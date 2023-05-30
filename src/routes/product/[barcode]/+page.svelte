@@ -7,9 +7,6 @@
 
 	export let data: PageData;
 	$: product = data.state.product;
-	$: knowledgePanels = data.knowledgePanels;
-
-	$: console.debug(knowledgePanels);
 </script>
 
 <div class="container flex-col flex gap-4 xl:max-w-6xl mx-auto my-2">
@@ -61,5 +58,5 @@
 		<EcoScore grade={product.nutriscore_grade} />
 	</div>
 
-	<KnowledgePanels {knowledgePanels} />
+	<KnowledgePanels knowledgePanels={data.knowledgePanels} />
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElement, KnowledgePanel } from '$lib/product';
+	import type { KnowledgeElement, KnowledgePanel } from './knowledgepanels';
 	import Panel from './KnowledgePanel.svelte';
 	import TextPanel from './TextElement.svelte';
 
@@ -13,11 +13,12 @@
 
 		{#each element.panel_group_element.panel_ids as id}
 			{@const panel = allPanels[id]}
-			<Panel {panel} {allPanels} />
+			<Panel {panel} {allPanels} {id} />
 		{/each}
 	{:else if element.element_type === 'panel'}
-		{@const panel = allPanels[element.panel_element.panel_id]}
-		<Panel {panel} {allPanels} />
+		{@const id = element.panel_element.panel_id}
+		{@const panel = allPanels[id]}
+		<Panel {panel} {allPanels} {id} />
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}

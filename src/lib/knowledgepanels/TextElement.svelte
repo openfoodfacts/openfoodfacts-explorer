@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeTextElement } from '$lib/product';
+	import type { KnowledgeTextElement } from './knowledgepanels';
 
 	export let element: KnowledgeTextElement;
 </script>

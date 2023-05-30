@@ -1,8 +1,6 @@
 import type { ProductState } from '$lib/product';
 import type { PageLoad } from './$types';
 
-export const ssr = false;
-
 export const load = (async ({ params, fetch }) => {
 	const barcode = params.barcode;
 

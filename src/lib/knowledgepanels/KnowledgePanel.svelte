@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { KnowledgePanel } from '$lib/product';
+	import type { KnowledgePanel } from './knowledgepanels';
 
 	import { tweened } from 'svelte/motion';
 	import Elements from './KnowledgeElements.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let panel: KnowledgePanel | null;
+	export let id: string;
 
 	let expanded = panel?.expanded ?? false;
 	$: {
@@ -20,7 +21,7 @@
 	<p>Panel is null</p>
 {:else if panel.type === 'card'}
 	<div class="shadow-md rounded-2xl p-5 w-full bg-base-100 dark:bg-base-300">
-		<h2 class="text-4xl font-bold my-3">{panel.title_element.title}</h2>
+		<h2 class="text-4xl font-bold my-3" {id}>{panel.title_element.title}</h2>
 
 		<Elements elements={panel.elements} {allPanels} />
 	</div>
