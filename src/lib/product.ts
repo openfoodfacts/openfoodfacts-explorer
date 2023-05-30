@@ -2,9 +2,15 @@ import type { KnowledgePanel } from './knowledgepanels/knowledgepanels';
 import type { Nutriments } from './nutriments';
 
 export type ProductState = {
-	code: string;
-	status: number;
-	status_verbose: string;
+	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
+	result: {
+		id: string;
+		name: string;
+		lc_name: string;
+	};
+	errors: object[];
+	warnings: object[];
+
 	product: {
 		knowledge_panels: Record<string, KnowledgePanel>;
 		product_name: string;
