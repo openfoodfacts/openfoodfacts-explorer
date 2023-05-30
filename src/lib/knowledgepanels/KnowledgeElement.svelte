@@ -1,50 +1,53 @@
 <script lang="ts">
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/product';
 	import Panel from './KnowledgePanel.svelte';
+	import TextPanel from './TextElement.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let element: KnowledgeElement;
 </script>
 
-{#if element.element_type === 'panel_group'}
-	<h3 class="text-xl font-bold my-3">{element.panel_group_element.title}</h3>
+<div class="my-1">
+	{#if element.element_type === 'panel_group'}
+		<h3 class="text-xl font-bold my-3">{element.panel_group_element.title}</h3>
 
-	{#each element.panel_group_element.panel_ids as id}
-		{@const panel = allPanels[id]}
+		{#each element.panel_group_element.panel_ids as id}
+			{@const panel = allPanels[id]}
+			<Panel {panel} {allPanels} />
+		{/each}
+	{:else if element.element_type === 'panel'}
+		{@const panel = allPanels[element.panel_element.panel_id]}
 		<Panel {panel} {allPanels} />
-	{/each}
-{:else if element.element_type === 'panel'}
-	{@const panel = allPanels[element.panel_element.panel_id]}
-	<Panel {panel} {allPanels} />
-{:else if element.element_type === 'text'}
-	{@html element.text_element.html}
-{:else if element.element_type === 'image'}
-	<img src={element.image_element.url} alt={element.image_element.alt_text} />
-{:else if element.element_type === 'table'}
-	<div class="overflow-x-auto">
-		<table class="table w-full table-compact">
-			<thead>
-				<tr>
-					<th />
-					{#each element.table_element.columns as column}
-						<th>{column.text}</th>
-					{/each}
-				</tr>
-			</thead>
-			<tbody>
-				{#each element.table_element.rows as row}
+	{:else if element.element_type === 'text'}
+		<TextPanel {element} />
+	{:else if element.element_type === 'image'}
+		<img src={element.image_element.url} alt={element.image_element.alt_text} />
+	{:else if element.element_type === 'table'}
+		<div class="overflow-x-auto">
+			<table class="table w-full table-compact">
+				<thead>
 					<tr>
-						<td />
-						{#each row.values as cell}
-							<td>{cell.text}</td>
+						<th />
+						{#each element.table_element.columns as column}
+							<th>{column.text}</th>
 						{/each}
 					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
-{:else if element.element_type === 'action'}
-	<button class="btn btn-primary">{@html element.action_element.html}</button>
-{:else}
-	{JSON.stringify(element)}
-{/if}
+				</thead>
+				<tbody>
+					{#each element.table_element.rows as row}
+						<tr>
+							<td />
+							{#each row.values as cell}
+								<td>{cell.text}</td>
+							{/each}
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{:else if element.element_type === 'action'}
+		<button class="btn btn-primary">{@html element.action_element.html}</button>
+	{:else}
+		{JSON.stringify(element)}
+	{/if}
+</div>

@@ -6,6 +6,9 @@
 	export let elements: KnowledgeElement[];
 </script>
 
-{#each elements as element}
+{#each elements as element, i}
+	{#if i > 0}
+		<hr class="my-4 bg-base-100 border-base-100" />
+	{/if}
 	<Element {element} {allPanels} />
 {/each}
