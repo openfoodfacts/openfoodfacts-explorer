@@ -40,7 +40,7 @@
 			class:pl-2={expanded}
 		>
 			<summary
-				class="hover:bg-base-100 w-full rounded-lg p-2 my-2 cursor-pointer flex items-center select-none"
+				class="dark:hover:bg-base-100 hover:bg-base-200 w-full rounded-lg p-2 my-2 cursor-pointer flex items-center select-none"
 			>
 				{#if panel.title_element != null}
 					{#if panel.title_element.icon_url != null}
