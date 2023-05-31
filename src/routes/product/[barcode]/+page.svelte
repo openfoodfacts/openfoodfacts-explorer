@@ -7,6 +7,8 @@
 
 	export let data: PageData;
 	$: product = data.state.product;
+
+	$: console.debug('Product:', product);
 </script>
 
 <div class="container flex-col flex gap-4 xl:max-w-6xl mx-auto my-2">
@@ -56,7 +58,7 @@
 		<div class="p-3 w-full flex gap-4 justify-evenly">
 			<NutriScore grade={product.nutriscore_grade} />
 			<Nova grade={product.nova_group} />
-			<EcoScore grade={product.nutriscore_grade} />
+			<EcoScore grade={product.ecoscore_grade} />
 		</div>
 
 		<KnowledgePanels knowledgePanels={product.knowledge_panels} />
