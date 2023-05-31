@@ -53,6 +53,7 @@ export type ProductState = {
 
 		categories: string;
 		categories_tags: string[];
+		categories_hierarchy: object[];
 
 		stores: string;
 		stores_tags: string[];

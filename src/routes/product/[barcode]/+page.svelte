@@ -1,14 +1,16 @@
 <script lang="ts">
+	import { getOrDefault } from '$lib/taxo';
 	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/KnowledgePanels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
 	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
 	import type { PageData } from './$types';
+	import { preferences } from '$lib/settings';
 
 	export let data: PageData;
 	$: product = data.state.product;
 
-	$: console.debug('Product:', product);
+	$: lang = $preferences.lang;
 </script>
 
 <div class="container flex-col flex gap-4 xl:max-w-6xl mx-auto my-2">
@@ -33,16 +35,52 @@
 						<span>{product.quantity}</span>
 
 						<span class="font-bold text-end">Brands:</span>
-						<span>{product.brands_tags}</span>
+						<span>
+							{#await data.taxo.brands}
+								Loading...
+							{:then brands}
+								{#each product.brands_tags as tag, i}
+									{#if i > 0}, {/if}
+									{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+								{/each}
+							{/await}
+						</span>
 
 						<span class="font-bold text-end">Categories:</span>
-						<span>{product.categories_tags}</span>
+						<span>
+							{#await data.taxo.categories}
+								Loading...
+							{:then categories}
+								{#each product.categories_tags as tag, i}
+									{#if i > 0}, {/if}
+									{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
+								{/each}
+							{/await}
+						</span>
 
 						<span class="font-bold text-end">Stores:</span>
-						<span>{product.stores_tags}</span>
+						<span>
+							{#await data.taxo.stores}
+								Loading...
+							{:then stores}
+								{#each product.stores_tags as tag, i}
+									{#if i > 0}, {/if}
+									{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+								{/each}
+							{/await}
+						</span>
 
 						<span class="font-bold text-end">Labels:</span>
-						<span>{product.labels_tags}</span>
+						<span>
+							{#await data.taxo.labels}
+								Loading...
+							{:then labels}
+								{#each product.labels_tags as tag, i}
+									{#if i > 0}, {/if}
+									{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
+								{/each}
+							{/await}
+						</span>
 					</div>
 				</div>
 				<div>
