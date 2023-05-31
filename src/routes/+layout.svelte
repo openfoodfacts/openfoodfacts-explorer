@@ -8,4 +8,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<slot />
+<div class="container flex-col flex gap-4 xl:max-w-6xl mx-auto my-2">
+	<slot />
+</div>
