@@ -16,7 +16,7 @@
 {#if data.state.status === 'success'}
 	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
 		<div class="flex">
-			<h1 class="font-bold text-4xl my-4">{product.product_name}</h1>
+			<h1 class="font-bold text-4xl my-4">{product.product_name ?? product.code}</h1>
 			<a
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"

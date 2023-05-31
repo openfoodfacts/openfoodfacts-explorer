@@ -11,56 +11,67 @@ export type ProductState = {
 	errors: object[];
 	warnings: object[];
 
-	product: {
-		knowledge_panels: Record<string, KnowledgePanel>;
-		product_name: string;
-		product_name_en: string;
-		_id: string;
-		code: string;
-		_keywords: string[];
-		additives_n: number;
-		ingredients: {
-			id: string;
-			percent: number;
-			percent_estimate: number;
-			percent_max: number;
-			percent_min: number;
-			text: string;
-			vegan: string;
-			vegetarian: string;
-		}[];
-		additives_tags: string[];
+	product: Product;
+};
 
-		image_front_url: string;
-		image_front_small_url: string;
-		image_front_thumb_url: string;
+export type ProductSearch = {
+	count: number;
+	page: number;
+	page_count: number;
+	page_size: number;
+	products: Product[];
+	skip: number;
+}
 
-		image_ingredients_url: string;
-		image_ingredients_small_url: string;
-		image_ingredients_thumb_url: string;
+export type Product = {
+	knowledge_panels: Record<string, KnowledgePanel>;
+	product_name: string;
+	product_name_en: string;
+	_id: string;
+	code: string;
+	_keywords: string[];
+	additives_n: number;
+	ingredients: {
+		id: string;
+		percent: number;
+		percent_estimate: number;
+		percent_max: number;
+		percent_min: number;
+		text: string;
+		vegan: string;
+		vegetarian: string;
+	}[];
+	additives_tags: string[];
 
-		image_nutrition_url: string;
-		image_nutrition_small_url: string;
-		image_nutrition_thumb_url: string;
+	image_front_url: string;
+	image_front_small_url: string;
+	image_front_thumb_url: string;
 
-		quantity: string;
-		nutriscore_grade: string;
-		ecoscore_grade: string;
-		nova_group: number;
+	image_ingredients_url: string;
+	image_ingredients_small_url: string;
+	image_ingredients_thumb_url: string;
 
-		brands: string;
-		brands_tags: string[];
+	image_nutrition_url: string;
+	image_nutrition_small_url: string;
+	image_nutrition_thumb_url: string;
 
-		categories: string;
-		categories_tags: string[];
-		categories_hierarchy: object[];
+	quantity: string;
+	nutriscore_grade: string;
+	ecoscore_grade: string;
+	nova_group: number;
 
-		stores: string;
-		stores_tags: string[];
+	brands: string;
+	brands_tags: string[];
 
-		labels: string;
-		labels_tags: string[];
+	categories: string;
+	categories_tags: string[];
+	categories_hierarchy: object[];
 
-		nutriments: Nutriments;
-	};
+	stores: string;
+	stores_tags: string[];
+
+	labels: string;
+	labels_tags: string[];
+
+	nutriments: Nutriments;
 };
