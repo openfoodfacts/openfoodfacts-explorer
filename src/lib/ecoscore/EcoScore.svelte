@@ -18,4 +18,6 @@
 	$: src = MAP[grade.toLowerCase()] ?? EcoscoreUnknown;
 </script>
 
-<img alt="Nutriscore" {src} />
+<a href="#nutriscore">
+	<img alt="Nutriscore" {src} class="hover:brightness-90 transition-all duration-75" />
+</a>

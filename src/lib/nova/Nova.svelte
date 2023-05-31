@@ -16,4 +16,6 @@
 	$: src = MAP[grade] ?? NovaUnknown;
 </script>
 
-<img alt="Nutriscore" {src} />
+<a href="#nova">
+	<img alt="Nutriscore" {src} class="hover:brightness-90 transition-all duration-75" />
+</a>
