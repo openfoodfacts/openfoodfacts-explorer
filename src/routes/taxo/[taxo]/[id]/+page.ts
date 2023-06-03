@@ -2,7 +2,7 @@ import type { PageLoad } from './$types';
 import type { Taxonomy } from '$lib/taxo';
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
-import type { ProductSearch } from '$lib/product';
+import type { ProductReduced, ProductSearch } from '$lib/product';
 import { SEARCH_URL, TAXONOMY_URL } from '$lib/const';
 import { error } from '@sveltejs/kit';
 
@@ -12,8 +12,8 @@ async function getProducts(
 	taxonomy: string,
 	nodeId: string,
 	fetch: (url: string) => Promise<Response>
-): Promise<ProductSearch> {
-	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${get(preferences).lang}`;
+): Promise<ProductSearch<ProductReduced>> {
+	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${get(preferences).lang}&fields=product_name,code,image_front_small_url`;
 	const res = await fetch(url);
 	return await res.json();
 }

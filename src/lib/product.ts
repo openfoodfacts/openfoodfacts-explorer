@@ -14,12 +14,12 @@ export type ProductState<T = Product> = {
 	product: T;
 };
 
-export type ProductSearch = {
+export type ProductSearch<T = Product> = {
 	count: number;
 	page: number;
 	page_count: number;
 	page_size: number;
-	products: Product[];
+	products: T[];
 	skip: number;
 };
 
