@@ -7,7 +7,8 @@
 	$: languages = Object.entries(data.languages);
 
 	let langSelect: HTMLSelectElement;
-	function setLangSelect() {
+	
+	function updatePreferences() {
 		preferences.update((old) => ({
 			...old,
 			lang: langSelect.value
@@ -15,7 +16,7 @@
 	}
 </script>
 
-<select bind:this={langSelect} on:change={setLangSelect}>
+<select bind:this={langSelect} on:change={updatePreferences}>
 	{#each languages as [_, lang]}
 		<option
 			value={lang.language_code_2.en}

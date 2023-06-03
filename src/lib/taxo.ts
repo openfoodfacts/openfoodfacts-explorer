@@ -4,7 +4,7 @@ export function getOrDefault<T>(localized: Record<string, T>, lang: string): T |
 	return localized[lang] ?? localized['en'] ?? Object.values(localized)[0];
 }
 
-export type Taxonomy<T extends TaxoNode = TaxoNode> = Record<string, T | undefined>;
+export type Taxonomy<T extends TaxoNode = TaxoNode> = Record<string, T>;
 
 export type TaxoNode = {
 	name: LocalizedString;
@@ -28,3 +28,12 @@ export type Category = TaxoNode & {
 export type Store = TaxoNode & {};
 
 export type Brand = TaxoNode & {};
+
+export type Language = TaxoNode & {
+	language_code_2: {
+		en: string;
+	};
+	language_code_3: {
+		en: string;
+	};
+};
