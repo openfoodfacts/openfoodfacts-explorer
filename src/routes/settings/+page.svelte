@@ -3,6 +3,7 @@
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
+	import { loginFolksonomy } from '$lib/api';
 
 	export let data: PageData;
 
@@ -33,4 +34,32 @@
 
 	<label for="nova" class="justify-self-end">Nova:</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
+
+	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>
+
+	<label for="username">Username</label>
+	<input
+		type="text"
+		id="username"
+		class="input input-bordered"
+		bind:value={$preferences.username}
+	/>
+
+	<label for="password">Password</label>
+	<input
+		type="password"
+		id="password"
+		class="input input-bordered"
+		bind:value={$preferences.password}
+	/>
+
+	<label for="">Login to folksonomy engine</label>
+
+	<button
+		disabled={!$preferences.username || !$preferences.password}
+		class="btn btn-primary"
+		on:click={() => loginFolksonomy($preferences.username, $preferences.password)}
+	>
+		Login
+	</button>
 </div>

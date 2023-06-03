@@ -43,3 +43,101 @@ export async function getProductReducedForCard(
 
 	return productState.product;
 }
+
+export type ProductTag = {
+	product: string;
+	k: string;
+	v: string;
+
+	owner?: string;
+	version?: number;
+	editor?: string;
+	last_edit?: string;
+	comment?: string;
+};
+
+export async function loginFolksonomy(username: string, password: string) {
+	const res = await fetch('https://api.folksonomy.openfoodfacts.org/auth', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: new URLSearchParams({
+			username,
+			password
+		}).toString()
+	});
+	if (res.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
+
+	const token = (await res.json()) as { access_token: string; token_type: string };
+	preferences.update((p) => ({
+		...p,
+		folksonomy: {
+			...p.folksonomy,
+			authToken: token.access_token
+		}
+	}));
+}
+
+export async function getProductFolksonomy(
+	barcode: string,
+	fetch: (url: string, options?: RequestInit) => Promise<Response>
+): Promise<ProductTag[] | null> {
+	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product/' + barcode);
+	return await res.json();
+}
+
+export async function putProductTag(
+	tag: ProductTag,
+	fetch: (url: string, options?: RequestInit) => Promise<Response>
+): Promise<boolean> {
+	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product', {
+		method: 'PUT',
+		body: JSON.stringify(tag),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
+		}
+	});
+
+	return res.status === 200;
+}
+
+export async function createProductTag(
+	tag: ProductTag,
+	fetch: (url: string, options?: RequestInit) => Promise<Response>
+): Promise<boolean> {
+	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product', {
+		method: 'POST',
+		body: JSON.stringify(tag),
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
+		}
+	});
+
+	return res.status === 200;
+}
+
+export async function deleteProductTag(
+	tag: ProductTag,
+	fetch: (url: string, options?: RequestInit) => Promise<Response>
+) {
+	const res = await fetch(
+		'https://api.folksonomy.openfoodfacts.org/product/' +
+			tag.product +
+			'/' +
+			tag.k +
+			'?version=' +
+			tag.version,
+		{
+			method: 'DELETE',
+			body: JSON.stringify(tag),
+			headers: {
+				Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
+			}
+		}
+	);
+
+	return res.json();
+}

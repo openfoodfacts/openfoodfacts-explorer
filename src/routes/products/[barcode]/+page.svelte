@@ -6,6 +6,7 @@
 	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
 	import type { PageData } from './$types';
 	import { preferences } from '$lib/settings';
+	import Folksonomy from './Folksonomy.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
@@ -103,4 +104,12 @@
 	</div>
 
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} />
+
+	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
+		<h1 class="text-4xl my-4 font-bold">
+			Folksonomy Engine <span class="font-light italic">(alpha)</span>
+		</h1>
+
+		<Folksonomy tags={data.tags ?? []} barcode={product.code} />
+	</div>
 {/if}

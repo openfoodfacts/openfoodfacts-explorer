@@ -5,4 +5,9 @@ export const preferences = persisted('preferences', {
 	nutriscoreInfluence: 50,
 	ecoscoreInfluence: 50,
 	novaGroupInfluence: 50,
+	folksonomy: {
+		authToken: null as string | null
+	},
+	username: null as string | null,
+	password: null as string | null
 });
