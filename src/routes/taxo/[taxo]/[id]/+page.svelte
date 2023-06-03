@@ -6,6 +6,8 @@
 	export let data: PageData;
 	$: category = data.taxonomyElement;
 	$: taxonomy = data.taxonomy;
+
+	$: console.debug('category', category);
 </script>
 
 <h1 class="text-4xl font-bold mt-8">
@@ -38,10 +40,13 @@
 	<h3 class="text-xl font-bold">Parents</h3>
 
 	<ul class="list-disc ml-4">
-		{#each category.parents as parent}
+		{#each category.parents as parentId}
+			{@const parentNode = data.fullTaxonomy[parentId]}
 			<li>
-				<a class="link" href={`/taxo/${taxonomy}/${parent}`}>
-					{getOrDefault(data.fullTaxonomy[parent].name, $preferences.lang) ?? parent}
+				<a class="link" href={`/taxo/${taxonomy}/${parentId}`}>
+					{parentNode == null
+						? parentId
+						: getOrDefault(parentNode.name, $preferences.lang) ?? parentId}
 				</a>
 			</li>
 		{/each}
@@ -51,10 +56,11 @@
 {#if category.children != null}
 	<h3 class="text-xl font-bold">Children</h3>
 	<ul class="list-disc ml-4">
-		{#each category.children as child}
+		{#each category.children as childId}
+			{@const childNode = data.fullTaxonomy[childId]}
 			<li>
-				<a class="link" href={`/taxo/${taxonomy}/${child}`}>
-					{getOrDefault(data.fullTaxonomy[child].name, $preferences.lang) ?? child}
+				<a class="link" href={`/taxo/${taxonomy}/${childId}`}>
+					{childNode == null ? childId : getOrDefault(childNode.name, $preferences.lang) ?? childId}
 				</a>
 			</li>
 		{/each}
@@ -75,7 +81,6 @@
 
 <h3 class="text-xl font-bold">Example of products</h3>
 {#await data.streamed.search}
-	<progress class="progress" aria-busy="true" />
 	<div>Loading example products...</div>
 {:then search}
 	{#if search.products.length > 0}
@@ -91,7 +96,7 @@
 				</div>
 			{/each}
 		</div>
-		{:else}
+	{:else}
 		<div class="alert alert-warning">No example products found</div>
 	{/if}
 {/await}

@@ -1,25 +1,32 @@
 import type { PageLoad } from './$types';
-import type { Category, Taxo } from '$lib/taxo';
+import type { Category, TaxoNode, Taxonomy } from '$lib/taxo';
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 import type { ProductSearch } from '$lib/product';
+import { SEARCH_URL, TAXONOMY_URL } from '$lib/const';
+import { error } from '@sveltejs/kit';
 
 export const ssr = false;
+
+async function getProducts(
+	taxonomy: string,
+	nodeId: string,
+	fetch: (url: string) => Promise<Response>
+): Promise<ProductSearch> {
+	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${get(preferences).lang}`;
+	const res = await fetch(url);
+	return await res.json();
+}
 
 export const load = (async ({ params, fetch }) => {
 	const { id, taxo: taxonomyName } = params;
 
-	const taxoRes = await fetch(
-		'https://static.openfoodfacts.org/data/taxonomies/' + taxonomyName + '.json'
-	);
-	const taxonomy = (await taxoRes.json()) as Record<string, Category>;
-	const element = taxonomy[id] as Taxo;
+	const taxonomy = (await (await fetch(TAXONOMY_URL(taxonomyName))).json()) as Taxonomy;
+	const element = taxonomy[id];
 
-	const search = fetch(
-		`https://world.openfoodfacts.org/api/v2/search?${taxonomyName}_tags=${id}&lc=${
-			get(preferences).lang
-		}`
-	).then((res) => res.json()) as Promise<ProductSearch>;
+	if (element == null) throw error(404, 'Taxonomy element not found');
+
+	const search = getProducts(taxonomyName, id, fetch);
 
 	return {
 		taxonomy: taxonomyName,

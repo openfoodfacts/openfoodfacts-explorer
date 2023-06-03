@@ -3,6 +3,15 @@ import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 import type { Category, Label, Store } from '$lib/taxo';
+import { TAXONOMY_URL } from '$lib/const';
+
+async function getTaxo<T>(
+	taxo: string,
+	fetch: (url: string) => Promise<Response>
+): Promise<Record<string, T>> {
+	const res = await fetch(TAXONOMY_URL(taxo));
+	return await res.json();
+}
 
 export const load = (async ({ params, fetch }) => {
 	const barcode = params.barcode;
@@ -18,28 +27,17 @@ export const load = (async ({ params, fetch }) => {
 
 	const state = (await res.json()) as ProductState;
 
-	const categories = fetch('https://static.openfoodfacts.org/data/taxonomies/categories.json').then(
-		(res) => res.json()
-	) as Promise<Record<string, Category>>;
-
-	const labels = fetch('https://static.openfoodfacts.org/data/taxonomies/labels.json').then((res) =>
-		res.json()
-	) as Promise<Record<string, Label>>;
-
-	const stores = fetch('https://static.openfoodfacts.org/data/taxonomies/stores.json').then((res) =>
-		res.json()
-	) as Promise<Record<string, Store>>;
-
-	const brands = fetch('https://static.openfoodfacts.org/data/taxonomies/brands.json').then((res) =>
-		res.json()
-	) as Promise<Record<string, Store>>;
+	const categories = getTaxo('categories', fetch);
+	const labels = getTaxo('labels', fetch);
+	const stores = getTaxo('stores', fetch);
+	const brands = getTaxo('brands', fetch);
 
 	return {
-		state: state,
+		state,
 		taxo: {
-			categories: categories,
-			labels: labels,
-			stores: stores,
+			categories,
+			labels,
+			stores,
 			brands
 		}
 	};
