@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import type { Category, TaxoNode, Taxonomy } from '$lib/taxo';
+import type { Taxonomy } from '$lib/taxo';
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 import type { ProductSearch } from '$lib/product';

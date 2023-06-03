@@ -1,7 +1,7 @@
 import type { KnowledgePanel } from './knowledgepanels/knowledgepanels';
 import type { Nutriments } from './nutriments';
 
-export type ProductState = {
+export type ProductState<T = Product> = {
 	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
 	result: {
 		id: string;
@@ -11,7 +11,7 @@ export type ProductState = {
 	errors: object[];
 	warnings: object[];
 
-	product: Product;
+	product: T;
 };
 
 export type ProductSearch = {
@@ -21,7 +21,7 @@ export type ProductSearch = {
 	page_size: number;
 	products: Product[];
 	skip: number;
-}
+};
 
 export type Product = {
 	knowledge_panels: Record<string, KnowledgePanel>;
@@ -75,3 +75,5 @@ export type Product = {
 
 	nutriments: Nutriments;
 };
+
+export type ProductReduced = Pick<Product, 'image_front_small_url' | 'code' | 'product_name'>;

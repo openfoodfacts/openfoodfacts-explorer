@@ -37,3 +37,11 @@ export type Language = TaxoNode & {
 		en: string;
 	};
 };
+
+export const TAXONOMIES_NAMES: Record<string, string> = {
+	labels: 'Label',
+	categories: 'Category',
+	stores: 'Store',
+	brands: 'Brand',
+	languages: 'Language'
+};

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { preferences } from '$lib/settings';
-	import { getOrDefault } from '$lib/taxo';
+	import { TAXONOMIES_NAMES, getOrDefault } from '$lib/taxo';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -10,7 +10,8 @@
 	$: console.debug('category', category);
 </script>
 
-<h1 class="text-4xl font-bold mt-8">
+<h1 class="text-4xl">
+	<span class="font-bold">{TAXONOMIES_NAMES[taxonomy] ?? taxonomy}:</span>
 	{getOrDefault(category.name, $preferences.lang) ?? 'Unknown'}
 </h1>
 
