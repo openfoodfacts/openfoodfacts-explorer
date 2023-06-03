@@ -110,6 +110,6 @@
 			Folksonomy Engine <span class="font-light italic">(alpha)</span>
 		</h1>
 
-		<Folksonomy tags={data.tags ?? []} barcode={product.code} />
+		<Folksonomy tags={data.tags ?? []} keys={data.keys.map((it) => it.k)} barcode={product.code} />
 	</div>
 {/if}

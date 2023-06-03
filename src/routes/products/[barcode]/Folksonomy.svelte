@@ -4,8 +4,18 @@
 
 	export let tags: ProductTag[];
 	export let barcode: string;
+	export let keys: readonly string[];
+
+	function getFilteredKeys(newKey: string, keys: readonly string[]) {
+		if (newKey === '') {
+			return keys;
+		} else {
+			return keys.filter((key) => key.includes(newKey) && key !== newKey);
+		}
+	}
 
 	$: editable = $preferences.folksonomy.authToken != null;
+	$: filteredKeys = getFilteredKeys(newKey, keys);
 
 	let newButton: HTMLButtonElement;
 
@@ -95,13 +105,31 @@
 
 		<tr>
 			<td>
-				<input
-					type="text"
-					class="input w-full"
-					placeholder="Key"
-					readonly={!editable}
-					bind:value={newKey}
-				/>
+				<div class="dropdown w-full dropdown-top">
+					<input
+						type="text"
+						class="input w-full"
+						placeholder="Key"
+						readonly={!editable}
+						bind:value={newKey}
+					/>
+
+					<div class="dropdown-content max-h-52 overflow-y-auto">
+						<ul tabindex="0" class=" menu p-2 shadow bg-base-100 rounded-box">
+							{#each filteredKeys as key}
+								<li>
+									<button
+										on:click={() => {
+											newKey = key;
+										}}
+									>
+										{key}
+									</button>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				</div>
 			</td>
 			<td class="flex gap-2">
 				<input
@@ -111,8 +139,9 @@
 					readonly={!editable}
 					bind:value={newValue}
 				/>
-				<button class="btn btn-primary" bind:this={newButton} on:click={createNewTag}>Create</button
-				>
+				<button class="btn btn-primary" bind:this={newButton} on:click={createNewTag}>
+					Create
+				</button>
 			</td>
 		</tr>
 	</tbody>

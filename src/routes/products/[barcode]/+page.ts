@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import { getProduct, getProductFolksonomy, getTaxo } from '$lib/api';
+import { getKeys, getProduct, getProductFolksonomy, getTaxo } from '$lib/api';
 
 export const load = (async ({ params, fetch }) => {
 	const state = getProduct(params.barcode, fetch);
@@ -9,10 +9,12 @@ export const load = (async ({ params, fetch }) => {
 	const brands = getTaxo('brands', fetch);
 
 	const tags = getProductFolksonomy(params.barcode, fetch);
+	const keys = getKeys(fetch);
 
 	return {
 		state,
 		tags,
+		keys,
 		taxo: {
 			categories,
 			labels,

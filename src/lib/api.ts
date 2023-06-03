@@ -56,6 +56,12 @@ export type ProductTag = {
 	comment?: string;
 };
 
+export type Key = {
+	k: string;
+	count: number;
+	values: number;
+};
+
 export async function loginFolksonomy(username: string, password: string) {
 	const res = await fetch('https://api.folksonomy.openfoodfacts.org/auth', {
 		method: 'POST',
@@ -84,6 +90,13 @@ export async function getProductFolksonomy(
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ): Promise<ProductTag[] | null> {
 	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product/' + barcode);
+	return await res.json();
+}
+
+export async function getKeys(
+	fetch: (url: string, options?: RequestInit) => Promise<Response>
+): Promise<Key[]> {
+	const res = await fetch('https://api.folksonomy.openfoodfacts.org/keys');
 	return await res.json();
 }
 
