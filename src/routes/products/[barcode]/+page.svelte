@@ -16,16 +16,16 @@
 
 {#if data.state.status === 'success'}
 	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
-		<div class="flex">
-			<h1 class="font-bold text-4xl my-4">{product.product_name ?? product.code}</h1>
+		<div class="md:flex max-md:text-center gap-2 max-md:mb-4">
+			<h1 class="font-bold text-3xl md:text-4xl my-4">{product.product_name ?? product.code}</h1>
 			<a
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="btn btn-secondary ml-auto"
+				class="btn max-sm:btn-sm btn-secondary ml-auto"
 			>
-				Go to OpenFoodFacts
-			</a>
+			See on OpenFoodFacts
+		</a>
 		</div>
 
 		<div class="flex gap-4">

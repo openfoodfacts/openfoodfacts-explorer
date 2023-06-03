@@ -71,7 +71,7 @@
 	}
 </script>
 
-<table class="table w-full">
+<table class="table w-full table-compact">
 	<thead>
 		<tr>
 			<th>Key</th>
@@ -81,11 +81,15 @@
 	<tbody>
 		{#each tags as tag, i}
 			<tr>
-				<td>{tag.k}</td>
-				<td class="flex gap-2">
+				<td aria-label="Key">
+					<div class="flex w-full">
+						<input class="input grow max-sm:w-20" type="text" readonly value={tag.k} />
+					</div>
+				</td>
+				<td class="flex gap-2" aria-label="Value">
 					<input
 						type="text"
-						class="input grow"
+						class="input grow max-sm:w-20"
 						value={tag.v}
 						readonly={!editable}
 						on:change={(e) => updateTag(e, i)}
@@ -105,11 +109,11 @@
 
 		<tr>
 			<td>
-				<div class="dropdown w-full dropdown-top">
+				<div class="dropdown w-full dropdown-top flex">
 					<input
 						type="text"
-						class="input w-full"
-						placeholder="Key"
+						class="input grow max-sm:w-20"
+						placeholder="New key"
 						readonly={!editable}
 						bind:value={newKey}
 					/>
@@ -134,8 +138,8 @@
 			<td class="flex gap-2">
 				<input
 					type="text"
-					class="input grow"
-					placeholder="Value"
+					class="input grow max-sm:w-20"
+					placeholder="New value"
 					readonly={!editable}
 					bind:value={newValue}
 				/>
