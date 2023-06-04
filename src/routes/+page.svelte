@@ -13,7 +13,7 @@
 
 			<button
 				class="btn btn-square px-10"
-				on:click={() => (window.location.href = '/product/' + barcode)}
+				on:click={() => (window.location.href = '/products/' + barcode)}
 				disabled={barcode == null || barcode == ''}
 			>
 				Go
