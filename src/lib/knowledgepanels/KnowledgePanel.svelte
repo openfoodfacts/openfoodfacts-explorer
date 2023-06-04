@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgePanel } from './knowledgepanels';
+	import type { KnowledgePanel } from '$lib/api';
 
 	import { tweened } from 'svelte/motion';
 	import Elements from './KnowledgeElements.svelte';

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import type { KnowledgePanel } from '$lib/api';
+
 	import Panel from './KnowledgePanel.svelte';
-	import type { KnowledgePanel } from './knowledgepanels';
 
 	export let knowledgePanels: Record<string, KnowledgePanel>;
 	$: arr = Object.entries(knowledgePanels);

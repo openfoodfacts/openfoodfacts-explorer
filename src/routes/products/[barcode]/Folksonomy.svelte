@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { putProductTag, type ProductTag, createProductTag, deleteProductTag } from '$lib/api';
+	import {
+		createFolksonomyTag,
+		deleteFolksonomyTag,
+		putFolksonomyTag,
+		type FolksonomyTag
+	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 
-	export let tags: ProductTag[];
+	export let tags: FolksonomyTag[];
 	export let barcode: string;
 	export let keys: readonly string[];
 
@@ -28,14 +33,14 @@
 		const oldTag = tags[idx];
 		const newValue = event.currentTarget.value;
 
-		const newTag: ProductTag = {
+		const newTag: FolksonomyTag = {
 			...oldTag,
 			last_edit: new Date().toISOString(),
 			version: (oldTag.version ?? 0) + 1,
 			v: newValue
 		};
 
-		const res = await putProductTag(newTag, fetch);
+		const res = await putFolksonomyTag(newTag, fetch);
 		if (res) {
 			console.debug('Updated tag', oldTag, 'to', newTag);
 			tags[idx] = newTag;
@@ -51,14 +56,14 @@
 		newButton.disabled = true;
 
 		if (newKey !== '' && newValue != '') {
-			const newTag: ProductTag = {
+			const newTag: FolksonomyTag = {
 				k: newKey,
 				v: newValue,
 				product: barcode,
 				version: 1
 			};
 
-			const ok = await createProductTag(newTag, fetch);
+			const ok = await createFolksonomyTag(newTag, fetch);
 
 			if (ok) {
 				tags = [...tags, newTag];
@@ -98,7 +103,7 @@
 						class="btn btn-error"
 						on:click={() => {
 							tags = tags.filter((t) => t.k !== tag.k);
-							deleteProductTag(tag, fetch);
+							deleteFolksonomyTag(tag, fetch);
 						}}
 					>
 						Delete

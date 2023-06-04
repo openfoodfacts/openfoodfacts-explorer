@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getOrDefault } from '$lib/taxo';
+	import { getOrDefault } from '$lib/api';
 	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/KnowledgePanels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
@@ -17,15 +17,21 @@
 {#if data.state.status === 'success'}
 	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
 		<div class="md:flex max-md:text-center gap-2 max-md:mb-4">
-			<h1 class="font-bold text-3xl md:text-4xl my-4">{product.product_name ?? product.code}</h1>
+			<h1 class="font-bold text-3xl md:text-4xl my-4 grow">
+				{product.product_name ?? product.code}
+			</h1>
+
 			<a
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="btn max-sm:btn-sm btn-secondary ml-auto"
 			>
-			See on OpenFoodFacts
-		</a>
+				See on OpenFoodFacts
+			</a>
+			<a href={`/products/${product.code}/edit`} class="btn max-sm:btn-sm btn-secondary ml-auto">
+				Edit
+			</a>
 		</div>
 
 		<div class="flex gap-4">

@@ -1,10 +1,11 @@
-import type { PageLoad } from './$types';
-import type { Taxonomy } from '$lib/taxo';
-import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
-import type { ProductReduced, ProductSearch } from '$lib/product';
-import { SEARCH_URL, TAXONOMY_URL } from '$lib/const';
 import { error } from '@sveltejs/kit';
+
+import type { ProductReduced, ProductSearch, Taxonomy } from '$lib/api';
+import { preferences } from '$lib/settings';
+import { SEARCH_URL, TAXONOMY_URL } from '$lib/const';
+
+import type { PageLoad } from './$types';
 
 export const ssr = false;
 
@@ -13,7 +14,9 @@ async function getProducts(
 	nodeId: string,
 	fetch: (url: string) => Promise<Response>
 ): Promise<ProductSearch<ProductReduced>> {
-	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${get(preferences).lang}&fields=product_name,code,image_front_small_url`;
+	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${
+		get(preferences).lang
+	}&fields=product_name,code,image_front_small_url`;
 	const res = await fetch(url);
 	return await res.json();
 }
