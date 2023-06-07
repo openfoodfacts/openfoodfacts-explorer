@@ -1,9 +1,10 @@
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 import type { FolksonomyKey, FolksonomyTag } from './types';
+import { wrapFetch } from '$lib/utils';
 
 export async function loginFolksonomy(username: string, password: string) {
-	const res = await fetch('https://api.folksonomy.openfoodfacts.org/auth', {
+	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/auth', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded'
@@ -29,7 +30,7 @@ export async function getProductFolksonomy(
 	barcode: string,
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ): Promise<FolksonomyTag[] | null> {
-	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product/' + barcode);
+	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product/' + barcode);
 	return await res.json();
 }
 
@@ -44,7 +45,7 @@ export async function putFolksonomyTag(
 	tag: FolksonomyTag,
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ): Promise<boolean> {
-	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product', {
+	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product', {
 		method: 'PUT',
 		body: JSON.stringify(tag),
 		headers: {
@@ -60,7 +61,7 @@ export async function createFolksonomyTag(
 	tag: FolksonomyTag,
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ): Promise<boolean> {
-	const res = await fetch('https://api.folksonomy.openfoodfacts.org/product', {
+	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product', {
 		method: 'POST',
 		body: JSON.stringify(tag),
 		headers: {
@@ -76,7 +77,7 @@ export async function deleteFolksonomyTag(
 	tag: FolksonomyTag,
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ) {
-	const res = await fetch(
+	const res = await wrapFetch(fetch)(
 		'https://api.folksonomy.openfoodfacts.org/product/' +
 			tag.product +
 			'/' +
@@ -103,6 +104,6 @@ export async function getProducts(
 	const params = new URLSearchParams({ k: key });
 	if (value) params.append('v', value);
 
-	const res = await fetch(`https://api.folksonomy.openfoodfacts.org/products?${params}`);
+	const res = await wrapFetch(fetch)(`https://api.folksonomy.openfoodfacts.org/products?${params}`);
 	return res.json();
 }

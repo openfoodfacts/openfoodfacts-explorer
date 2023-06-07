@@ -15,6 +15,7 @@
 	</div>
 
 	<div class="flex-none">
+		<a class="btn btn-ghost" href="/folksonomy">Folksonomy</a>
 		<a class="btn btn-ghost" href="/settings">Settings</a>
 	</div>
 </div>

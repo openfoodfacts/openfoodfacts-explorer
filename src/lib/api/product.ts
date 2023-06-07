@@ -1,8 +1,9 @@
-import { API_HOST, PRODUCT_URL, STATIC_HOST } from '$lib/const';
+import { API_HOST, PRODUCT_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
+import { wrapFetch } from '$lib/utils';
 
 export type ProductState<T = Product> = {
 	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
@@ -91,7 +92,7 @@ export async function getProduct(
 			fields: 'all,knowledge_panels',
 			lc: get(preferences).lang
 		});
-	const res = await fetch(url);
+	const res = await wrapFetch(fetch)(url);
 	return await res.json();
 }
 
@@ -106,7 +107,7 @@ export async function getProductReducedForCard(
 			fields: 'image_front_small_url,code,product_name',
 			lc: get(preferences).lang
 		});
-	const res = await fetch(url);
+	const res = await wrapFetch(fetch)(url);
 	const productState = (await res.json()) as ProductState<ProductReduced>;
 
 	return productState.product;
@@ -124,7 +125,7 @@ export async function getProductName(
 			lc: get(preferences).lang
 		});
 
-	const res = await fetch(url);
+	const res = await wrapFetch(fetch)(url);
 	const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
 
 	return productState.product;
@@ -132,7 +133,7 @@ export async function getProductName(
 
 export async function addOrEditProductV2(
 	product: Product,
-	fetch: (url: string, init: RequestInit) => Promise<Response>
+	fetch: (url: string, init?: RequestInit) => Promise<Response>
 ) {
 	const url = `${API_HOST}/cgi/product_jqm2.pl`;
 
@@ -150,7 +151,7 @@ export async function addOrEditProductV2(
 		brands: product.brands
 	});
 
-	const res = await fetch(url, {
+	const res = await wrapFetch(fetch)(url, {
 		method: 'POST',
 		body,
 		headers: {
