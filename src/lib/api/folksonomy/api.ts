@@ -94,3 +94,15 @@ export async function deleteFolksonomyTag(
 
 	return res.json();
 }
+
+export async function getProducts(
+	fetch: (url: string, options?: RequestInit) => Promise<Response>,
+	key: string,
+	value?: string
+): Promise<FolksonomyTag[]> {
+	const params = new URLSearchParams({ k: key });
+	if (value) params.append('v', value);
+
+	const res = await fetch(`https://api.folksonomy.openfoodfacts.org/products?${params}`);
+	return res.json();
+}

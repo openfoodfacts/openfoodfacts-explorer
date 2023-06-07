@@ -112,6 +112,24 @@ export async function getProductReducedForCard(
 	return productState.product;
 }
 
+export async function getProductName(
+	fetch: (url: string) => Promise<Response>,
+	barcode: string
+): Promise<Pick<Product, 'product_name'>> {
+	const url =
+		PRODUCT_URL(barcode) +
+		'?' +
+		new URLSearchParams({
+			fields: 'product_name',
+			lc: get(preferences).lang
+		});
+
+	const res = await fetch(url);
+	const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
+
+	return productState.product;
+}
+
 export async function addOrEditProductV2(
 	product: Product,
 	fetch: (url: string, init: RequestInit) => Promise<Response>
