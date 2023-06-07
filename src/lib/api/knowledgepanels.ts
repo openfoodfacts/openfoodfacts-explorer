@@ -22,10 +22,11 @@ export type KnowledgeElement =
 	| KnowledgePanelGroupElement
 	| KnowledgePanelElement
 	| KnowledgeTableElement
-	| KnowledgeActionElement;
+	| KnowledgeActionElement
+	| KnowledgeMapElement;
 
 interface KnowledgeElementBase {
-	element_type: 'text' | 'image' | 'panel_group' | 'panel' | 'table' | 'action';
+	element_type: string;
 }
 
 export type KnowledgeTextElement = KnowledgeElementBase & {
@@ -94,5 +95,14 @@ export type KnowledgeActionElement = KnowledgeElementBase & {
 	action_element: {
 		actions: string[];
 		html: string;
+	};
+};
+
+export type KnowledgeMapElement = KnowledgeElementBase & {
+	element_type: 'map';
+	map_element: {
+		pointers: {
+			geo: { lat: number; lng: number };
+		}[];
 	};
 };

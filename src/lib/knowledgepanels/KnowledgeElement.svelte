@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
-	
+
 	import Panel from './KnowledgePanel.svelte';
+	import Map from './Map.svelte';
 	import TextPanel from './TextElement.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
@@ -49,7 +50,12 @@
 		</div>
 	{:else if element.element_type === 'action'}
 		<button class="btn btn-primary">{@html element.action_element.html}</button>
+	{:else if element.element_type === 'map'}
+		<Map {element} />
 	{:else}
-		{JSON.stringify(element)}
+		<div class="alert alert-warning">No renderer for element type!</div>
+		<details>
+			<pre>{JSON.stringify(element)}</pre>
+		</details>
 	{/if}
 </div>
