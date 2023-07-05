@@ -9,7 +9,7 @@
 <ul class="menu gap-1">
 	{#each sortedTags as key}
 		<li>
-			<a href="/folksonomy/{key.k}">
+			<a href="/folksonomy/{key.k}" class="font-mono">
 				{key.k}
 			</a>
 		</li>
