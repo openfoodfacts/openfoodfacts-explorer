@@ -1,22 +1,24 @@
 import { getProductReducedForCard } from '$lib/api';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ fetch }) => {
+async function productsWithQuestions(fetch: typeof window.fetch) {
 	const res = await fetch('https://robotoff.openfoodfacts.org/api/v1/questions?count=10');
 	const questions = (await res.json()) as {
-		status: 'no_questions';
+		status: string;
 		questions: {
 			barcode: string;
 		}[];
-		count: 0;
+		count: number;
 	};
 
-	const products = questions.questions.map(
-		async (question) => await getProductReducedForCard(question.barcode, fetch)
+	const products = await Promise.all(
+		questions.questions.map((question) => getProductReducedForCard(question.barcode, fetch))
 	);
+	return products;
+}
 
+export const load = (async ({ fetch }) => {
 	return {
-		questions,
-		streamed: { products }
+		streamed: { products: productsWithQuestions(fetch) }
 	};
 }) satisfies PageLoad;
