@@ -14,6 +14,7 @@
 	<Heading>General</Heading>
 	<label for="lang-select" class="justify-self-end">Language:</label>
 	<select class="select" name="lang-select" bind:value={$preferences.lang}>
+		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 		{#each languages as [_, lang]}
 			<option
 				value={lang.language_code_2.en}

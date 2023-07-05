@@ -49,7 +49,10 @@
 			</table>
 		</div>
 	{:else if element.element_type === 'action'}
-		<button class="btn btn-primary">{@html element.action_element.html}</button>
+		<button class="btn btn-primary">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html element.action_element.html}
+		</button>
 	{:else if element.element_type === 'map'}
 		<Map {element} />
 	{:else}

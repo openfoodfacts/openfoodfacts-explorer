@@ -13,6 +13,7 @@
 {/if}
 
 <div class="prose">
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html element.text_element.html}
 </div>
 

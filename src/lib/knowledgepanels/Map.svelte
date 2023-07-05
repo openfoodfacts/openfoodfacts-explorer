@@ -21,7 +21,8 @@
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 		for (const pointer of element.map_element.pointers) {
-			const marker = L.marker([pointer.geo.lat, pointer.geo.lng]).addTo(map);
+			const marker = L.marker([pointer.geo.lat, pointer.geo.lng]);
+			marker.addTo(map);
 		}
 	});
 </script>

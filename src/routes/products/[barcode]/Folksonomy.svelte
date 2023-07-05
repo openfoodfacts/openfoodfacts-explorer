@@ -48,8 +48,8 @@
 		}
 	}
 
-	let newKey: string = '';
-	let newValue: string = '';
+	let newKey = '';
+	let newValue = '';
 
 	async function createNewTag() {
 		newButton.classList.add('loading');

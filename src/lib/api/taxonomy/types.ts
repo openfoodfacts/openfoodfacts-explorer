@@ -25,9 +25,9 @@ export type Category = TaxoNode & {
 	ciqual_food_name?: LocalizedString;
 };
 
-export type Store = TaxoNode & {};
+export type Store = TaxoNode & object;
 
-export type Brand = TaxoNode & {};
+export type Brand = TaxoNode & object;
 
 export type Language = TaxoNode & {
 	language_code_2: {

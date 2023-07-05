@@ -6,7 +6,7 @@
 
 	export let autocomplete: string[] = [];
 
-	let newValue: string = '';
+	let newValue = '';
 
 	$: filteredAutocomplete =
 		newValue.length < 3

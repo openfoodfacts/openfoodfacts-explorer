@@ -1,7 +1,7 @@
-import { getProduct, getProductReducedForCard } from '$lib/api';
+import { getProductReducedForCard } from '$lib/api';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ fetch, params }) => {
+export const load = (async ({ fetch }) => {
 	const res = await fetch('https://robotoff.openfoodfacts.org/api/v1/questions?count=10');
 	const questions = (await res.json()) as {
 		status: 'no_questions';
