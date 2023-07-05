@@ -21,7 +21,7 @@ jobs:
           node-version: latest
           cache: 'pnpm'
 
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
 
       - run: pnpm check
         if: always()
