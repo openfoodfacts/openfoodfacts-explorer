@@ -1,26 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	let barcode: string;
-
 	export let data: PageData;
 </script>
 
 <div class="container xl:max-w-6xl mx-auto my-4 flex flex-col items-center">
-	<div class="form-control">
-		<div class="input-group">
-			<input type="text" bind:value={barcode} class="input input-bordered" placeholder="Barcode" />
-
-			<button
-				class="btn btn-square px-10"
-				on:click={() => (window.location.href = '/products/' + barcode)}
-				disabled={barcode == null || barcode == ''}
-			>
-				Go
-			</button>
-		</div>
-	</div>
-
 	<div class="mt-8">
 		{#await data.streamed.products}
 			<progress class="progress progress-secondary" />

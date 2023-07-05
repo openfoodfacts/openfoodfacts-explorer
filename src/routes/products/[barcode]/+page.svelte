@@ -7,6 +7,7 @@
 	import type { PageData } from './$types';
 	import { preferences } from '$lib/settings';
 	import Folksonomy from './Folksonomy.svelte';
+	import Card from '$lib/ui/Card.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
@@ -15,7 +16,7 @@
 </script>
 
 {#if data.state.status === 'success'}
-	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
+	<Card>
 		<div class="md:flex max-md:text-center gap-2 max-md:mb-4">
 			<h1 class="font-bold text-3xl md:text-4xl my-4 grow">
 				{product.product_name ?? product.code}
@@ -101,7 +102,7 @@
 				/>
 			</div>
 		</div>
-	</div>
+	</Card>
 
 	<div class="p-3 w-full flex gap-4 justify-evenly">
 		<NutriScore grade={product.nutriscore_grade} />
@@ -111,11 +112,11 @@
 
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} />
 
-	<div class="shadow-md rounded-2xl p-6 w-full bg-base-100 dark:bg-base-300">
+	<Card>
 		<h1 class="text-4xl my-4 font-bold">
 			Folksonomy Engine <span class="font-light italic">(alpha)</span>
 		</h1>
 
 		<Folksonomy tags={data.tags ?? []} keys={data.keys.map((it) => it.k)} barcode={product.code} />
-	</div>
+	</Card>
 {/if}

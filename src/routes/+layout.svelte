@@ -1,6 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
+
+	let barcode: string;
 </script>
 
 <svelte:head>
@@ -10,11 +12,42 @@
 </svelte:head>
 
 <div class="navbar bg-base-100 max-w-7xl mx-auto mt-2 mb-8">
-	<div class="flex-1">
-		<a class="btn btn-ghost normal-case text-xl" href="/">OpenFoodFacts Explorer</a>
+	<div class="navbar-start">
+		<a href="/">
+			<picture>
+				<source
+					srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg"
+					media="(prefers-color-scheme: dark)"
+				/>
+				<img
+					src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
+					alt="OpenFoodFacts Explorer"
+				/>
+			</picture>
+		</a>
+	</div>
+	<div class="navbar-center">
+		<div class="form-control">
+			<div class="input-group">
+				<input
+					type="text"
+					bind:value={barcode}
+					class="input input-bordered w-full"
+					placeholder="Barcode"
+				/>
+
+				<button
+					class="btn btn-square px-10"
+					on:click={() => (window.location.href = '/products/' + barcode)}
+					disabled={barcode == null || barcode == ''}
+				>
+					Go
+				</button>
+			</div>
+		</div>
 	</div>
 
-	<div class="flex-none">
+	<div class="navbar-end">
 		<a class="btn btn-ghost" href="/folksonomy">Folksonomy</a>
 		<a class="btn btn-ghost" href="/settings">Settings</a>
 	</div>
