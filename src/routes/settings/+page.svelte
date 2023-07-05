@@ -56,9 +56,15 @@
 	<label for="">Login to folksonomy engine</label>
 
 	<button
-		disabled={!$preferences.username || !$preferences.password}
+		disabled={$preferences.username == null || $preferences.password == null}
 		class="btn btn-primary"
-		on:click={() => loginFolksonomy($preferences.username, $preferences.password)}
+		on:click={() => {
+			const username = $preferences.username;
+			const password = $preferences.password;
+			if (username == null || password == null) throw new Error('Username or password is null');
+
+			loginFolksonomy(username, password);
+		}}
 	>
 		Login
 	</button>

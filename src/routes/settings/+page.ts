@@ -1,5 +1,4 @@
-import { getTaxo } from '$lib/api';
-import type { Language } from '$lib/taxo';
+import { getTaxo, type Language } from '$lib/api';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch }) => {

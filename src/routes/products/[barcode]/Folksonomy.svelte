@@ -124,6 +124,7 @@
 					/>
 
 					<div class="dropdown-content max-h-52 overflow-y-auto">
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 						<ul tabindex="0" class=" menu p-2 shadow bg-base-100 rounded-box">
 							{#each filteredKeys as key}
 								<li>

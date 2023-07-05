@@ -53,6 +53,7 @@
 		/>
 
 		<div class="dropdown-content max-h-52 overflow-y-auto">
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<ul tabindex="0" class="menu bg-base-100 shadow-sm">
 				{#each filteredAutocomplete as suggestion}
 					<li>
