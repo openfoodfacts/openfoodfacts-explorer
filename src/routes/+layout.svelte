@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Logo from '$lib/ui/Logo.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 
@@ -14,16 +15,7 @@
 <div class="navbar bg-base-100 max-w-7xl mx-auto mt-2 mb-8">
 	<div class="navbar-start">
 		<a href="/">
-			<picture>
-				<source
-					srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg"
-					media="(prefers-color-scheme: dark)"
-				/>
-				<img
-					src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
-					alt="OpenFoodFacts Explorer"
-				/>
-			</picture>
+			<Logo />
 		</a>
 	</div>
 	<div class="navbar-center">
