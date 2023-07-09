@@ -26,7 +26,9 @@
 
 	<div class="mt-8 w-full">
 		{#await data.streamed.products}
-			<progress class="progress progress-secondary mt-8 w-full mx-4" />
+			<div class="justify-center flex">
+				<span class="loading loading-ring loading-lg mx-auto" />
+			</div>
 		{:then products}
 			<div class="grid grid-cols-4 gap-4">
 				{#each products as product}
@@ -36,9 +38,9 @@
 						class:pointer-events-none={$navigating}
 					>
 						<div class="flex flex-row items-center">
-							<div class="mr-4 w-16 flex-shrink-0">
+							<div class="mr-4 w-16 flex-shrink-0 flex justify-center items-center">
 								{#if $navigating?.to?.params?.barcode === product.code}
-									<progress class="progress progress-secondary" />
+									<span class="loading loading-ring loading-lg mx-auto my-auto" />
 								{:else if product.image_front_small_url}
 									<img
 										src={product.image_front_small_url}

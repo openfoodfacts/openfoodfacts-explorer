@@ -12,7 +12,7 @@
 	<span class="badge">Summary</span>
 {/if}
 
-<div class="prose">
+<div class="prose w-full max-w-full">
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html element.text_element.html}
 </div>
@@ -22,3 +22,9 @@
 		{element.text_element.source_text} ({element.text_element.source_language})
 	</a>
 {/if}
+
+<style>
+	:global(#ordered_ingredients_list) {
+		font-family: monospace;
+	}
+</style>
