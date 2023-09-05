@@ -17,7 +17,7 @@
 		"@tailwindcss/typography": "^0.5.9",
 		"@types/leaflet": "^1.9.3",
 		"@typescript-eslint/eslint-plugin": "^5.61.0",
-		"@typescript-eslint/parser": "^5.61.0",
+		"@typescript-eslint/parser": "^5.62.0",
 		"autoprefixer": "^10.4.14",
 		"daisyui": "^3.2.1",
 		"eslint": "^8.44.0",
