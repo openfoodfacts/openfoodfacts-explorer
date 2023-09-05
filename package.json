@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/kit": "^1.24.1",
-		"@tailwindcss/typography": "^0.5.9",
+		"@tailwindcss/typography": "^0.5.10",
 		"@types/leaflet": "^1.9.4",
 		"@typescript-eslint/eslint-plugin": "^6.6.0",
 		"@typescript-eslint/parser": "^6.6.0",
