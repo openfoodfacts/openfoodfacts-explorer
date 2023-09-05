@@ -5,18 +5,46 @@ import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { wrapFetch } from '$lib/utils';
 
-export type ProductState<T = Product> = {
-	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
+export type ProductStateBase = {
 	result: {
 		id: string;
 		name: string;
 		lc_name: string;
 	};
-	errors: object[];
-	warnings: object[];
+};
 
+export type ProductStateFailure = ProductStateBase & {
+	status: 'failure';
+	errors: {
+		field: { id: string; value: string };
+		impact: { lc_name: string; name: string; id: string };
+		message: { lc_name: string; name: string; id: string };
+	}[];
+};
+
+export type ProductStateFound<T = Product> = ProductStateBase & {
 	product: T;
 };
+
+export type ProductStateSuccess<T = Product> = ProductStateFound<T> & {
+	status: 'success';
+};
+
+export type ProductStateSuccessWithWarnings<T = Product> = ProductStateFound<T> & {
+	status: 'success_with_warnings';
+	warnings: object[];
+};
+
+export type ProductStateSuccessWithErrors<T = Product> = ProductStateFound<T> & {
+	status: 'success_with_errors';
+	errors: object[];
+};
+
+export type ProductState<T = Product> =
+	| ProductStateSuccess<T>
+	| ProductStateSuccessWithWarnings<T>
+	| ProductStateSuccessWithErrors<T>
+	| ProductStateFailure;
 
 export type ProductSearch<T = Product> = {
 	count: number;
@@ -99,7 +127,7 @@ export async function getProduct(
 export async function getProductReducedForCard(
 	barcode: string,
 	fetch: (url: string) => Promise<Response>
-): Promise<ProductReduced> {
+): Promise<ProductState<ProductReduced>> {
 	const url =
 		PRODUCT_URL(barcode) +
 		'?' +
@@ -110,13 +138,13 @@ export async function getProductReducedForCard(
 	const res = await wrapFetch(fetch)(url);
 	const productState = (await res.json()) as ProductState<ProductReduced>;
 
-	return productState.product;
+	return productState;
 }
 
 export async function getProductName(
 	fetch: (url: string) => Promise<Response>,
 	barcode: string
-): Promise<Pick<Product, 'product_name'>> {
+): Promise<Pick<Product, 'product_name'> | null> {
 	const url =
 		PRODUCT_URL(barcode) +
 		'?' +
@@ -128,7 +156,8 @@ export async function getProductName(
 	const res = await wrapFetch(fetch)(url);
 	const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
 
-	return productState.product;
+	if (productState.status !== 'success') return null;
+	else return productState.product;
 }
 
 export async function addOrEditProductV2(

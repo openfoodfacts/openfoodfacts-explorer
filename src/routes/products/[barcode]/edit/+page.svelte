@@ -2,7 +2,6 @@
 	import { addOrEditProductV2, getOrDefault, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
-	import Debug from '$lib/ui/Debug.svelte';
 	import type { PageData } from './$types';
 	import Tags from './Tags.svelte';
 
@@ -18,9 +17,7 @@
 	$: labelNames = getNames(data.labels);
 	$: brandNames = getNames(data.brands);
 
-	let newProduct = {
-		...data.product.product
-	};
+	let newProduct = { ...data.state.product };
 
 	async function submit() {
 		console.group('Product added/edited');
@@ -48,7 +45,7 @@
 	<div class="form-control mb-4">
 		<label for="">Categories: </label>
 		<Tags
-			tags={data.product.product.categories.split(',').filter((c) => c !== '')}
+			tags={data.state.product.categories.split(',').filter((c) => c !== '')}
 			autocomplete={categoryNames}
 			on:change={(e) => (newProduct.categories = e.detail.tags.join(','))}
 		/>
@@ -56,7 +53,7 @@
 	<div class="mb-4">
 		<label for="">Labels</label>
 		<Tags
-			tags={data.product.product.labels.split(',').filter((l) => l !== '')}
+			tags={data.state.product.labels.split(',').filter((l) => l !== '')}
 			autocomplete={labelNames}
 			on:change={(e) => (newProduct.labels = e.detail.tags.join(','))}
 		/>
@@ -64,7 +61,7 @@
 	<div class="mb-4">
 		<label for="">Brands</label>
 		<Tags
-			tags={data.product.product.brands.split(',').filter((l) => l !== '')}
+			tags={data.state.product.brands.split(',').filter((l) => l !== '')}
 			autocomplete={brandNames}
 			on:change={(e) => (newProduct.brands = e.detail.tags.join(','))}
 		/>

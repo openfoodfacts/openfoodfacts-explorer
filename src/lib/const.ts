@@ -8,5 +8,3 @@ export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${ba
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
 
 export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_VERSION})`;
-
-console.debug('User agent', USER_AGENT);
