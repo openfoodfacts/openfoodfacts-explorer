@@ -22,7 +22,7 @@
 		"daisyui": "^3.9.3",
 		"eslint": "^8.52.0",
 		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-svelte": "^2.34.0",
+		"eslint-plugin-svelte": "^2.34.1",
 		"fuse.js": "^6.6.2",
 		"leaflet": "^1.9.4",
 		"postcss": "^8.4.31",
