@@ -1,10 +1,23 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+
+	function getLcNameOrDefault(obj: { lc_name?: string; name?: string }) {
+		let name = obj.lc_name;
+		if (name == null || name == '') {
+			name = obj.name;
+		}
+
+		if (name == null || name == '') {
+			name = '<no name>';
+		}
+
+		return name;
+	}
 </script>
 
 <div class="alert alert-error">
 	<div>
-		<h1 class="font-bold text-xl mb-3">
+		<h1 class="mb-3 text-xl font-bold">
 			{$page.error?.message}
 		</h1>
 
@@ -17,19 +30,26 @@
 
 			<ul class="list-disc">
 				{#each errors as error}
-					<li class="ms-4 mb-2">
+					<li class="mb-2 ms-4">
 						<h3>
-							<span class="font-bold me-2">
-								{error['impact']['lc_name']}:
+							<span class="font-bold">
+								{getLcNameOrDefault(error.impact)}:
 							</span>
-							{error['message']['lc_name']}
-							(id: <code class="font-mono">{error['message']['id']}</code>)
+							<span>
+								{getLcNameOrDefault(error.message)}
+							</span>
 						</h3>
-						<p class="text-xs font-mono">
+						<div class="font-mono text-xs">
+							<p>Impact ID: {error.impact.id}</p>
+							<p>Message ID: {error.message.id}</p>
 							{#if error.field}
-								Caused by field `{error.field.id}` with value `{error.field.value}`
+								<p>
+									Caused by field `{error.field.id}` with value `{error.field.value.length != 0
+										? error.field.value
+										: '<empty>'}`
+								</p>
 							{/if}
-						</p>
+						</div>
 					</li>
 				{/each}
 			</ul>

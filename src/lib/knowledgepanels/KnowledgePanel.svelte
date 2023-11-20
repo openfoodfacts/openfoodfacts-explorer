@@ -7,7 +7,7 @@
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let panel: KnowledgePanel | null;
 	export let id: string;
-	export let link: string;
+	export let link: string | undefined = undefined;
 
 	let expanded = panel?.expanded ?? false;
 </script>
@@ -19,7 +19,9 @@
 		<Card>
 			<div class="flex items-center">
 				<h2 class="my-3 flex-grow text-4xl font-bold">{panel.title_element.title}</h2>
-				<a class="link" href={link}>Go back</a>
+				{#if link != null}
+					<a class="link" href={link}>Go back</a>
+				{/if}
 			</div>
 
 			<Elements elements={panel.elements} {allPanels} />

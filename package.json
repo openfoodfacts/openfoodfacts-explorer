@@ -24,6 +24,7 @@
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.35.0",
 		"fuse.js": "^7.0.0",
+		"html5-qrcode": "^2.3.8",
 		"leaflet": "^1.9.4",
 		"postcss": "^8.4.31",
 		"prettier": "^3.1.0",

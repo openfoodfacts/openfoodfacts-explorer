@@ -12,7 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="navbar bg-base-100 max-w-7xl mx-auto mt-2 mb-8">
+<div class="navbar mx-auto mb-8 mt-2 max-w-7xl bg-base-100">
 	<div class="navbar-start">
 		<a href="/">
 			<Logo />
@@ -20,16 +20,16 @@
 	</div>
 	<div class="navbar-center">
 		<div class="form-control">
-			<div class="input-group">
+			<div class="join">
 				<input
 					type="text"
 					bind:value={barcode}
-					class="input input-bordered w-full"
+					class="input join-item input-bordered w-full"
 					placeholder="Barcode"
 				/>
 
 				<button
-					class="btn btn-square px-10"
+					class="btn btn-square btn-secondary join-item px-10"
 					on:click={() => (window.location.href = '/products/' + barcode)}
 					disabled={barcode == null || barcode == ''}
 				>
@@ -45,6 +45,6 @@
 	</div>
 </div>
 
-<div class="container flex-col flex gap-4 xl:max-w-6xl mx-auto my-2">
+<div class="container mx-auto my-2 flex flex-col gap-4 xl:max-w-6xl">
 	<slot />
 </div>
