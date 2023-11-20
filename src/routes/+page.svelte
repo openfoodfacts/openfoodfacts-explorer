@@ -1,16 +1,18 @@
 <script lang="ts">
+	import type { PageData } from './$types';
+
 	import { navigating } from '$app/stores';
+
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
-	import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>
 
-<div class="container xl:max-w-6xl mx-auto my-4 flex flex-col items-center">
+<div class="container mx-auto my-4 flex flex-col items-center xl:max-w-6xl">
 	<Card>
 		<div class="card-body items-center text-center">
-			<h3 class="card-title text-2xl mb-4">
+			<h3 class="card-title mb-4 text-2xl">
 				Welcome to
 				<Logo />
 				Explorer!
@@ -26,7 +28,7 @@
 
 	<div class="mt-8 w-full">
 		{#await data.streamed.products}
-			<div class="justify-center flex">
+			<div class="flex justify-center">
 				<span class="loading loading-ring loading-lg mx-auto" />
 			</div>
 		{:then products}
@@ -34,17 +36,17 @@
 				{#each products as state}
 					<a
 						href={`/products/${state.product.code}`}
-						class="btn btn-ghost h-auto p-2 justify-normal text-start pointer-events-none"
+						class="btn btn-ghost pointer-events-none h-auto justify-normal p-2 text-start"
 						class:pointer-events-none={$navigating}
 					>
 						<div class="flex flex-row items-center">
-							<div class="mr-4 w-16 flex-shrink-0 flex justify-center items-center">
+							<div class="mr-4 flex w-16 flex-shrink-0 items-center justify-center">
 								{#if $navigating?.to?.params?.barcode === state.product.code}
 									<span class="loading loading-ring loading-lg mx-auto my-auto" />
 								{:else if state.product.image_front_small_url}
 									<img
 										src={state.product.image_front_small_url}
-										class="h-16 object-cover rounded-lg"
+										class="h-16 rounded-lg object-cover"
 										alt="Product front"
 									/>
 								{/if}

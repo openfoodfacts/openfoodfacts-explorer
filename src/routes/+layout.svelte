@@ -20,21 +20,26 @@
 	</div>
 	<div class="navbar-center">
 		<div class="form-control">
-			<div class="join">
-				<input
-					type="text"
-					bind:value={barcode}
-					class="input join-item input-bordered w-full"
-					placeholder="Barcode"
-				/>
+			<div>
+				<div class="join">
+					<input
+						type="text"
+						bind:value={barcode}
+						class="input join-item input-bordered w-full"
+						placeholder="Barcode"
+					/>
+					<button
+						class="btn btn-square btn-secondary join-item px-10"
+						on:click={() => (window.location.href = '/products/' + barcode)}
+						disabled={barcode == null || barcode == ''}
+					>
+						Go
+					</button>
+				</div>
 
-				<button
-					class="btn btn-square btn-secondary join-item px-10"
-					on:click={() => (window.location.href = '/products/' + barcode)}
-					disabled={barcode == null || barcode == ''}
-				>
-					Go
-				</button>
+				<a class="btn btn-secondary ms-4 px-5" href="/qr" title="Scan a barcode">
+					<span class="icon-[mdi--camera]"></span>
+				</a>
 			</div>
 		</div>
 	</div>

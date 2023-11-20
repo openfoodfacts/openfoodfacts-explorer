@@ -13,17 +13,16 @@
 
 		return name;
 	}
+
+	$: message = $page.error?.message;
+	$: errors = $page.error?.errors;
 </script>
 
 <div class="alert alert-error">
 	<div>
-		<h1 class="mb-3 text-xl font-bold">
-			{$page.error?.message}
-		</h1>
+		<h1 class="mb-3 text-xl font-bold">{message}</h1>
 
-		{#if $page.error?.errors != null}
-			{@const errors = $page.error.errors}
-
+		{#if errors != null}
 			<p>
 				{errors.length} error{#if errors.length > 1}s{/if} occurred:
 			</p>
@@ -32,12 +31,8 @@
 				{#each errors as error}
 					<li class="mb-2 ms-4">
 						<h3>
-							<span class="font-bold">
-								{getLcNameOrDefault(error.impact)}:
-							</span>
-							<span>
-								{getLcNameOrDefault(error.message)}
-							</span>
+							<span class="font-bold"> {getLcNameOrDefault(error.impact)}: </span>
+							<span> {getLcNameOrDefault(error.message)} </span>
 						</h3>
 						<div class="font-mono text-xs">
 							<p>Impact ID: {error.impact.id}</p>

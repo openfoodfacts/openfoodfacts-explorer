@@ -14,14 +14,16 @@ type QuestionsResponse = {
 	count: number;
 };
 
+const count = '10';
+
 async function productsWithQuestions(
 	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>[]> {
-	const res: QuestionsResponse = await fetch(
-		'https://robotoff.openfoodfacts.org/api/v1/questions?count=10'
+	const response: QuestionsResponse = await fetch(
+		'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count: count })
 	).then((it) => it.json());
 
-	const productsPromises = res.questions.map((question) =>
+	const productsPromises = response.questions.map((question) =>
 		getProductReducedForCard(question.barcode, fetch)
 	);
 
