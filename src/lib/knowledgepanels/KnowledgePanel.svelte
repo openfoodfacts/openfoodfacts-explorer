@@ -7,6 +7,7 @@
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let panel: KnowledgePanel | null;
 	export let id: string;
+	export let link: string;
 
 	let expanded = panel?.expanded ?? false;
 </script>
@@ -16,7 +17,10 @@
 		<div class="alert alert-warning">Panel is null</div>
 	{:else if panel.type === 'card'}
 		<Card>
-			<h2 class="text-4xl font-bold my-3">{panel.title_element.title}</h2>
+			<div class="flex items-center">
+				<h2 class="my-3 flex-grow text-4xl font-bold">{panel.title_element.title}</h2>
+				<a class="link" href={link}>Go back</a>
+			</div>
 
 			<Elements elements={panel.elements} {allPanels} />
 		</Card>
@@ -34,26 +38,25 @@
 			class:pl-2={expanded}
 		>
 			<summary
-				class="dark:hover:bg-base-100 hover:bg-base-200 w-full rounded-lg p-2 my-2 cursor-pointer flex items-center select-none"
+				class="my-2 flex w-full cursor-pointer select-none items-center rounded-lg p-2 hover:bg-base-200 dark:hover:bg-base-100"
 			>
 				{#if panel.title_element != null}
 					{#if panel.title_element.icon_url != null}
 						{#if panel.title_element.type === 'grade'}
 							<img
-								class="h-12 mr-4"
+								class="mr-4 h-12"
 								src={panel.title_element.icon_url}
 								alt={panel.title_element.title}
 							/>
 						{:else}
 							<img
-								class="w-8 h-8 rounded-full mr-4 dark:invert"
-
+								class="mr-4 h-8 w-8 rounded-full dark:invert"
 								src={panel.title_element.icon_url}
 								alt={panel.title_element.title}
 							/>
 						{/if}
 					{/if}
-					<span class="text-xl grow">
+					<span class="grow text-xl">
 						{panel.title_element.title}
 					</span>
 				{/if}
