@@ -18,7 +18,10 @@
 				Explorer!
 			</h3>
 
-			<p>OpenFoodFacts Explorer is a tool to explore the OpenFoodFacts database.</p>
+			<p>
+				<strong>OpenFoodFacts Explorer</strong>
+				is a tool to explore the OpenFoodFacts database.
+			</p>
 			<p>
 				You can enter a product code in the search bar above to get started or click on one of the
 				products below.
@@ -28,15 +31,15 @@
 
 	<div class="mt-8 w-full">
 		{#await data.streamed.products}
-			<div class="flex justify-center">
-				<span class="loading loading-ring loading-lg mx-auto" />
+			<div class="mt-10 flex justify-center">
+				<span class="loading loading-dots loading-lg mx-auto" />
 			</div>
 		{:then products}
 			<div class="grid grid-cols-4 gap-4">
 				{#each products as state}
 					<a
 						href={`/products/${state.product.code}`}
-						class="btn btn-ghost pointer-events-none h-auto justify-normal p-2 text-start"
+						class="btn btn-ghost pointer-events-none h-auto justify-normal bg-white p-4 text-start text-primary shadow-md dark:bg-base-300"
 						class:pointer-events-none={$navigating}
 					>
 						<div class="flex flex-row items-center">
@@ -51,9 +54,14 @@
 									/>
 								{/if}
 							</div>
-							<p>
-								{state.product.product_name ?? state.product.code}
-							</p>
+							<div>
+								<p class="text-lg">
+									{state.product.product_name ?? state.product.code}
+								</p>
+								<p class="mt-2 text-sm font-light">
+									{state.product.brands}
+								</p>
+							</div>
 						</div>
 					</a>
 				{/each}

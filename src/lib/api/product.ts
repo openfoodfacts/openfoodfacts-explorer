@@ -108,7 +108,10 @@ export type Product = {
 	nutriments: Nutriments;
 };
 
-export type ProductReduced = Pick<Product, 'image_front_small_url' | 'code' | 'product_name'>;
+export type ProductReduced = Pick<
+	Product,
+	'image_front_small_url' | 'code' | 'product_name' | 'brands'
+>;
 export async function getProduct(
 	barcode: string,
 	fetch: (url: string) => Promise<Response>
@@ -132,7 +135,7 @@ export async function getProductReducedForCard(
 		PRODUCT_URL(barcode) +
 		'?' +
 		new URLSearchParams({
-			fields: 'image_front_small_url,code,product_name',
+			fields: 'image_front_small_url,code,product_name,brands',
 			lc: get(preferences).lang
 		});
 	const res = await wrapFetch(fetch)(url);
