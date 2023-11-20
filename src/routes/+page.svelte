@@ -31,26 +31,26 @@
 			</div>
 		{:then products}
 			<div class="grid grid-cols-4 gap-4">
-				{#each products as product}
+				{#each products as state}
 					<a
-						href={`/products/${product.code}`}
+						href={`/products/${state.product.code}`}
 						class="btn btn-ghost h-auto p-2 justify-normal text-start pointer-events-none"
 						class:pointer-events-none={$navigating}
 					>
 						<div class="flex flex-row items-center">
 							<div class="mr-4 w-16 flex-shrink-0 flex justify-center items-center">
-								{#if $navigating?.to?.params?.barcode === product.code}
+								{#if $navigating?.to?.params?.barcode === state.product.code}
 									<span class="loading loading-ring loading-lg mx-auto my-auto" />
-								{:else if product.image_front_small_url}
+								{:else if state.product.image_front_small_url}
 									<img
-										src={product.image_front_small_url}
+										src={state.product.image_front_small_url}
 										class="h-16 object-cover rounded-lg"
 										alt="Product front"
 									/>
 								{/if}
 							</div>
 							<p>
-								{product.product_name ?? product.code}
+								{state.product.product_name ?? state.product.code}
 							</p>
 						</div>
 					</a>
