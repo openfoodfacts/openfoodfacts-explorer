@@ -1,10 +1,5 @@
 <script lang="ts">
-	import {
-		createFolksonomyTag,
-		deleteFolksonomyTag,
-		putFolksonomyTag,
-		type FolksonomyTag
-	} from '$lib/api';
+	import { type FolksonomyTag, FolksonomyApi } from '$lib/api';
 	import { preferences } from '$lib/settings';
 
 	export let tags: FolksonomyTag[];
@@ -40,7 +35,7 @@
 			v: newValue
 		};
 
-		const res = await putFolksonomyTag(newTag, fetch);
+		const res = await new FolksonomyApi(fetch).putTag(newTag);
 		if (res) {
 			console.debug('Updated tag', oldTag, 'to', newTag);
 			tags[idx] = newTag;
@@ -63,7 +58,7 @@
 				version: 1
 			};
 
-			const ok = await createFolksonomyTag(newTag, fetch);
+			const ok = await new FolksonomyApi(fetch).addTag(newTag);
 
 			if (ok) {
 				tags = [...tags, newTag];
@@ -76,7 +71,7 @@
 	}
 </script>
 
-<table class="table w-full table-compact">
+<table class="table-compact table w-full">
 	<thead>
 		<tr>
 			<th>Key</th>
@@ -103,7 +98,12 @@
 						class="btn btn-error"
 						on:click={() => {
 							tags = tags.filter((t) => t.k !== tag.k);
-							deleteFolksonomyTag(tag, fetch);
+
+							if (tag.version == null) {
+								throw new Error('Tag value is null');
+							} else {
+								new FolksonomyApi(fetch).removeTag(tag);
+							}
 						}}
 					>
 						Delete
@@ -114,7 +114,7 @@
 
 		<tr>
 			<td>
-				<div class="dropdown w-full dropdown-top flex">
+				<div class="dropdown dropdown-top flex w-full">
 					<input
 						type="text"
 						class="input grow max-sm:w-20"
@@ -125,7 +125,7 @@
 
 					<div class="dropdown-content max-h-52 overflow-y-auto">
 						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-						<ul tabindex="0" class=" menu p-2 shadow bg-base-100 rounded-box">
+						<ul tabindex="0" class=" menu rounded-box bg-base-100 p-2 shadow">
 							{#each filteredKeys as key}
 								<li>
 									<button

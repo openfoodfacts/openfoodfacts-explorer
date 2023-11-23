@@ -1,3 +1,3 @@
-<div class="shadow-md rounded-2xl p-6 w-full bg-white dark:bg-base-200">
+<div class="w-full rounded-2xl bg-white p-6 shadow-md dark:bg-base-200">
 	<slot />
 </div>

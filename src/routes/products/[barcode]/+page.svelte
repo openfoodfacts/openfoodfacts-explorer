@@ -8,6 +8,7 @@
 	import { preferences } from '$lib/settings';
 	import Folksonomy from './Folksonomy.svelte';
 	import Card from '$lib/ui/Card.svelte';
+	import Prices from './Prices.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
@@ -117,8 +118,22 @@
 
 <Card>
 	<h1 class="my-4 text-4xl font-bold">
-		Folksonomy Engine <span class="font-light italic">(alpha)</span>
+		Folksonomy Engine <span class="font-light italic">(beta)</span>
 	</h1>
 
-	<Folksonomy tags={data.tags ?? []} keys={data.keys.map((it) => it.k)} barcode={product.code} />
+	<Folksonomy
+		tags={data.tags?.data ?? []}
+		keys={data.keys.map((it) => it.k)}
+		barcode={product.code}
+	/>
 </Card>
+
+{#if data.prices.data != null}
+	<Card>
+		<h1 class="my-4 text-4xl font-bold">
+			Open prices <span class="font-light italic">(alpha)</span>
+		</h1>
+
+		<Prices prices={data.prices.data} barcode={product.code} />
+	</Card>
+{/if}

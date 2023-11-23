@@ -40,7 +40,7 @@
 {#if category.parents != null}
 	<h3 class="text-xl font-bold">Parents</h3>
 
-	<ul class="list-disc ml-4">
+	<ul class="ml-4 list-disc">
 		{#each category.parents as parentId}
 			{@const parentNode = data.fullTaxonomy[parentId]}
 			<li>
@@ -56,7 +56,7 @@
 
 {#if category.children != null}
 	<h3 class="text-xl font-bold">Children</h3>
-	<ul class="list-disc ml-4">
+	<ul class="ml-4 list-disc">
 		{#each category.children as childId}
 			{@const childNode = data.fullTaxonomy[childId]}
 			<li>
@@ -71,7 +71,7 @@
 {#if category.synonyms != null}
 	{@const synonyms = getOrDefault(category.synonyms, $preferences.lang) ?? []}
 	<h3 class="text-xl font-bold">Synonyms</h3>
-	<ul class="list-disc ml-4">
+	<ul class="ml-4 list-disc">
 		{#each synonyms as synonym}
 			<li>
 				{synonym}
@@ -89,7 +89,7 @@
 			{#each search.products as product}
 				<div class="flex flex-row items-center">
 					{#if product.image_front_small_url}
-						<img src={product.image_front_small_url} class="w-16 h-16 mr-4" alt="Product front" />
+						<img src={product.image_front_small_url} class="mr-4 h-16 w-16" alt="Product front" />
 					{/if}
 					<a href={`/products/${product.code}`} class="link">
 						{product.product_name ?? product.code}

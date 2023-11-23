@@ -3,14 +3,14 @@
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
-	import { loginFolksonomy } from '$lib/api';
+	import { FolksonomyApi } from '$lib/api';
 
 	export let data: PageData;
 
 	$: languages = Object.entries(data.languages);
 </script>
 
-<div class="grid grid-cols-[1fr,max-content] mx-auto my-8 gap-y-2 gap-x-8 items-center">
+<div class="mx-auto my-8 grid grid-cols-[1fr,max-content] items-center gap-x-8 gap-y-2">
 	<Heading>General</Heading>
 	<label for="lang-select" class="justify-self-end">Language:</label>
 	<select class="select" name="lang-select" bind:value={$preferences.lang}>
@@ -64,7 +64,7 @@
 			const password = $preferences.password;
 			if (username == null || password == null) throw new Error('Username or password is null');
 
-			loginFolksonomy(username, password);
+			new FolksonomyApi(fetch).login(username, password);
 		}}
 	>
 		Login

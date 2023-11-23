@@ -1,109 +1,91 @@
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
-import type { FolksonomyKey, FolksonomyTag } from './types';
-import { wrapFetch } from '$lib/utils';
 
-export async function loginFolksonomy(username: string, password: string) {
-	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/auth', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},
-		body: new URLSearchParams({
-			username,
-			password
-		}).toString()
-	});
-	if (res.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
+import type { paths, components } from './folksonomy.d';
+import createClient from 'openapi-fetch';
 
-	const token = (await res.json()) as { access_token: string; token_type: string };
-	preferences.update((p) => ({
-		...p,
-		folksonomy: {
-			...p.folksonomy,
-			authToken: token.access_token
-		}
-	}));
-}
+export type FolksonomyTag = components['schemas']['ProductTag'];
+export type FolksonomyKey = {
+	k: string;
+	count: number;
+	values: number;
+};
 
-export async function getProductFolksonomy(
-	barcode: string,
-	fetch: (url: string, options?: RequestInit) => Promise<Response>
-): Promise<FolksonomyTag[] | null> {
-	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product/' + barcode);
-	return await res.json();
-}
+export class FolksonomyApi {
+	private client: ReturnType<typeof createClient<paths>>;
+	private fetch: typeof window.fetch;
 
-export async function getKeys(
-	fetch: (url: string, options?: RequestInit) => Promise<Response>
-): Promise<FolksonomyKey[]> {
-	const res = await fetch('https://api.folksonomy.openfoodfacts.org/keys');
-	return await res.json();
-}
+	constructor(fetch: typeof window.fetch) {
+		this.fetch = fetch;
+		this.client = createClient({
+			baseUrl: 'https://api.folksonomy.openfoodfacts.org/',
+			fetch,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
 
-export async function putFolksonomyTag(
-	tag: FolksonomyTag,
-	fetch: (url: string, options?: RequestInit) => Promise<Response>
-): Promise<boolean> {
-	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product', {
-		method: 'PUT',
-		body: JSON.stringify(tag),
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
-		}
-	});
+	async getKeys(): Promise<FolksonomyKey[]> {
+		const res = await this.client.GET('/keys');
+		return res.response.json();
+	}
 
-	return res.status === 200;
-}
+	async getProducts(key: string, value?: string): Promise<FolksonomyTag[]> {
+		const res = await this.client.GET('/products', { params: { query: { k: key, v: value } } });
+		return res.response.json();
+	}
 
-export async function createFolksonomyTag(
-	tag: FolksonomyTag,
-	fetch: (url: string, options?: RequestInit) => Promise<Response>
-): Promise<boolean> {
-	const res = await wrapFetch(fetch)('https://api.folksonomy.openfoodfacts.org/product', {
-		method: 'POST',
-		body: JSON.stringify(tag),
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
-		}
-	});
+	async putTag(tag: FolksonomyTag): Promise<boolean> {
+		const res = await this.client.PUT('/product', {
+			body: tag,
+			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+		});
 
-	return res.status === 200;
-}
+		return res.response.status === 200;
+	}
 
-export async function deleteFolksonomyTag(
-	tag: FolksonomyTag,
-	fetch: (url: string, options?: RequestInit) => Promise<Response>
-) {
-	const res = await wrapFetch(fetch)(
-		'https://api.folksonomy.openfoodfacts.org/product/' +
-			tag.product +
-			'/' +
-			tag.k +
-			'?version=' +
-			tag.version,
-		{
-			method: 'DELETE',
-			body: JSON.stringify(tag),
-			headers: {
-				Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
+	async getProduct(barcode: string) {
+		const res = await this.client.GET('/product/{product}', {
+			params: { path: { product: barcode } }
+		});
+
+		return res;
+	}
+
+	async addTag(tag: FolksonomyTag): Promise<boolean> {
+		const res = await this.client.POST('/product', {
+			body: tag,
+			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+		});
+
+		return res.response.status === 200;
+	}
+
+	async removeTag(tag: FolksonomyTag & { version: number }) {
+		const res = await this.client.DELETE('/product/{product}/{k}', {
+			params: {
+				path: { product: tag.product, k: tag.k },
+				query: { version: tag.version }
+			},
+			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+		});
+
+		return res;
+	}
+
+	async login(username: string, password: string) {
+		const res = await this.client.POST('/auth', {
+			body: { username, password }
+		});
+
+		if (res.response.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
+
+		const token = (await res.response.json()) as { access_token: string; token_type: string };
+		preferences.update((p) => ({
+			...p,
+			folksonomy: {
+				...p.folksonomy,
+				authToken: token.access_token
 			}
-		}
-	);
-
-	return res.json();
-}
-
-export async function getProducts(
-	fetch: (url: string, options?: RequestInit) => Promise<Response>,
-	key: string,
-	value?: string
-): Promise<FolksonomyTag[]> {
-	const params = new URLSearchParams({ k: key });
-	if (value) params.append('v', value);
-
-	const res = await wrapFetch(fetch)(`https://api.folksonomy.openfoodfacts.org/products?${params}`);
-	return res.json();
+		}));
+	}
 }

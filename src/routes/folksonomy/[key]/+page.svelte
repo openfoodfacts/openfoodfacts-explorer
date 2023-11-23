@@ -7,7 +7,7 @@
 
 <h2 class="text-2xl font-bold">
 	Folksonomy tag:
-	<span class="ml-4 font-mono bg-accent text-xl text-accent-content p-2 rounded-lg">
+	<span class="ml-4 rounded-lg bg-accent p-2 font-mono text-xl text-accent-content">
 		{$page.params.key}
 	</span>
 </h2>

@@ -5,5 +5,5 @@
 
 <details>
 	<summary>Debug {title ?? ''}</summary>
-	<code class="bg-base-200 p-2 rounded-md">{JSON.stringify(data)}</code>
+	<code class="rounded-md bg-base-200 p-2">{JSON.stringify(data)}</code>
 </details>

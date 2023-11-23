@@ -11,7 +11,7 @@
 
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
-		<h3 class="text-xl font-bold my-3">{element.panel_group_element.title}</h3>
+		<h3 class="my-3 text-xl font-bold">{element.panel_group_element.title}</h3>
 
 		{#each element.panel_group_element.panel_ids as id}
 			{@const panel = allPanels[id]}
@@ -27,7 +27,7 @@
 		<img src={element.image_element.url} alt={element.image_element.alt_text} />
 	{:else if element.element_type === 'table'}
 		<div class="overflow-x-auto">
-			<table class="table w-full table-compact">
+			<table class="table-compact table w-full">
 				<thead>
 					<tr>
 						<th />

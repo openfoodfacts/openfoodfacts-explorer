@@ -3,7 +3,91 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
-import { wrapFetch } from '$lib/utils';
+
+export class ProductsApi {
+	private readonly fetch: typeof window.fetch;
+	constructor(fetch: typeof window.fetch) {
+		this.fetch = fetch;
+	}
+
+	async getProduct<T extends Array<keyof Product>>(
+		barcode: string,
+		{ fields }: { fields: T } = { fields: ['all', 'knowledge_panels'] as T }
+	): Promise<ProductState<Pick<Product, T[number]>>> {
+		const url =
+			PRODUCT_URL(barcode) +
+			'?' +
+			new URLSearchParams({
+				fields: fields.join(','),
+				lc: get(preferences).lang
+			});
+		const res = await this.fetch(url);
+		return await res.json();
+	}
+
+	async addOrEditProductV2(product: Product) {
+		const url = `${API_HOST}/cgi/product_jqm2.pl`;
+
+		const username = get(preferences).username;
+		const password = get(preferences).password;
+
+		if (!username || !password) throw new Error('No username or password set');
+
+		const body = formData({
+			code: product.code,
+			user_id: username,
+			password: password,
+			categories: product.categories,
+			labels: product.labels,
+			brands: product.brands
+		});
+
+		const res = await this.fetch(url, {
+			method: 'POST',
+			body,
+			headers: { 'Content-Type': 'multipart/form-data' }
+		});
+
+		return res.status === 200;
+	}
+
+	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
+		const fields = ['product_name', 'code', 'image_front_small_url', 'brands'];
+
+		const params = new URLSearchParams({
+			fields: fields.join(','),
+			lc: get(preferences).lang
+		});
+
+		const res = await this.fetch(`${PRODUCT_URL(barcode)}?${params.toString()}`);
+		const productState = (await res.json()) as ProductState<ProductReduced>;
+
+		return productState;
+	}
+
+	async getProductName(barcode: string): Promise<Pick<Product, 'product_name'> | null> {
+		const params = new URLSearchParams({
+			fields: 'product_name',
+			lc: get(preferences).lang
+		});
+
+		const res = await this.fetch(PRODUCT_URL(barcode) + '?' + params);
+		const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
+
+		if (productState.status !== 'success') return null;
+		else return productState.product;
+	}
+}
+
+/**
+ * @deprecated use ProductsApi instead
+ */
+export async function getProduct(
+	barcode: string,
+	fetch: typeof window.fetch
+): Promise<ProductState> {
+	return new ProductsApi(fetch).getProduct(barcode);
+}
 
 export type ProductStateBase = {
 	result: {
@@ -112,86 +196,25 @@ export type ProductReduced = Pick<
 	Product,
 	'image_front_small_url' | 'code' | 'product_name' | 'brands'
 >;
-export async function getProduct(
-	barcode: string,
-	fetch: (url: string) => Promise<Response>
-): Promise<ProductState> {
-	const url =
-		PRODUCT_URL(barcode) +
-		'?' +
-		new URLSearchParams({
-			fields: 'all,knowledge_panels',
-			lc: get(preferences).lang
-		});
-	const res = await wrapFetch(fetch)(url);
-	return await res.json();
-}
 
+/** @deprecated */
 export async function getProductReducedForCard(
 	barcode: string,
-	fetch: (url: string) => Promise<Response>
+	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>> {
-	const url =
-		PRODUCT_URL(barcode) +
-		'?' +
-		new URLSearchParams({
-			fields: 'image_front_small_url,code,product_name,brands',
-			lc: get(preferences).lang
-		});
-	const res = await wrapFetch(fetch)(url);
-	const productState = (await res.json()) as ProductState<ProductReduced>;
-
-	return productState;
+	return new ProductsApi(fetch).getProductReducedForCard(barcode);
 }
-
+/** @deprecated */
 export async function getProductName(
-	fetch: (url: string) => Promise<Response>,
+	fetch: typeof window.fetch,
 	barcode: string
 ): Promise<Pick<Product, 'product_name'> | null> {
-	const url =
-		PRODUCT_URL(barcode) +
-		'?' +
-		new URLSearchParams({
-			fields: 'product_name',
-			lc: get(preferences).lang
-		});
-
-	const res = await wrapFetch(fetch)(url);
-	const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
-
-	if (productState.status !== 'success') return null;
-	else return productState.product;
+	return new ProductsApi(fetch).getProductName(barcode);
 }
 
-export async function addOrEditProductV2(
-	product: Product,
-	fetch: (url: string, init?: RequestInit) => Promise<Response>
-) {
-	const url = `${API_HOST}/cgi/product_jqm2.pl`;
-
-	const username = get(preferences).username;
-	const password = get(preferences).password;
-
-	if (!username || !password) throw new Error('No username or password set');
-
-	const body = formData({
-		code: product.code,
-		user_id: username,
-		password: password,
-		categories: product.categories,
-		labels: product.labels,
-		brands: product.brands
-	});
-
-	const res = await wrapFetch(fetch)(url, {
-		method: 'POST',
-		body,
-		headers: {
-			'Content-Type': 'multipart/form-data'
-		}
-	});
-
-	return res.status === 200;
+/** @deprecated */
+export async function addOrEditProductV2(product: Product, fetch: typeof window.fetch) {
+	return new ProductsApi(fetch).addOrEditProductV2(product);
 }
 
 function formData(data: Record<string, string | Blob>) {

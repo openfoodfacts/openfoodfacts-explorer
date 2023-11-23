@@ -1,17 +1,17 @@
-import { getProductName, getProducts } from '$lib/api';
+import { FolksonomyApi, ProductsApi } from '$lib/api';
 import type { PageLoad } from './$types';
+
+export const ssr = false;
 
 export const load: PageLoad = async ({ fetch, params }) => {
 	const { key } = params;
+	const tags = await new FolksonomyApi(fetch).getProducts(key);
+	const productsApi = new ProductsApi(fetch);
 
-	const tags = await getProducts(fetch, key);
-
-	const products = Promise.all(tags.map((tag) => getProductName(fetch, tag.product)));
+	const products = Promise.all(tags.map((tag) => productsApi.getProductName(tag.product)));
 
 	return {
 		tags,
-		streamed: {
-			products
-		}
+		streamed: { products }
 	};
 };

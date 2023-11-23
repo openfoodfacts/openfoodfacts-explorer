@@ -40,10 +40,10 @@
 </script>
 
 <div
-	class="input-bordered input h-auto flex flex-wrap gap-x-1.5 gap-y-1 p-2 rounded-md min-h-12 bg-base-100"
+	class="min-h-12 input input-bordered flex h-auto flex-wrap gap-x-1.5 gap-y-1 rounded-md bg-base-100 p-2"
 >
 	{#each tags as tag}
-		<span class="badge badge-ghost text-lg py-3" transition:fade={{ duration: 100 }}>
+		<span class="badge badge-ghost py-3 text-lg" transition:fade={{ duration: 100 }}>
 			{tag}
 			<button class="ml-2 text-xl" on:click={removeTag(tag)}>×</button>
 		</span>
@@ -51,7 +51,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="w-full outline-none bg-transparent"
+			class="w-full bg-transparent outline-none"
 			on:keydown={inputHandler}
 			bind:value={newValue}
 		/>

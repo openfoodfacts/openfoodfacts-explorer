@@ -27,4 +27,4 @@
 	});
 </script>
 
-<div id="map" class="w-full h-96 rounded-lg" />
+<div id="map" class="h-96 w-full rounded-lg" />

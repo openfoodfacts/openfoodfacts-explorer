@@ -14,14 +14,19 @@ async function getProducts(
 	nodeId: string,
 	fetch: (url: string) => Promise<Response>
 ): Promise<ProductSearch<ProductReduced>> {
-	const url = `${SEARCH_URL}?${taxonomy}_tags=${nodeId}&lc=${
-		get(preferences).lang
-	}&fields=product_name,code,image_front_small_url`;
-	const res = await fetch(url);
+	const fields = ['product_name', 'code', 'image_front_small_url'];
+
+	const params = new URLSearchParams({
+		[`${taxonomy}_tags`]: nodeId,
+		lc: get(preferences).lang,
+		fields: fields.join(',')
+	});
+
+	const res = await fetch(`${SEARCH_URL}?${params.toString()}`);
 	return await res.json();
 }
 
-export const load = (async ({ params, fetch }) => {
+export const load: PageLoad = async ({ params, fetch }) => {
 	const { id, taxo: taxonomyName } = params;
 
 	const taxonomy = (await (await fetch(TAXONOMY_URL(taxonomyName))).json()) as Taxonomy;
@@ -39,4 +44,4 @@ export const load = (async ({ params, fetch }) => {
 			search
 		}
 	};
-}) satisfies PageLoad;
+};

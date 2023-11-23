@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addOrEditProductV2, getOrDefault, type Taxonomy } from '$lib/api';
+	import { getOrDefault, ProductsApi, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
 	import type { PageData } from './$types';
@@ -22,7 +22,7 @@
 	async function submit() {
 		console.group('Product added/edited');
 		console.debug('Submitting', newProduct);
-		const ok = await addOrEditProductV2(newProduct, fetch);
+		const ok = await new ProductsApi(fetch).addOrEditProductV2(newProduct);
 		console.debug('Submitted', ok);
 		console.groupEnd();
 		if (ok) {

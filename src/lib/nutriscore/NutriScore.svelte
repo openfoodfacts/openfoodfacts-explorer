@@ -19,5 +19,5 @@
 </script>
 
 <a href="#nutriscore">
-	<img alt="Nutriscore" {src} class="hover:brightness-90 transition-all duration-75" />
+	<img alt="Nutriscore" {src} class="transition-all duration-75 hover:brightness-90" />
 </a>
