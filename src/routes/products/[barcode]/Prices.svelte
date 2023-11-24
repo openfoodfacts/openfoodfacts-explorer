@@ -82,48 +82,48 @@
 </script>
 
 <div>
-	{#if authenticated == null}
-		Loading...
-	{:else if authenticated}
+	<div id="prices">
 		<span class="font-bold">
 			Prices: ({Math.min(prices.size ?? 0, prices.total ?? 0)}/{prices.total})
 		</span>
-		<div>
-			<table class="table table-zebra">
-				<thead>
+		<table class="table table-zebra">
+			<thead>
+				<tr>
+					<th>Price</th>
+					<th>Store</th>
+					<th>Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#each prices.items as price}
 					<tr>
-						<th>Price</th>
-						<th>Store</th>
-						<th>Date</th>
+						<td>{price.price + ' ' + price.currency}</td>
+						<td>
+							{#await idToName(fetch, price.location_osm_id)}
+								Loading...
+							{:then storeName}
+								<a
+									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
+										price.location_osm_id
+									}`}
+								>
+									{storeName}
+								</a>
+							{:catch error}
+								<span class="text-red-500">Error: {error.message}</span>
+							{/await}
+						</td>
+						<td>{new Date(price.date).toLocaleDateString()}</td>
 					</tr>
-				</thead>
-				<tbody>
-					{#each prices.items as price}
-						<tr>
-							<td>{price.price + ' ' + price.currency}</td>
-							<td>
-								{#await idToName(fetch, price.location_osm_id)}
-									Loading...
-								{:then storeName}
-									<a
-										href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
-											price.location_osm_id
-										}`}
-									>
-										{storeName}
-									</a>
-								{:catch error}
-									<span class="text-red-500">Error: {error.message}</span>
-								{/await}
-							</td>
-							<td>{new Date(price.date).toLocaleDateString()}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
+				{/each}
+			</tbody>
+		</table>
+	</div>
 
-		<div class="my-4">
+	<div class="my-4" id="new-price">
+		{#if authenticated == null}
+			<progress class="progress progress-primary"></progress>
+		{:else if authenticated}
 			<h3 class="text-2xl font-bold">Report a new price</h3>
 			<form
 				class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
@@ -170,31 +170,31 @@
 				<div></div>
 				<button class="btn" type="submit">Submit</button>
 			</form>
-		</div>
-	{:else}
-		<h2 class="mb-4 text-2xl font-bold">Login</h2>
-		<form class="space-y-4" on:submit|preventDefault={login}>
-			<div>
-				<label for="email" class="block font-medium">Email</label>
-				<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />
-			</div>
-			<div>
-				<label for="password" class="block font-medium">Password</label>
-				<input
-					type="password"
-					bind:value={loginFields.password}
-					class="input input-bordered w-full"
-				/>
-			</div>
-			<div>
-				<button type="submit" class="btn btn-primary w-full">Login</button>
-			</div>
-		</form>
+		{:else}
+			<h2 class="mb-4 text-2xl font-bold">Login</h2>
+			<form class="space-y-4" on:submit|preventDefault={login}>
+				<div>
+					<label for="email" class="block font-medium">Email</label>
+					<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />
+				</div>
+				<div>
+					<label for="password" class="block font-medium">Password</label>
+					<input
+						type="password"
+						bind:value={loginFields.password}
+						class="input input-bordered w-full"
+					/>
+				</div>
+				<div>
+					<button type="submit" class="btn btn-primary w-full">Login</button>
+				</div>
+			</form>
 
-		{#if authStatus}
-			<div class="alert alert-success mt-4">Logged in!</div>
-		{:else if authStatus === false}
-			<div class="alert alert-error mt-4">Error while logging in</div>
+			{#if authStatus}
+				<div class="alert alert-success mt-4">Logged in!</div>
+			{:else if authStatus === false}
+				<div class="alert alert-error mt-4">Error while logging in</div>
+			{/if}
 		{/if}
-	{/if}
+	</div>
 </div>
