@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 
 import type { paths, components } from './folksonomy.d';
 import createClient from 'openapi-fetch';
+import { formBody as formBodySerializer } from './utils';
 
 export type FolksonomyTag = components['schemas']['ProductTag'];
 export type FolksonomyKey = {
@@ -26,7 +27,10 @@ export class FolksonomyApi {
 		this.client = createClient({
 			baseUrl: BASE_URL,
 			fetch,
-			headers: { 'Content-Type': 'application/json' }
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + get(preferences).folksonomy.authToken
+			}
 		});
 	}
 
@@ -42,8 +46,7 @@ export class FolksonomyApi {
 
 	async putTag(tag: FolksonomyTag): Promise<boolean> {
 		const res = await this.client.PUT('/product', {
-			body: tag,
-			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+			body: tag
 		});
 
 		return res.response.status === 200;
@@ -59,8 +62,7 @@ export class FolksonomyApi {
 
 	async addTag(tag: FolksonomyTag): Promise<boolean> {
 		const res = await this.client.POST('/product', {
-			body: tag,
-			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+			body: tag
 		});
 
 		return res.response.status === 200;
@@ -71,8 +73,7 @@ export class FolksonomyApi {
 			params: {
 				path: { product: tag.product, k: tag.k },
 				query: { version: tag.version }
-			},
-			headers: { Authorization: 'Bearer ' + get(preferences).folksonomy.authToken }
+			}
 		});
 
 		return res;
@@ -80,7 +81,9 @@ export class FolksonomyApi {
 
 	async login(username: string, password: string) {
 		const res = await this.client.POST('/auth', {
-			body: { username, password }
+			body: { username, password },
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			bodySerializer: formBodySerializer
 		});
 
 		if (res.response.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
@@ -88,10 +91,7 @@ export class FolksonomyApi {
 		const token = (await res.response.json()) as { access_token: string; token_type: string };
 		preferences.update((p) => ({
 			...p,
-			folksonomy: {
-				...p.folksonomy,
-				authToken: token.access_token
-			}
+			folksonomy: { ...p.folksonomy, authToken: token.access_token }
 		}));
 	}
 }

@@ -8,6 +8,14 @@
 	export let data: PageData;
 
 	$: languages = Object.entries(data.languages);
+
+	async function loginToFolksonomy() {
+		const username = $preferences.username;
+		const password = $preferences.password;
+		if (username == null || password == null) throw new Error('Username or password is null');
+
+		new FolksonomyApi(fetch).login(username, password);
+	}
 </script>
 
 <div class="mx-auto my-8 grid grid-cols-[1fr,max-content] items-center gap-x-8 gap-y-2">
@@ -59,13 +67,7 @@
 	<button
 		disabled={$preferences.username == null || $preferences.password == null}
 		class="btn btn-primary"
-		on:click={() => {
-			const username = $preferences.username;
-			const password = $preferences.password;
-			if (username == null || password == null) throw new Error('Username or password is null');
-
-			new FolksonomyApi(fetch).login(username, password);
-		}}
+		on:click={loginToFolksonomy}
 	>
 		Login
 	</button>

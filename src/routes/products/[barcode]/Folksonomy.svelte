@@ -6,27 +6,27 @@
 	export let barcode: string;
 	export let keys: readonly string[];
 
-	function getFilteredKeys(newKey: string, keys: readonly string[]) {
-		if (newKey === '') {
-			return keys;
+	async function refreshTags() {
+		const res = await new FolksonomyApi(fetch).getProduct(barcode);
+		if (res.error) {
+			console.error(res.error);
 		} else {
-			return keys.filter((key) => key.includes(newKey) && key !== newKey);
+			tags = res.data;
 		}
 	}
 
-	$: editable = $preferences.folksonomy.authToken != null;
-	$: filteredKeys = getFilteredKeys(newKey, keys);
+	function getFilteredKeys(keys: readonly string[], newKey: string) {
+		if (newKey === '') {
+			return keys;
+		}
+		return keys.filter((key) => key.includes(newKey) && key !== newKey);
+	}
+	$: filteredNewKeys = getFilteredKeys(keys, newKey);
 
-	let newButton: HTMLButtonElement;
+	$: loggedIn = $preferences.folksonomy.authToken != null;
 
-	async function updateTag(
-		event: Event & {
-			currentTarget: EventTarget & HTMLInputElement;
-		},
-		idx: number
-	) {
+	async function updateTag(newValue: string, idx: number) {
 		const oldTag = tags[idx];
-		const newValue = event.currentTarget.value;
 
 		const newTag: FolksonomyTag = {
 			...oldTag,
@@ -35,39 +35,54 @@
 			v: newValue
 		};
 
-		const res = await new FolksonomyApi(fetch).putTag(newTag);
-		if (res) {
-			console.debug('Updated tag', oldTag, 'to', newTag);
-			tags[idx] = newTag;
-			tags = [...tags];
+		const ok = await new FolksonomyApi(fetch).putTag(newTag);
+		if (!ok) {
+			console.error('Failed to update tag', oldTag, 'to', newTag);
+			return;
 		}
+
+		console.debug('Updated tag', oldTag, 'to', newTag);
+		await refreshTags();
+	}
+
+	async function removeTag(tag: FolksonomyTag) {
+		tags = tags.filter((t) => t.k !== tag.k);
+		const version = tag.version;
+		if (version == null) {
+			throw new Error('Tag value is null');
+		}
+		// otherwise ts complains about version possibly being null
+		new FolksonomyApi(fetch).removeTag({ ...tag, version });
 	}
 
 	let newKey = '';
 	let newValue = '';
 
+	let creatingNewTag: boolean;
+
 	async function createNewTag() {
-		newButton.classList.add('loading');
-		newButton.disabled = true;
-
-		if (newKey !== '' && newValue != '') {
-			const newTag: FolksonomyTag = {
-				k: newKey,
-				v: newValue,
-				product: barcode,
-				version: 1
-			};
-
-			const ok = await new FolksonomyApi(fetch).addTag(newTag);
-
-			if (ok) {
-				tags = [...tags, newTag];
-				newKey = '';
-				newValue = '';
-			}
+		creatingNewTag = true;
+		if (newKey == '' || newValue == '') {
+			creatingNewTag = false;
+			throw new Error('New key or value is empty');
 		}
-		newButton.classList.remove('loading');
-		newButton.disabled = false;
+
+		const newTag: FolksonomyTag = {
+			k: newKey,
+			v: newValue,
+			product: barcode,
+			version: 1
+		};
+
+		const created = await new FolksonomyApi(fetch).addTag(newTag);
+
+		if (created) {
+			tags = [...tags, newTag];
+			newKey = '';
+			newValue = '';
+		}
+
+		creatingNewTag = false;
 	}
 </script>
 
@@ -76,6 +91,9 @@
 		<tr>
 			<th>Key</th>
 			<th>Value</th>
+			{#if loggedIn}
+				<th></th>
+			{/if}
 		</tr>
 	</thead>
 	<tbody>
@@ -83,7 +101,9 @@
 			<tr>
 				<td aria-label="Key">
 					<div class="flex w-full">
-						<input class="input grow max-sm:w-20" type="text" readonly value={tag.k} />
+						<a href="/folksonomy/{tag.k}" class="link grow pl-2 font-mono max-sm:w-20" type="text">
+							{tag.k}
+						</a>
 					</div>
 				</td>
 				<td class="flex gap-2" aria-label="Value">
@@ -91,68 +111,76 @@
 						type="text"
 						class="input grow max-sm:w-20"
 						value={tag.v}
-						readonly={!editable}
-						on:change={(e) => updateTag(e, i)}
+						readonly={!loggedIn}
+						on:change={(e) => updateTag(e.currentTarget.value, i)}
 					/>
-					<button
-						class="btn btn-error"
-						on:click={() => {
-							tags = tags.filter((t) => t.k !== tag.k);
-
-							if (tag.version == null) {
-								throw new Error('Tag value is null');
-							} else {
-								new FolksonomyApi(fetch).removeTag(tag);
-							}
-						}}
-					>
-						Delete
-					</button>
 				</td>
+				{#if loggedIn}
+					<td>
+						<button
+							class="btn btn-error"
+							disabled={!loggedIn}
+							on:click={() => {
+								removeTag(tag);
+							}}
+						>
+							Delete
+						</button>
+					</td>
+				{/if}
 			</tr>
 		{/each}
 
-		<tr>
-			<td>
-				<div class="dropdown dropdown-top flex w-full">
+		{#if loggedIn}
+			<tr>
+				<td>
+					<div class="dropdown dropdown-top flex w-full">
+						<input
+							type="text"
+							class="input grow max-sm:w-20"
+							placeholder="New key"
+							readonly={!loggedIn}
+							bind:value={newKey}
+						/>
+
+						<div class="dropdown-content max-h-52 overflow-y-auto">
+							<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+							<ul tabindex="0" class=" menu rounded-box bg-base-100 p-2 shadow">
+								{#each filteredNewKeys as key}
+									<li>
+										<button
+											on:click={() => {
+												newKey = key;
+											}}
+										>
+											{key}
+										</button>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					</div>
+				</td>
+				<td class="flex gap-2">
 					<input
 						type="text"
 						class="input grow max-sm:w-20"
-						placeholder="New key"
-						readonly={!editable}
-						bind:value={newKey}
+						placeholder="New value"
+						readonly={!loggedIn}
+						bind:value={newValue}
 					/>
-
-					<div class="dropdown-content max-h-52 overflow-y-auto">
-						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-						<ul tabindex="0" class=" menu rounded-box bg-base-100 p-2 shadow">
-							{#each filteredKeys as key}
-								<li>
-									<button
-										on:click={() => {
-											newKey = key;
-										}}
-									>
-										{key}
-									</button>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				</div>
-			</td>
-			<td class="flex gap-2">
-				<input
-					type="text"
-					class="input grow max-sm:w-20"
-					placeholder="New value"
-					readonly={!editable}
-					bind:value={newValue}
-				/>
-				<button class="btn btn-primary" bind:this={newButton} on:click={createNewTag}>
-					Create
-				</button>
-			</td>
-		</tr>
+				</td>
+				<td>
+					<button
+						class="btn btn-primary"
+						on:click={createNewTag}
+						disabled={creatingNewTag}
+						class:loading={creatingNewTag}
+					>
+						Create
+					</button>
+				</td>
+			</tr>
+		{/if}
 	</tbody>
 </table>

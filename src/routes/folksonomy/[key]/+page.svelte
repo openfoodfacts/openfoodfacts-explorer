@@ -3,6 +3,13 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	function productNameOrBarcode(
+		product: { product_name: string } | null,
+		tag: { product: string }
+	) {
+		return product?.product_name ?? tag.product;
+	}
 </script>
 
 <h2 class="text-2xl font-bold">
@@ -25,10 +32,10 @@
 			<tr>
 				<td>
 					{#await data.streamed.products}
-						Loading product names...
+						Loading product name...
 					{:then products}
 						<a class="link" href="/products/{tag.product}">
-							{products[i].product_name}
+							{productNameOrBarcode(products[i], tag)}
 						</a>
 					{/await}
 				</td>
