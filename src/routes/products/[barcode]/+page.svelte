@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { getOrDefault } from '$lib/api';
+	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
+	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/KnowledgePanels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
@@ -116,19 +118,21 @@
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} />
 
-<Card>
-	<h1 class="my-4 text-4xl font-bold">
-		Folksonomy Engine <span class="font-light italic">(beta)</span>
-	</h1>
+{#if isFolksonomyConfigured()}
+	<Card>
+		<h1 class="my-4 text-4xl font-bold">
+			Folksonomy Engine <span class="font-light italic">(beta)</span>
+		</h1>
 
-	<Folksonomy
-		tags={data.tags?.data ?? []}
-		keys={data.keys.map((it) => it.k)}
-		barcode={product.code}
-	/>
-</Card>
+		<Folksonomy
+			tags={data.tags?.data ?? []}
+			keys={data.keys.map((it) => it.k)}
+			barcode={product.code}
+		/>
+	</Card>
+{/if}
 
-{#if data.prices.data != null}
+{#if data.prices.data != null && isPriceConfigured()}
 	<Card>
 		<h1 class="my-4 text-4xl font-bold">
 			Open prices <span class="font-light italic">(alpha)</span>

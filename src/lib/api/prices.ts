@@ -7,6 +7,10 @@ export type Prices = paths['/prices']['get']['responses']['200']['content']['app
 
 const BASE_URL = import.meta.env.VITE_PRICES_API_URL;
 
+export function isConfigured() {
+	return BASE_URL != null;
+}
+
 export class PricesApi {
 	private readonly client: ReturnType<typeof createClient<paths>>;
 	private readonly fetch: typeof window.fetch;

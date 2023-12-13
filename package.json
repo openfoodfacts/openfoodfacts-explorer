@@ -40,6 +40,7 @@
 		"svelte": "^4.2.8",
 		"svelte-check": "^3.6.2",
 		"svelte-local-storage-store": "^0.6.4",
+		"openfoodfacts-nodejs": "github:openfoodfacts/openfoodfacts-nodejs",
 		"tailwindcss": "^3.3.6",
 		"tailwindcss-opentype": "^1.1.0",
 		"tslib": "^2.6.2",

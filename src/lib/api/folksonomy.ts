@@ -11,6 +11,12 @@ export type FolksonomyKey = {
 	values: number;
 };
 
+const BASE_URL = import.meta.env.VITE_FOLKSONOMY_API_URL;
+
+export function isConfigured() {
+	return BASE_URL != null;
+}
+
 export class FolksonomyApi {
 	private client: ReturnType<typeof createClient<paths>>;
 	private fetch: typeof window.fetch;
@@ -18,7 +24,7 @@ export class FolksonomyApi {
 	constructor(fetch: typeof window.fetch) {
 		this.fetch = fetch;
 		this.client = createClient({
-			baseUrl: 'https://api.folksonomy.openfoodfacts.org/',
+			baseUrl: BASE_URL,
 			fetch,
 			headers: { 'Content-Type': 'application/json' }
 		});

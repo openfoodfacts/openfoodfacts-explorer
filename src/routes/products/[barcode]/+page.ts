@@ -1,15 +1,8 @@
 import type { PageLoad } from './$types';
-import {
-	type Brand,
-	type Label,
-	getTaxo,
-	type Store,
-	type Category,
-	FolksonomyApi,
-	ProductsApi
-} from '$lib/api';
+import { type Brand, type Label, getTaxo, type Store, type Category, ProductsApi } from '$lib/api';
 import { error } from '@sveltejs/kit';
-import { PricesApi } from '$lib/api';
+import { FolksonomyApi } from '$lib/api/folksonomy';
+import { PricesApi } from '$lib/api/prices';
 
 export const ssr = false;
 

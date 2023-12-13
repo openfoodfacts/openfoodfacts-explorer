@@ -1,6 +1,3 @@
-export * from './api/folksonomy/api';
-export * from './api/prices/prices';
-
 export * from './api/taxonomy/api';
 export * from './api/taxonomy/types';
 

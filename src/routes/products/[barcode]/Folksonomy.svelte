@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type FolksonomyTag, FolksonomyApi } from '$lib/api';
+	import { FolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 
 	export let tags: FolksonomyTag[];

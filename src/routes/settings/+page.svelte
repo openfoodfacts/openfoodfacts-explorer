@@ -3,7 +3,7 @@
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
-	import { FolksonomyApi } from '$lib/api';
+	import { FolksonomyApi } from '$lib/api/folksonomy';
 
 	export let data: PageData;
 

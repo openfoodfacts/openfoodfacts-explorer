@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PricesApi, type Prices } from '$lib/api';
+	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
