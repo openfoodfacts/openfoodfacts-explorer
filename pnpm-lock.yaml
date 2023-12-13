@@ -29,6 +29,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.13.2
     version: 6.14.0(eslint@8.55.0)(typescript@5.3.3)
+  '@vercel/speed-insights':
+    specifier: ^1.0.1
+    version: 1.0.1
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.32)
@@ -698,6 +701,11 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
+    dev: true
+
+  /@vercel/speed-insights@1.0.1:
+    resolution: {integrity: sha512-cm8KTTsDgS1AbWsgIEZuMoyPUjclzeqJihyLp0tnA21B/x9iTE8hu2S5zM+/DBzihuHxWL1dx9pCWk22ctMFWQ==}
+    requiresBuild: true
     dev: true
 
   /acorn-jsx@5.3.2(acorn@8.11.2):

@@ -4,6 +4,14 @@
 	import 'leaflet/dist/leaflet.css';
 
 	let barcode: string;
+
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		// only inject the script on the client side
+		injectSpeedInsights();
+	});
 </script>
 
 <svelte:head>
