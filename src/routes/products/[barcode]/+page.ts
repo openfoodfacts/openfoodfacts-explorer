@@ -19,22 +19,22 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const brands = getTaxo<Brand>('brands', fetch);
 
 	const folkApi = new FolksonomyApi(fetch);
-	const tags = folkApi.getProduct(params.barcode);
-	const keys = folkApi.getKeys();
+	const folksonomyTags = folkApi.getProduct(params.barcode);
+	const folksonomyKeys = folkApi.getKeys();
 
 	const pricesApi = new PricesApi(fetch);
 	const pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 
 	return {
 		state,
-		tags,
-		keys,
+		tags: await folksonomyTags,
+		keys: await folksonomyKeys,
 		taxo: {
 			categories,
 			labels,
 			stores,
 			brands
 		},
-		prices: pricesResponse
+		prices: await pricesResponse
 	};
 };

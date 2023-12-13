@@ -4,7 +4,15 @@
 	import Panel from './KnowledgePanel.svelte';
 
 	export let knowledgePanels: Record<string, KnowledgePanel>;
-	$: arr = Object.entries(knowledgePanels);
+	$: panelsArray = sort(Object.entries(knowledgePanels));
+
+	function sort(arr: [string, KnowledgePanel][]) {
+		return arr.sort((a, b) => {
+			const aTitle = a[0];
+			const bTitle = b[0];
+			return aTitle.localeCompare(bTitle);
+		});
+	}
 
 	const summaryId = 'knowledge-panels';
 </script>
@@ -17,7 +25,7 @@
 	<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
 
 	<div class="my-4 flex justify-center gap-4" id={summaryId}>
-		{#each arr as [panelKey, panel]}
+		{#each panelsArray as [panelKey, panel]}
 			{#if panel.type === 'card'}
 				<a class="btn btn-secondary text-lg" href={'#' + panelKey}>
 					{panel.title_element.title}
@@ -29,7 +37,7 @@
 	<div class="border-b-2 border-dashed border-secondary"></div>
 </div>
 
-{#each arr as [id, panel]}
+{#each panelsArray as [id, panel]}
 	{#if panel.type === 'card'}
 		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + summaryId} />
 	{/if}
