@@ -11,12 +11,17 @@
 	import Folksonomy from './Folksonomy.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Prices from './Prices.svelte';
+	import ImageModal from './ImageModal.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
 
 	$: lang = $preferences.lang;
+
+	let imageModal: ImageModal;
 </script>
+
+<ImageModal bind:this={imageModal} />
 
 <Card>
 	<div class="items-center gap-2 max-md:mb-4 max-md:text-center md:flex">
@@ -39,7 +44,7 @@
 	</div>
 
 	<div class="flex gap-4">
-		<div class="grid w-3/4 grid-cols-[max-content,1fr] gap-x-4 gap-y-1">
+		<div class="grid max-h-max w-3/4 grid-cols-[max-content,1fr] gap-x-4 gap-y-1">
 			<span class="text-end font-bold">Quantity:</span>
 			<span>{product.quantity}</span>
 
@@ -101,11 +106,17 @@
 		</div>
 
 		<div class="flex flex-grow justify-center">
-			<img
-				src={product.image_front_url}
-				alt={product.product_name}
-				class="float-right w-32 rounded-lg"
-			/>
+			<button
+				on:click={() => {
+					imageModal.displayImage(product.image_front_url, product.product_name);
+				}}
+			>
+				<img
+					src={product.image_front_url}
+					alt={product.product_name}
+					class="float-right w-32 rounded-lg"
+				/>
+			</button>
 		</div>
 	</div>
 </Card>
@@ -132,7 +143,7 @@
 	</Card>
 {/if}
 
-{#if data.prices.data != null && isPriceConfigured()}
+{#if data?.prices?.data != null && isPriceConfigured()}
 	<Card>
 		<h1 class="my-4 text-4xl font-bold">
 			Open prices <span class="font-light italic">(alpha)</span>

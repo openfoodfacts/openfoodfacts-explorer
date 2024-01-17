@@ -35,6 +35,12 @@ devDependencies:
   '@vercel/speed-insights':
     specifier: ^1.0.2
     version: 1.0.2
+  '@zoom-image/core':
+    specifier: ^0.32.1
+    version: 0.32.1
+  '@zoom-image/svelte':
+    specifier: ^0.2.4
+    version: 0.2.4(svelte@4.2.8)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.32)
@@ -458,6 +464,10 @@ packages:
       - supports-color
     dev: true
 
+  /@namnode/store@0.1.0:
+    resolution: {integrity: sha512-4NGTldxKcmY0UuZ7OEkvCjs8ZEoeYB6M2UwMu74pdLiFMKxXbj9HdNk1Qn213bxX1O7bY5h+PLh5DZsTURZkYA==}
+    dev: true
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -873,6 +883,21 @@ packages:
   /@vercel/speed-insights@1.0.2:
     resolution: {integrity: sha512-y5HWeB6RmlyVYxJAMrjiDEz8qAIy2cit0fhBq+MD78WaUwQvuBnQlX4+5MuwVTWi46bV3klaRMq83u9zUy1KOg==}
     requiresBuild: true
+    dev: true
+
+  /@zoom-image/core@0.32.1:
+    resolution: {integrity: sha512-R56D749Ck+/1yLWlEJ2FctxjdpTQEje3jPhOAbeEZGzLndIumskO42UqRNixcER6sAzCi01oYopmqnCpDElF0g==}
+    dependencies:
+      '@namnode/store': 0.1.0
+    dev: true
+
+  /@zoom-image/svelte@0.2.4(svelte@4.2.8):
+    resolution: {integrity: sha512-rgfgn7Q60VrwmE4MPBzDWaFplc+411Lxg1nMdAnq/UTv4HTWSpiwm1IOg8gQZjRp92a8RXcRmUYXU+wFKEMjSg==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0
+    dependencies:
+      '@zoom-image/core': 0.32.1
+      svelte: 4.2.8
     dev: true
 
   /abbrev@1.1.1:

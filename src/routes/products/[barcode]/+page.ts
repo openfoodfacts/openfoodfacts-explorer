@@ -23,7 +23,12 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const folksonomyKeys = folkApi.getKeys();
 
 	const pricesApi = new PricesApi(fetch);
-	const pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
+	let pricesResponse = null;
+	try {
+		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
+	} catch (e) {
+		console.error('Error fetching prices', e);
+	}
 
 	return {
 		state,
