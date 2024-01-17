@@ -32,7 +32,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const taxonomy = (await (await fetch(TAXONOMY_URL(taxonomyName))).json()) as Taxonomy;
 	const element = taxonomy[id];
 
-	if (element == null) throw error(404, 'Taxonomy element not found');
+	if (element == null) error(404, 'Taxonomy element not found');
 
 	const search = getProducts(taxonomyName, id, fetch);
 

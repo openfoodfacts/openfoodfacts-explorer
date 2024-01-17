@@ -10,7 +10,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
 	const state = await productsApi.getProduct(params.barcode);
 	if (state.status === 'failure') {
-		throw error(404, { message: 'Failure to load product', errors: state.errors });
+		error(404, { message: 'Failure to load product', errors: state.errors });
 	}
 
 	const categories = getTaxo<Category>('categories', fetch);

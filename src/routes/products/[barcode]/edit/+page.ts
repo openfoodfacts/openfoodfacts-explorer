@@ -11,10 +11,10 @@ export const load = (async ({ fetch, params }) => {
 	const brands = await getTaxo<Category>('brands', fetch);
 
 	if (product.status === 'failure') {
-		throw error(404, {
-			message: 'Failure to load product',
-			errors: product.errors
-		});
+		error(404, {
+        			message: 'Failure to load product',
+        			errors: product.errors
+        		});
 	}
 
 	return {

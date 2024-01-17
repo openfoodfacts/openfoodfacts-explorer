@@ -17,8 +17,9 @@
 	"devDependencies": {
 		"@iconify-json/mdi": "^1.1.63",
 		"@iconify/tailwind": "^0.1.4",
-		"@sveltejs/adapter-vercel": "^3.1.0",
-		"@sveltejs/kit": "^1.30.3",
+		"@sveltejs/adapter-vercel": "^4.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tailwindcss/typography": "^0.5.10",
 		"@types/leaflet": "^1.9.8",
 		"@typescript-eslint/eslint-plugin": "^6.15.0",
@@ -46,7 +47,7 @@
 		"tailwindcss-opentype": "^1.1.0",
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
-		"vite": "^4.5.1"
+		"vite": "^5.0.0"
 	},
 	"type": "module",
 	"packageManager": "pnpm@8.10.5"
