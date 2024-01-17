@@ -60,8 +60,23 @@ export type KnowledgePanelGroupElement = KnowledgeElementBase & {
 	element_type: 'panel_group';
 	panel_group_element: {
 		title: string;
+		image?: KnowledgePanelImage;
 		panel_ids: string[];
 	};
+};
+
+export type KnowledgePanelImage = {
+	alt: string;
+	id: string;
+	lc: string;
+	sizes: Record<
+		string,
+		{
+			height: number;
+			width: number;
+			url: string;
+		}
+	>;
 };
 
 export type KnowledgePanelElement = KnowledgeElementBase & {

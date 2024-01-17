@@ -24,7 +24,4 @@
 {/if}
 
 <style>
-	:global(#ordered_ingredients_list) {
-		font-family: monospace;
-	}
 </style>
