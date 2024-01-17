@@ -40,7 +40,7 @@
 </script>
 
 <div
-	class="min-h-12 input input-bordered flex h-auto flex-wrap gap-x-1.5 gap-y-1 rounded-md bg-base-100 p-2"
+	class="input input-bordered flex h-auto min-h-12 flex-wrap gap-x-1.5 gap-y-1 rounded-md bg-base-100 p-2"
 >
 	{#each tags as tag}
 		<span class="badge badge-ghost py-3 text-lg" transition:fade={{ duration: 100 }}>
