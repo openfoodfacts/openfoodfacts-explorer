@@ -9,6 +9,11 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<!-- Preconnect to static assets -->
+	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
+</svelte:head>
+
 <div class="container mx-auto my-4 flex flex-col items-center xl:max-w-6xl">
 	<Card>
 		<div class="card-body items-center text-center">
@@ -59,7 +64,7 @@
 									{state.product.product_name ?? state.product.code}
 								</p>
 								<p class="mt-2 text-sm font-light">
-									{state.product.brands}
+									{state.product.brands} - {state.product.quantity}
 								</p>
 							</div>
 						</div>

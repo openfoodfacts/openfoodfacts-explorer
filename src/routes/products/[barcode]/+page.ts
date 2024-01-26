@@ -2,7 +2,7 @@ import type { PageLoad } from './$types';
 import { type Brand, type Label, getTaxo, type Store, type Category, ProductsApi } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
-import { PricesApi } from '$lib/api/prices';
+import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 
 export const ssr = false;
 
@@ -10,6 +10,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
 	const state = await productsApi.getProduct(params.barcode);
 	if (state.status === 'failure') {
+		state
 		error(404, { message: 'Failure to load product', errors: state.errors });
 	}
 
@@ -24,10 +25,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const pricesApi = new PricesApi(fetch);
 	let pricesResponse = null;
-	try {
+	if (isPricesConfigured()) {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
-	} catch (e) {
-		console.error('Error fetching prices', e);
 	}
 
 	return {

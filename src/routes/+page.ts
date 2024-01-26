@@ -1,5 +1,5 @@
 import {
-	getProductReducedForCard,
+	ProductsApi,
 	type ProductReduced,
 	type ProductState,
 	type ProductStateFound
@@ -23,34 +23,41 @@ async function productsWithQuestions(
 		'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count: count })
 	).then((it) => it.json());
 
+	const productApi = new ProductsApi(fetch);
+
 	const productsPromises = response.questions.map((question) =>
-		getProductReducedForCard(question.barcode, fetch)
+		productApi.getProductReducedForCard(question.barcode)
 	);
 
 	return Promise.all(productsPromises);
 }
 
-export const load = (async ({ fetch }) => {
-	const products = productsWithQuestions(fetch);
+function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
+	const seen = new Set<string>();
+
+	return array.filter((el) => {
+		if (seen.has(key(el))) return false;
+		else {
+			seen.add(key(el));
+			return true;
+		}
+	});
+}
+
+export const load: PageLoad = async ({ fetch }) => {
+	const states = productsWithQuestions(fetch);
 
 	// filtering out failures
-	const filteredProducts = products.then((it) =>
-		it.filter((state) => state.status != 'failure')
-	) as Promise<ProductStateFound<ProductReduced>[]>;
+	const filteredProducts: ProductStateFound<ProductReduced>[] = await states.then((states) =>
+		states.filter(
+			(state): state is ProductStateFound<ProductReduced> => state.status != 'failure'
+		)
+	);
 
 	// deduping
-	const dedupedProducts = filteredProducts.then((it) => {
-		const seen = new Set<string>();
-		return it.filter((state) => {
-			if (seen.has(state.product.code)) return false;
-			else {
-				seen.add(state.product.code);
-				return true;
-			}
-		});
-	});
+	const dedupedProducts = deduplicate(await filteredProducts, (it) => it.product.code);
 
 	return {
 		streamed: { products: dedupedProducts }
 	};
-}) satisfies PageLoad;
+};

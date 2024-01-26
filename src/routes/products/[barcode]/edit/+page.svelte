@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { writable, get } from 'svelte/store';
+
 	import { getOrDefault, ProductsApi, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
+
 	import type { PageData } from './$types';
-	import Tags from './Tags.svelte';
+	import TagsString from './TagsString.svelte';
 
 	export let data: PageData;
 
@@ -17,53 +20,70 @@
 	$: labelNames = getNames(data.labels);
 	$: brandNames = getNames(data.brands);
 
-	let newProduct = { ...data.state.product };
+	let productStore = writable(data.state.product);
 
 	async function submit() {
+		const product = get(productStore);
+
 		console.group('Product added/edited');
-		console.debug('Submitting', newProduct);
-		const ok = await new ProductsApi(fetch).addOrEditProductV2(newProduct);
+		console.debug('Submitting', product);
+		const ok = await new ProductsApi(fetch).addOrEditProductV2(product);
 		console.debug('Submitted', ok);
 		console.groupEnd();
 		if (ok) {
-			window.location.href = '/products/' + newProduct.code;
+			window.location.href = '/products/' + product.code;
 		}
+	}
+
+	$: {
+		productStore.subscribe((it) => {
+			console.debug('Product store changed', it);
+		});
 	}
 </script>
 
 <Card>
 	<div class="form-control mb-4">
 		<label for="">Name</label>
-		<input type="text" class="input input-bordered w-full" bind:value={newProduct.product_name} />
+		<input
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$productStore.product_name}
+		/>
 	</div>
 
 	<div class="form-control mb-4">
 		<label for="">Quantity</label>
-		<input type="text" class="input input-bordered w-full" bind:value={newProduct.quantity} />
+		<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
 	</div>
 
 	<div class="form-control mb-4">
 		<label for="">Categories: </label>
-		<Tags
-			tags={data.state.product.categories.split(',').filter((c) => c !== '')}
-			autocomplete={categoryNames}
-			on:change={(e) => (newProduct.categories = e.detail.tags.join(','))}
-		/>
+		<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
 	</div>
 	<div class="mb-4">
 		<label for="">Labels</label>
-		<Tags
-			tags={data.state.product.labels.split(',').filter((l) => l !== '')}
-			autocomplete={labelNames}
-			on:change={(e) => (newProduct.labels = e.detail.tags.join(','))}
-		/>
+		<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
 	</div>
 	<div class="mb-4">
 		<label for="">Brands</label>
-		<Tags
-			tags={data.state.product.brands.split(',').filter((l) => l !== '')}
-			autocomplete={brandNames}
-			on:change={(e) => (newProduct.brands = e.detail.tags.join(','))}
+		<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
+	</div>
+</Card>
+
+<Card>
+	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
+
+	{#if $productStore.image_ingredients_url}
+		<img src={$productStore.image_ingredients_url} alt="Ingredients" class="mb-4" />
+	{:else}
+		<p class="alert alert-warning mb-4">No ingredients image</p>
+	{/if}
+
+	<div class="form-control mb-4">
+		<textarea
+			class="textarea textarea-bordered h-40 w-full"
+			bind:value={$productStore.ingredients_text}
 		/>
 	</div>
 </Card>

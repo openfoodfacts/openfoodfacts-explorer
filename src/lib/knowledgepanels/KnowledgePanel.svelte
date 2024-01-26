@@ -52,7 +52,7 @@
 							/>
 						{:else}
 							<img
-								class="mr-4 h-8 w-8 rounded-full dark:invert"
+								class="mr-4 h-8 w-8 rounded-md bg-white object-contain"
 								src={panel.title_element.icon_url}
 								alt={panel.title_element.title}
 							/>

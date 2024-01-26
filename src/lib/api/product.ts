@@ -52,10 +52,8 @@ export class ProductsApi {
 	}
 
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
-		const fields = ['product_name', 'code', 'image_front_small_url', 'brands'];
-
 		const params = new URLSearchParams({
-			fields: fields.join(','),
+			fields: REDUCED_FIELDS.join(','),
 			lc: get(preferences).lang
 		});
 
@@ -97,38 +95,25 @@ export type ProductStateBase = {
 	};
 };
 
+export type ProductStateError = {
+	field: { id: string; value: string };
+	impact: { lc_name: string; name: string; id: string };
+	message: { lc_name: string; name: string; id: string };
+};
+
 export type ProductStateFailure = ProductStateBase & {
 	status: 'failure';
-	errors: {
-		field: { id: string; value: string };
-		impact: { lc_name: string; name: string; id: string };
-		message: { lc_name: string; name: string; id: string };
-	}[];
+	errors: ProductStateError[];
 };
 
-export type ProductStateFound<T = Product> = ProductStateBase & {
-	product: T;
-};
+export type ProductStateFound<T = Product> = ProductStateBase & { product: T } & (
+		| { status: 'success' }
+		| { status: 'success_with_warnings'; warnings: object[] }
+		| { status: 'success_with_errors'; errors: ProductStateError[] }
+	);
 
-export type ProductStateSuccess<T = Product> = ProductStateFound<T> & {
-	status: 'success';
-};
-
-export type ProductStateSuccessWithWarnings<T = Product> = ProductStateFound<T> & {
-	status: 'success_with_warnings';
-	warnings: object[];
-};
-
-export type ProductStateSuccessWithErrors<T = Product> = ProductStateFound<T> & {
-	status: 'success_with_errors';
-	errors: object[];
-};
-
-export type ProductState<T = Product> =
-	| ProductStateSuccess<T>
-	| ProductStateSuccessWithWarnings<T>
-	| ProductStateSuccessWithErrors<T>
-	| ProductStateFailure;
+export type ProductState<T = Product> = ProductStateBase &
+	(ProductStateFound<T> | ProductStateFailure);
 
 export type ProductSearch<T = Product> = {
 	count: number;
@@ -138,6 +123,8 @@ export type ProductSearch<T = Product> = {
 	products: T[];
 	skip: number;
 };
+
+type LangIngredient = `ingredients_text_${string}`;
 
 export type Product = {
 	knowledge_panels: Record<string, KnowledgePanel>;
@@ -159,9 +146,11 @@ export type Product = {
 	}[];
 	additives_tags: string[];
 
+	ingredients_text: string;
+	[lang: LangIngredient]: string;
+
 	image_front_url: string;
 	image_front_small_url: string;
-	image_front_thumb_url: string;
 
 	image_ingredients_url: string;
 	image_ingredients_small_url: string;
@@ -192,10 +181,15 @@ export type Product = {
 	nutriments: Nutriments;
 };
 
-export type ProductReduced = Pick<
-	Product,
-	'image_front_small_url' | 'code' | 'product_name' | 'brands'
->;
+const REDUCED_FIELDS = [
+	'image_front_small_url',
+	'code',
+	'product_name',
+	'brands',
+	'quantity'
+] as const;
+
+export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
 
 /** @deprecated */
 export async function getProductReducedForCard(
