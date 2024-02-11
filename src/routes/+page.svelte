@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import { navigating } from '$app/stores';
-
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
+	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 
 	export let data: PageData;
 </script>
@@ -35,42 +34,16 @@
 	</Card>
 
 	<div class="mt-8 w-full">
-		{#await data.streamed.products}
-			<div class="mt-10 flex justify-center">
-				<span class="loading loading-dots loading-lg mx-auto" />
-			</div>
-		{:then products}
-			<div class="grid grid-cols-4 gap-4">
-				{#each products as state}
-					<a
-						href={`/products/${state.product.code}`}
-						class="btn btn-ghost pointer-events-none h-auto justify-normal bg-white p-4 text-start text-primary shadow-md dark:bg-base-300"
-						class:pointer-events-none={$navigating}
-					>
-						<div class="flex flex-row items-center">
-							<div class="mr-4 flex w-16 flex-shrink-0 items-center justify-center">
-								{#if $navigating?.to?.params?.barcode === state.product.code}
-									<span class="loading loading-ring loading-lg mx-auto my-auto" />
-								{:else if state.product.image_front_small_url}
-									<img
-										src={state.product.image_front_small_url}
-										class="h-16 rounded-lg object-cover"
-										alt="Product front"
-									/>
-								{/if}
-							</div>
-							<div>
-								<p class="text-lg">
-									{state.product.product_name ?? state.product.code}
-								</p>
-								<p class="mt-2 text-sm font-light">
-									{state.product.brands} - {state.product.quantity}
-								</p>
-							</div>
-						</div>
-					</a>
+		<div class="grid grid-cols-4 gap-4">
+			{#await data.streamed.products}
+				{#each Array(8) as _}
+					<div class="skeleton h-28 bg-white p-4 shadow-md dark:bg-base-300"></div>
 				{/each}
-			</div>
-		{/await}
+			{:then products}
+				{#each products as state}
+					<SmallProductCard product={state.product} />
+				{/each}
+			{/await}
+		</div>
 	</div>
 </div>

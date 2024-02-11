@@ -48,16 +48,17 @@ export const load: PageLoad = async ({ fetch }) => {
 	const states = productsWithQuestions(fetch);
 
 	// filtering out failures
-	const filteredProducts: ProductStateFound<ProductReduced>[] = await states.then((states) =>
-		states.filter(
-			(state): state is ProductStateFound<ProductReduced> => state.status != 'failure'
+	const products: Promise<ProductStateFound<ProductReduced>[]> = states
+		.then((states) =>
+			states.filter(
+				(state): state is ProductStateFound<ProductReduced> => state.status != 'failure'
+			)
 		)
-	);
-
-	// deduping
-	const dedupedProducts = deduplicate(await filteredProducts, (it) => it.product.code);
+		.then((states) => {
+			return deduplicate(states, (it) => it.product.code);
+		});
 
 	return {
-		streamed: { products: dedupedProducts }
+		streamed: { products: products }
 	};
 };

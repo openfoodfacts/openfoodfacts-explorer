@@ -3,15 +3,27 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 
-	let barcode: string;
+	let searchQuery: string;
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
 	});
+
+	function updateSearchQuery(url: URL) {
+		searchQuery = url.searchParams.get('q') ?? '';
+	}
+	// update searchQuery when the ?q parameter changes
+	$: updateSearchQuery($page.url);
+
+	function gotoProductsSearch() {
+		goto('/products/search?q=' + searchQuery);
+	}
 </script>
 
 <svelte:head>
@@ -32,14 +44,19 @@
 				<div class="join">
 					<input
 						type="text"
-						bind:value={barcode}
+						bind:value={searchQuery}
 						class="input join-item input-bordered w-full"
-						placeholder="Barcode"
+						placeholder="Query or barcode"
+						on:keydown={(e) => {
+							if (e.key === 'Enter') {
+								gotoProductsSearch();
+							}
+						}}
 					/>
 					<button
 						class="btn btn-square btn-secondary join-item px-10"
-						on:click={() => (window.location.href = '/products/' + barcode)}
-						disabled={barcode == null || barcode == ''}
+						on:click={() => gotoProductsSearch()}
+						disabled={searchQuery == null || searchQuery == ''}
 					>
 						Go
 					</button>

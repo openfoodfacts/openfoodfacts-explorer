@@ -5,7 +5,7 @@ export const ssr = false;
 
 export const load: PageLoad = async ({ fetch }) => {
 	const api = new FolksonomyApi(fetch);
-	const keys = api.getKeys();
+	const keys = await api.getKeys();
 
 	return {
 		keys

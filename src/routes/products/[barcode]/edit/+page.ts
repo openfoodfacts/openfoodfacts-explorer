@@ -12,9 +12,9 @@ export const load = (async ({ fetch, params }) => {
 
 	if (product.status === 'failure') {
 		error(404, {
-        			message: 'Failure to load product',
-        			errors: product.errors
-        		});
+			message: 'Failure to load product',
+			errors: product.errors
+		});
 	}
 
 	return {
