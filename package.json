@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@iconify-json/mdi": "^1.1.64",
 		"@iconify/tailwind": "^0.1.4",
-		"@sveltejs/adapter-vercel": "^4.0.0",
+		"@sveltejs/adapter-vercel": "^5.1.0",
 		"@sveltejs/kit": "^2.5.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@tailwindcss/typography": "^0.5.10",
