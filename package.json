@@ -23,7 +23,7 @@
 		"@tailwindcss/typography": "^0.5.10",
 		"@types/leaflet": "^1.9.8",
 		"@typescript-eslint/eslint-plugin": "^6.20.0",
-		"@typescript-eslint/parser": "^6.20.0",
+		"@typescript-eslint/parser": "^6.21.0",
 		"@vercel/speed-insights": "^1.0.10",
 		"@zoom-image/core": "^0.33.0",
 		"@zoom-image/svelte": "^0.2.6",
