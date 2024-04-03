@@ -36,19 +36,16 @@ export class FolksonomyApi {
 
 	async getKeys(): Promise<FolksonomyKey[]> {
 		const res = await this.client.GET('/keys');
-		return res.response.json();
+		return res.data as FolksonomyKey[];
 	}
 
-	async getProducts(key: string, value?: string): Promise<FolksonomyTag[]> {
+	async getProducts(key: string, value?: string): Promise<FolksonomyTag[] | undefined> {
 		const res = await this.client.GET('/products', { params: { query: { k: key, v: value } } });
-		return res.response.json();
+		return res.data;
 	}
 
 	async putTag(tag: FolksonomyTag): Promise<boolean> {
-		const res = await this.client.PUT('/product', {
-			body: tag
-		});
-
+		const res = await this.client.PUT('/product', { body: tag });
 		return res.response.status === 200;
 	}
 
@@ -88,6 +85,7 @@ export class FolksonomyApi {
 
 		if (res.response.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
 
+		// FIXME: .json should not be used!
 		const token = (await res.response.json()) as { access_token: string; token_type: string };
 		preferences.update((p) => ({
 			...p,
