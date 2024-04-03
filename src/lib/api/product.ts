@@ -179,6 +179,20 @@ export type Product = {
 	labels_tags: string[];
 
 	nutriments: Nutriments;
+
+	source: {
+		fields: string[];
+		id: string;
+		images: object[];
+		import_t: number;
+		manufacturer: number | string;
+		name: string;
+		source_licence: string;
+		source_licence_url: string;
+		url?: string;
+	};
+
+	link: string;
 };
 
 const REDUCED_FIELDS = [
