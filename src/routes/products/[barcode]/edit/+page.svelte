@@ -20,7 +20,7 @@
 	$: labelNames = getNames(data.labels);
 	$: brandNames = getNames(data.brands);
 
-	let productStore = writable(data.state.product);
+	$: productStore = writable(data.state.product);
 
 	async function submit() {
 		const product = get(productStore);
@@ -68,6 +68,11 @@
 	<div class="mb-4">
 		<label for="">Brands</label>
 		<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
+	</div>
+
+	<div class="mb-4">
+		<label for="">Website URL</label>
+		<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
 	</div>
 </Card>
 
