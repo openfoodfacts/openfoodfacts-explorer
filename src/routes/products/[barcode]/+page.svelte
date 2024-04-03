@@ -23,6 +23,10 @@
 
 <ImageModal bind:this={imageModal} />
 
+<svelte:head>
+	<title>{product.product_name ?? product.code} | Open Food Facts</title>
+</svelte:head>
+
 <Card>
 	<div class="items-center gap-2 max-md:mb-4 max-md:text-center md:flex">
 		<h1 class="my-4 grow text-3xl font-bold md:text-4xl">
