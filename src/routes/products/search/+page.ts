@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { Product } from '$lib/api';
 
@@ -7,6 +7,11 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	if (query == null || query.length === 0) {
 		error(400, 'Missing query parameter');
+	}
+
+	// If the code is an EAN13 code, we can directly fetch the product
+	if (query.match(/^\d{13}$/)) {
+		redirect(308, `/products/${query}`);
 	}
 
 	const page = url.searchParams.get('page') || '1';
