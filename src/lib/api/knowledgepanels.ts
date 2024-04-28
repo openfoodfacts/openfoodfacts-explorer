@@ -4,6 +4,7 @@ export type KnowledgePanel = {
 	expand_for: string;
 	title_element: {
 		title: string;
+		subtitle?: string;
 		grade: 'a' | 'b' | 'c' | 'd' | 'e' | 'unknown';
 		icon_url: string;
 		icon_color_from_evaluation: string;

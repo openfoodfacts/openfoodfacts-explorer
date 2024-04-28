@@ -3,6 +3,7 @@
 
 	import Elements from './KnowledgeElements.svelte';
 	import Card from '$lib/ui/Card.svelte';
+	import { dev } from '$app/environment';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let panel: KnowledgePanel | null;
@@ -58,9 +59,13 @@
 							/>
 						{/if}
 					{/if}
-					<span class="grow text-xl">
-						{panel.title_element.title}
-					</span>
+
+					<div class="grow text-xl">
+						<div>{panel.title_element.title}</div>
+						{#if panel.title_element.subtitle != null}
+							<h3 class="text-sm italic text-secondary">{panel.title_element.subtitle}</h3>
+						{/if}
+					</div>
 				{/if}
 			</summary>
 			{#if panel.elements != null}
@@ -68,6 +73,13 @@
 					<Elements elements={panel.elements} {allPanels} />
 				</div>
 			{/if}
+		</details>
+	{/if}
+
+	{#if dev}
+		<details>
+			<summary>Debug</summary>
+			<pre>{JSON.stringify(panel, null, 2)}</pre>
 		</details>
 	{/if}
 </div>
