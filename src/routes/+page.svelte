@@ -11,6 +11,8 @@
 <svelte:head>
 	<!-- Preconnect to static assets -->
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
+
+	<title>Open Food Facts Explorer</title>
 </svelte:head>
 
 <div class="container mx-auto my-4 flex flex-col items-center xl:max-w-6xl">
