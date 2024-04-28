@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
+	import Debug from '$lib/ui/Debug.svelte';
 
 	import Panel from './KnowledgePanel.svelte';
 	import Map from './Map.svelte';
@@ -69,8 +69,6 @@
 		<Map {element} />
 	{:else}
 		<div class="alert alert-warning">No renderer for element type!</div>
-		<details>
-			<pre>{JSON.stringify(element)}</pre>
-		</details>
+		<Debug data={element} />
 	{/if}
 </div>

@@ -4,6 +4,7 @@
 	import Elements from './KnowledgeElements.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { dev } from '$app/environment';
+	import Debug from '$lib/ui/Debug.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let panel: KnowledgePanel | null;
@@ -77,9 +78,6 @@
 	{/if}
 
 	{#if dev}
-		<details>
-			<summary>Debug</summary>
-			<pre>{JSON.stringify(panel, null, 2)}</pre>
-		</details>
+		<Debug data={panel} />
 	{/if}
 </div>
