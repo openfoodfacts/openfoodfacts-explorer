@@ -12,6 +12,7 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Prices from './Prices.svelte';
 	import ImageModal from './ImageModal.svelte';
+	import Gs1Country from './GS1Country.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
@@ -132,6 +133,8 @@
 </div>
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} />
+
+<Gs1Country barcode={product.code} />
 
 {#if isFolksonomyConfigured()}
 	<Card>
