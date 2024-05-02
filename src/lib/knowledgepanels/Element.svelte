@@ -2,9 +2,10 @@
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 	import Debug from '$lib/ui/Debug.svelte';
 
-	import Panel from './KnowledgePanel.svelte';
+	import Panel from './Panel.svelte';
 	import Map from './Map.svelte';
 	import TextPanel from './TextElement.svelte';
+	import PanelGroup from './PanelGroup.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let element: KnowledgeElement;
@@ -12,23 +13,7 @@
 
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
-		<div class="flex gap-4 flex-col md:flex-row">
-			<div class="grow">
-				<h3 class="my-3 text-xl font-bold">{element.panel_group_element.title}</h3>
-				{#each element.panel_group_element.panel_ids as id}
-					{@const panel = allPanels[id]}
-					<Panel {panel} {allPanels} {id} />
-				{/each}
-			</div>
-
-			{#if element.panel_group_element.image != null}
-				<img
-					class="max-w-96"
-					src={element.panel_group_element.image.sizes['full'].url}
-					alt={element.panel_group_element.image.alt}
-				/>
-			{/if}
-		</div>
+		<PanelGroup {element} {allPanels} />
 	{:else if element.element_type === 'panel'}
 		{@const id = element.panel_element.panel_id}
 		{@const panel = allPanels[id]}

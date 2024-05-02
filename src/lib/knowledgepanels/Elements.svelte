@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 
-	import Element from './KnowledgeElement.svelte';
+	import Element from './Element.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let elements: KnowledgeElement[];

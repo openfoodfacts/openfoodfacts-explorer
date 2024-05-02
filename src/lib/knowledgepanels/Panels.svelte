@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { KnowledgePanel } from '$lib/api';
 
-	import Panel from './KnowledgePanel.svelte';
+	import Panel from './Panel.svelte';
 
 	export let knowledgePanels: Record<string, KnowledgePanel>;
 	$: panelsArray = sort(Object.entries(knowledgePanels));

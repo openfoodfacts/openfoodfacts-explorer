@@ -32,16 +32,19 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
-	let questions: any[] = [];
-
-	try {
-		const questionsRes = await off.robotoff.questionsByProductCode(params.barcode);
-		if (questionsRes?.status === 'found') {
-			questions = questionsRes.questions;
+	const questions = off.robotoff.questionsByProductCode(params.barcode).then(
+		(res) => {
+			if (res?.status === 'found') {
+				return res.questions ?? [];
+			} else {
+				return [];
+			}
+		},
+		(e) => {
+			console.error(e);
+			return [];
 		}
-	} catch (e) {
-		console.error(e);
-	}
+	);
 
 	return {
 		state,

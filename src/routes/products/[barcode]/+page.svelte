@@ -3,7 +3,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
-	import KnowledgePanels from '$lib/knowledgepanels/KnowledgePanels.svelte';
+	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
 	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
 	import type { PageData } from './$types';
@@ -151,7 +151,7 @@
 	</Card>
 {/if}
 
-{#if data?.prices?.data != null && isPriceConfigured()}
+{#if isPriceConfigured() && data?.prices?.data != null}
 	<Card>
 		<h1 class="my-4 text-4xl font-bold">
 			Open prices <span class="font-light italic">(alpha)</span>
@@ -161,10 +161,12 @@
 	</Card>
 {/if}
 
-{#if data?.questions}
-	<Card>
+<Card>
+	{#await data?.questions}
+		Loading...
+	{:then questions}
 		<h1 class="my-4 text-4xl font-bold">Questions</h1>
 
-		<Debug data={data.questions} />
-	</Card>
-{/if}
+		<Debug data={questions} />
+	{/await}
+</Card>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { KnowledgePanel } from '$lib/api';
 
-	import Elements from './KnowledgeElements.svelte';
+	import Elements from './Elements.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { dev } from '$app/environment';
 	import Debug from '$lib/ui/Debug.svelte';
