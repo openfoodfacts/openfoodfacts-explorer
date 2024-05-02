@@ -24,6 +24,8 @@
 	function gotoProductsSearch() {
 		goto('/products/search?q=' + searchQuery);
 	}
+
+	let searchActive = false;
 </script>
 
 <svelte:head>
@@ -32,7 +34,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="navbar mx-auto mb-8 mt-2 max-w-7xl bg-base-100">
+<div class="navbar mx-auto mb-8 mt-2 hidden max-w-7xl bg-base-100 md:block">
 	<div class="navbar-start">
 		<a href="/">
 			<Logo />
@@ -45,7 +47,7 @@
 					<input
 						type="text"
 						bind:value={searchQuery}
-						class="input join-item input-bordered w-full"
+						class="input join-item input-bordered xl:w-full"
 						placeholder="Query or barcode"
 						on:keydown={(e) => {
 							if (e.key === 'Enter') {
@@ -75,6 +77,48 @@
 	</div>
 </div>
 
-<div class="container mx-auto my-2 flex flex-col gap-4 xl:max-w-6xl">
+<div class="mx-4 md:hidden">
+	<div class="navbar mx-auto mb-8 mt-2 max-w-7xl bg-base-100">
+		<div class="navbar-start">
+			<a href="/">
+				<Logo />
+			</a>
+		</div>
+		<div class="navbar-end">
+			<button
+				class="btn btn-square btn-secondary text-lg"
+				on:click={() => {
+					searchActive = !searchActive;
+				}}
+			>
+				<i class="icon-[mdi--magnify]"></i>
+			</button>
+		</div>
+	</div>
+	{#if searchActive}
+		<div class="join -mt-8 w-full">
+			<input
+				type="text"
+				bind:value={searchQuery}
+				class="input join-item input-bordered w-full"
+				placeholder="Query or barcode"
+				on:keydown={(e) => {
+					if (e.key === 'Enter') {
+						gotoProductsSearch();
+					}
+				}}
+			/>
+			<button
+				class="btn btn-square btn-secondary join-item"
+				on:click={() => gotoProductsSearch()}
+				disabled={searchQuery == null || searchQuery == ''}
+			>
+				Go
+			</button>
+		</div>
+	{/if}
+</div>
+
+<div class="container px-4 my-2 flex flex-col gap-4 xl:mx-auto xl:max-w-6xl">
 	<slot />
 </div>

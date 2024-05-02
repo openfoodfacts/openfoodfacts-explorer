@@ -32,6 +32,17 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
+	let questions: any[] = [];
+
+	try {
+		const questionsRes = await off.robotoff.questionsByProductCode(params.barcode);
+		if (questionsRes?.status === 'found') {
+			questions = questionsRes.questions;
+		}
+	} catch (e) {
+		console.error(e);
+	}
+
 	return {
 		state,
 		tags: await folksonomyTags,
@@ -42,6 +53,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			stores,
 			brands
 		},
-		prices: await pricesResponse
+		prices: await pricesResponse,
+		questions
 	};
 };

@@ -15,12 +15,14 @@
 	<title>Open Food Facts Explorer</title>
 </svelte:head>
 
-<div class="container mx-auto my-4 flex flex-col items-center xl:max-w-6xl">
+<div class="md:container mx-auto my-4 flex flex-col items-center xl:max-w-6xl">
 	<Card>
 		<div class="card-body items-center text-center">
-			<h3 class="card-title mb-4 text-2xl">
+			<h3 class="card-title mb-4 text-2xl md:flex block">
 				Welcome to
-				<Logo />
+				<div class="block xl:inline-block">
+					<Logo />
+				</div>
 				Explorer!
 			</h3>
 
@@ -36,9 +38,9 @@
 	</Card>
 
 	<div class="mt-8 w-full">
-		<div class="grid grid-cols-4 gap-4">
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-4">
 			{#await data.streamed.products}
-				{#each Array(8) as _}
+				{#each Array(4) as _}
 					<div class="skeleton h-28 bg-white p-4 shadow-md dark:bg-base-300"></div>
 				{/each}
 			{:then products}

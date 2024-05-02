@@ -13,6 +13,7 @@
 	import Prices from './Prices.svelte';
 	import ImageModal from './ImageModal.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import Debug from '$lib/ui/Debug.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
@@ -48,7 +49,7 @@
 		</a>
 	</div>
 
-	<div class="flex gap-4">
+	<div class="flex flex-col-reverse gap-4 md:flex-row">
 		<div class="grid max-h-max w-3/4 grid-cols-[max-content,1fr] gap-x-4 gap-y-1">
 			<span class="text-end font-bold">Quantity:</span>
 			<span>{product.quantity}</span>
@@ -119,7 +120,7 @@
 				<img
 					src={product.image_front_url}
 					alt={product.product_name}
-					class="float-right w-32 rounded-lg"
+					class="float-right w-full rounded-lg md:w-32"
 				/>
 			</button>
 		</div>
@@ -157,5 +158,13 @@
 		</h1>
 
 		<Prices prices={data.prices.data} barcode={product.code} />
+	</Card>
+{/if}
+
+{#if data?.questions}
+	<Card>
+		<h1 class="my-4 text-4xl font-bold">Questions</h1>
+
+		<Debug data={data.questions} />
 	</Card>
 {/if}
