@@ -6,6 +6,7 @@
 	import Map from './Map.svelte';
 	import TextPanel from './TextElement.svelte';
 	import PanelGroup from './PanelGroup.svelte';
+	import ImageButton from '$lib/ui/ImageButton.svelte';
 
 	export let allPanels: Record<string, KnowledgePanel>;
 	export let element: KnowledgeElement;
@@ -21,7 +22,7 @@
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
-		<img src={element.image_element.url} alt={element.image_element.alt_text} />
+		<ImageButton src={element.image_element.url} alt={element.image_element.alt_text} />
 	{:else if element.element_type === 'table'}
 		<div class="overflow-x-auto">
 			<table class="table-compact table w-full">

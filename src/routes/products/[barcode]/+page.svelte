@@ -2,28 +2,26 @@
 	import { getOrDefault } from '$lib/api';
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
+	import { preferences } from '$lib/settings';
+
 	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
 	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
-	import type { PageData } from './$types';
-	import { preferences } from '$lib/settings';
 	import Folksonomy from './Folksonomy.svelte';
 	import Card from '$lib/ui/Card.svelte';
-	import Prices from './Prices.svelte';
-	import ImageModal from './ImageModal.svelte';
-	import Gs1Country from './GS1Country.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
+	import ImageButton from '$lib/ui/ImageButton.svelte';
+
+	import type { PageData } from './$types';
+	import Prices from './Prices.svelte';
+	import Gs1Country from './GS1Country.svelte';
 
 	export let data: PageData;
 	$: product = data.state.product;
 
 	$: lang = $preferences.lang;
-
-	let imageModal: ImageModal;
 </script>
-
-<ImageModal bind:this={imageModal} />
 
 <svelte:head>
 	<title>{product.product_name ?? product.code} | Open Food Facts</title>
@@ -111,18 +109,8 @@
 			</span>
 		</div>
 
-		<div class="flex flex-grow justify-center">
-			<button
-				on:click={() => {
-					imageModal.displayImage(product.image_front_url, product.product_name);
-				}}
-			>
-				<img
-					src={product.image_front_url}
-					alt={product.product_name}
-					class="float-right w-full rounded-lg md:w-32"
-				/>
-			</button>
+		<div class="flex flex-grow justify-center ">
+			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>
 </Card>

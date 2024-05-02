@@ -34,11 +34,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="navbar mx-auto mb-8 mt-2 hidden max-w-7xl bg-base-100 md:block">
+<div class="navbar hidden md:flex">
 	<div class="navbar-start">
-		<a href="/">
-			<Logo />
-		</a>
+		<a href="/"> <Logo /> </a>
 	</div>
 	<div class="navbar-center">
 		<div class="form-control">
@@ -71,9 +69,9 @@
 		</div>
 	</div>
 
-	<div class="navbar-end">
-		<a class="btn btn-ghost" href="/folksonomy">Folksonomy</a>
-		<a class="btn btn-ghost" href="/settings">Settings</a>
+	<div class="navbar-end gap-2">
+		<a class="btn btn-outline link" href="/folksonomy">Folksonomy</a>
+		<a class="btn btn-outline link" href="/settings">Settings</a>
 	</div>
 </div>
 
@@ -119,6 +117,6 @@
 	{/if}
 </div>
 
-<div class="container px-4 my-2 flex flex-col gap-4 xl:mx-auto xl:max-w-6xl">
+<div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	<slot />
 </div>

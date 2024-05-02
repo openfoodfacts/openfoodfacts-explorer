@@ -5,40 +5,38 @@
 	let image:
 		| {
 				url: string;
-				alt: string;
+				alt?: string;
 		  }
 		| undefined;
 
 	let dialog: HTMLDialogElement;
 
-	export function displayImage(url: string, alt: string) {
-		dialog.showModal();
+	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
+		dialog.showModal();
 	}
 
-	let container: HTMLDivElement;
-	const { createZoomImage } = useZoomImageWheel();
+	function close() {
+		dialog.close();
+		setZoomImageState({ currentZoom: 1 });
+	}
 
 	onMount(() => {
 		createZoomImage(container);
 	});
+
+	let container: HTMLDivElement;
+	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
-	class="max-h-max max-w-xl border-r-2 border-none p-4 backdrop:backdrop-brightness-50"
+	class=" border-none bg-transparent p-4 backdrop:backdrop-brightness-50 md:max-h-max md:max-w-xl"
 	bind:this={dialog}
 	on:close={() => (image = undefined)}
-	on:click|self={() => dialog.close()}
+	on:click|self={() => close()}
 >
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation>
-		<button on:click={() => dialog.close()} id="close" class="rounded-md p-2 hover:bg-secondary">
-			<span class="icon-[mdi--close]"></span>
-		</button>
-	</div>
-
-	<div class="imageContainer" bind:this={container}>
+	<div bind:this={container}>
 		<img class="max-h-full max-w-full" src={image?.url} alt={image?.alt} />
 	</div>
 </dialog>
