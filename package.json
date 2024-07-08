@@ -36,7 +36,7 @@
 		"html5-qrcode": "^2.3.8",
 		"leaflet": "^1.9.4",
 		"openapi-fetch": "^0.10.2",
-		"openapi-typescript": "^6.7.6",
+		"openapi-typescript": "^7.0.2",
 		"openfoodfacts-nodejs": "github:openfoodfacts/openfoodfacts-nodejs",
 		"postcss": "^8.4.39",
 		"prettier": "^3.3.2",
