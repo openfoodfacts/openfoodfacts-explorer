@@ -8,8 +8,19 @@
 # Open Food Facts explorer: the modern JS frontend to Open Food Facts
 
 ## Features
+- Uses the official Open Food Facts NodeJS SDK
+- Basic editing
+- Product page display, including Knowledge Panels support
+- Search
+- Login support (simple login)
+- Folksonomy Engine Support
 
 ## Roadmap
+
+- Image editing
+- Image upload
+- Support for Open Prices
+- Support for Search-A-Licious (including facets)
 
 ## Developing
 
