@@ -28,7 +28,7 @@
 				value={lang.language_code_2.en}
 				selected={$preferences.lang === lang.language_code_2.en}
 			>
-				{lang.name[lang.language_code_2.en]}
+				{lang.name[lang.language_code_2.en]} ({lang.name["en"]})
 			</option>
 		{/each}
 	</select>
