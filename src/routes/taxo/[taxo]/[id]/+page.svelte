@@ -47,7 +47,7 @@
 				<a class="link" href={`/taxo/${taxonomy}/${parentId}`}>
 					{parentNode == null
 						? parentId
-						: getOrDefault(parentNode.name, $preferences.lang) ?? parentId}
+						: (getOrDefault(parentNode.name, $preferences.lang) ?? parentId)}
 				</a>
 			</li>
 		{/each}
@@ -61,7 +61,9 @@
 			{@const childNode = data.fullTaxonomy[childId]}
 			<li>
 				<a class="link" href={`/taxo/${taxonomy}/${childId}`}>
-					{childNode == null ? childId : getOrDefault(childNode.name, $preferences.lang) ?? childId}
+					{childNode == null
+						? childId
+						: (getOrDefault(childNode.name, $preferences.lang) ?? childId)}
 				</a>
 			</li>
 		{/each}

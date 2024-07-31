@@ -109,7 +109,7 @@
 			</span>
 		</div>
 
-		<div class="flex flex-grow justify-center ">
+		<div class="flex flex-grow justify-center">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>

@@ -95,7 +95,7 @@
 		{ name: 'Paraguay', prefixes: [784], code: 'PY' },
 		{ name: 'Ecuador', prefixes: [786], code: 'EC' },
 		{ name: 'Brazil', prefixes: [789, 790], code: 'BR' },
-		{ name: 'Italy, San Marino, and Vatican City', prefixes: [80, 81, 82, 83], code: 'IT-SM-VA'},
+		{ name: 'Italy, San Marino, and Vatican City', prefixes: [80, 81, 82, 83], code: 'IT-SM-VA' },
 		{ name: 'Spain, Andorra', prefixes: [84], code: 'ES-AD' },
 		{ name: 'Cuba', prefixes: [850], code: 'CU' },
 		{ name: 'Slovakia', prefixes: [858], code: 'SK' },
