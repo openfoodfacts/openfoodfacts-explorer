@@ -4,6 +4,7 @@
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
 	import { FolksonomyApi } from '$lib/api/folksonomy';
+	import { t } from '$lib/translations';
 
 	export let data: PageData;
 
@@ -28,20 +29,20 @@
 				value={lang.language_code_2.en}
 				selected={$preferences.lang === lang.language_code_2.en}
 			>
-				{lang.name[lang.language_code_2.en]} ({lang.name["en"]})
+				{lang.name[lang.language_code_2.en]} ({lang.name['en']})
 			</option>
 		{/each}
 	</select>
 
 	<Heading>Influences</Heading>
 
-	<label for="nutriscore" class="justify-self-end">Nutriscore:</label>
+	<label for="nutriscore" class="justify-self-end">{$t('common.nutriscore')}</label>
 	<Influence id="nutriscore" bind:value={$preferences.nutriscoreInfluence} />
 
-	<label for="ecoscore" class="justify-self-end">Ecoscore:</label>
+	<label for="ecoscore" class="justify-self-end">{$t('common.ecoscore')}</label>
 	<Influence id="ecoscore" bind:value={$preferences.ecoscoreInfluence} />
 
-	<label for="nova" class="justify-self-end">Nova:</label>
+	<label for="nova" class="justify-self-end">{$t('common.nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
 	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>

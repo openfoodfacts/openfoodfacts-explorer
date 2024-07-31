@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/translations';
 	import type { PageData } from './$types';
 
 	import Card from '$lib/ui/Card.svelte';
@@ -19,21 +20,15 @@
 	<Card>
 		<div class="card-body items-center text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
-				Welcome to
+				{$t('home.welcome')}
 				<div class="block xl:inline-block">
 					<Logo />
 				</div>
 				Explorer!
 			</h3>
 
-			<p>
-				<strong>OpenFoodFacts Explorer</strong>
-				is a tool to explore the OpenFoodFacts database.
-			</p>
-			<p>
-				You can enter a product code in the search bar above to get started or click on one of the
-				products below.
-			</p>
+			<p>{@html $t('home.intro_1')}</p>
+			<p>{$t('home.intro_2')}</p>
 		</div>
 	</Card>
 

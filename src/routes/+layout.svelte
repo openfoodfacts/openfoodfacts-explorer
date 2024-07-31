@@ -2,6 +2,7 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
+	import { t } from '$lib/translations';
 
 	let searchQuery: string;
 
@@ -70,8 +71,8 @@
 	</div>
 
 	<div class="navbar-end gap-2">
-		<a class="btn btn-outline link" href="/folksonomy">Folksonomy</a>
-		<a class="btn btn-outline link" href="/settings">Settings</a>
+		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
+		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 	</div>
 </div>
 
