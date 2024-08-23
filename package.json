@@ -37,7 +37,7 @@
 		"leaflet": "^1.9.4",
 		"openapi-fetch": "^0.11.1",
 		"openapi-typescript": "^7.3.0",
-		"openfoodfacts-nodejs": "github:openfoodfacts/openfoodfacts-nodejs#pull/513/head",
+		"openfoodfacts-nodejs": "github:openfoodfacts/openfoodfacts-nodejs",
 		"postcss": "^8.4.41",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.6",
