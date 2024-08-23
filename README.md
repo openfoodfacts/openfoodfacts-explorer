@@ -8,6 +8,7 @@
 # Open Food Facts explorer: the modern JS frontend to Open Food Facts
 
 ## Features
+
 - Uses the official Open Food Facts NodeJS SDK
 - Basic editing
 - Product page display, including Knowledge Panels support
