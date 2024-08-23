@@ -72,8 +72,8 @@ devDependencies:
     specifier: ^7.1.2
     version: 7.1.2(typescript@5.5.4)
   openfoodfacts-nodejs:
-    specifier: github:openfoodfacts/openfoodfacts-nodejs
-    version: github.com/openfoodfacts/openfoodfacts-nodejs/e44e01b89896eb99e67b324012bae908223e8c75
+    specifier: github:openfoodfacts/openfoodfacts-nodejs#pull/513/head
+    version: github.com/openfoodfacts/openfoodfacts-nodejs/994cab49672c337e22a98b46256ca12d20b4ecfd
   postcss:
     specifier: ^8.4.40
     version: 8.4.40
@@ -3392,8 +3392,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/openfoodfacts/openfoodfacts-nodejs/e44e01b89896eb99e67b324012bae908223e8c75:
-    resolution: {tarball: https://codeload.github.com/openfoodfacts/openfoodfacts-nodejs/tar.gz/e44e01b89896eb99e67b324012bae908223e8c75}
+  github.com/openfoodfacts/openfoodfacts-nodejs/994cab49672c337e22a98b46256ca12d20b4ecfd:
+    resolution: {tarball: https://codeload.github.com/openfoodfacts/openfoodfacts-nodejs/tar.gz/994cab49672c337e22a98b46256ca12d20b4ecfd}
     name: openfoodfacts-nodejs
     version: 2.0.0
     dependencies:

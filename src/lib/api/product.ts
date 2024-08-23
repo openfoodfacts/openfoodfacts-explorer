@@ -19,7 +19,8 @@ export class ProductsApi {
 			'?' +
 			new URLSearchParams({
 				fields: fields.join(','),
-				lc: get(preferences).lang
+				lc: get(preferences).lang,
+				cc: get(preferences).country
 			});
 		const res = await this.fetch(url);
 		return await res.json();
