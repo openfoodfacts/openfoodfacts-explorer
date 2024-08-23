@@ -10,8 +10,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy/folksonomy.d.ts",
-		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/openapi.json --output src/lib/api/prices/prices.d.ts",
+		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy.d.ts",
+		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices"
 	},
 	"devDependencies": {

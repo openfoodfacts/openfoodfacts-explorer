@@ -20,10 +20,8 @@ export function isConfigured() {
 
 export class FolksonomyApi {
 	private client: ReturnType<typeof createClient<paths>>;
-	private fetch: typeof window.fetch;
 
 	constructor(fetch: typeof window.fetch) {
-		this.fetch = fetch;
 		this.client = createClient({
 			baseUrl: BASE_URL,
 			fetch,
@@ -39,7 +37,7 @@ export class FolksonomyApi {
 		return res.data as FolksonomyKey[];
 	}
 
-	async getProducts(key: string, value?: string): Promise<FolksonomyTag[] | undefined> {
+	async getProducts(key: string, value?: string) {
 		const res = await this.client.GET('/products', { params: { query: { k: key, v: value } } });
 		return res.data;
 	}
@@ -78,6 +76,7 @@ export class FolksonomyApi {
 
 	async login(username: string, password: string) {
 		const res = await this.client.POST('/auth', {
+			// @ts-expect-error - I could not find why "scope" is needed here
 			body: { username, password },
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			bodySerializer: formBodySerializer
