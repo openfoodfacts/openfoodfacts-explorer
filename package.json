@@ -50,7 +50,7 @@
 		"tailwindcss-opentype": "^1.1.0",
 		"tslib": "^2.7.0",
 		"typescript": "^5.5.4",
-		"vite": "^5.4.3"
+		"vite": "^5.4.6"
 	},
 	"type": "module",
 	"packageManager": "pnpm@8.10.5"
