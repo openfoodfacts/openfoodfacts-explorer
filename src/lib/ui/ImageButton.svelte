@@ -11,6 +11,6 @@
 
 <ImageModal bind:this={modal} />
 
-<button class="w-full" on:click={onclick}>
-	<img {src} {alt} class="float-right w-full rounded-lg" />
+<button class="max-w-full" on:click={onclick}>
+	<img {src} {alt} class="float-right h-full rounded-lg" />
 </button>
