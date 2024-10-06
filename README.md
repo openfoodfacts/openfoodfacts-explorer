@@ -9,7 +9,7 @@
 
 ## Features
 
-- Uses the official Open Food Facts NodeJS SDK
+- Uses the [official Open Food Facts NodeJS SDK](https://github.com/openfoodfacts/openfoodfacts-nodejs)
 - Basic editing
 - Product page display, including Knowledge Panels support
 - Search
@@ -20,8 +20,8 @@
 
 - Image editing
 - Image upload
-- Support for Open Prices
-- Support for Search-A-Licious (including facets)
+- Support for [Open Prices](https://prices.openfoodfacts.org/)
+- Support for [Search-A-Licious](https://search.openfoodfacts.org/docs) (including facets)
 
 ## Developing
 
