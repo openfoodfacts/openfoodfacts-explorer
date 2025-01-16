@@ -66,7 +66,7 @@
 {/snippet}
 
 <div {id}>
-	{#if panel == null}
+	{#if panel == null && dev}
 		<div class="alert alert-warning">Panel is null</div>
 	{:else if panel.type === 'card'}
 		<Card>

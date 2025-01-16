@@ -14,6 +14,21 @@
 		size?: KnowledgePanelSize;
 	};
 	let { allPanels, element, size }: Props = $props();
+
+	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
+		edit_product: 'Edit Product',
+		report_product_to_nutripatrol: 'Report Product to NutriPatrol'
+	};
+
+	function getButtonTitle(actions: string[]) {
+		for (const action of actions) {
+			if (BUTTON_ACTIONS_TITLES[action] != null) {
+				return BUTTON_ACTIONS_TITLES[action];
+			}
+		}
+
+		return actions.join(', ');
+	}
 </script>
 
 <div class="my-1">
@@ -52,8 +67,12 @@
 		</div>
 	{:else if element.element_type === 'action'}
 		<button class="btn btn-primary">
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html element.action_element.html}
+			{#if element.action_element.html != ''}
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html element.action_element.html}
+			{:else}
+				{getButtonTitle(element.action_element.actions)}
+			{/if}
 		</button>
 	{:else if element.element_type === 'map'}
 		<Map {element} />
