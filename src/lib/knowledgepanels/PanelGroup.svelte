@@ -3,25 +3,29 @@
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 	import Panel from './Panel.svelte';
 
-	export let element: KnowledgePanelGroupElement;
-	export let allPanels: Record<string, KnowledgePanel>;
+	let {
+		element,
+		allPanels
+	}: {
+		element: KnowledgePanelGroupElement;
+		allPanels: Record<string, KnowledgePanel>;
+	} = $props();
+
+	let groupEl = $derived(element.panel_group_element);
 </script>
 
 <div class="flex flex-col gap-4 md:flex-row">
 	<div class="grow">
-		<h3 class="my-3 text-xl font-bold">{element.panel_group_element.title}</h3>
-		{#each element.panel_group_element.panel_ids as id}
+		<h3 class="my-3 text-xl font-bold">{groupEl.title}</h3>
+		{#each groupEl.panel_ids as id}
 			{@const panel = allPanels[id]}
 			<Panel {panel} {allPanels} {id} />
 		{/each}
 	</div>
 
-	{#if element.panel_group_element.image != null}
+	{#if groupEl.image != null}
 		<div class="md:max-w-64">
-			<ImageButton
-				src={element.panel_group_element.image.sizes['full'].url}
-				alt={element.panel_group_element.image.alt}
-			/>
+			<ImageButton src={groupEl.image.sizes['full'].url} alt={groupEl.image.alt} />
 		</div>
 	{/if}
 </div>

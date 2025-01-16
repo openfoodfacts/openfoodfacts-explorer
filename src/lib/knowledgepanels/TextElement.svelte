@@ -1,27 +1,46 @@
 <script lang="ts">
 	import type { KnowledgeTextElement } from '$lib/api';
 
-	export let element: KnowledgeTextElement;
+	let { element }: { element: KnowledgeTextElement } = $props();
+
+	let text_el = $derived(element.text_element);
+	let type = $derived(text_el.type);
 </script>
 
-{#if element.text_element.type === 'warning'}
+{#if type === 'warning'}
 	<span class="badge badge-warning">Warning</span>
-{:else if element.text_element.type === 'notes'}
+{:else if type === 'notes'}
 	<span class="badge badge-info">Notes</span>
-{:else if element.text_element.type === 'summary'}
+{:else if type === 'summary'}
 	<span class="badge">Summary</span>
 {/if}
 
-<div class="prose w-full max-w-full">
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html element.text_element.html}
-</div>
+<!-- Specialization for ingredients_text -->
+{#if text_el.edit_field_type == 'ingredients_text'}
+	<div class="prose w-full max-w-full dark:text-white">
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html text_el.html}
+	</div>
+{:else}
+	<div class="prose w-full max-w-full dark:text-white">
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html text_el.html}
+	</div>
+{/if}
 
-{#if element.text_element.source_url}
-	<a class="link" href={element.text_element.source_url}>
-		{element.text_element.source_text} ({element.text_element.source_language})
+{#if text_el.source_url}
+	<a class="link" href={text_el.source_url}>
+		{text_el.source_text} ({text_el.source_language})
 	</a>
 {/if}
 
 <style>
+	:global(.allergen) {
+		background-color: #f8d7da;
+		border-color: #f5c6cb;
+		color: #721c24;
+		padding: 0 0.2em;
+		border-radius: 0.25em;
+		font-weight: bold;
+	}
 </style>

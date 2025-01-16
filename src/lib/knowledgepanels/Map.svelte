@@ -2,9 +2,12 @@
 	import type { KnowledgeMapElement } from '$lib/api';
 	import { onMount } from 'svelte';
 
-	export let element: KnowledgeMapElement;
+	let { element }: { element: KnowledgeMapElement } = $props();
 
 	const MAX_INITIAL_ZOOM = 3;
+	const MAX_ZOOM = 19;
+	const TILES_BASE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+	const ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 	onMount(async () => {
 		const { default: L } = await import('leaflet');
@@ -15,11 +18,8 @@
 		);
 
 		map.setZoom(Math.min(map.getZoom(), MAX_INITIAL_ZOOM));
+		L.tileLayer(TILES_BASE_URL, { maxZoom: MAX_ZOOM, attribution: ATTRIBUTION }).addTo(map);
 
-		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 19,
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		}).addTo(map);
 		for (const pointer of element.map_element.pointers) {
 			const marker = L.marker([pointer.geo.lat, pointer.geo.lng]);
 			marker.addTo(map);
@@ -27,4 +27,4 @@
 	});
 </script>
 
-<div id="map" class="h-96 w-full rounded-lg" />
+<div id="map" class="h-96 w-full rounded-lg"></div>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let title: string | undefined = undefined;
-	export let data: unknown;
+	type Props = { title?: string; data: unknown };
+	let { title, data }: Props = $props();
 </script>
 
 <details>

@@ -1,18 +1,69 @@
 <script lang="ts">
-	import type { KnowledgePanel } from '$lib/api';
-
-	import Elements from './Elements.svelte';
-	import Card from '$lib/ui/Card.svelte';
 	import { dev } from '$app/environment';
+
+	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelTitle } from '$lib/api';
+
+	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
+	import Element from './Element.svelte';
 
-	export let allPanels: Record<string, KnowledgePanel>;
-	export let panel: KnowledgePanel | null;
-	export let id: string;
-	export let link: string | undefined = undefined;
+	type Props = {
+		allPanels: Record<string, KnowledgePanel>;
 
-	let expanded = panel?.expanded ?? false;
+		panel: KnowledgePanel;
+		id: string;
+		link?: string;
+	};
+	let { allPanels, panel, id, link }: Props = $props();
+
+	let expanded = $state(panel?.expanded ?? false);
 </script>
+
+{#snippet elementList(elements: KnowledgeElement[])}
+	{#each elements as element, i}
+		{#if i > 0}
+			<hr class="my-2 border-base-100 bg-base-100" />
+		{/if}
+		<Element {element} {allPanels} />
+	{/each}
+{/snippet}
+
+{#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[])}
+	<details
+		bind:open={expanded}
+		class:border-l-secondary={expanded}
+		class:border-l-2={expanded}
+		class:pl-4={expanded}
+	>
+		<summary
+			class="my-2 flex w-full cursor-pointer select-none items-center rounded-lg p-2 hover:bg-base-200 dark:hover:bg-base-100"
+		>
+			{#if title != null}
+				{#if title.icon_url != null}
+					{#if title.type === 'grade'}
+						<img class="mr-4 h-12" src={title.icon_url} alt={title.title} />
+					{:else}
+						<img
+							class="mr-8 w-8 rounded-md bg-white object-contain"
+							src={title.icon_url}
+							alt={title.title}
+						/>
+					{/if}
+				{/if}
+
+				<div class="grow text-xl">
+					<div>{title.title}</div>
+					{#if title.subtitle != null}
+						<h3 class="text-sm italic text-secondary">{title.subtitle}</h3>
+					{/if}
+				</div>
+			{/if}
+		</summary>
+		{#if panel.elements != null}
+			{@render elementList(panel.elements)}
+		{/if}
+	</details>
+{/snippet}
 
 <div {id}>
 	{#if panel == null}
@@ -26,55 +77,16 @@
 				{/if}
 			</div>
 
-			<Elements elements={panel.elements} {allPanels} />
+			{@render elementList(panel.elements)}
 		</Card>
 	{:else if panel.type === 'inline'}
 		{#if panel.elements != null}
-			<div class="pl-4">
-				<Elements elements={panel.elements} {allPanels} />
+			<div class="border-l-2 border-l-secondary pl-4">
+				{@render elementList(panel.elements)}
 			</div>
 		{/if}
 	{:else}
-		<details
-			bind:open={expanded}
-			class:border-l-secondary={expanded}
-			class:border-l-2={expanded}
-			class:pl-2={expanded}
-		>
-			<summary
-				class="my-2 flex w-full cursor-pointer select-none items-center rounded-lg p-2 hover:bg-base-200 dark:hover:bg-base-100"
-			>
-				{#if panel.title_element != null}
-					{#if panel.title_element.icon_url != null}
-						{#if panel.title_element.type === 'grade'}
-							<img
-								class="mr-4 h-12"
-								src={panel.title_element.icon_url}
-								alt={panel.title_element.title}
-							/>
-						{:else}
-							<img
-								class="mr-4 h-8 w-8 rounded-md bg-white object-contain"
-								src={panel.title_element.icon_url}
-								alt={panel.title_element.title}
-							/>
-						{/if}
-					{/if}
-
-					<div class="grow text-xl">
-						<div>{panel.title_element.title}</div>
-						{#if panel.title_element.subtitle != null}
-							<h3 class="text-sm italic text-secondary">{panel.title_element.subtitle}</h3>
-						{/if}
-					</div>
-				{/if}
-			</summary>
-			{#if panel.elements != null}
-				<div class="pl-4">
-					<Elements elements={panel.elements} {allPanels} />
-				</div>
-			{/if}
-		</details>
+		{@render detailsElement(panel.title_element, panel.elements)}
 	{/if}
 
 	{#if dev}

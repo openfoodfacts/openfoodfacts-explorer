@@ -1,21 +1,19 @@
 <script lang="ts">
-	import Nova1 from './nova-group-1.svg';
-	import Nova2 from './nova-group-2.svg';
-	import Nova3 from './nova-group-3.svg';
-	import Nova4 from './nova-group-4.svg';
-	import NovaUnknown from './nova-group-unknown.svg';
+	import { KP_ATTRIBUTE_IMG, STATIC_HOST } from '$lib/const';
 
-	const MAP: Record<string, string> = {
-		1: Nova1,
-		2: Nova2,
-		3: Nova3,
-		4: Nova4
+	const SRC_MAP: Record<string, string> = {
+		1: KP_ATTRIBUTE_IMG('nova-group-1.svg'),
+		2: KP_ATTRIBUTE_IMG('nova-group-2.svg'),
+		3: KP_ATTRIBUTE_IMG('nova-group-3.svg'),
+		4: KP_ATTRIBUTE_IMG('nova-group-4.svg')
 	};
 
-	export let grade: number;
-	$: src = MAP[grade] ?? NovaUnknown;
+	const SRC_UNKNOWN = KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
+
+	let { grade }: { grade: number } = $props();
+	let src = $derived(SRC_MAP[grade] ?? SRC_UNKNOWN);
 </script>
 
 <a href="#nova">
-	<img alt="Nutriscore" {src} class="transition-all duration-75 hover:brightness-90" />
+	<img alt="Nova Score" {src} class="transition-all duration-75 hover:brightness-90" />
 </a>

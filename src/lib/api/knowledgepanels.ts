@@ -1,20 +1,24 @@
+export type KnowledgePanelTitle = {
+	title: string;
+	subtitle?: string;
+	grade: 'a' | 'b' | 'c' | 'd' | 'e' | 'unknown';
+	icon_url: string;
+	icon_color_from_evaluation: string;
+	icon_size: string;
+	type: string;
+};
+
+export type KnowledgePanelSize = 'small';
+
 export type KnowledgePanel = {
 	type: 'card' | 'inline';
 	expanded: boolean;
 	expand_for: string;
-	title_element: {
-		title: string;
-		subtitle?: string;
-		grade: 'a' | 'b' | 'c' | 'd' | 'e' | 'unknown';
-		icon_url: string;
-		icon_color_from_evaluation: string;
-		icon_size: string;
-		type: string;
-	};
+	title_element: KnowledgePanelTitle;
 	elements: KnowledgeElement[];
 	topics: string[];
 	level: string;
-	size?: 'small';
+	size?: KnowledgePanelSize;
 };
 
 export type KnowledgeElement =

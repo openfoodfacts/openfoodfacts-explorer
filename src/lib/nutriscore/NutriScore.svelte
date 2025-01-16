@@ -1,23 +1,22 @@
 <script lang="ts">
-	import NutriscoreA from './nutriscore-a.svg';
-	import NutriscoreB from './nutriscore-b.svg';
-	import NutriscoreC from './nutriscore-c.svg';
-	import NutriscoreD from './nutriscore-d.svg';
-	import NutriscoreE from './nutriscore-e.svg';
-	import NutriscoreUnknown from './nutriscore-unknown.svg';
+	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
-	const MAP: Record<string, string> = {
-		a: NutriscoreA,
-		b: NutriscoreB,
-		c: NutriscoreC,
-		d: NutriscoreD,
-		e: NutriscoreE
-	};
+	type Props = { grade: string; lang?: string };
+	let { grade, lang = 'en' }: Props = $props();
 
-	export let grade: string;
-	$: src = MAP[grade.toLowerCase()] ?? NutriscoreUnknown;
+	let srcMap: Record<string, string> = $derived({
+		a: KP_ATTRIBUTE_IMG('nutriscore-a-new-' + lang + '.svg'),
+		b: KP_ATTRIBUTE_IMG('nutriscore-b-new-' + lang + '.svg'),
+		c: KP_ATTRIBUTE_IMG('nutriscore-c-new-' + lang + '.svg'),
+		d: KP_ATTRIBUTE_IMG('nutriscore-d-new-' + lang + '.svg'),
+		e: KP_ATTRIBUTE_IMG('nutriscore-e-new-' + lang + '.svg')
+	});
+
+	let srcUnknown = $derived(KP_ATTRIBUTE_IMG('nutriscore-unknown-new-' + lang + '.svg'));
+
+	let src = $derived(srcMap[grade.toLowerCase()] ?? srcUnknown);
 </script>
 
 <a href="#nutriscore">
-	<img alt="Nutriscore" {src} class="transition-all duration-75 hover:brightness-90" />
+	<img alt="Nutri-Score" {src} class="transition-all duration-75 hover:brightness-90" />
 </a>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
+	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelSize } from '$lib/api';
 	import Debug from '$lib/ui/Debug.svelte';
 
 	import Panel from './Panel.svelte';
@@ -8,8 +8,12 @@
 	import PanelGroup from './PanelGroup.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
-	export let allPanels: Record<string, KnowledgePanel>;
-	export let element: KnowledgeElement;
+	type Props = {
+		allPanels: Record<string, KnowledgePanel>;
+		element: KnowledgeElement;
+		size?: KnowledgePanelSize;
+	};
+	let { allPanels, element, size }: Props = $props();
 </script>
 
 <div class="my-1">
@@ -28,7 +32,7 @@
 			<table class="table-compact table w-full">
 				<thead>
 					<tr>
-						<th />
+						<th></th>
 						{#each element.table_element.columns as column}
 							<th>{column.text}</th>
 						{/each}
@@ -37,7 +41,7 @@
 				<tbody>
 					{#each element.table_element.rows as row}
 						<tr>
-							<td />
+							<td></td>
 							{#each row.values as cell}
 								<td>{cell.text}</td>
 							{/each}

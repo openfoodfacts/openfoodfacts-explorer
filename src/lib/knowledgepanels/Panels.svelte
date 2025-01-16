@@ -1,10 +1,8 @@
 <script lang="ts">
 	import type { KnowledgePanel } from '$lib/api';
-
 	import Panel from './Panel.svelte';
 
-	export let knowledgePanels: Record<string, KnowledgePanel>;
-	$: panelsArray = sort(Object.entries(knowledgePanels));
+	let { knowledgePanels }: { knowledgePanels: Record<string, KnowledgePanel> } = $props();
 
 	function sort(arr: [string, KnowledgePanel][]) {
 		return arr.sort((a, b) => {
@@ -14,7 +12,9 @@
 		});
 	}
 
-	const summaryId = 'knowledge-panels';
+	let panelsArray = $derived(sort(Object.entries(knowledgePanels)));
+
+	const SUMMARY_ID = 'knowledge-panels';
 </script>
 
 <div class="">
@@ -24,7 +24,7 @@
 
 	<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
 
-	<div class="my-4 flex flex-col justify-center gap-4 md:flex-row" id={summaryId}>
+	<div class="my-4 flex flex-col justify-center gap-4 md:flex-row" id={SUMMARY_ID}>
 		{#each panelsArray as [panelKey, panel]}
 			{#if panel.type === 'card'}
 				<a class="btn btn-secondary text-lg" href={'#' + panelKey}>
@@ -39,6 +39,6 @@
 
 {#each panelsArray as [id, panel]}
 	{#if panel.type === 'card'}
-		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + summaryId} />
+		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + SUMMARY_ID} />
 	{/if}
 {/each}
