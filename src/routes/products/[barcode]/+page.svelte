@@ -4,7 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 
-	import EcoScore from '$lib/ecoscore/EcoScore.svelte';
+	import EcoScore from '$lib/greenscore/GreenScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
 	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
@@ -109,7 +109,7 @@
 			</span>
 		</div>
 
-		<div class="flex flex-grow justify-center max-h-56">
+		<div class="flex max-h-56 flex-grow justify-center">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>
@@ -118,7 +118,9 @@
 <div class="flex w-full justify-evenly gap-4 p-3">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
-	<EcoScore grade={product.ecoscore_grade} />
+	<a href="#nutriscore">
+		<EcoScore grade={product.ecoscore_grade} />
+	</a>
 </div>
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} />
