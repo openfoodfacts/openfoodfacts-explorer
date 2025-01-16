@@ -19,7 +19,7 @@
 		"@iconify/tailwind": "^1.2.0",
 		"@sveltejs/adapter-vercel": "^5.5.2",
 		"@sveltejs/kit": "^2.15.1",
-		"@sveltejs/vite-plugin-svelte": "^3.1.2",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/leaflet": "^1.9.15",
 		"@typescript-eslint/eslint-plugin": "^8.19.0",
@@ -42,7 +42,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
-		"svelte": "^4.2.19",
+		"svelte": "^5.18.0",
 		"svelte-check": "^4.1.1",
 		"svelte-local-storage-store": "^0.6.4",
 		"sveltekit-i18n": "^2.4.2",
@@ -50,7 +50,7 @@
 		"tailwindcss-opentype": "^1.1.0",
 		"tslib": "^2.8.1",
 		"typescript": "^5.7.2",
-		"vite": "^5.4.11"
+		"vite": "^6.0.7"
 	},
 	"type": "module",
 	"packageManager": "pnpm@8.10.5"
