@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
 
-	export let barcode: string;
+	interface Props {
+		barcode: string;
+	}
+
+	let { barcode }: Props = $props();
 
 	const gs1Country: Array<{ name: string; prefixes: number[]; code: string }> = [
 		{ name: 'USA and Canada', prefixes: [0], code: 'US-CA' },
@@ -168,7 +172,7 @@
 			.join('');
 	}
 
-	$: country = getCountry(barcode);
+	let country = $derived(getCountry(barcode));
 </script>
 
 <Card>

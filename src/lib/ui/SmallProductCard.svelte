@@ -2,7 +2,11 @@
 	import type { ProductReduced } from '$lib/api';
 	import { navigating } from '$app/stores';
 
-	export let product: ProductReduced;
+	interface Props {
+		product: ProductReduced;
+	}
+
+	let { product }: Props = $props();
 </script>
 
 <a
@@ -13,7 +17,7 @@
 	<div class="flex flex-row items-center">
 		<div class="mr-4 flex w-16 flex-shrink-0 items-center justify-center">
 			{#if $navigating?.to?.params?.barcode === product.code}
-				<span class="loading loading-ring loading-lg mx-auto my-auto" />
+				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
 				<img
 					src={product.image_front_small_url}

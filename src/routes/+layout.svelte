@@ -1,15 +1,22 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Logo from '$lib/ui/Logo.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
-	let searchQuery: string;
+	let searchQuery: string = $state();
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	onMount(() => {
 		// only inject the script on the client side
@@ -20,13 +27,15 @@
 		searchQuery = url.searchParams.get('q') ?? '';
 	}
 	// update searchQuery when the ?q parameter changes
-	$: updateSearchQuery($page.url);
+	run(() => {
+		updateSearchQuery($page.url);
+	});
 
 	function gotoProductsSearch() {
 		goto('/products/search?q=' + searchQuery);
 	}
 
-	let searchActive = false;
+	let searchActive = $state(false);
 </script>
 
 <svelte:head>
@@ -48,7 +57,7 @@
 						bind:value={searchQuery}
 						class="input join-item input-bordered xl:w-full"
 						placeholder="Query or barcode"
-						on:keydown={(e) => {
+						onkeydown={(e) => {
 							if (e.key === 'Enter') {
 								gotoProductsSearch();
 							}
@@ -56,7 +65,7 @@
 					/>
 					<button
 						class="btn btn-square btn-secondary join-item px-10"
-						on:click={() => gotoProductsSearch()}
+						onclick={() => gotoProductsSearch()}
 						disabled={searchQuery == null || searchQuery == ''}
 					>
 						Go
@@ -86,7 +95,7 @@
 		<div class="navbar-end">
 			<button
 				class="btn btn-square btn-secondary text-lg"
-				on:click={() => {
+				onclick={() => {
 					searchActive = !searchActive;
 				}}
 			>
@@ -101,7 +110,7 @@
 				bind:value={searchQuery}
 				class="input join-item input-bordered w-full"
 				placeholder="Query or barcode"
-				on:keydown={(e) => {
+				onkeydown={(e) => {
 					if (e.key === 'Enter') {
 						gotoProductsSearch();
 					}
@@ -109,7 +118,7 @@
 			/>
 			<button
 				class="btn btn-square btn-secondary join-item"
-				on:click={() => gotoProductsSearch()}
+				onclick={() => gotoProductsSearch()}
 				disabled={searchQuery == null || searchQuery == ''}
 			>
 				Go
@@ -119,5 +128,5 @@
 </div>
 
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
-	<slot />
+	{@render children?.()}
 </div>

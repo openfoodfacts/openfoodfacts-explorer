@@ -17,10 +17,14 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 
-	export let data: PageData;
-	$: product = data.state.product;
+	interface Props {
+		data: PageData;
+	}
 
-	$: lang = $preferences.lang;
+	let { data }: Props = $props();
+	let product = $derived(data.state.product);
+
+	let lang = $derived($preferences.lang);
 </script>
 
 <svelte:head>

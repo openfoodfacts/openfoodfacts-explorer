@@ -1,18 +1,24 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 
-	export let prices: Prices;
-	export let barcode: string;
+	interface Props {
+		prices: Prices;
+		barcode: string;
+	}
+
+	let { prices, barcode }: Props = $props();
 
 	let pricesApi: PricesApi;
-	let authenticated: boolean;
-	let authStatus: undefined | boolean;
+	let authenticated: boolean = $state();
+	let authStatus: undefined | boolean = $state();
 
-	let nearStores: OverpassAPIResult | undefined;
+	let nearStores: OverpassAPIResult | undefined = $state();
 
 	onMount(async () => {
 		pricesApi = new PricesApi(fetch);
@@ -21,13 +27,13 @@
 		nearStores = await getNearStores();
 	});
 
-	let newPrice = {
+	let newPrice = $state({
 		value: 0,
 		currency: 'EUR',
 		osm_id: 0
-	};
+	});
 
-	let loginFields = { email: '', password: '' };
+	let loginFields = $state({ email: '', password: '' });
 
 	async function login() {
 		console.debug('Logging in...');
@@ -127,7 +133,7 @@
 			<h3 class="text-2xl font-bold">Report a new price</h3>
 			<form
 				class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
-				on:submit|preventDefault={submitPrice}
+				onsubmit={preventDefault(submitPrice)}
 			>
 				<label for="price" class="label">
 					<span class="label-text">Price</span>
@@ -172,7 +178,7 @@
 			</form>
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
-			<form class="space-y-4" on:submit|preventDefault={login}>
+			<form class="space-y-4" onsubmit={preventDefault(login)}>
 				<div>
 					<label for="email" class="block font-medium">Email</label>
 					<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />

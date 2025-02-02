@@ -6,7 +6,11 @@
 	import { FolksonomyApi } from '$lib/api/folksonomy';
 	import { t } from '$lib/translations';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	async function loginToFolksonomy() {
 		const username = $preferences.username;
@@ -83,7 +87,7 @@
 	<button
 		disabled={$preferences.username == null || $preferences.password == null}
 		class="btn btn-primary"
-		on:click={loginToFolksonomy}
+		onclick={loginToFolksonomy}
 	>
 		Login
 	</button>

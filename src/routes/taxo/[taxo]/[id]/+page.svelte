@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { preferences } from '$lib/settings';
 	import { TAXONOMIES_NAMES, getOrDefault } from '$lib/api';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
-	$: category = data.taxonomyElement;
-	$: taxonomy = data.taxonomy;
+	interface Props {
+		data: PageData;
+	}
 
-	$: console.debug('category', category);
+	let { data }: Props = $props();
+	let category = $derived(data.taxonomyElement);
+	let taxonomy = $derived(data.taxonomy);
+
+	run(() => {
+		console.debug('category', category);
+	});
 </script>
 
 <h1 class="text-4xl">

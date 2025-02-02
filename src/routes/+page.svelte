@@ -6,7 +6,11 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <svelte:head>

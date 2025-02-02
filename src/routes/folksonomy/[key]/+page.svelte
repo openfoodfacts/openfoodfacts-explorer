@@ -2,7 +2,11 @@
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	function productNameOrBarcode(
 		product: { product_name: string } | null,

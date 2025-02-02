@@ -1,8 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	export let data: PageData;
-	$: sortedTags = [...data.keys].sort((a, b) => a.k.localeCompare(b.k));
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let sortedTags = $derived([...data.keys].sort((a, b) => a.k.localeCompare(b.k)));
 </script>
 
 <h2 class="text-2xl font-bold">Folksonomy keys</h2>

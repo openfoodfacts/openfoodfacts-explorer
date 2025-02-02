@@ -1,10 +1,14 @@
 <script lang="ts">
 	import Tags from './Tags.svelte';
 
-	export let tagsString: string;
-	export let separator = ',';
 
-	export let autocomplete: readonly string[] = [];
+	interface Props {
+		tagsString: string;
+		separator?: string;
+		autocomplete?: readonly string[];
+	}
+
+	let { tagsString = $bindable(), separator = ',', autocomplete = [] }: Props = $props();
 </script>
 
 <Tags

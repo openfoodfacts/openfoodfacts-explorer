@@ -1,14 +1,16 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 
-	$: message = $page.error?.message;
-	$: errors = $page.error?.errors;
+	let message = $derived($page.error?.message);
+	let errors = $derived($page.error?.errors);
 
-	$: {
+	run(() => {
 		for (const error of errors ?? []) {
 			console.error(error);
 		}
-	}
+	});
 
 	function isError(error: string) {
 		return errors?.some((e) => e.message.id === error) ?? false;

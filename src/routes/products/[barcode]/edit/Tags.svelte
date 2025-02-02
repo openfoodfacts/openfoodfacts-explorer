@@ -3,17 +3,21 @@
 	import { fade } from 'svelte/transition';
 	import Fuse from 'fuse.js';
 
-	export let tags: string[] = [];
 
-	export let autocomplete: readonly string[] = [];
-	$: autoCompleteFuse = new Fuse(autocomplete, {
+	interface Props {
+		tags?: string[];
+		autocomplete?: readonly string[];
+	}
+
+	let { tags = $bindable([]), autocomplete = [] }: Props = $props();
+	let autoCompleteFuse = $derived(new Fuse(autocomplete, {
 		threshold: 0.2
-	});
+	}));
 
-	let newValue = '';
+	let newValue = $state('');
 
-	$: filteredAutocomplete =
-		newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10);
+	let filteredAutocomplete =
+		$derived(newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10));
 
 	function inputHandler(event: KeyboardEvent) {
 		if (newValue.length !== 1 && (event.key === 'Enter' || event.key === ',')) {
@@ -45,27 +49,27 @@
 	{#each tags as tag}
 		<span class="badge badge-ghost py-3 text-lg" transition:fade={{ duration: 100 }}>
 			{tag}
-			<button class="ml-2 text-xl" on:click={removeTag(tag)}>×</button>
+			<button class="ml-2 text-xl" onclick={removeTag(tag)}>×</button>
 		</span>
 	{/each}
 	<div class="dropdown grow">
 		<input
 			type="text"
 			class="w-full bg-transparent outline-none"
-			on:keydown={inputHandler}
+			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
 
 		{#if filteredAutocomplete.length > 0}
 			<div class="dropdown-content max-h-52 overflow-y-auto">
-				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<ul tabindex="0" class="menu bg-base-100 shadow-sm">
 					{#each filteredAutocomplete as suggestion}
 						{@const key = suggestion.item}
 						<li>
 							<button
 								class="btn btn-ghost"
-								on:click={() => {
+								onclick={() => {
 									tags = [...tags, key];
 									dispatcher('change', { tags });
 									newValue = '';

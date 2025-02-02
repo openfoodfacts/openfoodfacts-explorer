@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { self } from 'svelte/legacy';
+
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
 
@@ -7,9 +9,9 @@
 				url: string;
 				alt?: string;
 		  }
-		| undefined;
+		| undefined = $state();
 
-	let dialog: HTMLDialogElement;
+	let dialog: HTMLDialogElement = $state();
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
@@ -25,16 +27,16 @@
 		createZoomImage(container);
 	});
 
-	let container: HTMLDivElement;
+	let container: HTMLDivElement = $state();
 	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
 <dialog
 	class=" border-none bg-transparent p-4 backdrop:backdrop-brightness-50 md:max-h-max md:max-w-xl"
 	bind:this={dialog}
-	on:close={() => (image = undefined)}
-	on:click|self={() => close()}
+	onclose={() => (image = undefined)}
+	onclick={self(() => close())}
 >
 	<div bind:this={container}>
 		<img class="max-h-full max-w-full" src={image?.url} alt={image?.alt} />

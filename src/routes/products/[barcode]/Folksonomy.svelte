@@ -2,9 +2,13 @@
 	import { FolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 
-	export let tags: FolksonomyTag[];
-	export let barcode: string;
-	export let keys: readonly string[];
+	interface Props {
+		tags: FolksonomyTag[];
+		barcode: string;
+		keys: readonly string[];
+	}
+
+	let { tags = $bindable(), barcode, keys }: Props = $props();
 
 	async function refreshTags() {
 		const res = await new FolksonomyApi(fetch).getProduct(barcode);
@@ -21,9 +25,7 @@
 		}
 		return keys.filter((key) => key.includes(newKey) && key !== newKey);
 	}
-	$: filteredNewKeys = getFilteredKeys(keys, newKey);
 
-	$: loggedIn = $preferences.folksonomy.authToken != null;
 
 	async function updateTag(newValue: string, idx: number) {
 		const oldTag = tags[idx];
@@ -55,10 +57,10 @@
 		new FolksonomyApi(fetch).removeTag({ ...tag, version });
 	}
 
-	let newKey = '';
-	let newValue = '';
+	let newKey = $state('');
+	let newValue = $state('');
 
-	let creatingNewTag: boolean;
+	let creatingNewTag: boolean = $state();
 
 	async function createNewTag() {
 		creatingNewTag = true;
@@ -84,6 +86,8 @@
 
 		creatingNewTag = false;
 	}
+	let filteredNewKeys = $derived(getFilteredKeys(keys, newKey));
+	let loggedIn = $derived($preferences.folksonomy.authToken != null);
 </script>
 
 <table class="table-compact table w-full">
@@ -112,7 +116,7 @@
 						class="input grow max-sm:w-20"
 						value={tag.v}
 						readonly={!loggedIn}
-						on:change={(e) => updateTag(e.currentTarget.value, i)}
+						onchange={(e) => updateTag(e.currentTarget.value, i)}
 					/>
 				</td>
 				{#if loggedIn}
@@ -120,7 +124,7 @@
 						<button
 							class="btn btn-error"
 							disabled={!loggedIn}
-							on:click={() => {
+							onclick={() => {
 								removeTag(tag);
 							}}
 						>
@@ -144,12 +148,12 @@
 						/>
 
 						<div class="dropdown-content max-h-52 overflow-y-auto">
-							<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+							<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 							<ul tabindex="0" class=" menu rounded-box bg-base-100 p-2 shadow">
 								{#each filteredNewKeys as key}
 									<li>
 										<button
-											on:click={() => {
+											onclick={() => {
 												newKey = key;
 											}}
 										>
@@ -173,7 +177,7 @@
 				<td>
 					<button
 						class="btn btn-primary"
-						on:click={createNewTag}
+						onclick={createNewTag}
 						disabled={creatingNewTag}
 						class:loading={creatingNewTag}
 					>

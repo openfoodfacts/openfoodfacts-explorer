@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { writable, get } from 'svelte/store';
 
 	import { getOrDefault, ProductsApi, type Taxonomy } from '$lib/api';
@@ -8,7 +10,11 @@
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
@@ -16,11 +22,11 @@
 			.filter((t): t is string => t !== undefined);
 	}
 
-	$: categoryNames = getNames(data.categories);
-	$: labelNames = getNames(data.labels);
-	$: brandNames = getNames(data.brands);
+	let categoryNames = $derived(getNames(data.categories));
+	let labelNames = $derived(getNames(data.labels));
+	let brandNames = $derived(getNames(data.brands));
 
-	$: productStore = writable(data.state.product);
+	let productStore = $derived(writable(data.state.product));
 
 	async function submit() {
 		const product = get(productStore);
@@ -35,11 +41,11 @@
 		}
 	}
 
-	$: {
+	run(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
 		});
-	}
+	});
 </script>
 
 <Card>
@@ -89,10 +95,10 @@
 		<textarea
 			class="textarea textarea-bordered h-40 w-full"
 			bind:value={$productStore.ingredients_text}
-		/>
+		></textarea>
 	</div>
 </Card>
-<button class="btn btn-primary" on:click={submit}> Submit </button>
+<button class="btn btn-primary" onclick={submit}> Submit </button>
 
 <details>
 	<summary>Debug</summary>

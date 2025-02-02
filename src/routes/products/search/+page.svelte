@@ -3,7 +3,11 @@
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	function getPageUrl(url: URL, p: number) {
 		url.searchParams.set('page', p.toString());
