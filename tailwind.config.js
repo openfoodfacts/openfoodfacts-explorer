@@ -14,6 +14,7 @@ export default {
 	],
 	daisyui: {
 		themes: [
+			"light",
 			{
 				off: {
 					primary: '#201a17',

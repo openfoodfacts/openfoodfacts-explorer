@@ -5,6 +5,8 @@
 	import Heading from './Heading.svelte';
 	import { FolksonomyApi } from '$lib/api/folksonomy';
 	import { t } from '$lib/translations';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { enhance } from '$app/forms';
 
 	interface Props {
 		data: PageData;
@@ -19,6 +21,13 @@
 
 		new FolksonomyApi(fetch).login(username, password);
 	}
+
+	const submitUpdateTheme: SubmitFunction = ({action})=>{
+		const theme = action.searchParams.get('theme');
+		if(theme){
+			document.documentElement.setAttribute('data-theme', theme);
+		}
+	} 
 </script>
 
 <div class="mx-auto my-8 grid grid-cols-[1fr,max-content] items-center gap-x-8 gap-y-2">
@@ -52,6 +61,18 @@
 			</option>
 		{/each}
 	</select>
+
+	<Heading>Appearance</Heading>
+	<label for="theme-select" class="justify-self-end">Theme:</label>
+	
+	<form method="POST" use:enhance={submitUpdateTheme}>
+		<li>
+			<button formaction="/?/setTheme&theme=dark" name="theme" value="dark">Dark</button>
+		</li>
+		<li>
+			<button formaction="/?/setTheme&theme=light" name="theme" value="light">Light</button>
+		</li>
+	</form>
 
 	<Heading>Influences</Heading>
 
