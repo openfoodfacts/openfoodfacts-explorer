@@ -197,7 +197,7 @@
 				Get more information from GS1
 			</a>
 		</div>
-		<p class="mt-4 text-end text-sm italic text-secondary">
+		<p class="text-secondary mt-4 text-end text-sm italic">
 			Source: <a
 				class="link"
 				href="https://www.gs1.org/standards/id-keys/company-prefix"

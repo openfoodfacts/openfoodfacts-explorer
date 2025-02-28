@@ -17,7 +17,7 @@
 
 {#await data.result}
 	{#each Array(5) as _}
-		<div class="skeleton h-24 bg-white p-4 shadow-md dark:bg-base-300"></div>
+		<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
 	{/each}
 {:then result}
 	{#each result.products as product}

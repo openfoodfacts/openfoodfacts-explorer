@@ -46,7 +46,7 @@
 			See on OpenFoodFacts
 		</a>
 
-		<a href={`/products/${product.code}/edit`} class="btn btn-secondary ml-auto max-sm:btn-sm">
+		<a href={`/products/${product.code}/edit`} class="btn btn-secondary max-sm:btn-sm ml-auto">
 			Edit
 		</a>
 	</div>

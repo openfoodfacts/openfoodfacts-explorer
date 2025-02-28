@@ -40,7 +40,7 @@
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
 			{#await data.streamed.products}
 				{#each Array(4) as _}
-					<div class="skeleton h-28 bg-white p-4 shadow-md dark:bg-base-300"></div>
+					<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
 				{/each}
 			{:then products}
 				{#each products as state}

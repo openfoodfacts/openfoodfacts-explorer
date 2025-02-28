@@ -92,7 +92,7 @@
 		<span class="font-bold">
 			Prices: ({Math.min(prices.size ?? 0, prices.total ?? 0)}/{prices.total})
 		</span>
-		<table class="table table-zebra">
+		<table class="table-zebra table">
 			<thead>
 				<tr>
 					<th>Price</th>

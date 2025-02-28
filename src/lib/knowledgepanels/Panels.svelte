@@ -18,11 +18,11 @@
 </script>
 
 <div class="">
-	<div class="absolute ms-5 max-w-max rounded-xl bg-secondary px-4 text-secondary-content">
+	<div class="bg-secondary text-secondary-content absolute ms-5 max-w-max rounded-xl px-4">
 		Summary
 	</div>
 
-	<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
+	<div class="border-secondary mt-3 border-b-2 border-dashed"></div>
 
 	<div class="my-4 flex flex-col justify-center gap-4 md:flex-row" id={SUMMARY_ID}>
 		{#each panelsArray as [panelKey, panel]}
@@ -34,7 +34,7 @@
 		{/each}
 	</div>
 
-	<div class="border-b-2 border-dashed border-secondary"></div>
+	<div class="border-secondary border-b-2 border-dashed"></div>
 </div>
 
 {#each panelsArray as [id, panel]}

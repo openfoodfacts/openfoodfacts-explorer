@@ -86,7 +86,7 @@
 </div>
 
 <div class="mx-4 md:hidden">
-	<div class="navbar mx-auto mb-8 mt-2 max-w-7xl bg-base-100">
+	<div class="navbar bg-base-100 mx-auto mt-2 mb-8 max-w-7xl">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />

@@ -22,7 +22,7 @@
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i}
 		{#if i > 0}
-			<hr class="my-2 border-base-100 bg-base-100" />
+			<hr class="border-base-100 bg-base-100 my-2" />
 		{/if}
 		<Element {element} {allPanels} />
 	{/each}
@@ -36,7 +36,7 @@
 		class:pl-4={expanded}
 	>
 		<summary
-			class="my-2 flex w-full cursor-pointer select-none items-center rounded-lg p-2 hover:bg-base-200 dark:hover:bg-base-100"
+			class="hover:bg-base-200 dark:hover:bg-base-100 my-2 flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
 		>
 			{#if title != null}
 				{#if title.icon_url != null}
@@ -54,7 +54,7 @@
 				<div class="grow text-xl">
 					<div>{title.title}</div>
 					{#if title.subtitle != null}
-						<h3 class="text-sm italic text-secondary">{title.subtitle}</h3>
+						<h3 class="text-secondary text-sm italic">{title.subtitle}</h3>
 					{/if}
 				</div>
 			{/if}
@@ -81,7 +81,7 @@
 		</Card>
 	{:else if panel.type === 'inline'}
 		{#if panel.elements != null}
-			<div class="border-l-2 border-l-secondary pl-4">
+			<div class="border-l-secondary border-l-2 pl-4">
 				{@render elementList(panel.elements)}
 			</div>
 		{/if}

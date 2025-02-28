@@ -18,12 +18,12 @@
 
 <h2 class="text-2xl font-bold">
 	Folksonomy tag:
-	<span class="ml-4 rounded-lg bg-accent p-2 font-mono text-xl text-accent-content">
+	<span class="bg-accent text-accent-content ml-4 rounded-lg p-2 font-mono text-xl">
 		{$page.params.key}
 	</span>
 </h2>
 
-<table class="table table-zebra table-sm">
+<table class="table-zebra table-sm table">
 	<thead>
 		<tr>
 			<th>Product</th>
