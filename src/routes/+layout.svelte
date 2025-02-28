@@ -36,6 +36,7 @@
 	}
 
 	let searchActive = $state(false);
+	let sidebarActive = $state(false);
 </script>
 
 <svelte:head>
@@ -92,7 +93,7 @@
 				<Logo />
 			</a>
 		</div>
-		<div class="navbar-end">
+		<div class="navbar-end flex gap-2">
 			<button
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
@@ -100,6 +101,14 @@
 				}}
 			>
 				<i class="icon-[mdi--magnify]"></i>
+			</button>
+			<button
+				class="btn btn-square btn-secondary text-lg"
+				onclick={() => {
+					sidebarActive = !sidebarActive;
+				}}
+			>
+				<i class="icon-[mdi--menu]"></i>
 			</button>
 		</div>
 	</div>
@@ -125,7 +134,21 @@
 			</button>
 		</div>
 	{/if}
+
+	{#if sidebarActive}
+		<div class="fixed inset-y-0 bg-[#201a17] left-0 w-64 z-20 shadow-lg p-4 transition-transform duration-300">
+			<button class="btn btn-sm btn-error mb-4" onclick={() => (sidebarActive = false)}>
+				Close
+			</button>
+			<div class="flex flex-col gap-2 navbar-end w-full">
+				<a onclick={() => (sidebarActive = false)} class="btn btn-outline link" href="/">Home</a>
+				<a onclick={() => (sidebarActive = false)} class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
+				<a onclick={() => (sidebarActive = false)} class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
+			</div>
+		</div>
+	{/if}
 </div>
+
 
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
