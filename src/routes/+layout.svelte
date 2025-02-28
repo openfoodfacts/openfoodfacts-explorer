@@ -58,7 +58,7 @@
 						class="input join-item input-bordered xl:w-full"
 						placeholder="Query or barcode"
 						onkeydown={(e) => {
-							if (e.key === 'Enter') {
+							if (e.key === 'Enter' && searchQuery.trim() !== '') {
 								gotoProductsSearch();
 							}
 						}}
@@ -66,7 +66,7 @@
 					<button
 						class="btn btn-square btn-secondary join-item px-10"
 						onclick={() => gotoProductsSearch()}
-						disabled={searchQuery == null || searchQuery == ''}
+						disabled={searchQuery == null || searchQuery.trim() === ''}
 					>
 						Go
 					</button>
@@ -111,7 +111,7 @@
 				class="input join-item input-bordered w-full"
 				placeholder="Query or barcode"
 				onkeydown={(e) => {
-					if (e.key === 'Enter') {
+					if (e.key === 'Enter' && searchQuery.trim() !== '') {
 						gotoProductsSearch();
 					}
 				}}
@@ -119,7 +119,7 @@
 			<button
 				class="btn btn-square btn-secondary join-item"
 				onclick={() => gotoProductsSearch()}
-				disabled={searchQuery == null || searchQuery == ''}
+				disabled={searchQuery == null || searchQuery.trim() === ''}
 			>
 				Go
 			</button>
