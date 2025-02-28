@@ -6,7 +6,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
-	let searchQuery: string = $state();
+	let searchQuery: string = $state() as string;
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
@@ -36,6 +36,7 @@
 	}
 
 	let searchActive = $state(false);
+	let accordionOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -97,15 +98,26 @@
 				<Logo />
 			</a>
 		</div>
-		<div class="navbar-end">
+		<div class="navbar-end flex gap-2">
 			<button
-				aria-label="Search"
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
 				}}
 			>
 				<i class="icon-[mdi--magnify]"></i>
+			</button>
+			<button
+				class="btn btn-square btn-secondary text-lg"
+				onclick={() => {
+					accordionOpen = !accordionOpen;
+				}}
+			>
+				{#if accordionOpen}
+					<i class="icon-[mdi--close]"></i>
+				{:else}
+					<i class="icon-[mdi--menu]"></i>
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -117,7 +129,7 @@
 				class="input join-item input-bordered w-full"
 				placeholder="Query or barcode"
 				onkeydown={(e) => {
-					if (e.key === 'Enter' && searchQuery.trim() !== '') {
+					if (e.key === 'Enter') {
 						gotoProductsSearch();
 					}
 				}}
@@ -125,10 +137,16 @@
 			<button
 				class="btn btn-square btn-secondary join-item"
 				onclick={() => gotoProductsSearch()}
-				disabled={searchQuery == null || searchQuery.trim() === ''}
+				disabled={searchQuery == null || searchQuery == ''}
 			>
 				Go
 			</button>
+		</div>
+	{/if}
+	{#if accordionOpen}
+		<div class="mt-3 flex w-full items-center justify-center gap-2">
+			<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
+			<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
 		</div>
 	{/if}
 </div>
