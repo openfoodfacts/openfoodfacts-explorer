@@ -52,7 +52,7 @@
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
-		<div class="grid h-max w-3/4 grid-cols-[max-content,1fr] gap-x-4 gap-y-1">
+		<div class="grid h-max w-3/4 grid-cols-[max-content_1fr] gap-x-4 gap-y-1">
 			<span class="text-end font-bold">Quantity:</span>
 			<span>{product.quantity}</span>
 
@@ -113,7 +113,7 @@
 			</span>
 		</div>
 
-		<div class="flex max-h-56 flex-grow justify-center">
+		<div class="flex max-h-56 grow justify-center">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>

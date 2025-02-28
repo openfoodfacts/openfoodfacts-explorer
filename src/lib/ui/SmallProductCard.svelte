@@ -15,7 +15,7 @@
 	class:pointer-events-none={$navigating}
 >
 	<div class="flex flex-row items-center">
-		<div class="mr-4 flex w-16 flex-shrink-0 items-center justify-center">
+		<div class="mr-4 flex w-16 shrink-0 items-center justify-center">
 			{#if $navigating?.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}

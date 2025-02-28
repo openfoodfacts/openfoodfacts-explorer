@@ -21,7 +21,7 @@
 	}
 </script>
 
-<div class="mx-auto my-8 grid grid-cols-[1fr,max-content] items-center gap-x-8 gap-y-2">
+<div class="mx-auto my-8 grid grid-cols-[1fr_max-content] items-center gap-x-8 gap-y-2">
 	<Heading>General</Heading>
 	<label for="lang-select" class="justify-self-end">Language:</label>
 	<select class="select select-bordered" name="lang-select" bind:value={$preferences.lang}>

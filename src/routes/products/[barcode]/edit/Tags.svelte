@@ -57,7 +57,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="w-full bg-transparent outline-none"
+			class="w-full bg-transparent outline-hidden"
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
@@ -65,7 +65,7 @@
 		{#if filteredAutocomplete.length > 0}
 			<div class="dropdown-content max-h-52 overflow-y-auto">
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<ul tabindex="0" class="menu bg-base-100 shadow-sm">
+				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
 					{#each filteredAutocomplete as suggestion}
 						{@const key = suggestion.item}
 						<li>

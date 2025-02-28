@@ -33,7 +33,7 @@
 					{#each errors as error}
 						<li class="mb-2 ms-4 list-none">
 							<ul
-								class="grid grid-cols-[auto,auto] gap-x-2 border-l-2 border-l-error-content ps-2 font-mono text-xs"
+								class="grid grid-cols-[auto_auto] gap-x-2 border-l-2 border-l-error-content ps-2 font-mono text-xs"
 							>
 								<span class="text-right">Impact ID:</span>
 								<span>{error.impact.id}</span>
