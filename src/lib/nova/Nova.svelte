@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { KP_ATTRIBUTE_IMG, STATIC_HOST } from '$lib/const';
+	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
 	const SRC_MAP: Record<string, string> = {
 		1: KP_ATTRIBUTE_IMG('nova-group-1.svg'),

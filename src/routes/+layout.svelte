@@ -72,7 +72,12 @@
 					</button>
 				</div>
 
-				<a class="btn btn-secondary ms-4 px-5 text-lg" href="/qr" title="Scan a barcode">
+				<a
+					class="btn btn-secondary ms-4 px-5 text-lg"
+					href="/qr"
+					title="Scan a barcode"
+					aria-label="Scan a barcode"
+				>
 					<span class="icon-[mdi--camera]"></span>
 				</a>
 			</div>
@@ -94,6 +99,7 @@
 		</div>
 		<div class="navbar-end">
 			<button
+				aria-label="Search"
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
