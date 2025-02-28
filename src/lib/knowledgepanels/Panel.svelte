@@ -59,7 +59,8 @@
 				</div>
 			{/if}
 		</summary>
-		{#if panel.elements != null}
+
+		{#if elements != null}
 			{@render elementList(panel.elements)}
 		{/if}
 	</details>
