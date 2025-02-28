@@ -11,7 +11,7 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="btn btn-ghost pointer-events-none h-auto justify-normal bg-white p-4 text-start text-primary shadow-md dark:bg-base-300"
+	class="btn btn-ghost text-primary dark:bg-base-300 pointer-events-none h-auto justify-normal rounded-2xl bg-white p-4 text-start shadow-md"
 	class:pointer-events-none={$navigating}
 >
 	<div class="flex flex-row items-center">
