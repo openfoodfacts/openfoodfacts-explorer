@@ -2,6 +2,7 @@
 
 @plugin 'daisyui';
 @plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
 
 @config '../tailwind.config.js';
 
