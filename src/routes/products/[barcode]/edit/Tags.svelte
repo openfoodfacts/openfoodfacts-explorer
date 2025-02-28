@@ -3,21 +3,23 @@
 	import { fade } from 'svelte/transition';
 	import Fuse from 'fuse.js';
 
-
 	interface Props {
 		tags?: string[];
 		autocomplete?: readonly string[];
 	}
 
 	let { tags = $bindable([]), autocomplete = [] }: Props = $props();
-	let autoCompleteFuse = $derived(new Fuse(autocomplete, {
-		threshold: 0.2
-	}));
+	let autoCompleteFuse = $derived(
+		new Fuse(autocomplete, {
+			threshold: 0.2
+		})
+	);
 
 	let newValue = $state('');
 
-	let filteredAutocomplete =
-		$derived(newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10));
+	let filteredAutocomplete = $derived(
+		newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10)
+	);
 
 	function inputHandler(event: KeyboardEvent) {
 		if (newValue.length !== 1 && (event.key === 'Enter' || event.key === ',')) {

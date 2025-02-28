@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Tags from './Tags.svelte';
 
-
 	interface Props {
 		tagsString: string;
 		separator?: string;

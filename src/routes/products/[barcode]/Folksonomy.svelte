@@ -26,7 +26,6 @@
 		return keys.filter((key) => key.includes(newKey) && key !== newKey);
 	}
 
-
 	async function updateTag(newValue: string, idx: number) {
 		const oldTag = tags[idx];
 
