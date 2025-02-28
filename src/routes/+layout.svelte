@@ -87,6 +87,13 @@
 	<div class="navbar-end gap-2">
 		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
+		<a
+			class="btn btn-outline link"
+			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+			target="_blank"
+		>
+			<span class="icon-[mdi--github] w-8 h-8"></span>
+		</a>
 	</div>
 </div>
 
