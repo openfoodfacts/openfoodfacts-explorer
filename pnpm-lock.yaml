@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@eslint/eslintrc':
+    specifier: ^3.3.0
+    version: 3.3.0
+  '@eslint/js':
+    specifier: ^9.21.0
+    version: 9.21.0
   '@iconify-json/mdi':
     specifier: ^1.2.3
     version: 1.2.3
@@ -59,6 +65,9 @@ devDependencies:
   fuse.js:
     specifier: ^7.1.0
     version: 7.1.0
+  globals:
+    specifier: ^16.0.0
+    version: 16.0.0
   html5-qrcode:
     specifier: ^2.3.8
     version: 2.3.8
@@ -1794,6 +1803,11 @@ packages:
 
   /globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+    dev: true
+
+  /globals@16.0.0:
+    resolution: {integrity: sha512-iInW14XItCXET01CQFqudPOWP2jYMl7T+QRQT+UNcR/iQncN/F0UNpgd76iFkBPgNQb4+X3LV9tLJYzwh+Gl3A==}
     engines: {node: '>=18'}
     dev: true
 
