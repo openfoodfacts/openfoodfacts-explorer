@@ -35,7 +35,10 @@
 
 		console.group('Product added/edited');
 		console.debug('Submitting', product);
-		const ok = await new ProductsApi(fetch).addOrEditProductV2({ ...product, comment: commentValue });
+		const ok = await new ProductsApi(fetch).addOrEditProductV2({
+			...product,
+			comment: commentValue
+		});
 		console.debug('Submitted', ok);
 		console.groupEnd();
 		if (ok) {

@@ -42,7 +42,7 @@ export class ProductsApi {
 			labels: product.labels,
 			brands: product.brands,
 			quantity: product.quantity,
-			comment: product.comment ?? '',
+			comment: product.comment ?? ''
 		});
 
 		const res = await this.fetch(url, {
