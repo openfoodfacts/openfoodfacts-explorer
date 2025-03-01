@@ -3,7 +3,7 @@
 
 	import { writable, get } from 'svelte/store';
 
-	import { getOrDefault, ProductsApi, type Taxonomy } from '$lib/api';
+	import { getOrDefault, ProductsApi, type SelectedImage, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
 
@@ -27,6 +27,7 @@
 	let brandNames = $derived(getNames(data.brands));
 	let storeNames = $derived(getNames(data.stores));
 	let productStore = $derived(writable(data.state.product));
+	let languages = $derived(data.languages);
 	let comment = writable('');
 
 	async function submit() {
@@ -46,12 +47,50 @@
 		}
 	}
 
+	function getIngredientsImage(language: string) {
+		let baseUrl = 'https://images.openfoodfacts.org/images/products/';
+		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
+		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+		if (!match) {
+			throw new Error('Invalid barcode format');
+		}
+		baseUrl += `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		const imageName = 'ingredients_' + language;
+		const image = get(productStore).images[imageName];
+		if (!image) {
+			return '';
+		}
+		const rev = (image as SelectedImage).rev;
+		const filename = `${imageName}.${rev}.400.jpg`;
+		return `${baseUrl}/${filename}`;
+	}
+
 	run(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
 		});
 	});
 </script>
+
+<div class="tabs tabs-box">
+	{#each Object.keys(languages) as language}
+		<input
+			type="radio"
+			name="language_tabs"
+			class="tab"
+			aria-label={languages[language as keyof typeof languages]}
+			defaultChecked={language === Object.keys(languages)[0]}
+		/>
+		<div class="tab-content form-control p-6">
+			<label for="">Name ({languages[language as keyof typeof languages]})</label>
+			<input
+				type="text"
+				class="input input-bordered w-full"
+				bind:value={$productStore[('product_name_' + language) as keyof typeof data.state.product]}
+			/>
+		</div>
+	{/each}
+</div>
 
 <Card>
 	<div class="form-control mb-4">
@@ -93,18 +132,30 @@
 
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
-
-	{#if $productStore.image_ingredients_url}
-		<img src={$productStore.image_ingredients_url} alt="Ingredients" class="mb-4" />
-	{:else}
-		<p class="alert alert-warning mb-4">No ingredients image</p>
-	{/if}
-
-	<div class="form-control mb-4">
-		<textarea
-			class="textarea textarea-bordered h-40 w-full"
-			bind:value={$productStore.ingredients_text}
-		></textarea>
+	<div class="tabs tabs-box">
+		{#each Object.keys(languages) as language}
+			<input
+				type="radio"
+				name="language_tabs"
+				class="tab"
+				aria-label={languages[language as keyof typeof languages]}
+				defaultChecked={language === Object.keys(languages)[0]}
+			/>
+			<div class="tab-content form-control p-6">
+				{#if getIngredientsImage(language)}
+					<img src={getIngredientsImage(language)} alt="Ingredients" class="mb-4" />
+				{:else}
+					<p class="alert alert-warning mb-4">No ingredients image</p>
+				{/if}
+				<label for="">Ingredients list ({languages[language as keyof typeof languages]})</label>
+				<div class="form-control mb-4">
+					<textarea
+						class="textarea textarea-bordered h-40 w-full"
+						bind:value={$productStore["ingredients_text_" + language as keyof typeof data.state.product]}
+					></textarea>
+				</div>
+			</div>
+		{/each}
 	</div>
 </Card>
 
