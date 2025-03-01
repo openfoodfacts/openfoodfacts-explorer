@@ -9,6 +9,8 @@ export const load = (async ({ fetch, params }) => {
 	const categories = await getTaxo<Category>('categories', fetch);
 	const labels = await getTaxo<Category>('labels', fetch);
 	const brands = await getTaxo<Category>('brands', fetch);
+	const stores = await getTaxo<Category>('stores',fetch);
+	
 
 	if (product.status === 'failure') {
 		error(404, {
@@ -21,6 +23,8 @@ export const load = (async ({ fetch, params }) => {
 		state: product,
 		categories,
 		labels,
-		brands
+		brands,
+		stores
 	};
+	
 }) satisfies PageLoad;

@@ -6,7 +6,7 @@ import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 
 export const ssr = false;
 
-import { OpenFoodFacts } from 'openfoodfacts-nodejs';
+import {OpenFoodFacts}  from 'openfoodfacts-nodejs';
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);

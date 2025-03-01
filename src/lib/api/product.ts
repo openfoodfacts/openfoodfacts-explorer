@@ -40,7 +40,8 @@ export class ProductsApi {
 			password: password,
 			categories: product.categories,
 			labels: product.labels,
-			brands: product.brands
+			brands: product.brands,
+			stores: product.stores
 		});
 
 		const res = await this.fetch(url, {
