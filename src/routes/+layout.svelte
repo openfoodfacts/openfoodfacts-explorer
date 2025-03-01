@@ -100,6 +100,7 @@
 		</div>
 		<div class="navbar-end flex gap-2">
 			<button
+			    aria-label="Search"
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
