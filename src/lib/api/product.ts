@@ -26,7 +26,7 @@ export class ProductsApi {
 		return await res.json();
 	}
 
-	async addOrEditProductV2(product: Product) {
+	async addOrEditProductV2(product: Product & { comment?: string }) {
 		const url = `${API_HOST}/cgi/product_jqm2.pl`;
 
 		const username = get(preferences).username;
@@ -40,7 +40,9 @@ export class ProductsApi {
 			password: password,
 			categories: product.categories,
 			labels: product.labels,
-			brands: product.brands
+			brands: product.brands,
+			quantity: product.quantity,
+			comment: product.comment ?? ''
 		});
 
 		const res = await this.fetch(url, {
