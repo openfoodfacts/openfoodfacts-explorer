@@ -54,9 +54,9 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="text-center opacity-70 mt-8">
-			<p class="">No products found</p>
-			<p class="">We couldn't find any products matching your search</p>
+		<div class="mt-8 text-center opacity-70">
+			<p>No products found</p>
+			<p>We couldn't find any products matching your search</p>
 		</div>
 	{/if}
 {/await}
