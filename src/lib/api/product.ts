@@ -43,7 +43,25 @@ export class ProductsApi {
 			brands: product.brands,
 			quantity: product.quantity,
 			stores: product.stores,
-			comment: product.comment ?? ''
+			comment: product.comment ?? '',
+
+			product_name: product.product_name,
+			product_name_en: product.product_name_en,
+			product_name_ar: product.product_name_ar,
+			product_name_cs: product.product_name_cs,
+			product_name_de: product.product_name_de,
+			product_name_fr: product.product_name_fr,
+			product_name_it: product.product_name_it,
+			product_name_es: product.product_name_es,
+
+			ingredients_text: product.ingredients_text,
+			ingredients_text_en: product.ingredients_text_en,
+			ingredients_text_ar: product.ingredients_text_ar,
+			ingredients_text_cs: product.ingredients_text_cs,
+			ingredients_text_de: product.ingredients_text_de,
+			ingredients_text_fr: product.ingredients_text_fr,
+			ingredients_text_it: product.ingredients_text_it,
+			ingredients_text_es: product.ingredients_text_es
 		});
 
 		const res = await this.fetch(url, {
@@ -130,10 +148,51 @@ export type ProductSearch<T = Product> = {
 
 type LangIngredient = `ingredients_text_${string}`;
 
+type ImageSize = {
+	h: number;
+	w: number;
+};
+
+export type SelectedImage = {
+	angle: number;
+	coordinates_image_size: string;
+	geometry: string;
+	imgid: string;
+	normalize: string | boolean | null;
+	rev: string;
+	sizes: {
+		100: ImageSize;
+		200: ImageSize;
+		400: ImageSize;
+		full: ImageSize;
+	};
+	white_magic: string | boolean | null;
+	x1: string;
+	x2: string;
+	y1: string;
+	y2: string;
+};
+
+type RawImage = {
+	sizes: {
+		full: ImageSize;
+		100: ImageSize;
+		400: ImageSize;
+	};
+	uploaded_t: string;
+	uploader: string;
+};
+
 export type Product = {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
 	product_name_en: string;
+	product_name_ar: string;
+	product_name_cs: string;
+	product_name_de: string;
+	product_name_fr: string;
+	product_name_it: string;
+	product_name_es: string;
 	_id: string;
 	code: string;
 	_keywords: string[];
@@ -159,6 +218,8 @@ export type Product = {
 	image_ingredients_url: string;
 	image_ingredients_small_url: string;
 	image_ingredients_thumb_url: string;
+
+	images: Record<string, SelectedImage | RawImage>;
 
 	image_nutrition_url: string;
 	image_nutrition_small_url: string;
