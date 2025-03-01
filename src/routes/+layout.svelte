@@ -6,7 +6,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
-	let searchQuery: string = $state() as string;
+	let searchQuery: string = $state("");
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
@@ -129,7 +129,7 @@
 				class="input join-item input-bordered w-full"
 				placeholder="Query or barcode"
 				onkeydown={(e) => {
-					if (e.key === 'Enter') {
+					if (e.key === 'Enter' && searchQuery.trim() !== '') {
 						gotoProductsSearch();
 					}
 				}}
@@ -137,18 +137,16 @@
 			<button
 				class="btn btn-square btn-secondary join-item"
 				onclick={() => gotoProductsSearch()}
-				disabled={searchQuery == null || searchQuery == ''}
+				disabled={searchQuery == null || searchQuery.trim() === ''}
 			>
 				Go
 			</button>
 		</div>
 	{/if}
-	{#if accordionOpen}
-		<div class="mt-3 flex w-full items-center justify-center gap-2">
+		<div class={`mt-3 flex justify-center gap-2 ${accordionOpen ? '' : 'hidden'}`}>
 			<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
 			<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
 		</div>
-	{/if}
 </div>
 
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
