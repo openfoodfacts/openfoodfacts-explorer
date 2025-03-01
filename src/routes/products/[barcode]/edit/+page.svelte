@@ -27,13 +27,15 @@
 	let brandNames = $derived(getNames(data.brands));
 
 	let productStore = $derived(writable(data.state.product));
+	let comment = writable('');
 
 	async function submit() {
 		const product = get(productStore);
+		const commentValue = get(comment);
 
 		console.group('Product added/edited');
 		console.debug('Submitting', product);
-		const ok = await new ProductsApi(fetch).addOrEditProductV2(product);
+		const ok = await new ProductsApi(fetch).addOrEditProductV2({ ...product, comment: commentValue });
 		console.debug('Submitted', ok);
 		console.groupEnd();
 		if (ok) {
@@ -98,7 +100,20 @@
 		></textarea>
 	</div>
 </Card>
-<button class="btn btn-primary" onclick={submit}> Submit </button>
+
+<Card>
+	<div class="form-control mb-4">
+		<label for="comment">Comment</label>
+		<input
+			id="comment"
+			type="text"
+			class="input input-bordered w-full"
+			placeholder="Add a comment to this edit"
+			bind:value={$comment}
+		/>
+	</div>
+	<button class="btn btn-primary w-full" onclick={submit}> Submit </button>
+</Card>
 
 <details>
 	<summary>Debug</summary>
