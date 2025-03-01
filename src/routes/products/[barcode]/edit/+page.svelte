@@ -151,7 +151,9 @@
 				<div class="form-control mb-4">
 					<textarea
 						class="textarea textarea-bordered h-40 w-full"
-						bind:value={$productStore["ingredients_text_" + language as keyof typeof data.state.product]}
+						bind:value={
+							$productStore[('ingredients_text_' + language) as keyof typeof data.state.product]
+						}
 					></textarea>
 				</div>
 			</div>
