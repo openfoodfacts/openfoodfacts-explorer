@@ -6,7 +6,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
-	let searchQuery: string = $state("");
+	let searchQuery: string = $state('');
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
@@ -100,7 +100,7 @@
 		</div>
 		<div class="navbar-end flex gap-2">
 			<button
-			    aria-label="Search"
+				aria-label="Search"
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
@@ -144,10 +144,10 @@
 			</button>
 		</div>
 	{/if}
-		<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
-			<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
-			<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
-		</div>
+	<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
+		<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
+		<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
+	</div>
 </div>
 
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
