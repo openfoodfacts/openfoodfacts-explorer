@@ -143,7 +143,7 @@
 			</button>
 		</div>
 	{/if}
-		<div class={`mt-3 flex justify-center gap-2 ${accordionOpen ? '' : 'hidden'}`}>
+		<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
 			<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
 			<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
 		</div>
