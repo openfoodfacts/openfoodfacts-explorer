@@ -23,15 +23,6 @@ export const load = (async ({ fetch, params }) => {
 		categories,
 		labels,
 		brands,
-		stores,
-		languages: {
-			ar: 'Arabic',
-			cs: 'Czech',
-			de: 'German',
-			en: 'English',
-			es: 'Spanish',
-			fr: 'French',
-			it: 'Italian'
-		}
+		stores
 	};
 }) satisfies PageLoad;

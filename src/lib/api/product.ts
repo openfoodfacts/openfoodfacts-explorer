@@ -258,6 +258,11 @@ export type Product = {
 	};
 
 	link: string;
+
+	languages_codes: {
+		[lang: string]: number;
+	};
+	lang: string;
 };
 
 const REDUCED_FIELDS = [

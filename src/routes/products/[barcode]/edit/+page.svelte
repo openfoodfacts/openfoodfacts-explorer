@@ -22,12 +22,16 @@
 			.filter((t): t is string => t !== undefined);
 	}
 
+	function getLanguage(code: string) {
+		const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+		return languageNames.of(code);
+	}
+
 	let categoryNames = $derived(getNames(data.categories));
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
 	let storeNames = $derived(getNames(data.stores));
 	let productStore = $derived(writable(data.state.product));
-	let languages = $derived(data.languages);
 	let comment = writable('');
 
 	async function submit() {
@@ -73,35 +77,26 @@
 </script>
 
 <div class="tabs tabs-box">
-	{#each Object.keys(languages) as language}
+	{#each Object.keys($productStore.languages_codes) as code}
 		<input
 			type="radio"
-			name="language_tabs"
+			name="name_tabs"
 			class="tab"
-			aria-label={languages[language as keyof typeof languages]}
-			defaultChecked={language === Object.keys(languages)[0]}
+			aria-label={getLanguage(code)}
+			defaultChecked={code === $productStore.lang}
 		/>
 		<div class="tab-content form-control p-6">
-			<label for="">Name ({languages[language as keyof typeof languages]})</label>
+			<label for="">Name ({getLanguage(code)})</label>
 			<input
 				type="text"
 				class="input input-bordered w-full"
-				bind:value={$productStore[('product_name_' + language) as keyof typeof data.state.product]}
+				bind:value={$productStore[('product_name_' + code) as keyof typeof data.state.product]}
 			/>
 		</div>
 	{/each}
 </div>
 
 <Card>
-	<div class="form-control mb-4">
-		<label for="">Name</label>
-		<input
-			type="text"
-			class="input input-bordered w-full"
-			bind:value={$productStore.product_name}
-		/>
-	</div>
-
 	<div class="form-control mb-4">
 		<label for="">Quantity</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
@@ -133,26 +128,26 @@
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
 	<div class="tabs tabs-box">
-		{#each Object.keys(languages) as language}
+		{#each Object.keys($productStore.languages_codes) as code}
 			<input
 				type="radio"
-				name="language_tabs"
+				name="ingredients_tabs"
 				class="tab"
-				aria-label={languages[language as keyof typeof languages]}
-				defaultChecked={language === Object.keys(languages)[0]}
+				aria-label={getLanguage(code)}
+				defaultChecked={code === $productStore.lang}
 			/>
 			<div class="tab-content form-control p-6">
-				{#if getIngredientsImage(language)}
-					<img src={getIngredientsImage(language)} alt="Ingredients" class="mb-4" />
+				{#if getIngredientsImage(code)}
+					<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
 				{:else}
 					<p class="alert alert-warning mb-4">No ingredients image</p>
 				{/if}
-				<label for="">Ingredients list ({languages[language as keyof typeof languages]})</label>
+				<label for="">Ingredients list ({getLanguage(code)})</label>
 				<div class="form-control mb-4">
 					<textarea
 						class="textarea textarea-bordered h-40 w-full"
 						bind:value={
-							$productStore[('ingredients_text_' + language) as keyof typeof data.state.product]
+							$productStore[('ingredients_text_' + code) as keyof typeof data.state.product]
 						}
 					></textarea>
 				</div>
