@@ -10,10 +10,10 @@
 </script>
 
 <h2 class="text-2xl font-bold">Folksonomy keys</h2>
-<ul class="menu gap-1">
+<ul class="menu flex flex-wrap gap-1 overflow-x-auto p-2 md:gap-2">
 	{#each sortedTags as key}
 		<li>
-			<a href="/folksonomy/{key.k}" class="font-mono">
+			<a href="/folksonomy/{key.k}" class="block p-2 font-mono text-sm md:text-base">
 				{key.k}
 			</a>
 		</li>
