@@ -42,6 +42,7 @@ export class ProductsApi {
 			labels: product.labels,
 			brands: product.brands,
 			quantity: product.quantity,
+			stores: product.stores,
 			comment: product.comment ?? ''
 		});
 
