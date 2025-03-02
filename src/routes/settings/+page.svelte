@@ -21,10 +21,16 @@
 	}
 </script>
 
-<div class="mx-auto my-8 grid grid-cols-[1fr_max-content] items-center gap-x-8 gap-y-2">
+<div
+	class="mx-auto my-8 grid grid-cols-1 items-center gap-x-4 gap-y-2 md:grid-cols-[1fr_max-content] md:gap-x-8"
+>
 	<Heading>General</Heading>
-	<label for="lang-select" class="justify-self-end">Language:</label>
-	<select class="select select-bordered" name="lang-select" bind:value={$preferences.lang}>
+	<label for="lang-select" class="justify-self-start md:justify-self-end">Language:</label>
+	<select
+		class="select select-bordered w-full md:w-auto"
+		name="lang-select"
+		bind:value={$preferences.lang}
+	>
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 		{#each Object.keys(data.languages).toSorted() as langKey}
 			{@const lang = data.languages[langKey]}
@@ -37,8 +43,12 @@
 		{/each}
 	</select>
 
-	<label for="country-select" class="justify-self-end">Country:</label>
-	<select name="country-select" class="select select-bordered" bind:value={$preferences.country}>
+	<label for="country-select" class="justify-self-start md:justify-self-end">Country:</label>
+	<select
+		name="country-select"
+		class="select select-bordered w-full md:w-auto"
+		bind:value={$preferences.country}
+	>
 		<option value="world" selected={$preferences.country === 'world'}>
 			{$t('common.world')}
 		</option>
@@ -55,38 +65,42 @@
 
 	<Heading>Influences</Heading>
 
-	<label for="nutriscore" class="justify-self-end">{$t('common.nutriscore')}</label>
+	<label for="nutriscore" class="justify-self-start md:justify-self-end"
+		>{$t('common.nutriscore')}</label
+	>
 	<Influence id="nutriscore" bind:value={$preferences.nutriscoreInfluence} />
 
-	<label for="ecoscore" class="justify-self-end">{$t('common.ecoscore')}</label>
+	<label for="ecoscore" class="justify-self-start md:justify-self-end"
+		>{$t('common.ecoscore')}</label
+	>
 	<Influence id="ecoscore" bind:value={$preferences.ecoscoreInfluence} />
 
-	<label for="nova" class="justify-self-end">{$t('common.nova')}</label>
+	<label for="nova" class="justify-self-start md:justify-self-end">{$t('common.nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
 	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>
 
-	<label for="username">Username</label>
+	<label for="username" class="justify-self-start md:justify-self-end">Username</label>
 	<input
 		type="text"
 		id="username"
-		class="input input-bordered"
+		class="input input-bordered w-full md:w-auto"
 		bind:value={$preferences.username}
 	/>
 
-	<label for="password">Password</label>
+	<label for="password" class="justify-self-start md:justify-self-end">Password</label>
 	<input
 		type="password"
 		id="password"
-		class="input input-bordered"
+		class="input input-bordered w-full md:w-auto"
 		bind:value={$preferences.password}
 	/>
 
-	<label for="">Login to folksonomy engine</label>
+	<label for="" class="justify-self-start md:justify-self-end">Login to folksonomy engine</label>
 
 	<button
 		disabled={$preferences.username == null || $preferences.password == null}
-		class="btn btn-primary"
+		class="btn btn-primary w-full md:w-auto"
 		onclick={loginToFolksonomy}
 	>
 		Login
