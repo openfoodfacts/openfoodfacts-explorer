@@ -39,7 +39,13 @@ export const load: PageLoad = async ({ fetch, url }) => {
 					page_count: number;
 					products: Product[];
 				}>
-		);
+		)
+		.then((data) => {
+			return {
+				...data,
+				total_pages: Math.ceil(data.count / data.page_size)
+			};
+		});
 
 	return {
 		result: result
