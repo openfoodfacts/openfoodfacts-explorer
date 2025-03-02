@@ -91,7 +91,17 @@
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
 
 	{#if $productStore.image_ingredients_url}
-		<img src={$productStore.image_ingredients_url} alt="Ingredients" class="mb-4" />
+		<div class="relative mb-4">
+			<img src={$productStore.image_ingredients_url} alt="Ingredients" class="mb-4" />
+
+			<!-- Unselect Image Button -->
+			<button
+				class="mt-2 rounded bg-orange-500 px-3 py-1 text-sm text-white transition hover:bg-red-600"
+				onclick={() => productStore.update((p) => ({ ...p, image_ingredients_url: '' }))}
+			>
+				Unselect Image
+			</button>
+		</div>
 	{:else}
 		<p class="alert alert-warning mb-4">No ingredients image</p>
 	{/if}
