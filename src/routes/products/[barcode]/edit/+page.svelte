@@ -25,7 +25,7 @@
 	let categoryNames = $derived(getNames(data.categories));
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
-
+	let storeNames = $derived(getNames(data.stores));
 	let productStore = $derived(writable(data.state.product));
 	let comment = writable('');
 
@@ -79,6 +79,10 @@
 	<div class="mb-4">
 		<label for="">Brands</label>
 		<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
+	</div>
+	<div class="mb-4">
+		<label for="">Stores</label>
+		<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
 	</div>
 
 	<div class="mb-4">
