@@ -34,6 +34,8 @@ export class ProductsApi {
 
 		if (!username || !password) throw new Error('No username or password set');
 
+		const languageCodes = Object.keys(product.languages_codes);
+
 		const body = formData({
 			code: product.code,
 			user_id: username,
@@ -46,22 +48,22 @@ export class ProductsApi {
 			comment: product.comment ?? '',
 
 			product_name: product.product_name,
-			product_name_en: product.product_name_en,
-			product_name_ar: product.product_name_ar,
-			product_name_cs: product.product_name_cs,
-			product_name_de: product.product_name_de,
-			product_name_fr: product.product_name_fr,
-			product_name_it: product.product_name_it,
-			product_name_es: product.product_name_es,
+			...languageCodes.reduce(
+				(acc, lang) => {
+					acc[`product_name_${lang}`] = product[`product_name_${lang}`];
+					return acc;
+				},
+				{} as Record<string, string>
+			),
 
 			ingredients_text: product.ingredients_text,
-			ingredients_text_en: product.ingredients_text_en,
-			ingredients_text_ar: product.ingredients_text_ar,
-			ingredients_text_cs: product.ingredients_text_cs,
-			ingredients_text_de: product.ingredients_text_de,
-			ingredients_text_fr: product.ingredients_text_fr,
-			ingredients_text_it: product.ingredients_text_it,
-			ingredients_text_es: product.ingredients_text_es
+			...languageCodes.reduce(
+				(acc, lang) => {
+					acc[`ingredients_text_${lang}`] = product[`ingredients_text_${lang}`];
+					return acc;
+				},
+				{} as Record<string, string>
+			)
 		});
 
 		const res = await this.fetch(url, {
@@ -147,6 +149,7 @@ export type ProductSearch<T = Product> = {
 };
 
 type LangIngredient = `ingredients_text_${string}`;
+type LangProduct = `product_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -186,13 +189,7 @@ type RawImage = {
 export type Product = {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
-	product_name_en: string;
-	product_name_ar: string;
-	product_name_cs: string;
-	product_name_de: string;
-	product_name_fr: string;
-	product_name_it: string;
-	product_name_es: string;
+	[lang: LangProduct]: string;
 	_id: string;
 	code: string;
 	_keywords: string[];
