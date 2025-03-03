@@ -3,7 +3,6 @@
   <source media="(prefers-color-scheme: light)" srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.png?refresh_github_cache=1">
   <img height="48" src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg">
 </picture>
-<br>
 
 # Open Food Facts explorer: the modern JS frontend to Open Food Facts
 
@@ -42,6 +41,17 @@ pnpm run dev
 pnpm run dev -- --open
 ```
 
+## Environment Variables
+
+Before running the project, you need to create a `.env` file in the root directory with the following variables:
+
+```ini
+VITE_FOLKSONOMY_API_URL=<open_food_facts_api_url>
+VITE_PRICES_API_URL=<open_prices_api_url>
+```
+
+These variables are required for API calls to Open Food Facts and Open Prices.
+
 ## Building
 
 To create a production version of your app:
@@ -50,4 +60,9 @@ To create a production version of your app:
 pnpm run build
 ```
 
-You can preview the production build with `pnpm run preview`.
+You can preview the production build with:
+
+```bash
+pnpm run preview
+```
+
