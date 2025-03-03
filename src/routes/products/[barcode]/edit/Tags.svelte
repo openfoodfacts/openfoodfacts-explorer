@@ -16,6 +16,7 @@
 	);
 
 	let newValue = $state('');
+	let showDropdown = $state(false);
 
 	let filteredAutocomplete = $derived(
 		newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10)
@@ -45,44 +46,48 @@
 	}>();
 </script>
 
-<div
-	class="input input-bordered bg-base-100 flex h-auto min-h-12 flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
->
-	{#each tags as tag}
-		<span class="badge badge-ghost py-3 text-lg" transition:fade={{ duration: 100 }}>
-			{tag}
-			<button class="ml-2 text-xl" onclick={removeTag(tag)}>×</button>
-		</span>
-	{/each}
-	<div class="dropdown grow">
+<div class="relative w-full">
+	<div
+		class="input input-bordered bg-base-100 flex h-auto min-h-12 flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2">
+		{#each tags as tag}
+			<span class="badge badge-ghost py-3 text-lg" transition:fade={{ duration: 100 }}>
+				{tag}
+				<button class="ml-2 text-xl" onclick={removeTag(tag)}>×</button>
+			</span>
+		{/each}
 		<input
 			type="text"
-			class="w-full bg-transparent outline-hidden"
+			class="z-10 w-full bg-transparent outline-none"
+			onfocus={() => (showDropdown = true)}
+			onblur={() => setTimeout(() => (showDropdown = false), 200)}
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
-
-		{#if filteredAutocomplete.length > 0}
-			<div class="dropdown-content max-h-52 overflow-y-auto">
-				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
-					{#each filteredAutocomplete as suggestion}
-						{@const key = suggestion.item}
-						<li>
-							<button
-								class="btn btn-ghost"
-								onclick={() => {
-									tags = [...tags, key];
-									dispatcher('change', { tags });
-									newValue = '';
-								}}
-							>
-								{key}
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		{/if}
 	</div>
+
+	<!-- Dropdown Suggestions (placed outside the input wrapper) -->
+	{#if showDropdown && filteredAutocomplete.length > 0}
+		<div
+			class="bg-base-100 absolute top-full left-0 z-[100] max-h-52 w-max overflow-y-auto rounded-md border border-gray-300 shadow-lg">
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+			<ul tabindex="0" class="menu bg-base-100 shadow-xs">
+				{#each filteredAutocomplete as suggestion}
+					{@const key = suggestion.item}
+					<li>
+						<button
+							class="btn btn-ghost w-full text-left"
+							onclick={() => {
+								tags = [...tags, key];
+								dispatcher('change', { tags });
+								newValue = '';
+								showDropdown = false;
+							}}
+						>
+							{key}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
 </div>
