@@ -9,6 +9,7 @@
 
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
+	import { PRODUCT_IMAGE_URL } from '$lib/const';
 
 	interface Props {
 		data: PageData;
@@ -52,13 +53,12 @@
 	}
 
 	function getIngredientsImage(language: string) {
-		let baseUrl = 'https://images.openfoodfacts.org/images/products/';
 		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
 		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
 		if (!match) {
 			throw new Error('Invalid barcode format');
 		}
-		baseUrl += `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'ingredients_' + language;
 		const image = get(productStore).images[imageName];
 		if (!image) {
@@ -66,7 +66,7 @@
 		}
 		const rev = (image as SelectedImage).rev;
 		const filename = `${imageName}.${rev}.400.jpg`;
-		return `${baseUrl}/${filename}`;
+		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
 	run(() => {

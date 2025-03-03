@@ -35,6 +35,20 @@ export class ProductsApi {
 		if (!username || !password) throw new Error('No username or password set');
 
 		const languageCodes = Object.keys(product.languages_codes);
+		const productNames = languageCodes.reduce(
+			(acc, lang) => {
+				acc[`product_name_${lang}`] = product[`product_name_${lang}`];
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+		const ingredientsTexts = languageCodes.reduce(
+			(acc, lang) => {
+				acc[`ingredients_text_${lang}`] = product[`ingredients_text_${lang}`];
+				return acc;
+			},
+			{} as Record<string, string>
+		);
 
 		const body = formData({
 			code: product.code,
@@ -48,22 +62,10 @@ export class ProductsApi {
 			comment: product.comment ?? '',
 
 			product_name: product.product_name,
-			...languageCodes.reduce(
-				(acc, lang) => {
-					acc[`product_name_${lang}`] = product[`product_name_${lang}`];
-					return acc;
-				},
-				{} as Record<string, string>
-			),
+			...productNames,
 
 			ingredients_text: product.ingredients_text,
-			...languageCodes.reduce(
-				(acc, lang) => {
-					acc[`ingredients_text_${lang}`] = product[`ingredients_text_${lang}`];
-					return acc;
-				},
-				{} as Record<string, string>
-			)
+			...ingredientsTexts
 		});
 
 		const res = await this.fetch(url, {
