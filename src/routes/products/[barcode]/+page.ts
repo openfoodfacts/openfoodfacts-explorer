@@ -32,7 +32,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
-	const questions = off.robotoff.questionsByProductCode(params.barcode).then(
+	// TODO: parseInt should be removed. Barcodes are strings
+	const questions = off.robotoff.questionsByProductCode(parseInt(params.barcode)).then(
 		(res) => {
 			if (res?.status === 'found') {
 				return res.questions ?? [];
