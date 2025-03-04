@@ -34,7 +34,7 @@
 				}
 			)
 			.catch((err) => {
-					console.error('QR Code Scanner Error:', err);
+				console.error('QR Code Scanner Error:', err);
 			});
 
 		html5QrCode = scanner;

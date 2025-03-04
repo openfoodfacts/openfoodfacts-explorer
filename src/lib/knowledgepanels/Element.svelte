@@ -13,7 +13,7 @@
 		element: KnowledgeElement;
 		// size?: KnowledgePanelSize;
 	};
-	let { allPanels, element}: Props = $props();
+	let { allPanels, element }: Props = $props();
 
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
 		edit_product: 'Edit Product',
