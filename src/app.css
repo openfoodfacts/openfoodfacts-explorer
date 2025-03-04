@@ -25,7 +25,6 @@
 
 @plugin "daisyui/theme" {
 	name: 'dark';
-	prefersdark: true;
 
 	--color-primary: #faf7f5;
 	--color-primary-content: #201a17;
