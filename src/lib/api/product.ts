@@ -34,6 +34,22 @@ export class ProductsApi {
 
 		if (!username || !password) throw new Error('No username or password set');
 
+		const languageCodes = Object.keys(product.languages_codes);
+		const productNames = languageCodes.reduce(
+			(acc, lang) => {
+				acc[`product_name_${lang}`] = product[`product_name_${lang}`];
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+		const ingredientsTexts = languageCodes.reduce(
+			(acc, lang) => {
+				acc[`ingredients_text_${lang}`] = product[`ingredients_text_${lang}`];
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+
 		const body = formData({
 			code: product.code,
 			user_id: username,
@@ -43,7 +59,13 @@ export class ProductsApi {
 			brands: product.brands,
 			quantity: product.quantity,
 			stores: product.stores,
-			comment: product.comment ?? ''
+			comment: product.comment ?? '',
+
+			product_name: product.product_name,
+			...productNames,
+
+			ingredients_text: product.ingredients_text,
+			...ingredientsTexts
 		});
 
 		const res = await this.fetch(url, {
@@ -129,11 +151,47 @@ export type ProductSearch<T = Product> = {
 };
 
 type LangIngredient = `ingredients_text_${string}`;
+type LangProduct = `product_name_${string}`;
+
+type ImageSize = {
+	h: number;
+	w: number;
+};
+
+export type SelectedImage = {
+	angle: number;
+	coordinates_image_size: string;
+	geometry: string;
+	imgid: string;
+	normalize: string | boolean | null;
+	rev: string;
+	sizes: {
+		100: ImageSize;
+		200: ImageSize;
+		400: ImageSize;
+		full: ImageSize;
+	};
+	white_magic: string | boolean | null;
+	x1: string;
+	x2: string;
+	y1: string;
+	y2: string;
+};
+
+type RawImage = {
+	sizes: {
+		full: ImageSize;
+		100: ImageSize;
+		400: ImageSize;
+	};
+	uploaded_t: string;
+	uploader: string;
+};
 
 export type Product = {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
-	product_name_en: string;
+	[lang: LangProduct]: string;
 	_id: string;
 	code: string;
 	_keywords: string[];
@@ -159,6 +217,8 @@ export type Product = {
 	image_ingredients_url: string;
 	image_ingredients_small_url: string;
 	image_ingredients_thumb_url: string;
+
+	images: Record<string, SelectedImage | RawImage>;
 
 	image_nutrition_url: string;
 	image_nutrition_small_url: string;
@@ -197,6 +257,11 @@ export type Product = {
 	};
 
 	link: string;
+
+	languages_codes: {
+		[lang: string]: number;
+	};
+	lang: string;
 };
 
 const REDUCED_FIELDS = [
