@@ -11,9 +11,9 @@
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeElement;
-		size?: KnowledgePanelSize;
+		// size?: KnowledgePanelSize;
 	};
-	let { allPanels, element, size }: Props = $props();
+	let { allPanels, element}: Props = $props();
 
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
 		edit_product: 'Edit Product',
