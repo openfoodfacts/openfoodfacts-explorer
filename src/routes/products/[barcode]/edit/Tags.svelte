@@ -45,13 +45,11 @@
 	}>();
 </script>
 
-<div class="input input-bordered bg-base-100 w-full h-auto min-h-12 flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2">
-
+<div
+	class="input input-bordered bg-base-100 h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
+>
 	{#each tags as tag}
-		<span
-			class="badge badge-ghost overflow-hidden py-3"
-			transition:fade={{ duration: 100 }}
-		>
+		<span class="badge badge-ghost overflow-hidden py-3" transition:fade={{ duration: 100 }}>
 			<span class="truncate">{tag}</span>
 			<button class="ml-1 text-xl" onclick={removeTag(tag)}>×</button>
 		</span>
@@ -86,4 +84,4 @@
 			</div>
 		{/if}
 	</div>
-</div> 
+</div>
