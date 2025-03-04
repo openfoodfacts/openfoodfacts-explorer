@@ -15,7 +15,7 @@
 	let { prices, barcode }: Props = $props();
 
 	let pricesApi: PricesApi;
-	let authenticated: boolean = $state();
+	let authenticated: boolean = $state(false);
 	let authStatus: undefined | boolean = $state();
 
 	let nearStores: OverpassAPIResult | undefined = $state();
