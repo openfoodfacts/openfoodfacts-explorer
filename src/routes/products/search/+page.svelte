@@ -16,6 +16,7 @@
 </script>
 
 {#await data.result}
+	<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 	{#each Array(5) as _}
 		<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
 	{/each}

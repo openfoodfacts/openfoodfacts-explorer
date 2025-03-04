@@ -30,7 +30,7 @@
 				</div>
 				Explorer!
 			</h3>
-
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			<p>{@html $t('home.intro_1')}</p>
 			<p>{$t('home.intro_2')}</p>
 		</div>
@@ -39,6 +39,7 @@
 	<div class="mt-8 w-full">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
 			{#await data.streamed.products}
+				<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 				{#each Array(4) as _}
 					<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
 				{/each}

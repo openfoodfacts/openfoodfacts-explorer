@@ -22,7 +22,7 @@
 			.start(
 				{ facingMode: 'environment' },
 				{ fps: 1, qrbox: { width: 500, height: 300 } },
-				(text, _result) => {
+				(text) => {
 					if (text == null) return;
 					console.log('QR code detected:', text);
 
