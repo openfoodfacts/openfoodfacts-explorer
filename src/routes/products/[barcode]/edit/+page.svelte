@@ -90,7 +90,7 @@
 			<input
 				type="text"
 				class="input input-bordered w-full"
-				bind:value={$productStore[('product_name_' + code) as keyof typeof data.state.product]}
+				bind:value={$productStore[`product_name_${code}`]}
 			/>
 		</div>
 	{/each}
@@ -146,9 +146,7 @@
 				<div class="form-control mb-4">
 					<textarea
 						class="textarea textarea-bordered h-40 w-full"
-						bind:value={
-							$productStore[('ingredients_text_' + code) as keyof typeof data.state.product]
-						}
+						bind:value={$productStore[`ingredients_text_${code}`]}
 					></textarea>
 				</div>
 			</div>
