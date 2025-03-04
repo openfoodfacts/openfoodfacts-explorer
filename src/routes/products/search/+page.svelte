@@ -41,15 +41,15 @@
 
 			<button class="btn join-item btn-active">{result.page}</button>
 
-			{#if result.page_count > result.page + 1}
+			{#if result.total_pages > result.page + 1}
 				<a href={getPageUrl($page.url, result.page + 1)} class="btn join-item">{result.page + 1}</a>
 			{/if}
-			{#if result.page_count > result.page + 2}
+			{#if result.total_pages > result.page + 2}
 				<button class="btn btn-disabled join-item">...</button>
 			{/if}
-			{#if result.page_count > result.page}
-				<a href={getPageUrl($page.url, result.page_count)} class="btn join-item">
-					{result.page_count}
+			{#if result.total_pages > result.page}
+				<a href={getPageUrl($page.url, result.total_pages)} class="btn join-item">
+					{result.total_pages}
 				</a>
 			{/if}
 		</div>

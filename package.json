@@ -31,7 +31,7 @@
 		"@vercel/speed-insights": "^1.2.0",
 		"@zoom-image/core": "^0.39.0",
 		"@zoom-image/svelte": "^0.3.0",
-		"daisyui": "5.0.0-beta.9",
+		"daisyui": "5.0.0",
 		"eslint": "^9.21.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^2.46.1",

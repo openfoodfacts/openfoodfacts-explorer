@@ -18,20 +18,25 @@
 			verbose: false
 		});
 
-		scanner.start(
-			{ facingMode: 'environment' },
-			{ fps: 1, qrbox: { width: 500, height: 300 } },
-			(text, _result) => {
-				if (text == null) return;
-				console.log('QR code detected:', text);
+		scanner
+			.start(
+				{ facingMode: 'environment' },
+				{ fps: 1, qrbox: { width: 500, height: 300 } },
+				(text, _result) => {
+					if (text == null) return;
+					console.log('QR code detected:', text);
 
-				scanner.stop();
-				window.location.href = '/products/' + text;
-			},
-			() => {
-				/* ignored */
-			}
-		);
+					scanner.stop();
+					window.location.href = '/products/' + text;
+				},
+				() => {
+					/* ignored */
+				}
+			)
+			.catch((err) => {
+				error = 'Camera access is required. Please enable it in your browser settings.';
+				console.error('QR Code Scanner Error:', err);
+			});
 
 		html5QrCode = scanner;
 	});
