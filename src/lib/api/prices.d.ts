@@ -221,11 +221,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
-		get: {
-			responses: {
-				200: { content: { 'application/json': any } };
-			};
-		};
+		get: operations['proofs_retrieve'];
 		put?: never;
 		post?: never;
 		delete: operations['proofs_destroy'];
