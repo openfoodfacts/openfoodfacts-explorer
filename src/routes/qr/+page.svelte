@@ -34,8 +34,7 @@
 				}
 			)
 			.catch((err) => {
-				error = 'Camera access is required. Please enable it in your browser settings.';
-				console.error('QR Code Scanner Error:', err);
+					console.error('QR Code Scanner Error:', err);
 			});
 
 		html5QrCode = scanner;
