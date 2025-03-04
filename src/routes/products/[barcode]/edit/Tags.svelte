@@ -65,7 +65,7 @@
 		/>
 	</div>
 
-	<!-- Dropdown Suggestions (placed outside the input wrapper) -->
+	<!-- Dropdown Suggestions -->
 	{#if showDropdown && filteredAutocomplete.length > 0}
 		<div
 			class="bg-base-100 absolute top-full left-0 z-[100] max-h-52 w-max overflow-y-auto rounded-md border border-gray-300 shadow-lg">
