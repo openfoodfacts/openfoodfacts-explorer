@@ -92,6 +92,7 @@
 			class="btn btn-outline link"
 			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
 			target="_blank"
+			aria-label="GitHub"
 		>
 			<span class="icon-[mdi--github] h-8 w-8"></span>
 		</a>

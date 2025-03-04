@@ -59,7 +59,7 @@
 	let newKey = $state('');
 	let newValue = $state('');
 
-	let creatingNewTag: boolean = $state();
+	let creatingNewTag: boolean = $state(false);
 
 	async function createNewTag() {
 		creatingNewTag = true;
@@ -72,7 +72,9 @@
 			k: newKey,
 			v: newValue,
 			product: barcode,
-			version: 1
+			version: 1,
+			comment: '',
+			owner: ''
 		};
 
 		const created = await new FolksonomyApi(fetch).addTag(newTag);

@@ -11,23 +11,29 @@
 		  }
 		| undefined = $state();
 
-	let dialog: HTMLDialogElement = $state();
+	let dialog: HTMLDialogElement | undefined = $state();
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
-		dialog.showModal();
+		if (dialog) {
+			dialog.showModal();
+		}
 	}
 
 	function close() {
-		dialog.close();
+		if (dialog) {
+			dialog.close();
+		}
 		setZoomImageState({ currentZoom: 1 });
 	}
 
 	onMount(() => {
-		createZoomImage(container);
+		if (container) {
+			createZoomImage(container);
+		}
 	});
 
-	let container: HTMLDivElement = $state();
+	let container: HTMLDivElement | undefined = $state();
 	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
