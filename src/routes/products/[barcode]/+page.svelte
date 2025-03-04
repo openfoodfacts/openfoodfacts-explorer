@@ -23,7 +23,6 @@
 
 	let { data }: Props = $props();
 	let product = $derived(data.state.product);
-
 	let lang = $derived($preferences.lang);
 </script>
 

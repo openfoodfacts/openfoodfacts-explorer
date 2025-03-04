@@ -124,7 +124,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
-		get?: never;
+		get: operations['prices_retrieve'];
 		put?: never;
 		post?: never;
 		delete: operations['prices_destroy'];
@@ -133,6 +133,23 @@ export interface paths {
 		patch: operations['prices_partial_update'];
 		trace?: never;
 	};
+	'/api/v1/prices/stats': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['prices_stats'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+
 	'/api/v1/products': {
 		parameters: {
 			query?: never;
@@ -204,7 +221,11 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
-		get: operations['proofs_retrieve'];
+		get: {
+			responses: {
+				200: { content: { 'application/json': any } };
+			};
+		};
 		put?: never;
 		post?: never;
 		delete: operations['proofs_destroy'];
@@ -2229,6 +2250,693 @@ export interface operations {
 			};
 		};
 	};
+	prices_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				content: {
+					'application/json': components['schemas']['Price'];
+				};
+			};
+		};
+	};
+	prices_stats: {
+		parameters: {
+			query?: {
+				category_tag?: string;
+				/** @description * `ZWL` - ZWL
+				 *     * `BRB` - BRB
+				 *     * `ARA` - ARA
+				 *     * `WST` - WST
+				 *     * `TJS` - TJS
+				 *     * `THB` - THB
+				 *     * `XTS` - XTS
+				 *     * `XUA` - XUA
+				 *     * `TJR` - TJR
+				 *     * `HUF` - HUF
+				 *     * `LVR` - LVR
+				 *     * `BAN` - BAN
+				 *     * `KHR` - KHR
+				 *     * `XFO` - XFO
+				 *     * `ZMW` - ZMW
+				 *     * `NGN` - NGN
+				 *     * `MRO` - MRO
+				 *     * `ECV` - ECV
+				 *     * `DEM` - DEM
+				 *     * `LSL` - LSL
+				 *     * `MKN` - MKN
+				 *     * `EGP` - EGP
+				 *     * `FKP` - FKP
+				 *     * `KMF` - KMF
+				 *     * `MZM` - MZM
+				 *     * `AOK` - AOK
+				 *     * `VEB` - VEB
+				 *     * `ERN` - ERN
+				 *     * `UAH` - UAH
+				 *     * `PES` - PES
+				 *     * `CLE` - CLE
+				 *     * `LTT` - LTT
+				 *     * `SDP` - SDP
+				 *     * `TRL` - TRL
+				 *     * `XBD` - XBD
+				 *     * `NAD` - NAD
+				 *     * `VNN` - VNN
+				 *     * `JOD` - JOD
+				 *     * `VUV` - VUV
+				 *     * `AON` - AON
+				 *     * `XEU` - XEU
+				 *     * `XDR` - XDR
+				 *     * `ESA` - ESA
+				 *     * `MDC` - MDC
+				 *     * `SSP` - SSP
+				 *     * `NIO` - NIO
+				 *     * `GWE` - GWE
+				 *     * `LRD` - LRD
+				 *     * `MLF` - MLF
+				 *     * `MTP` - MTP
+				 *     * `ADP` - ADP
+				 *     * `KZT` - KZT
+				 *     * `USS` - USS
+				 *     * `BRN` - BRN
+				 *     * `ZWD` - ZWD
+				 *     * `ILR` - ILR
+				 *     * `GWP` - GWP
+				 *     * `SUR` - SUR
+				 *     * `PLN` - PLN
+				 *     * `LUC` - LUC
+				 *     * `PEN` - PEN
+				 *     * `ALK` - ALK
+				 *     * `MAD` - MAD
+				 *     * `BOV` - BOV
+				 *     * `MXV` - MXV
+				 *     * `GYD` - GYD
+				 *     * `BIF` - BIF
+				 *     * `GRD` - GRD
+				 *     * `ZAR` - ZAR
+				 *     * `SGD` - SGD
+				 *     * `BEL` - BEL
+				 *     * `ITL` - ITL
+				 *     * `XAU` - XAU
+				 *     * `CRC` - CRC
+				 *     * `BGM` - BGM
+				 *     * `GMD` - GMD
+				 *     * `FRF` - FRF
+				 *     * `MZE` - MZE
+				 *     * `YUM` - YUM
+				 *     * `BUK` - BUK
+				 *     * `UZS` - UZS
+				 *     * `BGO` - BGO
+				 *     * `QAR` - QAR
+				 *     * `BTN` - BTN
+				 *     * `NZD` - NZD
+				 *     * `LKR` - LKR
+				 *     * `DOP` - DOP
+				 *     * `ISK` - ISK
+				 *     * `AZM` - AZM
+				 *     * `CZK` - CZK
+				 *     * `SLL` - SLL
+				 *     * `MZN` - MZN
+				 *     * `BAM` - BAM
+				 *     * `LBP` - LBP
+				 *     * `SAR` - SAR
+				 *     * `UGX` - UGX
+				 *     * `BYR` - BYR
+				 *     * `BGN` - BGN
+				 *     * `GBP` - GBP
+				 *     * `UYW` - UYW
+				 *     * `XBB` - XBB
+				 *     * `BND` - BND
+				 *     * `USN` - USN
+				 *     * `BRL` - BRL
+				 *     * `VND` - VND
+				 *     * `CNY` - CNY
+				 *     * `MNT` - MNT
+				 *     * `MXP` - MXP
+				 *     * `GEK` - GEK
+				 *     * `UAK` - UAK
+				 *     * `SRG` - SRG
+				 *     * `ZWR` - ZWR
+				 *     * `BEC` - BEC
+				 *     * `CYP` - CYP
+				 *     * `ZRZ` - ZRZ
+				 *     * `CUP` - CUP
+				 *     * `LVL` - LVL
+				 *     * `AOR` - AOR
+				 *     * `RUB` - RUB
+				 *     * `XAF` - XAF
+				 *     * `DJF` - DJF
+				 *     * `GNS` - GNS
+				 *     * `XPD` - XPD
+				 *     * `PLZ` - PLZ
+				 *     * `ECS` - ECS
+				 *     * `GQE` - GQE
+				 *     * `SOS` - SOS
+				 *     * `MYR` - MYR
+				 *     * `BYB` - BYB
+				 *     * `TZS` - TZS
+				 *     * `XSU` - XSU
+				 *     * `SBD` - SBD
+				 *     * `BRR` - BRR
+				 *     * `PTE` - PTE
+				 *     * `CSK` - CSK
+				 *     * `MWK` - MWK
+				 *     * `MRU` - MRU
+				 *     * `BRZ` - BRZ
+				 *     * `ARP` - ARP
+				 *     * `BDT` - BDT
+				 *     * `XPF` - XPF
+				 *     * `ZMK` - ZMK
+				 *     * `AFN` - AFN
+				 *     * `TOP` - TOP
+				 *     * `SKK` - SKK
+				 *     * `GTQ` - GTQ
+				 *     * `MDL` - MDL
+				 *     * `VED` - VED
+				 *     * `AMD` - AMD
+				 *     * `JMD` - JMD
+				 *     * `XOF` - XOF
+				 *     * `SIT` - SIT
+				 *     * `BRC` - BRC
+				 *     * `JPY` - JPY
+				 *     * `BOP` - BOP
+				 *     * `KYD` - KYD
+				 *     * `TMM` - TMM
+				 *     * `CHE` - CHE
+				 *     * `ANG` - ANG
+				 *     * `MCF` - MCF
+				 *     * `SRD` - SRD
+				 *     * `RON` - RON
+				 *     * `ARL` - ARL
+				 *     * `XBC` - XBC
+				 *     * `XAG` - XAG
+				 *     * `IEP` - IEP
+				 *     * `NLG` - NLG
+				 *     * `LAK` - LAK
+				 *     * `AZN` - AZN
+				 *     * `BBD` - BBD
+				 *     * `AUD` - AUD
+				 *     * `ILS` - ILS
+				 *     * `USD` - USD
+				 *     * `MGF` - MGF
+				 *     * `OMR` - OMR
+				 *     * `DZD` - DZD
+				 *     * `GHS` - GHS
+				 *     * `MOP` - MOP
+				 *     * `XBA` - XBA
+				 *     * `AFA` - AFA
+				 *     * `CHW` - CHW
+				 *     * `GIP` - GIP
+				 *     * `COP` - COP
+				 *     * `BSD` - BSD
+				 *     * `ZAL` - ZAL
+				 *     * `INR` - INR
+				 *     * `TTD` - TTD
+				 *     * `SVC` - SVC
+				 *     * `SZL` - SZL
+				 *     * `BRE` - BRE
+				 *     * `PEI` - PEI
+				 *     * `CNX` - CNX
+				 *     * `AED` - AED
+				 *     * `XXX` - XXX
+				 *     * `HTG` - HTG
+				 *     * `MTL` - MTL
+				 *     * `MAF` - MAF
+				 *     * `XRE` - XRE
+				 *     * `UYI` - UYI
+				 *     * `MXN` - MXN
+				 *     * `BEF` - BEF
+				 *     * `HNL` - HNL
+				 *     * `ZRN` - ZRN
+				 *     * `CLP` - CLP
+				 *     * `CNH` - CNH
+				 *     * `KES` - KES
+				 *     * `YUD` - YUD
+				 *     * `EUR` - EUR
+				 *     * `CHF` - CHF
+				 *     * `BYN` - BYN
+				 *     * `PGK` - PGK
+				 *     * `LUF` - LUF
+				 *     * `SEK` - SEK
+				 *     * `RSD` - RSD
+				 *     * `FIM` - FIM
+				 *     * `MGA` - MGA
+				 *     * `STD` - STD
+				 *     * `MMK` - MMK
+				 *     * `KGS` - KGS
+				 *     * `SDG` - SDG
+				 *     * `KPW` - KPW
+				 *     * `HRK` - HRK
+				 *     * `SLE` - SLE
+				 *     * `EEK` - EEK
+				 *     * `MUR` - MUR
+				 *     * `UYU` - UYU
+				 *     * `ALL` - ALL
+				 *     * `TRY` - TRY
+				 *     * `LUL` - LUL
+				 *     * `PYG` - PYG
+				 *     * `GNF` - GNF
+				 *     * `GEL` - GEL
+				 *     * `PHP` - PHP
+				 *     * `CUC` - CUC
+				 *     * `VES` - VES
+				 *     * `COU` - COU
+				 *     * `XFU` - XFU
+				 *     * `ESB` - ESB
+				 *     * `MVR` - MVR
+				 *     * `AWG` - AWG
+				 *     * `FJD` - FJD
+				 *     * `MVP` - MVP
+				 *     * `CDF` - CDF
+				 *     * `SCR` - SCR
+				 *     * `SHP` - SHP
+				 *     * `KRW` - KRW
+				 *     * `NPR` - NPR
+				 *     * `MKD` - MKD
+				 *     * `NIC` - NIC
+				 *     * `XPT` - XPT
+				 *     * `IQD` - IQD
+				 *     * `YUN` - YUN
+				 *     * `TND` - TND
+				 *     * `VEF` - VEF
+				 *     * `BGL` - BGL
+				 *     * `YDD` - YDD
+				 *     * `TWD` - TWD
+				 *     * `ETB` - ETB
+				 *     * `ISJ` - ISJ
+				 *     * `RWF` - RWF
+				 *     * `LTL` - LTL
+				 *     * `BWP` - BWP
+				 *     * `SYP` - SYP
+				 *     * `PKR` - PKR
+				 *     * `UYP` - UYP
+				 *     * `ARM` - ARM
+				 *     * `LYD` - LYD
+				 *     * `CVE` - CVE
+				 *     * `GHC` - GHC
+				 *     * `BAD` - BAD
+				 *     * `BHD` - BHD
+				 *     * `KWD` - KWD
+				 *     * `KRH` - KRH
+				 *     * `UGS` - UGS
+				 *     * `KRO` - KRO
+				 *     * `RUR` - RUR
+				 *     * `ROL` - ROL
+				 *     * `IRR` - IRR
+				 *     * `TMT` - TMT
+				 *     * `SDD` - SDD
+				 *     * `ATS` - ATS
+				 *     * `TPE` - TPE
+				 *     * `CSD` - CSD
+				 *     * `DDM` - DDM
+				 *     * `BMD` - BMD
+				 *     * `HKD` - HKD
+				 *     * `IDR` - IDR
+				 *     * `YER` - YER
+				 *     * `DKK` - DKK
+				 *     * `BOB` - BOB
+				 *     * `AOA` - AOA
+				 *     * `ARS` - ARS
+				 *     * `NOK` - NOK
+				 *     * `BZD` - BZD
+				 *     * `BOL` - BOL
+				 *     * `CAD` - CAD
+				 *     * `HRD` - HRD
+				 *     * `PAB` - PAB
+				 *     * `YUR` - YUR
+				 *     * `ILP` - ILP
+				 *     * `XCD` - XCD
+				 *     * `CLF` - CLF
+				 *     * `RHD` - RHD
+				 *     * `STN` - STN
+				 *     * `ESP` - ESP */
+				currency?:
+					| 'ADP'
+					| 'AED'
+					| 'AFA'
+					| 'AFN'
+					| 'ALK'
+					| 'ALL'
+					| 'AMD'
+					| 'ANG'
+					| 'AOA'
+					| 'AOK'
+					| 'AON'
+					| 'AOR'
+					| 'ARA'
+					| 'ARL'
+					| 'ARM'
+					| 'ARP'
+					| 'ARS'
+					| 'ATS'
+					| 'AUD'
+					| 'AWG'
+					| 'AZM'
+					| 'AZN'
+					| 'BAD'
+					| 'BAM'
+					| 'BAN'
+					| 'BBD'
+					| 'BDT'
+					| 'BEC'
+					| 'BEF'
+					| 'BEL'
+					| 'BGL'
+					| 'BGM'
+					| 'BGN'
+					| 'BGO'
+					| 'BHD'
+					| 'BIF'
+					| 'BMD'
+					| 'BND'
+					| 'BOB'
+					| 'BOL'
+					| 'BOP'
+					| 'BOV'
+					| 'BRB'
+					| 'BRC'
+					| 'BRE'
+					| 'BRL'
+					| 'BRN'
+					| 'BRR'
+					| 'BRZ'
+					| 'BSD'
+					| 'BTN'
+					| 'BUK'
+					| 'BWP'
+					| 'BYB'
+					| 'BYN'
+					| 'BYR'
+					| 'BZD'
+					| 'CAD'
+					| 'CDF'
+					| 'CHE'
+					| 'CHF'
+					| 'CHW'
+					| 'CLE'
+					| 'CLF'
+					| 'CLP'
+					| 'CNH'
+					| 'CNX'
+					| 'CNY'
+					| 'COP'
+					| 'COU'
+					| 'CRC'
+					| 'CSD'
+					| 'CSK'
+					| 'CUC'
+					| 'CUP'
+					| 'CVE'
+					| 'CYP'
+					| 'CZK'
+					| 'DDM'
+					| 'DEM'
+					| 'DJF'
+					| 'DKK'
+					| 'DOP'
+					| 'DZD'
+					| 'ECS'
+					| 'ECV'
+					| 'EEK'
+					| 'EGP'
+					| 'ERN'
+					| 'ESA'
+					| 'ESB'
+					| 'ESP'
+					| 'ETB'
+					| 'EUR'
+					| 'FIM'
+					| 'FJD'
+					| 'FKP'
+					| 'FRF'
+					| 'GBP'
+					| 'GEK'
+					| 'GEL'
+					| 'GHC'
+					| 'GHS'
+					| 'GIP'
+					| 'GMD'
+					| 'GNF'
+					| 'GNS'
+					| 'GQE'
+					| 'GRD'
+					| 'GTQ'
+					| 'GWE'
+					| 'GWP'
+					| 'GYD'
+					| 'HKD'
+					| 'HNL'
+					| 'HRD'
+					| 'HRK'
+					| 'HTG'
+					| 'HUF'
+					| 'IDR'
+					| 'IEP'
+					| 'ILP'
+					| 'ILR'
+					| 'ILS'
+					| 'INR'
+					| 'IQD'
+					| 'IRR'
+					| 'ISJ'
+					| 'ISK'
+					| 'ITL'
+					| 'JMD'
+					| 'JOD'
+					| 'JPY'
+					| 'KES'
+					| 'KGS'
+					| 'KHR'
+					| 'KMF'
+					| 'KPW'
+					| 'KRH'
+					| 'KRO'
+					| 'KRW'
+					| 'KWD'
+					| 'KYD'
+					| 'KZT'
+					| 'LAK'
+					| 'LBP'
+					| 'LKR'
+					| 'LRD'
+					| 'LSL'
+					| 'LTL'
+					| 'LTT'
+					| 'LUC'
+					| 'LUF'
+					| 'LUL'
+					| 'LVL'
+					| 'LVR'
+					| 'LYD'
+					| 'MAD'
+					| 'MAF'
+					| 'MCF'
+					| 'MDC'
+					| 'MDL'
+					| 'MGA'
+					| 'MGF'
+					| 'MKD'
+					| 'MKN'
+					| 'MLF'
+					| 'MMK'
+					| 'MNT'
+					| 'MOP'
+					| 'MRO'
+					| 'MRU'
+					| 'MTL'
+					| 'MTP'
+					| 'MUR'
+					| 'MVP'
+					| 'MVR'
+					| 'MWK'
+					| 'MXN'
+					| 'MXP'
+					| 'MXV'
+					| 'MYR'
+					| 'MZE'
+					| 'MZM'
+					| 'MZN'
+					| 'NAD'
+					| 'NGN'
+					| 'NIC'
+					| 'NIO'
+					| 'NLG'
+					| 'NOK'
+					| 'NPR'
+					| 'NZD'
+					| 'OMR'
+					| 'PAB'
+					| 'PEI'
+					| 'PEN'
+					| 'PES'
+					| 'PGK'
+					| 'PHP'
+					| 'PKR'
+					| 'PLN'
+					| 'PLZ'
+					| 'PTE'
+					| 'PYG'
+					| 'QAR'
+					| 'RHD'
+					| 'ROL'
+					| 'RON'
+					| 'RSD'
+					| 'RUB'
+					| 'RUR'
+					| 'RWF'
+					| 'SAR'
+					| 'SBD'
+					| 'SCR'
+					| 'SDD'
+					| 'SDG'
+					| 'SDP'
+					| 'SEK'
+					| 'SGD'
+					| 'SHP'
+					| 'SIT'
+					| 'SKK'
+					| 'SLE'
+					| 'SLL'
+					| 'SOS'
+					| 'SRD'
+					| 'SRG'
+					| 'SSP'
+					| 'STD'
+					| 'STN'
+					| 'SUR'
+					| 'SVC'
+					| 'SYP'
+					| 'SZL'
+					| 'THB'
+					| 'TJR'
+					| 'TJS'
+					| 'TMM'
+					| 'TMT'
+					| 'TND'
+					| 'TOP'
+					| 'TPE'
+					| 'TRL'
+					| 'TRY'
+					| 'TTD'
+					| 'TWD'
+					| 'TZS'
+					| 'UAH'
+					| 'UAK'
+					| 'UGS'
+					| 'UGX'
+					| 'USD'
+					| 'USN'
+					| 'USS'
+					| 'UYI'
+					| 'UYP'
+					| 'UYU'
+					| 'UYW'
+					| 'UZS'
+					| 'VEB'
+					| 'VED'
+					| 'VEF'
+					| 'VES'
+					| 'VND'
+					| 'VNN'
+					| 'VUV'
+					| 'WST'
+					| 'XAF'
+					| 'XAG'
+					| 'XAU'
+					| 'XBA'
+					| 'XBB'
+					| 'XBC'
+					| 'XBD'
+					| 'XCD'
+					| 'XDR'
+					| 'XEU'
+					| 'XFO'
+					| 'XFU'
+					| 'XOF'
+					| 'XPD'
+					| 'XPF'
+					| 'XPT'
+					| 'XRE'
+					| 'XSU'
+					| 'XTS'
+					| 'XUA'
+					| 'XXX'
+					| 'YDD'
+					| 'YER'
+					| 'YUD'
+					| 'YUM'
+					| 'YUN'
+					| 'YUR'
+					| 'ZAL'
+					| 'ZAR'
+					| 'ZMK'
+					| 'ZMW'
+					| 'ZRN'
+					| 'ZRZ'
+					| 'ZWD'
+					| 'ZWL'
+					| 'ZWR'
+					| null;
+				date?: string;
+				date__gt?: string;
+				date__gte?: string;
+				date__lt?: string;
+				date__lte?: string;
+				date__month?: number;
+				date__year?: number;
+				location_id?: number | null;
+				location_id__isnull?: boolean;
+				location_osm_id?: number;
+				/** @description * `NODE` - NODE
+				 *     * `WAY` - WAY
+				 *     * `RELATION` - RELATION */
+				location_osm_type?: 'NODE' | 'RELATION' | 'WAY' | null;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				owner?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				price?: number;
+				price__gt?: number;
+				price__gte?: number;
+				price__lt?: number;
+				price__lte?: number;
+				price_is_discounted?: boolean;
+				product_code?: string;
+				product_id?: number | null;
+				product_id__isnull?: boolean;
+				proof_id?: number | null;
+				proof_id__isnull?: boolean;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': {
+						price__count: number;
+						price__min: number;
+						price__max: number;
+						price__avg: number;
+					};
+				};
+			};
+		};
+	};
+
 	prices_create: {
 		parameters: {
 			query?: never;
