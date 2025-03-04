@@ -7,6 +7,7 @@ export default {
 	plugins: [],
 	daisyui: {
 		themes: [
+			"light",
 			{
 				off: {
 					primary: '#201a17',
