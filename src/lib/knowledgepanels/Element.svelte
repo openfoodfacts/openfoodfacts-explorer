@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelSize } from '$lib/api';
+	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 	import Debug from '$lib/ui/Debug.svelte';
 
 	import Panel from './Panel.svelte';
