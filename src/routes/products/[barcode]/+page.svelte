@@ -111,6 +111,36 @@
 					{/each}
 				{/await}
 			</span>
+
+			<span class="text-end font-bold">Countries:</span>
+			<span>
+				{#await data.taxo.countries}
+					Loading...
+				{:then countries}
+					{#each product.countries_tags as tag, i}
+						{#if i > 0},
+						{/if}
+						<a class="link" href={'/taxo/countries/' + tag}>
+							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
+						</a>
+					{/each}
+				{/await}
+			</span>
+
+			<span class="text-end font-bold">Origins:</span>
+			<span>
+				{#await data.taxo.origins}
+					Loading...
+				{:then origins}
+					{#each product.origins_tags as tag, i}
+						{#if i > 0},
+						{/if}
+						<a class="link" href={'/taxo/origin/' + tag}>
+							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
+						</a>
+					{/each}
+				{/await}
+			</span>
 		</div>
 
 		<div class="flex max-h-56 grow justify-center">

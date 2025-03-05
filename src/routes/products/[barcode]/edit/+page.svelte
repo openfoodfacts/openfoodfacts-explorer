@@ -32,6 +32,8 @@
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
 	let storeNames = $derived(getNames(data.stores));
+	let originNames = $derived(getNames(data.origins));
+	let countriesNames = $derived(getNames(data.countries));
 	let productStore = $derived(writable(data.state.product));
 	let comment = writable('');
 
@@ -117,6 +119,14 @@
 	<div class="mb-4">
 		<label for="">Stores</label>
 		<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
+	</div>
+	<div class="mb-4">
+		<label for="">Origins</label>
+		<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
+	</div>
+	<div class="mb-4">
+		<label for="">Countries</label>
+		<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
 	</div>
 
 	<div class="mb-4">
