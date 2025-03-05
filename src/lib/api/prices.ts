@@ -2,6 +2,8 @@ import createClient from 'openapi-fetch';
 import type { paths } from './prices.d';
 
 type PricesQuery = paths['/api/v1/prices']['get']['parameters']['query'];
+type prices_stats = paths['/api/v1/prices/stats']['get']['parameters']['query'];
+
 export type PricesCreate =
 	paths['/api/v1/prices']['post']['requestBody']['content']['application/json'];
 export type Prices =
@@ -27,6 +29,22 @@ export class PricesApi {
 	}
 	createPrice(body: PricesCreate) {
 		return this.client.POST('/api/v1/prices', { body });
+	}
+	getPriceById(id: number) {
+		return this.client.GET('/api/v1/prices/{id}', {
+			params: { path: { id } }
+		});
+	}
+	updatePrice(id: number, body: Partial<PricesCreate>) {
+		return this.client.PATCH('/api/v1/prices/{id}', { params: { path: { id } }, body });
+	}
+
+	deletePrice(id: number) {
+		return this.client.DELETE('/api/v1/prices/{id}', { params: { path: { id } } });
+	}
+
+	getPriceStats(query: prices_stats) {
+		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
 	login(body: { username: string; password: string }) {
 		return this.client.POST('/api/v1/auth', {
