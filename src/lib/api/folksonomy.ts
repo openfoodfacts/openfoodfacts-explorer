@@ -84,7 +84,7 @@ export class FolksonomyApi {
 
 		if (res.response.status !== 200) throw new Error('Could not authenticate to Folksonomy API');
 
-		const token = res.data as { access_token: string, token_type: string };
+		const token = res.data as { access_token: string; token_type: string };
 		preferences.update((p) => ({
 			...p,
 			folksonomy: { ...p.folksonomy, authToken: token.access_token }
