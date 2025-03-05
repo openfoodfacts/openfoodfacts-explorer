@@ -6,7 +6,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
-	import settings from '$lib/settings';
+	import { preferences } from '$lib/settings';
 
 	let searchQuery: string = $state('');
 
@@ -26,8 +26,8 @@
 	});
 
 	onMount(() => {
-		settings.subscribe(() => {
-			document.firstElementChild!.setAttribute('data-theme', $settings.theme);
+		preferences.subscribe(() => {
+			document.firstElementChild!.setAttribute('data-theme', $preferences.theme);
 		});
 	});
 

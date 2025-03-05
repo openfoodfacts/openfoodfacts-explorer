@@ -7,8 +7,9 @@
 	import { t } from '$lib/translations';
 
 	import { derived } from 'svelte/store';
-	import settings, { themes as allThemes } from '$lib/settings';
-	let themes = derived(settings, ({ theme }) => allThemes.filter((t) => t != theme));
+	import  { themes as allThemes } from '$lib/settings';
+	
+	let themes = derived(preferences, ({ theme }) => allThemes.filter((t) => t != theme));
 
 	interface Props {
 		data: PageData;
@@ -70,8 +71,8 @@
 	<Heading>Appearance</Heading>
 	<label for="lang-select" class="justify-self-start md:justify-self-end">Theme:</label>
 
-	<select class="select select-bordered w-full md:w-auto" bind:value={$settings.theme}>
-		<option>{$settings.theme}</option>
+	<select class="select select-bordered w-full md:w-auto" bind:value={$preferences.theme}>
+		<option>{$preferences.theme}</option>
 		{#each $themes as theme}
 			<option>{theme}</option>
 		{/each}

@@ -10,21 +10,11 @@ export const preferences = persisted('preferences', {
 		authToken: null as string | null
 	},
 	username: null as string | null,
-	password: null as string | null
+	password: null as string | null,
+	theme: 'dark',
 });
 
 export const themes = [
 	'light',
 	'dark',
 ] as const;
-type Theme = (typeof themes)[number];
-
-export interface Settings {
-	theme: Theme;
-}
-
-const settings = persisted<Settings>('settings', {
-	theme: 'dark',
-});
-
-export default settings;
