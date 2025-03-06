@@ -29,6 +29,10 @@ export type Store = TaxoNode & object;
 
 export type Brand = TaxoNode & object;
 
+export type Origin = TaxoNode & object;
+
+export type Country = TaxoNode & object;
+
 export type Language = TaxoNode & {
 	language_code_2: {
 		en: string;
@@ -43,5 +47,7 @@ export const TAXONOMIES_NAMES: Record<string, string> = {
 	categories: 'Category',
 	stores: 'Store',
 	brands: 'Brand',
+	countries: 'Country',
+	origins: 'Origin',
 	languages: 'Language'
 };
