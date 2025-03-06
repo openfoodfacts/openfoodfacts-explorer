@@ -63,6 +63,29 @@
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
+    
+		{#if filteredAutocomplete.length > 0}
+			<div class="dropdown-content">
+				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
+					{#each filteredAutocomplete as suggestion}
+						{@const key = suggestion.item}
+						<li>
+							<button
+								class="btn btn-ghost"
+								onclick={() => {
+									tags = [...tags, key];
+									dispatcher('change', { tags });
+									newValue = '';
+								}}
+							>
+								{key}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 	</div>
 
 	<!-- Dropdown Suggestions -->

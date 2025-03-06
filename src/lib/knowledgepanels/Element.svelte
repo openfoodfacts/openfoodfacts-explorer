@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelSize } from '$lib/api';
+	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 	import Debug from '$lib/ui/Debug.svelte';
 
 	import Panel from './Panel.svelte';
@@ -11,9 +11,8 @@
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeElement;
-		size?: KnowledgePanelSize;
 	};
-	let { allPanels, element, size }: Props = $props();
+	let { allPanels, element }: Props = $props();
 
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
 		edit_product: 'Edit Product',

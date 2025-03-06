@@ -3,12 +3,13 @@
 
 	import { writable, get } from 'svelte/store';
 
-	import { getOrDefault, ProductsApi, type Taxonomy } from '$lib/api';
+	import { getOrDefault, ProductsApi, type SelectedImage, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
 
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
+	import { PRODUCT_IMAGE_URL } from '$lib/const';
 
 	interface Props {
 		data: PageData;
@@ -20,6 +21,11 @@
 		return Object.values(taxo)
 			.map((t) => getOrDefault(t.name, $preferences.lang))
 			.filter((t): t is string => t !== undefined);
+	}
+
+	function getLanguage(code: string) {
+		const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+		return languageNames.of(code);
 	}
 
 	let categoryNames = $derived(getNames(data.categories));
@@ -46,6 +52,23 @@
 		}
 	}
 
+	function getIngredientsImage(language: string) {
+		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
+		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+		if (!match) {
+			throw new Error('Invalid barcode format');
+		}
+		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		const imageName = 'ingredients_' + language;
+		const image = get(productStore).images[imageName];
+		if (!image) {
+			return '';
+		}
+		const rev = (image as SelectedImage).rev;
+		const filename = `${imageName}.${rev}.400.jpg`;
+		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+	}
+
 	run(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
@@ -53,16 +76,27 @@
 	});
 </script>
 
-<Card>
-	<div class="form-control mb-4">
-		<label for="">Name</label>
+<div class="tabs tabs-box">
+	{#each Object.keys($productStore.languages_codes) as code}
 		<input
-			type="text"
-			class="input input-bordered w-full"
-			bind:value={$productStore.product_name}
+			type="radio"
+			name="name_tabs"
+			class="tab"
+			aria-label={getLanguage(code)}
+			defaultChecked={code === $productStore.lang}
 		/>
-	</div>
+		<div class="tab-content form-control p-6">
+			<label for="">Name ({getLanguage(code)})</label>
+			<input
+				type="text"
+				class="input input-bordered w-full"
+				bind:value={$productStore[`product_name_${code}`]}
+			/>
+		</div>
+	{/each}
+</div>
 
+<Card>
 	<div class="form-control mb-4">
 		<label for="">Quantity</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
@@ -93,18 +127,30 @@
 
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
-
-	{#if $productStore.image_ingredients_url}
-		<img src={$productStore.image_ingredients_url} alt="Ingredients" class="mb-4" />
-	{:else}
-		<p class="alert alert-warning mb-4">No ingredients image</p>
-	{/if}
-
-	<div class="form-control mb-4">
-		<textarea
-			class="textarea textarea-bordered h-40 w-full"
-			bind:value={$productStore.ingredients_text}
-		></textarea>
+	<div class="tabs tabs-box">
+		{#each Object.keys($productStore.languages_codes) as code}
+			<input
+				type="radio"
+				name="ingredients_tabs"
+				class="tab"
+				aria-label={getLanguage(code)}
+				defaultChecked={code === $productStore.lang}
+			/>
+			<div class="tab-content form-control p-6">
+				{#if getIngredientsImage(code)}
+					<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
+				{:else}
+					<p class="alert alert-warning mb-4">No ingredients image</p>
+				{/if}
+				<label for="">Ingredients list ({getLanguage(code)})</label>
+				<div class="form-control mb-4">
+					<textarea
+						class="textarea textarea-bordered h-40 w-full"
+						bind:value={$productStore[`ingredients_text_${code}`]}
+					></textarea>
+				</div>
+			</div>
+		{/each}
 	</div>
 </Card>
 
