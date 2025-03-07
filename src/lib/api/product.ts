@@ -37,14 +37,20 @@ export class ProductsApi {
 		const languageCodes = Object.keys(product.languages_codes);
 		const productNames = languageCodes.reduce(
 			(acc, lang) => {
-				acc[`product_name_${lang}`] = product[`product_name_${lang}`];
+				const key = `product_name_${lang}`;
+				if (product[key as LangProduct] != null) {
+					acc[key] = product[key as LangProduct];
+				}
 				return acc;
 			},
 			{} as Record<string, string>
 		);
 		const ingredientsTexts = languageCodes.reduce(
 			(acc, lang) => {
-				acc[`ingredients_text_${lang}`] = product[`ingredients_text_${lang}`];
+				const key = `ingredients_text_${lang}`;
+				if (product[key as LangIngredient] != null) {
+					acc[key] = product[key as LangIngredient];
+				}
 				return acc;
 			},
 			{} as Record<string, string>
