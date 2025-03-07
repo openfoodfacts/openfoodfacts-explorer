@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  iso-639-1:
-    specifier: ^3.1.5
-    version: 3.1.5
-
 devDependencies:
   '@eslint/eslintrc':
     specifier: ^3.3.0
@@ -79,6 +74,9 @@ devDependencies:
   html5-qrcode:
     specifier: ^2.3.8
     version: 2.3.8
+  iso-639-1:
+    specifier: ^3.1.5
+    version: 3.1.5
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
@@ -1978,7 +1976,7 @@ packages:
   /iso-639-1@3.1.5:
     resolution: {integrity: sha512-gXkz5+KN7HrG0Q5UGqSMO2qB9AsbEeyLP54kF1YrMsIxmu+g4BdB7rflReZTSTZGpfj8wywu6pfPBCylPIzGQA==}
     engines: {node: '>=6.0'}
-    dev: false
+    dev: true
 
   /jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}

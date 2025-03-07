@@ -38,7 +38,15 @@
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
-	let filteredLanguages = $state(languageCodes);
+	let filteredLanguages = $derived(
+		languageCodes.filter((code) => {
+			if ($productStore.languages_codes[code] !== undefined) {
+				return false;
+			}
+			const language = getLanguage(code);
+			return language.toLowerCase().includes(languageSearch.toLowerCase());
+		})
+	);
 
 	async function submit() {
 		const product = get(productStore);
@@ -77,16 +85,6 @@
 	run(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
-		});
-	});
-
-	$effect(() => {
-		filteredLanguages = languageCodes.filter((code) => {
-			if ($productStore.languages_codes[code] !== undefined) {
-				return false;
-			}
-			const language = getLanguage(code);
-			return language.toLowerCase().includes(languageSearch.toLowerCase());
 		});
 	});
 </script>
