@@ -48,8 +48,8 @@ devDependencies:
     specifier: ^1.2.0
     version: 1.2.0(@sveltejs/kit@2.18.0)(svelte@5.22.5)
   '@zoom-image/core':
-    specifier: ^0.39.0
-    version: 0.39.0
+    specifier: ^0.40.0
+    version: 0.40.0
   '@zoom-image/svelte':
     specifier: ^0.3.0
     version: 0.3.1(svelte@5.22.5)
@@ -1484,12 +1484,6 @@ packages:
     dependencies:
       '@sveltejs/kit': 2.18.0(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.22.5)(vite@6.2.1)
       svelte: 5.22.5
-    dev: true
-
-  /@zoom-image/core@0.39.0:
-    resolution: {integrity: sha512-JD6UghIOvfdRdI5FCFQRtvaJGht2gIpkzFp+5NrcwKXbHQwSfl00VQ9JQ0TYbaeHa6tc+dxgepYgJukCtrPVgg==}
-    dependencies:
-      '@namnode/store': 0.1.0
     dev: true
 
   /@zoom-image/core@0.40.0:
