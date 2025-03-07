@@ -89,31 +89,34 @@
 	});
 </script>
 
-<Card>
-	<h3 class="mb-4 text-3xl font-bold">Add a language</h3>
-	<label class="input w-full">
-		<span class="icon-[mdi--search] h-5 w-5"></span>
-		<input type="search" placeholder="Search languages to add" bind:value={languageSearch} />
-	</label>
-	{#if filteredLanguages.length === 0}
-		<p class="mt-4 text-center opacity-70">No languages found</p>
-	{:else}
-		<div
-			class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
-		>
-			{#each filteredLanguages as code}
-				<button
-					class="btn btn-ghost"
-					onclick={() => {
-						$productStore.languages_codes[code] = 0;
-					}}
-				>
-					{getLanguage(code)}
-				</button>
-			{/each}
-		</div>
-	{/if}
-</Card>
+<div class="collapse-arrow dark:bg-base-200 collapse p-2 bg-white shadow-md">
+	<input type="checkbox" />
+	<div class="collapse-title font-semibold">Add a language</div>
+	<div class="collapse-content text-sm">
+		<label class="input w-full">
+			<span class="icon-[mdi--search] h-5 w-5"></span>
+			<input type="search" placeholder="Search languages to add" bind:value={languageSearch} />
+		</label>
+		{#if filteredLanguages.length === 0}
+			<p class="mt-4 text-center opacity-70">No languages found</p>
+		{:else}
+			<div
+				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
+			>
+				{#each filteredLanguages as code}
+					<button
+						class="btn btn-ghost"
+						onclick={() => {
+							$productStore.languages_codes[code] = 0;
+						}}
+					>
+						{getLanguage(code)}
+					</button>
+				{/each}
+			</div>
+		{/if}
+	</div>
+</div>
 
 <div class="tabs tabs-box">
 	{#each Object.keys($productStore.languages_codes) as code}
