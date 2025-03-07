@@ -89,7 +89,7 @@
 	});
 </script>
 
-<div class="collapse-arrow dark:bg-base-200 collapse p-2 bg-white shadow-md">
+<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
 	<input type="checkbox" />
 	<div class="collapse-title font-semibold">Add a language</div>
 	<div class="collapse-content text-sm">
