@@ -95,16 +95,17 @@
 	<div>Loading example products...</div>
 {:then search}
 	{#if search.products.length > 0}
-		<div class="grid grid-cols-4 gap-4">
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
 			{#each search.products as product}
-				<div class="flex flex-row items-center">
+				<a href={`/products/${product.code}`}
+					class="flex h-24 flex-row items-center rounded-lg bg-[#2D2724] p-2" >
 					{#if product.image_front_small_url}
-						<img src={product.image_front_small_url} class="mr-4 h-16 w-16" alt="Product front" />
+						<img src={product.image_front_small_url} class="mr-4 h-full w-16" alt="Product front" />
 					{/if}
-					<a href={`/products/${product.code}`} class="link">
+					<div class="link no-underline">
 						{product.product_name ?? product.code}
-					</a>
-				</div>
+					</div>
+				</a>
 			{/each}
 		</div>
 	{:else}
