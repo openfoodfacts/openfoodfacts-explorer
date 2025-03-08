@@ -2,8 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 
-	let error: string | null = $state(null);
-
+	let error: string | null = null;
 	let html5QrCode: Html5Qrcode | null = null;
 
 	onMount(() => {
@@ -18,10 +17,15 @@
 			verbose: false
 		});
 
+		const getQrBoxSize = () => {
+			const screenWidth = window.innerWidth;
+			return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
+		};
+
 		scanner
 			.start(
 				{ facingMode: 'environment' },
-				{ fps: 1, qrbox: { width: 500, height: 300 } },
+				{ fps: 10, qrbox: getQrBoxSize() },
 				(text) => {
 					if (text == null) return;
 					console.log('QR code detected:', text);
@@ -42,19 +46,18 @@
 	});
 
 	onDestroy(() => {
-		// Stop the scanner when the component is destroyed
-		if (html5QrCode != null) {
+		if (html5QrCode) {
 			html5QrCode.stop();
 		}
 	});
 </script>
 
-{#if error != null}
-	<div class="flex items-center justify-center">
-		<p>{error}</p>
+{#if error}
+	<div class="flex items-center justify-center h-screen">
+		<p class="text-red-500">{error}</p>
 	</div>
 {:else}
-	<div class="flex items-center justify-center">
-		<div id="reader" class="w-full"></div>
+	<div class="flex items-center justify-center min-h-screen p-4">
+		<div id="reader" class="w-full max-w-md border-2 border-gray-300 rounded-lg"></div>
 	</div>
 {/if}
