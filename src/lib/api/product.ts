@@ -37,7 +37,7 @@ export class ProductsApi {
 		const languageCodes = Object.keys(product.languages_codes);
 		const productNames = languageCodes.reduce(
 			(acc, lang) => {
-				const productName = product[`product_name_${lang}`];
+				const productName = getProductNameInLang(product, lang);
 				if (productName != null) {
 					acc[`product_name_${lang}`] = productName;
 				}
@@ -47,7 +47,7 @@ export class ProductsApi {
 		);
 		const ingredientsTexts = languageCodes.reduce(
 			(acc, lang) => {
-				const ingredientsText = product[`ingredients_text_${lang}`];
+				const ingredientsText = getProductIngredientsInLang(product, lang);
 				if (ingredientsText != null) {
 					acc[`ingredients_text_${lang}`] = ingredientsText;
 				}
@@ -306,6 +306,14 @@ export async function getProductName(
 /** @deprecated */
 export async function addOrEditProductV2(product: Product, fetch: typeof window.fetch) {
 	return new ProductsApi(fetch).addOrEditProductV2(product);
+}
+
+function getProductNameInLang(product: Product, lang: string) {
+	return product[`product_name_${lang}`] ?? product.product_name;
+}
+
+function getProductIngredientsInLang(product: Product, lang: string) {
+	return product[`ingredients_text_${lang}`] ?? product.ingredients_text;
 }
 
 function formData(data: Record<string, string | Blob>) {

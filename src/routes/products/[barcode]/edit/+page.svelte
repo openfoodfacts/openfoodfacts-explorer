@@ -65,6 +65,13 @@
 		}
 	}
 
+	function addLanguage(code: string) {
+		productStore.update((store) => {
+			store.languages_codes = { ...store.languages_codes, [code]: 0 };
+			return store;
+		});
+	}
+
 	function getIngredientsImage(language: string) {
 		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
 		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
@@ -104,12 +111,7 @@
 				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
 			>
 				{#each filteredLanguages as code}
-					<button
-						class="btn btn-ghost"
-						onclick={() => {
-							$productStore.languages_codes[code] = 0;
-						}}
-					>
+					<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
 						{getLanguage(code)}
 					</button>
 				{/each}
