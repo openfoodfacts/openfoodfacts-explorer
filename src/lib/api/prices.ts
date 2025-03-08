@@ -2,7 +2,7 @@ import createClient from 'openapi-fetch';
 import type { paths } from './prices.d';
 
 type PricesQuery = paths['/api/v1/prices']['get']['parameters']['query'];
-type priceStats = paths['/api/v1/prices/stats']['get']['parameters']['query'];
+type PriceStats = paths['/api/v1/prices/stats']['get']['parameters']['query'];
 
 export type PricesCreate =
 	paths['/api/v1/prices']['post']['requestBody']['content']['application/json'];
@@ -43,7 +43,7 @@ export class PricesApi {
 		return this.client.DELETE('/api/v1/prices/{id}', { params: { path: { id } } });
 	}
 
-	getPriceStats(query: priceStats) {
+	getPriceStats(query: PriceStats) {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
 	login(body: { username: string; password: string }) {
