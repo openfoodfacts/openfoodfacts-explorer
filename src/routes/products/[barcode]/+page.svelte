@@ -152,7 +152,7 @@
 <div class="flex w-full justify-evenly gap-4 p-3">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
-	<a href="#nutriscore">
+	<a href="#environment_card">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
 </div>
