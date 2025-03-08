@@ -101,6 +101,38 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/api/v1/price-tags': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['price_tags_list'];
+		put?: never;
+		post: operations['price_tags_create'];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/api/v1/price-tags/{id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['price_tags_retrieve'];
+		put?: never;
+		post?: never;
+		delete: operations['price_tags_destroy'];
+		options?: never;
+		head?: never;
+		patch: operations['price_tags_partial_update'];
+		trace?: never;
+	};
 	'/api/v1/prices': {
 		parameters: {
 			query?: never;
@@ -124,13 +156,29 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
-		get?: never;
+		get: operations['prices_retrieve'];
 		put?: never;
 		post?: never;
 		delete: operations['prices_destroy'];
 		options?: never;
 		head?: never;
 		patch: operations['prices_partial_update'];
+		trace?: never;
+	};
+	'/api/v1/prices/stats': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['prices_stats_retrieve'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
 		trace?: never;
 	};
 	'/api/v1/products': {
@@ -213,6 +261,22 @@ export interface paths {
 		patch: operations['proofs_partial_update'];
 		trace?: never;
 	};
+	'/api/v1/proofs/process-with-gemini': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: operations['proofs_process_with_gemini_create'];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/api/v1/proofs/upload': {
 		parameters: {
 			query?: never;
@@ -240,6 +304,22 @@ export interface paths {
 		put?: never;
 		post?: never;
 		delete: operations['session_destroy'];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/api/v1/stats': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['stats_retrieve'];
+		put?: never;
+		post?: never;
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -277,6 +357,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/api/v1/users/{user_id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['users_retrieve'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -284,628 +380,656 @@ export interface components {
 		/** @enum {unknown} */
 		BlankEnum: '';
 		/**
-		 * @description * `ZWL` - ZWL
-		 *     * `BRB` - BRB
-		 *     * `ARA` - ARA
-		 *     * `WST` - WST
-		 *     * `TJS` - TJS
-		 *     * `THB` - THB
-		 *     * `XTS` - XTS
-		 *     * `XUA` - XUA
-		 *     * `TJR` - TJR
-		 *     * `HUF` - HUF
-		 *     * `LVR` - LVR
-		 *     * `BAN` - BAN
-		 *     * `KHR` - KHR
-		 *     * `XFO` - XFO
-		 *     * `ZMW` - ZMW
-		 *     * `NGN` - NGN
-		 *     * `MRO` - MRO
-		 *     * `ECV` - ECV
-		 *     * `DEM` - DEM
-		 *     * `LSL` - LSL
-		 *     * `MKN` - MKN
-		 *     * `EGP` - EGP
-		 *     * `FKP` - FKP
-		 *     * `KMF` - KMF
-		 *     * `MZM` - MZM
-		 *     * `AOK` - AOK
-		 *     * `VEB` - VEB
-		 *     * `ERN` - ERN
-		 *     * `UAH` - UAH
-		 *     * `PES` - PES
-		 *     * `CLE` - CLE
-		 *     * `LTT` - LTT
-		 *     * `SDP` - SDP
-		 *     * `TRL` - TRL
-		 *     * `XBD` - XBD
-		 *     * `NAD` - NAD
-		 *     * `VNN` - VNN
-		 *     * `JOD` - JOD
-		 *     * `VUV` - VUV
-		 *     * `AON` - AON
-		 *     * `XEU` - XEU
-		 *     * `XDR` - XDR
-		 *     * `ESA` - ESA
-		 *     * `MDC` - MDC
-		 *     * `SSP` - SSP
-		 *     * `NIO` - NIO
-		 *     * `GWE` - GWE
-		 *     * `LRD` - LRD
-		 *     * `MLF` - MLF
-		 *     * `MTP` - MTP
-		 *     * `ADP` - ADP
-		 *     * `KZT` - KZT
-		 *     * `USS` - USS
-		 *     * `BRN` - BRN
-		 *     * `ZWD` - ZWD
-		 *     * `ILR` - ILR
-		 *     * `GWP` - GWP
-		 *     * `SUR` - SUR
-		 *     * `PLN` - PLN
-		 *     * `LUC` - LUC
-		 *     * `PEN` - PEN
-		 *     * `ALK` - ALK
-		 *     * `MAD` - MAD
-		 *     * `BOV` - BOV
-		 *     * `MXV` - MXV
-		 *     * `GYD` - GYD
-		 *     * `BIF` - BIF
-		 *     * `GRD` - GRD
-		 *     * `ZAR` - ZAR
-		 *     * `SGD` - SGD
-		 *     * `BEL` - BEL
-		 *     * `ITL` - ITL
-		 *     * `XAU` - XAU
-		 *     * `CRC` - CRC
-		 *     * `BGM` - BGM
-		 *     * `GMD` - GMD
-		 *     * `FRF` - FRF
-		 *     * `MZE` - MZE
-		 *     * `YUM` - YUM
-		 *     * `BUK` - BUK
-		 *     * `UZS` - UZS
-		 *     * `BGO` - BGO
-		 *     * `QAR` - QAR
-		 *     * `BTN` - BTN
-		 *     * `NZD` - NZD
-		 *     * `LKR` - LKR
-		 *     * `DOP` - DOP
-		 *     * `ISK` - ISK
-		 *     * `AZM` - AZM
-		 *     * `CZK` - CZK
-		 *     * `SLL` - SLL
-		 *     * `MZN` - MZN
-		 *     * `BAM` - BAM
-		 *     * `LBP` - LBP
-		 *     * `SAR` - SAR
-		 *     * `UGX` - UGX
-		 *     * `BYR` - BYR
-		 *     * `BGN` - BGN
-		 *     * `GBP` - GBP
-		 *     * `UYW` - UYW
-		 *     * `XBB` - XBB
-		 *     * `BND` - BND
-		 *     * `USN` - USN
-		 *     * `BRL` - BRL
-		 *     * `VND` - VND
-		 *     * `CNY` - CNY
-		 *     * `MNT` - MNT
-		 *     * `MXP` - MXP
-		 *     * `GEK` - GEK
-		 *     * `UAK` - UAK
-		 *     * `SRG` - SRG
-		 *     * `ZWR` - ZWR
-		 *     * `BEC` - BEC
-		 *     * `CYP` - CYP
-		 *     * `ZRZ` - ZRZ
-		 *     * `CUP` - CUP
-		 *     * `LVL` - LVL
-		 *     * `AOR` - AOR
-		 *     * `RUB` - RUB
-		 *     * `XAF` - XAF
-		 *     * `DJF` - DJF
-		 *     * `GNS` - GNS
-		 *     * `XPD` - XPD
-		 *     * `PLZ` - PLZ
-		 *     * `ECS` - ECS
-		 *     * `GQE` - GQE
-		 *     * `SOS` - SOS
-		 *     * `MYR` - MYR
-		 *     * `BYB` - BYB
-		 *     * `TZS` - TZS
-		 *     * `XSU` - XSU
-		 *     * `SBD` - SBD
-		 *     * `BRR` - BRR
-		 *     * `PTE` - PTE
-		 *     * `CSK` - CSK
-		 *     * `MWK` - MWK
-		 *     * `MRU` - MRU
-		 *     * `BRZ` - BRZ
-		 *     * `ARP` - ARP
-		 *     * `BDT` - BDT
-		 *     * `XPF` - XPF
-		 *     * `ZMK` - ZMK
-		 *     * `AFN` - AFN
-		 *     * `TOP` - TOP
-		 *     * `SKK` - SKK
-		 *     * `GTQ` - GTQ
-		 *     * `MDL` - MDL
-		 *     * `VED` - VED
-		 *     * `AMD` - AMD
-		 *     * `JMD` - JMD
-		 *     * `XOF` - XOF
-		 *     * `SIT` - SIT
-		 *     * `BRC` - BRC
-		 *     * `JPY` - JPY
-		 *     * `BOP` - BOP
-		 *     * `KYD` - KYD
-		 *     * `TMM` - TMM
-		 *     * `CHE` - CHE
-		 *     * `ANG` - ANG
-		 *     * `MCF` - MCF
-		 *     * `SRD` - SRD
-		 *     * `RON` - RON
-		 *     * `ARL` - ARL
-		 *     * `XBC` - XBC
-		 *     * `XAG` - XAG
-		 *     * `IEP` - IEP
-		 *     * `NLG` - NLG
-		 *     * `LAK` - LAK
-		 *     * `AZN` - AZN
-		 *     * `BBD` - BBD
-		 *     * `AUD` - AUD
-		 *     * `ILS` - ILS
-		 *     * `USD` - USD
-		 *     * `MGF` - MGF
-		 *     * `OMR` - OMR
-		 *     * `DZD` - DZD
-		 *     * `GHS` - GHS
-		 *     * `MOP` - MOP
-		 *     * `XBA` - XBA
-		 *     * `AFA` - AFA
-		 *     * `CHW` - CHW
-		 *     * `GIP` - GIP
-		 *     * `COP` - COP
-		 *     * `BSD` - BSD
-		 *     * `ZAL` - ZAL
-		 *     * `INR` - INR
-		 *     * `TTD` - TTD
-		 *     * `SVC` - SVC
-		 *     * `SZL` - SZL
-		 *     * `BRE` - BRE
-		 *     * `PEI` - PEI
-		 *     * `CNX` - CNX
+		 * @description * `ADP` - ADP
 		 *     * `AED` - AED
-		 *     * `XXX` - XXX
-		 *     * `HTG` - HTG
-		 *     * `MTL` - MTL
-		 *     * `MAF` - MAF
-		 *     * `XRE` - XRE
-		 *     * `UYI` - UYI
-		 *     * `MXN` - MXN
+		 *     * `AFA` - AFA
+		 *     * `AFN` - AFN
+		 *     * `ALK` - ALK
+		 *     * `ALL` - ALL
+		 *     * `AMD` - AMD
+		 *     * `ANG` - ANG
+		 *     * `AOA` - AOA
+		 *     * `AOK` - AOK
+		 *     * `AON` - AON
+		 *     * `AOR` - AOR
+		 *     * `ARA` - ARA
+		 *     * `ARL` - ARL
+		 *     * `ARM` - ARM
+		 *     * `ARP` - ARP
+		 *     * `ARS` - ARS
+		 *     * `ATS` - ATS
+		 *     * `AUD` - AUD
+		 *     * `AWG` - AWG
+		 *     * `AZM` - AZM
+		 *     * `AZN` - AZN
+		 *     * `BAD` - BAD
+		 *     * `BAM` - BAM
+		 *     * `BAN` - BAN
+		 *     * `BBD` - BBD
+		 *     * `BDT` - BDT
+		 *     * `BEC` - BEC
 		 *     * `BEF` - BEF
-		 *     * `HNL` - HNL
-		 *     * `ZRN` - ZRN
+		 *     * `BEL` - BEL
+		 *     * `BGL` - BGL
+		 *     * `BGM` - BGM
+		 *     * `BGN` - BGN
+		 *     * `BGO` - BGO
+		 *     * `BHD` - BHD
+		 *     * `BIF` - BIF
+		 *     * `BMD` - BMD
+		 *     * `BND` - BND
+		 *     * `BOB` - BOB
+		 *     * `BOL` - BOL
+		 *     * `BOP` - BOP
+		 *     * `BOV` - BOV
+		 *     * `BRB` - BRB
+		 *     * `BRC` - BRC
+		 *     * `BRE` - BRE
+		 *     * `BRL` - BRL
+		 *     * `BRN` - BRN
+		 *     * `BRR` - BRR
+		 *     * `BRZ` - BRZ
+		 *     * `BSD` - BSD
+		 *     * `BTN` - BTN
+		 *     * `BUK` - BUK
+		 *     * `BWP` - BWP
+		 *     * `BYB` - BYB
+		 *     * `BYN` - BYN
+		 *     * `BYR` - BYR
+		 *     * `BZD` - BZD
+		 *     * `CAD` - CAD
+		 *     * `CDF` - CDF
+		 *     * `CHE` - CHE
+		 *     * `CHF` - CHF
+		 *     * `CHW` - CHW
+		 *     * `CLE` - CLE
+		 *     * `CLF` - CLF
 		 *     * `CLP` - CLP
 		 *     * `CNH` - CNH
-		 *     * `KES` - KES
-		 *     * `YUD` - YUD
-		 *     * `EUR` - EUR
-		 *     * `CHF` - CHF
-		 *     * `BYN` - BYN
-		 *     * `PGK` - PGK
-		 *     * `LUF` - LUF
-		 *     * `SEK` - SEK
-		 *     * `RSD` - RSD
-		 *     * `FIM` - FIM
-		 *     * `MGA` - MGA
-		 *     * `STD` - STD
-		 *     * `MMK` - MMK
-		 *     * `KGS` - KGS
-		 *     * `SDG` - SDG
-		 *     * `KPW` - KPW
-		 *     * `HRK` - HRK
-		 *     * `SLE` - SLE
-		 *     * `EEK` - EEK
-		 *     * `MUR` - MUR
-		 *     * `UYU` - UYU
-		 *     * `ALL` - ALL
-		 *     * `TRY` - TRY
-		 *     * `LUL` - LUL
-		 *     * `PYG` - PYG
-		 *     * `GNF` - GNF
-		 *     * `GEL` - GEL
-		 *     * `PHP` - PHP
-		 *     * `CUC` - CUC
-		 *     * `VES` - VES
+		 *     * `CNX` - CNX
+		 *     * `CNY` - CNY
+		 *     * `COP` - COP
 		 *     * `COU` - COU
-		 *     * `XFU` - XFU
-		 *     * `ESB` - ESB
-		 *     * `MVR` - MVR
-		 *     * `AWG` - AWG
-		 *     * `FJD` - FJD
-		 *     * `MVP` - MVP
-		 *     * `CDF` - CDF
-		 *     * `SCR` - SCR
-		 *     * `SHP` - SHP
-		 *     * `KRW` - KRW
-		 *     * `NPR` - NPR
-		 *     * `MKD` - MKD
-		 *     * `NIC` - NIC
-		 *     * `XPT` - XPT
-		 *     * `IQD` - IQD
-		 *     * `YUN` - YUN
-		 *     * `TND` - TND
-		 *     * `VEF` - VEF
-		 *     * `BGL` - BGL
-		 *     * `YDD` - YDD
-		 *     * `TWD` - TWD
-		 *     * `ETB` - ETB
-		 *     * `ISJ` - ISJ
-		 *     * `RWF` - RWF
-		 *     * `LTL` - LTL
-		 *     * `BWP` - BWP
-		 *     * `SYP` - SYP
-		 *     * `PKR` - PKR
-		 *     * `UYP` - UYP
-		 *     * `ARM` - ARM
-		 *     * `LYD` - LYD
-		 *     * `CVE` - CVE
-		 *     * `GHC` - GHC
-		 *     * `BAD` - BAD
-		 *     * `BHD` - BHD
-		 *     * `KWD` - KWD
-		 *     * `KRH` - KRH
-		 *     * `UGS` - UGS
-		 *     * `KRO` - KRO
-		 *     * `RUR` - RUR
-		 *     * `ROL` - ROL
-		 *     * `IRR` - IRR
-		 *     * `TMT` - TMT
-		 *     * `SDD` - SDD
-		 *     * `ATS` - ATS
-		 *     * `TPE` - TPE
+		 *     * `CRC` - CRC
 		 *     * `CSD` - CSD
+		 *     * `CSK` - CSK
+		 *     * `CUC` - CUC
+		 *     * `CUP` - CUP
+		 *     * `CVE` - CVE
+		 *     * `CYP` - CYP
+		 *     * `CZK` - CZK
 		 *     * `DDM` - DDM
-		 *     * `BMD` - BMD
-		 *     * `HKD` - HKD
-		 *     * `IDR` - IDR
-		 *     * `YER` - YER
+		 *     * `DEM` - DEM
+		 *     * `DJF` - DJF
 		 *     * `DKK` - DKK
-		 *     * `BOB` - BOB
-		 *     * `AOA` - AOA
-		 *     * `ARS` - ARS
-		 *     * `NOK` - NOK
-		 *     * `BZD` - BZD
-		 *     * `BOL` - BOL
-		 *     * `CAD` - CAD
-		 *     * `HRD` - HRD
-		 *     * `PAB` - PAB
-		 *     * `YUR` - YUR
-		 *     * `ILP` - ILP
-		 *     * `XCD` - XCD
-		 *     * `CLF` - CLF
-		 *     * `RHD` - RHD
-		 *     * `STN` - STN
+		 *     * `DOP` - DOP
+		 *     * `DZD` - DZD
+		 *     * `ECS` - ECS
+		 *     * `ECV` - ECV
+		 *     * `EEK` - EEK
+		 *     * `EGP` - EGP
+		 *     * `ERN` - ERN
+		 *     * `ESA` - ESA
+		 *     * `ESB` - ESB
 		 *     * `ESP` - ESP
+		 *     * `ETB` - ETB
+		 *     * `EUR` - EUR
+		 *     * `FIM` - FIM
+		 *     * `FJD` - FJD
+		 *     * `FKP` - FKP
+		 *     * `FRF` - FRF
+		 *     * `GBP` - GBP
+		 *     * `GEK` - GEK
+		 *     * `GEL` - GEL
+		 *     * `GHC` - GHC
+		 *     * `GHS` - GHS
+		 *     * `GIP` - GIP
+		 *     * `GMD` - GMD
+		 *     * `GNF` - GNF
+		 *     * `GNS` - GNS
+		 *     * `GQE` - GQE
+		 *     * `GRD` - GRD
+		 *     * `GTQ` - GTQ
+		 *     * `GWE` - GWE
+		 *     * `GWP` - GWP
+		 *     * `GYD` - GYD
+		 *     * `HKD` - HKD
+		 *     * `HNL` - HNL
+		 *     * `HRD` - HRD
+		 *     * `HRK` - HRK
+		 *     * `HTG` - HTG
+		 *     * `HUF` - HUF
+		 *     * `IDR` - IDR
+		 *     * `IEP` - IEP
+		 *     * `ILP` - ILP
+		 *     * `ILR` - ILR
+		 *     * `ILS` - ILS
+		 *     * `INR` - INR
+		 *     * `IQD` - IQD
+		 *     * `IRR` - IRR
+		 *     * `ISJ` - ISJ
+		 *     * `ISK` - ISK
+		 *     * `ITL` - ITL
+		 *     * `JMD` - JMD
+		 *     * `JOD` - JOD
+		 *     * `JPY` - JPY
+		 *     * `KES` - KES
+		 *     * `KGS` - KGS
+		 *     * `KHR` - KHR
+		 *     * `KMF` - KMF
+		 *     * `KPW` - KPW
+		 *     * `KRH` - KRH
+		 *     * `KRO` - KRO
+		 *     * `KRW` - KRW
+		 *     * `KWD` - KWD
+		 *     * `KYD` - KYD
+		 *     * `KZT` - KZT
+		 *     * `LAK` - LAK
+		 *     * `LBP` - LBP
+		 *     * `LKR` - LKR
+		 *     * `LRD` - LRD
+		 *     * `LSL` - LSL
+		 *     * `LTL` - LTL
+		 *     * `LTT` - LTT
+		 *     * `LUC` - LUC
+		 *     * `LUF` - LUF
+		 *     * `LUL` - LUL
+		 *     * `LVL` - LVL
+		 *     * `LVR` - LVR
+		 *     * `LYD` - LYD
+		 *     * `MAD` - MAD
+		 *     * `MAF` - MAF
+		 *     * `MCF` - MCF
+		 *     * `MDC` - MDC
+		 *     * `MDL` - MDL
+		 *     * `MGA` - MGA
+		 *     * `MGF` - MGF
+		 *     * `MKD` - MKD
+		 *     * `MKN` - MKN
+		 *     * `MLF` - MLF
+		 *     * `MMK` - MMK
+		 *     * `MNT` - MNT
+		 *     * `MOP` - MOP
+		 *     * `MRO` - MRO
+		 *     * `MRU` - MRU
+		 *     * `MTL` - MTL
+		 *     * `MTP` - MTP
+		 *     * `MUR` - MUR
+		 *     * `MVP` - MVP
+		 *     * `MVR` - MVR
+		 *     * `MWK` - MWK
+		 *     * `MXN` - MXN
+		 *     * `MXP` - MXP
+		 *     * `MXV` - MXV
+		 *     * `MYR` - MYR
+		 *     * `MZE` - MZE
+		 *     * `MZM` - MZM
+		 *     * `MZN` - MZN
+		 *     * `NAD` - NAD
+		 *     * `NGN` - NGN
+		 *     * `NIC` - NIC
+		 *     * `NIO` - NIO
+		 *     * `NLG` - NLG
+		 *     * `NOK` - NOK
+		 *     * `NPR` - NPR
+		 *     * `NZD` - NZD
+		 *     * `OMR` - OMR
+		 *     * `PAB` - PAB
+		 *     * `PEI` - PEI
+		 *     * `PEN` - PEN
+		 *     * `PES` - PES
+		 *     * `PGK` - PGK
+		 *     * `PHP` - PHP
+		 *     * `PKR` - PKR
+		 *     * `PLN` - PLN
+		 *     * `PLZ` - PLZ
+		 *     * `PTE` - PTE
+		 *     * `PYG` - PYG
+		 *     * `QAR` - QAR
+		 *     * `RHD` - RHD
+		 *     * `ROL` - ROL
+		 *     * `RON` - RON
+		 *     * `RSD` - RSD
+		 *     * `RUB` - RUB
+		 *     * `RUR` - RUR
+		 *     * `RWF` - RWF
+		 *     * `SAR` - SAR
+		 *     * `SBD` - SBD
+		 *     * `SCR` - SCR
+		 *     * `SDD` - SDD
+		 *     * `SDG` - SDG
+		 *     * `SDP` - SDP
+		 *     * `SEK` - SEK
+		 *     * `SGD` - SGD
+		 *     * `SHP` - SHP
+		 *     * `SIT` - SIT
+		 *     * `SKK` - SKK
+		 *     * `SLE` - SLE
+		 *     * `SLL` - SLL
+		 *     * `SOS` - SOS
+		 *     * `SRD` - SRD
+		 *     * `SRG` - SRG
+		 *     * `SSP` - SSP
+		 *     * `STD` - STD
+		 *     * `STN` - STN
+		 *     * `SUR` - SUR
+		 *     * `SVC` - SVC
+		 *     * `SYP` - SYP
+		 *     * `SZL` - SZL
+		 *     * `THB` - THB
+		 *     * `TJR` - TJR
+		 *     * `TJS` - TJS
+		 *     * `TMM` - TMM
+		 *     * `TMT` - TMT
+		 *     * `TND` - TND
+		 *     * `TOP` - TOP
+		 *     * `TPE` - TPE
+		 *     * `TRL` - TRL
+		 *     * `TRY` - TRY
+		 *     * `TTD` - TTD
+		 *     * `TWD` - TWD
+		 *     * `TZS` - TZS
+		 *     * `UAH` - UAH
+		 *     * `UAK` - UAK
+		 *     * `UGS` - UGS
+		 *     * `UGX` - UGX
+		 *     * `USD` - USD
+		 *     * `USN` - USN
+		 *     * `USS` - USS
+		 *     * `UYI` - UYI
+		 *     * `UYP` - UYP
+		 *     * `UYU` - UYU
+		 *     * `UYW` - UYW
+		 *     * `UZS` - UZS
+		 *     * `VEB` - VEB
+		 *     * `VED` - VED
+		 *     * `VEF` - VEF
+		 *     * `VES` - VES
+		 *     * `VND` - VND
+		 *     * `VNN` - VNN
+		 *     * `VUV` - VUV
+		 *     * `WST` - WST
+		 *     * `XAF` - XAF
+		 *     * `XAG` - XAG
+		 *     * `XAU` - XAU
+		 *     * `XBA` - XBA
+		 *     * `XBB` - XBB
+		 *     * `XBC` - XBC
+		 *     * `XBD` - XBD
+		 *     * `XCD` - XCD
+		 *     * `XDR` - XDR
+		 *     * `XEU` - XEU
+		 *     * `XFO` - XFO
+		 *     * `XFU` - XFU
+		 *     * `XOF` - XOF
+		 *     * `XPD` - XPD
+		 *     * `XPF` - XPF
+		 *     * `XPT` - XPT
+		 *     * `XRE` - XRE
+		 *     * `XSU` - XSU
+		 *     * `XTS` - XTS
+		 *     * `XUA` - XUA
+		 *     * `XXX` - XXX
+		 *     * `YDD` - YDD
+		 *     * `YER` - YER
+		 *     * `YUD` - YUD
+		 *     * `YUM` - YUM
+		 *     * `YUN` - YUN
+		 *     * `YUR` - YUR
+		 *     * `ZAL` - ZAL
+		 *     * `ZAR` - ZAR
+		 *     * `ZMK` - ZMK
+		 *     * `ZMW` - ZMW
+		 *     * `ZRN` - ZRN
+		 *     * `ZRZ` - ZRZ
+		 *     * `ZWD` - ZWD
+		 *     * `ZWL` - ZWL
+		 *     * `ZWR` - ZWR
 		 * @enum {string}
 		 */
 		CurrencyEnum:
-			| 'ZWL'
-			| 'BRB'
-			| 'ARA'
-			| 'WST'
-			| 'TJS'
-			| 'THB'
-			| 'XTS'
-			| 'XUA'
-			| 'TJR'
-			| 'HUF'
-			| 'LVR'
-			| 'BAN'
-			| 'KHR'
-			| 'XFO'
-			| 'ZMW'
-			| 'NGN'
-			| 'MRO'
-			| 'ECV'
-			| 'DEM'
-			| 'LSL'
-			| 'MKN'
-			| 'EGP'
-			| 'FKP'
-			| 'KMF'
-			| 'MZM'
-			| 'AOK'
-			| 'VEB'
-			| 'ERN'
-			| 'UAH'
-			| 'PES'
-			| 'CLE'
-			| 'LTT'
-			| 'SDP'
-			| 'TRL'
-			| 'XBD'
-			| 'NAD'
-			| 'VNN'
-			| 'JOD'
-			| 'VUV'
-			| 'AON'
-			| 'XEU'
-			| 'XDR'
-			| 'ESA'
-			| 'MDC'
-			| 'SSP'
-			| 'NIO'
-			| 'GWE'
-			| 'LRD'
-			| 'MLF'
-			| 'MTP'
 			| 'ADP'
-			| 'KZT'
-			| 'USS'
-			| 'BRN'
-			| 'ZWD'
-			| 'ILR'
-			| 'GWP'
-			| 'SUR'
-			| 'PLN'
-			| 'LUC'
-			| 'PEN'
-			| 'ALK'
-			| 'MAD'
-			| 'BOV'
-			| 'MXV'
-			| 'GYD'
-			| 'BIF'
-			| 'GRD'
-			| 'ZAR'
-			| 'SGD'
-			| 'BEL'
-			| 'ITL'
-			| 'XAU'
-			| 'CRC'
-			| 'BGM'
-			| 'GMD'
-			| 'FRF'
-			| 'MZE'
-			| 'YUM'
-			| 'BUK'
-			| 'UZS'
-			| 'BGO'
-			| 'QAR'
-			| 'BTN'
-			| 'NZD'
-			| 'LKR'
-			| 'DOP'
-			| 'ISK'
-			| 'AZM'
-			| 'CZK'
-			| 'SLL'
-			| 'MZN'
-			| 'BAM'
-			| 'LBP'
-			| 'SAR'
-			| 'UGX'
-			| 'BYR'
-			| 'BGN'
-			| 'GBP'
-			| 'UYW'
-			| 'XBB'
-			| 'BND'
-			| 'USN'
-			| 'BRL'
-			| 'VND'
-			| 'CNY'
-			| 'MNT'
-			| 'MXP'
-			| 'GEK'
-			| 'UAK'
-			| 'SRG'
-			| 'ZWR'
-			| 'BEC'
-			| 'CYP'
-			| 'ZRZ'
-			| 'CUP'
-			| 'LVL'
-			| 'AOR'
-			| 'RUB'
-			| 'XAF'
-			| 'DJF'
-			| 'GNS'
-			| 'XPD'
-			| 'PLZ'
-			| 'ECS'
-			| 'GQE'
-			| 'SOS'
-			| 'MYR'
-			| 'BYB'
-			| 'TZS'
-			| 'XSU'
-			| 'SBD'
-			| 'BRR'
-			| 'PTE'
-			| 'CSK'
-			| 'MWK'
-			| 'MRU'
-			| 'BRZ'
-			| 'ARP'
-			| 'BDT'
-			| 'XPF'
-			| 'ZMK'
-			| 'AFN'
-			| 'TOP'
-			| 'SKK'
-			| 'GTQ'
-			| 'MDL'
-			| 'VED'
-			| 'AMD'
-			| 'JMD'
-			| 'XOF'
-			| 'SIT'
-			| 'BRC'
-			| 'JPY'
-			| 'BOP'
-			| 'KYD'
-			| 'TMM'
-			| 'CHE'
-			| 'ANG'
-			| 'MCF'
-			| 'SRD'
-			| 'RON'
-			| 'ARL'
-			| 'XBC'
-			| 'XAG'
-			| 'IEP'
-			| 'NLG'
-			| 'LAK'
-			| 'AZN'
-			| 'BBD'
-			| 'AUD'
-			| 'ILS'
-			| 'USD'
-			| 'MGF'
-			| 'OMR'
-			| 'DZD'
-			| 'GHS'
-			| 'MOP'
-			| 'XBA'
-			| 'AFA'
-			| 'CHW'
-			| 'GIP'
-			| 'COP'
-			| 'BSD'
-			| 'ZAL'
-			| 'INR'
-			| 'TTD'
-			| 'SVC'
-			| 'SZL'
-			| 'BRE'
-			| 'PEI'
-			| 'CNX'
 			| 'AED'
-			| 'XXX'
-			| 'HTG'
-			| 'MTL'
-			| 'MAF'
-			| 'XRE'
-			| 'UYI'
-			| 'MXN'
+			| 'AFA'
+			| 'AFN'
+			| 'ALK'
+			| 'ALL'
+			| 'AMD'
+			| 'ANG'
+			| 'AOA'
+			| 'AOK'
+			| 'AON'
+			| 'AOR'
+			| 'ARA'
+			| 'ARL'
+			| 'ARM'
+			| 'ARP'
+			| 'ARS'
+			| 'ATS'
+			| 'AUD'
+			| 'AWG'
+			| 'AZM'
+			| 'AZN'
+			| 'BAD'
+			| 'BAM'
+			| 'BAN'
+			| 'BBD'
+			| 'BDT'
+			| 'BEC'
 			| 'BEF'
-			| 'HNL'
-			| 'ZRN'
+			| 'BEL'
+			| 'BGL'
+			| 'BGM'
+			| 'BGN'
+			| 'BGO'
+			| 'BHD'
+			| 'BIF'
+			| 'BMD'
+			| 'BND'
+			| 'BOB'
+			| 'BOL'
+			| 'BOP'
+			| 'BOV'
+			| 'BRB'
+			| 'BRC'
+			| 'BRE'
+			| 'BRL'
+			| 'BRN'
+			| 'BRR'
+			| 'BRZ'
+			| 'BSD'
+			| 'BTN'
+			| 'BUK'
+			| 'BWP'
+			| 'BYB'
+			| 'BYN'
+			| 'BYR'
+			| 'BZD'
+			| 'CAD'
+			| 'CDF'
+			| 'CHE'
+			| 'CHF'
+			| 'CHW'
+			| 'CLE'
+			| 'CLF'
 			| 'CLP'
 			| 'CNH'
-			| 'KES'
-			| 'YUD'
-			| 'EUR'
-			| 'CHF'
-			| 'BYN'
-			| 'PGK'
-			| 'LUF'
-			| 'SEK'
-			| 'RSD'
-			| 'FIM'
-			| 'MGA'
-			| 'STD'
-			| 'MMK'
-			| 'KGS'
-			| 'SDG'
-			| 'KPW'
-			| 'HRK'
-			| 'SLE'
-			| 'EEK'
-			| 'MUR'
-			| 'UYU'
-			| 'ALL'
-			| 'TRY'
-			| 'LUL'
-			| 'PYG'
-			| 'GNF'
-			| 'GEL'
-			| 'PHP'
-			| 'CUC'
-			| 'VES'
+			| 'CNX'
+			| 'CNY'
+			| 'COP'
 			| 'COU'
-			| 'XFU'
-			| 'ESB'
-			| 'MVR'
-			| 'AWG'
-			| 'FJD'
-			| 'MVP'
-			| 'CDF'
-			| 'SCR'
-			| 'SHP'
-			| 'KRW'
-			| 'NPR'
-			| 'MKD'
-			| 'NIC'
-			| 'XPT'
-			| 'IQD'
-			| 'YUN'
-			| 'TND'
-			| 'VEF'
-			| 'BGL'
-			| 'YDD'
-			| 'TWD'
-			| 'ETB'
-			| 'ISJ'
-			| 'RWF'
-			| 'LTL'
-			| 'BWP'
-			| 'SYP'
-			| 'PKR'
-			| 'UYP'
-			| 'ARM'
-			| 'LYD'
-			| 'CVE'
-			| 'GHC'
-			| 'BAD'
-			| 'BHD'
-			| 'KWD'
-			| 'KRH'
-			| 'UGS'
-			| 'KRO'
-			| 'RUR'
-			| 'ROL'
-			| 'IRR'
-			| 'TMT'
-			| 'SDD'
-			| 'ATS'
-			| 'TPE'
+			| 'CRC'
 			| 'CSD'
+			| 'CSK'
+			| 'CUC'
+			| 'CUP'
+			| 'CVE'
+			| 'CYP'
+			| 'CZK'
 			| 'DDM'
-			| 'BMD'
-			| 'HKD'
-			| 'IDR'
-			| 'YER'
+			| 'DEM'
+			| 'DJF'
 			| 'DKK'
-			| 'BOB'
-			| 'AOA'
-			| 'ARS'
-			| 'NOK'
-			| 'BZD'
-			| 'BOL'
-			| 'CAD'
+			| 'DOP'
+			| 'DZD'
+			| 'ECS'
+			| 'ECV'
+			| 'EEK'
+			| 'EGP'
+			| 'ERN'
+			| 'ESA'
+			| 'ESB'
+			| 'ESP'
+			| 'ETB'
+			| 'EUR'
+			| 'FIM'
+			| 'FJD'
+			| 'FKP'
+			| 'FRF'
+			| 'GBP'
+			| 'GEK'
+			| 'GEL'
+			| 'GHC'
+			| 'GHS'
+			| 'GIP'
+			| 'GMD'
+			| 'GNF'
+			| 'GNS'
+			| 'GQE'
+			| 'GRD'
+			| 'GTQ'
+			| 'GWE'
+			| 'GWP'
+			| 'GYD'
+			| 'HKD'
+			| 'HNL'
 			| 'HRD'
-			| 'PAB'
-			| 'YUR'
+			| 'HRK'
+			| 'HTG'
+			| 'HUF'
+			| 'IDR'
+			| 'IEP'
 			| 'ILP'
-			| 'XCD'
-			| 'CLF'
+			| 'ILR'
+			| 'ILS'
+			| 'INR'
+			| 'IQD'
+			| 'IRR'
+			| 'ISJ'
+			| 'ISK'
+			| 'ITL'
+			| 'JMD'
+			| 'JOD'
+			| 'JPY'
+			| 'KES'
+			| 'KGS'
+			| 'KHR'
+			| 'KMF'
+			| 'KPW'
+			| 'KRH'
+			| 'KRO'
+			| 'KRW'
+			| 'KWD'
+			| 'KYD'
+			| 'KZT'
+			| 'LAK'
+			| 'LBP'
+			| 'LKR'
+			| 'LRD'
+			| 'LSL'
+			| 'LTL'
+			| 'LTT'
+			| 'LUC'
+			| 'LUF'
+			| 'LUL'
+			| 'LVL'
+			| 'LVR'
+			| 'LYD'
+			| 'MAD'
+			| 'MAF'
+			| 'MCF'
+			| 'MDC'
+			| 'MDL'
+			| 'MGA'
+			| 'MGF'
+			| 'MKD'
+			| 'MKN'
+			| 'MLF'
+			| 'MMK'
+			| 'MNT'
+			| 'MOP'
+			| 'MRO'
+			| 'MRU'
+			| 'MTL'
+			| 'MTP'
+			| 'MUR'
+			| 'MVP'
+			| 'MVR'
+			| 'MWK'
+			| 'MXN'
+			| 'MXP'
+			| 'MXV'
+			| 'MYR'
+			| 'MZE'
+			| 'MZM'
+			| 'MZN'
+			| 'NAD'
+			| 'NGN'
+			| 'NIC'
+			| 'NIO'
+			| 'NLG'
+			| 'NOK'
+			| 'NPR'
+			| 'NZD'
+			| 'OMR'
+			| 'PAB'
+			| 'PEI'
+			| 'PEN'
+			| 'PES'
+			| 'PGK'
+			| 'PHP'
+			| 'PKR'
+			| 'PLN'
+			| 'PLZ'
+			| 'PTE'
+			| 'PYG'
+			| 'QAR'
 			| 'RHD'
+			| 'ROL'
+			| 'RON'
+			| 'RSD'
+			| 'RUB'
+			| 'RUR'
+			| 'RWF'
+			| 'SAR'
+			| 'SBD'
+			| 'SCR'
+			| 'SDD'
+			| 'SDG'
+			| 'SDP'
+			| 'SEK'
+			| 'SGD'
+			| 'SHP'
+			| 'SIT'
+			| 'SKK'
+			| 'SLE'
+			| 'SLL'
+			| 'SOS'
+			| 'SRD'
+			| 'SRG'
+			| 'SSP'
+			| 'STD'
 			| 'STN'
-			| 'ESP';
+			| 'SUR'
+			| 'SVC'
+			| 'SYP'
+			| 'SZL'
+			| 'THB'
+			| 'TJR'
+			| 'TJS'
+			| 'TMM'
+			| 'TMT'
+			| 'TND'
+			| 'TOP'
+			| 'TPE'
+			| 'TRL'
+			| 'TRY'
+			| 'TTD'
+			| 'TWD'
+			| 'TZS'
+			| 'UAH'
+			| 'UAK'
+			| 'UGS'
+			| 'UGX'
+			| 'USD'
+			| 'USN'
+			| 'USS'
+			| 'UYI'
+			| 'UYP'
+			| 'UYU'
+			| 'UYW'
+			| 'UZS'
+			| 'VEB'
+			| 'VED'
+			| 'VEF'
+			| 'VES'
+			| 'VND'
+			| 'VNN'
+			| 'VUV'
+			| 'WST'
+			| 'XAF'
+			| 'XAG'
+			| 'XAU'
+			| 'XBA'
+			| 'XBB'
+			| 'XBC'
+			| 'XBD'
+			| 'XCD'
+			| 'XDR'
+			| 'XEU'
+			| 'XFO'
+			| 'XFU'
+			| 'XOF'
+			| 'XPD'
+			| 'XPF'
+			| 'XPT'
+			| 'XRE'
+			| 'XSU'
+			| 'XTS'
+			| 'XUA'
+			| 'XXX'
+			| 'YDD'
+			| 'YER'
+			| 'YUD'
+			| 'YUM'
+			| 'YUN'
+			| 'YUR'
+			| 'ZAL'
+			| 'ZAR'
+			| 'ZMK'
+			| 'ZMW'
+			| 'ZRN'
+			| 'ZRZ'
+			| 'ZWD'
+			| 'ZWL'
+			| 'ZWR';
+		/**
+		 * @description * `QUANTITY` - QUANTITY
+		 *     * `SALE` - SALE
+		 *     * `SEASONAL` - SEASONAL
+		 *     * `LOYALTY_PROGRAM` - LOYALTY_PROGRAM
+		 *     * `EXPIRES_SOON` - EXPIRES_SOON
+		 *     * `PICK_IT_YOURSELF` - PICK_IT_YOURSELF
+		 *     * `SECOND_HAND` - SECOND_HAND
+		 *     * `OTHER` - OTHER
+		 * @enum {string}
+		 */
+		DiscountTypeEnum:
+			| 'QUANTITY'
+			| 'SALE'
+			| 'SEASONAL'
+			| 'LOYALTY_PROGRAM'
+			| 'EXPIRES_SOON'
+			| 'PICK_IT_YOURSELF'
+			| 'SECOND_HAND'
+			| 'OTHER';
 		Location: {
 			readonly id: number;
+			type: components['schemas']['TypeA9eEnum'];
 			/** Format: int64 */
-			osm_id: number;
-			osm_type: components['schemas']['LocationOsmTypeEnum'];
+			osm_id: number | null;
+			osm_type:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
 			osm_name?: string | null;
 			osm_display_name?: string | null;
 			osm_tag_key?: string | null;
 			osm_tag_value?: string | null;
+			osm_brand?: string | null;
 			osm_address_postcode?: string | null;
 			osm_address_city?: string | null;
 			osm_address_country?: string | null;
@@ -914,16 +1038,32 @@ export interface components {
 			osm_lat?: number | null;
 			/** Format: double */
 			osm_lon?: number | null;
+			osm_version?: number | null;
+			/** Format: uri */
+			website_url?: string | null;
 			price_count?: number | null;
+			user_count?: number | null;
+			product_count?: number | null;
+			proof_count?: number | null;
+			source?: string | null;
 			/** Format: date-time */
 			created?: string;
 			/** Format: date-time */
 			readonly updated: string;
 		};
 		LocationCreate: {
+			type: components['schemas']['TypeA9eEnum'];
 			/** Format: int64 */
-			osm_id: number;
-			osm_type: components['schemas']['LocationOsmTypeEnum'];
+			osm_id?: number | null;
+			osm_type?:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: uri */
+			website_url?: string | null;
 		};
 		/**
 		 * @description * `NODE` - NODE
@@ -968,6 +1108,21 @@ export interface components {
 			previous?: string | null;
 			results: components['schemas']['PriceFull'][];
 		};
+		PaginatedPriceTagFullList: {
+			/** @example 123 */
+			count: number;
+			/**
+			 * Format: uri
+			 * @example http://api.example.org/accounts/?page=4
+			 */
+			next?: string | null;
+			/**
+			 * Format: uri
+			 * @example http://api.example.org/accounts/?page=2
+			 */
+			previous?: string | null;
+			results: components['schemas']['PriceTagFull'][];
+		};
 		PaginatedProductFullList: {
 			/** @example 123 */
 			count: number;
@@ -983,7 +1138,7 @@ export interface components {
 			previous?: string | null;
 			results: components['schemas']['ProductFull'][];
 		};
-		PaginatedProofFullList: {
+		PaginatedProofHalfFullList: {
 			/** @example 123 */
 			count: number;
 			/**
@@ -996,7 +1151,7 @@ export interface components {
 			 * @example http://api.example.org/accounts/?page=2
 			 */
 			previous?: string | null;
-			results: components['schemas']['ProofFull'][];
+			results: components['schemas']['ProofHalfFull'][];
 		};
 		PaginatedUserList: {
 			/** @example 123 */
@@ -1013,68 +1168,58 @@ export interface components {
 			previous?: string | null;
 			results: components['schemas']['User'][];
 		};
+		PatchedPriceTagUpdate: {
+			/** @description Coordinates of the bounding box, in the format [y_min, x_min, y_max, x_max] */
+			bounding_box?: number[];
+			/** @description The annotation status
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price
+			 *     * `2` - not_readable
+			 *     * `3` - truncated
+			 *     * `4` - not_price_tag */
+			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			price_id?: number;
+		};
 		PatchedPriceUpdate: {
-			/** Format: double */
-			price?: number | null;
-			price_is_discounted?: boolean | null;
-			/** Format: double */
-			price_without_discount?: number | null;
-			price_per?:
-				| (
-						| components['schemas']['PricePerEnum']
-						| components['schemas']['BlankEnum']
-						| components['schemas']['NullEnum']
-				  )
-				| null;
-			currency?:
-				| (
-						| components['schemas']['CurrencyEnum']
-						| components['schemas']['BlankEnum']
-						| components['schemas']['NullEnum']
-				  )
-				| null;
-			/** Format: date */
-			date?: string | null;
-		};
-		PatchedProofUpdate: {
-			type?: components['schemas']['TypeEnum'];
-			currency?:
-				| (
-						| components['schemas']['CurrencyEnum']
-						| components['schemas']['BlankEnum']
-						| components['schemas']['NullEnum']
-				  )
-				| null;
-			/** Format: date */
-			date?: string | null;
-		};
-		PriceCreate: {
-			/** Format: double */
-			price?: number | null;
-			price_is_discounted?: boolean | null;
-			/** Format: double */
-			price_without_discount?: number | null;
-			price_per?:
-				| (
-						| components['schemas']['PricePerEnum']
-						| components['schemas']['BlankEnum']
-						| components['schemas']['NullEnum']
-				  )
-				| null;
-			currency?:
-				| (
-						| components['schemas']['CurrencyEnum']
-						| components['schemas']['BlankEnum']
-						| components['schemas']['NullEnum']
-				  )
-				| null;
-			/** Format: date */
-			date?: string | null;
-			product_code?: string | null;
-			product_name?: string | null;
 			category_tag?: string | null;
 			labels_tags?: unknown;
 			origins_tags?: unknown;
+			/** Format: double */
+			price?: number | null;
+			price_is_discounted?: boolean;
+			/** Format: double */
+			price_without_discount?: number | null;
+			discount_type?:
+				| (
+						| components['schemas']['DiscountTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			price_per?:
+				| (
+						| components['schemas']['PricePerEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			currency?:
+				| (
+						| components['schemas']['CurrencyEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: date */
+			date?: string | null;
+			/**
+			 * Receipt's price quantity (user input)
+			 * Format: double
+			 */
+			receipt_quantity?: number | null;
+		};
+		PatchedProofUpdate: {
 			/** Format: int64 */
 			location_osm_id?: number | null;
 			location_osm_type?:
@@ -1084,6 +1229,80 @@ export interface components {
 						| components['schemas']['NullEnum']
 				  )
 				| null;
+			type?: components['schemas']['TypeEbbEnum'];
+			currency?:
+				| (
+						| components['schemas']['CurrencyEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: date */
+			date?: string | null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
+		};
+		PriceCreate: {
+			category_tag?: string | null;
+			labels_tags?: unknown;
+			origins_tags?: unknown;
+			/** Format: double */
+			price?: number | null;
+			price_is_discounted?: boolean;
+			/** Format: double */
+			price_without_discount?: number | null;
+			discount_type?:
+				| (
+						| components['schemas']['DiscountTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			price_per?:
+				| (
+						| components['schemas']['PricePerEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			currency?:
+				| (
+						| components['schemas']['CurrencyEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: date */
+			date?: string | null;
+			/**
+			 * Receipt's price quantity (user input)
+			 * Format: double
+			 */
+			receipt_quantity?: number | null;
+			type?: components['schemas']['TypeF36Enum'];
+			product_code?: string | null;
+			product_name?: string | null;
+			/** Format: int64 */
+			location_osm_id?: number | null;
+			location_osm_type?:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			location_id?: number;
 			proof_id: number;
 		};
 		PriceFull: {
@@ -1094,6 +1313,7 @@ export interface components {
 			product: components['schemas']['ProductFull'];
 			location: components['schemas']['Location'];
 			proof: components['schemas']['Proof'];
+			type: components['schemas']['TypeF36Enum'];
 			product_code?: string | null;
 			product_name?: string | null;
 			category_tag?: string | null;
@@ -1101,9 +1321,16 @@ export interface components {
 			origins_tags?: unknown;
 			/** Format: double */
 			price?: number | null;
-			price_is_discounted?: boolean | null;
+			price_is_discounted?: boolean;
 			/** Format: double */
 			price_without_discount?: number | null;
+			discount_type?:
+				| (
+						| components['schemas']['DiscountTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
 			price_per?:
 				| (
 						| components['schemas']['PricePerEnum']
@@ -1129,7 +1356,13 @@ export interface components {
 				| null;
 			/** Format: date */
 			date?: string | null;
+			/**
+			 * Receipt's price quantity (user input)
+			 * Format: double
+			 */
+			receipt_quantity?: number | null;
 			owner?: string | null;
+			source?: string | null;
 			/** Format: date-time */
 			created?: string;
 			/** Format: date-time */
@@ -1141,12 +1374,114 @@ export interface components {
 		 * @enum {string}
 		 */
 		PricePerEnum: 'UNIT' | 'KILOGRAM';
+		PriceStats: {
+			price__count: number;
+			/** Format: double */
+			price__min: number;
+			/** Format: double */
+			price__max: number;
+			/** Format: double */
+			price__avg: number;
+		};
+		PriceTagCreate: {
+			/** @description Coordinates of the bounding box, in the format [y_min, x_min, y_max, x_max] */
+			bounding_box: number[];
+			/** @description The annotation status
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price
+			 *     * `2` - not_readable
+			 *     * `3` - truncated
+			 *     * `4` - not_price_tag */
+			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			price_id?: number;
+			proof_id: number;
+		};
+		PriceTagFull: {
+			readonly id: number;
+			/** @description The price linked to this tag */
+			readonly price_id: number | null;
+			readonly predictions: components['schemas']['PriceTagPrediction'][];
+			proof: components['schemas']['ProofHalfFull'];
+			/** @description Coordinates of the bounding box, in the format [y_min, x_min, y_max, x_max] */
+			bounding_box: number[];
+			/** @description The annotation status
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price
+			 *     * `2` - not_readable
+			 *     * `3` - truncated
+			 *     * `4` - not_price_tag */
+			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			/** @description The version of the object detector model that generated the prediction */
+			model_version?: string | null;
+			prediction_count?: number | null;
+			/** @description The name of the user who created this price tag. This field is null if the tag was created by a model. */
+			created_by?: string | null;
+			/** @description The name of the user who last updated this price tag bounding boxes. If the price tag bounding boxes were never updated, this field is null. */
+			updated_by?: string | null;
+			/**
+			 * Format: date-time
+			 * @description When the tag was created in DB
+			 */
+			created?: string;
+			/**
+			 * Format: date-time
+			 * @description When the tag was last updated
+			 */
+			readonly updated: string;
+		};
+		PriceTagPrediction: {
+			/** @description The type of the prediction
+			 *
+			 *     * `PRICE_TAG_EXTRACTION` - PRICE_TAG_EXTRACTION */
+			type: components['schemas']['PriceTagPredictionTypeEnum'];
+			/** @description The name of the model that generated the prediction */
+			model_name: string;
+			/** @description The specific version of the model that generated the prediction */
+			model_version: string;
+			/**
+			 * Format: date-time
+			 * @description When the prediction was created in DB
+			 */
+			created?: string;
+			/** @description a dict representing the data of the prediction. This field is model-specific. */
+			data?: unknown;
+		};
+		/**
+		 * @description * `PRICE_TAG_EXTRACTION` - PRICE_TAG_EXTRACTION
+		 * @enum {string}
+		 */
+		PriceTagPredictionTypeEnum: 'PRICE_TAG_EXTRACTION';
+		PriceTagUpdate: {
+			/** @description Coordinates of the bounding box, in the format [y_min, x_min, y_max, x_max] */
+			bounding_box: number[];
+			/** @description The annotation status
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price
+			 *     * `2` - not_readable
+			 *     * `3` - truncated
+			 *     * `4` - not_price_tag */
+			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			price_id: number;
+		};
 		PriceUpdate: {
+			category_tag?: string | null;
+			labels_tags?: unknown;
+			origins_tags?: unknown;
 			/** Format: double */
 			price?: number | null;
-			price_is_discounted?: boolean | null;
+			price_is_discounted?: boolean;
 			/** Format: double */
 			price_without_discount?: number | null;
+			discount_type?:
+				| (
+						| components['schemas']['DiscountTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
 			price_per?:
 				| (
 						| components['schemas']['PricePerEnum']
@@ -1163,6 +1498,11 @@ export interface components {
 				| null;
 			/** Format: date */
 			date?: string | null;
+			/**
+			 * Receipt's price quantity (user input)
+			 * Format: double
+			 */
+			receipt_quantity?: number | null;
 		};
 		ProductFull: {
 			readonly id: number;
@@ -1174,6 +1514,8 @@ export interface components {
 						| components['schemas']['NullEnum']
 				  )
 				| null;
+			/** Format: date-time */
+			source_last_synced?: string | null;
 			product_name?: string | null;
 			image_url?: string | null;
 			product_quantity?: number | null;
@@ -1187,6 +1529,11 @@ export interface components {
 			nova_group?: number | null;
 			unique_scans_n?: number | null;
 			price_count?: number | null;
+			price_currency_count?: number | null;
+			location_count?: number | null;
+			location_type_osm_country_count?: number | null;
+			user_count?: number | null;
+			proof_count?: number | null;
 			/** Format: date-time */
 			created?: string;
 			/** Format: date-time */
@@ -1195,9 +1542,10 @@ export interface components {
 		Proof: {
 			readonly id: number;
 			location_id: number;
-			file_path: string;
+			file_path?: string | null;
 			mimetype?: string | null;
-			type: components['schemas']['TypeEnum'];
+			type: components['schemas']['TypeEbbEnum'];
+			image_thumb_path?: string | null;
 			/** Format: int64 */
 			location_osm_id?: number | null;
 			location_osm_type?:
@@ -1216,21 +1564,37 @@ export interface components {
 						| components['schemas']['NullEnum']
 				  )
 				| null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
 			price_count?: number | null;
+			prediction_count?: number | null;
 			owner?: string | null;
+			source?: string | null;
 			/** Format: date-time */
 			created?: string;
 			/** Format: date-time */
 			readonly updated: string;
-			location?: number | null;
 		};
 		ProofFull: {
 			readonly id: number;
 			location_id: number;
 			location: components['schemas']['Location'];
-			file_path: string;
+			readonly predictions: components['schemas']['ProofPrediction'][];
+			file_path?: string | null;
 			mimetype?: string | null;
-			type: components['schemas']['TypeEnum'];
+			type: components['schemas']['TypeEbbEnum'];
+			image_thumb_path?: string | null;
 			/** Format: int64 */
 			location_osm_id?: number | null;
 			location_osm_type?:
@@ -1249,15 +1613,120 @@ export interface components {
 						| components['schemas']['NullEnum']
 				  )
 				| null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
 			price_count?: number | null;
+			prediction_count?: number | null;
 			owner?: string | null;
+			source?: string | null;
 			/** Format: date-time */
 			created?: string;
 			/** Format: date-time */
 			readonly updated: string;
 		};
+		ProofHalfFull: {
+			readonly id: number;
+			location_id: number;
+			location: components['schemas']['Location'];
+			file_path?: string | null;
+			mimetype?: string | null;
+			type: components['schemas']['TypeEbbEnum'];
+			image_thumb_path?: string | null;
+			/** Format: int64 */
+			location_osm_id?: number | null;
+			location_osm_type?:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: date */
+			date?: string | null;
+			currency?:
+				| (
+						| components['schemas']['CurrencyEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
+			price_count?: number | null;
+			prediction_count?: number | null;
+			owner?: string | null;
+			source?: string | null;
+			/** Format: date-time */
+			created?: string;
+			/** Format: date-time */
+			readonly updated: string;
+		};
+		ProofPrediction: {
+			/** The type of the prediction */
+			type: components['schemas']['ProofPredictionTypeEnum'];
+			/** The name of the model that generated the prediction */
+			model_name: string;
+			/** The specific version of the model that generated the prediction */
+			model_version: string;
+			/**
+			 * When the prediction was created in DB
+			 * Format: date-time
+			 */
+			created?: string;
+			/** A dict representing the data of the prediction. This field is model-specific. */
+			data?: unknown;
+			/** The predicted value, only for classification models, null otherwise. */
+			value?: string | null;
+			/**
+			 * The maximum confidence of the prediction, may be null for some models.For object detection models, this is the confidence of the most confident object.For classification models, this is the confidence of the predicted class.
+			 * Format: double
+			 */
+			max_confidence?: number | null;
+		};
+		/**
+		 * @description * `OBJECT_DETECTION` - OBJECT_DETECTION
+		 *     * `CLASSIFICATION` - CLASSIFICATION
+		 *     * `RECEIPT_EXTRACTION` - RECEIPT_EXTRACTION
+		 * @enum {string}
+		 */
+		ProofPredictionTypeEnum: 'OBJECT_DETECTION' | 'CLASSIFICATION' | 'RECEIPT_EXTRACTION';
+		ProofProcessWithGemini: {
+			files: string[];
+			mode: string;
+		};
 		ProofUpdate: {
-			type: components['schemas']['TypeEnum'];
+			/** Format: int64 */
+			location_osm_id?: number | null;
+			location_osm_type?:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			type: components['schemas']['TypeEbbEnum'];
 			currency?:
 				| (
 						| components['schemas']['CurrencyEnum']
@@ -1267,6 +1736,55 @@ export interface components {
 				| null;
 			/** Format: date */
 			date?: string | null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
+		};
+		ProofUpload: {
+			file: string;
+			/** Format: int64 */
+			location_osm_id?: number | null;
+			location_osm_type?:
+				| (
+						| components['schemas']['LocationOsmTypeEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			type: components['schemas']['TypeEbbEnum'];
+			currency?:
+				| (
+						| components['schemas']['CurrencyEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/** Format: date */
+			date?: string | null;
+			/** Receipt's number of prices (user input) */
+			receipt_price_count?: number | null;
+			/**
+			 * Receipt's total amount (user input)
+			 * Format: double
+			 */
+			receipt_price_total?: number | null;
+			/**
+			 * Receipt's online delivery costs (user input)
+			 * Format: double
+			 */
+			receipt_online_delivery_costs?: number | null;
+			ready_for_price_tag_validation?: boolean;
+			location_id?: number;
 		};
 		SessionFull: {
 			user_id: string;
@@ -1291,15 +1809,95 @@ export interface components {
 			status: string;
 		};
 		/**
+		 * @description * `0` - deleted
+		 *     * `1` - linked_to_price
+		 *     * `2` - not_readable
+		 *     * `3` - truncated
+		 *     * `4` - not_price_tag
+		 * @enum {integer}
+		 */
+		StatusEnum: 0 | 1 | 2 | 3 | 4;
+		TotalStats: {
+			price_count?: number;
+			price_type_product_code_count?: number;
+			price_type_category_tag_count?: number;
+			price_with_discount_count?: number;
+			price_currency_count?: number;
+			price_year_count?: number;
+			price_location_country_count?: number;
+			price_type_group_community_count?: number;
+			price_type_group_consumption_count?: number;
+			price_source_web_count?: number;
+			price_source_mobile_count?: number;
+			price_source_api_count?: number;
+			price_source_other_count?: number;
+			product_count?: number;
+			product_source_off_count?: number;
+			product_source_obf_count?: number;
+			product_source_opff_count?: number;
+			product_source_opf_count?: number;
+			product_with_price_count?: number;
+			product_source_off_with_price_count?: number;
+			product_source_obf_with_price_count?: number;
+			product_source_opff_with_price_count?: number;
+			product_source_opf_with_price_count?: number;
+			location_count?: number;
+			location_with_price_count?: number;
+			location_type_osm_count?: number;
+			location_type_online_count?: number;
+			location_type_osm_country_count?: number;
+			proof_count?: number;
+			proof_with_price_count?: number;
+			proof_type_price_tag_count?: number;
+			proof_type_receipt_count?: number;
+			proof_type_gdpr_request_count?: number;
+			proof_type_shop_import_count?: number;
+			proof_type_group_community_count?: number;
+			proof_type_group_consumption_count?: number;
+			proof_source_web_count?: number;
+			proof_source_mobile_count?: number;
+			proof_source_api_count?: number;
+			proof_source_other_count?: number;
+			price_tag_count?: number;
+			price_tag_status_unknown_count?: number;
+			price_tag_status_linked_to_price_count?: number;
+			user_count?: number;
+			user_with_price_count?: number;
+			/** Format: date-time */
+			readonly updated: string;
+		};
+		/**
+		 * @description * `OSM` - OSM
+		 *     * `ONLINE` - ONLINE
+		 * @enum {string}
+		 */
+		TypeA9eEnum: 'OSM' | 'ONLINE';
+		/**
 		 * @description * `PRICE_TAG` - PRICE_TAG
 		 *     * `RECEIPT` - RECEIPT
 		 *     * `GDPR_REQUEST` - GDPR_REQUEST
+		 *     * `SHOP_IMPORT` - SHOP_IMPORT
 		 * @enum {string}
 		 */
-		TypeEnum: 'PRICE_TAG' | 'RECEIPT' | 'GDPR_REQUEST';
+		TypeEbbEnum: 'PRICE_TAG' | 'RECEIPT' | 'GDPR_REQUEST' | 'SHOP_IMPORT';
+		/**
+		 * @description * `PRODUCT` - PRODUCT
+		 *     * `CATEGORY` - CATEGORY
+		 * @enum {string}
+		 */
+		TypeF36Enum: 'PRODUCT' | 'CATEGORY';
 		User: {
 			user_id: string;
 			price_count?: number | null;
+			price_type_group_community_count?: number;
+			price_type_group_consumption_count?: number;
+			price_currency_count?: number | null;
+			proof_count?: number | null;
+			proof_type_group_community_count?: number;
+			proof_type_group_consumption_count?: number;
+			location_count?: number | null;
+			location_type_osm_country_count?: number | null;
+			product_count?: number | null;
 		};
 	};
 	responses: never;
@@ -1480,6 +2078,11 @@ export interface operations {
 				price_count?: number;
 				price_count__gte?: number;
 				price_count__lte?: number;
+				/** @description Number of results to return per page. */
+				size?: number;
+				/** @description * `OSM` - OSM
+				 *     * `ONLINE` - ONLINE */
+				type?: 'ONLINE' | 'OSM';
 			};
 			header?: never;
 			path?: never;
@@ -1566,315 +2169,2028 @@ export interface operations {
 			};
 		};
 	};
+	price_tags_list: {
+		parameters: {
+			query?: {
+				created__gte?: string;
+				created__lte?: string;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				prediction_count?: number;
+				prediction_count__gte?: number;
+				prediction_count__lte?: number;
+				proof__owner?: string;
+				proof__ready_for_price_tag_validation?: boolean;
+				/** @description The proof this price tag belongs to */
+				proof_id?: number;
+				/** @description Number of results to return per page. */
+				size?: number;
+				/** @description The annotation status
+				 *
+				 *     * `0` - deleted
+				 *     * `1` - linked_to_price
+				 *     * `2` - not_readable
+				 *     * `3` - truncated
+				 *     * `4` - not_price_tag */
+				status?: 0 | 1 | 2 | 3 | 4 | null;
+				status__isnull?: boolean;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PaginatedPriceTagFullList'];
+				};
+			};
+		};
+	};
+	price_tags_create: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['PriceTagCreate'];
+				'application/x-www-form-urlencoded': components['schemas']['PriceTagCreate'];
+				'multipart/form-data': components['schemas']['PriceTagCreate'];
+			};
+		};
+		responses: {
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceTagCreate'];
+				};
+			};
+		};
+	};
+	price_tags_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price Tag. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceTagFull'];
+				};
+			};
+		};
+	};
+	price_tags_destroy: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price Tag. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description No response body */
+			204: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	price_tags_partial_update: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price Tag. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				'application/json': components['schemas']['PatchedPriceTagUpdate'];
+				'application/x-www-form-urlencoded': components['schemas']['PatchedPriceTagUpdate'];
+				'multipart/form-data': components['schemas']['PatchedPriceTagUpdate'];
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceTagUpdate'];
+				};
+			};
+		};
+	};
 	prices_list: {
 		parameters: {
 			query?: {
 				category_tag?: string;
-				/** @description * `ZWL` - ZWL
-				 *     * `BRB` - BRB
-				 *     * `ARA` - ARA
-				 *     * `WST` - WST
-				 *     * `TJS` - TJS
-				 *     * `THB` - THB
-				 *     * `XTS` - XTS
-				 *     * `XUA` - XUA
-				 *     * `TJR` - TJR
-				 *     * `HUF` - HUF
-				 *     * `LVR` - LVR
-				 *     * `BAN` - BAN
-				 *     * `KHR` - KHR
-				 *     * `XFO` - XFO
-				 *     * `ZMW` - ZMW
-				 *     * `NGN` - NGN
-				 *     * `MRO` - MRO
-				 *     * `ECV` - ECV
-				 *     * `DEM` - DEM
-				 *     * `LSL` - LSL
-				 *     * `MKN` - MKN
-				 *     * `EGP` - EGP
-				 *     * `FKP` - FKP
-				 *     * `KMF` - KMF
-				 *     * `MZM` - MZM
-				 *     * `AOK` - AOK
-				 *     * `VEB` - VEB
-				 *     * `ERN` - ERN
-				 *     * `UAH` - UAH
-				 *     * `PES` - PES
-				 *     * `CLE` - CLE
-				 *     * `LTT` - LTT
-				 *     * `SDP` - SDP
-				 *     * `TRL` - TRL
-				 *     * `XBD` - XBD
-				 *     * `NAD` - NAD
-				 *     * `VNN` - VNN
-				 *     * `JOD` - JOD
-				 *     * `VUV` - VUV
-				 *     * `AON` - AON
-				 *     * `XEU` - XEU
-				 *     * `XDR` - XDR
-				 *     * `ESA` - ESA
-				 *     * `MDC` - MDC
-				 *     * `SSP` - SSP
-				 *     * `NIO` - NIO
-				 *     * `GWE` - GWE
-				 *     * `LRD` - LRD
-				 *     * `MLF` - MLF
-				 *     * `MTP` - MTP
-				 *     * `ADP` - ADP
-				 *     * `KZT` - KZT
-				 *     * `USS` - USS
-				 *     * `BRN` - BRN
-				 *     * `ZWD` - ZWD
-				 *     * `ILR` - ILR
-				 *     * `GWP` - GWP
-				 *     * `SUR` - SUR
-				 *     * `PLN` - PLN
-				 *     * `LUC` - LUC
-				 *     * `PEN` - PEN
-				 *     * `ALK` - ALK
-				 *     * `MAD` - MAD
-				 *     * `BOV` - BOV
-				 *     * `MXV` - MXV
-				 *     * `GYD` - GYD
-				 *     * `BIF` - BIF
-				 *     * `GRD` - GRD
-				 *     * `ZAR` - ZAR
-				 *     * `SGD` - SGD
-				 *     * `BEL` - BEL
-				 *     * `ITL` - ITL
-				 *     * `XAU` - XAU
-				 *     * `CRC` - CRC
-				 *     * `BGM` - BGM
-				 *     * `GMD` - GMD
-				 *     * `FRF` - FRF
-				 *     * `MZE` - MZE
-				 *     * `YUM` - YUM
-				 *     * `BUK` - BUK
-				 *     * `UZS` - UZS
-				 *     * `BGO` - BGO
-				 *     * `QAR` - QAR
-				 *     * `BTN` - BTN
-				 *     * `NZD` - NZD
-				 *     * `LKR` - LKR
-				 *     * `DOP` - DOP
-				 *     * `ISK` - ISK
-				 *     * `AZM` - AZM
-				 *     * `CZK` - CZK
-				 *     * `SLL` - SLL
-				 *     * `MZN` - MZN
-				 *     * `BAM` - BAM
-				 *     * `LBP` - LBP
-				 *     * `SAR` - SAR
-				 *     * `UGX` - UGX
-				 *     * `BYR` - BYR
-				 *     * `BGN` - BGN
-				 *     * `GBP` - GBP
-				 *     * `UYW` - UYW
-				 *     * `XBB` - XBB
-				 *     * `BND` - BND
-				 *     * `USN` - USN
-				 *     * `BRL` - BRL
-				 *     * `VND` - VND
-				 *     * `CNY` - CNY
-				 *     * `MNT` - MNT
-				 *     * `MXP` - MXP
-				 *     * `GEK` - GEK
-				 *     * `UAK` - UAK
-				 *     * `SRG` - SRG
-				 *     * `ZWR` - ZWR
-				 *     * `BEC` - BEC
-				 *     * `CYP` - CYP
-				 *     * `ZRZ` - ZRZ
-				 *     * `CUP` - CUP
-				 *     * `LVL` - LVL
-				 *     * `AOR` - AOR
-				 *     * `RUB` - RUB
-				 *     * `XAF` - XAF
-				 *     * `DJF` - DJF
-				 *     * `GNS` - GNS
-				 *     * `XPD` - XPD
-				 *     * `PLZ` - PLZ
-				 *     * `ECS` - ECS
-				 *     * `GQE` - GQE
-				 *     * `SOS` - SOS
-				 *     * `MYR` - MYR
-				 *     * `BYB` - BYB
-				 *     * `TZS` - TZS
-				 *     * `XSU` - XSU
-				 *     * `SBD` - SBD
-				 *     * `BRR` - BRR
-				 *     * `PTE` - PTE
-				 *     * `CSK` - CSK
-				 *     * `MWK` - MWK
-				 *     * `MRU` - MRU
-				 *     * `BRZ` - BRZ
-				 *     * `ARP` - ARP
-				 *     * `BDT` - BDT
-				 *     * `XPF` - XPF
-				 *     * `ZMK` - ZMK
-				 *     * `AFN` - AFN
-				 *     * `TOP` - TOP
-				 *     * `SKK` - SKK
-				 *     * `GTQ` - GTQ
-				 *     * `MDL` - MDL
-				 *     * `VED` - VED
-				 *     * `AMD` - AMD
-				 *     * `JMD` - JMD
-				 *     * `XOF` - XOF
-				 *     * `SIT` - SIT
-				 *     * `BRC` - BRC
-				 *     * `JPY` - JPY
-				 *     * `BOP` - BOP
-				 *     * `KYD` - KYD
-				 *     * `TMM` - TMM
-				 *     * `CHE` - CHE
-				 *     * `ANG` - ANG
-				 *     * `MCF` - MCF
-				 *     * `SRD` - SRD
-				 *     * `RON` - RON
-				 *     * `ARL` - ARL
-				 *     * `XBC` - XBC
-				 *     * `XAG` - XAG
-				 *     * `IEP` - IEP
-				 *     * `NLG` - NLG
-				 *     * `LAK` - LAK
-				 *     * `AZN` - AZN
-				 *     * `BBD` - BBD
-				 *     * `AUD` - AUD
-				 *     * `ILS` - ILS
-				 *     * `USD` - USD
-				 *     * `MGF` - MGF
-				 *     * `OMR` - OMR
-				 *     * `DZD` - DZD
-				 *     * `GHS` - GHS
-				 *     * `MOP` - MOP
-				 *     * `XBA` - XBA
-				 *     * `AFA` - AFA
-				 *     * `CHW` - CHW
-				 *     * `GIP` - GIP
-				 *     * `COP` - COP
-				 *     * `BSD` - BSD
-				 *     * `ZAL` - ZAL
-				 *     * `INR` - INR
-				 *     * `TTD` - TTD
-				 *     * `SVC` - SVC
-				 *     * `SZL` - SZL
-				 *     * `BRE` - BRE
-				 *     * `PEI` - PEI
-				 *     * `CNX` - CNX
+				created__gte?: string;
+				created__lte?: string;
+				/** @description * `ADP` - ADP
 				 *     * `AED` - AED
-				 *     * `XXX` - XXX
-				 *     * `HTG` - HTG
-				 *     * `MTL` - MTL
-				 *     * `MAF` - MAF
-				 *     * `XRE` - XRE
-				 *     * `UYI` - UYI
-				 *     * `MXN` - MXN
+				 *     * `AFA` - AFA
+				 *     * `AFN` - AFN
+				 *     * `ALK` - ALK
+				 *     * `ALL` - ALL
+				 *     * `AMD` - AMD
+				 *     * `ANG` - ANG
+				 *     * `AOA` - AOA
+				 *     * `AOK` - AOK
+				 *     * `AON` - AON
+				 *     * `AOR` - AOR
+				 *     * `ARA` - ARA
+				 *     * `ARL` - ARL
+				 *     * `ARM` - ARM
+				 *     * `ARP` - ARP
+				 *     * `ARS` - ARS
+				 *     * `ATS` - ATS
+				 *     * `AUD` - AUD
+				 *     * `AWG` - AWG
+				 *     * `AZM` - AZM
+				 *     * `AZN` - AZN
+				 *     * `BAD` - BAD
+				 *     * `BAM` - BAM
+				 *     * `BAN` - BAN
+				 *     * `BBD` - BBD
+				 *     * `BDT` - BDT
+				 *     * `BEC` - BEC
 				 *     * `BEF` - BEF
-				 *     * `HNL` - HNL
-				 *     * `ZRN` - ZRN
+				 *     * `BEL` - BEL
+				 *     * `BGL` - BGL
+				 *     * `BGM` - BGM
+				 *     * `BGN` - BGN
+				 *     * `BGO` - BGO
+				 *     * `BHD` - BHD
+				 *     * `BIF` - BIF
+				 *     * `BMD` - BMD
+				 *     * `BND` - BND
+				 *     * `BOB` - BOB
+				 *     * `BOL` - BOL
+				 *     * `BOP` - BOP
+				 *     * `BOV` - BOV
+				 *     * `BRB` - BRB
+				 *     * `BRC` - BRC
+				 *     * `BRE` - BRE
+				 *     * `BRL` - BRL
+				 *     * `BRN` - BRN
+				 *     * `BRR` - BRR
+				 *     * `BRZ` - BRZ
+				 *     * `BSD` - BSD
+				 *     * `BTN` - BTN
+				 *     * `BUK` - BUK
+				 *     * `BWP` - BWP
+				 *     * `BYB` - BYB
+				 *     * `BYN` - BYN
+				 *     * `BYR` - BYR
+				 *     * `BZD` - BZD
+				 *     * `CAD` - CAD
+				 *     * `CDF` - CDF
+				 *     * `CHE` - CHE
+				 *     * `CHF` - CHF
+				 *     * `CHW` - CHW
+				 *     * `CLE` - CLE
+				 *     * `CLF` - CLF
 				 *     * `CLP` - CLP
 				 *     * `CNH` - CNH
-				 *     * `KES` - KES
-				 *     * `YUD` - YUD
-				 *     * `EUR` - EUR
-				 *     * `CHF` - CHF
-				 *     * `BYN` - BYN
-				 *     * `PGK` - PGK
-				 *     * `LUF` - LUF
-				 *     * `SEK` - SEK
-				 *     * `RSD` - RSD
-				 *     * `FIM` - FIM
-				 *     * `MGA` - MGA
-				 *     * `STD` - STD
-				 *     * `MMK` - MMK
-				 *     * `KGS` - KGS
-				 *     * `SDG` - SDG
-				 *     * `KPW` - KPW
-				 *     * `HRK` - HRK
-				 *     * `SLE` - SLE
-				 *     * `EEK` - EEK
-				 *     * `MUR` - MUR
-				 *     * `UYU` - UYU
-				 *     * `ALL` - ALL
-				 *     * `TRY` - TRY
-				 *     * `LUL` - LUL
-				 *     * `PYG` - PYG
-				 *     * `GNF` - GNF
-				 *     * `GEL` - GEL
-				 *     * `PHP` - PHP
-				 *     * `CUC` - CUC
-				 *     * `VES` - VES
+				 *     * `CNX` - CNX
+				 *     * `CNY` - CNY
+				 *     * `COP` - COP
 				 *     * `COU` - COU
-				 *     * `XFU` - XFU
-				 *     * `ESB` - ESB
-				 *     * `MVR` - MVR
-				 *     * `AWG` - AWG
-				 *     * `FJD` - FJD
-				 *     * `MVP` - MVP
-				 *     * `CDF` - CDF
-				 *     * `SCR` - SCR
-				 *     * `SHP` - SHP
-				 *     * `KRW` - KRW
-				 *     * `NPR` - NPR
-				 *     * `MKD` - MKD
-				 *     * `NIC` - NIC
-				 *     * `XPT` - XPT
-				 *     * `IQD` - IQD
-				 *     * `YUN` - YUN
-				 *     * `TND` - TND
-				 *     * `VEF` - VEF
-				 *     * `BGL` - BGL
-				 *     * `YDD` - YDD
-				 *     * `TWD` - TWD
-				 *     * `ETB` - ETB
-				 *     * `ISJ` - ISJ
-				 *     * `RWF` - RWF
-				 *     * `LTL` - LTL
-				 *     * `BWP` - BWP
-				 *     * `SYP` - SYP
-				 *     * `PKR` - PKR
-				 *     * `UYP` - UYP
-				 *     * `ARM` - ARM
-				 *     * `LYD` - LYD
-				 *     * `CVE` - CVE
-				 *     * `GHC` - GHC
-				 *     * `BAD` - BAD
-				 *     * `BHD` - BHD
-				 *     * `KWD` - KWD
-				 *     * `KRH` - KRH
-				 *     * `UGS` - UGS
-				 *     * `KRO` - KRO
-				 *     * `RUR` - RUR
-				 *     * `ROL` - ROL
-				 *     * `IRR` - IRR
-				 *     * `TMT` - TMT
-				 *     * `SDD` - SDD
-				 *     * `ATS` - ATS
-				 *     * `TPE` - TPE
+				 *     * `CRC` - CRC
 				 *     * `CSD` - CSD
+				 *     * `CSK` - CSK
+				 *     * `CUC` - CUC
+				 *     * `CUP` - CUP
+				 *     * `CVE` - CVE
+				 *     * `CYP` - CYP
+				 *     * `CZK` - CZK
 				 *     * `DDM` - DDM
-				 *     * `BMD` - BMD
-				 *     * `HKD` - HKD
-				 *     * `IDR` - IDR
-				 *     * `YER` - YER
+				 *     * `DEM` - DEM
+				 *     * `DJF` - DJF
 				 *     * `DKK` - DKK
-				 *     * `BOB` - BOB
-				 *     * `AOA` - AOA
-				 *     * `ARS` - ARS
-				 *     * `NOK` - NOK
-				 *     * `BZD` - BZD
-				 *     * `BOL` - BOL
-				 *     * `CAD` - CAD
+				 *     * `DOP` - DOP
+				 *     * `DZD` - DZD
+				 *     * `ECS` - ECS
+				 *     * `ECV` - ECV
+				 *     * `EEK` - EEK
+				 *     * `EGP` - EGP
+				 *     * `ERN` - ERN
+				 *     * `ESA` - ESA
+				 *     * `ESB` - ESB
+				 *     * `ESP` - ESP
+				 *     * `ETB` - ETB
+				 *     * `EUR` - EUR
+				 *     * `FIM` - FIM
+				 *     * `FJD` - FJD
+				 *     * `FKP` - FKP
+				 *     * `FRF` - FRF
+				 *     * `GBP` - GBP
+				 *     * `GEK` - GEK
+				 *     * `GEL` - GEL
+				 *     * `GHC` - GHC
+				 *     * `GHS` - GHS
+				 *     * `GIP` - GIP
+				 *     * `GMD` - GMD
+				 *     * `GNF` - GNF
+				 *     * `GNS` - GNS
+				 *     * `GQE` - GQE
+				 *     * `GRD` - GRD
+				 *     * `GTQ` - GTQ
+				 *     * `GWE` - GWE
+				 *     * `GWP` - GWP
+				 *     * `GYD` - GYD
+				 *     * `HKD` - HKD
+				 *     * `HNL` - HNL
 				 *     * `HRD` - HRD
-				 *     * `PAB` - PAB
-				 *     * `YUR` - YUR
+				 *     * `HRK` - HRK
+				 *     * `HTG` - HTG
+				 *     * `HUF` - HUF
+				 *     * `IDR` - IDR
+				 *     * `IEP` - IEP
 				 *     * `ILP` - ILP
-				 *     * `XCD` - XCD
-				 *     * `CLF` - CLF
+				 *     * `ILR` - ILR
+				 *     * `ILS` - ILS
+				 *     * `INR` - INR
+				 *     * `IQD` - IQD
+				 *     * `IRR` - IRR
+				 *     * `ISJ` - ISJ
+				 *     * `ISK` - ISK
+				 *     * `ITL` - ITL
+				 *     * `JMD` - JMD
+				 *     * `JOD` - JOD
+				 *     * `JPY` - JPY
+				 *     * `KES` - KES
+				 *     * `KGS` - KGS
+				 *     * `KHR` - KHR
+				 *     * `KMF` - KMF
+				 *     * `KPW` - KPW
+				 *     * `KRH` - KRH
+				 *     * `KRO` - KRO
+				 *     * `KRW` - KRW
+				 *     * `KWD` - KWD
+				 *     * `KYD` - KYD
+				 *     * `KZT` - KZT
+				 *     * `LAK` - LAK
+				 *     * `LBP` - LBP
+				 *     * `LKR` - LKR
+				 *     * `LRD` - LRD
+				 *     * `LSL` - LSL
+				 *     * `LTL` - LTL
+				 *     * `LTT` - LTT
+				 *     * `LUC` - LUC
+				 *     * `LUF` - LUF
+				 *     * `LUL` - LUL
+				 *     * `LVL` - LVL
+				 *     * `LVR` - LVR
+				 *     * `LYD` - LYD
+				 *     * `MAD` - MAD
+				 *     * `MAF` - MAF
+				 *     * `MCF` - MCF
+				 *     * `MDC` - MDC
+				 *     * `MDL` - MDL
+				 *     * `MGA` - MGA
+				 *     * `MGF` - MGF
+				 *     * `MKD` - MKD
+				 *     * `MKN` - MKN
+				 *     * `MLF` - MLF
+				 *     * `MMK` - MMK
+				 *     * `MNT` - MNT
+				 *     * `MOP` - MOP
+				 *     * `MRO` - MRO
+				 *     * `MRU` - MRU
+				 *     * `MTL` - MTL
+				 *     * `MTP` - MTP
+				 *     * `MUR` - MUR
+				 *     * `MVP` - MVP
+				 *     * `MVR` - MVR
+				 *     * `MWK` - MWK
+				 *     * `MXN` - MXN
+				 *     * `MXP` - MXP
+				 *     * `MXV` - MXV
+				 *     * `MYR` - MYR
+				 *     * `MZE` - MZE
+				 *     * `MZM` - MZM
+				 *     * `MZN` - MZN
+				 *     * `NAD` - NAD
+				 *     * `NGN` - NGN
+				 *     * `NIC` - NIC
+				 *     * `NIO` - NIO
+				 *     * `NLG` - NLG
+				 *     * `NOK` - NOK
+				 *     * `NPR` - NPR
+				 *     * `NZD` - NZD
+				 *     * `OMR` - OMR
+				 *     * `PAB` - PAB
+				 *     * `PEI` - PEI
+				 *     * `PEN` - PEN
+				 *     * `PES` - PES
+				 *     * `PGK` - PGK
+				 *     * `PHP` - PHP
+				 *     * `PKR` - PKR
+				 *     * `PLN` - PLN
+				 *     * `PLZ` - PLZ
+				 *     * `PTE` - PTE
+				 *     * `PYG` - PYG
+				 *     * `QAR` - QAR
 				 *     * `RHD` - RHD
+				 *     * `ROL` - ROL
+				 *     * `RON` - RON
+				 *     * `RSD` - RSD
+				 *     * `RUB` - RUB
+				 *     * `RUR` - RUR
+				 *     * `RWF` - RWF
+				 *     * `SAR` - SAR
+				 *     * `SBD` - SBD
+				 *     * `SCR` - SCR
+				 *     * `SDD` - SDD
+				 *     * `SDG` - SDG
+				 *     * `SDP` - SDP
+				 *     * `SEK` - SEK
+				 *     * `SGD` - SGD
+				 *     * `SHP` - SHP
+				 *     * `SIT` - SIT
+				 *     * `SKK` - SKK
+				 *     * `SLE` - SLE
+				 *     * `SLL` - SLL
+				 *     * `SOS` - SOS
+				 *     * `SRD` - SRD
+				 *     * `SRG` - SRG
+				 *     * `SSP` - SSP
+				 *     * `STD` - STD
 				 *     * `STN` - STN
-				 *     * `ESP` - ESP */
+				 *     * `SUR` - SUR
+				 *     * `SVC` - SVC
+				 *     * `SYP` - SYP
+				 *     * `SZL` - SZL
+				 *     * `THB` - THB
+				 *     * `TJR` - TJR
+				 *     * `TJS` - TJS
+				 *     * `TMM` - TMM
+				 *     * `TMT` - TMT
+				 *     * `TND` - TND
+				 *     * `TOP` - TOP
+				 *     * `TPE` - TPE
+				 *     * `TRL` - TRL
+				 *     * `TRY` - TRY
+				 *     * `TTD` - TTD
+				 *     * `TWD` - TWD
+				 *     * `TZS` - TZS
+				 *     * `UAH` - UAH
+				 *     * `UAK` - UAK
+				 *     * `UGS` - UGS
+				 *     * `UGX` - UGX
+				 *     * `USD` - USD
+				 *     * `USN` - USN
+				 *     * `USS` - USS
+				 *     * `UYI` - UYI
+				 *     * `UYP` - UYP
+				 *     * `UYU` - UYU
+				 *     * `UYW` - UYW
+				 *     * `UZS` - UZS
+				 *     * `VEB` - VEB
+				 *     * `VED` - VED
+				 *     * `VEF` - VEF
+				 *     * `VES` - VES
+				 *     * `VND` - VND
+				 *     * `VNN` - VNN
+				 *     * `VUV` - VUV
+				 *     * `WST` - WST
+				 *     * `XAF` - XAF
+				 *     * `XAG` - XAG
+				 *     * `XAU` - XAU
+				 *     * `XBA` - XBA
+				 *     * `XBB` - XBB
+				 *     * `XBC` - XBC
+				 *     * `XBD` - XBD
+				 *     * `XCD` - XCD
+				 *     * `XDR` - XDR
+				 *     * `XEU` - XEU
+				 *     * `XFO` - XFO
+				 *     * `XFU` - XFU
+				 *     * `XOF` - XOF
+				 *     * `XPD` - XPD
+				 *     * `XPF` - XPF
+				 *     * `XPT` - XPT
+				 *     * `XRE` - XRE
+				 *     * `XSU` - XSU
+				 *     * `XTS` - XTS
+				 *     * `XUA` - XUA
+				 *     * `XXX` - XXX
+				 *     * `YDD` - YDD
+				 *     * `YER` - YER
+				 *     * `YUD` - YUD
+				 *     * `YUM` - YUM
+				 *     * `YUN` - YUN
+				 *     * `YUR` - YUR
+				 *     * `ZAL` - ZAL
+				 *     * `ZAR` - ZAR
+				 *     * `ZMK` - ZMK
+				 *     * `ZMW` - ZMW
+				 *     * `ZRN` - ZRN
+				 *     * `ZRZ` - ZRZ
+				 *     * `ZWD` - ZWD
+				 *     * `ZWL` - ZWL
+				 *     * `ZWR` - ZWR */
+				currency?:
+					| 'ADP'
+					| 'AED'
+					| 'AFA'
+					| 'AFN'
+					| 'ALK'
+					| 'ALL'
+					| 'AMD'
+					| 'ANG'
+					| 'AOA'
+					| 'AOK'
+					| 'AON'
+					| 'AOR'
+					| 'ARA'
+					| 'ARL'
+					| 'ARM'
+					| 'ARP'
+					| 'ARS'
+					| 'ATS'
+					| 'AUD'
+					| 'AWG'
+					| 'AZM'
+					| 'AZN'
+					| 'BAD'
+					| 'BAM'
+					| 'BAN'
+					| 'BBD'
+					| 'BDT'
+					| 'BEC'
+					| 'BEF'
+					| 'BEL'
+					| 'BGL'
+					| 'BGM'
+					| 'BGN'
+					| 'BGO'
+					| 'BHD'
+					| 'BIF'
+					| 'BMD'
+					| 'BND'
+					| 'BOB'
+					| 'BOL'
+					| 'BOP'
+					| 'BOV'
+					| 'BRB'
+					| 'BRC'
+					| 'BRE'
+					| 'BRL'
+					| 'BRN'
+					| 'BRR'
+					| 'BRZ'
+					| 'BSD'
+					| 'BTN'
+					| 'BUK'
+					| 'BWP'
+					| 'BYB'
+					| 'BYN'
+					| 'BYR'
+					| 'BZD'
+					| 'CAD'
+					| 'CDF'
+					| 'CHE'
+					| 'CHF'
+					| 'CHW'
+					| 'CLE'
+					| 'CLF'
+					| 'CLP'
+					| 'CNH'
+					| 'CNX'
+					| 'CNY'
+					| 'COP'
+					| 'COU'
+					| 'CRC'
+					| 'CSD'
+					| 'CSK'
+					| 'CUC'
+					| 'CUP'
+					| 'CVE'
+					| 'CYP'
+					| 'CZK'
+					| 'DDM'
+					| 'DEM'
+					| 'DJF'
+					| 'DKK'
+					| 'DOP'
+					| 'DZD'
+					| 'ECS'
+					| 'ECV'
+					| 'EEK'
+					| 'EGP'
+					| 'ERN'
+					| 'ESA'
+					| 'ESB'
+					| 'ESP'
+					| 'ETB'
+					| 'EUR'
+					| 'FIM'
+					| 'FJD'
+					| 'FKP'
+					| 'FRF'
+					| 'GBP'
+					| 'GEK'
+					| 'GEL'
+					| 'GHC'
+					| 'GHS'
+					| 'GIP'
+					| 'GMD'
+					| 'GNF'
+					| 'GNS'
+					| 'GQE'
+					| 'GRD'
+					| 'GTQ'
+					| 'GWE'
+					| 'GWP'
+					| 'GYD'
+					| 'HKD'
+					| 'HNL'
+					| 'HRD'
+					| 'HRK'
+					| 'HTG'
+					| 'HUF'
+					| 'IDR'
+					| 'IEP'
+					| 'ILP'
+					| 'ILR'
+					| 'ILS'
+					| 'INR'
+					| 'IQD'
+					| 'IRR'
+					| 'ISJ'
+					| 'ISK'
+					| 'ITL'
+					| 'JMD'
+					| 'JOD'
+					| 'JPY'
+					| 'KES'
+					| 'KGS'
+					| 'KHR'
+					| 'KMF'
+					| 'KPW'
+					| 'KRH'
+					| 'KRO'
+					| 'KRW'
+					| 'KWD'
+					| 'KYD'
+					| 'KZT'
+					| 'LAK'
+					| 'LBP'
+					| 'LKR'
+					| 'LRD'
+					| 'LSL'
+					| 'LTL'
+					| 'LTT'
+					| 'LUC'
+					| 'LUF'
+					| 'LUL'
+					| 'LVL'
+					| 'LVR'
+					| 'LYD'
+					| 'MAD'
+					| 'MAF'
+					| 'MCF'
+					| 'MDC'
+					| 'MDL'
+					| 'MGA'
+					| 'MGF'
+					| 'MKD'
+					| 'MKN'
+					| 'MLF'
+					| 'MMK'
+					| 'MNT'
+					| 'MOP'
+					| 'MRO'
+					| 'MRU'
+					| 'MTL'
+					| 'MTP'
+					| 'MUR'
+					| 'MVP'
+					| 'MVR'
+					| 'MWK'
+					| 'MXN'
+					| 'MXP'
+					| 'MXV'
+					| 'MYR'
+					| 'MZE'
+					| 'MZM'
+					| 'MZN'
+					| 'NAD'
+					| 'NGN'
+					| 'NIC'
+					| 'NIO'
+					| 'NLG'
+					| 'NOK'
+					| 'NPR'
+					| 'NZD'
+					| 'OMR'
+					| 'PAB'
+					| 'PEI'
+					| 'PEN'
+					| 'PES'
+					| 'PGK'
+					| 'PHP'
+					| 'PKR'
+					| 'PLN'
+					| 'PLZ'
+					| 'PTE'
+					| 'PYG'
+					| 'QAR'
+					| 'RHD'
+					| 'ROL'
+					| 'RON'
+					| 'RSD'
+					| 'RUB'
+					| 'RUR'
+					| 'RWF'
+					| 'SAR'
+					| 'SBD'
+					| 'SCR'
+					| 'SDD'
+					| 'SDG'
+					| 'SDP'
+					| 'SEK'
+					| 'SGD'
+					| 'SHP'
+					| 'SIT'
+					| 'SKK'
+					| 'SLE'
+					| 'SLL'
+					| 'SOS'
+					| 'SRD'
+					| 'SRG'
+					| 'SSP'
+					| 'STD'
+					| 'STN'
+					| 'SUR'
+					| 'SVC'
+					| 'SYP'
+					| 'SZL'
+					| 'THB'
+					| 'TJR'
+					| 'TJS'
+					| 'TMM'
+					| 'TMT'
+					| 'TND'
+					| 'TOP'
+					| 'TPE'
+					| 'TRL'
+					| 'TRY'
+					| 'TTD'
+					| 'TWD'
+					| 'TZS'
+					| 'UAH'
+					| 'UAK'
+					| 'UGS'
+					| 'UGX'
+					| 'USD'
+					| 'USN'
+					| 'USS'
+					| 'UYI'
+					| 'UYP'
+					| 'UYU'
+					| 'UYW'
+					| 'UZS'
+					| 'VEB'
+					| 'VED'
+					| 'VEF'
+					| 'VES'
+					| 'VND'
+					| 'VNN'
+					| 'VUV'
+					| 'WST'
+					| 'XAF'
+					| 'XAG'
+					| 'XAU'
+					| 'XBA'
+					| 'XBB'
+					| 'XBC'
+					| 'XBD'
+					| 'XCD'
+					| 'XDR'
+					| 'XEU'
+					| 'XFO'
+					| 'XFU'
+					| 'XOF'
+					| 'XPD'
+					| 'XPF'
+					| 'XPT'
+					| 'XRE'
+					| 'XSU'
+					| 'XTS'
+					| 'XUA'
+					| 'XXX'
+					| 'YDD'
+					| 'YER'
+					| 'YUD'
+					| 'YUM'
+					| 'YUN'
+					| 'YUR'
+					| 'ZAL'
+					| 'ZAR'
+					| 'ZMK'
+					| 'ZMW'
+					| 'ZRN'
+					| 'ZRZ'
+					| 'ZWD'
+					| 'ZWL'
+					| 'ZWR'
+					| null;
+				date?: string;
+				date__gt?: string;
+				date__gte?: string;
+				date__lt?: string;
+				date__lte?: string;
+				date__month?: number;
+				date__year?: number;
+				/** @description * `QUANTITY` - QUANTITY
+				 *     * `SALE` - SALE
+				 *     * `SEASONAL` - SEASONAL
+				 *     * `LOYALTY_PROGRAM` - LOYALTY_PROGRAM
+				 *     * `EXPIRES_SOON` - EXPIRES_SOON
+				 *     * `PICK_IT_YOURSELF` - PICK_IT_YOURSELF
+				 *     * `SECOND_HAND` - SECOND_HAND
+				 *     * `OTHER` - OTHER */
+				discount_type?:
+					| 'EXPIRES_SOON'
+					| 'LOYALTY_PROGRAM'
+					| 'OTHER'
+					| 'PICK_IT_YOURSELF'
+					| 'QUANTITY'
+					| 'SALE'
+					| 'SEASONAL'
+					| 'SECOND_HAND'
+					| null;
+				labels_tags__contains?: string;
+				location_id?: number | null;
+				location_id__isnull?: boolean;
+				location_osm_id?: number;
+				/** @description * `NODE` - NODE
+				 *     * `WAY` - WAY
+				 *     * `RELATION` - RELATION */
+				location_osm_type?: 'NODE' | 'RELATION' | 'WAY' | null;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				origins_tags__contains?: string;
+				owner?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				price?: number;
+				price__gt?: number;
+				price__gte?: number;
+				price__lt?: number;
+				price__lte?: number;
+				price_is_discounted?: boolean;
+				product__categories_tags__contains?: string;
+				product_code?: string;
+				product_id?: number | null;
+				product_id__isnull?: boolean;
+				/** @description * `PRICE_TAG` - PRICE_TAG
+				 *     * `RECEIPT` - RECEIPT
+				 *     * `GDPR_REQUEST` - GDPR_REQUEST
+				 *     * `SHOP_IMPORT` - SHOP_IMPORT */
+				proof__type?: ('GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT' | 'SHOP_IMPORT')[];
+				proof_id?: number | null;
+				proof_id__isnull?: boolean;
+				/** @description Number of results to return per page. */
+				size?: number;
+				/** @description * `PRODUCT` - PRODUCT
+				 *     * `CATEGORY` - CATEGORY */
+				type?: 'CATEGORY' | 'PRODUCT';
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PaginatedPriceFullList'];
+				};
+			};
+		};
+	};
+	prices_create: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['PriceCreate'];
+				'application/x-www-form-urlencoded': components['schemas']['PriceCreate'];
+				'multipart/form-data': components['schemas']['PriceCreate'];
+			};
+		};
+		responses: {
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceCreate'];
+				};
+			};
+		};
+	};
+	prices_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceFull'];
+				};
+			};
+		};
+	};
+	prices_destroy: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description No response body */
+			204: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	prices_partial_update: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Price. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				'application/json': components['schemas']['PatchedPriceUpdate'];
+				'application/x-www-form-urlencoded': components['schemas']['PatchedPriceUpdate'];
+				'multipart/form-data': components['schemas']['PatchedPriceUpdate'];
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceUpdate'];
+				};
+			};
+		};
+	};
+	prices_stats_retrieve: {
+		parameters: {
+			query?: {
+				category_tag?: string;
+				created__gte?: string;
+				created__lte?: string;
+				/** @description * `ADP` - ADP
+				 *     * `AED` - AED
+				 *     * `AFA` - AFA
+				 *     * `AFN` - AFN
+				 *     * `ALK` - ALK
+				 *     * `ALL` - ALL
+				 *     * `AMD` - AMD
+				 *     * `ANG` - ANG
+				 *     * `AOA` - AOA
+				 *     * `AOK` - AOK
+				 *     * `AON` - AON
+				 *     * `AOR` - AOR
+				 *     * `ARA` - ARA
+				 *     * `ARL` - ARL
+				 *     * `ARM` - ARM
+				 *     * `ARP` - ARP
+				 *     * `ARS` - ARS
+				 *     * `ATS` - ATS
+				 *     * `AUD` - AUD
+				 *     * `AWG` - AWG
+				 *     * `AZM` - AZM
+				 *     * `AZN` - AZN
+				 *     * `BAD` - BAD
+				 *     * `BAM` - BAM
+				 *     * `BAN` - BAN
+				 *     * `BBD` - BBD
+				 *     * `BDT` - BDT
+				 *     * `BEC` - BEC
+				 *     * `BEF` - BEF
+				 *     * `BEL` - BEL
+				 *     * `BGL` - BGL
+				 *     * `BGM` - BGM
+				 *     * `BGN` - BGN
+				 *     * `BGO` - BGO
+				 *     * `BHD` - BHD
+				 *     * `BIF` - BIF
+				 *     * `BMD` - BMD
+				 *     * `BND` - BND
+				 *     * `BOB` - BOB
+				 *     * `BOL` - BOL
+				 *     * `BOP` - BOP
+				 *     * `BOV` - BOV
+				 *     * `BRB` - BRB
+				 *     * `BRC` - BRC
+				 *     * `BRE` - BRE
+				 *     * `BRL` - BRL
+				 *     * `BRN` - BRN
+				 *     * `BRR` - BRR
+				 *     * `BRZ` - BRZ
+				 *     * `BSD` - BSD
+				 *     * `BTN` - BTN
+				 *     * `BUK` - BUK
+				 *     * `BWP` - BWP
+				 *     * `BYB` - BYB
+				 *     * `BYN` - BYN
+				 *     * `BYR` - BYR
+				 *     * `BZD` - BZD
+				 *     * `CAD` - CAD
+				 *     * `CDF` - CDF
+				 *     * `CHE` - CHE
+				 *     * `CHF` - CHF
+				 *     * `CHW` - CHW
+				 *     * `CLE` - CLE
+				 *     * `CLF` - CLF
+				 *     * `CLP` - CLP
+				 *     * `CNH` - CNH
+				 *     * `CNX` - CNX
+				 *     * `CNY` - CNY
+				 *     * `COP` - COP
+				 *     * `COU` - COU
+				 *     * `CRC` - CRC
+				 *     * `CSD` - CSD
+				 *     * `CSK` - CSK
+				 *     * `CUC` - CUC
+				 *     * `CUP` - CUP
+				 *     * `CVE` - CVE
+				 *     * `CYP` - CYP
+				 *     * `CZK` - CZK
+				 *     * `DDM` - DDM
+				 *     * `DEM` - DEM
+				 *     * `DJF` - DJF
+				 *     * `DKK` - DKK
+				 *     * `DOP` - DOP
+				 *     * `DZD` - DZD
+				 *     * `ECS` - ECS
+				 *     * `ECV` - ECV
+				 *     * `EEK` - EEK
+				 *     * `EGP` - EGP
+				 *     * `ERN` - ERN
+				 *     * `ESA` - ESA
+				 *     * `ESB` - ESB
+				 *     * `ESP` - ESP
+				 *     * `ETB` - ETB
+				 *     * `EUR` - EUR
+				 *     * `FIM` - FIM
+				 *     * `FJD` - FJD
+				 *     * `FKP` - FKP
+				 *     * `FRF` - FRF
+				 *     * `GBP` - GBP
+				 *     * `GEK` - GEK
+				 *     * `GEL` - GEL
+				 *     * `GHC` - GHC
+				 *     * `GHS` - GHS
+				 *     * `GIP` - GIP
+				 *     * `GMD` - GMD
+				 *     * `GNF` - GNF
+				 *     * `GNS` - GNS
+				 *     * `GQE` - GQE
+				 *     * `GRD` - GRD
+				 *     * `GTQ` - GTQ
+				 *     * `GWE` - GWE
+				 *     * `GWP` - GWP
+				 *     * `GYD` - GYD
+				 *     * `HKD` - HKD
+				 *     * `HNL` - HNL
+				 *     * `HRD` - HRD
+				 *     * `HRK` - HRK
+				 *     * `HTG` - HTG
+				 *     * `HUF` - HUF
+				 *     * `IDR` - IDR
+				 *     * `IEP` - IEP
+				 *     * `ILP` - ILP
+				 *     * `ILR` - ILR
+				 *     * `ILS` - ILS
+				 *     * `INR` - INR
+				 *     * `IQD` - IQD
+				 *     * `IRR` - IRR
+				 *     * `ISJ` - ISJ
+				 *     * `ISK` - ISK
+				 *     * `ITL` - ITL
+				 *     * `JMD` - JMD
+				 *     * `JOD` - JOD
+				 *     * `JPY` - JPY
+				 *     * `KES` - KES
+				 *     * `KGS` - KGS
+				 *     * `KHR` - KHR
+				 *     * `KMF` - KMF
+				 *     * `KPW` - KPW
+				 *     * `KRH` - KRH
+				 *     * `KRO` - KRO
+				 *     * `KRW` - KRW
+				 *     * `KWD` - KWD
+				 *     * `KYD` - KYD
+				 *     * `KZT` - KZT
+				 *     * `LAK` - LAK
+				 *     * `LBP` - LBP
+				 *     * `LKR` - LKR
+				 *     * `LRD` - LRD
+				 *     * `LSL` - LSL
+				 *     * `LTL` - LTL
+				 *     * `LTT` - LTT
+				 *     * `LUC` - LUC
+				 *     * `LUF` - LUF
+				 *     * `LUL` - LUL
+				 *     * `LVL` - LVL
+				 *     * `LVR` - LVR
+				 *     * `LYD` - LYD
+				 *     * `MAD` - MAD
+				 *     * `MAF` - MAF
+				 *     * `MCF` - MCF
+				 *     * `MDC` - MDC
+				 *     * `MDL` - MDL
+				 *     * `MGA` - MGA
+				 *     * `MGF` - MGF
+				 *     * `MKD` - MKD
+				 *     * `MKN` - MKN
+				 *     * `MLF` - MLF
+				 *     * `MMK` - MMK
+				 *     * `MNT` - MNT
+				 *     * `MOP` - MOP
+				 *     * `MRO` - MRO
+				 *     * `MRU` - MRU
+				 *     * `MTL` - MTL
+				 *     * `MTP` - MTP
+				 *     * `MUR` - MUR
+				 *     * `MVP` - MVP
+				 *     * `MVR` - MVR
+				 *     * `MWK` - MWK
+				 *     * `MXN` - MXN
+				 *     * `MXP` - MXP
+				 *     * `MXV` - MXV
+				 *     * `MYR` - MYR
+				 *     * `MZE` - MZE
+				 *     * `MZM` - MZM
+				 *     * `MZN` - MZN
+				 *     * `NAD` - NAD
+				 *     * `NGN` - NGN
+				 *     * `NIC` - NIC
+				 *     * `NIO` - NIO
+				 *     * `NLG` - NLG
+				 *     * `NOK` - NOK
+				 *     * `NPR` - NPR
+				 *     * `NZD` - NZD
+				 *     * `OMR` - OMR
+				 *     * `PAB` - PAB
+				 *     * `PEI` - PEI
+				 *     * `PEN` - PEN
+				 *     * `PES` - PES
+				 *     * `PGK` - PGK
+				 *     * `PHP` - PHP
+				 *     * `PKR` - PKR
+				 *     * `PLN` - PLN
+				 *     * `PLZ` - PLZ
+				 *     * `PTE` - PTE
+				 *     * `PYG` - PYG
+				 *     * `QAR` - QAR
+				 *     * `RHD` - RHD
+				 *     * `ROL` - ROL
+				 *     * `RON` - RON
+				 *     * `RSD` - RSD
+				 *     * `RUB` - RUB
+				 *     * `RUR` - RUR
+				 *     * `RWF` - RWF
+				 *     * `SAR` - SAR
+				 *     * `SBD` - SBD
+				 *     * `SCR` - SCR
+				 *     * `SDD` - SDD
+				 *     * `SDG` - SDG
+				 *     * `SDP` - SDP
+				 *     * `SEK` - SEK
+				 *     * `SGD` - SGD
+				 *     * `SHP` - SHP
+				 *     * `SIT` - SIT
+				 *     * `SKK` - SKK
+				 *     * `SLE` - SLE
+				 *     * `SLL` - SLL
+				 *     * `SOS` - SOS
+				 *     * `SRD` - SRD
+				 *     * `SRG` - SRG
+				 *     * `SSP` - SSP
+				 *     * `STD` - STD
+				 *     * `STN` - STN
+				 *     * `SUR` - SUR
+				 *     * `SVC` - SVC
+				 *     * `SYP` - SYP
+				 *     * `SZL` - SZL
+				 *     * `THB` - THB
+				 *     * `TJR` - TJR
+				 *     * `TJS` - TJS
+				 *     * `TMM` - TMM
+				 *     * `TMT` - TMT
+				 *     * `TND` - TND
+				 *     * `TOP` - TOP
+				 *     * `TPE` - TPE
+				 *     * `TRL` - TRL
+				 *     * `TRY` - TRY
+				 *     * `TTD` - TTD
+				 *     * `TWD` - TWD
+				 *     * `TZS` - TZS
+				 *     * `UAH` - UAH
+				 *     * `UAK` - UAK
+				 *     * `UGS` - UGS
+				 *     * `UGX` - UGX
+				 *     * `USD` - USD
+				 *     * `USN` - USN
+				 *     * `USS` - USS
+				 *     * `UYI` - UYI
+				 *     * `UYP` - UYP
+				 *     * `UYU` - UYU
+				 *     * `UYW` - UYW
+				 *     * `UZS` - UZS
+				 *     * `VEB` - VEB
+				 *     * `VED` - VED
+				 *     * `VEF` - VEF
+				 *     * `VES` - VES
+				 *     * `VND` - VND
+				 *     * `VNN` - VNN
+				 *     * `VUV` - VUV
+				 *     * `WST` - WST
+				 *     * `XAF` - XAF
+				 *     * `XAG` - XAG
+				 *     * `XAU` - XAU
+				 *     * `XBA` - XBA
+				 *     * `XBB` - XBB
+				 *     * `XBC` - XBC
+				 *     * `XBD` - XBD
+				 *     * `XCD` - XCD
+				 *     * `XDR` - XDR
+				 *     * `XEU` - XEU
+				 *     * `XFO` - XFO
+				 *     * `XFU` - XFU
+				 *     * `XOF` - XOF
+				 *     * `XPD` - XPD
+				 *     * `XPF` - XPF
+				 *     * `XPT` - XPT
+				 *     * `XRE` - XRE
+				 *     * `XSU` - XSU
+				 *     * `XTS` - XTS
+				 *     * `XUA` - XUA
+				 *     * `XXX` - XXX
+				 *     * `YDD` - YDD
+				 *     * `YER` - YER
+				 *     * `YUD` - YUD
+				 *     * `YUM` - YUM
+				 *     * `YUN` - YUN
+				 *     * `YUR` - YUR
+				 *     * `ZAL` - ZAL
+				 *     * `ZAR` - ZAR
+				 *     * `ZMK` - ZMK
+				 *     * `ZMW` - ZMW
+				 *     * `ZRN` - ZRN
+				 *     * `ZRZ` - ZRZ
+				 *     * `ZWD` - ZWD
+				 *     * `ZWL` - ZWL
+				 *     * `ZWR` - ZWR */
+				currency?:
+					| 'ADP'
+					| 'AED'
+					| 'AFA'
+					| 'AFN'
+					| 'ALK'
+					| 'ALL'
+					| 'AMD'
+					| 'ANG'
+					| 'AOA'
+					| 'AOK'
+					| 'AON'
+					| 'AOR'
+					| 'ARA'
+					| 'ARL'
+					| 'ARM'
+					| 'ARP'
+					| 'ARS'
+					| 'ATS'
+					| 'AUD'
+					| 'AWG'
+					| 'AZM'
+					| 'AZN'
+					| 'BAD'
+					| 'BAM'
+					| 'BAN'
+					| 'BBD'
+					| 'BDT'
+					| 'BEC'
+					| 'BEF'
+					| 'BEL'
+					| 'BGL'
+					| 'BGM'
+					| 'BGN'
+					| 'BGO'
+					| 'BHD'
+					| 'BIF'
+					| 'BMD'
+					| 'BND'
+					| 'BOB'
+					| 'BOL'
+					| 'BOP'
+					| 'BOV'
+					| 'BRB'
+					| 'BRC'
+					| 'BRE'
+					| 'BRL'
+					| 'BRN'
+					| 'BRR'
+					| 'BRZ'
+					| 'BSD'
+					| 'BTN'
+					| 'BUK'
+					| 'BWP'
+					| 'BYB'
+					| 'BYN'
+					| 'BYR'
+					| 'BZD'
+					| 'CAD'
+					| 'CDF'
+					| 'CHE'
+					| 'CHF'
+					| 'CHW'
+					| 'CLE'
+					| 'CLF'
+					| 'CLP'
+					| 'CNH'
+					| 'CNX'
+					| 'CNY'
+					| 'COP'
+					| 'COU'
+					| 'CRC'
+					| 'CSD'
+					| 'CSK'
+					| 'CUC'
+					| 'CUP'
+					| 'CVE'
+					| 'CYP'
+					| 'CZK'
+					| 'DDM'
+					| 'DEM'
+					| 'DJF'
+					| 'DKK'
+					| 'DOP'
+					| 'DZD'
+					| 'ECS'
+					| 'ECV'
+					| 'EEK'
+					| 'EGP'
+					| 'ERN'
+					| 'ESA'
+					| 'ESB'
+					| 'ESP'
+					| 'ETB'
+					| 'EUR'
+					| 'FIM'
+					| 'FJD'
+					| 'FKP'
+					| 'FRF'
+					| 'GBP'
+					| 'GEK'
+					| 'GEL'
+					| 'GHC'
+					| 'GHS'
+					| 'GIP'
+					| 'GMD'
+					| 'GNF'
+					| 'GNS'
+					| 'GQE'
+					| 'GRD'
+					| 'GTQ'
+					| 'GWE'
+					| 'GWP'
+					| 'GYD'
+					| 'HKD'
+					| 'HNL'
+					| 'HRD'
+					| 'HRK'
+					| 'HTG'
+					| 'HUF'
+					| 'IDR'
+					| 'IEP'
+					| 'ILP'
+					| 'ILR'
+					| 'ILS'
+					| 'INR'
+					| 'IQD'
+					| 'IRR'
+					| 'ISJ'
+					| 'ISK'
+					| 'ITL'
+					| 'JMD'
+					| 'JOD'
+					| 'JPY'
+					| 'KES'
+					| 'KGS'
+					| 'KHR'
+					| 'KMF'
+					| 'KPW'
+					| 'KRH'
+					| 'KRO'
+					| 'KRW'
+					| 'KWD'
+					| 'KYD'
+					| 'KZT'
+					| 'LAK'
+					| 'LBP'
+					| 'LKR'
+					| 'LRD'
+					| 'LSL'
+					| 'LTL'
+					| 'LTT'
+					| 'LUC'
+					| 'LUF'
+					| 'LUL'
+					| 'LVL'
+					| 'LVR'
+					| 'LYD'
+					| 'MAD'
+					| 'MAF'
+					| 'MCF'
+					| 'MDC'
+					| 'MDL'
+					| 'MGA'
+					| 'MGF'
+					| 'MKD'
+					| 'MKN'
+					| 'MLF'
+					| 'MMK'
+					| 'MNT'
+					| 'MOP'
+					| 'MRO'
+					| 'MRU'
+					| 'MTL'
+					| 'MTP'
+					| 'MUR'
+					| 'MVP'
+					| 'MVR'
+					| 'MWK'
+					| 'MXN'
+					| 'MXP'
+					| 'MXV'
+					| 'MYR'
+					| 'MZE'
+					| 'MZM'
+					| 'MZN'
+					| 'NAD'
+					| 'NGN'
+					| 'NIC'
+					| 'NIO'
+					| 'NLG'
+					| 'NOK'
+					| 'NPR'
+					| 'NZD'
+					| 'OMR'
+					| 'PAB'
+					| 'PEI'
+					| 'PEN'
+					| 'PES'
+					| 'PGK'
+					| 'PHP'
+					| 'PKR'
+					| 'PLN'
+					| 'PLZ'
+					| 'PTE'
+					| 'PYG'
+					| 'QAR'
+					| 'RHD'
+					| 'ROL'
+					| 'RON'
+					| 'RSD'
+					| 'RUB'
+					| 'RUR'
+					| 'RWF'
+					| 'SAR'
+					| 'SBD'
+					| 'SCR'
+					| 'SDD'
+					| 'SDG'
+					| 'SDP'
+					| 'SEK'
+					| 'SGD'
+					| 'SHP'
+					| 'SIT'
+					| 'SKK'
+					| 'SLE'
+					| 'SLL'
+					| 'SOS'
+					| 'SRD'
+					| 'SRG'
+					| 'SSP'
+					| 'STD'
+					| 'STN'
+					| 'SUR'
+					| 'SVC'
+					| 'SYP'
+					| 'SZL'
+					| 'THB'
+					| 'TJR'
+					| 'TJS'
+					| 'TMM'
+					| 'TMT'
+					| 'TND'
+					| 'TOP'
+					| 'TPE'
+					| 'TRL'
+					| 'TRY'
+					| 'TTD'
+					| 'TWD'
+					| 'TZS'
+					| 'UAH'
+					| 'UAK'
+					| 'UGS'
+					| 'UGX'
+					| 'USD'
+					| 'USN'
+					| 'USS'
+					| 'UYI'
+					| 'UYP'
+					| 'UYU'
+					| 'UYW'
+					| 'UZS'
+					| 'VEB'
+					| 'VED'
+					| 'VEF'
+					| 'VES'
+					| 'VND'
+					| 'VNN'
+					| 'VUV'
+					| 'WST'
+					| 'XAF'
+					| 'XAG'
+					| 'XAU'
+					| 'XBA'
+					| 'XBB'
+					| 'XBC'
+					| 'XBD'
+					| 'XCD'
+					| 'XDR'
+					| 'XEU'
+					| 'XFO'
+					| 'XFU'
+					| 'XOF'
+					| 'XPD'
+					| 'XPF'
+					| 'XPT'
+					| 'XRE'
+					| 'XSU'
+					| 'XTS'
+					| 'XUA'
+					| 'XXX'
+					| 'YDD'
+					| 'YER'
+					| 'YUD'
+					| 'YUM'
+					| 'YUN'
+					| 'YUR'
+					| 'ZAL'
+					| 'ZAR'
+					| 'ZMK'
+					| 'ZMW'
+					| 'ZRN'
+					| 'ZRZ'
+					| 'ZWD'
+					| 'ZWL'
+					| 'ZWR'
+					| null;
+				date?: string;
+				date__gt?: string;
+				date__gte?: string;
+				date__lt?: string;
+				date__lte?: string;
+				date__month?: number;
+				date__year?: number;
+				/** @description * `QUANTITY` - QUANTITY
+				 *     * `SALE` - SALE
+				 *     * `SEASONAL` - SEASONAL
+				 *     * `LOYALTY_PROGRAM` - LOYALTY_PROGRAM
+				 *     * `EXPIRES_SOON` - EXPIRES_SOON
+				 *     * `PICK_IT_YOURSELF` - PICK_IT_YOURSELF
+				 *     * `SECOND_HAND` - SECOND_HAND
+				 *     * `OTHER` - OTHER */
+				discount_type?:
+					| 'EXPIRES_SOON'
+					| 'LOYALTY_PROGRAM'
+					| 'OTHER'
+					| 'PICK_IT_YOURSELF'
+					| 'QUANTITY'
+					| 'SALE'
+					| 'SEASONAL'
+					| 'SECOND_HAND'
+					| null;
+				labels_tags__contains?: string;
+				location_id?: number | null;
+				location_id__isnull?: boolean;
+				location_osm_id?: number;
+				/** @description * `NODE` - NODE
+				 *     * `WAY` - WAY
+				 *     * `RELATION` - RELATION */
+				location_osm_type?: 'NODE' | 'RELATION' | 'WAY' | null;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				origins_tags__contains?: string;
+				owner?: string;
+				price?: number;
+				price__gt?: number;
+				price__gte?: number;
+				price__lt?: number;
+				price__lte?: number;
+				price_is_discounted?: boolean;
+				product__categories_tags__contains?: string;
+				product_code?: string;
+				product_id?: number | null;
+				product_id__isnull?: boolean;
+				/** @description * `PRICE_TAG` - PRICE_TAG
+				 *     * `RECEIPT` - RECEIPT
+				 *     * `GDPR_REQUEST` - GDPR_REQUEST
+				 *     * `SHOP_IMPORT` - SHOP_IMPORT */
+				proof__type?: ('GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT' | 'SHOP_IMPORT')[];
+				proof_id?: number | null;
+				proof_id__isnull?: boolean;
+				/** @description * `PRODUCT` - PRODUCT
+				 *     * `CATEGORY` - CATEGORY */
+				type?: 'CATEGORY' | 'PRODUCT';
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PriceStats'];
+				};
+			};
+		};
+	};
+	products_list: {
+		parameters: {
+			query?: {
+				brands__like?: string;
+				brands_tags__contains?: string;
+				categories_tags__contains?: string;
+				code?: string;
+				ecoscore_grade?: string;
+				labels_tags__contains?: string;
+				nova_group?: number;
+				nutriscore_grade?: string;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				price_count?: number;
+				price_count__gte?: number;
+				price_count__lte?: number;
+				product_name__like?: string;
+				/** @description Number of results to return per page. */
+				size?: number;
+				/** @description * `off` - off
+				 *     * `obf` - obf
+				 *     * `opff` - opff
+				 *     * `opf` - opf
+				 *     * `off_pro` - off_pro */
+				source?: 'obf' | 'off' | 'off_pro' | 'opf' | 'opff' | null;
+				unique_scans_n__gte?: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PaginatedProductFullList'];
+				};
+			};
+		};
+	};
+	products_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Product. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ProductFull'];
+				};
+			};
+		};
+	};
+	products_code_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				code: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ProductFull'];
+				};
+			};
+		};
+	};
+	proofs_list: {
+		parameters: {
+			query?: {
+				created__gte?: string;
+				created__lte?: string;
+				/** @description * `ADP` - ADP
+				 *     * `AED` - AED
+				 *     * `AFA` - AFA
+				 *     * `AFN` - AFN
+				 *     * `ALK` - ALK
+				 *     * `ALL` - ALL
+				 *     * `AMD` - AMD
+				 *     * `ANG` - ANG
+				 *     * `AOA` - AOA
+				 *     * `AOK` - AOK
+				 *     * `AON` - AON
+				 *     * `AOR` - AOR
+				 *     * `ARA` - ARA
+				 *     * `ARL` - ARL
+				 *     * `ARM` - ARM
+				 *     * `ARP` - ARP
+				 *     * `ARS` - ARS
+				 *     * `ATS` - ATS
+				 *     * `AUD` - AUD
+				 *     * `AWG` - AWG
+				 *     * `AZM` - AZM
+				 *     * `AZN` - AZN
+				 *     * `BAD` - BAD
+				 *     * `BAM` - BAM
+				 *     * `BAN` - BAN
+				 *     * `BBD` - BBD
+				 *     * `BDT` - BDT
+				 *     * `BEC` - BEC
+				 *     * `BEF` - BEF
+				 *     * `BEL` - BEL
+				 *     * `BGL` - BGL
+				 *     * `BGM` - BGM
+				 *     * `BGN` - BGN
+				 *     * `BGO` - BGO
+				 *     * `BHD` - BHD
+				 *     * `BIF` - BIF
+				 *     * `BMD` - BMD
+				 *     * `BND` - BND
+				 *     * `BOB` - BOB
+				 *     * `BOL` - BOL
+				 *     * `BOP` - BOP
+				 *     * `BOV` - BOV
+				 *     * `BRB` - BRB
+				 *     * `BRC` - BRC
+				 *     * `BRE` - BRE
+				 *     * `BRL` - BRL
+				 *     * `BRN` - BRN
+				 *     * `BRR` - BRR
+				 *     * `BRZ` - BRZ
+				 *     * `BSD` - BSD
+				 *     * `BTN` - BTN
+				 *     * `BUK` - BUK
+				 *     * `BWP` - BWP
+				 *     * `BYB` - BYB
+				 *     * `BYN` - BYN
+				 *     * `BYR` - BYR
+				 *     * `BZD` - BZD
+				 *     * `CAD` - CAD
+				 *     * `CDF` - CDF
+				 *     * `CHE` - CHE
+				 *     * `CHF` - CHF
+				 *     * `CHW` - CHW
+				 *     * `CLE` - CLE
+				 *     * `CLF` - CLF
+				 *     * `CLP` - CLP
+				 *     * `CNH` - CNH
+				 *     * `CNX` - CNX
+				 *     * `CNY` - CNY
+				 *     * `COP` - COP
+				 *     * `COU` - COU
+				 *     * `CRC` - CRC
+				 *     * `CSD` - CSD
+				 *     * `CSK` - CSK
+				 *     * `CUC` - CUC
+				 *     * `CUP` - CUP
+				 *     * `CVE` - CVE
+				 *     * `CYP` - CYP
+				 *     * `CZK` - CZK
+				 *     * `DDM` - DDM
+				 *     * `DEM` - DEM
+				 *     * `DJF` - DJF
+				 *     * `DKK` - DKK
+				 *     * `DOP` - DOP
+				 *     * `DZD` - DZD
+				 *     * `ECS` - ECS
+				 *     * `ECV` - ECV
+				 *     * `EEK` - EEK
+				 *     * `EGP` - EGP
+				 *     * `ERN` - ERN
+				 *     * `ESA` - ESA
+				 *     * `ESB` - ESB
+				 *     * `ESP` - ESP
+				 *     * `ETB` - ETB
+				 *     * `EUR` - EUR
+				 *     * `FIM` - FIM
+				 *     * `FJD` - FJD
+				 *     * `FKP` - FKP
+				 *     * `FRF` - FRF
+				 *     * `GBP` - GBP
+				 *     * `GEK` - GEK
+				 *     * `GEL` - GEL
+				 *     * `GHC` - GHC
+				 *     * `GHS` - GHS
+				 *     * `GIP` - GIP
+				 *     * `GMD` - GMD
+				 *     * `GNF` - GNF
+				 *     * `GNS` - GNS
+				 *     * `GQE` - GQE
+				 *     * `GRD` - GRD
+				 *     * `GTQ` - GTQ
+				 *     * `GWE` - GWE
+				 *     * `GWP` - GWP
+				 *     * `GYD` - GYD
+				 *     * `HKD` - HKD
+				 *     * `HNL` - HNL
+				 *     * `HRD` - HRD
+				 *     * `HRK` - HRK
+				 *     * `HTG` - HTG
+				 *     * `HUF` - HUF
+				 *     * `IDR` - IDR
+				 *     * `IEP` - IEP
+				 *     * `ILP` - ILP
+				 *     * `ILR` - ILR
+				 *     * `ILS` - ILS
+				 *     * `INR` - INR
+				 *     * `IQD` - IQD
+				 *     * `IRR` - IRR
+				 *     * `ISJ` - ISJ
+				 *     * `ISK` - ISK
+				 *     * `ITL` - ITL
+				 *     * `JMD` - JMD
+				 *     * `JOD` - JOD
+				 *     * `JPY` - JPY
+				 *     * `KES` - KES
+				 *     * `KGS` - KGS
+				 *     * `KHR` - KHR
+				 *     * `KMF` - KMF
+				 *     * `KPW` - KPW
+				 *     * `KRH` - KRH
+				 *     * `KRO` - KRO
+				 *     * `KRW` - KRW
+				 *     * `KWD` - KWD
+				 *     * `KYD` - KYD
+				 *     * `KZT` - KZT
+				 *     * `LAK` - LAK
+				 *     * `LBP` - LBP
+				 *     * `LKR` - LKR
+				 *     * `LRD` - LRD
+				 *     * `LSL` - LSL
+				 *     * `LTL` - LTL
+				 *     * `LTT` - LTT
+				 *     * `LUC` - LUC
+				 *     * `LUF` - LUF
+				 *     * `LUL` - LUL
+				 *     * `LVL` - LVL
+				 *     * `LVR` - LVR
+				 *     * `LYD` - LYD
+				 *     * `MAD` - MAD
+				 *     * `MAF` - MAF
+				 *     * `MCF` - MCF
+				 *     * `MDC` - MDC
+				 *     * `MDL` - MDL
+				 *     * `MGA` - MGA
+				 *     * `MGF` - MGF
+				 *     * `MKD` - MKD
+				 *     * `MKN` - MKN
+				 *     * `MLF` - MLF
+				 *     * `MMK` - MMK
+				 *     * `MNT` - MNT
+				 *     * `MOP` - MOP
+				 *     * `MRO` - MRO
+				 *     * `MRU` - MRU
+				 *     * `MTL` - MTL
+				 *     * `MTP` - MTP
+				 *     * `MUR` - MUR
+				 *     * `MVP` - MVP
+				 *     * `MVR` - MVR
+				 *     * `MWK` - MWK
+				 *     * `MXN` - MXN
+				 *     * `MXP` - MXP
+				 *     * `MXV` - MXV
+				 *     * `MYR` - MYR
+				 *     * `MZE` - MZE
+				 *     * `MZM` - MZM
+				 *     * `MZN` - MZN
+				 *     * `NAD` - NAD
+				 *     * `NGN` - NGN
+				 *     * `NIC` - NIC
+				 *     * `NIO` - NIO
+				 *     * `NLG` - NLG
+				 *     * `NOK` - NOK
+				 *     * `NPR` - NPR
+				 *     * `NZD` - NZD
+				 *     * `OMR` - OMR
+				 *     * `PAB` - PAB
+				 *     * `PEI` - PEI
+				 *     * `PEN` - PEN
+				 *     * `PES` - PES
+				 *     * `PGK` - PGK
+				 *     * `PHP` - PHP
+				 *     * `PKR` - PKR
+				 *     * `PLN` - PLN
+				 *     * `PLZ` - PLZ
+				 *     * `PTE` - PTE
+				 *     * `PYG` - PYG
+				 *     * `QAR` - QAR
+				 *     * `RHD` - RHD
+				 *     * `ROL` - ROL
+				 *     * `RON` - RON
+				 *     * `RSD` - RSD
+				 *     * `RUB` - RUB
+				 *     * `RUR` - RUR
+				 *     * `RWF` - RWF
+				 *     * `SAR` - SAR
+				 *     * `SBD` - SBD
+				 *     * `SCR` - SCR
+				 *     * `SDD` - SDD
+				 *     * `SDG` - SDG
+				 *     * `SDP` - SDP
+				 *     * `SEK` - SEK
+				 *     * `SGD` - SGD
+				 *     * `SHP` - SHP
+				 *     * `SIT` - SIT
+				 *     * `SKK` - SKK
+				 *     * `SLE` - SLE
+				 *     * `SLL` - SLL
+				 *     * `SOS` - SOS
+				 *     * `SRD` - SRD
+				 *     * `SRG` - SRG
+				 *     * `SSP` - SSP
+				 *     * `STD` - STD
+				 *     * `STN` - STN
+				 *     * `SUR` - SUR
+				 *     * `SVC` - SVC
+				 *     * `SYP` - SYP
+				 *     * `SZL` - SZL
+				 *     * `THB` - THB
+				 *     * `TJR` - TJR
+				 *     * `TJS` - TJS
+				 *     * `TMM` - TMM
+				 *     * `TMT` - TMT
+				 *     * `TND` - TND
+				 *     * `TOP` - TOP
+				 *     * `TPE` - TPE
+				 *     * `TRL` - TRL
+				 *     * `TRY` - TRY
+				 *     * `TTD` - TTD
+				 *     * `TWD` - TWD
+				 *     * `TZS` - TZS
+				 *     * `UAH` - UAH
+				 *     * `UAK` - UAK
+				 *     * `UGS` - UGS
+				 *     * `UGX` - UGX
+				 *     * `USD` - USD
+				 *     * `USN` - USN
+				 *     * `USS` - USS
+				 *     * `UYI` - UYI
+				 *     * `UYP` - UYP
+				 *     * `UYU` - UYU
+				 *     * `UYW` - UYW
+				 *     * `UZS` - UZS
+				 *     * `VEB` - VEB
+				 *     * `VED` - VED
+				 *     * `VEF` - VEF
+				 *     * `VES` - VES
+				 *     * `VND` - VND
+				 *     * `VNN` - VNN
+				 *     * `VUV` - VUV
+				 *     * `WST` - WST
+				 *     * `XAF` - XAF
+				 *     * `XAG` - XAG
+				 *     * `XAU` - XAU
+				 *     * `XBA` - XBA
+				 *     * `XBB` - XBB
+				 *     * `XBC` - XBC
+				 *     * `XBD` - XBD
+				 *     * `XCD` - XCD
+				 *     * `XDR` - XDR
+				 *     * `XEU` - XEU
+				 *     * `XFO` - XFO
+				 *     * `XFU` - XFU
+				 *     * `XOF` - XOF
+				 *     * `XPD` - XPD
+				 *     * `XPF` - XPF
+				 *     * `XPT` - XPT
+				 *     * `XRE` - XRE
+				 *     * `XSU` - XSU
+				 *     * `XTS` - XTS
+				 *     * `XUA` - XUA
+				 *     * `XXX` - XXX
+				 *     * `YDD` - YDD
+				 *     * `YER` - YER
+				 *     * `YUD` - YUD
+				 *     * `YUM` - YUM
+				 *     * `YUN` - YUN
+				 *     * `YUR` - YUR
+				 *     * `ZAL` - ZAL
+				 *     * `ZAR` - ZAR
+				 *     * `ZMK` - ZMK
+				 *     * `ZMW` - ZMW
+				 *     * `ZRN` - ZRN
+				 *     * `ZRZ` - ZRZ
+				 *     * `ZWD` - ZWD
+				 *     * `ZWL` - ZWL
+				 *     * `ZWR` - ZWR */
 				currency?:
 					| 'ADP'
 					| 'AED'
@@ -2201,832 +4517,20 @@ export interface operations {
 				owner?: string;
 				/** @description A page number within the paginated result set. */
 				page?: number;
-				price?: number;
-				price__gt?: number;
-				price__gte?: number;
-				price__lt?: number;
-				price__lte?: number;
-				price_is_discounted?: boolean;
-				product_code?: string;
-				product_id?: number | null;
-				product_id__isnull?: boolean;
-				proof_id?: number | null;
-				proof_id__isnull?: boolean;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['PaginatedPriceFullList'];
-				};
-			};
-		};
-	};
-	prices_create: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['PriceCreate'];
-				'application/x-www-form-urlencoded': components['schemas']['PriceCreate'];
-				'multipart/form-data': components['schemas']['PriceCreate'];
-			};
-		};
-		responses: {
-			201: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['PriceCreate'];
-				};
-			};
-		};
-	};
-	prices_destroy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				/** @description A unique integer value identifying this Price. */
-				id: number;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description No response body */
-			204: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	prices_partial_update: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				/** @description A unique integer value identifying this Price. */
-				id: number;
-			};
-			cookie?: never;
-		};
-		requestBody?: {
-			content: {
-				'application/json': components['schemas']['PatchedPriceUpdate'];
-				'application/x-www-form-urlencoded': components['schemas']['PatchedPriceUpdate'];
-				'multipart/form-data': components['schemas']['PatchedPriceUpdate'];
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['PriceUpdate'];
-				};
-			};
-		};
-	};
-	products_list: {
-		parameters: {
-			query?: {
-				brands__like?: string;
-				brands_tags__contains?: string;
-				categories_tags__contains?: string;
-				code?: string;
-				ecoscore_grade?: string;
-				labels_tags__contains?: string;
-				nova_group?: number;
-				nutriscore_grade?: string;
-				/** @description Which field to use when ordering the results. */
-				order_by?: string;
-				/** @description A page number within the paginated result set. */
-				page?: number;
+				prediction_count?: number;
+				prediction_count__gte?: number;
+				prediction_count__lte?: number;
 				price_count?: number;
 				price_count__gte?: number;
 				price_count__lte?: number;
-				product_name__like?: string;
-				/** @description * `off` - off
-				 *     * `obf` - obf
-				 *     * `opff` - opff
-				 *     * `opf` - opf
-				 *     * `off_pro` - off_pro */
-				source?: 'obf' | 'off' | 'off_pro' | 'opf' | 'opff' | null;
-				unique_scans_n__gte?: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['PaginatedProductFullList'];
-				};
-			};
-		};
-	};
-	products_retrieve: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				/** @description A unique integer value identifying this Product. */
-				id: number;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['ProductFull'];
-				};
-			};
-		};
-	};
-	products_code_retrieve: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				code: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['ProductFull'];
-				};
-			};
-		};
-	};
-	proofs_list: {
-		parameters: {
-			query?: {
-				/** @description * `ZWL` - ZWL
-				 *     * `BRB` - BRB
-				 *     * `ARA` - ARA
-				 *     * `WST` - WST
-				 *     * `TJS` - TJS
-				 *     * `THB` - THB
-				 *     * `XTS` - XTS
-				 *     * `XUA` - XUA
-				 *     * `TJR` - TJR
-				 *     * `HUF` - HUF
-				 *     * `LVR` - LVR
-				 *     * `BAN` - BAN
-				 *     * `KHR` - KHR
-				 *     * `XFO` - XFO
-				 *     * `ZMW` - ZMW
-				 *     * `NGN` - NGN
-				 *     * `MRO` - MRO
-				 *     * `ECV` - ECV
-				 *     * `DEM` - DEM
-				 *     * `LSL` - LSL
-				 *     * `MKN` - MKN
-				 *     * `EGP` - EGP
-				 *     * `FKP` - FKP
-				 *     * `KMF` - KMF
-				 *     * `MZM` - MZM
-				 *     * `AOK` - AOK
-				 *     * `VEB` - VEB
-				 *     * `ERN` - ERN
-				 *     * `UAH` - UAH
-				 *     * `PES` - PES
-				 *     * `CLE` - CLE
-				 *     * `LTT` - LTT
-				 *     * `SDP` - SDP
-				 *     * `TRL` - TRL
-				 *     * `XBD` - XBD
-				 *     * `NAD` - NAD
-				 *     * `VNN` - VNN
-				 *     * `JOD` - JOD
-				 *     * `VUV` - VUV
-				 *     * `AON` - AON
-				 *     * `XEU` - XEU
-				 *     * `XDR` - XDR
-				 *     * `ESA` - ESA
-				 *     * `MDC` - MDC
-				 *     * `SSP` - SSP
-				 *     * `NIO` - NIO
-				 *     * `GWE` - GWE
-				 *     * `LRD` - LRD
-				 *     * `MLF` - MLF
-				 *     * `MTP` - MTP
-				 *     * `ADP` - ADP
-				 *     * `KZT` - KZT
-				 *     * `USS` - USS
-				 *     * `BRN` - BRN
-				 *     * `ZWD` - ZWD
-				 *     * `ILR` - ILR
-				 *     * `GWP` - GWP
-				 *     * `SUR` - SUR
-				 *     * `PLN` - PLN
-				 *     * `LUC` - LUC
-				 *     * `PEN` - PEN
-				 *     * `ALK` - ALK
-				 *     * `MAD` - MAD
-				 *     * `BOV` - BOV
-				 *     * `MXV` - MXV
-				 *     * `GYD` - GYD
-				 *     * `BIF` - BIF
-				 *     * `GRD` - GRD
-				 *     * `ZAR` - ZAR
-				 *     * `SGD` - SGD
-				 *     * `BEL` - BEL
-				 *     * `ITL` - ITL
-				 *     * `XAU` - XAU
-				 *     * `CRC` - CRC
-				 *     * `BGM` - BGM
-				 *     * `GMD` - GMD
-				 *     * `FRF` - FRF
-				 *     * `MZE` - MZE
-				 *     * `YUM` - YUM
-				 *     * `BUK` - BUK
-				 *     * `UZS` - UZS
-				 *     * `BGO` - BGO
-				 *     * `QAR` - QAR
-				 *     * `BTN` - BTN
-				 *     * `NZD` - NZD
-				 *     * `LKR` - LKR
-				 *     * `DOP` - DOP
-				 *     * `ISK` - ISK
-				 *     * `AZM` - AZM
-				 *     * `CZK` - CZK
-				 *     * `SLL` - SLL
-				 *     * `MZN` - MZN
-				 *     * `BAM` - BAM
-				 *     * `LBP` - LBP
-				 *     * `SAR` - SAR
-				 *     * `UGX` - UGX
-				 *     * `BYR` - BYR
-				 *     * `BGN` - BGN
-				 *     * `GBP` - GBP
-				 *     * `UYW` - UYW
-				 *     * `XBB` - XBB
-				 *     * `BND` - BND
-				 *     * `USN` - USN
-				 *     * `BRL` - BRL
-				 *     * `VND` - VND
-				 *     * `CNY` - CNY
-				 *     * `MNT` - MNT
-				 *     * `MXP` - MXP
-				 *     * `GEK` - GEK
-				 *     * `UAK` - UAK
-				 *     * `SRG` - SRG
-				 *     * `ZWR` - ZWR
-				 *     * `BEC` - BEC
-				 *     * `CYP` - CYP
-				 *     * `ZRZ` - ZRZ
-				 *     * `CUP` - CUP
-				 *     * `LVL` - LVL
-				 *     * `AOR` - AOR
-				 *     * `RUB` - RUB
-				 *     * `XAF` - XAF
-				 *     * `DJF` - DJF
-				 *     * `GNS` - GNS
-				 *     * `XPD` - XPD
-				 *     * `PLZ` - PLZ
-				 *     * `ECS` - ECS
-				 *     * `GQE` - GQE
-				 *     * `SOS` - SOS
-				 *     * `MYR` - MYR
-				 *     * `BYB` - BYB
-				 *     * `TZS` - TZS
-				 *     * `XSU` - XSU
-				 *     * `SBD` - SBD
-				 *     * `BRR` - BRR
-				 *     * `PTE` - PTE
-				 *     * `CSK` - CSK
-				 *     * `MWK` - MWK
-				 *     * `MRU` - MRU
-				 *     * `BRZ` - BRZ
-				 *     * `ARP` - ARP
-				 *     * `BDT` - BDT
-				 *     * `XPF` - XPF
-				 *     * `ZMK` - ZMK
-				 *     * `AFN` - AFN
-				 *     * `TOP` - TOP
-				 *     * `SKK` - SKK
-				 *     * `GTQ` - GTQ
-				 *     * `MDL` - MDL
-				 *     * `VED` - VED
-				 *     * `AMD` - AMD
-				 *     * `JMD` - JMD
-				 *     * `XOF` - XOF
-				 *     * `SIT` - SIT
-				 *     * `BRC` - BRC
-				 *     * `JPY` - JPY
-				 *     * `BOP` - BOP
-				 *     * `KYD` - KYD
-				 *     * `TMM` - TMM
-				 *     * `CHE` - CHE
-				 *     * `ANG` - ANG
-				 *     * `MCF` - MCF
-				 *     * `SRD` - SRD
-				 *     * `RON` - RON
-				 *     * `ARL` - ARL
-				 *     * `XBC` - XBC
-				 *     * `XAG` - XAG
-				 *     * `IEP` - IEP
-				 *     * `NLG` - NLG
-				 *     * `LAK` - LAK
-				 *     * `AZN` - AZN
-				 *     * `BBD` - BBD
-				 *     * `AUD` - AUD
-				 *     * `ILS` - ILS
-				 *     * `USD` - USD
-				 *     * `MGF` - MGF
-				 *     * `OMR` - OMR
-				 *     * `DZD` - DZD
-				 *     * `GHS` - GHS
-				 *     * `MOP` - MOP
-				 *     * `XBA` - XBA
-				 *     * `AFA` - AFA
-				 *     * `CHW` - CHW
-				 *     * `GIP` - GIP
-				 *     * `COP` - COP
-				 *     * `BSD` - BSD
-				 *     * `ZAL` - ZAL
-				 *     * `INR` - INR
-				 *     * `TTD` - TTD
-				 *     * `SVC` - SVC
-				 *     * `SZL` - SZL
-				 *     * `BRE` - BRE
-				 *     * `PEI` - PEI
-				 *     * `CNX` - CNX
-				 *     * `AED` - AED
-				 *     * `XXX` - XXX
-				 *     * `HTG` - HTG
-				 *     * `MTL` - MTL
-				 *     * `MAF` - MAF
-				 *     * `XRE` - XRE
-				 *     * `UYI` - UYI
-				 *     * `MXN` - MXN
-				 *     * `BEF` - BEF
-				 *     * `HNL` - HNL
-				 *     * `ZRN` - ZRN
-				 *     * `CLP` - CLP
-				 *     * `CNH` - CNH
-				 *     * `KES` - KES
-				 *     * `YUD` - YUD
-				 *     * `EUR` - EUR
-				 *     * `CHF` - CHF
-				 *     * `BYN` - BYN
-				 *     * `PGK` - PGK
-				 *     * `LUF` - LUF
-				 *     * `SEK` - SEK
-				 *     * `RSD` - RSD
-				 *     * `FIM` - FIM
-				 *     * `MGA` - MGA
-				 *     * `STD` - STD
-				 *     * `MMK` - MMK
-				 *     * `KGS` - KGS
-				 *     * `SDG` - SDG
-				 *     * `KPW` - KPW
-				 *     * `HRK` - HRK
-				 *     * `SLE` - SLE
-				 *     * `EEK` - EEK
-				 *     * `MUR` - MUR
-				 *     * `UYU` - UYU
-				 *     * `ALL` - ALL
-				 *     * `TRY` - TRY
-				 *     * `LUL` - LUL
-				 *     * `PYG` - PYG
-				 *     * `GNF` - GNF
-				 *     * `GEL` - GEL
-				 *     * `PHP` - PHP
-				 *     * `CUC` - CUC
-				 *     * `VES` - VES
-				 *     * `COU` - COU
-				 *     * `XFU` - XFU
-				 *     * `ESB` - ESB
-				 *     * `MVR` - MVR
-				 *     * `AWG` - AWG
-				 *     * `FJD` - FJD
-				 *     * `MVP` - MVP
-				 *     * `CDF` - CDF
-				 *     * `SCR` - SCR
-				 *     * `SHP` - SHP
-				 *     * `KRW` - KRW
-				 *     * `NPR` - NPR
-				 *     * `MKD` - MKD
-				 *     * `NIC` - NIC
-				 *     * `XPT` - XPT
-				 *     * `IQD` - IQD
-				 *     * `YUN` - YUN
-				 *     * `TND` - TND
-				 *     * `VEF` - VEF
-				 *     * `BGL` - BGL
-				 *     * `YDD` - YDD
-				 *     * `TWD` - TWD
-				 *     * `ETB` - ETB
-				 *     * `ISJ` - ISJ
-				 *     * `RWF` - RWF
-				 *     * `LTL` - LTL
-				 *     * `BWP` - BWP
-				 *     * `SYP` - SYP
-				 *     * `PKR` - PKR
-				 *     * `UYP` - UYP
-				 *     * `ARM` - ARM
-				 *     * `LYD` - LYD
-				 *     * `CVE` - CVE
-				 *     * `GHC` - GHC
-				 *     * `BAD` - BAD
-				 *     * `BHD` - BHD
-				 *     * `KWD` - KWD
-				 *     * `KRH` - KRH
-				 *     * `UGS` - UGS
-				 *     * `KRO` - KRO
-				 *     * `RUR` - RUR
-				 *     * `ROL` - ROL
-				 *     * `IRR` - IRR
-				 *     * `TMT` - TMT
-				 *     * `SDD` - SDD
-				 *     * `ATS` - ATS
-				 *     * `TPE` - TPE
-				 *     * `CSD` - CSD
-				 *     * `DDM` - DDM
-				 *     * `BMD` - BMD
-				 *     * `HKD` - HKD
-				 *     * `IDR` - IDR
-				 *     * `YER` - YER
-				 *     * `DKK` - DKK
-				 *     * `BOB` - BOB
-				 *     * `AOA` - AOA
-				 *     * `ARS` - ARS
-				 *     * `NOK` - NOK
-				 *     * `BZD` - BZD
-				 *     * `BOL` - BOL
-				 *     * `CAD` - CAD
-				 *     * `HRD` - HRD
-				 *     * `PAB` - PAB
-				 *     * `YUR` - YUR
-				 *     * `ILP` - ILP
-				 *     * `XCD` - XCD
-				 *     * `CLF` - CLF
-				 *     * `RHD` - RHD
-				 *     * `STN` - STN
-				 *     * `ESP` - ESP */
-				currency?:
-					| 'ADP'
-					| 'AED'
-					| 'AFA'
-					| 'AFN'
-					| 'ALK'
-					| 'ALL'
-					| 'AMD'
-					| 'ANG'
-					| 'AOA'
-					| 'AOK'
-					| 'AON'
-					| 'AOR'
-					| 'ARA'
-					| 'ARL'
-					| 'ARM'
-					| 'ARP'
-					| 'ARS'
-					| 'ATS'
-					| 'AUD'
-					| 'AWG'
-					| 'AZM'
-					| 'AZN'
-					| 'BAD'
-					| 'BAM'
-					| 'BAN'
-					| 'BBD'
-					| 'BDT'
-					| 'BEC'
-					| 'BEF'
-					| 'BEL'
-					| 'BGL'
-					| 'BGM'
-					| 'BGN'
-					| 'BGO'
-					| 'BHD'
-					| 'BIF'
-					| 'BMD'
-					| 'BND'
-					| 'BOB'
-					| 'BOL'
-					| 'BOP'
-					| 'BOV'
-					| 'BRB'
-					| 'BRC'
-					| 'BRE'
-					| 'BRL'
-					| 'BRN'
-					| 'BRR'
-					| 'BRZ'
-					| 'BSD'
-					| 'BTN'
-					| 'BUK'
-					| 'BWP'
-					| 'BYB'
-					| 'BYN'
-					| 'BYR'
-					| 'BZD'
-					| 'CAD'
-					| 'CDF'
-					| 'CHE'
-					| 'CHF'
-					| 'CHW'
-					| 'CLE'
-					| 'CLF'
-					| 'CLP'
-					| 'CNH'
-					| 'CNX'
-					| 'CNY'
-					| 'COP'
-					| 'COU'
-					| 'CRC'
-					| 'CSD'
-					| 'CSK'
-					| 'CUC'
-					| 'CUP'
-					| 'CVE'
-					| 'CYP'
-					| 'CZK'
-					| 'DDM'
-					| 'DEM'
-					| 'DJF'
-					| 'DKK'
-					| 'DOP'
-					| 'DZD'
-					| 'ECS'
-					| 'ECV'
-					| 'EEK'
-					| 'EGP'
-					| 'ERN'
-					| 'ESA'
-					| 'ESB'
-					| 'ESP'
-					| 'ETB'
-					| 'EUR'
-					| 'FIM'
-					| 'FJD'
-					| 'FKP'
-					| 'FRF'
-					| 'GBP'
-					| 'GEK'
-					| 'GEL'
-					| 'GHC'
-					| 'GHS'
-					| 'GIP'
-					| 'GMD'
-					| 'GNF'
-					| 'GNS'
-					| 'GQE'
-					| 'GRD'
-					| 'GTQ'
-					| 'GWE'
-					| 'GWP'
-					| 'GYD'
-					| 'HKD'
-					| 'HNL'
-					| 'HRD'
-					| 'HRK'
-					| 'HTG'
-					| 'HUF'
-					| 'IDR'
-					| 'IEP'
-					| 'ILP'
-					| 'ILR'
-					| 'ILS'
-					| 'INR'
-					| 'IQD'
-					| 'IRR'
-					| 'ISJ'
-					| 'ISK'
-					| 'ITL'
-					| 'JMD'
-					| 'JOD'
-					| 'JPY'
-					| 'KES'
-					| 'KGS'
-					| 'KHR'
-					| 'KMF'
-					| 'KPW'
-					| 'KRH'
-					| 'KRO'
-					| 'KRW'
-					| 'KWD'
-					| 'KYD'
-					| 'KZT'
-					| 'LAK'
-					| 'LBP'
-					| 'LKR'
-					| 'LRD'
-					| 'LSL'
-					| 'LTL'
-					| 'LTT'
-					| 'LUC'
-					| 'LUF'
-					| 'LUL'
-					| 'LVL'
-					| 'LVR'
-					| 'LYD'
-					| 'MAD'
-					| 'MAF'
-					| 'MCF'
-					| 'MDC'
-					| 'MDL'
-					| 'MGA'
-					| 'MGF'
-					| 'MKD'
-					| 'MKN'
-					| 'MLF'
-					| 'MMK'
-					| 'MNT'
-					| 'MOP'
-					| 'MRO'
-					| 'MRU'
-					| 'MTL'
-					| 'MTP'
-					| 'MUR'
-					| 'MVP'
-					| 'MVR'
-					| 'MWK'
-					| 'MXN'
-					| 'MXP'
-					| 'MXV'
-					| 'MYR'
-					| 'MZE'
-					| 'MZM'
-					| 'MZN'
-					| 'NAD'
-					| 'NGN'
-					| 'NIC'
-					| 'NIO'
-					| 'NLG'
-					| 'NOK'
-					| 'NPR'
-					| 'NZD'
-					| 'OMR'
-					| 'PAB'
-					| 'PEI'
-					| 'PEN'
-					| 'PES'
-					| 'PGK'
-					| 'PHP'
-					| 'PKR'
-					| 'PLN'
-					| 'PLZ'
-					| 'PTE'
-					| 'PYG'
-					| 'QAR'
-					| 'RHD'
-					| 'ROL'
-					| 'RON'
-					| 'RSD'
-					| 'RUB'
-					| 'RUR'
-					| 'RWF'
-					| 'SAR'
-					| 'SBD'
-					| 'SCR'
-					| 'SDD'
-					| 'SDG'
-					| 'SDP'
-					| 'SEK'
-					| 'SGD'
-					| 'SHP'
-					| 'SIT'
-					| 'SKK'
-					| 'SLE'
-					| 'SLL'
-					| 'SOS'
-					| 'SRD'
-					| 'SRG'
-					| 'SSP'
-					| 'STD'
-					| 'STN'
-					| 'SUR'
-					| 'SVC'
-					| 'SYP'
-					| 'SZL'
-					| 'THB'
-					| 'TJR'
-					| 'TJS'
-					| 'TMM'
-					| 'TMT'
-					| 'TND'
-					| 'TOP'
-					| 'TPE'
-					| 'TRL'
-					| 'TRY'
-					| 'TTD'
-					| 'TWD'
-					| 'TZS'
-					| 'UAH'
-					| 'UAK'
-					| 'UGS'
-					| 'UGX'
-					| 'USD'
-					| 'USN'
-					| 'USS'
-					| 'UYI'
-					| 'UYP'
-					| 'UYU'
-					| 'UYW'
-					| 'UZS'
-					| 'VEB'
-					| 'VED'
-					| 'VEF'
-					| 'VES'
-					| 'VND'
-					| 'VNN'
-					| 'VUV'
-					| 'WST'
-					| 'XAF'
-					| 'XAG'
-					| 'XAU'
-					| 'XBA'
-					| 'XBB'
-					| 'XBC'
-					| 'XBD'
-					| 'XCD'
-					| 'XDR'
-					| 'XEU'
-					| 'XFO'
-					| 'XFU'
-					| 'XOF'
-					| 'XPD'
-					| 'XPF'
-					| 'XPT'
-					| 'XRE'
-					| 'XSU'
-					| 'XTS'
-					| 'XUA'
-					| 'XXX'
-					| 'YDD'
-					| 'YER'
-					| 'YUD'
-					| 'YUM'
-					| 'YUN'
-					| 'YUR'
-					| 'ZAL'
-					| 'ZAR'
-					| 'ZMK'
-					| 'ZMW'
-					| 'ZRN'
-					| 'ZRZ'
-					| 'ZWD'
-					| 'ZWL'
-					| 'ZWR'
-					| null;
-				date?: string;
-				date__gt?: string;
-				date__gte?: string;
-				date__lt?: string;
-				date__lte?: string;
-				location_id?: number | null;
-				location_osm_id?: number;
-				/** @description * `NODE` - NODE
-				 *     * `WAY` - WAY
-				 *     * `RELATION` - RELATION */
-				location_osm_type?: 'NODE' | 'RELATION' | 'WAY' | null;
-				/** @description Which field to use when ordering the results. */
-				order_by?: string;
-				owner?: string;
-				/** @description A page number within the paginated result set. */
-				page?: number;
-				price_count?: number;
-				price_count__gte?: number;
-				price_count__lte?: number;
+				ready_for_price_tag_validation?: boolean;
+				/** @description Number of results to return per page. */
+				size?: number;
 				/** @description * `PRICE_TAG` - PRICE_TAG
 				 *     * `RECEIPT` - RECEIPT
-				 *     * `GDPR_REQUEST` - GDPR_REQUEST */
-				type?: 'GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT';
+				 *     * `GDPR_REQUEST` - GDPR_REQUEST
+				 *     * `SHOP_IMPORT` - SHOP_IMPORT */
+				type?: 'GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT' | 'SHOP_IMPORT';
 			};
 			header?: never;
 			path?: never;
@@ -3039,7 +4543,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					'application/json': components['schemas']['PaginatedProofFullList'];
+					'application/json': components['schemas']['PaginatedProofHalfFullList'];
 				};
 			};
 		};
@@ -3115,6 +4619,29 @@ export interface operations {
 			};
 		};
 	};
+	proofs_process_with_gemini_create: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'multipart/form-data': components['schemas']['ProofProcessWithGemini'];
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ProofFull'];
+				};
+			};
+		};
+	};
 	proofs_upload_create: {
 		parameters: {
 			query?: never;
@@ -3124,9 +4651,7 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				'application/json': components['schemas']['ProofFull'];
-				'application/x-www-form-urlencoded': components['schemas']['ProofFull'];
-				'multipart/form-data': components['schemas']['ProofFull'];
+				'multipart/form-data': components['schemas']['ProofUpload'];
 			};
 		};
 		responses: {
@@ -3177,6 +4702,25 @@ export interface operations {
 			};
 		};
 	};
+	stats_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['TotalStats'];
+				};
+			};
+		};
+	};
 	status_retrieve: {
 		parameters: {
 			query?: never;
@@ -3206,6 +4750,8 @@ export interface operations {
 				price_count?: number;
 				price_count__gte?: number;
 				price_count__lte?: number;
+				/** @description Number of results to return per page. */
+				size?: number;
 			};
 			header?: never;
 			path?: never;
@@ -3219,6 +4765,28 @@ export interface operations {
 				};
 				content: {
 					'application/json': components['schemas']['PaginatedUserList'];
+				};
+			};
+		};
+	};
+	users_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique value identifying this User. */
+				user_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['User'];
 				};
 			};
 		};
