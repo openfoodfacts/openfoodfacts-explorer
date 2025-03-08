@@ -2,7 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 
-	let error: string | null = null;
+	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
 
 	onMount(() => {
@@ -52,7 +52,7 @@
 	});
 </script>
 
-{#if error}
+{#if error!=null}
 	<div class="flex items-center justify-center h-screen">
 		<p class="text-red-500">{error}</p>
 	</div>
