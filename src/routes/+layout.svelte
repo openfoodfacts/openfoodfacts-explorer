@@ -131,25 +131,35 @@
 		</div>
 	</div>
 	{#if searchActive}
-		<div class="join -mt-8 w-full">
-			<input
-				type="text"
-				bind:value={searchQuery}
-				class="input join-item input-bordered w-full"
-				placeholder="Query or barcode"
-				onkeydown={(e) => {
-					if (e.key === 'Enter' && searchQuery.trim() !== '') {
-						gotoProductsSearch();
-					}
-				}}
-			/>
-			<button
-				class="btn btn-square btn-secondary join-item"
-				onclick={() => gotoProductsSearch()}
-				disabled={searchQuery == null || searchQuery.trim() === ''}
+		<div class="flex items-center justify-center">
+			<div class="join w-full">
+				<input
+					type="text"
+					bind:value={searchQuery}
+					class="input join-item input-bordered w-full"
+					placeholder="Query or barcode"
+					onkeydown={(e) => {
+						if (e.key === 'Enter' && searchQuery.trim() !== '') {
+							gotoProductsSearch();
+						}
+					}}
+				/>
+				<button
+					class="btn btn-square btn-secondary join-item"
+					onclick={() => gotoProductsSearch()}
+					disabled={searchQuery == null || searchQuery.trim() === ''}
+				>
+					Go
+				</button>
+			</div>
+			<a
+				class="btn btn-secondary ms-4 px-5 text-lg"
+				href="/qr"
+				title="Scan a barcode"
+				aria-label="Scan a barcode"
 			>
-				Go
-			</button>
+				<span class="icon-[mdi--camera]"></span>
+			</a>
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
