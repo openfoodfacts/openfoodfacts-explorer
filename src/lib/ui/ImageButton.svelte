@@ -10,6 +10,6 @@
 
 <ImageModal bind:this={modal} />
 
-<button class="max-w-full flex justify-center" {onclick}>
+<button class="flex max-w-full justify-center" {onclick}>
 	<img {src} {alt} class="float-right h-full rounded-lg" />
 </button>
