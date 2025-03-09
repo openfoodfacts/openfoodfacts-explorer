@@ -75,7 +75,7 @@
 					Loading...
 				{:then categories}
 					{#each product.categories_tags as tag, i}
-						<a class="link no-underline px-2 bg-[#FF8714] font-semibold rounded-xl mr-[2px] inline-block break-inside-avoid" href={'/taxo/categories/' + tag}
+						<a class="link no-underline px-2 bg-secondary text-black font-semibold rounded-xl mr-0.5 inline-block break-inside-avoid" href="/taxo/categories/{tag}"
 							>{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}</a
 						>
 					{/each}
