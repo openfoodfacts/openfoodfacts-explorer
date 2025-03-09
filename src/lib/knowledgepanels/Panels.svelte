@@ -24,7 +24,7 @@
 
 	<div class="border-secondary mt-3 border-b-2 border-dashed"></div>
 
-	<div class="my-4 flex flex-col justify-center gap-4 md:flex-row" id={SUMMARY_ID}>
+	<div class="my-4 flex justify-center gap-2 md:gap-4 flex-row flex-wrap" id={SUMMARY_ID}>
 		{#each panelsArray as [panelKey, panel]}
 			{#if panel.type === 'card'}
 				<a class="btn btn-secondary text-lg" href={'#' + panelKey}>
