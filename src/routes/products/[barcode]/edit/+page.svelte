@@ -2,6 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import { writable, get } from 'svelte/store';
+	import ISO6391 from 'iso-639-1';
 
 	import { getOrDefault, ProductsApi, type SelectedImage, type Taxonomy } from '$lib/api';
 	import { preferences } from '$lib/settings';
@@ -24,8 +25,7 @@
 	}
 
 	function getLanguage(code: string) {
-		const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
-		return languageNames.of(code);
+		return ISO6391.getName(code);
 	}
 
 	let categoryNames = $derived(getNames(data.categories));
@@ -36,6 +36,17 @@
 	let countriesNames = $derived(getNames(data.countries));
 	let productStore = $derived(writable(data.state.product));
 	let comment = writable('');
+	const languageCodes = ISO6391.getAllCodes();
+	let languageSearch = $state('');
+	let filteredLanguages = $derived(
+		languageCodes.filter((code) => {
+			if ($productStore.languages_codes[code] !== undefined) {
+				return false;
+			}
+			const language = getLanguage(code);
+			return language.toLowerCase().includes(languageSearch.toLowerCase());
+		})
+	);
 
 	async function submit() {
 		const product = get(productStore);
@@ -52,6 +63,13 @@
 		if (ok) {
 			window.location.href = '/products/' + product.code;
 		}
+	}
+
+	function addLanguage(code: string) {
+		productStore.update((store) => {
+			store.languages_codes = { ...store.languages_codes, [code]: 0 };
+			return store;
+		});
 	}
 
 	function getIngredientsImage(language: string) {
@@ -77,6 +95,30 @@
 		});
 	});
 </script>
+
+<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
+	<input type="checkbox" />
+	<div class="collapse-title font-semibold">Add a language</div>
+	<div class="collapse-content text-sm">
+		<label class="input w-full">
+			<span class="icon-[mdi--search] h-5 w-5"></span>
+			<input type="search" placeholder="Search languages to add" bind:value={languageSearch} />
+		</label>
+		{#if filteredLanguages.length === 0}
+			<p class="mt-4 text-center opacity-70">No languages found</p>
+		{:else}
+			<div
+				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
+			>
+				{#each filteredLanguages as code}
+					<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
+						{getLanguage(code)}
+					</button>
+				{/each}
+			</div>
+		{/if}
+	</div>
+</div>
 
 <div class="tabs tabs-box">
 	{#each Object.keys($productStore.languages_codes) as code}
