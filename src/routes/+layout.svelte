@@ -74,12 +74,12 @@
 				</div>
 
 				<a
-					class="btn btn-secondary ms-4 px-5 text-lg"
+					class="btn btn-secondary ms-4 px-5 text-2xl"
 					href="/qr"
 					title="Scan a barcode"
 					aria-label="Scan a barcode"
 				>
-					<span class="icon-[mdi--camera]"></span>
+					<span class="icon-[mdi--barcode-scan]"></span>
 				</a>
 			</div>
 		</div>
