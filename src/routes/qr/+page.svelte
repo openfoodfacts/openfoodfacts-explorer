@@ -57,7 +57,7 @@
 		<p class="text-red-500">{error}</p>
 	</div>
 {:else}
-	<div class="flex flex-2 items-center justify-center h-[calc(100vh-4rem)]">
+	<div class="flex flex-1 my-44 items-center justify-center">
 		<div id="reader" class="w-full max-w-md border-2 border-gray-300 rounded-lg"></div>
 	</div>
 {/if}
