@@ -4,6 +4,7 @@
 	import { preferences } from '$lib/settings';
 	import { TAXONOMIES_NAMES, getOrDefault } from '$lib/api';
 	import type { PageData } from './$types';
+	import ProductCard from '$lib/ui/ProductCard.svelte';
 
 	interface Props {
 		data: PageData;
@@ -95,16 +96,9 @@
 	<div>Loading example products...</div>
 {:then search}
 	{#if search.products.length > 0}
-		<div class="grid grid-cols-4 gap-4">
+		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{#each search.products as product}
-				<div class="flex flex-row items-center">
-					{#if product.image_front_small_url}
-						<img src={product.image_front_small_url} class="mr-4 h-16 w-16" alt="Product front" />
-					{/if}
-					<a href={`/products/${product.code}`} class="link">
-						{product.product_name ?? product.code}
-					</a>
-				</div>
+			<ProductCard {product} />
 			{/each}
 		</div>
 	{:else}
