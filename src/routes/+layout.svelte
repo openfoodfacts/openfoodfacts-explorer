@@ -152,9 +152,21 @@
 			</button>
 		</div>
 	{/if}
-	<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
-		<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
-		<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
+	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<a class="btn btn-outline link flex items-center justify-center" href="/folksonomy">
+			{$t('common.folksonomy')}
+		</a>
+		<a class="btn btn-outline link flex items-center justify-center" href="/settings">
+			{$t('common.settings')}
+		</a>
+		<a
+			class="btn btn-outline link flex items-center justify-center"
+			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+			target="_blank"
+			aria-label={$t('common.github')}
+		>
+			<span class="icon-[mdi--github] h-6 w-6"></span>
+		</a>
 	</div>
 </div>
 
