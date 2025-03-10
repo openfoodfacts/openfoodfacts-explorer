@@ -116,6 +116,14 @@
 			>
 				<i class="icon-[mdi--magnify]"></i>
 			</button>
+			<a
+				class="btn btn-square btn-secondary text-lg"
+				href="/qr"
+				title="Scan a barcode"
+				aria-label="Scan a barcode"
+			>
+				<span class="icon-[mdi--camera]"></span>
+			</a>
 			<button
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
