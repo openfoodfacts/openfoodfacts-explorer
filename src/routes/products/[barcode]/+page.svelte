@@ -52,7 +52,7 @@
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
-		<div class="grid h-max w-3/4 grid-cols-[max-content_1fr] gap-x-4 gap-y-1">
+		<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-1 md:w-3/4">
 			<span class="text-end font-bold">Quantity:</span>
 			<span>{product.quantity}</span>
 
