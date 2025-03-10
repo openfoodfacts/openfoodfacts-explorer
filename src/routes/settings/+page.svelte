@@ -6,6 +6,11 @@
 	import { FolksonomyApi } from '$lib/api/folksonomy';
 	import { t } from '$lib/translations';
 
+	import { derived } from 'svelte/store';
+	import  { themes as allThemes } from '$lib/settings';
+	
+	let themes = derived(preferences, ({ theme }) => allThemes.filter((t) => t != theme));
+
 	interface Props {
 		data: PageData;
 	}
@@ -60,6 +65,16 @@
 			<option value={code2} selected={$preferences.country === code2}>
 				{country.name['en']} ({country.name[$preferences.lang]})
 			</option>
+		{/each}
+	</select>
+
+	<Heading>Appearance</Heading>
+	<label for="lang-select" class="justify-self-start md:justify-self-end">Theme:</label>
+
+	<select class="select select-bordered w-full md:w-auto" bind:value={$preferences.theme}>
+		<option>{$preferences.theme}</option>
+		{#each $themes as theme}
+			<option>{theme}</option>
 		{/each}
 	</select>
 
