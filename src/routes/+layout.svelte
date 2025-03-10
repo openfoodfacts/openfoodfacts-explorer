@@ -12,6 +12,9 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+
+	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
+
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -90,7 +93,7 @@
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
 			class="btn btn-outline link"
-			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}
 		>
@@ -161,7 +164,7 @@
 		</a>
 		<a
 			class="btn btn-outline link flex items-center justify-center"
-			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}
 		>
