@@ -1,9 +1,11 @@
 <script lang="ts">
-	export let product: {
+	type Product = {
 		code: string;
 		image_front_small_url?: string;
 		product_name?: string;
 	};
+
+	let { product }: { product: Product } = $props();
 </script>
 
 <a
