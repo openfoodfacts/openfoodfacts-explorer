@@ -1,23 +1,37 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsEslint from 'typescript-eslint';
+import eslintPluginSvelte from 'eslint-plugin-svelte';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import eslint from '@eslint/js';
+import svelteParser from 'svelte-eslint-parser';
 import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
-import parser from 'svelte-eslint-parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
-	allConfig: js.configs.all
-});
 
 export default [
+	eslint.configs.recommended,
+	...tsEslint.configs.recommended,
+	...eslintPluginSvelte.configs['flat/recommended'],
+	eslintConfigPrettier,
+	...eslintPluginSvelte.configs['flat/prettier'],
+	{
+		files: ['**/*.svelte'],
+		languageOptions: {
+			ecmaVersion: 2022,
+			sourceType: 'module',
+			globals: { ...globals.node, ...globals.browser },
+			parser: svelteParser,
+			parserOptions: {
+				parser: tsEslint.parser
+			}
+		}
+	},
+	{
+		files: ['svelte.config.js'],
+		languageOptions: {
+			globals: { ...globals.node }
+		}
+	},
 	{
 		ignores: [
+			'**/*.cjs',
 			'**/.DS_Store',
 			'**/node_modules',
 			'build',
@@ -28,46 +42,8 @@ export default [
 			'!**/.env.example',
 			'**/pnpm-lock.yaml',
 			'**/package-lock.json',
-			'**/yarn.lock'
+			'**/yarn.lock',
+			'.vercel'
 		]
-	},
-	...compat.extends(
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:svelte/recommended',
-		'prettier'
-	),
-	{
-		plugins: {
-			'@typescript-eslint': typescriptEslint
-		},
-
-		languageOptions: {
-			globals: {
-				...globals.browser,
-				...globals.node
-			},
-
-			parser: tsParser,
-			ecmaVersion: 2020,
-			sourceType: 'module',
-
-			parserOptions: {
-				extraFileExtensions: ['.svelte']
-			}
-		}
-	},
-	{
-		files: ['**/*.svelte'],
-
-		languageOptions: {
-			parser: parser,
-			ecmaVersion: 5,
-			sourceType: 'script',
-
-			parserOptions: {
-				parser: '@typescript-eslint/parser'
-			}
-		}
 	}
 ];

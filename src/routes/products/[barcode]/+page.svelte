@@ -52,7 +52,7 @@
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
-		<div class="grid h-max w-3/4 grid-cols-[max-content_1fr] gap-x-4 gap-y-1">
+		<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-1 md:w-3/4">
 			<span class="text-end font-bold">Quantity:</span>
 			<span>{product.quantity}</span>
 
@@ -70,14 +70,14 @@
 			</span>
 
 			<span class="text-end font-bold">Categories:</span>
-			<span>
+			<span class="flex flex-wrap gap-1">
 				{#await data.taxo.categories}
 					Loading...
 				{:then categories}
 					{#each product.categories_tags as tag, i}
-						{#if i > 0},
-						{/if}
-						<a class="link" href={'/taxo/categories/' + tag}
+						<a
+							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
+							href="/taxo/categories/{tag}"
 							>{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}</a
 						>
 					{/each}
@@ -111,6 +111,36 @@
 					{/each}
 				{/await}
 			</span>
+
+			<span class="text-end font-bold">Countries:</span>
+			<span>
+				{#await data.taxo.countries}
+					Loading...
+				{:then countries}
+					{#each product.countries_tags as tag, i}
+						{#if i > 0},
+						{/if}
+						<a class="link" href={'/taxo/countries/' + tag}>
+							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
+						</a>
+					{/each}
+				{/await}
+			</span>
+
+			<span class="text-end font-bold">Origins:</span>
+			<span>
+				{#await data.taxo.origins}
+					Loading...
+				{:then origins}
+					{#each product.origins_tags as tag, i}
+						{#if i > 0},
+						{/if}
+						<a class="link" href={'/taxo/origin/' + tag}>
+							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
+						</a>
+					{/each}
+				{/await}
+			</span>
 		</div>
 
 		<div class="flex max-h-56 grow justify-center">
@@ -122,7 +152,7 @@
 <div class="flex w-full justify-evenly gap-4 p-3">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
-	<a href="#nutriscore">
+	<a href="#environment_card">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
 </div>
