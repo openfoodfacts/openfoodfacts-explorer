@@ -156,14 +156,14 @@
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
-		<a class="btn btn-outline link flex items-center justify-center" href="/folksonomy">
+		<a class="btn btn-outline link" href="/folksonomy">
 			{$t('common.folksonomy')}
 		</a>
-		<a class="btn btn-outline link flex items-center justify-center" href="/settings">
+		<a class="btn btn-outline link" href="/settings">
 			{$t('common.settings')}
 		</a>
 		<a
-			class="btn btn-outline link flex items-center justify-center"
+			class="btn btn-outline link"
 			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}
