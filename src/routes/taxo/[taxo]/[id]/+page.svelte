@@ -19,7 +19,7 @@
 	});
 </script>
 
-<h1 class="bg-red-500 text-xl sm:text-4xl">
+<h1 class="text-xl sm:text-4xl">
 	<span class="font-bold">{TAXONOMIES_NAMES[taxonomy] ?? taxonomy}:</span>
 	{getOrDefault(category.name, $preferences.lang) ?? 'Unknown'}
 </h1>
