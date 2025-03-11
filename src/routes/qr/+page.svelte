@@ -17,10 +17,10 @@
 			verbose: false
 		});
 
-		const getQrBoxSize = () => {
+		function getQrBoxSize() {
 			const screenWidth = window.innerWidth;
 			return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
-		};
+		}
 
 		scanner
 			.start(
@@ -46,18 +46,18 @@
 	});
 
 	onDestroy(() => {
-		if (html5QrCode) {
+		if (html5QrCode != null) {
 			html5QrCode.stop();
 		}
 	});
 </script>
 
-{#if error!=null}
+{#if error != null}
 	<div class="flex items-center justify-center h-screen">
 		<p class="text-red-500">{error}</p>
 	</div>
 {:else}
-	<div class="flex items-center justify-center min-h-screen p-4">
+	<div class="flex flex-1 my-44 items-center justify-center">
 		<div id="reader" class="w-full max-w-md border-2 border-gray-300 rounded-lg"></div>
 	</div>
 {/if}
