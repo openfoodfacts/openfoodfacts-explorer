@@ -184,3 +184,85 @@
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
 </div>
+
+<div class="flex flex-col gap-5 md:flex-row justify-between bg-secondary px-10 md:px-2 py-8 lg:px-40 text-black mt-10">
+	<div class="flex flex-col gap-1">
+		<div class="text-lg font-bold">Join the community</div>
+		<div>
+			Discover our <a href="https://world.openfoodfacts.org/code-of-conduct" class="underline">Code of conduct</a>
+		</div>
+		<div>Join us on <a href="https://slack.openfoodfacts.org/" class="underline">Slack</a></div>
+		<div><a href="https://forum.openfoodfacts.org/" class="underline">Forum</a></div>
+		<div class="flex gap-2">
+			<div>Follow us:</div>
+			<a
+				href="https://twitter.com/OpenFoodFacts"
+				target="_blank"
+				aria-label="Open Food Facts Twitter"
+			>
+				<span class="icon-[mdi--twitter] h-6 w-6"></span>
+			</a>
+			<a
+				href="https://www.facebook.com/OpenFoodFacts?utm_source=off&utf_medium=web"
+				target="_blank"
+				aria-label="Open Food Facts Facebook"
+			>
+				<span class="icon-[mdi--facebook] h-6 w-6"></span>
+			</a>
+			<a
+				href="https://www.instagram.com/open.food.facts/"
+				target="_blank"
+				aria-label="Open Food Facts Instagram"
+			>
+				<span class="icon-[mdi--instagram] h-6 w-6"></span>
+			</a>
+			<a
+				href={GITHUB_REPO_URL}
+				target="_blank"
+				aria-label="Open Food Facts GitHub repository"
+			>
+				<span class="icon-[mdi--github] h-6 w-6"></span>
+			</a>
+		</div>
+		<div>
+			<a href="https://link.openfoodfacts.org/newsletter-en" class="underline"
+				>Subscribe to our newsletter</a
+			>
+		</div>
+	</div>
+	<div class="flex flex-col gap-2 md:max-w-1/2">
+		<div class="text-lg font-bold">Discover the project</div>
+		<div class="text-sm flex gap-3 flex-wrap">
+			<a href="https://world.openfoodfacts.org/who-we-are" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Who we are</a>
+			<a href="https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Vision, Mission, Values and Programs</a>
+			<a href="https://support.openfoodfacts.org/help/en-gb" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Frequently asked questions</a>
+			<a href="https://blog.openfoodfacts.org/en/" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Open Food Facts blog</a>
+			<a href="https://world.openfoodfacts.org/press" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Press</a>
+			<a href="https://wiki.openfoodfacts.org/" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Open Food Facts wiki (en)</a>
+			<a href="https://world.openfoodfacts.org/cgi/top_translators.pl" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Translators</a>
+			<a href="https://world.openfoodfacts.org/partners" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Partners</a>
+			<a href="https://world.openbeautyfacts.org/" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Open Food Facts - Cosmetics</a>
+			<a href="https://world.pro.openfoodfacts.org/" class="bg-white text-black px-2 py-1 rounded-lg hover:bg-base-300 hover:text-white transition-all duration-300">Open Food Facts for Producers</a>
+
+		</div>
+	</div>
+</div>
+<div class="bg-base-200 py-5 text-white flex flex-col gap-3 justify-center items-center p-4 manrope">
+	<div>
+		<a href="/"><img src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-white.svg" alt="Open Food Facts"></a>
+	</div>
+	<div class="text-sm">
+		A collaborative, free and open database of food products from around the world.
+	</div>
+	<div class="textarea-xs">
+		<div class="flex gap-3 flex-wrap">
+			<a href="https://world.openfoodfacts.org/legal" class="underline">Legal</a>
+			<a href="https://world.openfoodfacts.org/privacy" class="underline">Privacy</a>
+			<a href="https://world.openfoodfacts.org/terms-of-use" class="underline">Terms of use</a>
+			<a href="https://world.openfoodfacts.org/data" class="underline">Data, API and SDKs</a>
+			<a href="https://world.openfoodfacts.org/legal" class="underline">Donate to Open Food Facts</a>
+			<a href="https://world.openfoodfacts.org/legal" class="underline">Producers</a>
+			<a href="https://world.openfoodfacts.org/legal" class="underline">Subscribe to our newsletter</a>
+		</div>
+	</div>
+</div>
