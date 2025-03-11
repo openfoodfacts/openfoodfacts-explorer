@@ -1,5 +1,27 @@
 <script lang="ts">
-	let props = $props();
+    
+    const projectLinks = [
+        { url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' }, 
+        { url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs', text: 'Vision, Mission, Values and Programs' }, 
+        { url: 'https://support.openfoodfacts.org/help/en-gb', text: 'Frequently asked questions' }, 
+        { url: 'https://blog.openfoodfacts.org/en/', text: 'Open Food Facts blog' }, 
+        { url: 'https://world.openfoodfacts.org/press', text: 'Press' }, 
+        { url: 'https://wiki.openfoodfacts.org/', text: 'Open Food Facts wiki (en)' }, 
+        { url: 'https://world.openfoodfacts.org/cgi/top_translators.pl', text: 'Translators' }, 
+        { url: 'https://world.openfoodfacts.org/partners', text: 'Partners' }, 
+        { url: 'https://world.openbeautyfacts.org/', text: 'Open Food Facts - Cosmetics' }, 
+        { url: 'https://world.pro.openfoodfacts.org/', text: 'Open Food Facts for Producers' }
+    ]
+
+    const footerLinks = [
+        { url: 'https://world.openfoodfacts.org/legal', text: 'Legal' }, 
+        { url: 'https://world.openfoodfacts.org/privacy', text: 'Privacy' }, 
+        { url: 'https://world.openfoodfacts.org/terms-of-use', text: 'Terms of use' }, 
+        { url: 'https://world.openfoodfacts.org/data', text: 'Data, API and SDKs' }, 
+        { url: 'https://world.openfoodfacts.org/donate-to-open-food-facts', text: 'Donate to Open Food Facts' }, 
+        { url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' }, 
+        { url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
+    ]
 </script>
 
 <div
@@ -54,18 +76,7 @@
 	<div class="flex flex-col gap-2 md:max-w-1/2">
 		<div class="text-lg font-bold">Discover the project</div>
 		<div class="flex flex-wrap gap-3 text-sm">
-			{#each [
-                { url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' }, 
-                { url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs', text: 'Vision, Mission, Values and Programs' }, 
-                { url: 'https://support.openfoodfacts.org/help/en-gb', text: 'Frequently asked questions' }, 
-                { url: 'https://blog.openfoodfacts.org/en/', text: 'Open Food Facts blog' }, 
-                { url: 'https://world.openfoodfacts.org/press', text: 'Press' }, 
-                { url: 'https://wiki.openfoodfacts.org/', text: 'Open Food Facts wiki (en)' }, 
-                { url: 'https://world.openfoodfacts.org/cgi/top_translators.pl', text: 'Translators' }, 
-                { url: 'https://world.openfoodfacts.org/partners', text: 'Partners' }, 
-                { url: 'https://world.openbeautyfacts.org/', text: 'Open Food Facts - Cosmetics' }, 
-                { url: 'https://world.pro.openfoodfacts.org/', text: 'Open Food Facts for Producers' }
-                ] as link}
+			{#each projectLinks as link}
 				<a
 					href={link.url}
 					class="hover:bg-base-300 rounded-lg bg-white px-2 py-1 text-black transition-all duration-300 hover:text-white"
@@ -92,15 +103,7 @@
 	</div>
 	<div class="textarea-xs">
 		<div class="flex flex-wrap gap-3">
-			{#each [
-                { url: 'https://world.openfoodfacts.org/legal', text: 'Legal' }, 
-                { url: 'https://world.openfoodfacts.org/privacy', text: 'Privacy' }, 
-                { url: 'https://world.openfoodfacts.org/terms-of-use', text: 'Terms of use' }, 
-                { url: 'https://world.openfoodfacts.org/data', text: 'Data, API and SDKs' }, 
-                { url: 'https://world.openfoodfacts.org/donate-to-open-food-facts', text: 'Donate to Open Food Facts' }, 
-                { url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' }, 
-                { url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
-                ] as footerLink}
+			{#each footerLinks as footerLink}
 				<a href={footerLink.url} class="underline">{footerLink.text}</a>
 			{/each}
 		</div>
