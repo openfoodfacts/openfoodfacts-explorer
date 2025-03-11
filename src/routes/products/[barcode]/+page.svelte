@@ -177,7 +177,7 @@
 
 {#if isPriceConfigured() && data?.prices?.data != null}
 	<Card>
-		<h1 class="my-4 text-xl sm:text-4xl font-bold">
+		<h1 class="my-4 text-xl font-bold sm:text-4xl">
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
@@ -189,7 +189,7 @@
 	{#await data?.questions}
 		Loading...
 	{:then questions}
-		<h1 class="my-4 text-2xl sm:text-4xl font-bold">Questions</h1>
+		<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
 
 		<Debug data={questions} />
 	{/await}

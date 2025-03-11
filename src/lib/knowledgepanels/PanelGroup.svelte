@@ -16,7 +16,7 @@
 
 <div class="flex flex-col gap-4 md:flex-row">
 	<div class="grow">
-		<h3 class="my-3 text-lg sm:text-xl font-bold">{groupEl.title}</h3>
+		<h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
 		{#each groupEl.panel_ids as id}
 			{@const panel = allPanels[id]}
 			<Panel {panel} {allPanels} {id} />

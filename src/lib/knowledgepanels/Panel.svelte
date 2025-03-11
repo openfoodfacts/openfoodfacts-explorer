@@ -72,7 +72,7 @@
 	{:else if panel.type === 'card'}
 		<Card>
 			<div class="flex items-center">
-				<h2 class="my-3 grow text-2xl sm:text-4xl font-bold">{panel.title_element.title}</h2>
+				<h2 class="my-3 grow text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
 				{#if link != null}
 					<a class="link" href={link}>Go back</a>
 				{/if}
