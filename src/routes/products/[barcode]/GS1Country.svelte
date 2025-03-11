@@ -176,12 +176,12 @@
 </script>
 
 <Card>
-	<h1 class="my-4 text-4xl font-bold">Barcode information</h1>
+	<h1 class="my-4 text-2xl sm:text-4xl font-bold">Barcode information</h1>
 
 	<div>
 		<div class="flex items-center gap-2">
-			<div class="text-3xl">{getFlagEmoji(country.code)}</div>
-			<p>
+			<div class="text-xl sm:text-3xl">{getFlagEmoji(country.code)}</div>
+			<p class="text-xs sm:text-md">
 				<strong>GS1 Country:</strong>
 				{country.name}
 			</p>
