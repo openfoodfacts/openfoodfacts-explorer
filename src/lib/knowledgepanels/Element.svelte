@@ -7,6 +7,7 @@
 	import TextPanel from './TextElement.svelte';
 	import PanelGroup from './PanelGroup.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import KnowledgePanelElement from './KnowledgePanelElement.svelte';
 
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
@@ -90,9 +91,7 @@
 	{#if element.element_type === 'panel_group'}
 		<PanelGroup {element} {allPanels} />
 	{:else if element.element_type === 'panel'}
-		{@const id = element.panel_element.panel_id}
-		{@const panel = allPanels[id]}
-		<Panel {panel} {allPanels} {id} />
+		<KnowledgePanelElement {element} {allPanels} />
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
