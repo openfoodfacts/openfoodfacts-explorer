@@ -46,13 +46,13 @@
 	});
 
 	onDestroy(() => {
-		if (html5QrCode) {
+		if (html5QrCode != null) {
 			html5QrCode.stop();
 		}
 	});
 </script>
 
-{#if error!=null}
+{#if error != null}
 	<div class="flex items-center justify-center h-screen">
 		<p class="text-red-500">{error}</p>
 	</div>
