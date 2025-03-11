@@ -39,11 +39,11 @@
 	<div class="mt-8 w-full">
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
 			{#await data.streamed.products}
-				{#each Array(4) as i (i)}
+				{#each [...Array(4).keys()] as i (i)}
 					<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
 				{/each}
 			{:then products}
-				{#each products as state}
+				{#each products as state (state.product.code)}
 					<SmallProductCard product={state.product} />
 				{/each}
 			{/await}
