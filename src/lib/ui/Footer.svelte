@@ -1,5 +1,5 @@
 <script lang="ts">
-    
+
     const projectLinks = [
         { url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' }, 
         { url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs', text: 'Vision, Mission, Values and Programs' }, 
@@ -25,7 +25,7 @@
 </script>
 
 <div
-	class="bg-secondary mt-10 flex flex-col justify-between gap-5 px-10 py-8 text-black md:flex-row md:px-20 lg:px-40"
+	class="bg-secondary mt-10 flex flex-col justify-between gap-5 px-10 py-8 text-white dark:text-black md:flex-row md:px-20 lg:px-40"
 >
 	<div class="flex flex-col gap-1">
 		<div class="text-lg font-bold">Join the community</div>
@@ -88,7 +88,7 @@
 </div>
 
 <div
-	class="bg-base-200 manrope flex flex-col items-center justify-center gap-3 px-6 py-5 text-white"
+	class="bg-base-200 manrope flex flex-col items-center justify-center gap-3 px-6 py-5 text-black dark:text-white"
 >
 	<div>
 		<a href="/">
