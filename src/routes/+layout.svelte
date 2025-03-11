@@ -12,6 +12,9 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+
+	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
+
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -90,7 +93,7 @@
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
 			class="btn btn-outline link"
-			href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}
 		>
@@ -116,6 +119,14 @@
 			>
 				<i class="icon-[mdi--magnify]"></i>
 			</button>
+			<a
+				class="btn btn-square btn-secondary text-lg"
+				href="/qr"
+				title="Scan a barcode"
+				aria-label="Scan a barcode"
+			>
+				<span class="icon-[mdi--camera]"></span>
+			</a>
 			<button
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
@@ -152,9 +163,21 @@
 			</button>
 		</div>
 	{/if}
-	<div class:hidden={!accordionOpen} class="mt-3 flex justify-center gap-2">
-		<a class="btn btn-outline link flex" href="/folksonomy">{$t('common.folksonomy')}</a>
-		<a class="btn btn-outline link flex" href="/settings">{$t('common.settings')}</a>
+	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<a class="btn btn-outline link" href="/folksonomy">
+			{$t('common.folksonomy')}
+		</a>
+		<a class="btn btn-outline link" href="/settings">
+			{$t('common.settings')}
+		</a>
+		<a
+			class="btn btn-outline link"
+			href={GITHUB_REPO_URL}
+			target="_blank"
+			aria-label={$t('common.github')}
+		>
+			<span class="icon-[mdi--github] h-6 w-6"></span>
+		</a>
 	</div>
 </div>
 
