@@ -51,23 +51,26 @@
 		// Get the current product ID from the URL
 		const urlParts = window.location.pathname.split('/');
 		const productId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
-		
+
 		// Handle different action types
 		for (const action of actions) {
-			switch(action) {
+			switch (action) {
 				case 'edit_product':
 					if (productId) {
 						window.open(`https://world.openfoodfacts.org/product/${productId}/edit`, '_blank');
 					}
 					break;
-				
+
 				case 'report_product_to_nutripatrol':
 					if (productId) {
 						// Direct to the edit page with focus on the report problem section
-						window.open(`https://world.openfoodfacts.org/product/${productId}/edit#report_problem`, '_blank');
+						window.open(
+							`https://world.openfoodfacts.org/product/${productId}/edit#report_problem`,
+							'_blank'
+						);
 					}
 					break;
-				
+
 				default:
 					// If not a known action, try to handle it as a URL if it looks like one
 					if (action.startsWith('http://') || action.startsWith('https://')) {
@@ -118,9 +121,14 @@
 			</table>
 		</div>
 	{:else if element.element_type === 'action'}
-		<button 
-			class="btn btn-primary {isLoading ? 'loading' : ''}" 
-			onclick={(event) => handleActionClick(element.action_element.actions, element.action_element.html !== '', event)}
+		<button
+			class="btn btn-primary {isLoading ? 'loading' : ''}"
+			onclick={(event) =>
+				handleActionClick(
+					element.action_element.actions,
+					element.action_element.html !== '',
+					event
+				)}
 			disabled={isLoading}
 		>
 			{#if element.action_element.html != '' && !isLoading}
