@@ -3,6 +3,7 @@
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 
 	let error: string | null = $state(null);
+
 	let html5QrCode: Html5Qrcode | null = null;
 
 	onMount(() => {
@@ -46,6 +47,7 @@
 	});
 
 	onDestroy(() => {
+		// Stop the scanner when the component is destroyed
 		if (html5QrCode != null) {
 			html5QrCode.stop();
 		}
