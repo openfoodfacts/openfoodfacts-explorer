@@ -53,11 +53,11 @@
 </script>
 
 {#if error != null}
-	<div class="flex items-center justify-center h-screen">
+	<div class="flex h-screen items-center justify-center">
 		<p class="text-red-500">{error}</p>
 	</div>
 {:else}
-	<div class="flex flex-1 my-44 items-center justify-center">
-		<div id="reader" class="w-full max-w-md border-2 border-gray-300 rounded-lg"></div>
+	<div class="my-44 flex flex-1 items-center justify-center">
+		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
 	</div>
 {/if}
