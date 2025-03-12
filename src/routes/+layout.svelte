@@ -2,6 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import Logo from '$lib/ui/Logo.svelte';
+	import Footer from '$lib/ui/Footer.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
@@ -184,3 +185,5 @@
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
 </div>
+
+<Footer />

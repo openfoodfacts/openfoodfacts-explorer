@@ -1,5 +1,5 @@
 import { getTaxo } from '$lib/api';
-import type { Country, Language } from 'openfoodfacts-nodejs';
+import type { Country, Language } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
