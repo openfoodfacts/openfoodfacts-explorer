@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import { preferences } from '$lib/settings';
 	import { TAXONOMIES_NAMES, getOrDefault } from '$lib/api';
@@ -14,7 +13,7 @@
 	let category = $derived(data.taxonomyElement);
 	let taxonomy = $derived(data.taxonomy);
 
-	run(() => {
+	$effect(() => {
 		console.debug('category', category);
 	});
 </script>
