@@ -7,10 +7,10 @@
 	import Panel from './Panel.svelte';
 
 	type Props = {
-		allPanels?: Record<string, KnowledgePanel>;
+		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeActionElement | KnowledgePanelElementType;
 	};
-	let { allPanels = {}, element }: Props = $props();
+	let { allPanels, element }: Props = $props();
 
 	// Action-related functionality
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
@@ -102,17 +102,13 @@
 		{/if}
 	</button>
 {:else if element.element_type === 'panel'}
-	{#if allPanels}
-		{#if 'panel_element' in element}
-			{@const id = element.panel_element.panel_id}
-			{@const panel = allPanels[id]}
-			{#if panel}
-				<Panel {panel} {allPanels} {id} />
-			{:else}
-				<div class="alert alert-warning">Panel not found: {id}</div>
-			{/if}
+	{#if 'panel_element' in element}
+		{@const id = element.panel_element.panel_id}
+		{@const panel = allPanels[id]}
+		{#if panel !== null}
+			<Panel {panel} {allPanels} {id} />
+		{:else}
+			<div class="alert alert-warning">Panel not found: {id}</div>
 		{/if}
-	{:else}
-		<div class="alert alert-warning">No panels provided</div>
 	{/if}
 {/if}
