@@ -18,10 +18,15 @@
 			verbose: false
 		});
 
+		function getQrBoxSize() {
+			const screenWidth = window.innerWidth;
+			return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
+		}
+
 		scanner
 			.start(
 				{ facingMode: 'environment' },
-				{ fps: 1, qrbox: { width: 500, height: 300 } },
+				{ fps: 10, qrbox: getQrBoxSize() },
 				(text) => {
 					if (text == null) return;
 					console.log('QR code detected:', text);
@@ -50,11 +55,11 @@
 </script>
 
 {#if error != null}
-	<div class="flex items-center justify-center">
-		<p>{error}</p>
+	<div class="flex h-screen items-center justify-center">
+		<p class="text-red-500">{error}</p>
 	</div>
 {:else}
-	<div class="flex items-center justify-center">
-		<div id="reader" class="w-full"></div>
+	<div class="my-44 flex flex-1 items-center justify-center">
+		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
 	</div>
 {/if}

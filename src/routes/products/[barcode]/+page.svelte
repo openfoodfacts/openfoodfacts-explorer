@@ -33,7 +33,7 @@
 
 <Card>
 	<div class="items-center gap-2 max-md:mb-4 max-md:text-center md:flex">
-		<h1 class="my-4 grow text-3xl font-bold md:text-4xl">
+		<h1 class="my-4 grow text-2xl font-bold md:text-4xl">
 			{product.product_name ?? product.code}
 		</h1>
 
@@ -177,7 +177,7 @@
 
 {#if isPriceConfigured() && data?.prices?.data != null}
 	<Card>
-		<h1 class="my-4 text-4xl font-bold">
+		<h1 class="my-4 text-xl font-bold sm:text-4xl">
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
@@ -189,7 +189,7 @@
 	{#await data?.questions}
 		Loading...
 	{:then questions}
-		<h1 class="my-4 text-4xl font-bold">Questions</h1>
+		<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
 
 		<Debug data={questions} />
 	{/await}
