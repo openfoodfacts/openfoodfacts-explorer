@@ -16,12 +16,21 @@ import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 export const ssr = false;
 
 import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { BeautyApi } from '$lib/api/beauty';
+
+type ProductSourceType = "OFF" | "OBF";
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
-	const state = await productsApi.getProduct(params.barcode);
+	let state = await productsApi.getProduct(params.barcode);
+	let type: ProductSourceType = "OFF"
 	if (state.status === 'failure') {
+		type = "OBF";
+	  const beautyApi = new BeautyApi(fetch);
+	  state = await beautyApi.getProduct(params.barcode);
+	  if(state.status === 'failure'){
 		error(404, { message: 'Failure to load product', errors: state.errors });
+	  }
 	}
 
 	const categories = getTaxo<Category>('categories', fetch);
@@ -71,6 +80,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			origins
 		},
 		prices: await pricesResponse,
-		questions
+		questions,
+		type
 	};
 };
