@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	const projectLinks = [
 		{ url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' },
 		{
@@ -46,9 +47,14 @@
 			<a
 				href="https://twitter.com/OpenFoodFacts"
 				target="_blank"
-				aria-label="Open Food Facts Twitter"
+				aria-label="Open Food Facts X (formerly Twitter)"
 			>
-				<span class="icon-[mdi--twitter] h-6 w-6"></span>
+				<img
+					src="{base}/images/icons/x-logo.svg"
+					alt="X logo"
+					class="h-6 w-6"
+					style="filter: var(--icon-filter, none);"
+				/>
 			</a>
 			<a
 				href="https://www.facebook.com/OpenFoodFacts?utm_source=off&utf_medium=web"
