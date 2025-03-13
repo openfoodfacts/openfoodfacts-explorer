@@ -49,7 +49,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="navbar hidden md:flex">
+<div
+	class="bg-base-100 navbar fixed top-0 right-0 left-0 z-50 hidden px-10 shadow-md md:flex md:px-20 lg:px-40"
+>
 	<div class="navbar-start">
 		<a href="/"> <Logo /> </a>
 	</div>
@@ -103,8 +105,8 @@
 	</div>
 </div>
 
-<div class="mx-4 md:hidden">
-	<div class="navbar bg-base-100 mx-auto mt-2 mb-8 max-w-7xl">
+<div class="bg-base-100 fixed top-0 right-0 left-0 z-50 mx-4 shadow-md md:hidden">
+	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 max-w-7xl">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
@@ -181,6 +183,8 @@
 		</a>
 	</div>
 </div>
+
+<div class="pt-24 md:pt-20"></div>
 
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
