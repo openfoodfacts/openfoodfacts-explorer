@@ -11,7 +11,7 @@
 	let { questions }: Props = $props();
 
 	let answers: { insight_id: string; value: number }[] = $state([]);
-	let requestState = $state<'loading' | 'answered' | 'error' | 'idle'>('error');
+	let requestState = $state<'loading' | 'answered' | 'error' | 'idle'>('idle');
 
 	async function reset() {
 		answers = (await questions).map((question) => ({
