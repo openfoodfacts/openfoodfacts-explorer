@@ -5,5 +5,11 @@
 	"settings": "Settings",
 	"folksonomy": "Folksonomy",
 	"world": "World",
-	"github": "GitHub"
+	"github": "GitHub",
+	"product": {
+		"facets": {
+			"title": "Product Knowledge Panels",
+			"no_barcode": "No barcode provided"
+		}
+	}
 }
