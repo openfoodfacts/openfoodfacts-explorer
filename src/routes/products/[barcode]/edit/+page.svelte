@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { preferences } from '$lib/settings';
 	import { TAXONOMIES_NAMES, getOrDefault } from '$lib/api';
 	import type { PageData } from './$types';

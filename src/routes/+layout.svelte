@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import Logo from '$lib/ui/Logo.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import '../app.css';
