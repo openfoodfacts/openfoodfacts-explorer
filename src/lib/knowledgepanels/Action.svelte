@@ -85,7 +85,7 @@
 			else if (action.startsWith('http://') || action.startsWith('https://')) {
 				window.open(action, '_blank');
 			}
-		} 
+		}
 		// If no product code but it's a URL, still try to open it
 		else if (action.startsWith('http://') || action.startsWith('https://')) {
 			window.open(action, '_blank');
