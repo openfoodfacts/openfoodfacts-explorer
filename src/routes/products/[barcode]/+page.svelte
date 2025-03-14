@@ -58,6 +58,9 @@
 				Edit
 			{/if}
 		</a>
+		<a href={`/products/${product.code}/facets`} class="btn btn-secondary max-sm:btn-sm ml-2">
+			Knowledge Panels
+		</a>
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
