@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
+	import { page } from '$app/state';
 
-	import { page } from '$app/stores';
+	let message = $derived(page.error?.message);
+	let errors = $derived(page.error?.errors);
 
-	let message = $derived($page.error?.message);
-	let errors = $derived($page.error?.errors);
-
-	run(() => {
+	$effect(() => {
 		for (const error of errors ?? []) {
 			console.error(error);
 		}

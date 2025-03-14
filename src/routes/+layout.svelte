@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import Logo from '$lib/ui/Logo.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import '../app.css';
@@ -12,7 +10,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -31,8 +29,8 @@
 		searchQuery = url.searchParams.get('q') ?? '';
 	}
 	// update searchQuery when the ?q parameter changes
-	run(() => {
-		updateSearchQuery($page.url);
+	$effect(() => {
+		updateSearchQuery(page.url);
 	});
 
 	function gotoProductsSearch() {
