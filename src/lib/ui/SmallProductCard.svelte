@@ -31,13 +31,13 @@
 		<div class="mr-4 flex w-16 shrink-0 items-center justify-center">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
-			{:else if product.image_front_small_url}
-				<img
-					src={product.image_front_small_url}
-					class="h-16 rounded-lg object-cover"
-					alt="Product front"
-				/>
+				
 			{/if}
+			{#if product.image_front_small_url}
+			<img src={product.image_front_small_url} alt={product.product_name} />
+		{:else}
+			<div class="placeholder bg-amber-50 text-black aspect-square flex items-center justify-center">No Image</div>
+		{/if}
 		</div>
 		<div>
 			<p class="text-lg">
