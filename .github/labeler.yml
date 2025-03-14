@@ -4,3 +4,72 @@
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
+
+🏷️ Folksonomy Project:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/folksonomy/+page.svelte'
+
+📖 Knowledge panels:
+  - changed-files:
+      - any-glob-to-any-file: ''
+
+🥜 Allergens:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🐾 Open Pet Food Facts:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🧴 Open Beauty Facts:
+  - changed-files:
+      - any-glob-to-any-file: ''
+📸 Open Products Facts:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🌐 Translations:
+  - changed-files:
+      - any-glob-to-any-file: ''
+Dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ''
+📚 Documentation:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🧽 Data Quality:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🧪 Additives:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🚦 Nutri-Score:
+  - changed-files:
+      - any-glob-to-any-file: ''
+facets:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🖼️ Images:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🎁 Donations:
+  - changed-files:
+      - any-glob-to-any-file: ''
+✏️ Editing:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🕹️ Gamification:
+  - changed-files:
+      - any-glob-to-any-file: ''
+👥 Users:
+  - changed-files:
+      - any-glob-to-any-file: ''
+👮 Moderation:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🔐 Auth:
+  - changed-files:
+      - any-glob-to-any-file: ''
+🧪 Tests:
+  - changed-files:
+      - any-glob-to-any-file: ''
+💸 Prices:
+  - changed-files:
+      - any-glob-to-any-file: ''
