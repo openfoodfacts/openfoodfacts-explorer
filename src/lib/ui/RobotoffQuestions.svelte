@@ -2,10 +2,11 @@
 	import Card from './Card.svelte';
 	import { preventDefault } from 'svelte/legacy';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { RobotoffQuestion } from '$lib/api/robotoff';
+	import { type Question } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { onMount } from 'svelte';
 
 	interface Props {
-		questions: Promise<RobotoffQuestion[]>;
+		questions: Promise<Question[]>;
 	}
 
 	let { questions }: Props = $props();
@@ -21,7 +22,9 @@
 		requestState = 'idle';
 	}
 
-	reset(); // initial call to set answers when questions is resolved.
+	onMount(() => {
+		reset(); // initial call to set answers when questions is resolved.
+	});
 
 	async function submitAnswers() {
 		try {
@@ -42,12 +45,40 @@
 	}
 </script>
 
+{#snippet QuestionItem(question: Question)}
+	<div class="flex-grow">
+		<div>{question.question}</div>
+		{#if question.image_url}
+			<img src={question.image_url} alt={question.question} class="h-20 w-20" />
+		{/if}
+		{#if question.value}
+			<div class="font-semibold">{question.value}</div>
+		{/if}
+	</div>
+{/snippet}
+
+{#snippet ResponseButtons(question: Question, questionIndex: number)}
+	<div class="join">
+		{#each [-1, 0, 1] as value}
+			<input
+				type="radio"
+				class="join-item btn border-base-300 flex-1"
+				name={question.insight_id}
+				bind:group={answers[questionIndex].value}
+				{value}
+				aria-label={value === 1 ? 'Yes' : value === 0 ? 'No' : 'Skip'}
+				required
+				disabled={requestState == 'loading'}
+			/>
+		{/each}
+	</div>
+{/snippet}
+
 <Card>
 	<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
 	{#await questions}
 		<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
 	{:then resolvedQuestions}
-		{console.log(answers)}
 		{#if resolvedQuestions.length !== 0}
 			{#if requestState == 'answered'}
 				<p class="text-center">Thank you for your response</p>
@@ -58,30 +89,9 @@
 				<form onsubmit={preventDefault(submitAnswers)}>
 					<div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-[1fr_max-content]">
 						{#each resolvedQuestions as question, i}
-							<div class="flex-grow">
-								<div>{question.question}</div>
-								{#if question.image_url}
-									<img src={question.image_url} alt={question.question} class="h-20 w-20" />
-								{/if}
-								{#if question.value}
-									<div class="font-semibold">{question.value}</div>
-								{/if}
-							</div>
+							{@render QuestionItem(question)}
 							{#if answers[i] != undefined}
-								<div class="join">
-									{#each [-1, 0, 1] as value}
-										<input
-											type="radio"
-											class="join-item btn border-base-300 flex-1"
-											name={question.insight_id}
-											bind:group={answers[i].value}
-											{value}
-											aria-label={value === 1 ? 'Yes' : value === 0 ? 'No' : 'Skip'}
-											required
-											disabled={requestState == 'loading'}
-										/>
-									{/each}
-								</div>
+								{@render ResponseButtons(question, i)}
 							{/if}
 						{/each}
 					</div>
