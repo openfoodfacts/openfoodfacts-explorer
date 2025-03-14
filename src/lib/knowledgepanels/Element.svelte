@@ -12,15 +12,16 @@
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeElement;
+		productCode?: string;
 	};
-	let { allPanels, element }: Props = $props();
+	let { allPanels, element, productCode }: Props = $props();
 </script>
 
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
-		<PanelGroup {element} {allPanels} />
+		<PanelGroup {element} {allPanels} {productCode} />
 	{:else if element.element_type === 'panel' || element.element_type === 'action'}
-		<Action {element} {allPanels} />
+		<Action {element} {allPanels} {productCode} />
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}

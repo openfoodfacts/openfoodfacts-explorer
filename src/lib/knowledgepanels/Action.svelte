@@ -9,8 +9,9 @@
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeActionElement | KnowledgePanelElementType;
+		productCode?: string;
 	};
-	let { allPanels, element }: Props = $props();
+	let { allPanels, element, productCode }: Props = $props();
 
 	// Action-related functionality
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
@@ -30,9 +31,20 @@
 		return actions.join(', ');
 	}
 
-	function handleActionClick(actions: string[], hasHtml: boolean, event: MouseEvent) {
+	/**
+	 * Handles clicks on the action button.
+	 *
+	 * Special case: When an action element contains HTML content with links (<a> tags),
+	 * we need to allow those links to function normally. This happens when knowledge panels
+	 * include rich HTML content with clickable elements. In such cases, if the user clicks
+	 * directly on a link within the button's HTML content, we want the link's default
+	 * navigation behavior to work instead of triggering the button's action.
+	 *
+	 * @param event - The mouse event from the button click
+	 */
+	function handleActionClick(event: MouseEvent) {
 		// If the action has HTML content and the click was on a link, let the link handle it
-		if (hasHtml) {
+		if (element.element_type === 'action' && element.action_element.html !== '') {
 			const target = event.target as HTMLElement;
 			if (target.tagName === 'A' || target.closest('a')) {
 				// Let the link handle the click
@@ -40,31 +52,32 @@
 			}
 		}
 
-		if (!actions || actions.length === 0) {
+		if (
+			element.element_type !== 'action' ||
+			!element.action_element.actions ||
+			element.action_element.actions.length === 0
+		) {
 			return;
 		}
 
 		// Show loading state
 		isLoading = true;
 
-		// Get the current product ID from the URL
-		const urlParts = window.location.pathname.split('/');
-		const productId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
-
+		// Use the productCode prop instead of extracting from URL
 		// Handle different action types
-		for (const action of actions) {
+		for (const action of element.action_element.actions) {
 			switch (action) {
 				case 'edit_product':
-					if (productId) {
-						window.open(`https://world.openfoodfacts.org/product/${productId}/edit`, '_blank');
+					if (productCode) {
+						window.open(`https://world.openfoodfacts.org/product/${productCode}/edit`, '_blank');
 					}
 					break;
 
 				case 'report_product_to_nutripatrol':
-					if (productId) {
+					if (productCode) {
 						// Direct to the edit page with focus on the report problem section
 						window.open(
-							`https://world.openfoodfacts.org/product/${productId}/edit#report_problem`,
+							`https://world.openfoodfacts.org/product/${productCode}/edit#report_problem`,
 							'_blank'
 						);
 					}
@@ -88,8 +101,7 @@
 {#if element.element_type === 'action'}
 	<button
 		class="btn btn-primary {isLoading ? 'loading' : ''}"
-		onclick={(event) =>
-			handleActionClick(element.action_element.actions, element.action_element.html !== '', event)}
+		onclick={handleActionClick}
 		disabled={isLoading}
 	>
 		{#if element.action_element.html != '' && !isLoading}
@@ -106,7 +118,7 @@
 		{@const id = element.panel_element.panel_id}
 		{@const panel = allPanels[id]}
 		{#if panel !== null}
-			<Panel {panel} {allPanels} {id} />
+			<Panel {panel} {allPanels} {id} {productCode} />
 		{:else}
 			<div class="alert alert-warning">Panel not found: {id}</div>
 		{/if}

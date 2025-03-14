@@ -157,7 +157,7 @@
 	</a>
 </div>
 
-<KnowledgePanels knowledgePanels={product.knowledge_panels} />
+<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 <Gs1Country barcode={product.code} />
 

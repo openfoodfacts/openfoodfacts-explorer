@@ -2,7 +2,13 @@
 	import type { KnowledgePanel } from '$lib/api';
 	import Panel from './Panel.svelte';
 
-	let { knowledgePanels }: { knowledgePanels: Record<string, KnowledgePanel> } = $props();
+	let {
+		knowledgePanels,
+		productCode
+	}: {
+		knowledgePanels: Record<string, KnowledgePanel>;
+		productCode?: string;
+	} = $props();
 
 	function sort(arr: [string, KnowledgePanel][]) {
 		return arr.sort((a, b) => {
@@ -39,6 +45,6 @@
 
 {#each panelsArray as [id, panel]}
 	{#if panel.type === 'card'}
-		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + SUMMARY_ID} />
+		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + SUMMARY_ID} {productCode} />
 	{/if}
 {/each}
