@@ -6,6 +6,10 @@
 	} from '$lib/api';
 	import Panel from './Panel.svelte';
 
+	// URL constants
+	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
+	const PRODUCT_REPORT_URL = 'https://world.openfoodfacts.org/product/';
+
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeActionElement | KnowledgePanelElementType;
@@ -52,6 +56,7 @@
 			}
 		}
 
+		// Check if this is a valid action element with actions
 		if (
 			element.element_type !== 'action' ||
 			!element.action_element.actions ||
@@ -63,31 +68,37 @@
 		// Show loading state
 		isLoading = true;
 
-		// Use the productCode prop instead of extracting from URL
-		// Handle different action types
-		for (const action of element.action_element.actions) {
-			switch (action) {
-				case 'edit_product':
-					if (productCode) {
-						window.open(`https://world.openfoodfacts.org/product/${productCode}/edit`, '_blank');
-					}
-					break;
+		// Get the first action from the list (most cases will only have one action)
+		const action = element.action_element.actions[0];
 
-				case 'report_product_to_nutripatrol':
-					if (productCode) {
-						// Direct to the edit page with focus on the report problem section
-						window.open(
-							`https://world.openfoodfacts.org/product/${productCode}/edit#report_problem`,
-							'_blank'
-						);
-					}
-					break;
+		// Handle known action types if product code is available
+		if (productCode) {
+			// Edit product action
+			if (action === 'edit_product') {
+				window.open(`${PRODUCT_EDIT_URL}${productCode}/edit`, '_blank');
+			}
+			// Report to NutriPatrol action
+			else if (action === 'report_product_to_nutripatrol') {
+				window.open(`${PRODUCT_REPORT_URL}${productCode}/edit#report_problem`, '_blank');
+			}
+			// Handle URLs directly
+			else if (action.startsWith('http://') || action.startsWith('https://')) {
+				window.open(action, '_blank');
+			}
+		} 
+		// If no product code but it's a URL, still try to open it
+		else if (action.startsWith('http://') || action.startsWith('https://')) {
+			window.open(action, '_blank');
+		}
 
-				default:
-					// If not a known action, try to handle it as a URL if it looks like one
-					if (action.startsWith('http://') || action.startsWith('https://')) {
-						window.open(action, '_blank');
-					}
+		// Process any additional actions if necessary
+		if (element.action_element.actions.length > 1) {
+			for (let i = 1; i < element.action_element.actions.length; i++) {
+				const additionalAction = element.action_element.actions[i];
+				// Handle direct URLs in additional actions
+				if (additionalAction.startsWith('http://') || additionalAction.startsWith('https://')) {
+					window.open(additionalAction, '_blank');
+				}
 			}
 		}
 
