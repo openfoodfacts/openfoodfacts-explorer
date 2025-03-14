@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+	import { PRODUCT_URL } from '$lib/const';
 
 	let error: string | null = $state(null);
 	let productNotFound: boolean = $state(false);
@@ -10,10 +11,10 @@
 
 	async function searchProduct(barcode: string) {
 		try {
-			const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
+			const URL = PRODUCT_URL(barcode);
+			const response = await fetch(URL);
 			const data = await response.json();
-
-			if (data.status === 1) {
+			if (data.status === "success") {
 				// Product exists, redirect to product page.
 				window.location.href = `/products/${barcode}`;
 			} else {
