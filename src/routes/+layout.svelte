@@ -83,7 +83,7 @@
 					title="Scan a barcode"
 					aria-label="Scan a barcode"
 				>
-					<span class="icon-[mdi--camera]"></span>
+					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 				</a>
 			</div>
 		</div>
@@ -126,7 +126,7 @@
 				title="Scan a barcode"
 				aria-label="Scan a barcode"
 			>
-				<span class="icon-[mdi--camera]"></span>
+				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 			</a>
 			<button
 				class="btn btn-square btn-secondary text-lg"

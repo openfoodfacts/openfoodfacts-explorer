@@ -3,6 +3,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
+	import { navigating } from '$app/state';
 
 	import EcoScore from '$lib/greenscore/GreenScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
@@ -58,8 +59,16 @@
 			</a>
 		{/if}
 
-		<a href={`/products/${product.code}/edit`} class="btn btn-secondary max-sm:btn-sm ml-auto">
-			Edit
+		<a
+			href={`/products/${product.code}/edit`}
+			class="btn btn-secondary max-sm:btn-sm ml-auto"
+			class:pointer-events-none={navigating.to}
+		>
+			{#if navigating.to?.params?.barcode === product.code}
+				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
+			{:else}
+				Edit
+			{/if}
 		</a>
 	</div>
 
