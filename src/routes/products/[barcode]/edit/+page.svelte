@@ -145,6 +145,25 @@
 	</div>
 
 	<div class="form-control mb-4">
+		<label for="">EMB Code (Producer code)</label>
+		<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
+	</div>
+
+	<div class="form-control mb-4">
+		<label for="">Packaging</label>
+		<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
+	</div>
+
+	<div class="form-control mb-4">
+		<label for="">Manufacturing places</label>
+		<input
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$productStore.manufacturing_places}
+		/>
+	</div>
+
+	<div class="form-control mb-4">
 		<label for="">Categories: </label>
 		<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
 	</div>
@@ -202,6 +221,97 @@
 			</div>
 		{/each}
 	</div>
+</Card>
+
+<Card>
+	<h3 class="mb-4 text-3xl font-bold">Nutritional Information</h3>
+	<div class="form-control mb-4">
+		<label for="">Serving Size</label>
+		<input
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$productStore.serving_size}
+		/>
+	</div>
+
+	{#if $productStore.nutriments}
+		<div class="grid grid-cols-2 gap-4">
+			<div class="form-control mb-4">
+				<label for="">Energy (kJ)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments['energy-kj_100g']}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Energy (kcal)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments['energy-kcal_100g']}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Fat (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.fat_100g}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Saturated Fat (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments['saturated-fat_100g']}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Carbohydrates (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.carbohydrates_100g}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Sugars (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.sugars_100g}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Proteins (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.proteins_100g}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Salt (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.salt_100g}
+				/>
+			</div>
+			<div class="form-control mb-4">
+				<label for="">Sodium (g)</label>
+				<input
+					type="number"
+					class="input input-bordered w-full"
+					bind:value={$productStore.nutriments.sodium_100g}
+				/>
+			</div>
+		</div>
+	{:else}
+		<div class="alert alert-warning">No nutritional information available</div>
+	{/if}
 </Card>
 
 <Card>
