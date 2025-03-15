@@ -24,6 +24,7 @@
 
 	let { data }: Props = $props();
 	let product = $derived(data.state.product);
+	let type = $derived(data.type);
 
 	let lang = $derived($preferences.lang);
 </script>
@@ -38,14 +39,25 @@
 			{product.product_name ?? product.code}
 		</h1>
 
-		<a
-			href={'https://world.openfoodfacts.org/product/' + product.code}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="link me-4"
-		>
-			See on OpenFoodFacts
-		</a>
+		{#if type === 'OFF'}
+			<a
+				href="https://world.openfoodfacts.org/product/{product.code}"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline"
+			>
+				See on Open Food Facts
+			</a>
+		{:else}
+			<a
+				href="https://world.openbeautyfacts.org/product/{product.code}"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline"
+			>
+				See on Open Beauty Facts
+			</a>
+		{/if}
 
 		<a
 			href={`/products/${product.code}/edit`}

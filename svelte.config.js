@@ -19,6 +19,7 @@ const config = {
 					'self',
 					'data:',
 					'https://*.openfoodfacts.org/',
+					'https://*.openbeautyfacts.org/',
 					'https://tile.openstreetmap.org'
 				],
 				'style-src': ['self', 'unsafe-inline'],
