@@ -1,4 +1,4 @@
-import { API_HOST, PRODUCT_URL } from '$lib/const';
+import { API_HOST, PRODUCT_IMAGE_URL, PRODUCT_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
@@ -109,6 +109,48 @@ export class ProductsApi {
 		if (productState.status !== 'success') return null;
 		else return productState.product;
 	}
+
+	async unselectProductImage(barcode: string, imageId: string) {
+		const url = `${API_HOST}/cgi/product_image_unselect.pl`;
+
+		const body = formData({
+			code: barcode,
+			image_id: imageId
+		});
+
+		const res = await this.fetch(url, {
+			method: 'PUT',
+			body,
+			headers: { 'Content-Type': 'multipart/form-data', mode: 'no-cors' }
+		});
+
+		return res.status === 200;
+	}
+
+	async selectProductImage(barcode: string, id: string, imageId: string) {
+		const url = `${API_HOST}/cgi/product_image_crop.pl`;
+		const body = new URLSearchParams({
+			code: barcode,
+			id: id,
+			imgid: imageId,
+			x1: '0',
+			y1: '0',
+			x2: '0',
+			y2: '0',
+			coordinates_image_size: 'full',
+			angle: '0',
+			normalize: 'false',
+			white_magic: 'false'
+		});
+
+		const res = await this.fetch(url, {
+			method: 'PUT',
+			body,
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		});
+
+		return res.status === 200;
+	}
 }
 
 /**
@@ -186,7 +228,7 @@ export type SelectedImage = {
 	y2: string;
 };
 
-type RawImage = {
+export type RawImage = {
 	sizes: {
 		full: ImageSize;
 		100: ImageSize;
@@ -322,4 +364,34 @@ function formData(data: Record<string, string | Blob>) {
 		form.append(key, value);
 	}
 	return form;
+}
+
+export function getProductImage(
+	code: string,
+	key: string,
+	image: SelectedImage | RawImage,
+	size: string = 'full'
+) {
+	const paddedBarcode = code.padStart(13, '0');
+	const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+	if (!match) {
+		throw new Error('Invalid barcode format');
+	}
+	const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+	let filename;
+	// If the key is a number, it's a RawImage and we don't have a revision
+	// But raw images can only specify the sizes 100, 400
+	// Full size on RawImage must be specified by removing the size parameter
+	if (key.match(/^\d+$/)) {
+		if (size != 'full') {
+			filename = `${key}.${size}.jpg`;
+		} else {
+			filename = `${key}.jpg`;
+		}
+	} else {
+		filename = `${key}.${(image as SelectedImage).rev}.${size}.jpg`;
+	}
+	const url = PRODUCT_IMAGE_URL(`${path}/${filename}`);
+	console.debug('Image URL', url);
+	return url;
 }

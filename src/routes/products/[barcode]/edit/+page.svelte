@@ -4,13 +4,20 @@
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 
-	import { getOrDefault, ProductsApi, type SelectedImage, type Taxonomy } from '$lib/api';
+	import {
+		getOrDefault,
+		getProductImage,
+		ProductsApi,
+		type SelectedImage,
+		type Taxonomy
+	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
 
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
+	import PhotoManager from '$lib/ui/PhotoManager.svelte';
 
 	interface Props {
 		data: PageData;
@@ -73,20 +80,12 @@
 	}
 
 	function getIngredientsImage(language: string) {
-		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
-		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
-		if (!match) {
-			throw new Error('Invalid barcode format');
-		}
-		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
-		const imageName = 'ingredients_' + language;
+		const imageName = `ingredients_${language}`;
 		const image = get(productStore).images[imageName];
 		if (!image) {
 			return '';
 		}
-		const rev = (image as SelectedImage).rev;
-		const filename = `${imageName}.${rev}.400.jpg`;
-		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+		return getProductImage($productStore.code, imageName, image, '400');
 	}
 
 	run(() => {
@@ -95,6 +94,8 @@
 		});
 	});
 </script>
+
+<PhotoManager product={$productStore} />
 
 <div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
 	<input type="checkbox" />
