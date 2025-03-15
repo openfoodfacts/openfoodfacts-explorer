@@ -7,6 +7,8 @@
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
 
+	import { preferences } from '$lib/settings';
+
 	let searchQuery: string = $state('');
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
@@ -25,6 +27,12 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
+	});
+
+	onMount(() => {
+		preferences.subscribe(() => {
+			document.firstElementChild!.setAttribute('data-theme', $preferences.theme);
+		});
 	});
 
 	function updateSearchQuery(url: URL) {
