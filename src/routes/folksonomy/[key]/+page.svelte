@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -19,7 +19,7 @@
 <h2 class="text-2xl font-bold">
 	Folksonomy tag:
 	<span class="bg-accent text-accent-content ml-4 rounded-lg p-2 font-mono text-xl">
-		{$page.params.key}
+		{page.params.key}
 	</span>
 </h2>
 
