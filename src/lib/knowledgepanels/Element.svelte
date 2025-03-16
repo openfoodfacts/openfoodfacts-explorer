@@ -20,8 +20,18 @@
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
 		<PanelGroup {element} {allPanels} {productCode} />
-	{:else if element.element_type === 'panel' || element.element_type === 'action'}
+	{:else if element.element_type === 'action'}
 		<Action {element} {allPanels} {productCode} />
+	{:else if element.element_type === 'panel'}
+		{#if 'panel_element' in element}
+			{@const id = element.panel_element.panel_id}
+			{@const panel = allPanels[id]}
+			{#if panel !== null}
+				<Panel {panel} {allPanels} {id} {productCode} />
+			{:else}
+				<div class="alert alert-warning">Panel not found: {id}</div>
+			{/if}
+		{/if}
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}

@@ -1,21 +1,16 @@
 <script lang="ts">
-	import type {
-		KnowledgeActionElement,
-		KnowledgePanel,
-		KnowledgePanelElement as KnowledgePanelElementType
-	} from '$lib/api';
-	import Panel from './Panel.svelte';
+	import type { KnowledgeActionElement } from '$lib/api';
 
 	// URL constants
 	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
 	const PRODUCT_REPORT_URL = 'https://world.openfoodfacts.org/product/';
 
 	type Props = {
-		allPanels: Record<string, KnowledgePanel>;
-		element: KnowledgeActionElement | KnowledgePanelElementType;
+		element: KnowledgeActionElement;
+		allPanels: Record<string, any>; // Keep for compatibility
 		productCode?: string;
 	};
-	let { allPanels, element, productCode }: Props = $props();
+	let { element, productCode }: Props = $props();
 
 	// Action-related functionality
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
@@ -48,7 +43,7 @@
 	 */
 	function handleActionClick(event: MouseEvent) {
 		// If the action has HTML content and the click was on a link, let the link handle it
-		if (element.element_type === 'action' && element.action_element.html !== '') {
+		if (element.action_element.html !== '') {
 			const target = event.target as HTMLElement;
 			if (target.tagName === 'A' || target.closest('a')) {
 				// Let the link handle the click
@@ -57,11 +52,7 @@
 		}
 
 		// Check if this is a valid action element with actions
-		if (
-			element.element_type !== 'action' ||
-			!element.action_element.actions ||
-			element.action_element.actions.length === 0
-		) {
+		if (!element.action_element.actions || element.action_element.actions.length === 0) {
 			return;
 		}
 
@@ -72,7 +63,7 @@
 		const action = element.action_element.actions[0];
 
 		// Handle known action types if product code is available
-		if (productCode) {
+		if (productCode != null) {
 			// Edit product action
 			if (action === 'edit_product') {
 				window.open(`${PRODUCT_EDIT_URL}${productCode}/edit`, '_blank');
@@ -109,29 +100,17 @@
 	}
 </script>
 
-{#if element.element_type === 'action'}
-	<button
-		class="btn btn-primary {isLoading ? 'loading' : ''}"
-		onclick={handleActionClick}
-		disabled={isLoading}
-	>
-		{#if element.action_element.html != '' && !isLoading}
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html element.action_element.html}
-		{:else if !isLoading}
-			{getButtonTitle(element.action_element.actions)}
-		{:else}
-			Loading...
-		{/if}
-	</button>
-{:else if element.element_type === 'panel'}
-	{#if 'panel_element' in element}
-		{@const id = element.panel_element.panel_id}
-		{@const panel = allPanels[id]}
-		{#if panel !== null}
-			<Panel {panel} {allPanels} {id} {productCode} />
-		{:else}
-			<div class="alert alert-warning">Panel not found: {id}</div>
-		{/if}
+<button
+	class="btn btn-primary {isLoading ? 'loading' : ''}"
+	onclick={handleActionClick}
+	disabled={isLoading}
+>
+	{#if element.action_element.html != '' && !isLoading}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html element.action_element.html}
+	{:else if !isLoading}
+		{getButtonTitle(element.action_element.actions)}
+	{:else}
+		Loading...
 	{/if}
-{/if}
+</button>
