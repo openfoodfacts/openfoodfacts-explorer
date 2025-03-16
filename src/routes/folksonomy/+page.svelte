@@ -11,7 +11,9 @@
 	let { data }: Props = $props();
 
 	// Ensure data.keys exists and has a default empty array if undefined
-	let sortedTags = $derived(data.keys != null ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : []);
+	let sortedTags = $derived(
+		data.keys != null ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : []
+	);
 
 	// Search functionality
 	let searchQuery = $state('');
@@ -74,11 +76,15 @@
 
 	// Calculate key usage metrics for visual representation with safe default values
 	const maxCount = $derived(
-		data.keys != null && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.count || 0), 1) : 1
+		data.keys != null && data.keys.length > 0
+			? Math.max(...data.keys.map((k) => k?.count || 0), 1)
+			: 1
 	);
 
 	const maxValues = $derived(
-		data.keys != null && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.values || 0), 1) : 1
+		data.keys != null && data.keys.length > 0
+			? Math.max(...data.keys.map((k) => k?.values || 0), 1)
+			: 1
 	);
 
 	function getUsagePercent(count: number): number {
@@ -125,7 +131,11 @@
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label="Search folksonomy keys" onclick={handleSearch}>
+						<button
+							class="btn btn-square"
+							aria-label="Search folksonomy keys"
+							onclick={handleSearch}
+						>
 							<span class="icon-[mdi--magnify] h-6 w-6"></span>
 						</button>
 					</div>
@@ -153,10 +163,7 @@
 		<div
 			class="key-card bg-base-100 border-base-300 rounded-lg border p-3 transition-all duration-300 hover:shadow-lg"
 		>
-			<a
-				href="/folksonomy/{key.k}"
-				class="hover:text-primary block font-mono transition-colors"
-			>
+			<a href="/folksonomy/{key.k}" class="hover:text-primary block font-mono transition-colors">
 				<div class="mb-2 flex items-center justify-between">
 					<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
 					<div class="flex gap-1">
@@ -228,7 +235,9 @@
 	{@render headerSection()}
 
 	{#if data.keys == null || data.keys.length === 0}
-		{@render emptyState('No Folksonomy keys available. Keys will appear here once they are created.')}
+		{@render emptyState(
+			'No Folksonomy keys available. Keys will appear here once they are created.'
+		)}
 	{:else if filteredTags.length === 0}
 		{@render emptyState('No keys found with the current search query.')}
 	{:else}
