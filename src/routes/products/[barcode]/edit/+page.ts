@@ -4,14 +4,15 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
 
 export const load = (async ({ fetch, params }) => {
-	const product = await getProduct(params.barcode, fetch);
-
-	const categories = await getTaxo<Category>('categories', fetch);
-	const labels = await getTaxo<Label>('labels', fetch);
-	const brands = await getTaxo<Brand>('brands', fetch);
-	const stores = await getTaxo<Store>('stores', fetch);
-	const origins = await getTaxo<Origin>('origins', fetch);
-	const countries = await getTaxo<Country>('countries', fetch);
+	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
+		getProduct(params.barcode, fetch),
+		getTaxo<Category>('categories', fetch),
+		getTaxo<Label>('labels', fetch),
+		getTaxo<Brand>('brands', fetch),
+		getTaxo<Store>('stores', fetch),
+		getTaxo<Origin>('origins', fetch),
+		getTaxo<Country>('countries', fetch)
+	]);
 
 	if (product.status === 'failure') {
 		error(404, {
