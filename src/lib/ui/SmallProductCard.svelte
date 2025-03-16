@@ -1,17 +1,23 @@
 <script lang="ts">
 	import type { ProductReduced } from '$lib/api';
 	import { navigating } from '$app/state';
+	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
 	interface Props {
 		product: ProductReduced;
 	}
 
 	let { product }: Props = $props();
+	console.log(product)
+	let nutriscore_src = KP_ATTRIBUTE_IMG('nutriscore-' + (product.nutriscore_grade ?? 'unknown') +'-new-en.svg')
+	let nova_src = KP_ATTRIBUTE_IMG('nova-group-' + (product.nova_group ?? 'unknown') + '.svg')
+	let ecoscore_src = KP_ATTRIBUTE_IMG('ecoscore-' + (product.ecoscore_grade ?? 'unknown') + '.svg')
+
 </script>
 
 <a
 	href={`/products/${product.code}`}
-	class="btn btn-ghost text-primary dark:bg-base-300 pointer-events-none h-auto justify-normal rounded-2xl bg-white p-4 text-start shadow-md"
+	class="btn btn-ghost text-primary dark:bg-base-300 pointer-events-none h-auto justify-normal rounded-2xl bg-white p-4 text-start shadow-md flex flex-col"
 	class:pointer-events-none={navigating.to}
 >
 	<div class="flex flex-row items-center">
@@ -34,5 +40,10 @@
 				{product.brands} - {product.quantity}
 			</p>
 		</div>
+	</div>
+	<div class="flex flex-row items-center justify-between gap-2">
+		<div><img src={nutriscore_src} alt="nutriscore" class="h-8"></div>
+		<div><img src={nova_src} alt="nova" class="h-8"></div>
+		<div><img src={ecoscore_src} alt="nova" class="h-8"></div>
 	</div>
 </a>
