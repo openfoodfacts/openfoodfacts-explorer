@@ -11,12 +11,12 @@
 	let { data }: Props = $props();
 
 	// Ensure data.keys exists and has a default empty array if undefined
-	let sortedTags = $derived(data.keys ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : []);
+	let sortedTags = $derived(data.keys != null ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : []);
 
 	// Search functionality
 	let searchQuery = $state('');
 	let filteredTags = $derived(
-		searchQuery
+		searchQuery != null && searchQuery !== ''
 			? sortedTags.filter((key) => key.k.toLowerCase().includes(searchQuery.toLowerCase()))
 			: sortedTags
 	);
@@ -25,7 +25,7 @@
 	function getKeyPrefix(key: string): string {
 		// Extract the first part of the key before a colon or underscore
 		const match = key.match(/^([^:_]+)/);
-		return match ? match[0] : 'other';
+		return match != null ? match[0] : 'other';
 	}
 
 	// Create a function to get the grouped tags to use in derived
@@ -34,7 +34,7 @@
 
 		tags.forEach((key) => {
 			const prefix = getKeyPrefix(key.k);
-			if (!groups[prefix]) {
+			if (groups[prefix] == null) {
 				groups[prefix] = [];
 			}
 			groups[prefix].push(key);
@@ -74,11 +74,11 @@
 
 	// Calculate key usage metrics for visual representation with safe default values
 	const maxCount = $derived(
-		data.keys && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.count || 0), 1) : 1
+		data.keys != null && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.count || 0), 1) : 1
 	);
 
 	const maxValues = $derived(
-		data.keys && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.values || 0), 1) : 1
+		data.keys != null && data.keys.length > 0 ? Math.max(...data.keys.map((k) => k?.values || 0), 1) : 1
 	);
 
 	function getUsagePercent(count: number): number {
@@ -103,90 +103,134 @@
 </script>
 
 <div class="folksonomy-container flex flex-col gap-6 p-4">
-	<div class="header-section mb-2">
-		<h1 class="text-primary mb-4 text-3xl font-bold">
-			Folksonomy Engine
-			<span class="text-base font-normal opacity-70">Keys Explorer</span>
-		</h1>
+	{#snippet headerSection()}
+		<div class="header-section mb-2">
+			<h1 class="text-primary mb-4 text-3xl font-bold">
+				Folksonomy Engine
+				<span class="text-base font-normal opacity-70">Keys Explorer</span>
+			</h1>
 
-		<p class="mb-4 max-w-2xl text-sm opacity-75">
-			Folksonomy allows users to add custom tags to products. Browse all available keys below,
-			search for specific keys, or click on any key to see products that use it.
-		</p>
+			<p class="mb-4 max-w-2xl text-sm opacity-75">
+				Folksonomy allows users to add custom tags to products. Browse all available keys below,
+				search for specific keys, or click on any key to see products that use it.
+			</p>
 
-		<div class="search-section mb-6">
-			<div class="form-control">
-				<div class="input-group">
-					<input
-						type="text"
-						placeholder="Search keys..."
-						class="input input-bordered w-full max-w-md"
-						bind:value={searchQuery}
-						transition:fade={{ duration: 200 }}
-					/>
-					<button class="btn btn-square" aria-label="Search folksonomy keys" onclick={handleSearch}>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-6 w-6"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
-					</button>
+			<div class="search-section mb-6">
+				<div class="form-control">
+					<div class="input-group">
+						<input
+							type="text"
+							placeholder="Search keys..."
+							class="input input-bordered w-full max-w-md"
+							bind:value={searchQuery}
+							transition:fade={{ duration: 200 }}
+						/>
+						<button class="btn btn-square" aria-label="Search folksonomy keys" onclick={handleSearch}>
+							<span class="icon-[mdi--magnify] h-6 w-6"></span>
+						</button>
+					</div>
+				</div>
+
+				<div class="mt-2 text-sm">
+					{filteredTags.length}
+					{filteredTags.length === 1 ? 'key' : 'keys'} found
+					{#if searchQuery != null && searchQuery !== ''}
+						for "<span class="font-medium">{searchQuery}</span>"
+					{/if}
 				</div>
 			</div>
+		</div>
+	{/snippet}
 
-			<div class="mt-2 text-sm">
-				{filteredTags.length}
-				{filteredTags.length === 1 ? 'key' : 'keys'} found
-				{#if searchQuery}
-					for "<span class="font-medium">{searchQuery}</span>"
+	{#snippet emptyState(message: string)}
+		<div class="alert alert-info" transition:fade>
+			<span class="icon-[mdi--information-outline] h-6 w-6 shrink-0 stroke-current"></span>
+			<span>{message}</span>
+		</div>
+	{/snippet}
+
+	{#snippet keyCard(key: FolksonomyKey)}
+		<div
+			class="key-card bg-base-100 border-base-300 rounded-lg border p-3 transition-all duration-300 hover:shadow-lg"
+		>
+			<a
+				href="/folksonomy/{key.k}"
+				class="hover:text-primary block font-mono transition-colors"
+			>
+				<div class="mb-2 flex items-center justify-between">
+					<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
+					<div class="flex gap-1">
+						{#if key.count != null && key.count > 0}
+							<div
+								class="badge badge-sm {getColorClass(getUsagePercent(key.count))}"
+								title="Number of products: {key.count}"
+							>
+								{key.count}
+							</div>
+						{/if}
+						{#if key.values != null && key.values > 0}
+							<div
+								class="badge badge-sm {getColorClass(getValuesPercent(key.values))}"
+								title="Number of unique values: {key.values}"
+							>
+								{key.values}
+							</div>
+						{/if}
+					</div>
+				</div>
+				{#if key.count != null && key.count > 0}
+					<div class="bg-base-300 h-1 w-full overflow-hidden rounded-full">
+						<div
+							class="bg-primary h-full rounded-full"
+							style="width: {getUsagePercent(key.count)}%"
+						></div>
+					</div>
 				{/if}
-			</div>
+			</a>
 		</div>
-	</div>
+	{/snippet}
 
-	{#if !data.keys || data.keys.length === 0}
-		<div class="alert alert-info" transition:fade>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				class="h-6 w-6 shrink-0 stroke-current"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				></path>
-			</svg>
-			<span>No Folksonomy keys available. Keys will appear here once they are created.</span>
+	{#snippet groupHeader(group: string, keys: FolksonomyKey[])}
+		<div
+			class="group-header flex cursor-pointer items-center justify-between p-3 text-lg font-semibold"
+			role="button"
+			tabindex="0"
+			aria-expanded={expandedGroups[group] ? 'true' : 'false'}
+			onclick={() => toggleGroup(group)}
+			onkeydown={(e) => handleGroupKeyDown(e, group)}
+		>
+			<div class="flex items-center gap-2">
+				<span>{group}</span>
+				<div class="badge">{keys.length}</div>
+			</div>
+			<button class="btn btn-sm btn-circle" aria-hidden="true">
+				{#if expandedGroups[group]}
+					<span class="icon-[mdi--chevron-up] h-6 w-6"></span>
+				{:else}
+					<span class="icon-[mdi--chevron-down] h-6 w-6"></span>
+				{/if}
+			</button>
 		</div>
+	{/snippet}
+
+	{#snippet groupContent(group: string, keys: FolksonomyKey[])}
+		{#if expandedGroups[group]}
+			<div class="group-keys card-body p-4 pt-0" transition:fade={{ duration: 200 }}>
+				<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+					{#each keys as key}
+						{@render keyCard(key)}
+					{/each}
+				</div>
+			</div>
+		{/if}
+	{/snippet}
+
+	{@render headerSection()}
+
+	{#if data.keys == null || data.keys.length === 0}
+		{@render emptyState('No Folksonomy keys available. Keys will appear here once they are created.')}
 	{:else if filteredTags.length === 0}
-		<div class="alert alert-info" transition:fade>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				class="h-6 w-6 shrink-0 stroke-current"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				></path>
-			</svg>
-			<span>No keys found with the current search query.</span>
-		</div>
+		{@render emptyState('No keys found with the current search query.')}
 	{:else}
 		<div class="keys-container">
 			{#each groupedTags as [group, keys]}
@@ -194,99 +238,8 @@
 					class="group-container card bg-base-200 mb-4 shadow-md"
 					transition:fly={{ y: 20, duration: 300 }}
 				>
-					<div
-						class="group-header flex cursor-pointer items-center justify-between p-3 text-lg font-semibold"
-						role="button"
-						tabindex="0"
-						aria-expanded={expandedGroups[group] ? 'true' : 'false'}
-						onclick={() => toggleGroup(group)}
-						onkeydown={(e) => handleGroupKeyDown(e, group)}
-					>
-						<div class="flex items-center gap-2">
-							<span>{group}</span>
-							<div class="badge">{keys.length}</div>
-						</div>
-						<button class="btn btn-sm btn-circle" aria-hidden="true">
-							{#if expandedGroups[group]}
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-6 w-6"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M18 12H6"
-									/>
-								</svg>
-							{:else}
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-6 w-6"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 6v12M6 12h12"
-									/>
-								</svg>
-							{/if}
-						</button>
-					</div>
-
-					{#if expandedGroups[group]}
-						<div class="group-keys card-body p-4 pt-0" transition:fade={{ duration: 200 }}>
-							<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-								{#each keys as key}
-									<div
-										class="key-card bg-base-100 border-base-300 rounded-lg border p-3 transition-all duration-300 hover:shadow-lg"
-									>
-										<a
-											href="/folksonomy/{key.k}"
-											class="hover:text-primary block font-mono transition-colors"
-										>
-											<div class="mb-2 flex items-center justify-between">
-												<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
-												<div class="flex gap-1">
-													{#if key.count && key.count > 0}
-														<div
-															class="badge badge-sm {getColorClass(getUsagePercent(key.count))}"
-															title="Number of products: {key.count}"
-														>
-															{key.count}
-														</div>
-													{/if}
-													{#if key.values && key.values > 0}
-														<div
-															class="badge badge-sm {getColorClass(getValuesPercent(key.values))}"
-															title="Number of unique values: {key.values}"
-														>
-															{key.values}
-														</div>
-													{/if}
-												</div>
-											</div>
-											{#if key.count && key.count > 0}
-												<div class="bg-base-300 h-1 w-full overflow-hidden rounded-full">
-													<div
-														class="bg-primary h-full rounded-full"
-														style="width: {getUsagePercent(key.count)}%"
-													></div>
-												</div>
-											{/if}
-										</a>
-									</div>
-								{/each}
-							</div>
-						</div>
-					{/if}
+					{@render groupHeader(group, keys)}
+					{@render groupContent(group, keys)}
 				</div>
 			{/each}
 		</div>
