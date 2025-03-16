@@ -2,13 +2,25 @@
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 
-	import { getOrDefault, ProductsApi, type SelectedImage, type Taxonomy } from '$lib/api';
+	import {
+		getOrDefault,
+		ProductsApi,
+		type SelectedImage,
+		type Taxonomy,
+		type Product,
+		type Nutriments
+	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import Card from '$lib/ui/Card.svelte';
 
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
+
+	// Extend Product type to include no_nutrition_data property
+	type ExtendedProduct = Product & {
+		no_nutrition_data?: boolean;
+	};
 
 	interface Props {
 		data: PageData;
@@ -32,7 +44,7 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
-	let productStore = $derived(writable(data.state.product));
+	let productStore = $derived(writable<ExtendedProduct>(data.state.product));
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
@@ -45,6 +57,31 @@
 			return language.toLowerCase().includes(languageSearch.toLowerCase());
 		})
 	);
+
+	// Initialize nutriments object if it doesn't exist
+	function ensureNutriments() {
+		productStore.update((store) => {
+			if (!store.nutriments) {
+				store.nutriments = {} as Nutriments;
+			}
+			return store;
+		});
+	}
+
+	// Handle nutriment value changes
+	function updateNutriment(key: string, value: number | null) {
+		ensureNutriments();
+		productStore.update((store) => {
+			if (value === null) {
+				// @ts-ignore - We know this is a valid key for nutriments
+				delete store.nutriments[key];
+			} else {
+				// @ts-ignore - We know this is a valid key for nutriments
+				store.nutriments[key] = value;
+			}
+			return store;
+		});
+	}
 
 	async function submit() {
 		const product = get(productStore);
@@ -234,14 +271,26 @@
 		/>
 	</div>
 
-	{#if $productStore.nutriments}
+	<div class="form-control mb-4">
+		<label class="label cursor-pointer justify-start gap-2">
+			<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
+			<span class="label-text">No nutrition information on the product</span>
+		</label>
+	</div>
+
+	{#if !$productStore.no_nutrition_data}
 		<div class="grid grid-cols-2 gap-4">
 			<div class="form-control mb-4">
 				<label for="">Energy (kJ)</label>
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments['energy-kj_100g']}
+					value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'energy-kj_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -249,7 +298,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments['energy-kcal_100g']}
+					value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'energy-kcal_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -257,7 +311,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.fat_100g}
+					value={$productStore.nutriments?.fat_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'fat_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -265,7 +324,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments['saturated-fat_100g']}
+					value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'saturated-fat_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -273,7 +337,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.carbohydrates_100g}
+					value={$productStore.nutriments?.carbohydrates_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'carbohydrates_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -281,7 +350,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.sugars_100g}
+					value={$productStore.nutriments?.sugars_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'sugars_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -289,7 +363,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.proteins_100g}
+					value={$productStore.nutriments?.proteins_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'proteins_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -297,7 +376,12 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.salt_100g}
+					value={$productStore.nutriments?.salt_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'salt_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -305,12 +389,17 @@
 				<input
 					type="number"
 					class="input input-bordered w-full"
-					bind:value={$productStore.nutriments.sodium_100g}
+					value={$productStore.nutriments?.sodium_100g ?? ''}
+					oninput={(e) =>
+						updateNutriment(
+							'sodium_100g',
+							e.currentTarget.value ? Number(e.currentTarget.value) : null
+						)}
 				/>
 			</div>
 		</div>
 	{:else}
-		<div class="alert alert-warning">No nutritional information available</div>
+		<div class="alert alert-info">Nutrition information will not be displayed for this product</div>
 	{/if}
 </Card>
 
