@@ -2,11 +2,11 @@
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
 	const MAP: Record<string, string> = {
-		a: KP_ATTRIBUTE_IMG('green-score-a.svg'),
-		b: KP_ATTRIBUTE_IMG('green-score-b.svg'),
-		c: KP_ATTRIBUTE_IMG('green-score-c.svg'),
-		d: KP_ATTRIBUTE_IMG('green-score-d.svg'),
-		e: KP_ATTRIBUTE_IMG('green-score-e.svg')
+		a: KP_ATTRIBUTE_IMG('green-score-b.svg'),
+		b: KP_ATTRIBUTE_IMG('green-score-c.svg'),
+		c: KP_ATTRIBUTE_IMG('green-score-d.svg'),
+		d: KP_ATTRIBUTE_IMG('green-score-e.svg'),
+		e: KP_ATTRIBUTE_IMG('green-score-unknown.svg')
 	};
 
 	let SRC_UNKNOWN = KP_ATTRIBUTE_IMG('green-score-unknown.svg');
