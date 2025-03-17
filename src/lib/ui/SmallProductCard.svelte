@@ -8,11 +8,12 @@
 	}
 
 	let { product }: Props = $props();
-	console.log(product)
-	let nutriscore_src = KP_ATTRIBUTE_IMG('nutriscore-' + (product.nutriscore_grade ?? 'unknown') +'-new-en.svg')
-	let nova_src = KP_ATTRIBUTE_IMG('nova-group-' + (product.nova_group ?? 'unknown') + '.svg')
-	let ecoscore_src = KP_ATTRIBUTE_IMG('ecoscore-' + (product.ecoscore_grade ?? 'unknown') + '.svg')
 
+	let nutriscoreSrc = $derived(KP_ATTRIBUTE_IMG('nutriscore-' + product.nutriscore_grade + '-new-en.svg'))
+
+	let novaSrc = $derived(product.nova_group ? (KP_ATTRIBUTE_IMG('nova-group-' + product.nova_group + '.svg')) : (KP_ATTRIBUTE_IMG('nova-group-unknown.svg')))
+
+	let ecoscoreSrc = $derived(KP_ATTRIBUTE_IMG('ecoscore-' + product.ecoscore_grade + '.svg'))
 </script>
 
 <a
@@ -39,11 +40,11 @@
 			<p class="mt-2 text-sm font-light">
 				{product.brands} - {product.quantity}
 			</p>
+			<div class="flex flex-row items-center justify-between gap-2 mt-2">
+				<div><img src={nutriscoreSrc} alt="nutriscore" class="h-8"></div>
+				<div><img src={novaSrc} alt="nova" class="h-8"></div>
+				<div><img src={ecoscoreSrc} alt="nova" class="h-8"></div>
+			</div>
 		</div>
-	</div>
-	<div class="flex flex-row items-center justify-between gap-2">
-		<div><img src={nutriscore_src} alt="nutriscore" class="h-8"></div>
-		<div><img src={nova_src} alt="nova" class="h-8"></div>
-		<div><img src={ecoscore_src} alt="nova" class="h-8"></div>
 	</div>
 </a>
