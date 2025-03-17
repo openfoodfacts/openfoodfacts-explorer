@@ -196,4 +196,4 @@
 	</Card>
 {/if}
 
-<RobotoffQuestions questions={data.questions as Promise<RobotoffQuestion[]>} />
+<RobotoffQuestions questions={data.questions} />
