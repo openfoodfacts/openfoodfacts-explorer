@@ -27,62 +27,87 @@
 		nearStores = await getNearStores();
 	});
 
+	// Common currencies that are definitely supported by the API
+	type Currency = 'EUR' | 'USD' | 'GBP' | 'JPY' | 'CNY' | 'INR' | 'AUD' | 'CAD' | 'CHF' | 'HKD';
+
 	let newPrice = $state({
-		value: 0,
-		currency: 'EUR',
-		osm_id: 0
+		price: 0,
+		currency: 'EUR' as Currency,
+		location_osm_id: 0,
+		location_osm_type: undefined as 'NODE' | 'WAY' | 'RELATION' | undefined,
+		date: new Date().toISOString().split('T')[0],
+		proof_id: 0
 	});
 
 	let loginFields = $state({ email: '', password: '' });
 
 	async function login() {
 		console.debug('Logging in...');
-		const res = await pricesApi.login({
-			username: loginFields.email,
-			password: loginFields.password
-		});
-		if (res.error != null) {
-			console.error('Error while logging in', res.error);
-			authStatus = false;
+		try {
+			const res = await pricesApi.login({
+				username: loginFields.email,
+				password: loginFields.password
+			});
 
+			if (!res.response.ok) {
+				console.error('Error while logging in', res.error);
+				authStatus = false;
+
+				setTimeout(() => {
+					authStatus = undefined;
+				}, 2000);
+			} else {
+				console.debug('Logged in', res.data);
+				authStatus = true;
+				setTimeout(() => {
+					authenticated = true;
+				}, 1000);
+			}
+		} catch (error) {
+			console.error('Error while logging in', error);
+			authStatus = false;
 			setTimeout(() => {
 				authStatus = undefined;
 			}, 2000);
-		} else {
-			console.debug('Logged in', res.data);
-			authStatus = true;
-			setTimeout(() => {
-				authenticated = true;
-			}, 1000);
 		}
 	}
 
 	async function submitPrice() {
-		const today = new Date();
-
-		const type = nearStores?.elements.find((el) => el.id === newPrice.osm_id)?.type?.toUpperCase();
+		const type = nearStores?.elements
+			.find((el) => el.id === newPrice.location_osm_id)
+			?.type?.toUpperCase();
 		if (type == null) {
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = await pricesApi.createPrice({
-			product_code: barcode,
-			price: newPrice.value,
-			currency: newPrice.currency,
-			// we only need the date, not the time
-			date: today.toISOString().split('T')[0],
+		try {
+			const res = await pricesApi.createPrice({
+				product_code: barcode,
+				price: newPrice.price,
+				currency: newPrice.currency,
+				date: newPrice.date,
+				location_osm_id: newPrice.location_osm_id,
+				location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
+				proof_id: newPrice.proof_id
+			});
 
-			// TODO: Add location
-			location_osm_id: newPrice.osm_id,
-			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION'
-		});
-
-		if (res.error != null) {
-			console.error('Error while submitting price', res.error);
-		} else {
-			console.debug('Submitted price', res.data);
-			prices.items.push(res.data);
-			invalidateAll();
+			if (!res.response.ok) {
+				console.error('Error while submitting price', res.error);
+			} else if (res.data) {
+				console.debug('Submitted price', res.data);
+				prices = {
+					...prices,
+					count: prices.count + 1,
+					results: [...prices.results, res.data as Prices['results'][0]]
+				};
+				invalidateAll();
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error('Error while submitting price:', error.message);
+			} else {
+				console.error('Error while submitting price:', error);
+			}
 		}
 	}
 </script>
@@ -90,7 +115,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.size ?? 0, prices.total ?? 0)}/{prices.total})
+			Prices: {prices.count}
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -101,25 +126,27 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.items as price}
+				{#each prices.results as price (price.id)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
-							{#await idToName(fetch, price.location_osm_id)}
+							{#await idToName(fetch, price.location_osm_id ?? 0)}
 								Loading...
 							{:then storeName}
 								<a
-									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
-										price.location_osm_id
+									href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
+										price.location_osm_id ?? 0
 									}`}
 								>
 									{storeName}
 								</a>
 							{:catch error}
-								<span class="text-red-500">Error: {error.message}</span>
+								<span class="text-red-500"
+									>Error: {error instanceof Error ? error.message : String(error)}</span
+								>
 							{/await}
 						</td>
-						<td>{new Date(price.date).toLocaleDateString()}</td>
+						<td>{new Date(price.date ?? '').toLocaleDateString()}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -140,7 +167,7 @@
 				</label>
 				<input
 					type="number"
-					bind:value={newPrice.value}
+					bind:value={newPrice.price}
 					name="price"
 					id="price"
 					class="input input-bordered"
@@ -149,13 +176,23 @@
 				<label for="currency" class="label">
 					<span class="label-text">Currency</span>
 				</label>
-				<input
-					class="input input-bordered"
+				<select
+					class="select select-bordered"
 					bind:value={newPrice.currency}
-					type="text"
 					name="currency"
 					id="currency"
-				/>
+				>
+					<option value="EUR">EUR</option>
+					<option value="USD">USD</option>
+					<option value="GBP">GBP</option>
+					<option value="JPY">JPY</option>
+					<option value="CNY">CNY</option>
+					<option value="INR">INR</option>
+					<option value="AUD">AUD</option>
+					<option value="CAD">CAD</option>
+					<option value="CHF">CHF</option>
+					<option value="HKD">HKD</option>
+				</select>
 
 				<label for="store" class="label">
 					<span class="label-text">Store</span>
@@ -166,8 +203,8 @@
 				{:else if nearStores.elements.length === 0}
 					<div>No stores found</div>
 				{:else}
-					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
-						{#each nearStores?.elements as store}
+					<select class="select select-bordered" name="store" bind:value={newPrice.location_osm_id}>
+						{#each nearStores?.elements as store (store.id)}
 							<option value={store.id}>{store.tags.name}</option>
 						{/each}
 					</select>

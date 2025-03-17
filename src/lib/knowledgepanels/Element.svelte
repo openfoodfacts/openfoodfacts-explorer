@@ -47,16 +47,16 @@
 				<thead>
 					<tr>
 						<th></th>
-						{#each element.table_element.columns as column}
+						{#each element.table_element.columns as column (column.text)}
 							<th>{column.text}</th>
 						{/each}
 					</tr>
 				</thead>
 				<tbody>
-					{#each element.table_element.rows as row}
+					{#each element.table_element.rows as row, rowIndex (rowIndex)}
 						<tr>
 							<td></td>
-							{#each row.values as cell}
+							{#each row.values as cell (cell.text)}
 								<td>{cell.text}</td>
 							{/each}
 						</tr>
