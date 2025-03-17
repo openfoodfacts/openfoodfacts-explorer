@@ -58,7 +58,7 @@
 			{@const country = data.countries[countryKey]}
 			{@const code2 = country.country_code_2.en}
 			<option value={code2} selected={$preferences.country === code2}>
-				{country.name['en']} ({country.name[$preferences.lang]})
+				{country.name['en']}
 			</option>
 		{/each}
 	</select>
