@@ -18,7 +18,6 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 	import RobotoffQuestions from '$lib/ui/RobotoffQuestions.svelte';
-	import { type Question as RobotoffQuestion } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	interface Props {
 		data: PageData;

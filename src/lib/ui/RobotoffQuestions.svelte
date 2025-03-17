@@ -40,6 +40,7 @@
 			await Promise.all(requests);
 			requestState = 'answered';
 		} catch (e) {
+			console.error(e);
 			requestState = 'error';
 		}
 	}
