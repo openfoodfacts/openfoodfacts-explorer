@@ -7,7 +7,7 @@
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
-	
+
 	type ApiResponse<T> = { data?: T; error?: any };
 
 	interface Props {
@@ -45,11 +45,11 @@
 
 	async function login() {
 		console.debug('Logging in...');
-		const res = await pricesApi.login({
+		const res = (await pricesApi.login({
 			username: loginFields.email,
 			password: loginFields.password
-		}) as ApiResponse<any>;
-		
+		})) as ApiResponse<any>;
+
 		if (res.error != null) {
 			console.error('Error while logging in', res.error);
 			authStatus = false;
@@ -74,7 +74,7 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = await pricesApi.createPrice({
+		const res = (await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
 			currency: newPrice.currency as components['schemas']['CurrencyEnum'],
@@ -84,10 +84,10 @@
 			// TODO: Add location
 			location_osm_id: newPrice.osm_id,
 			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
-            
+
 			// Required property
 			proof_id: 0 // This should be replaced with an actual proof ID if available
-		}) as ApiResponse<any>;
+		})) as ApiResponse<any>;
 
 		if (res.error != null) {
 			console.error('Error while submitting price', res.error);
