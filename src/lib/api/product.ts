@@ -85,16 +85,32 @@ export class ProductsApi {
 		return res.status === 200;
 	}
 
-	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
+	async getProductReducedForCard(barcode: string, product_type: string): Promise<ProductState<ProductReduced & { product_type: string }>> {
+		const additionalFields: (keyof Product)[] = [];
+
+		if (product_type === 'food') {
+			additionalFields.push('nutriscore_grade', 'ecoscore_grade', 'nova_group');
+		}
+		const allFields = [...REDUCED_FIELDS, ...additionalFields]
+
 		const params = new URLSearchParams({
-			fields: REDUCED_FIELDS.join(','),
+			fields: allFields.join(','),
 			lc: get(preferences).lang
 		});
 
 		const res = await this.fetch(`${PRODUCT_URL(barcode)}?${params.toString()}`);
 		const productState = (await res.json()) as ProductState<ProductReduced>;
 
-		return productState;
+		if (productState.status === 'success'){
+			return {
+				...productState, 
+				product: {
+					...productState.product,
+					product_type
+				}
+			}
+		}
+		return productState as ProductState<ProductReduced & { product_type: string }>;
 	}
 
 	async getProductName(barcode: string): Promise<Pick<Product, 'product_name'> | null> {
@@ -283,20 +299,22 @@ const REDUCED_FIELDS = [
 	'code',
 	'product_name',
 	'brands',
-	'quantity',
-	'nutriscore_grade',
-	'ecoscore_grade',
-	'nova_group'
+	'quantity'
 ] as const;
 
-export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
+export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]> & {
+	nutriscore_grade: string;
+	ecoscore_grade: string;
+	nova_group: number;
+	product_type: string;
+}
 
 /** @deprecated */
 export async function getProductReducedForCard(
 	barcode: string,
 	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>> {
-	return new ProductsApi(fetch).getProductReducedForCard(barcode);
+	return new ProductsApi(fetch).getProductReducedForCard(barcode, 'food');
 }
 /** @deprecated */
 export async function getProductName(

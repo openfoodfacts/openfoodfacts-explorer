@@ -26,8 +26,8 @@ async function productsWithQuestions(
 	const productApi = new ProductsApi(fetch);
 
 	const productsPromises = response.questions.map((question) =>
-		productApi.getProductReducedForCard(question.barcode)
-	);
+		productApi.getProductReducedForCard(question.barcode, 'food')
+);
 
 	return Promise.all(productsPromises);
 }
