@@ -88,10 +88,16 @@
 	</div>
 
 	<div class="navbar-end gap-2">
-		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
-		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
-			class="btn btn-outline link"
+			class="btn btn-outline hover:bg-secondary link no-underline transition-all duration-500 hover:text-black"
+			href="/folksonomy">{$t('common.folksonomy')}</a
+		>
+		<a
+			class="btn btn-outline hover:bg-secondary link no-underline transition-all duration-500 hover:text-black"
+			href="/settings">{$t('common.settings')}</a
+		>
+		<a
+			class="btn btn-outline hover:bg-secondary link transition-all duration-500 hover:text-black"
 			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}
@@ -163,14 +169,20 @@
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
-		<a class="btn btn-outline link" href="/folksonomy">
+		<a
+			class="btn btn-outline hover:bg-secondary link no-underline transition-all duration-500 hover:text-black"
+			href="/folksonomy"
+		>
 			{$t('common.folksonomy')}
 		</a>
-		<a class="btn btn-outline link" href="/settings">
+		<a
+			class="btn btn-outline hover:bg-secondary link no-underline transition-all duration-500 hover:text-black"
+			href="/settings"
+		>
 			{$t('common.settings')}
 		</a>
 		<a
-			class="btn btn-outline link"
+			class="btn btn-outline hover:bg-secondary link transition-all duration-500 hover:text-black"
 			href={GITHUB_REPO_URL}
 			target="_blank"
 			aria-label={$t('common.github')}

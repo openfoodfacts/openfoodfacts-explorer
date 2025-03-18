@@ -42,7 +42,7 @@
 			href={'https://world.openfoodfacts.org/product/' + product.code}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="link me-4"
+			class="btn btn-secondary max-sm:btn-sm ml-auto"
 		>
 			See on OpenFoodFacts
 		</a>
