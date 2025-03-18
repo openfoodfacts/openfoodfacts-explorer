@@ -103,7 +103,7 @@
 				<div class="bg-base-100 flex items-center gap-3 rounded-xl p-2">
 					<span>{getLanguage(code)}</span>
 					<button
-						class="flex items-center justify-center"
+						class="flex items-center justify-center cursor-pointer"
 						aria-label="Remove language"
 						onclick={() => {
 							productStore.update((store) => {
