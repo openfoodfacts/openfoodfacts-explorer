@@ -150,6 +150,18 @@
 					{/each}
 				{/await}
 			</span>
+
+			{#if product.emb_codes && product.emb_codes.length > 0}
+				<span class="text-end font-bold">Traceability Codes:</span>
+				<span>
+					{product.emb_codes}
+					<a
+						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
+						target="_blank"
+						class="ml-2 text-xs text-gray-500">(Learn more)</a
+					>
+				</span>
+			{/if}
 		</div>
 
 		<div class="flex max-h-56 grow justify-center">
