@@ -98,10 +98,38 @@
 	<input type="checkbox" />
 	<div class="collapse-title font-semibold">Add a language</div>
 	<div class="collapse-content text-sm">
-		<label class="input w-full">
+		<div class="mb-4 flex flex-wrap gap-2">
+			{#each Object.keys($productStore.languages_codes) as code}
+				<div class="bg-base-100 flex items-center gap-3 rounded-xl p-2">
+					<span>{getLanguage(code)}</span>
+					<button
+						class="flex items-center justify-center"
+						aria-label="Remove language"
+						onclick={() => {
+							productStore.update((store) => {
+								if (Object.keys(store.languages_codes).length > 1) {
+									delete store.languages_codes[code];
+								}
+								return store;
+							});
+						}}
+					>
+						<div class="icon-[mdi--close] h-4 w-4"></div>
+					</button>
+				</div>
+			{/each}
+		</div>
+
+		<label class="input flex w-full items-center gap-2">
 			<span class="icon-[mdi--search] h-5 w-5"></span>
-			<input type="search" placeholder="Search languages to add" bind:value={languageSearch} />
+			<input
+				type="search"
+				placeholder="Search languages to add"
+				bind:value={languageSearch}
+				class="flex-grow border-none outline-none"
+			/>
 		</label>
+
 		{#if filteredLanguages.length === 0}
 			<p class="mt-4 text-center opacity-70">No languages found</p>
 		{:else}
