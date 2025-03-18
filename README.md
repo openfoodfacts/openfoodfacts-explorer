@@ -33,6 +33,16 @@ First, install dependencies:
 pnpm install
 ```
 
+### Environment Variables Setup
+
+Before running the project, set up the environment variables:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file as needed to configure your development environment.
+
 Then start the development server:
 
 ```bash
