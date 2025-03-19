@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 
@@ -89,7 +87,7 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
-	run(() => {
+	$effect(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
 		});
