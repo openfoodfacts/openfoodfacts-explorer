@@ -22,7 +22,6 @@
 {:then result}
 	{#if result.count > 0}
 		{#each result.products as product}
-		     {console.log(product)}
 			<SmallProductCard {product} />
 		{/each}
 

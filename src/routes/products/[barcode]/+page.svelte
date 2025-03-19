@@ -29,25 +29,24 @@
 	let lang = $derived($preferences.lang);
 
 	const typeContent = {
-    OFF: {
-      link: {
-        url: `https://world.openfoodfacts.org/product/${product.code}`,
-        text: 'See on Open Food Facts'
-      },
-      hasScores: true // Flag to indicate scores should be rendered
-    },
-    OBF: {
-      link: {
-        url: `https://world.openbeautyfacts.org/product/${product.code}`,
-        text: 'See on Open Beauty Facts'
-      },
-      hasScores: false // No scores for OBF
-    }
-  };
+		OFF: {
+			link: {
+				url: `https://world.openfoodfacts.org/product/${product.code}`,
+				text: 'See on Open Food Facts'
+			},
+			hasScores: true // Flag to indicate scores should be rendered
+		},
+		OBF: {
+			link: {
+				url: `https://world.openbeautyfacts.org/product/${product.code}`,
+				text: 'See on Open Beauty Facts'
+			},
+			hasScores: false // No scores for OBF
+		}
+	};
 
-  // Derived content based on type
-  let currentContent = $derived(typeContent[type] || typeContent.OFF); // Default to OFF if type is invalid
-
+	// Derived content based on type
+	let currentContent = $derived(typeContent[type] || typeContent.OFF); // Default to OFF if type is invalid
 </script>
 
 <svelte:head>
@@ -60,16 +59,9 @@
 			{product.product_name ?? product.code}
 		</h1>
 
-		<a
-      href={currentContent.link.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="underline"
-    >
-      {currentContent.link.text}
-    </a>
-
-
+		<a href={currentContent.link.url} target="_blank" rel="noopener noreferrer" class="underline">
+			{currentContent.link.text}
+		</a>
 
 		<a
 			href={`/products/${product.code}/edit`}
@@ -183,13 +175,13 @@
 </Card>
 
 {#if currentContent.hasScores}
-  <div class="flex w-full justify-evenly gap-4 p-3">
-    <NutriScore grade={product.nutriscore_grade} />
-    <Nova grade={product.nova_group} />
-    <a href="#environment_card">
-      <EcoScore grade={product.ecoscore_grade} />
-    </a>
-  </div>
+	<div class="flex w-full justify-evenly gap-4 p-3">
+		<NutriScore grade={product.nutriscore_grade} />
+		<Nova grade={product.nova_group} />
+		<a href="#environment_card">
+			<EcoScore grade={product.ecoscore_grade} />
+		</a>
+	</div>
 {/if}
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} />

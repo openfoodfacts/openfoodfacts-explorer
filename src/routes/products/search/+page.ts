@@ -24,8 +24,10 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page: page
 	});
 
-	const apiBaseUrl = db === 'off' ? 'https://world.openfoodfacts.org/cgi/search.pl'
-	: 'https://world.openbeautyfacts.org/cgi/search.pl';
+	const apiBaseUrl =
+		db === 'off'
+			? 'https://world.openfoodfacts.org/cgi/search.pl'
+			: 'https://world.openbeautyfacts.org/cgi/search.pl';
 
 	const result = fetch(`${apiBaseUrl}?${urlSearch.toString()}`)
 		.then((res) => {
@@ -53,6 +55,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	return {
 		result: result,
-		db:db
+		db: db
 	};
 };

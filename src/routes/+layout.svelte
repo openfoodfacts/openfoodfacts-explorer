@@ -35,8 +35,8 @@
 	});
 
 	function gotoProductsSearch() {
-    goto(`/products/search?q=${searchQuery}&db=${selectedDatabase}`);
-    }
+		goto(`/products/search?q=${searchQuery}&db=${selectedDatabase}`);
+	}
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
