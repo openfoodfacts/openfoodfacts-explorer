@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+	import { goto } from '$app/navigation';
 
 	let error: string | null = $state(null);
 
@@ -27,30 +28,40 @@
 			.start(
 				{ facingMode: 'environment' },
 				{ fps: 10, qrbox: getQrBoxSize() },
-				(text) => {
+				async (text) => {
 					if (text == null) return;
 					console.log('QR code detected:', text);
 
-					scanner.stop();
-					window.location.href = '/products/' + text;
+					await scanner.stop();
+					await goto('/products/' + text);
 				},
 				() => {
 					/* ignored */
 				}
 			)
-			.catch((err) => {
+			.catch(async (err) => {
 				error = 'Camera access is required. Please enable it in your browser settings.';
 				console.error('QR Code Scanner Error:', err);
+				await cleanupScanner();
 			});
 
 		html5QrCode = scanner;
 	});
 
-	onDestroy(() => {
-		// Stop the scanner when the component is destroyed
+	async function cleanupScanner() {
 		if (html5QrCode != null) {
-			html5QrCode.stop();
+			try {
+				await html5QrCode.stop();
+				await html5QrCode.clear();
+			} catch (e) {
+				console.error('Error cleaning up scanner:', e);
+			}
+			html5QrCode = null;
 		}
+	}
+
+	onDestroy(() => {
+		cleanupScanner();
 	});
 </script>
 
