@@ -26,8 +26,6 @@
 		injectSpeedInsights();
 	});
 
-	
-
 	function updateSearchQuery(url: URL) {
 		searchQuery = url.searchParams.get('q') ?? '';
 	}
@@ -59,10 +57,7 @@
 		<div class="form-control">
 			<div>
 				<div class="join">
-					<select 
-						bind:value={selectedDatabase}
-						class="select select-bordered join-item"
-					>
+					<select bind:value={selectedDatabase} class="select select-bordered join-item">
 						<option value="off">OFF</option>
 						<option value="obf">OBF</option>
 					</select>
@@ -153,10 +148,7 @@
 	</div>
 	{#if searchActive}
 		<div class="join -mt-8 w-full">
-			<select 
-				bind:value={selectedDatabase}
-				class="select select-bordered join-item"
-			>
+			<select bind:value={selectedDatabase} class="select select-bordered join-item">
 				<option value="off">OFF</option>
 				<option value="obf">OBF</option>
 			</select>

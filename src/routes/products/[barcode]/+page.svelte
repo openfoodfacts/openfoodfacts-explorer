@@ -170,13 +170,17 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-evenly gap-4 p-3">
-	<NutriScore grade={product.nutriscore_grade} />
-	<Nova grade={product.nova_group} />
-	<a href="#environment_card">
-		<EcoScore grade={product.ecoscore_grade} />
-	</a>
-</div>
+{#if type === 'OFF'}
+	<div class="flex w-full justify-evenly gap-4 p-3">
+		<NutriScore grade={product.nutriscore_grade} />
+		<Nova grade={product.nova_group} />
+		<a href="#environment_card">
+			<EcoScore grade={product.ecoscore_grade} />
+		</a>
+	</div>
+{:else}
+	<div></div>
+{/if}
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} />
 

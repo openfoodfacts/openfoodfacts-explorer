@@ -245,4 +245,3 @@ function formData(data: Record<string, string | Blob>) {
 	}
 	return form;
 }
-
