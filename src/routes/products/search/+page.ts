@@ -4,6 +4,7 @@ import type { Product } from '$lib/api';
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
+	const db = url.searchParams.get('db');
 
 	if (query == null || query.length === 0) {
 		error(400, 'Missing query parameter');
@@ -23,7 +24,10 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page: page
 	});
 
-	const result = fetch(`https://world.openfoodfacts.org/cgi/search.pl?` + urlSearch.toString())
+	const apiBaseUrl = db === 'off' ? 'https://world.openfoodfacts.org/cgi/search.pl'
+	: 'https://world.openbeautyfacts.org/cgi/search.pl';
+
+	const result = fetch(`${apiBaseUrl}?${urlSearch.toString()}`)
 		.then((res) => {
 			if (!res.ok) {
 				error(400, 'Failed to fetch data');
@@ -48,6 +52,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		});
 
 	return {
-		result: result
+		result: result,
+		db:db
 	};
 };

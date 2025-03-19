@@ -35,9 +35,8 @@
 	});
 
 	function gotoProductsSearch() {
-		const baseUrl = selectedDatabase === 'off' ? '/products/search' : '/beauty/products/search';
-		goto(`${baseUrl}?q=${searchQuery}`);
-	}
+    goto(`/products/search?q=${searchQuery}&db=${selectedDatabase}`);
+    }
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
@@ -57,9 +56,9 @@
 		<div class="form-control">
 			<div>
 				<div class="join">
-					<select bind:value={selectedDatabase} class="select select-bordered join-item">
-						<option value="off">OFF</option>
-						<option value="obf">OBF</option>
+					<select bind:value={selectedDatabase} class="select select-bordered join-item w-20">
+						<option value="off">Food</option>
+						<option value="obf">Cosmetics</option>
 					</select>
 					<input
 						type="text"
@@ -148,9 +147,9 @@
 	</div>
 	{#if searchActive}
 		<div class="join -mt-8 w-full">
-			<select bind:value={selectedDatabase} class="select select-bordered join-item">
-				<option value="off">OFF</option>
-				<option value="obf">OBF</option>
+			<select bind:value={selectedDatabase} class="select select-bordered join-item w-24">
+				<option value="off">Food</option>
+				<option value="obf">Cosmetics</option>
 			</select>
 			<input
 				type="text"
