@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeActionElement } from '$lib/api';
+	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 
 	// URL constants
 	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
@@ -7,7 +7,7 @@
 
 	type Props = {
 		element: KnowledgeActionElement;
-		allPanels: Record<string, any>; // Keep for compatibility
+		allPanels: Record<string, KnowledgePanel>;
 		productCode?: string;
 	};
 	let { element, productCode }: Props = $props();
