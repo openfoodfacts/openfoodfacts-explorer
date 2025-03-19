@@ -17,6 +17,7 @@
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.0",
 		"@eslint/js": "^9.22.0",
+		"@iconify-json/logos": "^1.2.4",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify/tailwind": "^1.2.0",
 		"@iconify/tailwind4": "^1.0.6",
