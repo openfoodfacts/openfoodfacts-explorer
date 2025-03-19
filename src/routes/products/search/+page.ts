@@ -1,6 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Product } from '$lib/api';
+import { ProductsApi } from '$lib/api';
+import type { Product, ProductState, ProductStateFound } from '$lib/api/product';
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
@@ -23,7 +24,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page: page
 	});
 
-	const result = fetch(`https://world.openfoodfacts.org/cgi/search.pl?` + urlSearch.toString())
+	const productsApi = new ProductsApi(fetch);
+
+	const searchResult = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?` + urlSearch.toString())
 		.then((res) => {
 			if (!res.ok) {
 				error(400, 'Failed to fetch data');
@@ -39,13 +42,27 @@ export const load: PageLoad = async ({ fetch, url }) => {
 					page_count: number;
 					products: Product[];
 				}>
-		)
-		.then((data) => {
-			return {
-				...data,
-				total_pages: Math.ceil(data.count / data.page_size)
-			};
-		});
+		
+		);
+
+	// Load full product details for each search result
+	const productsWithDetails = await Promise.all(
+		searchResult.products.map(async (product) => {
+			try {
+				const state = await productsApi.getProduct(product.code);
+				return state;
+			} catch (e) {
+				console.error('Failed to load product details:', e);
+				return null;
+			}
+		})
+	);
+
+	const result = {
+		...searchResult,
+		products: productsWithDetails.filter((p): p is ProductStateFound<Product> => p !== null),
+		total_pages: Math.ceil(searchResult.count / searchResult.page_size)
+	};
 
 	return {
 		result: result

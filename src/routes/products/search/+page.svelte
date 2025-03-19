@@ -2,9 +2,25 @@
 	import { page } from '$app/state';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import type { PageData } from './$types';
+	import type { Product, ProductState, ProductStateFound } from '$lib/api/product';
+
+	type ProductSearchResult = {
+		count: number;
+		page: number;
+		page_size: number;
+		page_count: number;
+		products: ProductStateFound<Product>[];
+		total_pages: number;
+	};
+
+	function isSuccessState(state: ProductStateFound<Product>): state is ProductStateFound<Product> {
+		return state.status === 'success' || state.status === 'success_with_warnings';
+	}
 
 	interface Props {
-		data: PageData;
+		data: PageData & {
+			result: Promise<ProductSearchResult>;
+		};
 	}
 
 	let { data }: Props = $props();
@@ -21,8 +37,10 @@
 	{/each}
 {:then result}
 	{#if result.count > 0}
-		{#each result.products as product}
-			<SmallProductCard {product} />
+		{#each result.products as state}
+			{#if isSuccessState(state)}
+				<SmallProductCard product={state.product} />
+			{/if}
 		{/each}
 
 		<div class="join my-8 justify-center">
