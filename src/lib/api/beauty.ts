@@ -23,6 +23,64 @@ export class BeautyApi {
 		const res = await this.fetch(url);
 		return await res.json();
 	}
+	async addOrEditProductV2(product: Product & { comment?: string }) {
+		const url = `${BEAUTY_HOST}/cgi/product_jqm2.pl`;
+
+		const username = get(preferences).username;
+		const password = get(preferences).password;
+
+		if (!username || !password) throw new Error('No username or password set');
+
+		const languageCodes = Object.keys(product.languages_codes);
+		const productNames = languageCodes.reduce(
+			(acc, lang) => {
+				const productName = getProductNameInLang(product, lang);
+				if (productName != null) {
+					acc[`product_name_${lang}`] = productName;
+				}
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+		const ingredientsTexts = languageCodes.reduce(
+			(acc, lang) => {
+				const ingredientsText = getProductIngredientsInLang(product, lang);
+				if (ingredientsText != null) {
+					acc[`ingredients_text_${lang}`] = ingredientsText;
+				}
+				return acc;
+			},
+			{} as Record<string, string>
+		);
+
+		const body = formData({
+			code: product.code,
+			user_id: username,
+			password: password,
+			categories: product.categories,
+			labels: product.labels,
+			brands: product.brands,
+			quantity: product.quantity,
+			stores: product.stores,
+			origins: product.origins,
+			countries: product.countries,
+			comment: product.comment ?? '',
+
+			product_name: product.product_name,
+			...productNames,
+
+			ingredients_text: product.ingredients_text,
+			...ingredientsTexts
+		});
+
+		const res = await this.fetch(url, {
+			method: 'POST',
+			body,
+			headers: { 'Content-Type': 'multipart/form-data' }
+		});
+
+		return res.status === 200;
+	}
 }
 export type ProductStateBase = {
 	result: {
@@ -171,3 +229,20 @@ export type Product = {
 	};
 	lang: string;
 };
+
+function getProductNameInLang(product: Product, lang: string) {
+	return product[`product_name_${lang}`] ?? product.product_name;
+}
+
+function getProductIngredientsInLang(product: Product, lang: string) {
+	return product[`ingredients_text_${lang}`] ?? product.ingredients_text;
+}
+
+function formData(data: Record<string, string | Blob>) {
+	const form = new FormData();
+	for (const [key, value] of Object.entries(data)) {
+		form.append(key, value);
+	}
+	return form;
+}
+

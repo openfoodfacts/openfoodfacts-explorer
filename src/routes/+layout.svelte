@@ -8,6 +8,7 @@
 	import { t } from '$lib/translations';
 
 	let searchQuery: string = $state('');
+	let selectedDatabase: 'off' | 'obf' = $state('off');
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
@@ -27,6 +28,8 @@
 		injectSpeedInsights();
 	});
 
+	
+
 	function updateSearchQuery(url: URL) {
 		searchQuery = url.searchParams.get('q') ?? '';
 	}
@@ -36,7 +39,8 @@
 	});
 
 	function gotoProductsSearch() {
-		goto('/products/search?q=' + searchQuery);
+		const baseUrl = selectedDatabase === 'off' ? '/products/search' : '/beauty/products/search';
+		goto(`${baseUrl}?q=${searchQuery}`);
 	}
 
 	let searchActive = $state(false);
@@ -57,6 +61,13 @@
 		<div class="form-control">
 			<div>
 				<div class="join">
+					<select 
+						bind:value={selectedDatabase}
+						class="select select-bordered join-item"
+					>
+						<option value="off">OFF</option>
+						<option value="obf">OBF</option>
+					</select>
 					<input
 						type="text"
 						bind:value={searchQuery}
@@ -144,6 +155,13 @@
 	</div>
 	{#if searchActive}
 		<div class="join -mt-8 w-full">
+			<select 
+				bind:value={selectedDatabase}
+				class="select select-bordered join-item"
+			>
+				<option value="off">OFF</option>
+				<option value="obf">OBF</option>
+			</select>
 			<input
 				type="text"
 				bind:value={searchQuery}
