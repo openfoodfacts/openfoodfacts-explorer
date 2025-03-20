@@ -5,6 +5,9 @@
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
 
+	const TRACEABILITY_CODES_URL =
+		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
+
 	import EcoScore from '$lib/greenscore/GreenScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Nova from '$lib/nova/Nova.svelte';
@@ -155,10 +158,8 @@
 				<span class="text-end font-bold">Traceability Codes:</span>
 				<span>
 					{product.emb_codes}
-					<a
-						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
-						target="_blank"
-						class="ml-2 text-xs text-gray-500">(Learn more)</a
+					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500"
+						>(Learn more)</a
 					>
 				</span>
 			{/if}

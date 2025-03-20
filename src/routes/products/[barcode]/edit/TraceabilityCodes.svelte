@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import Tags from './Tags.svelte';
+
+	const TRACEABILITY_CODES_URL =
+		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
 	interface Props {
 		traceabilityCodes?: string;
 		autocomplete?: readonly string[];
+		onChange?: (event: { traceabilityCodes: string }) => void;
 	}
 
-	let { traceabilityCodes = $bindable(''), autocomplete = [] }: Props = $props();
+	let { traceabilityCodes = $bindable(''), autocomplete = [], onChange }: Props = $props();
 
 	// Create an array of codes from the comma-separated string
 	let traceabilityCodesArray = $derived(
 		traceabilityCodes ? traceabilityCodes.split(',').filter((code) => code !== '') : []
 	);
 
-	const dispatcher = createEventDispatcher<{
-		change: { traceabilityCodes: string };
-	}>();
-
 	function handleChange(event: CustomEvent<{ tags: string[] }>) {
 		const newCodes = event.detail.tags.join(',');
 		traceabilityCodes = newCodes;
-		dispatcher('change', { traceabilityCodes: newCodes });
+		onChange?.({ traceabilityCodes: newCodes });
 	}
 </script>
 
@@ -36,10 +35,8 @@
 	<div class="mt-1 text-xs">
 		<p>Format depends on country (e.g., FR XX.XXX.XXX CE for France)</p>
 		<p>
-			More info: <a
-				href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
-				target="_blank"
-				class="link">Food Traceability Codes Wiki</a
+			More info: <a href={TRACEABILITY_CODES_URL} target="_blank" class="link"
+				>Food Traceability Codes Wiki</a
 			>
 		</p>
 	</div>
