@@ -11,17 +11,17 @@
 	let { data }: Props = $props();
 
 	// Ensure data.keys exists and has a default empty array if undefined
-	let sortedTags = $derived(
-		data.keys != null ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : []
-	);
+	let sortedTags = $derived.by(() => {
+		return data.keys != null ? [...data.keys].sort((a, b) => a.k.localeCompare(b.k)) : [];
+	});
 
 	// Search functionality
 	let searchQuery = $state('');
-	let filteredTags = $derived(
-		searchQuery != null && searchQuery !== ''
+	let filteredTags = $derived.by(() => {
+		return searchQuery != null && searchQuery !== ''
 			? sortedTags.filter((key) => key.k.toLowerCase().includes(searchQuery.toLowerCase()))
-			: sortedTags
-	);
+			: sortedTags;
+	});
 
 	// Grouping functionality
 	function getKeyPrefix(key: string): string {
@@ -87,7 +87,7 @@
 			: 1
 	);
 
-	function getUsagePercent(count: number): number {
+	function getUsagePercent(count: number | null | undefined): number {
 		return Math.ceil(((count || 0) / maxCount) * 100);
 	}
 
@@ -108,7 +108,7 @@
 	}
 </script>
 
-<div class="folksonomy-container flex flex-col gap-6 p-4">
+<div class="folksonomy-container flex flex-col gap-6 p-4" transition:fade={{ duration: 500 }}>
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
 			<h1 class="text-primary mb-4 text-3xl font-bold">
@@ -168,8 +168,13 @@
 					<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
 					<div class="flex gap-1">
 						{#if key.count != null && key.count > 0}
+							{@const usagePercent = getUsagePercent(key.count)}
 							<div
-								class="badge badge-sm {getColorClass(getUsagePercent(key.count))}"
+								class="badge badge-sm"
+								class:badge-primary={usagePercent > 75}
+								class:badge-secondary={usagePercent > 50 && usagePercent <= 75}
+								class:badge-accent={usagePercent > 25 && usagePercent <= 50}
+								class:badge-ghost={usagePercent <= 25}
 								title="Number of products: {key.count}"
 							>
 								{key.count}
@@ -256,21 +261,6 @@
 </div>
 
 <style>
-	.folksonomy-container {
-		animation: fadeIn 0.5s ease-in-out;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
 	.key-card:hover {
 		transform: translateY(-2px);
 	}
