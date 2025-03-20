@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
+	import { goto } from '$app/navigation';
 
 	// URL constants
 	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
@@ -66,10 +67,11 @@
 		if (productCode != null) {
 			// Edit product action
 			if (action === 'edit_product') {
-				window.open(`${PRODUCT_EDIT_URL}${productCode}/edit`, '_blank');
+				goto(`/products/${productCode}/edit`);
 			}
 			// Report to NutriPatrol action
 			else if (action === 'report_product_to_nutripatrol') {
+				// TODO: Eventually we should link to the internal route instead of opening external URL
 				window.open(`${PRODUCT_REPORT_URL}${productCode}/edit#report_problem`, '_blank');
 			}
 			// Handle URLs directly
