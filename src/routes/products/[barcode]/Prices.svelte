@@ -35,7 +35,13 @@
 		nearStores = await getNearStores();
 	});
 
-	let newPrice = $state({
+	type NewPriceForm = {
+		value: number;
+		currency: components['schemas']['CurrencyEnum'];
+		osm_id: number;
+	};
+
+	let newPrice: NewPriceForm = $state({
 		value: 0,
 		currency: 'EUR' as components['schemas']['CurrencyEnum'],
 		osm_id: 0
@@ -48,7 +54,7 @@
 		const res = (await pricesApi.login({
 			username: loginFields.email,
 			password: loginFields.password
-		})) as ApiResponse<any>;
+		})) as ApiResponse<components['schemas']['SessionResponse']>;
 
 		if (res.error != null) {
 			console.error('Error while logging in', res.error);
@@ -102,7 +108,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.count ?? 0, prices.count ?? 0)}/{prices.count})
+			Prices: ({prices.count ?? 0}/{prices.count ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
