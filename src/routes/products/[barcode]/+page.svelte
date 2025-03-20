@@ -26,6 +26,18 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	// Function to normalize tag names (similar to normalizeTagName in the UserScript)  
+	function normalizeTagName(tag: string): string {
+		return tag
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '') // Remove accents
+			.replace(/[ '"&]/g, '-') // Replace spaces and special chars with hyphens
+			.replace(/-+/g, '-'); // Collapse multiple hyphens
+	}
+
+	let firstBrand = $derived(product.brands_tags?.[0] || '');
 </script>
 
 <svelte:head>
@@ -58,6 +70,17 @@
 				Edit
 			{/if}
 		</a>
+		{#if firstBrand}
+				<a
+					href={`https://hunger.openfoodfacts.org/questions?value_tag=${normalizeTagName(firstBrand)}&type=brand`}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="btn btn-secondary max-sm:btn-sm"
+				>
+					Hunger Games
+				</a>
+			{/if}
+		
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
