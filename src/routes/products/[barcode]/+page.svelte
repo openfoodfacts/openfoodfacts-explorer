@@ -27,7 +27,7 @@
 
 	let lang = $derived($preferences.lang);
 
-	// Function to normalize tag names (similar to normalizeTagName in the UserScript)  
+	// Function to normalize tag names (similar to normalizeTagName in the UserScript)
 	function normalizeTagName(tag: string): string {
 		return tag
 			.toLowerCase()
@@ -71,16 +71,15 @@
 			{/if}
 		</a>
 		{#if firstBrand}
-				<a
-					href={`https://hunger.openfoodfacts.org/questions?value_tag=${normalizeTagName(firstBrand)}&type=brand`}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="btn btn-secondary max-sm:btn-sm"
-				>
-					Hunger Games
-				</a>
-			{/if}
-		
+			<a
+				href={`https://hunger.openfoodfacts.org/questions?value_tag=${normalizeTagName(firstBrand)}&type=brand`}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn btn-secondary max-sm:btn-sm"
+			>
+				Hunger Games
+			</a>
+		{/if}
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
