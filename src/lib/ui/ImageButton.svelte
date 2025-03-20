@@ -10,10 +10,9 @@
 	let onclick = $derived(src != null ? () => modal.displayImage(src, alt) : undefined);
 
 	let rotation = $state(0);
-	let isLoggedIn = $derived(get(preferences).username != null && get(preferences).password != null);
 
 	function rotateImage() {
-		rotation = (rotation + 90) % 360;
+		rotation = rotation + 90;
 	}
 </script>
 
@@ -28,17 +27,15 @@
 			style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 		/>
 	</button>
-	{#if isLoggedIn}
-		<button
-			class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
-			onclick={(e) => {
-				e.stopPropagation();
-				rotateImage();
-			}}
-			title="Rotate image"
-			aria-label="Rotate image 90 degrees clockwise"
-		>
-			<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
-		</button>
-	{/if}
+	<button
+		class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
+		onclick={(e) => {
+			e.stopPropagation();
+			rotateImage();
+		}}
+		title="Rotate image"
+		aria-label="Rotate image 90 degrees clockwise"
+	>
+		<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
+	</button>
 </div>

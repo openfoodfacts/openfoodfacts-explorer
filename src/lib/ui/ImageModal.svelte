@@ -14,7 +14,6 @@
 
 	let dialog: HTMLDialogElement | undefined = $state();
 	let rotation = $state(0);
-	let isLoggedIn = $derived(get(preferences).username != null && get(preferences).password != null);
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
@@ -29,7 +28,7 @@
 	}
 
 	function rotateImage() {
-		rotation = (rotation + 90) % 360;
+		rotation = rotation + 90;
 	}
 
 	onMount(() => {
@@ -59,19 +58,17 @@
 				style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 			/>
 		</div>
-		{#if isLoggedIn}
-			<button
-				class="btn btn-circle bg-base-100/80 hover:bg-base-100 absolute right-4 bottom-4"
-				onclick={(e) => {
-					e.stopPropagation();
-					rotateImage();
-				}}
-				title="Rotate image"
-				aria-label="Rotate image 90 degrees clockwise"
-			>
-				<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
-			</button>
-		{/if}
+		<button
+			class="btn btn-circle bg-base-100/80 hover:bg-base-100 absolute right-4 bottom-4"
+			onclick={(e) => {
+				e.stopPropagation();
+				rotateImage();
+			}}
+			title="Rotate image"
+			aria-label="Rotate image 90 degrees clockwise"
+		>
+			<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
+		</button>
 	</div>
 </dialog>
 
