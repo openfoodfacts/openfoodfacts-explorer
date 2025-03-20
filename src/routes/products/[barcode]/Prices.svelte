@@ -3,6 +3,7 @@
 
 	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
+	import type { Currency, NewPrice } from '$lib/types/currency';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
@@ -27,14 +28,11 @@
 		nearStores = await getNearStores();
 	});
 
-	// Common currencies that are definitely supported by the API
-	type Currency = 'EUR' | 'USD' | 'GBP' | 'JPY' | 'CNY' | 'INR' | 'AUD' | 'CAD' | 'CHF' | 'HKD';
-
-	let newPrice = $state({
+	let newPrice: NewPrice = $state({
 		price: 0,
-		currency: 'EUR' as Currency,
+		currency: 'EUR',
 		location_osm_id: 0,
-		location_osm_type: undefined as 'NODE' | 'WAY' | 'RELATION' | undefined,
+		location_osm_type: undefined,
 		date: new Date().toISOString().split('T')[0],
 		proof_id: 0
 	});
@@ -43,26 +41,26 @@
 
 	async function login() {
 		console.debug('Logging in...');
+		const res = await pricesApi.login({
+			username: loginFields.email,
+			password: loginFields.password
+		});
+
+		if (!res.response.ok) {
+			console.error('Error while logging in', res.error);
+			authStatus = false;
+			setTimeout(() => {
+				authStatus = undefined;
+			}, 2000);
+			return;
+		}
+
 		try {
-			const res = await pricesApi.login({
-				username: loginFields.email,
-				password: loginFields.password
-			});
-
-			if (!res.response.ok) {
-				console.error('Error while logging in', res.error);
-				authStatus = false;
-
-				setTimeout(() => {
-					authStatus = undefined;
-				}, 2000);
-			} else {
-				console.debug('Logged in', res.data);
-				authStatus = true;
-				setTimeout(() => {
-					authenticated = true;
-				}, 1000);
-			}
+			console.debug('Logged in', res.data);
+			authStatus = true;
+			setTimeout(() => {
+				authenticated = true;
+			}, 1000);
 		} catch (error) {
 			console.error('Error while logging in', error);
 			authStatus = false;
@@ -80,28 +78,33 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		try {
-			const res = await pricesApi.createPrice({
-				product_code: barcode,
-				price: newPrice.price,
-				currency: newPrice.currency,
-				date: newPrice.date,
-				location_osm_id: newPrice.location_osm_id,
-				location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
-				proof_id: newPrice.proof_id
-			});
+		const res = await pricesApi.createPrice({
+			product_code: barcode,
+			price: newPrice.price,
+			currency: newPrice.currency,
+			date: newPrice.date,
+			location_osm_id: newPrice.location_osm_id,
+			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
+			proof_id: newPrice.proof_id
+		});
 
-			if (!res.response.ok) {
-				console.error('Error while submitting price', res.error);
-			} else if (res.data) {
-				console.debug('Submitted price', res.data);
-				prices = {
-					...prices,
-					count: prices.count + 1,
-					results: [...prices.results, res.data as Prices['results'][0]]
-				};
-				invalidateAll();
-			}
+		if (!res.response.ok) {
+			console.error('Error while submitting price', res.error);
+			return;
+		}
+
+		if (!res.data) {
+			return;
+		}
+
+		try {
+			console.debug('Submitted price', res.data);
+			prices = {
+				...prices,
+				count: prices.count + 1,
+				results: [...prices.results, res.data as Prices['results'][0]]
+			};
+			invalidateAll();
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error('Error while submitting price:', error.message);
@@ -133,20 +136,30 @@
 							{#await idToName(fetch, price.location_osm_id ?? 0)}
 								Loading...
 							{:then storeName}
-								<a
-									href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
-										price.location_osm_id ?? 0
-									}`}
-								>
+								{#if price.location_osm_id && price.location_osm_id !== 0}
+									<a
+										href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
+											price.location_osm_id
+										}`}
+									>
+										{storeName}
+									</a>
+								{:else}
 									{storeName}
-								</a>
+								{/if}
 							{:catch error}
 								<span class="text-red-500"
-									>Error: {error instanceof Error ? error.message : String(error)}</span
+									>Error: {error instanceof Error ? error.message : error}</span
 								>
 							{/await}
 						</td>
-						<td>{new Date(price.date ?? '').toLocaleDateString()}</td>
+						<td>
+							{#if price.date}
+								{new Date(price.date).toLocaleDateString()}
+							{:else}
+								No date
+							{/if}
+						</td>
 					</tr>
 				{/each}
 			</tbody>
