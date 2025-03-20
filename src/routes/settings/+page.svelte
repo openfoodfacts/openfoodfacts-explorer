@@ -57,7 +57,11 @@
 		{#each Object.keys(data.countries).toSorted() as countryKey}
 			{@const country = data.countries[countryKey]}
 			{@const code2 = country.country_code_2.en}
-			<option value={code2} selected={$preferences.country === code2}>
+			<option
+				value={code2}
+				selected={$preferences.country === code2}
+				class="overflow-hidden text-ellipsis"
+			>
 				{country.name['en']}
 			</option>
 		{/each}
