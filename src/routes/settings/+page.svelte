@@ -5,7 +5,6 @@
 	import Heading from './Heading.svelte';
 	import { FolksonomyApi } from '$lib/api/folksonomy';
 	import { t } from '$lib/translations';
-	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
 	interface Props {
@@ -13,14 +12,10 @@
 	}
 
 	let { data }: Props = $props();
-	let loginStatus: undefined | boolean = $state();
 	let isLoggingIn: boolean = $state(false);
-	let isAuthenticated: boolean = $state(false);
 
-	onMount(async () => {
-		// Check if user is already authenticated by checking if token exists
-		isAuthenticated = $preferences.folksonomy.authToken !== null;
-	});
+	let isAuthenticated = $derived($preferences.folksonomy.authToken !== null);
+	let loginStatus: undefined | boolean = $state();
 
 	async function loginToFolksonomy() {
 		isLoggingIn = true;
@@ -31,7 +26,6 @@
 		try {
 			await new FolksonomyApi(fetch).login(username, password);
 			loginStatus = true;
-			isAuthenticated = true;
 			setTimeout(() => {
 				loginStatus = undefined;
 			}, 3000);
@@ -53,7 +47,6 @@
 			username: null,
 			password: null
 		}));
-		isAuthenticated = false;
 	}
 </script>
 
@@ -114,7 +107,7 @@
 	<label for="nova" class="justify-self-start md:justify-self-end">{$t('common.nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
-	<Heading>Folksonomy Authentication</Heading>
+	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>
 
 	{#if isAuthenticated}
 		<span class="justify-self-start text-sm font-medium md:justify-self-end">Status</span>
