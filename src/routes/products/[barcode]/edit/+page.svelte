@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
+	import { t } from '$lib/translations';
 
 	import {
 		getOrDefault,
@@ -363,7 +364,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="alert alert-info">Nutrition information will not be displayed for this product</div>
+		<div class="alert alert-info">{$t('product.nutrition.not_specified')}</div>
 	{/if}
 </Card>
 
