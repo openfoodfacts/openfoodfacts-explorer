@@ -67,8 +67,10 @@
 {/snippet}
 
 <div {id}>
-	{#if panel == null && dev}
-		<div class="alert alert-warning">Panel is null</div>
+	{#if panel == null}
+		{#if dev}
+			<div class="alert alert-warning">Panel is null</div>
+		{/if}
 	{:else if panel.type === 'card'}
 		<Card>
 			<div class="flex items-center">
