@@ -17,11 +17,6 @@
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 
-	// Extend Product type to include no_nutrition_data property
-	type ExtendedProduct = Product & {
-		no_nutrition_data?: boolean;
-	};
-
 	interface Props {
 		data: PageData;
 	}
@@ -44,7 +39,7 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
-	let productStore = $derived(writable<ExtendedProduct>(data.state.product));
+	let productStore = $derived(writable<Product>(data.state.product));
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
@@ -81,6 +76,11 @@
 			}
 			return store;
 		});
+	}
+
+	function handleNutrimentInput(e: Event, key: string) {
+		const target = e.currentTarget as HTMLInputElement;
+		updateNutriment(key, target.value ? Number(target.value) : null);
 	}
 
 	async function submit() {
@@ -286,11 +286,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'energy-kj_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -299,11 +295,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'energy-kcal_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -312,11 +304,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.fat_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'fat_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -325,11 +313,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'saturated-fat_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -338,11 +322,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.carbohydrates_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'carbohydrates_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -351,11 +331,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.sugars_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'sugars_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -364,11 +340,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.proteins_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'proteins_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -377,11 +349,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.salt_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'salt_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
 				/>
 			</div>
 			<div class="form-control mb-4">
@@ -390,11 +358,7 @@
 					type="number"
 					class="input input-bordered w-full"
 					value={$productStore.nutriments?.sodium_100g ?? ''}
-					oninput={(e) =>
-						updateNutriment(
-							'sodium_100g',
-							e.currentTarget.value ? Number(e.currentTarget.value) : null
-						)}
+					oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
 				/>
 			</div>
 		</div>

@@ -267,6 +267,8 @@ export type Product = {
 
 	nutriments: Nutriments;
 
+	no_nutrition_data?: boolean;
+
 	source: {
 		fields: string[];
 		id: string;
