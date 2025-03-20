@@ -29,11 +29,12 @@ facets:
 💸 Prices:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/Prices.svelte'
-      - any-glob-to-any-file: 'src/lib/api/prices.ts'
+      src/lib/api/prices.ts
 🖼️ Images:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
       - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
+
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
