@@ -32,7 +32,7 @@
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{/if}
-			{#if product.image_front_small_url}
+			{#if product.image_front_small_url != null}
 				<img src={product.image_front_small_url} alt={product.product_name} />
 			{:else}
 				<div
