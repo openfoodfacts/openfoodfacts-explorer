@@ -26,7 +26,7 @@
 			return `${baseUrl}?${params.toString()}`;
 		}
 	}
-  
+
 	function getSortLabel(sortOption: string): string {
 		const labels = {
 			relevance: 'Relevance',
@@ -35,7 +35,7 @@
 		};
 		return labels[sortOption] || sortOption;
 	}
-  
+
 	function changeSort(newSortBy: string) {
 		const url = new URL(window.location.href);
 		url.searchParams.set('sort_by', newSortBy);
@@ -70,11 +70,11 @@
 			<label tabindex="0" class="btn btn-sm m-1">
 				Sort: {getSortLabel(data.sortBy)}
 			</label>
-			<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+			<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
 				{#each data.sortOptions as option}
 					<li>
-						<button 
-							class="flex justify-between items-center {option === data.sortBy ? 'font-bold' : ''}" 
+						<button
+							class="flex items-center justify-between {option === data.sortBy ? 'font-bold' : ''}"
 							on:click={() => changeSort(option)}
 						>
 							{getSortLabel(option)}
@@ -86,7 +86,7 @@
 	</div>
 
 	{#if result && result.products && result.products.length > 0}
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{#each result.products as product}
 				<SmallProductCard {product} />
 			{/each}
