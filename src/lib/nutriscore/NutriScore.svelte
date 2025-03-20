@@ -46,7 +46,7 @@
 		}
 	};
 
-	let normalizedGrade = grade.toLowerCase();
+	let normalizedGrade = $derived(grade.toLowerCase());
 	let { name, src, textColor, bgColor } = $derived(NUTRI_MAP[normalizedGrade] ?? NUTRI_MAP.unknown);
 </script>
 
