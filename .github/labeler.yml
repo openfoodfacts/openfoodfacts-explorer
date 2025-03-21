@@ -34,7 +34,6 @@ facets:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
       - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
-
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
