@@ -6,6 +6,7 @@
 	import { t } from '$lib/translations';
 
 	let searchQuery: string = $state('');
+	let selectedDatabase: 'off' | 'obf' = $state('off');
 
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { onMount } from 'svelte';
@@ -34,7 +35,7 @@
 	});
 
 	function gotoProductsSearch() {
-		goto('/products/search?q=' + searchQuery);
+		goto(`/products/search?q=${searchQuery}&db=${selectedDatabase}`);
 	}
 
 	let searchActive = $state(false);
@@ -55,6 +56,10 @@
 		<div class="form-control">
 			<div>
 				<div class="join">
+					<select bind:value={selectedDatabase} class="select select-bordered join-item w-20">
+						<option value="off">Food</option>
+						<option value="obf">Cosmetics</option>
+					</select>
 					<input
 						type="text"
 						bind:value={searchQuery}
@@ -142,6 +147,10 @@
 	</div>
 	{#if searchActive}
 		<div class="join -mt-8 w-full">
+			<select bind:value={selectedDatabase} class="select select-bordered join-item w-24">
+				<option value="off">Food</option>
+				<option value="obf">Cosmetics</option>
+			</select>
 			<input
 				type="text"
 				bind:value={searchQuery}
