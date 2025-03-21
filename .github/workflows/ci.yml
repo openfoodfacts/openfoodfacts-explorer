@@ -29,5 +29,8 @@ jobs:
       - run: pnpm lint
         if: always()
 
+      - run: pnpm format
+        if: always()
+
       - run: pnpm build
         if: always()
