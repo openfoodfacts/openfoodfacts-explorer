@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import type { PageData } from './$types';
+	import { t } from '$lib/translations';
 
 	interface Props {
 		data: PageData;
@@ -54,9 +55,10 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="mt-8 text-center opacity-70">
+		<div class="mt-8 text-center">
 			<p>No products found</p>
 			<p>We couldn't find any products matching your search</p>
+			<a class="btn btn-secondary join-item px-10 mt-5" href="/addProduct">{$t('common.add_product')}</a>
 		</div>
 	{/if}
 {/await}
