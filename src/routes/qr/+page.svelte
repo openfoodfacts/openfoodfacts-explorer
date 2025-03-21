@@ -32,7 +32,14 @@
 					if (text == null) return;
 					console.log('QR code detected:', text);
 
+					// We must stop the scanner first to release the camera
+					// This is important because:
+					// 1. It frees up camera resources
+					// 2. Prevents memory leaks
+					// 3. Ensures the camera is available for other applications
 					await scanner.stop();
+					// Then we navigate to the product page
+					// Using goto() instead of window.location for proper SvelteKit navigation
 					await goto('/products/' + text);
 				},
 				() => {
@@ -74,3 +81,4 @@
 		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
 	</div>
 {/if}
+
