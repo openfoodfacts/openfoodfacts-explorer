@@ -4,6 +4,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	let searchQuery: string = $state('');
 
@@ -88,6 +89,7 @@
 	</div>
 
 	<div class="navbar-end gap-2">
+		<NutritionCalculator />
 		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
@@ -163,6 +165,7 @@
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<NutritionCalculator />
 		<a class="btn btn-outline link" href="/folksonomy">
 			{$t('common.folksonomy')}
 		</a>

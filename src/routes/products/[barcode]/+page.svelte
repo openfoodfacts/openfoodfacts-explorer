@@ -4,6 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
+	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 
 	import EcoScore from '$lib/greenscore/GreenScore.svelte';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
@@ -26,6 +27,16 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	function addToCalculator() {
+		addItemToCalculator({
+			id: product.code,
+			name: product.product_name || product.code,
+			quantity: 100,
+			imageUrl: product.image_front_small_url,
+			nutriments: extractNutriments(product.nutriments)
+		});
+	}
 </script>
 
 <svelte:head>
@@ -46,6 +57,10 @@
 		>
 			See on OpenFoodFacts
 		</a>
+
+		<button class="btn btn-secondary max-sm:btn-sm mr-2" on:click={addToCalculator}>
+			Add to Calculator
+		</button>
 
 		<a
 			href={`/products/${product.code}/edit`}
