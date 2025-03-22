@@ -58,7 +58,7 @@
 		<div class="mt-8 text-center">
 			<p>No products found</p>
 			<p>We couldn't find any products matching your search</p>
-			<a class="btn btn-secondary join-item px-10 mt-5" href="/addProduct">{$t('common.add_product')}</a>
+			<a class="btn btn-secondary join-item px-10 mt-5" href="/addProduct?barcode={page.url.searchParams.get('q')}">{$t('common.add_product')}</a>
 		</div>
 	{/if}
 {/await}

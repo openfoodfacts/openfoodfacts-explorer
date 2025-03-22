@@ -1,11 +1,46 @@
 <script lang="ts">
 	import { writable, get } from 'svelte/store';
+	import { page } from '$app/stores';
 	import Card from '$lib/ui/Card.svelte';
 	import { addOrEditProductV2 } from '$lib/api';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+
+	const barcode = $page.url.searchParams.get('barcode') ?? '';
+
+	let currentUser = {
+		isLoggedIn: false,
+		user_id: '',
+		password: ''
+	}
+
+	onMount(() => {
+		const preferences = localStorage.getItem('preferences');
+		const parsedPreferences = preferences ? JSON.parse(preferences) : null;
+
+		const user_id = parsedPreferences ? parsedPreferences.username : null;
+		const password = parsedPreferences ? parsedPreferences.password : null;
+		
+		if (user_id && password){
+			currentUser = {
+				isLoggedIn: true,
+				user_id,
+				password
+			}
+		} else {
+			alert('You must be logged in access this page')
+			goto('/settings')
+		}
+
+		if (!barcode) {
+			alert('Barcode required to access this page');
+			goto('/');
+		}
+	});
 
 	let newProduct = writable({
 		_id: '',
-		code: '',
+		code: barcode,
 		product_name: '',
 		quantity: '',
 		categories: '',
@@ -184,6 +219,24 @@
 		ecoscore_grade: ''
 	});
 
+	let unitSelection = {
+		Fat: 'g',
+		'Saturated-fat': 'g',
+		Carbohydrates: 'g',
+		Sugars: 'g',
+		Fiber: 'g',
+		Proteins: 'g',
+		Salt: 'g',
+		Sodium: 'g',
+		Bicarbonate: 'g',
+		Potassium: 'g',
+		Chloride: 'g',
+		Calcium: 'g',
+		Magnesium: 'mg',
+		Sulphate: 'mg',
+		Nitrate: 'mg'
+	};
+
 	async function submit(fetch: typeof window.fetch = window.fetch) {
 		const productData = get(newProduct);
 
@@ -200,31 +253,66 @@
 		}
 	}
 
-	async function convertToBase64(file: File): Promise<string> {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result as string);
-			reader.onerror = (error) => reject(error);
-		});
-	}
-
 	async function handleImageUpload(event: Event, type: 'front' | 'ingredients') {
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (file) {
 			try {
-				const base64Image = await convertToBase64(file);
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(file);
+				fileReader.onload = async () => {
+					const dataUrl = fileReader.result as string;
 
-				newProduct.update((product) => {
-					if (type === 'front') {
-						product.image_front_url = `data:${file.type};base64,${base64Image.split(',')[1]}`;
-					} else if (type === 'ingredients') {
-						product.image_ingredients_url = `data:${file.type};base64,${base64Image.split(',')[1]}`; 
+					const payload = {
+						user_id: currentUser.user_id,
+						password: currentUser.password,
+						code: barcode,
+						imageField: type,
+						imgupload_front: dataUrl
+					};
+
+					const response = await fetch(
+						'https://world.openfoodfacts.net/cgi/product_image_upload.pl',
+						{
+							method: 'POST',
+							body: JSON.stringify(payload),
+							headers: {
+								'Content-Type': file.type,
+								'User-Agent': 'OpenFoodFactsExplorer/1.0'
+							},
+							mode: 'no-cors'
+						}
+					);
+					
+					if (!response.ok) {
+						console.error('Failed to upload image:', response.status, response.statusText);
+						alert(`Failed to upload image: ${response.statusText}`);
+						return;
 					}
-					return product;
-				});
+
+					const data = await response.json();
+
+					if (data.status === 1) {
+						newProduct.update((product) => {
+							if (type === 'front') {
+								product.image_front_url = data.image.url; 
+							} else if (type === 'ingredients') {
+								product.image_ingredients_url = data.image.url; 
+							}
+							return product;
+						});
+						alert('Image uploaded successfully!');
+					} else {
+						alert(`Failed to upload image: ${data.error}`);
+					}
+				};
+
+				fileReader.onerror = (error) => {
+					console.error('Error reading file:', error);
+					alert('An error occurred while reading the file.');
+				};
 			} catch (error) {
-				console.error('Error converting image to Base64:', error);
+				console.error('Error uploading image:', error);
+				alert('An error occurred while uploading the image.');
 			}
 		}
 	}
@@ -232,7 +320,10 @@
 
 <div class="my-3 text-center text-4xl font-semibold">Add a Product</div>
 <Card>
-	<h3 class="mb-4 text-3xl font-bold">Basic Information</h3>
+	<h3 class="mb-4 text-3xl font-semibold">Product characteristics</h3>
+	<div class="mb-4 flex items-center gap-2">
+		Barcode: {barcode}
+	</div>
 	<div class="form-control mb-4">
 		<label for="product_name">Product Name</label>
 		<input
@@ -241,17 +332,6 @@
 			class="input input-bordered w-full"
 			bind:value={$newProduct.product_name}
 			placeholder="Enter product name"
-		/>
-	</div>
-	<div class="form-control mb-4">
-		<label for="code">Barcode*</label>
-		<input
-			id="code"
-			type="text"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.code}
-			placeholder="Enter barcode"
-			required
 		/>
 	</div>
 	<div class="form-control mb-4">
@@ -264,30 +344,7 @@
 			placeholder="Enter quantity (e.g., 500g)"
 		/>
 	</div>
-</Card>
 
-<Card>
-	<h3 class="mb-4 text-3xl font-bold">Categories and Tags</h3>
-	<div class="form-control mb-4">
-		<label for="categories">Categories</label>
-		<input
-			id="categories"
-			type="text"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.categories}
-			placeholder="Enter categories (comma-separated)"
-		/>
-	</div>
-	<div class="form-control mb-4">
-		<label for="labels">Labels</label>
-		<input
-			id="labels"
-			type="text"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.labels}
-			placeholder="Enter labels (comma-separated)"
-		/>
-	</div>
 	<div class="form-control mb-4">
 		<label for="brands">Brands</label>
 		<input
@@ -298,6 +355,29 @@
 			placeholder="Enter brands (comma-separated)"
 		/>
 	</div>
+
+	<div class="form-control mb-4">
+		<label for="categories">Categories</label>
+		<input
+			id="categories"
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$newProduct.categories}
+			placeholder="Enter categories (comma-separated)"
+		/>
+	</div>
+
+	<div class="form-control mb-4">
+		<label for="labels">Labels, certifications, awards</label>
+		<input
+			id="labels"
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$newProduct.labels}
+			placeholder="Enter labels, certifications, awards (comma-separated)"
+		/>
+	</div>
+
 	<div class="form-control mb-4">
 		<label for="stores">Stores</label>
 		<input
@@ -306,6 +386,28 @@
 			class="input input-bordered w-full"
 			bind:value={$newProduct.stores}
 			placeholder="Enter stores (comma-separated)"
+		/>
+	</div>
+
+	<div class="form-control mb-4">
+		<label for="origins">Origins</label>
+		<input
+			id="origins"
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$newProduct.origins}
+			placeholder="Enter origins (comma-separated)"
+		/>
+	</div>
+
+	<div class="form-control mb-4">
+		<label for="countries">Countries</label>
+		<input
+			id="countries"
+			type="text"
+			class="input input-bordered w-full"
+			bind:value={$newProduct.countries}
+			placeholder="Enter countries (comma-separated)"
 		/>
 	</div>
 </Card>
@@ -380,81 +482,77 @@
 
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Nutritional Information</h3>
-	<div class="form-control mb-4">
-		<label for="energy">Energy (kcal)</label>
-		<input
-			id="energy"
-			type="number"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.nutriments.energy}
-		/>
-	</div>
-	<div class="form-control mb-4">
-		<label for="fat">Fat (g)</label>
-		<input
-			id="fat"
-			type="number"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.nutriments.fat}
-		/>
-	</div>
-	<div class="form-control mb-4">
-		<label for="proteins">Proteins (g)</label>
-		<input
-			id="proteins"
-			type="number"
-			class="input input-bordered w-full"
-			bind:value={$newProduct.nutriments.proteins}
-		/>
-	</div>
-</Card>
 
-<Card>
-	<h3 class="mb-4 text-3xl font-bold">Additional Information</h3>
-	<div class="form-control mb-4">
-		<label for="nutriscore">NutriScore</label>
-		<select
-			id="nutriscore"
-			class="select select-bordered w-full"
-			bind:value={$newProduct.nutriscore_grade}
-		>
-			<option value="" disabled selected>Select NutriScore</option>
-			<option value="a">A</option>
-			<option value="b">B</option>
-			<option value="c">C</option>
-			<option value="d">D</option>
-			<option value="e">E</option>
-		</select>
-	</div>
-	<div class="form-control mb-4">
-		<label for="nova_group">Nova Group</label>
-		<select
-			id="nova_group"
-			class="select select-bordered w-full"
-			bind:value={$newProduct.nova_group}
-		>
-			<option value={0} disabled selected>Select Nova Group</option>
-			<option value={1}>1</option>
-			<option value={2}>2</option>
-			<option value={3}>3</option>
-			<option value={4}>4</option>
-		</select>
-	</div>
-	<div class="form-control mb-4">
-		<label for="greenscore">GreenScore</label>
-		<select
-			id="greenscore"
-			class="select select-bordered w-full"
-			bind:value={$newProduct.ecoscore_grade}
-		>
-			<option value="" disabled selected>Select GreenScore</option>
-			<option value="a">A</option>
-			<option value="b">B</option>
-			<option value="c">C</option>
-			<option value="d">D</option>
-			<option value="e">E</option>
-		</select>
-	</div>
+	<table class="mt-4 w-full table-auto border-collapse border border-gray-300 sm:w-3/4 lg:w-1/2">
+		<thead>
+			<tr class="bg-secondary text-black">
+				<th class="border border-gray-300 px-4 py-2">Nutrient</th>
+				<th class="border border-gray-300 px-4 py-2">Value (per 100g)</th>
+				<th class="border border-gray-300 px-4 py-2">Unit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="border border-gray-300 px-4 py-2">Energy</td>
+				<td class="border border-gray-300 px-4 py-2">
+					<input
+						type="number"
+						bind:value={$newProduct.nutriments.energy_100g}
+						class="bg-base-300 w-full px-2 py-1 focus:outline-none"
+					/>
+				</td>
+				<td class="border border-gray-300 px-4 py-2">kJ</td>
+			</tr>
+
+			<tr>
+				<td class="border border-gray-300 px-4 py-2">Energy (kcal)</td>
+				<td class="border border-gray-300 px-4 py-2">
+					<input
+						type="number"
+						bind:value={$newProduct.nutriments['energy-kcal_100g']}
+						class="bg-base-300 w-full px-2 py-1 focus:outline-none"
+					/>
+				</td>
+				<td class="border border-gray-300 px-4 py-2">kcal</td>
+			</tr>
+
+			{#each Object.keys(unitSelection) as nutrient (nutrient)}
+				<tr>
+					<td class="border border-gray-300 px-4 py-2">{nutrient.replace('-', ' ')}</td>
+					<td class="border border-gray-300 px-4 py-2">
+						<input
+							type="number"
+							bind:value={
+								$newProduct.nutriments[(nutrient + '_100g') as keyof typeof $newProduct.nutriments]
+							}
+							class="bg-base-300 w-full px-2 py-1 focus:outline-none"
+						/>
+					</td>
+					<td class="border border-gray-300 px-4 py-2">
+						<select
+							bind:value={unitSelection[nutrient as keyof typeof unitSelection]}
+							class="bg-base-300 border-none outline-none"
+						>
+							<option value="g">g</option>
+							<option value="mg">mg</option>
+							<option value="mcg">mcg/µg</option>
+						</select>
+					</td>
+				</tr>
+			{/each}
+			<tr>
+				<td class="border border-gray-300 px-4 py-2">Alcohol</td>
+				<td class="border border-gray-300 px-4 py-2">
+					<input
+						type="number"
+						bind:value={$newProduct.nutriments.alcohol_100g}
+						class="bg-base-300 w-full px-2 py-1 focus:outline-none"
+					/>
+				</td>
+				<td class="border border-gray-300 px-4 py-2">% vol / °</td>
+			</tr>
+		</tbody>
+	</table>
 </Card>
 
 <button class="btn btn-primary mt-4 w-full" onclick={() => submit()}>Add Product</button>
