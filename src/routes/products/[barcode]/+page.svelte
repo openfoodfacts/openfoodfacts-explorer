@@ -26,6 +26,18 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	// Function to normalize tag names (similar to normalizeTagName in the UserScript)
+	function normalizeTagName(tag: string): string {
+		return tag
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '') // Remove accents
+			.replace(/[ '"&]/g, '-') // Replace spaces and special chars with hyphens
+			.replace(/-+/g, '-'); // Collapse multiple hyphens
+	}
+
+	let firstBrand = $derived(product.brands_tags?.[0] || '');
 </script>
 
 <svelte:head>
@@ -74,6 +86,14 @@
 						{#if i > 0},
 						{/if}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+						<a
+							href="https://hunger.openfoodfacts.org/questions?value_tag={normalizeTagName(
+								tag
+							)}&type=brand"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="ml-1 text-sm underline">[HG]</a
+						>
 					{/each}
 				{/await}
 			</span>
@@ -88,6 +108,14 @@
 							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
 							href="/taxo/categories/{tag}"
 							>{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}</a
+						>
+						<a
+							href="https://hunger.openfoodfacts.org/questions?value_tag={normalizeTagName(
+								tag
+							)}&type=category"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="ml-1 text-sm underline">[HG]</a
 						>
 					{/each}
 				{/await}
@@ -117,6 +145,14 @@
 						<a class="link" href={'/taxo/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 						</a>
+						<a
+							href="https://hunger.openfoodfacts.org/questions?value_tag={normalizeTagName(
+								tag
+							)}&type=label"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="ml-1 text-sm underline">[HG]</a
+						>
 					{/each}
 				{/await}
 			</span>
