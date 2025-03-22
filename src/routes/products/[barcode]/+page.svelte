@@ -17,6 +17,8 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import ZoomableImage from '$lib/ui/ZoomableImage.svelte';
+	import ImageModal from '$lib/ui/ImageModal.svelte';
 
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
@@ -30,6 +32,16 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+	let imageModal: any;
+
+	function viewFullImage() {
+		if (imageModal) {
+			const imageUrl =
+				product.image_front_url?.replace(/\.400\.|\.200\.|\.100\./, '.full.') ||
+				product.image_front_url;
+			imageModal.displayImage(imageUrl, product.product_name);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -167,8 +179,18 @@
 			{/if}
 		</div>
 
-		<div class="flex max-h-56 grow justify-center">
-			<ImageButton src={product.image_front_url} alt={product.product_name} />
+		<div class="flex max-h-80 grow justify-center">
+			<div class="flex flex-col items-center">
+				<ZoomableImage
+					src={product.image_front_url}
+					alt={product.product_name}
+					className="h-full max-h-72 object-contain"
+				/>
+				<button class="text-secondary mt-2 text-xs hover:underline" onclick={viewFullImage}>
+					View full image
+				</button>
+			</div>
+			<ImageModal bind:this={imageModal} />
 		</div>
 	</div>
 </Card>

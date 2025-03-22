@@ -18,6 +18,7 @@
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import TraceabilityCodes from './TraceabilityCodes.svelte';
+	import ZoomableImage from '$lib/ui/ZoomableImage.svelte';
 
 	interface Props {
 		data: PageData;
@@ -250,7 +251,13 @@
 			/>
 			<div class="tab-content form-control p-6">
 				{#if getIngredientsImage(code)}
-					<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
+					<div class="relative mb-4 max-w-full">
+						<ZoomableImage
+							src={getIngredientsImage(code)}
+							alt="Ingredients"
+							className="w-full object-contain"
+						/>
+					</div>
 				{:else}
 					<p class="alert alert-warning mb-4">No ingredients image</p>
 				{/if}
