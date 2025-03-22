@@ -17,6 +17,7 @@
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
+	import Energy from './Energy.svelte';
 
 	interface Props {
 		data: PageData;
@@ -231,6 +232,8 @@
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
 	</div>
 </Card>
+
+<Energy nutriments={$productStore.nutriments} />
 
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
