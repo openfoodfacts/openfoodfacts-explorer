@@ -17,6 +17,7 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import RobotoffQuestions from '$lib/ui/RobotoffQuestions.svelte';
 
 	interface Props {
 		data: PageData;
@@ -194,12 +195,4 @@
 	</Card>
 {/if}
 
-<Card>
-	{#await data?.questions}
-		Loading...
-	{:then questions}
-		<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
-
-		<Debug data={questions} />
-	{/await}
-</Card>
+<RobotoffQuestions questions={data.questions} />
