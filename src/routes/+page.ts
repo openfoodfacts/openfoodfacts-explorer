@@ -27,7 +27,7 @@ async function productsWithQuestions(
 
 	const productsPromises = response.questions.map((question) =>
 		productApi.getProductReducedForCard(question.barcode)
-);
+	);
 
 	return Promise.all(productsPromises);
 }
