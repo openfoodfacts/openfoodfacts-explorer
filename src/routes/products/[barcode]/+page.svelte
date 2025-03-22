@@ -154,7 +154,7 @@
 				{/await}
 			</span>
 
-			{#if product.emb_codes && product.emb_codes.length > 0}
+			{#if product.emb_codes != null && product.emb_codes.length > 0}
 				<span class="text-end font-bold">Traceability Codes:</span>
 				<span>
 					{product.emb_codes}
