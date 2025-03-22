@@ -1,19 +1,48 @@
 <script lang="ts">
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
-	const SRC_MAP: Record<string, string> = {
-		1: KP_ATTRIBUTE_IMG('nova-group-1.svg'),
-		2: KP_ATTRIBUTE_IMG('nova-group-2.svg'),
-		3: KP_ATTRIBUTE_IMG('nova-group-3.svg'),
-		4: KP_ATTRIBUTE_IMG('nova-group-4.svg')
+	const NOVA_MAP: Record<
+		number,
+		{ name: string; src: string; textColor: string; bgColor: string }
+	> = {
+		1: {
+			name: 'Unprocessed or minimally processed foods',
+			src: KP_ATTRIBUTE_IMG('nova-group-1.svg'),
+			textColor: 'text-green-700',
+			bgColor: 'bg-green-100 hover:bg-green-200'
+		},
+		2: {
+			name: 'Processed culinary ingredients',
+			src: KP_ATTRIBUTE_IMG('nova-group-2.svg'),
+			textColor: 'text-green-700',
+			bgColor: 'bg-green-100 hover:bg-green-200'
+		},
+		3: {
+			name: 'Processed foods',
+			src: KP_ATTRIBUTE_IMG('nova-group-3.svg'),
+			textColor: 'text-green-700',
+			bgColor: 'bg-green-100 hover:bg-green-200'
+		},
+		4: {
+			name: 'Ultra processed foods',
+			src: KP_ATTRIBUTE_IMG('nova-group-4.svg'),
+			textColor: 'text-orange-700',
+			bgColor: 'bg-red-100 hover:bg-red-200'
+		},
+		0: {
+			name: 'NOVA not computed',
+			src: KP_ATTRIBUTE_IMG('nova-group-unknown.svg'),
+			textColor: 'text-black',
+			bgColor: 'bg-gray-200 hover:bg-gray-300'
+		}
 	};
 
-	const SRC_UNKNOWN = KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
-
 	let { grade }: { grade: number } = $props();
-	let src = $derived(SRC_MAP[grade] ?? SRC_UNKNOWN);
+
+	let { name, src, textColor, bgColor } = $derived(NOVA_MAP[grade] ?? NOVA_MAP[0]);
 </script>
 
-<a href="#nova">
-	<img alt="Nova Score" {src} class="transition-all duration-75 hover:brightness-90" />
+<a href="#nova" class="w-1/3 {bgColor} flex items-center justify-evenly gap-4 rounded-xl p-4">
+	<img alt="Nova Score" {src} class="h-20 transition-all duration-75 hover:brightness-90" />
+	<div class="{textColor} text-xl font-semibold">{name}</div>
 </a>

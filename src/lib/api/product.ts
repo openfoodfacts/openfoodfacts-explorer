@@ -64,9 +64,13 @@ export class ProductsApi {
 			labels: product.labels,
 			brands: product.brands,
 			quantity: product.quantity,
+			serving_size: product.serving_size,
 			stores: product.stores,
 			origins: product.origins,
 			countries: product.countries,
+			emb_codes: product.emb_codes,
+			packaging: product.packaging,
+			manufacturing_places: product.manufacturing_places,
 			comment: product.comment ?? '',
 
 			product_name: product.product_name,
@@ -233,9 +237,14 @@ export type Product = {
 	image_nutrition_thumb_url: string;
 
 	quantity: string;
+	serving_size: string;
 	nutriscore_grade: string;
 	ecoscore_grade: string;
 	nova_group: number;
+
+	emb_codes: string;
+	packaging: string;
+	manufacturing_places: string;
 
 	brands: string;
 	brands_tags: string[];
@@ -257,6 +266,8 @@ export type Product = {
 	countries_tags: string[];
 
 	nutriments: Nutriments;
+
+	no_nutrition_data?: boolean;
 
 	source: {
 		fields: string[];

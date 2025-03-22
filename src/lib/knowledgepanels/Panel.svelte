@@ -13,8 +13,9 @@
 		panel: KnowledgePanel;
 		id: string;
 		link?: string;
+		productCode?: string;
 	};
-	let { allPanels, panel, id, link }: Props = $props();
+	let { allPanels, panel, id, link, productCode }: Props = $props();
 
 	let expanded = $state(panel?.expanded ?? false);
 </script>
@@ -24,7 +25,7 @@
 		{#if i > 0}
 			<hr class="border-base-100 bg-base-100 my-2" />
 		{/if}
-		<Element {element} {allPanels} />
+		<Element {element} {allPanels} {productCode} />
 	{/each}
 {/snippet}
 
@@ -67,8 +68,10 @@
 {/snippet}
 
 <div {id}>
-	{#if panel == null && dev}
-		<div class="alert alert-warning">Panel is null</div>
+	{#if panel == null}
+		{#if dev}
+			<div class="alert alert-warning">Panel is null</div>
+		{/if}
 	{:else if panel.type === 'card'}
 		<Card>
 			<div class="flex items-center">

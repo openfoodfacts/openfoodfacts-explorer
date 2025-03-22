@@ -1,18 +1,54 @@
 <script lang="ts">
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
-	const MAP: Record<string, string> = {
-		a: KP_ATTRIBUTE_IMG('green-score-b.svg'),
-		b: KP_ATTRIBUTE_IMG('green-score-c.svg'),
-		c: KP_ATTRIBUTE_IMG('green-score-d.svg'),
-		d: KP_ATTRIBUTE_IMG('green-score-e.svg'),
-		e: KP_ATTRIBUTE_IMG('green-score-unknown.svg')
+	const GRADE_MAP: Record<
+		string,
+		{ name: string; src: string; textColor: string; bgColor: string }
+	> = {
+		a: {
+			name: 'Very low environmental impact',
+			src: KP_ATTRIBUTE_IMG('green-score-a.svg'),
+			textColor: 'text-green-700',
+			bgColor: 'bg-green-100 hover:bg-green-200'
+		},
+		b: {
+			name: 'Low environmental impact',
+			src: KP_ATTRIBUTE_IMG('green-score-b.svg'),
+			textColor: 'text-green-700',
+			bgColor: 'bg-green-100 hover:bg-green-200'
+		},
+		c: {
+			name: 'Moderate environmental impact',
+			src: KP_ATTRIBUTE_IMG('green-score-c.svg'),
+			textColor: 'text-yellow-800',
+			bgColor: 'bg-orange-100 hover:bg-orange-200'
+		},
+		d: {
+			name: 'High environmental impact',
+			src: KP_ATTRIBUTE_IMG('green-score-d.svg'),
+			textColor: 'text-orange-700',
+			bgColor: 'bg-red-100 hover:bg-red-200'
+		},
+		unknown: {
+			name: 'Unknown impact',
+			src: KP_ATTRIBUTE_IMG('green-score-unknown.svg'),
+			textColor: 'text-black',
+			bgColor: 'bg-gray-200 hover:bg-gray-300'
+		}
 	};
 
-	let SRC_UNKNOWN = KP_ATTRIBUTE_IMG('green-score-unknown.svg');
-
 	let { grade }: { grade: string } = $props();
-	let src = $derived(MAP[grade.toLowerCase()] ?? SRC_UNKNOWN);
+	let normalizedGrade = $derived(grade.toLowerCase());
+	let { name, src, textColor, bgColor } = $derived(GRADE_MAP[normalizedGrade]);
 </script>
 
-<img alt="Green-Score" {src} class="transition-all duration-75 hover:brightness-90" />
+<a
+	href="#environment_card"
+	class="flex h-full w-full items-center gap-4 rounded-xl p-4 {bgColor} hover:bg-opacity-90 transition-all duration-75"
+>
+	<img alt="Green-Score" {src} class="h-20" />
+	<div class="flex flex-col">
+		<div class="text-xl font-semibold {textColor}">Green-Score {grade.toUpperCase()}</div>
+		<div class="text-black">{name}</div>
+	</div>
+</a>

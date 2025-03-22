@@ -158,7 +158,7 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-evenly gap-4 p-3">
+<div class="flex max-h-32 w-full justify-between gap-3">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
 	<a href="#environment_card">
@@ -166,7 +166,7 @@
 	</a>
 </div>
 
-<KnowledgePanels knowledgePanels={product.knowledge_panels} />
+<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 <Gs1Country barcode={product.code} />
 
