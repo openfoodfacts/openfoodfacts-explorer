@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Logo from '$lib/ui/Logo.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { initI18n, _ } from '$lib/i18n';
@@ -90,6 +92,7 @@
 	</div>
 
 	<div class="navbar-end gap-2">
+		<NutritionCalculator />
 		<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
 		<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
 		<a
@@ -165,6 +168,7 @@
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<NutritionCalculator />
 		<a class="btn btn-outline link" href="/folksonomy">
 			{$_('folksonomy_link')}
 		</a>
