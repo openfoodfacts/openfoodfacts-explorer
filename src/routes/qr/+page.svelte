@@ -81,4 +81,3 @@
 		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
 	</div>
 {/if}
-
