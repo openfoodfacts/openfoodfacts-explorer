@@ -18,6 +18,8 @@
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import TraceabilityCodes from './TraceabilityCodes.svelte';
+	import PriceEdit from '../PriceEdit.svelte';
+	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 
 	interface Props {
 		data: PageData;
@@ -390,6 +392,16 @@
 	</div>
 	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.submit')}</button>
 </Card>
+
+{#if isPriceConfigured() && data?.prices?.data != null}
+	<Card>
+		<h1 class="my-4 text-xl font-bold sm:text-4xl">
+			Open prices <span class="font-light italic">(alpha)</span>
+		</h1>
+
+		<PriceEdit prices={data.prices.data} barcode={data.state.product.code} />
+	</Card>
+{/if}
 
 <details>
 	<summary>{$_('product.edit.debug')}</summary>

@@ -1,5 +1,6 @@
 import { getProduct, getTaxo } from '$lib/api';
 import type { Category, Origin, Label, Brand, Store, Country } from '$lib/api';
+import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
 
@@ -13,6 +14,11 @@ export const load = (async ({ fetch, params }) => {
 		getTaxo<Origin>('origins', fetch),
 		getTaxo<Country>('countries', fetch)
 	]);
+	const pricesApi = new PricesApi(fetch);
+	let pricesResponse = null;
+	if (isPricesConfigured()) {
+		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
+	}
 
 	if (product.status === 'failure') {
 		error(404, {
@@ -28,6 +34,7 @@ export const load = (async ({ fetch, params }) => {
 		brands,
 		stores,
 		origins,
-		countries
+		countries,
+		prices: await pricesResponse
 	};
 }) satisfies PageLoad;
