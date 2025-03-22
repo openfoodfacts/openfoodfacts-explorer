@@ -8,14 +8,23 @@
 	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
 
-	type ApiResponse<T> = { data?: T; error?: any };
+	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type ApiResponse<T> = { data?: T; error?: object };
+
+	type PriceResult = {
+		price: number;
+		currency: string;
+		location_osm_id: number;
+		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
+		date: string;
+	};
 
 	interface Props {
 		prices: {
 			count: number;
 			next?: string | null;
 			previous?: string | null;
-			results: any[];
+			results: PriceResult[];
 		};
 		barcode: string;
 	}
@@ -37,13 +46,13 @@
 
 	type NewPriceForm = {
 		value: number;
-		currency: components['schemas']['CurrencyEnum'];
+		currency: CurrencyEnum;
 		osm_id: number;
 	};
 
 	let newPrice: NewPriceForm = $state({
 		value: 0,
-		currency: 'EUR' as components['schemas']['CurrencyEnum'],
+		currency: 'EUR' as CurrencyEnum,
 		osm_id: 0
 	});
 
@@ -83,7 +92,7 @@
 		const res = (await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
-			currency: newPrice.currency as components['schemas']['CurrencyEnum'],
+			currency: newPrice.currency,
 			// we only need the date, not the time
 			date: today.toISOString().split('T')[0],
 
@@ -108,7 +117,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({prices.count ?? 0}/{prices.count ?? 0})
+			Prices: ({prices.results.length ?? 0}/{prices.count ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
