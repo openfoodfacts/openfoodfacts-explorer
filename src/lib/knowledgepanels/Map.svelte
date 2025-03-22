@@ -18,6 +18,10 @@
 	onMount(() => {
 		let mounted = true;
 
+		// Using async function for several reasons:
+		// 1. Dynamic Import: Allows using await with Leaflet import (code splitting)
+		// 2. Lifecycle Safety: 'mounted' flag prevents updates after component unmount
+		// 3. Clean Structure: Keeps async code contained while allowing proper cleanup
 		(async () => {
 			try {
 				const leaflet = await import('leaflet');
