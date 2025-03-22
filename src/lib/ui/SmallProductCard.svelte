@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ProductReduced } from '$lib/api';
-	import { navigating } from '$app/state';
+	import { navigating } from '$app/stores';
 
 	interface Props {
 		product: ProductReduced;
@@ -12,11 +12,11 @@
 <a
 	href={`/products/${product.code}`}
 	class="btn btn-ghost text-primary dark:bg-base-300 pointer-events-none h-auto justify-normal rounded-2xl bg-white p-4 text-start shadow-md"
-	class:pointer-events-none={navigating.to}
+	class:pointer-events-none={$navigating}
 >
 	<div class="flex flex-row items-center">
 		<div class="mr-4 flex w-16 shrink-0 items-center justify-center">
-			{#if navigating.to?.params?.barcode === product.code}
+			{#if $navigating?.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
 				<img
@@ -24,6 +24,12 @@
 					class="h-16 rounded-lg object-cover"
 					alt="Product front"
 				/>
+			{:else}
+				<div
+					class="placeholder flex aspect-square h-full w-full items-center justify-center bg-amber-50 text-black"
+				>
+					No Image
+				</div>
 			{/if}
 		</div>
 		<div>
