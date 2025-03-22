@@ -61,7 +61,7 @@
 		bind:value={$preferences.lang}
 	>
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-		{#each Object.keys(data.languages).toSorted() as langKey}
+		{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
 			{@const lang = data.languages[langKey]}
 			<option
 				value={lang.language_code_2.en}
@@ -83,7 +83,7 @@
 		</option>
 
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-		{#each Object.keys(data.countries).toSorted() as countryKey}
+		{#each Object.keys(data.countries).toSorted() as countryKey (countryKey)}
 			{@const country = data.countries[countryKey]}
 			{@const code2 = country.country_code_2.en}
 			<option

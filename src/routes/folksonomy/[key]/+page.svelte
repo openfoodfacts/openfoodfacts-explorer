@@ -32,7 +32,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.tags as tag, i}
+		{#each data.tags as tag, i (i)}
 			<tr>
 				<td>
 					{#await data.streamed.products}

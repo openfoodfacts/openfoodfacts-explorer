@@ -48,7 +48,7 @@
 	<h3 class="text-xl font-bold">Parents</h3>
 
 	<ul class="ml-4 list-disc">
-		{#each category.parents as parentId}
+		{#each category.parents as parentId (parentId)}
 			{@const parentNode = data.fullTaxonomy[parentId]}
 			<li>
 				<a class="link" href={`/taxo/${taxonomy}/${parentId}`}>
@@ -64,7 +64,7 @@
 {#if category.children != null}
 	<h3 class="text-xl font-bold">Children</h3>
 	<ul class="ml-4 list-disc">
-		{#each category.children as childId}
+		{#each category.children as childId (childId)}
 			{@const childNode = data.fullTaxonomy[childId]}
 			<li>
 				<a class="link" href={`/taxo/${taxonomy}/${childId}`}>
@@ -81,7 +81,7 @@
 	{@const synonyms = getOrDefault(category.synonyms, $preferences.lang) ?? []}
 	<h3 class="text-xl font-bold">Synonyms</h3>
 	<ul class="ml-4 list-disc">
-		{#each synonyms as synonym}
+		{#each synonyms as synonym (synonym)}
 			<li>
 				{synonym}
 			</li>
@@ -95,7 +95,7 @@
 {:then search}
 	{#if search.products.length > 0}
 		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-			{#each search.products as product}
+			{#each search.products as product (product.code)}
 				<ProductCard {product} />
 			{/each}
 		</div>
