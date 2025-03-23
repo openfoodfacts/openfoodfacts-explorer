@@ -171,7 +171,7 @@
 	</div>
 </Card>
 
-<div class="flex max-h-32 w-full justify-between gap-3">
+<div class="flex w-full flex-col justify-between gap-3 md:flex-row">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
 	<a href="#environment_card">

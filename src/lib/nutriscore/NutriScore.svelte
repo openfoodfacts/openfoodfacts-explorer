@@ -50,10 +50,7 @@
 	let { name, src, textColor, bgColor } = $derived(NUTRI_MAP[normalizedGrade] ?? NUTRI_MAP.unknown);
 </script>
 
-<a
-	href="#health_card"
-	class="{bgColor} flex w-1/3 items-center justify-evenly gap-2 rounded-lg p-2"
->
+<a href="#health_card" class="{bgColor} flex items-center gap-4 rounded-lg p-4">
 	<img alt="Nutri-Score" {src} class="h-16" />
 	<div class="flex flex-col">
 		<div class="text-xl {textColor} font-semibold">Nutri-Score {grade.toUpperCase()}</div>
