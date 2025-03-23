@@ -158,9 +158,9 @@
 				<span class="text-end font-bold">Traceability Codes:</span>
 				<span>
 					{product.emb_codes}
-					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500"
-						>(Learn more)</a
-					>
+					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
+						(Learn more)
+					</a>
 				</span>
 			{/if}
 		</div>

@@ -35,9 +35,9 @@
 	<div class="mt-1 text-xs">
 		<p>Format depends on country (e.g., FR XX.XXX.XXX CE for France)</p>
 		<p>
-			More info: <a href={TRACEABILITY_CODES_URL} target="_blank" class="link"
-				>Food Traceability Codes Wiki</a
-			>
+			More info: <a href={TRACEABILITY_CODES_URL} target="_blank" class="link">
+				Food Traceability Codes Wiki
+			</a>
 		</p>
 	</div>
 </div>
