@@ -3,6 +3,12 @@
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import type { PageData } from './$types';
 
+	const labels = {
+		relevance: 'Relevance',
+		nutrition_grade: 'Nutrition Score (A→E)',
+		ecoscore: 'Eco Score (High→Low)'
+	};
+
 	interface Props {
 		data: PageData;
 	}
@@ -13,7 +19,34 @@
 		url.searchParams.set('page', p.toString());
 		return url.toString();
 	}
+
+	function getSortLabel(sortOption: string): string {
+		return labels[sortOption] || sortOption;
+	}
+
+	function changeSort(newSortBy: string) {
+		const url = new URL(window.location.href);
+		url.searchParams.set('sort_by', newSortBy);
+		return url.toString();
+	}
 </script>
+
+<div class="mb-4 flex justify-end">
+	<div class="dropdown dropdown-end">
+		<label tabindex="0" class="btn btn-sm m-1">
+			Sort: {getSortLabel(data.sortBy)}
+		</label>
+		<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+			{#each data.sortOptions as option}
+				<li>
+					<a href={changeSort(option)} class={option === data.sortBy ? 'font-bold' : ''}>
+						{getSortLabel(option)}
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</div>
+</div>
 
 {#await data.result}
 	{#each Array(5) as i (i)}

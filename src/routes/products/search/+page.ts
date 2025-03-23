@@ -2,19 +2,32 @@ import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { Product } from '$lib/api';
 
+const SORT_OPTIONS: Record<string, string> = {
+	relevance: '',
+	nutrition_grade: 'nutriscore_score',
+	ecoscore: 'ecoscore_score'
+};
+
+const DEFAULT_SORT_ORDERS: Record<string, string> = {
+	relevance: 'desc',
+	nutrition_grade: 'asc',
+	ecoscore: 'desc'
+};
+
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 
 	if (query == null || query.length === 0) {
-		error(400, 'Missing query parameter');
+		throw error(400, 'Missing query parameter');
 	}
 
-	// If the code is an EAN13 code, we can directly fetch the product
 	if (query.match(/^\d{13}$/)) {
-		redirect(308, `/products/${query}`);
+		throw redirect(308, `/products/${query}`);
 	}
 
 	const page = url.searchParams.get('page') || '1';
+	const sortBy = url.searchParams.get('sort_by') || 'relevance';
+	const sortOrder = DEFAULT_SORT_ORDERS[sortBy] || 'desc';
 
 	const urlSearch = new URLSearchParams({
 		search_terms: query,
@@ -23,31 +36,34 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page: page
 	});
 
-	const result = fetch(`https://world.openfoodfacts.org/cgi/search.pl?` + urlSearch.toString())
-		.then((res) => {
-			if (!res.ok) {
-				error(400, 'Failed to fetch data');
-			}
-			return res;
-		})
-		.then(
-			(res) =>
-				res.json() as Promise<{
-					count: number;
-					page: number;
-					page_size: number;
-					page_count: number;
-					products: Product[];
-				}>
-		)
-		.then((data) => {
-			return {
-				...data,
-				total_pages: Math.ceil(data.count / data.page_size)
-			};
-		});
+	if (sortBy !== 'relevance' && SORT_OPTIONS[sortBy]) {
+		urlSearch.set('sort_by', SORT_OPTIONS[sortBy]);
+		urlSearch.set('sort_order', sortOrder);
+	}
 
-	return {
-		result: result
-	};
+	try {
+		const response = await fetch(
+			`https://world.openfoodfacts.org/cgi/search.pl?${urlSearch.toString()}`
+		);
+
+		if (!response.ok) {
+			throw error(400, 'Failed to fetch data');
+		}
+
+		const data = await response.json();
+
+		const result = {
+			...data,
+			total_pages: Math.ceil(data.count / data.page_size)
+		};
+
+		return {
+			result: result,
+			sortBy,
+			sortOrder,
+			sortOptions: Object.keys(SORT_OPTIONS)
+		};
+	} catch (err) {
+		throw error(500, 'Error loading data');
+	}
 };
