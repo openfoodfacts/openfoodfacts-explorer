@@ -5,6 +5,7 @@
 	import { getNearStores, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 	import Card from '$lib/ui/Card.svelte';
+	import { t } from '$lib/translations';
 
 	interface Props {
 		prices: Prices;
@@ -96,9 +97,9 @@
 	<h3 class="mb-4 text-3xl font-bold">Edit Price</h3>
 
 	{#if !authenticated}
-		<div class="alert alert-warning mb-4">Please log in to edit prices</div>
+		<div class="alert alert-warning mb-4">{$t('home.log_in_message')}</div>
 	{:else if prices.items.length === 0}
-		<div class="alert alert-info mb-4">No prices available to edit</div>
+		<div class="alert alert-info mb-4">{$t('home.no_prices_to_edit')}</div>
 	{:else}
 		<div class="form-control mb-4">
 			<label for="price-select">Select a Price to Edit</label>
