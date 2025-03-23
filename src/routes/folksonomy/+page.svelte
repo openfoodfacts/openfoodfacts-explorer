@@ -25,8 +25,8 @@
 
 	// Grouping functionality
 	function getKeyPrefix(key: string): string {
-		// Extract the first part of the key before a colon or underscore
-		const match = key.match(/^([^:_]+)/);
+		// Extract the first part of the key before a colon
+		const match = key.match(/^([^:]+)/);
 		return match != null ? match[0] : 'other';
 	}
 
@@ -101,11 +101,6 @@
 		if (percent > 25) return 'badge-accent';
 		return 'badge-ghost';
 	}
-
-	function handleSearch() {
-		// This function can be used for additional search functionality if needed
-		console.log('Searching for:', searchQuery);
-	}
 </script>
 
 <div class="folksonomy-container flex flex-col gap-6 p-4" transition:fade={{ duration: 500 }}>
@@ -131,11 +126,7 @@
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button
-							class="btn btn-square"
-							aria-label="Search folksonomy keys"
-							onclick={handleSearch}
-						>
+						<button class="btn btn-square" aria-label="Search folksonomy keys">
 							<span class="icon-[mdi--magnify] h-6 w-6"></span>
 						</button>
 					</div>
@@ -175,7 +166,7 @@
 								class:badge-secondary={usagePercent > 50 && usagePercent <= 75}
 								class:badge-accent={usagePercent > 25 && usagePercent <= 50}
 								class:badge-ghost={usagePercent <= 25}
-								title="Number of products: {key.count}"
+								title="Used in {key.count} products ({usagePercent}% relative usage)"
 							>
 								{key.count}
 							</div>
@@ -183,7 +174,7 @@
 						{#if key.values != null && key.values > 0}
 							<div
 								class="badge badge-sm {getColorClass(getValuesPercent(key.values))}"
-								title="Number of unique values: {key.values}"
+								title="Has {key.values} different possible values"
 							>
 								{key.values}
 							</div>
@@ -191,7 +182,10 @@
 					</div>
 				</div>
 				{#if key.count != null && key.count > 0}
-					<div class="bg-base-300 h-1 w-full overflow-hidden rounded-full">
+					<div
+						class="bg-base-300 h-1 w-full overflow-hidden rounded-full"
+						title="Usage frequency indicator: {getUsagePercent(key.count)}% relative to other keys"
+					>
 						<div
 							class="bg-primary h-full rounded-full"
 							style="width: {getUsagePercent(key.count)}%"
@@ -246,6 +240,21 @@
 	{:else if filteredTags.length === 0}
 		{@render emptyState('No keys found with the current search query.')}
 	{:else}
+		<div class="bg-base-200 mb-4 rounded-lg p-3 text-sm opacity-75">
+			<h3 class="mb-1 font-semibold">Key Visualization Guide:</h3>
+			<ul class="ml-4 list-disc">
+				<li>
+					The first badge <span class="badge badge-sm mr-1 ml-1">123</span> shows the number of products
+					using this key
+				</li>
+				<li>
+					The second badge <span class="badge badge-sm badge-accent mr-1 ml-1">45</span> shows the number
+					of unique values for this key
+				</li>
+				<li>The progress bar represents how commonly the key is used relative to other keys</li>
+			</ul>
+		</div>
+
 		<div class="keys-container">
 			{#each groupedTags as [group, keys]}
 				<div
