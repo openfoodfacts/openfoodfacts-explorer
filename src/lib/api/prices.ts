@@ -1,5 +1,6 @@
 import createClient from 'openapi-fetch';
 import type { paths } from './prices.d';
+import { preferences } from '$lib/settings';
 
 type PricesQuery = paths['/api/v1/prices']['get']['parameters']['query'];
 type PriceStats = paths['/api/v1/prices/stats']['get']['parameters']['query'];
@@ -46,13 +47,32 @@ export class PricesApi {
 	getPriceStats(query: PriceStats) {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
-	login(body: { username: string; password: string }) {
-		return this.client.POST('/api/v1/auth', {
+	async login(body: { username: string; password: string }) {
+		const res = await this.client.POST('/api/v1/auth', {
+			// @ts-expect-error The API expects set_cookie parameter
 			params: { query: { set_cookie: true } },
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			bodySerializer: (body) => new URLSearchParams(body as Record<string, string>)
 		});
+
+		// Update moderator status if the response includes user information
+		if (res.data && !res.error) {
+			const authData = res.data as {
+				user?: {
+					is_moderator?: boolean;
+				};
+			};
+
+			if (authData.user) {
+				preferences.update((p) => ({
+					...p,
+					isModerator: authData.user?.is_moderator || false
+				}));
+			}
+		}
+
+		return res;
 	}
 
 	uploadProof(body: { file: Blob }) {

@@ -3,6 +3,7 @@
 
 	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
+	import { preferences } from '$lib/settings';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
@@ -176,6 +177,14 @@
 				<div></div>
 				<button class="btn" type="submit">Submit</button>
 			</form>
+			<div>
+				{#if $preferences.isModerator}
+					<div class="alert alert-info mt-4">
+						<span class="icon-[mdi--shield] h-5 w-5"></span>
+						<span>Moderator privileges enabled</span>
+					</div>
+				{/if}
+			</div>
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
 			<form class="space-y-4" onsubmit={preventDefault(login)}>

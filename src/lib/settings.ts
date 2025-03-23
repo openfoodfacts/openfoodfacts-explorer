@@ -10,5 +10,6 @@ export const preferences = persisted('preferences', {
 		authToken: null as string | null
 	},
 	username: null as string | null,
-	password: null as string | null
+	password: null as string | null,
+	isModerator: false
 });
