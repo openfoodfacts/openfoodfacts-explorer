@@ -7,7 +7,7 @@ GitHub Actions:
 🏷️ Folksonomy Project:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
-      - any-glob-to-any-file: 'src/lib/api/folksonomy.ts
+      - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
 📖 Knowledge panels:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/knowledgepanels/**/*'
