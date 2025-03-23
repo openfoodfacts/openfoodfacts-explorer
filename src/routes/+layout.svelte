@@ -168,7 +168,6 @@
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
-		<NutritionCalculator />
 		<a class="btn btn-outline link" href="/folksonomy">
 			{$_('folksonomy_link')}
 		</a>
@@ -189,5 +188,8 @@
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
 </div>
+
+<NutritionCalculator />
+<Footer />
 
 <Footer />
