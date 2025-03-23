@@ -8,6 +8,14 @@
 		clearCalculator,
 		toggleCalculator
 	} from '$lib/stores/calculatorStore';
+	import { onMount } from 'svelte';
+
+	// Load calculator items on component mount
+	onMount(() => {
+		// Force a refresh of the calculatorItems store
+		// This ensures the UI reflects any items loaded from localStorage
+		calculatorItems.update((items) => [...items]);
+	});
 
 	function calculateTotals() {
 		let totals = {
@@ -39,11 +47,23 @@
 	}
 </script>
 
-<!-- Calculator button -->
-<button class="btn btn-outline link" on:click={toggleCalculator} aria-label="Nutrition Calculator">
-	<span class="icon-[mdi--calculator] mr-1 h-6 w-6"></span>
-	{$t('calculator') || 'Calculator'}
-</button>
+<!-- Floating Calculator button -->
+<div class="fixed right-6 bottom-6 z-50">
+	<button
+		class="btn btn-circle btn-primary shadow-lg"
+		on:click={toggleCalculator}
+		aria-label="Nutrition Calculator"
+	>
+		<span class="icon-[mdi--calculator] h-6 w-6"></span>
+		{#if $calculatorItems.length > 0}
+			<span
+				class="bg-secondary absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white"
+			>
+				{$calculatorItems.length}
+			</span>
+		{/if}
+	</button>
+</div>
 
 <!-- Calculator panel -->
 {#if $isCalculatorOpen}
