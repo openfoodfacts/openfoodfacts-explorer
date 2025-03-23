@@ -1,6 +1,5 @@
 # Add labels to any any pull request with changes to the specified paths
 
-# Pull requests that update GitHub Actions code. If you navigate to the folder, you will have a README of what it does
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
@@ -37,36 +36,35 @@ facets:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
       - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
 Product page:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/**/*'
 Home page:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/SmallProductCard.svelte'
 QR:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/routes/qr/**/*'
 Settings:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/routes/settings/**/*'
 ✏️ Editing:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
 Search:
-    - changed-files:
+  - changed-files:
       - any-glob-to-any-file: 'src/routes/products/search/**/*'
 Green-Score:
-    - changed-files:
-     - any-glob-to-any-file: 'src/lib/greenscore/**/*'
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/greenscore/**/*'
 Ultra-processed foods - NOVA:
-    - changed-files:
-     - any-glob-to-any-file: 'src/lib/nova/**/*'
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/nova/**/*'
 User Interface:
-    - changed-files:
-     - any-glob-to-any-file: 'src/lib/ui/**/*'
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/**/*'
 Nutrients:
-    - changed-files:
-     - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
-
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
