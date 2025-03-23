@@ -265,6 +265,9 @@ export type Product = {
 	countries: string;
 	countries_tags: string[];
 
+	emb_codes: string;
+	emb_codes_tags: string[];
+
 	nutriments: Nutriments;
 
 	no_nutrition_data?: boolean;
