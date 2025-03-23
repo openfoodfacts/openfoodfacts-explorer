@@ -43,12 +43,12 @@
 </script>
 
 <a
-	href="#environment_card"
-	class="flex h-full w-full items-center gap-4 rounded-xl p-4 {bgColor} hover:bg-opacity-90 transition-all duration-75"
+    href="#environment_card"
+    class="flex flex-col md:flex-col lg:flex-row h-full w-full items-center gap-4 rounded-xl p-4 {bgColor} hover:bg-opacity-90 transition-all duration-75"
 >
-	<img alt="Green-Score" {src} class="h-20" />
-	<div class="flex flex-col">
-		<div class="text-xl font-semibold {textColor}">Green-Score {grade.toUpperCase()}</div>
-		<div class="text-black">{name}</div>
-	</div>
+    <img alt="Green-Score" {src} class="h-20" />
+    <div class="flex flex-col">
+        <div class="text-xl font-semibold {textColor}">Green-Score {grade.toUpperCase()}</div>
+        <div class="text-black">{name}</div>
+    </div>
 </a>
