@@ -14,7 +14,7 @@
 </script>
 
 <a href={`/products/${product.code}`} class="block" class:pointer-events-none={navigating.to}>
-	<div class="h-[11.5rem] w-[16rem] rounded-2xl dark:bg-base-200 shadow-md text-primary">
+	<div class="dark:bg-base-200 text-primary h-[11.5rem] w-[16rem] rounded-2xl shadow-md">
 		<div class="h-[8rem] w-full text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
