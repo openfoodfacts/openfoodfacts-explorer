@@ -14,7 +14,7 @@
 </script>
 
 <a href={`/products/${product.code}`} class="block" class:pointer-events-none={navigating.to}>
-	<div class="h-[11.5rem] w-[16rem] rounded-2xl bg-white shadow-md">
+	<div class="h-[11.5rem] w-[16rem] rounded-2xl dark:bg-base-200 shadow-md text-primary">
 		<div class="h-[8rem] w-full text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
@@ -26,14 +26,14 @@
 				/>
 			{/if}
 		</div>
-		<div class="flex flex-col items-center justify-center px-2 pt-2 font-semibold text-black">
+		<div class="flex flex-col items-center justify-center px-2 pt-2 font-semibold">
 			<div
 				class="w-[100%] truncate text-center font-semibold 2xl:text-[16px]"
 				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
 			>
 				{product.product_name ? capitalizeWords(product.product_name) : product.code}
 			</div>
-			<p class="text-xs text-gray-500">
+			<p class="text-xs">
 				{product.brands} - {product.quantity}
 			</p>
 		</div>
