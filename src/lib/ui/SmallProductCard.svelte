@@ -33,11 +33,11 @@
 			{/if}
 		</div>
 		<div class="m-auto flex w-full flex-col items-center overflow-hidden text-ellipsis">
-			<p class="line-clamp-2 w-full overflow-hidden text-center text-lg text-ellipsis">
+			<p class="line-clamp-2 w-full overflow-hidden text-lg text-ellipsis">
 				{product.product_name ?? product.code}
 			</p>
 			<p
-				class="mt-1 line-clamp-2 w-full overflow-hidden text-center text-sm font-light text-ellipsis"
+				class="mt-1 line-clamp-2 w-full overflow-hidden text-sm font-light text-ellipsis"
 			>
 				{product.brands} - {product.quantity}
 			</p>
