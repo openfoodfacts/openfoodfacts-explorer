@@ -278,8 +278,7 @@
 							headers: {
 								'Content-Type': file.type,
 								'User-Agent': 'OpenFoodFactsExplorer/1.0'
-							},
-							mode: 'no-cors'
+							}
 						}
 					);
 					
