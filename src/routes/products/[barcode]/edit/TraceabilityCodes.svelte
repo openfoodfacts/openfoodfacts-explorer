@@ -13,9 +13,12 @@
 	let { traceabilityCodes = $bindable(''), autocomplete = [], onChange }: Props = $props();
 
 	// Create an array of codes from the comma-separated string
-	let traceabilityCodesArray = $derived(
-		traceabilityCodes ? traceabilityCodes.split(',').filter((code) => code !== '') : []
-	);
+	let traceabilityCodesArray = $derived.by(() => {
+		const codeStr = traceabilityCodes.trim();
+
+		if (codeStr === '') return [];
+		return codeStr.split(',');
+	});
 
 	function handleChange(event: CustomEvent<{ tags: string[] }>) {
 		const newCodes = event.detail.tags.join(',');
