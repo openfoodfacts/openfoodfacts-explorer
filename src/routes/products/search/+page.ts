@@ -15,7 +15,7 @@ const DEFAULT_SORT_ORDERS: Record<string, string> = {
 };
 
 export const load: PageLoad = async ({ fetch, url }) => {
-	const query = url.searchParams.get('q');
+  const query = url.searchParams.get('q');
 
 	if (query == null || query.length === 0) {
 		throw error(400, 'Missing query parameter');
