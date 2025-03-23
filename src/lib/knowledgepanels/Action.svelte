@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
+	import { API_HOST } from '$lib/const';
 
 	// URL constants
-	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
-	const PRODUCT_REPORT_URL = 'https://world.openfoodfacts.org/product/';
+	const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
+	const PRODUCT_REPORT_URL = `${API_HOST}/product/`;
 
 	type Props = {
 		element: KnowledgeActionElement;
