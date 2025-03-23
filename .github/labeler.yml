@@ -4,3 +4,103 @@
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
+🏷️ Folksonomy Project:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
+      - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
+📖 Knowledge panels:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/knowledgepanels/**/*'
+🌐 Translations:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/translations/**/*'
+Dependencies:
+  - changed-files:
+      - any-glob-to-any-file: '.github/dependabot.yml'
+📚 Documentation:
+  - changed-files:
+      - any-glob-to-any-file: 'README.md'
+🚦 Nutri-Score:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/nutriscore/**/*'
+facets:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/Tags.svelte'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/TagsString.svelte'
+      - any-glob-to-any-file: 'src/routes/taxo/[taxo]/[id]/**/*'
+💸 Prices:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/Prices.svelte'
+      - any-glob-to-any-file: 'src/lib/api/prices.ts'
+🖼️ Images:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
+Product page:
+    - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/**/*'
+Home page:
+    - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/SmallProductCard.svelte'
+QR:
+    - changed-files:
+      - any-glob-to-any-file: 'src/routes/qr/**/*'
+Settings:
+    - changed-files:
+      - any-glob-to-any-file: 'src/routes/settings/**/*'
+✏️ Editing:
+    - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
+Search:
+    - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/search/**/*'
+Green-Score:
+    - changed-files:
+     - any-glob-to-any-file: 'src/lib/greenscore/**/*'
+Ultra-processed foods - NOVA:
+    - changed-files:
+     - any-glob-to-any-file: 'src/lib/nova/**/*'
+User Interface:
+    - changed-files:
+     - any-glob-to-any-file: 'src/lib/ui/**/*'
+Nutrients:
+    - changed-files:
+     - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+
+# 🎁 Donations:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+
+# 🕹️ Gamification:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 👥 Users:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 👮 Moderation:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🔐 Auth:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🧪 Tests:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🥜 Allergens:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🐾 Open Pet Food Facts:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🧴 Open Beauty Facts:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 📸 Open Products Facts:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🧽 Data Quality:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
+# 🧪 Additives:
+#   - changed-files:
+#       - any-glob-to-any-file: ''
