@@ -152,7 +152,7 @@
 			</span>
 		</div>
 
-		<div class="flex max-h-56 grow justify-center">
+		<div class="flex  grow justify-center">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>
