@@ -291,7 +291,7 @@ const REDUCED_FIELDS = [
 	'product_type'
 ] as const;
 
-export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>
+export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
 
 /** @deprecated */
 export async function getProductReducedForCard(

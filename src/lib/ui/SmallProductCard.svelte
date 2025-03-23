@@ -47,11 +47,11 @@
 				{product.brands} - {product.quantity}
 			</p>
 			{#if product.product_type === 'food'}
-			<div class="mt-2 flex flex-row items-center justify-between gap-2">
-				<div><img src={nutriscoreSrc} alt="nutriscore" class="h-8" /></div>
-				<div><img src={novaSrc} alt="nova" class="h-8" /></div>
-				<div><img src={ecoscoreSrc} alt="nova" class="h-8" /></div>
-			</div>
+				<div class="mt-2 flex flex-row items-center justify-between gap-2">
+					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-8" /></div>
+					<div><img src={novaSrc} alt="nova" class="h-8" /></div>
+					<div><img src={ecoscoreSrc} alt="nova" class="h-8" /></div>
+				</div>
 			{/if}
 		</div>
 	</div>
