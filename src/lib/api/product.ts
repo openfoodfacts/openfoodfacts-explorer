@@ -242,7 +242,6 @@ export type Product = {
 	ecoscore_grade: string;
 	nova_group: number;
 
-	emb_codes: string;
 	packaging: string;
 	manufacturing_places: string;
 
@@ -264,6 +263,9 @@ export type Product = {
 
 	countries: string;
 	countries_tags: string[];
+
+	emb_codes: string;
+	emb_codes_tags: string[];
 
 	nutriments: Nutriments;
 
