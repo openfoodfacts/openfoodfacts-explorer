@@ -12,7 +12,7 @@
 		isLoggedIn: false,
 		user_id: '',
 		password: ''
-	}
+	};
 
 	onMount(() => {
 		const preferences = localStorage.getItem('preferences');
@@ -20,16 +20,16 @@
 
 		const user_id = parsedPreferences ? parsedPreferences.username : null;
 		const password = parsedPreferences ? parsedPreferences.password : null;
-		
-		if (user_id && password){
+
+		if (user_id && password) {
 			currentUser = {
 				isLoggedIn: true,
 				user_id,
 				password
-			}
+			};
 		} else {
-			alert('You must be logged in access this page')
-			goto('/settings')
+			alert('You must be logged in access this page');
+			goto('/settings');
 		}
 
 		if (!barcode) {
@@ -281,7 +281,7 @@
 							}
 						}
 					);
-					
+
 					if (!response.ok) {
 						console.error('Failed to upload image:', response.status, response.statusText);
 						alert(`Failed to upload image: ${response.statusText}`);
@@ -293,9 +293,9 @@
 					if (data.status === 1) {
 						newProduct.update((product) => {
 							if (type === 'front') {
-								product.image_front_url = data.image.url; 
+								product.image_front_url = data.image.url;
 							} else if (type === 'ingredients') {
-								product.image_ingredients_url = data.image.url; 
+								product.image_ingredients_url = data.image.url;
 							}
 							return product;
 						});
