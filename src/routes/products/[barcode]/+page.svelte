@@ -181,16 +181,12 @@
 
 		<div class="flex max-h-80 grow justify-center">
 			<div class="flex flex-col items-center">
-				<ZoomableImage
+				<ImageButton
 					src={product.image_front_url}
 					alt={product.product_name}
 					className="h-full max-h-72 object-contain"
 				/>
-				<button class="text-secondary mt-2 text-xs hover:underline" onclick={viewFullImage}>
-					View full image
-				</button>
 			</div>
-			<ImageModal bind:this={imageModal} />
 		</div>
 	</div>
 </Card>
