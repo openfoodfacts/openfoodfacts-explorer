@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
+	import { preferences } from '$lib/settings';
+
 	const projectLinks = [
 		{ url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' },
 		{
@@ -27,10 +31,103 @@
 		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' },
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
 	];
+
+	const colorScheme = writable('white');
+	const userLanguage = writable('en');
+	const userCountry = writable('US');
+	const apple_badgePath = writable('');
+	const playstore_badgePath = writable('');
+	let apple_defaultPath = `/app_store_badges/${colorScheme}/appstore_US.svg`;
+	let playstore_defaultPath = `/play_store_badges/en_get.svg`;
+
+	onMount(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const updateScheme = () => colorScheme.set(mediaQuery.matches ? 'white' : 'black');
+
+		updateScheme();
+		mediaQuery.addEventListener('change', updateScheme);
+
+		return () => mediaQuery.removeEventListener('change', updateScheme);
+	});
+
+	$effect(() => {
+		userLanguage.set($preferences.lang || 'en');
+		userCountry.set($preferences.country || 'US');
+	});
+
+	async function checkImageExists(url: string) {
+		try {
+			const response = await fetch(url, { method: 'HEAD' });
+			return response.ok;
+		} catch {
+			return false;
+		}
+	}
+
+	$effect(() => {
+		(async () => {
+			const lang = $userLanguage;
+			const playstorePath = `/play_store_badges/${lang}_get.svg`;
+			const exists = await checkImageExists(playstorePath);
+			playstore_badgePath.set(exists ? playstorePath : `/play_store_badges/en_get.svg`);
+		})();
+		$effect(() => {
+			(async () => {
+				const scheme = $colorScheme;
+				const country = $userCountry;
+				const applePath = `/app_store_badges/${scheme}/appstore_${country.toUpperCase()}.svg`;
+				const exists = await checkImageExists(applePath);
+				apple_badgePath.set(exists ? applePath : `/app_store_badges/${scheme}/appstore_US.svg`);
+			})();
+		});
+	});
 </script>
 
+<div class="mt-10 flex items-center justify-evenly gap-3 px-6 py-5">
+	<div class="flex flex-col gap-1 text-center text-xl font-semibold">
+		<div>Install the App now!</div>
+		<div>Scan Your Everyday foods</div>
+	</div>
+	<div class="flex items-center justify-between gap-5">
+		{#if apple_badgePath}
+			<a
+				href="https://apps.apple.com/app/open-food-facts/id588797948?utm_source=off&utf_medium=web&utm_campaign=install_the_app_ios_footer_en"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<img
+					src={$apple_badgePath}
+					alt="Language-specific badge"
+					class="h-12 w-auto"
+					onerror={() => apple_badgePath.set(apple_defaultPath)}
+				/>
+			</a>
+		{/if}
+		{#if playstore_badgePath}
+			<a
+				href="https://play.google.com/store/apps/details?id=org.openfoodfacts.scanner&utm_source=off&utm_medium=web&utm_campaign=install_the_app_android_footer_en"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<img
+					src={$playstore_badgePath}
+					alt="Google Play Store badge"
+					class="h-16 w-auto"
+					onerror={() => playstore_badgePath.set(playstore_defaultPath)}
+				/>
+			</a>
+		{/if}
+		<a
+			href="https://world.openfoodfacts.org/files/off.apk?utm_source=off&utf_medium=web?utm_source=off&utf_medium=web&utm_campaign=install_the_app_apk_footer_en"
+			class="bg-white p-1"
+		>
+			<img src="https://static.openfoodfacts.org/images/misc/android-apk.svg" alt="" class="h-12" />
+		</a>
+	</div>
+</div>
+
 <div
-	class="bg-secondary text-secondary-content mt-10 flex flex-col justify-between gap-5 px-10 py-8 md:flex-row md:px-20 lg:px-40"
+	class="bg-secondary text-secondary-content flex flex-col justify-between gap-5 px-10 py-8 md:flex-row md:px-20 lg:px-40"
 >
 	<div class="flex flex-col gap-1">
 		<div class="text-lg font-bold">Join the community</div>
