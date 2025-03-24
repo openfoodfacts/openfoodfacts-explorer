@@ -117,11 +117,11 @@
 				/>
 			</a>
 		{/if}
-		<a
-			href="https://world.openfoodfacts.org/files/off.apk?utm_source=off&utf_medium=web?utm_source=off&utf_medium=web&utm_campaign=install_the_app_apk_footer_en"
-			class="bg-white p-1"
-		>
-			<img src="https://static.openfoodfacts.org/images/misc/android-apk.svg" alt="" class="h-12" />
+		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0">
+			<img src="/apk_android.svg" alt="" class="h-12" />
+		</a>
+		<a href="https://f-droid.org/packages/openfoodfacts.github.scrachx.openfood">
+			<img src="/f-droid.png" alt="" class="h-16" />
 		</a>
 	</div>
 </div>
