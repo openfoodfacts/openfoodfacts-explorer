@@ -21,7 +21,7 @@
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
-	{#each elements as element, i}
+	{#each elements as element, i (element)}
 		{#if i > 0}
 			<hr class="border-base-100 bg-base-100 my-2" />
 		{/if}

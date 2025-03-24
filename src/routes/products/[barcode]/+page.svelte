@@ -73,9 +73,7 @@
 				{#await data.taxo.brands}
 					Loading...
 				{:then brands}
-					{#each product.brands_tags as tag, i}
-						{#if i > 0},
-						{/if}
+					{#each product.brands_tags as tag (tag)}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -86,7 +84,7 @@
 				{#await data.taxo.categories}
 					Loading...
 				{:then categories}
-					{#each product.categories_tags as tag, i}
+					{#each product.categories_tags as tag (tag)}
 						<a
 							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
 							href="/taxo/categories/{tag}"
@@ -101,9 +99,7 @@
 				{#await data.taxo.stores}
 					Loading...
 				{:then stores}
-					{#each product.stores_tags as tag, i}
-						{#if i > 0},
-						{/if}
+					{#each product.stores_tags as tag (tag)}
 						{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -114,9 +110,7 @@
 				{#await data.taxo.labels}
 					Loading...
 				{:then labels}
-					{#each product.labels_tags as tag, i}
-						{#if i > 0},
-						{/if}
+					{#each product.labels_tags as tag (tag)}
 						<a class="link" href={'/taxo/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 						</a>
@@ -129,9 +123,7 @@
 				{#await data.taxo.countries}
 					Loading...
 				{:then countries}
-					{#each product.countries_tags as tag, i}
-						{#if i > 0},
-						{/if}
+					{#each product.countries_tags as tag (tag)}
 						<a class="link" href={'/taxo/countries/' + tag}>
 							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 						</a>
@@ -144,9 +136,7 @@
 				{#await data.taxo.origins}
 					Loading...
 				{:then origins}
-					{#each product.origins_tags as tag, i}
-						{#if i > 0},
-						{/if}
+					{#each product.origins_tags as tag (tag)}
 						<a class="link" href={'/taxo/origin/' + tag}>
 							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 						</a>

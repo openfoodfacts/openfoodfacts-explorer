@@ -10,9 +10,11 @@
 	const ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 	let mapContainer: HTMLElement;
+	/* eslint-disable @typescript-eslint/no-explicit-any */
 	let mapInstance: any;
 	let markers: any[] = [];
 	let L: any;
+	/* eslint-enable @typescript-eslint/no-explicit-any */
 
 	// Initialize map on mount
 	onMount(() => {

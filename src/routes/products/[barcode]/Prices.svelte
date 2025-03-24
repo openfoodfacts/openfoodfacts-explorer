@@ -101,7 +101,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.items as price}
+				{#each prices.items as price (price.id)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
@@ -167,7 +167,7 @@
 					<div>No stores found</div>
 				{:else}
 					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
-						{#each nearStores?.elements as store}
+						{#each nearStores?.elements as store (store.id)}
 							<option value={store.id}>{store.tags.name}</option>
 						{/each}
 					</select>

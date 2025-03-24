@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 
 	// URL constants
-	const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
+	// const PRODUCT_EDIT_URL = 'https://world.openfoodfacts.org/product/';
 	const PRODUCT_REPORT_URL = 'https://world.openfoodfacts.org/product/';
 
 	type Props = {
