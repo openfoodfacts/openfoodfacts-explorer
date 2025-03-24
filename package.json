@@ -12,6 +12,7 @@
 		"format": "prettier --write .",
 		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy.d.ts",
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
+		"api:nutripatrol" : "openapi-typescript https://nutripatrol.openfoodfacts.org/api/openapi.json --output src/lib/api/nutripatrol.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
 		"prepare": "husky",
 		"pre-commit": "pnpm format"

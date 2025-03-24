@@ -2,6 +2,7 @@ export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
 export const IMAGE_HOST = 'https://images.openfoodfacts.org';
+export const NUTRIPATROLSERVICE_URL = 'https://nutripatrol.openfoodfacts.org';
 
 export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_VERSION})`;
 
