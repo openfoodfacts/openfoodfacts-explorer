@@ -9,6 +9,7 @@ export const preferences = persisted('preferences', {
 	folksonomy: {
 		authToken: null as string | null
 	},
+	pricesAuthToken: null as string | null,
 	username: null as string | null,
 	password: null as string | null,
 	isModerator: false
