@@ -39,9 +39,14 @@
 				/>
 			{:else}
 				<div
-					class="placeholder flex aspect-square h-full w-full items-center justify-center bg-amber-50 text-black"
+					class="placeholder flex aspect-square h-full w-full items-center justify-center bg-transparent text-black"
 				>
-					No Image
+				<img
+				src="Placeholder.svg"
+				class="h-16 rounded-lg object-cover bg-transparent"
+				alt="Product front"
+				
+			/>
 				</div>
 			{/if}
 		</div>
