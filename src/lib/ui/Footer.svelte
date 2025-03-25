@@ -37,8 +37,8 @@
 	const userCountry = writable('US');
 	const apple_badgePath = writable('');
 	const playstore_badgePath = writable('');
-	let apple_defaultPath = `/app_store_badges/${colorScheme}/appstore_US.svg`;
-	let playstore_defaultPath = `/play_store_badges/en_get.svg`;
+	let apple_defaultPath = `/footer/app_store_badges/${colorScheme}/appstore_US.svg`;
+	let playstore_defaultPath = `/footer/play_store_badges/en_get.svg`;
 
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -67,42 +67,45 @@
 	$effect(() => {
 		(async () => {
 			const lang = $userLanguage;
-			const playstorePath = `/play_store_badges/${lang}_get.svg`;
+			const playstorePath = `/footer/play_store_badges/${lang}_get.svg`;
 			const exists = await checkImageExists(playstorePath);
-			playstore_badgePath.set(exists ? playstorePath : `/play_store_badges/en_get.svg`);
+			playstore_badgePath.set(exists ? playstorePath : `/footer/play_store_badges/en_get.svg`);
 		})();
 		$effect(() => {
 			(async () => {
 				const scheme = $colorScheme;
 				const country = $userCountry;
-				const applePath = `/app_store_badges/${scheme}/appstore_${country.toUpperCase()}.svg`;
+				const applePath = `/footer/app_store_badges/${scheme}/appstore_${country.toUpperCase()}.svg`;
 				const exists = await checkImageExists(applePath);
-				apple_badgePath.set(exists ? applePath : `/app_store_badges/${scheme}/appstore_US.svg`);
+				apple_badgePath.set(
+					exists ? applePath : `/footer/app_store_badges/${scheme}/appstore_US.svg`
+				);
 			})();
 		});
 	});
 </script>
 
-<div class="mt-10 flex items-center justify-evenly gap-3 px-6 py-5">
-	<div class="flex flex-col gap-1 text-center text-xl font-semibold">
-		<div>Install the App now!</div>
-		<div>Scan Your Everyday foods</div>
+<div class="mt-10 flex flex-wrap items-center justify-evenly gap-3 px-2 py-5 md:px-6">
+	<div>
+		<img src="/footer/off_footer.svg" alt="Open Food Facts" class="h-28" />
 	</div>
-	<div class="flex items-center justify-between gap-5">
-		{#if apple_badgePath}
-			<a
-				href="https://apps.apple.com/app/open-food-facts/id588797948?utm_source=off&utf_medium=web&utm_campaign=install_the_app_ios_footer_en"
-				target="_blank"
-				rel="noopener noreferrer"
+	<div class="flex flex-col gap-1 text-center text-xl font-semibold">
+		<div class="text-2xl font-semibold tracking-tight uppercase">Install the App!</div>
+		<div>
+			Scan Your
+			<span
+				class="inline-block rotate-3 rounded-md bg-[#0064C8] px-1 font-semibold text-white uppercase"
+				>Everyday</span
 			>
-				<img
-					src={$apple_badgePath}
-					alt="Language-specific badge"
-					class="h-12 w-auto"
-					onerror={() => apple_badgePath.set(apple_defaultPath)}
-				/>
-			</a>
-		{/if}
+		</div>
+		<div class="flex justify-center">
+			<span
+				class="inline-block -rotate-2 rounded-md bg-[#FF8714] px-1 font-semibold text-white uppercase"
+				>foods</span
+			>
+		</div>
+	</div>
+	<div class="flex flex-wrap items-center justify-center gap-5 md:justify-between">
 		{#if playstore_badgePath}
 			<a
 				href="https://play.google.com/store/apps/details?id=org.openfoodfacts.scanner&utm_source=off&utm_medium=web&utm_campaign=install_the_app_android_footer_en"
@@ -117,12 +120,26 @@
 				/>
 			</a>
 		{/if}
-		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0">
-			<img src="/apk_android.svg" alt="" class="h-12" />
-		</a>
 		<a href="https://f-droid.org/packages/openfoodfacts.github.scrachx.openfood">
-			<img src="/f-droid.png" alt="" class="h-16" />
+			<img src="/footer/f-droid.png" alt="" class="h-16" />
 		</a>
+		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0">
+			<img src="/footer/apk_android.svg" alt="" class="h-12" />
+		</a>
+		{#if apple_badgePath}
+			<a
+				href="https://apps.apple.com/app/open-food-facts/id588797948?utm_source=off&utf_medium=web&utm_campaign=install_the_app_ios_footer_en"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<img
+					src={$apple_badgePath}
+					alt="Language-specific badge"
+					class="h-12 w-auto"
+					onerror={() => apple_badgePath.set(apple_defaultPath)}
+				/>
+			</a>
+		{/if}
 	</div>
 </div>
 
