@@ -82,6 +82,7 @@
 		} else {
 			if ('data' in res) {
 				console.debug('Submitted price', res.data);
+				/* eslint-disable @typescript-eslint/no-explicit-any */
 				prices.results.push(res.data as any);
 			}
 

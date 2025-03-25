@@ -47,6 +47,7 @@ export class PricesApi {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
 	login(body: { username: string; password: string }) {
+		/* eslint-disable @typescript-eslint/no-explicit-any */
 		return (this.client as any).POST('/api/v1/auth', {
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
