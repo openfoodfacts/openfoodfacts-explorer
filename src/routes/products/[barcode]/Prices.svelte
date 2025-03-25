@@ -23,13 +23,12 @@
 	onMount(async () => {
 		pricesApi = new PricesApi(fetch);
 		authenticated = await pricesApi.isAuthenticated();
-
 		nearStores = await getNearStores();
 	});
 
 	let newPrice = $state({
 		value: 0,
-		currency: 'EUR',
+		currency: 'EUR' as const,
 		osm_id: 0
 	});
 
@@ -41,10 +40,10 @@
 			username: loginFields.email,
 			password: loginFields.password
 		});
-		if (res.error != null) {
-			console.error('Error while logging in', res.error);
+		if ('error' in res && res.error != null) {
+			console.error('Error while logging in',  ('error' in res) && res.error);
 			authStatus = false;
-
+			
 			setTimeout(() => {
 				authStatus = undefined;
 			}, 2000);
@@ -74,14 +73,18 @@
 
 			// TODO: Add location
 			location_osm_id: newPrice.osm_id,
-			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION'
+			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
+			proof_id: 0, // TODO: update this value
 		});
 
-		if (res.error != null) {
+		if (!res.response.ok) {
 			console.error('Error while submitting price', res.error);
 		} else {
-			console.debug('Submitted price', res.data);
-			prices.items.push(res.data);
+			if ('data' in res) {
+				console.debug('Submitted price', res.data);
+				prices.results.push(res.data as any);
+			}
+			
 			invalidateAll();
 		}
 	}
@@ -90,7 +93,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.size ?? 0, prices.total ?? 0)}/{prices.total})
+			Prices: ({Math.min(prices.results.length, prices.count)}/{prices.count})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -101,15 +104,15 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.items as price (price.id)}
+				{#each prices.results as price (price.id)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
-							{#await idToName(fetch, price.location_osm_id)}
+							{#await idToName(fetch, price.location_osm_id ?? 0)}
 								Loading...
 							{:then storeName}
 								<a
-									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
+									href={`https://www.openstreetmap.org/${price.location_osm_type?.toLowerCase() ?? ''}/${
 										price.location_osm_id
 									}`}
 								>
@@ -119,7 +122,7 @@
 								<span class="text-red-500">Error: {error.message}</span>
 							{/await}
 						</td>
-						<td>{new Date(price.date).toLocaleDateString()}</td>
+						<td>{new Date(price.date ?? '').toLocaleDateString()}</td>
 					</tr>
 				{/each}
 			</tbody>

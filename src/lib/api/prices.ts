@@ -47,11 +47,15 @@ export class PricesApi {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
 	login(body: { username: string; password: string }) {
-		return this.client.POST('/api/v1/auth', {
-			params: { query: { set_cookie: true } },
+		return (this.client as any).POST('/api/v1/auth', {
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			bodySerializer: (body) => new URLSearchParams(body as Record<string, string>)
+			bodySerializer: (reqBody: Record<string, string>) => new URLSearchParams(reqBody),
+			params: {
+				query: {
+					set_cookie: true
+				}
+			}
 		});
 	}
 
