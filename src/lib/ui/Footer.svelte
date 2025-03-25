@@ -105,12 +105,13 @@
 			>
 		</div>
 	</div>
-	<div class="flex flex-wrap items-center justify-center gap-5 md:justify-between">
+	<div class="flex flex-wrap items-center justify-center gap-2 md:justify-end">
 		{#if playstore_badgePath}
 			<a
 				href="https://play.google.com/store/apps/details?id=org.openfoodfacts.scanner&utm_source=off&utm_medium=web&utm_campaign=install_the_app_android_footer_en"
 				target="_blank"
 				rel="noopener noreferrer"
+				class="-mx-3"
 			>
 				<img
 					src={$playstore_badgePath}
@@ -120,11 +121,15 @@
 				/>
 			</a>
 		{/if}
-		<a href="https://f-droid.org/packages/openfoodfacts.github.scrachx.openfood">
+		<a
+			href="https://f-droid.org/packages/openfoodfacts.github.scrachx.openfood"
+			target="_blank"
+			class="-mx-2"
+		>
 			<img src="/footer/f-droid.png" alt="" class="h-16" />
 		</a>
-		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0">
-			<img src="/footer/apk_android.svg" alt="" class="h-12" />
+		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0" target="_blank">
+			<img src="/footer/apk_android.svg" alt="" class="h-[42px]" />
 		</a>
 		{#if apple_badgePath}
 			<a
@@ -134,8 +139,8 @@
 			>
 				<img
 					src={$apple_badgePath}
-					alt="Language-specific badge"
-					class="h-12 w-auto"
+					alt="App Store Badge"
+					class="h-[42px] w-auto"
 					onerror={() => apple_badgePath.set(apple_defaultPath)}
 				/>
 			</a>
