@@ -41,9 +41,9 @@
 			password: loginFields.password
 		});
 		if ('error' in res && res.error != null) {
-			console.error('Error while logging in',  ('error' in res) && res.error);
+			console.error('Error while logging in', 'error' in res && res.error);
 			authStatus = false;
-			
+
 			setTimeout(() => {
 				authStatus = undefined;
 			}, 2000);
@@ -74,7 +74,7 @@
 			// TODO: Add location
 			location_osm_id: newPrice.osm_id,
 			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
-			proof_id: 0, // TODO: update this value
+			proof_id: 0 // TODO: update this value
 		});
 
 		if (!res.response.ok) {
@@ -84,7 +84,7 @@
 				console.debug('Submitted price', res.data);
 				prices.results.push(res.data as any);
 			}
-			
+
 			invalidateAll();
 		}
 	}
