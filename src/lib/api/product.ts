@@ -257,6 +257,7 @@ export type Product = {
 
 	labels: string;
 	labels_tags: string[];
+	product_type: string;
 
 	origins: string;
 	origins_tags: string[];
@@ -296,7 +297,11 @@ const REDUCED_FIELDS = [
 	'code',
 	'product_name',
 	'brands',
-	'quantity'
+	'quantity',
+	'nutriscore_grade',
+	'ecoscore_grade',
+	'nova_group',
+	'product_type'
 ] as const;
 
 export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
