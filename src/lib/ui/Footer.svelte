@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { preferences } from '$lib/settings';
 
@@ -32,23 +31,12 @@
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
 	];
 
-	const colorScheme = writable('white');
 	const userLanguage = writable('en');
 	const userCountry = writable('US');
 	const apple_badgePath = writable('');
 	const playstore_badgePath = writable('');
-	let apple_defaultPath = `/footer/app_store_badges/${colorScheme}/appstore_US.svg`;
+	let apple_defaultPath = `/footer/app_store_badges/appstore_US.svg`;
 	let playstore_defaultPath = `/footer/play_store_badges/en_get.svg`;
-
-	onMount(() => {
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		const updateScheme = () => colorScheme.set(mediaQuery.matches ? 'white' : 'black');
-
-		updateScheme();
-		mediaQuery.addEventListener('change', updateScheme);
-
-		return () => mediaQuery.removeEventListener('change', updateScheme);
-	});
 
 	$effect(() => {
 		userLanguage.set($preferences.lang || 'en');
@@ -73,13 +61,10 @@
 		})();
 		$effect(() => {
 			(async () => {
-				const scheme = $colorScheme;
 				const country = $userCountry;
-				const applePath = `/footer/app_store_badges/${scheme}/appstore_${country.toUpperCase()}.svg`;
+				const applePath = `/footer/app_store_badges/appstore_${country.toUpperCase()}.svg`;
 				const exists = await checkImageExists(applePath);
-				apple_badgePath.set(
-					exists ? applePath : `/footer/app_store_badges/${scheme}/appstore_US.svg`
-				);
+				apple_badgePath.set(exists ? applePath : `/footer/app_store_badges/appstore_US.svg`);
 			})();
 		});
 	});
@@ -129,7 +114,11 @@
 			<img src="/footer/f-droid.png" alt="" class="h-16" />
 		</a>
 		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0" target="_blank">
-			<img src="/footer/apk_android.svg" alt="" class="h-[42px]" />
+			<img
+				src="/footer/apk_android.svg"
+				alt=""
+				class="h-[42px] rounded-md border-[1px] border-[#bfbfbf]"
+			/>
 		</a>
 		{#if apple_badgePath}
 			<a
