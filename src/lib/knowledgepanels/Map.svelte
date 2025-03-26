@@ -2,6 +2,9 @@
 	import type { KnowledgeMapElement } from '$lib/api';
 	import { onMount } from 'svelte';
 
+	import type { Map, Marker } from 'leaflet';
+	import * as L from 'leaflet';
+
 	let { element }: { element: KnowledgeMapElement } = $props();
 
 	const MAX_INITIAL_ZOOM = 3;
@@ -10,23 +13,18 @@
 	const ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 	let mapContainer: HTMLElement;
-	let mapInstance: any;
-	let markers: any[] = [];
-	let L: any;
+	let mapInstance: Map | null;
+	let markers: Marker[] = [];
 
 	// Initialize map on mount
 	onMount(() => {
 		let mounted = true;
 
 		// Using async function for several reasons:
-		// 1. Dynamic Import: Allows using await with Leaflet import (code splitting)
 		// 2. Lifecycle Safety: 'mounted' flag prevents updates after component unmount
 		// 3. Clean Structure: Keeps async code contained while allowing proper cleanup
 		(async () => {
 			try {
-				const leaflet = await import('leaflet');
-				L = leaflet.default;
-
 				if (mounted) {
 					// Initialize map
 					mapInstance = L.map(mapContainer, {});
@@ -51,12 +49,15 @@
 
 	// Update map when element changes
 	$effect(() => {
-		if (mapInstance && L) {
-			updateMap();
+		if (mapInstance == null || L == null) {
+			return;
 		}
+		updateMap();
 	});
 
 	function updateMap() {
+		if (!mapInstance || !L) return;
+
 		// Clear existing markers
 		cleanupMarkers();
 

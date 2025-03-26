@@ -2,8 +2,6 @@
 	import { self } from 'svelte/legacy';
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
-	import { preferences } from '$lib/settings';
-	import { get } from 'svelte/store';
 
 	let image:
 		| {

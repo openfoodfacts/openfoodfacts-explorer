@@ -223,7 +223,7 @@
 		{#if expandedGroups[group]}
 			<div class="group-keys card-body p-4 pt-0" transition:fade={{ duration: 200 }}>
 				<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-					{#each keys as key}
+					{#each keys as key (key)}
 						{@render keyCard(key)}
 					{/each}
 				</div>
@@ -256,7 +256,7 @@
 		</div>
 
 		<div class="keys-container">
-			{#each groupedTags as [group, keys]}
+			{#each groupedTags as [group, keys] (group)}
 				<div
 					class="group-container card bg-base-200 mb-4 shadow-md"
 					transition:fly={{ y: 20, duration: 300 }}

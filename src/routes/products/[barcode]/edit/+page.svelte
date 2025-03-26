@@ -70,10 +70,10 @@
 		ensureNutriments();
 		productStore.update((store) => {
 			if (value === null) {
-				// @ts-ignore - We know this is a valid key for nutriments
+				// @ts-expect-error - We know this is a valid key for nutriments
 				delete store.nutriments[key];
 			} else {
-				// @ts-ignore - We know this is a valid key for nutriments
+				// @ts-expect-error - We know this is a valid key for nutriments
 				store.nutriments[key] = value;
 			}
 			return store;
