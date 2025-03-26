@@ -93,7 +93,8 @@
 			return;
 		}
 
-		if (!res.data) {
+		if (res.data != null) {
+			console.warn('Data is null');
 			return;
 		}
 
