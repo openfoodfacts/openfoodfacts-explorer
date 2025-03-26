@@ -5,10 +5,12 @@
 
 	let {
 		element,
-		allPanels
+		allPanels,
+		productCode
 	}: {
 		element: KnowledgePanelGroupElement;
 		allPanels: Record<string, KnowledgePanel>;
+		productCode?: string;
 	} = $props();
 
 	let groupEl = $derived(element.panel_group_element);
@@ -19,7 +21,7 @@
 		<h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
 		{#each groupEl.panel_ids as id (id)}
 			{@const panel = allPanels[id]}
-			<Panel {panel} {allPanels} {id} />
+			<Panel {panel} {allPanels} {id} {productCode} />
 		{/each}
 	</div>
 
