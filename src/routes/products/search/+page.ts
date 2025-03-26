@@ -1,6 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { Product } from '$lib/api';
+import { API_HOST } from '$lib/const';
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
@@ -23,7 +24,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page: page
 	});
 
-	const result = fetch(`https://world.openfoodfacts.org/cgi/search.pl?` + urlSearch.toString())
+	const result = fetch(`${API_HOST}/cgi/search.pl?` + urlSearch.toString())
 		.then((res) => {
 			if (!res.ok) {
 				error(400, 'Failed to fetch data');

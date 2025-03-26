@@ -47,16 +47,12 @@ export class PricesApi {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
 	login(body: { username: string; password: string }) {
-		/* eslint-disable @typescript-eslint/no-explicit-any */
-		return (this.client as any).POST('/api/v1/auth', {
+		return this.client.POST('/api/v1/auth', {
+			// @ts-expect-error - The type definition doesn't include set_cookie parameter but the API requires it
+			params: { query: { set_cookie: true } },
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			bodySerializer: (reqBody: Record<string, string>) => new URLSearchParams(reqBody),
-			params: {
-				query: {
-					set_cookie: true
-				}
-			}
 		});
 	}
 

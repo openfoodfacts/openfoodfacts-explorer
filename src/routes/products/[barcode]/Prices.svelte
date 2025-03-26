@@ -6,9 +6,26 @@
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
+	import type { components } from '$lib/api/prices.d';
+
+	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type ApiResponse<T> = { data?: T; error?: object };
+
+	type PriceResult = {
+		price: number;
+		currency: string;
+		location_osm_id: number;
+		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
+		date: string;
+	};
 
 	interface Props {
-		prices: Prices;
+		prices: {
+			count: number;
+			next?: string | null;
+			previous?: string | null;
+			results: PriceResult[];
+		};
 		barcode: string;
 	}
 
@@ -26,9 +43,15 @@
 		nearStores = await getNearStores();
 	});
 
-	let newPrice = $state({
+	type NewPriceForm = {
+		value: number;
+		currency: CurrencyEnum;
+		osm_id: number;
+	};
+
+	let newPrice: NewPriceForm = $state({
 		value: 0,
-		currency: 'EUR' as const,
+		currency: 'EUR' as CurrencyEnum,
 		osm_id: 0
 	});
 
@@ -36,12 +59,13 @@
 
 	async function login() {
 		console.debug('Logging in...');
-		const res = await pricesApi.login({
+		const res = (await pricesApi.login({
 			username: loginFields.email,
 			password: loginFields.password
-		});
-		if ('error' in res && res.error != null) {
-			console.error('Error while logging in', 'error' in res && res.error);
+		})) as ApiResponse<components['schemas']['SessionResponse']>;
+
+		if (res.error != null) {
+			console.error('Error while logging in', res.error);
 			authStatus = false;
 
 			setTimeout(() => {
@@ -64,7 +88,7 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = await pricesApi.createPrice({
+		const res = (await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
 			currency: newPrice.currency,
@@ -74,18 +98,16 @@
 			// TODO: Add location
 			location_osm_id: newPrice.osm_id,
 			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
-			proof_id: 0 // TODO: update this value
-		});
+
+			// Required property
+			proof_id: 0 // This should be replaced with an actual proof ID if available
+		})) as ApiResponse<any>;
 
 		if (!res.response.ok) {
 			console.error('Error while submitting price', res.error);
 		} else {
-			if ('data' in res) {
-				console.debug('Submitted price', res.data);
-				/* eslint-disable @typescript-eslint/no-explicit-any */
-				prices.results.push(res.data as any);
-			}
-
+			console.debug('Submitted price', res.data);
+			prices.results.push(res.data);
 			invalidateAll();
 		}
 	}
@@ -94,7 +116,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.results.length, prices.count)}/{prices.count})
+			Prices: ({Math.min(prices.results.length ?? 0, prices.count ?? 0)}/{prices.count})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -105,7 +127,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price (price.id)}
+				{#each prices.results as price}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
