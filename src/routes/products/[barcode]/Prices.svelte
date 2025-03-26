@@ -3,13 +3,29 @@
 
 	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
-	import type { Currency, NewPrice } from '$lib/types/currency';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
+	import type { components } from '$lib/api/prices.d';
+
+	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type ApiResponse<T> = { data?: T; error?: object };
+
+	type PriceResult = {
+		price: number;
+		currency: string;
+		location_osm_id: number;
+		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
+		date: string;
+	};
 
 	interface Props {
-		prices: Prices;
+		prices: {
+			count: number;
+			next?: string | null;
+			previous?: string | null;
+			results: PriceResult[];
+		};
 		barcode: string;
 	}
 
@@ -28,90 +44,72 @@
 		nearStores = await getNearStores();
 	});
 
-	let newPrice: NewPrice = $state({
-		price: 0,
-		currency: 'EUR',
-		location_osm_id: 0,
-		location_osm_type: undefined,
-		date: new Date().toISOString().split('T')[0],
-		proof_id: 0
+	type NewPriceForm = {
+		value: number;
+		currency: CurrencyEnum;
+		osm_id: number;
+	};
+
+	let newPrice: NewPriceForm = $state({
+		value: 0,
+		currency: 'EUR' as CurrencyEnum,
+		osm_id: 0
 	});
 
 	let loginFields = $state({ email: '', password: '' });
 
 	async function login() {
 		console.debug('Logging in...');
-		const res = await pricesApi.login({
+		const res = (await pricesApi.login({
 			username: loginFields.email,
 			password: loginFields.password
-		});
+		})) as ApiResponse<components['schemas']['SessionResponse']>;
 
-		if (!res.response.ok) {
+		if (res.error != null) {
 			console.error('Error while logging in', res.error);
 			authStatus = false;
+
 			setTimeout(() => {
 				authStatus = undefined;
 			}, 2000);
-			return;
-		}
-
-		try {
+		} else {
 			console.debug('Logged in', res.data);
 			authStatus = true;
 			setTimeout(() => {
 				authenticated = true;
 			}, 1000);
-		} catch (error) {
-			console.error('Error while logging in', error);
-			authStatus = false;
-			setTimeout(() => {
-				authStatus = undefined;
-			}, 2000);
 		}
 	}
 
 	async function submitPrice() {
-		const type = nearStores?.elements
-			.find((el) => el.id === newPrice.location_osm_id)
-			?.type?.toUpperCase();
+		const today = new Date();
+
+		const type = nearStores?.elements.find((el) => el.id === newPrice.osm_id)?.type?.toUpperCase();
 		if (type == null) {
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = await pricesApi.createPrice({
+		const res = (await pricesApi.createPrice({
 			product_code: barcode,
-			price: newPrice.price,
+			price: newPrice.value,
 			currency: newPrice.currency,
-			date: newPrice.date,
-			location_osm_id: newPrice.location_osm_id,
+			// we only need the date, not the time
+			date: today.toISOString().split('T')[0],
+
+			// TODO: Add location
+			location_osm_id: newPrice.osm_id,
 			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
-			proof_id: newPrice.proof_id
-		});
 
-		if (!res.response.ok) {
+			// Required property
+			proof_id: 0 // This should be replaced with an actual proof ID if available
+		})) as ApiResponse<any>;
+
+		if (res.error != null) {
 			console.error('Error while submitting price', res.error);
-			return;
-		}
-
-		if (res.data != null) {
-			console.warn('Data is null');
-			return;
-		}
-
-		try {
+		} else {
 			console.debug('Submitted price', res.data);
-			prices = {
-				...prices,
-				count: prices.count + 1,
-				results: [...prices.results, res.data as Prices['results'][0]]
-			};
+			prices.results.push(res.data);
 			invalidateAll();
-		} catch (error) {
-			if (error instanceof Error) {
-				console.error('Error while submitting price:', error.message);
-			} else {
-				console.error('Error while submitting price:', error);
-			}
 		}
 	}
 </script>
@@ -119,7 +117,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: {prices.count}
+			Prices: ({Math.min(prices.results.length ?? 0, prices.count ?? 0)}/{prices.count})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -130,37 +128,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price (price.id)}
+				{#each prices.results as price}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
-							{#await idToName(fetch, price.location_osm_id ?? 0)}
+							{#await idToName(fetch, price.location_osm_id)}
 								Loading...
 							{:then storeName}
-								{#if price.location_osm_id && price.location_osm_id !== 0}
-									<a
-										href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
-											price.location_osm_id
-										}`}
-									>
-										{storeName}
-									</a>
-								{:else}
+								<a
+									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
+										price.location_osm_id
+									}`}
+								>
 									{storeName}
-								{/if}
+								</a>
 							{:catch error}
-								<span class="text-red-500">
-									Error: {error instanceof Error ? error.message : error}
-								</span>
+								<span class="text-red-500">Error: {error.message}</span>
 							{/await}
 						</td>
-						<td>
-							{#if price.date != null}
-								{new Date(price.date).toLocaleDateString()}
-							{:else}
-								No date
-							{/if}
-						</td>
+						<td>{new Date(price.date).toLocaleDateString()}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -174,17 +160,14 @@
 			<h3 class="text-2xl font-bold">Report a new price</h3>
 			<form
 				class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
-				onsubmit={(e) => {
-					e.preventDefault();
-					submitPrice();
-				}}
+				onsubmit={preventDefault(submitPrice)}
 			>
 				<label for="price" class="label">
 					<span class="label-text">Price</span>
 				</label>
 				<input
 					type="number"
-					bind:value={newPrice.price}
+					bind:value={newPrice.value}
 					name="price"
 					id="price"
 					class="input input-bordered"
@@ -193,23 +176,13 @@
 				<label for="currency" class="label">
 					<span class="label-text">Currency</span>
 				</label>
-				<select
-					class="select select-bordered"
+				<input
+					class="input input-bordered"
 					bind:value={newPrice.currency}
+					type="text"
 					name="currency"
 					id="currency"
-				>
-					<option value="EUR">EUR</option>
-					<option value="USD">USD</option>
-					<option value="GBP">GBP</option>
-					<option value="JPY">JPY</option>
-					<option value="CNY">CNY</option>
-					<option value="INR">INR</option>
-					<option value="AUD">AUD</option>
-					<option value="CAD">CAD</option>
-					<option value="CHF">CHF</option>
-					<option value="HKD">HKD</option>
-				</select>
+				/>
 
 				<label for="store" class="label">
 					<span class="label-text">Store</span>
@@ -220,8 +193,8 @@
 				{:else if nearStores.elements.length === 0}
 					<div>No stores found</div>
 				{:else}
-					<select class="select select-bordered" name="store" bind:value={newPrice.location_osm_id}>
-						{#each nearStores?.elements as store (store.id)}
+					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
+						{#each nearStores?.elements as store}
 							<option value={store.id}>{store.tags.name}</option>
 						{/each}
 					</select>
