@@ -28,7 +28,7 @@
 				</p>
 
 				<ul class="list-disc">
-					{#each errors as error}
+					{#each errors as error, i (i)}
 						<li class="ms-4 mb-2 list-none">
 							<ul
 								class="border-l-error-content grid grid-cols-[auto_auto] gap-x-2 border-l-2 ps-2 font-mono text-xs"

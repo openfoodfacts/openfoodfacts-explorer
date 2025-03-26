@@ -1,4 +1,4 @@
-name: 🎨 Add mockup-required and mockup-available issues to the openfoodfacts-design project
+name: Automatically add relevant issues to the relevant GitHub projects
 
 on:
   issues:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   add-to-design-project:
-    name: 🎨 Add issue to the openfoodfacts-design project
+    name: Automatically add relevant issues to the relevant GitHub projects
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@main
@@ -99,5 +99,5 @@ jobs:
         with:
           project-url: https://github.com/orgs/openfoodfacts/projects/105 # Add issue to the Prices project
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-          labeled: 💸 prices
+          labeled: 💸 Prices
           label-operator: OR
