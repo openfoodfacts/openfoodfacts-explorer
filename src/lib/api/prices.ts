@@ -52,7 +52,7 @@ export class PricesApi {
 			params: { query: { set_cookie: true } },
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			bodySerializer: (reqBody: Record<string, string>) => new URLSearchParams(reqBody),
+			bodySerializer: (reqBody: Record<string, string>) => new URLSearchParams(reqBody)
 		});
 	}
 

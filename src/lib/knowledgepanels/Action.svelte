@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
-	import { API_HOST, PRODUCT_EDIT_URL, PRODUCT_REPORT_URL } from '$lib/const';
+	import { PRODUCT_REPORT_URL } from '$lib/const';
 
 	type Props = {
 		element: KnowledgeActionElement;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import { PricesApi, type Prices } from '$lib/api/prices';
+	import { PricesApi } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
@@ -101,6 +101,7 @@
 
 			// Required property
 			proof_id: 0 // This should be replaced with an actual proof ID if available
+			/* eslint-disable @typescript-eslint/no-explicit-any */
 		})) as ApiResponse<any>;
 
 		if (!res.response.ok) {
@@ -127,7 +128,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price}
+				{#each prices.results as price, index (index)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
