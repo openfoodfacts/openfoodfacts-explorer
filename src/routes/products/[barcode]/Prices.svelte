@@ -148,13 +148,13 @@
 									{storeName}
 								{/if}
 							{:catch error}
-								<span class="text-red-500"
-									>Error: {error instanceof Error ? error.message : error}</span
-								>
+								<span class="text-red-500">
+									Error: {error instanceof Error ? error.message : error}
+								</span>
 							{/await}
 						</td>
 						<td>
-							{#if price.date}
+							{#if price.date != null}
 								{new Date(price.date).toLocaleDateString()}
 							{:else}
 								No date
@@ -173,7 +173,10 @@
 			<h3 class="text-2xl font-bold">Report a new price</h3>
 			<form
 				class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
-				onsubmit={preventDefault(submitPrice)}
+				onsubmit={(e) => {
+					e.preventDefault();
+					submitPrice();
+				}}
 			>
 				<label for="price" class="label">
 					<span class="label-text">Price</span>
