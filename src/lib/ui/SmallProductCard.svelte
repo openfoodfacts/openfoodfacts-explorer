@@ -39,7 +39,7 @@
 				/>
 			{:else}
 				<div
-					class="placeholder flex aspect-square h-full w-full items-center justify-center bg-transparent text-black"
+					class="flex aspect-square h-full w-full items-center justify-center bg-transparent text-black"
 				>
 					<img
 						src="Placeholder.svg"
