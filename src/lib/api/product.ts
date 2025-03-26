@@ -242,7 +242,6 @@ export type Product = {
 	ecoscore_grade: string;
 	nova_group: number;
 
-	emb_codes: string;
 	packaging: string;
 	manufacturing_places: string;
 
@@ -258,12 +257,16 @@ export type Product = {
 
 	labels: string;
 	labels_tags: string[];
+	product_type: string;
 
 	origins: string;
 	origins_tags: string[];
 
 	countries: string;
 	countries_tags: string[];
+
+	emb_codes: string;
+	emb_codes_tags: string[];
 
 	nutriments: Nutriments;
 
@@ -294,7 +297,11 @@ const REDUCED_FIELDS = [
 	'code',
 	'product_name',
 	'brands',
-	'quantity'
+	'quantity',
+	'nutriscore_grade',
+	'ecoscore_grade',
+	'nova_group',
+	'product_type'
 ] as const;
 
 export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;

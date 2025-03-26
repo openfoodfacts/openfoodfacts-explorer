@@ -1,7 +1,5 @@
 <script lang="ts">
 	import ImageModal from './ImageModal.svelte';
-	import { preferences } from '$lib/settings';
-	import { get } from 'svelte/store';
 
 	type Props = { src?: string; alt?: string };
 	let { src, alt }: Props = $props();

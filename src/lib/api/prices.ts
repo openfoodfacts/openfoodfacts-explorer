@@ -57,6 +57,7 @@ export class PricesApi {
 	getPriceStats(query: PriceStats) {
 		return this.client.GET('/api/v1/prices/stats', { params: { query } });
 	}
+
 	async login(body: { username: string; password: string }) {
 		const res = await this.client.POST('/api/v1/auth', {
 			body,

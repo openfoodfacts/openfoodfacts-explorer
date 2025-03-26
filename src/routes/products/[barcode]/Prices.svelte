@@ -1,15 +1,32 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import { PricesApi, type Prices } from '$lib/api/prices';
+	import { PricesApi } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 	import { preferences } from '$lib/settings';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
+	import type { components } from '$lib/api/prices.d';
+
+	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type ApiResponse<T> = { data?: T; error?: object };
+
+	type PriceResult = {
+		price: number;
+		currency: string;
+		location_osm_id: number;
+		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
+		date: string;
+	};
 
 	interface Props {
-		prices: Prices;
+		prices: {
+			count: number;
+			next?: string | null;
+			previous?: string | null;
+			results: PriceResult[];
+		};
 		barcode: string;
 	}
 
@@ -28,9 +45,15 @@
 		nearStores = await getNearStores();
 	});
 
-	let newPrice = $state({
+	type NewPriceForm = {
+		value: number;
+		currency: CurrencyEnum;
+		osm_id: number;
+	};
+
+	let newPrice: NewPriceForm = $state({
 		value: 0,
-		currency: 'EUR',
+		currency: 'EUR' as CurrencyEnum,
 		osm_id: 0
 	});
 
@@ -38,10 +61,11 @@
 
 	async function login() {
 		console.debug('Logging in...');
-		const res = await pricesApi.login({
+		const res = (await pricesApi.login({
 			username: loginFields.email,
 			password: loginFields.password
-		});
+		})) as ApiResponse<components['schemas']['SessionResponse']>;
+
 		if (res.error != null) {
 			console.error('Error while logging in', res.error);
 			authStatus = false;
@@ -75,14 +99,19 @@
 
 			// TODO: Add location
 			location_osm_id: newPrice.osm_id,
-			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION'
+			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION',
+
+			// Required property
+			proof_id: 0 // This should be replaced with an actual proof ID if available
 		});
 
 		if (res.error != null) {
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while submitting price', res.error);
 		} else {
 			console.debug('Submitted price', res.data);
-			prices.items.push(res.data);
+			// @ts-expect-error - TODO: Types should be specified in a better way
+			prices.results.push(res.data);
 			invalidateAll();
 		}
 	}
@@ -91,7 +120,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.size ?? 0, prices.total ?? 0)}/{prices.total})
+			Prices: ({Math.min(prices.results.length ?? 0, prices.count ?? 0)}/{prices.count})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -102,7 +131,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.items as price}
+				<!-- TODO: the key here is not guaranteed to be unique -->
+				{#each prices.results as price (price.date + price.location_osm_id + price.price)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
@@ -168,7 +198,7 @@
 					<div>No stores found</div>
 				{:else}
 					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
-						{#each nearStores?.elements as store}
+						{#each nearStores?.elements as store (store.id)}
 							<option value={store.id}>{store.tags.name}</option>
 						{/each}
 					</select>
@@ -187,7 +217,13 @@
 			</div>
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
-			<form class="space-y-4" onsubmit={preventDefault(login)}>
+			<form
+				class="space-y-4"
+				onsubmit={(e) => {
+					e.preventDefault();
+					login();
+				}}
+			>
 				<div>
 					<label for="email" class="block font-medium">Email</label>
 					<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />
