@@ -8,10 +8,11 @@
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
-	import EcoScore from '$lib/greenscore/GreenScore.svelte';
+	import EcoScore from './GreenScore.svelte';
+	import NutriScore from './NutriScore.svelte';
+	import Nova from './Nova.svelte';
+
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Nova from '$lib/nova/Nova.svelte';
-	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
@@ -172,10 +173,14 @@
 	</div>
 </Card>
 
-<div class="flex max-h-32 w-full justify-between gap-3">
-	<NutriScore grade={product.nutriscore_grade} />
-	<Nova grade={product.nova_group} />
-	<a href="#environment_card">
+<div class="flex w-full justify-between gap-3 max-md:flex-col lg:max-h-32">
+	<a href="#health_card" class="md:w-1/3">
+		<NutriScore grade={product.nutriscore_grade} />
+	</a>
+	<a href="#nutrition_card" class="md:w-1/3">
+		<Nova grade={product.nova_group} />
+	</a>
+	<a href="#environment_card" class="md:w-1/3">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
 </div>
