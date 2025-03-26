@@ -26,8 +26,8 @@
 	let ecoscoreSrc = $derived(KP_ATTRIBUTE_IMG('ecoscore-' + product.ecoscore_grade + '.svg'));
 </script>
 
-<a href={`/products/${product.code}`} class="block" class:pointer-events-none={navigating.to}>
-	<div class="dark:bg-base-200 text-primary h-[14.5rem] w-[16rem] rounded-2xl shadow-md">
+<a href={`/products/${product.code}`} class="flex justify-center" class:pointer-events-none={navigating.to}>
+	<div class="dark:bg-base-200 text-primary h-[14.5rem] w-[16rem] rounded-2xl shadow-md ">
 		<div class="h-[8rem] w-full text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
