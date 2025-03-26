@@ -37,6 +37,16 @@
 					class="h-16 rounded-lg object-cover"
 					alt="Product front"
 				/>
+			{:else}
+				<div
+					class="flex aspect-square h-full w-full items-center justify-center bg-transparent text-black"
+				>
+					<img
+						src="Placeholder.svg"
+						class="h-16 rounded-lg bg-transparent object-cover"
+						alt="Product front"
+					/>
+				</div>
 			{/if}
 		</div>
 		<div>
