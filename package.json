@@ -6,7 +6,7 @@
 	"license": "AGPL-3.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/openfoodfacts/openfoodfacts-explorer.git"
+		"url": "git+https://github.com/openfoodfacts/openfoodfacts-explorer.git"
 	},
 	"engines": {
 		"node": ">=18.0.0",
