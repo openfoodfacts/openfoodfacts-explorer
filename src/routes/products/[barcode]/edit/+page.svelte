@@ -17,6 +17,7 @@
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
+	import TraceabilityCodes from './TraceabilityCodes.svelte';
 
 	interface Props {
 		data: PageData;
@@ -224,6 +225,10 @@
 	<div class="mb-4">
 		<label for="">Countries</label>
 		<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
+	</div>
+
+	<div class="mb-4">
+		<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
 	</div>
 
 	<div class="mb-4">
