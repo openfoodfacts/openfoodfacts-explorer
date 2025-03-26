@@ -64,9 +64,13 @@ export class ProductsApi {
 			labels: product.labels,
 			brands: product.brands,
 			quantity: product.quantity,
+			serving_size: product.serving_size,
 			stores: product.stores,
 			origins: product.origins,
 			countries: product.countries,
+			emb_codes: product.emb_codes,
+			packaging: product.packaging,
+			manufacturing_places: product.manufacturing_places,
 			comment: product.comment ?? '',
 
 			product_name: product.product_name,
@@ -233,9 +237,13 @@ export type Product = {
 	image_nutrition_thumb_url: string;
 
 	quantity: string;
+	serving_size: string;
 	nutriscore_grade: string;
 	ecoscore_grade: string;
 	nova_group: number;
+
+	packaging: string;
+	manufacturing_places: string;
 
 	brands: string;
 	brands_tags: string[];
@@ -249,6 +257,7 @@ export type Product = {
 
 	labels: string;
 	labels_tags: string[];
+	product_type: string;
 
 	origins: string;
 	origins_tags: string[];
@@ -256,7 +265,12 @@ export type Product = {
 	countries: string;
 	countries_tags: string[];
 
+	emb_codes: string;
+	emb_codes_tags: string[];
+
 	nutriments: Nutriments;
+
+	no_nutrition_data?: boolean;
 
 	source: {
 		fields: string[];
@@ -283,7 +297,11 @@ const REDUCED_FIELDS = [
 	'code',
 	'product_name',
 	'brands',
-	'quantity'
+	'quantity',
+	'nutriscore_grade',
+	'ecoscore_grade',
+	'nova_group',
+	'product_type'
 ] as const;
 
 export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;

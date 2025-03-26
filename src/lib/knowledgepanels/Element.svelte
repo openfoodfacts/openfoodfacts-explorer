@@ -7,36 +7,31 @@
 	import TextPanel from './TextElement.svelte';
 	import PanelGroup from './PanelGroup.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import Action from './Action.svelte';
 
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
 		element: KnowledgeElement;
+		productCode?: string;
 	};
-	let { allPanels, element }: Props = $props();
-
-	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
-		edit_product: 'Edit Product',
-		report_product_to_nutripatrol: 'Report Product to NutriPatrol'
-	};
-
-	function getButtonTitle(actions: string[]) {
-		for (const action of actions) {
-			if (BUTTON_ACTIONS_TITLES[action] != null) {
-				return BUTTON_ACTIONS_TITLES[action];
-			}
-		}
-
-		return actions.join(', ');
-	}
+	let { allPanels, element, productCode }: Props = $props();
 </script>
 
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
-		<PanelGroup {element} {allPanels} />
+		<PanelGroup {element} {allPanels} {productCode} />
+	{:else if element.element_type === 'action'}
+		<Action {element} {allPanels} {productCode} />
 	{:else if element.element_type === 'panel'}
-		{@const id = element.panel_element.panel_id}
-		{@const panel = allPanels[id]}
-		<Panel {panel} {allPanels} {id} />
+		{#if 'panel_element' in element}
+			{@const id = element.panel_element.panel_id}
+			{@const panel = allPanels[id]}
+			{#if panel !== null}
+				<Panel {panel} {allPanels} {id} {productCode} />
+			{:else}
+				<div class="alert alert-warning">Panel not found: {id}</div>
+			{/if}
+		{/if}
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
@@ -47,16 +42,16 @@
 				<thead>
 					<tr>
 						<th></th>
-						{#each element.table_element.columns as column}
+						{#each element.table_element.columns as column (column.text)}
 							<th>{column.text}</th>
 						{/each}
 					</tr>
 				</thead>
 				<tbody>
-					{#each element.table_element.rows as row}
+					{#each element.table_element.rows as row, rowIndex (rowIndex)}
 						<tr>
 							<td></td>
-							{#each row.values as cell}
+							{#each row.values as cell (cell.text)}
 								<td>{cell.text}</td>
 							{/each}
 						</tr>
@@ -64,15 +59,6 @@
 				</tbody>
 			</table>
 		</div>
-	{:else if element.element_type === 'action'}
-		<button class="btn btn-primary">
-			{#if element.action_element.html != ''}
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html element.action_element.html}
-			{:else}
-				{getButtonTitle(element.action_element.actions)}
-			{/if}
-		</button>
 	{:else if element.element_type === 'map'}
 		<Map {element} />
 	{:else}
