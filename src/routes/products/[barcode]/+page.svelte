@@ -71,7 +71,7 @@
 					Loading...
 				{:then brands}
 					{#each product.brands_tags as tag, i (i)}
-						{#if i < product.brands_tags.length - 1},
+						{#if i > 0},
 						{/if}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 					{/each}
@@ -87,8 +87,9 @@
 						<a
 							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
 							href="/taxo/categories/{tag}"
-							>{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}</a
 						>
+							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
+						</a>
 					{/each}
 				{/await}
 			</span>
@@ -99,7 +100,7 @@
 					Loading...
 				{:then stores}
 					{#each product.stores_tags as tag, i (i)}
-						{#if i < product.stores_tags.length - 1},
+						{#if i > 0},
 						{/if}
 						{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 					{/each}
@@ -112,7 +113,7 @@
 					Loading...
 				{:then labels}
 					{#each product.labels_tags as tag, i (i)}
-						{#if i < product.labels_tags.length - 1},
+						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
@@ -126,8 +127,8 @@
 				{#await data.taxo.countries}
 					Loading...
 				{:then countries}
-					{#each product.countries_tags as tag (tag)}
-						{#if tag !== product.countries_tags[0]},
+					{#each product.countries_tags as tag, i (tag)}
+						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/countries/' + tag}>
 							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
@@ -142,7 +143,7 @@
 					Loading...
 				{:then origins}
 					{#each product.origins_tags as tag, i (i)}
-						{#if i < product.origins_tags.length - 1},
+						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/origin/' + tag}>
 							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
