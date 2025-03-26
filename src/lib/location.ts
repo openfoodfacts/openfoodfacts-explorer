@@ -27,37 +27,32 @@ export type OverpassAPIResult = {
 };
 
 export async function getNearStores(radius: number = 1000): Promise<OverpassAPIResult> {
-	try {
-		const location = await getLocation();
-		const { latitude, longitude } = location.coords;
+	const location = await getLocation();
+	const { latitude, longitude } = location.coords;
 
-		const query = `
-			[out:json][timeout:90];
-			(
-				nwr["shop"="supermarket"](around:${radius},${latitude},${longitude});
-				nwr["shop"="convenience"](around:${radius},${latitude},${longitude});
-			);
-			out center;
-		`;
+	const query = `
+		[out:json][timeout:90];
+		(
+			nwr["shop"="supermarket"](around:${radius},${latitude},${longitude});
+			nwr["shop"="convenience"](around:${radius},${latitude},${longitude});
+		);
+		out center;
+	`;
 
-		const response = await fetch('https://overpass-api.de/api/interpreter', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: 'data=' + encodeURIComponent(query)
-		});
+	const response = await fetch('https://overpass-api.de/api/interpreter', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: 'data=' + encodeURIComponent(query)
+	});
 
-		if (!response.ok) {
-			throw new Error(`Overpass API error: ${response.status} ${response.statusText}`);
-		}
-
-		const data = await response.json();
-		return data as OverpassAPIResult;
-	} catch (error) {
-		console.error('Error fetching nearby stores:', error);
-		throw error;
+	if (!response.ok) {
+		throw new Error(`Overpass API error: ${response.status} ${response.statusText}`);
 	}
+
+	const data = await response.json();
+	return data as OverpassAPIResult;
 }
 
 export async function idToName(fetch: typeof window.fetch, id: number): Promise<string> {
