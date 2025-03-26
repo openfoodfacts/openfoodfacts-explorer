@@ -65,6 +65,9 @@ User Interface:
 Nutrients:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+# 👮 Nutri-Patrol:
+#  - changed-files:
+#      - any-glob-to-any-file: ''
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
