@@ -17,14 +17,18 @@
 <ImageModal bind:this={modal} />
 
 <div class="relative">
-	<button class="flex max-w-full justify-center" {onclick}>
-		<img
-			{src}
-			{alt}
-			class="float-right h-full rounded-lg"
-			style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
-		/>
-	</button>
+	<div class="flex justify-center overflow-hidden">
+		<div style="width: fit-content; height: fit-content; transform-origin: center center;">
+			<button class="flex justify-center" {onclick}>
+				<img
+					{src}
+					{alt}
+					class="rounded-lg"
+					style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
+				/>
+			</button>
+		</div>
+	</div>
 	<button
 		class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
 		onclick={(e) => {

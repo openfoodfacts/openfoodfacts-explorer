@@ -166,13 +166,13 @@
 			{/if}
 		</div>
 
-		<div class="flex max-h-56 grow justify-center">
+		<div class="flex grow justify-center">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>
 </Card>
 
-<div class="flex max-h-32 w-full justify-between gap-3">
+<div class="flex w-full flex-col justify-between gap-3 sm:flex-row">
 	<NutriScore grade={product.nutriscore_grade} />
 	<Nova grade={product.nova_group} />
 	<a href="#environment_card">
