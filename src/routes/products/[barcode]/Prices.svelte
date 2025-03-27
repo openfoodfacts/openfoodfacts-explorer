@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import { PricesApi, type Prices } from '$lib/api/prices';
+	import { PricesApi } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
@@ -12,11 +12,36 @@
 	type ApiResponse<T> = { data?: T; error?: object };
 
 	type PriceResult = {
-		price: number;
-		currency: string;
-		location_osm_id: number;
-		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
-		date: string;
+		readonly id: number;
+		product_id: number;
+		location_id: number;
+		proof_id: number;
+		product: {
+			readonly id: number;
+			code: string;
+		};
+		location: unknown;
+		proof: unknown;
+		type: string;
+		product_code?: string | null;
+		product_name?: string | null;
+		category_tag?: string | null;
+		labels_tags?: unknown;
+		origins_tags?: unknown;
+		price?: number | null;
+		price_is_discounted?: boolean;
+		price_without_discount?: number | null;
+		discount_type?: unknown | null;
+		price_per?: unknown | null;
+		currency?: string | null;
+		location_osm_id?: number | null;
+		location_osm_type?: 'NODE' | 'WAY' | 'RELATION' | '' | null;
+		date?: string | null;
+		receipt_quantity?: number | null;
+		owner?: string | null;
+		source?: string | null;
+		created?: string;
+		readonly updated: string;
 	};
 
 	interface Props {
@@ -89,7 +114,7 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = (await pricesApi.createPrice({
+		const res = await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
 			currency: newPrice.currency,
@@ -102,12 +127,14 @@
 
 			// Required property
 			proof_id: 0 // This should be replaced with an actual proof ID if available
-		})) as ApiResponse<any>;
+		});
 
 		if (res.error != null) {
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while submitting price', res.error);
 		} else {
 			console.debug('Submitted price', res.data);
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			prices.results.push(res.data);
 			invalidateAll();
 		}
@@ -128,25 +155,31 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price}
+				{#each prices.results as price (price.id)}
 					<tr>
-						<td>{price.price + ' ' + price.currency}</td>
+						<td
+							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
+						>
 						<td>
-							{#await idToName(fetch, price.location_osm_id)}
-								Loading...
-							{:then storeName}
-								<a
-									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
-										price.location_osm_id
-									}`}
-								>
-									{storeName}
-								</a>
-							{:catch error}
-								<span class="text-red-500">Error: {error.message}</span>
-							{/await}
+							{#if price.location_osm_id != null}
+								{#await idToName(fetch, price.location_osm_id)}
+									Loading...
+								{:then storeName}
+									<a
+										href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
+											price.location_osm_id
+										}`}
+									>
+										{storeName}
+									</a>
+								{:catch error}
+									<span class="text-red-500">Error: {error.message}</span>
+								{/await}
+							{:else}
+								Unknown location
+							{/if}
 						</td>
-						<td>{new Date(price.date).toLocaleDateString()}</td>
+						<td>{price.date ? new Date(price.date).toLocaleDateString() : 'Unknown date'}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -194,7 +227,7 @@
 					<div>No stores found</div>
 				{:else}
 					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
-						{#each nearStores?.elements as store}
+						{#each nearStores?.elements as store (store.id)}
 							<option value={store.id}>{store.tags.name}</option>
 						{/each}
 					</select>
@@ -205,7 +238,13 @@
 			</form>
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
-			<form class="space-y-4" onsubmit={preventDefault(login)}>
+			<form
+				class="space-y-4"
+				onsubmit={(e) => {
+					e.preventDefault();
+					login();
+				}}
+			>
 				<div>
 					<label for="email" class="block font-medium">Email</label>
 					<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />
