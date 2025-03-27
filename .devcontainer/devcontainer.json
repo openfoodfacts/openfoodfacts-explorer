@@ -1,0 +1,8 @@
+{
+  "name": "My Project",
+  "extensions": [
+    "svelte.svelte-vscode"
+  ],
+  "postCreateCommand": "npm install -g pnpm && cp .env.example .env && npm install",
+  "postStartCommand": "pnpm run dev"
+}
