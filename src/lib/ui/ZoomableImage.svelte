@@ -56,7 +56,7 @@
 
 <div class="relative">
 	<div bind:this={container} class="cursor-zoom-in overflow-hidden">
-		<img {src} {alt} class={`rounded-lg ${className}`} />
+		<img {src} {alt} class="rounded-lg" class:className />
 	</div>
 	<div class="absolute right-2 bottom-2 z-10 flex items-center gap-1">
 		{#if zoomLevel > 1}
