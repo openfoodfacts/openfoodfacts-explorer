@@ -21,7 +21,7 @@
 	{/each}
 {:then result}
 	{#if result.count > 0}
-		{#each result.products as product}
+		{#each result.products as product (product.code)}
 			<SmallProductCard {product} />
 		{/each}
 

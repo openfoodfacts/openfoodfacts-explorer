@@ -69,8 +69,6 @@
 	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog
 	class="border-base-300 bg-base-100 fixed inset-0 m-auto max-h-[95vh] max-w-[95vw] border p-0 shadow-lg"
 	bind:this={dialog}

@@ -18,6 +18,7 @@
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import ZoomableImage from '$lib/ui/ZoomableImage.svelte';
+	import TraceabilityCodes from './TraceabilityCodes.svelte';
 
 	interface Props {
 		data: PageData;
@@ -147,7 +148,7 @@
 			<div
 				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
 			>
-				{#each filteredLanguages as code}
+				{#each filteredLanguages as code (code)}
 					<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
 						{getLanguage(code)}
 					</button>
@@ -158,7 +159,7 @@
 </div>
 
 <div class="tabs tabs-box">
-	{#each Object.keys($productStore.languages_codes) as code}
+	{#each Object.keys($productStore.languages_codes) as code (code)}
 		<input
 			type="radio"
 			name="name_tabs"
@@ -228,6 +229,10 @@
 	</div>
 
 	<div class="mb-4">
+		<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
+	</div>
+
+	<div class="mb-4">
 		<label for="">Website URL</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
 	</div>
@@ -236,7 +241,7 @@
 <Card>
 	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
 	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes) as code}
+		{#each Object.keys($productStore.languages_codes) as code (code)}
 			<input
 				type="radio"
 				name="ingredients_tabs"
