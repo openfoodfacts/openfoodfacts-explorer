@@ -88,7 +88,7 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = (await pricesApi.createPrice({
+		const res = await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
 			currency: newPrice.currency,
@@ -101,13 +101,14 @@
 
 			// Required property
 			proof_id: 0 // This should be replaced with an actual proof ID if available
-			/* eslint-disable @typescript-eslint/no-explicit-any */
-		})) as ApiResponse<any>;
+		});
 
-		if (!res.response.ok) {
+		if (res.error != null) {
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while submitting price', res.error);
 		} else {
 			console.debug('Submitted price', res.data);
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			prices.results.push(res.data);
 			invalidateAll();
 		}
@@ -128,7 +129,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price, index (index)}
+				<!-- TODO: the key here is not guaranteed to be unique -->
+				{#each prices.results as price (price.date + price.location_osm_id + price.price)}
 					<tr>
 						<td>{price.price + ' ' + price.currency}</td>
 						<td>
@@ -205,7 +207,13 @@
 			</form>
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
-			<form class="space-y-4" onsubmit={preventDefault(login)}>
+			<form
+				class="space-y-4"
+				onsubmit={(e) => {
+					e.preventDefault();
+					login();
+				}}
+			>
 				<div>
 					<label for="email" class="block font-medium">Email</label>
 					<input type="text" bind:value={loginFields.email} class="input input-bordered w-full" />

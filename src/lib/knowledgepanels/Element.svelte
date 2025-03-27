@@ -42,16 +42,16 @@
 				<thead>
 					<tr>
 						<th></th>
-						{#each element.table_element.columns as column (column.text)}
+						{#each element.table_element.columns as column, columnIndex (columnIndex)}
 							<th>{column.text}</th>
 						{/each}
 					</tr>
 				</thead>
 				<tbody>
-					{#each element.table_element.rows as row (row)}
+					{#each element.table_element.rows as row, rowIndex (rowIndex)}
 						<tr>
 							<td></td>
-							{#each row.values as cell (cell.text)}
+							{#each row.values as cell, cellIndex (cellIndex)}
 								<td>{cell.text}</td>
 							{/each}
 						</tr>

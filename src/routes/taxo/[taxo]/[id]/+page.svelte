@@ -95,7 +95,7 @@
 {:then search}
 	{#if search.products.length > 0}
 		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-			{#each search.products as product (product)}
+			{#each search.products as product (product.code)}
 				<ProductCard {product} />
 			{/each}
 		</div>
