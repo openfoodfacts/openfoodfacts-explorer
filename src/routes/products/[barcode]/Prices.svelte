@@ -119,7 +119,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices.results.length ?? 0, prices.count ?? 0)}/{prices.count})
+			Prices: ({Math.min(prices?.results?.length ?? 0, prices?.count ?? 0)}/{prices?.count ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
