@@ -5,10 +5,14 @@
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
 
-	import EcoScore from '$lib/greenscore/GreenScore.svelte';
+	const TRACEABILITY_CODES_URL =
+		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
+
+	import EcoScore from './GreenScore.svelte';
+	import NutriScore from './NutriScore.svelte';
+	import Nova from './Nova.svelte';
+
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Nova from '$lib/nova/Nova.svelte';
-	import NutriScore from '$lib/nutriscore/NutriScore.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
@@ -70,7 +74,7 @@
 				{#await data.taxo.brands}
 					Loading...
 				{:then brands}
-					{#each product.brands_tags as tag, i}
+					{#each product.brands_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
@@ -83,12 +87,13 @@
 				{#await data.taxo.categories}
 					Loading...
 				{:then categories}
-					{#each product.categories_tags as tag, i}
+					{#each product.categories_tags as tag (tag)}
 						<a
 							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
 							href="/taxo/categories/{tag}"
-							>{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}</a
 						>
+							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
+						</a>
 					{/each}
 				{/await}
 			</span>
@@ -98,7 +103,7 @@
 				{#await data.taxo.stores}
 					Loading...
 				{:then stores}
-					{#each product.stores_tags as tag, i}
+					{#each product.stores_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
 						{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
@@ -111,7 +116,7 @@
 				{#await data.taxo.labels}
 					Loading...
 				{:then labels}
-					{#each product.labels_tags as tag, i}
+					{#each product.labels_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/labels/' + tag}>
@@ -126,7 +131,7 @@
 				{#await data.taxo.countries}
 					Loading...
 				{:then countries}
-					{#each product.countries_tags as tag, i}
+					{#each product.countries_tags as tag, i (tag)}
 						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/countries/' + tag}>
@@ -141,7 +146,7 @@
 				{#await data.taxo.origins}
 					Loading...
 				{:then origins}
-					{#each product.origins_tags as tag, i}
+					{#each product.origins_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
 						<a class="link" href={'/taxo/origin/' + tag}>
@@ -150,6 +155,16 @@
 					{/each}
 				{/await}
 			</span>
+
+			{#if product.emb_codes != null && product.emb_codes.length > 0}
+				<span class="text-end font-bold">Traceability Codes:</span>
+				<span>
+					{product.emb_codes}
+					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
+						(Learn more)
+					</a>
+				</span>
+			{/if}
 		</div>
 
 		<div class="flex max-h-56 grow justify-center">
@@ -158,15 +173,19 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-evenly gap-4 p-3">
-	<NutriScore grade={product.nutriscore_grade} />
-	<Nova grade={product.nova_group} />
-	<a href="#environment_card">
+<div class="flex w-full justify-between gap-3 max-md:flex-col lg:max-h-32">
+	<a href="#health_card" class="md:w-1/3">
+		<NutriScore grade={product.nutriscore_grade} />
+	</a>
+	<a href="#nutrition_card" class="md:w-1/3">
+		<Nova grade={product.nova_group} />
+	</a>
+	<a href="#environment_card" class="md:w-1/3">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
 </div>
 
-<KnowledgePanels knowledgePanels={product.knowledge_panels} />
+<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 <Gs1Country barcode={product.code} />
 
