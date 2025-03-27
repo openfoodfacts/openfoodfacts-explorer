@@ -157,7 +157,9 @@
 			<tbody>
 				{#each prices.results as price (price.id)}
 					<tr>
-						<td>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td>
+						<td
+							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
+						>
 						<td>
 							{#if price.location_osm_id != null}
 								{#await idToName(fetch, price.location_osm_id)}
