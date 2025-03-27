@@ -5,10 +5,13 @@
 	let { src, alt, className = '' }: Props = $props();
 
 	let modal: ImageModal;
+
+	function getFullSizeImageUrl(url: string): string {
+		return url.replace(/\.400\.|\.200\.|\.100\./, '.full.');
+	}
+
 	let onclick = $derived(
-		src != null
-			? () => modal.displayImage(src.replace(/\.400\.|\.200\.|\.100\./, '.full.'), alt)
-			: undefined
+		src != null ? () => modal.displayImage(getFullSizeImageUrl(src), alt) : undefined
 	);
 
 	let rotation = $state(0);
