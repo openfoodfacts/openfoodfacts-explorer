@@ -12,11 +12,36 @@
 	type ApiResponse<T> = { data?: T; error?: object };
 
 	type PriceResult = {
-		price: number;
-		currency: string;
-		location_osm_id: number;
-		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
-		date: string;
+		readonly id: number;
+		product_id: number;
+		location_id: number;
+		proof_id: number;
+		product: {
+			readonly id: number;
+			code: string;
+		};
+		location: unknown;
+		proof: unknown;
+		type: string;
+		product_code?: string | null;
+		product_name?: string | null;
+		category_tag?: string | null;
+		labels_tags?: unknown;
+		origins_tags?: unknown;
+		price?: number | null;
+		price_is_discounted?: boolean;
+		price_without_discount?: number | null;
+		discount_type?: unknown | null;
+		price_per?: unknown | null;
+		currency?: string | null;
+		location_osm_id?: number | null;
+		location_osm_type?: 'NODE' | 'WAY' | 'RELATION' | '' | null;
+		date?: string | null;
+		receipt_quantity?: number | null;
+		owner?: string | null;
+		source?: string | null;
+		created?: string;
+		readonly updated: string;
 	};
 
 	interface Props {
@@ -130,26 +155,31 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- TODO: the key here is not guaranteed to be unique -->
-				{#each prices.results as price (price.date + price.location_osm_id + price.price)}
+				{#each prices.results as price (price.id)}
 					<tr>
-						<td>{price.price + ' ' + price.currency}</td>
+						<td
+							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
+						>
 						<td>
-							{#await idToName(fetch, price.location_osm_id)}
-								Loading...
-							{:then storeName}
-								<a
-									href={`https://www.openstreetmap.org/${price.location_osm_type.toLowerCase()}/${
-										price.location_osm_id
-									}`}
-								>
-									{storeName}
-								</a>
-							{:catch error}
-								<span class="text-red-500">Error: {error.message}</span>
-							{/await}
+							{#if price.location_osm_id != null}
+								{#await idToName(fetch, price.location_osm_id)}
+									Loading...
+								{:then storeName}
+									<a
+										href={`https://www.openstreetmap.org/${(price.location_osm_type ?? 'node').toLowerCase()}/${
+											price.location_osm_id
+										}`}
+									>
+										{storeName}
+									</a>
+								{:catch error}
+									<span class="text-red-500">Error: {error.message}</span>
+								{/await}
+							{:else}
+								Unknown location
+							{/if}
 						</td>
-						<td>{new Date(price.date).toLocaleDateString()}</td>
+						<td>{price.date ? new Date(price.date).toLocaleDateString() : 'Unknown date'}</td>
 					</tr>
 				{/each}
 			</tbody>
