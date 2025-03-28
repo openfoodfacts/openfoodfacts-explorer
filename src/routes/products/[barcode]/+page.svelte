@@ -191,9 +191,7 @@
 
 {#if isFolksonomyConfigured()}
 	<Card>
-		<h1 class="my-4 text-4xl font-bold">
-			Folksonomy Engine
-		</h1>
+		<h1 class="my-4 text-4xl font-bold">Folksonomy Engine</h1>
 
 		<Folksonomy
 			tags={data.tags?.data ?? []}
@@ -205,9 +203,7 @@
 
 {#if isPriceConfigured() && data?.prices?.data != null}
 	<Card>
-		<h1 class="my-4 text-xl font-bold sm:text-4xl">
-			Open prices 
-		</h1>
+		<h1 class="my-4 text-xl font-bold sm:text-4xl">Open prices</h1>
 
 		<Prices prices={data.prices.data} barcode={product.code} />
 	</Card>
