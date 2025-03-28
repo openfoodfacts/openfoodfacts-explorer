@@ -30,6 +30,35 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	// Define PriceResult type from Prices.svelte
+	type PriceResult = {
+		id: number;
+		product_id: number;
+		location_id: number;
+		proof_id: number;
+		price: number;
+		currency: string;
+		location_osm_id: number;
+		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
+		date: string;
+		owner?: string | null;
+		source?: string | null;
+		created?: string;
+		updated?: string;
+	};
+
+	function getPricesData() {
+		if (data.prices?.data) {
+			return data.prices.data as {
+				count: number;
+				next?: string | null;
+				previous?: string | null;
+				results: PriceResult[];
+			};
+		}
+		return { count: 0, results: [] };
+	}
 </script>
 
 <svelte:head>
@@ -167,8 +196,14 @@
 			{/if}
 		</div>
 
-		<div class="flex max-h-56 grow justify-center">
-			<ImageButton src={product.image_front_url} alt={product.product_name} />
+		<div class="flex max-h-80 grow justify-center">
+			<div class="flex flex-col items-center">
+				<ImageButton
+					src={product.image_front_url}
+					alt={product.product_name}
+					className="h-full max-h-72 object-contain"
+				/>
+			</div>
 		</div>
 	</div>
 </Card>
@@ -209,7 +244,7 @@
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
-		<Prices prices={data.prices.data} barcode={product.code} />
+		<Prices prices={getPricesData()} barcode={product.code} />
 	</Card>
 {/if}
 
