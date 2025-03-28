@@ -47,7 +47,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="bg-base-100 navbar hidden px-10 md:flex md:px-20 lg:px-40">
+<div class="bg-base-100 navbar hidden px-10 lg:flex lg:px-40">
 	<div class="navbar-start">
 		<a href="/"> <Logo /> </a>
 	</div>
@@ -101,7 +101,7 @@
 	</div>
 </div>
 
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 md:hidden">
+<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 lg:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 max-w-7xl">
 		<div class="navbar-start">
 			<a href="/">
