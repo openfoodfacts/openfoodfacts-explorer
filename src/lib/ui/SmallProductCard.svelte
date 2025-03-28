@@ -31,7 +31,7 @@
 	class="flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="dark:bg-base-200 text-primary h-[10rem] w-[25rem] rounded-2xl shadow-md flex">
+	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[25rem] rounded-2xl shadow-md">
 		<div class="h-[100%] w-[10rem] text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
@@ -53,22 +53,24 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex flex-col items-center justify-evenly font-semibold w-[13rem] p-[0.5rem] pl-[0.7rem]">
+		<div
+			class="flex w-[13rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold"
+		>
 			<div
-				class="w-[100%] truncate font-semibold text-[1.2rem]"
+				class="w-[100%] truncate text-[1.2rem] font-semibold"
 				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
 			>
 				{product.product_name ? capitalizeWords(product.product_name) : product.code}
 			</div>
-			<div class="flex justify-start w-full">
-				<p class="text-xs truncate text-[0.8rem]" title="{product.brands} - {product.quantity}">
+			<div class="flex w-full justify-start">
+				<p class="truncate text-xs text-[0.8rem]" title="{product.brands} - {product.quantity}">
 					{product.brands} - {product.quantity}
 				</p>
 			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex flex-row items-center justify-between gap-2 w-full">
+				<div class="mt-2 flex w-full flex-row items-center justify-between gap-2">
 					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-[40px]" /></div>
-					<div><img src={novaSrc} alt="nova" class="h-[44px] mt-[-10px]" /></div>
+					<div><img src={novaSrc} alt="nova" class="mt-[-10px] h-[44px]" /></div>
 					<div><img src={ecoscoreSrc} alt="nova" class="h-[40px]" /></div>
 				</div>
 			{/if}
