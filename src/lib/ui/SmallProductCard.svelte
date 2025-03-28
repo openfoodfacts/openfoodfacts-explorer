@@ -31,14 +31,14 @@
 	class="flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="dark:bg-base-200 text-primary h-[14.5rem] w-[16rem] rounded-2xl shadow-md">
-		<div class="h-[8rem] w-full text-center text-sm">
+	<div class="dark:bg-base-200 text-primary h-[10rem] w-[25rem] rounded-2xl shadow-md flex">
+		<div class="h-[100%] w-[10rem] text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
 				<img
 					src={product.image_front_small_url ?? ''}
-					class="h-full w-full overflow-hidden rounded-t-2xl object-cover"
+					class="h-full w-full overflow-hidden rounded-l-2xl object-cover"
 					alt="Product front"
 				/>
 			{:else}
@@ -53,21 +53,23 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex flex-col items-center justify-center px-2 pt-2 font-semibold">
+		<div class="flex flex-col items-center justify-evenly font-semibold w-[13rem] p-[0.5rem] pl-[0.7rem]">
 			<div
-				class="w-[100%] truncate text-center font-semibold 2xl:text-[16px]"
+				class="w-[100%] truncate font-semibold text-[1.2rem]"
 				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
 			>
 				{product.product_name ? capitalizeWords(product.product_name) : product.code}
 			</div>
-			<p class="text-xs">
-				{product.brands} - {product.quantity}
-			</p>
+			<div class="flex justify-start w-full">
+				<p class="text-xs truncate text-[0.8rem]" title="{product.brands} - {product.quantity}">
+					{product.brands} - {product.quantity}
+				</p>
+			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex flex-row items-center justify-between gap-2">
-					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-8" /></div>
-					<div><img src={novaSrc} alt="nova" class="h-8" /></div>
-					<div><img src={ecoscoreSrc} alt="nova" class="h-8" /></div>
+				<div class="mt-2 flex flex-row items-center justify-between gap-2 w-full">
+					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-[40px]" /></div>
+					<div><img src={novaSrc} alt="nova" class="h-[44px] mt-[-10px]" /></div>
+					<div><img src={ecoscoreSrc} alt="nova" class="h-[40px]" /></div>
 				</div>
 			{/if}
 		</div>
