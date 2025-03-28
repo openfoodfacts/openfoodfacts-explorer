@@ -7,7 +7,6 @@
 
 	let zoomLevel = $state(1);
 	const MAX_ZOOM = 3;
-	let isZooming = $state(false);
 
 	function zoomIn(e: MouseEvent) {
 		e.preventDefault();
@@ -15,7 +14,6 @@
 		const newZoom = Math.min(zoomLevel + 0.5, MAX_ZOOM);
 		setZoomImageState({ currentZoom: newZoom });
 		zoomLevel = newZoom;
-		isZooming = true;
 	}
 
 	function zoomOut(e: MouseEvent) {
@@ -24,7 +22,6 @@
 		const newZoom = Math.max(zoomLevel - 0.5, 1);
 		setZoomImageState({ currentZoom: newZoom });
 		zoomLevel = newZoom;
-		if (newZoom === 1) isZooming = false;
 	}
 
 	function resetZoom(e: MouseEvent) {
@@ -32,7 +29,6 @@
 		e.stopPropagation();
 		setZoomImageState({ currentZoom: 1 });
 		zoomLevel = 1;
-		isZooming = false;
 	}
 
 	let container: HTMLDivElement | undefined = $state();
@@ -47,7 +43,6 @@
 				zoomOnClick: true,
 				onZoomChange: (zoom: number) => {
 					zoomLevel = zoom;
-					isZooming = zoom > 1;
 				}
 			});
 		}

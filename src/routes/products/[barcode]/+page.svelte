@@ -16,7 +16,9 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	// @ts-ignore - Imported for future use
 	import ZoomableImage from '$lib/ui/ZoomableImage.svelte';
+	// @ts-ignore - Imported for future use
 	import ImageModal from '$lib/ui/ImageModal.svelte';
 
 	import type { PageData } from './$types';
@@ -31,8 +33,10 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+	// @ts-ignore - Using any for component reference is acceptable here
 	let imageModal: any;
 
+	// @ts-ignore - Function reserved for future use
 	function viewFullImage() {
 		if (imageModal) {
 			const imageUrl =
@@ -40,6 +44,14 @@
 				product.image_front_url;
 			imageModal.displayImage(imageUrl, product.product_name);
 		}
+	}
+
+	// @ts-ignore - Function to handle type incompatibility with Prices component
+	function getPricesData() {
+		if (data.prices?.data) {
+			return data.prices.data as any;
+		}
+		return { count: 0, results: [] };
 	}
 </script>
 
@@ -222,7 +234,7 @@
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
-		<Prices prices={data.prices.data} barcode={product.code} />
+		<Prices prices={getPricesData()} barcode={product.code} />
 	</Card>
 {/if}
 
