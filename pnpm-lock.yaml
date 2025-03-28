@@ -7,43 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.1
-        version: 2.0.0-alpha.1
-      '@vercel/speed-insights':
-        specifier: ^1.2.0
-        version: 1.2.0(@sveltejs/kit@2.19.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.23.1)(vite@6.2.2(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.23.1)(vite@6.2.2(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.23.1)
-      '@zoom-image/core':
-        specifier: ^0.40.0
-        version: 0.40.0
-      '@zoom-image/svelte':
-        specifier: ^0.3.0
-        version: 0.3.1(svelte@5.23.1)
-      daisyui:
-        specifier: 5.0.4
-        version: 5.0.4
-      fuse.js:
-        specifier: ^7.1.0
-        version: 7.1.0
-      html5-qrcode:
-        specifier: ^2.3.8
-        version: 2.3.8
-      iso-639-1:
-        specifier: ^3.1.5
-        version: 3.1.5
-      leaflet:
-        specifier: ^1.9.4
-        version: 1.9.4
-      openapi-fetch:
-        specifier: ^0.13.5
-        version: 0.13.5
-      svelte-local-storage-store:
-        specifier: ^0.6.4
-        version: 0.6.4(svelte@5.23.1)
-      sveltekit-i18n:
-        specifier: ^2.4.2
-        version: 2.4.2(svelte@5.23.1)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.0
@@ -63,6 +26,9 @@ importers:
       '@iconify/tailwind4':
         specifier: ^1.0.6
         version: 1.0.6(tailwindcss@4.0.14)
+      '@openfoodfacts/openfoodfacts-nodejs':
+        specifier: 2.0.0-alpha.1
+        version: 2.0.0-alpha.1
       '@sveltejs/adapter-vercel':
         specifier: ^5.6.3
         version: 5.6.3(@sveltejs/kit@2.19.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.23.1)(vite@6.2.3(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.23.1)(vite@6.2.3(jiti@2.4.2)(lightningcss@1.29.2)))(rollup@4.37.0)
@@ -108,12 +74,27 @@ importers:
       eslint-plugin-svelte:
         specifier: ^3.2.0
         version: 3.2.0(eslint@9.22.0(jiti@2.4.2))(svelte@5.23.1)
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.1.0
       globals:
         specifier: ^16.0.0
         version: 16.0.0
+      html5-qrcode:
+        specifier: ^2.3.8
+        version: 2.3.8
       husky:
         specifier: ^9.1.7
         version: 9.1.7
+      iso-639-1:
+        specifier: ^3.1.5
+        version: 3.1.5
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
+      openapi-fetch:
+        specifier: ^0.13.5
+        version: 0.13.5
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.6.1(typescript@5.8.2)
@@ -141,6 +122,12 @@ importers:
       svelte-eslint-parser:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.23.1)
+      svelte-local-storage-store:
+        specifier: ^0.6.4
+        version: 0.6.4(svelte@5.23.1)
+      sveltekit-i18n:
+        specifier: ^2.4.2
+        version: 2.4.2(svelte@5.23.1)
       tailwindcss:
         specifier: ^4.0.14
         version: 4.0.14
