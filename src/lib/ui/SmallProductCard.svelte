@@ -26,13 +26,37 @@
 	let ecoscoreSrc = $derived(KP_ATTRIBUTE_IMG('ecoscore-' + product.ecoscore_grade + '.svg'));
 </script>
 
+<style>
+  @media (min-width: 640px) and (max-width: 768px) {
+    .small-product-card {
+      width: 16rem;
+	  margin: 0.5rem;
+    }
+    .small-product-card .image-container {
+      width: 7rem;
+    }
+    .small-product-card .details-container {
+      width: 10rem;
+    }
+    .small-product-card .details-container .title {
+      font-size: 1rem;
+    }
+    .small-product-card .details-container .brand-quantity {
+      font-size: 0.7rem;
+    }
+    .small-product-card .details-container .icons img {
+      height: 32px;
+    }
+  }
+</style>
+
 <a
 	href={`/products/${product.code}`}
-	class="flex justify-center"
+	class="small-product-card flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[25rem] rounded-2xl shadow-md">
-		<div class="h-[100%] w-[10rem] text-center text-sm">
+	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[20rem] rounded-2xl shadow-md">
+		<div class="image-container h-[100%] w-[8rem] text-center text-sm">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
@@ -54,21 +78,21 @@
 			{/if}
 		</div>
 		<div
-			class="flex w-[13rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold"
+			class="details-container flex w-[12rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold"
 		>
 			<div
-				class="w-[100%] truncate text-[1.2rem] font-semibold"
+				class="title w-[100%] truncate text-[1.2rem] font-semibold"
 				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
 			>
 				{product.product_name ? capitalizeWords(product.product_name) : product.code}
 			</div>
-			<div class="flex w-full justify-start">
+			<div class="brand-quantity flex w-full justify-start">
 				<p class="truncate text-xs text-[0.8rem]" title="{product.brands} - {product.quantity}">
 					{product.brands} - {product.quantity}
 				</p>
 			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex w-full flex-row items-center justify-between gap-2">
+				<div class="icons mt-2 flex w-full flex-row items-center justify-between gap-2">
 					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-[40px]" /></div>
 					<div><img src={novaSrc} alt="nova" class="mt-[-10px] h-[44px]" /></div>
 					<div><img src={ecoscoreSrc} alt="nova" class="h-[40px]" /></div>
