@@ -237,7 +237,7 @@
 				<button class="btn" type="submit">Submit</button>
 			</form>
 		{:else}
-			<h2 class="mb-4 text-2xl font-bold">Login</h2>
+			<h2 class="mb-4 text-2xl font-bold">Log In to add a price</h2>
 			<form
 				class="space-y-4"
 				onsubmit={(e) => {
