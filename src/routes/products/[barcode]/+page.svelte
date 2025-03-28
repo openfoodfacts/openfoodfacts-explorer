@@ -33,11 +33,19 @@
 
 	// Define PriceResult type from Prices.svelte
 	type PriceResult = {
+		id: number;
+		product_id: number;
+		location_id: number;
+		proof_id: number;
 		price: number;
 		currency: string;
 		location_osm_id: number;
 		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
 		date: string;
+		owner?: string | null;
+		source?: string | null;
+		created?: string;
+		updated?: string;
 	};
 
 	function getPricesData() {
