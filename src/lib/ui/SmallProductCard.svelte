@@ -9,10 +9,6 @@
 
 	let { product }: Props = $props();
 
-	function capitalizeWords(name: string): string {
-		return name.replace(/\b\w/g, (char) => char.toUpperCase());
-	}
-
 	let nutriscoreSrc = $derived(
 		KP_ATTRIBUTE_IMG('nutriscore-' + product.nutriscore_grade + '-new-en.svg')
 	);
@@ -58,9 +54,9 @@
 		>
 			<div
 				class="title w-[100%] truncate text-[1.2rem] font-semibold sm:text-base"
-				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
+				title={product.product_name ? product.product_name : product.code}
 			>
-				{product.product_name ? capitalizeWords(product.product_name) : product.code}
+				{product.product_name ? product.product_name : product.code}
 			</div>
 			<div class="brand-quantity flex w-full justify-start">
 				<p
