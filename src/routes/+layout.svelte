@@ -87,7 +87,7 @@
 		</div>
 	</div>
 
-	<div class="navbar-end gap-2 mx-2">
+	<div class="navbar-end mx-2 gap-2">
 		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
