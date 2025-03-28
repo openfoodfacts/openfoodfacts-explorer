@@ -36,7 +36,7 @@
 		</div>
 	</Card>
 
-	<div class="mt-8 w-full flex justify-evenly">
+	<div class="mt-8 flex w-full justify-evenly">
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
 			{#await data.streamed.products}
 				{#each [...Array(4).keys()] as i (i)}

@@ -26,30 +26,6 @@
 	let ecoscoreSrc = $derived(KP_ATTRIBUTE_IMG('ecoscore-' + product.ecoscore_grade + '.svg'));
 </script>
 
-<style>
-  @media (min-width: 640px) and (max-width: 768px) {
-    .small-product-card {
-      width: 16rem;
-	  margin: 0.5rem;
-    }
-    .small-product-card .image-container {
-      width: 7rem;
-    }
-    .small-product-card .details-container {
-      width: 10rem;
-    }
-    .small-product-card .details-container .title {
-      font-size: 1rem;
-    }
-    .small-product-card .details-container .brand-quantity {
-      font-size: 0.7rem;
-    }
-    .small-product-card .details-container .icons img {
-      height: 32px;
-    }
-  }
-</style>
-
 <a
 	href={`/products/${product.code}`}
 	class="small-product-card flex justify-center"
@@ -101,3 +77,27 @@
 		</div>
 	</div>
 </a>
+
+<style>
+	@media (min-width: 640px) and (max-width: 768px) {
+		.small-product-card {
+			width: 16rem;
+			margin: 0.5rem;
+		}
+		.small-product-card .image-container {
+			width: 7rem;
+		}
+		.small-product-card .details-container {
+			width: 10rem;
+		}
+		.small-product-card .details-container .title {
+			font-size: 1rem;
+		}
+		.small-product-card .details-container .brand-quantity {
+			font-size: 0.7rem;
+		}
+		.small-product-card .details-container .icons img {
+			height: 32px;
+		}
+	}
+</style>
