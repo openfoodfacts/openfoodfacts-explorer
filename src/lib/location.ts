@@ -1,10 +1,15 @@
 export async function getLocation(): Promise<GeolocationPosition> {
-	return new Promise<GeolocationPosition>((resolve, reject) => {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(resolve, reject);
-		} else {
-			reject(new Error('Not Supported'));
+	return new Promise((resolve, reject) => {
+		if (!navigator.geolocation) {
+			reject(new Error('Geolocation is not supported by your browser'));
+			return;
 		}
+
+		navigator.geolocation.getCurrentPosition(resolve, reject, {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		});
 	});
 }
 
@@ -21,23 +26,33 @@ export type OverpassAPIResult = {
 	}[];
 };
 
-export async function getNearStores(): Promise<OverpassAPIResult> {
+export async function getNearStores(radius: number = 1000): Promise<OverpassAPIResult> {
 	const location = await getLocation();
 	const { latitude, longitude } = location.coords;
-	return await fetch('https://overpass-api.de/api/interpreter', {
-		method: 'POST',
 
-		body:
-			'data=' +
-			encodeURIComponent(`
-				[out:json][timeout:90];
-				(
-					nwr["shop"="supermarket"](around:1000,${latitude},${longitude});
-					nwr["shop"="convenience"](around:1000,${latitude},${longitude});
-				);
-				out center;
-			`)
-	}).then((data) => data.json());
+	const query = `
+		[out:json][timeout:90];
+		(
+			nwr["shop"="supermarket"](around:${radius},${latitude},${longitude});
+			nwr["shop"="convenience"](around:${radius},${latitude},${longitude});
+		);
+		out center;
+	`;
+
+	const response = await fetch('https://overpass-api.de/api/interpreter', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: 'data=' + encodeURIComponent(query)
+	});
+
+	if (!response.ok) {
+		throw new Error(`Overpass API error: ${response.status} ${response.statusText}`);
+	}
+
+	const data = await response.json();
+	return data as OverpassAPIResult;
 }
 
 export async function idToName(fetch: typeof window.fetch, id: number): Promise<string> {
