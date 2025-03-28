@@ -28,11 +28,11 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="small-product-card flex justify-center sm:w-64 sm:m-2"
+	class="small-product-card flex justify-center sm:m-2 sm:w-64"
 	class:pointer-events-none={navigating.to}
 >
 	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[20rem] rounded-2xl shadow-md">
-		<div class="image-container h-[100%] w-[8rem] sm:w-28 text-center text-sm">
+		<div class="image-container h-[100%] w-[8rem] text-center text-sm sm:w-28">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
@@ -54,16 +54,19 @@
 			{/if}
 		</div>
 		<div
-			class="details-container flex w-[12rem] sm:w-40 flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold"
+			class="details-container flex w-[12rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold sm:w-40"
 		>
 			<div
-				class="title w-[100%] truncate text-[1.2rem] sm:text-base font-semibold"
+				class="title w-[100%] truncate text-[1.2rem] font-semibold sm:text-base"
 				title={product.product_name ? capitalizeWords(product.product_name) : product.code}
 			>
 				{product.product_name ? capitalizeWords(product.product_name) : product.code}
 			</div>
 			<div class="brand-quantity flex w-full justify-start">
-				<p class="truncate text-xs text-[0.8rem] sm:text-[0.7rem]" title="{product.brands} - {product.quantity}">
+				<p
+					class="truncate text-xs text-[0.8rem] sm:text-[0.7rem]"
+					title="{product.brands} - {product.quantity}"
+				>
 					{product.brands} - {product.quantity}
 				</p>
 			</div>
