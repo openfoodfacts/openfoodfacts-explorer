@@ -4,6 +4,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
+	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	let searchQuery: string = $state('');
 
@@ -184,4 +185,5 @@
 	{@render children?.()}
 </div>
 
+<CompareFloatingButton />
 <Footer />

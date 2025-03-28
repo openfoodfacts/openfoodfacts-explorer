@@ -4,6 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
+	import { compareStore } from '$lib/stores/compareStore';
 
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
@@ -50,6 +51,11 @@
 		>
 			See on OpenFoodFacts
 		</a>
+
+		<button class="btn btn-outline mr-4" onclick={() => compareStore.addProduct(product)}>
+			<span class="icon-[mdi--compare] mr-1 h-4 w-4"></span>
+			Add to Compare
+		</button>
 
 		<a
 			href={`/products/${product.code}/edit`}
