@@ -42,7 +42,7 @@
 					class="flex aspect-square h-full w-full items-center justify-center bg-transparent text-black"
 				>
 					<img
-						src="Placeholder.svg"
+						src="/Placeholder.svg"
 						class="h-16 rounded-lg bg-transparent object-cover"
 						alt="Product front"
 					/>
