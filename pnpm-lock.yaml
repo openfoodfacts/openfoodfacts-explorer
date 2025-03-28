@@ -110,9 +110,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.11
         version: 0.6.11(prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@5.23.1))(prettier@3.5.3)
-      rimraf:
-        specifier: ^5.0.5
-        version: 5.0.10
       svelte:
         specifier: ^5.23.1
         version: 5.23.1

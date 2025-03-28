@@ -24,10 +24,7 @@
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
 		"prepare": "husky",
-		"pre-commit": "pnpm format",
-		"clean": "rimraf .svelte-kit build coverage",
-		"typecheck": "svelte-check --tsconfig ./tsconfig.json",
-		"validate": "pnpm run lint && pnpm run typecheck"
+		"pre-commit": "pnpm format"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.0",
@@ -64,7 +61,6 @@
 		"prettier": "^3.5.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"rimraf": "^5.0.5",
 		"svelte": "^5.23.1",
 		"svelte-check": "^4.1.4",
 		"svelte-eslint-parser": "^1.1.0",
