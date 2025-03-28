@@ -24,17 +24,17 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="btn btn-ghost text-primary dark:bg-base-300 pointer-events-none flex h-auto flex-col justify-normal rounded-2xl bg-white p-4 text-start shadow-md"
+	class="small-product-card flex justify-center sm:m-2 sm:w-64"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="flex flex-row items-center overflow-hidden">
-		<div class="mr-4 flex w-16 shrink-0 items-center justify-center">
+	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[20rem] rounded-2xl shadow-md">
+		<div class="image-container h-[100%] w-[8rem] text-center text-sm sm:w-28">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
 				<img
-					src={product.image_front_small_url}
-					class="h-16 rounded-lg object-cover"
+					src={product.image_front_small_url ?? ''}
+					class="h-full w-full overflow-hidden rounded-l-2xl object-cover"
 					alt="Product front"
 				/>
 			{:else}
@@ -49,18 +49,28 @@
 				</div>
 			{/if}
 		</div>
-		<div class="m-auto flex w-full flex-col items-center overflow-hidden text-ellipsis">
-			<p class="line-clamp-1 w-full overflow-hidden text-lg text-ellipsis">
-				{product.product_name ?? product.code}
-			</p>
-			<p class="mt-1 line-clamp-1 w-full overflow-hidden text-sm font-light text-ellipsis">
-				{product.brands} - {product.quantity}
-			</p>
+		<div
+			class="details-container flex w-[12rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold sm:w-40"
+		>
+			<div
+				class="title w-[100%] truncate text-[1.2rem] font-semibold sm:text-base"
+				title={product.product_name ? product.product_name : product.code}
+			>
+				{product.product_name ? product.product_name : product.code}
+			</div>
+			<div class="brand-quantity flex w-full justify-start">
+				<p
+					class="truncate text-xs text-[0.8rem] sm:text-[0.7rem]"
+					title="{product.brands} - {product.quantity}"
+				>
+					{product.brands} - {product.quantity}
+				</p>
+			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex flex-row items-center justify-between gap-2">
-					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-8" /></div>
-					<div><img src={novaSrc} alt="nova" class="h-8" /></div>
-					<div><img src={ecoscoreSrc} alt="nova" class="h-8" /></div>
+				<div class="icons mt-2 flex w-full flex-row items-center justify-between gap-2">
+					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-[40px] sm:h-8" /></div>
+					<div><img src={novaSrc} alt="nova" class="mt-[-10px] h-[44px] sm:h-8" /></div>
+					<div><img src={ecoscoreSrc} alt="nova" class="h-[40px] sm:h-8" /></div>
 				</div>
 			{/if}
 		</div>
