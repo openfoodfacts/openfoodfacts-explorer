@@ -192,7 +192,7 @@
 {#if isFolksonomyConfigured()}
 	<Card>
 		<h1 class="my-4 text-4xl font-bold">
-			Folksonomy Engine <span class="font-light italic">(beta)</span>
+			Folksonomy Engine
 		</h1>
 
 		<Folksonomy
@@ -206,7 +206,7 @@
 {#if isPriceConfigured() && data?.prices?.data != null}
 	<Card>
 		<h1 class="my-4 text-xl font-bold sm:text-4xl">
-			Open prices <span class="font-light italic">(alpha)</span>
+			Open prices 
 		</h1>
 
 		<Prices prices={data.prices.data} barcode={product.code} />
