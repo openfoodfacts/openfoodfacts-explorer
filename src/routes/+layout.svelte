@@ -76,7 +76,7 @@
 				</div>
 
 				<a
-					class="btn btn-secondary ms-4 px-5 text-lg"
+					class="btn btn-secondary ms-4 text-lg"
 					href="/qr"
 					title="Scan a barcode"
 					aria-label="Scan a barcode"
@@ -87,7 +87,7 @@
 		</div>
 	</div>
 
-	<div class="navbar-end gap-2">
+	<div class="navbar-end gap-2 mx-2">
 		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
