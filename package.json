@@ -17,6 +17,7 @@
 		"pre-commit": "pnpm format"
 	},
 	"devDependencies": {
+		"@crowdin/cli": "^4.6.1",
 		"@eslint/eslintrc": "^3.3.0",
 		"@eslint/js": "^9.22.0",
 		"@iconify-json/logos": "^1.2.4",
@@ -70,5 +71,8 @@
 			"@vercel/speed-insights",
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"svelte-i18n": "^4.0.1"
 	}
 }

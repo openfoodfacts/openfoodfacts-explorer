@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
 
 	import Card from '$lib/ui/Card.svelte';
@@ -24,15 +24,15 @@
 	<Card>
 		<div class="card-body items-center text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
-				{$t('home.welcome')}
+				{$_('home.welcome')}
 				<div class="block xl:inline-block">
 					<Logo />
 				</div>
 				Explorer!
 			</h3>
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			<p>{@html $t('home.intro_1')}</p>
-			<p>{$t('home.intro_2')}</p>
+			<p>{@html $_('home.intro_1')}</p>
+			<p>{$_('home.intro_2')}</p>
 		</div>
 	</Card>
 
