@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { KnowledgeTextElement } from '$lib/api';
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 
 	let { element }: { element: KnowledgeTextElement } = $props();
 
@@ -9,11 +9,11 @@
 </script>
 
 {#if type === 'warning'}
-	<span class="badge badge-warning">{$t('common.general.warning')}</span>
+	<span class="badge badge-warning">{$_('general.warning')}</span>
 {:else if type === 'notes'}
-	<span class="badge badge-info">{$t('common.general.notes')}</span>
+	<span class="badge badge-info">{$_('general.notes')}</span>
 {:else if type === 'summary'}
-	<span class="badge">{$t('common.general.summary')}</span>
+	<span class="badge">{$_('general.summary')}</span>
 {/if}
 
 <!-- Specialization for ingredients_text -->

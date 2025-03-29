@@ -2,10 +2,10 @@
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Eco-Score",
 	"nova": "Nova - Ultra-processing levels",
-	"settings_link": "Impostazioni",
+	"settings_link": "Settings",
 	"folksonomy_link": "Folksonomy",
+	"world_option": "World",
 	"github_link": "GitHub",
-	"world_option": "Mondo",
 	"search": {
 		"placeholder": "Query or barcode",
 		"go": "Go",
@@ -50,5 +50,40 @@
 		"keys_found": "keys found",
 		"key_found": "key found",
 		"for": "for"
+	},
+	"home": {
+		"welcome": "Welcome to",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+	},
+	"product": {
+		"edit": {
+			"add_language": "Add a language",
+			"search_languages": "Search languages to add",
+			"no_languages_found": "No languages found",
+			"name": "Name",
+			"quantity": "Quantity",
+			"emb_code": "EMB Code (Producer code)",
+			"packaging": "Packaging",
+			"manufacturing_places": "Manufacturing places",
+			"categories": "Categories:",
+			"labels": "Labels",
+			"brands": "Brands",
+			"stores": "Stores",
+			"origins": "Origins",
+			"countries": "Countries",
+			"website_url": "Website URL",
+			"ingredients": "Ingredients",
+			"ingredients_list": "Ingredients list",
+			"no_ingredients_image": "No ingredients image",
+			"nutritional_information": "Nutritional Information",
+			"serving_size": "Serving Size",
+			"no_nutrition_data": "No nutrition information on the product",
+			"no_nutrition_specified": "No nutrition data specified",
+			"comment": "Comment",
+			"comment_placeholder": "Add a comment to this edit",
+			"submit": "Submit",
+			"debug": "Debug"
+		}
 	}
 }

@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import type { FolksonomyKey } from '$lib/api/folksonomy';
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 
 	interface Props {
 		data: PageData;
@@ -108,12 +108,12 @@
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
 			<h1 class="text-primary mb-4 text-3xl font-bold">
-				{$t('common.folksonomy.title')}
-				<span class="text-base font-normal opacity-70">{$t('common.folksonomy.subtitle')}</span>
+				{$_('folksonomy.title')}
+				<span class="text-base font-normal opacity-70">{$_('folksonomy.subtitle')}</span>
 			</h1>
 
 			<p class="mb-4 max-w-2xl text-sm opacity-75">
-				{$t('common.folksonomy.description')}
+				{$_('folksonomy.description')}
 			</p>
 
 			<div class="search-section mb-6">
@@ -121,12 +121,12 @@
 					<div class="input-group">
 						<input
 							type="text"
-							placeholder={$t('common.folksonomy.search_placeholder')}
+							placeholder={$_('folksonomy.search_placeholder')}
 							class="input input-bordered w-full max-w-md"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label={$t('common.search.button')}>
+						<button class="btn btn-square" aria-label={$_('search.button')}>
 							<span class="icon-[mdi--magnify] h-6 w-6"></span>
 						</button>
 					</div>
@@ -134,11 +134,9 @@
 
 				<div class="mt-2 text-sm">
 					{filteredTags.length}
-					{filteredTags.length === 1
-						? $t('common.folksonomy.key_found')
-						: $t('common.folksonomy.keys_found')}
+					{filteredTags.length === 1 ? $_('folksonomy.key_found') : $_('folksonomy.keys_found')}
 					{#if searchQuery != null && searchQuery !== ''}
-						{$t('common.folksonomy.for')} "<span class="font-medium">{searchQuery}</span>"
+						{$_('folksonomy.for')} "<span class="font-medium">{searchQuery}</span>"
 					{/if}
 				</div>
 			</div>

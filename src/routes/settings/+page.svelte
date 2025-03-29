@@ -4,7 +4,7 @@
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
 	import { FolksonomyApi } from '$lib/api/folksonomy';
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
 
 	interface Props {
@@ -53,9 +53,9 @@
 <div
 	class="mx-auto my-8 grid grid-cols-1 items-center gap-x-4 gap-y-2 md:grid-cols-[1fr_max-content] md:gap-x-8"
 >
-	<Heading>{$t('common.settings.general')}</Heading>
+	<Heading>{$_('settings.general')}</Heading>
 	<label for="lang-select" class="justify-self-start md:justify-self-end"
-		>{$t('common.general.language')}:</label
+		>{$_('general.language')}:</label
 	>
 	<select
 		class="select select-bordered w-full md:w-auto"
@@ -75,7 +75,7 @@
 	</select>
 
 	<label for="country-select" class="justify-self-start md:justify-self-end"
-		>{$t('common.general.country')}:</label
+		>{$_('general.country')}:</label
 	>
 	<select
 		name="country-select"
@@ -83,7 +83,7 @@
 		bind:value={$preferences.country}
 	>
 		<option value="world" selected={$preferences.country === 'world'}>
-			{$t('common.world_option')}
+			{$_('world_option')}
 		</option>
 
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
@@ -100,36 +100,32 @@
 		{/each}
 	</select>
 
-	<Heading>{$t('common.settings.influences')}</Heading>
+	<Heading>{$_('settings.influences')}</Heading>
 
-	<label for="nutriscore" class="justify-self-start md:justify-self-end"
-		>{$t('common.nutriscore')}</label
-	>
+	<label for="nutriscore" class="justify-self-start md:justify-self-end">{$_('nutriscore')}</label>
 	<Influence id="nutriscore" bind:value={$preferences.nutriscoreInfluence} />
 
-	<label for="ecoscore" class="justify-self-start md:justify-self-end"
-		>{$t('common.ecoscore')}</label
-	>
+	<label for="ecoscore" class="justify-self-start md:justify-self-end">{$_('ecoscore')}</label>
 	<Influence id="ecoscore" bind:value={$preferences.ecoscoreInfluence} />
 
-	<label for="nova" class="justify-self-start md:justify-self-end">{$t('common.nova')}</label>
+	<label for="nova" class="justify-self-start md:justify-self-end">{$_('nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
-	<Heading>{$t('common.settings.login')}</Heading>
+	<Heading>{$_('settings.login')}</Heading>
 
 	{#if isAuthenticated}
 		<span class="justify-self-start text-sm font-medium md:justify-self-end"
-			>{$t('common.auth.status')}</span
+			>{$_('auth.status')}</span
 		>
 		<div class="flex items-center gap-2">
 			<span class="badge badge-success">
 				<span class="icon-[mdi--check-circle] h-4 w-4"></span>
 			</span>
-			<span class="font-medium">{$t('common.auth.authenticated')}</span>
+			<span class="font-medium">{$_('auth.authenticated')}</span>
 		</div>
 
 		<span class="justify-self-start text-sm font-medium md:justify-self-end"
-			>{$t('common.auth.actions')}</span
+			>{$_('auth.actions')}</span
 		>
 		<button
 			class="btn btn-sm btn-outline btn-error w-full md:w-auto"
@@ -137,11 +133,11 @@
 			transition:fade={{ duration: 200 }}
 		>
 			<span class="icon-[mdi--logout] mr-1 h-4 w-4"></span>
-			{$t('common.auth.signout')}
+			{$_('auth.signout')}
 		</button>
 	{:else}
 		<label for="username" class="justify-self-start md:justify-self-end"
-			>{$t('common.auth.username')}</label
+			>{$_('auth.username')}</label
 		>
 		<div class="form-control w-full md:w-auto">
 			<input
@@ -149,12 +145,12 @@
 				id="username"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.username}
-				placeholder={$t('common.auth.enter_username')}
+				placeholder={$_('auth.enter_username')}
 			/>
 		</div>
 
 		<label for="password" class="justify-self-start md:justify-self-end"
-			>{$t('common.auth.password')}</label
+			>{$_('auth.password')}</label
 		>
 		<div class="form-control w-full md:w-auto">
 			<input
@@ -162,7 +158,7 @@
 				id="password"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.password}
-				placeholder={$t('common.auth.enter_password')}
+				placeholder={$_('auth.enter_password')}
 			/>
 		</div>
 
@@ -176,9 +172,9 @@
 			>
 				{#if isLoggingIn}
 					<span class="loading loading-spinner loading-xs"></span>
-					{$t('common.auth.authenticating')}
+					{$_('auth.authenticating')}
 				{:else}
-					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$t('common.auth.signin')}
+					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$_('auth.signin')}
 				{/if}
 			</button>
 
@@ -189,10 +185,10 @@
 				>
 					{#if loginStatus}
 						<span class="icon-[mdi--check-circle] h-4 w-4"></span>
-						<span class="text-sm">{$t('common.auth.success')}</span>
+						<span class="text-sm">{$_('auth.success')}</span>
 					{:else}
 						<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
-						<span class="text-sm">{$t('common.auth.failed')}</span>
+						<span class="text-sm">{$_('auth.failed')}</span>
 					{/if}
 				</div>
 			{/if}

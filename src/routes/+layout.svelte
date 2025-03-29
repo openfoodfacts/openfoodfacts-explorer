@@ -3,14 +3,16 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
-	import { t } from '$lib/translations';
-
-	let searchQuery: string = $state('');
-
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import { initI18n, _ } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+
+	// Initialize i18n
+	initI18n();
+
+	let searchQuery: string = $state('');
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -59,7 +61,7 @@
 						type="text"
 						bind:value={searchQuery}
 						class="input join-item input-bordered xl:w-full"
-						placeholder={$t('common.search.placeholder')}
+						placeholder={$_('search.placeholder')}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' && searchQuery.trim() !== '') {
 								gotoProductsSearch();
@@ -71,15 +73,15 @@
 						onclick={() => gotoProductsSearch()}
 						disabled={searchQuery == null || searchQuery.trim() === ''}
 					>
-						{$t('common.search.go')}
+						{$_('search.go')}
 					</button>
 				</div>
 
 				<a
 					class="btn btn-secondary ms-4 px-5 text-lg"
 					href="/qr"
-					title={$t('common.search.scan')}
-					aria-label={$t('common.search.scan')}
+					title={$_('search.scan')}
+					aria-label={$_('search.scan')}
 				>
 					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 				</a>
@@ -88,13 +90,13 @@
 	</div>
 
 	<div class="navbar-end gap-2">
-		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy_link')}</a>
-		<a class="btn btn-outline link" href="/settings">{$t('common.settings_link')}</a>
+		<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
+		<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
 		<a
 			class="btn btn-outline link"
 			href={GITHUB_REPO_URL}
 			target="_blank"
-			aria-label={$t('common.github_link')}
+			aria-label={$_('github_link')}
 		>
 			<span class="icon-[mdi--github] h-8 w-8"></span>
 		</a>
@@ -110,7 +112,7 @@
 		</div>
 		<div class="navbar-end flex gap-2">
 			<button
-				aria-label={$t('common.search.button')}
+				aria-label={$_('search.button')}
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
@@ -121,8 +123,8 @@
 			<a
 				class="btn btn-square btn-secondary text-lg"
 				href="/qr"
-				title={$t('common.search.scan')}
-				aria-label={$t('common.search.scan')}
+				title={$_('search.scan')}
+				aria-label={$_('search.scan')}
 			>
 				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 			</a>
@@ -146,7 +148,7 @@
 				type="text"
 				bind:value={searchQuery}
 				class="input join-item input-bordered w-full"
-				placeholder={$t('common.search.placeholder')}
+				placeholder={$_('search.placeholder')}
 				onkeydown={(e) => {
 					if (e.key === 'Enter' && searchQuery.trim() !== '') {
 						gotoProductsSearch();
@@ -158,24 +160,24 @@
 				onclick={() => gotoProductsSearch()}
 				disabled={searchQuery == null || searchQuery.trim() === ''}
 			>
-				{$t('common.search.go')}
+				{$_('search.go')}
 			</button>
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
 		<a class="btn btn-outline link" href="/folksonomy">
-			{$t('common.folksonomy_link')}
+			{$_('folksonomy_link')}
 		</a>
 		<a class="btn btn-outline link" href="/settings">
-			{$t('common.settings_link')}
+			{$_('settings_link')}
 		</a>
 		<a
 			class="btn btn-outline link"
 			href={GITHUB_REPO_URL}
 			target="_blank"
-			aria-label={$t('common.github_link')}
+			aria-label={$_('github_link')}
 		>
-			<span class="icon-[mdi--github] h-6 w-6"></span>
+			<span class="icon-[mdi--github] h-8 w-8"></span>
 		</a>
 	</div>
 </div>
