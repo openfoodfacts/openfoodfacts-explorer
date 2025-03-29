@@ -2,8 +2,53 @@
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Eco-Score",
 	"nova": "Nova - Ultra-processing levels",
-	"settings": "Settings",
-	"folksonomy": "Folksonomy",
-	"world": "World",
-	"github": "GitHub"
+	"settings_link": "Settings",
+	"folksonomy_link": "Folksonomy",
+	"world_option": "World",
+	"github_link": "GitHub",
+	"search": {
+		"placeholder": "Query or barcode",
+		"go": "Go",
+		"scan": "Scan a barcode",
+		"button": "Search"
+	},
+	"auth": {
+		"username": "Username",
+		"password": "Password",
+		"authenticated": "Authenticated",
+		"signin": "Sign in",
+		"signout": "Sign out",
+		"authenticating": "Authenticating...",
+		"success": "Success",
+		"failed": "Failed",
+		"enter_username": "Enter username",
+		"enter_password": "Enter password",
+		"status": "Status",
+		"actions": "Actions"
+	},
+	"general": {
+		"language": "Language",
+		"country": "Country",
+		"loading": "Loading...",
+		"warning": "Warning",
+		"notes": "Notes",
+		"summary": "Summary",
+		"product_not_found": "Product not found",
+		"error_occurred": "error occurred:",
+		"errors_occurred": "errors occurred:"
+	},
+	"settings": {
+		"general": "General",
+		"influences": "Influences",
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+	},
+	"folksonomy": {
+		"title": "Folksonomy Engine",
+		"subtitle": "Keys Explorer",
+		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
+		"search_placeholder": "Search keys...",
+		"keys_found": "keys found",
+		"key_found": "key found",
+		"for": "for"
+	}
 }

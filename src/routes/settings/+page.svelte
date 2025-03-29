@@ -53,8 +53,10 @@
 <div
 	class="mx-auto my-8 grid grid-cols-1 items-center gap-x-4 gap-y-2 md:grid-cols-[1fr_max-content] md:gap-x-8"
 >
-	<Heading>General</Heading>
-	<label for="lang-select" class="justify-self-start md:justify-self-end">Language:</label>
+	<Heading>{$t('common.settings.general')}</Heading>
+	<label for="lang-select" class="justify-self-start md:justify-self-end"
+		>{$t('common.general.language')}:</label
+	>
 	<select
 		class="select select-bordered w-full md:w-auto"
 		name="lang-select"
@@ -72,14 +74,16 @@
 		{/each}
 	</select>
 
-	<label for="country-select" class="justify-self-start md:justify-self-end">Country:</label>
+	<label for="country-select" class="justify-self-start md:justify-self-end"
+		>{$t('common.general.country')}:</label
+	>
 	<select
 		name="country-select"
 		class="select select-bordered w-full md:w-auto"
 		bind:value={$preferences.country}
 	>
 		<option value="world" selected={$preferences.country === 'world'}>
-			{$t('common.world')}
+			{$t('common.world_option')}
 		</option>
 
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
@@ -96,7 +100,7 @@
 		{/each}
 	</select>
 
-	<Heading>Influences</Heading>
+	<Heading>{$t('common.settings.influences')}</Heading>
 
 	<label for="nutriscore" class="justify-self-start md:justify-self-end"
 		>{$t('common.nutriscore')}</label
@@ -111,46 +115,54 @@
 	<label for="nova" class="justify-self-start md:justify-self-end">{$t('common.nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
-	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>
+	<Heading>{$t('common.settings.login')}</Heading>
 
 	{#if isAuthenticated}
-		<span class="justify-self-start text-sm font-medium md:justify-self-end">Status</span>
+		<span class="justify-self-start text-sm font-medium md:justify-self-end"
+			>{$t('common.auth.status')}</span
+		>
 		<div class="flex items-center gap-2">
 			<span class="badge badge-success">
 				<span class="icon-[mdi--check-circle] h-4 w-4"></span>
 			</span>
-			<span class="font-medium">Authenticated</span>
+			<span class="font-medium">{$t('common.auth.authenticated')}</span>
 		</div>
 
-		<span class="justify-self-start text-sm font-medium md:justify-self-end">Actions</span>
+		<span class="justify-self-start text-sm font-medium md:justify-self-end"
+			>{$t('common.auth.actions')}</span
+		>
 		<button
 			class="btn btn-sm btn-outline btn-error w-full md:w-auto"
 			onclick={logout}
 			transition:fade={{ duration: 200 }}
 		>
 			<span class="icon-[mdi--logout] mr-1 h-4 w-4"></span>
-			Sign out
+			{$t('common.auth.signout')}
 		</button>
 	{:else}
-		<label for="username" class="justify-self-start md:justify-self-end">Username</label>
+		<label for="username" class="justify-self-start md:justify-self-end"
+			>{$t('common.auth.username')}</label
+		>
 		<div class="form-control w-full md:w-auto">
 			<input
 				type="text"
 				id="username"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.username}
-				placeholder="Enter username"
+				placeholder={$t('common.auth.enter_username')}
 			/>
 		</div>
 
-		<label for="password" class="justify-self-start md:justify-self-end">Password</label>
+		<label for="password" class="justify-self-start md:justify-self-end"
+			>{$t('common.auth.password')}</label
+		>
 		<div class="form-control w-full md:w-auto">
 			<input
 				type="password"
 				id="password"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.password}
-				placeholder="Enter password"
+				placeholder={$t('common.auth.enter_password')}
 			/>
 		</div>
 
@@ -163,9 +175,10 @@
 				id="login-button"
 			>
 				{#if isLoggingIn}
-					<span class="loading loading-spinner loading-xs"></span> Authenticating...
+					<span class="loading loading-spinner loading-xs"></span>
+					{$t('common.auth.authenticating')}
 				{:else}
-					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> Sign in
+					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$t('common.auth.signin')}
 				{/if}
 			</button>
 
@@ -176,10 +189,10 @@
 				>
 					{#if loginStatus}
 						<span class="icon-[mdi--check-circle] h-4 w-4"></span>
-						<span class="text-sm">Success</span>
+						<span class="text-sm">{$t('common.auth.success')}</span>
 					{:else}
 						<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
-						<span class="text-sm">Failed</span>
+						<span class="text-sm">{$t('common.auth.failed')}</span>
 					{/if}
 				</div>
 			{/if}

@@ -59,7 +59,7 @@
 						type="text"
 						bind:value={searchQuery}
 						class="input join-item input-bordered xl:w-full"
-						placeholder="Query or barcode"
+						placeholder={$t('common.search.placeholder')}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' && searchQuery.trim() !== '') {
 								gotoProductsSearch();
@@ -71,15 +71,15 @@
 						onclick={() => gotoProductsSearch()}
 						disabled={searchQuery == null || searchQuery.trim() === ''}
 					>
-						Go
+						{$t('common.search.go')}
 					</button>
 				</div>
 
 				<a
 					class="btn btn-secondary ms-4 px-5 text-lg"
 					href="/qr"
-					title="Scan a barcode"
-					aria-label="Scan a barcode"
+					title={$t('common.search.scan')}
+					aria-label={$t('common.search.scan')}
 				>
 					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 				</a>
@@ -88,13 +88,13 @@
 	</div>
 
 	<div class="navbar-end gap-2">
-		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
-		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
+		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy_link')}</a>
+		<a class="btn btn-outline link" href="/settings">{$t('common.settings_link')}</a>
 		<a
 			class="btn btn-outline link"
 			href={GITHUB_REPO_URL}
 			target="_blank"
-			aria-label={$t('common.github')}
+			aria-label={$t('common.github_link')}
 		>
 			<span class="icon-[mdi--github] h-8 w-8"></span>
 		</a>
@@ -110,7 +110,7 @@
 		</div>
 		<div class="navbar-end flex gap-2">
 			<button
-				aria-label="Search"
+				aria-label={$t('common.search.button')}
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					searchActive = !searchActive;
@@ -121,8 +121,8 @@
 			<a
 				class="btn btn-square btn-secondary text-lg"
 				href="/qr"
-				title="Scan a barcode"
-				aria-label="Scan a barcode"
+				title={$t('common.search.scan')}
+				aria-label={$t('common.search.scan')}
 			>
 				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 			</a>
@@ -146,7 +146,7 @@
 				type="text"
 				bind:value={searchQuery}
 				class="input join-item input-bordered w-full"
-				placeholder="Query or barcode"
+				placeholder={$t('common.search.placeholder')}
 				onkeydown={(e) => {
 					if (e.key === 'Enter' && searchQuery.trim() !== '') {
 						gotoProductsSearch();
@@ -158,22 +158,22 @@
 				onclick={() => gotoProductsSearch()}
 				disabled={searchQuery == null || searchQuery.trim() === ''}
 			>
-				Go
+				{$t('common.search.go')}
 			</button>
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
 		<a class="btn btn-outline link" href="/folksonomy">
-			{$t('common.folksonomy')}
+			{$t('common.folksonomy_link')}
 		</a>
 		<a class="btn btn-outline link" href="/settings">
-			{$t('common.settings')}
+			{$t('common.settings_link')}
 		</a>
 		<a
 			class="btn btn-outline link"
 			href={GITHUB_REPO_URL}
 			target="_blank"
-			aria-label={$t('common.github')}
+			aria-label={$t('common.github_link')}
 		>
 			<span class="icon-[mdi--github] h-6 w-6"></span>
 		</a>

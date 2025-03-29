@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { t } from '$lib/translations';
 
 	let message = $derived(page.error?.message);
 	let errors = $derived(page.error?.errors);
@@ -21,10 +22,13 @@
 
 		{#if errors != null}
 			{#if isError('product_not_found')}
-				<h2>Product not found</h2>
+				<h2>{$t('common.general.product_not_found')}</h2>
 			{:else}
 				<p>
-					{errors.length} error{#if errors.length > 1}s{/if} occurred:
+					{errors.length}
+					{errors.length === 1
+						? $t('common.general.error_occurred')
+						: $t('common.general.errors_occurred')}
 				</p>
 
 				<ul class="list-disc">

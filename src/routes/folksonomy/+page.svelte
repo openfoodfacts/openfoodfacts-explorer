@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import type { FolksonomyKey } from '$lib/api/folksonomy';
+	import { t } from '$lib/translations';
 
 	interface Props {
 		data: PageData;
@@ -107,13 +108,12 @@
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
 			<h1 class="text-primary mb-4 text-3xl font-bold">
-				Folksonomy Engine
-				<span class="text-base font-normal opacity-70">Keys Explorer</span>
+				{$t('common.folksonomy.title')}
+				<span class="text-base font-normal opacity-70">{$t('common.folksonomy.subtitle')}</span>
 			</h1>
 
 			<p class="mb-4 max-w-2xl text-sm opacity-75">
-				Folksonomy allows users to add custom tags to products. Browse all available keys below,
-				search for specific keys, or click on any key to see products that use it.
+				{$t('common.folksonomy.description')}
 			</p>
 
 			<div class="search-section mb-6">
@@ -121,12 +121,12 @@
 					<div class="input-group">
 						<input
 							type="text"
-							placeholder="Search keys..."
+							placeholder={$t('common.folksonomy.search_placeholder')}
 							class="input input-bordered w-full max-w-md"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label="Search folksonomy keys">
+						<button class="btn btn-square" aria-label={$t('common.search.button')}>
 							<span class="icon-[mdi--magnify] h-6 w-6"></span>
 						</button>
 					</div>
@@ -134,9 +134,11 @@
 
 				<div class="mt-2 text-sm">
 					{filteredTags.length}
-					{filteredTags.length === 1 ? 'key' : 'keys'} found
+					{filteredTags.length === 1
+						? $t('common.folksonomy.key_found')
+						: $t('common.folksonomy.keys_found')}
 					{#if searchQuery != null && searchQuery !== ''}
-						for "<span class="font-medium">{searchQuery}</span>"
+						{$t('common.folksonomy.for')} "<span class="font-medium">{searchQuery}</span>"
 					{/if}
 				</div>
 			</div>
