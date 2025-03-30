@@ -368,8 +368,6 @@
 				/>
 			</div>
 		</div>
-	{:else}
-		<div class="alert alert-info">{$t('product.nutrition.not_specified')}</div>
 	{/if}
 </Card>
 
