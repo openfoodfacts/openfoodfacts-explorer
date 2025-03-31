@@ -47,7 +47,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="bg-base-100 navbar hidden px-10 lg:flex lg:px-40">
+<div class="bg-base-100 navbar hidden px-10 lg:flex lg:justify-center lg:px-30 xl:px-40">
 	<div class="navbar-start">
 		<a href="/"> <Logo /> </a>
 	</div>
@@ -76,7 +76,7 @@
 				</div>
 
 				<a
-					class="btn btn-secondary ms-4 px-5 text-lg"
+					class="btn btn-secondary ms-4 text-lg"
 					href="/qr"
 					title="Scan a barcode"
 					aria-label="Scan a barcode"
@@ -87,7 +87,7 @@
 		</div>
 	</div>
 
-	<div class="navbar-end gap-2">
+	<div class="navbar-end mx-2 gap-2">
 		<a class="btn btn-outline link" href="/folksonomy">{$t('common.folksonomy')}</a>
 		<a class="btn btn-outline link" href="/settings">{$t('common.settings')}</a>
 		<a
