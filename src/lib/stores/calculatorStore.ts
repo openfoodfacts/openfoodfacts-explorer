@@ -1,56 +1,36 @@
-import { writable, get } from 'svelte/store';
+import { writable, get, derived } from 'svelte/store';
+import { persisted } from 'svelte-local-storage-store';
 import type { Nutriments } from '$lib/api/nutriments';
+
+export type NutritionData = {
+	calories: number;
+	proteins: number;
+	carbohydrates: number;
+	fat: number;
+	sugars: number;
+	salt: number;
+};
 
 export type CalculatorItem = {
 	id: string;
 	name: string;
 	quantity: number;
 	imageUrl?: string;
-	nutriments: {
-		calories: number;
-		proteins: number;
-		carbohydrates: number;
-		fat: number;
-		sugars?: number;
-		salt?: number;
-	};
+	nutriments: NutritionData;
 };
 
-function loadFromStorage(): CalculatorItem[] {
-	if (typeof window === 'undefined') return [];
+const DEFAULT_QUANTITY_INCREMENT = 100;
 
-	try {
-		const stored = localStorage.getItem('nutritionCalculatorItems');
-		return stored ? JSON.parse(stored) : [];
-	} catch (e) {
-		console.error('Failed to load calculator data from localStorage:', e);
-		return [];
-	}
-}
+export const calculatorItems = persisted<CalculatorItem[]>('nutritionCalculatorItems', []);
 
-function saveToStorage(items: CalculatorItem[]): void {
-	if (typeof window === 'undefined') return;
-
-	try {
-		localStorage.setItem('nutritionCalculatorItems', JSON.stringify(items));
-	} catch (e) {
-		console.error('Failed to save calculator data to localStorage:', e);
-	}
-}
-
-export const calculatorItems = writable<CalculatorItem[]>(loadFromStorage());
 export const isCalculatorOpen = writable<boolean>(false);
-
-calculatorItems.subscribe((items) => {
-	saveToStorage(items);
-});
 
 export function addItemToCalculator(item: CalculatorItem) {
 	calculatorItems.update((items) => {
 		const existingIndex = items.findIndex((i) => i.id === item.id);
 		if (existingIndex >= 0) {
 			const updatedItems = [...items];
-			updatedItems[existingIndex].quantity += 100;
+			updatedItems[existingIndex].quantity += DEFAULT_QUANTITY_INCREMENT;
 			return updatedItems;
 		} else {
 			return [...items, item];
@@ -87,7 +67,7 @@ export function toggleCalculator() {
 	isCalculatorOpen.update((value) => !value);
 }
 
-export function extractNutriments(nutriments: Nutriments): CalculatorItem['nutriments'] {
+export function extractNutriments(nutriments: Nutriments): NutritionData {
 	return {
 		calories: nutriments['energy-kcal_100g'] || 0,
 		proteins: nutriments.proteins_100g || 0,
@@ -97,3 +77,33 @@ export function extractNutriments(nutriments: Nutriments): CalculatorItem['nutri
 		salt: nutriments.salt_100g
 	};
 }
+
+function calculateTotals(items: CalculatorItem[]): NutritionData {
+	const totals: NutritionData = {
+		calories: 0,
+		proteins: 0,
+		carbohydrates: 0,
+		fat: 0,
+		sugars: 0,
+		salt: 0
+	};
+
+	for (const item of items) {
+		const factor = item.quantity / 100;
+		totals.calories += item.nutriments.calories * factor;
+		totals.proteins += item.nutriments.proteins * factor;
+		totals.carbohydrates += item.nutriments.carbohydrates * factor;
+		totals.fat += item.nutriments.fat * factor;
+
+		if (item.nutriments.sugars) {
+			totals.sugars += item.nutriments.sugars * factor;
+		}
+		if (item.nutriments.salt) {
+			totals.salt += item.nutriments.salt * factor;
+		}
+	}
+
+	return totals;
+}
+
+export const totalNutrition = derived(calculatorItems, (items) => calculateTotals(items));
