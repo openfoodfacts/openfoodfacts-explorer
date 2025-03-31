@@ -3,7 +3,7 @@
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
-🏷️ Folksonomy Project:
+🏷️ Folksonomy Engine:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
       - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
