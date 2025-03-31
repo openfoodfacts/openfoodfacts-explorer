@@ -22,17 +22,17 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 
+	let isShareSupported = $state(
+		typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+	);
+
 	async function sharePage() {
-		if (navigator.share) {
-			try {
-				await navigator.share({
-					url: window.location.href
-				});
-			} catch (error) {
-				console.error('Error sharing the page:', error);
-			}
-		} else {
-			alert('Sharing is not supported in your browser.');
+		try {
+			await navigator.share({
+				url: window.location.href
+			});
+		} catch (error) {
+			console.error('Error sharing the page:', error);
 		}
 	}
 
@@ -77,13 +77,12 @@
 					Edit
 				{/if}
 			</a>
-			<button
-				class="btn btn-secondary max-sm:btn-sm flex items-center gap-2"
-				onclick={sharePage}
-			>
-				<span class="icon-[mdi--share-variant] h-5 w-5"></span>
-				<span class="hidden md:block">Share</span>
-			</button>
+			{#if isShareSupported}
+				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
+					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
+					<span class="hidden md:block">Share</span>
+				</button>
+			{/if}
 		</div>
 	</div>
 
