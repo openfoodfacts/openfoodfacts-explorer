@@ -24,11 +24,11 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="small-product-card flex justify-center sm:m-2 sm:w-64"
+	class="flex justify-center sm:m-2 sm:w-64"
 	class:pointer-events-none={navigating.to}
 >
 	<div class="dark:bg-base-200 text-primary flex h-[10rem] w-[20rem] rounded-2xl shadow-md">
-		<div class="image-container h-[100%] w-[8rem] text-center text-sm sm:w-28">
+		<div class="h-[100%] w-[8rem] text-center text-sm sm:w-28">
 			{#if navigating.to?.params?.barcode === product.code}
 				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
 			{:else if product.image_front_small_url}
@@ -50,7 +50,7 @@
 			{/if}
 		</div>
 		<div
-			class="details-container flex w-[12rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold sm:w-40"
+			class="flex w-[12rem] flex-col items-center justify-evenly p-[0.5rem] pl-[0.7rem] font-semibold sm:w-40"
 		>
 			<div
 				class="title w-[100%] truncate text-[1.2rem] font-semibold sm:text-base"
@@ -67,7 +67,7 @@
 				</p>
 			</div>
 			{#if product.product_type === 'food'}
-				<div class="icons mt-2 flex w-full flex-row items-center justify-between gap-2">
+				<div class="mt-2 flex w-full flex-row items-center justify-between gap-2">
 					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-[40px] sm:h-8" /></div>
 					<div><img src={novaSrc} alt="nova" class="mt-[-10px] h-[44px] sm:h-8" /></div>
 					<div><img src={ecoscoreSrc} alt="nova" class="h-[40px] sm:h-8" /></div>
