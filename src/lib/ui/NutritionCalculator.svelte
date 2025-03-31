@@ -6,48 +6,16 @@
 		updateItemQuantity,
 		removeItem,
 		clearCalculator,
-		toggleCalculator
+		toggleCalculator,
+		totalNutrition
 	} from '$lib/stores/calculatorStore';
 	import { onMount } from 'svelte';
 
-	// Load calculator items on component mount
 	onMount(() => {
-		// Force a refresh of the calculatorItems store
-		// This ensures the UI reflects any items loaded from localStorage
 		calculatorItems.update((items) => [...items]);
 	});
-
-	function calculateTotals() {
-		let totals = {
-			calories: 0,
-			proteins: 0,
-			carbohydrates: 0,
-			fat: 0,
-			sugars: 0,
-			salt: 0
-		};
-
-		$calculatorItems.forEach((item) => {
-			const factor = item.quantity / 100;
-			totals.calories += (item.nutriments.calories || 0) * factor;
-			totals.proteins += (item.nutriments.proteins || 0) * factor;
-			totals.carbohydrates += (item.nutriments.carbohydrates || 0) * factor;
-			totals.fat += (item.nutriments.fat || 0) * factor;
-
-			if (item.nutriments.sugars) {
-				totals.sugars += item.nutriments.sugars * factor;
-			}
-
-			if (item.nutriments.salt) {
-				totals.salt += item.nutriments.salt * factor;
-			}
-		});
-
-		return totals;
-	}
 </script>
 
-<!-- Floating Calculator button -->
 <div class="fixed right-6 bottom-6 z-50">
 	<button
 		class="btn btn-circle btn-primary shadow-lg"
@@ -65,14 +33,17 @@
 	</button>
 </div>
 
-<!-- Calculator panel -->
 {#if $isCalculatorOpen}
 	<div
 		class="calculator-panel bg-base-100 fixed top-20 right-4 z-50 w-96 max-w-full rounded-lg p-4 shadow-lg"
 	>
 		<div class="mb-4 flex items-center justify-between">
 			<h3 class="text-lg font-bold">Nutrition Calculator</h3>
-			<button class="btn btn-sm btn-circle" on:click={toggleCalculator}>
+			<button
+				class="btn btn-sm btn-circle"
+				on:click={toggleCalculator}
+				aria-label="Close calculator"
+			>
 				<span class="icon-[mdi--close] h-5 w-5"></span>
 			</button>
 		</div>
@@ -102,16 +73,22 @@
 							<button
 								class="btn btn-sm btn-square"
 								on:click={() => updateItemQuantity(item.id, -25)}
+								aria-label="Decrease quantity"
 							>
 								<span class="icon-[mdi--minus] h-4 w-4"></span>
 							</button>
 							<button
 								class="btn btn-sm btn-square ml-1"
 								on:click={() => updateItemQuantity(item.id, 25)}
+								aria-label="Increase quantity"
 							>
 								<span class="icon-[mdi--plus] h-4 w-4"></span>
 							</button>
-							<button class="btn btn-sm btn-square ml-1" on:click={() => removeItem(item.id)}>
+							<button
+								class="btn btn-sm btn-square ml-1"
+								on:click={() => removeItem(item.id)}
+								aria-label="Remove item"
+							>
 								<span class="icon-[mdi--delete] h-4 w-4"></span>
 							</button>
 						</div>
@@ -119,25 +96,22 @@
 				{/each}
 			</div>
 
-			<!-- Total nutrition info -->
-			{@const totals = calculateTotals()}
 			<div class="bg-base-200 mt-4 rounded p-2">
 				<h4 class="mb-2 font-bold">Total Nutrition:</h4>
 				<div class="grid grid-cols-2 gap-2 text-sm">
-					<div>Calories: {totals.calories.toFixed(1)} kcal</div>
-					<div>Protein: {totals.proteins.toFixed(1)}g</div>
-					<div>Carbs: {totals.carbohydrates.toFixed(1)}g</div>
-					<div>Fat: {totals.fat.toFixed(1)}g</div>
-					{#if totals.sugars > 0}
-						<div>Sugars: {totals.sugars.toFixed(1)}g</div>
+					<div>Calories: {$totalNutrition.calories.toFixed(1)} kcal</div>
+					<div>Protein: {$totalNutrition.proteins.toFixed(1)}g</div>
+					<div>Carbs: {$totalNutrition.carbohydrates.toFixed(1)}g</div>
+					<div>Fat: {$totalNutrition.fat.toFixed(1)}g</div>
+					{#if $totalNutrition.sugars > 0}
+						<div>Sugars: {$totalNutrition.sugars.toFixed(1)}g</div>
 					{/if}
-					{#if totals.salt > 0}
-						<div>Salt: {totals.salt.toFixed(1)}g</div>
+					{#if $totalNutrition.salt > 0}
+						<div>Salt: {$totalNutrition.salt.toFixed(1)}g</div>
 					{/if}
 				</div>
 			</div>
 
-			<!-- Action buttons -->
 			<div class="mt-4 flex justify-end">
 				<button class="btn btn-sm btn-error" on:click={clearCalculator}> Clear All </button>
 			</div>
