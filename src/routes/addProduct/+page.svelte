@@ -1,42 +1,18 @@
 <script lang="ts">
 	import { writable, get } from 'svelte/store';
-	import { page } from '$app/stores';
 	import Card from '$lib/ui/Card.svelte';
 	import { addOrEditProductV2 } from '$lib/api';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	const barcode = $page.url.searchParams.get('barcode') ?? '';
+	export let user: {user_id: string; password: string} | undefined = undefined;
 
 	let currentUser = {
 		isLoggedIn: false,
-		user_id: '',
-		password: ''
+		user_id: user?.user_id,
+		password: user?.password
 	};
 
-	onMount(() => {
-		const preferences = localStorage.getItem('preferences');
-		const parsedPreferences = preferences ? JSON.parse(preferences) : null;
-
-		const user_id = parsedPreferences ? parsedPreferences.username : null;
-		const password = parsedPreferences ? parsedPreferences.password : null;
-
-		if (user_id && password) {
-			currentUser = {
-				isLoggedIn: true,
-				user_id,
-				password
-			};
-		} else {
-			alert('You must be logged in access this page');
-			goto('/settings');
-		}
-
-		if (!barcode) {
-			alert('Barcode required to access this page');
-			goto('/');
-		}
-	});
 
 	let newProduct = writable({
 		_id: '',
@@ -51,6 +27,12 @@
 		countries: '',
 		link: '',
 		ingredients_text: '',
+		serving_size: '',
+		packaging: '',
+		manufacturing_places: '',
+		product_type: '',
+		other_missing_field_1: '',
+		other_missing_field_2: '',
 		images: {
 			front: {
 				url: '',
@@ -216,7 +198,9 @@
 		languages_codes: {},
 		lang: '',
 		nutriscore_grade: '',
-		ecoscore_grade: ''
+		ecoscore_grade: '',
+		emb_codes: '',
+		emb_codes_tags: []
 	});
 
 	let unitSelection = {
@@ -240,17 +224,28 @@
 	async function submit(fetch: typeof window.fetch = window.fetch) {
 		const productData = get(newProduct);
 
-		try {
-			const response = await addOrEditProductV2(productData, fetch);
-			if (response) {
-				alert('Product added successfully!');
-			} else {
-				alert('Failed to add product.');
+        const processedNutriments = { ...productData.nutriments };
+		for (const nutrient in unitSelection) {
+			const nutrientKey = `${nutrient.toLowerCase()}_100g`;
+			if (processedNutriments[nutrientKey as keyof typeof processedNutriments] !== undefined) {
+				(processedNutriments as Record<string, any>)[`${nutrientKey}_unit`] = unitSelection[nutrient as keyof typeof unitSelection];
 			}
-		} catch (error) {
-			console.error('Error adding product:', error);
-			alert('An error occurred while adding the product.');
 		}
+
+        productData.nutriments = processedNutriments;
+
+        console.log('Processed product data:', productData);
+		// try {
+		// 	const response = await addOrEditProductV2(productData, fetch);
+		// 	if (response) {
+		// 		alert('Product added successfully!');
+		// 	} else {
+		// 		alert('Failed to add product.');
+		// 	}
+		// } catch (error) {
+		// 	console.error('Error adding product:', error);
+		// 	alert('An error occurred while adding the product.');
+		// }
 	}
 
 	async function handleImageUpload(event: Event, type: 'front' | 'ingredients') {
@@ -262,13 +257,14 @@
 				fileReader.onload = async () => {
 					const dataUrl = fileReader.result as string;
 
-					const payload = {
-						user_id: currentUser.user_id,
-						password: currentUser.password,
-						code: barcode,
-						imageField: type,
-						imgupload_front: dataUrl
-					};
+					const payload = new URLSearchParams();
+					payload.append('user_id', currentUser.user_id ?? '');
+					payload.append('password', currentUser.password ?? '');
+					payload.append('code', barcode);
+					payload.append('imageField', type);
+					payload.append(`imgupload_${type}`, dataUrl);
+
+					console.log('payload', payload);
 
 					const response = await fetch(
 						'https://world.openfoodfacts.net/cgi/product_image_upload.pl',
@@ -276,11 +272,13 @@
 							method: 'POST',
 							body: JSON.stringify(payload),
 							headers: {
-								'Content-Type': file.type,
+								'Content-Type': 'application/x-www-form-urlencoded',
 								'User-Agent': 'OpenFoodFactsExplorer/1.0'
 							}
 						}
 					);
+
+					console.log('response', response);
 
 					if (!response.ok) {
 						console.error('Failed to upload image:', response.status, response.statusText);
@@ -288,20 +286,25 @@
 						return;
 					}
 
-					const data = await response.json();
-
-					if (data.status === 1) {
-						newProduct.update((product) => {
-							if (type === 'front') {
-								product.image_front_url = data.image.url;
-							} else if (type === 'ingredients') {
-								product.image_ingredients_url = data.image.url;
-							}
-							return product;
-						});
-						alert('Image uploaded successfully!');
-					} else {
-						alert(`Failed to upload image: ${data.error}`);
+					try {
+						const data = await response.json();
+						console.log(data)
+						if (data.status === 1) {
+							newProduct.update((product) => {
+								if (type === 'front') {
+									product.image_front_url = data.image.url;
+								} else if (type === 'ingredients') {
+									product.image_ingredients_url = data.image.url;
+								}
+								return product;
+							});
+							alert('Image uploaded successfully!');
+						} else {
+							alert(`Failed to upload image: ${data.error}`);
+						}
+					} catch (error) {
+						console.error('Error parsing response:', error);
+						alert('Unexpected error occurred.');
 					}
 				};
 
