@@ -49,7 +49,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="bg-base-100 navbar hidden px-10 lg:flex lg:px-40">
+<div class="bg-base-100 navbar hidden px-10 lg:flex lg:justify-center lg:px-30 xl:px-40">
 	<div class="navbar-start">
 		<a href="/"> <Logo /> </a>
 	</div>
@@ -78,7 +78,7 @@
 				</div>
 
 				<a
-					class="btn btn-secondary ms-4 px-5 text-lg"
+					class="btn btn-secondary ms-4 text-lg"
 					href="/qr"
 					title={$_('search.scan')}
 					aria-label={$_('search.scan')}
