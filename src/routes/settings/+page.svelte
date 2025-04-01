@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import { preventDefault } from 'svelte/legacy';
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
@@ -45,7 +46,8 @@
 			...p,
 			folksonomy: { ...p.folksonomy, authToken: null },
 			username: null,
-			password: null
+			password: null,
+			isModerator: false
 		}));
 	}
 </script>
@@ -122,6 +124,16 @@
 			<span class="font-medium">Authenticated</span>
 		</div>
 
+		{#if $preferences.isModerator}
+			<span class="justify-self-start text-sm font-medium md:justify-self-end">Moderator</span>
+			<div class="flex items-center gap-2">
+				<span class="badge badge-info">
+					<span class="icon-[mdi--shield] h-4 w-4"></span>
+				</span>
+				<span class="font-medium">Moderator privileges enabled</span>
+			</div>
+		{/if}
+
 		<span class="justify-self-start text-sm font-medium md:justify-self-end">Actions</span>
 		<button
 			class="btn btn-sm btn-outline btn-error w-full md:w-auto"
@@ -132,57 +144,59 @@
 			Sign out
 		</button>
 	{:else}
-		<label for="username" class="justify-self-start md:justify-self-end">Username</label>
-		<div class="form-control w-full md:w-auto">
-			<input
-				type="text"
-				id="username"
-				class="input input-sm input-bordered w-full"
-				bind:value={$preferences.username}
-				placeholder="Enter username"
-			/>
-		</div>
+		<form class="contents" onsubmit={preventDefault(loginToFolksonomy)}>
+			<label for="username" class="justify-self-start md:justify-self-end">Username</label>
+			<div class="form-control w-full md:w-auto">
+				<input
+					type="text"
+					id="username"
+					class="input input-sm input-bordered w-full"
+					bind:value={$preferences.username}
+					placeholder="Enter username"
+				/>
+			</div>
 
-		<label for="password" class="justify-self-start md:justify-self-end">Password</label>
-		<div class="form-control w-full md:w-auto">
-			<input
-				type="password"
-				id="password"
-				class="input input-sm input-bordered w-full"
-				bind:value={$preferences.password}
-				placeholder="Enter password"
-			/>
-		</div>
+			<label for="password" class="justify-self-start md:justify-self-end">Password</label>
+			<div class="form-control w-full md:w-auto">
+				<input
+					type="password"
+					id="password"
+					class="input input-sm input-bordered w-full"
+					bind:value={$preferences.password}
+					placeholder="Enter password"
+				/>
+			</div>
 
-		<span class="justify-self-start text-sm font-medium md:justify-self-end">Authentication</span>
-		<div class="flex w-full flex-col gap-2 md:w-auto">
-			<button
-				disabled={$preferences.username == null || $preferences.password == null || isLoggingIn}
-				class="btn btn-sm btn-primary w-full"
-				onclick={loginToFolksonomy}
-				id="login-button"
-			>
-				{#if isLoggingIn}
-					<span class="loading loading-spinner loading-xs"></span> Authenticating...
-				{:else}
-					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> Sign in
-				{/if}
-			</button>
-
-			{#if loginStatus !== undefined}
-				<div
-					class="alert {loginStatus ? 'alert-success' : 'alert-error'} px-3 py-2"
-					transition:fade={{ duration: 200 }}
+			<span class="justify-self-start text-sm font-medium md:justify-self-end">Authentication</span>
+			<div class="flex w-full flex-col gap-2 md:w-auto">
+				<button
+					disabled={$preferences.username == null || $preferences.password == null || isLoggingIn}
+					class="btn btn-sm btn-primary w-full"
+					type="submit"
+					id="login-button"
 				>
-					{#if loginStatus}
-						<span class="icon-[mdi--check-circle] h-4 w-4"></span>
-						<span class="text-sm">Success</span>
+					{#if isLoggingIn}
+						<span class="loading loading-spinner loading-xs"></span> Authenticating...
 					{:else}
-						<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
-						<span class="text-sm">Failed</span>
+						<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> Sign in
 					{/if}
-				</div>
-			{/if}
-		</div>
+				</button>
+
+				{#if loginStatus !== undefined}
+					<div
+						class="alert {loginStatus ? 'alert-success' : 'alert-error'} px-3 py-2"
+						transition:fade={{ duration: 200 }}
+					>
+						{#if loginStatus}
+							<span class="icon-[mdi--check-circle] h-4 w-4"></span>
+							<span class="text-sm">Success</span>
+						{:else}
+							<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
+							<span class="text-sm">Failed</span>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		</form>
 	{/if}
 </div>
