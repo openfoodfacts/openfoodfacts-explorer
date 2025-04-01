@@ -25,15 +25,17 @@
 			style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 		/>
 	</button>
-	<button
-		class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
-		onclick={(e) => {
-			e.stopPropagation();
-			rotateImage();
-		}}
-		title="Rotate image"
-		aria-label="Rotate image 90 degrees clockwise"
-	>
-		<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
-	</button>
+	{#if src}
+		<button
+			class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
+			onclick={(e) => {
+				e.stopPropagation();
+				rotateImage();
+			}}
+			title="Rotate image"
+			aria-label="Rotate image 90 degrees clockwise"
+		>
+			<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
+		</button>
+	{/if}
 </div>
