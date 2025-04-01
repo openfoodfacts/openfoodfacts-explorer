@@ -27,8 +27,8 @@
 		"pre-commit": "pnpm format"
 	},
 	"devDependencies": {
-		"@eslint/eslintrc": "^3.3.0",
-		"@eslint/js": "^9.22.0",
+		"@eslint/eslintrc": "^3.3.1",
+		"@eslint/js": "^9.23.0",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/simple-icons": "^1.2.29",
 		"@iconify/tailwind": "^1.2.0",
