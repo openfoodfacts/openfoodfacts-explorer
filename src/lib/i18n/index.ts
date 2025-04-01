@@ -14,7 +14,7 @@ locales.forEach((locale) => {
 
 export function initI18n() {
 	const userPreferredLanguage = browser ? get(preferences).lang : 'en';
-	
+
 	init({
 		fallbackLocale: 'en',
 		initialLocale: userPreferredLanguage || (browser ? getLocaleFromNavigator() : 'en')
