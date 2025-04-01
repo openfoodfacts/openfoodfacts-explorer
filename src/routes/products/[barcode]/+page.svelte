@@ -110,7 +110,7 @@
 				{:then categories}
 					{#each product.categories_tags as tag (tag)}
 						<a
-							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
+							class="link bg-secondary text-secondary-content mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold no-underline"
 							href="/taxo/categories/{tag}"
 						>
 							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
