@@ -37,7 +37,7 @@
 		}
 	};
 
-	let { grade = 'unknown' }: { grade?: string } = $props();
+	let { grade }: { grade: string } = $props();
 	let normalizedGrade = $derived((grade || '').toLowerCase());
 	let { name, src, textColor, bgColor } = $derived(
 		GRADE_MAP[normalizedGrade] || GRADE_MAP['unknown']
