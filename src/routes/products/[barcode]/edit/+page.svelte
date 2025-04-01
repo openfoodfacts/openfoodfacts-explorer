@@ -400,7 +400,6 @@
 		position: sticky;
 		bottom: 0;
 		background-color: var(--background-color, white);
-		padding: 1px;
 		bottom: 10px;
 		z-index: 10;
 	}
