@@ -1,5 +1,7 @@
 import { browser } from '$app/environment';
 import { init, register, getLocaleFromNavigator } from 'svelte-i18n';
+import { get } from 'svelte/store';
+import { preferences } from '$lib/settings';
 
 const locales = ['en', 'it'];
 
@@ -11,9 +13,11 @@ locales.forEach((locale) => {
 });
 
 export function initI18n() {
+	const userPreferredLanguage = browser ? get(preferences).lang : 'en';
+	
 	init({
 		fallbackLocale: 'en',
-		initialLocale: browser ? getLocaleFromNavigator() : 'en'
+		initialLocale: userPreferredLanguage || (browser ? getLocaleFromNavigator() : 'en')
 	});
 }
 

@@ -6,6 +6,7 @@
 	import { FolksonomyApi } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
+	import { locale } from '$lib/i18n';
 
 	interface Props {
 		data: PageData;
@@ -61,6 +62,7 @@
 		class="select select-bordered w-full md:w-auto"
 		name="lang-select"
 		bind:value={$preferences.lang}
+		onchange={() => locale.set($preferences.lang)}
 	>
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 		{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
