@@ -3,6 +3,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
+	import { dev } from '$app/environment';
 	import { navigating } from '$app/state';
 
 	const TRACEABILITY_CODES_URL =
@@ -218,7 +219,8 @@
 		Loading...
 	{:then questions}
 		<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
-
-		<Debug data={questions} />
+		{#if dev}
+			<Debug data={questions} />
+		{/if}
 	{/await}
 </Card>
