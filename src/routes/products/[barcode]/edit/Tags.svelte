@@ -46,7 +46,7 @@
 </script>
 
 <div
-	class="input input-bordered bg-base-100 h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
+	class="input input-bordered bg-base-100 h-auto min-h-12 w-full flex flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
 >
 	{#each tags as tag (tag)}
 		<span class="badge badge-ghost overflow-hidden py-3" transition:fade={{ duration: 100 }}>
@@ -54,7 +54,7 @@
 			<button class="ml-1 text-xl" onclick={removeTag(tag)}>×</button>
 		</span>
 	{/each}
-	<div class="dropdown grow">
+	<div class="dropdown grow min-w-[100px]">
 		<input
 			type="text"
 			class="w-full bg-transparent outline-hidden"
@@ -62,7 +62,7 @@
 			bind:value={newValue}
 		/>
 		{#if filteredAutocomplete.length > 0}
-			<div class="dropdown-content">
+			<div class="dropdown-content z-10">
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
 					{#each filteredAutocomplete as suggestion (suggestion.item)}
