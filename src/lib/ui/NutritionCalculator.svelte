@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { t } from '$lib/translations';
 	import {
 		calculatorItems,
 		isCalculatorOpen,
@@ -54,7 +53,7 @@
 			</div>
 		{:else}
 			<div class="max-h-80 overflow-y-auto">
-				{#each $calculatorItems as item}
+				{#each $calculatorItems as item (item.id)}
 					<div class="flex items-center justify-between border-b p-2">
 						<div class="flex items-center">
 							{#if item.imageUrl}
