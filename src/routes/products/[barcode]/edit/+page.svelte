@@ -384,10 +384,24 @@
 			bind:value={$comment}
 		/>
 	</div>
-	<button class="btn btn-primary w-full" onclick={submit}> Submit </button>
 </Card>
+<div class="sticky-save-container">
+	<button class="btn btn-primary w-full" onclick={submit}> Save </button>
+</div>
 
 <details>
 	<summary>Debug</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>
+
+<style>
+	.sticky-save-container {
+		border-radius: 10px;
+		position: sticky;
+		bottom: 0;
+		background-color: var(--background-color, white);
+		padding: 1px;
+		bottom: 10px;
+		z-index: 10;
+	}
+</style>
