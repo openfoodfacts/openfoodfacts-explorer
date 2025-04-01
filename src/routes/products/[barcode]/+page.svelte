@@ -4,7 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
-
+	import { onMount } from 'svelte';
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
@@ -30,6 +30,27 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+	let showGoUpButton = $state(false);
+
+	// Handle scroll event to show/hide the "Go up" button
+	onMount(() => {
+		function handleScroll() {
+			showGoUpButton = window.scrollY > 300;
+		}
+
+		window.addEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	});
+
+	// Function to scroll to the top of the page
+	function scrollToTop() {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	}
 </script>
 
 <svelte:head>
@@ -89,7 +110,7 @@
 				{:then categories}
 					{#each product.categories_tags as tag (tag)}
 						<a
-							class="link bg-secondary text-secondary-content mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold no-underline"
+							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
 							href="/taxo/categories/{tag}"
 						>
 							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
@@ -222,3 +243,25 @@
 		<Debug data={questions} />
 	{/await}
 </Card>
+
+<!-- Sticky "Go up" button -->
+{#if showGoUpButton}
+	<button
+		onclick={scrollToTop}
+		class="bg-primary hover:bg-primary-focus fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full text-black shadow-lg transition-all"
+		aria-label="Go to top"
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			class="h-6 w-6"
+		>
+			<path d="m18 15-6-6-6 6" />
+		</svg>
+	</button>
+{/if}
