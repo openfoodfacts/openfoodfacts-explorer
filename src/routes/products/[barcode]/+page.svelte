@@ -22,9 +22,7 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 
-	let isShareSupported = $state(
-		typeof navigator !== 'undefined' && typeof navigator.share === 'function'
-	);
+	let isShareSupported = navigator?.share != null;
 
 	async function sharePage() {
 		try {
