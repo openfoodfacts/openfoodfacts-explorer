@@ -30,6 +30,7 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+	let user = data.user;
 </script>
 
 <svelte:head>
@@ -51,17 +52,19 @@
 			See on OpenFoodFacts
 		</a>
 
-		<a
-			href={`/products/${product.code}/edit`}
-			class="btn btn-secondary max-sm:btn-sm ml-auto"
-			class:pointer-events-none={navigating.to}
-		>
-			{#if navigating.to?.params?.barcode === product.code}
-				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
-			{:else}
-				Edit
-			{/if}
-		</a>
+		{#if user != null}
+			<a
+				href={`/products/${product.code}/edit`}
+				class="btn btn-secondary max-sm:btn-sm ml-auto"
+				class:pointer-events-none={navigating.to}
+			>
+				{#if navigating.to?.params?.barcode === product.code}
+					<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
+				{:else}
+					Edit
+				{/if}
+			</a>
+		{/if}
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">

@@ -10,6 +10,8 @@ import {
 	ProductsApi
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
+import { preferences } from '$lib/settings';
+import { get } from 'svelte/store';
 import { FolksonomyApi } from '$lib/api/folksonomy';
 import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 
@@ -18,6 +20,7 @@ export const ssr = false;
 import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const load: PageLoad = async ({ params, fetch }) => {
+	const user = get(preferences).username;
 	const productsApi = new ProductsApi(fetch);
 	const state = await productsApi.getProduct(params.barcode);
 	if (state.status === 'failure') {
@@ -59,6 +62,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	);
 
 	return {
+		user,
 		state,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
