@@ -21,6 +21,9 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import type { components } from '$lib/api/prices.d';
+
+	type PriceResult = components['schemas']['PriceFull'];
 
 	interface Props {
 		data: PageData;
@@ -30,23 +33,6 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
-
-	// Define PriceResult type from Prices.svelte
-	type PriceResult = {
-		id: number;
-		product_id: number;
-		location_id: number;
-		proof_id: number;
-		price: number;
-		currency: string;
-		location_osm_id: number;
-		location_osm_type: 'NODE' | 'WAY' | 'RELATION';
-		date: string;
-		owner?: string | null;
-		source?: string | null;
-		created?: string;
-		updated?: string;
-	};
 
 	function getPricesData() {
 		if (data.prices?.data) {
