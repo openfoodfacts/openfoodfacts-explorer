@@ -33,7 +33,9 @@ export class PricesApi {
 	constructor(fetch: typeof window.fetch) {
 		const backendUrl = getEffectiveBackendUrl();
 		if (!backendUrl) {
-			throw new Error('Prices API URL is not configured');
+			throw new Error(
+				'Prices API URL is not configured. Please set VITE_PRICES_API_URL or VITE_PRICES_API_LOCAL_URL'
+			);
 		}
 		this.client = createClient({ fetch, baseUrl: backendUrl, credentials: 'include' });
 		this.fetch = fetch;
