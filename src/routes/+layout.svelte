@@ -4,6 +4,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import { t } from '$lib/translations';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	let searchQuery: string = $state('');
 
@@ -183,5 +184,8 @@
 <div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
 </div>
+
+<NutritionCalculator />
+<Footer />
 
 <Footer />
