@@ -9,10 +9,21 @@ export type PricesCreate =
 export type Prices =
 	paths['/api/v1/prices']['get']['responses']['200']['content']['application/json'];
 
-const BASE_URL = import.meta.env.VITE_PRICES_API_URL;
+const REMOTE_BASE_URL = import.meta.env.VITE_PRICES_API_URL;
+const LOCAL_BASE_URL = import.meta.env.VITE_PRICES_API_LOCAL_URL;
 
 export function isConfigured() {
-	return BASE_URL != null;
+	return getEffectiveBackendUrl() != null;
+}
+
+// Get effective backend URL based on configuration priority:
+// 1. Local backend URL from .env (for development)
+// 2. Remote backend URL from .env (for production-default)
+function getEffectiveBackendUrl(): string | null {
+	if (LOCAL_BASE_URL) {
+		return LOCAL_BASE_URL;
+	}
+	return REMOTE_BASE_URL;
 }
 
 export class PricesApi {
@@ -20,7 +31,11 @@ export class PricesApi {
 	private readonly fetch: typeof window.fetch;
 
 	constructor(fetch: typeof window.fetch) {
-		this.client = createClient({ fetch, baseUrl: BASE_URL, credentials: 'include' });
+		const backendUrl = getEffectiveBackendUrl();
+		if (!backendUrl) {
+			throw new Error('Prices API URL is not configured');
+		}
+		this.client = createClient({ fetch, baseUrl: backendUrl, credentials: 'include' });
 		this.fetch = fetch;
 	}
 
@@ -78,5 +93,13 @@ export class PricesApi {
 	async getStatus() {
 		const res = await this.client.GET('/api/v1/status');
 		return res.data;
+	}
+
+	/**
+	 * Get the current backend URL being used
+	 * @returns The backend URL
+	 */
+	getBackendUrl() {
+		return getEffectiveBackendUrl();
 	}
 }
