@@ -45,5 +45,14 @@ export default [
 			'**/yarn.lock',
 			'.vercel'
 		]
+	},
+	{
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'error', { 
+					varsIgnorePattern: '^_$'
+				}
+			]
+		}
 	}
 ];
