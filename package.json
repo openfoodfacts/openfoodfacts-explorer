@@ -2,6 +2,16 @@
 	"name": "openfoodfacts-sveltekit",
 	"version": "0.0.1",
 	"private": true,
+	"description": "Modern JavaScript frontend for Open Food Facts",
+	"license": "AGPL-3.0",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/openfoodfacts/openfoodfacts-explorer.git"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"pnpm": ">=8.0.0"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -17,10 +27,11 @@
 		"pre-commit": "pnpm format"
 	},
 	"devDependencies": {
+		"@crowdin/cli": "^4.7.0",
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.23.0",
-		"@iconify-json/logos": "^1.2.4",
 		"@iconify-json/mdi": "^1.2.3",
+		"@iconify-json/simple-icons": "^1.2.29",
 		"@iconify/tailwind": "^1.2.0",
 		"@iconify/tailwind4": "^1.0.6",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.1",
@@ -54,6 +65,7 @@
 		"svelte": "^5.25.3",
 		"svelte-check": "^4.1.4",
 		"svelte-eslint-parser": "^1.1.1",
+		"svelte-i18n": "^4.0.1",
 		"svelte-local-storage-store": "^0.6.4",
 		"sveltekit-i18n": "^2.4.2",
 		"tailwindcss": "^4.0.17",

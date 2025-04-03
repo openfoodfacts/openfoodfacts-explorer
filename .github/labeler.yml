@@ -65,6 +65,9 @@ User Interface:
 Nutrients:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+Footer:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/Footer.svelte'
 # 👮 Nutri-Patrol:
 #  - changed-files:
 #      - any-glob-to-any-file: ''
