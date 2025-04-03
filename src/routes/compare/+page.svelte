@@ -16,17 +16,17 @@
 		return () => window.removeEventListener('resize', handleResize);
 	});
 
-	function getNutriscoreImage(grade) {
+	function getNutriscoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('nutriscore-' + grade + '-new-en.svg');
 	}
 
-	function getNovaImage(group) {
+	function getNovaImage(group: string) {
 		return group
 			? KP_ATTRIBUTE_IMG('nova-group-' + group + '.svg')
 			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
 	}
 
-	function getEcoscoreImage(grade) {
+	function getEcoscoreImage(grade: string) {
 		return KP_ATTRIBUTE_IMG('ecoscore-' + grade + '.svg');
 	}
 </script>
@@ -58,12 +58,13 @@
 					? ''
 					: `display: grid; grid-template-columns: repeat(${$compareStore.length}, 1fr); gap: 1rem;`}
 			>
-				{#each $compareStore as product, i}
+				{#each $compareStore as product (product.code)}
 					<div class="relative rounded-lg border p-2">
 						<button
 							class="btn btn-circle btn-xs btn-ghost absolute top-2 right-2"
 							onclick={() => compareStore.removeProduct(product.code)}
-						>
+							aria-label="Remove product from comparison"
+							>	
 							<span class="icon-[mdi--close] h-3 w-3"></span>
 						</button>
 
