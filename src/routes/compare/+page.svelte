@@ -1,26 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 	import { compareStore } from '$lib/stores/compareStore';
-
-	let isMobile = $state(false);
-
-	function handleResize() {
-		isMobile = window.innerWidth < 768;
-	}
-
-	onMount(() => {
-		handleResize();
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	});
 
 	function getNutriscoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('nutriscore-' + grade + '-new-en.svg');
 	}
 
-	function getNovaImage(group: string) {
+	function getNovaImage(group: string | number) {
 		return group
 			? KP_ATTRIBUTE_IMG('nova-group-' + group + '.svg')
 			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
@@ -32,7 +19,8 @@
 </script>
 
 <svelte:head>
-	<title>Compare Products | Open Food Facts</title>
+	<title>Compare Products</title>
+	<meta name="description" content="Compare nutritional information of food products" />
 </svelte:head>
 
 <Card>
@@ -51,20 +39,15 @@
 			<a href="/products/search?q=chocolate" class="btn btn-primary">Browse Products</a>
 		</div>
 	{:else}
-		<div class={isMobile ? 'overflow-x-auto pb-4' : ''}>
-			<div
-				class={isMobile ? 'w-max' : ''}
-				style={isMobile
-					? ''
-					: `display: grid; grid-template-columns: repeat(${$compareStore.length}, 1fr); gap: 1rem;`}
-			>
+		<div class="overflow-x-auto pb-4">
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 				{#each $compareStore as product (product.code)}
 					<div class="relative rounded-lg border p-2">
 						<button
 							class="btn btn-circle btn-xs btn-ghost absolute top-2 right-2"
 							onclick={() => compareStore.removeProduct(product.code)}
 							aria-label="Remove product from comparison"
-							>	
+						>
 							<span class="icon-[mdi--close] h-3 w-3"></span>
 						</button>
 
@@ -95,7 +78,13 @@
 											class="h-6"
 										/>
 									</div>
-									<div><img src={getNovaImage(product.nova_group)} alt="nova" class="h-6" /></div>
+									<div>
+										<img
+											src={getNovaImage(String(product.nova_group))}
+											alt="nova"
+											class="h-6"
+										/>
+									</div>
 									<div>
 										<img
 											src={getEcoscoreImage(product.ecoscore_grade)}
