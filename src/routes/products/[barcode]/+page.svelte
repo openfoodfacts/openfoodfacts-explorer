@@ -22,6 +22,18 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 
+	let isShareSupported = navigator?.share != null;
+
+	async function sharePage() {
+		try {
+			await navigator.share({
+				url: window.location.href
+			});
+		} catch (error) {
+			console.error('Error sharing the page:', error);
+		}
+	}
+
 	interface Props {
 		data: PageData;
 	}
@@ -43,14 +55,15 @@
 			{product.product_name ?? product.code}
 		</h1>
 
-		<a
-			href={'https://world.openfoodfacts.org/product/' + product.code}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="link me-4"
-		>
-			See on OpenFoodFacts
-		</a>
+		<div class="flex items-center justify-center gap-2">
+			<a
+				href={'https://world.openfoodfacts.org/product/' + product.code}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link me-4"
+			>
+				See on OpenFoodFacts
+			</a>
 
 		{#if user != null}
 			<a
@@ -65,6 +78,14 @@
 				{/if}
 			</a>
 		{/if}
+  
+			{#if isShareSupported}
+				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
+					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
+					<span class="hidden md:block">Share</span>
+				</button>
+			{/if}
+		</div>
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
