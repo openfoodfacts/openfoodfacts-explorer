@@ -48,7 +48,7 @@
 				target="_blank"
 				aria-label="Open Food Facts X (formerly Twitter)"
 			>
-				<span class="icon-[logos--x] h-6 w-5"></span>
+				<span class="icon-[simple-icons--x] h-6 w-5 text-white dark:text-black"></span>
 			</a>
 			<a
 				href="https://www.facebook.com/OpenFoodFacts?utm_source=off&utf_medium=web"
