@@ -36,11 +36,11 @@
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) [After the fact documentation of openfoodfacts-explorer](https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?m=auto&t=RokuCr1uXrGFMhTB-6))
 ## Weekly meetings
 
-- We e-meet Thursdays at 12:30 Paris Time (11:30 London Time, 17:00 IST, 03:30 AM PT)
-- ![Google Meet](TODO) Video call link: <TODO>
-- Join by phone: TODO
+- We e-meet Wednesdays · 11:00 – 11:25am - Time zone: Europe/Paris
+- ![Google Meet](https://meet.google.com/uep-fhvf-gto) Video call link: https://meet.google.com/uep-fhvf-gto
+- Join by phone: https://tel.meet/uep-fhvf-gto?pin=8160344286211
 - Add the Event to your Calendar by [adding the Open Food Facts community calendar to your calendar](https://wiki.openfoodfacts.org/Events)
-- [Weekly Agenda](TODO): please add the Agenda items as early as you can. Make sure to check the Agenda items in advance of the meeting, so that we have the most informed discussions possible, leading to argumented decisions.
+- [Weekly Agenda](https://docs.google.com/document/d/1BGHfvrgx5eFIGjK8aTNPK2QwAggRp4oohGuYG9lNX8g/edit?tab=t.0): please add the Agenda items as early as you can. Make sure to check the Agenda items in advance of the meeting, so that we have the most informed discussions possible, leading to argumented decisions.
 - The meeting will handle Agenda items first, and if time permits, collaborative bug triage.
 - We strive to timebox the core of the meeting (decision making) to 30 minutes, with an optional free discussion/live debugging afterwards.
 - We take comprehensive notes in the Weekly Agenda of agenda item discussions and of decisions taken.
