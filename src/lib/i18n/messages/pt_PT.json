@@ -1,0 +1,89 @@
+{
+	"nutriscore": "Nutri-Score",
+	"ecoscore": "Eco-Score",
+	"nova": "Nova - Ultra-processing levels",
+	"settings_link": "Definições",
+	"folksonomy_link": "Folksonomy",
+	"world_option": "World",
+	"github_link": "GitHub",
+	"search": {
+		"placeholder": "Query or barcode",
+		"go": "Go",
+		"scan": "Digitalizar um código de barras",
+		"button": "Procurar"
+	},
+	"auth": {
+		"username": "Nome de utilizador",
+		"password": "Palavra-passe",
+		"authenticated": "Authenticated",
+		"signin": "Iniciar sessão",
+		"signout": "Terminar sessão",
+		"authenticating": "Authenticating...",
+		"success": "Sucesso",
+		"failed": "Falhou",
+		"enter_username": "Enter username",
+		"enter_password": "Enter password",
+		"status": "Estado",
+		"actions": "Actions"
+	},
+	"general": {
+		"language": "Idioma",
+		"country": "País",
+		"loading": "A carregar...",
+		"warning": "Aviso",
+		"notes": "Notes",
+		"summary": "Resumo",
+		"product_not_found": "Produto não encontrado",
+		"error_occurred": "error occurred:",
+		"errors_occurred": "errors occurred:"
+	},
+	"settings": {
+		"general": "Geral",
+		"influences": "Influences",
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+	},
+	"folksonomy": {
+		"title": "Folksonomy Engine",
+		"subtitle": "Keys Explorer",
+		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
+		"search_placeholder": "Search keys...",
+		"keys_found": "keys found",
+		"key_found": "key found",
+		"for": "para"
+	},
+	"home": {
+		"welcome": "Welcome to",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+	},
+	"product": {
+		"edit": {
+			"add_language": "Adicionar um idioma",
+			"search_languages": "Search languages to add",
+			"no_languages_found": "No languages found",
+			"name": "Nome",
+			"quantity": "Quantidade",
+			"emb_code": "EMB Code (Producer code)",
+			"packaging": "Embalagem",
+			"manufacturing_places": "Manufacturing places",
+			"categories": "Categories:",
+			"labels": "Etiquetas",
+			"brands": "Marcas",
+			"stores": "Lojas",
+			"origins": "Origens",
+			"countries": "Países",
+			"website_url": "Website URL",
+			"ingredients": "Ingredientes",
+			"ingredients_list": "Lista de ingredientes",
+			"no_ingredients_image": "No ingredients image",
+			"nutritional_information": "Nutritional Information",
+			"serving_size": "Serving Size",
+			"no_nutrition_data": "No nutrition information on the product",
+			"no_nutrition_specified": "No nutrition data specified",
+			"comment": "Comentário",
+			"comment_placeholder": "Add a comment to this edit",
+			"submit": "Enviar",
+			"debug": "Debug"
+		}
+	}
+}
