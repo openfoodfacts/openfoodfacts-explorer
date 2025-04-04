@@ -1,0 +1,89 @@
+{
+	"nutriscore": "Nutri-Score",
+	"ecoscore": "Eco-Score",
+	"nova": "Nova - Ultra-processing levels",
+	"settings_link": "Ayarlar",
+	"folksonomy_link": "Folksonomy",
+	"world_option": "World",
+	"github_link": "GitHub",
+	"search": {
+		"placeholder": "Query or barcode",
+		"go": "Go",
+		"scan": "Barkod tara",
+		"button": "Ara"
+	},
+	"auth": {
+		"username": "Kullanıcı adı",
+		"password": "Şifre",
+		"authenticated": "Authenticated",
+		"signin": "Giriş Yap",
+		"signout": "Çıkış yap",
+		"authenticating": "Authenticating...",
+		"success": "Başarılı",
+		"failed": "Başarısız oldu",
+		"enter_username": "Enter username",
+		"enter_password": "Enter password",
+		"status": "Durum",
+		"actions": "Actions"
+	},
+	"general": {
+		"language": "Dil",
+		"country": "Ülke",
+		"loading": "Yükleniyor...",
+		"warning": "Uyarı",
+		"notes": "Notes",
+		"summary": "Özet",
+		"product_not_found": "Ürün bulunamadı",
+		"error_occurred": "error occurred:",
+		"errors_occurred": "errors occurred:"
+	},
+	"settings": {
+		"general": "Genel",
+		"influences": "Influences",
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+	},
+	"folksonomy": {
+		"title": "Folksonomy Engine",
+		"subtitle": "Keys Explorer",
+		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
+		"search_placeholder": "Search keys...",
+		"keys_found": "keys found",
+		"key_found": "key found",
+		"for": "için"
+	},
+	"home": {
+		"welcome": "Welcome to",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+	},
+	"product": {
+		"edit": {
+			"add_language": "Add a language",
+			"search_languages": "Search languages to add",
+			"no_languages_found": "No languages found",
+			"name": "İsim",
+			"quantity": "Miktar",
+			"emb_code": "EMB Code (Producer code)",
+			"packaging": "Ambalaj",
+			"manufacturing_places": "Manufacturing places",
+			"categories": "Categories:",
+			"labels": "Etiketler",
+			"brands": "Markalar",
+			"stores": "Mağazalar",
+			"origins": "Kökenleri",
+			"countries": "Ülkeler",
+			"website_url": "Website URL",
+			"ingredients": "Malzemeler",
+			"ingredients_list": "İçindekiler listesi",
+			"no_ingredients_image": "No ingredients image",
+			"nutritional_information": "Nutritional Information",
+			"serving_size": "Serving Size",
+			"no_nutrition_data": "No nutrition information on the product",
+			"no_nutrition_specified": "No nutrition data specified",
+			"comment": "Comment",
+			"comment_placeholder": "Add a comment to this edit",
+			"submit": "Gönder",
+			"debug": "Debug"
+		}
+	}
+}
