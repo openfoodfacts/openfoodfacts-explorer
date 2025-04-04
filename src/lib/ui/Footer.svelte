@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { writable } from 'svelte/store';
+	import { preferences } from '$lib/settings';
+
 	const projectLinks = [
 		{ url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' },
 		{
@@ -27,10 +30,115 @@
 		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' },
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
 	];
+
+	const userLanguage = writable('en');
+	const userCountry = writable('US');
+	const apple_badgePath = writable('');
+	const playstore_badgePath = writable('');
+	let apple_defaultPath = `/footer/app_store_badges/appstore_US.svg`;
+	let playstore_defaultPath = `/footer/play_store_badges/en_get.svg`;
+
+	$effect(() => {
+		userLanguage.set($preferences.lang || 'en');
+		userCountry.set($preferences.country || 'US');
+	});
+
+	async function checkImageExists(url: string) {
+		try {
+			const response = await fetch(url, { method: 'HEAD' });
+			return response.ok;
+		} catch {
+			return false;
+		}
+	}
+
+	$effect(() => {
+		(async () => {
+			const lang = $userLanguage;
+			const playstorePath = `/footer/play_store_badges/${lang}_get.svg`;
+			const exists = await checkImageExists(playstorePath);
+			playstore_badgePath.set(exists ? playstorePath : `/footer/play_store_badges/en_get.svg`);
+		})();
+		$effect(() => {
+			(async () => {
+				const country = $userCountry;
+				const applePath = `/footer/app_store_badges/appstore_${country.toUpperCase()}.svg`;
+				const exists = await checkImageExists(applePath);
+				apple_badgePath.set(exists ? applePath : `/footer/app_store_badges/appstore_US.svg`);
+			})();
+		});
+	});
 </script>
 
+<div class="mt-10 flex flex-wrap items-center justify-evenly gap-3 px-2 py-5 md:px-6">
+	<div>
+		<img src="/footer/off_footer.svg" alt="Open Food Facts" class="h-28" />
+	</div>
+	<div class="flex flex-col gap-1 text-center text-xl font-semibold">
+		<div class="text-2xl font-semibold tracking-tight uppercase">Install the App!</div>
+		<div>
+			Scan Your
+			<span
+				class="inline-block rotate-3 rounded-md bg-[#0064C8] px-1 font-semibold text-white uppercase"
+				>Everyday</span
+			>
+		</div>
+		<div class="flex justify-center">
+			<span
+				class="inline-block -rotate-2 rounded-md bg-[#FF8714] px-1 font-semibold text-white uppercase"
+				>foods</span
+			>
+		</div>
+	</div>
+	<div class="flex flex-wrap items-center justify-center gap-2 md:justify-end">
+		{#if playstore_badgePath}
+			<a
+				href="https://play.google.com/store/apps/details?id=org.openfoodfacts.scanner&utm_source=off&utm_medium=web&utm_campaign=install_the_app_android_footer_en"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="-mx-3"
+			>
+				<img
+					src={$playstore_badgePath}
+					alt="Google Play Store badge"
+					class="h-16 w-auto"
+					onerror={() => playstore_badgePath.set(playstore_defaultPath)}
+				/>
+			</a>
+		{/if}
+		<a
+			href="https://f-droid.org/packages/openfoodfacts.github.scrachx.openfood"
+			target="_blank"
+			class="-mx-2"
+		>
+			<img src="/footer/f-droid.png" alt="" class="h-16" />
+		</a>
+		<a href="https://github.com/openfoodfacts/smooth-app/releases/tag/v4.19.0" target="_blank">
+			<img
+				src="/footer/apk_android.svg"
+				alt=""
+				class="h-[42px] rounded-md border-[1px] border-[#bfbfbf]"
+			/>
+		</a>
+		{#if apple_badgePath}
+			<a
+				href="https://apps.apple.com/app/open-food-facts/id588797948?utm_source=off&utf_medium=web&utm_campaign=install_the_app_ios_footer_en"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<img
+					src={$apple_badgePath}
+					alt="App Store Badge"
+					class="h-[42px] w-auto"
+					onerror={() => apple_badgePath.set(apple_defaultPath)}
+				/>
+			</a>
+		{/if}
+	</div>
+</div>
+
 <div
-	class="bg-secondary text-secondary-content mt-10 flex flex-col justify-between gap-5 px-10 py-8 md:flex-row md:px-20 lg:px-40"
+	class="bg-secondary text-secondary-content flex flex-col justify-between gap-5 px-10 py-8 md:flex-row md:px-20 lg:px-40"
 >
 	<div class="flex flex-col gap-1">
 		<div class="text-lg font-bold">Join the community</div>
