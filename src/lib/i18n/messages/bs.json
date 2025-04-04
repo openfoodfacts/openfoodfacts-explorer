@@ -1,0 +1,89 @@
+{
+	"nutriscore": "Nutri-Score",
+	"ecoscore": "Eco-Score",
+	"nova": "Nova - Ultra-processing levels",
+	"settings_link": "Postavke",
+	"folksonomy_link": "Folksonomy",
+	"world_option": "World",
+	"github_link": "GitHub",
+	"search": {
+		"placeholder": "Query or barcode",
+		"go": "Go",
+		"scan": "Scan a barcode",
+		"button": "Pretraži"
+	},
+	"auth": {
+		"username": "Username",
+		"password": "Password",
+		"authenticated": "Authenticated",
+		"signin": "Sign in",
+		"signout": "Sign out",
+		"authenticating": "Authenticating...",
+		"success": "Success",
+		"failed": "Failed",
+		"enter_username": "Enter username",
+		"enter_password": "Enter password",
+		"status": "Status",
+		"actions": "Actions"
+	},
+	"general": {
+		"language": "Language",
+		"country": "Country",
+		"loading": "Loading...",
+		"warning": "Warning",
+		"notes": "Notes",
+		"summary": "Summary",
+		"product_not_found": "Product not found",
+		"error_occurred": "error occurred:",
+		"errors_occurred": "errors occurred:"
+	},
+	"settings": {
+		"general": "General",
+		"influences": "Influences",
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+	},
+	"folksonomy": {
+		"title": "Folksonomy Engine",
+		"subtitle": "Keys Explorer",
+		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
+		"search_placeholder": "Search keys...",
+		"keys_found": "keys found",
+		"key_found": "key found",
+		"for": "for"
+	},
+	"home": {
+		"welcome": "Welcome to",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+	},
+	"product": {
+		"edit": {
+			"add_language": "Add a language",
+			"search_languages": "Search languages to add",
+			"no_languages_found": "No languages found",
+			"name": "Name",
+			"quantity": "Količina",
+			"emb_code": "EMB Code (Producer code)",
+			"packaging": "Ambalaža",
+			"manufacturing_places": "Manufacturing places",
+			"categories": "Categories:",
+			"labels": "Oznake",
+			"brands": "Brendovi",
+			"stores": "Stores",
+			"origins": "Origins",
+			"countries": "Zemlje",
+			"website_url": "Website URL",
+			"ingredients": "Sastojci",
+			"ingredients_list": "Ingredients list",
+			"no_ingredients_image": "No ingredients image",
+			"nutritional_information": "Nutritional Information",
+			"serving_size": "Serving Size",
+			"no_nutrition_data": "No nutrition information on the product",
+			"no_nutrition_specified": "No nutrition data specified",
+			"comment": "Comment",
+			"comment_placeholder": "Add a comment to this edit",
+			"submit": "Pošalji",
+			"debug": "Debug"
+		}
+	}
+}
