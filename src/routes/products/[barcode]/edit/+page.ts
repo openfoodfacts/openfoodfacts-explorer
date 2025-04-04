@@ -1,6 +1,6 @@
 import { getProduct, getTaxo } from '$lib/api';
 import type { Category, Origin, Label, Brand, Store, Country } from '$lib/api';
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
@@ -9,7 +9,7 @@ export const load = (async ({ fetch, params }) => {
 	const user = get(preferences).username;
 
 	if (!user) {
-		throw redirect(302, '/settings?error=You must be logged in to edit a product');
+		error(401, { message: 'User not Authenticated' });
 	}
 	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
 		getProduct(params.barcode, fetch),
