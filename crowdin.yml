@@ -1,0 +1,14 @@
+project_id: 'OPENFOODFACTS-EXPLORER'
+api_token: 'OPENFOODFACTS-EXPLORER'
+base_path: '.'
+base_url: 'https://api.crowdin.com'
+
+'preserve_hierarchy': true
+
+files:
+  [
+    {
+      'source': 'src/lib/i18n/messages/en.json',
+      'translation': 'src/lib/i18n/messages/%two_letters_code%.json'
+    }
+  ]
