@@ -1,28 +1,28 @@
 {
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Eco-Score",
-	"nova": "Nova - Ultra-processing levels",
+	"nova": "Nova - Niveaux d'ultra-transformations",
 	"settings_link": "Paramètres",
-	"folksonomy_link": "Folksonomy",
-	"world_option": "World",
+	"folksonomy_link": "Folksonomie",
+	"world_option": "International",
 	"github_link": "GitHub",
 	"search": {
-		"placeholder": "Query or barcode",
-		"go": "Go",
+		"placeholder": "Requête ou code-barres",
+		"go": "Aller",
 		"scan": "Scanner un code-barres",
 		"button": "Rechercher"
 	},
 	"auth": {
 		"username": "Identifiant",
 		"password": "Mot de passe",
-		"authenticated": "Authenticated",
+		"authenticated": "Authentifié",
 		"signin": "Se connecter",
 		"signout": "Se déconnecter",
-		"authenticating": "Authenticating...",
+		"authenticating": "Authentification en cours...",
 		"success": "Succès",
 		"failed": "Echoué",
-		"enter_username": "Enter username",
-		"enter_password": "Enter password",
+		"enter_username": "Saisissez le nom d'utilisateur",
+		"enter_password": "Saisir le mot de passe",
 		"status": "État ",
 		"actions": "Actions"
 	},
@@ -34,56 +34,56 @@
 		"notes": "Notes",
 		"summary": "Résumé",
 		"product_not_found": "Produit introuvable",
-		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"error_occurred": "une erreur est survenue:",
+		"errors_occurred": "des erreurs se sont produites :"
 	},
 	"settings": {
 		"general": "Général",
-		"influences": "Influences",
-		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+		"influences": "Influenceurs",
+		"login": "Connexion (enregistrée dans le stockage local) [DANGEREUX - DÉBOGAGE UNIQUEMENT]"
 	},
 	"folksonomy": {
-		"title": "Folksonomy Engine",
-		"subtitle": "Keys Explorer",
-		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
-		"search_placeholder": "Search keys...",
-		"keys_found": "keys found",
-		"key_found": "key found",
+		"title": "Moteur Folksonomy",
+		"subtitle": "Explorateur de clés",
+		"description": "Folksonomy permet aux utilisateurs d'ajouter des tags personnalisés aux produits. Parcourez toutes les clés disponibles ci-dessous, recherchez des clés spécifiques ou cliquez sur n'importe quelle clé pour voir les produits qui l'utilisent.",
+		"search_placeholder": "Rechercher des clés...",
+		"keys_found": "clés trouvées",
+		"key_found": "clé trouvée",
 		"for": "pour"
 	},
 	"home": {
-		"welcome": "Welcome to",
-		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
-		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+		"welcome": "Bienvenue sur",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> est un outil pour explorer la base de données OpenFoodFacts.",
+		"intro_2": "Vous pouvez entrer un code de produit dans la barre de recherche ci-dessus pour commencer ou cliquer sur l'un des produits ci-dessous."
 	},
 	"product": {
 		"edit": {
 			"add_language": "Ajouter une langue",
-			"search_languages": "Search languages to add",
-			"no_languages_found": "No languages found",
+			"search_languages": "Rechercher des langues à ajouter",
+			"no_languages_found": "Aucune langue trouvée",
 			"name": "Nom",
 			"quantity": "Quantité",
-			"emb_code": "EMB Code (Producer code)",
+			"emb_code": "Code EMB (code producteur)",
 			"packaging": "Emballage",
-			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"manufacturing_places": "Lieu de fabrication",
+			"categories": "Catégories :",
 			"labels": "Labels",
 			"brands": "Marques",
 			"stores": "Magasins",
 			"origins": "Origines",
 			"countries": "Pays",
-			"website_url": "Website URL",
+			"website_url": "URL du site",
 			"ingredients": "Ingrédients",
 			"ingredients_list": "Liste des ingrédients",
-			"no_ingredients_image": "No ingredients image",
-			"nutritional_information": "Nutritional Information",
-			"serving_size": "Serving Size",
-			"no_nutrition_data": "No nutrition information on the product",
-			"no_nutrition_specified": "No nutrition data specified",
+			"no_ingredients_image": "Aucune image d'ingrédient",
+			"nutritional_information": "Informations Nutritionnelles",
+			"serving_size": "Taille Portion",
+			"no_nutrition_data": "Aucune information nutritionnelle sur le produit",
+			"no_nutrition_specified": "Aucune donnée nutritionnelle spécifiée",
 			"comment": "Commentaire",
-			"comment_placeholder": "Add a comment to this edit",
+			"comment_placeholder": "Ajouter un commentaire à cette modification",
 			"submit": "Envoyer",
-			"debug": "Debug"
+			"debug": "Débogage"
 		}
 	}
 }
