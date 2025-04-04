@@ -7,6 +7,17 @@
 
 # Open Food Facts Explorer: the modern JS frontend to Open Food Facts
 
+## Warning
+- Please ask assignment before starting to code. First asking, first assigned. We have enough issues for everyone. Please open a matching issue and get consensus before raising PRs.
+- DO NOT create a bug and its PR at the same time. Create the issue first and ask to be assigned.
+- Do not try to race other contributors to solving an issue. Try something else, or try collaborating or helping one another on solving it.
+- DO NOT jump to implement an open issue before an agreement is reached on the design.
+- LINT your PRs before sending them pnpm
+- Please mention GenAI tool you used if you used it (Copilot in an IDE, Copilot Workspace, Gemini…)
+
+## Design
+- [![Sketch](https://img.shields.io/badge/Sketch-%23F24E1E.svg?logo=sketch&logoColor=white) Trying to create a digital twin of openfoodfacts-explorer](https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?node-id=1-53&t=XfEkgmUsvs6qiKr9-0)
+
 ## Features
 
 - Uses the [official Open Food Facts NodeJS SDK](https://github.com/openfoodfacts/openfoodfacts-nodejs)
