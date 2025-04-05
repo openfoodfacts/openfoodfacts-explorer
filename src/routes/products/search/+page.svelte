@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import type { PageData } from './$types';
-	import { t } from '$lib/translations';
 
 	interface Props {
 		data: PageData;
@@ -60,7 +59,7 @@
 			<p>We couldn't find any products matching your search</p>
 			<a
 				class="btn btn-secondary join-item mt-5 px-10"
-				href="/addProduct?barcode={page.url.searchParams.get('q')}">{$t('common.add_product')}</a
+				href="/addProduct?barcode={page.url.searchParams.get('q')}">Add new Product</a
 			>
 		</div>
 	{/if}
