@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { writable, get } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 
 	import {
 		getOrDefault,
@@ -70,10 +70,10 @@
 		ensureNutriments();
 		productStore.update((store) => {
 			if (value === null) {
-				// @ts-ignore - We know this is a valid key for nutriments
+				// @ts-expect-error - We know this is a valid key for nutriments
 				delete store.nutriments[key];
 			} else {
-				// @ts-ignore - We know this is a valid key for nutriments
+				// @ts-expect-error - We know this is a valid key for nutriments
 				store.nutriments[key] = value;
 			}
 			return store;
@@ -135,19 +135,23 @@
 
 <div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
 	<input type="checkbox" />
-	<div class="collapse-title font-semibold">Add a language</div>
+	<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
 	<div class="collapse-content text-sm">
 		<label class="input w-full">
 			<span class="icon-[mdi--search] h-5 w-5"></span>
-			<input type="search" placeholder="Search languages to add" bind:value={languageSearch} />
+			<input
+				type="search"
+				placeholder={$_('product.edit.search_languages')}
+				bind:value={languageSearch}
+			/>
 		</label>
 		{#if filteredLanguages.length === 0}
-			<p class="mt-4 text-center opacity-70">No languages found</p>
+			<p class="mt-4 text-center opacity-70">{$_('product.edit.no_languages_found')}</p>
 		{:else}
 			<div
 				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
 			>
-				{#each filteredLanguages as code}
+				{#each filteredLanguages as code (code)}
 					<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
 						{getLanguage(code)}
 					</button>
@@ -158,7 +162,7 @@
 </div>
 
 <div class="tabs tabs-box">
-	{#each Object.keys($productStore.languages_codes) as code}
+	{#each Object.keys($productStore.languages_codes) as code (code)}
 		<input
 			type="radio"
 			name="name_tabs"
@@ -167,7 +171,7 @@
 			defaultChecked={code === $productStore.lang}
 		/>
 		<div class="tab-content form-control p-6">
-			<label for="">Name ({getLanguage(code)})</label>
+			<label for="">{$_('product.edit.name')} ({getLanguage(code)})</label>
 			<input
 				type="text"
 				class="input input-bordered w-full"
@@ -179,22 +183,22 @@
 
 <Card>
 	<div class="form-control mb-4">
-		<label for="">Quantity</label>
+		<label for="">{$_('product.edit.quantity')}</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
 	</div>
 
 	<div class="form-control mb-4">
-		<label for="">EMB Code (Producer code)</label>
+		<label for="">{$_('product.edit.emb_code')}</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
 	</div>
 
 	<div class="form-control mb-4">
-		<label for="">Packaging</label>
+		<label for="">{$_('product.edit.packaging')}</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
 	</div>
 
 	<div class="form-control mb-4">
-		<label for="">Manufacturing places</label>
+		<label for="">{$_('product.edit.manufacturing_places')}</label>
 		<input
 			type="text"
 			class="input input-bordered w-full"
@@ -203,27 +207,27 @@
 	</div>
 
 	<div class="form-control mb-4">
-		<label for="">Categories: </label>
+		<label for="">{$_('product.edit.categories')}</label>
 		<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
 	</div>
 	<div class="mb-4">
-		<label for="">Labels</label>
+		<label for="">{$_('product.edit.labels')}</label>
 		<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
 	</div>
 	<div class="mb-4">
-		<label for="">Brands</label>
+		<label for="">{$_('product.edit.brands')}</label>
 		<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
 	</div>
 	<div class="mb-4">
-		<label for="">Stores</label>
+		<label for="">{$_('product.edit.stores')}</label>
 		<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
 	</div>
 	<div class="mb-4">
-		<label for="">Origins</label>
+		<label for="">{$_('product.edit.origins')}</label>
 		<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
 	</div>
 	<div class="mb-4">
-		<label for="">Countries</label>
+		<label for="">{$_('product.edit.countries')}</label>
 		<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
 	</div>
 
@@ -232,15 +236,15 @@
 	</div>
 
 	<div class="mb-4">
-		<label for="">Website URL</label>
+		<label for="">{$_('product.edit.website_url')}</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
 	</div>
 </Card>
 
 <Card>
-	<h3 class="mb-4 text-3xl font-bold">Ingredients</h3>
+	<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
 	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes) as code}
+		{#each Object.keys($productStore.languages_codes) as code (code)}
 			<input
 				type="radio"
 				name="ingredients_tabs"
@@ -252,9 +256,9 @@
 				{#if getIngredientsImage(code)}
 					<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
 				{:else}
-					<p class="alert alert-warning mb-4">No ingredients image</p>
+					<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
 				{/if}
-				<label for="">Ingredients list ({getLanguage(code)})</label>
+				<label for="">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
 				<div class="form-control mb-4">
 					<textarea
 						class="textarea textarea-bordered h-40 w-full"
@@ -267,9 +271,9 @@
 </Card>
 
 <Card>
-	<h3 class="mb-4 text-3xl font-bold">Nutritional Information</h3>
+	<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.nutritional_information')}</h3>
 	<div class="form-control mb-4">
-		<label for="">Serving Size</label>
+		<label for="">{$_('product.edit.serving_size')}</label>
 		<input
 			type="text"
 			class="input input-bordered w-full"
@@ -280,7 +284,7 @@
 	<div class="form-control mb-4">
 		<label class="label cursor-pointer justify-start gap-2">
 			<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
-			<span class="label-text">No nutrition information on the product</span>
+			<span class="label-text">{$_('product.edit.no_nutrition_data')}</span>
 		</label>
 	</div>
 
@@ -369,25 +373,25 @@
 			</div>
 		</div>
 	{:else}
-		<div class="alert alert-info">{$t('product.nutrition.not_specified')}</div>
+		<div class="alert alert-info">{$_('product.edit.no_nutrition_specified')}</div>
 	{/if}
 </Card>
 
 <Card>
 	<div class="form-control mb-4">
-		<label for="comment">Comment</label>
+		<label for="comment">{$_('product.edit.comment')}</label>
 		<input
 			id="comment"
 			type="text"
 			class="input input-bordered w-full"
-			placeholder="Add a comment to this edit"
+			placeholder={$_('product.edit.comment_placeholder')}
 			bind:value={$comment}
 		/>
 	</div>
-	<button class="btn btn-primary w-full" onclick={submit}> Submit </button>
+	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.submit')}</button>
 </Card>
 
 <details>
-	<summary>Debug</summary>
+	<summary>{$_('product.edit.debug')}</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>

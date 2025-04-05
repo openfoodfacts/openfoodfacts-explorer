@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
-	import { API_HOST, PRODUCT_EDIT_URL, PRODUCT_REPORT_URL } from '$lib/const';
+	import { PRODUCT_REPORT_URL } from '$lib/const';
+	import { _ } from '$lib/i18n';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -110,6 +111,6 @@
 	{:else if !isLoading}
 		{getButtonTitle(element.action_element.actions)}
 	{:else}
-		Loading...
+		{$_('general.loading')}
 	{/if}
 </button>

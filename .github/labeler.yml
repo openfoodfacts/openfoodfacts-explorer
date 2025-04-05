@@ -3,7 +3,7 @@
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
-🏷️ Folksonomy Project:
+🏷️ Folksonomy Engine:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
       - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
@@ -50,6 +50,7 @@ Settings:
 ✏️ Editing:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/+page.ts'
 Search:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/search/**/*'
@@ -65,6 +66,9 @@ User Interface:
 Nutrients:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+Footer:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/Footer.svelte'
 # 👮 Nutri-Patrol:
 #  - changed-files:
 #      - any-glob-to-any-file: ''

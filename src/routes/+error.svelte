@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { _ } from '$lib/i18n';
 
 	let message = $derived(page.error?.message);
 	let errors = $derived(page.error?.errors);
@@ -21,14 +22,15 @@
 
 		{#if errors != null}
 			{#if isError('product_not_found')}
-				<h2>Product not found</h2>
+				<h2>{$_('general.product_not_found')}</h2>
 			{:else}
 				<p>
-					{errors.length} error{#if errors.length > 1}s{/if} occurred:
+					{errors.length}
+					{errors.length === 1 ? $_('general.error_occurred') : $_('general.errors_occurred')}
 				</p>
 
 				<ul class="list-disc">
-					{#each errors as error}
+					{#each errors as error, i (i)}
 						<li class="ms-4 mb-2 list-none">
 							<ul
 								class="border-l-error-content grid grid-cols-[auto_auto] gap-x-2 border-l-2 ps-2 font-mono text-xs"
