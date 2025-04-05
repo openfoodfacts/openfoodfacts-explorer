@@ -50,6 +50,7 @@ Settings:
 ✏️ Editing:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/+page.ts'
 Search:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/search/**/*'

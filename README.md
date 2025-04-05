@@ -5,7 +5,7 @@
 </picture>
 <br>
 
-# Open Food Facts explorer: the modern JS frontend to Open Food Facts
+# Open Food Facts Explorer: the modern JS frontend to Open Food Facts
 
 ## Features
 
