@@ -390,7 +390,7 @@
 	</div>
 </Card>
 <div class="sticky-save-container">
-	<button class="btn btn-primary w-full" onclick={submit}> Save </button>
+	<button class="btn btn-primary w-full" onclick={submit}>Save</button>
 </div>
 
 <details>
