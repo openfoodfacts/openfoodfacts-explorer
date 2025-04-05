@@ -5,14 +5,13 @@
 	import { page } from '$app/stores';
 
 	const barcode = $page.url.searchParams.get('barcode') ?? '';
-	export let user: {user_id: string; password: string} | undefined = undefined;
+	export let user: { user_id: string; password: string } | undefined = undefined;
 
 	let currentUser = {
 		isLoggedIn: false,
 		user_id: user?.user_id,
 		password: user?.password
 	};
-
 
 	let newProduct = writable({
 		_id: '',
@@ -224,98 +223,26 @@
 	async function submit(fetch: typeof window.fetch = window.fetch) {
 		const productData = get(newProduct);
 
-        const processedNutriments = { ...productData.nutriments };
+		const processedNutriments = { ...productData.nutriments };
 		for (const nutrient in unitSelection) {
 			const nutrientKey = `${nutrient.toLowerCase()}_100g`;
 			if (processedNutriments[nutrientKey as keyof typeof processedNutriments] !== undefined) {
-				(processedNutriments as Record<string, any>)[`${nutrientKey}_unit`] = unitSelection[nutrient as keyof typeof unitSelection];
+				(processedNutriments as Record<string, any>)[`${nutrientKey}_unit`] =
+					unitSelection[nutrient as keyof typeof unitSelection];
 			}
 		}
 
-        productData.nutriments = processedNutriments;
-
-        console.log('Processed product data:', productData);
-		// try {
-		// 	const response = await addOrEditProductV2(productData, fetch);
-		// 	if (response) {
-		// 		alert('Product added successfully!');
-		// 	} else {
-		// 		alert('Failed to add product.');
-		// 	}
-		// } catch (error) {
-		// 	console.error('Error adding product:', error);
-		// 	alert('An error occurred while adding the product.');
-		// }
-	}
-
-	async function handleImageUpload(event: Event, type: 'front' | 'ingredients') {
-		const file = (event.target as HTMLInputElement).files?.[0];
-		if (file) {
-			try {
-				const fileReader = new FileReader();
-				fileReader.readAsDataURL(file);
-				fileReader.onload = async () => {
-					const dataUrl = fileReader.result as string;
-
-					const payload = new URLSearchParams();
-					payload.append('user_id', currentUser.user_id ?? '');
-					payload.append('password', currentUser.password ?? '');
-					payload.append('code', barcode);
-					payload.append('imageField', type);
-					payload.append(`imgupload_${type}`, dataUrl);
-
-					console.log('payload', payload);
-
-					const response = await fetch(
-						'https://world.openfoodfacts.net/cgi/product_image_upload.pl',
-						{
-							method: 'POST',
-							body: JSON.stringify(payload),
-							headers: {
-								'Content-Type': 'application/x-www-form-urlencoded',
-								'User-Agent': 'OpenFoodFactsExplorer/1.0'
-							}
-						}
-					);
-
-					console.log('response', response);
-
-					if (!response.ok) {
-						console.error('Failed to upload image:', response.status, response.statusText);
-						alert(`Failed to upload image: ${response.statusText}`);
-						return;
-					}
-
-					try {
-						const data = await response.json();
-						console.log(data)
-						if (data.status === 1) {
-							newProduct.update((product) => {
-								if (type === 'front') {
-									product.image_front_url = data.image.url;
-								} else if (type === 'ingredients') {
-									product.image_ingredients_url = data.image.url;
-								}
-								return product;
-							});
-							alert('Image uploaded successfully!');
-						} else {
-							alert(`Failed to upload image: ${data.error}`);
-						}
-					} catch (error) {
-						console.error('Error parsing response:', error);
-						alert('Unexpected error occurred.');
-					}
-				};
-
-				fileReader.onerror = (error) => {
-					console.error('Error reading file:', error);
-					alert('An error occurred while reading the file.');
-				};
-			} catch (error) {
-				console.error('Error uploading image:', error);
-				alert('An error occurred while uploading the image.');
+		productData.nutriments = processedNutriments;
+		console.log(productData);
+		try {
+			const response = await addOrEditProductV2(productData, fetch);
+			if (response) {
+				alert('Product added successfully');
+			} else {
+				alert('Failed to add product');
 			}
+		} catch (error) {
+			console.error('Error adding product:', error);
 		}
 	}
 </script>
@@ -411,74 +338,6 @@
 			bind:value={$newProduct.countries}
 			placeholder="Enter countries (comma-separated)"
 		/>
-	</div>
-</Card>
-
-<Card>
-	<h3 class="mb-4 text-3xl font-bold">Images</h3>
-	<div class="form-control mb-4">
-		<label for="front_image">Front Packaging Photo</label>
-		<label
-			for="front_image"
-			class="relative mt-1 flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300"
-		>
-			{#if $newProduct.image_front_url != ''}
-				<div class="flex flex-col items-center">
-					<span class="icon-[mdi--check-circle] text-4xl text-green-500"></span>
-					<a
-						href={$newProduct.image_front_url}
-						target="_blank"
-						class="mt-2 text-blue-500 underline"
-					>
-						View Image
-					</a>
-				</div>
-			{:else}
-				<div class="flex flex-col items-center">
-					<span class="icon-[mdi--plus-circle] text-4xl text-gray-500"></span>
-					<span class="mt-2 text-gray-500">Upload Image</span>
-				</div>
-			{/if}
-			<input
-				id="front_image"
-				type="file"
-				class="hidden"
-				accept="image/*"
-				onchange={(e) => handleImageUpload(e, 'front')}
-			/>
-		</label>
-	</div>
-	<div class="form-control mb-4">
-		<label for="ingredients_image">Ingredients Photo</label>
-		<label
-			for="ingredients_image"
-			class="relative mt-1 flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300"
-		>
-			{#if $newProduct.image_ingredients_url != ''}
-				<div class="flex flex-col items-center">
-					<span class="icon-[mdi--check-circle] text-4xl text-green-500"></span>
-					<a
-						href={$newProduct.image_ingredients_url}
-						target="_blank"
-						class="mt-2 text-blue-500 underline"
-					>
-						View Image
-					</a>
-				</div>
-			{:else}
-				<div class="flex flex-col items-center">
-					<span class="icon-[mdi--plus-circle] text-4xl text-gray-500"></span>
-					<span class="mt-2 text-gray-500">Upload Image</span>
-				</div>
-			{/if}
-			<input
-				id="ingredients_image"
-				type="file"
-				class="hidden"
-				accept="image/*"
-				onchange={(e) => handleImageUpload(e, 'ingredients')}
-			/>
-		</label>
 	</div>
 </Card>
 
