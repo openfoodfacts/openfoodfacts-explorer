@@ -3,9 +3,9 @@
 	export let product: any;
 
 	function convertToCET(unix: number) {
-        if (!unix || isNaN(unix)){
-            return 'unknown';
-        }
+		if (!unix || isNaN(unix)) {
+			return 'unknown';
+		}
 		const date = new Date(unix * 1000);
 		const options = {
 			timeZone: 'Europe/Paris',
@@ -27,16 +27,16 @@
 		return state.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 	}
 
-    const doneStates: string[] = [];
-    const toDoStates: string[] = [];
+	const doneStates: string[] = [];
+	const toDoStates: string[] = [];
 
-    product.states_hierarchy.forEach((state: string) => {
-        if (state.includes('to-be-completed')) {
-            toDoStates.push(formatState(state, true));
-        } else {
-            doneStates.push(formatState(state, false));
-        }
-    });
+	product.states_hierarchy.forEach((state: string) => {
+		if (state.includes('to-be-completed')) {
+			toDoStates.push(formatState(state, true));
+		} else {
+			doneStates.push(formatState(state, false));
+		}
+	});
 </script>
 
 <Card>
@@ -73,12 +73,11 @@
 
 	<div class="mt-4">
 		<span class="font-bold">Done:</span>
-        {doneStates.join(', ')}
+		{doneStates.join(', ')}
 	</div>
 
 	<div class="mt-4">
 		<span class="font-bold">To do:</span>
-        {toDoStates.join(', ')}
-
+		{toDoStates.join(', ')}
 	</div>
 </Card>
