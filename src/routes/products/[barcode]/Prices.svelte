@@ -61,12 +61,11 @@
 	let authStatus: undefined | boolean = $state();
 
 	let nearStores: OverpassAPIResult | undefined = $state();
+	let showNewPriceForm: boolean = $state(false);
 
 	onMount(async () => {
 		pricesApi = new PricesApi(fetch);
 		authenticated = await pricesApi.isAuthenticated();
-
-		nearStores = await getNearStores();
 	});
 
 	type NewPriceForm = {
@@ -103,6 +102,12 @@
 			setTimeout(() => {
 				authenticated = true;
 			}, 1000);
+		}
+	}
+
+	async function loadNearStores() {
+		if (!nearStores) {
+			nearStores = await getNearStores();
 		}
 	}
 
@@ -190,52 +195,64 @@
 		{#if authenticated == null}
 			<progress class="progress progress-primary"></progress>
 		{:else if authenticated}
-			<h3 class="text-2xl font-bold">Report a new price</h3>
-			<form
-				class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
-				onsubmit={preventDefault(submitPrice)}
-			>
-				<label for="price" class="label">
-					<span class="label-text">Price</span>
-				</label>
-				<input
-					type="number"
-					bind:value={newPrice.value}
-					name="price"
-					id="price"
-					class="input input-bordered"
-				/>
+			{#if !showNewPriceForm}
+				<button
+					class="btn btn-primary"
+					onclick={() => {
+						showNewPriceForm = true;
+						loadNearStores();
+					}}
+				>
+					Report a new price
+				</button>
+			{:else}
+				<h3 class="text-2xl font-bold">Report a new price</h3>
+				<form
+					class="my-2 grid grid-flow-col grid-rows-2 gap-x-3"
+					onsubmit={preventDefault(submitPrice)}
+				>
+					<label for="price" class="label">
+						<span class="label-text">Price</span>
+					</label>
+					<input
+						type="number"
+						bind:value={newPrice.value}
+						name="price"
+						id="price"
+						class="input input-bordered"
+					/>
 
-				<label for="currency" class="label">
-					<span class="label-text">Currency</span>
-				</label>
-				<input
-					class="input input-bordered"
-					bind:value={newPrice.currency}
-					type="text"
-					name="currency"
-					id="currency"
-				/>
+					<label for="currency" class="label">
+						<span class="label-text">Currency</span>
+					</label>
+					<input
+						class="input input-bordered"
+						bind:value={newPrice.currency}
+						type="text"
+						name="currency"
+						id="currency"
+					/>
 
-				<label for="store" class="label">
-					<span class="label-text">Store</span>
-				</label>
+					<label for="store" class="label">
+						<span class="label-text">Store</span>
+					</label>
 
-				{#if nearStores == null}
-					<div>Loading...</div>
-				{:else if nearStores.elements.length === 0}
-					<div>No stores found</div>
-				{:else}
-					<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
-						{#each nearStores?.elements as store (store.id)}
-							<option value={store.id}>{store.tags.name}</option>
-						{/each}
-					</select>
-				{/if}
+					{#if nearStores == null}
+						<div>Loading...</div>
+					{:else if nearStores.elements.length === 0}
+						<div>No stores found</div>
+					{:else}
+						<select class="select select-bordered" name="store" bind:value={newPrice.osm_id}>
+							{#each nearStores?.elements as store (store.id)}
+								<option value={store.id}>{store.tags.name}</option>
+							{/each}
+						</select>
+					{/if}
 
-				<div></div>
-				<button class="btn" type="submit">Submit</button>
-			</form>
+					<div></div>
+					<button class="btn" type="submit">Submit</button>
+				</form>
+			{/if}
 		{:else}
 			<h2 class="mb-4 text-2xl font-bold">Login</h2>
 			<form
