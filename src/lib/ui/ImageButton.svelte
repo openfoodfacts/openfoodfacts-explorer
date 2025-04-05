@@ -16,12 +16,12 @@
 
 <ImageModal bind:this={modal} />
 
-<div class="relative">
-	<button class="flex max-w-full justify-center" {onclick}>
+<div class="relative flex h-full items-center justify-center">
+	<button class="flex max-h-full max-w-full justify-center" {onclick}>
 		<img
 			{src}
 			{alt}
-			class="float-right h-full rounded-lg"
+			class="max-h-full max-w-full rounded-lg object-contain"
 			style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 		/>
 	</button>
