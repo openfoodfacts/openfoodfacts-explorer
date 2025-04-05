@@ -220,6 +220,54 @@
 		Nitrate: 'mg'
 	};
 
+	let selectedImage: File | null = null;
+	let isUploading = false;
+	let imageType: 'front' | 'ingredients' = 'front';
+
+	async function uploadImage() {
+		if (!selectedImage) {
+			alert('Please select an image to upload.');
+			return;
+		}
+
+		isUploading = true;
+		const formData = new FormData();
+		formData.append('code', barcode);
+		formData.append('imagefield', imageType);
+		formData.append(`imgupload_${imageType}`, selectedImage);
+
+		try {
+			const response = await fetch('https://world.openfoodfacts.org/cgi/product_image_upload.pl', {
+				method: 'POST',
+				body: formData,
+				headers: {
+					Authorization: `Basic ${btoa(`${currentUser.user_id}:${currentUser.password}`)}`
+				}
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+				if (result.status === 'status ok') {
+					const imageUrl = 'https://images.openfoodfacts.org' + result.files[0].thumbnailUrl;
+					if (imageType === 'front') {
+						$newProduct.image_front_url = imageUrl;
+					} else if (imageType === 'ingredients') {
+						$newProduct.image_ingredients_url = imageUrl;
+					}
+					alert('Image uploaded successfully!');
+				} else {
+					alert(`Image upload failed: ${result.error}`);
+				}
+			} else {
+				alert('Failed to upload image. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error uploading image:', error);
+		} finally {
+			isUploading = false;
+		}
+	}
+
 	async function submit(fetch: typeof window.fetch = window.fetch) {
 		const productData = get(newProduct);
 
@@ -233,7 +281,7 @@
 		}
 
 		productData.nutriments = processedNutriments;
-		console.log(productData);
+
 		try {
 			const response = await addOrEditProductV2(productData, fetch);
 			if (response) {
@@ -339,6 +387,51 @@
 			placeholder="Enter countries (comma-separated)"
 		/>
 	</div>
+</Card>
+
+<Card>
+	<h3 class="mb-4 text-3xl font-semibold">Upload Product Image</h3>
+	<div class="form-control mb-4">
+		<label for="product_image">Front Image</label>
+		<input
+			id="product_image"
+			type="file"
+			accept="image/*"
+			class="input input-bordered w-full"
+			onchange={async (e) => {
+				const target = e.target as HTMLInputElement | null;
+				if (target && target.files) {
+					selectedImage = target.files[0];
+					imageType = 'front';
+					await uploadImage();
+				}
+			}}
+		/>
+	</div>
+	{#if isUploading && imageType === 'front'}
+		<p class="text-center text-gray-500">Uploading image, please wait...</p>
+	{/if}
+
+	<div class="form-control mb-4">
+		<label for="ingredients_image">Ingredients Image</label>
+		<input
+			id="ingredients_image"
+			type="file"
+			accept="image/*"
+			class="input input-bordered w-full"
+			onchange={async (e) => {
+				const target = e.target as HTMLInputElement | null;
+				if (target && target.files) {
+					selectedImage = target.files[0];
+					imageType = 'ingredients';
+					await uploadImage();
+				}
+			}}
+		/>
+	</div>
+	{#if isUploading && imageType === 'ingredients'}
+		<p class="text-center text-gray-500">Uploading image, please wait...</p>
+	{/if}
 </Card>
 
 <Card>
