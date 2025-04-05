@@ -44,7 +44,7 @@
 	},
 	"folksonomy": {
 		"title": "Folksonomy-Engine",
-		"subtitle": "Keys Explorer",
+		"subtitle": "Schlüssel-Explorer",
 		"description": "Folksonomy ermöglicht es Benutzern, Produkte mit benutzerdefinierten Schlagwörtern (Tags) zu versehen. Durchsuchen Sie unten alle verfügbaren Schlüssel, suchen Sie nach bestimmten Schlüsseln oder klicken Sie auf einen Schlüssel, um Produkte anzuzeigen, die ihn verwenden.",
 		"search_placeholder": "Schlüssel suchen ...",
 		"keys_found": "Schlüssel gefunden",
