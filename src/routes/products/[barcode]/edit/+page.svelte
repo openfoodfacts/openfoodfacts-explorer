@@ -388,10 +388,23 @@
 			bind:value={$comment}
 		/>
 	</div>
-	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.submit')}</button>
 </Card>
+<div class="sticky-save-container">
+	<button class="btn btn-primary w-full" onclick={submit}>Save</button>
+</div>
 
 <details>
 	<summary>{$_('product.edit.debug')}</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>
+
+<style>
+	.sticky-save-container {
+		border-radius: 10px;
+		position: sticky;
+		bottom: 0;
+		background-color: var(--background-color, white);
+		bottom: 10px;
+		z-index: 10;
+	}
+</style>
