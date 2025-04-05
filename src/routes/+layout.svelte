@@ -182,7 +182,9 @@
 	</div>
 </div>
 
-<div class="container mx-auto my-2 flex flex-col gap-4 px-4 xl:max-w-6xl">
+<div
+	class="container mx-auto my-2 flex flex-col flex-wrap gap-4 px-4 md:flex-row md:justify-evenly"
+>
 	{@render children?.()}
 </div>
 
