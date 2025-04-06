@@ -398,8 +398,14 @@
 		<h1 class="my-4 text-xl font-bold sm:text-4xl">
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
-
-		<PriceEdit prices={data.prices.data} barcode={data.state.product.code} />
+        
+		<PriceEdit 
+		prices={{ 
+		  ...data.prices.data, 
+		  items: data.prices.data.items.flat() 
+		}} 
+		barcode={data.state.product.code} 
+	  />
 	</Card>
 {/if}
 

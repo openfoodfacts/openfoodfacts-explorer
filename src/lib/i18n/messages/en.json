@@ -84,6 +84,23 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"submit": "Submit",
 			"debug": "Debug"
-		}
+		},
+		"prices": {
+			"edit_price": "Edit Price",
+			"select_price": "Select a Price to Edit",
+			"price": "Price",
+			"currency": "Currency",
+			"store": "Store",
+			"date": "Date",
+			"update_price": "Update Price",
+			"loading_stores": "Loading stores...",
+			"no_stores_found": "No stores found",
+			"error_store_type": "Couldn't find store type",
+			"error_updating": "Error while updating price:",
+			"success_update": "Price updated successfully",
+			"log_in_message": "Please log in to edit prices",
+            "no_prices_to_edit": "No prices available to edit for this product"
+		  }
+		
 	}
 }

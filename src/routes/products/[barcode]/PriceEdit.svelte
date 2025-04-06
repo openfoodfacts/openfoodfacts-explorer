@@ -1,14 +1,25 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
 	import { PricesApi, type Prices } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 	import { getNearStores, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 	import Card from '$lib/ui/Card.svelte';
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
+	import type { components } from '$lib/api/prices.d';
+	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type Item = components['schemas']["PriceFull"]
+	
+
+
 
 	interface Props {
-		prices: Prices;
+		prices: {
+        items: Item[];
+        page: number;
+         pages: number;
+        size: number;
+        total: number;
+};
 		barcode: string;
 	}
 
@@ -19,13 +30,14 @@
 	let nearStores: OverpassAPIResult | undefined = $state();
 	let errorMessage: string | null = $state(null);
 	let successMessage: string | null = $state(null);
-	let selectedPriceId: string | null = $state(null);
+	let selectedPriceId: number | null = $state(null);
+	
 
 	let editPrice = $state({
-		value: 0,
-		currency: '',
-		osm_id: 0,
-		date: ''
+		value: 0 as number | null, // Allow null since price can be null
+		currency: 'EUR' as CurrencyEnum,
+		osm_id: 0 as number | null, // Allow null since location_osm_id can be null
+		date: '' as string | null // Allow null since date can be null
 	});
 
 	onMount(async () => {
@@ -43,22 +55,23 @@
 		}
 	});
 
-	function selectPrice(id: string) {
+	function selectPrice(id: number) {
 		const price = prices.items.find((p) => p.id === id);
 		if (!price) return;
 
 		editPrice = {
-			value: price.price,
-			currency: price.currency,
-			osm_id: price.location_osm_id,
-			date: price.date
+			value: price.price ?? 0, // Default to 0 if null
+			// @ts-expect-error - TODO: Types should be specified in a better way
+			currency: price.currency ?? '', // Default to empty string if null
+			osm_id: price.location_osm_id ?? 0, // Default to 0 if null
+			date: price.date ?? '' // Default to empty string if null
 		};
 		errorMessage = null;
 		successMessage = null;
 	}
 
 	async function updatePrice() {
-		if (!selectedPriceId || !authenticated) return;
+		if (!selectedPriceId || false) return;
 
 		const type = nearStores?.elements.find((el) => el.id === editPrice.osm_id)?.type?.toUpperCase();
 		if (!type) {
@@ -66,7 +79,7 @@
 			return;
 		}
 
-		const res = await pricesApi.updatePrice(parseInt(selectedPriceId), {
+		const res = await pricesApi.updatePrice(selectedPriceId, {
 			product_code: barcode,
 			price: editPrice.value,
 			currency: editPrice.currency,
@@ -75,14 +88,18 @@
 			location_osm_type: type as 'NODE' | 'WAY' | 'RELATION'
 		});
 
+
 		if (res.error != null) {
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			errorMessage = 'Error while updating price: ' + res.error.message;
+			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while updating price', res.error);
 		} else {
 			successMessage = 'Price updated successfully';
 			console.debug('Updated price', res.data);
 			const index = prices.items.findIndex((p) => p.id === selectedPriceId);
 			if (index !== -1) {
+				// @ts-expect-error - TODO: Types should be specified in a better way
 				prices.items[index] = res.data;
 				invalidateAll();
 			}
@@ -94,20 +111,20 @@
 </script>
 
 <Card>
-	<h3 class="mb-4 text-3xl font-bold">Edit Price</h3>
+	<h3 class="mb-4 text-3xl font-bold">{$_('product.prices.edit_price')}</h3>
 
 	{#if !authenticated}
-		<div class="alert alert-warning mb-4">{$t('home.log_in_message')}</div>
+		<div class="alert alert-warning mb-4">{$_('product.prices.log_in_message')}</div>
 	{:else if prices.items.length === 0}
-		<div class="alert alert-info mb-4">{$t('home.no_prices_to_edit')}</div>
+		<div class="alert alert-info mb-4">{$_('product.prices.no_prices_to_edit')}</div>
 	{:else}
 		<div class="form-control mb-4">
-			<label for="price-select">Select a Price to Edit</label>
+			<label for="price-select">{$_('product.prices.select_price')}</label>
 			<select id="price-select" class="input input-bordered w-full" bind:value={selectedPriceId}>
 				{#each prices.items as price}
 					<option value={price.id}>
 						{price.price}
-						{price.currency} - {new Date(price.date).toLocaleDateString()}
+						{price.currency} - {price.date ? new Date(price.date).toLocaleDateString() : 'No date'}
 					</option>
 				{/each}
 			</select>
@@ -116,7 +133,7 @@
 		{#if selectedPriceId}
 			<div class="space-y-4">
 				<div class="form-control mb-4">
-					<label for="price">Price</label>
+					<label for="price">{$_('product.prices.price')}</label>
 					<input
 						type="number"
 						step="0.01"
@@ -130,7 +147,7 @@
 				</div>
 
 				<div class="form-control mb-4">
-					<label for="currency">Currency</label>
+					<label for="currency">{$_('product.prices.currency')}</label>
 					<input
 						type="text"
 						bind:value={editPrice.currency}
@@ -142,11 +159,11 @@
 				</div>
 
 				<div class="form-control mb-4">
-					<label for="store">Store</label>
+					<label for="store">{$_('product.prices.store')}</label>
 					{#if !nearStores}
-						<div>Loading stores...</div>
+						<div>{$_('product.prices.loading_stores')}</div>
 					{:else if nearStores.elements.length === 0}
-						<div>No stores found</div>
+						<div>{$_('product.prices.update_stores')}</div>
 					{:else}
 						<select
 							class="input input-bordered w-full"
@@ -162,7 +179,7 @@
 				</div>
 
 				<div class="form-control mb-4">
-					<label for="date">Date</label>
+					<label for="date">{$_('product.prices.date')}</label>
 					<input
 						type="date"
 						bind:value={editPrice.date}
@@ -174,7 +191,7 @@
 				</div>
 
 				<button type="button" class="btn btn-primary w-full" onclick={updatePrice}>
-					Update Price
+					{$_('product.prices.update_price')}
 				</button>
 
 				{#if errorMessage}
