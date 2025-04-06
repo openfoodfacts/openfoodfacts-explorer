@@ -28,12 +28,10 @@
 				/>
 			</div>
 		{:else}
-			<div class="flex min-h-[120px] min-w-[120px] items-center justify-center">
-				<img
-					src="/Placeholder.svg"
-					alt="No content available"
-					class="max-h-full max-w-full rounded-lg object-contain"
-				/>
+			<div
+				class="flex min-h-[120px] min-w-[120px] items-center justify-center rounded-lg bg-gray-200"
+			>
+				<img src="/Placeholder.svg" alt="Image not available" height="24" aria-hidden="true" />
 			</div>
 		{/if}
 	</button>
