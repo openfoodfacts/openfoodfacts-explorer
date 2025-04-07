@@ -11,9 +11,7 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
+    permissions: write-all
     steps:
       - name: Check for merge conflicts
         uses: eps1lon/actions-label-merge-conflict@releases/2.x
