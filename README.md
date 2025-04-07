@@ -16,6 +16,9 @@
 - Please mention GenAI tool you used if you used it (Copilot in an IDE, Copilot Workspace, Gemini…)
 
 ## Design
+- openfoodfacts-explorer is our experimental, next gen frontend. The idea is to reach feature parity on the essential stuff with the main frontend to eventually replace it, with a much better responsive UI (80%+ of our traffic is mobile web). 
+- We currently don’t have any real visual mockup of it, nor “artistic direction” so for the time being, we're copying key features from the current frontend, improving them whenever we can.
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mockups on the current website]([https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6))
 - [![Sketch](https://img.shields.io/badge/Sketch-%23F24E1E.svg?logo=sketch&logoColor=white) Trying to create a digital twin of openfoodfacts-explorer](https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?node-id=1-53&t=XfEkgmUsvs6qiKr9-0)
 
 ## Features
@@ -40,11 +43,7 @@
 ## Get in touch
 - You can also join the #off-explorer channel on the Open Food Facts Slack: https://slack.openfoodfacts.org
 
-## Design
-- openfoodfacts-explorer is our experimental, next gen frontend. The idea is to reach feature parity on the essential stuff with the main frontend to eventually replace it, with a much better responsive UI (80%+ of our traffic is mobile web). 
-- We currently don’t have any real visual mockup of it, nor “artistic direction” so for the time being, we're copying key features from the current frontend, improving them whenever we can.
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mockups on the current website]([https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6))
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) [After the fact documentation of openfoodfacts-explorer](https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?m=auto&t=RokuCr1uXrGFMhTB-6))
+
 ## Weekly meetings
 
 - We e-meet Wednesdays · 11:00 – 11:25am - Time zone: Europe/Paris
