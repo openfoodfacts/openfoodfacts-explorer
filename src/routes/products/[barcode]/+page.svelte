@@ -11,6 +11,7 @@
 	import EcoScore from './GreenScore.svelte';
 	import NutriScore from './NutriScore.svelte';
 	import Nova from './Nova.svelte';
+	import Organic from './Organic.svelte';
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
@@ -193,16 +194,19 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-between gap-3 max-md:flex-col lg:max-h-32">
-	<a href="#health_card" class="md:w-1/3">
+<div class="flex w-full flex-wrap gap-3 max-md:flex-col">
+	<a href="#health_card" class="md:w-[32%]">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-1/3">
+	<a href="#nutrition_card" class="md:w-[32%]">
 		<Nova grade={product.nova_group} />
 	</a>
-	<a href="#environment_card" class="md:w-1/3">
+	<a href="#environment_card" class="md:w-[32%]">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
+	<div class="md:w-[32%]">
+		<Organic labels={product.labels} />
+	</div>
 </div>
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
