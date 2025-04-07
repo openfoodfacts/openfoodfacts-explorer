@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
-	const NOVA_MAP: Record<
+	const ORGANIC_MAP: Record<
 		number,
 		{ name: string; desc: string; src: string; textColor: string; bgColor: string }
 	> = {
@@ -36,14 +36,14 @@
 	} else {
 		isOrganic = labels.toLowerCase().includes('organic') ? 1 : 2;
 	}
-	console.log('organic ', isOrganic);
-	let { name, desc, src, textColor, bgColor } = $derived(NOVA_MAP[isOrganic] ?? NOVA_MAP[0]);
+	
+	let { name, desc, src, textColor, bgColor } = $derived(ORGANIC_MAP[isOrganic]);
 </script>
 
 <div
 	class="flex h-full w-full items-center justify-evenly gap-4 rounded-xl p-4 md:max-lg:flex-col {bgColor}"
 >
-	<img alt="Nova Score" {src} class="h-20 transition-all duration-75 hover:brightness-90" />
+	<img alt="Organic" {src} class="h-20 transition-all duration-75 hover:brightness-90" />
 	<div class="flex flex-col">
 		<div class="{textColor} text-xl font-semibold">{name}</div>
 		<div class="text-sm text-black">{desc}</div>
