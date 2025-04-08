@@ -96,7 +96,7 @@ export class ProductsApi {
 		if (!res.ok) {
 			throw new Error(`Failed to fetch product attributes for barcode: ${barcode}`);
 		}
-	
+
 		return await res.json();
 	}
 

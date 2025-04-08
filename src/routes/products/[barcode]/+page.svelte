@@ -194,7 +194,7 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-between flex-wrap gap-3 max-md:flex-col">
+<div class="flex w-full flex-wrap justify-between gap-3 max-md:flex-col">
 	<a href="#health_card" class="md:w-[49%]">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>

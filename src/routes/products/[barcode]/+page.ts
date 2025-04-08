@@ -25,10 +25,10 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	}
 
 	let productAttributes = null;
-	try{
+	try {
 		const attributeResponse = await productsApi.getProductAttributes(params.barcode);
 		productAttributes = attributeResponse.product.attribute_groups_en || [];
-	} catch (err){
+	} catch (err) {
 		console.error('Error fetching product attributes:', err);
 	}
 
