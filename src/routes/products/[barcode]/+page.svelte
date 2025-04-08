@@ -75,7 +75,7 @@
 				See on OpenFoodFacts
 			</a>
 
-			<button class="btn btn-secondary max-sm:btn-sm mr-2" on:click={addToCalculator}>
+			<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
 				Add to Calculator
 			</button>
 			<a
