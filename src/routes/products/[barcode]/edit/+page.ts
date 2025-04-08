@@ -8,7 +8,7 @@ import { get } from 'svelte/store';
 export const load = (async ({ fetch, params }) => {
 	const user = get(preferences).username;
 
-	if (!user) {
+	if (user == null) {
 		error(401, { message: 'User not Authenticated' });
 	}
 	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
