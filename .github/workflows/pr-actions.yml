@@ -28,31 +28,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        # we need to checkout the fork repository
-        # see https://github.com/stefanzweifel/git-auto-commit-action?tab=readme-ov-file#workflow-should-run-in-base-repository
         fetch-depth: 1
         repository: "${{ steps.get-branch.outputs.repository }}"
         ref: "${{ steps.get-branch.outputs.branch }}"
-        # We can't use GITHUB_TOKEN here because, github actions can't trigger actions
-        # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow
-        # So this is a personal access token
         token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-    - name: Lint files
-      # 2. Set up Node.js environment
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20' # Specify your project's Node.js version
         cache: 'npm'      # Or 'yarn' or 'pnpm' based on your package manager
-
-      # 3. Install project dependencies
-      #    Using 'ci' is generally recommended for CI environments for speed and reliability
-    - name: Install dependencies
       run: npm ci # Or 'yarn install --frozen-lockfile' or 'pnpm install --frozen-lockfile'
-
-      # 4. Run Prettier with --write flag
-      #    Adjust the file pattern if needed. '.' formats all supported files found.
-      #    You might use specific patterns like: "src/**/*.{js,ts,json,md}"
     - name: Run Prettier
       run: npx prettier --write .
     - name: Push changes if needed
