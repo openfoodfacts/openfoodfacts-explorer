@@ -57,7 +57,7 @@ jobs:
         skip_dirty_check: false
         create_branch: no
 
-  # Action to update test results by issuing /update_tests_results
+  # Action to update test results by issuing /lint_files
   lint_files:
     name: "On demand Update Tests Results"
     if: |
