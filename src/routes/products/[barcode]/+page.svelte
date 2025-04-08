@@ -4,6 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
+	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
@@ -43,6 +44,16 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	function addToCalculator() {
+		addItemToCalculator({
+			id: product.code,
+			name: product.product_name || product.code,
+			quantity: 100,
+			imageUrl: product.image_front_small_url,
+			nutriments: extractNutriments(product.nutriments)
+		});
+	}
 </script>
 
 <svelte:head>
@@ -65,6 +76,9 @@
 				See on OpenFoodFacts
 			</a>
 
+			<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
+				Add to Calculator
+			</button>
 			<a
 				href={`/products/${product.code}/edit`}
 				class="btn btn-secondary max-sm:btn-sm"
@@ -198,7 +212,7 @@
 	<a href="#health_card" class="md:w-[49%]">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-[49%]">
+	<a href="#nova" class="md:w-[49%]">
 		<Nova grade={product.nova_group} />
 	</a>
 	<a href="#environment_card" class="md:w-[49%]">
