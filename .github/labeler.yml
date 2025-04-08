@@ -32,6 +32,8 @@ facets:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/Prices.svelte'
       - any-glob-to-any-file: 'src/lib/api/prices.ts'
+      - any-glob-to-any-file: 'src/lib/api/prices.d.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/PriceEdit.svelte'
 🖼️ Images:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
@@ -52,6 +54,7 @@ Settings:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/+page.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/PriceEdit.svelte'
 Search:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/search/**/*'
