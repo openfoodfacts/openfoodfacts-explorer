@@ -211,7 +211,7 @@
 	<a href="#health_card" class="md:w-1/3">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-1/3">
+	<a href="#nova" class="md:w-1/3">
 		<Nova grade={product.nova_group} />
 	</a>
 	<a href="#environment_card" class="md:w-1/3">
