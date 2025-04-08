@@ -15,7 +15,6 @@
 </script>
 
 <ImageModal bind:this={modal} />
-
 <div class="relative">
 	<button class="flex max-w-full justify-center" {onclick}>
 		{#if src}
@@ -35,7 +34,6 @@
 			</div>
 		{/if}
 	</button>
-
 	{#if src}
 		<button
 			class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
