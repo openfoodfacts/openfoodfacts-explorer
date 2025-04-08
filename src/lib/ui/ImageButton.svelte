@@ -17,7 +17,7 @@
 <ImageModal bind:this={modal} />
 <div class="relative">
 	<button class="flex max-w-full justify-center" {onclick}>
-		{#if src}
+		{#if src != null}
 			<div class="flex items-center justify-center">
 				<img
 					{src}
@@ -28,13 +28,13 @@
 			</div>
 		{:else}
 			<div
-				class="flex min-h-[120px] min-w-[120px] items-center justify-center rounded-lg bg-gray-200"
+				class="mt-4 flex min-h-[120px] min-w-[120px] items-center justify-center rounded-lg bg-gray-200"
 			>
 				<img src="/Placeholder.svg" alt="Image not available" height="24" aria-hidden="true" />
 			</div>
 		{/if}
 	</button>
-	{#if src}
+	{#if src != null}
 		<button
 			class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
 			onclick={(e) => {
