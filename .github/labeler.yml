@@ -7,6 +7,7 @@ GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
       - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/Folksonomy.svelte'
 📖 Knowledge panels:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/knowledgepanels/**/*'
