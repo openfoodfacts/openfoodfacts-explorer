@@ -4,6 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
+	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
@@ -43,6 +44,16 @@
 
 	let lang = $derived($preferences.lang);
 	let user = $derived(data.user);
+
+	function addToCalculator() {
+		addItemToCalculator({
+			id: product.code,
+			name: product.product_name || product.code,
+			quantity: 100,
+			imageUrl: product.image_front_small_url,
+			nutriments: extractNutriments(product.nutriments)
+		});
+	}
 </script>
 
 <svelte:head>
@@ -79,6 +90,20 @@
 				</a>
 			{/if}
 
+			<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
+				Add to Calculator
+			</button>
+			<a
+				href={`/products/${product.code}/edit`}
+				class="btn btn-secondary max-sm:btn-sm"
+				class:pointer-events-none={navigating.to}
+			>
+				{#if navigating.to?.params?.barcode === product.code}
+					<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
+				{:else}
+					Edit
+				{/if}
+			</a>
 			{#if isShareSupported}
 				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
 					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
@@ -201,7 +226,7 @@
 	<a href="#health_card" class="md:w-1/3">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-1/3">
+	<a href="#nova" class="md:w-1/3">
 		<Nova grade={product.nova_group} />
 	</a>
 	<a href="#environment_card" class="md:w-1/3">
