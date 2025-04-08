@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { self } from 'svelte/legacy';
-
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
 
@@ -12,15 +11,22 @@
 		| undefined = $state();
 
 	let dialog: HTMLDialogElement | undefined = $state();
+	let rotation = $state(0);
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
+		rotation = 0;
 		dialog?.showModal();
 	}
 
 	function close() {
 		dialog?.close();
 		setZoomImageState({ currentZoom: 1 });
+		rotation = 0;
+	}
+
+	function rotateImage() {
+		rotation = rotation + 90;
 	}
 
 	onMount(() => {
@@ -33,16 +39,32 @@
 	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog
-	class=" border-none bg-transparent p-4 backdrop:backdrop-brightness-50 md:max-h-max md:max-w-xl"
+	class="border-none bg-transparent p-4 backdrop:backdrop-brightness-50 md:max-h-max md:max-w-xl"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={self(() => close())}
 >
-	<div bind:this={container}>
-		<img class="max-h-full max-w-full" src={image?.url} alt={image?.alt} />
+	<div class="relative">
+		<div bind:this={container}>
+			<img
+				class="max-h-full max-w-full"
+				src={image?.url}
+				alt={image?.alt}
+				style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
+			/>
+		</div>
+		<button
+			class="btn btn-circle bg-base-100/80 hover:bg-base-100 absolute right-4 bottom-4"
+			onclick={(e) => {
+				e.stopPropagation();
+				rotateImage();
+			}}
+			title="Rotate image"
+			aria-label="Rotate image 90 degrees clockwise"
+		>
+			<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
+		</button>
 	</div>
 </dialog>
 

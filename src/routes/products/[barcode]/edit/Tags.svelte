@@ -48,7 +48,7 @@
 <div
 	class="input input-bordered bg-base-100 h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
 >
-	{#each tags as tag}
+	{#each tags as tag (tag)}
 		<span class="badge badge-ghost overflow-hidden py-3" transition:fade={{ duration: 100 }}>
 			<span class="truncate">{tag}</span>
 			<button class="ml-1 text-xl" onclick={removeTag(tag)}>×</button>
@@ -65,7 +65,7 @@
 			<div class="dropdown-content">
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
-					{#each filteredAutocomplete as suggestion}
+					{#each filteredAutocomplete as suggestion (suggestion.item)}
 						{@const key = suggestion.item}
 						<li>
 							<button

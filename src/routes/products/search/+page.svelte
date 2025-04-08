@@ -16,12 +16,12 @@
 </script>
 
 {#await data.result}
-	{#each Array(5) as i (i)}
+	{#each Array(5) as _, i (i)}
 		<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
 	{/each}
 {:then result}
 	{#if result.count > 0}
-		{#each result.products as product}
+		{#each result.products as product (product.code)}
 			<SmallProductCard {product} />
 		{/each}
 

@@ -1,12 +1,12 @@
 # Add labels to any any pull request with changes to the specified paths
 
-# Pull requests that update GitHub Actions code. If you navigate to the folder, you will have a README of what it does
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
-🏷️ Folksonomy Project:
+🏷️ Folksonomy Engine:
   - changed-files:
-      - any-glob-to-any-file: 'src/routes/folksonomy/+page.svelte'
+      - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
+      - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
 📖 Knowledge panels:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/knowledgepanels/**/*'
@@ -21,26 +21,61 @@ Dependencies:
       - any-glob-to-any-file: 'README.md'
 🚦 Nutri-Score:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/nutriscore/NutriScore.svelte'
+      - any-glob-to-any-file: 'src/lib/nutriscore/**/*'
 facets:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/Tags.svelte'
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/TagsString.svelte'
+      - any-glob-to-any-file: 'src/routes/taxo/[taxo]/[id]/**/*'
 💸 Prices:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/Prices.svelte'
-      src/lib/api/prices.ts
+      - any-glob-to-any-file: 'src/lib/api/prices.ts'
 🖼️ Images:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
       - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
-
+Product page:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/**/*'
+Home page:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/SmallProductCard.svelte'
+QR:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/qr/**/*'
+Settings:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/settings/**/*'
+✏️ Editing:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/+page.ts'
+Search:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/search/**/*'
+Green-Score:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/greenscore/**/*'
+Ultra-processed foods - NOVA:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/nova/**/*'
+User Interface:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/**/*'
+Nutrients:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+Footer:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/Footer.svelte'
+# 👮 Nutri-Patrol:
+#  - changed-files:
+#      - any-glob-to-any-file: ''
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
-# ✏️ Editing:
-#   - changed-files:
-#       - any-glob-to-any-file: ''
+
 # 🕹️ Gamification:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
