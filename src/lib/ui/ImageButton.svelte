@@ -17,14 +17,18 @@
 <ImageModal bind:this={modal} />
 
 <div class="relative">
-	<button class="flex max-w-full justify-center" {onclick}>
-		<img
-			{src}
-			{alt}
-			class="float-right h-full rounded-lg"
-			style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
-		/>
-	</button>
+	<img
+  src={src && src.trim() !== '' ? src : '/Placeholder.svg'}
+  alt={alt ?? 'Placeholder Image'}
+  class="float-right h-full object-contain bg-gray-200 p-2 rounded-lg"
+  style="
+    transform: rotate({rotation}deg);
+    transition: transform 0.3s ease;
+    filter: {src && src.trim() !== '' ? 'none' : 'grayscale(100%)'};
+  "
+/>
+
+	{#if src && !src?.includes('Placeholder.svg')}
 	<button
 		class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
 		onclick={(e) => {
@@ -36,4 +40,5 @@
 	>
 		<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
 	</button>
+	{/if}
 </div>
