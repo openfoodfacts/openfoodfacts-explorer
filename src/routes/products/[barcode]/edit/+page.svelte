@@ -389,7 +389,7 @@
 		/>
 	</div>
 </Card>
-<div class="sticky-save-container">
+<div class="sticky bottom-2.5 z-1 rounded-md">
 	<button class="btn btn-primary w-full" onclick={submit}>Save</button>
 </div>
 
@@ -397,14 +397,3 @@
 	<summary>{$_('product.edit.debug')}</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>
-
-<style>
-	.sticky-save-container {
-		border-radius: 10px;
-		position: sticky;
-		bottom: 0;
-		background-color: var(--background-color, white);
-		bottom: 10px;
-		z-index: 10;
-	}
-</style>
