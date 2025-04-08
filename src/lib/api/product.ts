@@ -89,6 +89,17 @@ export class ProductsApi {
 		return res.status === 200;
 	}
 
+	async getProductAttributes(barcode: string): Promise<any> {
+		const url = `${API_HOST}/api/v2/product/${barcode}?fields=product_name,code,attribute_groups_en`;
+		const res = await this.fetch(url);
+
+		if (!res.ok) {
+			throw new Error(`Failed to fetch product attributes for barcode: ${barcode}`);
+		}
+	
+		return await res.json();
+	}
+
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
 		const params = new URLSearchParams({
 			fields: REDUCED_FIELDS.join(','),

@@ -1,51 +1,35 @@
 <script lang="ts">
-	import { KP_ATTRIBUTE_IMG } from '$lib/const';
-
+	let { productAttributes }: { productAttributes: any } = $props();
+	
 	const ORGANIC_MAP: Record<
-		number,
-		{ name: string; desc: string; src: string; textColor: string; bgColor: string }
+		string,
+		{ textColor: string; bgColor: string }
 	> = {
-		0: {
-			name: 'Missing information: organic product?',
-			desc: 'Organic products promote ecological sustainability and biodiversity.',
-			src: KP_ATTRIBUTE_IMG('organic-unknown.svg'),
-			textColor: 'text-black',
-			bgColor: 'bg-gray-200 hover:bg-gray-300'
-		},
-		1: {
-			name: 'Organic Product',
-			desc: 'Promotes ecological sustainability and biodiversity.',
-			src: KP_ATTRIBUTE_IMG('organic.svg'),
+		"a": {
 			textColor: 'text-green-700',
 			bgColor: 'bg-green-100 hover:bg-green-200'
 		},
-		2: {
-			name: 'Not an organic product',
-			desc: 'Organic products promote ecological, sustainability and biodiversity.',
-			src: KP_ATTRIBUTE_IMG('not-organic.svg'),
+		"e": {
 			textColor: 'text-red-700',
 			bgColor: 'bg-red-100 hover:bg-red-200'
+		},
+		"unknown": {
+			textColor: 'text-black',
+			bgColor: 'bg-gray-200 hover:bg-gray-300'
 		}
 	};
-
-	let { labels }: { labels: string } = $props();
-	let isOrganic;
-
-	if (labels == '') {
-		isOrganic = 0;
-	} else {
-		isOrganic = labels.toLowerCase().includes('organic') ? 1 : 2;
-	}
 	
-	let { name, desc, src, textColor, bgColor } = $derived(ORGANIC_MAP[isOrganic]);
+	const { grade, title, description_short, icon_url } = $derived(productAttributes);
+	const { textColor, bgColor } = $derived(ORGANIC_MAP[grade]);
+
 </script>
 
 <div
 	class="flex h-full w-full items-center justify-evenly gap-4 rounded-xl p-4 md:max-lg:flex-col {bgColor}"
 >
-	<img alt="Organic" {src} class="h-20 transition-all duration-75 hover:brightness-90" />
+	<img alt="Organic" src="{icon_url}" class="h-20 transition-all duration-75 hover:brightness-90" />
 	<div class="flex flex-col">
-		<div class="{textColor} text-xl font-semibold">{name}</div>
-		<div class="text-sm text-black">{desc}</div>
+		<div class="{textColor} text-xl font-semibold">{title}</div>
+		<div class="text-sm text-black">{description_short}</div>
 	</div>
 </div>

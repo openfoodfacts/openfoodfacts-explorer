@@ -24,6 +24,14 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		error(404, { message: 'Failure to load product', errors: state.errors });
 	}
 
+	let productAttributes = null;
+	try{
+		const attributeResponse = await productsApi.getProductAttributes(params.barcode);
+		productAttributes = attributeResponse.product.attribute_groups_en || [];
+	} catch (err){
+		console.error('Error fetching product attributes:', err);
+	}
+
 	const categories = getTaxo<Category>('categories', fetch);
 	const labels = getTaxo<Label>('labels', fetch);
 	const stores = getTaxo<Store>('stores', fetch);
@@ -60,6 +68,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	return {
 		state,
+		productAttributes,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		taxo: {

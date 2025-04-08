@@ -194,18 +194,18 @@
 	</div>
 </Card>
 
-<div class="flex w-full flex-wrap gap-3 max-md:flex-col">
-	<a href="#health_card" class="md:w-[32%]">
+<div class="flex w-full justify-between flex-wrap gap-3 max-md:flex-col">
+	<a href="#health_card" class="md:w-[49%]">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-[32%]">
+	<a href="#nutrition_card" class="md:w-[49%]">
 		<Nova grade={product.nova_group} />
 	</a>
-	<a href="#environment_card" class="md:w-[32%]">
+	<a href="#environment_card" class="md:w-[49%]">
 		<EcoScore grade={product.ecoscore_grade} />
 	</a>
-	<div class="md:w-[32%]">
-		<Organic labels={product.labels} />
+	<div class="md:w-[49%]">
+		<Organic productAttributes={data.productAttributes[5].attributes[0]} />
 	</div>
 </div>
 
