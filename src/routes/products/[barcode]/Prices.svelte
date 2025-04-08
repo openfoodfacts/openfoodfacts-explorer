@@ -9,47 +9,16 @@
 	import type { components } from '$lib/api/prices.d';
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
+	type Item = components['schemas']['PriceFull'];
 	type ApiResponse<T> = { data?: T; error?: object };
-
-	type PriceResult = {
-		readonly id: number;
-		product_id: number;
-		location_id: number;
-		proof_id: number;
-		product: {
-			readonly id: number;
-			code: string;
-		};
-		location: unknown;
-		proof: unknown;
-		type: string;
-		product_code?: string | null;
-		product_name?: string | null;
-		category_tag?: string | null;
-		labels_tags?: unknown;
-		origins_tags?: unknown;
-		price?: number | null;
-		price_is_discounted?: boolean;
-		price_without_discount?: number | null;
-		discount_type?: unknown | null;
-		price_per?: unknown | null;
-		currency?: string | null;
-		location_osm_id?: number | null;
-		location_osm_type?: 'NODE' | 'WAY' | 'RELATION' | '' | null;
-		date?: string | null;
-		receipt_quantity?: number | null;
-		owner?: string | null;
-		source?: string | null;
-		created?: string;
-		readonly updated: string;
-	};
 
 	interface Props {
 		prices: {
-			count: number;
-			next?: string | null;
-			previous?: string | null;
-			results: PriceResult[];
+			items: Item[];
+			page: number;
+			pages: number;
+			size: number;
+			total: number;
 		};
 		barcode: string;
 	}
@@ -144,7 +113,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices?.results?.length ?? 0, prices?.count ?? 0)}/{prices?.count ?? 0})
+			Prices: ({Math.min(prices?.items?.length ?? 0, prices?.size ?? 0)}/{prices?.size ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -155,7 +124,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price (price.id)}
+				{#each prices.items as price (price.id)}
 					<tr>
 						<td
 							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
