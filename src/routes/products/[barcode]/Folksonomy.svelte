@@ -112,13 +112,21 @@
 					</div>
 				</td>
 				<td class="flex gap-2" aria-label="Value">
-					<input
-						type="text"
-						class="input grow max-sm:w-20"
-						value={tag.v}
-						readonly={!loggedIn}
-						onchange={(e) => updateTag(e.currentTarget.value, i)}
-					/>
+					{#if loggedIn}
+						<input
+							type="text"
+							class="input grow max-sm:w-20"
+							value={tag.v}
+							readonly={!loggedIn}
+							onchange={(e) => updateTag(e.currentTarget.value, i)}
+						/>
+					{:else}
+						<textarea
+							class="textarea grow max-sm:w-20"
+							readonly
+							style="white-space: pre-wrap; overflow-wrap: break-word;">{tag.v}</textarea
+						>
+					{/if}
 				</td>
 				{#if loggedIn}
 					<td>
