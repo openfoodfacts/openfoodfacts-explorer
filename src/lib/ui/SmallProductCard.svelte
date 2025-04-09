@@ -24,13 +24,15 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="flex justify-center sm:m-2 sm:w-64"
+	class="flex w-full justify-center"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="dark:bg-base-200 text-primary flex h-40 w-80 rounded-2xl shadow-md">
-		<div class="h-full w-32 text-center text-sm sm:w-28">
+	<div class="dark:bg-base-200 text-primary flex h-40 w-full max-w-full lg:max-w-xl rounded-2xl shadow-md">
+		<div class="h-full w-32 text-center text-sm sm:w-28 lg:w-36">
 			{#if navigating.to?.params?.barcode === product.code}
-				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
+				<div class="flex h-full w-full items-center justify-center">
+					<span class="loading loading-ring loading-lg"></span>
+				</div>
 			{:else if product.image_front_small_url}
 				<img
 					src={product.image_front_small_url}
@@ -49,7 +51,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex w-48 flex-col items-center justify-evenly p-2 pl-3 font-semibold sm:w-40">
+		<div class="flex w-60 flex-col items-center justify-evenly p-2 pl-3 font-semibold sm:w-40 md:w-56 lg:w-52">
 			<div
 				class="title w-full truncate text-lg font-semibold sm:text-base"
 				title={product.product_name ? product.product_name : product.code}
@@ -62,10 +64,10 @@
 				</p>
 			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex w-full flex-row items-center justify-between gap-2">
-					<div><img src={nutriscoreSrc} alt="nutriscore" class="h-10 sm:h-8" /></div>
-					<div><img src={novaSrc} alt="nova" class="mt-[-10px] h-11 sm:h-8" /></div>
-					<div><img src={ecoscoreSrc} alt="nova" class="h-10 sm:h-8" /></div>
+				<div class="mt-2 flex w-full flex-row items-stretch justify-between gap-1 h-12">
+					<div class="flex items-center"><img src={nutriscoreSrc} alt="nutriscore" class="h-full max-h-10 sm:max-h-10" /></div>
+					<div class="flex items-center"><img src={novaSrc} alt="nova" class="h-full max-h-11 sm:max-h-10" /></div>
+					<div class="flex items-center"><img src={ecoscoreSrc} alt="ecoscore" class="h-full max-h-10 sm:max-h-10" /></div>
 				</div>
 			{/if}
 		</div>
