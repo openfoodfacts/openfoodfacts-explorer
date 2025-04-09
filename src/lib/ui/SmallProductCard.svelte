@@ -27,7 +27,9 @@
 	class="flex w-full justify-center"
 	class:pointer-events-none={navigating.to}
 >
-	<div class="dark:bg-base-200 text-primary flex h-40 w-full max-w-full lg:max-w-xl rounded-2xl shadow-md">
+	<div
+		class="dark:bg-base-200 text-primary flex h-40 w-full max-w-full rounded-2xl shadow-md lg:max-w-xl"
+	>
 		<div class="h-full w-32 text-center text-sm sm:w-28 lg:w-36">
 			{#if navigating.to?.params?.barcode === product.code}
 				<div class="flex h-full w-full items-center justify-center">
@@ -51,7 +53,9 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex w-60 flex-col items-center justify-evenly p-2 pl-3 font-semibold sm:w-40 md:w-56 lg:w-52">
+		<div
+			class="flex w-60 flex-col items-center justify-evenly p-2 pl-3 font-semibold sm:w-40 md:w-56 lg:w-52"
+		>
 			<div
 				class="title w-full truncate text-lg font-semibold sm:text-base"
 				title={product.product_name ? product.product_name : product.code}
@@ -64,10 +68,16 @@
 				</p>
 			</div>
 			{#if product.product_type === 'food'}
-				<div class="mt-2 flex w-full flex-row items-stretch justify-between gap-1 h-12">
-					<div class="flex items-center"><img src={nutriscoreSrc} alt="nutriscore" class="h-full max-h-10 sm:max-h-10" /></div>
-					<div class="flex items-center"><img src={novaSrc} alt="nova" class="h-full max-h-11 sm:max-h-10" /></div>
-					<div class="flex items-center"><img src={ecoscoreSrc} alt="ecoscore" class="h-full max-h-10 sm:max-h-10" /></div>
+				<div class="mt-2 flex h-12 w-full flex-row items-stretch justify-between gap-1">
+					<div class="flex items-center">
+						<img src={nutriscoreSrc} alt="nutriscore" class="h-full max-h-10 sm:max-h-10" />
+					</div>
+					<div class="flex items-center">
+						<img src={novaSrc} alt="nova" class="h-full max-h-11 sm:max-h-10" />
+					</div>
+					<div class="flex items-center">
+						<img src={ecoscoreSrc} alt="ecoscore" class="h-full max-h-10 sm:max-h-10" />
+					</div>
 				</div>
 			{/if}
 		</div>
