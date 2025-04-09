@@ -7,7 +7,7 @@ export class ProductAttributesApi {
 		this.fetch = fetchFn;
 	}
 
-	async getProductAttributes(barcode: string): Promise<any> {
+	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
 		const url = `${API_HOST}/api/v2/product/${barcode}?fields=product_name,code,attribute_groups_en`;
 		try {
 			const res = await this.fetch(url);
