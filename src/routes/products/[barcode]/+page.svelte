@@ -215,7 +215,7 @@
 		<Nova grade={product.nova_group} />
 	</a>
 	<a href="#environment_card" class="md:w-1/3">
-		<EcoScore grade={product.ecoscore_grade} />
+		<EcoScore grade={product.ecoscore_grade ?? 'unknown'} />
 	</a>
 </div>
 
