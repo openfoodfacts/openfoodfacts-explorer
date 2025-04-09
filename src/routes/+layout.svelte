@@ -190,6 +190,5 @@
 </div>
 
 <NutritionCalculator />
-<Footer />
 
 <Footer />
