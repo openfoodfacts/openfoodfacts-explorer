@@ -59,6 +59,11 @@
 					{/if}
 				</div>
 			{/if}
+
+			<span
+				class="icon-[mdi--chevron-down] h-6 w-6 transition-transform duration-300"
+				style="transform: rotate({expanded ? 180 : 0}deg);"
+			></span>
 		</summary>
 
 		{#if elements != null}
