@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comentário",
 			"comment_placeholder": "Add a comment to this edit",
-			"submit": "Enviar",
+			"save_btn": "Guardar",
 			"debug": "Debug"
 		}
 	}
