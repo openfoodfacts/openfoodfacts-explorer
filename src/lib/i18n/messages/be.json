@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
-			"submit": "Пацьвердзіць",
+			"save_btn": "Save",
 			"debug": "Debug"
 		}
 	}
