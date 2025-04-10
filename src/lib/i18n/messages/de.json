@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "Keine Nährwertangaben angegeben",
 			"comment": "Kommentar",
 			"comment_placeholder": "Kommentar zu dieser Bearbeitung hinzufügen",
-			"submit": "Senden",
+			"save_btn": "Speichern",
 			"debug": "Debug"
 		}
 	}
