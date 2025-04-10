@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Коментар",
 			"comment_placeholder": "Add a comment to this edit",
-			"submit": "Підтвердити",
+			"save_btn": "Зберегти",
 			"debug": "Debug"
 		}
 	}
