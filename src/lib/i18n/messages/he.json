@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "הערה",
 			"comment_placeholder": "Add a comment to this edit",
-			"submit": "הגשה",
+			"save_btn": "שמירה",
 			"debug": "Debug"
 		}
 	}
