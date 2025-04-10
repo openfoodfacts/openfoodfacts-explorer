@@ -390,7 +390,7 @@
 	</div>
 </Card>
 <div class="sticky bottom-2.5 z-1 rounded-md">
-	<button class="btn btn-primary w-full" onclick={submit}>Save</button>
+	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.save_btn')}</button>
 </div>
 
 <details>
