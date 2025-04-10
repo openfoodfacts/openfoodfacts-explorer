@@ -206,7 +206,6 @@
 	</div>
 </Card>
 
-
 <Preferences {productAttributes} />
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />

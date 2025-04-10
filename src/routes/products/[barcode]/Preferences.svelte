@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	type Attribute = {
 		id: string;
 		name: string;
@@ -20,7 +19,6 @@
 	const { productAttributes = [] } = $props<{
 		productAttributes: ProductAttributes;
 	}>();
-
 </script>
 
 <div class="flex w-full justify-between gap-3 max-md:flex-col lg:max-h-32">
