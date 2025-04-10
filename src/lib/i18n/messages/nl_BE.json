@@ -82,7 +82,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Reactie",
 			"comment_placeholder": "Add a comment to this edit",
-			"submit": "Bevestigen",
+			"save_btn": "Opslaan",
 			"debug": "Debug"
 		}
 	}
