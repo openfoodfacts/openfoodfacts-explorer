@@ -24,7 +24,7 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="flex w-full justify-center"
+	class="flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
 	<div

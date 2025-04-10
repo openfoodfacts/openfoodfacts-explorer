@@ -15,6 +15,11 @@
 	}
 </script>
 
+<div class="mt-8 flex w-full">
+	<div
+		class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+	>
+
 {#await data.result}
 	{#each Array(5) as _, i (i)}
 		<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
@@ -60,3 +65,5 @@
 		</div>
 	{/if}
 {/await}
+</div>
+</div>
