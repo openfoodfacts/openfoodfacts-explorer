@@ -388,8 +388,10 @@
 			bind:value={$comment}
 		/>
 	</div>
-	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.submit')}</button>
 </Card>
+<div class="sticky bottom-2.5 z-1 rounded-md">
+	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.save_btn')}</button>
+</div>
 
 <details>
 	<summary>{$_('product.edit.debug')}</summary>
