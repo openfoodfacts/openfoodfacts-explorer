@@ -12,19 +12,19 @@
 		const date = new Date(unix * 1000);
 		const options = {
 			timeZone: 'Europe/Paris',
-			year: 'numeric' as 'numeric',
-			month: 'long' as 'long' | 'numeric' | '2-digit',
-			day: 'numeric' as 'numeric' | '2-digit',
-			hour: '2-digit' as 'numeric' | '2-digit',
-			minute: '2-digit' as 'numeric' | '2-digit',
-			second: '2-digit' as 'numeric' | '2-digit',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit',
 			hour12: false,
-			timeZoneName: 'short' as 'short'
-		};
+			timeZoneName: 'short'
+		} as const;
 		return new Intl.DateTimeFormat('en-GB', options).format(date);
 	}
 
-	function formatState(state: string, toDo: boolean): string {
+	function formatState(state: string): string {
 		if (state.startsWith('en:')) {
 			state = state.slice(3);
 		}
@@ -34,13 +34,13 @@
 	const doneStates = $derived(
 		product.states_hierarchy
 			.filter((state: string) => !state.includes('to-be-completed'))
-			.map((state: string) => formatState(state, false))
+			.map((state: string) => formatState(state))
 	);
 
 	const toDoStates = $derived(
 		product.states_hierarchy
 			.filter((state: string) => state.includes('to-be-completed'))
-			.map((state: string) => formatState(state, true))
+			.map((state: string) => formatState(state))
 	);
 </script>
 
@@ -66,8 +66,9 @@
 		{#if product.editors_tags.length === 0}
 			<span class="underline">unknown</span>
 		{:else}
-			{#each product.editors_tags as editor, i}
-				<span class="underline"> {editor}</span>{#if i < product.editors_tags.length - 1}{', '}{/if}
+			{#each product.editors_tags as editor, i (i)}
+				<span class="underline"> {String(editor)}</span>{#if i < product.editors_tags.length - 1},
+				{/if}
 			{/each}
 		{/if}
 	</p>
