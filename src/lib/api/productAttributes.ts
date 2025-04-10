@@ -1,5 +1,18 @@
 import { API_HOST } from '$lib/const';
 
+interface ProductAttributeValue {
+	id: string;
+	name: string;
+	title: string;
+	description_short: string;
+}
+
+interface ProductAttribute {
+	id: string;
+	name: string;
+	attributes: ProductAttributeValue[];
+}
+
 export class ProductAttributesApi {
 	private fetch: typeof fetch;
 
@@ -19,7 +32,6 @@ export class ProductAttributesApi {
 			const data = await res.json();
 			return data.product?.attribute_groups_en || [];
 		} catch (err) {
-			console.error('Error fetching product attributes:', err);
 			return [];
 		}
 	}
