@@ -22,6 +22,7 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import type { ProductDataSection } from '$lib/api';
 
 	let isShareSupported = navigator?.share != null;
 
@@ -210,7 +211,7 @@
 
 <Gs1Country barcode={product.code} />
 
-<DataSources {product} />
+<DataSources product={product as ProductDataSection} />
 
 {#if isFolksonomyConfigured()}
 	<Card>
