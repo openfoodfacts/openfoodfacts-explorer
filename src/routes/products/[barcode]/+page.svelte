@@ -15,6 +15,7 @@
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
+	import DataSources from './DataSources.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -22,6 +23,7 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import type { ProductDataSection } from '$lib/api';
 
 	let isShareSupported = navigator?.share != null;
 
@@ -222,6 +224,8 @@
 <KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 <Gs1Country barcode={product.code} />
+
+<DataSources product={product as ProductDataSection} />
 
 {#if isFolksonomyConfigured()}
 	<Card>
