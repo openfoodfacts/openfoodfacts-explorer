@@ -12,6 +12,7 @@ import {
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
 import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { ProductAttributesApi } from '$lib/api/productAttributes';
 
 export const ssr = false;
 
@@ -43,6 +44,9 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
+	const productAttributesApi = new ProductAttributesApi(fetch);
+	const productAttributes = await productAttributesApi.getProductAttributes(params.barcode);
+
 	// TODO: parseInt should be removed. Barcodes are strings
 	const questions = off.robotoff.questionsByProductCode(parseInt(params.barcode)).then(
 		(res) => {
@@ -60,6 +64,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	return {
 		state,
+		productAttributes: await productAttributes,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		taxo: {
