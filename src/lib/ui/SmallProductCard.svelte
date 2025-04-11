@@ -24,7 +24,7 @@
 
 <a
 	href={`/products/${product.code}`}
-	class="flex w-full justify-center"
+	class="flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
 	<div
@@ -47,7 +47,7 @@
 				>
 					<img
 						src="/Placeholder.svg"
-						class="h-16 rounded-lg bg-transparent object-cover"
+						class="h-16 rounded-lg bg-transparent object-cover opacity-70 dark:invert"
 						alt="Product front"
 					/>
 				</div>
