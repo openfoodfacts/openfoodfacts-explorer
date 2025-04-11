@@ -31,7 +31,7 @@ export class ProductAttributesApi {
 
 			const data = await res.json();
 			return data.product?.attribute_groups_en || [];
-		} catch (err) {
+		} catch {
 			return [];
 		}
 	}
