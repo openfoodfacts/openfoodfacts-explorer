@@ -21,7 +21,12 @@
 			<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
 		{/each}
 	{:then result}
-		{#if result.count > 0}
+		{#if result.count === 0}
+			<div class="col-span-full mt-8 text-center opacity-70">
+				<p>No products found</p>
+				<p>We couldn't find any products matching your search</p>
+			</div>
+		{:else}
 			{#each result.products as product (product.code)}
 				<SmallProductCard {product} />
 			{/each}
@@ -33,7 +38,6 @@
 					{#if result.page > 3}
 						<button class="btn btn-disabled join-item">...</button>
 					{/if}
-
 					{#if result.page > 2}
 						<a href={getPageUrl(page.url, result.page - 1)} class="btn join-item">
 							{result.page - 1}
@@ -54,11 +58,6 @@
 						</a>
 					{/if}
 				</div>
-			</div>
-		{:else}
-			<div class="col-span-full mt-8 text-center opacity-70">
-				<p>No products found</p>
-				<p>We couldn't find any products matching your search</p>
 			</div>
 		{/if}
 	{/await}
