@@ -9,9 +9,9 @@
 
 	const { product }: Props = $props();
 
-	function convertToCET(unix: number) {
+	function formatUnixToDateString(unix: number) {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
-			return 'unknown';
+			return $_('product.preferences.unknown');
 		}
 		const date = new Date(unix * 1000);
 		const options = {
@@ -24,7 +24,9 @@
 			hour12: false,
 			timeZoneName: 'short'
 		} as const;
-		return new Intl.DateTimeFormat('en-GB', options).format(date);
+
+		const userLanguage = navigator.language || 'en-GB';
+		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
 	function formatState(state: string): string {
@@ -52,14 +54,17 @@
 	<p class="mt-4 text-sm">
 		<span class="text-gray-600 dark:text-gray-300">
 			{$_('product.preferences.added_on')}
-			{convertToCET(product.created_t)} by
+			{formatUnixToDateString(product.created_t)}
+			{$_('product.preferences.by')}
 		</span>
 		<span class="underline">{product.creator ?? 'unknown'}</span>
 	</p>
 
 	<p class="text-sm">
 		<span class="text-gray-600 dark:text-gray-300"
-			>{$_('product.preferences.last_edit')} {convertToCET(product.last_modified_t)} by</span
+			>{$_('product.preferences.last_edit')}
+			{formatUnixToDateString(product.last_modified_t)}
+			{$_('product.preferences.by')}</span
 		>
 		<span class="underline">{product.last_editor ?? 'unknown'}</span>
 	</p>
@@ -67,7 +72,7 @@
 	<p class="text-sm">
 		<span class="text-gray-600 dark:text-gray-300">{$_('product.preferences.also_edited_by')}</span>
 		{#if product.editors_tags.length === 0}
-			<span class="underline">unknown</span>
+			<span class="underline">{$_('product.preferences.unknown')}</span>
 		{:else}
 			{#each product.editors_tags as editor, i (i)}
 				<span class="underline"> {String(editor)}</span>{#if i < product.editors_tags.length - 1},
@@ -79,9 +84,11 @@
 
 	<p class="text-sm">
 		<span class="text-gray-600 dark:text-gray-300">
-			{$_('product.preferences.last_check')} {convertToCET(product.last_checked_t)} by</span
+			{$_('product.preferences.last_check')}
+			{formatUnixToDateString(product.last_checked_t)}
+			{$_('product.preferences.by')}</span
 		>
-		<span class="underline"> {product.checkers_tags[0] ?? 'unknown'}</span>
+		<span class="underline"> {product.checkers_tags[0] ?? $_('product.preferences.unknown')}</span>
 	</p>
 
 	<div class="bg-secondary mt-4 p-3">
@@ -90,14 +97,14 @@
 
 	{#if doneStates.length > 0}
 		<div class="mt-4">
-			<span class="font-bold">Done:</span>
+			<span class="font-bold">{$_('product.preferences.done')}:</span>
 			{doneStates.join(', ')}
 		</div>
 	{/if}
 
 	{#if toDoStates.length > 0}
 		<div class="mt-4">
-			<span class="font-bold">To do:</span>
+			<span class="font-bold">{$_('product.preferences.toDo')}:</span>
 			{toDoStates.join(', ')}
 		</div>
 	{/if}
