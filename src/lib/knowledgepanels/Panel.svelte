@@ -30,14 +30,10 @@
 {/snippet}
 
 {#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[])}
-	<details
-		bind:open={expanded}
-		class:border-l-secondary={expanded}
-		class:border-l-2={expanded}
-		class:pl-4={expanded}
-	>
-		<summary
-			class="hover:bg-base-200 dark:hover:bg-base-100 my-2 flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
+	<div class=" border-base-300 rounded-box collapse-arrow collapse border">
+		<input type="checkbox" bind:checked={expanded} />
+		<div
+			class="hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
 		>
 			{#if title != null}
 				{#if title.icon_url != null}
@@ -59,17 +55,13 @@
 					{/if}
 				</div>
 			{/if}
-
-			<span
-				class="icon-[mdi--chevron-down] h-6 w-6 transition-transform duration-300"
-				style="transform: rotate({expanded ? 180 : 0}deg);"
-			></span>
-		</summary>
-
-		{#if elements != null}
-			{@render elementList(panel.elements)}
-		{/if}
-	</details>
+		</div>
+		<div class="collapse-content">
+			{#if elements != null}
+				{@render elementList(panel.elements)}
+			{/if}
+		</div>
+	</div>
 {/snippet}
 
 <div {id}>
