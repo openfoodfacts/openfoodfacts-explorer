@@ -117,14 +117,11 @@
 							type="text"
 							class="input grow max-sm:w-20"
 							value={tag.v}
-							readonly={!loggedIn}
 							onchange={(e) => updateTag(e.currentTarget.value, i)}
 						/>
 					{:else}
-						<textarea
-							class="textarea grow max-sm:w-20"
-							readonly
-							style="white-space: pre-wrap; overflow-wrap: break-word;">{tag.v}</textarea
+						<textarea class="textarea grow break-words whitespace-pre-wrap max-sm:w-20" readonly
+							>{tag.v}</textarea
 						>
 					{/if}
 				</td>
