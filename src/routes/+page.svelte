@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from '$lib/translations';
+	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
 
 	import Card from '$lib/ui/Card.svelte';
@@ -24,20 +24,22 @@
 	<Card>
 		<div class="card-body items-center text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
-				{$t('home.welcome')}
+				{$_('home.welcome')}
 				<div class="block xl:inline-block">
 					<Logo />
 				</div>
 				Explorer!
 			</h3>
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			<p>{@html $t('home.intro_1')}</p>
-			<p>{$t('home.intro_2')}</p>
+			<p>{@html $_('home.intro_1')}</p>
+			<p>{$_('home.intro_2')}</p>
 		</div>
 	</Card>
 
-	<div class="mt-8 w-full">
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+	<div class="mt-8 flex w-full">
+		<div
+			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+		>
 			{#await data.streamed.products}
 				{#each [...Array(4).keys()] as i (i)}
 					<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>

@@ -4,7 +4,41 @@ on:
   issues:
     types:
       - opened
+      - edited
+      - deleted
+      - transferred
+      - pinned
+      - unpinned
+      - closed
+      - reopened
+      - assigned
+      - unassigned
       - labeled
+      - unlabeled
+      - locked
+      - unlocked
+      - milestoned
+      - demilestoned
+
+  pull_request_target:
+    types:
+      - assigned
+      - unassigned
+      - labeled
+      - unlabeled
+      - opened
+      - edited
+      - closed
+      - reopened
+      - synchronize
+      - converted_to_draft
+      - ready_for_review
+      - locked
+      - unlocked
+      - review_requested
+      - review_request_removed
+      - auto_merge_enabled
+      - auto_merge_disabled
 
 jobs:
   add-to-design-project:
@@ -51,7 +85,7 @@ jobs:
         with:
           project-url: https://github.com/orgs/openfoodfacts/projects/5 # Add issue to the folksonomy project
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-          labeled: 🏷️ Folksonomy Project
+          labeled: 🏷️ Folksonomy Engine
           label-operator: OR
       - uses: actions/add-to-project@main
         with:
@@ -100,4 +134,10 @@ jobs:
           project-url: https://github.com/orgs/openfoodfacts/projects/105 # Add issue to the Prices project
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           labeled: 💸 Prices
+          label-operator: OR
+      - uses: actions/add-to-project@main
+        with:
+          project-url: https://github.com/orgs/openfoodfacts/projects/136 # Add issue to the Translations project
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          labeled: 🌐 Translations, translations, i18n, Translations
           label-operator: OR

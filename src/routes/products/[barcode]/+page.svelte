@@ -5,6 +5,7 @@
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
 	import { compareStore } from '$lib/stores/compareStore';
+	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
@@ -23,6 +24,18 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 
+	let isShareSupported = navigator?.share != null;
+
+	async function sharePage() {
+		try {
+			await navigator.share({
+				url: window.location.href
+			});
+		} catch (error) {
+			console.error('Error sharing the page:', error);
+		}
+	}
+
 	interface Props {
 		data: PageData;
 	}
@@ -31,6 +44,16 @@
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
+
+	function addToCalculator() {
+		addItemToCalculator({
+			id: product.code,
+			name: product.product_name || product.code,
+			quantity: 100,
+			imageUrl: product.image_front_small_url,
+			nutriments: extractNutriments(product.nutriments)
+		});
+	}
 </script>
 
 <svelte:head>
@@ -43,31 +66,64 @@
 			{product.product_name ?? product.code}
 		</h1>
 
-		<a
-			href={'https://world.openfoodfacts.org/product/' + product.code}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="link me-4"
-		>
-			See on OpenFoodFacts
-		</a>
+		<div class="flex items-center justify-center gap-2">
+			<a
+				href={'https://world.openfoodfacts.org/product/' + product.code}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link me-4"
+				title="See on Open Food Facts official website"
+			>
+				See on OpenFoodFacts
+			</a>
 
-		<button class="btn btn-outline mr-4" onclick={() => compareStore.addProduct(product)}>
-			<span class="icon-[mdi--compare] mr-1 h-4 w-4"></span>
-			Add to Compare
-		</button>
+			<button
+				class="btn btn-secondary btn-sm md:btn-md"
+				onclick={addToCalculator}
+				title="Add to Calculator"
+				aria-label="Add to Calculator"
+			>
+				<span class="icon-[mdi--calculator] h-5 w-5"></span>
+				<span class="ml-1 hidden md:inline">Add to Calculator</span>
+			</button>
 
-		<a
-			href={`/products/${product.code}/edit`}
-			class="btn btn-secondary max-sm:btn-sm ml-auto"
-			class:pointer-events-none={navigating.to}
-		>
-			{#if navigating.to?.params?.barcode === product.code}
-				<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
-			{:else}
-				Edit
+			<button
+				class="btn btn-secondary btn-sm md:btn-md"
+				onclick={() => compareStore.addProduct(product)}
+				title="Add to Compare"
+				aria-label="Add to Compare"
+			>
+				<span class="icon-[mdi--compare] h-5 w-5"></span>
+				<span class="ml-1 hidden md:inline">Add to Compare</span>
+			</button>
+
+			<a
+				href={`/products/${product.code}/edit`}
+				class="btn btn-secondary btn-sm md:btn-md"
+				class:pointer-events-none={navigating.to}
+				title="Edit Product"
+				aria-label="Edit Product"
+			>
+				{#if navigating.to?.params?.barcode === product.code}
+					<span class="loading loading-ring loading-md mx-auto my-auto"></span>
+				{:else}
+					<span class="icon-[mdi--pencil] h-5 w-5"></span>
+					<span class="ml-1 hidden md:inline">Edit</span>
+				{/if}
+			</a>
+
+			{#if isShareSupported}
+				<button
+					class="btn btn-secondary btn-sm md:btn-md"
+					onclick={sharePage}
+					title="Share Product"
+					aria-label="Share Product"
+				>
+					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
+					<span class="ml-1 hidden md:inline">Share</span>
+				</button>
 			{/if}
-		</a>
+		</div>
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
@@ -81,8 +137,7 @@
 					Loading...
 				{:then brands}
 					{#each product.brands_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -95,7 +150,7 @@
 				{:then categories}
 					{#each product.categories_tags as tag (tag)}
 						<a
-							class="link bg-secondary mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold text-black no-underline"
+							class="link bg-secondary text-secondary-content mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold no-underline"
 							href="/taxo/categories/{tag}"
 						>
 							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
@@ -110,8 +165,7 @@
 					Loading...
 				{:then stores}
 					{#each product.stores_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -123,8 +177,7 @@
 					Loading...
 				{:then labels}
 					{#each product.labels_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 						</a>
@@ -138,8 +191,7 @@
 					Loading...
 				{:then countries}
 					{#each product.countries_tags as tag, i (tag)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/countries/' + tag}>
 							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 						</a>
@@ -153,8 +205,7 @@
 					Loading...
 				{:then origins}
 					{#each product.origins_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/origin/' + tag}>
 							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 						</a>
@@ -183,11 +234,11 @@
 	<a href="#health_card" class="md:w-1/3">
 		<NutriScore grade={product.nutriscore_grade} />
 	</a>
-	<a href="#nutrition_card" class="md:w-1/3">
+	<a href="#nova" class="md:w-1/3">
 		<Nova grade={product.nova_group} />
 	</a>
 	<a href="#environment_card" class="md:w-1/3">
-		<EcoScore grade={product.ecoscore_grade} />
+		<EcoScore grade={product.ecoscore_grade ?? 'unknown'} />
 	</a>
 </div>
 
