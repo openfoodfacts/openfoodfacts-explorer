@@ -3,15 +3,18 @@
 	import { _ } from '$lib/i18n';
 	import type { ProductDataSection } from '$lib/api';
 
-	const { product } = $props<{ product: ProductDataSection }>();
+	type Props = {
+		product: ProductDataSection;
+	};
+
+	const { product }: Props = $props();
 
 	function convertToCET(unix: number) {
-		if (!unix || isNaN(unix)) {
+		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return 'unknown';
 		}
 		const date = new Date(unix * 1000);
 		const options = {
-			timeZone: 'Europe/Paris',
 			year: 'numeric',
 			month: 'long',
 			day: 'numeric',
@@ -68,14 +71,15 @@
 		{:else}
 			{#each product.editors_tags as editor, i (i)}
 				<span class="underline"> {String(editor)}</span>{#if i < product.editors_tags.length - 1},
+					&nbsp;
 				{/if}
 			{/each}
 		{/if}
 	</p>
 
 	<p class="text-sm">
-		<span class="text-gray-600 dark:text-gray-300"
-			>{$_('product.preferences.last_check')} {convertToCET(product.last_checked_t)} by</span
+		<span class="text-gray-600 dark:text-gray-300">
+			{$_('product.preferences.last_check')} {convertToCET(product.last_checked_t)} by</span
 		>
 		<span class="underline"> {product.checkers_tags[0] ?? 'unknown'}</span>
 	</p>
@@ -84,13 +88,17 @@
 		<p class="invert">{$_('product.preferences.incomplete_or_incorrect')}</p>
 	</div>
 
-	<div class="mt-4">
-		<span class="font-bold">Done:</span>
-		{doneStates.join(', ')}
-	</div>
+	{#if doneStates.length > 0}
+		<div class="mt-4">
+			<span class="font-bold">Done:</span>
+			{doneStates.join(', ')}
+		</div>
+	{/if}
 
-	<div class="mt-4">
-		<span class="font-bold">To do:</span>
-		{toDoStates.join(', ')}
-	</div>
+	{#if toDoStates.length > 0}
+		<div class="mt-4">
+			<span class="font-bold">To do:</span>
+			{toDoStates.join(', ')}
+		</div>
+	{/if}
 </Card>

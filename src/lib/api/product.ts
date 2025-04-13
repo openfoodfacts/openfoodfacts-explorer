@@ -201,17 +201,17 @@ type RawImage = {
 };
 
 export type ProductDataSection = {
-	created_t?: number;
-	creator?: string;
-	last_modified_t?: number;
-	last_editor?: string;
-	editors_tags?: string[];
-	last_checked_t?: number;
-	checkers_tags?: string[];
-	states_hierarchy?: string[];
+	created_t: number;
+	creator: string;
+	last_modified_t: number;
+	last_editor: string;
+	editors_tags: string[];
+	last_checked_t: number;
+	checkers_tags: string[];
+	states_hierarchy: string[];
 };
 
-export type Product = {
+export type Product = ProductDataSection & {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
 	[lang: LangProduct]: string;
