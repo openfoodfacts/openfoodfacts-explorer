@@ -57,7 +57,7 @@
 			{formatUnixToDateString(product.created_t)}
 			{$_('product.preferences.by')}
 		</span>
-		<span class="underline">{product.creator ?? 'unknown'}</span>
+		<span class="underline">{product.creator ?? $_('product.preferences.unknown')}</span>
 	</p>
 
 	<p class="text-sm">
@@ -66,7 +66,7 @@
 			{formatUnixToDateString(product.last_modified_t)}
 			{$_('product.preferences.by')}</span
 		>
-		<span class="underline">{product.last_editor ?? 'unknown'}</span>
+		<span class="underline">{product.last_editor ?? $_('product.preferences.unknown')}</span>
 	</p>
 
 	<p class="text-sm">
