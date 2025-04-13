@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 
-	import { PricesApi } from '$lib/api/prices';
+	import { PricesApi } from "@openfoodfacts/openfoodfacts-nodejs";
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
@@ -46,10 +46,11 @@
 
 	interface Props {
 		prices: {
-			count: number;
-			next?: string | null;
-			previous?: string | null;
-			results: PriceResult[];
+			items: PriceResult[];
+			page: number;
+			pages: number;
+			size: number;
+			total : number;
 		};
 		barcode: string;
 	}
@@ -135,7 +136,7 @@
 		} else {
 			console.debug('Submitted price', res.data);
 			// @ts-expect-error - TODO: Types should be specified in a better way
-			prices.results.push(res.data);
+			prices.items.push(res.data);
 			invalidateAll();
 		}
 	}
@@ -144,7 +145,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices?.results?.length ?? 0, prices?.count ?? 0)}/{prices?.count ?? 0})
+			Prices: ({Math.min(prices?.items?.length ?? 0, prices?.total ?? 0)}/{prices?.total ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -155,7 +156,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price (price.id)}
+				{#each prices.items as price (price.id)}
 					<tr>
 						<td
 							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
