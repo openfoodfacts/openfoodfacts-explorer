@@ -39,8 +39,6 @@
 	}
 
 	let { data }: Props = $props();
-	console.log(data);
-
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
