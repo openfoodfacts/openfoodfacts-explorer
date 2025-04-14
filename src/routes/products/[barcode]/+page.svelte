@@ -9,7 +9,7 @@
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
-	import Preferences from './Preferences.svelte';
+	import ProductAttributes from './ProductAttributes.svelte';
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
@@ -206,7 +206,7 @@
 	</div>
 </Card>
 
-<Preferences {productAttributes} />
+<ProductAttributes {productAttributes} />
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 

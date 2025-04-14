@@ -1,20 +1,5 @@
 <script lang="ts">
-	type Attribute = {
-		id: string;
-		name: string;
-		grade: string;
-		title: string;
-		description_short?: string;
-		icon_url?: string;
-	};
-	type ProductAttribute = {
-		id: string;
-		name: string;
-		attributes: Attribute[];
-	};
-	type ProductAttributes = {
-		productAttributes: ProductAttribute[];
-	};
+	import type { Attribute, ProductAttribute, ProductAttributes } from '$lib/api/productAttributes';
 
 	const COLOR_MAP: Record<string, { textColor: string; bgColor: string }> = {
 		a: {
@@ -43,9 +28,11 @@
 		}
 	};
 
-	const { productAttributes = [] } = $props<{
+	interface Props {
 		productAttributes: ProductAttributes;
-	}>();
+	}
+
+	const { productAttributes }: Props = $props();
 
 	function getAttributeByName(name: string): Attribute | undefined {
 		const attributeGroup = productAttributes.find((pa: ProductAttribute) =>
@@ -59,10 +46,10 @@
 		return COLOR_MAP[normalizedGrade] ?? COLOR_MAP['unknown'];
 	}
 
-	const nutriScore = getAttributeByName('nutri');
-	const novaScore = getAttributeByName('processing');
-	const greenScore = getAttributeByName('environment');
-	const organicScore = getAttributeByName('labels');
+	let nutriScore = $derived(getAttributeByName('nutri'));
+	let novaScore = $derived(getAttributeByName('processing'));
+	let greenScore = $derived(getAttributeByName('environment'));
+	let organicScore = $derived(getAttributeByName('labels'));
 
 	function scoreCard(attribute: Attribute | undefined, href: string) {
 		if (!attribute) return null;
@@ -81,45 +68,44 @@
 
 	type CardData = {
 		href: string;
-		icon: string | undefined;
+		icon: string;
 		title: string;
-		description: string | undefined;
+		description: string;
 		textColor: string;
 		bgColor: string;
 	};
 
-	const cards: Array<{
-		href: string;
-		icon?: string;
-		title: string;
-		description?: string;
-		textColor: string;
-		bgColor: string;
-	}> = [
-		scoreCard(nutriScore, '#health_card'),
-		scoreCard(novaScore, '#nova'),
-		scoreCard(greenScore, '#environment_card'),
-		scoreCard(organicScore, '#')
-	].filter((card): card is CardData => card !== null);
+	const cards = $derived(
+		[
+			scoreCard(nutriScore, '#health_card'),
+			scoreCard(novaScore, '#nova'),
+			scoreCard(greenScore, '#environment_card'),
+			scoreCard(organicScore, '#')
+		].filter((card): card is CardData => card !== null)
+	);
 </script>
+
+{#snippet productAttributesCard(card: CardData)}
+	<a href={card.href} class="md:w-full">
+		<div
+			class="flex h-full w-full items-center justify-evenly gap-4 rounded-lg p-4 text-center md:max-lg:flex-col {card.bgColor}"
+		>
+			{#if card.icon}
+				<img alt={card.title} src={card.icon} class="h-16" />
+			{/if}
+			<div class="flex flex-col">
+				<div class="text-xl font-semibold {card.textColor}">{card.title}</div>
+				{#if card.description}
+					<div class="text-sm text-black">{card.description}</div>
+				{/if}
+			</div>
+		</div>
+	</a>
+{/snippet}
 
 <h2 class="mb-4 text-center text-3xl font-bold">Product Preferences</h2>
 <div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
 	{#each cards as card (card.href)}
-		<a href={card.href} class="md:w-full">
-			<div
-				class="flex h-full w-full items-center justify-evenly gap-4 rounded-lg p-4 text-center md:max-lg:flex-col {card.bgColor}"
-			>
-				{#if card.icon}
-					<img alt={card.title} src={card.icon} class="h-16" />
-				{/if}
-				<div class="flex flex-col">
-					<div class="text-xl font-semibold {card.textColor}">{card.title}</div>
-					{#if card.description}
-						<div class="text-sm text-black">{card.description}</div>
-					{/if}
-				</div>
-			</div>
-		</a>
+		{@render productAttributesCard(card)}
 	{/each}
 </div>
