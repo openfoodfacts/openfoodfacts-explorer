@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Attribute, ProductAttribute, ProductAttributes } from '$lib/api/productAttributes';
+	import type { Attribute, ProductAttribute, ProductAttributes } from '$lib/api/product';
 
 	const COLOR_MAP: Record<string, { textColor: string; bgColor: string }> = {
 		a: {
