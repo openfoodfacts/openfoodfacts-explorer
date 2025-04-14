@@ -39,6 +39,8 @@
 	}
 
 	let { data }: Props = $props();
+	console.log(data);
+
 	let product = $derived(data.state.product);
 
 	let lang = $derived($preferences.lang);
@@ -229,13 +231,7 @@
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
-		<Prices
-			prices={{
-				...data.prices.data,
-				items: data.prices.data.items.flat()
-			}}
-			barcode={product.code}
-		/>
+		<Prices prices={data.prices.data as any} barcode={product.code} />
 	</Card>
 {/if}
 
