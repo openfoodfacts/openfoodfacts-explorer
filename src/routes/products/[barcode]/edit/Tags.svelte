@@ -46,7 +46,7 @@
 </script>
 
 <div
-	class="input input-bordered bg-base-100 h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
+	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md border p-2 focus-within:outline-2 focus-within:outline-offset-2"
 >
 	{#each tags as tag (tag)}
 		<span class="badge badge-ghost overflow-hidden py-3" transition:fade={{ duration: 100 }}>
