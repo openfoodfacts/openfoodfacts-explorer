@@ -103,9 +103,11 @@
 	</a>
 {/snippet}
 
-<h2 class="mb-4 text-center text-3xl font-bold">Product Preferences</h2>
-<div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-	{#each cards as card (card.href)}
-		{@render productAttributesCard(card)}
-	{/each}
+<div>
+	<h2 class="mb-4 text-center text-3xl font-bold">Product Preferences</h2>
+	<div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+		{#each cards as card (card.href)}
+			{@render productAttributesCard(card)}
+		{/each}
+	</div>
 </div>
