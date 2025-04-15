@@ -53,6 +53,38 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/api/v1/challenges': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['challenges_list'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/api/v1/challenges/{id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['challenges_retrieve'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/api/v1/locations': {
 		parameters: {
 			query?: never;
@@ -293,6 +325,38 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/api/v1/receipt-items': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['receipt_items_list'];
+		put?: never;
+		post: operations['receipt_items_create'];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/api/v1/receipt-items/{id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['receipt_items_retrieve'];
+		put?: never;
+		post?: never;
+		delete: operations['receipt_items_destroy'];
+		options?: never;
+		head?: never;
+		patch: operations['receipt_items_partial_update'];
+		trace?: never;
+	};
 	'/api/v1/session': {
 		parameters: {
 			query?: never;
@@ -379,6 +443,38 @@ export interface components {
 	schemas: {
 		/** @enum {unknown} */
 		BlankEnum: '';
+		Challenge: {
+			readonly id: number;
+			title?: string | null;
+			icon?: string | null;
+			subtitle?: string | null;
+			/** Format: date */
+			start_date?: string | null;
+			/** Format: date */
+			end_date?: string | null;
+			categories?: string[];
+			example_proof_url?: string | null;
+			is_published?: boolean;
+			/** @description Read-only. Calculated based on is_published, start_date and end_date.
+			 *
+			 *     * `DRAFT` - DRAFT
+			 *     * `UPCOMING` - UPCOMING
+			 *     * `ONGOING` - ONGOING
+			 *     * `COMPLETED` - COMPLETED */
+			status?: components['schemas']['ChallengeStatusEnum'] | components['schemas']['BlankEnum'];
+			/** Format: date-time */
+			created?: string;
+			/** Format: date-time */
+			readonly updated: string;
+		};
+		/**
+		 * @description * `DRAFT` - DRAFT
+		 *     * `UPCOMING` - UPCOMING
+		 *     * `ONGOING` - ONGOING
+		 *     * `COMPLETED` - COMPLETED
+		 * @enum {string}
+		 */
+		ChallengeStatusEnum: 'DRAFT' | 'UPCOMING' | 'ONGOING' | 'COMPLETED';
 		/**
 		 * @description * `ADP` - ADP
 		 *     * `AED` - AED
@@ -1078,95 +1174,189 @@ export interface components {
 		};
 		/** @enum {unknown} */
 		NullEnum: null;
+		PaginatedChallengeList: {
+			items: components['schemas']['Challenge'][][];
+			/**
+			 * @description Current page number
+			 * @example 1
+			 */
+			page: number;
+			/**
+			 * @description Total number of pages
+			 * @example 16
+			 */
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
+		};
 		PaginatedLocationList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['Location'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['Location'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PaginatedPriceFullList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['PriceFull'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['PriceFull'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PaginatedPriceTagFullList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['PriceTagFull'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['PriceTagFull'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PaginatedProductFullList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['ProductFull'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['ProductFull'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PaginatedProofHalfFullList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['ProofHalfFull'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['ProofHalfFull'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
+		};
+		PaginatedReceiptItemFullList: {
+			items: components['schemas']['ReceiptItemFull'][][];
+			/**
+			 * @description Current page number
+			 * @example 1
+			 */
+			page: number;
+			/**
+			 * @description Total number of pages
+			 * @example 16
+			 */
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PaginatedUserList: {
-			/** @example 123 */
-			count: number;
+			items: components['schemas']['User'][][];
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=4
+			 * @description Current page number
+			 * @example 1
 			 */
-			next?: string | null;
+			page: number;
 			/**
-			 * Format: uri
-			 * @example http://api.example.org/accounts/?page=2
+			 * @description Total number of pages
+			 * @example 16
 			 */
-			previous?: string | null;
-			results: components['schemas']['User'][];
+			pages: number;
+			/**
+			 * @description Number of items per page
+			 * @example 100
+			 */
+			size: number;
+			/**
+			 * @description Total number of items
+			 * @example 1531
+			 */
+			total: number;
 		};
 		PatchedPriceTagUpdate: {
 			/** @description Coordinates of the bounding box, in the format [y_min, x_min, y_max, x_max] */
@@ -1178,7 +1368,7 @@ export interface components {
 			 *     * `2` - not_readable
 			 *     * `3` - truncated
 			 *     * `4` - not_price_tag */
-			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			status?: (components['schemas']['Status579Enum'] | components['schemas']['NullEnum']) | null;
 			price_id?: number;
 		};
 		PatchedPriceUpdate: {
@@ -1218,6 +1408,7 @@ export interface components {
 			 * Format: double
 			 */
 			receipt_quantity?: number | null;
+			owner_comment?: string | null;
 		};
 		PatchedProofUpdate: {
 			/** Format: int64 */
@@ -1252,6 +1443,40 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
+		};
+		PatchedReceiptItemFull: {
+			readonly id?: number;
+			proof_id?: number;
+			price_id?: number;
+			/** @description The order of the item in the receipt. Item on top is 1. */
+			order?: number;
+			/** @description A dict representing the predicted data of the receipt item. For example the product name, the price etc. */
+			predicted_data?: unknown;
+			/** @description The current status of the item
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price */
+			status?:
+				| (
+						| components['schemas']['ReceiptItemFullStatusEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/**
+			 * Format: date-time
+			 * @description When the item was created in DB
+			 */
+			created?: string;
+			/**
+			 * Format: date-time
+			 * @description When the item was last updated
+			 */
+			readonly updated?: string;
+			/** @description The proof prediction used to create this receipt item. Null if created by a user. */
+			proof_prediction?: number | null;
 		};
 		PriceCreate: {
 			category_tag?: string | null;
@@ -1290,6 +1515,7 @@ export interface components {
 			 * Format: double
 			 */
 			receipt_quantity?: number | null;
+			owner_comment?: string | null;
 			type?: components['schemas']['TypeF36Enum'];
 			product_code?: string | null;
 			product_name?: string | null;
@@ -1361,6 +1587,7 @@ export interface components {
 			 * Format: double
 			 */
 			receipt_quantity?: number | null;
+			owner_comment?: string | null;
 			owner?: string | null;
 			source?: string | null;
 			/** Format: date-time */
@@ -1393,7 +1620,7 @@ export interface components {
 			 *     * `2` - not_readable
 			 *     * `3` - truncated
 			 *     * `4` - not_price_tag */
-			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			status?: (components['schemas']['Status579Enum'] | components['schemas']['NullEnum']) | null;
 			price_id?: number;
 			proof_id: number;
 		};
@@ -1412,9 +1639,7 @@ export interface components {
 			 *     * `2` - not_readable
 			 *     * `3` - truncated
 			 *     * `4` - not_price_tag */
-			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
-			/** @description The version of the object detector model that generated the prediction */
-			model_version?: string | null;
+			status?: (components['schemas']['Status579Enum'] | components['schemas']['NullEnum']) | null;
 			prediction_count?: number | null;
 			/** @description The name of the user who created this price tag. This field is null if the tag was created by a model. */
 			created_by?: string | null;
@@ -1430,6 +1655,8 @@ export interface components {
 			 * @description When the tag was last updated
 			 */
 			readonly updated: string;
+			/** @description The proof prediction used to create this price tag. Null if created by a user. */
+			proof_prediction?: number | null;
 		};
 		PriceTagPrediction: {
 			/** @description The type of the prediction
@@ -1440,13 +1667,13 @@ export interface components {
 			model_name: string;
 			/** @description The specific version of the model that generated the prediction */
 			model_version: string;
+			/** @description a dict representing the data of the prediction. This field is model-specific. */
+			data?: unknown;
 			/**
 			 * Format: date-time
 			 * @description When the prediction was created in DB
 			 */
 			created?: string;
-			/** @description a dict representing the data of the prediction. This field is model-specific. */
-			data?: unknown;
 		};
 		/**
 		 * @description * `PRICE_TAG_EXTRACTION` - PRICE_TAG_EXTRACTION
@@ -1463,7 +1690,7 @@ export interface components {
 			 *     * `2` - not_readable
 			 *     * `3` - truncated
 			 *     * `4` - not_price_tag */
-			status?: (components['schemas']['StatusEnum'] | components['schemas']['NullEnum']) | null;
+			status?: (components['schemas']['Status579Enum'] | components['schemas']['NullEnum']) | null;
 			price_id: number;
 		};
 		PriceUpdate: {
@@ -1503,6 +1730,7 @@ export interface components {
 			 * Format: double
 			 */
 			receipt_quantity?: number | null;
+			owner_comment?: string | null;
 		};
 		ProductFull: {
 			readonly id: number;
@@ -1577,6 +1805,8 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
 			price_count?: number | null;
 			prediction_count?: number | null;
 			owner?: string | null;
@@ -1626,6 +1856,8 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
 			price_count?: number | null;
 			prediction_count?: number | null;
 			owner?: string | null;
@@ -1674,6 +1906,8 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
 			price_count?: number | null;
 			prediction_count?: number | null;
 			owner?: string | null;
@@ -1690,11 +1924,6 @@ export interface components {
 			model_name: string;
 			/** The specific version of the model that generated the prediction */
 			model_version: string;
-			/**
-			 * When the prediction was created in DB
-			 * Format: date-time
-			 */
-			created?: string;
 			/** A dict representing the data of the prediction. This field is model-specific. */
 			data?: unknown;
 			/** The predicted value, only for classification models, null otherwise. */
@@ -1704,6 +1933,11 @@ export interface components {
 			 * Format: double
 			 */
 			max_confidence?: number | null;
+			/**
+			 * When the prediction was created in DB
+			 * Format: date-time
+			 */
+			created?: string;
 		};
 		/**
 		 * @description * `OBJECT_DETECTION` - OBJECT_DETECTION
@@ -1749,6 +1983,8 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
 		};
 		ProofUpload: {
 			file: string;
@@ -1784,8 +2020,48 @@ export interface components {
 			 */
 			receipt_online_delivery_costs?: number | null;
 			ready_for_price_tag_validation?: boolean;
+			owner_consumption?: boolean | null;
+			owner_comment?: string | null;
 			location_id?: number;
 		};
+		ReceiptItemFull: {
+			readonly id: number;
+			proof_id: number;
+			price_id: number;
+			/** @description The order of the item in the receipt. Item on top is 1. */
+			order: number;
+			/** @description A dict representing the predicted data of the receipt item. For example the product name, the price etc. */
+			predicted_data?: unknown;
+			/** @description The current status of the item
+			 *
+			 *     * `0` - deleted
+			 *     * `1` - linked_to_price */
+			status?:
+				| (
+						| components['schemas']['ReceiptItemFullStatusEnum']
+						| components['schemas']['BlankEnum']
+						| components['schemas']['NullEnum']
+				  )
+				| null;
+			/**
+			 * Format: date-time
+			 * @description When the item was created in DB
+			 */
+			created?: string;
+			/**
+			 * Format: date-time
+			 * @description When the item was last updated
+			 */
+			readonly updated: string;
+			/** @description The proof prediction used to create this receipt item. Null if created by a user. */
+			proof_prediction?: number | null;
+		};
+		/**
+		 * @description * `0` - deleted
+		 *     * `1` - linked_to_price
+		 * @enum {unknown}
+		 */
+		ReceiptItemFullStatusEnum: 0 | 1;
 		SessionFull: {
 			user_id: string;
 			token: string;
@@ -1816,7 +2092,7 @@ export interface components {
 		 *     * `4` - not_price_tag
 		 * @enum {integer}
 		 */
-		StatusEnum: 0 | 1 | 2 | 3 | 4;
+		Status579Enum: 0 | 1 | 2 | 3 | 4;
 		TotalStats: {
 			price_count?: number;
 			price_type_product_code_count?: number;
@@ -1825,8 +2101,8 @@ export interface components {
 			price_currency_count?: number;
 			price_year_count?: number;
 			price_location_country_count?: number;
-			price_type_group_community_count?: number;
-			price_type_group_consumption_count?: number;
+			price_kind_community_count?: number;
+			price_kind_consumption_count?: number;
 			price_source_web_count?: number;
 			price_source_mobile_count?: number;
 			price_source_api_count?: number;
@@ -1852,8 +2128,8 @@ export interface components {
 			proof_type_receipt_count?: number;
 			proof_type_gdpr_request_count?: number;
 			proof_type_shop_import_count?: number;
-			proof_type_group_community_count?: number;
-			proof_type_group_consumption_count?: number;
+			proof_kind_community_count?: number;
+			proof_kind_consumption_count?: number;
 			proof_source_web_count?: number;
 			proof_source_mobile_count?: number;
 			proof_source_api_count?: number;
@@ -1889,12 +2165,17 @@ export interface components {
 		User: {
 			user_id: string;
 			price_count?: number | null;
-			price_type_group_community_count?: number;
-			price_type_group_consumption_count?: number;
+			price_type_product_count?: number | null;
+			price_type_category_count?: number | null;
+			price_kind_community_count?: number;
+			price_kind_consumption_count?: number;
 			price_currency_count?: number | null;
+			price_in_proof_owned_count?: number | null;
+			price_in_proof_not_owned_count?: number | null;
+			price_not_owned_in_proof_owned_count?: number | null;
 			proof_count?: number | null;
-			proof_type_group_community_count?: number;
-			proof_type_group_consumption_count?: number;
+			proof_kind_community_count?: number;
+			proof_kind_consumption_count?: number;
 			location_count?: number | null;
 			location_type_osm_country_count?: number | null;
 			product_count?: number | null;
@@ -2049,7 +2330,6 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				'application/json': components['schemas']['Login'];
 				'application/x-www-form-urlencoded': components['schemas']['Login'];
 				'multipart/form-data': components['schemas']['Login'];
 			};
@@ -2061,6 +2341,75 @@ export interface operations {
 				};
 				content: {
 					'application/json': components['schemas']['SessionResponse'];
+				};
+			};
+		};
+	};
+	challenges_list: {
+		parameters: {
+			query?: {
+				end_date__gt?: string;
+				end_date__gte?: string;
+				end_date__lt?: string;
+				end_date__lte?: string;
+				end_date__month?: number;
+				end_date__year?: number;
+				id?: number;
+				is_published?: boolean;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				/** @description Number of results to return per page. */
+				size?: number;
+				start_date__gt?: string;
+				start_date__gte?: string;
+				start_date__lt?: string;
+				start_date__lte?: string;
+				start_date__month?: number;
+				start_date__year?: number;
+				/** @description Read-only. Calculated based on is_published, start_date and end_date.
+				 *
+				 *     * `DRAFT` - DRAFT
+				 *     * `UPCOMING` - UPCOMING
+				 *     * `ONGOING` - ONGOING
+				 *     * `COMPLETED` - COMPLETED */
+				status?: 'COMPLETED' | 'DRAFT' | 'ONGOING' | 'UPCOMING';
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PaginatedChallengeList'];
+				};
+			};
+		};
+	};
+	challenges_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Challenge. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['Challenge'];
 				};
 			};
 		};
@@ -2952,6 +3301,9 @@ export interface operations {
 					| 'SEASONAL'
 					| 'SECOND_HAND'
 					| null;
+				/** @description * `COMMUNITY` - COMMUNITY
+				 *     * `CONSUMPTION` - CONSUMPTION */
+				kind?: 'COMMUNITY' | 'CONSUMPTION';
 				labels_tags__contains?: string;
 				location_id?: number | null;
 				location_id__isnull?: boolean;
@@ -3744,6 +4096,9 @@ export interface operations {
 					| 'SEASONAL'
 					| 'SECOND_HAND'
 					| null;
+				/** @description * `COMMUNITY` - COMMUNITY
+				 *     * `CONSUMPTION` - CONSUMPTION */
+				kind?: 'COMMUNITY' | 'CONSUMPTION';
 				labels_tags__contains?: string;
 				location_id?: number | null;
 				location_id__isnull?: boolean;
@@ -4505,6 +4860,9 @@ export interface operations {
 				date__lte?: string;
 				date__month?: number;
 				date__year?: number;
+				/** @description * `COMMUNITY` - COMMUNITY
+				 *     * `CONSUMPTION` - CONSUMPTION */
+				kind?: 'COMMUNITY' | 'CONSUMPTION';
 				location_id?: number | null;
 				location_id__isnull?: boolean;
 				location_osm_id?: number;
@@ -4530,7 +4888,7 @@ export interface operations {
 				 *     * `RECEIPT` - RECEIPT
 				 *     * `GDPR_REQUEST` - GDPR_REQUEST
 				 *     * `SHOP_IMPORT` - SHOP_IMPORT */
-				type?: 'GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT' | 'SHOP_IMPORT';
+				type?: ('GDPR_REQUEST' | 'PRICE_TAG' | 'RECEIPT' | 'SHOP_IMPORT')[];
 			};
 			header?: never;
 			path?: never;
@@ -4661,6 +5019,139 @@ export interface operations {
 				};
 				content: {
 					'application/json': components['schemas']['ProofFull'];
+				};
+			};
+		};
+	};
+	receipt_items_list: {
+		parameters: {
+			query?: {
+				created__gte?: string;
+				created__lte?: string;
+				/** @description Which field to use when ordering the results. */
+				order_by?: string;
+				/** @description A page number within the paginated result set. */
+				page?: number;
+				proof__owner?: string;
+				/** @description The proof this receipt item belongs to */
+				proof_id?: number;
+				/** @description Number of results to return per page. */
+				size?: number;
+				/** @description The current status of the item
+				 *
+				 *     * `0` - deleted
+				 *     * `1` - linked_to_price */
+				status?: 0 | 1 | null;
+				status__isnull?: boolean;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['PaginatedReceiptItemFullList'];
+				};
+			};
+		};
+	};
+	receipt_items_create: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['ReceiptItemFull'];
+				'application/x-www-form-urlencoded': components['schemas']['ReceiptItemFull'];
+				'multipart/form-data': components['schemas']['ReceiptItemFull'];
+			};
+		};
+		responses: {
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ReceiptItemFull'];
+				};
+			};
+		};
+	};
+	receipt_items_retrieve: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Receipt Item. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ReceiptItemFull'];
+				};
+			};
+		};
+	};
+	receipt_items_destroy: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Receipt Item. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description No response body */
+			204: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	receipt_items_partial_update: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description A unique integer value identifying this Receipt Item. */
+				id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				'application/json': components['schemas']['PatchedReceiptItemFull'];
+				'application/x-www-form-urlencoded': components['schemas']['PatchedReceiptItemFull'];
+				'multipart/form-data': components['schemas']['PatchedReceiptItemFull'];
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['ReceiptItemFull'];
 				};
 			};
 		};

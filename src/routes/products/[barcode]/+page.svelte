@@ -232,7 +232,7 @@
 			Open prices <span class="font-light italic">(alpha)</span>
 		</h1>
 
-		<Prices prices={data.prices.data} barcode={product.code} />
+		<Prices prices={data.prices.data as any} barcode={product.code} />
 	</Card>
 {/if}
 
