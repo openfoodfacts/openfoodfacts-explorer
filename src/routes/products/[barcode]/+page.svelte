@@ -4,6 +4,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
+	import { compareStore } from '$lib/stores/compareStore';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 
 	const TRACEABILITY_CODES_URL =
@@ -71,28 +72,55 @@
 				target="_blank"
 				rel="noopener noreferrer"
 				class="link me-4"
+				title="See on Open Food Facts official website"
 			>
 				See on OpenFoodFacts
 			</a>
 
-			<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
-				Add to Calculator
+			<button
+				class="btn btn-secondary btn-sm md:btn-md"
+				onclick={addToCalculator}
+				title="Add to Calculator"
+				aria-label="Add to Calculator"
+			>
+				<span class="icon-[mdi--calculator] h-5 w-5"></span>
+				<span class="ml-1 hidden md:inline">Add to Calculator</span>
 			</button>
+
+			<button
+				class="btn btn-secondary btn-sm md:btn-md"
+				onclick={() => compareStore.addProduct(product)}
+				title="Add to Compare"
+				aria-label="Add to Compare"
+			>
+				<span class="icon-[mdi--compare] h-5 w-5"></span>
+				<span class="ml-1 hidden md:inline">Add to Compare</span>
+			</button>
+
 			<a
 				href={`/products/${product.code}/edit`}
-				class="btn btn-secondary max-sm:btn-sm"
+				class="btn btn-secondary btn-sm md:btn-md"
 				class:pointer-events-none={navigating.to}
+				title="Edit Product"
+				aria-label="Edit Product"
 			>
 				{#if navigating.to?.params?.barcode === product.code}
-					<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
+					<span class="loading loading-ring loading-md mx-auto my-auto"></span>
 				{:else}
-					Edit
+					<span class="icon-[mdi--pencil] h-5 w-5"></span>
+					<span class="ml-1 hidden md:inline">Edit</span>
 				{/if}
 			</a>
+
 			{#if isShareSupported}
-				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
+				<button
+					class="btn btn-secondary btn-sm md:btn-md"
+					onclick={sharePage}
+					title="Share Product"
+					aria-label="Share Product"
+				>
 					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
-					<span class="hidden md:block">Share</span>
+					<span class="ml-1 hidden md:inline">Share</span>
 				</button>
 			{/if}
 		</div>
@@ -109,8 +137,7 @@
 					Loading...
 				{:then brands}
 					{#each product.brands_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -138,8 +165,7 @@
 					Loading...
 				{:then stores}
 					{#each product.stores_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 					{/each}
 				{/await}
@@ -151,8 +177,7 @@
 					Loading...
 				{:then labels}
 					{#each product.labels_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 						</a>
@@ -166,8 +191,7 @@
 					Loading...
 				{:then countries}
 					{#each product.countries_tags as tag, i (tag)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/countries/' + tag}>
 							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 						</a>
@@ -181,8 +205,7 @@
 					Loading...
 				{:then origins}
 					{#each product.origins_tags as tag, i (i)}
-						{#if i > 0},
-						{/if}
+						{#if i > 0},{/if}
 						<a class="link" href={'/taxo/origin/' + tag}>
 							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 						</a>
