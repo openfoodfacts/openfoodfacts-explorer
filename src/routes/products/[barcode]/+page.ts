@@ -11,7 +11,7 @@ import {
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
-import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { PricesApi } from "@openfoodfacts/openfoodfacts-nodejs";
 
 export const ssr = false;
 
@@ -38,10 +38,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const folksonomyKeys = folkApi.getKeys();
 
 	const pricesApi = new PricesApi(fetch);
-	let pricesResponse = null;
-	if (isPricesConfigured()) {
-		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
-	}
+	let pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 
 	const productAttributes = await productsApi.getProductAttributes(params.barcode);
 
