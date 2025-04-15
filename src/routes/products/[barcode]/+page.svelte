@@ -9,9 +9,7 @@
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
-	import EcoScore from './GreenScore.svelte';
-	import NutriScore from './NutriScore.svelte';
-	import Nova from './Nova.svelte';
+	import ProductAttributes from './ProductAttributes.svelte';
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
@@ -41,6 +39,7 @@
 
 	let { data }: Props = $props();
 	let product = $derived(data.state.product);
+	let productAttributes = $derived(data.productAttributes);
 
 	let lang = $derived($preferences.lang);
 
@@ -207,17 +206,7 @@
 	</div>
 </Card>
 
-<div class="flex w-full justify-between gap-3 max-md:flex-col lg:max-h-32">
-	<a href="#health_card" class="md:w-1/3">
-		<NutriScore grade={product.nutriscore_grade} />
-	</a>
-	<a href="#nova" class="md:w-1/3">
-		<Nova grade={product.nova_group} />
-	</a>
-	<a href="#environment_card" class="md:w-1/3">
-		<EcoScore grade={product.ecoscore_grade ?? 'unknown'} />
-	</a>
-</div>
+<ProductAttributes {productAttributes} />
 
 <KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
