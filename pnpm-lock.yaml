@@ -34,10 +34,10 @@ importers:
         version: 2.0.0-alpha.3
       '@sveltejs/adapter-vercel':
         specifier: ^5.7.0
-        version: 5.7.0(@sveltejs/kit@2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(rollup@4.39.0)
+        version: 5.7.0(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(rollup@4.39.0)
       '@sveltejs/kit':
-        specifier: ^2.20.4
-        version: 2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
+        specifier: ^2.20.6
+        version: 2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
@@ -58,7 +58,7 @@ importers:
         version: 8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3)
       '@vercel/speed-insights':
         specifier: ^1.2.0
-        version: 1.2.0(@sveltejs/kit@2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)
+        version: 1.2.0(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)
       '@zoom-image/core':
         specifier: ^0.40.0
         version: 0.40.0
@@ -766,8 +766,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@polka/url@1.0.0-next.28':
-    resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
+  '@polka/url@1.0.0-next.29':
+    resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
   '@redocly/ajv@8.11.2':
     resolution: {integrity: sha512-io1JpnwtIcvojV7QKDUSIuMN/ikdOUd1ReEnUnMKGfDVridQZ31J0MmIuqwuRjWDZfmvr+Q0MqCcfHM2gTivOg==}
@@ -898,8 +898,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.4.0
 
-  '@sveltejs/kit@2.20.4':
-    resolution: {integrity: sha512-B3Y1mb1Qjt57zXLVch5tfqsK/ebHe6uYTcFSnGFNwRpId3+fplLgQK6Z2zhDVBezSsPuhDq6Pry+9PA88ocN6Q==}
+  '@sveltejs/kit@2.20.6':
+    resolution: {integrity: sha512-ImUkSQ//Xf4N9r0HHAe5vRA7RyQ7U1Ue1YUT235Ig+IiIqbsixEulHTHrP5LtBiC8xOkJoPZQ1VZ/nWHNOaGGw==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -2804,7 +2804,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@polka/url@1.0.0-next.28': {}
+  '@polka/url@1.0.0-next.29': {}
 
   '@redocly/ajv@8.11.2':
     dependencies:
@@ -2901,9 +2901,9 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
-  '@sveltejs/adapter-vercel@5.7.0(@sveltejs/kit@2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(rollup@4.39.0)':
+  '@sveltejs/adapter-vercel@5.7.0(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(rollup@4.39.0)':
     dependencies:
-      '@sveltejs/kit': 2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
+      '@sveltejs/kit': 2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
       '@vercel/nft': 0.29.2(rollup@4.39.0)
       esbuild: 0.24.2
     transitivePeerDependencies:
@@ -2911,7 +2911,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@sveltejs/kit@2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))':
+  '@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
       '@types/cookie': 0.6.0
@@ -3134,9 +3134,9 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)':
+  '@vercel/speed-insights@1.2.0(@sveltejs/kit@2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)':
     optionalDependencies:
-      '@sveltejs/kit': 2.20.4(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
+      '@sveltejs/kit': 2.20.6(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2)))(svelte@5.25.8)(vite@6.2.6(jiti@2.4.2)(lightningcss@1.29.2))
       svelte: 5.25.8
 
   '@zoom-image/core@0.40.0':
@@ -4094,7 +4094,7 @@ snapshots:
 
   sirv@3.0.1:
     dependencies:
-      '@polka/url': 1.0.0-next.28
+      '@polka/url': 1.0.0-next.29
       mrmime: 2.0.1
       totalist: 3.0.1
 

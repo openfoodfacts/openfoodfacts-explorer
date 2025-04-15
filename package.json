@@ -36,7 +36,7 @@
 		"@iconify/tailwind4": "^1.0.6",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.3",
 		"@sveltejs/adapter-vercel": "^5.7.0",
-		"@sveltejs/kit": "^2.20.4",
+		"@sveltejs/kit": "^2.20.6",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@tailwindcss/postcss": "^4.1.3",
 		"@tailwindcss/typography": "^0.5.16",
