@@ -185,7 +185,7 @@
 	</div>
 </div>
 
-<div class="container mx-auto my-2 space-y-4 gap-4 px-4 xl:max-w-6xl">
+<div class="container mx-auto my-2 gap-4 space-y-4 px-4 xl:max-w-6xl">
 	{@render children?.()}
 </div>
 
