@@ -131,7 +131,6 @@
 	</div>
 </dialog>
 
-
 <style>
 	dialog[open] {
 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
