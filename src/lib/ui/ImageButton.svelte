@@ -1,11 +1,17 @@
 <script lang="ts">
 	import ImageModal from './ImageModal.svelte';
 
-	type Props = { src?: string; alt?: string };
-	let { src, alt }: Props = $props();
+	type Props = { src?: string; alt?: string; className?: string };
+	let { src, alt, className = '' }: Props = $props();
 
 	let modal: ImageModal;
-	let onclick = $derived(src != null ? () => modal.displayImage(src, alt) : undefined);
+
+	function getFullSizeImageUrl(url: string): string {
+		return url.replace(/\.400\.|\.200\.|\.100\./, '.full.');
+	}
+	let onclick = $derived(
+		src != null ? () => modal.displayImage(getFullSizeImageUrl(src), alt) : undefined
+	);
 
 	let rotation = $state(0);
 
@@ -22,7 +28,7 @@
 				<img
 					{src}
 					{alt}
-					class="max-h-full max-w-full rounded-lg object-contain"
+					class="max-h-full max-w-full rounded-lg object-contain {className}"
 					style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 				/>
 			</div>
