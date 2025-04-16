@@ -37,7 +37,7 @@
 </div>
 
 {#await data.result then result}
-	<div class="join my-8 justify-center w-full">
+	<div class="join my-8 w-full justify-center">
 		{#if result.page > 1}
 			<a href={getPageUrl(page.url, 1)} class="btn join-item"> 1 </a>
 		{/if}
