@@ -58,14 +58,14 @@
 	<title>{product.product_name ?? product.code} | Open Food Facts</title>
 </svelte:head>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4 w-full">
 	<Card>
 		<div class="items-center gap-2 max-md:mb-4 max-md:text-center md:flex">
 			<h1 class="my-4 grow text-2xl font-bold md:text-4xl">
 				{product.product_name ?? product.code}
 			</h1>
 
-			<div class="flex items-center justify-center gap-2">
+			<div class="flex items-center justify-center gap-2 flex-wrap">
 				<a
 					href={'https://world.openfoodfacts.org/product/' + product.code}
 					target="_blank"
@@ -204,7 +204,7 @@
 				{/if}
 			</div>
 
-			<div class="flex max-h-56 grow justify-center">
+			<div class="flex grow justify-center">
 				<ImageButton src={product.image_front_url} alt={product.product_name} />
 			</div>
 		</div>
