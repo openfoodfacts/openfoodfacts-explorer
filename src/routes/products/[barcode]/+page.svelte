@@ -216,8 +216,8 @@
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 	<Gs1Country barcode={product.code} />
-  
-  <DataSources {product} />
+
+	<DataSources {product} />
 
 	{#if isFolksonomyConfigured()}
 		<Card>
