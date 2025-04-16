@@ -43,6 +43,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
+	const productAttributes = await productsApi.getProductAttributes(params.barcode);
+
 	// TODO: parseInt should be removed. Barcodes are strings
 	const questions = off.robotoff.questionsByProductCode(parseInt(params.barcode)).then(
 		(res) => {
@@ -60,6 +62,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	return {
 		state,
+		productAttributes: await productAttributes,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		taxo: {
