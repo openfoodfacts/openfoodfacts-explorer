@@ -138,7 +138,7 @@
 	});
 </script>
 
-<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
+<div class="collapse-arrow dark:bg-base-200 collapse mb-4 bg-white p-2 shadow-md">
 	<input type="checkbox" />
 	<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
 	<div class="collapse-content text-sm">
@@ -166,7 +166,7 @@
 	</div>
 </div>
 
-<div class="tabs tabs-box">
+<div class="tabs tabs-box mb-4">
 	{#each Object.keys($productStore.languages_codes) as code (code)}
 		<input
 			type="radio"
@@ -186,7 +186,7 @@
 	{/each}
 </div>
 
-<Card>
+<Card marginBottom={4}>
 	<div class="form-control mb-4">
 		<label for="">{$_('product.edit.quantity')}</label>
 		<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
@@ -246,7 +246,7 @@
 	</div>
 </Card>
 
-<Card>
+<Card marginBottom={4}>
 	<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
 	<div class="tabs tabs-box">
 		{#each Object.keys($productStore.languages_codes) as code (code)}
@@ -275,7 +275,7 @@
 	</div>
 </Card>
 
-<Card>
+<Card marginBottom={4}>
 	<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.nutritional_information')}</h3>
 	<div class="form-control mb-4">
 		<label for="">{$_('product.edit.serving_size')}</label>
@@ -382,7 +382,7 @@
 	{/if}
 </Card>
 
-<Card>
+<Card marginBottom={4}>
 	<div class="form-control mb-4">
 		<label for="comment">{$_('product.edit.comment')}</label>
 		<input
@@ -394,6 +394,7 @@
 		/>
 	</div>
 </Card>
+
 <div class="sticky bottom-2.5 z-1 rounded-md">
 	<button class="btn btn-primary w-full" onclick={submit} disabled={isSubmitting}>
 		{#if isSubmitting}
