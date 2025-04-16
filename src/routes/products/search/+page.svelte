@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class="mt-8 flex grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+	class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 >
 	{#await data.result}
 		{#each Array(5) as _, i (i)}
@@ -35,8 +35,9 @@
 		{/if}
 	{/await}
 </div>
+
 {#await data.result then result}
-	<div class="join my-8 justify-center">
+	<div class="join my-8 justify-center w-full">
 		{#if result.page > 1}
 			<a href={getPageUrl(page.url, 1)} class="btn join-item"> 1 </a>
 		{/if}
