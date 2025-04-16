@@ -55,6 +55,8 @@
 		})
 	);
 
+	let isSubmitting = $state(false);
+
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
 		productStore.update((store) => {
@@ -86,6 +88,7 @@
 	}
 
 	async function submit() {
+		isSubmitting = true;
 		const product = get(productStore);
 		const commentValue = get(comment);
 
@@ -99,6 +102,8 @@
 		console.groupEnd();
 		if (ok) {
 			window.location.href = '/products/' + product.code;
+		} else {
+			isSubmitting = false;
 		}
 	}
 
@@ -390,7 +395,12 @@
 	</div>
 </Card>
 <div class="sticky bottom-2.5 z-1 rounded-md">
-	<button class="btn btn-primary w-full" onclick={submit}>{$_('product.edit.save_btn')}</button>
+	<button class="btn btn-primary w-full" onclick={submit} disabled={isSubmitting}>
+		{#if isSubmitting}
+			<span class="loading loading-spinner loading-sm"></span>
+		{/if}
+		{$_('product.edit.save_btn')}
+	</button>
 </div>
 
 <details>
