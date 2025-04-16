@@ -201,7 +201,7 @@
 			{/if}
 		</div>
 
-		<div class="flex h-56 grow justify-center overflow-hidden">
+		<div class="flex h-auto min-h-[40vh] grow justify-center max-md:min-h-[30vh]">
 			<ImageButton src={product.image_front_url} alt={product.product_name} />
 		</div>
 	</div>

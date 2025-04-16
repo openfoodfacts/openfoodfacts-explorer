@@ -16,17 +16,15 @@
 
 <ImageModal bind:this={modal} />
 <div class="relative flex h-full w-full items-center justify-center">
-	<button class="flex h-full w-full items-center justify-center" {onclick}>
+	<button class="flex items-center justify-center" {onclick}>
 		{#if src != null}
-			<div class="flex h-full w-full items-center justify-center p-4 md:py-8">
-				<div class="relative" style="width: 75%; height: 75%;">
-					<img
-						{src}
-						{alt}
-						class="absolute top-1/2 left-1/2 max-h-full max-w-full rounded-lg object-contain"
-						style="transform: translate(-50%, -50%) rotate({rotation}deg); transition: transform 0.3s ease; transform-origin: center;"
-					/>
-				</div>
+			<div class="flex items-center justify-center">
+				<img
+					{src}
+					{alt}
+					class="max-h-full max-w-full rounded-lg object-contain"
+					style="transform: rotate({rotation}deg); transition: transform 0.3s ease; transform-origin: center;"
+				/>
 			</div>
 		{:else}
 			<div
