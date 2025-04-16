@@ -35,9 +35,10 @@
 		class:border-l-secondary={expanded}
 		class:border-l-2={expanded}
 		class:pl-4={expanded}
+		class="collapse-arrow collapse"
 	>
 		<summary
-			class="hover:bg-base-200 dark:hover:bg-base-100 my-2 flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
+			class="hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 !flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
 		>
 			{#if title != null}
 				{#if title.icon_url != null}
@@ -51,7 +52,6 @@
 						/>
 					{/if}
 				{/if}
-
 				<div class="grow sm:text-xl">
 					<div>{title.title}</div>
 					{#if title.subtitle != null}
@@ -60,10 +60,11 @@
 				</div>
 			{/if}
 		</summary>
-
-		{#if elements != null}
-			{@render elementList(panel.elements)}
-		{/if}
+		<div class="collapse-content">
+			{#if elements != null}
+				{@render elementList(panel.elements)}
+			{/if}
+		</div>
 	</details>
 {/snippet}
 
