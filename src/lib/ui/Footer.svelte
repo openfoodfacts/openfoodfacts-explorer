@@ -1,5 +1,7 @@
 <script lang="ts">
-	import '@fontsource-variable/plus-jakarta-sans';
+	import footerTopLeft from '$lib/assets/footer-top-left.svg';
+	import footerBottomRight from '$lib/assets/footer-bottom-right.svg';
+	import { _ } from '$lib/i18n';
 
 	const stayUpdatedLinks = [
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Newsletter' },
@@ -14,6 +16,43 @@
 		{ url: 'https://wiki.openfoodfacts.org/', text: 'Wiki' }
 	];
 
+	const discoverProjectLinks = {
+		row1: [
+			{
+				url: 'https://world.openfoodfacts.org/who-we-are',
+				key: 'footer.discover.who_we_are'
+			},
+			{
+				url: 'https://blog.openfoodfacts.org/en/',
+				key: 'footer.discover.blog'
+			},
+			{
+				url: 'https://world.openfoodfacts.org/code-of-conduct',
+				key: 'footer.discover.code_of_conduct'
+			}
+		],
+		row2: [
+			{
+				url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs',
+				key: 'footer.discover.vision_mission_values_and_programs'
+			}
+		],
+		row3: [
+			{
+				url: 'https://world.openfoodfacts.org/partners',
+				key: 'footer.discover.partners'
+			},
+			{
+				url: 'https://support.openfoodfacts.org/help/en-gb',
+				key: 'footer.discover.faq'
+			},
+			{
+				url: 'https://world.openfoodfacts.org/press',
+				key: 'footer.discover.press'
+			}
+		]
+	};
+
 	const footerLinks = [
 		{ url: 'https://world.openfoodfacts.org/legal', text: 'Legal' },
 		{ url: 'https://world.openfoodfacts.org/privacy', text: 'Privacy' },
@@ -22,7 +61,7 @@
 </script>
 
 <div
-	class="bg-secondary text-secondary-content font-plus-jakarta-sans relative mt-10 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
+	class="bg-secondary text-secondary-content relative mt-10 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
 >
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">Stay Updated</h2>
@@ -41,7 +80,11 @@
 				<a href="https://www.instagram.com/open.food.facts/" target="_blank" aria-label="Instagram">
 					<span class="icon-[mdi--instagram] h-6 w-6"></span>
 				</a>
-				<a href="https://github.com/openfoodfacts" target="_blank" aria-label="GitHub">
+				<a
+					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+					target="_blank"
+					aria-label="GitHub"
+				>
 					<span class="icon-[mdi--github] h-6 w-6"></span>
 				</a>
 				<a href="https://www.facebook.com/OpenFoodFacts" target="_blank" aria-label="Facebook">
@@ -63,57 +106,46 @@
 	<div class="relative z-20 order-2 mt-8 flex w-full flex-col gap-2 md:mt-0 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">Discover our Project</h2>
 		<div class="mt-2 flex flex-wrap gap-2">
-			<a
-				href="https://world.openfoodfacts.org/who-we-are"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Who we are</a
-			>
-			<a
-				href="https://blog.openfoodfacts.org/en/"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Blog</a
-			>
-			<a
-				href="https://world.openfoodfacts.org/code-of-conduct"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Code of Conduct</a
-			>
+			{#each discoverProjectLinks.row1 as link (link.url)}
+				<a
+					href={link.url}
+					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
+				</a>
+			{/each}
 		</div>
 		<div class="mt-1 flex flex-wrap gap-2">
-			<a
-				href="https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Vision, Mission, Values and Programs</a
-			>
+			{#each discoverProjectLinks.row2 as link (link.url)}
+				<a
+					href={link.url}
+					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
+				</a>
+			{/each}
 		</div>
 		<div class="mt-1 flex flex-wrap gap-2">
-			<a
-				href="https://world.openfoodfacts.org/partners"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Partners</a
-			>
-			<a
-				href="https://support.openfoodfacts.org/help/en-gb"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>FAQ</a
-			>
-			<a
-				href="https://world.openfoodfacts.org/press"
-				class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
-				>Press</a
-			>
+			{#each discoverProjectLinks.row3 as link (link.url)}
+				<a
+					href={link.url}
+					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
+				</a>
+			{/each}
 		</div>
 	</div>
 </div>
 
 <div
-	class="font-plus-jakarta-sans relative flex flex-col items-center justify-center gap-3 overflow-hidden bg-[#201A17] px-10 py-8"
+	class="relative flex flex-col items-center justify-center gap-3 overflow-hidden bg-[#201A17] px-10 py-8"
 >
 	<div class="absolute top-0 left-0 z-0 hidden md:block">
-		<img src="/images/footer-top-left.svg" alt="" width="177" height="177" />
+		<img src={footerTopLeft} alt="" width="177" height="177" />
 	</div>
 	<div class="absolute right-0 bottom-0 z-0 hidden md:block">
-		<img src="/images/footer-bottom-right.svg" alt="" width="251" height="178" />
+		<img src={footerBottomRight} alt="" width="251" height="178" />
 	</div>
 	<div class="relative z-10 flex flex-col items-center gap-4">
 		<picture>

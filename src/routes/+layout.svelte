@@ -5,6 +5,7 @@
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
+	import '@fontsource-variable/plus-jakarta-sans';
 	import { initI18n, _ } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
