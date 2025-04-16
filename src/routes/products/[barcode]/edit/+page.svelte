@@ -139,7 +139,7 @@
 </script>
 
 <div class="space-y-4">
-	<div class="collapse-arrow dark:bg-base-200 collapse mb-4 bg-white p-2 shadow-md">
+	<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
 		<div class="collapse-content text-sm">
@@ -167,7 +167,7 @@
 		</div>
 	</div>
 
-	<div class="tabs tabs-box mb-4">
+	<div class="tabs tabs-box">
 		{#each Object.keys($productStore.languages_codes) as code (code)}
 			<input
 				type="radio"
