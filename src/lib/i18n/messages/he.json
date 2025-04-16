@@ -59,13 +59,13 @@
 	"product": {
 		"edit": {
 			"add_language": "הוספת שפה",
-			"search_languages": "Search languages to add",
-			"no_languages_found": "No languages found",
+			"search_languages": "חיפוש שפות להוספה",
+			"no_languages_found": "לא נמצאו שפות",
 			"name": "שם",
 			"quantity": "כמות",
-			"emb_code": "EMB Code (Producer code)",
+			"emb_code": "קוד EMB (קוד יצרן)",
 			"packaging": "אריזה",
-			"manufacturing_places": "Manufacturing places",
+			"manufacturing_places": "מקומות ייצור",
 			"categories": "קטגוריות:",
 			"labels": "תוויות",
 			"brands": "מותגים",
@@ -79,11 +79,11 @@
 			"nutritional_information": "פירוט תזונתי",
 			"serving_size": "גודל מנה",
 			"no_nutrition_data": "אין פירוט תזונתי על המוצר",
-			"no_nutrition_specified": "No nutrition data specified",
+			"no_nutrition_specified": "לא צוינו נתוני תזונה",
 			"comment": "הערה",
-			"comment_placeholder": "Add a comment to this edit",
+			"comment_placeholder": "הוספת הערה לעריכה הזאת",
 			"save_btn": "שמירה",
-			"debug": "Debug"
+			"debug": "ניפוי תקלות"
 		}
 	}
 }
