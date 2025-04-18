@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Produk ditambah pada",
+			"last_edit": "Suntingan terakhir halaman produk pada",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Pemeriksaan terakhir halaman produk pada",
+			"last_modified_t": "Suntingan terakhir halaman produk pada",
+			"incomplete_or_incorrect": "Sekiranya data tidak lengkap atau tidak betul, anda boleh melengkapkan atau membetulkannya dengan mengedit halaman ini.",
+			"unknown": "unknown",
+			"by": "oleh",
+			"done": "Done",
+			"toDo": "To do"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
