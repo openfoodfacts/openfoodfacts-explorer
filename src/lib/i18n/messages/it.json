@@ -57,6 +57,18 @@
 		"intro_2": "Puoi inserire un codice prodotto nella barra di ricerca sopra per iniziare o fare clic su uno dei prodotti sottostanti."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Prodotto aggiunto il",
+			"last_edit": "Ultima modifica della pagina del prodotto il",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Ultimo controllo della pagina del prodotto il",
+			"last_modified_t": "Ultima modifica della pagina del prodotto il",
+			"incomplete_or_incorrect": "Se i dati sono incompleti o errati puoi completarli o correggerli modificando questa pagina.",
+			"unknown": "sconosciuto",
+			"by": "da",
+			"done": "Fatto",
+			"toDo": "Da fare"
+		},
 		"edit": {
 			"add_language": "Aggiungi una lingua",
 			"search_languages": "Search languages to add",
