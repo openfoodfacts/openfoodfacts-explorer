@@ -4,13 +4,8 @@
 @plugin "@tailwindcss/typography";
 @plugin "@iconify/tailwind4";
 
-@config '../tailwind.config.js';
-
-@layer base {
-	html,
-	body {
-		font-family: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
-	}
+@theme {
+	--font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
 }
 
 @plugin "daisyui/theme" {
