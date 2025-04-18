@@ -103,51 +103,48 @@
 		</div>
 
 		<div class="flex flex-col-reverse gap-4 md:flex-row">
-			<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-1 md:w-3/4">
+			<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-2 md:w-3/4">
 				<span class="text-end font-bold">Quantity:</span>
 				<span>{product.quantity}</span>
 
 				<span class="text-end font-bold">Brands:</span>
-				<span>
+				<div>
 					{#await data.taxo.brands}
 						Loading...
 					{:then brands}
 						{#each product.brands_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+							<span class="badge">
+								{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+							</span>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Categories:</span>
-				<span class="flex flex-wrap gap-1">
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.categories}
 						Loading...
 					{:then categories}
 						{#each product.categories_tags as tag (tag)}
-							<a
-								class="link bg-secondary text-secondary-content mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold no-underline"
-								href="/taxo/categories/{tag}"
-							>
+							<a class="badge badge-secondary" href="/taxo/categories/{tag}">
 								{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Stores:</span>
-				<span>
+				<div>
 					{#await data.taxo.stores}
 						Loading...
 					{:then stores}
 						{#each product.stores_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+							<span class="badge">
+								{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+							</span>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Labels:</span>
 				<span>
@@ -155,9 +152,7 @@
 						Loading...
 					{:then labels}
 						{#each product.labels_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							<a class="link" href={'/taxo/labels/' + tag}>
+							<a class="badge" href={'/taxo/labels/' + tag}>
 								{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 							</a>
 						{/each}
@@ -169,10 +164,8 @@
 					{#await data.taxo.countries}
 						Loading...
 					{:then countries}
-						{#each product.countries_tags as tag, i (tag)}
-							{#if i > 0},
-							{/if}
-							<a class="link" href={'/taxo/countries/' + tag}>
+						{#each product.countries_tags as tag, i (i)}
+							<a class="badge" href={'/taxo/countries/' + tag}>
 								{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 							</a>
 						{/each}
