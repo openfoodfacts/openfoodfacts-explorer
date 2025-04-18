@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Sản phẩm thêm vào",
+			"last_edit": "Chỉnh sửa lần cuối của trang sản phẩm trên",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Lần kiểm tra trang sản phẩm gần nhất vào",
+			"last_modified_t": "Chỉnh sửa lần cuối của trang sản phẩm trên",
+			"incomplete_or_incorrect": "Nếu dữ liệu không đầy đủ hoặc không chính xác, bạn có thể hoàn thành hoặc sửa nó bằng cách chỉnh sửa trang này.",
+			"unknown": "không xác định",
+			"by": "qua",
+			"done": "Xong",
+			"toDo": "Cần làm"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
