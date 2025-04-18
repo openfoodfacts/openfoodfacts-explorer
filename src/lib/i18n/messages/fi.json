@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Tuote lisätty",
+			"last_edit": "Tuotesivua muokattu viimeksi",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Tuotesivun viimeisin tarkistus tapahtui",
+			"last_modified_t": "Tuotesivua muokattu viimeksi",
+			"incomplete_or_incorrect": "Jos tiedot ovat puutteellisia tai virheellisiä, voit täydentää tai korjata niitä muokkaamalla tätä sivua.",
+			"unknown": "tuntematon",
+			"by": "tekijä:",
+			"done": "Valmis",
+			"toDo": "Tehtävä"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
