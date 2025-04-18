@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Wie we zijn",
+			"blog": "Blog",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Visie, missie, waarden en programma's",
+			"partners": "Partners",
+			"faq": "Veelgestelde vragen (FAQ)",
+			"press": "Pers"
+		}
+	},
 	"settings": {
 		"general": "Algemeen",
 		"influences": "Influences",
@@ -57,15 +68,15 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
-		"preferences": {
-			"added_on": "Product toegevoegd op",
-			"last_edit": "Laatste wijziging van de productpagina op",
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
-			"last_check": "Laatste controle van de productpagina op",
-			"last_modified_t": "Laatste wijziging van de productpagina op",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
 			"incomplete_or_incorrect": "Indien de informatie onvolledig of foutief is, kunt u ze op deze pagina aanvullen of corrigeren.",
 			"unknown": "onbekend",
-			"by": "door",
 			"done": "Voltooid",
 			"toDo": "Nog te doen"
 		},
