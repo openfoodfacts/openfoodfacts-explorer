@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Kas mes esame",
+			"blog": "Blogas",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Vizija, misija, vertybės ir programos",
+			"partners": "Partneriai",
+			"faq": "DUK",
+			"press": "Spauda"
+		}
+	},
 	"settings": {
 		"general": "Bendra",
 		"influences": "Influences",
@@ -57,15 +68,15 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
-		"preferences": {
-			"added_on": "Produktas pridėtas",
-			"last_edit": "Paskutinis produkto puslapio redagavimas",
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
-			"last_check": "Paskutinis produkto puslapio patikrinimas",
-			"last_modified_t": "Paskutinis produkto puslapio redagavimas",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
 			"incomplete_or_incorrect": "Jei duomenys neišsamūs ar neteisingi, jūs galite redaguoti šį puslapį ir užbaigti arba ištaisyti.",
 			"unknown": "nežinoma",
-			"by": "pagal",
 			"done": "Atlikta",
 			"toDo": "Padaryti"
 		},
