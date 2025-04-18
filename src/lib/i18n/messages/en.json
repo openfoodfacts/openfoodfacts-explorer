@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Who we are",
+			"blog": "Blog",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Vision, Mission, Values and Programs",
+			"partners": "Partners",
+			"faq": "FAQ",
+			"press": "Press"
+		}
+	},
 	"settings": {
 		"general": "General",
 		"influences": "Influences",

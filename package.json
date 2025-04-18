@@ -30,6 +30,7 @@
 		"@crowdin/cli": "^4.7.0",
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.24.0",
+		"@fontsource-variable/plus-jakarta-sans": "^5.2.5",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/simple-icons": "^1.2.31",
 		"@iconify/tailwind": "^1.2.0",

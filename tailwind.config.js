@@ -2,7 +2,11 @@
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				'plus-jakarta-sans': ['Plus Jakarta Sans Variable', 'sans-serif']
+			}
+		}
 	},
 	plugins: [],
 	daisyui: {
