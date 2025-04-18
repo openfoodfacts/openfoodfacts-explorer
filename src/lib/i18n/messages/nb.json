@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Om oss",
+			"blog": "Blogg",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Visjon, oppgave, verdier og programmer",
+			"partners": "Partnere",
+			"faq": "FAQ",
+			"press": "Presse"
+		}
+	},
 	"settings": {
 		"general": "Generelt",
 		"influences": "Influences",
@@ -57,15 +68,15 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
-		"preferences": {
-			"added_on": "Produkt lagt til",
-			"last_edit": "Siste redigering av produktsiden den",
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
-			"last_check": "Siste sjekk av produktside den",
-			"last_modified_t": "Siste redigering av produktsiden den",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
 			"incomplete_or_incorrect": "Hvis dataene er ufullstendig eller feil, kan du fullføre eller korrigere dem ved å endre denne siden.",
 			"unknown": "unknown",
-			"by": "av",
 			"done": "Ferdig",
 			"toDo": "Gjøremål"
 		},
