@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "המוצר נוסף ב־",
+			"last_edit": "דף המוצר נערך לאחרונה במועד",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "דף המוצר נבדק לאחרונה במועד",
+			"last_modified_t": "דף המוצר נערך לאחרונה במועד",
+			"incomplete_or_incorrect": "אם המידע חלקי או שגוי, ניתן להשלים או לתקן אותו על־ידי עריכת עמוד זה.",
+			"unknown": "לא ידוע",
+			"by": "על־ידי",
+			"done": "בוצע",
+			"toDo": "לבצע"
+		},
 		"edit": {
 			"add_language": "הוספת שפה",
 			"search_languages": "חיפוש שפות להוספה",
