@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "添加产品",
+			"last_edit": "上次修改产品页面时间",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "最近一次修改产品页面在...",
+			"last_modified_t": "上次修改产品页面时间",
+			"incomplete_or_incorrect": "如果数据不完整或者不正确，可以通过编辑此页面来完成或者修改",
+			"unknown": "未知",
+			"by": "由",
+			"done": "完成",
+			"toDo": "要做"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
