@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "新增加的產品",
+			"last_edit": "產品頁最後編輯日期",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "上次查驗產品頁面的日期於",
+			"last_modified_t": "產品頁最後編輯日期",
+			"incomplete_or_incorrect": "若日期有誤或不正確，您可以藉由編輯此頁來修正它。",
+			"unknown": "unknown",
+			"by": "由",
+			"done": "已完成",
+			"toDo": "要做"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
