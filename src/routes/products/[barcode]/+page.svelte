@@ -13,6 +13,7 @@
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
+	import DataSources from './DataSources.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -215,6 +216,8 @@
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 	<Gs1Country barcode={product.code} />
+
+	<DataSources {product} />
 
 	{#if isFolksonomyConfigured()}
 		<Card>
