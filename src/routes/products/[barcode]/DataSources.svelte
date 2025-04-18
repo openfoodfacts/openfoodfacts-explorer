@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _, date } from '$lib/i18n';
+	import { _ } from '$lib/i18n';
 	import type { ProductDataSection } from '$lib/api';
 
 	type Props = {
