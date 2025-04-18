@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Produkt tillagd den",
+			"last_edit": "Senast ändrad produktsida på",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Sista kontrollen av produktsidan",
+			"last_modified_t": "Senast ändrad produktsida på",
+			"incomplete_or_incorrect": "Om uppgifterna är ofullständiga eller felaktiga kan du komplettera eller korrigera den genom att redigera den här sidan.",
+			"unknown": "unknown",
+			"by": "av",
+			"done": "Klar",
+			"toDo": "Att göra"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
