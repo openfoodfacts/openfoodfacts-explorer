@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "누가 우리가",
+			"blog": "블로그",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "비전, 사명, 가치 및 프로그램",
+			"partners": "파트너",
+			"faq": "FAQ",
+			"press": "프레스"
+		}
+	},
 	"settings": {
 		"general": "일반",
 		"influences": "Influences",
@@ -57,15 +68,15 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
-		"preferences": {
-			"added_on": "추가된 제품",
-			"last_edit": "제품의 마지막 편집 페이지",
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
-			"last_check": "제품 페이지의 마지막 확인 날짜",
-			"last_modified_t": "제품의 마지막 편집 페이지",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
 			"incomplete_or_incorrect": "데이터가 불완전하거나 부정확 한 경우, 당신은 완료하거나 문서를 편집하여 수정할 수 있습니다.",
 			"unknown": "알 수 없음",
-			"by": "로",
 			"done": "완료",
 			"toDo": "할 것"
 		},
