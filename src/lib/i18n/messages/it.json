@@ -39,13 +39,13 @@
 	},
 	"footer": {
 		"discover": {
-			"who_we_are": "Qui sommes-nous?",
-			"blog": "Le blog d'Open Food Facts",
+			"who_we_are": "Chi siamo?",
+			"blog": "Il blog di Open Food Facts",
 			"code_of_conduct": "Codice di Condotta",
-			"vision_mission_values_and_programs": "Vision, mission, valeurs et programmes",
-			"partners": "Partenaires",
-			"faq": "Questions fréquentes",
-			"press": "Presse"
+			"vision_mission_values_and_programs": "Visione, missione, valori e programmi",
+			"partners": "Partner",
+			"faq": "Domande frequenti",
+			"press": "Stampa"
 		}
 	},
 	"settings": {
