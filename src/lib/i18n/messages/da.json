@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Produkt tilføjet d.",
+			"last_edit": "Seneste redigering af produktside d.",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Seneste kontrol af produktside d.",
+			"last_modified_t": "Seneste redigering af produktside d.",
+			"incomplete_or_incorrect": "Hvis dataene er ufuldstændige eller forkerte, kan du tilføje eller korrigere dem ved at ændre denne side.",
+			"unknown": "ukendt",
+			"by": "af",
+			"done": "Færdiggjort",
+			"toDo": "Resterer"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
