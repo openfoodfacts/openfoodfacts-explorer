@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Το προϊόν προστέθηκε στις",
+			"last_edit": "Τελευταία επεξεργασία της σελίδας προϊόντος στις",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Τελευταίος έλεγχος της σελίδας προϊόντος στις",
+			"last_modified_t": "Τελευταία επεξεργασία της σελίδας προϊόντος στις",
+			"incomplete_or_incorrect": "Αν τα δεδομένα είναι εσφαλμένα ή ελλειπή, μπορείτε να τα συμπληρώσετε ή να τα διορθώσετε επεξεργάζοντας αυτή τη σελίδα.",
+			"unknown": "άγνωστο",
+			"by": "από",
+			"done": "Τέλος",
+			"toDo": "Εκκρεμεί"
+		},
 		"edit": {
 			"add_language": "Προσθήκη γλώσσας",
 			"search_languages": "Search languages to add",
