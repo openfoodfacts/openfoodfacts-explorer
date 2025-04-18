@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "وأضاف المنتج على",
+			"last_edit": "التعديل الأخير لصفحة المنتج على",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "آخر فحص لصفحة المنتج على",
+			"last_modified_t": "التعديل الأخير لصفحة المنتج على",
+			"incomplete_or_incorrect": "إذا كانت البيانات غير مكتملة أو غير صحيحة، يمكنك إكمال أو تصحيحها عن طريق تحرير هذه الصفحة.",
+			"unknown": "unknown",
+			"by": "بواسطة",
+			"done": "تم",
+			"toDo": "قائمة مهام"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
