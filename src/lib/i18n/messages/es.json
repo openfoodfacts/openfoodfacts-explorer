@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Quiénes somos",
+			"blog": "Blog",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Visión, misión, valores y programas",
+			"partners": "Asociados",
+			"faq": "Preguntas frecuentes",
+			"press": "Prensa"
+		}
+	},
 	"settings": {
 		"general": "General",
 		"influences": "Influences",
@@ -57,15 +68,15 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
-		"preferences": {
-			"added_on": "Producto añadido el",
-			"last_edit": "Última edición de la página del producto",
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
-			"last_check": "Última comprobación de la página de producto en",
-			"last_modified_t": "Última edición de la página del producto",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
 			"incomplete_or_incorrect": "Si la información está incompleta o es incorrecta, puedes completarla o corregirla editando esta página.",
 			"unknown": "desconocido",
-			"by": "por",
 			"done": "Hecho",
 			"toDo": "Por hacer"
 		},
