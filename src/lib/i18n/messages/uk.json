@@ -41,7 +41,7 @@
 		"discover": {
 			"who_we_are": "Ким ми є",
 			"blog": "Блог",
-			"code_of_conduct": "Code of Conduct",
+			"code_of_conduct": "Правила поведінки",
 			"vision_mission_values_and_programs": "Бачення, Місія, Цінності та Програми",
 			"partners": "Партнери",
 			"faq": "ЧаПИ",
@@ -69,12 +69,12 @@
 	},
 	"product": {
 		"datasources": {
-			"title": "Data Sources",
-			"added_on": "Product added on {date} by: ",
-			"last_edit": "Last edit of product page on {date} by: ",
-			"also_edited_by": "Product page also edited by:",
-			"last_check": "Last check of product page on {date} by: ",
-			"last_modified_t": "Last edit of product page on {date} by: ",
+			"title": "Джерела даних",
+			"added_on": "Продукт додано {date}: ",
+			"last_edit": "Останнє редагування сторінки продукту {date}: ",
+			"also_edited_by": "Сторінка продукту також відредагована:",
+			"last_check": "Останнє редагування сторінки продукту {date}: ",
+			"last_modified_t": "Останнє редагування сторінки продукту {date}: ",
 			"incomplete_or_incorrect": "Якщо вказані дані є неповні або неправильно введені, ви можете доповнити або виправити їх відредагувавши цю сторінку.",
 			"unknown": "невідоме",
 			"done": "Виконано",
