@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "A termék hozzáadva",
+			"last_edit": "Termékoldal legutóbb szerkesztve",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Termékoldal legutóbb ellenőrizve",
+			"last_modified_t": "Termékoldal legutóbb szerkesztve",
+			"incomplete_or_incorrect": "Ha az adatok hiányosak vagy hibásak, az oldal szerkesztésével kiegészítheti vagy javíthatja őket.",
+			"unknown": "ismeretlen",
+			"by": "időpontban, a következő felhasználó által:",
+			"done": "Kész",
+			"toDo": "Teendő"
+		},
 		"edit": {
 			"add_language": "Nyelv hozzáadása",
 			"search_languages": "Search languages to add",
