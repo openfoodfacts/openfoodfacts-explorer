@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Produs adăugat în",
+			"last_edit": "Ultima modificare a paginii produsului pe",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Ultima verificare a paginii produsului pe",
+			"last_modified_t": "Ultima modificare a paginii produsului pe",
+			"incomplete_or_incorrect": "Dacă datele sunt incomplete sau incorecte, le puteți completa sau corecta modificând această pagină.",
+			"unknown": "necunoscut",
+			"by": "de către",
+			"done": "Terminat",
+			"toDo": "De făcut"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
