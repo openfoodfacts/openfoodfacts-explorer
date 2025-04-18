@@ -41,7 +41,7 @@
 		"discover": {
 			"who_we_are": "Wer wir sind",
 			"blog": "Blog",
-			"code_of_conduct": "Code of Conduct",
+			"code_of_conduct": "Verhaltensregeln",
 			"vision_mission_values_and_programs": "Vision, Mission, Werte und Programme",
 			"partners": "Partner",
 			"faq": "Häufig gestellte Fragen",
@@ -69,12 +69,12 @@
 	},
 	"product": {
 		"datasources": {
-			"title": "Data Sources",
-			"added_on": "Product added on {date} by: ",
-			"last_edit": "Last edit of product page on {date} by: ",
-			"also_edited_by": "Product page also edited by:",
-			"last_check": "Last check of product page on {date} by: ",
-			"last_modified_t": "Last edit of product page on {date} by: ",
+			"title": "Datenquellen",
+			"added_on": "Produkt am {date} hinzugefügt von: ",
+			"last_edit": "Produktseite zuletzt bearbeitet am {date} von: ",
+			"also_edited_by": "Produktseite auch bearbeitet von:",
+			"last_check": "Produktseite zuletzt geprüft am {date} von: ",
+			"last_modified_t": "Produktseite zuletzt bearbeitet am {date} von: ",
 			"incomplete_or_incorrect": "Sollten die Informationen auf dieser Seite unvollständig oder falsch sein, dann können Sie diese vervollständigen oder korrigieren.",
 			"unknown": "Unbekannt",
 			"done": "Fertig",
