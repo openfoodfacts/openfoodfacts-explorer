@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "製品に追加",
+			"last_edit": "最後に編集した製品ページ",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "製品ページの最終確認",
+			"last_modified_t": "最後に編集した製品ページ",
+			"incomplete_or_incorrect": "データが不完全または間違っている場合は、完了するか、このページを編集して、それを修正することができます。",
+			"unknown": "不明",
+			"by": "によって",
+			"done": "完了",
+			"toDo": "To do"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
