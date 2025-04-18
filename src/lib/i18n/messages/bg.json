@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Добавен продукт на",
+			"last_edit": "Последна редакция на продуктовата страница на",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Последна проверка на страницата на продукта",
+			"last_modified_t": "Последна редакция на продуктовата страница на",
+			"incomplete_or_incorrect": "Ако данните са непълни или неверни, можеш да ги попълниш или коригираш, като редактираш тази страница.",
+			"unknown": "неизвестно",
+			"by": "от",
+			"done": "Готово",
+			"toDo": "Да се направи"
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
