@@ -57,6 +57,18 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"preferences": {
+			"added_on": "Product toegevoegd op",
+			"last_edit": "Laatste wijziging van de productpagina op",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Laatste controle van de productpagina op",
+			"last_modified_t": "Laatste wijziging van de productpagina op",
+			"incomplete_or_incorrect": "Indien de informatie onvolledig of foutief is, kunt u ze op deze pagina aanvullen of corrigeren.",
+			"unknown": "onbekend",
+			"by": "door",
+			"done": "Voltooid",
+			"toDo": "Nog te doen"
+		},
 		"edit": {
 			"add_language": "Een taal toevoegen",
 			"search_languages": "Search languages to add",
