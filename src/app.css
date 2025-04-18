@@ -6,9 +6,11 @@
 
 @config '../tailwind.config.js';
 
-html,
-body {
-	font-family: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+@layer base {
+	html,
+	body {
+		font-family: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+	}
 }
 
 @plugin "daisyui/theme" {
