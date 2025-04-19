@@ -104,7 +104,7 @@
 	}
 </script>
 
-<div class="folksonomy-container flex flex-col gap-6 p-4" transition:fade={{ duration: 500 }}>
+<div class="folksonomy-container flex flex-col gap-6 sm:p-4" transition:fade={{ duration: 500 }}>
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
 			<h1 class="text-primary mb-4 text-3xl font-bold">
@@ -198,15 +198,15 @@
 
 	{#snippet groupHeader(group: string, keys: FolksonomyKey[])}
 		<div
-			class="group-header flex cursor-pointer items-center justify-between p-3 text-lg font-semibold"
+			class="group-header flex cursor-pointer items-center justify-between p-3 font-semibold sm:text-lg"
 			role="button"
 			tabindex="0"
 			aria-expanded={expandedGroups[group] ? 'true' : 'false'}
 			onclick={() => toggleGroup(group)}
 			onkeydown={(e) => handleGroupKeyDown(e, group)}
 		>
-			<div class="flex items-center gap-2">
-				<span>{group}</span>
+			<div class="flex items-center gap-2 overflow-hidden">
+				<span class="truncate">{group}</span>
 				<div class="badge">{keys.length}</div>
 			</div>
 			<button class="btn btn-sm btn-circle" aria-hidden="true">
