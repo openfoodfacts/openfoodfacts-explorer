@@ -109,7 +109,7 @@
 			{#each discoverProjectLinks.row1 as link (link.url)}
 				<a
 					href={link.url}
-					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
 				>
 					{$_(link.key)}
 				</a>
@@ -119,7 +119,7 @@
 			{#each discoverProjectLinks.row2 as link (link.url)}
 				<a
 					href={link.url}
-					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
 				>
 					{$_(link.key)}
 				</a>
@@ -129,7 +129,7 @@
 			{#each discoverProjectLinks.row3 as link (link.url)}
 				<a
 					href={link.url}
-					class="bg-secondary-content rounded-full px-4 py-2 text-white transition-opacity hover:opacity-80"
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
 				>
 					{$_(link.key)}
 				</a>
@@ -139,7 +139,7 @@
 </div>
 
 <div
-	class="relative flex flex-col items-center justify-center gap-3 overflow-hidden bg-[#201A17] px-10 py-8"
+	class="bg-primary-content relative flex flex-col items-center justify-center gap-3 overflow-hidden px-10 py-8"
 >
 	<div class="absolute top-0 left-0 z-0 hidden md:block">
 		<img src={footerTopLeft} alt="" width="177" height="177" />
@@ -159,14 +159,14 @@
 			/>
 		</picture>
 
-		<div class="text-center text-base md:bg-transparent md:text-inherit md:text-inherit">
+		<div class="text-primary text-center md:bg-transparent md:text-inherit">
 			A collaborative, free and open database of food products<span class="hidden md:inline"
 				><br /></span
 			><span class="md:hidden"> </span> from around the world.
 		</div>
 	</div>
 
-	<div class="relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
+	<div class="text-primary relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
 		{#each footerLinks as footerLink (footerLink.url)}
 			<a href={footerLink.url} class="underline">{footerLink.text}</a>
 		{/each}
