@@ -4,7 +4,6 @@
 	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelTitle } from '$lib/api';
 
 	import Card from '$lib/ui/Card.svelte';
-	import Debug from '$lib/ui/Debug.svelte';
 	import Element from './Element.svelte';
 
 	type Props = {
@@ -92,9 +91,5 @@
 		{/if}
 	{:else}
 		{@render detailsElement(panel.title_element, panel.elements)}
-	{/if}
-
-	{#if dev}
-		<Debug data={panel} />
 	{/if}
 </div>
