@@ -49,7 +49,7 @@ export class PricesApi {
 	login(body: { username: string; password: string }) {
 		return this.client.POST('/api/v1/auth', {
 			// @ts-expect-error - The type definition doesn't include set_cookie parameter but the API requires it
-			params: { query: { set_cookie: true } },
+			params: { query: { set_cookie: 1 } },
 			body,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			bodySerializer: (body) => new URLSearchParams(body as Record<string, string>)
