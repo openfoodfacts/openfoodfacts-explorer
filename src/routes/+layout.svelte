@@ -108,13 +108,13 @@
 </div>
 
 <div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
-	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 max-w-7xl">
+	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
 			</a>
 		</div>
-		<div class="navbar-end flex gap-2">
+		<div class="navbar-end flex gap-1 sm:gap-2">
 			<button
 				aria-label={$_('search.button')}
 				class="btn btn-square btn-secondary text-lg"
@@ -124,14 +124,6 @@
 			>
 				<i class="icon-[mdi--magnify]"></i>
 			</button>
-			<a
-				class="btn btn-square btn-secondary text-lg"
-				href="/qr"
-				title={$_('search.scan')}
-				aria-label={$_('search.scan')}
-			>
-				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-			</a>
 			<button
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
@@ -147,25 +139,35 @@
 		</div>
 	</div>
 	{#if searchActive}
-		<div class="join -mt-8 w-full">
-			<input
-				type="text"
-				bind:value={searchQuery}
-				class="input join-item input-bordered w-full"
-				placeholder={$_('search.placeholder')}
-				onkeydown={(e) => {
-					if (e.key === 'Enter' && searchQuery.trim() !== '') {
-						gotoProductsSearch();
-					}
-				}}
-			/>
-			<button
-				class="btn btn-square btn-secondary join-item"
-				onclick={() => gotoProductsSearch()}
-				disabled={searchQuery == null || searchQuery.trim() === ''}
+		<div class="-mt-2 flex items-center gap-1 sm:gap-2">
+			<div class="join w-full">
+				<input
+					type="text"
+					bind:value={searchQuery}
+					class="input join-item input-bordered w-full"
+					placeholder={$_('search.placeholder')}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' && searchQuery.trim() !== '') {
+							gotoProductsSearch();
+						}
+					}}
+				/>
+				<button
+					class="btn btn-square btn-secondary join-item"
+					onclick={() => gotoProductsSearch()}
+					disabled={searchQuery == null || searchQuery.trim() === ''}
+				>
+					{$_('search.go')}
+				</button>
+			</div>
+			<a
+				class="btn btn-square btn-secondary text-lg"
+				href="/qr"
+				title={$_('search.scan')}
+				aria-label={$_('search.scan')}
 			>
-				{$_('search.go')}
-			</button>
+				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
+			</a>
 		</div>
 	{/if}
 	<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">

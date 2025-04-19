@@ -22,7 +22,7 @@
 
 <div class="mx-auto my-4 flex flex-col items-center md:container xl:max-w-6xl">
 	<Card>
-		<div class="card-body items-center text-center">
+		<div class="card-body items-center px-0 text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
 				{$_('home.welcome')}
 				<div class="block xl:inline-block">
