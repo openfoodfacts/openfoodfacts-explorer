@@ -96,5 +96,10 @@
 			"save_btn": "Save",
 			"debug": "Debug"
 		}
+	},
+	"errors": {
+		"network": {
+			"title": "Errore di Connessione"
+		}
 	}
 }

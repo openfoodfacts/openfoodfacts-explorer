@@ -5,6 +5,7 @@ import {
 	type ProductStateFound
 } from '$lib/api';
 import type { PageLoad } from './$types';
+import { error } from '@sveltejs/kit';
 
 type QuestionsResponse = {
 	status: string;
@@ -19,17 +20,22 @@ const count = '10';
 async function productsWithQuestions(
 	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>[]> {
-	const response: QuestionsResponse = await fetch(
-		'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count: count })
-	).then((it) => it.json());
+	try {
+		const response: QuestionsResponse = await fetch(
+			'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count })
+		).then((it) => it.json());
 
-	const productApi = new ProductsApi(fetch);
+		const productApi = new ProductsApi(fetch);
 
-	const productsPromises = response.questions.map((question) =>
-		productApi.getProductReducedForCard(question.barcode)
-	);
+		const productsPromises = response.questions.map((question) =>
+			productApi.getProductReducedForCard(question.barcode)
+		);
 
-	return Promise.all(productsPromises);
+		return Promise.all(productsPromises);
+	} catch (err: any) {
+		console.error('productsWithQuestions error:', err);
+		throw err;
+	}
 }
 
 function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
@@ -37,28 +43,52 @@ function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 
 	return array.filter((el) => {
 		if (seen.has(key(el))) return false;
-		else {
-			seen.add(key(el));
-			return true;
-		}
+		seen.add(key(el));
+		return true;
 	});
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	const states = productsWithQuestions(fetch);
-
-	// filtering out failures
-	const products: Promise<ProductStateFound<ProductReduced>[]> = states
-		.then((states) =>
-			states.filter(
-				(state): state is ProductStateFound<ProductReduced> => state.status != 'failure'
-			)
-		)
-		.then((states) => {
-			return deduplicate(states, (it) => it.product.code);
-		});
-
-	return {
-		streamed: { products: products }
-	};
+	try {
+		const states = await productsWithQuestions(fetch);
+		const products: ProductStateFound<ProductReduced>[] = states.filter(
+			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
+		);
+		const dedupedProducts = deduplicate(products, (it) => it.product.code);
+		return {
+			streamed: { products: Promise.resolve(dedupedProducts) }
+		};
+	} catch (err: any) {
+		const isNetworkError =
+			err instanceof TypeError &&
+			(err.message === 'fetch failed' ||
+				err.message.includes('ENOTFOUND') ||
+				err.message.includes('Failed to fetch') ||
+				err.message.includes('NetworkError') ||
+				err.name === 'AbortError' ||
+				err.message.includes('timeout'));
+		if (isNetworkError) {
+			throw error(503, {
+				message: 'network_error',
+				errors: [
+					{
+						message: { name: err.name, id: err.message, lc_name: err.toString() },
+						impact: { name: 'fetch', id: 'network', lc_name: 'network' },
+						field: { id: 'url', value: 'Open Food Facts API' }
+					}
+				]
+			});
+		} else {
+			throw error(500, {
+				message: 'unexpected_error',
+				errors: [
+					{
+						message: { name: err.name, id: err.message, lc_name: err.toString() },
+						impact: { name: 'unknown', id: 'unknown', lc_name: 'unknown' },
+						field: { id: 'unknown', value: 'unknown' }
+					}
+				]
+			});
+		}
+	}
 };
