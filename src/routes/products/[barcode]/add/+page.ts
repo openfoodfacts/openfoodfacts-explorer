@@ -1,8 +1,8 @@
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 
-export const load: PageLoad = async ({ url }) => {
-	const barcode = url.searchParams.get('barcode');
+export const load: PageLoad = async ({ params }) => {
+	const barcode = params.barcode;
 
 	if (!barcode) {
 		error(401, { message: 'Barcode required to access this page' });
@@ -13,6 +13,10 @@ export const load: PageLoad = async ({ url }) => {
 
 	const user_id = parsedPreferences?.username ?? null;
 	const password = parsedPreferences?.password ?? null;
+
+	if (user_id == null) {
+		error(401, { message: 'User not Authenticated' });
+	}
 
 	return {
 		barcode,
