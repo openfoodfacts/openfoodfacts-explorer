@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { init, register, getLocaleFromNavigator } from 'svelte-i18n';
+import { init, register, getLocaleFromNavigator, waitLocale } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 
@@ -12,13 +12,24 @@ locales.forEach((locale) => {
 	});
 });
 
-export function initI18n() {
+init({
+	fallbackLocale: 'en',
+	initialLocale: 'en'
+});
+
+export async function initI18n() {
 	const userPreferredLanguage = browser ? get(preferences).lang : 'en';
+
+	const localeToUse = browser ? userPreferredLanguage || getLocaleFromNavigator() || 'en' : 'en';
 
 	init({
 		fallbackLocale: 'en',
-		initialLocale: userPreferredLanguage || (browser ? getLocaleFromNavigator() : 'en')
+		initialLocale: localeToUse
 	});
+
+	if (browser) {
+		await waitLocale(localeToUse);
+	}
 }
 
 export * from 'svelte-i18n';

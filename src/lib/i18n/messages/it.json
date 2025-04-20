@@ -88,7 +88,9 @@
 	},
 	"errors": {
 		"network": {
-			"title": "Errore di Connessione"
+			"title": "Errore di Connessione",
+			"message": "Impossibile connettersi al server di Open Food Facts. Controlla la tua connessione a Internet e riprova.",
+			"instructions": "Se il problema persiste, visita la pagina di stato di Open Food Facts."
 		}
 	}
 }
