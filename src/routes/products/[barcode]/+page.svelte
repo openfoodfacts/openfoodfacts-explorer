@@ -113,7 +113,7 @@
 						Loading...
 					{:then brands}
 						{#each product.brands_tags as tag, i (i)}
-							<span class="badge flex h-auto items-center break-words">
+							<span class="badge h-auto break-words">
 								{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 							</span>
 						{/each}
@@ -126,10 +126,7 @@
 						Loading...
 					{:then categories}
 						{#each product.categories_tags as tag (tag)}
-							<a
-								class="badge badge-secondary flex h-auto items-center break-words"
-								href="/taxo/categories/{tag}"
-							>
+							<a class="badge badge-secondary h-auto break-words" href="/taxo/categories/{tag}">
 								{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
 							</a>
 						{/each}
@@ -142,7 +139,7 @@
 						Loading...
 					{:then stores}
 						{#each product.stores_tags as tag, i (i)}
-							<span class="badge flex h-auto items-center break-words">
+							<span class="badge h-auto break-words">
 								{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 							</span>
 						{/each}
@@ -155,7 +152,7 @@
 						Loading...
 					{:then labels}
 						{#each product.labels_tags as tag, i (i)}
-							<a class="badge flex h-auto items-center break-words" href={'/taxo/labels/' + tag}>
+							<a class="badge h-auto break-words" href={'/taxo/labels/' + tag}>
 								{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 							</a>
 						{/each}
@@ -168,7 +165,7 @@
 						Loading...
 					{:then countries}
 						{#each product.countries_tags as tag, i (i)}
-							<a class="badge flex h-auto items-center break-words" href={'/taxo/countries/' + tag}>
+							<a class="badge h-auto break-words" href={'/taxo/countries/' + tag}>
 								{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 							</a>
 						{/each}
