@@ -9,5 +9,8 @@ export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_V
 
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
 export const TAXONOMY_URL = (taxo: string) => `${STATIC_HOST}/data/taxonomies/${taxo}.json`;
-export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${barcode}.json`;
+export const PRODUCT_URL = (barcode: string) => {
+	const apiVersion = import.meta.env.VITE_API_VERSION || '3';
+	return `${API_HOST}/api/v${apiVersion}/product/${barcode}.json`;
+};
 export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/products/${path}`;

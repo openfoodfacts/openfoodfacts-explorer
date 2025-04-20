@@ -11,7 +11,8 @@ export class ProductsApi {
 	}
 
 	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
-		const url = `${API_HOST}/api/v2/product/${barcode}?fields=product_name,code,attribute_groups_en`;
+		const apiVersion = import.meta.env.VITE_API_VERSION || '2';
+		const url = `${API_HOST}/api/v${apiVersion}/product/${barcode}?fields=product_name,code,attribute_groups_en`;
 
 		const res = await this.fetch(url);
 
