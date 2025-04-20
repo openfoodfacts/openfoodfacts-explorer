@@ -52,58 +52,60 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<div class="bg-base-100 navbar hidden px-10 xl:flex">
-	<div class="navbar-start">
-		<a href="/"> <Logo /> </a>
-	</div>
-	<div class="navbar-center">
-		<div class="form-control">
-			<div>
-				<div class="join">
-					<input
-						type="text"
-						bind:value={searchQuery}
-						class="input join-item input-bordered xl:w-full"
-						placeholder={$_('search.placeholder')}
-						onkeydown={(e) => {
-							if (e.key === 'Enter' && searchQuery.trim() !== '') {
-								gotoProductsSearch();
-							}
-						}}
-					/>
-					<button
-						class="btn btn-square btn-secondary join-item px-10"
-						onclick={() => gotoProductsSearch()}
-						disabled={searchQuery == null || searchQuery.trim() === ''}
-					>
-						{$_('search.go')}
-					</button>
-				</div>
+<div class="flex justify-center">
+	<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
+		<div class="navbar-start">
+			<a href="/"> <Logo /> </a>
+		</div>
+		<div class="navbar-center">
+			<div class="form-control">
+				<div>
+					<div class="join">
+						<input
+							type="text"
+							bind:value={searchQuery}
+							class="input join-item input-bordered xl:w-full"
+							placeholder={$_('search.placeholder')}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' && searchQuery.trim() !== '') {
+									gotoProductsSearch();
+								}
+							}}
+						/>
+						<button
+							class="btn btn-square btn-secondary join-item px-10"
+							onclick={() => gotoProductsSearch()}
+							disabled={searchQuery == null || searchQuery.trim() === ''}
+						>
+							{$_('search.go')}
+						</button>
+					</div>
 
-				<a
-					class="btn btn-secondary ms-4 px-5 text-lg"
-					href="/qr"
-					title={$_('search.scan')}
-					aria-label={$_('search.scan')}
-				>
-					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-				</a>
+					<a
+						class="btn btn-secondary ms-4 px-5 text-lg"
+						href="/qr"
+						title={$_('search.scan')}
+						aria-label={$_('search.scan')}
+					>
+						<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="navbar-end gap-2">
-		<NutritionCalculator />
-		<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
-		<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
-		<a
-			class="btn btn-outline link"
-			href={GITHUB_REPO_URL}
-			target="_blank"
-			aria-label={$_('github_link')}
-		>
-			<span class="icon-[mdi--github] h-8 w-8"></span>
-		</a>
+		<div class="navbar-end gap-2">
+			<NutritionCalculator />
+			<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
+			<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
+			<a
+				class="btn btn-outline link"
+				href={GITHUB_REPO_URL}
+				target="_blank"
+				aria-label={$_('github_link')}
+			>
+				<span class="icon-[mdi--github] h-8 w-8"></span>
+			</a>
+		</div>
 	</div>
 </div>
 
