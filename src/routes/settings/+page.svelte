@@ -7,7 +7,6 @@
 	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
-	import { dev } from '$app/environment';
 
 	interface Props {
 		data: PageData;
