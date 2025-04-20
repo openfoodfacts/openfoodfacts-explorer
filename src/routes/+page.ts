@@ -20,22 +20,17 @@ const count = '10';
 async function productsWithQuestions(
 	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>[]> {
-	try {
-		const response: QuestionsResponse = await fetch(
-			'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count })
-		).then((it) => it.json());
+	const response: QuestionsResponse = await fetch(
+		'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count })
+	).then((it) => it.json());
 
-		const productApi = new ProductsApi(fetch);
+	const productApi = new ProductsApi(fetch);
 
-		const productsPromises = response.questions.map((question) =>
-			productApi.getProductReducedForCard(question.barcode)
-		);
+	const productsPromises = response.questions.map((question) =>
+		productApi.getProductReducedForCard(question.barcode)
+	);
 
-		return Promise.all(productsPromises);
-	} catch (err: any) {
-		console.error('productsWithQuestions error:', err);
-		throw err;
-	}
+	return Promise.all(productsPromises);
 }
 
 function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
