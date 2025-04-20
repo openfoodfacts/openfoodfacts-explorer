@@ -29,13 +29,11 @@ async function productsWithQuestions(
 	const productsPromises = response.questions.map((question) =>
 		productApi.getProductReducedForCard(question.barcode)
 	);
-
 	return Promise.all(productsPromises);
 }
 
 function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 	const seen = new Set<string>();
-
 	return array.filter((el) => {
 		if (seen.has(key(el))) return false;
 		seen.add(key(el));
@@ -53,7 +51,7 @@ export const load: PageLoad = async ({ fetch }) => {
 		return {
 			streamed: { products: Promise.resolve(dedupedProducts) }
 		};
-	} catch (err: any) {
+	} catch (err: unknown) {
 		const isNetworkError =
 			err instanceof TypeError &&
 			(err.message === 'fetch failed' ||
@@ -67,7 +65,11 @@ export const load: PageLoad = async ({ fetch }) => {
 				message: 'network_error',
 				errors: [
 					{
-						message: { name: err.name, id: err.message, lc_name: err.toString() },
+						message: {
+							name: (err as Error).name,
+							id: (err as Error).message,
+							lc_name: String(err)
+						},
 						impact: { name: 'fetch', id: 'network', lc_name: 'network' },
 						field: { id: 'url', value: 'Open Food Facts API' }
 					}
@@ -78,7 +80,11 @@ export const load: PageLoad = async ({ fetch }) => {
 				message: 'unexpected_error',
 				errors: [
 					{
-						message: { name: err.name, id: err.message, lc_name: err.toString() },
+						message: {
+							name: err instanceof Error ? err.name : 'unknown',
+							id: err instanceof Error ? err.message : String(err),
+							lc_name: String(err)
+						},
 						impact: { name: 'unknown', id: 'unknown', lc_name: 'unknown' },
 						field: { id: 'unknown', value: 'unknown' }
 					}
