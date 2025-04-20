@@ -78,6 +78,12 @@ cp .env.example .env
 
 Edit the `.env` file as needed to configure your development environment.
 
+#### Development Configuration
+
+- Set `VITE_API_VERSION` in `.env` file to test different versions of the Open Food Facts API (default: 3)
+- For example, to test the API v2: `VITE_API_VERSION=2`
+- This is useful for testing new API versions before updating the default version used in the application.
+
 Then start the development server:
 
 ```bash
