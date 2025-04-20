@@ -205,8 +205,8 @@
 			onclick={() => toggleGroup(group)}
 			onkeydown={(e) => handleGroupKeyDown(e, group)}
 		>
-			<div class="flex items-center gap-2 overflow-hidden">
-				<span class="truncate">{group}</span>
+			<div class="flex items-center gap-2">
+				<span class="break-all">{group}</span>
 				<div class="badge">{keys.length}</div>
 			</div>
 			<button class="btn btn-sm btn-circle" aria-hidden="true">
