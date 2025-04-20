@@ -37,6 +37,17 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Chi siamo?",
+			"blog": "Il blog di Open Food Facts",
+			"code_of_conduct": "Codice di Condotta",
+			"vision_mission_values_and_programs": "Visione, missione, valori e programmi",
+			"partners": "Partner",
+			"faq": "Domande frequenti",
+			"press": "Stampa"
+		}
+	},
 	"settings": {
 		"general": "General",
 		"influences": "Influences",
