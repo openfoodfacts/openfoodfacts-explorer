@@ -130,7 +130,7 @@
 
 	function getIngredientsImage(language: string) {
 		const productData = get(productStore);
-		if (!productData.code || !productData.images) {
+		if (productData.code === undefined || productData.code === null || productData.images === undefined || productData.images === null) {
 			return '';
 		}
 
@@ -149,7 +149,7 @@
 		}
 
 		const rev = (image as SelectedImage).rev;
-		if (!rev) {
+		if (rev === undefined || rev === null) {
 			return '';
 		}
 
@@ -194,25 +194,25 @@
 	</div>
 
 	<div class="tabs tabs-box">
-		{#if Object.keys($productStore.languages_codes || {}).length > 0}
-			{#each Object.keys($productStore.languages_codes || {}) as code (code)}
+		{#each Object.keys($productStore.languages_codes || {}) as code (code)}
+			<input
+				type="radio"
+				name="name_tabs"
+				class="tab"
+				aria-label={getLanguage(code)}
+				defaultChecked={code === $productStore.lang}
+			/>
+			<div class="tab-content form-control p-6">
+				<label for="">{$_('product.edit.name')} ({getLanguage(code)})</label>
 				<input
-					type="radio"
-					name="name_tabs"
-					class="tab"
-					aria-label={getLanguage(code)}
-					defaultChecked={code === $productStore.lang}
+					type="text"
+					class="input input-bordered w-full"
+					bind:value={$productStore[`product_name_${code}`]}
 				/>
-				<div class="tab-content form-control p-6">
-					<label for="">{$_('product.edit.name')} ({getLanguage(code)})</label>
-					<input
-						type="text"
-						class="input input-bordered w-full"
-						bind:value={$productStore[`product_name_${code}`]}
-					/>
-				</div>
-			{/each}
-		{:else}
+			</div>
+		{/each}
+		
+		{#if Object.keys($productStore.languages_codes || {}).length === 0}
 			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 		{/if}
 	</div>
@@ -280,31 +280,31 @@
 	<Card>
 		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
 		<div class="tabs tabs-box">
-			{#if Object.keys($productStore.languages_codes || {}).length > 0}
-				{#each Object.keys($productStore.languages_codes || {}) as code (code)}
-					<input
-						type="radio"
-						name="ingredients_tabs"
-						class="tab"
-						aria-label={getLanguage(code)}
-						defaultChecked={code === $productStore.lang}
-					/>
-					<div class="tab-content form-control p-6">
-						{#if getIngredientsImage(code)}
-							<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
-						{:else}
-							<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
-						{/if}
-						<label for="">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
-						<div class="form-control mb-4">
-							<textarea
-								class="textarea textarea-bordered h-40 w-full"
-								bind:value={$productStore[`ingredients_text_${code}`]}
-							></textarea>
-						</div>
+			{#each Object.keys($productStore.languages_codes || {}) as code (code)}
+				<input
+					type="radio"
+					name="ingredients_tabs"
+					class="tab"
+					aria-label={getLanguage(code)}
+					defaultChecked={code === $productStore.lang}
+				/>
+				<div class="tab-content form-control p-6">
+					{#if getIngredientsImage(code)}
+						<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
+					{:else}
+						<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
+					{/if}
+					<label for="">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
+					<div class="form-control mb-4">
+						<textarea
+							class="textarea textarea-bordered h-40 w-full"
+							bind:value={$productStore[`ingredients_text_${code}`]}
+						></textarea>
 					</div>
-				{/each}
-			{:else}
+				</div>
+			{/each}
+			
+			{#if Object.keys($productStore.languages_codes || {}).length === 0}
 				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 			{/if}
 		</div>
