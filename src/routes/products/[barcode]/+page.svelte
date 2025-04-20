@@ -66,17 +66,17 @@
 				{product.product_name ?? product.code}
 			</h1>
 
-			<div class="flex items-center justify-center gap-2">
+			<div class="flex flex-wrap items-center justify-center gap-2">
 				<a
 					href={'https://world.openfoodfacts.org/product/' + product.code}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="link me-4"
+					class="link"
 				>
 					See on OpenFoodFacts
 				</a>
 
-				<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
+				<button class="btn btn-secondary max-sm:btn-sm" onclick={addToCalculator}>
 					Add to Calculator
 				</button>
 				<a
