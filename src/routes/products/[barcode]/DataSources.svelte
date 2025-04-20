@@ -57,7 +57,7 @@
 				values: { date: formatUnixToDateString(product.created_t) }
 			})}
 		</span>
-		<span class="underline">{product.creator ?? $_('product.datasources.unknown')}</span>
+		<span class="break-all underline">{product.creator ?? $_('product.datasources.unknown')}</span>
 	</p>
 
 	<p class="mt-2 text-sm">
@@ -66,10 +66,12 @@
 				values: { date: formatUnixToDateString(product.last_modified_t) }
 			})}
 		</span>
-		<span class="underline">{product.last_editor ?? $_('product.datasources.unknown')}</span>
+		<span class="break-all underline">
+			{product.last_editor ?? $_('product.datasources.unknown')}
+		</span>
 	</p>
 
-	<p class="mt-2 text-sm">
+	<p class="mt-2 overflow-hidden text-sm break-words">
 		<span class="text-gray-600 dark:text-gray-300">
 			{$_('product.datasources.also_edited_by')}
 		</span>
@@ -78,8 +80,8 @@
 			<span class="underline">{$_('product.datasources.unknown')}</span>
 		{:else}
 			{#each product.editors_tags as editor, i (i)}
-				<span class="underline"> {String(editor)}</span>{#if i < product.editors_tags.length - 1},
-					&nbsp;
+				<span class="break-all underline"> {editor} </span>
+				{#if i < product.editors_tags.length - 1}, &nbsp;
 				{/if}
 			{/each}
 		{/if}
@@ -91,7 +93,9 @@
 				values: { date: formatUnixToDateString(product.last_checked_t) }
 			})}
 		</span>
-		<span class="underline"> {product.checkers_tags[0] ?? $_('product.datasources.unknown')}</span>
+		<span class="break-all underline">
+			{product.checkers_tags[0] ?? $_('product.datasources.unknown')}
+		</span>
 	</p>
 
 	<div class="divider"></div>
