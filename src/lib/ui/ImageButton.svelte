@@ -15,8 +15,8 @@
 </script>
 
 <ImageModal bind:this={modal} />
-<div class="relative">
-	<button class="flex max-w-full justify-center" {onclick}>
+<div class="relative flex h-full w-full items-center justify-center">
+	<button class="flex items-center justify-center" {onclick}>
 		{#if src != null}
 			<div class="flex items-center justify-center">
 				<img
