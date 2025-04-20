@@ -1,6 +1,5 @@
 import { getProduct, getTaxo } from '$lib/api';
 import type { Category, Origin, Label, Brand, Store, Country } from '$lib/api';
-import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
 
 export const load = (async ({ fetch, params }) => {
@@ -15,10 +14,19 @@ export const load = (async ({ fetch, params }) => {
 	]);
 
 	if (product.status === 'failure') {
-		error(404, {
-			message: 'Failure to load product',
-			errors: product.errors
-		});
+		return {
+			state: {
+				status: 'empty',
+				product: null,
+				errors: product.errors
+			},
+			categories,
+			labels,
+			brands,
+			stores,
+			origins,
+			countries
+		};
 	}
 
 	return {

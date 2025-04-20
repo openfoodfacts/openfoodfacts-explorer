@@ -33,7 +33,7 @@
 				<p>We couldn't find any products matching your search</p>
 				<a
 					class="btn btn-secondary join-item mt-5 px-10"
-					href="/products/{page.url.searchParams.get('q')}/add">Add new Product</a
+					href="/products/{page.url.searchParams.get('q')}/edit">Add new Product</a
 				>
 			</div>
 		{/if}
