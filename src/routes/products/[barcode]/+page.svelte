@@ -108,12 +108,12 @@
 				<span>{product.quantity}</span>
 
 				<span class="text-end font-bold">Brands:</span>
-				<div>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.brands}
 						Loading...
 					{:then brands}
 						{#each product.brands_tags as tag, i (i)}
-							<span class="badge">
+							<span class="badge h-auto break-words">
 								{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
 							</span>
 						{/each}
@@ -126,7 +126,7 @@
 						Loading...
 					{:then categories}
 						{#each product.categories_tags as tag (tag)}
-							<a class="badge badge-secondary" href="/taxo/categories/{tag}">
+							<a class="badge badge-secondary h-auto break-words" href="/taxo/categories/{tag}">
 								{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
 							</a>
 						{/each}
@@ -134,12 +134,12 @@
 				</div>
 
 				<span class="text-end font-bold">Stores:</span>
-				<div>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.stores}
 						Loading...
 					{:then stores}
 						{#each product.stores_tags as tag, i (i)}
-							<span class="badge">
+							<span class="badge h-auto break-words">
 								{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
 							</span>
 						{/each}
@@ -147,45 +147,45 @@
 				</div>
 
 				<span class="text-end font-bold">Labels:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.labels}
 						Loading...
 					{:then labels}
 						{#each product.labels_tags as tag, i (i)}
-							<a class="badge" href={'/taxo/labels/' + tag}>
+							<a class="badge h-auto break-words" href={'/taxo/labels/' + tag}>
 								{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Countries:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.countries}
 						Loading...
 					{:then countries}
 						{#each product.countries_tags as tag, i (i)}
-							<a class="badge" href={'/taxo/countries/' + tag}>
+							<a class="badge h-auto break-words" href={'/taxo/countries/' + tag}>
 								{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Origins:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.origins}
 						Loading...
 					{:then origins}
 						{#each product.origins_tags as tag, i (i)}
 							{#if i > 0},
 							{/if}
-							<a class="link" href={'/taxo/origin/' + tag}>
+							<a class="link inline-flex items-center break-words" href={'/taxo/origin/' + tag}>
 								{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				{#if product.emb_codes != null && product.emb_codes.length > 0}
 					<span class="text-end font-bold">Traceability Codes:</span>
