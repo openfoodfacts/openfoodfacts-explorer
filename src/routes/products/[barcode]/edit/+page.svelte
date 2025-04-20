@@ -130,7 +130,12 @@
 
 	function getIngredientsImage(language: string) {
 		const productData = get(productStore);
-		if (productData.code === undefined || productData.code === null || productData.images === undefined || productData.images === null) {
+		if (
+			productData.code === undefined ||
+			productData.code === null ||
+			productData.images === undefined ||
+			productData.images === null
+		) {
 			return '';
 		}
 
@@ -211,7 +216,7 @@
 				/>
 			</div>
 		{/each}
-		
+
 		{#if Object.keys($productStore.languages_codes || {}).length === 0}
 			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 		{/if}
@@ -303,7 +308,7 @@
 					</div>
 				</div>
 			{/each}
-			
+
 			{#if Object.keys($productStore.languages_codes || {}).length === 0}
 				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 			{/if}
