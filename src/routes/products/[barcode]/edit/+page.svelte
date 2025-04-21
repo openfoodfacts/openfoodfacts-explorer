@@ -131,10 +131,8 @@
 	function getIngredientsImage(language: string) {
 		const productData = get(productStore);
 		if (
-			productData.code === undefined ||
-			productData.code === null ||
-			productData.images === undefined ||
-			productData.images === null
+			productData.code == null ||
+			productData.images == null
 		) {
 			return '';
 		}
@@ -154,7 +152,7 @@
 		}
 
 		const rev = (image as SelectedImage).rev;
-		if (rev === undefined || rev === null) {
+		if (rev == null) {
 			return '';
 		}
 
