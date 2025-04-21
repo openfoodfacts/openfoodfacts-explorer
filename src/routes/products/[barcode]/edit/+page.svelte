@@ -130,10 +130,7 @@
 
 	function getIngredientsImage(language: string) {
 		const productData = get(productStore);
-		if (
-			productData.code == null ||
-			productData.images == null
-		) {
+		if (productData.code == null || productData.images == null) {
 			return '';
 		}
 
