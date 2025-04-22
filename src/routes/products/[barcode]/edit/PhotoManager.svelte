@@ -52,7 +52,7 @@
 			}
 		}
 
-		for (const [key, value] of Object.entries(get(product).images)) {
+		for (const [key] of Object.entries(get(product).images)) {
 			if (key.endsWith(`_${code}`) && !photoTypes.some((pt) => key === `${pt.id}_${code}`)) {
 				const imageUrl = getImageUrl($product.code, key);
 				if (imageUrl) {
@@ -87,7 +87,7 @@
 				</h4>
 
 				<div class="flex flex-wrap gap-3">
-					{#each getAllImages(code) as image}
+					{#each getAllImages(code) as image (image.url)}
 						<div class="h-40 w-40 overflow-hidden border">
 							<img src={image.url} alt={image.alt} class="h-full w-full object-contain" />
 						</div>
