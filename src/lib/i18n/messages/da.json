@@ -1,41 +1,41 @@
 {
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Øko-Score",
-	"nova": "Nova - Ultra-processing levels",
+	"nova": "Nova - Ultra-processing niveauer",
 	"settings_link": "Indstillinger",
 	"folksonomy_link": "Folksonomy",
-	"world_option": "World",
+	"world_option": "Verden",
 	"github_link": "GitHub",
 	"search": {
-		"placeholder": "Query or barcode",
-		"go": "Go",
+		"placeholder": "Forespørgsel eller stregkode",
+		"go": "Gå",
 		"scan": "Scan a barcode",
 		"button": "Søg"
 	},
 	"auth": {
 		"username": "Username",
 		"password": "Adgangskode",
-		"authenticated": "Authenticated",
+		"authenticated": "Godkendt",
 		"signin": "Log ind",
 		"signout": "Log ud",
-		"authenticating": "Authenticating...",
+		"authenticating": "Godkender...",
 		"success": "Success",
 		"failed": "Mislykket",
-		"enter_username": "Enter username",
-		"enter_password": "Enter password",
+		"enter_username": "Indtast brugernavn",
+		"enter_password": "Indtast adgangskode",
 		"status": "Status",
-		"actions": "Actions"
+		"actions": "Handlinger"
 	},
 	"general": {
 		"language": "Sprog",
 		"country": "Land",
 		"loading": "Indlæser...",
 		"warning": "Advarsel",
-		"notes": "Notes",
+		"notes": "Noter",
 		"summary": "Oversigt",
 		"product_not_found": "Produktet blev ikke fundet",
-		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"error_occurred": "fejl opstod:",
+		"errors_occurred": "fejl opstod:"
 	},
 	"footer": {
 		"discover": {
@@ -50,11 +50,11 @@
 	},
 	"settings": {
 		"general": "Generelt",
-		"influences": "Influences",
-		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+		"influences": "Påvirkninger",
+		"login": "Login (gemt i localStorage) [USIKKER - KUN DEBUG]"
 	},
 	"folksonomy": {
-		"title": "Folksonomy Engine",
+		"title": "Folksonomi Motor",
 		"subtitle": "Keys Explorer",
 		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
 		"search_placeholder": "Search keys...",
@@ -63,14 +63,14 @@
 		"for": "til"
 	},
 	"home": {
-		"welcome": "Welcome to",
-		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
-		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+		"welcome": "Velkommen til",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> er et værktøj til at udforske OpenFoodFacts-databasen.",
+		"intro_2": "Du kan indtaste en produktkode i søgefeltet ovenfor for at komme i gang eller klikke på et af produkterne nedenfor."
 	},
 	"product": {
 		"datasources": {
-			"title": "Data Sources",
-			"added_on": "Product added on {date} by: ",
+			"title": "Datakilder",
+			"added_on": "Produkt tilføjet d. {date} af: ",
 			"last_edit": "Last edit of product page on {date} by: ",
 			"also_edited_by": "Product page also edited by:",
 			"last_check": "Last check of product page on {date} by: ",
@@ -82,25 +82,25 @@
 		},
 		"edit": {
 			"add_language": "Add a language",
-			"search_languages": "Search languages to add",
-			"no_languages_found": "No languages found",
+			"search_languages": "Søg efter sprog at tilføje",
+			"no_languages_found": "Ingen sprog fundet",
 			"name": "Navn",
 			"quantity": "Kvantitet",
-			"emb_code": "EMB Code (Producer code)",
+			"emb_code": "EMB-kode (producentkode)",
 			"packaging": "Emballage",
-			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"manufacturing_places": "Produktionssteder",
+			"categories": "Kategorier:",
 			"labels": "Etiketter",
 			"brands": "Mærker",
 			"stores": "Butikker",
 			"origins": "Oprindelser",
 			"countries": "Lande",
-			"website_url": "Website URL",
+			"website_url": "Websted-URL",
 			"ingredients": "Ingredienser",
 			"ingredients_list": "Liste over ingredienser",
-			"no_ingredients_image": "No ingredients image",
-			"nutritional_information": "Nutritional Information",
-			"serving_size": "Serving Size",
+			"no_ingredients_image": "Intet ingrediensbillede",
+			"nutritional_information": "Ernæringsoplysninger",
+			"serving_size": "Portions størrelse",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",
