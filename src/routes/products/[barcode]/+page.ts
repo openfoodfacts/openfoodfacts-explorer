@@ -11,7 +11,7 @@ import {
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
-import { PricesApi } from "@openfoodfacts/openfoodfacts-nodejs";
+import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const ssr = false;
 

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
+	import { preferences } from '$lib/settings';
 
-	import { PricesApi } from "@openfoodfacts/openfoodfacts-nodejs";
+	import { PricesApi } from '$lib/api/prices';
+	// import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
@@ -50,7 +52,7 @@
 			page: number;
 			pages: number;
 			size: number;
-			total : number;
+			total: number;
 		};
 		barcode: string;
 	}
@@ -66,7 +68,6 @@
 	onMount(async () => {
 		pricesApi = new PricesApi(fetch);
 		authenticated = await pricesApi.isAuthenticated();
-
 		nearStores = await getNearStores();
 	});
 
@@ -101,6 +102,13 @@
 		} else {
 			console.debug('Logged in', res.data);
 			authStatus = true;
+
+			// set the auth token in the preferences store
+			preferences.update((p) => ({
+				...p,
+				prices: { ...p.prices, authToken: res?.data?.access_token ?? null }
+			}));
+
 			setTimeout(() => {
 				authenticated = true;
 			}, 1000);
@@ -131,11 +139,9 @@
 		});
 
 		if (res.error != null) {
-			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while submitting price', res.error);
 		} else {
 			console.debug('Submitted price', res.data);
-			// @ts-expect-error - TODO: Types should be specified in a better way
 			prices.items.push(res.data);
 			invalidateAll();
 		}
