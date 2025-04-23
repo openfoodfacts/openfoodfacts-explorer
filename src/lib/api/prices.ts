@@ -1,5 +1,7 @@
 import createClient from 'openapi-fetch';
 import type { paths } from './prices.d';
+import { preferences } from '$lib/settings';
+import { get } from 'svelte/store';
 
 type PricesQuery = paths['/api/v1/prices']['get']['parameters']['query'];
 type PriceStats = paths['/api/v1/prices/stats']['get']['parameters']['query'];
@@ -20,7 +22,15 @@ export class PricesApi {
 	private readonly fetch: typeof window.fetch;
 
 	constructor(fetch: typeof window.fetch) {
-		this.client = createClient({ fetch, baseUrl: BASE_URL, credentials: 'include' });
+		this.client = createClient({
+			fetch,
+			baseUrl: BASE_URL,
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + get(preferences)?.prices?.authToken
+			}
+		});
 		this.fetch = fetch;
 	}
 
