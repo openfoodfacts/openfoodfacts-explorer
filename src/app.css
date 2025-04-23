@@ -4,7 +4,9 @@
 @plugin "@tailwindcss/typography";
 @plugin "@iconify/tailwind4";
 
-@config '../tailwind.config.js';
+@theme {
+	--font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+}
 
 @plugin "daisyui/theme" {
 	name: 'light';
