@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getOrDefault } from '$lib/api';
+	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
