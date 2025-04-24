@@ -108,5 +108,12 @@
 			"save_btn": "Shrani",
 			"debug": "Debug"
 		}
+	},
+	"errors": {
+		"network": {
+			"title": "Connection Error",
+			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
+			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
+		}
 	}
 }
