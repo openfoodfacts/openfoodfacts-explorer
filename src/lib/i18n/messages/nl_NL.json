@@ -1,7 +1,7 @@
 {
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Eco-score",
-	"nova": "Nova - Ultra-processing levels",
+	"nova": "Nova - Ultra-verwerkingsniveaus",
 	"settings_link": "Instellingen",
 	"folksonomy_link": "Folksonomy",
 	"world_option": "Wereld",
@@ -15,33 +15,33 @@
 	"auth": {
 		"username": "Gebruikersnaam",
 		"password": "Wachtwoord",
-		"authenticated": "Authenticated",
+		"authenticated": "Geverifieerd",
 		"signin": "Inloggen",
 		"signout": "Uitloggen",
-		"authenticating": "Authenticating...",
+		"authenticating": "Verifiëren...",
 		"success": "Succesvol",
 		"failed": "Mislukt",
-		"enter_username": "Enter username",
-		"enter_password": "Enter password",
+		"enter_username": "Gebruikersnaam invoeren",
+		"enter_password": "Wachtwoord invoeren",
 		"status": "Status",
-		"actions": "Actions"
+		"actions": "Acties"
 	},
 	"general": {
 		"language": "Taal",
 		"country": "Land",
 		"loading": "Aan het laden...",
 		"warning": "Waarschuwing",
-		"notes": "Notes",
+		"notes": "Notities",
 		"summary": "Samenvatting",
 		"product_not_found": "Product niet gevonden",
-		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"error_occurred": "er is een fout opgetreden:",
+		"errors_occurred": "er zijn fouten opgetreden:"
 	},
 	"footer": {
 		"discover": {
 			"who_we_are": "Over ons",
 			"blog": "Blog",
-			"code_of_conduct": "Code of Conduct",
+			"code_of_conduct": "Gedragscode",
 			"vision_mission_values_and_programs": "Visie, missie, waarden en programma's",
 			"partners": "Partners",
 			"faq": "Veelgestelde vragen (FAQ)",
@@ -50,7 +50,7 @@
 	},
 	"settings": {
 		"general": "Algemeen",
-		"influences": "Influences",
+		"influences": "Invloeden",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
 	},
 	"folksonomy": {
@@ -58,23 +58,23 @@
 		"subtitle": "Keys Explorer",
 		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
 		"search_placeholder": "Search keys...",
-		"keys_found": "keys found",
-		"key_found": "key found",
+		"keys_found": "sleutels gevonden",
+		"key_found": "sleutel gevonden",
 		"for": "voor"
 	},
 	"home": {
-		"welcome": "Welcome to",
+		"welcome": "Welkom bij",
 		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
-		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+		"intro_2": "Om te beginnen kunt u een productcode invoeren in de zoekbalk hierboven. U kunt ook op een van de onderstaande producten klikken."
 	},
 	"product": {
 		"datasources": {
-			"title": "Data Sources",
-			"added_on": "Product added on {date} by: ",
-			"last_edit": "Last edit of product page on {date} by: ",
-			"also_edited_by": "Product page also edited by:",
-			"last_check": "Last check of product page on {date} by: ",
-			"last_modified_t": "Last edit of product page on {date} by: ",
+			"title": "Gegevensbronnen",
+			"added_on": "Product toegevoegd op {date} door: ",
+			"last_edit": "Laatste bewerking van de productpagina op {date} door: ",
+			"also_edited_by": "Productpagina ook bewerkt door:",
+			"last_check": "Laatste controle van productpagina op {date} door: ",
+			"last_modified_t": "Laatste bewerking van de productpagina op {date} door: ",
 			"incomplete_or_incorrect": "Indien de informatie onvolledig of foutief is, kan je ze op deze pagina aanvullen of corrigeren.",
 			"unknown": "onbekend",
 			"done": "Voltooid",
@@ -82,38 +82,38 @@
 		},
 		"edit": {
 			"add_language": "Een taal toevoegen",
-			"search_languages": "Search languages to add",
-			"no_languages_found": "No languages found",
+			"search_languages": "Zoek naar talen om toe te voegen",
+			"no_languages_found": "Geen talen gevonden",
 			"name": "Naam",
 			"quantity": "Hoeveelheid",
-			"emb_code": "EMB Code (Producer code)",
+			"emb_code": "EMB-code (producentcode)",
 			"packaging": "Verpakking",
-			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"manufacturing_places": "Productielocaties",
+			"categories": "Categorieën:",
 			"labels": "Keurmerken",
 			"brands": "Merken",
 			"stores": "Winkels",
 			"origins": "Oorsprong",
 			"countries": "Landen",
-			"website_url": "Website URL",
+			"website_url": "Website-URL",
 			"ingredients": "Ingrediënten",
 			"ingredients_list": "Ingrediëntenlijst",
-			"no_ingredients_image": "No ingredients image",
+			"no_ingredients_image": "Geen ingrediëntenafbeelding",
 			"nutritional_information": "Nutritional Information",
-			"serving_size": "Serving Size",
+			"serving_size": "Portiegrootte",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Reactie",
-			"comment_placeholder": "Add a comment to this edit",
+			"comment_placeholder": "Voeg een opmerking toe aan deze bewerking",
 			"save_btn": "Opslaan",
-			"debug": "Debug"
+			"debug": "Foutopsporing"
 		}
 	},
 	"errors": {
 		"network": {
-			"title": "Connection Error",
-			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
-			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
+			"title": "Verbindingsfout",
+			"message": "Verbinding met de Open Food Facts-server is mislukt. Controleer uw internetverbinding en probeer het opnieuw.",
+			"instructions": "Als het probleem zich blijft voordoen, ga dan naar de Open Food Facts Statuspagina."
 		}
 	}
 }
