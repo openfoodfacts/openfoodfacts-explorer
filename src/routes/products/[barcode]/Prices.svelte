@@ -15,7 +15,6 @@
 
 	const baseUrl = import.meta.env.VITE_PRICES_API_URL;
 
-
 	type PriceResult = {
 		readonly id: number;
 		product_id: number;
