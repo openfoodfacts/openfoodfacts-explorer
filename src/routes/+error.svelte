@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import { _ } from '$lib/i18n';
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
 
-	const errorMessage = $derived($page.error?.message || '');
-	const errorDetails = $derived($page.error?.errors || []);
-	const isNetworkError = $derived(errorMessage === ERROR_TYPES.NETWORK_ERROR);
+	const errorMessage = page.error?.message || '';
+	const errorDetails = page.error?.errors || [];
+	const isNetworkError = errorMessage === ERROR_TYPES.NETWORK_ERROR;
 
-	$effect(() => {
+	onMount(() => {
 		for (const err of errorDetails) {
 			console.error('Error detail:', err);
 		}
