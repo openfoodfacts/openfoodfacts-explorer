@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 	import { preferences } from '$lib/settings';
-	import { get } from 'svelte/store';
 
-	import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
+	import { createPricesApi, updatePricesAuthToken } from '$lib/api/prices';
+	import type { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
 	type ApiResponse<T> = { data?: T; error?: object };
@@ -68,10 +68,7 @@
 	let nearStores: OverpassAPIResult | undefined = $state();
 
 	onMount(async () => {
-		pricesApi = new PricesApi(fetch, {
-			baseUrl,
-			authToken: `${get(preferences)?.prices?.authToken}`
-		});
+		pricesApi = createPricesApi(fetch);
 		authenticated = await pricesApi.isAuthenticated();
 		nearStores = await getNearStores();
 	});
@@ -109,10 +106,7 @@
 			authStatus = true;
 
 			// set the auth token in the preferences store
-			preferences.update((p) => ({
-				...p,
-				prices: { ...p.prices, authToken: res?.data?.access_token ?? null }
-			}));
+			updatePricesAuthToken(res?.data?.access_token ?? '');
 
 			setTimeout(() => {
 				authenticated = true;

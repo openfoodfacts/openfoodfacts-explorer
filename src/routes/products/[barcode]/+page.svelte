@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getOrDefault } from '$lib/api';
-	import { isPricesConfigured } from '$lib/api/utils';
+	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 	import { navigating } from '$app/state';
@@ -226,7 +226,7 @@
 		</Card>
 	{/if}
 
-	{#if isPricesConfigured() && data?.prices?.data != null}
+	{#if isPriceConfigured() && data?.prices?.data != null}
 		<Card>
 			<h1 class="my-4 text-xl font-bold sm:text-4xl">
 				Open prices <span class="font-light italic">(alpha)</span>
