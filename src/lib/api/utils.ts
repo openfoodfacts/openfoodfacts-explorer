@@ -7,4 +7,3 @@ export function formBody(params: Record<string, string | null | undefined>) {
 	}
 	return formBody;
 }
-

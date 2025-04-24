@@ -9,16 +9,16 @@ export function isConfigured() {
 }
 
 export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
-    const pricesApi = new PricesApi(fetch, {
-        baseUrl: BASE_URL,
-        authToken: `${get(preferences)?.prices?.authToken}`
-    });
-    return pricesApi;
-}
+	const pricesApi = new PricesApi(fetch, {
+		baseUrl: BASE_URL,
+		authToken: `${get(preferences)?.prices?.authToken}`
+	});
+	return pricesApi;
+};
 
 export const updatePricesAuthToken = async (token: string) => {
-    preferences.update((p) => ({
-        ...p,
-        prices: { ...p.prices, authToken: token ?? null }
-    }));
+	preferences.update((p) => ({
+		...p,
+		prices: { ...p.prices, authToken: token ?? null }
+	}));
 };
