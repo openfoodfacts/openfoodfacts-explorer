@@ -2,7 +2,7 @@
 	"nutriscore": "营养分数",
 	"ecoscore": "生态得分",
 	"nova": "Nova - Ultra-processing levels",
-	"settings_link": "設定",
+	"settings_link": "设置",
 	"folksonomy_link": "Folksonomy",
 	"world_option": "World",
 	"github_link": "GitHub",
@@ -10,7 +10,7 @@
 		"placeholder": "Query or barcode",
 		"go": "Go",
 		"scan": "扫描条形码",
-		"button": "搜尋"
+		"button": "搜索"
 	},
 	"auth": {
 		"username": "用户名",
@@ -28,7 +28,7 @@
 	},
 	"general": {
 		"language": "语言",
-		"country": "地區",
+		"country": "国家/地区",
 		"loading": "載入中...",
 		"warning": "警告",
 		"notes": "Notes",
@@ -45,7 +45,7 @@
 			"vision_mission_values_and_programs": "希望、任务、价值和项目",
 			"partners": "合作伙伴",
 			"faq": "常见问题",
-			"press": "傳媒"
+			"press": "媒体报道"
 		}
 	},
 	"settings": {
@@ -85,7 +85,7 @@
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
 			"name": "名称",
-			"quantity": "數量",
+			"quantity": "数量",
 			"emb_code": "EMB Code (Producer code)",
 			"packaging": "包装",
 			"manufacturing_places": "Manufacturing places",
@@ -94,7 +94,7 @@
 			"brands": "品牌",
 			"stores": "商店",
 			"origins": "起源",
-			"countries": "國家地區",
+			"countries": "国家/地区",
 			"website_url": "Website URL",
 			"ingredients": "成分",
 			"ingredients_list": "成分列表：",
@@ -105,7 +105,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
-			"save_btn": "儲存",
+			"save_btn": "保存",
 			"debug": "Debug"
 		}
 	},
