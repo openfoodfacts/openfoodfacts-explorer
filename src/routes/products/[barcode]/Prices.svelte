@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
 	import { preferences } from '$lib/settings';
+	import { get } from 'svelte/store';
 
-	import { PricesApi } from '$lib/api/prices';
-	// import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
@@ -12,6 +12,9 @@
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
 	type ApiResponse<T> = { data?: T; error?: object };
+
+	const baseUrl = import.meta.env.VITE_PRICES_API_URL;
+
 
 	type PriceResult = {
 		readonly id: number;
@@ -66,7 +69,10 @@
 	let nearStores: OverpassAPIResult | undefined = $state();
 
 	onMount(async () => {
-		pricesApi = new PricesApi(fetch);
+		pricesApi = new PricesApi(fetch, {
+			baseUrl,
+			authToken: `${get(preferences)?.prices?.authToken}`
+		});
 		authenticated = await pricesApi.isAuthenticated();
 		nearStores = await getNearStores();
 	});

@@ -11,7 +11,7 @@ import {
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
-import { isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { isPricesConfigured } from '$lib/api/utils';
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const ssr = false;

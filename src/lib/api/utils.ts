@@ -7,3 +7,9 @@ export function formBody(params: Record<string, string | null | undefined>) {
 	}
 	return formBody;
 }
+
+const pricesBaseUrl = import.meta.env.VITE_PRICES_API_URL;
+
+export function isPricesConfigured() {
+	return pricesBaseUrl != null;
+}
