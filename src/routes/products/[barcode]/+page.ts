@@ -13,6 +13,8 @@ import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
 import { isPricesConfigured } from '$lib/api/utils';
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+import { preferences } from '$lib/settings';
+import { get } from 'svelte/store';
 
 export const ssr = false;
 
@@ -38,7 +40,12 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const folksonomyTags = folkApi.getProduct(params.barcode);
 	const folksonomyKeys = folkApi.getKeys();
 
-	const pricesApi = new PricesApi(fetch);
+	const baseUrl = import.meta.env.VITE_PRICES_API_URL;
+
+	const pricesApi = new PricesApi(fetch, {
+		baseUrl,
+		authToken: `${get(preferences)?.prices?.authToken}`
+	});
 	let pricesResponse = null;
 	if (isPricesConfigured()) {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
