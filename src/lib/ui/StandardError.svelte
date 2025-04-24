@@ -1,17 +1,24 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	export let errors: Array<{
+	const { errors = [], message = '' } = $props<{
+		errors?: Array<{
+			impact: { id: string };
+			message: { id: string };
+			field?: { id: string; value: string };
+		}>;
+		message?: string;
+	}>();
+
+	type ErrorItem = {
 		impact: { id: string };
 		message: { id: string };
 		field?: { id: string; value: string };
-	}> = [];
+	};
 
-	export let message: string = '';
-
-	function isError(error: string) {
-		return errors?.some((e) => e.message.id === error) ?? false;
-	}
+	const isError = $derived(
+		(error: string) => errors?.some((e: ErrorItem) => e.message.id === error) ?? false
+	);
 </script>
 
 <div class="flex flex-col">

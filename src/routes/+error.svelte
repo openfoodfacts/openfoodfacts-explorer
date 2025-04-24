@@ -1,16 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import { _ } from '$lib/i18n';
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
+	import { ERROR_TYPES } from '$lib/errors';
 
-	let message = $derived(page.error?.message);
-	let errors = $derived(page.error?.errors);
-	let isNetworkError = $derived(message === 'network_error');
+	const errorMessage = $derived($page.error?.message || '');
+	const errorDetails = $derived($page.error?.errors || []);
+	const isNetworkError = $derived(errorMessage === ERROR_TYPES.NETWORK_ERROR);
 
 	$effect(() => {
-		for (const error of errors ?? []) {
-			console.error(error);
+		for (const err of errorDetails) {
+			console.error('Error detail:', err);
 		}
 	});
 </script>
@@ -21,6 +22,6 @@
 	{#if isNetworkError}
 		<NetworkError />
 	{:else}
-		<StandardError {errors} {message} />
+		<StandardError errors={errorDetails} message={errorMessage} />
 	{/if}
 </div>

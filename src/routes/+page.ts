@@ -6,6 +6,7 @@ import {
 } from '$lib/api';
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import { ERROR_TYPES, ERROR_CODES, isNetworkError } from '$lib/errors';
 
 type QuestionsResponse = {
 	status: string;
@@ -52,17 +53,9 @@ export const load: PageLoad = async ({ fetch }) => {
 			streamed: { products: Promise.resolve(dedupedProducts) }
 		};
 	} catch (err: unknown) {
-		const isNetworkError =
-			err instanceof TypeError &&
-			(err.message === 'fetch failed' ||
-				err.message.includes('ENOTFOUND') ||
-				err.message.includes('Failed to fetch') ||
-				err.message.includes('NetworkError') ||
-				err.name === 'AbortError' ||
-				err.message.includes('timeout'));
-		if (isNetworkError) {
-			throw error(503, {
-				message: 'network_error',
+		if (isNetworkError(err)) {
+			throw error(ERROR_CODES.NETWORK, {
+				message: ERROR_TYPES.NETWORK_ERROR,
 				errors: [
 					{
 						message: {
@@ -76,8 +69,8 @@ export const load: PageLoad = async ({ fetch }) => {
 				]
 			});
 		} else {
-			throw error(500, {
-				message: 'unexpected_error',
+			throw error(ERROR_CODES.UNEXPECTED, {
+				message: ERROR_TYPES.UNEXPECTED_ERROR,
 				errors: [
 					{
 						message: {
