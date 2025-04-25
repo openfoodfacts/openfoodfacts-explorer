@@ -206,11 +206,16 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
-	let productStore = $derived(
-		writable<Product>(
-			data.state.status === 'empty' ? emptyProduct : (data.state.product ?? emptyProduct)
-		)
-	);
+	let productStore = $derived.by(() => {
+		if (data.state.status === 'empty') {
+			return writable<Product>(emptyProduct);
+		} else if (data.state.product) {
+			return writable<Product>(data.state.product);
+		} else {
+			return writable<Product>(emptyProduct);
+		}
+	});
+
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');

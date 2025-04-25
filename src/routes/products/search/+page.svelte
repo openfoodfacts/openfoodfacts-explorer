@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -29,12 +30,14 @@
 			{/each}
 		{:else}
 			<div class="mt-8 text-center">
-				<p>No products found</p>
-				<p>We couldn't find any products matching your search</p>
+				<p>{$_('product.search.product_not_found')}</p>
+				<p>{$_('product.search.product_not_found_desc')}</p>
 				<a
 					class="btn btn-secondary join-item mt-5 px-10"
-					href="/products/{page.url.searchParams.get('q')}/edit">Add new Product</a
+					href="/products/{page.url.searchParams.get('q')}/edit"
 				>
+					{$_('product.search.add_product')}
+				</a>
 			</div>
 		{/if}
 	{/await}
