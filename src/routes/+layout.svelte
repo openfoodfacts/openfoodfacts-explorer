@@ -198,5 +198,5 @@
 	<NutritionCalculator />
 	<Footer />
 {:else}
-	<div class="text-center py-10 text-xl font-medium">Loading translations...</div>
+	<div class="py-10 text-center text-xl font-medium">Loading translations...</div>
 {/if}
