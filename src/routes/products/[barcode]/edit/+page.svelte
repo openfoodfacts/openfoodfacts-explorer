@@ -44,16 +44,16 @@
 	let productStore = $derived(
 		writable<Product>({
 			...data.state.product,
-			emb_codes: data.state.product.emb_codes || '',
-			categories: data.state.product.categories || '',
-			labels: data.state.product.labels || '',
-			brands: data.state.product.brands || '',
-			stores: data.state.product.stores || '',
-			origins: data.state.product.origins || '',
-			countries: data.state.product.countries || '',
-			languages_codes: data.state.product.languages_codes || {},
-			images: data.state.product.images || {},
-			nutriments: data.state.product.nutriments || {}
+			emb_codes: data.state.product.emb_codes ?? '',
+			categories: data.state.product.categories ?? '',
+			labels: data.state.product.labels ?? '',
+			brands: data.state.product.brands ?? '',
+			stores: data.state.product.stores ?? '',
+			origins: data.state.product.origins ?? '',
+			countries: data.state.product.countries ?? '',
+			languages_codes: data.state.product.languages_codes ?? {},
+			images: data.state.product.images ?? {},
+			nutriments: data.state.product.nutriments ?? {}
 		})
 	);
 	let comment = writable('');
@@ -131,7 +131,7 @@
 	function getIngredientsImage(language: string) {
 		const productData = get(productStore);
 		if (productData.code == null || productData.images == null) {
-			return '';
+			return null;
 		}
 
 		const paddedBarcode = productData.code.toString().padStart(13, '0');
@@ -145,12 +145,12 @@
 		const image = productData.images[imageName];
 
 		if (!image) {
-			return '';
+			return null;
 		}
 
 		const rev = (image as SelectedImage).rev;
 		if (rev == null) {
-			return '';
+			return null;
 		}
 
 		const filename = `${imageName}.${rev}.400.jpg`;
@@ -280,7 +280,7 @@
 	<Card>
 		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
 		<div class="tabs tabs-box">
-			{#each Object.keys($productStore.languages_codes || {}) as code (code)}
+			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 				<input
 					type="radio"
 					name="ingredients_tabs"
