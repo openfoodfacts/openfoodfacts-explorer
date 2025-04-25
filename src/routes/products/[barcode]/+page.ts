@@ -11,7 +11,7 @@ import {
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import { FolksonomyApi } from '$lib/api/folksonomy';
-import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
 export const ssr = false;
 
@@ -37,9 +37,9 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const folksonomyTags = folkApi.getProduct(params.barcode);
 	const folksonomyKeys = folkApi.getKeys();
 
-	const pricesApi = new PricesApi(fetch);
+	const pricesApi = createPricesApi(fetch);
 	let pricesResponse = null;
-	if (isPricesConfigured()) {
+	if (isPriceConfigured()) {
 		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
 	}
 
