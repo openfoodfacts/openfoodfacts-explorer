@@ -102,7 +102,7 @@
 			authStatus = true;
 
 			// set the auth token in the preferences store
-			updatePricesAuthToken(res?.data?.access_token ?? '');
+			updatePricesAuthToken(res?.data?.access_token ?? null);
 
 			setTimeout(() => {
 				authenticated = true;

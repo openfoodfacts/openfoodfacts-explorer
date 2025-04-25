@@ -16,9 +16,9 @@ export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
 	return pricesApi;
 };
 
-export const updatePricesAuthToken = async (token: string) => {
+export const updatePricesAuthToken = (token: string | null) => {
 	preferences.update((p) => ({
 		...p,
-		prices: { ...p.prices, authToken: token ?? null }
+		prices: { ...p.prices, authToken: token }
 	}));
 };
