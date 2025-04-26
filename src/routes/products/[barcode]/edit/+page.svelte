@@ -194,7 +194,7 @@
 	</div>
 
 	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes || {}) as code (code)}
+		{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 			<input
 				type="radio"
 				name="name_tabs"
@@ -212,7 +212,7 @@
 			</div>
 		{/each}
 
-		{#if Object.keys($productStore.languages_codes || {}).length === 0}
+		{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 		{/if}
 	</div>
@@ -304,7 +304,7 @@
 				</div>
 			{/each}
 
-			{#if Object.keys($productStore.languages_codes || {}).length === 0}
+			{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
 			{/if}
 		</div>
