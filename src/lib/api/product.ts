@@ -389,7 +389,7 @@ function formData(data: Record<string, string | Blob>) {
 export function getProductImageUrl(
 	barcode: string,
 	imageName: string,
-	product: Product
+	images: Record<string, SelectedImage | RawImage>
 ): string | null {
 	const paddedBarcode = barcode.toString().padStart(13, '0');
 	const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
@@ -398,7 +398,7 @@ export function getProductImageUrl(
 	}
 
 	const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
-	const image = product.images[imageName];
+	const image = images[imageName];
 
 	if (!image) {
 		return null;
