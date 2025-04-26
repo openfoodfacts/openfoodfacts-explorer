@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
 
-	type Props = { src?: string; alt?: string; className?: string };
-	let { src, alt, className = '' }: Props = $props();
+	type Props = { src?: string; alt?: string };
+	let { src, alt }: Props = $props();
 
 	let zoomLevel = $state(1);
 	const MAX_ZOOM = 3;
@@ -51,7 +51,7 @@
 
 <div class="relative">
 	<div bind:this={container} class="cursor-zoom-in overflow-hidden">
-		<img {src} {alt} class="rounded-lg" class:className />
+		<img {src} {alt} class="rounded-lg" />
 	</div>
 	<div class="absolute right-2 bottom-2 z-10 flex items-center gap-1">
 		{#if zoomLevel > 1}

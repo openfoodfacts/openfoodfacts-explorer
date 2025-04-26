@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ImageModal from './ImageModal.svelte';
 
-	type Props = { src?: string; alt?: string; className?: string };
-	let { src, alt, className = '' }: Props = $props();
+	type Props = { src?: string; alt?: string };
+	let { src, alt }: Props = $props();
 
 	let modal: ImageModal;
 
@@ -28,7 +28,7 @@
 				<img
 					{src}
 					{alt}
-					class="max-h-full max-w-full rounded-lg object-contain {className}"
+					class="max-h-full max-w-full rounded-lg object-contain"
 					style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 				/>
 			</div>
