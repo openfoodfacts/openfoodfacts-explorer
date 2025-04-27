@@ -55,11 +55,11 @@
 	},
 	"folksonomy": {
 		"title": "Folksonomi Motor",
-		"subtitle": "Keys Explorer",
-		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
-		"search_placeholder": "Search keys...",
-		"keys_found": "keys found",
-		"key_found": "key found",
+		"subtitle": "Udforsk Nøgleord",
+		"description": "Folksonomy giver brugerne mulighed for at tilføje brugerdefinerede tags til produkter. Gennemse alle tilgængelige nøgleord nedenfor, søg efter specifikke nøgleord, eller klik på et nøgleord for at se produkter, der bruger det.",
+		"search_placeholder": "Søg nøgleord...",
+		"keys_found": "nøgleord fundet",
+		"key_found": "nøgleord fundet",
 		"for": "til"
 	},
 	"home": {
@@ -71,10 +71,10 @@
 		"datasources": {
 			"title": "Datakilder",
 			"added_on": "Produkt tilføjet d. {date} af: ",
-			"last_edit": "Last edit of product page on {date} by: ",
-			"also_edited_by": "Product page also edited by:",
-			"last_check": "Last check of product page on {date} by: ",
-			"last_modified_t": "Last edit of product page on {date} by: ",
+			"last_edit": "Sidste redigering af produktside d. {date} af: ",
+			"also_edited_by": "Produktsiden er også redigeret af:",
+			"last_check": "Sidste tjek af produktside d. {date} af: ",
+			"last_modified_t": "Sidste redigering af produktside d. {date} af: ",
 			"incomplete_or_incorrect": "Hvis dataene er ufuldstændige eller forkerte, kan du tilføje eller korrigere dem ved at ændre denne side.",
 			"unknown": "ukendt",
 			"done": "Færdiggjort",
@@ -101,19 +101,19 @@
 			"no_ingredients_image": "Intet ingrediensbillede",
 			"nutritional_information": "Ernæringsoplysninger",
 			"serving_size": "Portions størrelse",
-			"no_nutrition_data": "No nutrition information on the product",
-			"no_nutrition_specified": "No nutrition data specified",
+			"no_nutrition_data": "Ingen ernæringsoplysninger om produktet",
+			"no_nutrition_specified": "Ingen ernæringsdata angivet",
 			"comment": "Kommentér",
-			"comment_placeholder": "Add a comment to this edit",
+			"comment_placeholder": "Tilføj en kommentar til denne redigering",
 			"save_btn": "Gem",
 			"debug": "Debug"
 		}
 	},
 	"errors": {
 		"network": {
-			"title": "Connection Error",
-			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
-			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
+			"title": "Tilslutningsfejl",
+			"message": "Kunne ikke oprette forbindelse til Open Food Facts-serveren. Tjek venligst din internetforbindelse og prøv igen.",
+			"instructions": "Hvis problemet fortsætter, skal du besøge statussiden for Open Food Facts."
 		}
 	}
 }
