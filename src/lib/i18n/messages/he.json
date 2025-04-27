@@ -111,9 +111,9 @@
 	},
 	"errors": {
 		"network": {
-			"title": "Connection Error",
-			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
-			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
+			"title": "שגיאת חיבור",
+			"message": "ההתחברות לשרת Open Food Facts נכשלה. נא לבדוק שהחיבור שלך לאינטרנט תקין ולנסות שוב.",
+			"instructions": "אם הבעיה נמשכת, כדאי לבקר בעמוד המצב של Open Food Facts."
 		}
 	}
 }
