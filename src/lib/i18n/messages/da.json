@@ -9,7 +9,7 @@
 	"search": {
 		"placeholder": "Forespørgsel eller stregkode",
 		"go": "Gå",
-		"scan": "Scan a barcode",
+		"scan": "Scan en stregkode",
 		"button": "Søg"
 	},
 	"auth": {
