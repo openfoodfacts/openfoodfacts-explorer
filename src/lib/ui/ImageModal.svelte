@@ -22,32 +22,35 @@
 
 	function close() {
 		dialog?.close();
-		setZoomImageState({ currentZoom: 1 });
 		zoomLevel = 1;
 	}
 
 	function zoomIn(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
-		const newZoom = Math.min(zoomLevel + 0.5, MAX_ZOOM);
-		setZoomImageState({ currentZoom: newZoom });
-		zoomLevel = newZoom;
+		zoomLevel = Math.min(zoomLevel + 0.5, MAX_ZOOM);
 	}
 
 	function zoomOut(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
-		const newZoom = Math.max(zoomLevel - 0.5, 1);
-		setZoomImageState({ currentZoom: newZoom });
-		zoomLevel = newZoom;
+		zoomLevel = Math.max(zoomLevel - 0.5, 1);
 	}
 
 	function resetZoom(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
-		setZoomImageState({ currentZoom: 1 });
 		zoomLevel = 1;
 	}
+
+	let container: HTMLDivElement | undefined = $state();
+	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
+
+	$effect(() => {
+		if (setZoomImageState) {
+			setZoomImageState({ currentZoom: zoomLevel });
+		}
+	});
 
 	onMount(() => {
 		if (container) {
@@ -62,9 +65,6 @@
 			});
 		}
 	});
-
-	let container: HTMLDivElement | undefined = $state();
-	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 </script>
 
 <dialog

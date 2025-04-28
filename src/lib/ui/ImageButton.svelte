@@ -22,13 +22,13 @@
 
 <ImageModal bind:this={modal} />
 <div class="relative flex h-full w-full items-center justify-center">
-	<button class="flex items-center justify-center" {onclick}>
+	<button class="flex cursor-pointer items-center justify-center" {onclick}>
 		{#if src != null}
 			<div class="flex items-center justify-center">
 				<img
 					{src}
 					{alt}
-					class="max-h-full max-w-full rounded-lg object-contain"
+					class="max-h-full max-w-full cursor-pointer rounded-lg object-contain"
 					style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
 				/>
 			</div>
