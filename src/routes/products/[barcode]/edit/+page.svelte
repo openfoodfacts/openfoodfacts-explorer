@@ -249,7 +249,7 @@
 	</Card>
 
 	<Card>
-		<PhotoManager product={$productStore} barcode={$productStore.code} />
+		<PhotoManager product={$productStore} />
 	</Card>
 
 	<Card>

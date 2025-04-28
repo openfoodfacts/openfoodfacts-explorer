@@ -7,10 +7,9 @@
 
 	interface Props {
 		product: Product;
-		barcode: string;
 	}
 
-	let { product, barcode }: Props = $props();
+	let { product }: Props = $props();
 
 	function getLanguage(code: string) {
 		return ISO6391.getName(code);
@@ -35,7 +34,7 @@
 		const standardImages = photoTypes
 			.map((photoType) => {
 				const imageName = `${photoType.id}_${code}`;
-				const imageUrl = getProductImageUrl(barcode, imageName, productImages);
+				const imageUrl = getProductImageUrl(product.code, imageName, productImages);
 
 				if (imageUrl == null) {
 					return null;
@@ -54,7 +53,7 @@
 				(key) => key.endsWith(`_${code}`) && !photoTypes.some((pt) => key === `${pt.id}_${code}`)
 			)
 			.map((key) => {
-				const imageUrl = getProductImageUrl(barcode, key, productImages);
+				const imageUrl = getProductImageUrl(product.code, key, productImages);
 
 				if (imageUrl == null) {
 					return null;
@@ -76,10 +75,10 @@
 
 	function handleLanguageChange(e: Event) {
 		const input = e.target as HTMLInputElement;
-		if (input.checked) {
+		if (input.checked === true) {
 			const label = input.getAttribute('aria-label');
 			const code = Object.keys(product.languages_codes).find((code) => getLanguage(code) === label);
-			if (code) {
+			if (code != null) {
 				activeLanguageCode = code;
 			}
 		}
