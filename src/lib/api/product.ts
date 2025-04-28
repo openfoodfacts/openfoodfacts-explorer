@@ -221,7 +221,7 @@ export type SelectedImage = {
 };
 
 export type RawImage = {
-	url: '';
+	url: string;
 	sizes: {
 		full: ImageSize;
 		100: ImageSize;

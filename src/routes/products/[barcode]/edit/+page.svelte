@@ -212,23 +212,23 @@
 			return writable<Product>(emptyProduct);
 		} else if (data.state.product) {
 			return writable<Product>({
-        ...data.state.product,
-        emb_codes: data.state.product.emb_codes ?? '',
-        categories: data.state.product.categories ?? '',
-        labels: data.state.product.labels ?? '',
-        brands: data.state.product.brands ?? '',
-        stores: data.state.product.stores ?? '',
-        origins: data.state.product.origins ?? '',
-        countries: data.state.product.countries ?? '',
-        languages_codes: data.state.product.languages_codes ?? {},
-        images: data.state.product.images ?? {},
-        nutriments: data.state.product.nutriments ?? {}
-      });
+				...data.state.product,
+				emb_codes: data.state.product.emb_codes ?? '',
+				categories: data.state.product.categories ?? '',
+				labels: data.state.product.labels ?? '',
+				brands: data.state.product.brands ?? '',
+				stores: data.state.product.stores ?? '',
+				origins: data.state.product.origins ?? '',
+				countries: data.state.product.countries ?? '',
+				languages_codes: data.state.product.languages_codes ?? {},
+				images: data.state.product.images ?? {},
+				nutriments: data.state.product.nutriments ?? {}
+			});
 		} else {
 			return writable<Product>(emptyProduct);
 		}
 	});
-  
+
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
