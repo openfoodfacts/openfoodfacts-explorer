@@ -22,6 +22,7 @@
 - We currently don’t have any real visual mockup of it, nor “artistic direction” so for the time being, we're copying key features from the current frontend, improving them whenever we can.
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mockups on the current website](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Trying to create a digital twin of openfoodfacts-explorer](<https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?node-id=1-53&t=XfEkgmUsvs6qiKr9-0>)
+- Are you a designer ? [Join the design team](https://github.com/openfoodfacts/openfoodfacts-design)
 
 ## Features
 

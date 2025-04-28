@@ -206,16 +206,29 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
+
 	let productStore = $derived.by(() => {
 		if (data.state.status === 'empty') {
 			return writable<Product>(emptyProduct);
 		} else if (data.state.product) {
-			return writable<Product>(data.state.product);
+			return writable<Product>({
+        ...data.state.product,
+        emb_codes: data.state.product.emb_codes ?? '',
+        categories: data.state.product.categories ?? '',
+        labels: data.state.product.labels ?? '',
+        brands: data.state.product.brands ?? '',
+        stores: data.state.product.stores ?? '',
+        origins: data.state.product.origins ?? '',
+        countries: data.state.product.countries ?? '',
+        languages_codes: data.state.product.languages_codes ?? {},
+        images: data.state.product.images ?? {},
+        nutriments: data.state.product.nutriments ?? {}
+      });
 		} else {
 			return writable<Product>(emptyProduct);
 		}
 	});
-
+  
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
@@ -291,18 +304,30 @@
 	}
 
 	function getIngredientsImage(language: string) {
-		const paddedBarcode = get(productStore).code.toString().padStart(13, '0');
+		const productData = get(productStore);
+		if (productData.code == null || productData.images == null) {
+			return null;
+		}
+
+		const paddedBarcode = productData.code.toString().padStart(13, '0');
 		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
 		if (!match) {
 			throw new Error('Invalid barcode format');
 		}
+
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'ingredients_' + language;
-		const image = get(productStore).images[imageName];
+		const image = productData.images[imageName];
+
 		if (!image) {
-			return '';
+			return null;
 		}
+
 		const rev = (image as SelectedImage).rev;
+		if (rev == null) {
+			return null;
+		}
+
 		const filename = `${imageName}.${rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
@@ -344,7 +369,7 @@
 	</div>
 
 	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes) as code (code)}
+		{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 			<input
 				type="radio"
 				name="name_tabs"
@@ -361,6 +386,10 @@
 				/>
 			</div>
 		{/each}
+
+		{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
+		{/if}
 	</div>
 
 	<Card>
@@ -426,7 +455,7 @@
 	<Card>
 		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
 		<div class="tabs tabs-box">
-			{#each Object.keys($productStore.languages_codes) as code (code)}
+			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 				<input
 					type="radio"
 					name="ingredients_tabs"
@@ -449,6 +478,10 @@
 					</div>
 				</div>
 			{/each}
+
+			{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
+			{/if}
 		</div>
 	</Card>
 

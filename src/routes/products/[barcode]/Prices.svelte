@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy';
-
-	import { PricesApi } from '$lib/api/prices';
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
 	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
+	import { createPricesApi, updatePricesAuthToken } from '$lib/api/prices';
+	import type { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
 	type ApiResponse<T> = { data?: T; error?: object };
@@ -46,10 +46,11 @@
 
 	interface Props {
 		prices: {
-			count: number;
-			next?: string | null;
-			previous?: string | null;
-			results: PriceResult[];
+			items: PriceResult[];
+			page: number;
+			pages: number;
+			size: number;
+			total: number;
 		};
 		barcode: string;
 	}
@@ -63,9 +64,8 @@
 	let nearStores: OverpassAPIResult | undefined = $state();
 
 	onMount(async () => {
-		pricesApi = new PricesApi(fetch);
+		pricesApi = createPricesApi(fetch);
 		authenticated = await pricesApi.isAuthenticated();
-
 		nearStores = await getNearStores();
 	});
 
@@ -100,6 +100,10 @@
 		} else {
 			console.debug('Logged in', res.data);
 			authStatus = true;
+
+			// set the auth token in the preferences store
+			updatePricesAuthToken(res?.data?.access_token ?? null);
+
 			setTimeout(() => {
 				authenticated = true;
 			}, 1000);
@@ -130,12 +134,10 @@
 		});
 
 		if (res.error != null) {
-			// @ts-expect-error - TODO: Types should be specified in a better way
 			console.error('Error while submitting price', res.error);
 		} else {
 			console.debug('Submitted price', res.data);
-			// @ts-expect-error - TODO: Types should be specified in a better way
-			prices.results.push(res.data);
+			prices.items.push(res.data);
 			invalidateAll();
 		}
 	}
@@ -144,7 +146,7 @@
 <div>
 	<div id="prices">
 		<span class="font-bold">
-			Prices: ({Math.min(prices?.results?.length ?? 0, prices?.count ?? 0)}/{prices?.count ?? 0})
+			Prices: ({Math.min(prices?.items?.length ?? 0, prices?.total ?? 0)}/{prices?.total ?? 0})
 		</span>
 		<table class="table-zebra table">
 			<thead>
@@ -155,7 +157,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each prices.results as price (price.id)}
+				{#each prices.items as price (price.id)}
 					<tr>
 						<td
 							>{price.price != null ? price.price + ' ' + (price.currency ?? 'Unknown') : 'N/A'}</td
