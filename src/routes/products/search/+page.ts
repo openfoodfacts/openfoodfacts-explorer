@@ -3,6 +3,21 @@ import type { PageLoad } from './$types';
 import type { Product } from '$lib/api';
 import { API_HOST } from '$lib/const';
 
+function isValidEAN13(code: string): boolean {
+	if (!/^\d{13}$/.test(code)) {
+		return false;
+	}
+
+	const digits = code.split('').map(Number);
+	const checksum =
+		digits.slice(0, 12).reduce((sum, digit, index) => {
+			return sum + digit * (index % 2 === 0 ? 1 : 3);
+		}, 0) % 10;
+
+	const checkDigit = (10 - checksum) % 10;
+	return checkDigit === digits[12];
+}
+
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 
@@ -11,7 +26,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	// If the code is an EAN13 code, we can directly fetch the product
-	if (query.match(/^\d{13}$/)) {
+	if (isValidEAN13(query)) {
 		redirect(308, `/products/${query}`);
 	}
 
