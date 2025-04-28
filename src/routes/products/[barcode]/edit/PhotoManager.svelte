@@ -3,7 +3,6 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
-	import { onMount } from 'svelte';
 
 	interface Props {
 		product: Product;
@@ -71,7 +70,11 @@
 	}
 
 	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
-	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
+	let currentImages = $state<ProductImage[]>([]);
+
+	$effect(() => {
+		currentImages = getImagesForLanguage(activeLanguageCode);
+	});
 
 	function handleLanguageChange(e: Event) {
 		const input = e.target as HTMLInputElement;
@@ -83,10 +86,6 @@
 			}
 		}
 	}
-
-	onMount(() => {
-		activeLanguageCode = activeLanguageCode;
-	});
 </script>
 
 <div class="mb-6">
