@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { init, register, getLocaleFromNavigator } from 'svelte-i18n';
+import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 
@@ -21,4 +21,5 @@ export function initI18n() {
 	});
 }
 
+export { isLoading };
 export * from 'svelte-i18n';

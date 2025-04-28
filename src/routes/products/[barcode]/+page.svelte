@@ -13,6 +13,7 @@
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Folksonomy from './Folksonomy.svelte';
+	import DataSources from './DataSources.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -65,17 +66,17 @@
 				{product.product_name ?? product.code}
 			</h1>
 
-			<div class="flex items-center justify-center gap-2">
+			<div class="flex flex-wrap items-center justify-center gap-2">
 				<a
 					href={'https://world.openfoodfacts.org/product/' + product.code}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="link me-4"
+					class="link"
 				>
 					See on OpenFoodFacts
 				</a>
 
-				<button class="btn btn-secondary max-sm:btn-sm mr-2" onclick={addToCalculator}>
+				<button class="btn btn-secondary max-sm:btn-sm" onclick={addToCalculator}>
 					Add to Calculator
 				</button>
 				<a
@@ -102,96 +103,89 @@
 		</div>
 
 		<div class="flex flex-col-reverse gap-4 md:flex-row">
-			<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-1 md:w-3/4">
+			<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-2 md:w-3/4">
 				<span class="text-end font-bold">Quantity:</span>
 				<span>{product.quantity}</span>
 
 				<span class="text-end font-bold">Brands:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.brands}
 						Loading...
 					{:then brands}
 						{#each product.brands_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+							<span class="badge h-auto break-words">
+								{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
+							</span>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Categories:</span>
-				<span class="flex flex-wrap gap-1">
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.categories}
 						Loading...
 					{:then categories}
 						{#each product.categories_tags as tag (tag)}
-							<a
-								class="link bg-secondary text-secondary-content mr-0.5 inline-block break-inside-avoid rounded-xl px-2 font-semibold no-underline"
-								href="/taxo/categories/{tag}"
-							>
+							<a class="badge badge-secondary h-auto break-words" href="/taxo/categories/{tag}">
 								{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Stores:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.stores}
 						Loading...
 					{:then stores}
 						{#each product.stores_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+							<span class="badge h-auto break-words">
+								{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+							</span>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Labels:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.labels}
 						Loading...
 					{:then labels}
 						{#each product.labels_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							<a class="link" href={'/taxo/labels/' + tag}>
+							<a class="badge h-auto break-words" href={'/taxo/labels/' + tag}>
 								{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Countries:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.countries}
 						Loading...
 					{:then countries}
-						{#each product.countries_tags as tag, i (tag)}
-							{#if i > 0},
-							{/if}
-							<a class="link" href={'/taxo/countries/' + tag}>
+						{#each product.countries_tags as tag, i (i)}
+							<a class="badge h-auto break-words" href={'/taxo/countries/' + tag}>
 								{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				<span class="text-end font-bold">Origins:</span>
-				<span>
+				<div class="flex flex-wrap gap-1">
 					{#await data.taxo.origins}
 						Loading...
 					{:then origins}
 						{#each product.origins_tags as tag, i (i)}
 							{#if i > 0},
 							{/if}
-							<a class="link" href={'/taxo/origin/' + tag}>
+							<a class="link inline-flex items-center break-words" href={'/taxo/origin/' + tag}>
 								{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 							</a>
 						{/each}
 					{/await}
-				</span>
+				</div>
 
 				{#if product.emb_codes != null && product.emb_codes.length > 0}
 					<span class="text-end font-bold">Traceability Codes:</span>
@@ -204,7 +198,7 @@
 				{/if}
 			</div>
 
-			<div class="flex max-h-56 grow justify-center">
+			<div class="flex h-auto min-h-[40vh] grow justify-center max-md:min-h-[30vh]">
 				<ImageButton src={product.image_front_url} alt={product.product_name} />
 			</div>
 		</div>
@@ -215,6 +209,8 @@
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
 	<Gs1Country barcode={product.code} />
+
+	<DataSources {product} />
 
 	{#if isFolksonomyConfigured()}
 		<Card>
