@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
+	import { createFolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
 
 	interface Props {
@@ -11,11 +11,12 @@
 	let { tags = $bindable(), barcode, keys }: Props = $props();
 
 	async function refreshTags() {
-		const res = await new FolksonomyApi(fetch).getProduct(barcode);
+		const folksonomyApi = createFolksonomyApi(fetch);
+		const res = await folksonomyApi.getProduct(barcode);
 		if (res.error) {
 			console.error(res.error);
 		} else {
-			tags = res.data;
+			tags = res;
 		}
 	}
 
@@ -36,7 +37,9 @@
 			v: newValue
 		};
 
-		const ok = await new FolksonomyApi(fetch).putTag(newTag);
+		const folksonomyApi = createFolksonomyApi(fetch);
+
+		const ok = await folksonomyApi.putTag(newTag);
 		if (!ok) {
 			console.error('Failed to update tag', oldTag, 'to', newTag);
 			return;
@@ -53,7 +56,9 @@
 			throw new Error('Tag value is null');
 		}
 		// otherwise ts complains about version possibly being null
-		new FolksonomyApi(fetch).removeTag({ ...tag, version });
+		const folksonomyApi = createFolksonomyApi(fetch);
+
+		folksonomyApi.removeTag({ ...tag, version });
 	}
 
 	let newKey = $state('');
@@ -77,7 +82,9 @@
 			owner: ''
 		};
 
-		const created = await new FolksonomyApi(fetch).addTag(newTag);
+		const folksonomyApi = createFolksonomyApi(fetch);
+
+		const created = await folksonomyApi.addTag(newTag);
 
 		if (created) {
 			tags = [...tags, newTag];

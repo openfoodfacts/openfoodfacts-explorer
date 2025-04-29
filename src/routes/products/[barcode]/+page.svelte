@@ -219,7 +219,7 @@
 			</h1>
 
 			<Folksonomy
-				tags={data.tags?.data ?? []}
+				tags={data.tags ?? []}
 				keys={data.keys.map((it) => it.k)}
 				barcode={product.code}
 			/>

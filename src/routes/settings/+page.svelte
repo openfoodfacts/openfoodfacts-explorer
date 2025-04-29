@@ -3,7 +3,7 @@
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
-	import { FolksonomyApi } from '$lib/api/folksonomy';
+	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
@@ -25,11 +25,14 @@
 		if (username == null || password == null) throw new Error('Username or password is null');
 
 		try {
-			await new FolksonomyApi(fetch).login(username, password);
+			const folksonomyApi = createFolksonomyApi(fetch);
+			const response = await folksonomyApi.login(username, password);
 			loginStatus = true;
 			setTimeout(() => {
 				loginStatus = undefined;
 			}, 3000);
+
+			updateFolksonomyAuthToken(response?.token?.access_token ?? null);
 		} catch (error) {
 			console.error('Error while logging in', error);
 			loginStatus = false;
