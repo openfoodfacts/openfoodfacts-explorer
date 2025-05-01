@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Countries",
 			"website_url": "Website URL",
+			"photos": "Produktu fotogrāfijas",
+			"no_photo_available": "No photo available",
 			"ingredients": "Sastāvdaļas",
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
