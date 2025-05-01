@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Countries",
 			"website_url": "Website URL",
+			"photos": "Product Photos",
+			"no_photo_available": "No photo available",
 			"ingredients": "Kayan mahadi",
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
