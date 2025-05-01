@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "ประเทศ",
 			"website_url": "Website URL",
+			"photos": "รูปถ่ายผลิตภัณฑ์",
+			"no_photo_available": "No photo available",
 			"ingredients": "ส่วนผสม",
 			"ingredients_list": "ส่วนประกอบอาหาร",
 			"no_ingredients_image": "No ingredients image",
