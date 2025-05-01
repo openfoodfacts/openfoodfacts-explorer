@@ -96,6 +96,8 @@
 			"origins": "Nguồn gốc",
 			"countries": "Quốc gia",
 			"website_url": "Website URL",
+			"photos": "Hình ảnh sản phẩm",
+			"no_photo_available": "No photo available",
 			"ingredients": "Thành phần",
 			"ingredients_list": "Danh sách các thành phần",
 			"no_ingredients_image": "No ingredients image",
