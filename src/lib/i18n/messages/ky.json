@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Өлкөлөр",
 			"website_url": "Website URL",
+			"photos": "Продукт сүрөттөрү",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ingredients",
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
