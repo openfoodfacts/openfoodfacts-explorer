@@ -96,6 +96,8 @@
 			"origins": "原産国",
 			"countries": "国",
 			"website_url": "Website URL",
+			"photos": "製品の写真",
+			"no_photo_available": "No photo available",
 			"ingredients": "原材料",
 			"ingredients_list": "成分リスト",
 			"no_ingredients_image": "No ingredients image",
