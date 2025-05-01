@@ -32,7 +32,9 @@
 				loginStatus = undefined;
 			}, 3000);
 
-			updateFolksonomyAuthToken(response?.token?.access_token ?? null);
+			if (!('error' in response)) {
+				updateFolksonomyAuthToken(response?.token?.access_token ?? null);
+			}
 		} catch (error) {
 			console.error('Error while logging in', error);
 			loginStatus = false;

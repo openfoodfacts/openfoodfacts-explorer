@@ -13,10 +13,10 @@
 	async function refreshTags() {
 		const folksonomyApi = createFolksonomyApi(fetch);
 		const res = await folksonomyApi.getProduct(barcode);
-		if (res.error) {
+		if ('error' in res) {
 			console.error(res.error);
 		} else {
-			tags = res;
+			tags = res as FolksonomyTag[];
 		}
 	}
 
@@ -39,6 +39,7 @@
 
 		const folksonomyApi = createFolksonomyApi(fetch);
 
+		// @ts-expect-error - need to update type in nodejs SDK
 		const ok = await folksonomyApi.putTag(newTag);
 		if (!ok) {
 			console.error('Failed to update tag', oldTag, 'to', newTag);
@@ -58,6 +59,7 @@
 		// otherwise ts complains about version possibly being null
 		const folksonomyApi = createFolksonomyApi(fetch);
 
+		// @ts-expect-error - need to update type in nodejs SDK
 		folksonomyApi.removeTag({ ...tag, version });
 	}
 
@@ -83,7 +85,7 @@
 		};
 
 		const folksonomyApi = createFolksonomyApi(fetch);
-
+		// @ts-expect-error - need to update type in nodejs SDK
 		const created = await folksonomyApi.addTag(newTag);
 
 		if (created) {

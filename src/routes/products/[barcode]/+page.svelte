@@ -21,6 +21,7 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
+	import type { FolksonomyTag } from '$lib/api/folksonomy';
 
 	let isShareSupported = navigator?.share != null;
 
@@ -219,7 +220,7 @@
 			</h1>
 
 			<Folksonomy
-				tags={data.tags ?? []}
+				tags={(data.tags as FolksonomyTag[]) ?? []}
 				keys={data.keys.map((it) => it.k)}
 				barcode={product.code}
 			/>
