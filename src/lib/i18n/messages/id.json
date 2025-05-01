@@ -96,6 +96,8 @@
 			"origins": "Tempat asal",
 			"countries": "Negara - negara",
 			"website_url": "Website URL",
+			"photos": "Foto - foto produk",
+			"no_photo_available": "No photo available",
 			"ingredients": "bahan",
 			"ingredients_list": "Daftar bahan",
 			"no_ingredients_image": "No ingredients image",
