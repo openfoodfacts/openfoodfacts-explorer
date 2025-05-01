@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Negara-negara",
 			"website_url": "Website URL",
+			"photos": "Product Photos",
+			"no_photo_available": "No photo available",
 			"ingredients": "Bahan-bahan",
 			"ingredients_list": "Senarai bahan ramuan",
 			"no_ingredients_image": "No ingredients image",
