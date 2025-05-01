@@ -27,9 +27,11 @@
 		type: string;
 	};
 
+	// Get all images for a specific language code
 	function getImagesForLanguage(code: string): ProductImage[] {
 		const productImages = product.images;
 
+		// Get standard images (front, ingredients, nutrition, packaging)
 		const standardImages = photoTypes
 			.map((photoType) => {
 				const imageName = `${photoType.id}_${code}`;
@@ -47,8 +49,11 @@
 			})
 			.filter((img): img is ProductImage => img !== null);
 
+		// Get additional non-standard images for this language
 		const additionalImages = Object.keys(productImages)
 			.filter(
+				// Finds the images ending with this language code, but not part of standard types
+				// for example: includes "organic_certification_en" but excludes "front_en"
 				(key) => key.endsWith(`_${code}`) && !photoTypes.some((pt) => key === `${pt.id}_${code}`)
 			)
 			.map((key) => {
@@ -66,6 +71,7 @@
 			})
 			.filter((img): img is ProductImage => img !== null);
 
+		// Returns the combined standard and additional(non-standard) images
 		return [...standardImages, ...additionalImages];
 	}
 
@@ -76,15 +82,8 @@
 		currentImages = getImagesForLanguage(activeLanguageCode);
 	});
 
-	function handleLanguageChange(e: Event) {
-		const input = e.target as HTMLInputElement;
-		if (input.checked === true) {
-			const label = input.getAttribute('aria-label');
-			const code = Object.keys(product.languages_codes).find((code) => getLanguage(code) === label);
-			if (code != null) {
-				activeLanguageCode = code;
-			}
-		}
+	function handleLanguageChange(code: string) {
+		activeLanguageCode = code;
 	}
 </script>
 
@@ -99,7 +98,7 @@
 				class="tab"
 				aria-label={getLanguage(code)}
 				checked={code === activeLanguageCode}
-				onchange={handleLanguageChange}
+				onchange={() => handleLanguageChange(code)}
 			/>
 			<div class="tab-content p-6" class:hidden={code !== activeLanguageCode}>
 				<h4 class="text-md mb-3 font-semibold">
