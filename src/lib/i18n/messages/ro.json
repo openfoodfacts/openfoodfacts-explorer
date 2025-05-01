@@ -96,6 +96,8 @@
 			"origins": "Origini",
 			"countries": "Țări",
 			"website_url": "Website URL",
+			"photos": "Fotografiile produselor",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ingrediente",
 			"ingredients_list": "Lista de ingrediente",
 			"no_ingredients_image": "No ingredients image",
