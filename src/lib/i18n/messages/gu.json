@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Countries",
 			"website_url": "Website URL",
+			"photos": "Product Photos",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ingredients",
 			"ingredients_list": "ઘટકોની સૂચિ",
 			"no_ingredients_image": "No ingredients image",
