@@ -9,9 +9,13 @@
 	function getFullSizeImageUrl(url: string): string {
 		return url.replace(/\.400\.|\.200\.|\.100\./, '.full.');
 	}
-	let onclick = $derived(
-		src != null ? () => modal.displayImage(getFullSizeImageUrl(src), alt) : undefined
-	);
+
+	let onclick = $derived.by(() => {
+		if (src == null) {
+			return undefined;
+		}
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt);
+	});
 
 	let rotation = $state(0);
 

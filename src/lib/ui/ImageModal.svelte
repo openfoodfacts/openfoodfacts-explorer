@@ -47,7 +47,7 @@
 	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
 
 	$effect(() => {
-		if (setZoomImageState) {
+		if (setZoomImageState != null) {
 			setZoomImageState({ currentZoom: zoomLevel });
 		}
 	});
