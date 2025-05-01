@@ -1,6 +1,6 @@
 {
 	"nutriscore": "营养分数",
-	"ecoscore": "生态得分",
+	"ecoscore": "生态评分",
 	"nova": "Nova - Ultra-processing levels",
 	"settings_link": "设置",
 	"folksonomy_link": "Folksonomy",
@@ -78,7 +78,7 @@
 			"incomplete_or_incorrect": "如果数据不完整或者不正确，可以通过编辑此页面来完成或者修改",
 			"unknown": "未知",
 			"done": "完成",
-			"toDo": "要做"
+			"toDo": "待办事项"
 		},
 		"edit": {
 			"add_language": "Add a language",
@@ -96,6 +96,8 @@
 			"origins": "起源",
 			"countries": "国家/地区",
 			"website_url": "Website URL",
+			"photos": "产品照片",
+			"no_photo_available": "No photo available",
 			"ingredients": "成分",
 			"ingredients_list": "成分列表：",
 			"no_ingredients_image": "No ingredients image",
