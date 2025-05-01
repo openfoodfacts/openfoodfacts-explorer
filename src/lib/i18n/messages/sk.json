@@ -96,6 +96,8 @@
 			"origins": "Pôvod",
 			"countries": "Krajiny",
 			"website_url": "Website URL",
+			"photos": "Fotografie výrobku",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ingrediencie",
 			"ingredients_list": "Zoznam prísad",
 			"no_ingredients_image": "No ingredients image",
