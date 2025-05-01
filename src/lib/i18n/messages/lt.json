@@ -96,6 +96,8 @@
 			"origins": "Kilmė",
 			"countries": "Šalys",
 			"website_url": "Website URL",
+			"photos": "Produkto nuotraukos",
+			"no_photo_available": "No photo available",
 			"ingredients": "Sudėtis",
 			"ingredients_list": "Sudėtis",
 			"no_ingredients_image": "No ingredients image",
