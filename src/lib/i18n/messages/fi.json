@@ -96,6 +96,8 @@
 			"origins": "Alkuperät",
 			"countries": "Maat",
 			"website_url": "Website URL",
+			"photos": "Tuotekuvat",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ainesosat",
 			"ingredients_list": "Ainesosaluettelo",
 			"no_ingredients_image": "No ingredients image",
