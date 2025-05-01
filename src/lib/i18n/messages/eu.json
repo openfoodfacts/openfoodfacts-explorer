@@ -96,6 +96,8 @@
 			"origins": "Origins",
 			"countries": "Countries",
 			"website_url": "Website URL",
+			"photos": "Produktuaren argazkiak",
+			"no_photo_available": "No photo available",
 			"ingredients": "Osagaiak",
 			"ingredients_list": "Osagaien zerrenda",
 			"no_ingredients_image": "No ingredients image",
