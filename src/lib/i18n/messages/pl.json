@@ -96,6 +96,8 @@
 			"origins": "Pochodzenie",
 			"countries": "Kraje",
 			"website_url": "Website URL",
+			"photos": "Zdjęcia produktów",
+			"no_photo_available": "No photo available",
 			"ingredients": "Składniki",
 			"ingredients_list": "Lista składników",
 			"no_ingredients_image": "No ingredients image",
