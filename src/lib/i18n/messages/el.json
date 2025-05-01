@@ -96,6 +96,8 @@
 			"origins": "Προελεύσεις",
 			"countries": "Χώρες",
 			"website_url": "Website URL",
+			"photos": "Φωτογραφίες Προϊόντων",
+			"no_photo_available": "No photo available",
 			"ingredients": "Συστατικά",
 			"ingredients_list": "Λίστα συστατικών",
 			"no_ingredients_image": "No ingredients image",
