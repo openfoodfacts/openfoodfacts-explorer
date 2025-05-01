@@ -96,6 +96,8 @@
 			"origins": "Kökenleri",
 			"countries": "Ülkeler",
 			"website_url": "Website URL",
+			"photos": "Ürün Fotoğrafları",
+			"no_photo_available": "No photo available",
 			"ingredients": "Malzemeler",
 			"ingredients_list": "İçindekiler listesi",
 			"no_ingredients_image": "No ingredients image",
