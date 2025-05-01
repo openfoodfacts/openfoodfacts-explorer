@@ -96,6 +96,8 @@
 			"origins": "أصلي",
 			"countries": "بلدان",
 			"website_url": "Website URL",
+			"photos": "صور المنتج",
+			"no_photo_available": "No photo available",
 			"ingredients": "المكونات",
 			"ingredients_list": "قائمة المكونات",
 			"no_ingredients_image": "No ingredients image",
