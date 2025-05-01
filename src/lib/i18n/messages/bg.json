@@ -96,6 +96,8 @@
 			"origins": "Произход",
 			"countries": "Страни",
 			"website_url": "Website URL",
+			"photos": "Снимки на продукта",
+			"no_photo_available": "No photo available",
 			"ingredients": "Съставки",
 			"ingredients_list": "Списък на съставките",
 			"no_ingredients_image": "No ingredients image",
