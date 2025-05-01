@@ -96,6 +96,8 @@
 			"origins": "Származás",
 			"countries": "Országok",
 			"website_url": "Website URL",
+			"photos": "Termékfotók",
+			"no_photo_available": "No photo available",
 			"ingredients": "Összetevők",
 			"ingredients_list": "Összetevők listája",
 			"no_ingredients_image": "No ingredients image",
