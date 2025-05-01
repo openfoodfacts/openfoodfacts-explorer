@@ -96,6 +96,8 @@
 			"origins": "근원",
 			"countries": "국가",
 			"website_url": "Website URL",
+			"photos": "제품 사진",
+			"no_photo_available": "No photo available",
 			"ingredients": "성분",
 			"ingredients_list": "성분 목록",
 			"no_ingredients_image": "No ingredients image",
