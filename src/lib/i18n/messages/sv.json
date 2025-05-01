@@ -96,6 +96,8 @@
 			"origins": "Ursprung",
 			"countries": "Länder",
 			"website_url": "Website URL",
+			"photos": "Produktbilder",
+			"no_photo_available": "No photo available",
 			"ingredients": "Ingredienser",
 			"ingredients_list": "Ingredienslista",
 			"no_ingredients_image": "No ingredients image",
