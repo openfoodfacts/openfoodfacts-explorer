@@ -21,7 +21,6 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
-	import type { FolksonomyTag } from '$lib/api/folksonomy';
 
 	let isShareSupported = navigator?.share != null;
 
