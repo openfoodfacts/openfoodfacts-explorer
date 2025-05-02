@@ -1,10 +1,36 @@
 import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 
-import type { components } from './folksonomy.d';
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
-export type FolksonomyTag = components['schemas']['ProductTag'];
+// TODO: remove this import when the nodejs type is updated
+export type FolksonomyTag = {
+	/** Product */
+	product: string;
+	/** K */
+	k: string;
+	/** V */
+	v: string;
+	/**
+	 * Owner
+	 * @default
+	 */
+	owner: string;
+	/**
+	 * Version
+	 * @default 1
+	 */
+	version: number;
+	/** Editor */
+	editor?: string | null;
+	/** Last Edit */
+	last_edit?: string | null;
+	/**
+	 * Comment
+	 * @default
+	 */
+	comment: string | null;
+};
 export type FolksonomyKey = {
 	k: string;
 	count: number;
@@ -17,17 +43,17 @@ export function isConfigured() {
 	return BASE_URL != null;
 }
 
-export const createFolksonomyApi = (fetch: typeof window.fetch): Folksonomy => {
+export function createFolksonomyApi(fetch: typeof window.fetch): Folksonomy {
 	const folksonomyApi = new Folksonomy(fetch, {
 		baseUrl: BASE_URL,
 		authToken: `${get(preferences).folksonomy.authToken}`
 	});
 	return folksonomyApi;
-};
+}
 
-export const updateFolksonomyAuthToken = (token: string | null) => {
+export function updateFolksonomyAuthToken(token: string | null) {
 	preferences.update((p) => ({
 		...p,
 		folksonomy: { ...p.folksonomy, authToken: token }
 	}));
-};
+}

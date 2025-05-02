@@ -10,7 +10,7 @@ import {
 	ProductsApi
 } from '$lib/api';
 import { error } from '@sveltejs/kit';
-import { createFolksonomyApi } from '$lib/api/folksonomy';
+import { createFolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
 export const ssr = false;
@@ -63,7 +63,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	return {
 		state,
 		productAttributes: await productAttributes,
-		tags: await folksonomyTags,
+		tags: (await folksonomyTags) as FolksonomyTag[],
 		keys: await folksonomyKeys,
 		taxo: {
 			categories,

@@ -12,11 +12,11 @@
 
 	async function refreshTags() {
 		const folksonomyApi = createFolksonomyApi(fetch);
-		const res = await folksonomyApi.getProduct(barcode);
+		const res = (await folksonomyApi.getProduct(barcode)) as FolksonomyTag[];
 		if ('error' in res) {
 			console.error(res.error);
 		} else {
-			tags = res as FolksonomyTag[];
+			tags = res;
 		}
 	}
 

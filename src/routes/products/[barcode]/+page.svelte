@@ -220,7 +220,7 @@
 			</h1>
 
 			<Folksonomy
-				tags={(data.tags as FolksonomyTag[]) ?? []}
+				tags={data.tags ?? []}
 				keys={data.keys.map((it) => it.k)}
 				barcode={product.code}
 			/>

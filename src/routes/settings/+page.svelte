@@ -34,6 +34,9 @@
 
 			if (!('error' in response)) {
 				updateFolksonomyAuthToken(response?.token?.access_token ?? null);
+			} else {
+				loginStatus = false;
+				updateFolksonomyAuthToken(null);
 			}
 		} catch (error) {
 			console.error('Error while logging in', error);
