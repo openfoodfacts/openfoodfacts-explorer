@@ -20,6 +20,7 @@
 	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import TraceabilityCodes from './TraceabilityCodes.svelte';
+	import PhotoManager from './PhotoManager.svelte';
 
 	interface Props {
 		data: PageData;
@@ -450,6 +451,10 @@
 			<label for="">{$_('product.edit.website_url')}</label>
 			<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
 		</div>
+	</Card>
+
+	<Card>
+		<PhotoManager product={$productStore} />
 	</Card>
 
 	<Card>

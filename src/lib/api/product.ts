@@ -1,4 +1,4 @@
-import { API_HOST, PRODUCT_URL } from '$lib/const';
+import { API_HOST, PRODUCT_URL, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
@@ -382,4 +382,30 @@ function formData(data: Record<string, string | Blob>) {
 		form.append(key, value);
 	}
 	return form;
+}
+
+/**
+ * Gets URL for a product image based on its barcode and image name
+ */
+export function getProductImageUrl(
+	barcode: string,
+	imageName: string,
+	images: Record<string, SelectedImage | RawImage>
+): string | null {
+	const paddedBarcode = barcode.toString().padStart(13, '0');
+	const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+	if (!match) {
+		throw new Error(`Invalid barcode format: ${paddedBarcode}`);
+	}
+
+	const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+	const image = images[imageName];
+
+	if (!image) {
+		return null;
+	}
+
+	const rev = (image as SelectedImage).rev;
+	const filename = `${imageName}.${rev}.400.jpg`;
+	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 }
