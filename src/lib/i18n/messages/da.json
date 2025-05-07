@@ -13,7 +13,7 @@
 		"button": "Søg"
 	},
 	"auth": {
-		"username": "Username",
+		"username": "Brugernavn",
 		"password": "Adgangskode",
 		"authenticated": "Godkendt",
 		"signin": "Log ind",
