@@ -81,6 +81,7 @@
 			"toDo": "Por hacer"
 		},
 		"edit": {
+			"add_product": "Añadir producto",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Guardar",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "No se encontraron productos",
+			"product_not_found_desc": "No pudimos encontrar ningún producto que coincida con tu búsqueda.",
+			"add_product": "Añadir nuevo producto"
 		}
 	},
 	"errors": {
