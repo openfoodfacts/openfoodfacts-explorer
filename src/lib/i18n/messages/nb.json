@@ -81,6 +81,7 @@
 			"toDo": "Gjøremål"
 		},
 		"edit": {
+			"add_product": "Legg til produkt",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Lagre",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Ingen produkter funnet",
+			"product_not_found_desc": "Vi kunne ikke finne noen produkter som samsvarer med søket ditt",
+			"add_product": "Legg til nytt produkt"
 		}
 	},
 	"errors": {
