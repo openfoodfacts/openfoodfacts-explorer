@@ -81,6 +81,7 @@
 			"toDo": "Выполнить"
 		},
 		"edit": {
+			"add_product": "Добавить продукт",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Сохранить",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Продуктов не найдено",
+			"product_not_found_desc": "Мы не смогли найти ни одного продукта, соответствующего вашему поиску",
+			"add_product": "Добавить новый продукт"
 		}
 	},
 	"errors": {
