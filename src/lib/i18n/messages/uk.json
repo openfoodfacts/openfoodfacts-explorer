@@ -81,6 +81,7 @@
 			"toDo": "Необхідно виконати"
 		},
 		"edit": {
+			"add_product": "Додати товар",
 			"add_language": "Додати мову",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Зберегти",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Не знайдено жодних товарів",
+			"product_not_found_desc": "Нам не вдалося знайти жодних товарів, що відповідають вашому пошуковому запиту",
+			"add_product": "Додати новий продукт"
 		}
 	},
 	"errors": {
