@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "保存",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "商品が見つかりません",
+			"product_not_found_desc": "検索に一致する商品が見つかりませんでした",
+			"add_product": "新しい商品を追加"
 		}
 	},
 	"errors": {
