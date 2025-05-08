@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Cha deach bathar a lorg",
+			"product_not_found_desc": "Cha b’ urrainn dhuinn toraidhean sam bith a lorg a bha a’ freagairt ris an rannsachadh agad",
+			"add_product": "Cuir Toradh Ùr ris"
 		}
 	},
 	"errors": {
