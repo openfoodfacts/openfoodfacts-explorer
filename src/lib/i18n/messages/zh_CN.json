@@ -81,6 +81,7 @@
 			"toDo": "待办事项"
 		},
 		"edit": {
+			"add_product": "添加产品",
 			"add_language": "添加语言",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "保存",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "未找到任何产品",
+			"product_not_found_desc": "我们找不到符合您搜索条件的产品",
+			"add_product": "添加新产品"
 		}
 	},
 	"errors": {
