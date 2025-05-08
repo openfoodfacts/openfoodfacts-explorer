@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -15,26 +16,38 @@
 	}
 </script>
 
-<div
-	class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
->
-	{#await data.result}
+{#await data.result}
+	<div
+		class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+	>
 		{#each Array(5) as _, i (i)}
 			<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
 		{/each}
-	{:then result}
-		{#if result.count > 0}
+	</div>
+{:then result}
+	{#if result.count > 0}
+		<div
+			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+		>
 			{#each result.products as product (product.code)}
 				<SmallProductCard {product} />
 			{/each}
-		{:else}
-			<div class="mt-8 text-center opacity-70">
-				<p>No products found</p>
-				<p>We couldn't find any products matching your search</p>
+		</div>
+	{:else}
+		<div class="mt-8 grid w-full grid-cols-1 gap-4 lg:gap-2">
+			<div class="mt-8 text-center">
+				<p>{$_('product.search.product_not_found')}</p>
+				<p>{$_('product.search.product_not_found_desc')}</p>
+				<a
+					class="btn btn-secondary join-item mt-5 px-10"
+					href="/products/{page.url.searchParams.get('q')}/edit"
+				>
+					{$_('product.search.add_product')}
+				</a>
 			</div>
-		{/if}
-	{/await}
-</div>
+		</div>
+	{/if}
+{/await}
 
 {#await data.result then result}
 	<div class="join my-8 w-full justify-center">

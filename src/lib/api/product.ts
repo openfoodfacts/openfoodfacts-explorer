@@ -220,7 +220,8 @@ export type SelectedImage = {
 	y2: string;
 };
 
-type RawImage = {
+export type RawImage = {
+	url: string;
 	sizes: {
 		full: ImageSize;
 		100: ImageSize;
