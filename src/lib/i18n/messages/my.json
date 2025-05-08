@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "သိမ်းဆည်းမည်",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "ထုတ်ကုန်မတွေ့ပါ။",
+			"product_not_found_desc": "သင့်ရှာဖွေမှုနှင့် ကိုက်ညီသော မည်သည့်ထုတ်ကုန်ကိုမျှ ကျွန်ုပ်တို့ ရှာမတွေ့ပါ။",
+			"add_product": "ထုတ်ကုန်အသစ်ထည့်ပါ။"
 		}
 	},
 	"errors": {
