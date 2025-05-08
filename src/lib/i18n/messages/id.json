@@ -81,6 +81,7 @@
 			"toDo": "Untuk dikerjakan"
 		},
 		"edit": {
+			"add_product": "Tambahkan produk",
 			"add_language": "Tambahkan bahasa",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "menyimpan ",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Tidak ada produk yang ditemukan",
+			"product_not_found_desc": "Kami tidak dapat menemukan produk yang sesuai dengan pencarian Anda",
+			"add_product": "Tambahkan Produk Baru"
 		}
 	},
 	"errors": {
