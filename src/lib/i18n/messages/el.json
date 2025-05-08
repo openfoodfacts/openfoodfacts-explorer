@@ -81,6 +81,7 @@
 			"toDo": "Εκκρεμεί"
 		},
 		"edit": {
+			"add_product": "Προσθήκη προϊόντος",
 			"add_language": "Προσθήκη γλώσσας",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Αποθήκευση",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Δεν βρέθηκαν προϊόντα",
+			"product_not_found_desc": "Δεν μπορέσαμε να βρούμε προϊόντα που να ταιριάζουν με την αναζήτησή σας",
+			"add_product": "Προσθήκη νέου προϊόντος"
 		}
 	},
 	"errors": {
