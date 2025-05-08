@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "ಉಳಿಸು",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "ಯಾವುದೇ ಉತ್ಪನ್ನಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+			"product_not_found_desc": "ನಿಮ್ಮ ಹುಡುಕಾಟಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವ ಯಾವುದೇ ಉತ್ಪನ್ನಗಳು ನಮಗೆ ಸಿಗಲಿಲ್ಲ.",
+			"add_product": "ಹೊಸ ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ"
 		}
 	},
 	"errors": {
