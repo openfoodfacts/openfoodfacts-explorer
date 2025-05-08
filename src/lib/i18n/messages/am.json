@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "ምንም ምርቶች አልተገኙም።",
+			"product_not_found_desc": "ከፍለጋዎ ጋር የሚዛመዱ ምንም አይነት ምርቶች ማግኘት አልቻልንም።",
+			"add_product": "አዲስ ምርት ያክሉ"
 		}
 	},
 	"errors": {
