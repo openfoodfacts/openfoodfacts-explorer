@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Gehitu produktua",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Gorde",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Ez da produkturik aurkitu",
+			"product_not_found_desc": "Ez dugu zure bilaketarekin bat datorren produkturik aurkitu",
+			"add_product": "Gehitu produktu berria"
 		}
 	},
 	"errors": {
