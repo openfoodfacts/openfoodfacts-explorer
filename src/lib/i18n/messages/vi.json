@@ -81,6 +81,7 @@
 			"toDo": "Cần làm"
 		},
 		"edit": {
+			"add_product": "Thêm sản phẩm",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Lưu",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Không tìm thấy sản phẩm nào",
+			"product_not_found_desc": "Chúng tôi không thể tìm thấy bất kỳ sản phẩm nào phù hợp với tìm kiếm của bạn",
+			"add_product": "Thêm sản phẩm mới"
 		}
 	},
 	"errors": {
