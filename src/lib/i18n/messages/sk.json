@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Pridať výrobok",
 			"add_language": "Pridať jazyk",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Uložiť",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Nenašli sa žiadne produkty",
+			"product_not_found_desc": "Nenašli sme žiadne produkty zodpovedajúce vášmu vyhľadávaniu",
+			"add_product": "Pridať nový produkt"
 		}
 	},
 	"errors": {
