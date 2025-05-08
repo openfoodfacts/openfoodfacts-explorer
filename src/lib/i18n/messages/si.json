@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "නිෂ්පාදන කිසිවක් හමු නොවීය",
+			"product_not_found_desc": "ඔබගේ සෙවුමට ගැළපෙන කිසිදු නිෂ්පාදනයක් අපට සොයාගත නොහැකි විය.",
+			"add_product": "නව නිෂ්පාදනයක් එක් කරන්න"
 		}
 	},
 	"errors": {
