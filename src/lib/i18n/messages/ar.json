@@ -81,6 +81,7 @@
 			"toDo": "قائمة مهام"
 		},
 		"edit": {
+			"add_product": "إضافة المنتوج",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "حفظ",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "لم يتم العثور على أي منتجات",
+			"product_not_found_desc": "لم نتمكن من العثور على أي منتجات تطابق بحثك",
+			"add_product": "إضافة منتج جديد"
 		}
 	},
 	"errors": {
