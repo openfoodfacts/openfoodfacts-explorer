@@ -81,6 +81,7 @@
 			"toDo": "Padaryti"
 		},
 		"edit": {
+			"add_product": "Pridėti produktą",
 			"add_language": "Pridėti kalbą",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Išsaugoti",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Nerasta jokių produktų",
+			"product_not_found_desc": "Neradome jokių produktų, atitinkančių jūsų paiešką",
+			"add_product": "Pridėti naują produktą"
 		}
 	},
 	"errors": {
