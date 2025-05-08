@@ -81,6 +81,7 @@
 			"toDo": "要做"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "儲存",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "No products found",
+			"product_not_found_desc": "We couldn't find any products matching your search",
+			"add_product": "Add new Product"
 		}
 	},
 	"errors": {
