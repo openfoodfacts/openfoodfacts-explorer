@@ -81,6 +81,7 @@
 			"toDo": "할 것"
 		},
 		"edit": {
+			"add_product": "제품 추가",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "저장",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "상품을 찾을 수 없습니다",
+			"product_not_found_desc": "귀하의 검색과 일치하는 제품을 찾을 수 없습니다.",
+			"add_product": "새로운 제품 추가"
 		}
 	},
 	"errors": {
