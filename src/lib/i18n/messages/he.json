@@ -81,6 +81,7 @@
 			"toDo": "לבצע"
 		},
 		"edit": {
+			"add_product": "הוספת מוצר",
 			"add_language": "הוספת שפה",
 			"search_languages": "חיפוש שפות להוספה",
 			"no_languages_found": "לא נמצאו שפות",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "הוספת הערה לעריכה הזאת",
 			"save_btn": "שמירה",
 			"debug": "ניפוי תקלות"
+		},
+		"search": {
+			"product_not_found": "לא נמצאו מוצרים",
+			"product_not_found_desc": "לא מצאנו מוצרים התואמים את החיפוש שלך",
+			"add_product": "הוסף מוצר חדש"
 		}
 	},
 	"errors": {
