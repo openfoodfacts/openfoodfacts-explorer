@@ -18,7 +18,7 @@
 
 	import type { PageData } from './$types';
 	import TagsString from './TagsString.svelte';
-	import { PRODUCT_IMAGE_URL } from '$lib/const';
+	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
 	import TraceabilityCodes from './TraceabilityCodes.svelte';
 	import PhotoManager from './PhotoManager.svelte';
 
@@ -209,7 +209,7 @@
 	let countriesNames = $derived(getNames(data.countries));
 
 	let productStore = $derived.by(() => {
-		if (data.state.status === 'empty') {
+		if (data.state.status === PRODUCT_STATUS.EMPTY) {
 			return writable<Product>(emptyProduct);
 		} else if (data.state.product) {
 			return writable<Product>({

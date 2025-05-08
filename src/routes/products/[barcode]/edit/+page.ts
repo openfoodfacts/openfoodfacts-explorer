@@ -2,6 +2,7 @@ import { getProduct, getTaxo } from '$lib/api';
 import type { Category, Origin, Label, Brand, Store, Country } from '$lib/api';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
+import { PRODUCT_STATUS } from '$lib/const';
 
 export const load = (async ({ fetch, params }) => {
 	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
@@ -17,7 +18,7 @@ export const load = (async ({ fetch, params }) => {
 	if (product.status === 'failure' && product.result.id === 'product_not_found') {
 		return {
 			state: {
-				status: 'empty',
+				status: PRODUCT_STATUS.EMPTY,
 				product: null,
 				errors: product.errors
 			},

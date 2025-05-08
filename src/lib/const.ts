@@ -11,3 +11,6 @@ export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attribut
 export const TAXONOMY_URL = (taxo: string) => `${STATIC_HOST}/data/taxonomies/${taxo}.json`;
 export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${barcode}.json`;
 export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/products/${path}`;
+export const PRODUCT_STATUS = {
+	EMPTY: 'empty'
+};
