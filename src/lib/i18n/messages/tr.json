@@ -81,6 +81,7 @@
 			"toDo": "Yapılacak"
 		},
 		"edit": {
+			"add_product": "Ürün ekle",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Kaydet",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Ürün bulunamadı",
+			"product_not_found_desc": "Aramanızla eşleşen herhangi bir ürün bulamadık",
+			"add_product": "Yeni Ürün Ekle"
 		}
 	},
 	"errors": {
