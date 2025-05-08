@@ -81,6 +81,7 @@
 			"toDo": "Nog te doen"
 		},
 		"edit": {
+			"add_product": "Artikel toevoegen",
 			"add_language": "Een taal toevoegen",
 			"search_languages": "Zoek naar talen om toe te voegen",
 			"no_languages_found": "Geen talen gevonden",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Voeg een opmerking toe aan deze bewerking",
 			"save_btn": "Opslaan",
 			"debug": "Foutopsporing"
+		},
+		"search": {
+			"product_not_found": "Geen producten gevonden",
+			"product_not_found_desc": "We konden geen producten vinden die aan uw zoekopdracht voldoen",
+			"add_product": "Nieuw product toevoegen"
 		}
 	},
 	"errors": {
