@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Lisa toode",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Salvesta",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Tooteid ei leitud",
+			"product_not_found_desc": "Me ei leidnud teie otsingule vastavaid tooteid",
+			"add_product": "Lisa uus toode"
 		}
 	},
 	"errors": {
