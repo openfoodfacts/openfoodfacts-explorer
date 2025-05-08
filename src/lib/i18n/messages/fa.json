@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "افزودن کالا",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "ذخيره",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "محصولی یافت نشد",
+			"product_not_found_desc": "ما نتوانستیم محصولی مطابق با جستجوی شما پیدا کنیم",
+			"add_product": "اضافه کردن محصول جدید"
 		}
 	},
 	"errors": {
