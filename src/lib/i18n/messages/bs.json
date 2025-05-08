@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Dodajte proizvod",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Nije pronađen nijedan proizvod",
+			"product_not_found_desc": "Nismo mogli pronaći nijedan proizvod koji odgovara vašoj pretrazi",
+			"add_product": "Dodaj novi proizvod"
 		}
 	},
 	"errors": {
