@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "சேமி",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "தயாரிப்புகள் எதுவும் கிடைக்கவில்லை",
+			"product_not_found_desc": "உங்கள் தேடலுடன் பொருந்தக்கூடிய எந்த தயாரிப்புகளையும் எங்களால் கண்டுபிடிக்க முடியவில்லை.",
+			"add_product": "புதிய தயாரிப்பைச் சேர்க்கவும்"
 		}
 	},
 	"errors": {
