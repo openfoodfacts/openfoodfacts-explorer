@@ -81,6 +81,7 @@
 			"toDo": "Da ober"
 		},
 		"edit": {
+			"add_product": "Ouzhpennañ ur produ",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Enrollañ",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Produ ebet bet kavet",
+			"product_not_found_desc": "N'hon eus ket kavet produ ebet a glot gant ho klask",
+			"add_product": "Ouzhpennañ ur produ nevez"
 		}
 	},
 	"errors": {
