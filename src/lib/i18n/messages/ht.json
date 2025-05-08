@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Ajoute pwodwi",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Anrejistre",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Pa jwenn okenn pwodwi",
+			"product_not_found_desc": "Nou pa jwenn okenn pwodwi ki koresponn ak rechèch ou a",
+			"add_product": "Ajoute nouvo pwodwi"
 		}
 	},
 	"errors": {
