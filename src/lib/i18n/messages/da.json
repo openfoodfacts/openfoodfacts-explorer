@@ -81,6 +81,7 @@
 			"toDo": "Resterer"
 		},
 		"edit": {
+			"add_product": "Tilføj produkt",
 			"add_language": "Tilføj et sprog",
 			"search_languages": "Søg efter sprog at tilføje",
 			"no_languages_found": "Ingen sprog fundet",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Tilføj en kommentar til denne redigering",
 			"save_btn": "Gem",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Ingen produkter fundet",
+			"product_not_found_desc": "Vi kunne ikke finde nogen produkter, der matcher din søgning",
+			"add_product": "Tilføj nyt produkt"
 		}
 	},
 	"errors": {
