@@ -81,6 +81,7 @@
 			"toDo": "To do"
 		},
 		"edit": {
+			"add_product": "Add product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "কোনো সামগ্ৰী পোৱা নগ'ল",
+			"product_not_found_desc": "আপোনাৰ সন্ধানৰ সৈতে মিল থকা কোনো সামগ্ৰী আমি বিচাৰি নাপালোঁ",
+			"add_product": "নতুন Product যোগ কৰক"
 		}
 	},
 	"errors": {
