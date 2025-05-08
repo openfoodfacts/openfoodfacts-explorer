@@ -81,6 +81,7 @@
 			"toDo": "De făcut"
 		},
 		"edit": {
+			"add_product": "Adaugă produs",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -109,6 +110,11 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Salvează",
 			"debug": "Debug"
+		},
+		"search": {
+			"product_not_found": "Nu s-au găsit produse",
+			"product_not_found_desc": "Nu am găsit niciun produs care să corespundă căutării dvs.",
+			"add_product": "Adăugați un produs nou"
 		}
 	},
 	"errors": {
