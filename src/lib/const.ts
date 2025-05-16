@@ -5,6 +5,9 @@ export const IMAGE_HOST = 'https://images.openfoodfacts.org';
 export const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
 export const PRODUCT_REPORT_URL = `${API_HOST}/product/`;
 
+export const TRACEABILITY_CODES_URL =
+	'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
+
 export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_VERSION})`;
 
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
