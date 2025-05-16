@@ -4,10 +4,7 @@
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
 
-	interface Props {
-		product: Product;
-	}
-
+	type Props = { product: Product };
 	let { product }: Props = $props();
 
 	function getLanguage(code: string) {
@@ -76,11 +73,7 @@
 	}
 
 	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
-	let currentImages = $state<ProductImage[]>([]);
-
-	$effect(() => {
-		currentImages = getImagesForLanguage(activeLanguageCode);
-	});
+	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 
 	function handleLanguageChange(code: string) {
 		activeLanguageCode = code;
