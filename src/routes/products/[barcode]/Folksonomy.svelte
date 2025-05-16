@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { createFolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
+
+	import type { FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { createFolksonomyApi } from '$lib/api/folksonomy';
 
 	interface Props {
 		tags: FolksonomyTag[];
@@ -12,7 +14,7 @@
 
 	async function refreshTags() {
 		const folksonomyApi = createFolksonomyApi(fetch);
-		const res = (await folksonomyApi.getProduct(barcode)) as FolksonomyTag[];
+		const res = await folksonomyApi.getProductTags(barcode);
 		if ('error' in res) {
 			console.error(res.error);
 		} else {
@@ -39,7 +41,6 @@
 
 		const folksonomyApi = createFolksonomyApi(fetch);
 
-		// @ts-expect-error - need to update type in nodejs SDK
 		const ok = await folksonomyApi.putTag(newTag);
 		if (!ok) {
 			console.error('Failed to update tag', oldTag, 'to', newTag);
@@ -58,9 +59,14 @@
 		}
 		// otherwise ts complains about version possibly being null
 		const folksonomyApi = createFolksonomyApi(fetch);
+		const ok = await folksonomyApi.removeTag({ ...tag, version });
+		if (!ok) {
+			console.error('Failed to remove tag', tag);
+			return;
+		}
 
-		// @ts-expect-error - need to update type in nodejs SDK
-		folksonomyApi.removeTag({ ...tag, version });
+		console.debug('Removed tag', tag);
+		await refreshTags();
 	}
 
 	let newKey = $state('');
@@ -85,9 +91,8 @@
 		};
 
 		const folksonomyApi = createFolksonomyApi(fetch);
-		// @ts-expect-error - need to update type in nodejs SDK
-		const created = await folksonomyApi.addTag(newTag);
 
+		const created = await folksonomyApi.addTag(newTag);
 		if (created) {
 			tags = [...tags, newTag];
 			newKey = '';
