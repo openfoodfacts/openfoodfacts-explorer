@@ -34,7 +34,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const off = new OpenFoodFacts(fetch);
 
 	const folkApi = createFolksonomyApi(fetch);
-	const folksonomyTags = folkApi.getProduct(params.barcode);
+	const folksonomyTags = folkApi.getProductTags(params.barcode);
 	const folksonomyKeys = folkApi.getKeys();
 
 	const pricesApi = createPricesApi(fetch);
