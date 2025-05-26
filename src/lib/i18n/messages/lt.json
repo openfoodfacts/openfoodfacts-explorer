@@ -113,7 +113,7 @@
 		},
 		"search": {
 			"product_not_found": "Nerasta jokių produktų",
-			"product_not_found_desc": "Neradome jokių produktų, atitinkančių jūsų paiešką",
+			"product_not_found_desc": "Mes neradome jokių produktų, atitinkančių jūsų paiešką",
 			"add_product": "Pridėti naują produktą"
 		}
 	},
