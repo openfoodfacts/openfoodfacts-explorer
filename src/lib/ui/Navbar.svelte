@@ -3,7 +3,6 @@
 		{ name: 'Discover', href: '#' },
 		{ name: 'Contribute', href: '#' },
 		{ name: 'Producers', href: '#' },
-		// { name: "Explore Products by", href: "#" },
 		{ name: 'Prices', href: '#' },
 		{ name: 'Folksonomy', href: '/folksonomy' }
 	];

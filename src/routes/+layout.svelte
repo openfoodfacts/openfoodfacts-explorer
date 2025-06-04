@@ -97,7 +97,6 @@
 
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
-				<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
 				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
 				<a
 					class="btn btn-outline link"
@@ -179,12 +178,24 @@
 				</a>
 			</div>
 		{/if}
-		<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<div class:hidden={!accordionOpen} class="mt-3 flex flex-col md:flex-row md:flex-wrap md:justify-center gap-2">
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
 			<a class="btn btn-outline link" href="/settings">
 				{$_('settings_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('Discover')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('Contribute')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('Producers')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('Prices')}
 			</a>
 			<a
 				class="btn btn-outline link"
