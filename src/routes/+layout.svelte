@@ -178,7 +178,10 @@
 				</a>
 			</div>
 		{/if}
-		<div class:hidden={!accordionOpen} class="mt-3 flex flex-col md:flex-row md:flex-wrap md:justify-center gap-2">
+		<div
+			class:hidden={!accordionOpen}
+			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
+		>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
