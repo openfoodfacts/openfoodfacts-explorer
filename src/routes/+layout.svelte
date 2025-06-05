@@ -13,6 +13,10 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 
+	onMount(async () => {
+		await import('@openfoodfacts/openfoodfacts-webcomponents');
+	});
+
 	// Initialize i18n
 	initI18n();
 
@@ -213,6 +217,10 @@
 
 	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
 		{@render children?.()}
+	</div>
+
+	<div class="xl:max-w-8xl container mx-auto my-2 px-4">
+		<donation-banner></donation-banner>
 	</div>
 
 	<NutritionCalculator />
