@@ -189,16 +189,16 @@
 				{$_('settings_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
-				{$_('Discover')}
+				{$_('discover_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
-				{$_('Contribute')}
+				{$_('contribute_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
-				{$_('Producers')}
+				{$_('producers_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
-				{$_('Prices')}
+				{$_('prices_link')}
 			</a>
 			<a
 				class="btn btn-outline link"
