@@ -11,6 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import Navbar from '$lib/ui/Navbar.svelte';
 
 	// Initialize i18n
 	initI18n();
@@ -96,7 +97,6 @@
 
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
-				<a class="btn btn-outline link" href="/folksonomy">{$_('folksonomy_link')}</a>
 				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
 				<a
 					class="btn btn-outline link"
@@ -108,6 +108,11 @@
 				</a>
 			</div>
 		</div>
+	</div>
+
+	<!-- Only show Navbar on lg and up -->
+	<div class="hidden xl:block">
+		<Navbar />
 	</div>
 
 	<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
@@ -173,12 +178,27 @@
 				</a>
 			</div>
 		{/if}
-		<div class:hidden={!accordionOpen} class="mt-3 flex flex-wrap justify-center gap-2">
+		<div
+			class:hidden={!accordionOpen}
+			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
+		>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
 			<a class="btn btn-outline link" href="/settings">
 				{$_('settings_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('discover_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('contribute_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('producers_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('prices_link')}
 			</a>
 			<a
 				class="btn btn-outline link"
