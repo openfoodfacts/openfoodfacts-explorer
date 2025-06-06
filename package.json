@@ -86,6 +86,7 @@
 		]
 	},
 	"dependencies": {
-		"@openfoodfacts/openfoodfacts-webcomponents": "^1.7.0"
+		"@openfoodfacts/openfoodfacts-webcomponents": "^1.7.0",
+		"@webcomponents/webcomponentsjs": "^2.8.0"
 	}
 }

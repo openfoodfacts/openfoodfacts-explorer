@@ -58,6 +58,13 @@
 </svelte:head>
 
 {#if !$isLoading}
+	<!-- Global OpenFoodFacts Web Components Configuration -->
+	<off-webcomponents-configuration
+		language-code="en"
+		assets-images-path="node_modules/@openfoodfacts/openfoodfacts-webcomponents/dist/assets/images"
+	>
+	</off-webcomponents-configuration>
+
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
