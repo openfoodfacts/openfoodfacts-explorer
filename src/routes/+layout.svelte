@@ -225,11 +225,6 @@
 	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
 		{@render children?.()}
 	</div>
-
-	<div class="xl:max-w-8xl container mx-auto my-2 px-4">
-		<donation-banner></donation-banner>
-	</div>
-
 	<NutritionCalculator />
 	<Footer />
 {:else}
