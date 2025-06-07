@@ -59,7 +59,8 @@
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->
-	<off-webcomponents-configuration language-code="en"> </off-webcomponents-configuration>
+	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
+	</off-webcomponents-configuration>
 
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">

@@ -10,7 +10,7 @@ export default defineConfig({
 			targets: [
 				{
 					src: 'node_modules/@openfoodfacts/openfoodfacts-webcomponents/dist/assets/**/*',
-					dest: 'assets'
+					dest: 'assets/webcomponents'
 				}
 			]
 		})
