@@ -2,7 +2,7 @@
 	import { _ } from '$lib/i18n';
 
 	const navItems = [
-		{ name: 'discover_link', href: '#' },
+		{ name: 'discover_link', href: '/discover' },
 		{ name: 'contribute_link', href: '#' },
 		{ name: 'producers_link', href: '#' },
 		{ name: 'prices_link', href: '#' },
