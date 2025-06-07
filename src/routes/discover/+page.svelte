@@ -45,10 +45,10 @@
 </style> -->
 
 <iframe
-  src="https://world.openfoodfacts.org/discover?content_only=1"
-  class="w-full border-0"
-  style="height: 600vh; min-height: 100vh;"
-  title="Discover Open Food Facts"
-  scrolling="auto"
-  frameborder="0"
+	src="https://world.openfoodfacts.org/discover?content_only=1"
+	class="w-full border-0"
+	style="height: 600vh; min-height: 100vh;"
+	title="Discover Open Food Facts"
+	scrolling="auto"
+	frameborder="0"
 ></iframe>
