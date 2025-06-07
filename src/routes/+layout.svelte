@@ -13,6 +13,10 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 
+	onMount(async () => {
+		await import('@openfoodfacts/openfoodfacts-webcomponents');
+	});
+
 	// Initialize i18n
 	initI18n();
 
@@ -54,6 +58,10 @@
 </svelte:head>
 
 {#if !$isLoading}
+	<!-- Global OpenFoodFacts Web Components Configuration -->
+	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
+	</off-webcomponents-configuration>
+
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
@@ -214,7 +222,6 @@
 	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
 		{@render children?.()}
 	</div>
-
 	<NutritionCalculator />
 	<Footer />
 {:else}
