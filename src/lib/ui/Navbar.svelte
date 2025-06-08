@@ -3,8 +3,8 @@
 
 	const navItems = [
 		{ name: 'discover_link', href: '/discover' },
-		{ name: 'contribute_link', href: '#' },
-		{ name: 'producers_link', href: '#' },
+		{ name: 'contribute_link', href: '/contribute' },
+		{ name: 'producers_link', href: '/producers' },
 		{ name: 'prices_link', href: '#' },
 		{ name: 'folksonomy_link', href: '/folksonomy' }
 	];

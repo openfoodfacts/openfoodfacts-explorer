@@ -199,10 +199,10 @@
 			<a class="btn btn-outline link" href="/discover">
 				{$_('discover_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/contribute">
 				{$_('contribute_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/producers">
 				{$_('producers_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
