@@ -189,13 +189,7 @@
 		<div
 			class:hidden={!accordionOpen}
 			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
-		>
-			<a class="btn btn-outline link" href="/folksonomy">
-				{$_('folksonomy_link')}
-			</a>
-			<a class="btn btn-outline link" href="/settings">
-				{$_('settings_link')}
-			</a>
+		>	
 			<a class="btn btn-outline link" href="/discover">
 				{$_('discover_link')}
 			</a>
@@ -207,6 +201,12 @@
 			</a>
 			<a class="btn btn-outline link" href="#">
 				{$_('prices_link')}
+			</a>
+			<a class="btn btn-outline link" href="/folksonomy">
+				{$_('folksonomy_link')}
+			</a>
+			<a class="btn btn-outline link" href="/settings">
+				{$_('settings_link')}
 			</a>
 			<a
 				class="btn btn-outline link"
