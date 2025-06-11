@@ -1,14 +1,9 @@
 <script lang="ts">
-	import { self } from 'svelte/legacy';
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
 
-	let image:
-		| {
-				url: string;
-				alt?: string;
-		  }
-		| undefined = $state();
+	type ImageState = { url: string; alt?: string };
+	let image: ImageState | undefined = $state();
 
 	let dialog: HTMLDialogElement | undefined = $state();
 	let zoomLevel = $state(1);
@@ -44,7 +39,7 @@
 	}
 
 	let container: HTMLDivElement | undefined = $state();
-	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
+	const { createZoomImage, setZoomImageState, zoomImageState } = useZoomImageWheel();
 
 	$effect(() => {
 		if (setZoomImageState != null) {
@@ -56,12 +51,11 @@
 		if (container) {
 			createZoomImage(container, {
 				maxZoom: MAX_ZOOM,
-				wheel: { step: 0.5 },
-				zoomOnHover: true,
-				zoomOnClick: true,
-				onZoomChange: (zoom: number) => {
-					zoomLevel = zoom;
-				}
+				wheelZoomRatio: 0.5,
+				shouldZoomOnSingleTouch: () => true
+			});
+			zoomImageState.subscribe((state) => {
+				zoomLevel = state.currentZoom;
 			});
 		}
 	});
@@ -71,7 +65,11 @@
 	class="border-base-300 bg-base-100 fixed inset-0 m-auto max-h-[95vh] max-w-[95vw] border p-0 shadow-lg"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
-	onclick={self(() => close())}
+	onclick={(e) => {
+		if (e.target === dialog) {
+			close();
+		}
+	}}
 >
 	<div class="relative flex h-full w-full flex-col">
 		<div class="absolute top-2 right-2 z-10">
@@ -105,9 +103,9 @@
 				>
 					<span class="icon-[mdi--magnify-close] h-6 w-6"></span>
 				</button>
-				<span class="bg-base-100/80 text-md rounded-md px-2 py-2 font-medium text-white"
-					>{zoomLevel.toFixed(1)}x</span
-				>
+				<span class="bg-base-100/80 text-md rounded-md px-2 py-2 font-medium text-white">
+					{zoomLevel.toFixed(1)} x
+				</span>
 				<button
 					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
 					onclick={zoomOut}
