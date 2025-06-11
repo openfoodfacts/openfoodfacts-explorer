@@ -19,7 +19,9 @@ const config = {
 					'self',
 					'data:',
 					'https://*.openfoodfacts.org/',
-					'https://tile.openstreetmap.org'
+					'https://tile.openstreetmap.org',
+					'https://play.google.com',
+					'https://fdroid.gitlab.io'
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'frame-ancestors': ['none']
