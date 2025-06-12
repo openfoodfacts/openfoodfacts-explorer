@@ -30,14 +30,14 @@
 		"@crowdin/cli": "^4.7.1",
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.28.0",
-		"@fontsource-variable/plus-jakarta-sans": "^5.2.5",
+		"@fontsource-variable/plus-jakarta-sans": "^5.2.6",
 		"@iconify-json/mdi": "^1.2.3",
-		"@iconify-json/simple-icons": "^1.2.37",
+		"@iconify-json/simple-icons": "^1.2.38",
 		"@iconify/tailwind": "^1.2.0",
 		"@iconify/tailwind4": "^1.0.6",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.6",
 		"@sveltejs/adapter-vercel": "^5.7.2",
-		"@sveltejs/kit": "^2.21.2",
+		"@sveltejs/kit": "^2.21.3",
 		"@sveltejs/vite-plugin-svelte": "^5.1.0",
 		"@tailwindcss/postcss": "^4.1.8",
 		"@tailwindcss/typography": "^0.5.16",
@@ -45,8 +45,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.33.1",
 		"@typescript-eslint/parser": "^8.33.1",
 		"@vercel/speed-insights": "^1.2.0",
-		"@zoom-image/core": "^0.40.0",
-		"@zoom-image/svelte": "^0.3.0",
+		"@zoom-image/core": "^0.41.0",
+		"@zoom-image/svelte": "^0.3.4",
 		"daisyui": "5.0.43",
 		"eslint": "^9.28.0",
 		"eslint-config-prettier": "^10.1.5",
@@ -63,7 +63,7 @@
 		"prettier": "^3.5.2",
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.6.12",
-		"svelte": "^5.33.17",
+		"svelte": "^5.33.18",
 		"svelte-check": "^4.2.1",
 		"svelte-eslint-parser": "^1.2.0",
 		"svelte-i18n": "^4.0.1",
@@ -87,7 +87,7 @@
 		]
 	},
 	"dependencies": {
-		"@openfoodfacts/openfoodfacts-webcomponents": "^1.7.0",
+		"@openfoodfacts/openfoodfacts-webcomponents": "^1.7.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0"
 	}
 }

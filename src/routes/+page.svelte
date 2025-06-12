@@ -54,4 +54,7 @@
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 		<donation-banner></donation-banner>
 	</div>
+	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
+		<mobile-badges></mobile-badges>
+	</div>
 </div>
