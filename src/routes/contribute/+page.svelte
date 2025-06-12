@@ -1,7 +1,8 @@
-<iframe
-	src="https://world.openfoodfacts.org/contribute?content_only=1"
-	class="h-[4800px] w-full border-0 md:h-[3300px] lg:h-[2800px] xl:h-[2400px]"
+<script lang="ts">
+	import StaticPageIframe from '../../lib/ui/StaticPageIframe.svelte';
+</script>
+
+<StaticPageIframe
+	src="http://world.openfoodfacts.localhost/contribute?content_only=1"
 	title="Contribute to Open Food Facts"
-	scrolling="no"
-	frameborder="0"
-></iframe>
+/>
