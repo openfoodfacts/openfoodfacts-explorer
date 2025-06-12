@@ -3,6 +3,6 @@
 </script>
 
 <StaticPageIframe
-	src="http://world.openfoodfacts.localhost/producers?content_only=1"
+	src="https://world.openfoodfacts.org/producers?content_only=1"
 	title="Open Food Facts for Producers"
 />

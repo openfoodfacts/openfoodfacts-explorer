@@ -3,6 +3,6 @@
 </script>
 
 <StaticPageIframe
-	src="http://world.openfoodfacts.localhost/contribute?content_only=1"
+	src="https://world.openfoodfacts.org/contribute?content_only=1"
 	title="Contribute to Open Food Facts"
 />

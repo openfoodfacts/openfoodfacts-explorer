@@ -3,6 +3,6 @@
 </script>
 
 <StaticPageIframe
-	src="http://world.openfoodfacts.localhost/discover?content_only=1"
+	src="https://world.openfoodfacts.org/discover?content_only=1"
 	title="Discover Open Food Facts"
 />
