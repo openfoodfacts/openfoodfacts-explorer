@@ -190,23 +190,23 @@
 			class:hidden={!accordionOpen}
 			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 		>
+			<a class="btn btn-outline link" href="/discover">
+				{$_('discover_link')}
+			</a>
+			<a class="btn btn-outline link" href="/contribute">
+				{$_('contribute_link')}
+			</a>
+			<a class="btn btn-outline link" href="/producers">
+				{$_('producers_link')}
+			</a>
+			<a class="btn btn-outline link" href="#">
+				{$_('prices_link')}
+			</a>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
 			<a class="btn btn-outline link" href="/settings">
 				{$_('settings_link')}
-			</a>
-			<a class="btn btn-outline link" href="#">
-				{$_('discover_link')}
-			</a>
-			<a class="btn btn-outline link" href="#">
-				{$_('contribute_link')}
-			</a>
-			<a class="btn btn-outline link" href="#">
-				{$_('producers_link')}
-			</a>
-			<a class="btn btn-outline link" href="#">
-				{$_('prices_link')}
 			</a>
 			<a
 				class="btn btn-outline link"
