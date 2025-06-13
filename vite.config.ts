@@ -4,6 +4,15 @@ import { version as packageVersion } from './package.json';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
+	server: {
+		proxy: {
+			'/api/search': {
+				target: 'https://search.openfoodfacts.org',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api\/search/, '')
+			}
+		}
+	},
 	plugins: [
 		sveltekit(),
 		viteStaticCopy({

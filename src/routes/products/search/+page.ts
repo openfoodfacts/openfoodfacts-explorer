@@ -1,7 +1,31 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Product } from '$lib/api';
-import { API_HOST } from '$lib/const';
+import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+
+export const ssr = false;
+
+const SEARCH_BASE_URL =
+	import.meta.env.VITE_SEARCH_BASE_URL || new URL(import.meta.url).origin + '/api/search';
+
+// TODO: This should be not necessary.
+// We should use the SDK types.
+type SearchResult = Promise<{
+	data: {
+		aggregations: null;
+		charts: object;
+		count: number;
+		debug: object;
+		facets: object;
+		hits: Array<Product>;
+		is_count_exact: boolean;
+		page: number;
+		page_count: number;
+		page_size: number;
+		timed_out: boolean;
+		took: number;
+		warnings: unknown;
+	};
+}>;
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -31,39 +55,18 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const page = url.searchParams.get('page') || '1';
+	const pageSize = url.searchParams.get('page_size') || 6 * 4;
 
-	const urlSearch = new URLSearchParams({
-		search_terms: query,
-		search_simple: '1',
-		json: '1',
-		page: page
-	});
+	const api = new SearchApi(fetch, { baseUrl: SEARCH_BASE_URL });
 
-	const result = fetch(`${API_HOST}/cgi/search.pl?` + urlSearch.toString())
-		.then((res) => {
-			if (!res.ok) {
-				error(400, 'Failed to fetch data');
-			}
-			return res;
-		})
-		.then(
-			(res) =>
-				res.json() as Promise<{
-					count: number;
-					page: number;
-					page_size: number;
-					page_count: number;
-					products: Product[];
-				}>
-		)
-		.then((data) => {
-			return {
-				...data,
-				total_pages: Math.ceil(data.count / data.page_size)
-			};
-		});
+	const result = (
+		api.search({
+			q: query,
+			page: page,
+			page_size: pageSize
+		}) as SearchResult
+	) //
+		.then((result) => result.data);
 
-	return {
-		result: result
-	};
+	return { search: result };
 };
