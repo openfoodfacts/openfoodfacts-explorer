@@ -68,7 +68,7 @@
 	},
 	"home": {
 		"welcome": "Welkom bij",
-		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is een hulpmiddel om de OpenFoodFacts-database te verkennen.",
 		"intro_2": "Om te beginnen kunt u een productcode invoeren in de zoekbalk hierboven. U kunt ook op een van de onderstaande producten klikken."
 	},
 	"product": {
@@ -102,7 +102,7 @@
 			"countries": "Landen",
 			"website_url": "Website-URL",
 			"photos": "Productfoto's",
-			"no_photo_available": "No photo available",
+			"no_photo_available": "Geen foto beschikbaar",
 			"ingredients": "Ingrediënten",
 			"ingredients_list": "Ingrediëntenlijst",
 			"no_ingredients_image": "Geen ingrediëntenafbeelding",
