@@ -12,6 +12,7 @@
 	import { page } from '$app/state';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
+	import { userLoginState } from '$lib/stores/userStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -33,6 +34,20 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
+
+		// checking
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get('state') !== null && urlParams.get('code') != null) {
+			getAccessToken()
+				.then((token) => {
+					localStorage.setItem('userAccessToken', token.accessToken);
+					console.log('Access Token:', token.accessToken);
+					userLoginState.set(true);
+				})
+				.catch((error) => {
+					console.error('Error getting access token:', error);
+				});
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -50,13 +65,10 @@
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
 
-	// TODO: update this propertly
-	let userLoginState = false;
-
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	const keycloak = 'http://auth.openfoodfacts.localhost:5600/realms/open-products-facts';
 	const pkceClientId = 'OFF_EXP';
-
+	const clientId = 'explorer';
 
 	function base64URLEncode(bytes: any) {
 		const b64 = btoa(String.fromCodePoint(...bytes));
@@ -76,33 +88,38 @@
 		);
 
 		const nonce = crypto.getRandomValues(new BigUint64Array(1))[0];
-		const lang = "en";
+		const lang = 'en';
 		const clientSecret = '1';
 
-		const redirectUri = `http://localhost:5604/${page}.html?clientId=${clientId}&pkceClientId=${pkceClientId}&clientSecret=${clientSecret}&lang=${lang}&keycloak=${encodeURIComponent(keycloak)}&mode=pkce`;
+		// const redirectUri = `http://localhost:5604/${page}.html?clientId=${clientId}&pkceClientId=${pkceClientId}&clientSecret=${clientSecret}&lang=${lang}&keycloak=${encodeURIComponent(keycloak)}&mode=pkce`;
+		const redirectUri = 'http://localhost:5173/';
 
 		const url = `${keycloak}/protocol/openid-connect/auth?response_type=code&client_id=${pkceClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+profile+offline_access&state=${nonce}&ui_locales=${lang}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
-		userLoginState = true; // Set user login state to true
 		window.location.href = url;
 	}
 
 	async function getAccessToken() {
-		const verifier = localStorage.getItem("verifier");
+		// http://localhost:5173/?state=10434643858497371922&session_state=11890927-9a18-4be3-bf83-4e35f5aa312f&iss=http%3A%2F%2Fauth.openfoodfacts.localhost%3A5600%2Frealms%2Fopen-products-facts&code=8a2eaaab-9214-4a3c-ad8f-62cb295b797a.11890927-9a18-4be3-bf83-4e35f5aa312f.b26fbd11-4f08-4998-b27d-7c2ee61d0ba5
+
+		const verifier = localStorage.getItem('verifier');
+		const urlParams = new URLSearchParams(window.location.search);
+		const code = urlParams.get('code');
+
 		const body = new URLSearchParams({
-			code: "code", // figure this out
-			grant_type: "authorization_code",
-			redirect_uri: "http://localhost:5173/accesstoken.html",
+			code: code ?? '',
+			grant_type: 'authorization_code',
+			redirect_uri: 'http://localhost:5173/accesstoken.html',
 			client_id: pkceClientId,
 			code_verifier: verifier ?? ''
 		});
 		const response = await fetch(`${keycloak}/protocol/openid-connect/token`, {
-			method: "POST",
+			method: 'POST',
 			body: body,
-			headers: new Headers(),
+			headers: new Headers()
 		});
 		const jwt = await response.json();
-		const accessToken = JSON.parse(atob(jwt.access_token.split(".")[1]));
+		const accessToken = JSON.parse(atob(jwt.access_token.split('.')[1]));
 		return {
 			accessToken: jwt.access_token,
 			idToken: jwt.id_token,
@@ -113,16 +130,16 @@
 
 	async function logoutUser() {
 		const { idToken } = await getAccessToken();
-		const redirectUri = `http://localhost:5604/logout.html`;
-		userLoginState = false; // Set user login state to false
-
+		// const redirectUri = `http://localhost:5604/logout.html`;
+		const redirectUri = 'http://localhost:5173/';
+		userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
 	}
 
 	function getAccountUrl() {
 		return `${keycloak}/account/#/`;
 	}
-	
+
 	// const authUrl = `http://auth.openfoodfacts.localhost:5600/realms/open-products-facts/protocol/openid-connect/auth?client_id=${clientId}&redirect_uri=${redirect_uri}&state=de8df7a8-a591-4f38-908d-d7340ce7e04e&response_mode=query&response_type=code&scope=openid&nonce=20bf70cc-6d3a-48df-ab62-6dd053cfa582&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -191,12 +208,9 @@
 				>
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
-				{#if userLoginState}
+				{#if $userLoginState}
 					<a class="btn btn-outline link" href={getAccountUrl()}>Account</a>
-					<button
-						class="btn btn-outline link logout-btn"
-						onclick={logoutUser}>Log out</button
-					>
+					<button class="btn btn-outline link logout-btn" onclick={logoutUser}>Log out</button>
 				{:else}
 					<!-- svelte-ignore a11y_missing_attribute -->
 					<a class="btn btn-outline link">
