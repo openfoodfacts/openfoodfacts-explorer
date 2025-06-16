@@ -40,8 +40,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(tailwindcss@4.1.8)
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.6
-        version: 2.0.0-alpha.6
+        specifier: 2.0.0-alpha.7
+        version: 2.0.0-alpha.7
       '@sveltejs/adapter-vercel':
         specifier: ^5.7.2
         version: 5.7.2(@sveltejs/kit@2.21.3(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.33.18)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(svelte@5.33.18)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(rollup@4.40.2)
@@ -669,8 +669,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.6':
-    resolution: {integrity: sha512-apQx+vcUIsK0wxD/mNTlCBv3vt7xCJCFI17DiCTPcH/4p74fNoJ24kw7B66YSsOF2HAbm+ul5eGRKXhi3DBPVw==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.7':
+    resolution: {integrity: sha512-nyIM/KangbJdK7ieI/0IET0CsJ+3VZ9FzxgcZfECPeL2u4cXMBMFdTkXKB4LwMWf6bDuS2yHNLI1P14Zq31HQg==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.7.1':
     resolution: {integrity: sha512-3oWpSOaa5iWEhewSpqYvZ/ckbtM+EvxglXXmlRrDGLJAHE3QJLfGy3a1mfe+w/vk1e63esNtUO0e1g/zZdaJWw==}
@@ -1831,9 +1831,6 @@ packages:
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
 
-  openapi-fetch@0.13.8:
-    resolution: {integrity: sha512-yJ4QKRyNxE44baQ9mY5+r/kAzZ8yXMemtNAOFwOzRXJscdjSxxzWSNlyBAr+o5JjkUw9Lc3W7OIoca0cY3PYnQ==}
-
   openapi-fetch@0.14.0:
     resolution: {integrity: sha512-PshIdm1NgdLvb05zp8LqRQMNSKzIlPkyMxYFxwyHR+UlKD4t2nUjkDhNxeRbhRSEd3x5EUNh2w5sJYwkhOH4fg==}
 
@@ -2826,9 +2823,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.6':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.7':
     dependencies:
-      openapi-fetch: 0.13.8
+      openapi-fetch: 0.14.0
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.7.1':
     dependencies:
@@ -3990,10 +3987,6 @@ snapshots:
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
-
-  openapi-fetch@0.13.8:
-    dependencies:
-      openapi-typescript-helpers: 0.0.15
 
   openapi-fetch@0.14.0:
     dependencies:
