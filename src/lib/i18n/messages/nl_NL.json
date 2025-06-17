@@ -12,7 +12,7 @@
 	"github_link": "GitHub",
 	"search": {
 		"placeholder": "Query or barcode",
-		"go": "Go",
+		"go": "Gaan",
 		"scan": "Scan een streepjescode",
 		"button": "Zoeken"
 	},
@@ -58,10 +58,10 @@
 		"login": "Inloggen (opgeslagen in localStorage) [ONVEILIG - ALLEEN DEBUGGEN]"
 	},
 	"folksonomy": {
-		"title": "Folksonomy Engine",
+		"title": "Folksonomy-engine",
 		"subtitle": "Keys Explorer",
-		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
-		"search_placeholder": "Search keys...",
+		"description": "Met Folksonomy kunnen gebruikers aangepaste tags aan producten toevoegen. Bekijk hieronder alle beschikbare sleutels, zoek naar specifieke sleutels of klik op een sleutel om producten te zien die deze gebruiken.",
+		"search_placeholder": "Zoeksleutels...",
 		"keys_found": "sleutels gevonden",
 		"key_found": "sleutel gevonden",
 		"for": "voor"
