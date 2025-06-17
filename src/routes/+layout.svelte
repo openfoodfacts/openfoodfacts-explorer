@@ -40,7 +40,6 @@
 		if (urlParams.get('state') !== null && urlParams.get('code') != null) {
 			getAccessToken()
 				.then((token) => {
-					localStorage.setItem('userAccessToken', token.accessToken);
 					console.log('Access Token:', token.accessToken);
 					userLoginState.set(true);
 				})
@@ -48,6 +47,16 @@
 					console.error('Error getting access token:', error);
 				});
 		}
+
+		// if the cookie userAccessToken is set, set the userLoginState to true
+		const cookies = document.cookie.split('; ');
+		const userAccessToken = cookies.find((cookie) => cookie.startsWith('userAccessToken='));
+		if (userAccessToken) {
+			userLoginState.set(true);
+		} else {
+			userLoginState.set(false);
+		}
+		console.log("User login state:", $userLoginState);
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -67,8 +76,7 @@
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	const keycloak = 'http://auth.openfoodfacts.localhost:5600/realms/open-products-facts';
-	const pkceClientId = 'OFF_EXP';
-	const clientId = 'explorer';
+	const pkceClientId = 'OFF_EXP_DEV';
 
 	function base64URLEncode(bytes: any) {
 		const b64 = btoa(String.fromCodePoint(...bytes));
@@ -89,10 +97,9 @@
 
 		const nonce = crypto.getRandomValues(new BigUint64Array(1))[0];
 		const lang = 'en';
-		const clientSecret = '1';
 
 		// const redirectUri = `http://localhost:5604/${page}.html?clientId=${clientId}&pkceClientId=${pkceClientId}&clientSecret=${clientSecret}&lang=${lang}&keycloak=${encodeURIComponent(keycloak)}&mode=pkce`;
-		const redirectUri = 'http://localhost:5173/';
+		const redirectUri = 'http://localhost:5173';
 
 		const url = `${keycloak}/protocol/openid-connect/auth?response_type=code&client_id=${pkceClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+profile+offline_access&state=${nonce}&ui_locales=${lang}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
@@ -109,7 +116,7 @@
 		const body = new URLSearchParams({
 			code: code ?? '',
 			grant_type: 'authorization_code',
-			redirect_uri: 'http://localhost:5173/accesstoken.html',
+			redirect_uri: 'http://localhost:5173',
 			client_id: pkceClientId,
 			code_verifier: verifier ?? ''
 		});
@@ -120,20 +127,42 @@
 		});
 		const jwt = await response.json();
 		const accessToken = JSON.parse(atob(jwt.access_token.split('.')[1]));
+
+		// Save accessToken and refreshToken in cookies (expires in jwt.expires_in seconds)
+		const expires = new Date(Date.now() + (jwt.expires_in * 1000)).toUTCString();
+		document.cookie = `userAccessToken=${jwt.access_token}; expires=${expires}; path=/; secure; samesite=strict`;
+		if (jwt.refresh_token) {
+			// Set refresh token cookie with a longer expiry if available (e.g., 30 days)
+			const refreshExpires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
+			document.cookie = `userRefreshToken=${jwt.refresh_token}; expires=${refreshExpires}; path=/; secure; samesite=strict`;
+		}
+
+		// save id token in cookies
+		document.cookie = `userIdToken=${jwt.id_token}; expires=${expires}; path=/; secure; samesite=strict`;
+
 		return {
 			accessToken: jwt.access_token,
 			idToken: jwt.id_token,
 			expiresIn: jwt.expires_in,
+			refreshToken: jwt.refresh_token,
 			accessTokenPayload: accessToken
 		};
 	}
 
 	async function logoutUser() {
-		const { idToken } = await getAccessToken();
-		// const redirectUri = `http://localhost:5604/logout.html`;
-		const redirectUri = 'http://localhost:5173/';
-		userLoginState.set(false); // Set user login state to false
+		// const { idToken } = await getAccessToken();
+		const cookies = document.cookie.split('; ');
+		const idTokenCookie = cookies.find((cookie) => cookie.startsWith('userIdToken='));
+		const idToken = idTokenCookie ? idTokenCookie.split('=')[1] : '';
+		if (!idToken) {
+			console.error('No ID token found in cookies. Cannot log out.');
+			return;
+		}
+
+		const redirectUri = 'http://localhost:5173';
+		// userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
+
 	}
 
 	function getAccountUrl() {
