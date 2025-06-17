@@ -56,7 +56,7 @@
 		} else {
 			userLoginState.set(false);
 		}
-		console.log("User login state:", $userLoginState);
+		console.log('User login state:', $userLoginState);
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -129,7 +129,7 @@
 		const accessToken = JSON.parse(atob(jwt.access_token.split('.')[1]));
 
 		// Save accessToken and refreshToken in cookies (expires in jwt.expires_in seconds)
-		const expires = new Date(Date.now() + (jwt.expires_in * 1000)).toUTCString();
+		const expires = new Date(Date.now() + jwt.expires_in * 1000).toUTCString();
 		document.cookie = `userAccessToken=${jwt.access_token}; expires=${expires}; path=/; secure; samesite=strict`;
 		if (jwt.refresh_token) {
 			// Set refresh token cookie with a longer expiry if available (e.g., 30 days)
@@ -162,7 +162,6 @@
 		const redirectUri = 'http://localhost:5173';
 		// userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
-
 	}
 
 	function getAccountUrl() {
