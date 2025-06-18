@@ -13,6 +13,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
+	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -36,17 +37,17 @@
 		injectSpeedInsights();
 
 		// checking
-		const urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get('state') !== null && urlParams.get('code') != null) {
-			getAccessToken()
-				.then((token) => {
-					console.log('Access Token:', token.accessToken);
-					userLoginState.set(true);
-				})
-				.catch((error) => {
-					console.error('Error getting access token:', error);
-				});
-		}
+		// const urlParams = new URLSearchParams(window.location.search);
+		// if (urlParams.get('state') !== null && urlParams.get('code') != null) {
+		// 	getAccessToken()
+		// 		.then((token) => {
+		// 			console.log('Access Token:', token.accessToken);
+		// 			userLoginState.set(true);
+		// 		})
+		// 		.catch((error) => {
+		// 			console.error('Error getting access token:', error);
+		// 		});
+		// }
 
 		// if the cookie userAccessToken is set, set the userLoginState to true
 		const cookies = document.cookie.split('; ');
@@ -75,82 +76,8 @@
 	let accordionOpen = $state(false);
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	const keycloak = 'http://auth.openfoodfacts.localhost:5600/realms/open-products-facts';
-	const pkceClientId = 'OFF_EXP_DEV';
-
-	function base64URLEncode(bytes: any) {
-		const b64 = btoa(String.fromCodePoint(...bytes));
-		const encoded = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-		return encoded;
-	}
-
-	async function pkceLogin() {
-		const verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
-		// Save the verifier so that the code page can access it
-		// Should really use sessionStorage but for tests when we click a verification email that starts a separate session
-		localStorage.setItem('verifier', verifier);
-		const codeChallenge = base64URLEncode(
-			new Uint8Array(
-				await crypto.subtle.digest({ name: 'SHA-256' }, new TextEncoder().encode(verifier))
-			)
-		);
-
-		const nonce = crypto.getRandomValues(new BigUint64Array(1))[0];
-		const lang = 'en';
-
-		// const redirectUri = `http://localhost:5604/${page}.html?clientId=${clientId}&pkceClientId=${pkceClientId}&clientSecret=${clientSecret}&lang=${lang}&keycloak=${encodeURIComponent(keycloak)}&mode=pkce`;
-		const redirectUri = 'http://localhost:5173';
-
-		const url = `${keycloak}/protocol/openid-connect/auth?response_type=code&client_id=${pkceClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+profile+offline_access&state=${nonce}&ui_locales=${lang}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
-
-		window.location.href = url;
-	}
-
-	async function getAccessToken() {
-		// http://localhost:5173/?state=10434643858497371922&session_state=11890927-9a18-4be3-bf83-4e35f5aa312f&iss=http%3A%2F%2Fauth.openfoodfacts.localhost%3A5600%2Frealms%2Fopen-products-facts&code=8a2eaaab-9214-4a3c-ad8f-62cb295b797a.11890927-9a18-4be3-bf83-4e35f5aa312f.b26fbd11-4f08-4998-b27d-7c2ee61d0ba5
-
-		const verifier = localStorage.getItem('verifier');
-		const urlParams = new URLSearchParams(window.location.search);
-		const code = urlParams.get('code');
-
-		const body = new URLSearchParams({
-			code: code ?? '',
-			grant_type: 'authorization_code',
-			redirect_uri: 'http://localhost:5173',
-			client_id: pkceClientId,
-			code_verifier: verifier ?? ''
-		});
-		const response = await fetch(`${keycloak}/protocol/openid-connect/token`, {
-			method: 'POST',
-			body: body,
-			headers: new Headers()
-		});
-		const jwt = await response.json();
-		const accessToken = JSON.parse(atob(jwt.access_token.split('.')[1]));
-
-		// Save accessToken and refreshToken in cookies (expires in jwt.expires_in seconds)
-		const expires = new Date(Date.now() + jwt.expires_in * 1000).toUTCString();
-		document.cookie = `userAccessToken=${jwt.access_token}; expires=${expires}; path=/; secure; samesite=strict`;
-		if (jwt.refresh_token) {
-			// Set refresh token cookie with a longer expiry if available (e.g., 30 days)
-			const refreshExpires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
-			document.cookie = `userRefreshToken=${jwt.refresh_token}; expires=${refreshExpires}; path=/; secure; samesite=strict`;
-		}
-
-		// save id token in cookies
-		document.cookie = `userIdToken=${jwt.id_token}; expires=${expires}; path=/; secure; samesite=strict`;
-
-		return {
-			accessToken: jwt.access_token,
-			idToken: jwt.id_token,
-			expiresIn: jwt.expires_in,
-			refreshToken: jwt.refresh_token,
-			accessTokenPayload: accessToken
-		};
-	}
-
-	async function logoutUser() {
-		// const { idToken } = await getAccessToken();
+	
+	 async function logoutUser() {
 		const cookies = document.cookie.split('; ');
 		const idTokenCookie = cookies.find((cookie) => cookie.startsWith('userIdToken='));
 		const idToken = idTokenCookie ? idTokenCookie.split('=')[1] : '';
@@ -159,7 +86,7 @@
 			return;
 		}
 
-		const redirectUri = 'http://localhost:5173';
+		const redirectUri = 'http://localhost:5173/logout';
 		// userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
 	}
@@ -167,8 +94,6 @@
 	function getAccountUrl() {
 		return `${keycloak}/account/#/`;
 	}
-
-	// const authUrl = `http://auth.openfoodfacts.localhost:5600/realms/open-products-facts/protocol/openid-connect/auth?client_id=${clientId}&redirect_uri=${redirect_uri}&state=de8df7a8-a591-4f38-908d-d7340ce7e04e&response_mode=query&response_type=code&scope=openid&nonce=20bf70cc-6d3a-48df-ab62-6dd053cfa582&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 </script>
@@ -242,7 +167,7 @@
 				{:else}
 					<!-- svelte-ignore a11y_missing_attribute -->
 					<a class="btn btn-outline link">
-						<button onclick={pkceLogin}> Login </button>
+						<button type="button" onclick={() => goto('/login')}> Login </button>
 					</a>
 				{/if}
 			</div>
