@@ -14,9 +14,9 @@
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
 	import {
+	accountUrl,
 		getAccessToken,
 		keycloak,
-		pkceClientId,
 		saveAuthTokens
 	} from '$lib/stores/pkceLoginStore';
 
@@ -85,27 +85,6 @@
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
 
-	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	async function logoutUser() {
-		const cookies = document.cookie.split('; ');
-		const idTokenCookie = cookies.find((cookie) => cookie.startsWith('userIdToken='));
-		const idToken = idTokenCookie ? idTokenCookie.split('=')[1] : '';
-		if (!idToken) {
-			console.error('No ID token found in cookies. Cannot log out.');
-			return;
-		}
-
-		const redirectUri = 'http://localhost:5173/logout';
-		// userLoginState.set(false); // Set user login state to false
-		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
-	}
-
-	function getAccountUrl() {
-		return `${keycloak}/account/#/`;
-	}
-
-	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 </script>
 
 <svelte:head>
@@ -172,12 +151,12 @@
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
 				{#if $userLoginState}
-					<a class="btn btn-outline link" href={getAccountUrl()}>Account</a>
-					<button class="btn btn-outline link logout-btn" onclick={logoutUser}>Log out</button>
+					<a class="btn btn-outline link" href={accountUrl}>Account</a>
+					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
 					<!-- svelte-ignore a11y_missing_attribute -->
-					<a class="btn btn-outline link">
-						<button type="button" onclick={() => goto('/login')}> Login </button>
+					<a class="btn btn-outline link" href="/login">
+						 Login
 					</a>
 				{/if}
 			</div>
@@ -274,6 +253,18 @@
 			<a class="btn btn-outline link" href="#">
 				{$_('prices_link')}
 			</a>
+			{#if $userLoginState}
+				<a class="btn btn-outline link" href={accountUrl}>
+					{$_('account_link')}
+				</a>
+				<a class="btn btn-outline link" href='/logout'>
+					{$_('logout_link')}
+				</a>
+			{:else}
+				<a class="btn btn-outline link" href="/login">
+					{$_('login_link')}
+				</a>
+			{/if}
 			<a
 				class="btn btn-outline link"
 				href={GITHUB_REPO_URL}

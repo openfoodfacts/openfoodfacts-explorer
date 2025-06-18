@@ -2,8 +2,6 @@
 	import { goto } from '$app/navigation';
 	import {
 		getAccessToken,
-		keycloak,
-		pkceClientId,
 		saveAuthTokens
 	} from '$lib/stores/pkceLoginStore';
 	import { onMount } from 'svelte';
