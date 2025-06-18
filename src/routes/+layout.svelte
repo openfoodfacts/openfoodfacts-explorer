@@ -13,7 +13,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { accountUrl, getAccessToken, keycloak, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { accountUrl, getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -147,7 +147,6 @@
 					<a class="btn btn-outline link" href={accountUrl}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
-					<!-- svelte-ignore a11y_missing_attribute -->
 					<a class="btn btn-outline link" href="/login"> Login </a>
 				{/if}
 			</div>

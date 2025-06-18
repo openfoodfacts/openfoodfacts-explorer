@@ -1,7 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { userLoginState } from '$lib/stores/userStore';
 	import Card from '$lib/ui/Card.svelte';
 	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
 	import { OFF_EXP_BASE_URL } from '$lib/const';
@@ -21,7 +19,6 @@
 
 		const redirectUri = `${OFF_EXP_BASE_URL}/logout_callback`;
 
-		// userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
 	}
 </script>
