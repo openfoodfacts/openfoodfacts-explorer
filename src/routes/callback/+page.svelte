@@ -40,7 +40,7 @@
 		// save id token in cookies
 		document.cookie = `userIdToken=${jwt.id_token}; expires=${expires}; path=/; secure; samesite=strict`;
 
-        userLoginState.set(true);
+		userLoginState.set(true);
 
 		goto('/');
 	}
