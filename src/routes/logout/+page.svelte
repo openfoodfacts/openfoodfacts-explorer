@@ -20,7 +20,7 @@
 		}
 
 		const redirectUri = `${OFF_EXP_BASE_URL}/logout_callback`;
-		
+
 		// userLoginState.set(false); // Set user login state to false
 		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
 	}
