@@ -17,8 +17,9 @@
 		goto('/');
 	});
 </script>
+
 <Card>
-    <div class="flex justify-center items-center w-full h-full">
-        <p>Logging you out. Please wait..</p>
-    </div>
+	<div class="flex h-full w-full items-center justify-center">
+		<p>Logging you out. Please wait..</p>
+	</div>
 </Card>

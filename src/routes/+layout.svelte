@@ -13,7 +13,12 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { getAccessToken, keycloak, pkceClientId, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import {
+		getAccessToken,
+		keycloak,
+		pkceClientId,
+		saveAuthTokens
+	} from '$lib/stores/pkceLoginStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -52,14 +57,13 @@
 					console.log('Access Token using refresh token:', jwt);
 
 					saveAuthTokens(jwt);
-            		userLoginState.set(true);
+					userLoginState.set(true);
 					console.log('User login state: true');
 				})
 				.catch((error) => {
 					console.error('Error getting access token using refresh token:', error);
 					userLoginState.set(false);
 				});
-
 		} else {
 			userLoginState.set(false);
 			console.log('User login state: false');
