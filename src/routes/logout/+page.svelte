@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { userLoginState } from '$lib/stores/userStore';
+	import Card from '$lib/ui/Card.svelte';
 
 	onMount(() => {
 		// delete all the cookies
@@ -16,3 +17,8 @@
 		goto('/');
 	});
 </script>
+<Card>
+    <div class="flex justify-center items-center w-full h-full">
+        <p>Logging you out. Please wait..</p>
+    </div>
+</Card>

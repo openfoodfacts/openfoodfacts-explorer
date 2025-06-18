@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
+	import Card from '$lib/ui/Card.svelte';
 
 	onMount(() => {
 		pkceLogin();
@@ -36,3 +37,9 @@
 		window.location.href = url;
 	}
 </script>
+
+<Card>
+	<div class="flex justify-center items-center w-full h-full">
+	<p>Redirecting to Login Page. Please wait..</p>
+    </div>
+</Card>

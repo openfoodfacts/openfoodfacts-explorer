@@ -13,7 +13,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
+	import { getAccessToken, keycloak, pkceClientId, saveAuthTokens } from '$lib/stores/pkceLoginStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -36,28 +36,34 @@
 		// only inject the script on the client side
 		injectSpeedInsights();
 
-		// checking
-		// const urlParams = new URLSearchParams(window.location.search);
-		// if (urlParams.get('state') !== null && urlParams.get('code') != null) {
-		// 	getAccessToken()
-		// 		.then((token) => {
-		// 			console.log('Access Token:', token.accessToken);
-		// 			userLoginState.set(true);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.error('Error getting access token:', error);
-		// 		});
-		// }
-
 		// if the cookie userAccessToken is set, set the userLoginState to true
 		const cookies = document.cookie.split('; ');
 		const userAccessToken = cookies.find((cookie) => cookie.startsWith('userAccessToken='));
-		if (userAccessToken) {
+		const userRefreshToken = cookies.find((cookie) => cookie.startsWith('userRefreshToken='));
+
+		if (typeof userAccessToken === 'string' && userAccessToken) {
+			// valid access token found
 			userLoginState.set(true);
+		} else if (typeof userRefreshToken === 'string' && userRefreshToken) {
+			// since access token is not found and refresh token is found, we can assume the user is logged in
+			// but we need to refresh the access token
+			getAccessToken(true)
+				.then((jwt) => {
+					console.log('Access Token using refresh token:', jwt);
+
+					saveAuthTokens(jwt);
+            		userLoginState.set(true);
+					console.log('User login state: true');
+				})
+				.catch((error) => {
+					console.error('Error getting access token using refresh token:', error);
+					userLoginState.set(false);
+				});
+
 		} else {
 			userLoginState.set(false);
+			console.log('User login state: false');
 		}
-		console.log('User login state:', $userLoginState);
 	});
 
 	function updateSearchQuery(url: URL) {
