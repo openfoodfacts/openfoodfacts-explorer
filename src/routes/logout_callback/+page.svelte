@@ -1,10 +1,10 @@
 <script>
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import Card from '$lib/ui/Card.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-    
-    onMount(() => {
+
+	onMount(() => {
 		// delete all the cookies
 		document.cookie.split(';').forEach((cookie) => {
 			document.cookie = cookie

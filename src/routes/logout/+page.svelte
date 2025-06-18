@@ -17,10 +17,10 @@
 		// redirect to the home page
 		// goto('/');
 
-        logoutUser();
+		logoutUser();
 	});
 
-    async function logoutUser() {
+	async function logoutUser() {
 		const cookies = document.cookie.split('; ');
 		const idTokenCookie = cookies.find((cookie) => cookie.startsWith('userIdToken='));
 		const idToken = idTokenCookie ? idTokenCookie.split('=')[1] : '';

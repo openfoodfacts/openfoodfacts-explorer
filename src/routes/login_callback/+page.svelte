@@ -1,9 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import {
-		getAccessToken,
-		saveAuthTokens
-	} from '$lib/stores/pkceLoginStore';
+	import { getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
 	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
