@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { keycloak, pkceClientId } from "$lib/stores/pkceLoginStore";
+	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
 
 	onMount(() => {
 		pkceLogin();

@@ -6,7 +6,9 @@
 	onMount(() => {
 		// delete all the cookies
 		document.cookie.split(';').forEach((cookie) => {
-			document.cookie = cookie.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/;secure;samesite=strict');
+			document.cookie = cookie
+				.replace(/^ +/, '')
+				.replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/;secure;samesite=strict');
 		});
 		// set the userLoginState to false
 		userLoginState.set(false);
