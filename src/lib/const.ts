@@ -1,3 +1,5 @@
+import { dev } from '$app/environment';
+
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
@@ -17,3 +19,15 @@ export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/product
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
+
+// Auth/PKCE constants (hardcoded, not from env)
+export const AUTH_BASE_URL_PROD = 'https://auth.openfoodfacts.org';
+export const AUTH_BASE_URL_DEV = 'http://auth.openfoodfacts.localhost:5600';
+export const AUTH_PKCE_ID_DEV = 'OFF_EXP_DEV';
+export const AUTH_PKCE_ID_PROD = 'OFF_EXP_PROD';
+export const OFF_EXP_BASE_URL_PROD = 'https://openfoodfacts-explorer.vercel.app';
+export const OFF_EXP_BASE_URL_DEV = 'http://localhost:5173';
+
+export const AUTH_BASE_URL = dev ? AUTH_BASE_URL_DEV : AUTH_BASE_URL_PROD;
+export const AUTH_PKCE_ID = dev ? AUTH_PKCE_ID_DEV : AUTH_PKCE_ID_PROD;
+export const OFF_EXP_BASE_URL = dev ? OFF_EXP_BASE_URL_DEV : OFF_EXP_BASE_URL_PROD;

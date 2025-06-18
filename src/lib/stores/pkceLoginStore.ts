@@ -1,5 +1,7 @@
-export const keycloak = 'http://auth.openfoodfacts.localhost:5600/realms/open-products-facts';
-export const pkceClientId = 'OFF_EXP_DEV';
+import { AUTH_BASE_URL, AUTH_PKCE_ID, OFF_EXP_BASE_URL } from '$lib/const';
+
+export const keycloak = `${AUTH_BASE_URL}/realms/open-products-facts`;
+export const pkceClientId = AUTH_PKCE_ID;
 export const accountUrl = `${keycloak}/account/#/`;
 
 export type AuthTokens = {
@@ -17,7 +19,7 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	const body = new URLSearchParams({
 		code: code ?? '',
 		grant_type: 'authorization_code',
-		redirect_uri: 'http://localhost:5173/login_callback', // changed to match login redirect_uri
+		redirect_uri: `${OFF_EXP_BASE_URL}/login_callback`,
 		client_id: pkceClientId,
 		code_verifier: verifier ?? ''
 	});

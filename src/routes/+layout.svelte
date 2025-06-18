@@ -61,7 +61,6 @@
 				});
 		} else {
 			userLoginState.set(false);
-			console.log('User login state: false');
 		}
 	});
 
