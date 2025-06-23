@@ -3,16 +3,26 @@
 	export let src: string = '';
 	export let title: string = '';
 
+	let iframeEl: HTMLIFrameElement | null = null;
+	let frameHeight = '';
+
 	onMount(() => {
 		window.addEventListener('message', function (event) {
-			const iframe = document.getElementById('static-page-iframe');
-			if (event.data.frameHeight && iframe) {
+			if (event.data.frameHeight) {
 				console.debug('Received frameHeight:', event.data.frameHeight);
-				iframe.style.height = event.data.frameHeight + 'px';
+				frameHeight = event.data.frameHeight + 'px';
 			}
 		});
 	});
 </script>
 
-<iframe id="static-page-iframe" {src} class="w-full border-0" {title} scrolling="no" frameborder="0"
+<iframe
+	bind:this={iframeEl}
+	id="static-page-iframe"
+	{src}
+	class="w-full border-0"
+	{title}
+	scrolling="no"
+	frameborder="0"
+	style="height: {frameHeight};"
 ></iframe>
