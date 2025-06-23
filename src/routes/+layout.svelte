@@ -11,6 +11,7 @@
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
+	import * as matomo from '$lib/matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -19,8 +20,11 @@
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
 
-		const matomo = await import('$lib/matomo');
 		matomo.initMatomo();
+	});
+
+	$effect(() => {
+		if (page.url) matomo.trackPageView();
 	});
 
 	// Initialize i18n

@@ -1,9 +1,5 @@
-const _paq = (window._paq = window._paq || []);
-/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-_paq.push(['trackPageView']);
-_paq.push(['enableLinkTracking']);
-
-function initializeMatomo() {
+export function initMatomo() {
+	const _paq = (window._paq = window._paq || []);
 	const url = 'https://analytics.openfoodfacts.org/';
 	_paq.push(['setTrackerUrl', url + 'matomo.php']);
 	_paq.push(['setSiteId', '17']);
@@ -21,4 +17,9 @@ function initializeMatomo() {
 	}
 }
 
-export { initializeMatomo as initMatomo };
+export function trackPageView() {
+	const _paq = (window._paq = window._paq || []);
+	/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+	_paq.push(['trackPageView']);
+	_paq.push(['enableLinkTracking']);
+}
