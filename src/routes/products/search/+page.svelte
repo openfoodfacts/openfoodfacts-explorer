@@ -5,6 +5,7 @@
 	import type { PageData } from './$types';
 	import Pagination from '$lib/Pagination.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import Metadata from '$lib/Metadata.svelte';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -18,9 +19,10 @@
 	let { search } = $derived(data);
 </script>
 
-<svelte:head>
-	<title>{$_('product.search.title')} - {data.query} - Open Food Facts Explorer</title>
-</svelte:head>
+<Metadata
+	title={$_('search.title', { values: { query: data.query } })}
+	description={$_('search.description', { values: { query: data.query } })}
+/>
 
 {#await search}
 	<div
@@ -56,8 +58,8 @@
 		<div
 			class="flex w-full grid-cols-1 flex-col items-center gap-4 py-50 md:h-auto md:pt-20 md:pb-30 lg:gap-2"
 		>
-			<p class="mb-4 text-3xl font-bold">{$_('product.search.product_not_found')}</p>
-			<p>{$_('product.search.product_not_found_desc')}</p>
+			<p class="mb-4 text-3xl font-bold">{$_('search.product_not_found')}</p>
+			<p>{$_('search.product_not_found_desc')}</p>
 		</div>
 	{/if}
 {/await}
