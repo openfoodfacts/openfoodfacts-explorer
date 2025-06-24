@@ -43,8 +43,8 @@ importers:
         specifier: 2.0.0-alpha.7
         version: 2.0.0-alpha.7
       '@sinnwerkstatt/sveltekit-matomo':
-        specifier: ^0.0.8
-        version: 0.0.8(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
+        specifier: github:VaiTon/sveltekit-matomo
+        version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7(svelte@5.34.3)
       '@sveltejs/adapter-vercel':
         specifier: ^5.7.2
         version: 5.7.2(@sveltejs/kit@2.21.5(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(rollup@4.40.2)
@@ -808,8 +808,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sinnwerkstatt/sveltekit-matomo@0.0.8':
-    resolution: {integrity: sha512-7yFDiEE8zCtjS9Swlrfpu3zZK7sg+dkcgurEZKA4EoiEORf584s5yHRPPAF/GN0voA/gokT6A9oe2uUE1MoEXA==}
+  '@sinnwerkstatt/sveltekit-matomo@https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7':
+    resolution: {tarball: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7}
+    version: 0.0.7
+    peerDependencies:
+      svelte: ^5.0.0
 
   '@sveltejs/acorn-typescript@1.0.5':
     resolution: {integrity: sha512-IwQk4yfwLdibDlrXVE04jTZYlLnwsTT2PIOQQGNLWfjavGifnk1JD1LcZjZaBTRcxZu2FfPfNLOE04DSu9lqtQ==}
@@ -2972,13 +2975,9 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.40.2':
     optional: true
 
-  '@sinnwerkstatt/sveltekit-matomo@0.0.8(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))':
+  '@sinnwerkstatt/sveltekit-matomo@https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7(svelte@5.34.3)':
     dependencies:
-      '@sveltejs/kit': 2.21.5(@sveltejs/vite-plugin-svelte@5.1.0(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)))(svelte@5.34.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1))
       svelte: 5.34.3
-    transitivePeerDependencies:
-      - '@sveltejs/vite-plugin-svelte'
-      - vite
 
   '@sveltejs/acorn-typescript@1.0.5(acorn@8.15.0)':
     dependencies:

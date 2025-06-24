@@ -4,9 +4,16 @@
 	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
 	import Pagination from '$lib/Pagination.svelte';
+	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
+
+	$effect(() => {
+		data.search.then((result) => {
+			if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
+		});
+	});
 
 	let { search } = $derived(data);
 </script>

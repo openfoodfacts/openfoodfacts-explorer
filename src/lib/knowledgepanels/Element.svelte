@@ -8,6 +8,7 @@
 	import PanelGroup from './PanelGroup.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 	import Action from './Action.svelte';
+	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
@@ -52,6 +53,7 @@
 			{#if panel !== null}
 				<Panel {panel} {allPanels} {id} {productCode} />
 			{:else}
+				{$tracker?.trackEvent('Panel Not Found', 'Panel ID', id)}
 				<div class="alert alert-warning">Panel not found: {id}</div>
 			{/if}
 		{/if}

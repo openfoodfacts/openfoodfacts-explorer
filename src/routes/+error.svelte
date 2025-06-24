@@ -4,6 +4,7 @@
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
+	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
 	let errorMessage = $derived(page.error?.message || '');
 	let errorDetails = $derived(page.error?.errors || []);
@@ -13,6 +14,9 @@
 		for (const err of errorDetails) {
 			console.error('Error detail:', err);
 		}
+
+		// track the error event with Matomo
+		$tracker?.trackEvent('Error', 'Error Occurred', errorMessage, errorDetails.length);
 	});
 </script>
 
