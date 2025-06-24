@@ -11,6 +11,10 @@
 	let { search } = $derived(data);
 </script>
 
+<svelte:head>
+	<title>{$_('product.search.title')} - {data.query} - Open Food Facts Explorer</title>
+</svelte:head>
+
 {#await search}
 	<div
 		class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"

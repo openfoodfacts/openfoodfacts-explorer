@@ -68,5 +68,5 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	) //
 		.then((result) => result.data);
 
-	return { search: result };
+	return { query, search: result };
 };
