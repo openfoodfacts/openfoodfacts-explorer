@@ -2,8 +2,6 @@ import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
-export const ssr = false;
-
 const SEARCH_BASE_URL =
 	import.meta.env.VITE_SEARCH_BASE_URL || new URL(import.meta.url).origin + '/api/search';
 
