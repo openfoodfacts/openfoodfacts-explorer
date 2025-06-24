@@ -11,7 +11,7 @@
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
-	import * as matomo from '$lib/matomo';
+	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -19,12 +19,6 @@
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
-
-		matomo.initMatomo();
-	});
-
-	$effect(() => {
-		if (page.url) matomo.trackPageView();
 	});
 
 	// Initialize i18n
@@ -66,6 +60,8 @@
 	<meta name="description" content="Open Food Facts Explorer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
+
+<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->

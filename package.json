@@ -36,6 +36,7 @@
 		"@iconify/tailwind": "^1.2.0",
 		"@iconify/tailwind4": "^1.0.6",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.7",
+		"@sinnwerkstatt/sveltekit-matomo": "^0.0.8",
 		"@sveltejs/adapter-vercel": "^5.7.2",
 		"@sveltejs/kit": "^2.21.5",
 		"@sveltejs/vite-plugin-svelte": "^5.1.0",
