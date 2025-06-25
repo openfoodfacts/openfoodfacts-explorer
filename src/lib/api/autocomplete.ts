@@ -6,21 +6,21 @@ const SEARCH_BASE_URL =
 const api = new SearchApi(fetch, { baseUrl: SEARCH_BASE_URL });
 
 export async function autocomplete(query: AutocompleteQuery) {
-    if (query.length < 3) {
-        return { suggestions: [] };
-    }
+	if (query.length < 3) {
+		return { suggestions: [] };
+	}
 
-    const response = await api.autocomplete(query);
-    console.log('Autocomplete response:', response);
-    return response.data;
+	const response = await api.autocomplete(query);
+	console.log('Autocomplete response:', response);
+	return response.data;
 }
 
 export type AutocompleteOption = {
-    id: string;
-    text: string;
-    taxonomy_name: string;
+	id: string;
+	text: string;
+	taxonomy_name: string;
 };
 
 export type AutocompleteResponse = {
-    options: AutocompleteOption[];
+	options: AutocompleteOption[];
 };

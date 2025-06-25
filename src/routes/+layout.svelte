@@ -12,7 +12,11 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
-	import { autocomplete, type AutocompleteOption, type AutocompleteResponse } from '$lib/api/autocomplete';
+	import {
+		autocomplete,
+		type AutocompleteOption,
+		type AutocompleteResponse
+	} from '$lib/api/autocomplete';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -77,7 +81,7 @@
 				fuzziness: null,
 				index_id: null
 			};
-			const response = await autocomplete(autocompleteQuery) as AutocompleteResponse;
+			const response = (await autocomplete(autocompleteQuery)) as AutocompleteResponse;
 			if (response && Array.isArray(response.options)) {
 				autocompleteList = response.options;
 			} else {
@@ -131,11 +135,13 @@
 									showAutocomplete = searchQuery.trim().length > 0;
 									fetchAutocomplete(searchQuery);
 								}}
-								onblur={() => setTimeout(() => showAutocomplete = false, 100)}
+								onblur={() => setTimeout(() => (showAutocomplete = false), 100)}
 							/>
 							{console.log('autocomplete', showAutocomplete)}
 							{#if showAutocomplete && autocompleteList.length > 0}
-								<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow-sm mt-1 min-w-0">
+								<ul
+									class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
+								>
 									{#each autocompleteList as item}
 										<li><a>{item.text}</a></li>
 									{/each}
