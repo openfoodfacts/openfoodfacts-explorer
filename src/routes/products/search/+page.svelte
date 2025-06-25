@@ -6,6 +6,7 @@
 	import Pagination from '$lib/Pagination.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import Metadata from '$lib/Metadata.svelte';
+	import { goto } from '$app/navigation';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -17,12 +18,58 @@
 	});
 
 	let { search } = $derived(data);
+
+	const sortOptions = [
+		{ label: 'Most scanned products', value: '-unique_scans_n' },
+		{ label: 'Products with the best Eco-Score', value: 'ecoscore_grade' },
+		{ label: 'Products with the best Nutri-Score', value: 'nutriscore_grade' },
+		{ label: 'Recently added products', value: '-created_t' },
+		{ label: 'Recently modified products', value: '-last_modified_t' },
+	];
+
+	let selectedSort: string = $state("");
+	let selectedSortLabel: string = $state("");
+	let isSortDropdownOpen: boolean = $state(false);
+
+	function handleSortClick(value: string, label: string) {
+		selectedSort = value;
+		selectedSortLabel = label;
+		isSortDropdownOpen = false;
+		console.log(`Sorting by: ${value}`);
+		gotoProductsSearch();
+	}
+
+	function gotoProductsSearch() {
+		console.log('Going to products search with query:', data.query, 'and sort:', selectedSort);
+		goto('/products/search?q=' + encodeURIComponent(data.query) + '&sort_by=' + selectedSort);
+	}
 </script>
 
 <Metadata
 	title={$_('search.title', { values: { query: data.query } })}
 	description={$_('search.description', { values: { query: data.query } })}
 />
+
+<!-- Sort By Dropdown -->
+<div class="flex justify-end mb-4">
+  <div class="dropdown dropdown-end">
+	<button class="btn btn-outline btn-sm m-1 flex items-center gap-2" onclick={() => isSortDropdownOpen = !isSortDropdownOpen}>
+	  {selectedSortLabel || 'Sort by'}
+	  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+	</button>
+    {#if isSortDropdownOpen}
+    <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+      {#each sortOptions as { label, value }}
+		<li>
+		  <button class="w-full text-left" onclick={() => handleSortClick(value, label)}>
+			{label}
+		  </button>
+		</li>
+      {/each}
+    </ul>
+    {/if}
+  </div>
+</div>
 
 {#await search}
 	<div
