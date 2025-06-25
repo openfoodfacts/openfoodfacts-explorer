@@ -2,7 +2,7 @@ import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-
 
 export function getSearchBaseUrl(): string {
 	const origin = new URL(import.meta.url).origin;
-	const baseUrl = origin === "null" ? import.meta.env.VITE_OFF_EXP_BASE_URL : origin;
+	const baseUrl = origin === 'null' ? import.meta.env.VITE_OFF_EXP_BASE_URL : origin;
 	return baseUrl + '/api/search';
 }
 
