@@ -12,6 +12,7 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { autocomplete, type AutocompleteOption, type AutocompleteResponse } from '$lib/api/autocomplete';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -53,6 +54,41 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+
+	let autocompleteList: AutocompleteOption[] = $state([]);
+	let showAutocomplete = $state(false);
+	let autocompleteAbortController: AbortController | null = null;
+
+	async function fetchAutocomplete(query: string) {
+		if (!query.trim()) {
+			autocompleteList = [];
+			return;
+		}
+		if (autocompleteAbortController) {
+			autocompleteAbortController.abort();
+		}
+		autocompleteAbortController = new AbortController();
+		try {
+			const autocompleteQuery = {
+				q: query,
+				taxonomy_names: 'brand,category',
+				lang: 'en',
+				size: 5,
+				fuzziness: null,
+				index_id: null
+			};
+			const response = await autocomplete(autocompleteQuery) as AutocompleteResponse;
+			if (response && Array.isArray(response.options)) {
+				autocompleteList = response.options;
+			} else {
+				autocompleteList = [];
+			}
+		} catch (e) {
+			if (e instanceof Error && e.name !== 'AbortError') {
+				console.error('Autocomplete error', e);
+			}
+		}
+	}
 </script>
 
 <svelte:head>
@@ -76,7 +112,7 @@
 			<div class="navbar-center">
 				<div class="form-control">
 					<div>
-						<div class="join">
+						<div class="join dropdown dropdown-bottom dropdown-center">
 							<input
 								type="text"
 								bind:value={searchQuery}
@@ -87,7 +123,24 @@
 										gotoProductsSearch();
 									}
 								}}
+								oninput={() => {
+									showAutocomplete = searchQuery.trim().length > 0;
+									fetchAutocomplete(searchQuery);
+								}}
+								onfocus={() => {
+									showAutocomplete = searchQuery.trim().length > 0;
+									fetchAutocomplete(searchQuery);
+								}}
+								onblur={() => setTimeout(() => showAutocomplete = false, 100)}
 							/>
+							{console.log('autocomplete', showAutocomplete)}
+							{#if showAutocomplete && autocompleteList.length > 0}
+								<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow-sm mt-1 min-w-0">
+									{#each autocompleteList as item}
+										<li><a>{item.text}</a></li>
+									{/each}
+								</ul>
+							{/if}
 							<button
 								class="btn btn-square btn-secondary join-item px-10"
 								onclick={() => gotoProductsSearch()}
