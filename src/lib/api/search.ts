@@ -1,7 +1,7 @@
 import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export function getSearchBaseUrl(): string {
-	return import.meta.env.VITE_SEARCH_BASE_URL || new URL(import.meta.url).origin + '/api/search';
+	return import.meta.env.VITE_SEARCH_BASE_URL || '/api/search';
 }
 
 const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
