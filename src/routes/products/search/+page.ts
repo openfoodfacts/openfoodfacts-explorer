@@ -61,7 +61,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 			q: query,
 			page: page,
 			page_size: pageSize,
-			sort_by: sort_by,
+			sort_by: sort_by
 		}) as SearchResult
 	) //
 		.then((result) => result.data);
