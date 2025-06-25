@@ -16,7 +16,7 @@
 		autocomplete,
 		type AutocompleteOption,
 		type AutocompleteResponse
-	} from '$lib/api/autocomplete';
+	} from '$lib/api/search';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
