@@ -141,7 +141,7 @@
 								<ul
 									class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
 								>
-									{#each autocompleteList as item}
+									{#each autocompleteList as item (item.id)}
 										<li>
 											<button
 												onmousedown={() => {
@@ -261,7 +261,7 @@
 						<ul
 							class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
 						>
-							{#each autocompleteList as item}
+							{#each autocompleteList as item (item.id)}
 								<li>
 									<button
 										onmousedown={() => {
