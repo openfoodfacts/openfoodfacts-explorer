@@ -142,7 +142,15 @@
 									class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
 								>
 									{#each autocompleteList as item}
-										<li><button onmousedown={() => { searchQuery = item.text; showAutocomplete = false; gotoProductsSearch(); }}>{item.text}</button></li>
+										<li>
+											<button
+												onmousedown={() => {
+													searchQuery = item.text;
+													showAutocomplete = false;
+													gotoProductsSearch();
+												}}>{item.text}</button
+											>
+										</li>
 									{/each}
 								</ul>
 							{/if}
