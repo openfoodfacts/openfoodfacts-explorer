@@ -1,17 +1,21 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+
 	import Logo from '$lib/ui/Logo.svelte';
+	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+
+	import { initI18n, _, isLoading } from '$lib/i18n';
+	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
-	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import Navbar from '$lib/ui/Navbar.svelte';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -56,6 +60,8 @@
 	<meta name="description" content="Open Food Facts Explorer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
+
+<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->

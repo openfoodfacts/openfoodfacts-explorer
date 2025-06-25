@@ -14,11 +14,16 @@ const config = {
 		adapter: adapter(),
 		csp: {
 			directives: {
-				'script-src': ['self', 'https://va.vercel-scripts.com/'],
+				'script-src': [
+					'self',
+					'https://va.vercel-scripts.com/',
+					'https://analytics.openfoodfacts.org/matomo.js'
+				],
 				'img-src': [
 					'self',
 					'data:',
 					'https://*.openfoodfacts.org/',
+
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',
 					'https://fdroid.gitlab.io'

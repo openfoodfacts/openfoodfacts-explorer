@@ -15,4 +15,10 @@ declare global {
 	}
 }
 
+declare global {
+	interface Window {
+		_paq: string[][];
+	}
+}
+
 export {};
