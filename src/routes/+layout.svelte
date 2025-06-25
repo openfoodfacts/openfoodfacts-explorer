@@ -148,8 +148,15 @@
 													searchQuery = item.text;
 													showAutocomplete = false;
 													gotoProductsSearch();
-												}}>{item.text}</button
-											>
+												}}>
+												<span class='flex flex-col gap-1'>
+													<span>
+													{item.text}
+												</span>
+												<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
+												</span>
+												
+											</button>
 										</li>
 									{/each}
 								</ul>
