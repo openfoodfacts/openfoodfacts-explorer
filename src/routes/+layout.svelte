@@ -148,14 +148,14 @@
 													searchQuery = item.text;
 													showAutocomplete = false;
 													gotoProductsSearch();
-												}}>
-												<span class='flex flex-col gap-1'>
+												}}
+											>
+												<span class="flex flex-col gap-1">
 													<span>
-													{item.text}
+														{item.text}
+													</span>
+													<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
 												</span>
-												<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
-												</span>
-												
 											</button>
 										</li>
 									{/each}
@@ -233,22 +233,56 @@
 				</button>
 			</div>
 		</div>
+
 		{#if searchActive}
-			<div class="-mt-2 flex items-center gap-1 sm:gap-2">
-				<div class="join w-full">
+			<div class="flex justify-center">
+				<div class="join dropdown dropdown-bottom w-96">
 					<input
 						type="text"
 						bind:value={searchQuery}
-						class="input join-item input-bordered w-full"
+						class="input join-item input-bordered"
 						placeholder={$_('search.placeholder')}
 						onkeydown={(e) => {
 							if (e.key === 'Enter' && searchQuery.trim() !== '') {
 								gotoProductsSearch();
 							}
 						}}
+						oninput={() => {
+							showAutocomplete = searchQuery.trim().length > 0;
+							fetchAutocomplete(searchQuery);
+						}}
+						onfocus={() => {
+							showAutocomplete = searchQuery.trim().length > 0;
+							fetchAutocomplete(searchQuery);
+						}}
+						onblur={() => setTimeout(() => (showAutocomplete = false), 100)}
 					/>
+					{#if showAutocomplete && autocompleteList.length > 0}
+						<ul
+							class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
+						>
+							{#each autocompleteList as item}
+								<li>
+									<button
+										onmousedown={() => {
+											searchQuery = item.text;
+											showAutocomplete = false;
+											gotoProductsSearch();
+										}}
+									>
+										<span class="flex flex-col gap-1">
+											<span>
+												{item.text}
+											</span>
+											<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
+										</span>
+									</button>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 					<button
-						class="btn btn-square btn-secondary join-item"
+						class="btn btn-square btn-secondary join-item px-10"
 						onclick={() => gotoProductsSearch()}
 						disabled={searchQuery == null || searchQuery.trim() === ''}
 					>
@@ -256,7 +290,7 @@
 					</button>
 				</div>
 				<a
-					class="btn btn-square btn-secondary text-lg"
+					class="btn btn-square btn-secondary mx-1 text-lg"
 					href="/qr"
 					title={$_('search.scan')}
 					aria-label={$_('search.scan')}
