@@ -12,11 +12,7 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
-	import {
-		autocomplete,
-		type AutocompleteOption,
-		type AutocompleteResponse
-	} from '$lib/api/search';
+	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -60,10 +56,12 @@
 	let accordionOpen = $state(false);
 
 	let autocompleteList: AutocompleteOption[] = $state([]);
+
+	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
 	async function fetchAutocomplete(query: string) {
-		if (!query.trim()) {
+		if (!query.trim() || query.length < 3) {
 			autocompleteList = [];
 			return;
 		}
@@ -80,7 +78,7 @@
 				fuzziness: null,
 				index_id: null
 			};
-			const response = (await autocomplete(autocompleteQuery, fetch)) as AutocompleteResponse;
+			const response = await autocomplete(autocompleteQuery, fetch);
 			if (response && Array.isArray(response.options)) {
 				autocompleteList = response.options;
 			} else {
