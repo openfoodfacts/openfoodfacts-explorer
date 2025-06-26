@@ -7,6 +7,8 @@
 	export let onSearch: (query: string) => void;
 
 	let autocompleteList: AutocompleteOption[] = [];
+
+	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
 	async function fetchAutocomplete(query: string) {
