@@ -1,7 +1,13 @@
 import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export function getSearchBaseUrl() {
-	return import.meta.env.VITE_SEARCH_BASE_URL || '/api/search';
+	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
+		throw new Error(
+			'VITE_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
+		);
+	}
+
+	return import.meta.env.VITE_SEARCH_BASE_URL;
 }
 
 export const autocomplete = async (
