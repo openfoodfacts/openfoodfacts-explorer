@@ -13,8 +13,6 @@ import { error } from '@sveltejs/kit';
 import { createFolksonomyApi } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
-export const ssr = false;
-
 import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const load: PageLoad = async ({ params, fetch }) => {
