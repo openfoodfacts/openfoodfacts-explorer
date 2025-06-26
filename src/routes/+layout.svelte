@@ -13,6 +13,7 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -54,6 +55,42 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+
+	let autocompleteList: AutocompleteOption[] = $state([]);
+
+	// used for aborting previously executing autocomplete requests
+	let autocompleteAbortController: AbortController | null = null;
+
+	async function fetchAutocomplete(query: string) {
+		if (!query.trim() || query.length < 3) {
+			autocompleteList = [];
+			return;
+		}
+		if (autocompleteAbortController) {
+			autocompleteAbortController.abort();
+		}
+		autocompleteAbortController = new AbortController();
+		try {
+			const autocompleteQuery = {
+				q: query,
+				taxonomy_names: 'brand,category',
+				lang: 'en',
+				size: 5,
+				fuzziness: null,
+				index_id: null
+			};
+			const response = await autocomplete(autocompleteQuery, fetch);
+			if (response && Array.isArray(response.options)) {
+				autocompleteList = response.options;
+			} else {
+				autocompleteList = [];
+			}
+		} catch (e) {
+			if (e instanceof Error && e.name !== 'AbortError') {
+				console.error('Autocomplete error', e);
+			}
+		}
+	}
 </script>
 
 <svelte:head>
