@@ -57,20 +57,10 @@
 			class="btn btn-outline btn-sm m-1 flex items-center gap-2"
 			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 		>
-			{selectedSortLabel || 'Sort by'}
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-4 w-4"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M19 9l-7 7-7-7"
-				/></svg
-			>
+			Sort by
+			{#if selectedSortLabel}
+				: <span class="font-semibold">{selectedSortLabel}</span>
+			{/if}
 		</button>
 		{#if isSortDropdownOpen}
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
