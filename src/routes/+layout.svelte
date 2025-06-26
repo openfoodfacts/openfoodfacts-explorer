@@ -60,7 +60,6 @@
 	let accordionOpen = $state(false);
 
 	let autocompleteList: AutocompleteOption[] = $state([]);
-	let showAutocomplete = $state(false);
 	let autocompleteAbortController: AbortController | null = null;
 
 	async function fetchAutocomplete(query: string) {
@@ -81,7 +80,7 @@
 				fuzziness: null,
 				index_id: null
 			};
-			const response = (await autocomplete(autocompleteQuery)) as AutocompleteResponse;
+			const response = (await autocomplete(autocompleteQuery, fetch)) as AutocompleteResponse;
 			if (response && Array.isArray(response.options)) {
 				autocompleteList = response.options;
 			} else {
@@ -128,16 +127,14 @@
 									}
 								}}
 								oninput={() => {
-									showAutocomplete = searchQuery.trim().length > 0;
 									fetchAutocomplete(searchQuery);
 								}}
 								onfocus={() => {
-									showAutocomplete = searchQuery.trim().length > 0;
 									fetchAutocomplete(searchQuery);
 								}}
-								onblur={() => setTimeout(() => (showAutocomplete = false), 100)}
+								onblur={() => setTimeout(() => {}, 100)}
 							/>
-							{#if showAutocomplete && autocompleteList.length > 0}
+							{#if autocompleteList.length >= 3}
 								<ul
 									class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
 								>
@@ -146,7 +143,6 @@
 											<button
 												onmousedown={() => {
 													searchQuery = item.text;
-													showAutocomplete = false;
 													gotoProductsSearch();
 												}}
 											>
@@ -248,16 +244,14 @@
 							}
 						}}
 						oninput={() => {
-							showAutocomplete = searchQuery.trim().length > 0;
 							fetchAutocomplete(searchQuery);
 						}}
 						onfocus={() => {
-							showAutocomplete = searchQuery.trim().length > 0;
 							fetchAutocomplete(searchQuery);
 						}}
-						onblur={() => setTimeout(() => (showAutocomplete = false), 100)}
+						onblur={() => setTimeout(() => {}, 100)}
 					/>
-					{#if showAutocomplete && autocompleteList.length > 0}
+					{#if autocompleteList.length >= 3}
 						<ul
 							class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
 						>
@@ -266,7 +260,6 @@
 									<button
 										onmousedown={() => {
 											searchQuery = item.text;
-											showAutocomplete = false;
 											gotoProductsSearch();
 										}}
 									>

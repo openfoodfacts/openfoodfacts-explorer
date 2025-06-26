@@ -1,18 +1,16 @@
 import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-nodejs';
 
-export function getSearchBaseUrl(): string {
+export function getSearchBaseUrl() {
 	return import.meta.env.VITE_SEARCH_BASE_URL || '/api/search';
 }
 
-const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
 
-export async function autocomplete(query: AutocompleteQuery) {
+export const autocomplete = async (query: AutocompleteQuery, fetch: typeof window.fetch) => {
 	if (query.length < 3) {
 		return { suggestions: [] };
 	}
-
+	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
 	const response = await api.autocomplete(query);
-	console.log('Autocomplete response:', response);
 	return response.data;
 }
 
