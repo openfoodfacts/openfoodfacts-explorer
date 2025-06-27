@@ -131,7 +131,6 @@
 
 		{#if searchActive}
 			<div class="flex justify-center">
-				<!-- Remove slot usage, SearchBar now contains QR button internally -->
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 		{/if}

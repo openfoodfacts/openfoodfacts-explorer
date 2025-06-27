@@ -19,7 +19,7 @@
 	let autocompleteAbortController: AbortController | null = null;
 
 	async function fetchAutocomplete(query: string) {
-		if (!query.trim() || query.length < minQueryLength) {
+		if (query == null || query.trim().length < minQueryLength) {
 			autocompleteList = [];
 			return;
 		}
@@ -61,7 +61,7 @@
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (!autocompleteList.length) return;
+		if (autocompleteList.length == 0) return;
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			highlightedIndex =
