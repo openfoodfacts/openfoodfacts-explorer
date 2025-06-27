@@ -64,10 +64,16 @@
 		if (!autocompleteList.length) return;
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
-			highlightedIndex = highlightedIndex === null || highlightedIndex === autocompleteList.length - 1 ? 0 : highlightedIndex + 1;
+			highlightedIndex =
+				highlightedIndex === null || highlightedIndex === autocompleteList.length - 1
+					? 0
+					: highlightedIndex + 1;
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
-			highlightedIndex = highlightedIndex === null || highlightedIndex === 0 ? autocompleteList.length - 1 : highlightedIndex - 1;
+			highlightedIndex =
+				highlightedIndex === null || highlightedIndex === 0
+					? autocompleteList.length - 1
+					: highlightedIndex - 1;
 		} else if (e.key === 'Enter' && highlightedIndex !== null) {
 			e.preventDefault();
 			handleSelect(autocompleteList[highlightedIndex]);
@@ -87,12 +93,15 @@
 				class="input join-item input-bordered xl:w-full"
 				placeholder={$_('search.placeholder')}
 				onkeydown={handleKeyDown}
-				oninput={() => { fetchAutocomplete(searchQuery); highlightedIndex = null; }}
+				oninput={() => {
+					fetchAutocomplete(searchQuery);
+					highlightedIndex = null;
+				}}
 				onfocus={() => {
 					if (searchQuery.trim().length >= minQueryLength) {
 						fetchAutocomplete(searchQuery);
 					}
-				}} 
+				}}
 			/>
 			{#if autocompleteList.length > 0}
 				<ul
@@ -122,12 +131,12 @@
 			</button>
 		</div>
 		<a
-				href="/qr"
-				title={$_('search.scan')}
-				aria-label={$_('search.scan')}
-				class="btn btn-secondary join-item px-5 text-lg hidden md:inline-flex ms-2"
-			>
-				<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-			</a>
+			href="/qr"
+			title={$_('search.scan')}
+			aria-label={$_('search.scan')}
+			class="btn btn-secondary join-item ms-2 hidden px-5 text-lg md:inline-flex"
+		>
+			<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
+		</a>
 	</div>
 </div>
