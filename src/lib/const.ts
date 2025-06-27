@@ -17,3 +17,11 @@ export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/product
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
+
+export const SORT_OPTIONS = [
+	{ label: 'Most scanned products', value: '-unique_scans_n' },
+	{ label: 'Products with the best Eco-Score', value: 'ecoscore_grade' },
+	{ label: 'Products with the best Nutri-Score', value: 'nutriscore_grade' },
+	{ label: 'Recently added products', value: '-created_t' },
+	{ label: 'Recently modified products', value: '-last_modified_t' }
+];

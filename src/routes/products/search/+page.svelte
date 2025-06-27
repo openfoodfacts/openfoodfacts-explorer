@@ -7,6 +7,8 @@
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import Metadata from '$lib/Metadata.svelte';
 	import { goto } from '$app/navigation';
+	import { SORT_OPTIONS } from '$lib/const';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -19,29 +21,36 @@
 
 	let { search } = $derived(data);
 
-	const sortOptions = [
-		{ label: 'Most scanned products', value: '-unique_scans_n' },
-		{ label: 'Products with the best Eco-Score', value: 'ecoscore_grade' },
-		{ label: 'Products with the best Nutri-Score', value: 'nutriscore_grade' },
-		{ label: 'Recently added products', value: '-created_t' },
-		{ label: 'Recently modified products', value: '-last_modified_t' }
-	];
-
 	let selectedSort: string = $state('');
 	let selectedSortLabel: string = $state('');
 	let isSortDropdownOpen: boolean = $state(false);
+
+	// Set initial selectedSort and selectedSortLabel from URL
+	$effect(() => {
+		const url = new URL(page.url);
+		const sortValue = url.searchParams.get('sort_by');
+		selectedSort = sortValue ?? '';
+		const selected = SORT_OPTIONS.find((opt) => opt.value === sortValue);
+		selectedSortLabel = selected ? selected.label : '';
+	});
 
 	function handleSortClick(value: string, label: string) {
 		selectedSort = value;
 		selectedSortLabel = label;
 		isSortDropdownOpen = false;
-		console.log(`Sorting by: ${value}`);
 		gotoProductsSearch();
 	}
 
 	function gotoProductsSearch() {
-		console.log('Going to products search with query:', data.query, 'and sort:', selectedSort);
 		goto('/products/search?q=' + encodeURIComponent(data.query) + '&sort_by=' + selectedSort);
+	}
+
+	function handleSortOptionSelect(value: string) {
+		selectedSort = value;
+		const selected = SORT_OPTIONS.find((opt) => opt.value === value);
+		selectedSortLabel = selected ? selected.label : '';
+		isSortDropdownOpen = false;
+		gotoProductsSearch();
 	}
 </script>
 
@@ -51,20 +60,20 @@
 />
 
 <!-- Sort By Dropdown -->
-<div class="mb-4 flex justify-end">
-	<div class="dropdown dropdown-end">
+<div class="my-4 justify-end hidden lg:flex">
+	<div class="dropdown dropdown-center lg:w-60 md:w-50">
 		<button
-			class="btn btn-outline btn-sm m-1 flex items-center gap-2"
+			class="btn btn-outline btn-sm m-1 flex items-center gap-2 w-full justify-start text-xs lg:text-sm"
 			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 		>
 			Sort by
 			{#if selectedSortLabel}
-				: <span class="font-semibold">{selectedSortLabel}</span>
+				: <span class="font-semibold md:max-w-20 lg:max-w-30 truncate inline-block align-middle" title={selectedSortLabel}>{selectedSortLabel}</span>
 			{/if}
 		</button>
 		{#if isSortDropdownOpen}
-			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-				{#each sortOptions as { label, value }}
+			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
+				{#each SORT_OPTIONS as { label, value }}
 					<li>
 						<button class="w-full text-left" onclick={() => handleSortClick(value, label)}>
 							{label}
@@ -115,3 +124,11 @@
 		</div>
 	{/if}
 {/await}
+
+<!-- Sticky SORT & FILTER Footer -->
+<SearchOptionsFooter
+	isSortDropdownOpen={isSortDropdownOpen}
+	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
+	onSortOptionSelect={handleSortOptionSelect}
+	selectedSort={selectedSort}
+/>

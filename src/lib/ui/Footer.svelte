@@ -61,7 +61,7 @@
 </script>
 
 <div
-	class="bg-secondary text-secondary-content relative mt-10 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
+	class="bg-secondary text-secondary-content relative mt-2 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
 >
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">Stay Updated</h2>
