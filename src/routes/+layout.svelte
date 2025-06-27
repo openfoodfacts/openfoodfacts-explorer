@@ -13,7 +13,6 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
-	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
