@@ -55,42 +55,6 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
-
-	let autocompleteList: AutocompleteOption[] = $state([]);
-
-	// used for aborting previously executing autocomplete requests
-	let autocompleteAbortController: AbortController | null = null;
-
-	async function fetchAutocomplete(query: string) {
-		if (!query.trim() || query.length < 3) {
-			autocompleteList = [];
-			return;
-		}
-		if (autocompleteAbortController) {
-			autocompleteAbortController.abort();
-		}
-		autocompleteAbortController = new AbortController();
-		try {
-			const autocompleteQuery = {
-				q: query,
-				taxonomy_names: 'brand,category',
-				lang: 'en',
-				size: 5,
-				fuzziness: null,
-				index_id: null
-			};
-			const response = await autocomplete(autocompleteQuery, fetch);
-			if (response && Array.isArray(response.options)) {
-				autocompleteList = response.options;
-			} else {
-				autocompleteList = [];
-			}
-		} catch (e) {
-			if (e instanceof Error && e.name !== 'AbortError') {
-				console.error('Autocomplete error', e);
-			}
-		}
-	}
 </script>
 
 <svelte:head>
@@ -112,17 +76,7 @@
 				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
-				<SearchBar bind:searchQuery onSearch={gotoProductsSearch}>
-					<a
-						slot="qr"
-						class="btn btn-secondary ms-4 px-5 text-lg"
-						href="/qr"
-						title={$_('search.scan')}
-						aria-label={$_('search.scan')}
-					>
-						<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-					</a>
-				</SearchBar>
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
@@ -178,17 +132,8 @@
 
 		{#if searchActive}
 			<div class="flex justify-center">
-				<SearchBar bind:searchQuery onSearch={gotoProductsSearch}>
-					<a
-						slot="qr"
-						class="btn btn-square btn-secondary mx-1 text-lg"
-						href="/qr"
-						title={$_('search.scan')}
-						aria-label={$_('search.scan')}
-					>
-						<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-					</a>
-				</SearchBar>
+				<!-- Remove slot usage, SearchBar now contains QR button internally -->
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 		{/if}
 		<div
