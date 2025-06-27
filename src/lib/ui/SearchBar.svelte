@@ -64,16 +64,18 @@
 		if (autocompleteList.length == 0) return;
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
-			highlightedIndex =
-				highlightedIndex === null || highlightedIndex === autocompleteList.length - 1
-					? 0
-					: highlightedIndex + 1;
+			if (highlightedIndex === null || highlightedIndex === autocompleteList.length - 1) {
+				highlightedIndex = 0;
+			} else {
+				highlightedIndex = highlightedIndex + 1;
+			}
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
-			highlightedIndex =
-				highlightedIndex === null || highlightedIndex === 0
-					? autocompleteList.length - 1
-					: highlightedIndex - 1;
+			if (highlightedIndex === null || highlightedIndex === 0) {
+				highlightedIndex = autocompleteList.length - 1;
+			} else {
+				highlightedIndex = highlightedIndex - 1;
+			}
 		} else if (e.key === 'Enter' && highlightedIndex !== null) {
 			e.preventDefault();
 			handleSelect(autocompleteList[highlightedIndex]);
