@@ -1,22 +1,23 @@
 import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-nodejs';
 
-export function getSearchBaseUrl(): string {
-	const origin = new URL(import.meta.url).origin;
-	const baseUrl = origin === 'null' ? import.meta.env.VITE_OFF_EXP_BASE_URL : origin;
-	return baseUrl + '/api/search';
-}
-
-const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
-
-export async function autocomplete(query: AutocompleteQuery) {
-	if (query.length < 3) {
-		return { suggestions: [] };
+export function getSearchBaseUrl() {
+	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
+		throw new Error(
+			'VITE_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
+		);
 	}
 
-	const response = await api.autocomplete(query);
-	console.log('Autocomplete response:', response);
-	return response.data;
+	return import.meta.env.VITE_SEARCH_BASE_URL;
 }
+
+export const autocomplete = async (
+	query: AutocompleteQuery,
+	fetch: typeof window.fetch
+): Promise<AutocompleteResponse> => {
+	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
+	const response = await api.autocomplete(query);
+	return response.data as AutocompleteResponse;
+};
 
 export type AutocompleteOption = {
 	id: string;
