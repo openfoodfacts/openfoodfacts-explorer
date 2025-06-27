@@ -76,7 +76,7 @@
 		</button>
 		{#if isSortDropdownOpen}
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
-				{#each SORT_OPTIONS as { label, value }}
+				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
 						<button class="w-full text-left" onclick={() => handleSortClick(value, label)}>
 							{label}

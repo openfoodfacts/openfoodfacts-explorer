@@ -19,7 +19,7 @@
 			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border py-2 shadow-xl"
 		>
 			<div class="my-2 px-4 pb-2 text-sm font-bold tracking-wide text-gray-500">SORT BY</div>
-			{#each SORT_OPTIONS as option}
+			{#each SORT_OPTIONS as option (option.value)}
 				<button
 					class="hover:bg-base-200 flex w-full items-center gap-3 px-4 py-2 text-sm"
 					class:bg-base-200={selectedSort === option.value}
