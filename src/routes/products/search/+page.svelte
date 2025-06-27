@@ -60,15 +60,18 @@
 />
 
 <!-- Sort By Dropdown -->
-<div class="my-4 justify-end hidden lg:flex">
-	<div class="dropdown dropdown-center lg:w-60 md:w-50">
+<div class="my-4 hidden justify-end lg:flex">
+	<div class="dropdown dropdown-center md:w-50 lg:w-60">
 		<button
-			class="btn btn-outline btn-sm m-1 flex items-center gap-2 w-full justify-start text-xs lg:text-sm"
+			class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
 			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 		>
 			Sort by
 			{#if selectedSortLabel}
-				: <span class="font-semibold md:max-w-20 lg:max-w-30 truncate inline-block align-middle" title={selectedSortLabel}>{selectedSortLabel}</span>
+				: <span
+					class="inline-block truncate align-middle font-semibold md:max-w-20 lg:max-w-30"
+					title={selectedSortLabel}>{selectedSortLabel}</span
+				>
 			{/if}
 		</button>
 		{#if isSortDropdownOpen}
@@ -127,8 +130,8 @@
 
 <!-- Sticky SORT & FILTER Footer -->
 <SearchOptionsFooter
-	isSortDropdownOpen={isSortDropdownOpen}
+	{isSortDropdownOpen}
 	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 	onSortOptionSelect={handleSortOptionSelect}
-	selectedSort={selectedSort}
+	{selectedSort}
 />
