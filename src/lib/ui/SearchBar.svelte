@@ -2,11 +2,17 @@
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _ } from '$lib/i18n';
 
-	export let searchQuery: string = '';
-	export let minAutocompleteLength: number = 3;
-	export let onSearch: (query: string) => void;
+	let {
+		searchQuery = $bindable(''),
+		minAutocompleteLength = 3,
+		onSearch
+	} = $props<{
+		searchQuery?: string;
+		minAutocompleteLength?: number;
+		onSearch: (query: string) => void;
+	}>();
 
-	let autocompleteList: AutocompleteOption[] = [];
+	let autocompleteList = $state<AutocompleteOption[]>([]);
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
@@ -42,12 +48,6 @@
 		}
 	}
 
-	function handleInput(e: Event) {
-		const value = (e.target as HTMLInputElement).value;
-		searchQuery = value;
-		fetchAutocomplete(value);
-	}
-
 	function handleEnter() {
 		if (searchQuery.trim() !== '') {
 			onSearch?.(searchQuery);
@@ -68,12 +68,11 @@
 				bind:value={searchQuery}
 				class="input join-item input-bordered xl:w-full"
 				placeholder={$_('search.placeholder')}
-				on:keydown={(e) => {
+				onkeydown={(e) => {
 					if (e.key === 'Enter') handleEnter();
 				}}
-				on:input={handleInput}
-				on:focus={() => fetchAutocomplete(searchQuery)}
-				on:blur={() => setTimeout(() => {}, 100)}
+				oninput={() => fetchAutocomplete(searchQuery)}
+				onblur={() => setTimeout(() => {}, 100)}
 			/>
 			{#if autocompleteList.length >= minAutocompleteLength}
 				<ul
@@ -81,7 +80,7 @@
 				>
 					{#each autocompleteList as item (item.id)}
 						<li>
-							<button on:mousedown={() => handleSelect(item)}>
+							<button onmousedown={() => handleSelect(item)}>
 								<span class="flex flex-col gap-1">
 									<span>{item.text}</span>
 									<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
@@ -93,7 +92,7 @@
 			{/if}
 			<button
 				class="btn btn-square btn-secondary join-item px-10"
-				on:click={handleEnter}
+				onclick={handleEnter}
 				disabled={searchQuery == null || searchQuery.trim() === ''}
 			>
 				{$_('search.go')}
