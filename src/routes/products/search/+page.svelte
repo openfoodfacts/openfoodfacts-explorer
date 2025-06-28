@@ -22,35 +22,27 @@
 	let { search } = $derived(data);
 
 	let selectedSort: string = $state('');
-	let selectedSortLabel: string = $state('');
 	let isSortDropdownOpen: boolean = $state(false);
 
-	// Set initial selectedSort and selectedSortLabel from URL
 	$effect(() => {
 		const url = new URL(page.url);
 		const sortValue = url.searchParams.get('sort_by');
-		selectedSort = sortValue ?? '';
-		const selected = SORT_OPTIONS.find((opt) => opt.value === sortValue);
-		selectedSortLabel = selected ? selected.label : '';
+		selectedSort = sortValue || '-unique_scans_n';
 	});
 
-	function handleSortClick(value: string, label: string) {
+	function getSelectedSortLabel() {
+		const selected = SORT_OPTIONS.find((opt) => opt.value === selectedSort);
+		return selected ? selected.label : '';
+	}
+
+	function handleSortChange(value: string) {
 		selectedSort = value;
-		selectedSortLabel = label;
 		isSortDropdownOpen = false;
 		gotoProductsSearch();
 	}
 
 	function gotoProductsSearch() {
 		goto('/products/search?q=' + encodeURIComponent(data.query) + '&sort_by=' + selectedSort);
-	}
-
-	function handleSortOptionSelect(value: string) {
-		selectedSort = value;
-		const selected = SORT_OPTIONS.find((opt) => opt.value === value);
-		selectedSortLabel = selected ? selected.label : '';
-		isSortDropdownOpen = false;
-		gotoProductsSearch();
 	}
 </script>
 
@@ -67,10 +59,10 @@
 			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 		>
 			Sort by
-			{#if selectedSortLabel}
+			{#if getSelectedSortLabel()}
 				: <span
 					class="inline-block truncate align-middle font-semibold md:max-w-20 lg:max-w-30"
-					title={selectedSortLabel}>{selectedSortLabel}</span
+					title={getSelectedSortLabel()}>{getSelectedSortLabel()}</span
 				>
 			{/if}
 		</button>
@@ -78,7 +70,7 @@
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
-						<button class="w-full text-left" onclick={() => handleSortClick(value, label)}>
+						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
 							{label}
 						</button>
 					</li>
@@ -132,6 +124,6 @@
 <SearchOptionsFooter
 	{isSortDropdownOpen}
 	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
-	onSortOptionSelect={handleSortOptionSelect}
+	onSortOptionSelect={handleSortChange}
 	{selectedSort}
 />

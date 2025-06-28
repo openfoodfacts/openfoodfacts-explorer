@@ -1,19 +1,24 @@
 <script lang="ts">
 	import { SORT_OPTIONS } from '../const';
 
-	export let isSortDropdownOpen: boolean;
-	export let onSortClick: () => void = () => {};
-	export let onSortOptionSelect: (value: string) => void = () => {};
-	export let selectedSort: string = '';
+	let {
+		isSortDropdownOpen,
+		onSortClick = () => {},
+		onSortOptionSelect = () => {},
+		selectedSort = ''
+	}: {
+		isSortDropdownOpen: boolean;
+		onSortClick: () => void;
+		onSortOptionSelect: (value: string) => void;
+		selectedSort: string;
+	} = $props();
 
 	function handleSortOptionClick(value: string) {
 		onSortOptionSelect(value);
 	}
 </script>
 
-<footer
-	class="bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0 lg:hidden"
->
+<footer class="search-options-footer">
 	{#if isSortDropdownOpen}
 		<div
 			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border py-2 shadow-xl"

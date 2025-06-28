@@ -49,7 +49,7 @@
 	});
 
 	function gotoProductsSearch() {
-		goto('/products/search?q=' + searchQuery + '&sort_by=-unique_scans_n');
+		goto('/products/search?q=' + searchQuery);
 	}
 
 	let searchActive = $state(false);

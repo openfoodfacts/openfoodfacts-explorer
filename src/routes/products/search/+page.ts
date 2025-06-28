@@ -40,7 +40,7 @@ function isValidEAN13(code: string): boolean {
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
-	const sort_by = url.searchParams.get('sort_by');
+	const sort_by = url.searchParams.get('sort_by') || '-unique_scans_n';
 
 	if (query == null || query.length === 0) {
 		error(400, 'Missing query parameter');
