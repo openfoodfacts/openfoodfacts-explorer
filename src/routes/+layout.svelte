@@ -9,10 +9,10 @@
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import SearchBar from '$lib/ui/SearchBar.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
-	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -54,42 +54,6 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
-
-	let autocompleteList: AutocompleteOption[] = $state([]);
-
-	// used for aborting previously executing autocomplete requests
-	let autocompleteAbortController: AbortController | null = null;
-
-	async function fetchAutocomplete(query: string) {
-		if (!query.trim() || query.length < 3) {
-			autocompleteList = [];
-			return;
-		}
-		if (autocompleteAbortController) {
-			autocompleteAbortController.abort();
-		}
-		autocompleteAbortController = new AbortController();
-		try {
-			const autocompleteQuery = {
-				q: query,
-				taxonomy_names: 'brand,category',
-				lang: 'en',
-				size: 5,
-				fuzziness: null,
-				index_id: null
-			};
-			const response = await autocomplete(autocompleteQuery, fetch);
-			if (response && Array.isArray(response.options)) {
-				autocompleteList = response.options;
-			} else {
-				autocompleteList = [];
-			}
-		} catch (e) {
-			if (e instanceof Error && e.name !== 'AbortError') {
-				console.error('Autocomplete error', e);
-			}
-		}
-	}
 </script>
 
 <svelte:head>
@@ -111,71 +75,8 @@
 				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
-				<div class="form-control">
-					<div>
-						<div class="join dropdown dropdown-bottom dropdown-center">
-							<input
-								type="text"
-								bind:value={searchQuery}
-								class="input join-item input-bordered xl:w-full"
-								placeholder={$_('search.placeholder')}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' && searchQuery.trim() !== '') {
-										gotoProductsSearch();
-									}
-								}}
-								oninput={() => {
-									fetchAutocomplete(searchQuery);
-								}}
-								onfocus={() => {
-									fetchAutocomplete(searchQuery);
-								}}
-								onblur={() => setTimeout(() => {}, 100)}
-							/>
-							{#if autocompleteList.length >= 3}
-								<ul
-									class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
-								>
-									{#each autocompleteList as item (item.id)}
-										<li>
-											<button
-												onmousedown={() => {
-													searchQuery = item.text;
-													gotoProductsSearch();
-												}}
-											>
-												<span class="flex flex-col gap-1">
-													<span>
-														{item.text}
-													</span>
-													<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
-												</span>
-											</button>
-										</li>
-									{/each}
-								</ul>
-							{/if}
-							<button
-								class="btn btn-square btn-secondary join-item px-10"
-								onclick={() => gotoProductsSearch()}
-								disabled={searchQuery == null || searchQuery.trim() === ''}
-							>
-								{$_('search.go')}
-							</button>
-						</div>
-
-						<a
-							class="btn btn-secondary ms-4 px-5 text-lg"
-							href="/qr"
-							title={$_('search.scan')}
-							aria-label={$_('search.scan')}
-						>
-							<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-						</a>
-					</div>
-				</div>
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
-
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
 				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
@@ -230,64 +131,7 @@
 
 		{#if searchActive}
 			<div class="flex justify-center">
-				<div class="join dropdown dropdown-bottom w-96">
-					<input
-						type="text"
-						bind:value={searchQuery}
-						class="input join-item input-bordered"
-						placeholder={$_('search.placeholder')}
-						onkeydown={(e) => {
-							if (e.key === 'Enter' && searchQuery.trim() !== '') {
-								gotoProductsSearch();
-							}
-						}}
-						oninput={() => {
-							fetchAutocomplete(searchQuery);
-						}}
-						onfocus={() => {
-							fetchAutocomplete(searchQuery);
-						}}
-						onblur={() => setTimeout(() => {}, 100)}
-					/>
-					{#if autocompleteList.length >= 3}
-						<ul
-							class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
-						>
-							{#each autocompleteList as item (item.id)}
-								<li>
-									<button
-										onmousedown={() => {
-											searchQuery = item.text;
-											gotoProductsSearch();
-										}}
-									>
-										<span class="flex flex-col gap-1">
-											<span>
-												{item.text}
-											</span>
-											<span class="block text-xs text-gray-500">{item.taxonomy_name}</span>
-										</span>
-									</button>
-								</li>
-							{/each}
-						</ul>
-					{/if}
-					<button
-						class="btn btn-square btn-secondary join-item px-10"
-						onclick={() => gotoProductsSearch()}
-						disabled={searchQuery == null || searchQuery.trim() === ''}
-					>
-						{$_('search.go')}
-					</button>
-				</div>
-				<a
-					class="btn btn-square btn-secondary mx-1 text-lg"
-					href="/qr"
-					title={$_('search.scan')}
-					aria-label={$_('search.scan')}
-				>
-					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-				</a>
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 		{/if}
 		<div
