@@ -6,6 +6,7 @@
 	import Pagination from '$lib/Pagination.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import Metadata from '$lib/Metadata.svelte';
+	import FacetBar from '$lib/ui/FacetBar.svelte';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -34,6 +35,7 @@
 	</div>
 {:then result}
 	{#if result.count > 0}
+	<FacetBar facets={result.facets} />
 		<div
 			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>

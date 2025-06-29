@@ -59,7 +59,13 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		api.search({
 			q: query,
 			page: page,
-			page_size: pageSize
+			page_size: pageSize,
+			facets: [
+				'brands_tags',
+				'categories_tags',
+				'nutrition_grades',
+				'ecoscore_grade'
+			],
 		}) as SearchResult
 	) //
 		.then((result) => result.data);
