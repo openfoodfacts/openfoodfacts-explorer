@@ -23,7 +23,7 @@ export const PRODUCT_STATUS = {
 // Auth/PKCE constants (hardcoded, not from env)
 export const AUTH_BASE_URL_PROD = 'https://auth.openfoodfacts.org';
 export const AUTH_BASE_URL_DEV = 'http://auth.openfoodfacts.localhost:5600';
-export const AUTH_PKCE_ID_DEV = 'OFF_EXP_DEV';
+export const AUTH_PKCE_ID_DEV = 'test_public_client';
 export const AUTH_PKCE_ID_PROD = 'OFF_EXP_PROD';
 export const OFF_EXP_BASE_URL_PROD = 'https://openfoodfacts-explorer.vercel.app';
 export const OFF_EXP_BASE_URL_DEV = 'http://localhost:5173';
