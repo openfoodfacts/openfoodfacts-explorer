@@ -35,7 +35,7 @@
 	</div>
 {:then result}
 	{#if result.count > 0}
-	<FacetBar facets={result.facets} />
+		<FacetBar facets={result.facets} />
 		<div
 			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>
