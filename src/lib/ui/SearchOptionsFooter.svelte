@@ -44,14 +44,18 @@
 			onclick={onSortClick}
 			aria-label="Sort"
 		>
-			<span class="text-sm leading-tight font-semibold tracking-wide">Sort</span>
+			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide"
+				>Sort <i class="icon-[mdi--sort] ml-2 text-lg"></i></span
+			>
 		</button>
 		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
 			aria-label="Filter"
 		>
-			<span class="text-sm leading-tight font-semibold tracking-wide">Filter</span>
+			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide"
+				>Filter <i class="icon-[mdi--filter] ml-2 text-lg"></i></span
+			>
 		</button>
 	</div>
 </footer>

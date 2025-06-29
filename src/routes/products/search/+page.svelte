@@ -65,6 +65,7 @@
 					title={getSelectedSortLabel()}>{getSelectedSortLabel()}</span
 				>
 			{/if}
+			<i class="icon-[mdi--chevron-down] text-xl"></i>
 		</button>
 		{#if isSortDropdownOpen}
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
