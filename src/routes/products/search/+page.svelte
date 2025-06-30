@@ -42,7 +42,10 @@
 	}
 
 	function gotoProductsSearch() {
-		goto('/products/search?q=' + encodeURIComponent(data.query) + '&sort_by=' + selectedSort);
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('q', data.query);
+		newUrl.searchParams.set('sort_by', selectedSort);
+		goto(newUrl.toString());
 	}
 </script>
 
@@ -126,5 +129,5 @@
 	{isSortDropdownOpen}
 	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 	onSortOptionSelect={handleSortChange}
-	{selectedSort}
+	sortBy={selectedSort}
 />

@@ -1,22 +1,26 @@
 <script lang="ts">
-	import { SORT_OPTIONS } from '../const';
+	import { SORT_OPTIONS } from '$lib/const';
 
 	let {
 		isSortDropdownOpen,
 		onSortClick = () => {},
 		onSortOptionSelect = () => {},
-		selectedSort = ''
+		sortBy = ''
 	}: {
 		isSortDropdownOpen: boolean;
 		onSortClick: () => void;
 		onSortOptionSelect: (value: string) => void;
-		selectedSort: string;
+		sortBy: string;
 	} = $props();
-
-	function handleSortOptionClick(value: string) {
-		onSortOptionSelect(value);
-	}
 </script>
+
+<style lang="postcss">
+	@reference './../../app.css';
+
+	.search-options-footer {
+		@apply bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0 lg:hidden;
+	}
+</style>
 
 <footer class="search-options-footer">
 	{#if isSortDropdownOpen}
@@ -27,11 +31,11 @@
 			{#each SORT_OPTIONS as option (option.value)}
 				<button
 					class="hover:bg-base-200 flex w-full items-center gap-3 px-4 py-2 text-sm"
-					class:bg-base-200={selectedSort === option.value}
-					onclick={() => handleSortOptionClick(option.value)}
+					class:bg-base-200={sortBy === option.value}
+					onclick={() => onSortOptionSelect(option.value)}
 				>
 					<span>{option.label}</span>
-					{#if selectedSort === option.value}
+					{#if sortBy === option.value}
 						<span class="text-lg">✓</span>
 					{/if}
 				</button>
