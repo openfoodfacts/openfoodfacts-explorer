@@ -1,8 +1,5 @@
-import { AUTH_BASE_URL, AUTH_PKCE_ID, OFF_EXP_BASE_URL } from '$lib/const';
+import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
 
-export const keycloak = `${AUTH_BASE_URL}/realms/open-products-facts`;
-export const pkceClientId = AUTH_PKCE_ID;
-export const accountUrl = `${keycloak}/account/#/`;
 
 export type AuthTokens = {
 	expires_in: number;
@@ -19,8 +16,8 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	const body = new URLSearchParams({
 		code: code ?? '',
 		grant_type: 'authorization_code',
-		redirect_uri: `${OFF_EXP_BASE_URL}/login_callback`,
-		client_id: pkceClientId,
+		redirect_uri: LOGIN_CALLBACK_URL,
+		client_id: AUTH_PKCE_ID,
 		code_verifier: verifier ?? ''
 	});
 
@@ -38,7 +35,7 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 		body.set('refresh_token', refreshToken);
 	}
 
-	const response = await fetch(`${keycloak}/protocol/openid-connect/token`, {
+	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
 		method: 'POST',
 		body: body,
 		headers: new Headers()

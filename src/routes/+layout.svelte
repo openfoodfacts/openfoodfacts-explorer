@@ -2,7 +2,6 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
@@ -13,7 +12,8 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { accountUrl, getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { ACCOUNT_URL } from '$lib/const';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -144,7 +144,7 @@
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
 				{#if $userLoginState}
-					<a class="btn btn-outline link" href={accountUrl}>Account</a>
+					<a class="btn btn-outline link" href={ACCOUNT_URL}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
 					<a class="btn btn-outline link" href="/login"> Login </a>
@@ -244,7 +244,7 @@
 				{$_('prices_link')}
 			</a>
 			{#if $userLoginState}
-				<a class="btn btn-outline link" href={accountUrl}>
+				<a class="btn btn-outline link" href={ACCOUNT_URL}>
 					{$_('account_link')}
 				</a>
 				<a class="btn btn-outline link" href="/logout">
