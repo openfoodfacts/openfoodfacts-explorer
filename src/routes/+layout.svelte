@@ -49,11 +49,8 @@
 			// but we need to refresh the access token
 			getAccessToken(true)
 				.then((jwt) => {
-					console.log('Access Token using refresh token:', jwt);
-
 					saveAuthTokens(jwt);
 					userLoginState.set(true);
-					console.log('User login state: true');
 				})
 				.catch((error) => {
 					console.error('Error getting access token using refresh token:', error);

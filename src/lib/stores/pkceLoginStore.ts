@@ -1,6 +1,5 @@
 import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
 
-
 export type AuthTokens = {
 	expires_in: number;
 	access_token: string;
@@ -42,7 +41,6 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	});
 
 	const jwt = await response.json();
-	console.log('JWT response:', jwt);
 	return jwt;
 }
 
