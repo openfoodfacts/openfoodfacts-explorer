@@ -14,14 +14,6 @@
 	} = $props();
 </script>
 
-<style lang="postcss">
-	@reference './../../app.css';
-
-	.search-options-footer {
-		@apply bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0 lg:hidden;
-	}
-</style>
-
 <footer class="search-options-footer">
 	{#if isSortDropdownOpen}
 		<div
@@ -63,3 +55,11 @@
 		</button>
 	</div>
 </footer>
+
+<style lang="postcss">
+	@reference './../../app.css';
+
+	.search-options-footer {
+		@apply bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0 lg:hidden;
+	}
+</style>
