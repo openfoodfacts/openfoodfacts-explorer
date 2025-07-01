@@ -14,10 +14,15 @@
 	"world_option": "World",
 	"github_link": "GitHub",
 	"search": {
+		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
-		"button": "Search"
+		"button": "Search",
+		"product_not_found": "No products found",
+		"product_not_found_desc": "We couldn't find any products matching your search",
+		"add_product": "Add new Product",
+		"description": "Search on Open Food Facts Explorer for {query}"
 	},
 	"auth": {
 		"username": "Username",
@@ -75,6 +80,9 @@
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"product": {
+		"title": "{productName} - Open Food Facts Explorer",
+		"description": "Product page for {productName} on Open Food Facts Explorer",
+
 		"datasources": {
 			"title": "Data Sources",
 			"added_on": "Product added on {date} by: ",
@@ -117,11 +125,6 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
-		},
-		"search": {
-			"product_not_found": "No products found",
-			"product_not_found_desc": "We couldn't find any products matching your search",
-			"add_product": "Add new Product"
 		}
 	},
 	"errors": {

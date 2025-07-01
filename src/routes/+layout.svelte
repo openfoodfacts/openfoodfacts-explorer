@@ -1,19 +1,25 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Logo from '$lib/ui/Logo.svelte';
+	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
-	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
 	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
 	import { ACCOUNT_URL } from '$lib/const';
+	import SearchBar from '$lib/ui/SearchBar.svelte';
+	import { initI18n, _, isLoading } from '$lib/i18n';
+	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+
+	import '../app.css';
+	import 'leaflet/dist/leaflet.css';
+	import '@fontsource-variable/plus-jakarta-sans';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -74,6 +80,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
+<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
+
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
@@ -85,41 +93,8 @@
 				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
-				<div class="form-control">
-					<div>
-						<div class="join">
-							<input
-								type="text"
-								bind:value={searchQuery}
-								class="input join-item input-bordered xl:w-full"
-								placeholder={$_('search.placeholder')}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' && searchQuery.trim() !== '') {
-										gotoProductsSearch();
-									}
-								}}
-							/>
-							<button
-								class="btn btn-square btn-secondary join-item px-10"
-								onclick={() => gotoProductsSearch()}
-								disabled={searchQuery == null || searchQuery.trim() === ''}
-							>
-								{$_('search.go')}
-							</button>
-						</div>
-
-						<a
-							class="btn btn-secondary ms-4 px-5 text-lg"
-							href="/qr"
-							title={$_('search.scan')}
-							aria-label={$_('search.scan')}
-						>
-							<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-						</a>
-					</div>
-				</div>
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
-
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
 				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
@@ -177,36 +152,10 @@
 				</button>
 			</div>
 		</div>
+
 		{#if searchActive}
-			<div class="-mt-2 flex items-center gap-1 sm:gap-2">
-				<div class="join w-full">
-					<input
-						type="text"
-						bind:value={searchQuery}
-						class="input join-item input-bordered w-full"
-						placeholder={$_('search.placeholder')}
-						onkeydown={(e) => {
-							if (e.key === 'Enter' && searchQuery.trim() !== '') {
-								gotoProductsSearch();
-							}
-						}}
-					/>
-					<button
-						class="btn btn-square btn-secondary join-item"
-						onclick={() => gotoProductsSearch()}
-						disabled={searchQuery == null || searchQuery.trim() === ''}
-					>
-						{$_('search.go')}
-					</button>
-				</div>
-				<a
-					class="btn btn-square btn-secondary text-lg"
-					href="/qr"
-					title={$_('search.scan')}
-					aria-label={$_('search.scan')}
-				>
-					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-				</a>
+			<div class="flex justify-center">
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 		{/if}
 		<div

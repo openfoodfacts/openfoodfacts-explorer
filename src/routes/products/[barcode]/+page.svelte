@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
+	import { _ } from '$lib/i18n';
 
 	import ProductAttributes from './ProductAttributes.svelte';
 
@@ -14,6 +15,7 @@
 	import Prices from './Prices.svelte';
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 
 	type Props = { data: PageData };
 
@@ -22,9 +24,11 @@
 	let productAttributes = $derived(data.productAttributes);
 </script>
 
-<svelte:head>
-	<title>{product.product_name ?? product.code} | Open Food Facts</title>
-</svelte:head>
+<Metadata
+	title={$_('product.title', { values: { productName: product.product_name } })}
+	description={$_('product.description', { values: { productName: product.product_name } })}
+	imageUrl={product.image_front_small_url ?? product.image_front_url}
+/>
 
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
