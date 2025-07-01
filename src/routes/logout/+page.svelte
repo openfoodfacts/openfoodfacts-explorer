@@ -2,16 +2,14 @@
 	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { KEYCLOAK_URL, AUTH_PKCE_ID, OFF_EXP_BASE_URL } from '$lib/const';
-	import { userAccessToken, userRefreshToken, userIdToken } from '$lib/stores/pkceLoginStore';
+	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
 
 	onMount(() => {
 		logoutUser();
 	});
 
 	async function logoutUser() {
-		userAccessToken.set('');
-		userRefreshToken.set('');
-		userIdToken.set('');
+		userAuthTokens.set({ accessToken: '', refreshToken: '', idToken: '' });
 
 		const redirectUri = `${OFF_EXP_BASE_URL}/logout_callback`;
 

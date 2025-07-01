@@ -2,15 +2,16 @@ import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
 
 export type AuthTokens = {
-	expires_in: number;
-	access_token: string;
-	refresh_token: string;
-	id_token: string;
+	accessToken: string;
+	refreshToken: string;
+	idToken: string;
 };
 
-export const userAccessToken = persisted('userAccessToken', '');
-export const userRefreshToken = persisted('userRefreshToken', '');
-export const userIdToken = persisted('userIdToken', '');
+export const userAuthTokens = persisted<AuthTokens>('userAuthTokens', {
+	accessToken: '',
+	refreshToken: '',
+	idToken: ''
+});
 
 export async function getAccessToken(useRefreshToken: boolean = false) {
 	const verifier = localStorage.getItem('verifier');
@@ -26,10 +27,10 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	});
 
 	if (useRefreshToken) {
-		const refreshToken = document.cookie
-			.split('; ')
-			.find((row) => row.startsWith('userRefreshToken='))
-			?.split('=')[1];
+		let refreshToken = '';
+		userAuthTokens.subscribe((tokens) => {
+			refreshToken = tokens.refreshToken;
+		})();
 
 		if (!refreshToken) {
 			throw new Error('No refresh token available');
@@ -41,17 +42,17 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 
 	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
 		method: 'POST',
-		body: body,
-		headers: new Headers()
+		body: body
 	});
 
 	const jwt = await response.json();
 	return jwt;
 }
 
-export function saveAuthTokens(jwt: AuthTokens) {
-	// Save tokens in local storage
-	userAccessToken.set(jwt.access_token);
-	userRefreshToken.set(jwt.refresh_token || '');
-	userIdToken.set(jwt.id_token);
+export function saveAuthTokens(jwt: { access_token: string; refresh_token: string; id_token: string }) {
+	userAuthTokens.set({
+		accessToken: jwt.access_token,
+		refreshToken: jwt.refresh_token || '',
+		idToken: jwt.id_token
+	});
 }
