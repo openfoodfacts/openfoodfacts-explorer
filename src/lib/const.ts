@@ -1,5 +1,3 @@
-import { dev } from '$app/environment';
-
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
@@ -20,16 +18,10 @@ export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
 
-export const AUTH_BASE_URL_PROD = import.meta.env.VITE_AUTH_BASE_URL_PROD;
-export const AUTH_BASE_URL_DEV = import.meta.env.VITE_AUTH_BASE_URL_DEV;
-export const AUTH_PKCE_ID_DEV = import.meta.env.VITE_AUTH_PKCE_ID_DEV;
-export const AUTH_PKCE_ID_PROD = import.meta.env.VITE_AUTH_PKCE_ID_PROD;
-export const OFF_EXP_BASE_URL_PROD = import.meta.env.VITE_OFF_EXP_BASE_URL_PROD;
-export const OFF_EXP_BASE_URL_DEV = import.meta.env.VITE_OFF_EXP_BASE_URL_DEV;
+export const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL;
+export const AUTH_PKCE_ID = import.meta.env.VITE_AUTH_PKCE_ID;
+export const OFF_EXP_BASE_URL = import.meta.env.VITE_OFF_EXP_BASE_URL;
 
-export const AUTH_BASE_URL = dev ? AUTH_BASE_URL_DEV : AUTH_BASE_URL_PROD;
-export const AUTH_PKCE_ID = dev ? AUTH_PKCE_ID_DEV : AUTH_PKCE_ID_PROD;
-export const OFF_EXP_BASE_URL = dev ? OFF_EXP_BASE_URL_DEV : OFF_EXP_BASE_URL_PROD;
 export const KEYCLOAK_REALM = import.meta.env.VITE_KEYCLOAK_REALM;
 export const KEYCLOAK_URL = `${AUTH_BASE_URL}/realms/${KEYCLOAK_REALM}`;
 export const ACCOUNT_URL = `${KEYCLOAK_URL}/account/#/`;

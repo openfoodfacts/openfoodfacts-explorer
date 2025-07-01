@@ -12,7 +12,12 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { getAccessToken, saveAuthTokens, userAccessToken, userRefreshToken } from '$lib/stores/pkceLoginStore';
+	import {
+		getAccessToken,
+		saveAuthTokens,
+		userAccessToken,
+		userRefreshToken
+	} from '$lib/stores/pkceLoginStore';
 	import { ACCOUNT_URL } from '$lib/const';
 
 	onMount(async () => {
