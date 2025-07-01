@@ -1,3 +1,5 @@
+import { PUBLIC_AUTH_BASE_URL, PUBLIC_AUTH_PKCE_ID, PUBLIC_OFF_EXP_BASE_URL, PUBLIC_KEYCLOAK_REALM } from '$env/static/public';
+
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
@@ -18,11 +20,11 @@ export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
 
-export const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL;
-export const AUTH_PKCE_ID = import.meta.env.VITE_AUTH_PKCE_ID;
-export const OFF_EXP_BASE_URL = import.meta.env.VITE_OFF_EXP_BASE_URL;
+export const AUTH_BASE_URL = PUBLIC_AUTH_BASE_URL;
+export const AUTH_PKCE_ID = PUBLIC_AUTH_PKCE_ID;
+export const OFF_EXP_BASE_URL = PUBLIC_OFF_EXP_BASE_URL;
 
-export const KEYCLOAK_REALM = import.meta.env.VITE_KEYCLOAK_REALM;
+export const KEYCLOAK_REALM = PUBLIC_KEYCLOAK_REALM;
 export const KEYCLOAK_URL = `${AUTH_BASE_URL}/realms/${KEYCLOAK_REALM}`;
 export const ACCOUNT_URL = `${KEYCLOAK_URL}/account/#/`;
 export const LOGIN_CALLBACK_URL = `${OFF_EXP_BASE_URL}/login_callback`;
