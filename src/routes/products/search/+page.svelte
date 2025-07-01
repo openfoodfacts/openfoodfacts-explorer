@@ -23,26 +23,21 @@
 
 	let selectedSort = $derived.by(() => {
 		const url = new URL(page.url);
-		return url.searchParams.get('sort_by') || '-unique_scans_n';
+		const sortValue = url.searchParams.get('sort_by') || '-unique_scans_n';
+		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
 	});
 
 	let isSortDropdownOpen: boolean = $state(false);
 
 	function getSelectedSortLabel() {
-		const selected = SORT_OPTIONS.find((opt) => opt.value === selectedSort);
-		return selected ? selected.label : '';
+		return selectedSort.label;
 	}
 
 	function handleSortChange(value: string) {
-		selectedSort = value;
+		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		isSortDropdownOpen = false;
-		gotoProductsSearch();
-	}
-
-	function gotoProductsSearch() {
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('q', data.query);
-		newUrl.searchParams.set('sort_by', selectedSort);
+		newUrl.searchParams.set('sort_by', selectedSort.value);
 		goto(newUrl.toString());
 	}
 </script>
@@ -126,6 +121,6 @@
 <SearchOptionsFooter
 	{isSortDropdownOpen}
 	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
-	onSortOptionSelect={handleSortChange}
-	sortBy={selectedSort}
+	onSortOptionSelect={(value) => handleSortChange(value)}
+	sortBy={selectedSort.value}
 />
