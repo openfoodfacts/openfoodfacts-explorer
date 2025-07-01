@@ -18,9 +18,7 @@ export async function load() {
 	localStorage.setItem('verifier', verifier);
 
 	const codeChallenge = base64URLEncode(
-		new Uint8Array(
-			await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))
-		)
+		new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
 	);
 
 	const nonce = crypto.getRandomValues(new BigUint64Array(1))[0].toString();

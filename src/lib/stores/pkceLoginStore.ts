@@ -49,7 +49,11 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	return jwt;
 }
 
-export function saveAuthTokens(jwt: { access_token: string; refresh_token: string; id_token: string }) {
+export function saveAuthTokens(jwt: {
+	access_token: string;
+	refresh_token: string;
+	id_token: string;
+}) {
 	userAuthTokens.set({
 		accessToken: jwt.access_token,
 		refreshToken: jwt.refresh_token || '',
