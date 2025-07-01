@@ -12,12 +12,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import {
-		getAccessToken,
-		saveAuthTokens,
-		userAccessToken,
-		userRefreshToken
-	} from '$lib/stores/pkceLoginStore';
+	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
 	import { ACCOUNT_URL } from '$lib/const';
 
 	onMount(async () => {
@@ -41,28 +36,20 @@
 		// only inject the script on the client side
 		injectSpeedInsights();
 
-		const unsubscribeAccessToken = userAccessToken.subscribe((token: string) => {
-			if (token) {
-				userLoginState.set(true);
-			} else {
-				const unsubscribeRefreshToken = userRefreshToken.subscribe(async (refreshToken: string) => {
-					if (refreshToken) {
-						try {
-							const jwt = await getAccessToken(true);
-							saveAuthTokens(jwt);
-							userLoginState.set(true);
-						} catch (error) {
-							console.error('Error getting access token using refresh token:', error);
-							userLoginState.set(false);
-						}
-					} else {
-						userLoginState.set(false);
-					}
-				});
-				unsubscribeRefreshToken();
-			}
-		});
-		unsubscribeAccessToken();
+		let accessToken = '';
+		let refreshToken = '';
+
+		// check if the user is logged in based on the access tokens
+		userAuthTokens.subscribe((tokens) => {
+			accessToken = tokens.accessToken;
+			refreshToken = tokens.refreshToken;
+		})();
+
+		if (accessToken) {
+			userLoginState.set(true);
+		} else {
+			userLoginState.set(false);
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
