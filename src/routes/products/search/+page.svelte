@@ -21,14 +21,12 @@
 
 	let { search } = $derived(data);
 
-	let selectedSort: string = $state('');
-	let isSortDropdownOpen: boolean = $state(false);
-
-	$effect(() => {
+	let selectedSort = $derived.by(() => {
 		const url = new URL(page.url);
-		const sortValue = url.searchParams.get('sort_by');
-		selectedSort = sortValue || '-unique_scans_n';
+		return url.searchParams.get('sort_by') || '-unique_scans_n';
 	});
+
+	let isSortDropdownOpen: boolean = $state(false);
 
 	function getSelectedSortLabel() {
 		const selected = SORT_OPTIONS.find((opt) => opt.value === selectedSort);
