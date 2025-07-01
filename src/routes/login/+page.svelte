@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
-	import { OFF_EXP_BASE_URL } from '$lib/const';
+	import { OFF_EXP_BASE_URL, KEYCLOAK_URL, AUTH_PKCE_ID } from '$lib/const';
 	import Card from '$lib/ui/Card.svelte';
 
 	onMount(() => {
@@ -33,7 +32,7 @@
 
 		const redirectUri = `${OFF_EXP_BASE_URL}/login_callback`;
 
-		const url = `${keycloak}/protocol/openid-connect/auth?response_type=code&client_id=${pkceClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+profile+offline_access&state=${nonce}&ui_locales=${lang}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+		const url = `${KEYCLOAK_URL}/protocol/openid-connect/auth?response_type=code&client_id=${AUTH_PKCE_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=openid+profile+offline_access&state=${nonce}&ui_locales=${lang}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
 		window.location.href = url;
 	}
 </script>

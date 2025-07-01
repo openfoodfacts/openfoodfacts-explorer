@@ -1,25 +1,21 @@
 <script>
 	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
-	import { keycloak, pkceClientId } from '$lib/stores/pkceLoginStore';
-	import { OFF_EXP_BASE_URL } from '$lib/const';
+	import { KEYCLOAK_URL, AUTH_PKCE_ID, OFF_EXP_BASE_URL } from '$lib/const';
+	import { userAccessToken, userRefreshToken, userIdToken } from '$lib/stores/pkceLoginStore';
 
 	onMount(() => {
 		logoutUser();
 	});
 
 	async function logoutUser() {
-		const cookies = document.cookie.split('; ');
-		const idTokenCookie = cookies.find((cookie) => cookie.startsWith('userIdToken='));
-		const idToken = idTokenCookie ? idTokenCookie.split('=')[1] : '';
-		if (!idToken) {
-			console.error('No ID token found in cookies. Cannot log out.');
-			return;
-		}
+		userAccessToken.set('');
+		userRefreshToken.set('');
+		userIdToken.set('');
 
 		const redirectUri = `${OFF_EXP_BASE_URL}/logout_callback`;
 
-		window.location.href = `${keycloak}/protocol/openid-connect/logout?client_id=${pkceClientId}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}&id_token_hint=${idToken}`;
+		window.location.href = `${KEYCLOAK_URL}/protocol/openid-connect/logout?client_id=${AUTH_PKCE_ID}&post_logout_redirect_uri=${encodeURIComponent(redirectUri)}`;
 	}
 </script>
 

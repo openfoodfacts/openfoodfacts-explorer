@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Card from '$lib/ui/Card.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
+	import { userAccessToken, userRefreshToken, userIdToken } from '$lib/stores/pkceLoginStore';
 
 	onMount(() => {
 		// delete all the cookies
@@ -11,6 +12,9 @@
 				.replace(/^ +/, '')
 				.replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/;secure;samesite=strict');
 		});
+		userAccessToken.set('');
+		userRefreshToken.set('');
+		userIdToken.set('');
 		// set the userLoginState to false
 		userLoginState.set(false);
 		// redirect to the home page

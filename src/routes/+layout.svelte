@@ -12,7 +12,7 @@
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import { userLoginState } from '$lib/stores/userStore';
-	import { getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { getAccessToken, saveAuthTokens, userAccessToken, userRefreshToken } from '$lib/stores/pkceLoginStore';
 	import { ACCOUNT_URL } from '$lib/const';
 
 	onMount(async () => {
@@ -36,29 +36,28 @@
 		// only inject the script on the client side
 		injectSpeedInsights();
 
-		// if the cookie userAccessToken is set, set the userLoginState to true
-		const cookies = document.cookie.split('; ');
-		const userAccessToken = cookies.find((cookie) => cookie.startsWith('userAccessToken='));
-		const userRefreshToken = cookies.find((cookie) => cookie.startsWith('userRefreshToken='));
-
-		if (typeof userAccessToken === 'string' && userAccessToken) {
-			// valid access token found
-			userLoginState.set(true);
-		} else if (typeof userRefreshToken === 'string' && userRefreshToken) {
-			// since access token is not found and refresh token is found, we can assume the user is logged in
-			// but we need to refresh the access token
-			getAccessToken(true)
-				.then((jwt) => {
-					saveAuthTokens(jwt);
-					userLoginState.set(true);
-				})
-				.catch((error) => {
-					console.error('Error getting access token using refresh token:', error);
-					userLoginState.set(false);
+		const unsubscribeAccessToken = userAccessToken.subscribe((token: string) => {
+			if (token) {
+				userLoginState.set(true);
+			} else {
+				const unsubscribeRefreshToken = userRefreshToken.subscribe(async (refreshToken: string) => {
+					if (refreshToken) {
+						try {
+							const jwt = await getAccessToken(true);
+							saveAuthTokens(jwt);
+							userLoginState.set(true);
+						} catch (error) {
+							console.error('Error getting access token using refresh token:', error);
+							userLoginState.set(false);
+						}
+					} else {
+						userLoginState.set(false);
+					}
 				});
-		} else {
-			userLoginState.set(false);
-		}
+				unsubscribeRefreshToken();
+			}
+		});
+		unsubscribeAccessToken();
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -228,10 +227,10 @@
 			<a class="btn btn-outline link" href="/settings">
 				{$_('settings_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/discover">
 				{$_('discover_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/contribute">
 				{$_('contribute_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">

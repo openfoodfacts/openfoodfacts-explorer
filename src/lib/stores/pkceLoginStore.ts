@@ -1,4 +1,5 @@
 import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
+import { persisted } from 'svelte-local-storage-store';
 
 export type AuthTokens = {
 	expires_in: number;
@@ -6,6 +7,10 @@ export type AuthTokens = {
 	refresh_token: string;
 	id_token: string;
 };
+
+export const userAccessToken = persisted('userAccessToken', '');
+export const userRefreshToken = persisted('userRefreshToken', '');
+export const userIdToken = persisted('userIdToken', '');
 
 export async function getAccessToken(useRefreshToken: boolean = false) {
 	const verifier = localStorage.getItem('verifier');
@@ -45,17 +50,8 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 }
 
 export function saveAuthTokens(jwt: AuthTokens) {
-	// Save accessToken and refreshToken in cookies (expires in jwt.expires_in seconds)
-	const expires = new Date(Date.now() + jwt.expires_in * 1000).toUTCString();
-	document.cookie = `userAccessToken=${jwt.access_token}; expires=${expires}; path=/; secure; samesite=strict`;
-
-	// if a refresh token is provided, set it in cookies
-	if (jwt.refresh_token) {
-		// Set refresh token cookie with a longer expiry if available (e.g., 30 days)
-		const refreshExpires = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toUTCString();
-		document.cookie = `userRefreshToken=${jwt.refresh_token}; expires=${refreshExpires}; path=/; secure; samesite=strict`;
-	}
-
-	// save id token in cookies
-	document.cookie = `userIdToken=${jwt.id_token}; expires=${expires}; path=/; secure; samesite=strict`;
+	// Save tokens in local storage
+	userAccessToken.set(jwt.access_token);
+	userRefreshToken.set(jwt.refresh_token || '');
+	userIdToken.set(jwt.id_token);
 }
