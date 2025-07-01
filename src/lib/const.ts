@@ -1,4 +1,9 @@
-import { PUBLIC_AUTH_BASE_URL, PUBLIC_AUTH_PKCE_ID, PUBLIC_OFF_EXP_BASE_URL, PUBLIC_KEYCLOAK_REALM } from '$env/static/public';
+import {
+	PUBLIC_AUTH_BASE_URL,
+	PUBLIC_AUTH_PKCE_ID,
+	PUBLIC_OFF_EXP_BASE_URL,
+	PUBLIC_KEYCLOAK_REALM
+} from '$env/static/public';
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
