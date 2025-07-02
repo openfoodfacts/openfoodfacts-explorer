@@ -11,7 +11,36 @@
 	import { SORT_OPTIONS } from '$lib/const';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
 
-	let facetBarComponent: any = $state(null);
+	// Define types for facets
+	type FacetItem = {
+		key: string;
+		name: string;
+		count: number;
+		selected: boolean;
+	};
+
+	type Facet = {
+		name: string;
+		items: FacetItem[];
+		count_error_margin: number;
+	};
+
+	type FacetsType = {
+		[key: string]: Facet;
+	};
+
+	// Define a type for the FacetBar component instance
+	type FacetBarComponent = {
+		getSelectedFacets: () => Array<{
+			facetKey: string;
+			facetName: string;
+			itemKey: string;
+			itemName: string;
+		}>;
+		removeFacet: (facetKey: string, itemKey: string) => void;
+	};
+
+	let facetBarComponent: FacetBarComponent | null = $state(null);
 
 	let selectedFacets: Array<{
 		facetKey: string;
@@ -39,7 +68,9 @@
 				if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
 
 				try {
-					selectedFacets = facetBarComponent.getSelectedFacets();
+					if (facetBarComponent) {
+						selectedFacets = facetBarComponent.getSelectedFacets();
+					}
 				} catch (error) {
 					console.error('Error updating facets after search:', error);
 				}
@@ -169,7 +200,7 @@
 
 		<!-- Facet component with binding to access its methods -->
 		<FacetBar
-			facets={result.facets as any}
+			facets={result.facets as FacetsType}
 			on:facetChange={handleFacetChange}
 			bind:this={facetBarComponent}
 		/>

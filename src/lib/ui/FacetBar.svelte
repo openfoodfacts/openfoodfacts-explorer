@@ -104,7 +104,7 @@
 </script>
 
 <div class="menu menu-horizontal w-full justify-evenly rounded-lg p-4">
-	{#each Object.entries(facets) as [facetKey, facetObj]}
+	{#each Object.entries(facets) as [facetKey, facetObj] (facetKey)}
 		{@const facet = facetObj as Facet}
 		<div class="dropdown dropdown-center">
 			<button type="button" class="btn flex w-58 items-center justify-start gap-2">
@@ -123,7 +123,7 @@
 							updateSearchQuery(facetKey, (e.target as HTMLInputElement)?.value ?? '')}
 					/>
 				</li>
-				{#each getVisibleOptions(facet.items, searchQueries[facetKey], facetKey) as item}
+				{#each getVisibleOptions(facet.items, searchQueries[facetKey], facetKey) as item (item.key)}
 					<li>
 						<label class="flex items-center">
 							<input
