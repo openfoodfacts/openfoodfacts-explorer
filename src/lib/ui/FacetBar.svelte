@@ -1,17 +1,26 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	type FacetItem = {
+		key: string;
+		name: string;
+		count: number;
+		selected: boolean;
+	};
+
+	type Facet = {
+		name: string;
+		items: FacetItem[];
+		count_error_margin: number;
+	};
+
+	type FacetsType = {
+		[key: string]: Facet;
+	};
+
 	let {
-		facets = {}
-	}: {
-		facets: {
-			[key: string]: {
-				name: string;
-				items: Array<{ key: string; name: string; count: number; selected: boolean }>;
-				count_error_margin: number;
-			};
-		};
-	} = $props();
+		facets = {} as FacetsType
+	} = $props<{ facets: FacetsType }>();
 
 	let searchQueries = $state<Record<string, string>>(
 		Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
@@ -33,7 +42,7 @@
 		searchQueries = { ...searchQueries, [facetKey]: query };
 	};
 
-	const filteredOptions = (items: any[], query: string) => {
+	const filteredOptions = (items: FacetItem[], query: string) => {
 		if (!items || !Array.isArray(items)) return [];
 		if (!query || typeof query !== 'string') query = '';
 		return items.filter(
@@ -42,7 +51,7 @@
 		);
 	};
 
-	const getVisibleOptions = (items: any[], query: string, facetKey: string) => {
+	const getVisibleOptions = (items: FacetItem[], query: string, facetKey: string) => {
 		if (query) {
 			return filteredOptions(items, query);
 		}
@@ -54,7 +63,7 @@
 	};
 
 	function onFacetToggle(facetKey: string, itemKey: string, selected: boolean) {
-		const updatedItems = facets[facetKey].items.map((item) =>
+		const updatedItems = facets[facetKey].items.map((item: FacetItem) =>
 			item.key === itemKey ? { ...item, selected } : item
 		);
 		facets = {
@@ -64,15 +73,39 @@
 				items: updatedItems
 			}
 		};
+		
+		const selectedItems = updatedItems.filter((item: FacetItem) => item.selected).map((item: FacetItem) => item.key);
 		dispatch('facetChange', {
 			facetKey,
-			selectedItems: updatedItems.filter((item) => item.selected).map((item) => item.key)
+			selectedItems
 		});
+	}
+
+	// Export function to get all selected items across all facets
+	export function getSelectedFacets() {
+		const selected = Object.entries(facets).flatMap(([facetKey, facet]) => {
+			const typedFacet = facet as Facet;
+			return typedFacet.items
+				.filter((item: FacetItem) => item.selected)
+				.map((item: FacetItem) => ({
+					facetKey,
+					facetName: typedFacet.name,
+					itemKey: item.key,
+					itemName: item.name
+				}));
+		});
+		return selected;
+	}
+
+	// Export function to remove a selected facet
+	export function removeFacet(facetKey: string, itemKey: string) {
+		onFacetToggle(facetKey, itemKey, false);
 	}
 </script>
 
 <div class="menu menu-horizontal w-full justify-evenly rounded-lg p-4">
-	{#each Object.entries(facets) as [facetKey, facet]}
+	{#each Object.entries(facets) as [facetKey, facetObj]}
+		{@const facet = facetObj as Facet}
 		<div class="dropdown dropdown-center">
 			<button type="button" class="btn flex w-58 items-center justify-start gap-2">
 				{facet.name} ({facet.items.length})
