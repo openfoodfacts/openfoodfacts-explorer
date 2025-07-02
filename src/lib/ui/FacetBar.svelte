@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	let {
 		facets = {}
 	}: {
@@ -25,6 +27,8 @@
 		}, {})
 	);
 
+	const dispatch = createEventDispatcher();
+
 	const updateSearchQuery = (facetKey: string, query: string) => {
 		searchQueries = { ...searchQueries, [facetKey]: query };
 	};
@@ -48,6 +52,23 @@
 	const toggleShowAll = (facetKey: string) => {
 		showAll = { ...showAll, [facetKey]: !showAll[facetKey] };
 	};
+
+	function onFacetToggle(facetKey: string, itemKey: string, selected: boolean) {
+		const updatedItems = facets[facetKey].items.map(item =>
+			item.key === itemKey ? { ...item, selected } : item
+		);
+		facets = {
+			...facets,
+			[facetKey]: {
+				...facets[facetKey],
+				items: updatedItems
+			}
+		};
+		dispatch('facetChange', {
+			facetKey,
+			selectedItems: updatedItems.filter(item => item.selected).map(item => item.key)
+		});
+	}
 </script>
 
 <div class="menu menu-horizontal w-full justify-evenly rounded-lg p-4">
@@ -75,7 +96,8 @@
 							<input
 								type="checkbox"
 								class="checkbox checkbox-secondary"
-								bind:checked={item.selected}
+								checked={item.selected}
+								onchange={(e) => onFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
 							/>
 							<span class="ml-2">{item.name} ({item.count})</span>
 						</label>

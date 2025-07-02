@@ -40,8 +40,16 @@
 		injectSpeedInsights();
 	});
 
+	function extractFreeTextFromLuceneQuery(query: string): string {
+		if (!query) return '';
+		let withoutFields = query.replace(/\b\w+:("[^"]*"|'[^']*'|\S+)/g, '').trim();
+		withoutFields = withoutFields.replace(/\b(AND|OR|NOT)\b/gi, '').trim();
+		return withoutFields.replace(/\s+/g, ' ').trim();
+	}
+
 	function updateSearchQuery(url: URL) {
-		searchQuery = url.searchParams.get('q') ?? '';
+		const q = url.searchParams.get('q') ?? '';
+		searchQuery = extractFreeTextFromLuceneQuery(q);
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {

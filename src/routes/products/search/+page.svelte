@@ -41,6 +41,35 @@
 		newUrl.searchParams.set('sort_by', selectedSort.value);
 		goto(newUrl.toString());
 	}
+
+	function handleFacetChange(event: CustomEvent<{ facetKey: string; selectedItems: string[] }>) {
+		const { facetKey, selectedItems } = event.detail;
+		
+		const newUrl = new URL(page.url);
+		const query = newUrl.searchParams.get('q') || '';
+		
+		// Get current URL query and remove any existing facet filters for this key
+		let baseQuery = query.replace(new RegExp(`\\s*${facetKey}\\s*:\\s*\\([^)]*\\)`, 'g'), '')
+			.replace(new RegExp(`\\s*AND\\s*${facetKey}\\s*:\\s*"[^"]*"`, 'g'), '')
+			.replace(new RegExp(`\\s*${facetKey}\\s*:\\s*"[^"]*"`, 'g'), '')
+			.trim();
+		
+		// Add new facet filter if items are selected
+		if (selectedItems.length > 0) {
+			if (selectedItems.length === 1) {
+				// For a single selection, use the format: facet_key:"value"
+				baseQuery += ` ${baseQuery ? 'AND ' : ''}${facetKey}:"${selectedItems[0]}"`;
+			} else {
+				// For multiple selections, use the format: facet_key:(value1 OR value2)
+				const facetQuery = `${facetKey}:(${selectedItems.join(' OR ')})`;
+				baseQuery += ` ${baseQuery ? 'AND ' : ''}${facetQuery}`;
+			}
+		}
+		
+		// Update the URL with the new query
+		newUrl.searchParams.set('q', baseQuery);
+		goto(newUrl.toString());
+	}
 </script>
 
 <Metadata
@@ -88,7 +117,7 @@
 	</div>
 {:then result}
 	{#if result.count > 0}
-		<FacetBar facets={result.facets} />
+		<FacetBar facets={result.facets} on:facetChange={handleFacetChange}/>
 		<div
 			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>
