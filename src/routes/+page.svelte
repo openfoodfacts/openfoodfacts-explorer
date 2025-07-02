@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
@@ -11,6 +13,33 @@
 	}
 
 	let { data }: Props = $props();
+	
+	// TODO: Find a better way to handle dark mode
+	// Track dark mode based on system preference
+	let isDarkMode = $state(false);
+	
+	// Track which product is being navigated to
+	let navigatingTo: string | null = $state(null);
+	
+	// Handle navigation to product page
+	function navigateToProduct(barcode: string) {
+		navigatingTo = barcode;
+		goto(`/products/${barcode}`);
+	}
+	
+	onMount(() => {
+		isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleThemeChange = (e: MediaQueryListEvent) => {
+			isDarkMode = e.matches;
+		};
+		
+		darkModeMediaQuery.addEventListener('change', handleThemeChange);
+		
+		return () => {
+			darkModeMediaQuery.removeEventListener('change', handleThemeChange);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -46,15 +75,22 @@
 				{/each}
 			{:then products}
 				{#each products as state (state.product.code)}
-					<SmallProductCard product={state.product} />
+					<!-- <SmallProductCard product={state.product} /> -->
+					<product-card 
+						product={state.product} 
+						darkMode={isDarkMode}
+						navigating={{ to: navigatingTo === state.product.code ? { params: { barcode: state.product.code } } : null }}
+						placeholderImage="/Placeholder.svg"
+						on:click={() => navigateToProduct(state.product.code)}
+					></product-card>
 				{/each}
 			{/await}
 		</div>
 	</div>
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-		<donation-banner></donation-banner>
+		<donation-banner darkMode={isDarkMode}></donation-banner>
 	</div>
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-		<mobile-badges></mobile-badges>
+		<mobile-badges darkMode={isDarkMode}></mobile-badges>
 	</div>
 </div>

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@openfoodfacts/openfoodfacts-webcomponents':
-        specifier: ^1.8.5
-        version: 1.8.5
+        specifier: ^1.10.0
+        version: 1.10.0
       '@webcomponents/webcomponentsjs':
         specifier: ^2.8.0
         version: 2.8.0
@@ -679,8 +679,8 @@ packages:
   '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.7':
     resolution: {integrity: sha512-nyIM/KangbJdK7ieI/0IET0CsJ+3VZ9FzxgcZfECPeL2u4cXMBMFdTkXKB4LwMWf6bDuS2yHNLI1P14Zq31HQg==}
 
-  '@openfoodfacts/openfoodfacts-webcomponents@1.8.5':
-    resolution: {integrity: sha512-ZQuuHBePnKhMAkXMQyo91aZCLZ+KxLUx6FCnynbWOCNFEdUhPXTShtox5rHYsbnvOjxPoWz/P2ToEyKwzz0owg==}
+  '@openfoodfacts/openfoodfacts-webcomponents@1.10.0':
+    resolution: {integrity: sha512-taIQExAtk3wzr2qSJfbfG8MuitTZXBYgDSnh3Lk5TgV8NH211dHualPe/81tAAEcpl6GPjxNcnzOgxqubejEFA==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -2868,7 +2868,7 @@ snapshots:
     dependencies:
       openapi-fetch: 0.14.0
 
-  '@openfoodfacts/openfoodfacts-webcomponents@1.8.5':
+  '@openfoodfacts/openfoodfacts-webcomponents@1.10.0':
     dependencies:
       '@lit-labs/signals': 0.1.2
       '@lit/localize': 0.12.2
