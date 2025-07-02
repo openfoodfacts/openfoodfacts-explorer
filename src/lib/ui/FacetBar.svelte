@@ -18,9 +18,7 @@
 		[key: string]: Facet;
 	};
 
-	let {
-		facets = {} as FacetsType
-	} = $props<{ facets: FacetsType }>();
+	let { facets = {} as FacetsType } = $props<{ facets: FacetsType }>();
 
 	let searchQueries = $state<Record<string, string>>(
 		Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
@@ -73,8 +71,10 @@
 				items: updatedItems
 			}
 		};
-		
-		const selectedItems = updatedItems.filter((item: FacetItem) => item.selected).map((item: FacetItem) => item.key);
+
+		const selectedItems = updatedItems
+			.filter((item: FacetItem) => item.selected)
+			.map((item: FacetItem) => item.key);
 		dispatch('facetChange', {
 			facetKey,
 			selectedItems

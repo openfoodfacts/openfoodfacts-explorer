@@ -10,16 +10,15 @@
 	import { goto } from '$app/navigation';
 	import { SORT_OPTIONS } from '$lib/const';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	
+
 	let facetBarComponent: any = $state(null);
-	
+
 	let selectedFacets: Array<{
 		facetKey: string;
 		facetName: string;
 		itemKey: string;
 		itemName: string;
 	}> = $state([]);
-
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -35,10 +34,10 @@
 			} catch (error) {
 				console.error('Error updating selected facets:', error);
 			}
-			
+
 			search.then((result) => {
 				if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
-				
+
 				try {
 					selectedFacets = facetBarComponent.getSelectedFacets();
 				} catch (error) {
@@ -67,7 +66,7 @@
 		newUrl.searchParams.set('sort_by', selectedSort.value);
 		goto(newUrl.toString());
 	}
-	
+
 	// Handle removing a facet badge
 	function handleRemoveFacet(facetKey: string, itemKey: string) {
 		if (facetBarComponent) {
@@ -150,14 +149,14 @@
 	{#if result.count > 0}
 		<!-- Selected facets badges section -->
 		{#if selectedFacets.length > 0}
-			<div class="flex flex-wrap items-center gap-2 mb-4">
+			<div class="mb-4 flex flex-wrap items-center gap-2">
 				<span class="font-medium">Active filters:</span>
 				{#each selectedFacets as selectedFacet (selectedFacet.facetKey + '-' + selectedFacet.itemKey)}
 					<div class="badge badge-secondary gap-1 p-3">
 						<span>{selectedFacet.itemName}</span>
-						<button 
-							type="button" 
-							class="btn btn-ghost btn-xs btn-circle" 
+						<button
+							type="button"
+							class="btn btn-ghost btn-xs btn-circle"
 							aria-label="Remove filter"
 							onclick={() => handleRemoveFacet(selectedFacet.facetKey, selectedFacet.itemKey)}
 						>
@@ -167,14 +166,14 @@
 				{/each}
 			</div>
 		{/if}
-		
+
 		<!-- Facet component with binding to access its methods -->
-		<FacetBar 
-			facets={result.facets as any} 
-			on:facetChange={handleFacetChange} 
-			bind:this={facetBarComponent} 
+		<FacetBar
+			facets={result.facets as any}
+			on:facetChange={handleFacetChange}
+			bind:this={facetBarComponent}
 		/>
-		
+
 		<div
 			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>
