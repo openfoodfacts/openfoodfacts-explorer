@@ -13,29 +13,29 @@
 	}
 
 	let { data }: Props = $props();
-	
+
 	// TODO: Find a better way to handle dark mode
 	// Track dark mode based on system preference
 	let isDarkMode = $state(false);
-	
+
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
-	
+
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
-	
+
 	onMount(() => {
 		isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		const handleThemeChange = (e: MediaQueryListEvent) => {
 			isDarkMode = e.matches;
 		};
-		
+
 		darkModeMediaQuery.addEventListener('change', handleThemeChange);
-		
+
 		return () => {
 			darkModeMediaQuery.removeEventListener('change', handleThemeChange);
 		};
@@ -76,10 +76,15 @@
 			{:then products}
 				{#each products as state (state.product.code)}
 					<!-- <SmallProductCard product={state.product} /> -->
-					<product-card 
-						product={state.product} 
+					<product-card
+						product={state.product}
 						darkMode={isDarkMode}
-						navigating={{ to: navigatingTo === state.product.code ? { params: { barcode: state.product.code } } : null }}
+						navigating={{
+							to:
+								navigatingTo === state.product.code
+									? { params: { barcode: state.product.code } }
+									: null
+						}}
 						placeholderImage="/Placeholder.svg"
 						on:click={() => navigateToProduct(state.product.code)}
 					></product-card>
