@@ -54,7 +54,7 @@
 	};
 
 	function onFacetToggle(facetKey: string, itemKey: string, selected: boolean) {
-		const updatedItems = facets[facetKey].items.map(item =>
+		const updatedItems = facets[facetKey].items.map((item) =>
 			item.key === itemKey ? { ...item, selected } : item
 		);
 		facets = {
@@ -66,7 +66,7 @@
 		};
 		dispatch('facetChange', {
 			facetKey,
-			selectedItems: updatedItems.filter(item => item.selected).map(item => item.key)
+			selectedItems: updatedItems.filter((item) => item.selected).map((item) => item.key)
 		});
 	}
 </script>
@@ -97,7 +97,8 @@
 								type="checkbox"
 								class="checkbox checkbox-secondary"
 								checked={item.selected}
-								onchange={(e) => onFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
+								onchange={(e) =>
+									onFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
 							/>
 							<span class="ml-2">{item.name} ({item.count})</span>
 						</label>
