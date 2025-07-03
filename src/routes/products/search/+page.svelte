@@ -6,6 +6,9 @@
 	import Pagination from '$lib/Pagination.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import Metadata from '$lib/Metadata.svelte';
+	import { goto } from '$app/navigation';
+	import { SORT_OPTIONS } from '$lib/const';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
@@ -17,12 +20,62 @@
 	});
 
 	let { search } = $derived(data);
+
+	let selectedSort = $derived.by(() => {
+		const url = new URL(page.url);
+		const sortValue = url.searchParams.get('sort_by') || '-unique_scans_n';
+		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
+	});
+
+	let isSortDropdownOpen: boolean = $state(false);
+
+	function getSelectedSortLabel() {
+		return selectedSort.label;
+	}
+
+	function handleSortChange(value: string) {
+		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+		isSortDropdownOpen = false;
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('sort_by', selectedSort.value);
+		goto(newUrl.toString());
+	}
 </script>
 
 <Metadata
 	title={$_('search.title', { values: { query: data.query } })}
 	description={$_('search.description', { values: { query: data.query } })}
 />
+
+<!-- Sort By Dropdown -->
+<div class="my-4 hidden justify-end lg:flex">
+	<div class="dropdown dropdown-center md:w-50 lg:w-60">
+		<button
+			class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
+			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
+		>
+			Sort by
+			{#if getSelectedSortLabel()}
+				: <span
+					class="inline-block truncate align-middle font-semibold md:max-w-20 lg:max-w-30"
+					title={getSelectedSortLabel()}>{getSelectedSortLabel()}</span
+				>
+			{/if}
+			<i class="icon-[mdi--chevron-down] text-xl"></i>
+		</button>
+		{#if isSortDropdownOpen}
+			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
+				{#each SORT_OPTIONS as { label, value } (value)}
+					<li>
+						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
+							{label}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</div>
+</div>
 
 {#await search}
 	<div
@@ -63,3 +116,11 @@
 		</div>
 	{/if}
 {/await}
+
+<!-- Sticky SORT & FILTER Footer -->
+<SearchOptionsFooter
+	{isSortDropdownOpen}
+	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
+	onSortOptionSelect={(value) => handleSortChange(value)}
+	sortBy={selectedSort.value}
+/>

@@ -33,3 +33,11 @@ export const KEYCLOAK_REALM = PUBLIC_KEYCLOAK_REALM;
 export const KEYCLOAK_URL = `${AUTH_BASE_URL}/realms/${KEYCLOAK_REALM}`;
 export const ACCOUNT_URL = `${KEYCLOAK_URL}/account/#/`;
 export const LOGIN_CALLBACK_URL = `${OFF_EXP_BASE_URL}/login_callback`;
+
+export const SORT_OPTIONS = [
+	{ label: 'Most scanned products', value: '-unique_scans_n' },
+	{ label: 'Products with the best Green-Score', value: 'ecoscore_grade' },
+	{ label: 'Products with the best Nutri-Score', value: 'nutriscore_grade' },
+	{ label: 'Recently added products', value: '-created_t' },
+	{ label: 'Recently modified products', value: '-last_modified_t' }
+];
