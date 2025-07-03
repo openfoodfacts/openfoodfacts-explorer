@@ -75,7 +75,6 @@
 				{/each}
 			{:then products}
 				{#each products as state (state.product.code)}
-					<!-- <SmallProductCard product={state.product} /> -->
 					<product-card
 						product={state.product}
 						darkMode={isDarkMode}
@@ -86,7 +85,7 @@
 									: null
 						}}
 						placeholderImage="/Placeholder.svg"
-						on:click={() => navigateToProduct(state.product.code)}
+						onclick={() => navigateToProduct(state.product.code)}
 					></product-card>
 				{/each}
 			{/await}
