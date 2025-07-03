@@ -1,5 +1,6 @@
 import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
+import { get } from 'svelte/store';
 
 export type AuthTokens = {
 	accessToken: string;
@@ -27,10 +28,7 @@ export async function getAccessToken(useRefreshToken: boolean = false) {
 	});
 
 	if (useRefreshToken) {
-		let refreshToken = '';
-		userAuthTokens.subscribe((tokens) => {
-			refreshToken = tokens.refreshToken;
-		})();
+		const refreshToken = get(userAuthTokens).refreshToken;
 
 		if (!refreshToken) {
 			throw new Error('No refresh token available');

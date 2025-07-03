@@ -10,7 +10,6 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
-	import { userLoginState } from '$lib/stores/userStore';
 	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
 	import { ACCOUNT_URL } from '$lib/const';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
@@ -29,6 +28,7 @@
 	initI18n();
 
 	let searchQuery: string = $state('');
+	let userLoginState: boolean = $state(false);
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -41,20 +41,15 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
-
-		let accessToken = '';
-		let refreshToken = '';
-
-		// check if the user is logged in based on the access tokens
-		userAuthTokens.subscribe((tokens) => {
-			accessToken = tokens.accessToken;
-			refreshToken = tokens.refreshToken;
-		})();
-
-		if (accessToken) {
-			userLoginState.set(true);
+	});
+	
+	// Set up a subscription to the auth tokens to keep login state in sync
+	$effect(() => {
+		const tokens = $userAuthTokens;
+		if (tokens.accessToken) {
+			userLoginState = true;
 		} else {
-			userLoginState.set(false);
+			userLoginState = false;
 		}
 	});
 
@@ -106,7 +101,7 @@
 				>
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
-				{#if $userLoginState}
+				{#if userLoginState}
 					<a class="btn btn-outline link" href={ACCOUNT_URL}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
@@ -180,7 +175,7 @@
 			<a class="btn btn-outline link" href="#">
 				{$_('prices_link')}
 			</a>
-			{#if $userLoginState}
+			{#if userLoginState}
 				<a class="btn btn-outline link" href={ACCOUNT_URL}>
 					{$_('account_link')}
 				</a>

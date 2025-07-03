@@ -3,13 +3,11 @@
 	import { getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
 	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
-	import { userLoginState } from '$lib/stores/userStore';
 
 	onMount(() => {
 		getAccessToken(false)
 			.then((jwt) => {
 				saveAuthTokens(jwt);
-				userLoginState.set(true);
 				goto('/'); // Redirect to the home page after successful login
 			})
 			.catch((error) => {
