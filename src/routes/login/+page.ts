@@ -22,6 +22,9 @@ export async function load() {
 	);
 
 	const nonce = crypto.getRandomValues(new BigUint64Array(1))[0].toString();
+
+	// Store the state parameter for validation in the callback
+	localStorage.setItem('authState', nonce);
 	const lang = 'en';
 	const redirectUri = `${OFF_EXP_BASE_URL}/login_callback`;
 

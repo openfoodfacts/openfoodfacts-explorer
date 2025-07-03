@@ -30,6 +30,7 @@
 				{ fps: 10, qrbox: getQrBoxSize() },
 				async (text) => {
 					if (text == null) return;
+					console.log('QR code detected:', text);
 					// We must stop the scanner first to release the camera
 					// This is important because:
 					// 1. It frees up camera resources

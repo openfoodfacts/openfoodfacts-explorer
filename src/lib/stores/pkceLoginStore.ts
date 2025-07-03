@@ -14,29 +14,57 @@ export const userAuthTokens = persisted<AuthTokens>('userAuthTokens', {
 	idToken: ''
 });
 
-export async function getAccessToken(useRefreshToken: boolean = false) {
+export async function getAccessToken() {
 	const verifier = localStorage.getItem('verifier');
 	const urlParams = new URLSearchParams(window.location.search);
 	const code = urlParams.get('code');
 
+	if (!code) {
+		throw new Error('Authorization code missing from callback URL');
+	}
+
+	if (!verifier) {
+		throw new Error('Code verifier missing from local storage');
+	}
+
 	const body = new URLSearchParams({
-		code: code ?? '',
+		code: code,
 		grant_type: 'authorization_code',
 		redirect_uri: LOGIN_CALLBACK_URL,
 		client_id: AUTH_PKCE_ID,
-		code_verifier: verifier ?? ''
+		code_verifier: verifier
 	});
 
-	if (useRefreshToken) {
-		const refreshToken = get(userAuthTokens).refreshToken;
+	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
+		method: 'POST',
+		body: body
+	});
 
-		if (!refreshToken) {
-			throw new Error('No refresh token available');
-		}
-
-		body.set('grant_type', 'refresh_token');
-		body.set('refresh_token', refreshToken);
+	if (!response.ok) {
+		const errorData = await response.json().catch(() => null);
+		throw new Error(
+			`Token exchange failed: ${errorData?.error_description || response.statusText}`
+		);
 	}
+
+	const jwt = await response.json();
+	localStorage.removeItem('verifier');
+	return jwt;
+}
+
+export async function refreshAccessToken() {
+	const refreshToken = get(userAuthTokens).refreshToken;
+
+	if (!refreshToken) {
+		throw new Error('No refresh token available');
+	}
+
+	const body = new URLSearchParams({
+		grant_type: 'refresh_token',
+		refresh_token: refreshToken,
+		client_id: AUTH_PKCE_ID,
+		redirect_uri: LOGIN_CALLBACK_URL
+	});
 
 	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
 		method: 'POST',
@@ -54,7 +82,7 @@ export function saveAuthTokens(jwt: {
 }) {
 	userAuthTokens.set({
 		accessToken: jwt.access_token,
-		refreshToken: jwt.refresh_token || '',
+		refreshToken: jwt.refresh_token,
 		idToken: jwt.id_token
 	});
 }
