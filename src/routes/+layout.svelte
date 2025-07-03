@@ -42,7 +42,7 @@
 		// only inject the script on the client side
 		injectSpeedInsights();
 	});
-	
+
 	// Set up a subscription to the auth tokens to keep login state in sync
 	$effect(() => {
 		const tokens = $userAuthTokens;
