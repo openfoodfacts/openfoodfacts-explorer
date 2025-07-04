@@ -6,7 +6,6 @@
 
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 
 	interface Props {
 		data: PageData;
