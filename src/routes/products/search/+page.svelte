@@ -29,8 +29,7 @@
 		[key: string]: Facet;
 	};
 
-	// Define a type for the FacetBar component instance
-	type FacetBarComponent = {
+	let facetBarComponent: {
 		getSelectedFacets: () => Array<{
 			facetKey: string;
 			facetName: string;
@@ -38,9 +37,7 @@
 			itemName: string;
 		}>;
 		removeFacet: (facetKey: string, itemKey: string) => void;
-	};
-
-	let facetBarComponent: FacetBarComponent | null = $state(null);
+	} | null = $state(null);
 
 	let selectedFacets: Array<{
 		facetKey: string;
