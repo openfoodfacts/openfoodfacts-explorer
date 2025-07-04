@@ -59,22 +59,34 @@
 		// This effect will run when facetBarComponent changes or when search results update
 		if (facetBarComponent) {
 			try {
-				selectedFacets = facetBarComponent.getSelectedFacets();
+				// Get initial selected facets
+				selectedFacets = facetBarComponent.getSelectedFacets() || [];
 			} catch (error) {
 				console.error('Error updating selected facets:', error);
+				selectedFacets = [];
 			}
 
 			search.then((result) => {
 				if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
 
-				try {
-					if (facetBarComponent) {
-						selectedFacets = facetBarComponent.getSelectedFacets();
+				// Only try to update facets if we have facets data
+				if (result.facets && Object.keys(result.facets).length > 0) {
+					try {
+						if (facetBarComponent) {
+							selectedFacets = facetBarComponent.getSelectedFacets() || [];
+						}
+					} catch (error) {
+						console.error('Error updating facets after search:', error);
+						selectedFacets = [];
 					}
-				} catch (error) {
-					console.error('Error updating facets after search:', error);
+				} else {
+					// No facets in the result
+					selectedFacets = [];
 				}
 			});
+		} else {
+			// Reset selected facets if component is not available
+			selectedFacets = [];
 		}
 	});
 
@@ -100,13 +112,17 @@
 
 	// Handle removing a facet badge
 	function handleRemoveFacet(facetKey: string, itemKey: string) {
-		if (facetBarComponent) {
-			facetBarComponent.removeFacet(facetKey, itemKey);
+		if (facetBarComponent && facetKey && itemKey) {
+			try {
+				facetBarComponent.removeFacet(facetKey, itemKey);
+			} catch (error) {
+				console.error('Error removing facet:', error);
+			}
 		}
 	}
 
-	function handleFacetChange(event: CustomEvent<{ facetKey: string; selectedItems: string[] }>) {
-		const { facetKey, selectedItems } = event.detail;
+	function handleFacetChange(event: { facetKey: string; selectedItems: string[] }) {
+		const { facetKey, selectedItems } = event;
 		const newUrl = new URL(page.url);
 		const query = newUrl.searchParams.get('q') || '';
 
@@ -199,11 +215,13 @@
 		{/if}
 
 		<!-- Facet component with binding to access its methods -->
-		<FacetBar
-			facets={result.facets as FacetsType}
-			on:facetChange={handleFacetChange}
-			bind:this={facetBarComponent}
-		/>
+		{#if result.facets && Object.keys(result.facets).length > 0}
+			<FacetBar
+				facets={result.facets as FacetsType}
+				onFacetChange={handleFacetChange}
+				bind:this={facetBarComponent}
+			/>
+		{/if}
 
 		<div
 			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"

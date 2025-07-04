@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
 	type FacetItem = {
 		key: string;
 		name: string;
@@ -18,23 +16,32 @@
 		[key: string]: Facet;
 	};
 
-	let { facets = {} as FacetsType } = $props<{ facets: FacetsType }>();
+	type FacetChangeData = {
+		facetKey: string;
+		selectedItems: string[];
+	};
+
+	let { 
+		facets,
+		onFacetChange 
+	} = $props<{ 
+		facets: FacetsType;
+		onFacetChange?: (data: FacetChangeData) => void;
+	}>();
 
 	let searchQueries = $state<Record<string, string>>(
-		Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
+		facets ? Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
 			acc[key] = '';
 			return acc;
-		}, {})
+		}, {}) : {}
 	);
 
 	let showAll = $state<Record<string, boolean>>(
-		Object.keys(facets).reduce<Record<string, boolean>>((acc, key) => {
+		facets ? Object.keys(facets).reduce<Record<string, boolean>>((acc, key) => {
 			acc[key] = false;
 			return acc;
-		}, {})
+		}, {}) : {}
 	);
-
-	const dispatch = createEventDispatcher();
 
 	const updateSearchQuery = (facetKey: string, query: string) => {
 		searchQueries = { ...searchQueries, [facetKey]: query };
@@ -60,7 +67,7 @@
 		showAll = { ...showAll, [facetKey]: !showAll[facetKey] };
 	};
 
-	function onFacetToggle(facetKey: string, itemKey: string, selected: boolean) {
+	function handleFacetToggle(facetKey: string, itemKey: string, selected: boolean) {
 		const updatedItems = facets[facetKey].items.map((item: FacetItem) =>
 			item.key === itemKey ? { ...item, selected } : item
 		);
@@ -75,14 +82,20 @@
 		const selectedItems = updatedItems
 			.filter((item: FacetItem) => item.selected)
 			.map((item: FacetItem) => item.key);
-		dispatch('facetChange', {
-			facetKey,
-			selectedItems
-		});
+			
+		// Call the callback with the facet change data if it exists
+		if (onFacetChange) {
+			onFacetChange({
+				facetKey,
+				selectedItems
+			});
+		}
 	}
 
 	// Export function to get all selected items across all facets
 	export function getSelectedFacets() {
+		if (!facets) return [];
+		
 		const selected = Object.entries(facets).flatMap(([facetKey, facet]) => {
 			const typedFacet = facet as Facet;
 			return typedFacet.items
@@ -99,19 +112,20 @@
 
 	// Export function to remove a selected facet
 	export function removeFacet(facetKey: string, itemKey: string) {
-		onFacetToggle(facetKey, itemKey, false);
+		handleFacetToggle(facetKey, itemKey, false);
 	}
 </script>
 
 <div class="menu menu-horizontal w-full justify-evenly rounded-lg p-4">
-	{#each Object.entries(facets) as [facetKey, facetObj] (facetKey)}
-		{@const facet = facetObj as Facet}
-		<div class="dropdown dropdown-center">
-			<button type="button" class="btn flex w-58 items-center justify-start gap-2">
-				{facet.name} ({facet.items.length})
-				<span class="flex-grow"></span>
-				<i class="icon-[mdi--chevron-down] text-xl"></i>
-			</button>
+	{#if facets && Object.keys(facets).length > 0}
+		{#each Object.entries(facets) as [facetKey, facetObj] (facetKey)}
+			{@const facet = facetObj as Facet}
+			<div class="dropdown dropdown-center">
+				<button type="button" class="btn flex w-58 items-center justify-start gap-2">
+					{facet.name} ({facet.items.length})
+					<span class="flex-grow"></span>
+					<i class="icon-[mdi--chevron-down] text-xl"></i>
+				</button>
 			<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
 				<li>
 					<input
@@ -131,7 +145,7 @@
 								class="checkbox checkbox-secondary"
 								checked={item.selected}
 								onchange={(e) =>
-									onFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
+									handleFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
 							/>
 							<span class="ml-2">{item.name} ({item.count})</span>
 						</label>
@@ -145,4 +159,5 @@
 			</ul>
 		</div>
 	{/each}
+	{/if}
 </div>
