@@ -21,26 +21,27 @@
 		selectedItems: string[];
 	};
 
-	let { 
-		facets,
-		onFacetChange 
-	} = $props<{ 
+	let { facets, onFacetChange } = $props<{
 		facets: FacetsType;
 		onFacetChange?: (data: FacetChangeData) => void;
 	}>();
 
 	let searchQueries = $state<Record<string, string>>(
-		facets ? Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
-			acc[key] = '';
-			return acc;
-		}, {}) : {}
+		facets
+			? Object.keys(facets).reduce<Record<string, string>>((acc, key) => {
+					acc[key] = '';
+					return acc;
+				}, {})
+			: {}
 	);
 
 	let showAll = $state<Record<string, boolean>>(
-		facets ? Object.keys(facets).reduce<Record<string, boolean>>((acc, key) => {
-			acc[key] = false;
-			return acc;
-		}, {}) : {}
+		facets
+			? Object.keys(facets).reduce<Record<string, boolean>>((acc, key) => {
+					acc[key] = false;
+					return acc;
+				}, {})
+			: {}
 	);
 
 	const updateSearchQuery = (facetKey: string, query: string) => {
@@ -82,7 +83,7 @@
 		const selectedItems = updatedItems
 			.filter((item: FacetItem) => item.selected)
 			.map((item: FacetItem) => item.key);
-			
+
 		// Call the callback with the facet change data if it exists
 		if (onFacetChange) {
 			onFacetChange({
@@ -95,7 +96,7 @@
 	// Export function to get all selected items across all facets
 	export function getSelectedFacets() {
 		if (!facets) return [];
-		
+
 		const selected = Object.entries(facets).flatMap(([facetKey, facet]) => {
 			const typedFacet = facet as Facet;
 			return typedFacet.items
@@ -126,38 +127,42 @@
 					<span class="flex-grow"></span>
 					<i class="icon-[mdi--chevron-down] text-xl"></i>
 				</button>
-			<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
-				<li>
-					<input
-						type="text"
-						placeholder="Search..."
-						class="input input-bordered mb-2 w-full"
-						bind:value={searchQueries[facetKey]}
-						oninput={(e) =>
-							updateSearchQuery(facetKey, (e.target as HTMLInputElement)?.value ?? '')}
-					/>
-				</li>
-				{#each getVisibleOptions(facet.items, searchQueries[facetKey], facetKey) as item (item.key)}
+				<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
 					<li>
-						<label class="flex items-center">
-							<input
-								type="checkbox"
-								class="checkbox checkbox-secondary"
-								checked={item.selected}
-								onchange={(e) =>
-									handleFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
-							/>
-							<span class="ml-2">{item.name} ({item.count})</span>
-						</label>
+						<input
+							type="text"
+							placeholder="Search..."
+							class="input input-bordered mb-2 w-full"
+							bind:value={searchQueries[facetKey]}
+							oninput={(e) =>
+								updateSearchQuery(facetKey, (e.target as HTMLInputElement)?.value ?? '')}
+						/>
 					</li>
-				{/each}
-				<li>
-					<button type="button" class="btn btn-link w-full" onclick={() => toggleShowAll(facetKey)}>
-						{showAll[facetKey] ? 'Show Less' : 'See All'}
-					</button>
-				</li>
-			</ul>
-		</div>
-	{/each}
+					{#each getVisibleOptions(facet.items, searchQueries[facetKey], facetKey) as item (item.key)}
+						<li>
+							<label class="flex items-center">
+								<input
+									type="checkbox"
+									class="checkbox checkbox-secondary"
+									checked={item.selected}
+									onchange={(e) =>
+										handleFacetToggle(facetKey, item.key, (e.target as HTMLInputElement)?.checked)}
+								/>
+								<span class="ml-2">{item.name} ({item.count})</span>
+							</label>
+						</li>
+					{/each}
+					<li>
+						<button
+							type="button"
+							class="btn btn-link w-full"
+							onclick={() => toggleShowAll(facetKey)}
+						>
+							{showAll[facetKey] ? 'Show Less' : 'See All'}
+						</button>
+					</li>
+				</ul>
+			</div>
+		{/each}
 	{/if}
 </div>
