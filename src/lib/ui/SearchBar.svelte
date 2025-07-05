@@ -136,7 +136,7 @@
 			href="/qr"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
-			class="btn btn-secondary join-item ms-2 hidden px-5 text-lg md:inline-flex"
+			class="btn btn-secondary join-item ms-2 text-lg"
 		>
 			<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
 		</a>
