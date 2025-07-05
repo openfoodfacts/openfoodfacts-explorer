@@ -17,6 +17,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
+	import { extractQuery } from '$lib/facets';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -41,7 +42,8 @@
 	});
 
 	function updateSearchQuery(url: URL) {
-		searchQuery = url.searchParams.get('q') ?? '';
+		const q = url.searchParams.get('q') ?? '';
+		searchQuery = extractQuery(q);
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {

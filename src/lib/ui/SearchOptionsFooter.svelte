@@ -2,20 +2,18 @@
 	import { SORT_OPTIONS } from '$lib/const';
 
 	let {
-		isSortDropdownOpen,
-		onSortClick = () => {},
 		onSortOptionSelect = () => {},
 		sortBy = ''
 	}: {
-		isSortDropdownOpen: boolean;
-		onSortClick: () => void;
 		onSortOptionSelect: (value: string) => void;
 		sortBy: string;
 	} = $props();
+
+	let sortDropdownOpen = $state(false);
 </script>
 
 <footer class="search-options-footer">
-	{#if isSortDropdownOpen}
+	{#if sortDropdownOpen}
 		<div
 			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border py-2 shadow-xl"
 		>
@@ -37,21 +35,23 @@
 	<div class="flex h-full w-full">
 		<button
 			class="border-base-200 flex h-full w-1/2 flex-col items-center justify-center border-r py-1 focus:outline-none"
-			onclick={onSortClick}
+			onclick={() => {
+				sortDropdownOpen = !sortDropdownOpen;
+			}}
 			aria-label="Sort"
 		>
-			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide"
-				>Sort <i class="icon-[mdi--sort] ml-2 text-lg"></i></span
-			>
+			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
+				Sort <i class="icon-[mdi--sort] ml-2 text-lg"></i>
+			</span>
 		</button>
 		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
 			aria-label="Filter"
 		>
-			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide"
-				>Filter <i class="icon-[mdi--filter] ml-2 text-lg"></i></span
-			>
+			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
+				Filter <i class="icon-[mdi--filter] ml-2 text-lg"></i>
+			</span>
 		</button>
 	</div>
 </footer>
