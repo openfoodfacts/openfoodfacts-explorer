@@ -2,15 +2,17 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import '../app.css';
+	import 'leaflet/dist/leaflet.css';
+	import '@fontsource-variable/plus-jakarta-sans';
+	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { ACCOUNT_URL } from '$lib/const';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
-
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
@@ -26,6 +28,7 @@
 	initI18n();
 
 	let searchQuery: string = $state('');
+	let userLoginState: boolean = $state(false);
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -38,6 +41,16 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
+	});
+
+	// Set up a subscription to the auth tokens to keep login state in sync
+	$effect(() => {
+		const tokens = $userAuthTokens;
+		if (tokens.accessToken) {
+			userLoginState = true;
+		} else {
+			userLoginState = false;
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -88,6 +101,12 @@
 				>
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
+				{#if userLoginState}
+					<a class="btn btn-outline link" href={ACCOUNT_URL}>Account</a>
+					<a class="btn btn-outline link" href="/logout">Log out</a>
+				{:else}
+					<a class="btn btn-outline link" href="/login"> Login </a>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -144,10 +163,10 @@
 			<a class="btn btn-outline link" href="/settings">
 				{$_('settings_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/discover">
 				{$_('discover_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/contribute">
 				{$_('contribute_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
@@ -156,6 +175,18 @@
 			<a class="btn btn-outline link" href="#">
 				{$_('prices_link')}
 			</a>
+			{#if userLoginState}
+				<a class="btn btn-outline link" href={ACCOUNT_URL}>
+					{$_('account_link')}
+				</a>
+				<a class="btn btn-outline link" href="/logout">
+					{$_('logout_link')}
+				</a>
+			{:else}
+				<a class="btn btn-outline link" href="/login">
+					{$_('login_link')}
+				</a>
+			{/if}
 			<a
 				class="btn btn-outline link"
 				href={GITHUB_REPO_URL}
