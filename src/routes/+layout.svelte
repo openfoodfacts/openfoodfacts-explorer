@@ -17,6 +17,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
+	import { extractQuery } from '$lib/facets';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -40,16 +41,9 @@
 		injectSpeedInsights();
 	});
 
-	function extractFreeTextFromLuceneQuery(query: string): string {
-		if (!query) return '';
-		let withoutFields = query.replace(/\b\w+:("[^"]*"|'[^']*'|\S+)/g, '').trim();
-		withoutFields = withoutFields.replace(/\b(AND|OR|NOT)\b/gi, '').trim();
-		return withoutFields.replace(/\s+/g, ' ').trim();
-	}
-
 	function updateSearchQuery(url: URL) {
 		const q = url.searchParams.get('q') ?? '';
-		searchQuery = extractFreeTextFromLuceneQuery(q);
+		searchQuery = extractQuery(q);
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {

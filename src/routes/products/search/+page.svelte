@@ -1,90 +1,37 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
-	import { _ } from '$lib/i18n';
-	import type { PageData } from './$types';
-	import Pagination from '$lib/Pagination.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
-	import Metadata from '$lib/Metadata.svelte';
-	import FacetBar from '$lib/ui/FacetBar.svelte';
+
+	import { _ } from '$lib/i18n';
+
+	import { navigating, page } from '$app/state';
 	import { goto } from '$app/navigation';
+
 	import { SORT_OPTIONS } from '$lib/const';
+
+	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import FacetBar from './FacetBar.svelte';
 
-	// Define types for facets
-	type FacetItem = {
-		key: string;
-		name: string;
-		count: number;
-		selected: boolean;
-	};
-
-	type Facet = {
-		name: string;
-		items: FacetItem[];
-		count_error_margin: number;
-	};
-
-	type FacetsType = {
-		[key: string]: Facet;
-	};
-
-	let facetBarComponent: {
-		getSelectedFacets: () => Array<{
-			facetKey: string;
-			facetName: string;
-			itemKey: string;
-			itemName: string;
-		}>;
-		removeFacet: (facetKey: string, itemKey: string) => void;
-	} | null = $state(null);
-
-	let selectedFacets: Array<{
-		facetKey: string;
-		facetName: string;
-		itemKey: string;
-		itemName: string;
-	}> = $state([]);
+	import type { PageData } from './$types';
+	import {
+		addIncludeFacet,
+		extractQuery,
+		removeIncludeFacet,
+		toLuceneString,
+		type FacetsSelection
+	} from '$lib/facets';
 
 	type Props = { data: PageData };
 	let { data }: Props = $props();
-
-	let { search } = $derived(data);
+	let { search: result } = $derived(data);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
-		// This effect will run when facetBarComponent changes or when search results update
-		if (facetBarComponent) {
-			try {
-				// Get initial selected facets
-				selectedFacets = facetBarComponent.getSelectedFacets() || [];
-			} catch (error) {
-				console.error('Error updating selected facets:', error);
-				selectedFacets = [];
-			}
-
-			search.then((result) => {
-				if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
-
-				// Only try to update facets if we have facets data
-				if (result.facets && Object.keys(result.facets).length > 0) {
-					try {
-						if (facetBarComponent) {
-							selectedFacets = facetBarComponent.getSelectedFacets() || [];
-						}
-					} catch (error) {
-						console.error('Error updating facets after search:', error);
-						selectedFacets = [];
-					}
-				} else {
-					// No facets in the result
-					selectedFacets = [];
-				}
-			});
-		} else {
-			// Reset selected facets if component is not available
-			selectedFacets = [];
-		}
+		// Track search queries that return no results
+		console.debug('Search result:', result);
+		if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
 	});
 
 	let selectedSort = $derived.by(() => {
@@ -93,55 +40,38 @@
 		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
 	});
 
-	let isSortDropdownOpen: boolean = $state(false);
+	let sortDropdown: HTMLDetailsElement | null = $state(null);
 
 	function getSelectedSortLabel() {
 		return selectedSort.label;
 	}
 
 	function handleSortChange(value: string) {
+		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
+
 		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
-		isSortDropdownOpen = false;
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('sort_by', selectedSort.value);
 		goto(newUrl.toString());
 	}
 
-	// Handle removing a facet badge
-	function handleRemoveFacet(facetKey: string, itemKey: string) {
-		if (facetBarComponent && facetKey && itemKey) {
-			try {
-				facetBarComponent.removeFacet(facetKey, itemKey);
-			} catch (error) {
-				console.error('Error removing facet:', error);
-			}
-		}
-	}
+	// State to hold selected facets
+	//  { key1 => { include: ['value1', 'value2'], exclude: ['value3'] } }
+	let selectedFacets: FacetsSelection = $derived.by(() => {
+		const entries = Object.entries(result.facets).map(([key, facet]) => {
+			const selectedItems = facet.items.filter((item) => item.selected).map((item) => item.key);
+			return [key, { include: selectedItems, exclude: [] }];
+		});
+		return Object.fromEntries(entries);
+	});
 
-	function handleFacetChange(event: { facetKey: string; selectedItems: string[] }) {
-		const { facetKey, selectedItems } = event;
+	function refreshQuery() {
+		// recreate the full lucene query with selected facets
+		const mainQuery = extractQuery(data.query);
+		const newQuery = toLuceneString(mainQuery, selectedFacets);
+
 		const newUrl = new URL(page.url);
-		const query = newUrl.searchParams.get('q') || '';
-
-		// Get current URL query and remove any existing facet filters for this key
-		let baseQuery = query
-			.replace(new RegExp(`\\s*${facetKey}\\s*:\\s*\\([^)]*\\)`, 'g'), '')
-			.replace(new RegExp(`\\s*AND\\s*${facetKey}\\s*:\\s*"[^"]*"`, 'g'), '')
-			.replace(new RegExp(`\\s*${facetKey}\\s*:\\s*"[^"]*"`, 'g'), '')
-			.trim();
-
-		// Add new facet filter if items are selected
-		if (selectedItems.length > 0) {
-			if (selectedItems.length === 1) {
-				baseQuery += ` ${baseQuery ? 'AND ' : ''}${facetKey}:"${selectedItems[0]}"`;
-			} else {
-				const facetQuery = `${facetKey}:(${selectedItems.join(' OR ')})`;
-				baseQuery += ` ${baseQuery ? 'AND ' : ''}${facetQuery}`;
-			}
-		}
-
-		// Update the URL with the new query
-		newUrl.searchParams.set('q', baseQuery);
+		newUrl.searchParams.set('q', newQuery);
 		goto(newUrl.toString());
 	}
 </script>
@@ -151,23 +81,32 @@
 	description={$_('search.description', { values: { query: data.query } })}
 />
 
-<!-- Sort By Dropdown -->
-<div class="my-4 hidden justify-end lg:flex">
-	<div class="dropdown dropdown-center md:w-50 lg:w-60">
-		<button
-			class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
-			onclick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
-		>
-			Sort by
-			{#if getSelectedSortLabel()}
-				: <span
-					class="inline-block truncate align-middle font-semibold md:max-w-20 lg:max-w-30"
-					title={getSelectedSortLabel()}>{getSelectedSortLabel()}</span
-				>
-			{/if}
-			<i class="icon-[mdi--chevron-down] text-xl"></i>
-		</button>
-		{#if isSortDropdownOpen}
+<div class="mb-4 flex w-full items-end justify-center gap-2 max-md:flex-col">
+	<div class="flex-1 max-md:w-full">
+		<label>
+			Raw Search Query:
+			<input
+				type="text"
+				placeholder={$_('search.search_placeholder')}
+				class="input wrap w-full font-mono break-words"
+				value={data.query}
+				disabled
+			/>
+		</label>
+	</div>
+
+	<!-- Sort By Dropdown -->
+	<div class="flex-0 max-lg:hidden">
+		Sort by:
+		<details class="dropdown dropdown-center md:w-50 lg:w-60" bind:this={sortDropdown}>
+			<summary
+				class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
+			>
+				<span class="inline-block truncate align-middle font-semibold">
+					{getSelectedSortLabel()}
+				</span>
+				<i class="icon-[mdi--chevron-down] text-xl"></i>
+			</summary>
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
@@ -177,83 +116,65 @@
 					</li>
 				{/each}
 			</ul>
-		{/if}
+		</details>
 	</div>
 </div>
 
-{#await search}
-	<div
-		class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
-	>
-		{#each Array(6) as _, i (i)}
-			<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
-		{/each}
+{#if result.facets && Object.keys(result.facets).length > 0}
+	<div class="my-4">
+		<FacetBar
+			facets={result.facets}
+			onAddFacet={(key, val) => {
+				selectedFacets = addIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+			onRemoveFacet={(key, val) => {
+				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+		/>
 	</div>
-{:then result}
-	{#if result.count > 0}
-		<!-- Selected facets badges section -->
-		{#if selectedFacets.length > 0}
-			<div class="mb-4 flex flex-wrap items-center gap-2">
-				<span class="font-medium">Active filters:</span>
-				{#each selectedFacets as selectedFacet (selectedFacet.facetKey + '-' + selectedFacet.itemKey)}
-					<div class="badge badge-secondary gap-1 p-3">
-						<span>{selectedFacet.itemName}</span>
-						<button
-							type="button"
-							class="btn btn-ghost btn-xs btn-circle"
-							aria-label="Remove filter"
-							onclick={() => handleRemoveFacet(selectedFacet.facetKey, selectedFacet.itemKey)}
-						>
-							<i class="icon-[mdi--close] text-xs"></i>
-						</button>
-					</div>
-				{/each}
+{/if}
+
+{#if result.count > 0}
+	<!-- Facet component with binding to access its methods -->
+
+	<div class="relative mt-4 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{#each result.hits as product (product.code)}
+			<SmallProductCard {product} />
+		{/each}
+		{#if navigating.to != null}
+			<div
+				class="bg-base-100/70 absolute inset-0 z-10 flex cursor-not-allowed items-start justify-center"
+			>
+				<span class="loading loading-spinner loading-lg mt-10"></span>
 			</div>
 		{/if}
+	</div>
 
-		<!-- Facet component with binding to access its methods -->
-		{#if result.facets && Object.keys(result.facets).length > 0}
-			<FacetBar
-				facets={result.facets as FacetsType}
-				onFacetChange={handleFacetChange}
-				bind:this={facetBarComponent}
-			/>
-		{/if}
-
-		<div
-			class="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
-		>
-			{#each result.hits as product (product.code)}
-				<SmallProductCard {product} />
-			{/each}
-		</div>
-
-		<!-- Pagination -->
-		<div class="mt-8">
-			<Pagination
-				page={result.page}
-				totalPages={result.page_count}
-				pageUrl={(p: number) => {
-					const newUrl = new URL(page.url);
-					newUrl.searchParams.set('page', p.toString());
-					return newUrl.toString();
-				}}
-			/>
-		</div>
-	{:else}
-		<div
-			class="flex w-full grid-cols-1 flex-col items-center gap-4 py-50 md:h-auto md:pt-20 md:pb-30 lg:gap-2"
-		>
-			<p class="mb-4 text-3xl font-bold">{$_('search.product_not_found')}</p>
-			<p>{$_('search.product_not_found_desc')}</p>
-		</div>
-	{/if}
-{/await}
+	<!-- Pagination -->
+	<div class="mt-8">
+		<Pagination
+			page={result.page}
+			totalPages={result.page_count}
+			pageUrl={(p: number) => {
+				const newUrl = new URL(page.url);
+				newUrl.searchParams.set('page', p.toString());
+				return newUrl.toString();
+			}}
+		/>
+	</div>
+{:else}
+	<div
+		class="flex w-full grid-cols-1 flex-col items-center gap-4 py-50 md:h-auto md:pt-20 md:pb-30 lg:gap-2"
+	>
+		<p class="mb-4 text-3xl font-bold">{$_('search.product_not_found')}</p>
+		<p>{$_('search.product_not_found_desc')}</p>
+	</div>
+{/if}
 
 <!-- Sticky SORT & FILTER Footer -->
 <SearchOptionsFooter
-	{isSortDropdownOpen}
-	onSortClick={() => (isSortDropdownOpen = !isSortDropdownOpen)}
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
 />
