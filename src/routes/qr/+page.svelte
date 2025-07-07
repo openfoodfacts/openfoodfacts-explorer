@@ -47,10 +47,10 @@
 					// 2. Prevents memory leaks
 					// 3. Ensures the camera is available for other applications
 					await scanner.stop();
-					
+
 					// Log before API call
 					console.log('API called');
-					
+
 					try {
 						// Use getProduct to check if product exists before navigating
 						const productState = await getProduct(text, fetch);
@@ -97,18 +97,18 @@
 	onDestroy(() => {
 		cleanupScanner();
 	});
-	
+
 	function addNewProduct() {
 		// Navigate to the product edit page with the scanned barcode
 		if (lastScannedCode) {
 			goto(`/products/${lastScannedCode}/edit`);
 		}
 	}
-	
+
 	function restartScanner() {
 		productNotFound = false;
 		isScanning = true;
-		
+
 		// Try to restart the scanner if it exists
 		if (html5QrCode) {
 			html5QrCode.start(
@@ -123,7 +123,7 @@
 					console.log('Product detected:', text);
 					lastScannedCode = text;
 					isScanning = false;
-					
+
 					await html5QrCode?.stop();
 					console.log('API called');
 					await goto('/products/' + text);
@@ -143,21 +143,13 @@
 {:else if productNotFound}
 	<div class="flex flex-col items-center justify-center p-8 text-center">
 		<h2 class="mb-2 text-xl font-semibold">Product Not Found</h2>
-		<p class="mb-6 text-gray-400">Barcode {lastScannedCode} was scanned successfully, but no product was found in our database.</p>
-		
+		<p class="mb-6 text-gray-400">
+			Barcode {lastScannedCode} was scanned successfully, but no product was found in our database.
+		</p>
+
 		<div class="flex gap-4">
-			<button 
-				class="btn btn-outline" 
-				onclick={addNewProduct}
-			>
-				Add New Product
-			</button>
-			<button 
-				class="btn btn-outline" 
-				onclick={restartScanner}
-			>
-				Scan Again
-			</button>
+			<button class="btn btn-outline" onclick={addNewProduct}> Add New Product </button>
+			<button class="btn btn-outline" onclick={restartScanner}> Scan Again </button>
 		</div>
 	</div>
 {:else}

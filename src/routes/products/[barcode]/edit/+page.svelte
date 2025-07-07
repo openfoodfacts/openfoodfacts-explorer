@@ -340,14 +340,7 @@
 	});
 
 	let currentStep = $state(0);
-	const steps = [
-		'Images',
-		'Basic Info',
-		'Languages',
-		'Ingredients',
-		'Nutrition',
-		'Comment'
-	];
+	const steps = ['Images', 'Basic Info', 'Languages', 'Ingredients', 'Nutrition', 'Comment'];
 
 	function nextStep() {
 		console.log('Next step', currentStep, steps.length);
@@ -364,7 +357,7 @@
 
 <div class="space-y-8">
 	<!-- Stepper -->
-	<ul class="steps w-full mb-6">
+	<ul class="steps mb-6 w-full">
 		{#each steps as step, i}
 			<li class="step {i <= currentStep ? 'step-primary' : ''}">{step}</li>
 		{/each}
@@ -385,19 +378,35 @@
 			<div class="card-body">
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.quantity')}</label>
-					<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
+					<input
+						type="text"
+						class="input input-bordered w-full"
+						bind:value={$productStore.quantity}
+					/>
 				</div>
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.emb_code')}</label>
-					<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
+					<input
+						type="text"
+						class="input input-bordered w-full"
+						bind:value={$productStore.emb_codes}
+					/>
 				</div>
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.packaging')}</label>
-					<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
+					<input
+						type="text"
+						class="input input-bordered w-full"
+						bind:value={$productStore.packaging}
+					/>
 				</div>
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.manufacturing_places')}</label>
-					<input type="text" class="input input-bordered w-full" bind:value={$productStore.manufacturing_places} />
+					<input
+						type="text"
+						class="input input-bordered w-full"
+						bind:value={$productStore.manufacturing_places}
+					/>
 				</div>
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.categories')}</label>
@@ -438,20 +447,28 @@
 	{#if currentStep === 2}
 		<div class="card bg-base-100 shadow-md">
 			<div class="card-body">
-				<div class="collapse collapse-arrow bg-base-200">
+				<div class="collapse-arrow bg-base-200 collapse">
 					<input type="checkbox" />
 					<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
 					<div class="collapse-content">
 						<label class="input w-full">
 							<span class="icon-[mdi--search] h-5 w-5"></span>
-							<input type="search" placeholder={$_('product.edit.search_languages')} bind:value={languageSearch} />
+							<input
+								type="search"
+								placeholder={$_('product.edit.search_languages')}
+								bind:value={languageSearch}
+							/>
 						</label>
 						{#if filteredLanguages.length === 0}
 							<p class="mt-4 text-center opacity-70">{$_('product.edit.no_languages_found')}</p>
 						{:else}
-							<div class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto">
+							<div
+								class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
+							>
 								{#each filteredLanguages as code (code)}
-									<button class="btn btn-ghost" onclick={() => addLanguage(code)}>{getLanguage(code)}</button>
+									<button class="btn btn-ghost" onclick={() => addLanguage(code)}
+										>{getLanguage(code)}</button
+									>
 								{/each}
 							</div>
 						{/if}
@@ -459,10 +476,20 @@
 				</div>
 				<div class="tabs tabs-box mt-4">
 					{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-						<input type="radio" name="name_tabs" class="tab" aria-label={getLanguage(code)} defaultChecked={code === $productStore.lang} />
+						<input
+							type="radio"
+							name="name_tabs"
+							class="tab"
+							aria-label={getLanguage(code)}
+							defaultChecked={code === $productStore.lang}
+						/>
 						<div class="tab-content form-control p-6">
 							<label class="label">{$_('product.edit.name')} ({getLanguage(code)})</label>
-							<input type="text" class="input input-bordered w-full" bind:value={$productStore[`product_name_${code}`]} />
+							<input
+								type="text"
+								class="input input-bordered w-full"
+								bind:value={$productStore[`product_name_${code}`]}
+							/>
 						</div>
 					{/each}
 					{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
@@ -480,16 +507,27 @@
 				<h3 class="mb-4 text-2xl font-bold">{$_('product.edit.ingredients')}</h3>
 				<div class="tabs tabs-box">
 					{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-						<input type="radio" name="ingredients_tabs" class="tab" aria-label={getLanguage(code)} defaultChecked={code === $productStore.lang} />
+						<input
+							type="radio"
+							name="ingredients_tabs"
+							class="tab"
+							aria-label={getLanguage(code)}
+							defaultChecked={code === $productStore.lang}
+						/>
 						<div class="tab-content form-control p-6">
 							{#if getIngredientsImage(code)}
 								<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
 							{:else}
 								<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
 							{/if}
-							<label class="label">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
+							<label class="label"
+								>{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label
+							>
 							<div class="form-control mb-4">
-								<textarea class="textarea textarea-bordered h-40 w-full" bind:value={$productStore[`ingredients_text_${code}`]}></textarea>
+								<textarea
+									class="textarea textarea-bordered h-40 w-full"
+									bind:value={$productStore[`ingredients_text_${code}`]}
+								></textarea>
 							</div>
 						</div>
 					{/each}
@@ -508,11 +546,19 @@
 				<h3 class="mb-4 text-2xl font-bold">{$_('product.edit.nutritional_information')}</h3>
 				<div class="form-control mb-4">
 					<label class="label">{$_('product.edit.serving_size')}</label>
-					<input type="text" class="input input-bordered w-full" bind:value={$productStore.serving_size} />
+					<input
+						type="text"
+						class="input input-bordered w-full"
+						bind:value={$productStore.serving_size}
+					/>
 				</div>
 				<div class="form-control mb-4">
 					<label class="label cursor-pointer justify-start gap-2">
-						<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={$productStore.no_nutrition_data}
+						/>
 						<span class="label-text">{$_('product.edit.no_nutrition_data')}</span>
 					</label>
 				</div>
@@ -520,39 +566,84 @@
 					<div class="grid grid-cols-2 gap-4">
 						<div class="form-control mb-4">
 							<label class="label">Energy (kJ)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['energy-kj_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Energy (kcal)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Fat (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.fat_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'fat_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.fat_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Saturated Fat (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Carbohydrates (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.carbohydrates_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.carbohydrates_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Sugars (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.sugars_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'sugars_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.sugars_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Proteins (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.proteins_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'proteins_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.proteins_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Salt (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.salt_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'salt_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.salt_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
+							/>
 						</div>
 						<div class="form-control mb-4">
 							<label class="label">Sodium (g)</label>
-							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.sodium_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'sodium_100g')} />
+							<input
+								type="number"
+								class="input input-bordered w-full"
+								value={$productStore.nutriments?.sodium_100g ?? ''}
+								oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
+							/>
 						</div>
 					</div>
 				{:else}
@@ -568,14 +659,20 @@
 			<div class="card-body">
 				<div class="form-control mb-4">
 					<label class="label" for="comment">{$_('product.edit.comment')}</label>
-					<input id="comment" type="text" class="input input-bordered w-full" placeholder={$_('product.edit.comment_placeholder')} bind:value={$comment} />
+					<input
+						id="comment"
+						type="text"
+						class="input input-bordered w-full"
+						placeholder={$_('product.edit.comment_placeholder')}
+						bind:value={$comment}
+					/>
 				</div>
 			</div>
 		</div>
 	{/if}
 
 	<!-- Navigation Buttons -->
-	<div class="flex flex-col sm:flex-row gap-2 mt-8 justify-end items-center">
+	<div class="mt-8 flex flex-col items-center justify-end gap-2 sm:flex-row">
 		{#if currentStep > 0}
 			<button class="btn btn-outline w-full sm:w-auto" onclick={prevStep} type="button">
 				<span class="icon-[mdi--arrow-left] mr-2"></span>{$_('common.back')}
@@ -589,7 +686,12 @@
 				{$_('common.skip')}
 			</button>
 		{:else}
-			<button class="btn btn-success w-full sm:w-auto" onclick={submit} disabled={isSubmitting} type="button">
+			<button
+				class="btn btn-success w-full sm:w-auto"
+				onclick={submit}
+				disabled={isSubmitting}
+				type="button"
+			>
 				{#if isSubmitting}
 					<span class="loading loading-spinner loading-sm mr-2"></span>
 				{/if}
