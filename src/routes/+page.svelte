@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
 	import Card from '$lib/ui/Card.svelte';
@@ -13,10 +12,6 @@
 
 	let { data }: Props = $props();
 
-	// TODO: Find a better way to handle dark mode
-	// Track dark mode based on system preference
-	let isDarkMode = $state(false);
-
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
 
@@ -25,20 +20,6 @@
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
-
-	onMount(() => {
-		isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		const handleThemeChange = (e: MediaQueryListEvent) => {
-			isDarkMode = e.matches;
-		};
-
-		darkModeMediaQuery.addEventListener('change', handleThemeChange);
-
-		return () => {
-			darkModeMediaQuery.removeEventListener('change', handleThemeChange);
-		};
-	});
 </script>
 
 <svelte:head>
@@ -76,7 +57,6 @@
 				{#each products as state (state.product.code)}
 					<product-card
 						product={state.product}
-						darkMode={isDarkMode}
 						navigating={{
 							to:
 								navigatingTo === state.product.code
@@ -91,9 +71,9 @@
 		</div>
 	</div>
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-		<donation-banner darkMode={isDarkMode}></donation-banner>
+		<donation-banner></donation-banner>
 	</div>
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-		<mobile-badges darkMode={isDarkMode}></mobile-badges>
+		<mobile-badges></mobile-badges>
 	</div>
 </div>
