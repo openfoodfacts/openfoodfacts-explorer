@@ -338,289 +338,268 @@
 			console.debug('Product store changed', it);
 		});
 	});
+
+	let currentStep = $state(0);
+	const steps = [
+		'Images',
+		'Basic Info',
+		'Languages',
+		'Ingredients',
+		'Nutrition',
+		'Comment'
+	];
+
+	function nextStep() {
+		console.log('Next step', currentStep, steps.length);
+		if (currentStep < steps.length - 1) {
+			currentStep = currentStep + 1;
+		}
+	}
+	function prevStep() {
+		if (currentStep > 0) {
+			currentStep = currentStep - 1;
+		}
+	}
 </script>
 
-<div class="space-y-4">
-	<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
-		<input type="checkbox" />
-		<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
-		<div class="collapse-content text-sm">
-			<label class="input w-full">
-				<span class="icon-[mdi--search] h-5 w-5"></span>
-				<input
-					type="search"
-					placeholder={$_('product.edit.search_languages')}
-					bind:value={languageSearch}
-				/>
-			</label>
-			{#if filteredLanguages.length === 0}
-				<p class="mt-4 text-center opacity-70">{$_('product.edit.no_languages_found')}</p>
-			{:else}
-				<div
-					class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
-				>
-					{#each filteredLanguages as code (code)}
-						<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
-							{getLanguage(code)}
-						</button>
-					{/each}
-				</div>
-			{/if}
-		</div>
-	</div>
-
-	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-			<input
-				type="radio"
-				name="name_tabs"
-				class="tab"
-				aria-label={getLanguage(code)}
-				defaultChecked={code === $productStore.lang}
-			/>
-			<div class="tab-content form-control p-6">
-				<label for="">{$_('product.edit.name')} ({getLanguage(code)})</label>
-				<input
-					type="text"
-					class="input input-bordered w-full"
-					bind:value={$productStore[`product_name_${code}`]}
-				/>
-			</div>
+<div class="space-y-8">
+	<!-- Stepper -->
+	<ul class="steps w-full mb-6">
+		{#each steps as step, i}
+			<li class="step {i <= currentStep ? 'step-primary' : ''}">{step}</li>
 		{/each}
+	</ul>
 
-		{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
-			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
-		{/if}
-	</div>
+	<!-- Step 1: Images -->
+	{#if currentStep === 0}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<PhotoManager product={$productStore} />
+			</div>
+		</div>
+	{/if}
 
-	<Card>
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.quantity')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
+	<!-- Step 2: Basic Info -->
+	{#if currentStep === 1}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.quantity')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.emb_code')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.packaging')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.manufacturing_places')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.manufacturing_places} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.categories')}</label>
+					<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.labels')}</label>
+					<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.brands')}</label>
+					<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.stores')}</label>
+					<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.origins')}</label>
+					<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.countries')}</label>
+					<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
+				</div>
+				<div class="form-control mb-4">
+					<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.website_url')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
+				</div>
+			</div>
 		</div>
+	{/if}
 
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.emb_code')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.packaging')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.manufacturing_places')}</label>
-			<input
-				type="text"
-				class="input input-bordered w-full"
-				bind:value={$productStore.manufacturing_places}
-			/>
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.categories')}</label>
-			<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.labels')}</label>
-			<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.brands')}</label>
-			<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.stores')}</label>
-			<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.origins')}</label>
-			<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.countries')}</label>
-			<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
-		</div>
-
-		<div class="mb-4">
-			<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
-		</div>
-
-		<div class="mb-4">
-			<label for="">{$_('product.edit.website_url')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
-		</div>
-	</Card>
-
-	<Card>
-		<PhotoManager product={$productStore} />
-	</Card>
-
-	<Card>
-		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
-		<div class="tabs tabs-box">
-			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-				<input
-					type="radio"
-					name="ingredients_tabs"
-					class="tab"
-					aria-label={getLanguage(code)}
-					defaultChecked={code === $productStore.lang}
-				/>
-				<div class="tab-content form-control p-6">
-					{#if getIngredientsImage(code)}
-						<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
-					{:else}
-						<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
-					{/if}
-					<label for="">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
-					<div class="form-control mb-4">
-						<textarea
-							class="textarea textarea-bordered h-40 w-full"
-							bind:value={$productStore[`ingredients_text_${code}`]}
-						></textarea>
+	<!-- Step 3: Languages -->
+	{#if currentStep === 2}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<div class="collapse collapse-arrow bg-base-200">
+					<input type="checkbox" />
+					<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
+					<div class="collapse-content">
+						<label class="input w-full">
+							<span class="icon-[mdi--search] h-5 w-5"></span>
+							<input type="search" placeholder={$_('product.edit.search_languages')} bind:value={languageSearch} />
+						</label>
+						{#if filteredLanguages.length === 0}
+							<p class="mt-4 text-center opacity-70">{$_('product.edit.no_languages_found')}</p>
+						{:else}
+							<div class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto">
+								{#each filteredLanguages as code (code)}
+									<button class="btn btn-ghost" onclick={() => addLanguage(code)}>{getLanguage(code)}</button>
+								{/each}
+							</div>
+						{/if}
 					</div>
 				</div>
-			{/each}
-
-			{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
-				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
-			{/if}
-		</div>
-	</Card>
-
-	<Card>
-		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.nutritional_information')}</h3>
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.serving_size')}</label>
-			<input
-				type="text"
-				class="input input-bordered w-full"
-				bind:value={$productStore.serving_size}
-			/>
-		</div>
-
-		<div class="form-control mb-4">
-			<label class="label cursor-pointer justify-start gap-2">
-				<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
-				<span class="label-text">{$_('product.edit.no_nutrition_data')}</span>
-			</label>
-		</div>
-
-		{#if !$productStore.no_nutrition_data}
-			<div class="grid grid-cols-2 gap-4">
-				<div class="form-control mb-4">
-					<label for="">Energy (kJ)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Energy (kcal)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Fat (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.fat_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Saturated Fat (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Carbohydrates (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.carbohydrates_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Sugars (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.sugars_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Proteins (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.proteins_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Salt (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.salt_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Sodium (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.sodium_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
-					/>
+				<div class="tabs tabs-box mt-4">
+					{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
+						<input type="radio" name="name_tabs" class="tab" aria-label={getLanguage(code)} defaultChecked={code === $productStore.lang} />
+						<div class="tab-content form-control p-6">
+							<label class="label">{$_('product.edit.name')} ({getLanguage(code)})</label>
+							<input type="text" class="input input-bordered w-full" bind:value={$productStore[`product_name_${code}`]} />
+						</div>
+					{/each}
+					{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+						<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
+					{/if}
 				</div>
 			</div>
-		{:else}
-			<div class="alert alert-info">{$_('product.edit.no_nutrition_specified')}</div>
-		{/if}
-	</Card>
-
-	<Card>
-		<div class="form-control mb-4">
-			<label for="comment">{$_('product.edit.comment')}</label>
-			<input
-				id="comment"
-				type="text"
-				class="input input-bordered w-full"
-				placeholder={$_('product.edit.comment_placeholder')}
-				bind:value={$comment}
-			/>
 		</div>
-	</Card>
+	{/if}
 
-	<div class="sticky bottom-2.5 z-1 rounded-md">
-		<button class="btn btn-primary w-full" onclick={submit} disabled={isSubmitting}>
-			{#if isSubmitting}
-				<span class="loading loading-spinner loading-sm"></span>
-			{/if}
-			{productNotFound ? $_('product.edit.add_product') : $_('product.edit.save_btn')}
-		</button>
+	<!-- Step 4: Ingredients -->
+	{#if currentStep === 3}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<h3 class="mb-4 text-2xl font-bold">{$_('product.edit.ingredients')}</h3>
+				<div class="tabs tabs-box">
+					{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
+						<input type="radio" name="ingredients_tabs" class="tab" aria-label={getLanguage(code)} defaultChecked={code === $productStore.lang} />
+						<div class="tab-content form-control p-6">
+							{#if getIngredientsImage(code)}
+								<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
+							{:else}
+								<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
+							{/if}
+							<label class="label">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
+							<div class="form-control mb-4">
+								<textarea class="textarea textarea-bordered h-40 w-full" bind:value={$productStore[`ingredients_text_${code}`]}></textarea>
+							</div>
+						</div>
+					{/each}
+					{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+						<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
+					{/if}
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Step 5: Nutrition -->
+	{#if currentStep === 4}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<h3 class="mb-4 text-2xl font-bold">{$_('product.edit.nutritional_information')}</h3>
+				<div class="form-control mb-4">
+					<label class="label">{$_('product.edit.serving_size')}</label>
+					<input type="text" class="input input-bordered w-full" bind:value={$productStore.serving_size} />
+				</div>
+				<div class="form-control mb-4">
+					<label class="label cursor-pointer justify-start gap-2">
+						<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
+						<span class="label-text">{$_('product.edit.no_nutrition_data')}</span>
+					</label>
+				</div>
+				{#if !$productStore.no_nutrition_data}
+					<div class="grid grid-cols-2 gap-4">
+						<div class="form-control mb-4">
+							<label class="label">Energy (kJ)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['energy-kj_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Energy (kcal)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Fat (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.fat_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'fat_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Saturated Fat (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''} oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Carbohydrates (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.carbohydrates_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Sugars (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.sugars_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'sugars_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Proteins (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.proteins_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'proteins_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Salt (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.salt_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'salt_100g')} />
+						</div>
+						<div class="form-control mb-4">
+							<label class="label">Sodium (g)</label>
+							<input type="number" class="input input-bordered w-full" value={$productStore.nutriments?.sodium_100g ?? ''} oninput={(e) => handleNutrimentInput(e, 'sodium_100g')} />
+						</div>
+					</div>
+				{:else}
+					<div class="alert alert-info">{$_('product.edit.no_nutrition_specified')}</div>
+				{/if}
+			</div>
+		</div>
+	{/if}
+
+	<!-- Step 6: Comment -->
+	{#if currentStep === 5}
+		<div class="card bg-base-100 shadow-md">
+			<div class="card-body">
+				<div class="form-control mb-4">
+					<label class="label" for="comment">{$_('product.edit.comment')}</label>
+					<input id="comment" type="text" class="input input-bordered w-full" placeholder={$_('product.edit.comment_placeholder')} bind:value={$comment} />
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Navigation Buttons -->
+	<div class="flex flex-col sm:flex-row gap-2 mt-8 justify-end items-center">
+		{#if currentStep > 0}
+			<button class="btn btn-outline w-full sm:w-auto" onclick={prevStep} type="button">
+				<span class="icon-[mdi--arrow-left] mr-2"></span>{$_('common.back')}
+			</button>
+		{/if}
+		{#if currentStep < steps.length - 1}
+			<button class="btn btn-primary w-full sm:w-auto" onclick={nextStep} type="button">
+				{$_('common.next')}<span class="icon-[mdi--arrow-right] ml-2"></span>
+			</button>
+			<button class="btn btn-ghost w-full sm:w-auto" onclick={nextStep} type="button">
+				{$_('common.skip')}
+			</button>
+		{:else}
+			<button class="btn btn-success w-full sm:w-auto" onclick={submit} disabled={isSubmitting} type="button">
+				{#if isSubmitting}
+					<span class="loading loading-spinner loading-sm mr-2"></span>
+				{/if}
+				{productNotFound ? $_('product.edit.add_product') : $_('product.edit.save_btn')}
+			</button>
+		{/if}
 	</div>
 </div>
 
-<details>
+<details class="mt-8">
 	<summary>{$_('product.edit.debug')}</summary>
 	<pre>{JSON.stringify(data, null, 2)}</pre>
 </details>

@@ -130,5 +130,10 @@
 			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
 			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
 		}
+	},
+	"common": {
+		"next": "Next",
+		"back": "Back",
+		"skip": "Skip"
 	}
 }
