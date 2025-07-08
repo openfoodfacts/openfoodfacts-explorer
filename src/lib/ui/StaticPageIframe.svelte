@@ -1,24 +1,31 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	export let src: string = '';
-	export let title: string = '';
 
-	let iframeEl: HTMLIFrameElement | null = null;
-	let frameHeight = '';
+	type Props = { src: string; title: string };
+	let { src, title }: Props = $props();
+
+	let frameHeight = $state('100vh'); // Default height, can be adjusted
 
 	onMount(() => {
-		window.addEventListener('message', function (event) {
-			if (event.data.frameHeight) {
+		const abortController = new AbortController();
+		window.addEventListener(
+			'message',
+			(event: { data: { frameHeight?: number } }) => {
+				if (!event.data.frameHeight) return;
+
 				console.debug('Received frameHeight:', event.data.frameHeight);
 				frameHeight = event.data.frameHeight + 'px';
-			}
-		});
+			},
+			{ signal: abortController.signal }
+		);
+
+		return () => {
+			abortController.abort(); // Cleanup the event listener on component unmount
+		};
 	});
 </script>
 
 <iframe
-	bind:this={iframeEl}
-	id="static-page-iframe"
 	{src}
 	class="w-full border-0"
 	{title}
