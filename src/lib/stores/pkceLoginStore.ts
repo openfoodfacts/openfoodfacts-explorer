@@ -8,17 +8,9 @@ export type AuthTokens = {
 	idToken: string;
 };
 
-export const userAuthTokens = persisted<AuthTokens>('userAuthTokens', {
-	accessToken: '',
-	refreshToken: '',
-	idToken: ''
-});
+export const userAuthTokens = persisted<AuthTokens | null>('userAuthTokens', null);
 
-export async function getAccessToken() {
-	const verifier = localStorage.getItem('verifier');
-	const urlParams = new URLSearchParams(window.location.search);
-	const code = urlParams.get('code');
-
+export async function pkceTokenExchange(verifier: string, code: string) {
 	if (!code) {
 		throw new Error('Authorization code missing from callback URL');
 	}
@@ -53,7 +45,7 @@ export async function getAccessToken() {
 }
 
 export async function refreshAccessToken() {
-	const refreshToken = get(userAuthTokens).refreshToken;
+	const refreshToken = get(userAuthTokens)?.refreshToken;
 
 	if (!refreshToken) {
 		throw new Error('No refresh token available');

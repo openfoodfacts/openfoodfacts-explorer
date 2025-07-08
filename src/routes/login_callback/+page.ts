@@ -1,8 +1,10 @@
 export const ssr = false;
-import { getAccessToken, saveAuthTokens } from '$lib/stores/pkceLoginStore';
-import type { PageLoad } from './$types';
+import { pkceTokenExchange, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+import type { PageLoad } from '../$types';
+import type { LoadEvent } from '@sveltejs/kit';
+import { goto } from '$app/navigation';
 
-export const load: PageLoad = async ({ url }) => {
+export const load: PageLoad = async ({ url }: LoadEvent) => {
 	const returnedState = url.searchParams.get('state');
 	const storedState = localStorage.getItem('authState');
 
@@ -13,10 +15,22 @@ export const load: PageLoad = async ({ url }) => {
 
 	localStorage.removeItem('authState');
 
+	const verifier = localStorage.getItem('verifier');
+	const code = url.searchParams.get('code');
+
+	if (!verifier) {
+		console.error('Missing PKCE verifier in localStorage');
+		throw new Error('Authentication failed: Missing PKCE verifier');
+	}
+	if (!code) {
+		console.error('Missing authorization code in URL');
+		throw new Error('Authentication failed: Missing authorization code');
+	}
+
 	try {
-		const jwt = await getAccessToken();
+		const jwt = await pkceTokenExchange(verifier, code);
 		saveAuthTokens(jwt);
-		window.location.href = '/';
+		await goto('/');
 	} catch (error) {
 		console.error('Error getting access token:', error);
 		throw new Error('Authentication failed: Unable to get access token');

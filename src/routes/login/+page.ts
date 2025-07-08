@@ -1,4 +1,7 @@
 import { OFF_EXP_BASE_URL, KEYCLOAK_URL, AUTH_PKCE_ID } from '$lib/const';
+import { redirect } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
+export const ssr = false;
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
@@ -13,7 +16,7 @@ function base64URLEncode(bytes: Uint8Array): string {
 /**
  * Redirects the user to the Keycloak login page with PKCE.
  */
-export async function load() {
+export const load: PageLoad = async () => {
 	const verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
 	localStorage.setItem('verifier', verifier);
 
@@ -41,5 +44,5 @@ export async function load() {
 	});
 
 	const url = `${baseUrl}?${params.toString()}`;
-	window.location.href = url;
-}
+	throw redirect(302, url);
+};
