@@ -12,6 +12,7 @@
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -225,9 +226,15 @@
 		</div>
 	</div>
 
-	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
-		{@render children?.()}
-	</div>
+	{#if NO_MARGIN_ROUTES.includes(page.url.pathname)}
+		<div class="w-full">
+			{@render children?.()}
+		</div>
+	{:else}
+		<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
+			{@render children?.()}
+		</div>
+	{/if}
 	<NutritionCalculator />
 	<Footer />
 {:else}

@@ -17,3 +17,4 @@ export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/product
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
+export const NO_MARGIN_ROUTES = ['/discover', '/contribute', '/producers'];
