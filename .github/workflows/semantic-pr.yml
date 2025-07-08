@@ -1,5 +1,9 @@
 name: '📋 Semantic Pull Requests'
 
+permissions:
+  contents: read
+  pull-requests: read
+
 on:
   pull_request_target:
     types:
