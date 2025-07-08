@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 
 	import type { Map, Marker } from 'leaflet';
-	import * as L from 'leaflet';
 
 	let { element }: { element: KnowledgeMapElement } = $props();
 
@@ -15,6 +14,7 @@
 	let mapContainer: HTMLElement;
 	let mapInstance: Map | null;
 	let markers: Marker[] = [];
+	let L: typeof import('leaflet') | null = null;
 
 	// Initialize map on mount
 	onMount(() => {
@@ -24,6 +24,8 @@
 		// 2. Lifecycle Safety: 'mounted' flag prevents updates after component unmount
 		// 3. Clean Structure: Keeps async code contained while allowing proper cleanup
 		(async () => {
+			L = await import('leaflet');
+
 			try {
 				if (mounted) {
 					// Initialize map

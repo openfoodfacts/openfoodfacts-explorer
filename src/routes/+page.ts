@@ -5,8 +5,6 @@ import {
 	type ProductStateFound
 } from '$lib/api';
 import type { PageLoad } from './$types';
-import { error } from '@sveltejs/kit';
-import { ERROR_TYPES, ERROR_CODES, isNetworkError } from '$lib/errors';
 
 type QuestionsResponse = {
 	status: string;
@@ -43,46 +41,20 @@ function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	try {
+	const fetchProducts = async () => {
 		const states = await productsWithQuestions(fetch);
-		const products: ProductStateFound<ProductReduced>[] = states.filter(
+		// filter out products that failed to load
+		const products = states.filter(
 			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
 		);
-		const dedupedProducts = deduplicate(products, (it) => it.product.code);
-		return {
-			streamed: { products: Promise.resolve(dedupedProducts) }
-		};
-	} catch (err: unknown) {
-		if (isNetworkError(err)) {
-			throw error(ERROR_CODES.NETWORK, {
-				message: ERROR_TYPES.NETWORK_ERROR,
-				errors: [
-					{
-						message: {
-							name: (err as Error).name,
-							id: (err as Error).message,
-							lc_name: String(err)
-						},
-						impact: { name: 'fetch', id: 'network', lc_name: 'network' },
-						field: { id: 'url', value: 'Open Food Facts API' }
-					}
-				]
-			});
-		} else {
-			throw error(ERROR_CODES.UNEXPECTED, {
-				message: ERROR_TYPES.UNEXPECTED_ERROR,
-				errors: [
-					{
-						message: {
-							name: err instanceof Error ? err.name : 'unknown',
-							id: err instanceof Error ? err.message : String(err),
-							lc_name: String(err)
-						},
-						impact: { name: 'unknown', id: 'unknown', lc_name: 'unknown' },
-						field: { id: 'unknown', value: 'unknown' }
-					}
-				]
-			});
-		}
-	}
+
+		// remove duplicate products
+		return deduplicate(products, (it) => it.product.code);
+	};
+
+	const products = fetchProducts();
+
+	return {
+		streamed: { products }
+	};
 };

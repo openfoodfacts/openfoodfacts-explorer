@@ -1,9 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-
-const SEARCH_BASE_URL =
-	import.meta.env.VITE_SEARCH_BASE_URL || new URL(import.meta.url).origin + '/api/search';
+import { getSearchBaseUrl } from '$lib/api/search';
 
 // TODO: This should be not necessary.
 // We should use the SDK types.
@@ -42,6 +40,7 @@ function isValidEAN13(code: string): boolean {
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
+	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
 	if (query == null || query.length === 0) {
 		error(400, 'Missing query parameter');
@@ -55,13 +54,14 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const page = url.searchParams.get('page') || '1';
 	const pageSize = url.searchParams.get('page_size') || 6 * 4;
 
-	const api = new SearchApi(fetch, { baseUrl: SEARCH_BASE_URL });
+	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
 
 	const result = (
 		api.search({
 			q: query,
 			page: page,
-			page_size: pageSize
+			page_size: pageSize,
+			sort_by: sortBy
 		}) as SearchResult
 	) //
 		.then((result) => result.data);

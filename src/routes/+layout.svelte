@@ -9,6 +9,7 @@
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import SearchBar from '$lib/ui/SearchBar.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
@@ -75,41 +76,8 @@
 				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
-				<div class="form-control">
-					<div>
-						<div class="join">
-							<input
-								type="text"
-								bind:value={searchQuery}
-								class="input join-item input-bordered xl:w-full"
-								placeholder={$_('search.placeholder')}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' && searchQuery.trim() !== '') {
-										gotoProductsSearch();
-									}
-								}}
-							/>
-							<button
-								class="btn btn-square btn-secondary join-item px-10"
-								onclick={() => gotoProductsSearch()}
-								disabled={searchQuery == null || searchQuery.trim() === ''}
-							>
-								{$_('search.go')}
-							</button>
-						</div>
-
-						<a
-							class="btn btn-secondary ms-4 px-5 text-lg"
-							href="/qr"
-							title={$_('search.scan')}
-							aria-label={$_('search.scan')}
-						>
-							<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-						</a>
-					</div>
-				</div>
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
-
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
 				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
@@ -161,36 +129,10 @@
 				</button>
 			</div>
 		</div>
+
 		{#if searchActive}
-			<div class="-mt-2 flex items-center gap-1 sm:gap-2">
-				<div class="join w-full">
-					<input
-						type="text"
-						bind:value={searchQuery}
-						class="input join-item input-bordered w-full"
-						placeholder={$_('search.placeholder')}
-						onkeydown={(e) => {
-							if (e.key === 'Enter' && searchQuery.trim() !== '') {
-								gotoProductsSearch();
-							}
-						}}
-					/>
-					<button
-						class="btn btn-square btn-secondary join-item"
-						onclick={() => gotoProductsSearch()}
-						disabled={searchQuery == null || searchQuery.trim() === ''}
-					>
-						{$_('search.go')}
-					</button>
-				</div>
-				<a
-					class="btn btn-square btn-secondary text-lg"
-					href="/qr"
-					title={$_('search.scan')}
-					aria-label={$_('search.scan')}
-				>
-					<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
-				</a>
+			<div class="flex justify-center">
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
 			</div>
 		{/if}
 		<div
