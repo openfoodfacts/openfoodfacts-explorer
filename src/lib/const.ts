@@ -41,3 +41,5 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently added products', value: '-created_t' },
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
+
+export const NO_MARGIN_ROUTES = ['/discover', '/contribute', '/producers'];

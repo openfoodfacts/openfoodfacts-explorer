@@ -1,16 +1,18 @@
 <script>
 	import { _ } from '$lib/i18n';
+	import { page } from '$app/state';
+	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	const navItems = [
-		{ name: 'discover_link', href: '#' },
-		{ name: 'contribute_link', href: '#' },
-		{ name: 'producers_link', href: '#' },
+		{ name: 'discover_link', href: '/discover' },
+		{ name: 'contribute_link', href: '/contribute' },
+		{ name: 'producers_link', href: '/producers' },
 		{ name: 'prices_link', href: '#' },
 		{ name: 'folksonomy_link', href: '/folksonomy' }
 	];
 </script>
 
-<nav class="bg-secondary mt-2 mb-8 px-4">
+<nav class="bg-secondary mt-2 px-4 {NO_MARGIN_ROUTES.includes(page.url.pathname) ? '' : 'mb-8'}">
 	<ul class="flex justify-center">
 		<div class="m-2 flex w-3/4 items-center justify-evenly 2xl:w-[60%]">
 			{#each navItems as item (item.name)}

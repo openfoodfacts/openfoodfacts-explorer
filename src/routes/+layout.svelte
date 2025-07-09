@@ -15,10 +15,12 @@
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
+	import { extractQuery } from '$lib/facets';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -54,7 +56,8 @@
 	});
 
 	function updateSearchQuery(url: URL) {
-		searchQuery = url.searchParams.get('q') ?? '';
+		const q = url.searchParams.get('q') ?? '';
+		searchQuery = extractQuery(q);
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {
@@ -157,36 +160,24 @@
 			class:hidden={!accordionOpen}
 			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 		>
-			<a class="btn btn-outline link" href="/folksonomy">
-				{$_('folksonomy_link')}
-			</a>
-			<a class="btn btn-outline link" href="/settings">
-				{$_('settings_link')}
-			</a>
 			<a class="btn btn-outline link" href="/discover">
 				{$_('discover_link')}
 			</a>
 			<a class="btn btn-outline link" href="/contribute">
 				{$_('contribute_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="/producers">
 				{$_('producers_link')}
 			</a>
 			<a class="btn btn-outline link" href="#">
 				{$_('prices_link')}
 			</a>
-			{#if userLoginState}
-				<a class="btn btn-outline link" href={ACCOUNT_URL}>
-					{$_('account_link')}
-				</a>
-				<a class="btn btn-outline link" href="/logout">
-					{$_('logout_link')}
-				</a>
-			{:else}
-				<a class="btn btn-outline link" href="/login">
-					{$_('login_link')}
-				</a>
-			{/if}
+			<a class="btn btn-outline link" href="/folksonomy">
+				{$_('folksonomy_link')}
+			</a>
+			<a class="btn btn-outline link" href="/settings">
+				{$_('settings_link')}
+			</a>
 			<a
 				class="btn btn-outline link"
 				href={GITHUB_REPO_URL}
@@ -198,9 +189,15 @@
 		</div>
 	</div>
 
-	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
-		{@render children?.()}
-	</div>
+	{#if NO_MARGIN_ROUTES.includes(page.url.pathname)}
+		<div class="w-full">
+			{@render children?.()}
+		</div>
+	{:else}
+		<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
+			{@render children?.()}
+		</div>
+	{/if}
 	<NutritionCalculator />
 	<Footer />
 {:else}
