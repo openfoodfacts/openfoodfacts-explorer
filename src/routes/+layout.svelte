@@ -48,7 +48,7 @@
 	// Set up a subscription to the auth tokens to keep login state in sync
 	$effect(() => {
 		const tokens = $userAuthTokens;
-		if (tokens && tokens.accessToken) {
+		if (tokens?.accessToken ?? false) {
 			userLoginState = true;
 		} else {
 			userLoginState = false;
