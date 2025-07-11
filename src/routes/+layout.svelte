@@ -11,7 +11,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
 	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
-	import { ACCOUNT_URL } from '$lib/const';
+	import { KEYCLOAK_ACCOUNT_URL } from '$lib/const';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
@@ -48,7 +48,7 @@
 	// Set up a subscription to the auth tokens to keep login state in sync
 	$effect(() => {
 		const tokens = $userAuthTokens;
-		if (tokens?.accessToken ?? false) {
+		if (tokens?.access_token ?? false) {
 			userLoginState = true;
 		} else {
 			userLoginState = false;
@@ -105,7 +105,7 @@
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
 				{#if userLoginState}
-					<a class="btn btn-outline link" href={ACCOUNT_URL}>Account</a>
+					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
 					<a class="btn btn-outline link" href="/login"> Login </a>

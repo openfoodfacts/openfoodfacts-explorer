@@ -1,15 +1,22 @@
-import { AUTH_PKCE_ID, KEYCLOAK_URL, LOGIN_CALLBACK_URL } from '$lib/const';
+import { OAUTH_CLIENT_ID, KEYCLOAK_URL } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 export type AuthTokens = {
-	accessToken: string;
-	refreshToken: string;
-	idToken: string;
+	access_token: string;
+	refresh_token: string;
+	id_token: string;
 };
 
 export const userAuthTokens = persisted<AuthTokens | null>('userAuthTokens', null);
 
+/**
+ * Complete the PKCE token exchange process by exchanging the authorization code
+ * for access and refresh tokens.
+ * @param verifier - the code verifier created during the initial login request.
+ * @param code - the authorization code received from the Keycloak callback URL.
+ * @returns the JWT tokens containing access, refresh, and ID tokens.
+ */
 export async function pkceTokenExchange(verifier: string, code: string) {
 	if (!code) {
 		throw new Error('Authorization code missing from callback URL');
@@ -22,8 +29,7 @@ export async function pkceTokenExchange(verifier: string, code: string) {
 	const body = new URLSearchParams({
 		code: code,
 		grant_type: 'authorization_code',
-		redirect_uri: LOGIN_CALLBACK_URL,
-		client_id: AUTH_PKCE_ID,
+		client_id: OAUTH_CLIENT_ID,
 		code_verifier: verifier
 	});
 
@@ -44,8 +50,12 @@ export async function pkceTokenExchange(verifier: string, code: string) {
 	return jwt;
 }
 
+/**
+ * Refreshes the access token using the stored refresh token.
+ * @returns the new JWT tokens containing access, refresh, and ID tokens.
+ */
 export async function refreshAccessToken() {
-	const refreshToken = get(userAuthTokens)?.refreshToken;
+	const refreshToken = get(userAuthTokens)?.refresh_token;
 
 	if (!refreshToken) {
 		throw new Error('No refresh token available');
@@ -54,8 +64,7 @@ export async function refreshAccessToken() {
 	const body = new URLSearchParams({
 		grant_type: 'refresh_token',
 		refresh_token: refreshToken,
-		client_id: AUTH_PKCE_ID,
-		redirect_uri: LOGIN_CALLBACK_URL
+		client_id: OAUTH_CLIENT_ID
 	});
 
 	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
@@ -67,14 +76,10 @@ export async function refreshAccessToken() {
 	return jwt;
 }
 
-export function saveAuthTokens(jwt: {
-	access_token: string;
-	refresh_token: string;
-	id_token: string;
-}) {
-	userAuthTokens.set({
-		accessToken: jwt.access_token,
-		refreshToken: jwt.refresh_token,
-		idToken: jwt.id_token
-	});
+/**
+ * Saves the JWT tokens to the local storage store.
+ * @param jwt - the JWT tokens containing access, refresh, and ID tokens.
+ */
+export function saveAuthTokens(tokens: AuthTokens) {
+	userAuthTokens.set(tokens);
 }
