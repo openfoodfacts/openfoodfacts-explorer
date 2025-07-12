@@ -1,27 +1,9 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-import { getSearchBaseUrl } from '$lib/api/search';
+import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 
-// TODO: This should be not necessary.
-// We should use the SDK types.
-type SearchResult = Promise<{
-	data: {
-		aggregations: null;
-		charts: object;
-		count: number;
-		debug: object;
-		facets: object;
-		hits: Array<Product>;
-		is_count_exact: boolean;
-		page: number;
-		page_count: number;
-		page_size: number;
-		timed_out: boolean;
-		took: number;
-		warnings: unknown;
-	};
-}>;
+export const ssr = false;
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -56,15 +38,18 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
 
-	const result = (
-		api.search({
-			q: query,
-			page: page,
-			page_size: pageSize,
-			sort_by: sortBy
-		}) as SearchResult
-	) //
-		.then((result) => result.data);
+	const params: SearchBody = {
+		q: query,
+		page: page,
+		page_size: pageSize,
+		facets: ['brands_tags', 'categories_tags', 'nutrition_grades', 'ecoscore_grade'],
+		sort_by: sortBy
+	};
 
-	return { query, search: result };
+	const result = (await api.search(params).then((result) => result.data as SearchResult)) ?? {};
+
+	return {
+		query,
+		search: result
+	};
 };
