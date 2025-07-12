@@ -23,7 +23,7 @@
 </script>
 
 <a
-	href={`/product/${product.code}`}
+	href={`/products/${product.code}`}
 	class="flex justify-center"
 	class:pointer-events-none={navigating.to}
 >
