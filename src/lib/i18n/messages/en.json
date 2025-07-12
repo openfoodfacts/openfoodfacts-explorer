@@ -76,6 +76,7 @@
 	},
 	"home": {
 		"welcome": "Welcome to",
+		"welcome_user": "Welcome {username} to",
 		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},

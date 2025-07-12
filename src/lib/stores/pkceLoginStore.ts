@@ -98,13 +98,16 @@ export function clearAuthTokens() {
 	userAuthTokens.set(null);
 }
 
-function parseJWT<T extends Record<string, object>>(token: string): T {
+function parseJWT<T extends Record<string, unknown>>(token: string): T {
 	const payload = token.split('.')[1];
 	const decoded = atob(payload);
 	return JSON.parse(decoded) as T;
 }
 
-export type UserInfo = {};
+export type UserInfo = {
+	preferred_username: string;
+	email: string;
+};
 
 /**
  * Parses the ID token to extract user information.
