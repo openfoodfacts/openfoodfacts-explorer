@@ -84,6 +84,7 @@
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
 			"@vercel/speed-insights",
+			"es5-ext",
 			"esbuild"
 		]
 	},
