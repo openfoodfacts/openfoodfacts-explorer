@@ -1,25 +1,24 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import Logo from '$lib/ui/Logo.svelte';
-	import Navbar from '$lib/ui/Navbar.svelte';
-	import Footer from '$lib/ui/Footer.svelte';
-	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import '../app.css';
-	import 'leaflet/dist/leaflet.css';
-	import '@fontsource-variable/plus-jakarta-sans';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
-	import { KEYCLOAK_ACCOUNT_URL } from '$lib/const';
-	import SearchBar from '$lib/ui/SearchBar.svelte';
-	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
-	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
+
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+
+	import Logo from '$lib/ui/Logo.svelte';
+	import Navbar from '$lib/ui/Navbar.svelte';
+	import Footer from '$lib/ui/Footer.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import SearchBar from '$lib/ui/SearchBar.svelte';
+
+	import { initI18n, _, isLoading } from '$lib/i18n';
+	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 
 	onMount(async () => {
