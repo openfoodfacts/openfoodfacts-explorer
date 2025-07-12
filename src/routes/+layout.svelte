@@ -174,6 +174,13 @@
 			>
 				<span class="icon-[mdi--github] h-8 w-8"></span>
 			</a>
+
+			{#if $userInfo != null}
+				<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
+				<a class="btn btn-outline link" href="/logout">Log out</a>
+			{:else}
+				<a class="btn btn-outline link" href="/login"> Login </a>
+			{/if}
 		</div>
 	</div>
 
