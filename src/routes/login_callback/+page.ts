@@ -1,8 +1,10 @@
-export const ssr = false;
-import { pkceTokenExchange, saveAuthTokens } from '$lib/stores/pkceLoginStore';
-import type { PageLoad } from '../$types';
 import type { LoadEvent } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
+
+import { pkceTokenExchange, saveAuthTokens } from '$lib/stores/pkceLoginStore';
 import { goto } from '$app/navigation';
+
+export const ssr = false;
 
 export const load: PageLoad = async ({ url }: LoadEvent) => {
 	const returnedState = url.searchParams.get('state');

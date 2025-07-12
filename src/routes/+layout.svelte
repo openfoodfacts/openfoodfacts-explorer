@@ -10,7 +10,7 @@
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
-	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { KEYCLOAK_ACCOUNT_URL } from '$lib/const';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import { initI18n, _, isLoading } from '$lib/i18n';
@@ -30,7 +30,6 @@
 	initI18n();
 
 	let searchQuery: string = $state('');
-	let userLoginState: boolean = $state(false);
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -43,16 +42,6 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
-	});
-
-	// Set up a subscription to the auth tokens to keep login state in sync
-	$effect(() => {
-		const tokens = $userAuthTokens;
-		if (tokens?.access_token ?? false) {
-			userLoginState = true;
-		} else {
-			userLoginState = false;
-		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -104,7 +93,7 @@
 				>
 					<span class="icon-[mdi--github] h-8 w-8"></span>
 				</a>
-				{#if userLoginState}
+				{#if $userInfo != null}
 					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}

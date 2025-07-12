@@ -1,6 +1,6 @@
 import { OAUTH_CLIENT_ID, KEYCLOAK_URL, OAUTH_REDIRECT_URI } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
-import { get } from 'svelte/store';
+import { derived, get } from 'svelte/store';
 
 export type AuthTokens = {
 	access_token: string;
@@ -89,3 +89,49 @@ export async function refreshAccessToken(url: URL) {
 export function saveAuthTokens(tokens: AuthTokens) {
 	userAuthTokens.set(tokens);
 }
+
+export function getAuthTokens() {
+	return get(userAuthTokens);
+}
+
+export function clearAuthTokens() {
+	userAuthTokens.set(null);
+}
+
+function parseJWT<T extends Record<string, object>>(token: string): T {
+	const payload = token.split('.')[1];
+	const decoded = atob(payload);
+	return JSON.parse(decoded) as T;
+}
+
+export type UserInfo = {};
+
+/**
+ * Parses the ID token to extract user information.
+ * @param idToken - the ID token from the JWT.
+ * @returns the parsed user information.
+ */
+function parseIdToken(idToken: string) {
+	if (!idToken) {
+		throw new Error('ID token is required for parsing');
+	}
+
+	try {
+		return parseJWT<UserInfo>(idToken);
+	} catch (error) {
+		throw new Error(`Failed to parse ID token: ${error}`);
+	}
+}
+
+export const userInfo = derived(userAuthTokens, ($tokens) => {
+	if (!$tokens) {
+		return null;
+	}
+
+	try {
+		return parseIdToken($tokens.id_token);
+	} catch (error) {
+		console.error('Failed to parse user info:', error);
+		return null;
+	}
+});

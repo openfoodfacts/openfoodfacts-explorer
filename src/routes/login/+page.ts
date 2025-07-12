@@ -1,6 +1,8 @@
-import { KEYCLOAK_URL, OAUTH_CLIENT_ID } from '$lib/const';
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+
+import { KEYCLOAK_URL, OAUTH_CLIENT_ID } from '$lib/const';
+
 export const ssr = false;
 
 /**

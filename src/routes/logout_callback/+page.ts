@@ -1,8 +1,11 @@
-export const ssr = false;
-import { userAuthTokens } from '$lib/stores/pkceLoginStore';
+import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
+import { clearAuthTokens } from '$lib/stores/pkceLoginStore';
+
+export const ssr = false;
+
 export const load: PageLoad = () => {
-	userAuthTokens.set(null);
-	window.location.href = '/';
+	clearAuthTokens();
+	throw redirect(302, '/');
 };
