@@ -1,4 +1,8 @@
+import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+
+import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+
 import {
 	type Brand,
 	type Label,
@@ -9,14 +13,15 @@ import {
 	type Country,
 	ProductsApi
 } from '$lib/api';
-import { error } from '@sveltejs/kit';
-import { createFolksonomyApi } from '$lib/api/folksonomy';
-import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
-import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
+import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
+	const off = new OpenFoodFacts(fetch);
+	const folkApi = createFolksonomyApi(fetch);
+
 	const state = await productsApi.getProduct(params.barcode);
 	if (state.status === 'failure') {
 		error(404, { message: 'Failure to load product', errors: state.errors });
@@ -29,17 +34,13 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const origins = getTaxo<Origin>('origins', fetch);
 	const countries = getTaxo<Country>('countries', fetch);
 
-	const off = new OpenFoodFacts(fetch);
-
-	const folkApi = createFolksonomyApi(fetch);
-	const folksonomyTags = folkApi.getProductTags(params.barcode);
-	const folksonomyKeys = folkApi.getKeys();
+	const folksonomyTags = isFolksonomyConfigured() ? folkApi.getProductTags(params.barcode) : [];
+	const folksonomyKeys = isFolksonomyConfigured() ? folkApi.getProducts(params.barcode) : [];
 
 	const pricesApi = createPricesApi(fetch);
-	let pricesResponse = null;
-	if (isPriceConfigured()) {
-		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
-	}
+	const pricesResponse = isPriceConfigured()
+		? pricesApi.getPrices({ product_code: params.barcode })
+		: Promise.resolve(null);
 
 	const productAttributes = await productsApi.getProductAttributes(params.barcode);
 
