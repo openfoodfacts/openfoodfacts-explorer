@@ -26,6 +26,7 @@ export const PRODUCT_STATUS = {
 
 export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
 export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;
+export const OAUTH_REDIRECT_URI = (url: URL) => `${url.origin}/login_callback`;
 
 export const KEYCLOAK_REALM = PUBLIC_KEYCLOAK_REALM;
 export const KEYCLOAK_URL = `${OAUTH_IDP_BASE_URL}/realms/${KEYCLOAK_REALM}`;

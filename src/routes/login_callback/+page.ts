@@ -28,7 +28,7 @@ export const load: PageLoad = async ({ url }: LoadEvent) => {
 	}
 
 	try {
-		const jwt = await pkceTokenExchange(verifier, code);
+		const jwt = await pkceTokenExchange(verifier, code, url);
 		saveAuthTokens(jwt);
 		await goto('/');
 	} catch (error) {

@@ -1,4 +1,4 @@
-import { OAUTH_CLIENT_ID, KEYCLOAK_URL } from '$lib/const';
+import { OAUTH_CLIENT_ID, KEYCLOAK_URL, OAUTH_REDIRECT_URI } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
@@ -17,7 +17,7 @@ export const userAuthTokens = persisted<AuthTokens | null>('userAuthTokens', nul
  * @param code - the authorization code received from the Keycloak callback URL.
  * @returns the JWT tokens containing access, refresh, and ID tokens.
  */
-export async function pkceTokenExchange(verifier: string, code: string) {
+export async function pkceTokenExchange(verifier: string, code: string, url: URL) {
 	if (!code) {
 		throw new Error('Authorization code missing from callback URL');
 	}
@@ -26,11 +26,14 @@ export async function pkceTokenExchange(verifier: string, code: string) {
 		throw new Error('Code verifier missing from local storage');
 	}
 
+	const redirectUri = OAUTH_REDIRECT_URI(url);
+
 	const body = new URLSearchParams({
 		code: code,
 		grant_type: 'authorization_code',
 		client_id: OAUTH_CLIENT_ID,
-		code_verifier: verifier
+		code_verifier: verifier,
+		redirect_uri: redirectUri
 	});
 
 	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
@@ -54,17 +57,20 @@ export async function pkceTokenExchange(verifier: string, code: string) {
  * Refreshes the access token using the stored refresh token.
  * @returns the new JWT tokens containing access, refresh, and ID tokens.
  */
-export async function refreshAccessToken() {
+export async function refreshAccessToken(url: URL) {
 	const refreshToken = get(userAuthTokens)?.refresh_token;
 
 	if (!refreshToken) {
 		throw new Error('No refresh token available');
 	}
 
+	const redirectUri = OAUTH_REDIRECT_URI(url);
+
 	const body = new URLSearchParams({
 		grant_type: 'refresh_token',
 		refresh_token: refreshToken,
-		client_id: OAUTH_CLIENT_ID
+		client_id: OAUTH_CLIENT_ID,
+		redirect_uri: redirectUri
 	});
 
 	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
