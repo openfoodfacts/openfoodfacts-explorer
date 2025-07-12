@@ -5,6 +5,7 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	interface Props {
 		data: PageData;
@@ -24,7 +25,11 @@
 	<Card>
 		<div class="card-body items-center px-0 text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
-				{$_('home.welcome')}
+				{#if $userInfo != null}
+					{$_('home.welcome_user', { values: { username: $userInfo.preferred_username } })}
+				{:else}
+					{$_('home.welcome')}
+				{/if}
 				<div class="block xl:inline-block">
 					<Logo />
 				</div>
