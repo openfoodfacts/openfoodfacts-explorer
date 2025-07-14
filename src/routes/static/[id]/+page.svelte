@@ -1,9 +1,9 @@
 <script lang="ts">
 	import StaticPageIframe from '$lib/ui/StaticPageIframe.svelte';
+	import { page } from '$app/stores';
 
 	// get id from the URL
-	import { page } from '$app/stores';
-	$: pageId = $page.params.id;
+	const pageId = $derived($page.params.id);
 </script>
 
 <StaticPageIframe
