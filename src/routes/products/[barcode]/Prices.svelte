@@ -6,6 +6,7 @@
 	import type { components } from '$lib/api/prices.d';
 	import { createPricesApi, updatePricesAuthToken } from '$lib/api/prices';
 	import type { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { invalidateAll } from '$app/navigation';
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
 	type ApiResponse<T> = { data?: T; error?: object };
@@ -136,8 +137,10 @@
 			console.error('Error while submitting price', res.error);
 		} else {
 			if (res.data) {
+				console.debug('Submitted price', res.data);
 				prices.items.push(res.data);
 			}
+			invalidateAll();
 		}
 	}
 </script>
