@@ -343,7 +343,6 @@
 	const steps = ['Images', 'Basic Info', 'Languages', 'Ingredients', 'Nutrition', 'Comment'];
 
 	function nextStep() {
-		console.log('Next step', currentStep, steps.length);
 		if (currentStep < steps.length - 1) {
 			currentStep = currentStep + 1;
 		}
