@@ -37,7 +37,6 @@
 						return;
 					}
 					console.log('QR code detected:', text);
-					console.log('Product detected:', text);
 					lastScannedCode = text;
 					isScanning = false;
 
@@ -47,9 +46,6 @@
 					// 2. Prevents memory leaks
 					// 3. Ensures the camera is available for other applications
 					await scanner.stop();
-
-					// Log before API call
-					console.log('API called');
 
 					try {
 						// Use getProduct to check if product exists before navigating

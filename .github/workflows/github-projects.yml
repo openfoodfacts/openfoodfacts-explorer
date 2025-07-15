@@ -1,5 +1,9 @@
 name: Automatically add relevant issues to the relevant GitHub projects
 
+permissions:
+  contents: read
+  issues: write
+
 on:
   issues:
     types:
@@ -140,4 +144,10 @@ jobs:
           project-url: https://github.com/orgs/openfoodfacts/projects/136 # Add issue to the Translations project
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           labeled: 🌐 Translations, translations, i18n, Translations
+          label-operator: OR
+      - uses: actions/add-to-project@main
+        with:
+          project-url: https://github.com/orgs/openfoodfacts/projects/140 # Add issue to the Translations project
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          labeled: blocked on openfoodfacts-webcomponents
           label-operator: OR

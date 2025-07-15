@@ -1,16 +1,26 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
+
+	// Track which product is being navigated to
+	let navigatingTo: string | null = $state(null);
+
+	// Handle navigation to product page
+	function navigateToProduct(barcode: string) {
+		navigatingTo = barcode;
+		goto(`/products/${barcode}`);
+	}
 </script>
 
 <svelte:head>
@@ -24,7 +34,11 @@
 	<Card>
 		<div class="card-body items-center px-0 text-center">
 			<h3 class="card-title mb-4 block text-2xl md:flex">
-				{$_('home.welcome')}
+				{#if $userInfo != null}
+					{$_('home.welcome_user', { values: { username: $userInfo.preferred_username } })}
+				{:else}
+					{$_('home.welcome')}
+				{/if}
 				<div class="block xl:inline-block">
 					<Logo />
 				</div>
@@ -46,7 +60,17 @@
 				{/each}
 			{:then products}
 				{#each products as state (state.product.code)}
-					<SmallProductCard product={state.product} />
+					<product-card
+						product={state.product}
+						navigating={{
+							to:
+								navigatingTo === state.product.code
+									? { params: { barcode: state.product.code } }
+									: null
+						}}
+						placeholderImage="/Placeholder.svg"
+						onclick={() => navigateToProduct(state.product.code)}
+					></product-card>
 				{/each}
 			{/await}
 		</div>

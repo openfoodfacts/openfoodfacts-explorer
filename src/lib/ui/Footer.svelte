@@ -2,6 +2,8 @@
 	import footerTopLeft from '$lib/assets/footer-top-left.svg';
 	import footerBottomRight from '$lib/assets/footer-bottom-right.svg';
 	import { _ } from '$lib/i18n';
+	import { page } from '$app/state';
+	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	const stayUpdatedLinks = [
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Newsletter' },
@@ -62,6 +64,7 @@
 
 <div
 	class="bg-secondary text-secondary-content relative mt-2 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
+	class:mt-10={!NO_MARGIN_ROUTES.includes(page.url.pathname)}
 >
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">Stay Updated</h2>

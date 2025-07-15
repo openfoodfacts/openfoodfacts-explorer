@@ -1,3 +1,9 @@
+import {
+	PUBLIC_AUTH_BASE_URL,
+	PUBLIC_AUTH_PKCE_ID,
+	PUBLIC_KEYCLOAK_REALM
+} from '$env/static/public';
+
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
@@ -18,6 +24,14 @@ export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
 
+export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
+export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;
+export const OAUTH_REDIRECT_URI = (url: URL) => `${url.origin}/login_callback`;
+
+export const KEYCLOAK_REALM = PUBLIC_KEYCLOAK_REALM;
+export const KEYCLOAK_URL = `${OAUTH_IDP_BASE_URL}/realms/${KEYCLOAK_REALM}`;
+export const KEYCLOAK_ACCOUNT_URL = `${KEYCLOAK_URL}/account/#/`;
+
 export const SORT_OPTIONS = [
 	{ label: 'Most scanned products', value: '-unique_scans_n' },
 	{ label: 'Products with the best Green-Score', value: 'ecoscore_grade' },
@@ -25,3 +39,5 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently added products', value: '-created_t' },
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
+
+export const NO_MARGIN_ROUTES = ['/discover', '/contribute', '/producers'];

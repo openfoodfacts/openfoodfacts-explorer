@@ -1,4 +1,8 @@
-import { SearchApi, type AutocompleteQuery } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	SearchApi,
+	type AutocompleteQuery,
+	type Product
+} from '@openfoodfacts/openfoodfacts-nodejs';
 
 export function getSearchBaseUrl() {
 	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
@@ -27,4 +31,37 @@ export type AutocompleteOption = {
 
 export type AutocompleteResponse = {
 	options: AutocompleteOption[];
+};
+
+export type FacetItem = {
+	key: string;
+	name: string;
+	count: number;
+	selected: boolean;
+};
+
+export type Facet = {
+	name: string;
+	items: FacetItem[];
+	count_error_margin: number;
+};
+
+export type FacetResult = Record<string, Facet>;
+
+// TODO: This should be not necessary.
+// We should use the SDK types.
+export type SearchResult = {
+	aggregations: null;
+	charts: object;
+	count: number;
+	debug: object;
+	facets: FacetResult;
+	hits: Array<Product>;
+	is_count_exact: boolean;
+	page: number;
+	page_count: number;
+	page_size: number;
+	timed_out: boolean;
+	took: number;
+	warnings: unknown;
 };

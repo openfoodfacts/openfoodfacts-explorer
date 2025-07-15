@@ -43,7 +43,6 @@ We support the usage of AI tools to enhance productivity, but we expect you to r
 ## Get in touch
 
 - We e-meet Wednesdays · 11:00 – 11:25am - Time zone: Europe/Paris
-
   - [![Google Meet Video call link](https://img.shields.io/badge/Google%20Meet-uep--fhvf--gto-blue?logo=google-meet&logoColor=white)](https://meet.google.com/uep-fhvf-gto)
   - Join by phone: https://tel.meet/uep-fhvf-gto?pin=8160344286211
   - Add the Event to your Calendar by [adding the Open Food Facts community calendar to your calendar](https://wiki.openfoodfacts.org/Events)

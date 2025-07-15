@@ -3,9 +3,9 @@
 	import { navigating } from '$app/state';
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
-	interface Props {
+	type Props = {
 		product: ProductReduced;
-	}
+	};
 
 	let { product }: Props = $props();
 
