@@ -6,7 +6,4 @@
 	const pageId = $derived($page.params.id);
 </script>
 
-<StaticPageIframe
-	src={`https://world.openfoodfacts.org/${pageId}?content_only=1`}
-	title="Discover Open Food Facts"
-/>
+<StaticPageIframe src={`https://world.openfoodfacts.org/${pageId}?content_only=1`} />

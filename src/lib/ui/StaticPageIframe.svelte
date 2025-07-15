@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	type Props = { src: string; title: string };
-	let { src, title }: Props = $props();
+	type Props = { src: string };
+	let { src }: Props = $props();
 
 	let frameHeight = $state('100vh'); // Default height, can be adjusted
 
@@ -25,11 +25,5 @@
 	});
 </script>
 
-<iframe
-	{src}
-	class="w-full border-0"
-	{title}
-	scrolling="no"
-	frameborder="0"
-	style="height: {frameHeight};"
+<iframe {src} class="w-full border-0" scrolling="no" frameborder="0" style="height: {frameHeight};"
 ></iframe>
