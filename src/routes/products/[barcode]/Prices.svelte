@@ -3,10 +3,10 @@
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
-	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
 	import { createPricesApi, updatePricesAuthToken } from '$lib/api/prices';
 	import type { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { invalidateAll } from '$app/navigation';
 
 	type CurrencyEnum = components['schemas']['CurrencyEnum'];
 	type ApiResponse<T> = { data?: T; error?: object };
@@ -118,7 +118,7 @@
 			throw new Error("Illegal state: Couldn't find store type");
 		}
 
-		const res = await pricesApi.createPrice({
+		const res = (await pricesApi.createPrice({
 			product_code: barcode,
 			price: newPrice.value,
 			currency: newPrice.currency,
@@ -131,13 +131,15 @@
 
 			// Required property
 			proof_id: 0 // This should be replaced with an actual proof ID if available
-		});
+		})) as ApiResponse<PriceResult>;
 
 		if (res.error != null) {
 			console.error('Error while submitting price', res.error);
 		} else {
-			console.debug('Submitted price', res.data);
-			prices.items.push(res.data);
+			if (res.data) {
+				console.debug('Submitted price', res.data);
+				prices.items.push(res.data);
+			}
 			invalidateAll();
 		}
 	}
