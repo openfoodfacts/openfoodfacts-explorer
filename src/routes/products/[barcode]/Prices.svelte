@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 
 	import { getNearStores, idToName, type OverpassAPIResult } from '$lib/location';
-	import { invalidateAll } from '$app/navigation';
 	import type { components } from '$lib/api/prices.d';
 	import { createPricesApi, updatePricesAuthToken } from '$lib/api/prices';
 	import type { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
