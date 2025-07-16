@@ -40,4 +40,4 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
 
-export const NO_MARGIN_ROUTES = ['/discover', '/contribute', '/producers'];
+export const NO_MARGIN_ROUTES = ['/static/discover', '/static/contribute', '/static/producers'];
