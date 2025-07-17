@@ -49,7 +49,7 @@
 			.filter((img): img is ProductImage => img !== null);
 
 		// Get additional non-standard images for this language
-		const additionalImages: { url: string; alt: string; type: string; }[] = [];
+		const additionalImages: { url: string; alt: string; type: string }[] = [];
 
 		// 1. Images with keys ending in _{code} that are not standard
 		Object.keys(productImages)
@@ -73,14 +73,14 @@
 			.forEach((key) => {
 				const imgObj = productImages[key];
 				let url = null;
-				if (imgObj && imgObj.sizes && imgObj.sizes["400"]) {
+				if (imgObj && imgObj.sizes && imgObj.sizes['400']) {
 					url = getProductImageUrl(product.code, key, productImages);
 				}
 				if (url) {
 					additionalImages.push({
 						url,
 						alt: `Additional image ${key}`,
-						type: "additional"
+						type: 'additional'
 					});
 				}
 			});
@@ -116,13 +116,13 @@
 	async function handleImageUpload(e: Event, type: string) {
 		const input = e.target as HTMLInputElement;
 		if (!input.files || input.files.length === 0) return;
-		
+
 		const file = input.files[0];
-		
+
 		// Map type to OpenFoodFacts imagefield value
 		let imagefield = '';
-		const typeId = photoTypes.find(pt => pt.label === type)?.id || type.toLowerCase();
-		
+		const typeId = photoTypes.find((pt) => pt.label === type)?.id || type.toLowerCase();
+
 		switch (typeId) {
 			case 'front':
 				imagefield = `front_${activeLanguageCode}`;
@@ -139,16 +139,16 @@
 			default:
 				imagefield = `${typeId}_${activeLanguageCode}`;
 		}
-		
+
 		const barcode = product.code;
 		const user_id = $preferences.username;
 		const password = $preferences.password;
-		
+
 		if (!user_id || !password) {
 			alert('Please set your OpenFoodFacts username and password in settings.');
 			return;
 		}
-		
+
 		try {
 			const api = new ProductsApi(fetch);
 			const result = await api.uploadImage(barcode, file, imagefield);
@@ -161,13 +161,13 @@
 			console.error('Image upload failed:', err);
 			alert('Image upload failed. Please try again.');
 		}
-		
+
 		input.value = '';
 	}
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<h3 class="mb-3 sm:mb-4 text-lg sm:text-xl font-bold">{$_('product.edit.photos')}</h3>
+	<h3 class="mb-3 text-lg font-bold sm:mb-4 sm:text-xl">{$_('product.edit.photos')}</h3>
 
 	<div class="tabs tabs-box">
 		{#each Object.keys(product.languages_codes) as code (code)}
@@ -181,18 +181,20 @@
 			/>
 			<div class="tab-content p-3 sm:p-6" class:hidden={code !== activeLanguageCode}>
 				{console.log('current Images', currentImages)}
-				
+
 				<!-- Show standard photo types first -->
 				{#each photoTypes as photoType}
-					{@const imagesOfType = currentImages.filter(img => img.type === photoType.label)}
+					{@const imagesOfType = currentImages.filter((img) => img.type === photoType.label)}
 					{@const isExpanded = expandedCategories.has(photoType.label)}
 					{@const imagesToShow = isExpanded ? imagesOfType : imagesOfType.slice(0, 10)}
 					{@const hasMoreImages = imagesOfType.length > 10}
-					
+
 					<div class="mb-6">
-						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-							<h4 class="text-sm sm:text-md font-semibold">{photoType.label} picture ({getLanguage(activeLanguageCode)})</h4>
-							<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+						<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<h4 class="sm:text-md text-sm font-semibold">
+								{photoType.label} picture ({getLanguage(activeLanguageCode)})
+							</h4>
+							<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
 								<!-- Upload button for this category -->
 								<input
 									id="{photoType.id}-{activeLanguageCode}-upload"
@@ -215,38 +217,48 @@
 										class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
 										onclick={() => toggleCategoryExpansion(photoType.label)}
 									>
-										<span class="text-xs sm:text-sm">{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span>
+										<span class="text-xs sm:text-sm"
+											>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+										>
 									</button>
 								{/if}
 							</div>
 						</div>
 						{#if imagesOfType.length > 0}
-							<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
+							<div
+								class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+							>
 								{#each imagesToShow as image (image.url)}
-									<div class="aspect-square overflow-hidden border rounded">
-										<img src={image.url} alt={image.alt} class="w-full h-full object-cover" />
+									<div class="aspect-square overflow-hidden rounded border">
+										<img src={image.url} alt={image.alt} class="h-full w-full object-cover" />
 									</div>
 								{/each}
 							</div>
 						{:else}
-							<div class="bg-base-200 flex w-full items-center justify-center p-3 sm:p-4 rounded">
-								<p class="text-base-content/60 text-xs sm:text-sm text-center">No {photoType.label.toLowerCase()} photos available</p>
+							<div class="bg-base-200 flex w-full items-center justify-center rounded p-3 sm:p-4">
+								<p class="text-base-content/60 text-center text-xs sm:text-sm">
+									No {photoType.label.toLowerCase()} photos available
+								</p>
 							</div>
 						{/if}
 					</div>
 				{/each}
-				
+
 				<!-- Show additional image types that are not standard -->
-				{#each [...new Set(currentImages.map(img => img.type).filter(type => !photoTypes.some(pt => pt.label === type)))] as type}
-					{@const imagesOfType = currentImages.filter(img => img.type === type)}
+				{#each [...new Set(currentImages
+							.map((img) => img.type)
+							.filter((type) => !photoTypes.some((pt) => pt.label === type)))] as type}
+					{@const imagesOfType = currentImages.filter((img) => img.type === type)}
 					{@const isExpanded = expandedCategories.has(type)}
 					{@const imagesToShow = isExpanded ? imagesOfType : imagesOfType.slice(0, 10)}
 					{@const hasMoreImages = imagesOfType.length > 10}
-					
+
 					<div class="mb-6">
-						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-							<h4 class="text-sm sm:text-md font-semibold">{type} picture ({getLanguage(activeLanguageCode)})</h4>
-							<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+						<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<h4 class="sm:text-md text-sm font-semibold">
+								{type} picture ({getLanguage(activeLanguageCode)})
+							</h4>
+							<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
 								<!-- Upload button for this category -->
 								<input
 									id="{type.toLowerCase()}-{activeLanguageCode}-upload"
@@ -258,7 +270,8 @@
 								<button
 									type="button"
 									class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
-									onclick={() => triggerFileInput(`${type.toLowerCase()}-${activeLanguageCode}-upload`)}
+									onclick={() =>
+										triggerFileInput(`${type.toLowerCase()}-${activeLanguageCode}-upload`)}
 								>
 									<span class="icon-[mdi--upload] h-3 w-3 sm:h-4 sm:w-4"></span>
 									<span class="text-xs sm:text-sm">Upload {type}</span>
@@ -269,25 +282,31 @@
 										class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
 										onclick={() => toggleCategoryExpansion(type)}
 									>
-										<span class="text-xs sm:text-sm">{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span>
+										<span class="text-xs sm:text-sm"
+											>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+										>
 									</button>
 								{/if}
 							</div>
 						</div>
-						<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
+						<div
+							class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+						>
 							{#each imagesToShow as image (image.url)}
-								<div class="aspect-square overflow-hidden border rounded">
-									<img src={image.url} alt={image.alt} class="w-full h-full object-cover" />
+								<div class="aspect-square overflow-hidden rounded border">
+									<img src={image.url} alt={image.alt} class="h-full w-full object-cover" />
 								</div>
 							{/each}
 						</div>
 					</div>
 				{/each}
-				
+
 				<!-- Show message if no images at all -->
 				{#if currentImages.length === 0}
-					<div class="bg-base-200 flex w-full items-center justify-center p-4 sm:p-6 rounded">
-						<p class="text-base-content/60 text-sm sm:text-base text-center">{$_('product.edit.no_photo_available')}</p>
+					<div class="bg-base-200 flex w-full items-center justify-center rounded p-4 sm:p-6">
+						<p class="text-base-content/60 text-center text-sm sm:text-base">
+							{$_('product.edit.no_photo_available')}
+						</p>
 					</div>
 				{/if}
 			</div>

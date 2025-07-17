@@ -110,11 +110,7 @@ export class ProductsApi {
 	 * @param user_id Username for authentication
 	 * @param password Password for authentication
 	 */
-	async uploadImage(
-		barcode: string,
-		imageFile: File,
-		imagefield: string
-	) {
+	async uploadImage(barcode: string, imageFile: File, imagefield: string) {
 		const url = `${API_HOST}/cgi/product_image_upload.pl`;
 		const formData = new FormData();
 		formData.append('code', barcode);
