@@ -36,20 +36,16 @@ function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	const fetchProducts = async () => {
-		const states = await productsWithQuestions(fetch);
-		// filter out products that failed to load
-		const products = states.filter(
-			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
-		);
+	const states = await productsWithQuestions(fetch);
+	// filter out products that failed to load
+	const products = states.filter(
+		(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
+	);
 
-		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
-	};
-
-	const products = fetchProducts();
+	// remove duplicate products
+	const dedupProducts = deduplicate(products, (it) => it.product.code);
 
 	return {
-		streamed: { products }
+		products: dedupProducts
 	};
 };
