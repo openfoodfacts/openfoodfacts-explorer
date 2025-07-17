@@ -352,55 +352,6 @@
 			currentStep = currentStep - 1;
 		}
 	}
-
-	function triggerFileInput(id: string) {
-		const input = document.getElementById(id) as HTMLInputElement;
-		if (input) input.click();
-	}
-
-	async function handleImageUpload(e: Event, type: string) {
-		const input = e.target as HTMLInputElement;
-		if (!input.files || input.files.length === 0) return;
-		const file = input.files[0];
-		// Map type to OpenFoodFacts imagefield value
-		let imagefield = '';
-		switch (type) {
-			case 'front':
-				imagefield = 'front_en';
-				break;
-			case 'ingredients':
-				imagefield = 'ingredients_en';
-				break;
-			case 'nutrition':
-				imagefield = 'nutrition_en';
-				break;
-			case 'recycling':
-				imagefield = 'recycling_en';
-				break;
-			case 'more':
-				imagefield = 'other_en';
-				break;
-			default:
-				imagefield = type + '_en';
-		}
-		const barcode = $productStore.code;
-		const user_id = $preferences.username;
-		const password = $preferences.password;
-		if (!user_id || !password) {
-			alert('Please set your OpenFoodFacts username and password in settings.');
-			return;
-		}
-		try {
-			const api = new ProductsApi(fetch);
-			const result = await api.uploadImage(barcode, file, imagefield);
-			console.log('Image upload result:', result);
-			alert('Image uploaded successfully!');
-		} catch (err) {
-			console.error('Image upload failed:', err);
-			alert('Image upload failed. Please try again.');
-		}
-		input.value = '';
-	}
 </script>
 
 <div class="space-y-8">
@@ -415,79 +366,6 @@
 
 	{#if currentStep === 0}
 		<div class="card bg-base-100 shadow-md">
-			<div class="card-body">
-				<!-- Front Packaging Photo -->
-				<div class="border-base-200 mb-6 border-b pb-4">
-					<h3 class="mb-2 font-semibold">Front Packaging Photo</h3>
-					<input
-						id="front-upload"
-						type="file"
-						accept="image/*"
-						class="hidden"
-						onchange={(e) => handleImageUpload(e, 'front')}
-					/>
-					<button class="btn" type="button" onclick={() => triggerFileInput('front-upload')}
-						>Upload Image</button
-					>
-				</div>
-				<!-- Ingredients Photo -->
-				<div class="border-base-200 mb-6 border-b pb-4">
-					<h3 class="mb-2 font-semibold">Ingredients Photo</h3>
-					<input
-						id="ingredients-upload"
-						type="file"
-						accept="image/*"
-						class="hidden"
-						onchange={(e) => handleImageUpload(e, 'ingredients')}
-					/>
-					<button class="btn" type="button" onclick={() => triggerFileInput('ingredients-upload')}
-						>Upload Image</button
-					>
-				</div>
-				<!-- Nutrition Facts Photo -->
-				<div class="border-base-200 mb-6 border-b pb-4">
-					<h3 class="mb-2 font-semibold">Nutrition Facts Photo</h3>
-					<input
-						id="nutrition-upload"
-						type="file"
-						accept="image/*"
-						class="hidden"
-						onchange={(e) => handleImageUpload(e, 'nutrition')}
-					/>
-					<button class="btn" type="button" onclick={() => triggerFileInput('nutrition-upload')}
-						>Upload Image</button
-					>
-				</div>
-				<!-- Recycling Photo -->
-				<div class="border-base-200 mb-6 border-b pb-4">
-					<h3 class="mb-2 font-semibold">Recycling Photo</h3>
-					<input
-						id="recycling-upload"
-						type="file"
-						accept="image/*"
-						class="hidden"
-						onchange={(e) => handleImageUpload(e, 'recycling')}
-					/>
-					<button class="btn" type="button" onclick={() => triggerFileInput('recycling-upload')}
-						>Upload Image</button
-					>
-				</div>
-				<!-- More Photos -->
-				<div>
-					<h3 class="mb-2 font-semibold">More Photos</h3>
-					<input
-						id="more-upload"
-						type="file"
-						accept="image/*"
-						class="hidden"
-						onchange={(e) => handleImageUpload(e, 'more')}
-						multiple
-					/>
-					<button class="btn" type="button" onclick={() => triggerFileInput('more-upload')}
-						>Upload Image</button
-					>
-				</div>
-			</div>
 			<div class="card-body">
 				<PhotoManager product={$productStore} />
 			</div>

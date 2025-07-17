@@ -113,21 +113,15 @@ export class ProductsApi {
 	async uploadImage(
 		barcode: string,
 		imageFile: File,
-		imagefield: string,
-		// user_id: string,
-		// password: string
+		imagefield: string
 	) {
 		const url = `${API_HOST}/cgi/product_image_upload.pl`;
 		const formData = new FormData();
 		formData.append('code', barcode);
-		// formData.append('user_id', user_id);
-		// formData.append('password', password);
 		formData.append('imagefield', imagefield);
-		// The file field must be named imgupload_{imagefield}
 		formData.append(`imgupload_${imagefield}`, imageFile);
 
 		try {
-			
 			const res = await this.fetch(url, {
 				method: 'POST',
 				body: formData
@@ -451,6 +445,11 @@ export function getProductImageUrl(
 	}
 
 	const rev = (image as SelectedImage).rev;
-	const filename = `${imageName}.${rev}.400.jpg`;
+	let filename;
+	if (rev) {
+		filename = `${imageName}.${rev}.400.jpg`;
+	} else {
+		filename = `${imageName}.400.jpg`;
+	}
 	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 }
