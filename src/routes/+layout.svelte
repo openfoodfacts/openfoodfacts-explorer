@@ -157,7 +157,7 @@
 			<a class="btn btn-outline link" href="/static/producers">
 				{$_('producers_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
 				{$_('prices_link')}
 			</a>
 			<a class="btn btn-outline link" href="/folksonomy">
