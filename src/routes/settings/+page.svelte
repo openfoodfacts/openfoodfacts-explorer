@@ -110,6 +110,21 @@
 		{/each}
 	</select>
 
+	<Heading>{$_('settings.links')}</Heading>
+
+	<span class="justify-self-start text-sm font-medium md:justify-self-end">{$_('github_link')}</span
+	>
+	<a
+		class="btn btn-sm btn-outline w-full md:w-auto"
+		href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+		target="_blank"
+		rel="noopener noreferrer"
+		aria-label={$_('github_link')}
+	>
+		<span class="icon-[mdi--github] mr-2 h-4 w-4"></span>
+		{$_('github')}
+	</a>
+
 	<Heading>{$_('settings.influences')}</Heading>
 
 	<label for="nutriscore" class="justify-self-start md:justify-self-end">{$_('nutriscore')}</label>

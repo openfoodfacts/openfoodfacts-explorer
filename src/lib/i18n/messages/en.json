@@ -62,6 +62,7 @@
 	},
 	"settings": {
 		"general": "General",
+		"links": "Links",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
 	},

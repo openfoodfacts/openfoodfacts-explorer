@@ -83,14 +83,8 @@
 			</div>
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
-				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
-				<a
-					class="btn btn-outline link"
-					href={GITHUB_REPO_URL}
-					target="_blank"
-					aria-label={$_('github_link')}
-				>
-					<span class="icon-[mdi--github] h-8 w-8"></span>
+				<a class="btn btn-outline link" href="/settings" aria-label={$_('settings_link')}>
+					<span class="icon-[mdi--cog] h-8 w-8"></span>
 				</a>
 				{#if $userInfo != null}
 					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
@@ -163,16 +157,8 @@
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
-			<a class="btn btn-outline link" href="/settings">
-				{$_('settings_link')}
-			</a>
-			<a
-				class="btn btn-outline link"
-				href={GITHUB_REPO_URL}
-				target="_blank"
-				aria-label={$_('github_link')}
-			>
-				<span class="icon-[mdi--github] h-8 w-8"></span>
+			<a class="btn btn-outline link" href="/settings" aria-label={$_('settings_link')}>
+				<span class="icon-[mdi--cog] h-8 w-8"></span>
 			</a>
 
 			{#if $userInfo != null}
