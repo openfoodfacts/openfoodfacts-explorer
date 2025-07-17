@@ -110,8 +110,14 @@ export class ProductsApi {
 	 * @param user_id Username for authentication
 	 * @param password Password for authentication
 	 */
-	async uploadImage(barcode: string, imageFile: File, imagefield: string, user_id: string, password: string) {
-		const url = `https://world.openfoodfacts.net/cgi/product_image_upload.pl`;
+	async uploadImage(
+		barcode: string,
+		imageFile: File,
+		imagefield: string,
+		user_id: string,
+		password: string
+	) {
+		const url = `${API_HOST}/cgi/product_image_upload.pl`;
 		const formData = new FormData();
 		formData.append('code', barcode);
 		formData.append('user_id', user_id);
@@ -121,7 +127,9 @@ export class ProductsApi {
 		formData.append(`imgupload_${imagefield}`, imageFile);
 
 		try {
-			console.log(`Uploading image for product ${barcode} with imagefield '${imagefield}' and user '${user_id}' and password '${password}'`);
+			console.log(
+				`Uploading image for product ${barcode} with imagefield '${imagefield}' and user '${user_id}' and password '${password}'`
+			);
 			const res = await this.fetch(url, {
 				method: 'POST',
 				body: formData
