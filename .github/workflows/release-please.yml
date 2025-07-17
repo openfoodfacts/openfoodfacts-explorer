@@ -15,7 +15,7 @@ jobs:
           # So this is a personal access token
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: simple
-          pull-request-title-pattern: "chore${scope}: 🚀 Open Food Facts Explorer - Experimental frontend - Release REPLACE ME."
+          pull-request-title-pattern: "chore: 🚀 changelog for Open Food Facts Explorer - Experimental frontend"
           changelog-types: |
             [
               {"type":"feat","section":"Features","hidden":false},
