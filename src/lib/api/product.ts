@@ -114,22 +114,20 @@ export class ProductsApi {
 		barcode: string,
 		imageFile: File,
 		imagefield: string,
-		user_id: string,
-		password: string
+		// user_id: string,
+		// password: string
 	) {
 		const url = `${API_HOST}/cgi/product_image_upload.pl`;
 		const formData = new FormData();
 		formData.append('code', barcode);
-		formData.append('user_id', user_id);
-		formData.append('password', password);
+		// formData.append('user_id', user_id);
+		// formData.append('password', password);
 		formData.append('imagefield', imagefield);
 		// The file field must be named imgupload_{imagefield}
 		formData.append(`imgupload_${imagefield}`, imageFile);
 
 		try {
-			console.log(
-				`Uploading image for product ${barcode} with imagefield '${imagefield}' and user '${user_id}' and password '${password}'`
-			);
+			
 			const res = await this.fetch(url, {
 				method: 'POST',
 				body: formData

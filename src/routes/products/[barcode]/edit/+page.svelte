@@ -392,7 +392,7 @@
 		}
 		try {
 			const api = new ProductsApi(fetch);
-			const result = await api.uploadImage(barcode, file, imagefield, user_id, password);
+			const result = await api.uploadImage(barcode, file, imagefield);
 			console.log('Image upload result:', result);
 			alert('Image uploaded successfully!');
 		} catch (err) {
