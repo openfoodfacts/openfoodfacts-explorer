@@ -30,8 +30,6 @@
 
 	let searchQuery: string = $state('');
 
-	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
-
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
