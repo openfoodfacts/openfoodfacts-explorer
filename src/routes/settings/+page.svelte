@@ -8,6 +8,8 @@
 	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
 
+	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
+
 	interface Props {
 		data: PageData;
 	}
@@ -204,4 +206,13 @@
 			{/if}
 		</div>
 	{/if}
+</div>
+
+<div class="divider my-8"></div>
+
+<div class="mt-8 flex justify-center">
+	<a class="btn btn-outline" href={GITHUB_REPO_URL} target="_blank" aria-label="GitHub">
+		<span class="icon-[mdi--github] text-xl"></span>
+		<span class="ml-2">Help us improve Explorer on GitHub</span>
+	</a>
 </div>
