@@ -112,6 +112,21 @@
 		{/each}
 	</select>
 
+	<label for="currency-select" class="justify-self-start md:justify-self-end">
+		{$_('general.currency')}:
+	</label>
+	<select
+		name="currency-select"
+		class="select select-bordered w-full md:w-auto"
+		bind:value={$preferences.currency}
+	>
+		{#each data.currencies as currency (currency)}
+			<option value={currency} selected={$preferences.currency === currency}>
+				{currency}
+			</option>
+		{/each}
+	</select>
+
 	<Heading>{$_('settings.influences')}</Heading>
 
 	<label for="nutriscore" class="justify-self-start md:justify-self-end">{$_('nutriscore')}</label>
