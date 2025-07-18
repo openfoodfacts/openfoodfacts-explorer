@@ -112,9 +112,9 @@
 		{/each}
 	</select>
 
-	<label for="currency-select" class="justify-self-start md:justify-self-end"
-		>{$_('general.currency')}:</label
-	>
+	<label for="currency-select" class="justify-self-start md:justify-self-end">
+		{$_('general.currency')}:
+	</label>
 	<select
 		name="currency-select"
 		class="select select-bordered w-full md:w-auto"
