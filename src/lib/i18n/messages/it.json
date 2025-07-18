@@ -32,7 +32,8 @@
 	},
 	"general": {
 		"language": "Language",
-		"country": "Country",
+		"country": "Paese",
+		"currency": "Valuta",
 		"loading": "Loading...",
 		"warning": "Warning",
 		"notes": "Notes",

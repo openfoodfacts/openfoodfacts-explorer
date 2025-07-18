@@ -41,6 +41,7 @@
 	"general": {
 		"language": "Language",
 		"country": "Country",
+		"currency": "Currency",
 		"loading": "Loading...",
 		"warning": "Warning",
 		"notes": "Notes",
