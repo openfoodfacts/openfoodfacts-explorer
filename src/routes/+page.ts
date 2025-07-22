@@ -1,32 +1,27 @@
+import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
+import type { PageLoad } from './$types';
+
 import {
 	ProductsApi,
 	type ProductReduced,
 	type ProductState,
 	type ProductStateFound
 } from '$lib/api';
-import type { PageLoad } from './$types';
 
-type QuestionsResponse = {
-	status: string;
-	questions: {
-		barcode: string;
-	}[];
-	count: number;
-};
-
-const count = '10';
+const INSIGHT_COUNT = 10;
 
 async function productsWithQuestions(
 	fetch: typeof window.fetch
 ): Promise<ProductState<ProductReduced>[]> {
-	const response: QuestionsResponse = await fetch(
-		'https://robotoff.openfoodfacts.org/api/v1/questions?' + new URLSearchParams({ count })
-	).then((it) => it.json());
+	const roffApi = new Robotoff(fetch);
+	const response = await roffApi.insights({ count: INSIGHT_COUNT });
 
 	const productApi = new ProductsApi(fetch);
 
-	const productsPromises = response.questions.map((question) =>
-		productApi.getProductReducedForCard(question.barcode)
+	const insights = response?.insights ?? [];
+
+	const productsPromises = insights.map((question) =>
+		productApi.getProductReducedForCard(question.barcode.toString())
 	);
 	return Promise.all(productsPromises);
 }
@@ -41,20 +36,16 @@ function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	const fetchProducts = async () => {
-		const states = await productsWithQuestions(fetch);
-		// filter out products that failed to load
-		const products = states.filter(
-			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
-		);
+	const states = await productsWithQuestions(fetch);
+	// filter out products that failed to load
+	const products = states.filter(
+		(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
+	);
 
-		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
-	};
-
-	const products = fetchProducts();
+	// remove duplicate products
+	const dedupProducts = deduplicate(products, (it) => it.product.code);
 
 	return {
-		streamed: { products }
+		products: dedupProducts
 	};
 };

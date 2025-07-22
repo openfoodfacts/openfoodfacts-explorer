@@ -4,10 +4,10 @@
 	import { NO_MARGIN_ROUTES } from '$lib/const';
 
 	const navItems = [
-		{ name: 'discover_link', href: '/discover' },
-		{ name: 'contribute_link', href: '/contribute' },
-		{ name: 'producers_link', href: '/producers' },
-		{ name: 'prices_link', href: '#' },
+		{ name: 'discover_link', href: '/static/discover' },
+		{ name: 'contribute_link', href: '/static/contribute' },
+		{ name: 'producers_link', href: '/static/producers' },
+		{ name: 'prices_link', href: 'https://prices.openfoodfacts.org' },
 		{ name: 'folksonomy_link', href: '/folksonomy' }
 	];
 </script>

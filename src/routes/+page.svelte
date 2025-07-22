@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data }: PageProps = $props();
+	let { products } = $derived(data);
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
@@ -54,25 +51,19 @@
 		<div
 			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>
-			{#await data.streamed.products}
-				{#each [...Array(6).keys()] as i (i)}
-					<div class="skeleton dark:bg-base-300 h-28 bg-white p-4 shadow-md"></div>
-				{/each}
-			{:then products}
-				{#each products as state (state.product.code)}
-					<product-card
-						product={state.product}
-						navigating={{
-							to:
-								navigatingTo === state.product.code
-									? { params: { barcode: state.product.code } }
-									: null
-						}}
-						placeholderImage="/Placeholder.svg"
-						onclick={() => navigateToProduct(state.product.code)}
-					></product-card>
-				{/each}
-			{/await}
+			{#each products as state (state.product.code)}
+				<product-card
+					product={state.product}
+					navigating={{
+						to:
+							navigatingTo === state.product.code
+								? { params: { barcode: state.product.code } }
+								: null
+					}}
+					placeholderImage="/Placeholder.svg"
+					onclick={() => navigateToProduct(state.product.code)}
+				></product-card>
+			{/each}
 		</div>
 	</div>
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">

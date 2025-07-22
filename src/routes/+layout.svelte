@@ -30,8 +30,6 @@
 
 	let searchQuery: string = $state('');
 
-	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
-
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
@@ -83,21 +81,20 @@
 			</div>
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
-				<a class="btn btn-outline link" href="/settings">{$_('settings_link')}</a>
-				<a
-					class="btn btn-outline link"
-					href={GITHUB_REPO_URL}
-					target="_blank"
-					aria-label={$_('github_link')}
-				>
-					<span class="icon-[mdi--github] h-8 w-8"></span>
-				</a>
 				{#if $userInfo != null}
 					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
 					<a class="btn btn-outline link" href="/logout">Log out</a>
 				{:else}
 					<a class="btn btn-outline link" href="/login"> Login </a>
 				{/if}
+				<a
+					class="btn btn-ghost link"
+					href="/settings"
+					aria-label={$_('settings_link')}
+					title={$_('settings_link')}
+				>
+					<span class="icon-[mdi--cog] text-2xl"></span>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -148,31 +145,30 @@
 			class:hidden={!accordionOpen}
 			class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 		>
-			<a class="btn btn-outline link" href="/discover">
+			<a class="btn btn-outline link" href="/static/discover">
 				{$_('discover_link')}
 			</a>
-			<a class="btn btn-outline link" href="/contribute">
+			<a class="btn btn-outline link" href="/static/contribute">
 				{$_('contribute_link')}
 			</a>
-			<a class="btn btn-outline link" href="/producers">
+			<a class="btn btn-outline link" href="/static/producers">
 				{$_('producers_link')}
 			</a>
-			<a class="btn btn-outline link" href="#">
+			<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
 				{$_('prices_link')}
 			</a>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
-			<a class="btn btn-outline link" href="/settings">
-				{$_('settings_link')}
-			</a>
+
+			<div class="divider md:divider-horizontal"></div>
 			<a
 				class="btn btn-outline link"
-				href={GITHUB_REPO_URL}
-				target="_blank"
-				aria-label={$_('github_link')}
+				href="/settings"
+				title={$_('settings_link')}
+				aria-label={$_('settings_link')}
 			>
-				<span class="icon-[mdi--github] h-8 w-8"></span>
+				{$_('settings_link')}
 			</a>
 
 			{#if $userInfo != null}

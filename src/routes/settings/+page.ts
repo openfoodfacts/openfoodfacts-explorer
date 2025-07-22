@@ -1,6 +1,7 @@
 import { getTaxo } from '$lib/api';
 import type { Country, Language } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
+import { createPricesApi } from '$lib/api/prices';
 
 export const load = (async ({ fetch }) => {
 	const languages = await getTaxo<Language>('languages', fetch);
@@ -12,8 +13,11 @@ export const load = (async ({ fetch }) => {
 		Object.entries(countries).filter(([, country]) => country.country_code_2 != null)
 	);
 
+	const pricesApi = createPricesApi(fetch);
+	const currencies = await pricesApi.getCurrenciesList();
 	return {
 		languages,
-		countries
+		countries,
+		currencies
 	};
 }) satisfies PageLoad;
