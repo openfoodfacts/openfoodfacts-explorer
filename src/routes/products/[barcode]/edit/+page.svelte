@@ -15,7 +15,7 @@
 		type RawImage
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
-import EditProductForm from '$lib/ui/EditProductForm.svelte';
+	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -455,37 +455,34 @@ import EditProductForm from '$lib/ui/EditProductForm.svelte';
 		<AddProductForm
 			productStore={$productStore}
 			comment={$comment}
-			currentStep={currentStep}
-			steps={steps}
-			showInfoImages={showInfoImages}
-			showInfoBasic={showInfoBasic}
-			showInfoLanguages={showInfoLanguages}
-			showInfoIngredients={showInfoIngredients}
-			showInfoNutrition={showInfoNutrition}
-			showInfoComment={showInfoComment}
-			prevStep={prevStep}
-			nextStep={nextStep}
-			goToStep={goToStep}
-			handleNutrimentInput={handleNutrimentInput}
-			addLanguage={addLanguage}
-			getLanguage={getLanguage}
-			getIngredientsImage={getIngredientsImage}
-			getNutritionImage={getNutritionImage}
-			filteredLanguages={filteredLanguages}
-			categoryNames={categoryNames}
-			labelNames={labelNames}
-			brandNames={brandNames}
-			storeNames={storeNames}
-			originNames={originNames}
-			countriesNames={countriesNames}
-			isSubmitting={isSubmitting}
-			submit={submit}
+			{currentStep}
+			{steps}
+			{showInfoImages}
+			{showInfoBasic}
+			{showInfoLanguages}
+			{showInfoIngredients}
+			{showInfoNutrition}
+			{showInfoComment}
+			{prevStep}
+			{nextStep}
+			{goToStep}
+			{handleNutrimentInput}
+			{addLanguage}
+			{getLanguage}
+			{getIngredientsImage}
+			{getNutritionImage}
+			{filteredLanguages}
+			{categoryNames}
+			{labelNames}
+			{brandNames}
+			{storeNames}
+			{originNames}
+			{countriesNames}
+			{isSubmitting}
+			{submit}
 		/>
-{:else}
-	   <EditProductForm
-			   product={$productStore}
-			   onSave={submit}
-	   />
+	{:else}
+		<EditProductForm product={$productStore} onSave={submit} />
 	{/if}
 </div>
 
