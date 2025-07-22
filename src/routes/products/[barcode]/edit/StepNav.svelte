@@ -1,12 +1,12 @@
 <script lang="ts">
-   type Props = {
-	   currentStep: number;
-	   stepsLength: number;
-	   onPrev: () => void;
-	   onNext: () => void;
-	   showNext?: boolean;
-   };
-   let { currentStep, stepsLength, onPrev, onNext, showNext = true }: Props = $props();
+	type Props = {
+		currentStep: number;
+		stepsLength: number;
+		onPrev: () => void;
+		onNext: () => void;
+		showNext?: boolean;
+	};
+	let { currentStep, stepsLength, onPrev, onNext, showNext = true }: Props = $props();
 </script>
 
 <div class="mb-6 flex items-center justify-between">
