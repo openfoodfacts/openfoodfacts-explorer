@@ -99,6 +99,8 @@
 		},
 		"edit": {
 			"add_product": "Add product",
+			"add_product_title": "Add New Product",
+			"edit_product_title": "Edit Product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
@@ -120,13 +122,22 @@
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
 			"nutritional_information": "Nutritional Information",
+			"no_nutrition_image": "No nutrition image",
 			"serving_size": "Serving Size",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
-			"debug": "Debug"
+			"debug": "Debug",
+			"sections": {
+				"images": "Images",
+				"basic_info": "Basic Information",
+				"languages": "Languages & Product Names",
+				"ingredients": "Ingredients",
+				"nutrition": "Nutritional Information",
+				"comment": "Comment"
+			}
 		}
 	},
 	"errors": {
@@ -139,6 +150,8 @@
 	"common": {
 		"next": "Next",
 		"back": "Back",
-		"skip": "Skip"
+		"skip": "Skip",
+		"step": "Step",
+		"of": "of"
 	}
 }

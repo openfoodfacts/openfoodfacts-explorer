@@ -167,8 +167,6 @@
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<h3 class="mb-3 text-lg font-bold sm:mb-4 sm:text-xl">{$_('product.edit.photos')}</h3>
-
 	<div class="tabs tabs-box">
 		{#each Object.keys(product.languages_codes) as code (code)}
 			<input
