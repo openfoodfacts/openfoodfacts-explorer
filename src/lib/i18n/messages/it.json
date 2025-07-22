@@ -84,7 +84,7 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Pagina prodotto per {productName} su Open Food Facts Explorer",
-		
+
 		"datasources": {
 			"title": "Fonti dei Dati",
 			"added_on": "Prodotto aggiunto il {date} da: ",
