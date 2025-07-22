@@ -470,39 +470,75 @@
 					</span>
 				</div>
 				<div class="flex items-center justify-center gap-2 px-4">
-					<h2 class="text-base-content text-xl leading-tight font-semibold text-center">
+					<h2 class="text-base-content text-center text-xl leading-tight font-semibold">
 						{steps[currentStep]}
 					</h2>
 					<!-- Info icon for mobile, per step -->
 					{#if currentStep === 0}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoImages = !showInfoImages}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoImages = !showInfoImages)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{:else if currentStep === 1}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoBasic = !showInfoBasic}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoBasic = !showInfoBasic)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{:else if currentStep === 2}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoLanguages = !showInfoLanguages}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoLanguages = !showInfoLanguages)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{:else if currentStep === 3}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoIngredients = !showInfoIngredients}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoIngredients = !showInfoIngredients)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{:else if currentStep === 4}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoNutrition = !showInfoNutrition}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoNutrition = !showInfoNutrition)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{:else if currentStep === 5}
-						<button type="button" class="ml-2 flex items-center" aria-label="Info"
-							onclick={() => showInfoComment = !showInfoComment}>
-							<span class="icon-[mdi--help-circle-outline] h-6 w-6 text-primary hover:text-primary/70"></span>
+						<button
+							type="button"
+							class="ml-2 flex items-center"
+							aria-label="Info"
+							onclick={() => (showInfoComment = !showInfoComment)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
+							></span>
 						</button>
 					{/if}
 				</div>
@@ -535,22 +571,35 @@
 					>
 						<span class="icon-[mdi--image-multiple] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.images')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoImages = !showInfoImages}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoImages = !showInfoImages)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoImages}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoImages = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.images')}
-						</span>
-					</div>
+					{#if showInfoImages}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoImages = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.images')}
+							</span>
+						</div>
 					{/if}
 
 					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
@@ -569,22 +618,35 @@
 					>
 						<span class="icon-[mdi--information] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.basic_info')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoBasic = !showInfoBasic}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoBasic = !showInfoBasic)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoBasic}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoBasic = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.basic_info')}
-						</span>
-					</div>
+					{#if showInfoBasic}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoBasic = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.basic_info')}
+							</span>
+						</div>
 					{/if}
 
 					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
@@ -737,7 +799,8 @@
 							</div>
 							<div class="form-control w-full">
 								<label class="label">
-									<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span>
+									<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span
+									>
 								</label>
 								<div class="w-full">
 									<TraceabilityCodes
@@ -761,22 +824,35 @@
 					>
 						<span class="icon-[mdi--translate] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.languages')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoLanguages = !showInfoLanguages}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoLanguages = !showInfoLanguages)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoLanguages}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoLanguages = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.languages')}
-						</span>
-					</div>
+					{#if showInfoLanguages}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoLanguages = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.languages')}
+							</span>
+						</div>
 					{/if}
 
 					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
@@ -853,22 +929,35 @@
 					>
 						<span class="icon-[mdi--format-list-bulleted] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.ingredients')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoIngredients = !showInfoIngredients}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoIngredients = !showInfoIngredients)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoIngredients}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoIngredients = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.ingredients')}
-						</span>
-					</div>
+					{#if showInfoIngredients}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoIngredients = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.ingredients')}
+							</span>
+						</div>
 					{/if}
 
 					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
@@ -920,22 +1009,35 @@
 					>
 						<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.nutrition')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoNutrition = !showInfoNutrition}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoNutrition = !showInfoNutrition)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoNutrition}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoNutrition = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.nutrition')}
-						</span>
-					</div>
+					{#if showInfoNutrition}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoNutrition = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.nutrition')}
+							</span>
+						</div>
 					{/if}
 
 					<!-- Top Navigation -->
@@ -1170,22 +1272,35 @@
 					>
 						<span class="icon-[mdi--comment-text] mr-1 h-6 w-6 align-middle"></span>
 						{$_('product.edit.sections.comment')}
-						<button type="button" class="ml-2 align-middle" aria-label="Info"
-							onclick={() => showInfoComment = !showInfoComment}>
-							<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+						<button
+							type="button"
+							class="ml-2 align-middle"
+							aria-label="Info"
+							onclick={() => (showInfoComment = !showInfoComment)}
+						>
+							<span
+								class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+							></span>
 						</button>
 					</h2>
-				{#if showInfoComment}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10 m-2" aria-label="Close"
-							onclick={() => showInfoComment = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0 w-6 h-6"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-6">
-							{$_('product.edit.info.comment')}
-						</span>
-					</div>
+					{#if showInfoComment}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoComment = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+							<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"
+							></span>
+							<span class="text-base-content/80 p-6 text-sm sm:text-base">
+								{$_('product.edit.info.comment')}
+							</span>
+						</div>
 					{/if}
 
 					<StepNav
@@ -1271,21 +1386,33 @@
 					{$_('product.edit.sections.images')}
 				</div>
 				<div class="collapse-content">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoImages = !showInfoImages}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoImages = !showInfoImages)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
-				{#if showInfoImages}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-4">
-							{$_('product.edit.info.images')}
-						</span>
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-							onclick={() => showInfoImages = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-					</div>
+					{#if showInfoImages}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								{$_('product.edit.info.images')}
+							</span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoImages = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+						</div>
 					{/if}
 					<PhotoManager product={$productStore} />
 				</div>
@@ -1299,21 +1426,33 @@
 					{$_('product.edit.sections.basic_info')}
 				</div>
 				<div class="collapse-content overflow-hidden">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoBasic = !showInfoBasic}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoBasic = !showInfoBasic)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
-				{#if showInfoBasic}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-4">
-							{$_('product.edit.info.basic_info')}
-						</span>
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-							onclick={() => showInfoBasic = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-					</div>
+					{#if showInfoBasic}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								{$_('product.edit.info.basic_info')}
+							</span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoBasic = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+						</div>
 					{/if}
 					<!-- Basic Product Information -->
 					<div class="space-y-6">
@@ -1491,21 +1630,33 @@
 					{$_('product.edit.sections.languages')}
 				</div>
 				<div class="collapse-content">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoLanguages = !showInfoLanguages}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoLanguages = !showInfoLanguages)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
-				{#if showInfoLanguages}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-4">
-							{$_('product.edit.info.languages')}
-						</span>
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-							onclick={() => showInfoLanguages = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-					</div>
+					{#if showInfoLanguages}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								{$_('product.edit.info.languages')}
+							</span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoLanguages = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+						</div>
 					{/if}
 					<div class="collapse-arrow bg-base-200 collapse mb-4">
 						<input type="checkbox" />
@@ -1577,21 +1728,33 @@
 					{$_('product.edit.sections.ingredients')}
 				</div>
 				<div class="collapse-content">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoIngredients = !showInfoIngredients}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoIngredients = !showInfoIngredients)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
-				{#if showInfoIngredients}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-4">
-							{$_('product.edit.info.ingredients')}
-						</span>
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-							onclick={() => showInfoIngredients = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-					</div>
+					{#if showInfoIngredients}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								{$_('product.edit.info.ingredients')}
+							</span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoIngredients = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+						</div>
 					{/if}
 					<div class="tabs tabs-box">
 						{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
@@ -1638,21 +1801,33 @@
 					{$_('product.edit.sections.nutrition')}
 				</div>
 				<div class="collapse-content">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoNutrition = !showInfoNutrition}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoNutrition = !showInfoNutrition)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
-				{#if showInfoNutrition}
-					<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
-						<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-						<span class="text-sm sm:text-base text-base-content/80 p-4">
-							{$_('product.edit.info.nutrition')}
-						</span>
-						<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-							onclick={() => showInfoNutrition = false}>
-							<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
-						</button>
-					</div>
+					{#if showInfoNutrition}
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
+							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								{$_('product.edit.info.nutrition')}
+							</span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoNutrition = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+							</button>
+						</div>
 					{/if}
 					<div class="tabs tabs-box mb-4">
 						{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
@@ -1879,19 +2054,31 @@
 					{$_('product.edit.sections.comment')}
 				</div>
 				<div class="collapse-content">
-					<button type="button" class="mb-2" aria-label="Info"
-						onclick={() => showInfoComment = !showInfoComment}>
-						<span class="icon-[mdi--help-circle-outline] ml-4 h-6 w-6 hover:text-primary/70 hover:cursor-pointer text-primary "></span>
+					<button
+						type="button"
+						class="mb-2"
+						aria-label="Info"
+						onclick={() => (showInfoComment = !showInfoComment)}
+					>
+						<span
+							class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+						></span>
 					</button>
 					{#if showInfoComment}
-						<div class="mb-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-primary-content text-sm shadow-sm flex items-center gap-2 relative">
+						<div
+							class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+						>
 							<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-							<span class="text-sm sm:text-base text-base-content/80 p-4">
-							Optionally, add a comment to describe your changes or provide additional context.
+							<span class="text-base-content/80 p-4 text-sm sm:text-base">
+								Optionally, add a comment to describe your changes or provide additional context.
 							</span>
-							<button type="button" class="absolute top-2 right-2 p-1 rounded hover:bg-primary/10" aria-label="Close"
-								onclick={() => showInfoComment = false}>
-								<span class="icon-[mdi--close] h-5 w-5 text-primary"></span>
+							<button
+								type="button"
+								class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
+								aria-label="Close"
+								onclick={() => (showInfoComment = false)}
+							>
+								<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 							</button>
 						</div>
 					{/if}

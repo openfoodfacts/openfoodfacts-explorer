@@ -97,15 +97,15 @@
 			"done": "Fatto",
 			"toDo": "Da fare"
 		},
-	"edit": {
-	  "info": {
-		"images": "Carica immagini chiare del prodotto, degli ingredienti e dei valori nutrizionali per aiutare gli altri a identificare il prodotto.",
-		"basic_info": "Fornisci i dettagli principali del prodotto, come quantità, imballaggio e produttore.",
-		"languages": "Aggiungi nomi e descrizioni del prodotto in diverse lingue per renderlo accessibile a più utenti.",
-		"ingredients": "Elenca tutti gli ingredienti presenti nel prodotto. Questo aiuta gli utenti con allergie o preferenze alimentari.",
-		"nutrition": "Inserisci le informazioni nutrizionali come riportato sulla confezione. Dati accurati aiutano gli utenti a fare scelte consapevoli.",
-		"comment": "Aggiungi eventuali commenti o note su questa modifica. Questo può aiutare i revisori a comprendere le tue modifiche."
-	  },
+		"edit": {
+			"info": {
+				"images": "Carica immagini chiare del prodotto, degli ingredienti e dei valori nutrizionali per aiutare gli altri a identificare il prodotto.",
+				"basic_info": "Fornisci i dettagli principali del prodotto, come quantità, imballaggio e produttore.",
+				"languages": "Aggiungi nomi e descrizioni del prodotto in diverse lingue per renderlo accessibile a più utenti.",
+				"ingredients": "Elenca tutti gli ingredienti presenti nel prodotto. Questo aiuta gli utenti con allergie o preferenze alimentari.",
+				"nutrition": "Inserisci le informazioni nutrizionali come riportato sulla confezione. Dati accurati aiutano gli utenti a fare scelte consapevoli.",
+				"comment": "Aggiungi eventuali commenti o note su questa modifica. Questo può aiutare i revisori a comprendere le tue modifiche."
+			},
 			"add_product": "Aggiungi prodotto",
 			"add_product_title": "Aggiungi Nuovo Prodotto",
 			"add_product_subtitle": "Aiuta ad espandere il database di Open Food Facts aggiungendo informazioni sui prodotti",

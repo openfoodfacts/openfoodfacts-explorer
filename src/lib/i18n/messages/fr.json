@@ -97,15 +97,15 @@
 			"done": "Terminé",
 			"toDo": "À faire"
 		},
-	"edit": {
-	  "info": {
-		"images": "Téléchargez des images claires du produit, des ingrédients et des informations nutritionnelles pour aider les autres à identifier le produit.",
-		"basic_info": "Fournissez les principaux détails du produit, tels que la quantité, l'emballage et le fabricant.",
-		"languages": "Ajoutez les noms et descriptions du produit dans différentes langues pour le rendre accessible à plus d'utilisateurs.",
-		"ingredients": "Listez tous les ingrédients présents dans le produit. Cela aide les utilisateurs ayant des allergies ou des préférences alimentaires.",
-		"nutrition": "Saisissez les informations nutritionnelles telles qu'elles figurent sur l'emballage. Des données précises aident les utilisateurs à faire des choix éclairés.",
-		"comment": "Ajoutez des commentaires ou des notes concernant cette modification. Cela peut aider les réviseurs à comprendre vos changements."
-	  },
+		"edit": {
+			"info": {
+				"images": "Téléchargez des images claires du produit, des ingrédients et des informations nutritionnelles pour aider les autres à identifier le produit.",
+				"basic_info": "Fournissez les principaux détails du produit, tels que la quantité, l'emballage et le fabricant.",
+				"languages": "Ajoutez les noms et descriptions du produit dans différentes langues pour le rendre accessible à plus d'utilisateurs.",
+				"ingredients": "Listez tous les ingrédients présents dans le produit. Cela aide les utilisateurs ayant des allergies ou des préférences alimentaires.",
+				"nutrition": "Saisissez les informations nutritionnelles telles qu'elles figurent sur l'emballage. Des données précises aident les utilisateurs à faire des choix éclairés.",
+				"comment": "Ajoutez des commentaires ou des notes concernant cette modification. Cela peut aider les réviseurs à comprendre vos changements."
+			},
 			"add_product": "Ajouter un produit",
 			"add_product_title": "Ajouter un nouveau produit",
 			"edit_product_title": "Modifier le produit",
