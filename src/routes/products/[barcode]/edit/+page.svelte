@@ -22,6 +22,7 @@
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
 	import TraceabilityCodes from './TraceabilityCodes.svelte';
 	import PhotoManager from './PhotoManager.svelte';
+	import StepNav from './StepNav.svelte';
 
 	interface Props {
 		data: PageData;
@@ -495,47 +496,7 @@
 						)}
 					</h2>
 
-					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-						<div>
-							{#if currentStep < steps.length - 1}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={nextStep}
-									type="button"
-									title={$_('common.next')}
-								>
-									<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
-								</button>
-							{:else}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={submit}
-									disabled={isSubmitting}
-									type="button"
-									title={$_('product.edit.add_product')}
-								>
-									{#if isSubmitting}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										<span class="icon-[mdi--check] h-4 w-4"></span>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 
 					<PhotoManager product={$productStore} />
 				</div>
@@ -554,47 +515,7 @@
 						)}
 					</h2>
 
-					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-						<div>
-							{#if currentStep < steps.length - 1}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={nextStep}
-									type="button"
-									title={$_('common.next')}
-								>
-									<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
-								</button>
-							{:else}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={submit}
-									disabled={isSubmitting}
-									type="button"
-									title={$_('product.edit.add_product')}
-								>
-									{#if isSubmitting}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										<span class="icon-[mdi--check] h-4 w-4"></span>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 
 					<div class="space-y-6 overflow-hidden">
 						<!-- Primary Fields Grid -->
@@ -772,47 +693,7 @@
 						)}
 					</h2>
 
-					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-						<div>
-							{#if currentStep < steps.length - 1}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={nextStep}
-									type="button"
-									title={$_('common.next')}
-								>
-									<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
-								</button>
-							{:else}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={submit}
-									disabled={isSubmitting}
-									type="button"
-									title={$_('product.edit.add_product')}
-								>
-									{#if isSubmitting}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										<span class="icon-[mdi--check] h-4 w-4"></span>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 
 					<div class="collapse-arrow bg-base-200 collapse">
 						<input type="checkbox" />
@@ -889,47 +770,7 @@
 						)}
 					</h2>
 
-					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-						<div>
-							{#if currentStep < steps.length - 1}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={nextStep}
-									type="button"
-									title={$_('common.next')}
-								>
-									<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
-								</button>
-							{:else}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={submit}
-									disabled={isSubmitting}
-									type="button"
-									title={$_('product.edit.add_product')}
-								>
-									{#if isSubmitting}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										<span class="icon-[mdi--check] h-4 w-4"></span>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 
 					<div class="tabs tabs-box">
 						{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
@@ -982,46 +823,7 @@
 					</h2>
 
 					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-						<div>
-							{#if currentStep < steps.length - 1}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={nextStep}
-									type="button"
-									title={$_('common.next')}
-								>
-									<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
-								</button>
-							{:else}
-								<button
-									class="btn btn-circle btn-sm btn-primary"
-									onclick={submit}
-									disabled={isSubmitting}
-									type="button"
-									title={$_('product.edit.add_product')}
-								>
-									{#if isSubmitting}
-										<span class="loading loading-spinner loading-xs"></span>
-									{:else}
-										<span class="icon-[mdi--check] h-4 w-4"></span>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 
 					<div class="tabs tabs-box mb-4">
 						{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
@@ -1255,21 +1057,13 @@
 						)}
 					</h2>
 
-					<!-- Top Navigation -->
-					<div class="mb-6 flex items-center justify-between">
-						<div>
-							{#if currentStep > 0}
-								<button
-									class="btn btn-circle btn-sm btn-outline"
-									onclick={prevStep}
-									type="button"
-									title={$_('common.back')}
-								>
-									<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
-								</button>
-							{/if}
-						</div>
-					</div>
+					<StepNav
+						{currentStep}
+						stepsLength={steps.length}
+						onPrev={prevStep}
+						onNext={nextStep}
+						showNext={false}
+					/>
 
 					<div class="space-y-6">
 						<div class="mb-6 text-center">
