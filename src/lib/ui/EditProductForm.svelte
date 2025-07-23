@@ -3,16 +3,13 @@
 	import TraceabilityCodes from '../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import PhotoManager from '../../routes/products/[barcode]/edit/PhotoManager.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
+
 	import type { Writable } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
-	type Props = {
-		productStore: Writable<any>;
-		onSave: (data: any) => void;
-	};
-	let { productStore, onSave }: Props = $props();
-
+	let { productStore, onSave }: { productStore: Writable<any>; onSave: (data: any) => void } =
+		$props();
 	let comment = $state('');
 
 	// Info toggles for collapsible sections
@@ -24,17 +21,15 @@
 	let showInfoComment = $state(false);
 
 	// Language section state
-	let languageCodes = $state(ISO6391.getAllCodes());
+	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
 	let filteredLanguages = $state(languageCodes);
 
 	$effect(() => {
+		const search = languageSearch.toLowerCase();
 		filteredLanguages = languageCodes.filter((code) => {
-			if ($productStore.languages_codes && $productStore.languages_codes[code] !== undefined) {
-				return false;
-			}
-			const language = ISO6391.getName(code);
-			return language.toLowerCase().includes(languageSearch.toLowerCase());
+			if ($productStore.languages_codes?.[code] !== undefined) return false;
+			return ISO6391.getName(code).toLowerCase().includes(search);
 		});
 	});
 
@@ -45,11 +40,7 @@
 		});
 	}
 
-	function getLanguage(code: string) {
-		return ISO6391.getName(code);
-	}
-
-	// Ingredients/Nutrition helpers
+	const getLanguage = ISO6391.getName;
 
 	function getIngredientsImage(language: string) {
 		const productData = $productStore;
@@ -60,7 +51,7 @@
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'ingredients_' + language;
 		const image = productData.images[imageName];
-		if (!image || !image.rev) return null;
+		if (!image?.rev) return null;
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
@@ -74,7 +65,7 @@
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'nutrition_' + language;
 		const image = productData.images[imageName];
-		if (!image || !image.rev) return null;
+		if (!image?.rev) return null;
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
@@ -82,8 +73,7 @@
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
 		productStore.update((store) => {
-			if (!store.nutriments) store.nutriments = {};
-			store.nutriments[key] = target.value ? Number(target.value) : null;
+			store.nutriments = { ...store.nutriments, [key]: target.value ? Number(target.value) : null };
 			return store;
 		});
 	}

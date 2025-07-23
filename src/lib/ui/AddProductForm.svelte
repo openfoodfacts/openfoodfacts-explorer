@@ -4,38 +4,7 @@
 	import TraceabilityCodes from '../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import PhotoManager from '../../routes/products/[barcode]/edit/PhotoManager.svelte';
 	import { _ } from '$lib/i18n';
-	import type { Writable } from 'svelte/store';
-	import type { Product } from '$lib/api/product';
 
-	type Props = {
-		productStore: Writable<Product>;
-		comment: Writable<string>;
-		currentStep: number;
-		steps: string[];
-		showInfoImages: boolean;
-		showInfoBasic: boolean;
-		showInfoLanguages: boolean;
-		showInfoIngredients: boolean;
-		showInfoNutrition: boolean;
-		showInfoComment: boolean;
-		prevStep: () => void;
-		nextStep: () => void;
-		goToStep: (i: number) => void;
-		handleNutrimentInput: (e: Event, key: string) => void;
-		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
-		getIngredientsImage: (code: string) => string | null;
-		getNutritionImage: (code: string) => string | null;
-		filteredLanguages: string[];
-		categoryNames: string[];
-		labelNames: string[];
-		brandNames: string[];
-		storeNames: string[];
-		originNames: string[];
-		countriesNames: string[];
-		isSubmitting: boolean;
-		submit: () => void;
-	};
 	let {
 		productStore,
 		comment,
@@ -64,7 +33,7 @@
 		countriesNames,
 		isSubmitting,
 		submit
-	}: Props = $props();
+	} = $props();
 
 	// Local state for language search input (not part of Product)
 	let languageSearch = $state('');
@@ -80,7 +49,7 @@
 			<span class="text-primary/60 text-xs font-medium">{$_('common.of')}{` ${steps.length}`}</span>
 		</div>
 		<div class="flex items-center justify-center gap-2 px-4">
-			<h2 class="text-base-content text-center text-xl leading-tight font-semibold">
+			<h2 class="text-primary text-center text-xl leading-tight font-semibold">
 				{steps[currentStep]}
 			</h2>
 			<!-- Info icon for mobile, per step -->
@@ -152,7 +121,7 @@
 <div class="mb-6 hidden md:block">
 	<ul class="steps w-full text-xs sm:text-sm">
 		{#each steps as step, i (step)}
-			<li class="step {i <= currentStep ? 'step-primary' : ''}">
+			<li class="step {i <= currentStep ? 'step-secondary' : ''}">
 				<button
 					type="button"
 					class="h-full w-full cursor-pointer border-none bg-transparent p-2 text-xs text-inherit transition-colors sm:text-sm"
@@ -202,7 +171,9 @@
 					>
 				</div>
 			{/if}
-			<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
+			{#if steps.length > 1}
+				<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
+			{/if}
 			<PhotoManager product={$productStore} />
 		</div>
 	</div>
@@ -247,8 +218,9 @@
 				</div>
 			{/if}
 			<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
-			<div class="space-y-6 overflow-hidden">
+			<div class="space-y-6">
 				<!-- Primary Fields Grid -->
+
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<div class="form-control w-full">
 						<label class="label" for="quantity">
@@ -324,9 +296,7 @@
 					/>
 				</div>
 				<!-- Tags Section -->
-				<div class="divider">
-					<span class="text-sm font-medium opacity-60">Product Tags</span>
-				</div>
+				<div class="divider text-sm font-medium opacity-60">Product Tags</div>
 				<div class="space-y-4">
 					<div class="form-control w-full">
 						<label class="label" for="categories-input">
@@ -334,9 +304,7 @@
 								>{$_('product.edit.categories')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="labels-input">
@@ -344,9 +312,7 @@
 								>{$_('product.edit.labels')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="brands-input">
@@ -354,9 +320,7 @@
 								>{$_('product.edit.brands')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="stores-input">
@@ -364,9 +328,7 @@
 								>{$_('product.edit.stores')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="origins-input">
@@ -374,9 +336,7 @@
 								>{$_('product.edit.origins')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="countries-input">
@@ -384,20 +344,13 @@
 								>{$_('product.edit.countries')}</span
 							>
 						</label>
-						<div class="w-full">
-							<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
-						</div>
+						<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
 					</div>
 					<div class="form-control w-full">
 						<label class="label" for="traceability-codes-input">
 							<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span>
 						</label>
-						<div class="w-full">
-							<TraceabilityCodes
-								bind:traceabilityCodes={$productStore.emb_codes}
-								autocomplete={[]}
-							/>
-						</div>
+						<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
 					</div>
 				</div>
 			</div>
@@ -926,7 +879,7 @@
 	<div class="flex">
 		{#if currentStep < steps.length - 1}
 			<button
-				class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
+				class="btn btn-secondary w-full text-sm sm:w-auto sm:text-base"
 				onclick={nextStep}
 				type="button"
 			>
@@ -934,7 +887,7 @@
 			</button>
 		{:else}
 			<button
-				class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
+				class="btn btn-secondary w-full text-sm sm:w-auto sm:text-base"
 				onclick={submit}
 				disabled={isSubmitting}
 				type="button"

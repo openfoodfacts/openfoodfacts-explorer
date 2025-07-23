@@ -26,7 +26,7 @@
 	<div>
 		{#if currentStep < stepsLength - 1 && showNext}
 			<button
-				class="btn btn-circle btn-sm btn-primary"
+				class="btn btn-circle btn-sm btn-secondary"
 				onclick={onNext}
 				type="button"
 				title="Next"

@@ -62,21 +62,24 @@
 			bind:value={newValue}
 		/>
 		{#if filteredAutocomplete.length > 0}
-			<div class="dropdown-content">
+			<div
+				class="dropdown-content bg-base-00 z-10 mt-1 w-full rounded-md shadow-lg focus:outline-none"
+			>
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<ul tabindex="0" class="menu bg-base-100 shadow-xs">
+				<ul tabindex="0" class="divide-base-100 divide-y">
 					{#each filteredAutocomplete as suggestion (suggestion.item)}
 						{@const key = suggestion.item}
 						<li>
 							<button
-								class="btn btn-ghost"
+								type="button"
+								class="bg-base-200 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full rounded-md px-4 py-2 text-left transition-colors duration-150"
 								onclick={() => {
 									tags = [...tags, key];
 									dispatcher('change', { tags });
 									newValue = '';
 								}}
 							>
-								{key}
+								<span class="block truncate">{key}</span>
 							</button>
 						</li>
 					{/each}

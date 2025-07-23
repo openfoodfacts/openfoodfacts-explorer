@@ -227,7 +227,8 @@
 				: writable<Product>(emptyProduct)
 	);
 
-	let comment = writable('');
+	let comment = $state("");
+	
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
 	let filteredLanguages = $derived(
@@ -276,7 +277,7 @@
 	async function submit() {
 		isSubmitting = true;
 		const product = get(productStore);
-		const commentValue = get(comment);
+		const commentValue = comment;
 
 		console.group('Product added/edited');
 		console.debug('Submitting', product);
