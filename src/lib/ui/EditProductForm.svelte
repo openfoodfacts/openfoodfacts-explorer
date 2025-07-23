@@ -5,12 +5,24 @@
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 
 	import type { Writable } from 'svelte/store';
+	import type { Product } from '$lib/api';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
-	let { productStore, onSave }: { productStore: Writable<any>; onSave: (data: any) => void } =
-		$props();
+	let {
+		productStore,
+		onSave
+	}: { productStore: Writable<Product>; onSave: (data: Product) => void } = $props();
 	let comment = $state('');
+
+	function hasRev(image: unknown): image is { rev: number } {
+		return (
+			typeof image === 'object' &&
+			image !== null &&
+			'rev' in image &&
+			typeof (image as { rev: unknown }).rev === 'number'
+		);
+	}
 
 	// Info toggles for collapsible sections
 	let showInfoImages = $state(false);
@@ -51,7 +63,7 @@
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'ingredients_' + language;
 		const image = productData.images[imageName];
-		if (!image?.rev) return null;
+		if (!hasRev(image)) return null;
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
@@ -65,7 +77,7 @@
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'nutrition_' + language;
 		const image = productData.images[imageName];
-		if (!image?.rev) return null;
+		if (!hasRev(image)) return null;
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
@@ -80,7 +92,7 @@
 
 	function handleSubmit() {
 		productStore.update((p) => {
-			onSave({ ...p, comment });
+			onSave(p);
 			return p;
 		});
 	}
