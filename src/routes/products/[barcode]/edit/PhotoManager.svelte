@@ -151,7 +151,7 @@
 
 		try {
 			const api = new ProductsApi(fetch);
-			const result = await api.uploadImage(barcode, file, imagefield);
+			await api.uploadImage(barcode, file, imagefield);
 
 			// TODO: show notification of success and remove alert
 			alert('Image uploaded successfully!');
@@ -178,10 +178,8 @@
 				onchange={() => handleLanguageChange(code)}
 			/>
 			<div class="tab-content p-3 sm:p-6" class:hidden={code !== activeLanguageCode}>
-				{console.log('current Images', currentImages)}
-
 				<!-- Show standard photo types first -->
-				{#each photoTypes as photoType}
+				{#each photoTypes as photoType (photoType.id)}
 					{@const imagesOfType = currentImages.filter((img) => img.type === photoType.label)}
 					{@const isExpanded = expandedCategories.has(photoType.label)}
 					{@const imagesToShow = isExpanded ? imagesOfType : imagesOfType.slice(0, 10)}
@@ -245,7 +243,7 @@
 				<!-- Show additional image types that are not standard -->
 				{#each [...new Set(currentImages
 							.map((img) => img.type)
-							.filter((type) => !photoTypes.some((pt) => pt.label === type)))] as type}
+							.filter((type) => !photoTypes.some((pt) => pt.label === type)))] as type (type)}
 					{@const imagesOfType = currentImages.filter((img) => img.type === type)}
 					{@const isExpanded = expandedCategories.has(type)}
 					{@const imagesToShow = isExpanded ? imagesOfType : imagesOfType.slice(0, 10)}

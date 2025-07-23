@@ -14,9 +14,10 @@
 		{#if currentStep > 0}
 			<button
 				class="btn btn-circle btn-sm btn-outline"
-				on:click={onPrev}
+				onclick={onPrev}
 				type="button"
 				title="Back"
+				aria-label="Back"
 			>
 				<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
 			</button>
@@ -26,9 +27,10 @@
 		{#if currentStep < stepsLength - 1 && showNext}
 			<button
 				class="btn btn-circle btn-sm btn-primary"
-				on:click={onNext}
+				onclick={onNext}
 				type="button"
 				title="Next"
+				aria-label="Next"
 			>
 				<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
 			</button>

@@ -4,10 +4,12 @@
 	import TraceabilityCodes from '../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import PhotoManager from '../../routes/products/[barcode]/edit/PhotoManager.svelte';
 	import { _ } from '$lib/i18n';
+	import type { Writable } from 'svelte/store';
+	import type { Product } from '$lib/api/product';
 
 	type Props = {
-		productStore: any;
-		comment: any;
+		productStore: Writable<Product>;
+		comment: Writable<string>;
 		currentStep: number;
 		steps: string[];
 		showInfoImages: boolean;
@@ -63,6 +65,9 @@
 		isSubmitting,
 		submit
 	}: Props = $props();
+
+	// Local state for language search input (not part of Product)
+	let languageSearch = $state('');
 </script>
 
 <!-- Step-by-step guided form UI, copy from +page.svelte add mode -->
@@ -146,7 +151,7 @@
 
 <div class="mb-6 hidden md:block">
 	<ul class="steps w-full text-xs sm:text-sm">
-		{#each steps as step, i}
+		{#each steps as step, i (step)}
 			<li class="step {i <= currentStep ? 'step-primary' : ''}">
 				<button
 					type="button"
@@ -164,7 +169,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--image-multiple] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.images')}
@@ -198,7 +203,7 @@
 				</div>
 			{/if}
 			<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
-			<PhotoManager product={productStore} />
+			<PhotoManager product={$productStore} />
 		</div>
 	</div>
 {/if}
@@ -208,7 +213,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--information] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.basic_info')}
@@ -246,70 +251,75 @@
 				<!-- Primary Fields Grid -->
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="quantity">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.quantity')}</span
 							>
 						</label>
 						<input
+							id="quantity"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={productStore.quantity}
+							bind:value={$productStore.quantity}
 							placeholder="e.g., 250g, 1L, 500ml"
 						/>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="packaging">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.packaging')}</span
 							>
 						</label>
 						<input
+							id="packaging"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={productStore.packaging}
+							bind:value={$productStore.packaging}
 							placeholder="e.g., plastic bottle, glass jar"
 						/>
 					</div>
 				</div>
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="manufacturing_places">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.manufacturing_places')}</span
 							>
 						</label>
 						<input
+							id="manufacturing_places"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={productStore.manufacturing_places}
+							bind:value={$productStore.manufacturing_places}
 							placeholder="e.g., France, Italy"
 						/>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="emb_codes">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.emb_code')}</span
 							>
 						</label>
 						<input
+							id="emb_codes"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={productStore.emb_codes}
+							bind:value={$productStore.emb_codes}
 							placeholder="e.g., EMB 12345"
 						/>
 					</div>
 				</div>
 				<div class="form-control w-full">
-					<label class="label">
+					<label class="label" for="website_url">
 						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.website_url')}</span
 						>
 					</label>
 					<input
+						id="website_url"
 						type="url"
 						class="input input-bordered w-full text-sm sm:text-base"
-						bind:value={productStore.link}
+						bind:value={$productStore.link}
 						placeholder="https://example.com"
 					/>
 				</div>
@@ -319,72 +329,72 @@
 				</div>
 				<div class="space-y-4">
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="categories-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.categories')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.categories} autocomplete={categoryNames} />
+							<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="labels-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.labels')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.labels} autocomplete={labelNames} />
+							<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="brands-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.brands')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.brands} autocomplete={brandNames} />
+							<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="stores-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.stores')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.stores} autocomplete={storeNames} />
+							<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="origins-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.origins')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.origins} autocomplete={originNames} />
+							<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="countries-input">
 							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.countries')}</span
 							>
 						</label>
 						<div class="w-full">
-							<TagsString bind:tagsString={productStore.countries} autocomplete={countriesNames} />
+							<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
 						</div>
 					</div>
 					<div class="form-control w-full">
-						<label class="label">
+						<label class="label" for="traceability-codes-input">
 							<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span>
 						</label>
 						<div class="w-full">
 							<TraceabilityCodes
-								bind:traceabilityCodes={productStore.emb_codes}
+								bind:traceabilityCodes={$productStore.emb_codes}
 								autocomplete={[]}
 							/>
 						</div>
@@ -400,7 +410,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--translate] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.languages')}
@@ -445,7 +455,7 @@
 						<input
 							type="search"
 							placeholder={$_('product.edit.search_languages')}
-							bind:value={productStore.languageSearch}
+							bind:value={languageSearch}
 							class="text-sm sm:text-base"
 						/>
 					</label>
@@ -467,26 +477,27 @@
 				</div>
 			</div>
 			<div class="tabs tabs-box mt-4">
-				{#each Object.keys(productStore.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="name_tabs"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === productStore.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content form-control p-6">
-						<label class="label text-sm sm:text-base"
+						<label class="label text-sm sm:text-base" for={`product-name-${code}`}
 							>{$_('product.edit.name')} ({getLanguage(code)})</label
 						>
 						<input
+							id={`product-name-${code}`}
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={productStore[`product_name_${code}`]}
+							bind:value={$productStore[`product_name_${code}`]}
 						/>
 					</div>
 				{/each}
-				{#if Object.keys(productStore.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -501,7 +512,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--format-list-bulleted] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.ingredients')}
@@ -536,13 +547,13 @@
 			{/if}
 			<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 			<div class="tabs tabs-box">
-				{#each Object.keys(productStore.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="ingredients_tabs"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === productStore.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content form-control p-6">
 						{#if getIngredientsImage(code)}
@@ -552,18 +563,19 @@
 								{$_('product.edit.no_ingredients_image')}
 							</p>
 						{/if}
-						<label class="label text-sm sm:text-base"
+						<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}
 							>{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label
 						>
 						<div class="form-control mb-4">
 							<textarea
+								id={`ingredients-list-${code}`}
 								class="textarea textarea-bordered h-40 w-full text-sm sm:text-base"
-								bind:value={productStore[`ingredients_text_${code}`]}
+								bind:value={$productStore[`ingredients_text_${code}`]}
 							></textarea>
 						</div>
 					</div>
 				{/each}
-				{#if Object.keys(productStore.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -578,7 +590,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.nutrition')}
@@ -613,13 +625,13 @@
 			{/if}
 			<StepNav {currentStep} stepsLength={steps.length} onPrev={prevStep} onNext={nextStep} />
 			<div class="tabs tabs-box mb-4">
-				{#each Object.keys(productStore.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="nutrition_image_tabs"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === productStore.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content p-6">
 						{#if getNutritionImage(code)}
@@ -635,7 +647,7 @@
 						{/if}
 					</div>
 				{/each}
-				{#if Object.keys(productStore.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -643,27 +655,32 @@
 			</div>
 			<div class="space-y-6">
 				<div class="form-control">
-					<label class="label">
+					<label class="label" for="serving-size-input">
 						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.serving_size')}</span
 						>
 					</label>
 					<input
+						id="serving-size-input"
 						type="text"
 						class="input input-bordered w-full text-sm sm:text-base"
-						bind:value={productStore.serving_size}
+						bind:value={$productStore.serving_size}
 						placeholder="e.g., 100g, 1 serving (30g)"
 					/>
 				</div>
 				<div class="form-control">
 					<label class="label cursor-pointer justify-start gap-3">
-						<input type="checkbox" class="checkbox" bind:checked={productStore.no_nutrition_data} />
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={$productStore.no_nutrition_data}
+						/>
 						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.no_nutrition_data')}</span
 						>
 					</label>
 				</div>
-				{#if !productStore.no_nutrition_data}
+				{#if !$productStore.no_nutrition_data}
 					<div class="space-y-6">
 						<div class="divider">
 							<span class="text-sm font-medium opacity-60">Nutritional Values</span>
@@ -671,13 +688,14 @@
 						<!-- Energy -->
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="energy-kj-input">
 									<span class="label-text text-sm font-medium sm:text-base">Energy (kJ)</span>
 								</label>
 								<input
+									id="energy-kj-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.['energy-kj_100g'] ?? ''}
+									value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
 									placeholder="2100"
 									step="1"
@@ -685,13 +703,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="energy-kcal-input">
 									<span class="label-text text-sm font-medium sm:text-base">Energy (kcal)</span>
 								</label>
 								<input
+									id="energy-kcal-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.['energy-kcal_100g'] ?? ''}
+									value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
 									placeholder="500"
 									step="1"
@@ -702,13 +721,14 @@
 						<!-- Macronutrients -->
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="fat-input">
 									<span class="label-text text-sm font-medium sm:text-base">Fat (g)</span>
 								</label>
 								<input
+									id="fat-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.fat_100g ?? ''}
+									value={$productStore.nutriments?.fat_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
 									placeholder="10.5"
 									step="0.1"
@@ -716,13 +736,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="saturated-fat-input">
 									<span class="label-text text-sm font-medium sm:text-base">Saturated Fat (g)</span>
 								</label>
 								<input
+									id="saturated-fat-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.['saturated-fat_100g'] ?? ''}
+									value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
 									placeholder="3.2"
 									step="0.1"
@@ -732,13 +753,14 @@
 						</div>
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="carbohydrates-input">
 									<span class="label-text text-sm font-medium sm:text-base">Carbohydrates (g)</span>
 								</label>
 								<input
+									id="carbohydrates-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.carbohydrates_100g ?? ''}
+									value={$productStore.nutriments?.carbohydrates_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
 									placeholder="60.0"
 									step="0.1"
@@ -746,13 +768,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="sugars-input">
 									<span class="label-text text-sm font-medium sm:text-base">Sugars (g)</span>
 								</label>
 								<input
+									id="sugars-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.sugars_100g ?? ''}
+									value={$productStore.nutriments?.sugars_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
 									placeholder="5.0"
 									step="0.1"
@@ -762,13 +785,14 @@
 						</div>
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="proteins-input">
 									<span class="label-text text-sm font-medium sm:text-base">Proteins (g)</span>
 								</label>
 								<input
+									id="proteins-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.proteins_100g ?? ''}
+									value={$productStore.nutriments?.proteins_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
 									placeholder="12.0"
 									step="0.1"
@@ -776,13 +800,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="salt-input">
 									<span class="label-text text-sm font-medium sm:text-base">Salt (g)</span>
 								</label>
 								<input
+									id="salt-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.salt_100g ?? ''}
+									value={$productStore.nutriments?.salt_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
 									placeholder="1.2"
 									step="0.01"
@@ -790,13 +815,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label">
+								<label class="label" for="sodium-input">
 									<span class="label-text text-sm font-medium sm:text-base">Sodium (g)</span>
 								</label>
 								<input
+									id="sodium-input"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={productStore.nutriments?.sodium_100g ?? ''}
+									value={$productStore.nutriments?.sodium_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
 									placeholder="0.48"
 									step="0.01"
@@ -821,7 +847,7 @@
 	<div class="card bg-base-100 shadow-md">
 		<div class="card-body p-4 sm:p-6">
 			<h2
-				class="text-primary mb-6 flex hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+				class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
 			>
 				<span class="icon-[mdi--comment-text] mr-1 h-6 w-6 align-middle"></span>
 				{$_('product.edit.sections.comment')}
@@ -866,7 +892,7 @@
 					<p class="text-base-content/60 text-sm">Add a comment about your changes (optional)</p>
 				</div>
 				<div class="form-control">
-					<label class="label">
+					<label class="label" for="comment">
 						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.comment')}</span
 						>

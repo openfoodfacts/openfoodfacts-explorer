@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { writable, get } from 'svelte/store';
+	import { writable, get, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
@@ -207,27 +207,25 @@
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
 
-	let productStore = $derived.by(() => {
-		if (data.state.status === PRODUCT_STATUS.EMPTY) {
-			return writable<Product>(emptyProduct);
-		} else if (data.state.product) {
-			return writable<Product>({
-				...data.state.product,
-				emb_codes: data.state.product.emb_codes ?? '',
-				categories: data.state.product.categories ?? '',
-				labels: data.state.product.labels ?? '',
-				brands: data.state.product.brands ?? '',
-				stores: data.state.product.stores ?? '',
-				origins: data.state.product.origins ?? '',
-				countries: data.state.product.countries ?? '',
-				languages_codes: data.state.product.languages_codes ?? {},
-				images: data.state.product.images ?? {},
-				nutriments: data.state.product.nutriments ?? {}
-			});
-		} else {
-			return writable<Product>(emptyProduct);
-		}
-	});
+	let productStore = $state<Writable<Product>>(
+		data.state.status === PRODUCT_STATUS.EMPTY
+			? writable<Product>(emptyProduct)
+			: data.state.product
+				? writable<Product>({
+						...data.state.product,
+						emb_codes: data.state.product.emb_codes ?? '',
+						categories: data.state.product.categories ?? '',
+						labels: data.state.product.labels ?? '',
+						brands: data.state.product.brands ?? '',
+						stores: data.state.product.stores ?? '',
+						origins: data.state.product.origins ?? '',
+						countries: data.state.product.countries ?? '',
+						languages_codes: data.state.product.languages_codes ?? {},
+						images: data.state.product.images ?? {},
+						nutriments: data.state.product.nutriments ?? {}
+					})
+				: writable<Product>(emptyProduct)
+	);
 
 	let comment = writable('');
 	const languageCodes = ISO6391.getAllCodes();
@@ -453,8 +451,8 @@
 
 	{#if isAddMode}
 		<AddProductForm
-			productStore={$productStore}
-			comment={$comment}
+			{productStore}
+			{comment}
 			{currentStep}
 			{steps}
 			{showInfoImages}
@@ -482,7 +480,7 @@
 			{submit}
 		/>
 	{:else}
-		<EditProductForm product={$productStore} onSave={submit} />
+		<EditProductForm {productStore} onSave={submit} />
 	{/if}
 </div>
 

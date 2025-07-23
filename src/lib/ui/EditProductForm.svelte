@@ -3,17 +3,16 @@
 	import TraceabilityCodes from '../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import PhotoManager from '../../routes/products/[barcode]/edit/PhotoManager.svelte';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
-	import { writable } from 'svelte/store';
+	import type { Writable } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
 	type Props = {
-		product: any;
+		productStore: Writable<any>;
 		onSave: (data: any) => void;
 	};
-	let { product, onSave }: Props = $props();
+	let { productStore, onSave }: Props = $props();
 
-	let formProduct = writable({ ...product });
 	let comment = $state('');
 
 	// Info toggles for collapsible sections
@@ -31,7 +30,7 @@
 
 	$effect(() => {
 		filteredLanguages = languageCodes.filter((code) => {
-			if ($formProduct.languages_codes && $formProduct.languages_codes[code] !== undefined) {
+			if ($productStore.languages_codes && $productStore.languages_codes[code] !== undefined) {
 				return false;
 			}
 			const language = ISO6391.getName(code);
@@ -40,7 +39,7 @@
 	});
 
 	function addLanguage(code: string) {
-		formProduct.update((store) => {
+		productStore.update((store) => {
 			store.languages_codes = { ...store.languages_codes, [code]: 0 };
 			return store;
 		});
@@ -51,8 +50,9 @@
 	}
 
 	// Ingredients/Nutrition helpers
+
 	function getIngredientsImage(language: string) {
-		const productData = $formProduct;
+		const productData = $productStore;
 		if (!productData.code || !productData.images) return null;
 		const paddedBarcode = productData.code.toString().padStart(13, '0');
 		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
@@ -64,8 +64,9 @@
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
+
 	function getNutritionImage(language: string) {
-		const productData = $formProduct;
+		const productData = $productStore;
 		if (!productData.code || !productData.images) return null;
 		const paddedBarcode = productData.code.toString().padStart(13, '0');
 		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
@@ -80,7 +81,7 @@
 
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
-		formProduct.update((store) => {
+		productStore.update((store) => {
 			if (!store.nutriments) store.nutriments = {};
 			store.nutriments[key] = target.value ? Number(target.value) : null;
 			return store;
@@ -88,7 +89,7 @@
 	}
 
 	function handleSubmit() {
-		formProduct.update((p) => {
+		productStore.update((p) => {
 			onSave({ ...p, comment });
 			return p;
 		});
@@ -132,7 +133,7 @@
 					</button>
 				</div>
 			{/if}
-			<PhotoManager product={$formProduct} />
+			<PhotoManager product={$productStore} />
 		</div>
 	</div>
 
@@ -177,41 +178,44 @@
 				<!-- Primary Fields Grid -->
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="quantity-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.quantity')}</span
-							></label
-						>
+							>
+						</label>
 						<input
+							id="quantity-edit"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct.quantity}
+							bind:value={$productStore.quantity}
 							placeholder="e.g., 250g, 1L, 500ml"
 						/>
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="packaging-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.packaging')}</span
-							></label
-						>
+							>
+						</label>
 						<input
+							id="packaging-edit"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct.packaging}
+							bind:value={$productStore.packaging}
 							placeholder="e.g., plastic bottle, glass jar"
 						/>
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="manufacturing-places-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.manufacturing_places')}</span
-							></label
-						>
+							>
+						</label>
 						<input
+							id="manufacturing-places-edit"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct.manufacturing_places}
+							bind:value={$productStore.manufacturing_places}
 							placeholder="e.g., France, Italy"
 						/>
 					</div>
@@ -219,28 +223,30 @@
 				<!-- Secondary Fields Grid -->
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="emb-codes-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.emb_code')}</span
-							></label
-						>
+							>
+						</label>
 						<input
+							id="emb-codes-edit"
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct.emb_codes}
+							bind:value={$productStore.emb_codes}
 							placeholder="e.g., EMB 12345"
 						/>
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="website-url-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.website_url')}</span
-							></label
-						>
+							>
+						</label>
 						<input
+							id="website-url-edit"
 							type="url"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct.link}
+							bind:value={$productStore.link}
 							placeholder="https://example.com"
 						/>
 					</div>
@@ -253,62 +259,61 @@
 			<div class="space-y-4">
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="categories-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.categories')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.categories} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.categories} autocomplete={[]} />
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="labels-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.labels')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.labels} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.labels} autocomplete={[]} />
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="brands-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.brands')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.brands} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.brands} autocomplete={[]} />
 					</div>
 				</div>
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="stores-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.stores')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.stores} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.stores} autocomplete={[]} />
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="origins-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.origins')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.origins} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.origins} autocomplete={[]} />
 					</div>
 					<div class="form-control w-full">
-						<label class="label"
-							><span class="label-text text-sm font-medium sm:text-base"
+						<label class="label" for="countries-edit">
+							<span class="label-text text-sm font-medium sm:text-base"
 								>{$_('product.edit.countries')}</span
-							></label
-						>
-						<TagsString bind:tagsString={$formProduct.countries} autocomplete={[]} />
+							>
+						</label>
+						<TagsString bind:tagsString={$productStore.countries} autocomplete={[]} />
 					</div>
 				</div>
 				<div class="form-control w-full">
-					<label class="label"
-						><span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span
-						></label
-					>
-					<TraceabilityCodes bind:traceabilityCodes={$formProduct.emb_codes} autocomplete={[]} />
+					<label class="label" for="traceability-codes-edit">
+						<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span>
+					</label>
+					<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
 				</div>
 			</div>
 		</div>
@@ -383,26 +388,27 @@
 				</div>
 			</div>
 			<div class="tabs tabs-box">
-				{#each Object.keys($formProduct.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="name_tabs_edit"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === $formProduct.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content form-control p-6">
-						<label class="label text-sm sm:text-base"
+						<label class="label text-sm sm:text-base" for={`product-name-edit-${code}`}
 							>{$_('product.edit.name')} ({getLanguage(code)})</label
 						>
 						<input
+							id={`product-name-edit-${code}`}
 							type="text"
 							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={$formProduct[`product_name_${code}`]}
+							bind:value={$productStore[`product_name_${code}`]}
 						/>
 					</div>
 				{/each}
-				{#if Object.keys($formProduct.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -448,13 +454,13 @@
 				</div>
 			{/if}
 			<div class="tabs tabs-box">
-				{#each Object.keys($formProduct.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="ingredients_tabs_edit"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === $formProduct.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content form-control p-6">
 						{#if getIngredientsImage(code)}
@@ -464,18 +470,19 @@
 								{$_('product.edit.no_ingredients_image')}
 							</p>
 						{/if}
-						<label class="label text-sm sm:text-base"
+						<label class="label text-sm sm:text-base" for={`ingredients-list-edit-${code}`}
 							>{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label
 						>
 						<div class="form-control mb-4">
 							<textarea
+								id={`ingredients-list-edit-${code}`}
 								class="textarea textarea-bordered h-40 w-full text-sm sm:text-base"
-								bind:value={$formProduct[`ingredients_text_${code}`]}
+								bind:value={$productStore[`ingredients_text_${code}`]}
 							></textarea>
 						</div>
 					</div>
 				{/each}
-				{#if Object.keys($formProduct.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -521,13 +528,13 @@
 				</div>
 			{/if}
 			<div class="tabs tabs-box mb-4">
-				{#each Object.keys($formProduct.languages_codes ?? {}) as code (code)}
+				{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 					<input
 						type="radio"
 						name="nutrition_image_tabs_edit"
 						class="tab text-xs sm:text-sm"
 						aria-label={getLanguage(code)}
-						checked={code === $formProduct.lang}
+						checked={code === $productStore.lang}
 					/>
 					<div class="tab-content p-6">
 						{#if getNutritionImage(code)}
@@ -543,7 +550,7 @@
 						{/if}
 					</div>
 				{/each}
-				{#if Object.keys($formProduct.languages_codes ?? {}).length === 0}
+				{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
 					<div class="alert alert-warning text-sm sm:text-base">
 						{$_('product.edit.no_languages_found')}
 					</div>
@@ -551,41 +558,46 @@
 			</div>
 			<div class="space-y-6">
 				<div class="form-control">
-					<label class="label"
-						><span class="label-text text-sm font-medium sm:text-base"
+					<label class="label" for="serving-size-edit">
+						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.serving_size')}</span
-						></label
-					>
+						>
+					</label>
 					<input
+						id="serving-size-edit"
 						type="text"
 						class="input input-bordered w-full text-sm sm:text-base"
-						bind:value={$formProduct.serving_size}
+						bind:value={$productStore.serving_size}
 						placeholder="e.g., 100g, 1 serving (30g)"
 					/>
 				</div>
 				<div class="form-control">
 					<label class="label cursor-pointer justify-start gap-3">
-						<input type="checkbox" class="checkbox" bind:checked={$formProduct.no_nutrition_data} />
+						<input
+							type="checkbox"
+							class="checkbox"
+							bind:checked={$productStore.no_nutrition_data}
+						/>
 						<span class="label-text text-sm font-medium sm:text-base"
 							>{$_('product.edit.no_nutrition_data')}</span
 						>
 					</label>
 				</div>
-				{#if !$formProduct.no_nutrition_data}
+				{#if !$productStore.no_nutrition_data}
 					<div class="space-y-6">
 						<div class="divider">
 							<span class="text-sm font-medium opacity-60">Nutritional Values</span>
 						</div>
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base">Energy (kJ)</span
-									></label
-								>
+								<label class="label" for="energy-kj-edit">
+									<span class="label-text text-sm font-medium sm:text-base">Energy (kJ)</span>
+								</label>
 								<input
+									id="energy-kj-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.['energy-kj_100g'] ?? ''}
+									value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
 									placeholder="2100"
 									step="1"
@@ -593,14 +605,14 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base">Energy (kcal)</span
-									></label
-								>
+								<label class="label" for="energy-kcal-edit">
+									<span class="label-text text-sm font-medium sm:text-base">Energy (kcal)</span>
+								</label>
 								<input
+									id="energy-kcal-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.['energy-kcal_100g'] ?? ''}
+									value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
 									placeholder="500"
 									step="1"
@@ -610,13 +622,14 @@
 						</div>
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base">Fat (g)</span></label
-								>
+								<label class="label" for="fat-edit">
+									<span class="label-text text-sm font-medium sm:text-base">Fat (g)</span>
+								</label>
 								<input
+									id="fat-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.fat_100g ?? ''}
+									value={$productStore.nutriments?.fat_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
 									placeholder="10.5"
 									step="0.1"
@@ -624,15 +637,16 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="saturated-fat-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.saturated_fat')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="saturated-fat-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.['saturated-fat_100g'] ?? ''}
+									value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
 									placeholder="3.2"
 									step="0.1"
@@ -640,15 +654,16 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="carbohydrates-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.carbohydrates')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="carbohydrates-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.carbohydrates_100g ?? ''}
+									value={$productStore.nutriments?.carbohydrates_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
 									placeholder="60.0"
 									step="0.1"
@@ -656,15 +671,16 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="sugars-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.sugars')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="sugars-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.sugars_100g ?? ''}
+									value={$productStore.nutriments?.sugars_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
 									placeholder="5.0"
 									step="0.1"
@@ -674,15 +690,16 @@
 						</div>
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="proteins-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.proteins')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="proteins-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.proteins_100g ?? ''}
+									value={$productStore.nutriments?.proteins_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
 									placeholder="12.0"
 									step="0.1"
@@ -690,15 +707,16 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="salt-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.salt')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="salt-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.salt_100g ?? ''}
+									value={$productStore.nutriments?.salt_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
 									placeholder="1.2"
 									step="0.01"
@@ -706,15 +724,16 @@
 								/>
 							</div>
 							<div class="form-control">
-								<label class="label"
-									><span class="label-text text-sm font-medium sm:text-base"
+								<label class="label" for="sodium-edit">
+									<span class="label-text text-sm font-medium sm:text-base"
 										>{$_('product.edit.sodium')}</span
-									></label
-								>
+									>
+								</label>
 								<input
+									id="sodium-edit"
 									type="number"
 									class="input input-bordered w-full text-sm sm:text-base"
-									value={$formProduct.nutriments?.sodium_100g ?? ''}
+									value={$productStore.nutriments?.sodium_100g ?? ''}
 									oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
 									placeholder="0.48"
 									step="0.01"
@@ -770,11 +789,11 @@
 				</div>
 			{/if}
 			<div class="form-control">
-				<label class="label"
-					><span class="label-text text-sm font-medium sm:text-base"
+				<label class="label" for="comment-edit">
+					<span class="label-text text-sm font-medium sm:text-base"
 						>{$_('product.edit.comment')}</span
-					></label
-				>
+					>
+				</label>
 				<textarea
 					id="comment-edit"
 					class="textarea textarea-bordered w-full text-sm sm:text-base"

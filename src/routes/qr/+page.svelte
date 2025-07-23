@@ -8,7 +8,6 @@
 	let html5QrCode: Html5Qrcode | null = null;
 	let productNotFound = $state(false);
 	let lastScannedCode = $state('');
-	let isScanning = $state(true);
 
 	function getQrBoxSize() {
 		const screenWidth = window.innerWidth;
@@ -38,7 +37,6 @@
 					}
 					console.log('QR code detected:', text);
 					lastScannedCode = text;
-					isScanning = false;
 
 					// We must stop the scanner first to release the camera
 					// This is important because:
@@ -71,7 +69,6 @@
 				error = 'Camera access is required. Please enable it in your browser settings.';
 				console.error('QR Code Scanner Error:', err);
 				console.log('Product not detected');
-				isScanning = false;
 				await cleanupScanner();
 			});
 
@@ -103,7 +100,6 @@
 
 	function restartScanner() {
 		productNotFound = false;
-		isScanning = true;
 
 		// Try to restart the scanner if it exists
 		if (html5QrCode) {
@@ -118,7 +114,6 @@
 					console.log('QR code detected:', text);
 					console.log('Product detected:', text);
 					lastScannedCode = text;
-					isScanning = false;
 
 					await html5QrCode?.stop();
 					console.log('API called');
