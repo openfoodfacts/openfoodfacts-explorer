@@ -227,8 +227,8 @@
 				: writable<Product>(emptyProduct)
 	);
 
-	let comment = $state("");
-	
+	let comment = $state('');
+
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
 	let filteredLanguages = $derived(
