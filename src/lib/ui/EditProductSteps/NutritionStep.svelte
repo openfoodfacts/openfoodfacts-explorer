@@ -115,7 +115,7 @@
 		<div class="space-y-6">
 			<div class="form-control">
 				<label class="label" for="serving-size-edit">
-					<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.serving_size')}
 						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
 					</span>

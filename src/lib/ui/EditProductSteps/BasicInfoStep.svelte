@@ -56,7 +56,7 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="quantity-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.quantity')}
 							<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
 						</span>
@@ -102,7 +102,7 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div class="form-control w-full">
 					<label class="label" for="emb-codes-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.emb_code')}
 							<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 						</span>
@@ -139,7 +139,7 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="categories-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.categories')}
 							<InfoTooltip text={$_('product.edit.tooltips.categories')} />
 						</span>
@@ -148,7 +148,7 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="labels-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.labels')}
 							<InfoTooltip text={$_('product.edit.tooltips.labels')} />
 						</span>
@@ -157,7 +157,7 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="brands-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.brands')}
 							<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
 						</span>
@@ -168,7 +168,7 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="stores-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.stores')}
 							<InfoTooltip text={$_('product.edit.tooltips.stores')} />
 						</span>
@@ -177,7 +177,7 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="origins-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.origins')}
 							<InfoTooltip text={$_('product.edit.tooltips.origins')} />
 						</span>
@@ -186,7 +186,7 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="countries-edit">
-						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 							{$_('product.edit.countries')}
 							<InfoTooltip text={$_('product.edit.tooltips.countries')} />
 						</span>
@@ -196,7 +196,7 @@
 			</div>
 			<div class="form-control w-full">
 				<label class="label" for="traceability-codes-edit">
-					<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						Traceability Codes
 						<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 					</span>
