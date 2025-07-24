@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { _ } from '$lib/i18n';
+
 	type Props = {
 		currentStep: number;
 		stepsLength: number;
@@ -16,8 +18,8 @@
 				class="btn btn-circle btn-sm btn-outline"
 				onclick={onPrev}
 				type="button"
-				title="Back"
-				aria-label="Back"
+				title={$_('common.back')}
+				aria-label={$_('common.back')}
 			>
 				<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
 			</button>
@@ -29,8 +31,8 @@
 				class="btn btn-circle btn-sm btn-secondary"
 				onclick={onNext}
 				type="button"
-				title="Next"
-				aria-label="Next"
+				title={$_('common.next')}
+				aria-label={$_('common.next')}
 			>
 				<span class="icon-[mdi--arrow-right] h-4 w-4"></span>
 			</button>

@@ -1,0 +1,137 @@
+<script lang="ts">
+	import ISO6391 from 'iso-639-1';
+	import { getImageFieldName } from '$lib/utils';
+	import { ProductsApi } from '$lib/api';
+	import { preferences } from '$lib/settings';
+	import type { Product } from '$lib/api';
+
+	interface Props {
+		photoType: { id: string; label: string } | { id: string; label: string; isAdditional?: boolean };
+		activeLanguageCode: string;
+		currentImages: Array<{ url: string; alt: string; type: string }>;
+		expandedCategories: Set<string>;
+		fileInputValues: Record<string, string>;
+		product: Product;
+		photoTypes: Array<{ id: string; label: string }>;
+		onToggleExpansion: (type: string) => void;
+		onFileInputChange: (key: string, value: string) => void;
+	}
+
+	let {
+		photoType,
+		activeLanguageCode,
+		currentImages,
+		expandedCategories,
+		fileInputValues,
+		product,
+		photoTypes,
+		onToggleExpansion,
+		onFileInputChange
+	}: Props = $props();
+
+	function getLanguage(code: string) {
+		return ISO6391.getName(code);
+	}
+
+	function triggerFileInput(id: string) {
+		const input = document.getElementById(id) as HTMLInputElement;
+		if (input) input.click();
+	}
+
+	async function handleImageUpload(e: Event, type: string) {
+		const input = e.target as HTMLInputElement;
+		if (!input.files || input.files.length === 0) return;
+
+		const file = input.files[0];
+
+		// Map type to OpenFoodFacts imagefield value using utility function
+		const imagefield = getImageFieldName(type, activeLanguageCode, photoTypes);
+
+		const barcode = product.code;
+		const user_id = $preferences.username;
+		const password = $preferences.password;
+
+		if (!user_id || !password) {
+			alert('Please set your OpenFoodFacts username and password in settings.');
+			return;
+		}
+
+		try {
+			const api = new ProductsApi(fetch);
+			await api.uploadImage(barcode, file, imagefield);
+
+			// TODO: show notification of success and remove alert
+			alert('Image uploaded successfully!');
+			// Reload the page to show the new image
+			window.location.reload();
+		} catch (err) {
+			console.error('Image upload failed:', err);
+			alert('Image upload failed. Please try again.');
+		}
+
+		const inputKey = `${type}-${activeLanguageCode}`;
+		onFileInputChange(inputKey, '');
+	}
+
+	// Derived values
+	const imagesOfType = $derived(currentImages.filter((img) => img.type === photoType.label));
+	const isExpanded = $derived(expandedCategories.has(photoType.label));
+	const imagesToShow = $derived(isExpanded ? imagesOfType : imagesOfType.slice(0, 10));
+	const hasMoreImages = $derived(imagesOfType.length > 10);
+	const inputId = $derived('isAdditional' in photoType ? `${photoType.id.toLowerCase()}-${activeLanguageCode}-upload` : `${photoType.id}-${activeLanguageCode}-upload`);
+</script>
+
+<div class="mb-6">
+	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+		<h4 class="sm:text-md text-sm font-semibold">
+			{photoType.label} picture ({getLanguage(activeLanguageCode)})
+		</h4>
+		<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
+			<!-- Upload button for this category -->
+			<input
+				id={inputId}
+				type="file"
+				accept="image/*"
+				class="hidden"
+				bind:value={fileInputValues[`${photoType.label}-${activeLanguageCode}`]}
+				onchange={(e) => handleImageUpload(e, photoType.label)}
+			/>
+			<button
+				type="button"
+				class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+				onclick={() => triggerFileInput(inputId)}
+			>
+				<span class="icon-[mdi--upload] h-3 w-3 sm:h-4 sm:w-4"></span>
+				<span class="text-xs sm:text-sm">Upload {photoType.label}</span>
+			</button>
+			{#if hasMoreImages}
+				<button
+					type="button"
+					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					onclick={() => onToggleExpansion(photoType.label)}
+				>
+					<span class="text-xs sm:text-sm"
+						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+					>
+				</button>
+			{/if}
+		</div>
+	</div>
+	{#if imagesOfType.length > 0}
+		<div
+			class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+		>
+			{#each imagesToShow as image (image.url)}
+				<div class="aspect-square overflow-hidden rounded border">
+					<img src={image.url} alt={image.alt} class="h-full w-full object-cover" />
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="bg-base-200 flex w-full items-center justify-center rounded p-3 sm:p-4">
+			<p class="text-base-content/60 text-center text-xs sm:text-sm">
+				No {photoType.label.toLowerCase()} photos available
+			</p>
+		</div>
+	{/if}
+</div>

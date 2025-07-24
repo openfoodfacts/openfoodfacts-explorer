@@ -148,6 +148,12 @@
 			}
 		}
 	},
+	"qr": {
+		"product_not_found": "Product Not Found",
+		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our database.",
+		"add_new_product": "Add New Product",
+		"scan_again": "Scan Again"
+	},
 	"errors": {
 		"network": {
 			"title": "Connection Error",

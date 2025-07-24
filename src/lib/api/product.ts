@@ -440,9 +440,9 @@ export function getProductImageUrl(
 		return null;
 	}
 
-	const rev = (image as SelectedImage).rev;
 	let filename;
-	if (rev) {
+	if ("rev" in image) {
+		const rev = image.rev;
 		filename = `${imageName}.${rev}.400.jpg`;
 	} else {
 		filename = `${imageName}.400.jpg`;

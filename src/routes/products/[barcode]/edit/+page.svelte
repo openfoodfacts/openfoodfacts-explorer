@@ -16,10 +16,10 @@
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
+	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
-	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 
 	interface Props {
 		data: PageData;
@@ -426,6 +426,72 @@
 	let showInfoIngredients = $state(false);
 	let showInfoNutrition = $state(false);
 	let showInfoComment = $state(false);
+
+	// Toggle functions for info boxes
+	function toggleInfoImages() {
+		showInfoImages = !showInfoImages;
+	}
+
+	function toggleInfoBasic() {
+		showInfoBasic = !showInfoBasic;
+	}
+
+	function toggleInfoLanguages() {
+		showInfoLanguages = !showInfoLanguages;
+	}
+
+	function toggleInfoIngredients() {
+		showInfoIngredients = !showInfoIngredients;
+	}
+
+	function toggleInfoNutrition() {
+		showInfoNutrition = !showInfoNutrition;
+	}
+
+	function toggleInfoComment() {
+		showInfoComment = !showInfoComment;
+	}
+
+	function handleCommentChange(value: string) {
+		comment = value;
+	}
+
+	let addProductFormProps = $derived({
+		productStore,
+		comment,
+		currentStep,
+		steps,
+		showInfoImages,
+		showInfoBasic,
+		showInfoLanguages,
+		showInfoIngredients,
+		showInfoNutrition,
+		showInfoComment,
+		prevStep,
+		nextStep,
+		goToStep,
+		handleNutrimentInput,
+		addLanguage,
+		getLanguage,
+		getIngredientsImage,
+		getNutritionImage,
+		filteredLanguages,
+		categoryNames,
+		labelNames,
+		brandNames,
+		storeNames,
+		originNames,
+		countriesNames,
+		isSubmitting,
+		submit,
+		toggleInfoImages,
+		toggleInfoBasic,
+		toggleInfoLanguages,
+		toggleInfoIngredients,
+		toggleInfoNutrition,
+		toggleInfoComment,
+		handleCommentChange
+	});
 </script>
 
 <div class="space-y-8">
@@ -451,35 +517,7 @@
 	</div>
 
 	{#if isAddMode}
-		<AddProductForm
-			{productStore}
-			{comment}
-			{currentStep}
-			{steps}
-			{showInfoImages}
-			{showInfoBasic}
-			{showInfoLanguages}
-			{showInfoIngredients}
-			{showInfoNutrition}
-			{showInfoComment}
-			{prevStep}
-			{nextStep}
-			{goToStep}
-			{handleNutrimentInput}
-			{addLanguage}
-			{getLanguage}
-			{getIngredientsImage}
-			{getNutritionImage}
-			{filteredLanguages}
-			{categoryNames}
-			{labelNames}
-			{brandNames}
-			{storeNames}
-			{originNames}
-			{countriesNames}
-			{isSubmitting}
-			{submit}
-		/>
+		<AddProductForm props={addProductFormProps} />
 	{:else}
 		<EditProductForm {productStore} onSave={submit} />
 	{/if}

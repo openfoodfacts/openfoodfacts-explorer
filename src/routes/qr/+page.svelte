@@ -3,6 +3,7 @@
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 	import { goto } from '$app/navigation';
 	import { getProduct } from '$lib/api/product';
+	import { _ } from '$lib/i18n';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -12,6 +13,44 @@
 	function getQrBoxSize() {
 		const screenWidth = window.innerWidth;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
+	}
+
+	async function startScanning(scanner: Html5Qrcode) {
+		return scanner.start(
+			{ facingMode: 'environment' },
+			{ fps: 10, qrbox: getQrBoxSize() },
+			async (text) => {
+				if (text == null) return;
+				console.log('QR code detected:', text);
+				lastScannedCode = text;
+
+				// We must stop the scanner first to release the camera
+				// This is important because:
+				// 1. It frees up camera resources
+				// 2. Prevents memory leaks
+				// 3. Ensures the camera is available for other applications
+				await scanner.stop();
+
+				try {
+					// Use getProduct to check if product exists before navigating
+					const productState = await getProduct(text, fetch);
+					if (!productState || productState.status !== 'success') {
+						// Product doesn't exist in the database
+						console.log('Product not found in database');
+						productNotFound = true;
+						return;
+					}
+					// Product exists, navigate to product page
+					await goto('/products/' + text);
+				} catch (err) {
+					console.error('Error checking product:', err);
+					productNotFound = true;
+				}
+			},
+			() => {
+				/* ignored */
+			}
+		);
 	}
 
 	onMount(() => {
@@ -26,51 +65,11 @@
 			verbose: false
 		});
 
-		scanner
-			.start(
-				{ facingMode: 'environment' },
-				{ fps: 10, qrbox: getQrBoxSize() },
-				async (text) => {
-					if (text == null) {
-						console.log('Product not detected');
-						return;
-					}
-					console.log('QR code detected:', text);
-					lastScannedCode = text;
-
-					// We must stop the scanner first to release the camera
-					// This is important because:
-					// 1. It frees up camera resources
-					// 2. Prevents memory leaks
-					// 3. Ensures the camera is available for other applications
-					await scanner.stop();
-
-					try {
-						// Use getProduct to check if product exists before navigating
-						const productState = await getProduct(text, fetch);
-						if (!productState || productState.status !== 'success') {
-							// Product doesn't exist in the database
-							console.log('Product not found in database');
-							productNotFound = true;
-							return;
-						}
-						// Product exists, navigate to product page
-						await goto('/products/' + text);
-					} catch (err) {
-						console.error('Error checking product:', err);
-						productNotFound = true;
-					}
-				},
-				() => {
-					console.log('Product not detected');
-				}
-			)
-			.catch(async (err) => {
-				error = 'Camera access is required. Please enable it in your browser settings.';
-				console.error('QR Code Scanner Error:', err);
-				console.log('Product not detected');
-				await cleanupScanner();
-			});
+		startScanning(scanner).catch(async (err) => {
+			error = 'Camera access is required. Please enable it in your browser settings.';
+			console.error('QR Code Scanner Error:', err);
+			await cleanupScanner();
+		});
 
 		html5QrCode = scanner;
 	});
@@ -98,31 +97,18 @@
 		}
 	}
 
-	function restartScanner() {
-		productNotFound = false;
+	async function restartScanner() {
+		try {
+			productNotFound = false;
+			error = null;
+			lastScannedCode = '';
 
-		// Try to restart the scanner if it exists
-		if (html5QrCode) {
-			html5QrCode.start(
-				{ facingMode: 'environment' },
-				{ fps: 10, qrbox: getQrBoxSize() },
-				async (text) => {
-					if (text == null) {
-						console.log('Product not detected');
-						return;
-					}
-					console.log('QR code detected:', text);
-					console.log('Product detected:', text);
-					lastScannedCode = text;
-
-					await html5QrCode?.stop();
-					console.log('API called');
-					await goto('/products/' + text);
-				},
-				() => {
-					console.log('Product not detected');
-				}
-			);
+			if (html5QrCode) {
+				await startScanning(html5QrCode);
+			}
+		} catch (err) {
+			console.error('Failed to restart scanner:', err);
+			error = 'Failed to restart the scanner. Please refresh the page.';
 		}
 	}
 </script>
@@ -133,14 +119,14 @@
 	</div>
 {:else if productNotFound}
 	<div class="flex flex-col items-center justify-center p-8 text-center">
-		<h2 class="mb-2 text-xl font-semibold">Product Not Found</h2>
+		<h2 class="mb-2 text-xl font-semibold">{$_('qr.product_not_found')}</h2>
 		<p class="mb-6 text-gray-400">
-			Barcode {lastScannedCode} was scanned successfully, but no product was found in our database.
+			{$_('qr.barcode_scanned_not_found', { values: { barcode: lastScannedCode } })}
 		</p>
 
 		<div class="flex gap-4">
-			<button class="btn btn-outline" onclick={addNewProduct}> Add New Product </button>
-			<button class="btn btn-outline" onclick={restartScanner}> Scan Again </button>
+			<button class="btn btn-outline" onclick={addNewProduct}>{$_('qr.add_new_product')}</button>
+			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
 		</div>
 	</div>
 {:else}
