@@ -3,9 +3,6 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
-	import { ProductsApi } from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import { getImageFieldName } from '$lib/utils';
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 
 	type Props = { product: Product };

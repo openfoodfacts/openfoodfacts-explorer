@@ -4,10 +4,6 @@
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
-	interface Props {
-		productStore: Writable<Product>;
-	}
-
 	let showInfoImages = $state(false);
 
 	let { productStore }: { productStore: Writable<Product> } = $props();
