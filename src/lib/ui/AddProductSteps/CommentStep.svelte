@@ -13,15 +13,15 @@
 		onCommentChange: (value: string) => void;
 	}
 
-	let { 
-		comment, 
-		currentStep, 
-		stepsLength, 
-		showInfoComment, 
-		prevStep, 
-		nextStep, 
-		onToggleInfo, 
-		onCommentChange 
+	let {
+		comment,
+		currentStep,
+		stepsLength,
+		showInfoComment,
+		prevStep,
+		nextStep,
+		onToggleInfo,
+		onCommentChange
 	}: Props = $props();
 </script>
 
@@ -32,12 +32,7 @@
 		>
 			<span class="icon-[mdi--comment-text] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.comment')}
-			<button
-				type="button"
-				class="ml-2 align-middle"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>
@@ -61,13 +56,7 @@
 				>
 			</div>
 		{/if}
-		<StepNav
-			{currentStep}
-			{stepsLength}
-			onPrev={prevStep}
-			onNext={nextStep}
-			showNext={false}
-		/>
+		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} showNext={false} />
 		<div class="space-y-6">
 			<div class="mb-6 text-center">
 				<p class="text-base-content/60 text-sm">Add a comment about your changes (optional)</p>

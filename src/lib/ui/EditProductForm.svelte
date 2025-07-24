@@ -14,7 +14,7 @@
 		productStore,
 		onSave
 	}: { productStore: Writable<Product>; onSave: (data: Product) => void } = $props();
-	
+
 	let comment = $state('');
 
 	function handleCommentChange(value: string) {

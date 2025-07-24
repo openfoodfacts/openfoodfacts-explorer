@@ -128,11 +128,7 @@
 			</div>
 			<div class="form-control">
 				<label class="label cursor-pointer justify-start gap-3">
-					<input
-						type="checkbox"
-						class="checkbox"
-						bind:checked={$productStore.no_nutrition_data}
-					/>
+					<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
 					<span class="label-text text-sm font-medium sm:text-base"
 						>{$_('product.edit.no_nutrition_data')}</span
 					>

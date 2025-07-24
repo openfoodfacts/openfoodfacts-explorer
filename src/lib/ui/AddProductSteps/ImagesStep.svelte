@@ -15,7 +15,15 @@
 		onToggleInfo: () => void;
 	}
 
-	let { productStore, currentStep, stepsLength, showInfoImages, prevStep, nextStep, onToggleInfo }: Props = $props();
+	let {
+		productStore,
+		currentStep,
+		stepsLength,
+		showInfoImages,
+		prevStep,
+		nextStep,
+		onToggleInfo
+	}: Props = $props();
 </script>
 
 <div class="card bg-base-100 shadow-md">
@@ -25,12 +33,7 @@
 		>
 			<span class="icon-[mdi--image-multiple] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.images')}
-			<button
-				type="button"
-				class="ml-2 align-middle"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>

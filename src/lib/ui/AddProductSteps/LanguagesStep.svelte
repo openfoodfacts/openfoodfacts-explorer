@@ -17,17 +17,17 @@
 		onToggleInfo: () => void;
 	}
 
-	let { 
-		productStore, 
-		currentStep, 
-		stepsLength, 
-		showInfoLanguages, 
-		filteredLanguages, 
-		addLanguage, 
-		getLanguage, 
-		prevStep, 
-		nextStep, 
-		onToggleInfo 
+	let {
+		productStore,
+		currentStep,
+		stepsLength,
+		showInfoLanguages,
+		filteredLanguages,
+		addLanguage,
+		getLanguage,
+		prevStep,
+		nextStep,
+		onToggleInfo
 	}: Props = $props();
 
 	// Local state for language search input
@@ -41,12 +41,7 @@
 		>
 			<span class="icon-[mdi--translate] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.languages')}
-			<button
-				type="button"
-				class="ml-2 align-middle"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>

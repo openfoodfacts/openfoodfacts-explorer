@@ -53,8 +53,7 @@
 		{/if}
 		<div class="form-control">
 			<label class="label" for="comment-edit">
-				<span class="label-text text-sm font-medium sm:text-base"
-					>{$_('product.edit.comment')}</span
+				<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.comment')}</span
 				>
 			</label>
 			<textarea

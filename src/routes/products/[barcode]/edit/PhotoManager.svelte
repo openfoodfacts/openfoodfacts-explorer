@@ -94,7 +94,7 @@
 	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
-	
+
 	let fileInputValues = $state<Record<string, string>>({});
 
 	function handleLanguageChange(code: string) {

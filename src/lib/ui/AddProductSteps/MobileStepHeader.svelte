@@ -23,12 +23,7 @@
 				{steps[currentStep]}
 			</h2>
 			<!-- Info icon for mobile, per step -->
-			<button
-				type="button"
-				class="ml-2 flex items-center"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 flex items-center" aria-label="Info" onclick={onToggleInfo}>
 				<span class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-6 w-6"
 				></span>
 			</button>

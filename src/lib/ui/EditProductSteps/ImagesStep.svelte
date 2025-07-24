@@ -8,11 +8,9 @@
 		productStore: Writable<Product>;
 	}
 
-
 	let showInfoImages = $state(false);
 
 	let { productStore }: { productStore: Writable<Product> } = $props();
-
 </script>
 
 <div class="collapse-arrow bg-base-100 collapse shadow-md">

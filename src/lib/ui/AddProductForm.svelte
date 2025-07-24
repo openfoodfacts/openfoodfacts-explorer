@@ -87,20 +87,27 @@
 	let handleCommentChange = $derived(props.handleCommentChange);
 </script>
 
-<MobileStepHeader {currentStep} {steps} onToggleInfo={
-	currentStep === 0 ? toggleInfoImages :
-	currentStep === 1 ? toggleInfoBasic :
-	currentStep === 2 ? toggleInfoLanguages :
-	currentStep === 3 ? toggleInfoIngredients :
-	currentStep === 4 ? toggleInfoNutrition :
-	toggleInfoComment
-} />
+<MobileStepHeader
+	{currentStep}
+	{steps}
+	onToggleInfo={currentStep === 0
+		? toggleInfoImages
+		: currentStep === 1
+			? toggleInfoBasic
+			: currentStep === 2
+				? toggleInfoLanguages
+				: currentStep === 3
+					? toggleInfoIngredients
+					: currentStep === 4
+						? toggleInfoNutrition
+						: toggleInfoComment}
+/>
 
 <DesktopStepNavigation {currentStep} {steps} {goToStep} />
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep 
+	<ImagesStep
 		{productStore}
 		{currentStep}
 		stepsLength={steps.length}
@@ -110,7 +117,7 @@
 		onToggleInfo={toggleInfoImages}
 	/>
 {:else if currentStep === 1}
-	<BasicInfoStep 
+	<BasicInfoStep
 		{productStore}
 		{currentStep}
 		stepsLength={steps.length}
@@ -126,7 +133,7 @@
 		onToggleInfo={toggleInfoBasic}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep 
+	<LanguagesStep
 		{productStore}
 		{currentStep}
 		stepsLength={steps.length}
@@ -139,7 +146,7 @@
 		onToggleInfo={toggleInfoLanguages}
 	/>
 {:else if currentStep === 3}
-	<IngredientsStep 
+	<IngredientsStep
 		{productStore}
 		{currentStep}
 		stepsLength={steps.length}
@@ -151,7 +158,7 @@
 		onToggleInfo={toggleInfoIngredients}
 	/>
 {:else if currentStep === 4}
-	<NutritionStep 
+	<NutritionStep
 		{productStore}
 		{currentStep}
 		stepsLength={steps.length}
@@ -164,7 +171,7 @@
 		onToggleInfo={toggleInfoNutrition}
 	/>
 {:else if currentStep === 5}
-	<CommentStep 
+	<CommentStep
 		{comment}
 		{currentStep}
 		stepsLength={steps.length}
@@ -176,7 +183,7 @@
 	/>
 {/if}
 
-<NavigationButtons 
+<NavigationButtons
 	{currentStep}
 	stepsLength={steps.length}
 	{isSubmitting}

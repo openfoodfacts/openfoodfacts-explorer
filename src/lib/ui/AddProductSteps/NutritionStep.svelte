@@ -17,17 +17,17 @@
 		onToggleInfo: () => void;
 	}
 
-	let { 
-		productStore, 
-		currentStep, 
-		stepsLength, 
-		showInfoNutrition, 
-		getLanguage, 
-		getNutritionImage, 
-		handleNutrimentInput, 
-		prevStep, 
-		nextStep, 
-		onToggleInfo 
+	let {
+		productStore,
+		currentStep,
+		stepsLength,
+		showInfoNutrition,
+		getLanguage,
+		getNutritionImage,
+		handleNutrimentInput,
+		prevStep,
+		nextStep,
+		onToggleInfo
 	}: Props = $props();
 </script>
 
@@ -38,12 +38,7 @@
 		>
 			<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.nutrition')}
-			<button
-				type="button"
-				class="ml-2 align-middle"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>
@@ -114,11 +109,7 @@
 			</div>
 			<div class="form-control">
 				<label class="label cursor-pointer justify-start gap-3">
-					<input
-						type="checkbox"
-						class="checkbox"
-						bind:checked={$productStore.no_nutrition_data}
-					/>
+					<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
 					<span class="label-text text-sm font-medium sm:text-base"
 						>{$_('product.edit.no_nutrition_data')}</span
 					>

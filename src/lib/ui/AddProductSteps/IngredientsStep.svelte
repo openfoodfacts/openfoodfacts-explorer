@@ -16,16 +16,16 @@
 		onToggleInfo: () => void;
 	}
 
-	let { 
-		productStore, 
-		currentStep, 
-		stepsLength, 
-		showInfoIngredients, 
-		getLanguage, 
-		getIngredientsImage, 
-		prevStep, 
-		nextStep, 
-		onToggleInfo 
+	let {
+		productStore,
+		currentStep,
+		stepsLength,
+		showInfoIngredients,
+		getLanguage,
+		getIngredientsImage,
+		prevStep,
+		nextStep,
+		onToggleInfo
 	}: Props = $props();
 </script>
 
@@ -36,12 +36,7 @@
 		>
 			<span class="icon-[mdi--format-list-bulleted] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.ingredients')}
-			<button
-				type="button"
-				class="ml-2 align-middle"
-				aria-label="Info"
-				onclick={onToggleInfo}
-			>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>
