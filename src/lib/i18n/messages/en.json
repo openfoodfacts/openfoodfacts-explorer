@@ -106,6 +106,19 @@
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context."
 			},
+			"tooltips": {
+				"serving_size": "This value helps to make a proportional calculation of each nutrient per serving size. For example, 60 g, 60g or 60 G (prefer the first one), 1000 ml or 1L",
+				"ingredients_list": "Keep the original order. Indicate the percentage when specified. Separate with a comma or hyphen and use parentheses for ingredients of an ingredient.",
+				"categories": "Indicate only the most specific category. Parent categories will be automatically added. For example, 'Sardines in olive oil', 'Orange juice from concentrate'.",
+				"product_name": "The product name is the main name printed on the packaging. It can be a registered trademark. For example, 'Nesquik', 'Tomato Ketchup'. Don't include the brand in the name",
+				"brand_name": "Input all the brands of the product. The main brand, generally clearly displayed on the front pack, should be entered first. For example, 'Nutella, 'Oreo, Mondelez'",
+				"quantity": "Copy the value indicated on the product and don't forget the units. For example, 230g, 6(for 6 eggs), 3 x 150g (for a product with 3 boxes, each of 150g).",
+				"labels": "Any characteristic of the product **which is factual** and different from the other fields. For example, 'Nutri-Score, NOVA…', 'Made in Belgium, produced in Brittany…', 'ISO 9001, ISO 22000…'.",
+				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
+				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
+				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
+				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
+			},
 			"add_product": "Add product",
 			"add_product_title": "Add New Product",
 			"edit_product_title": "Edit Product",

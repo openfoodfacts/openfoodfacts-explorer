@@ -1,5 +1,6 @@
 <script lang="ts">
 	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
@@ -78,9 +79,12 @@
 							{$_('product.edit.no_ingredients_image')}
 						</p>
 					{/if}
-					<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}
-						>{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label
-					>
+					<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
+						<span class="flex items-center gap-2">
+							{$_('product.edit.ingredients_list')} ({getLanguage(code)})
+							<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
+						</span>
+					</label>
 					<div class="form-control mb-4">
 						<textarea
 							id={`ingredients-list-${code}`}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import ISO6391 from 'iso-639-1';
@@ -111,10 +112,13 @@
 					aria-label={getLanguage(code)}
 					checked={code === $productStore.lang}
 				/>
-				<div class="tab-content form-control p-6">
-					<label class="label text-sm sm:text-base" for={`product-name-edit-${code}`}
-						>{$_('product.edit.name')} ({getLanguage(code)})</label
-					>
+				<div class="tab-content form-control p-6 mb-10">
+					<label class="label text-sm sm:text-base" for={`product-name-edit-${code}`}>
+						<span class="flex items-center gap-2">
+							{$_('product.edit.name')} ({getLanguage(code)})
+							<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
+						</span>
+					</label>
 					<input
 						id={`product-name-edit-${code}`}
 						type="text"

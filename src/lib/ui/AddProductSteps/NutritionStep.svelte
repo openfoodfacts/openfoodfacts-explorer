@@ -1,5 +1,6 @@
 <script lang="ts">
 	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
@@ -95,9 +96,10 @@
 		<div class="space-y-6">
 			<div class="form-control">
 				<label class="label" for="serving-size-input">
-					<span class="label-text text-sm font-medium sm:text-base"
-						>{$_('product.edit.serving_size')}</span
-					>
+					<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						{$_('product.edit.serving_size')}
+						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+					</span>
 				</label>
 				<input
 					id="serving-size-input"

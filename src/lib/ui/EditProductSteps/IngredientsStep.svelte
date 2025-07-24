@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import ISO6391 from 'iso-639-1';
@@ -91,9 +92,12 @@
 							{$_('product.edit.no_ingredients_image')}
 						</p>
 					{/if}
-					<label class="label text-sm sm:text-base" for={`ingredients-list-edit-${code}`}
-						>{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label
-					>
+					<label class="label text-sm sm:text-base" for={`ingredients-list-edit-${code}`}>
+						<span class="flex items-center gap-2">
+							{$_('product.edit.ingredients_list')} ({getLanguage(code)})
+							<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
+						</span>
+					</label>
 					<div class="form-control mb-4">
 						<textarea
 							id={`ingredients-list-edit-${code}`}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import ISO6391 from 'iso-639-1';
@@ -114,9 +115,10 @@
 		<div class="space-y-6">
 			<div class="form-control">
 				<label class="label" for="serving-size-edit">
-					<span class="label-text text-sm font-medium sm:text-base"
-						>{$_('product.edit.serving_size')}</span
-					>
+					<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						{$_('product.edit.serving_size')}
+						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+					</span>
 				</label>
 				<input
 					id="serving-size-edit"

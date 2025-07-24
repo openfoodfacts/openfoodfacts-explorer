@@ -1,6 +1,7 @@
 <script lang="ts">
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
+	import InfoTooltip from '../InfoTooltip.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
@@ -55,9 +56,10 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="quantity-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.quantity')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.quantity')}
+							<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
+						</span>
 					</label>
 					<input
 						id="quantity-edit"
@@ -69,9 +71,9 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="packaging-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.packaging')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base">
+							{$_('product.edit.packaging')}
+						</span>
 					</label>
 					<input
 						id="packaging-edit"
@@ -83,9 +85,9 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="manufacturing-places-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.manufacturing_places')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base">
+							{$_('product.edit.manufacturing_places')}
+						</span>
 					</label>
 					<input
 						id="manufacturing-places-edit"
@@ -100,9 +102,10 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div class="form-control w-full">
 					<label class="label" for="emb-codes-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.emb_code')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.emb_code')}
+							<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
+						</span>
 					</label>
 					<input
 						id="emb-codes-edit"
@@ -114,9 +117,9 @@
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="website-url-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.website_url')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base">
+							{$_('product.edit.website_url')}
+						</span>
 					</label>
 					<input
 						id="website-url-edit"
@@ -136,25 +139,28 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="categories-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.categories')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.categories')}
+							<InfoTooltip text={$_('product.edit.tooltips.categories')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.categories} autocomplete={[]} />
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="labels-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.labels')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.labels')}
+							<InfoTooltip text={$_('product.edit.tooltips.labels')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.labels} autocomplete={[]} />
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="brands-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.brands')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.brands')}
+							<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.brands} autocomplete={[]} />
 				</div>
@@ -162,32 +168,38 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
 					<label class="label" for="stores-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.stores')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.stores')}
+							<InfoTooltip text={$_('product.edit.tooltips.stores')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.stores} autocomplete={[]} />
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="origins-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.origins')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.origins')}
+							<InfoTooltip text={$_('product.edit.tooltips.origins')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.origins} autocomplete={[]} />
 				</div>
 				<div class="form-control w-full">
 					<label class="label" for="countries-edit">
-						<span class="label-text text-sm font-medium sm:text-base"
-							>{$_('product.edit.countries')}</span
-						>
+						<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+							{$_('product.edit.countries')}
+							<InfoTooltip text={$_('product.edit.tooltips.countries')} />
+						</span>
 					</label>
 					<TagsString bind:tagsString={$productStore.countries} autocomplete={[]} />
 				</div>
 			</div>
 			<div class="form-control w-full">
 				<label class="label" for="traceability-codes-edit">
-					<span class="label-text text-sm font-medium sm:text-base">Traceability Codes</span>
+					<span class="label-text text-sm font-medium sm:text-base flex items-center gap-2">
+						Traceability Codes
+						<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
+					</span>
 				</label>
 				<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
 			</div>
