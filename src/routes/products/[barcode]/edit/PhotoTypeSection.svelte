@@ -5,10 +5,12 @@
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
 
-	interface Props {
-		photoType:
-			| { id: string; label: string }
-			| { id: string; label: string; isAdditional?: boolean };
+	type PhotoType =
+		| { id: string; label: string }
+		| { id: string; label: string; isAdditional?: boolean };
+
+	type Props = {
+		photoType: PhotoType;
 		activeLanguageCode: string;
 		currentImages: Array<{ url: string; alt: string; type: string }>;
 		expandedCategories: Set<string>;
@@ -17,7 +19,7 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onFileInputChange: (key: string, value: string) => void;
-	}
+	};
 
 	let {
 		photoType,
@@ -80,11 +82,7 @@
 	const isExpanded = $derived(expandedCategories.has(photoType.label));
 	const imagesToShow = $derived(isExpanded ? imagesOfType : imagesOfType.slice(0, 10));
 	const hasMoreImages = $derived(imagesOfType.length > 10);
-	const inputId = $derived(
-		'isAdditional' in photoType
-			? `${photoType.id.toLowerCase()}-${activeLanguageCode}-upload`
-			: `${photoType.id}-${activeLanguageCode}-upload`
-	);
+	const inputId = $derived(`${photoType.id}-${activeLanguageCode}-upload`);
 </script>
 
 <div class="mb-6">

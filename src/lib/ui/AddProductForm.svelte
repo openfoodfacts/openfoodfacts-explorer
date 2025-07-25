@@ -85,23 +85,27 @@
 	let toggleInfoNutrition = $derived(props.toggleInfoNutrition);
 	let toggleInfoComment = $derived(props.toggleInfoComment);
 	let handleCommentChange = $derived(props.handleCommentChange);
+
+	// Get the appropriate toggle function based on current step
+	const getToggleInfo = (step: number) => {
+		switch (step) {
+			case 0:
+				return toggleInfoImages;
+			case 1:
+				return toggleInfoBasic;
+			case 2:
+				return toggleInfoLanguages;
+			case 3:
+				return toggleInfoIngredients;
+			case 4:
+				return toggleInfoNutrition;
+			default:
+				return toggleInfoComment;
+		}
+	};
 </script>
 
-<MobileStepHeader
-	{currentStep}
-	{steps}
-	onToggleInfo={currentStep === 0
-		? toggleInfoImages
-		: currentStep === 1
-			? toggleInfoBasic
-			: currentStep === 2
-				? toggleInfoLanguages
-				: currentStep === 3
-					? toggleInfoIngredients
-					: currentStep === 4
-						? toggleInfoNutrition
-						: toggleInfoComment}
-/>
+<MobileStepHeader {currentStep} {steps} onToggleInfo={getToggleInfo(currentStep)} />
 
 <DesktopStepNavigation {currentStep} {steps} {goToStep} />
 
