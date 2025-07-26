@@ -1,9 +1,9 @@
 <script lang="ts">
-	interface Props {
+	type Props = {
 		currentStep: number;
 		steps: string[];
 		goToStep: (stepIndex: number) => void;
-	}
+	};
 
 	let { currentStep, steps, goToStep }: Props = $props();
 </script>

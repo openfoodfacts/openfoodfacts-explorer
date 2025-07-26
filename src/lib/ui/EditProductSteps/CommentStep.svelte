@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	interface Props {
+	type Props = {
 		comment: string;
 		onCommentChange: (value: string) => void;
-	}
+	};
 
 	let { comment, onCommentChange }: Props = $props();
 

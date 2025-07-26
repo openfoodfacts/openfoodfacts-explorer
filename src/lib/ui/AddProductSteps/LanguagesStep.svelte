@@ -5,7 +5,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 
-	interface Props {
+	type Props = {
 		productStore: Writable<Product>;
 		currentStep: number;
 		stepsLength: number;
@@ -16,7 +16,7 @@
 		prevStep: () => void;
 		nextStep: () => void;
 		onToggleInfo: () => void;
-	}
+	};
 
 	let {
 		productStore,

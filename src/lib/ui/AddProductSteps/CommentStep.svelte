@@ -2,7 +2,7 @@
 	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
 	import { _ } from '$lib/i18n';
 
-	interface Props {
+	type Props = {
 		comment: string;
 		currentStep: number;
 		stepsLength: number;
@@ -11,7 +11,7 @@
 		nextStep: () => void;
 		onToggleInfo: () => void;
 		onCommentChange: (value: string) => void;
-	}
+	};
 
 	let {
 		comment,

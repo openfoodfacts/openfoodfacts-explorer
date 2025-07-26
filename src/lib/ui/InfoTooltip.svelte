@@ -1,8 +1,8 @@
 <script lang="ts">
-	interface Props {
+	type Props = {
 		text: string;
 		position?: 'top' | 'bottom' | 'left' | 'right';
-	}
+	};
 
 	let { text }: Props = $props();
 

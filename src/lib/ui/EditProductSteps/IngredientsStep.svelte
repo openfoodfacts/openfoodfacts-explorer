@@ -5,10 +5,9 @@
 	import ISO6391 from 'iso-639-1';
 	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import { _ } from '$lib/i18n';
-
-	interface Props {
+	type Props = {
 		productStore: Writable<Product>;
-	}
+	};
 
 	let { productStore }: Props = $props();
 

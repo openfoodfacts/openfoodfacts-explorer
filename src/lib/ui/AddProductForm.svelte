@@ -11,7 +11,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 
-	interface AddProductFormProps {
+	type AddProductFormProps = {
 		productStore: Writable<Product>;
 		comment: string;
 		currentStep: number;
@@ -46,7 +46,7 @@
 		toggleInfoNutrition: () => void;
 		toggleInfoComment: () => void;
 		handleCommentChange: (value: string) => void;
-	}
+	};
 
 	let { props }: { props: AddProductFormProps } = $props();
 

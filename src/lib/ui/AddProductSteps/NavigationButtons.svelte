@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	interface Props {
+	type Props = {
 		currentStep: number;
 		stepsLength: number;
 		isSubmitting: boolean;
 		prevStep: () => void;
 		nextStep: () => void;
 		submit: () => Promise<void>;
-	}
+	};
 
 	let { currentStep, stepsLength, isSubmitting, prevStep, nextStep, submit }: Props = $props();
 </script>

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	interface Props {
+	type Props = {
 		currentStep: number;
 		steps: string[];
 		onToggleInfo: () => void;
-	}
+	};
 
 	let { currentStep, steps, onToggleInfo }: Props = $props();
 </script>

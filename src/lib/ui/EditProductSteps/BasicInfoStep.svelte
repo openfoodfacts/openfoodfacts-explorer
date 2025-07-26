@@ -6,9 +6,9 @@
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
-	interface Props {
+	type Props = {
 		productStore: Writable<Product>;
-	}
+	};
 
 	let { productStore }: Props = $props();
 
