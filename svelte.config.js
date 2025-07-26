@@ -16,6 +16,7 @@ const config = {
 			directives: {
 				'script-src': [
 					'self',
+					'unsafe-eval', // Required for Vega charts
 					'https://va.vercel-scripts.com/',
 					'https://analytics.openfoodfacts.org/matomo.js'
 				],

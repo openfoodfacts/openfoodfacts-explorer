@@ -43,6 +43,7 @@
 		"@tailwindcss/postcss": "^4.1.11",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/leaflet": "^1.9.19",
+		"@types/vega": "^3.2.0",
 		"@typescript-eslint/eslint-plugin": "^8.35.1",
 		"@typescript-eslint/parser": "^8.35.1",
 		"@vercel/speed-insights": "^1.2.0",
@@ -90,6 +91,8 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.11.0",
-		"@webcomponents/webcomponentsjs": "^2.8.0"
+		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"vega": "^6.1.2",
+		"vega-lite": "^6.2.0"
 	}
 }

@@ -33,16 +33,23 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		redirect(308, `/products/${query}`);
 	}
 
-	const page = url.searchParams.get('page') || '1';
-	const pageSize = url.searchParams.get('page_size') || 6 * 4;
+	const page = parseInt(url.searchParams.get('page') || '1', 10);
+	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
 	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
 
 	const params: SearchBody = {
 		q: query,
+		langs: ['en'],
 		page: page,
 		page_size: pageSize,
 		facets: ['brands_tags', 'categories_tags', 'nutrition_grades', 'ecoscore_grade'],
+		charts: [
+			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChartType', field: 'ecoscore_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_groups' },
+			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+		],
 		sort_by: sortBy
 	};
 
