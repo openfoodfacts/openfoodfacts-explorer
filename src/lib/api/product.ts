@@ -102,6 +102,41 @@ export class ProductsApi {
 		return res.status === 200;
 	}
 
+	/**
+	 * Uploads an image to OpenFoodFacts for a product.
+	 * @param barcode Product barcode
+	 * @param imageFile The image file to upload
+	 * @param imagefield The type of image (e.g. 'front_en', 'ingredients_en', etc.)
+	 * @param user_id Username for authentication
+	 * @param password Password for authentication
+	 */
+	async uploadImage(barcode: string, imageFile: File, imagefield: string) {
+		const url = `${API_HOST}/cgi/product_image_upload.pl`;
+		const formData = new FormData();
+		formData.append('code', barcode);
+		formData.append('imagefield', imagefield);
+		formData.append(`imgupload_${imagefield}`, imageFile);
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!res.ok) {
+				console.error(`Image upload failed for barcode ${barcode}. Status: ${res.status}`);
+				throw new Error(`Failed to upload image for product with barcode: ${barcode}`);
+			}
+
+			const result = await res.json();
+			console.log('Image upload successful:', result);
+			return result;
+		} catch (err) {
+			console.error('Error during image upload:', err);
+			throw err;
+		}
+	}
+
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
 		const params = new URLSearchParams({
 			fields: REDUCED_FIELDS.join(','),
@@ -405,7 +440,12 @@ export function getProductImageUrl(
 		return null;
 	}
 
-	const rev = (image as SelectedImage).rev;
-	const filename = `${imageName}.${rev}.400.jpg`;
+	let filename;
+	if ('rev' in image) {
+		const rev = image.rev;
+		filename = `${imageName}.${rev}.400.jpg`;
+	} else {
+		filename = `${imageName}.400.jpg`;
+	}
 	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 }
