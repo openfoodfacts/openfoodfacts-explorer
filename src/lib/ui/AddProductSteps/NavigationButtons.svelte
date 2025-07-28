@@ -7,7 +7,7 @@
 		isSubmitting: boolean;
 		prevStep: () => void;
 		nextStep: () => void;
-		submit: () => Promise<void>;
+		submit: () => void;
 	};
 
 	let { currentStep, stepsLength, isSubmitting, prevStep, nextStep, submit }: Props = $props();

@@ -56,7 +56,7 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} showNext={false} />
+		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="space-y-6">
 			<div class="mb-6 text-center">
 				<p class="text-base-content/60 text-sm">Add a comment about your changes (optional)</p>

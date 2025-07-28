@@ -6,9 +6,8 @@
 		stepsLength: number;
 		onPrev: () => void;
 		onNext: () => void;
-		showNext?: boolean;
 	};
-	let { currentStep, stepsLength, onPrev, onNext, showNext = true }: Props = $props();
+	let { currentStep, stepsLength, onPrev, onNext }: Props = $props();
 </script>
 
 <div class="mb-6 flex items-center justify-between">
@@ -26,7 +25,7 @@
 		{/if}
 	</div>
 	<div>
-		{#if currentStep < stepsLength - 1 && showNext}
+		{#if currentStep < stepsLength - 1}
 			<button
 				class="btn btn-circle btn-sm btn-secondary"
 				onclick={onNext}
