@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { writable, get, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { pushState, replaceState } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
@@ -379,43 +380,69 @@
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
 
-	// Initialize step from URL parameter for add mode
+	// Track if router is ready
+	let routerReady = $state(false);
+
+	onMount(() => {
+		routerReady = true;
+	});
+
 	$effect(() => {
-		if (isAddMode) {
+		if (!isAddMode) return;
+
+		if ($page.state && typeof $page.state.currentStep === 'number') {
+			currentStep = $page.state.currentStep;
+		} else {
+			// Fallback to URL parameter for initial load or direct navigation
 			const stepParam = $page.url.searchParams.get('step');
 			if (stepParam) {
-				const stepNumber = parseInt(stepParam, 10) - 1; // Convert to 0-based index
+				const stepNumber = parseInt(stepParam, 10) - 1;
 				if (stepNumber >= 0 && stepNumber < steps.length) {
 					currentStep = stepNumber;
+				}
+			}
+
+			// Set initial state for shallow routing if router is ready
+			if (routerReady) {
+				try {
+					const searchParams = new URLSearchParams($page.url.searchParams);
+					searchParams.set('step', (currentStep + 1).toString());
+					replaceState('?' + searchParams.toString(), { currentStep });
+				} catch (error) {
+					console.warn('Could not set initial state:', error);
 				}
 			}
 		}
 	});
 
-	// Update URL when step changes in add mode
-	function updateStepInUrl(step: number) {
-		if (isAddMode) {
-			const url = new URL($page.url);
-			url.searchParams.set('step', (step + 1).toString()); // Convert to 1-based for URL
-			goto(url.toString(), { replaceState: true, noScroll: true });
+	function updateStep(newStep: number) {
+		if (!isAddMode || !routerReady) return;
+
+		currentStep = newStep;
+		try {
+			const searchParams = new URLSearchParams($page.url.searchParams);
+			searchParams.set('step', (newStep + 1).toString());
+			pushState('?' + searchParams.toString(), { currentStep: newStep });
+		} catch (error) {
+			console.warn('Could not push state:', error);
 		}
 	}
 
 	function goToStep(stepIndex: number) {
-		currentStep = stepIndex;
-		updateStepInUrl(currentStep);
+		if (stepIndex >= 0 && stepIndex < steps.length) {
+			updateStep(stepIndex);
+		}
 	}
 
 	function nextStep() {
 		if (currentStep < steps.length - 1) {
-			currentStep = currentStep + 1;
-			updateStepInUrl(currentStep);
+			updateStep(currentStep + 1);
 		}
 	}
+
 	function prevStep() {
 		if (currentStep > 0) {
-			currentStep = currentStep - 1;
-			updateStepInUrl(currentStep);
+			updateStep(currentStep - 1);
 		}
 	}
 
