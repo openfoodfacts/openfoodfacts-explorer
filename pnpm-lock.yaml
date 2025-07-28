@@ -69,9 +69,6 @@ importers:
       '@types/leaflet':
         specifier: ^1.9.19
         version: 1.9.19
-      '@types/vega':
-        specifier: ^3.2.0
-        version: 3.2.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.35.1
         version: 8.35.1(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)
@@ -973,10 +970,6 @@ packages:
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
-
-  '@types/vega@3.2.0':
-    resolution: {integrity: sha512-07hQ1ca9YEgEaPuYYJrDVMzcoA0JpySv87T46AY0nBNqGYR9v1hdZOygu0WfJMwjEFkyxg5h5dISpubF/wRDnA==}
-    deprecated: This is a stub types definition. vega provides its own type definitions, so you do not need this installed.
 
   '@typescript-eslint/eslint-plugin@8.35.1':
     resolution: {integrity: sha512-9XNTlo7P7RJxbVeICaIIIEipqxLKguyh+3UbXuT2XQuFp6d8VOeDEGuz5IiX0dgZo8CiI6aOFLg4e8cF71SFVg==}
@@ -3413,10 +3406,6 @@ snapshots:
       '@types/geojson': 7946.0.16
 
   '@types/trusted-types@2.0.7': {}
-
-  '@types/vega@3.2.0':
-    dependencies:
-      vega: 6.1.2
 
   '@typescript-eslint/eslint-plugin@8.35.1(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
