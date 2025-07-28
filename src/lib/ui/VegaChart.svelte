@@ -53,10 +53,6 @@
 </script>
 
 <div class="vega-chart-container">
-	{#if title}
-		<h3 class="mb-2 text-lg font-semibold capitalize">{title}</h3>
-	{/if}
-
 	<div bind:this={chartContainer} class="vega-chart">
 		{#if isLoading}
 			<div class="flex h-32 items-center justify-center">
@@ -80,13 +76,12 @@
 
 	.vega-chart {
 		width: 100%;
-		min-height: 140px;
 		position: relative;
 	}
 
 	:global(.vega-chart svg) {
 		width: 100%;
-		height: auto;
+		height: 200px;
 		display: block;
 	}
 </style>
