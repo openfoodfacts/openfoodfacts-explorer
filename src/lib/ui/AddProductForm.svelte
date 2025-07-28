@@ -1,13 +1,13 @@
 <script lang="ts">
-	import MobileStepHeader from './AddProductSteps/MobileStepHeader.svelte';
-	import DesktopStepNavigation from './AddProductSteps/DesktopStepNavigation.svelte';
-	import ImagesStep from './AddProductSteps/ImagesStep.svelte';
-	import BasicInfoStep from './AddProductSteps/BasicInfoStep.svelte';
-	import LanguagesStep from './AddProductSteps/LanguagesStep.svelte';
-	import IngredientsStep from './AddProductSteps/IngredientsStep.svelte';
-	import NutritionStep from './AddProductSteps/NutritionStep.svelte';
-	import CommentStep from './AddProductSteps/CommentStep.svelte';
-	import NavigationButtons from './AddProductSteps/NavigationButtons.svelte';
+	import MobileStepHeader from './add-product-steps/MobileStepHeader.svelte';
+	import DesktopStepNavigation from './add-product-steps/DesktopStepNavigation.svelte';
+	import ImagesStep from './add-product-steps/ImagesStep.svelte';
+	import BasicInfoStep from './add-product-steps/BasicInfoStep.svelte';
+	import LanguagesStep from './add-product-steps/LanguagesStep.svelte';
+	import IngredientsStep from './add-product-steps/IngredientsStep.svelte';
+	import NutritionStep from './add-product-steps/NutritionStep.svelte';
+	import CommentStep from './add-product-steps/CommentStep.svelte';
+	import NavigationButtons from './add-product-steps/NavigationButtons.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 

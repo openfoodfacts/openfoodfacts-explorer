@@ -1,10 +1,10 @@
 <script lang="ts">
-	import ImagesStep from './EditProductSteps/ImagesStep.svelte';
-	import BasicInfoStep from './EditProductSteps/BasicInfoStep.svelte';
-	import LanguagesStep from './EditProductSteps/LanguagesStep.svelte';
-	import IngredientsStep from './EditProductSteps/IngredientsStep.svelte';
-	import NutritionStep from './EditProductSteps/NutritionStep.svelte';
-	import CommentStep from './EditProductSteps/CommentStep.svelte';
+	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
+	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
+	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
+	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
+	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import CommentStep from './edit-product-steps/CommentStep.svelte';
 
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
