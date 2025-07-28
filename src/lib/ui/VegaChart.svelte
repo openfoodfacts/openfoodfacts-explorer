@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import * as vegaLite from 'vega-lite';
+	import * as vega from 'vega';
 
 	type Props = {
-		spec: any;
+		spec: vega.Spec | vegaLite.TopLevelSpec;
 		title?: string;
 	};
 
@@ -12,7 +13,7 @@
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
 
-	onMount(async () => {
+	function updateSpec(spec: vega.Spec | vegaLite.TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
 
 		isLoading = true;
@@ -21,39 +22,37 @@
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
 
-			if (isVegaLite) {
-				const [vegaLite, vega] = await Promise.all([import('vega-lite'), import('vega')]);
+			let compiledSpec = isVegaLite
+				? vegaLite.compile(spec as vegaLite.TopLevelSpec).spec
+				: (spec as vega.Spec);
 
-				const vegaSpec = vegaLite.compile(spec).spec;
-				const view = new vega.View(vega.parse(vegaSpec), {
-					renderer: 'svg',
-					container: chartContainer,
-					hover: true
-				});
-
-				await view.runAsync();
-			} else {
-				const vega = await import('vega');
-				const view = new vega.View(vega.parse(spec), {
-					renderer: 'svg',
-					container: chartContainer,
-					hover: true
-				});
-
-				await view.runAsync();
+			const runtime = vega.parse(compiledSpec);
+			if (!runtime) {
+				throw new Error('Failed to parse Vega spec');
 			}
 
-			isLoading = false;
+			const view = new vega.View(runtime, {
+				renderer: 'svg',
+				container: chartContainer,
+				hover: true
+			});
+
+			(async () => {
+				await view.runAsync();
+				isLoading = false;
+			})();
 		} catch (err) {
 			console.error('Chart rendering error:', err);
 			error = err instanceof Error ? err.message : 'Chart failed to load';
 			isLoading = false;
 		}
-	});
+	}
+
+	$effect(() => updateSpec(spec));
 </script>
 
-<div class="vega-chart-container">
-	<div bind:this={chartContainer} class="vega-chart">
+<div class="mb-4">
+	<div bind:this={chartContainer} class="vega-chart relative w-full">
 		{#if isLoading}
 			<div class="flex h-32 items-center justify-center">
 				<div class="loading loading-spinner loading-md"></div>
@@ -70,15 +69,6 @@
 </div>
 
 <style>
-	.vega-chart-container {
-		margin-bottom: 1rem;
-	}
-
-	.vega-chart {
-		width: 100%;
-		position: relative;
-	}
-
 	:global(.vega-chart svg) {
 		width: 100%;
 		height: 200px;
