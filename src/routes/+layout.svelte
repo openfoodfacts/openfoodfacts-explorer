@@ -50,8 +50,12 @@
 		updateSearchQuery(page.url);
 	});
 
-	function gotoProductsSearch() {
-		goto('/products/search?q=' + searchQuery);
+	let isSearching = $state(false);
+
+	async function gotoProductsSearch() {
+		isSearching = true;
+		await goto('/products/search?q=' + searchQuery);
+		isSearching = false;
 	}
 
 	let searchActive = $state(false);
@@ -77,7 +81,7 @@
 				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
-				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 			<div class="navbar-end gap-2">
 				<NutritionCalculator />
@@ -138,7 +142,7 @@
 
 		{#if searchActive}
 			<div class="flex justify-center">
-				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} />
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 		{/if}
 		<div
