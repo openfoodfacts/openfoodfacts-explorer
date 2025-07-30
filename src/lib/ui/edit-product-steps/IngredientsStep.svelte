@@ -18,7 +18,7 @@
 	function getIngredientsImage(language: string) {
 		const productData = $productStore;
 		if (!productData.code || !productData.images) return null;
-		
+
 		const imageName = 'ingredients_' + language;
 		return getProductImageUrl(productData.code, imageName, productData.images);
 	}

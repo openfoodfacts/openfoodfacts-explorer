@@ -85,7 +85,7 @@
 					<input
 						id="quantity"
 						type="text"
-						class="input w-full text-sm sm:text-base focus:border-primary focus:outline-none"
+						class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 						bind:value={$productStore.quantity}
 						placeholder="e.g., 250g, 1L, 500ml"
 					/>
@@ -99,7 +99,7 @@
 					<input
 						id="packaging"
 						type="text"
-						class="input w-full text-sm sm:text-base focus:border-primary focus:outline-none"
+						class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 						bind:value={$productStore.packaging}
 						placeholder="e.g., plastic bottle, glass jar"
 					/>
@@ -115,7 +115,7 @@
 					<input
 						id="manufacturing_places"
 						type="text"
-						class="input w-full text-sm sm:text-base focus:border-primary focus:outline-none"
+						class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 						bind:value={$productStore.manufacturing_places}
 						placeholder="e.g., France, Italy"
 					/>
@@ -130,7 +130,7 @@
 					<input
 						id="emb_codes"
 						type="text"
-						class="input w-full text-sm sm:text-base focus:border-primary focus:outline-none"
+						class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 						bind:value={$productStore.emb_codes}
 						placeholder="e.g., EMB 12345"
 					/>
@@ -138,14 +138,14 @@
 			</div>
 			<div class="form-control w-full">
 				<label class="label" for="website_url">
-					<span class="label-text text-sm font-medium sm:text-base text-wrap"
+					<span class="label-text text-sm font-medium text-wrap sm:text-base"
 						>{$_('product.edit.product_page_url')}</span
 					>
 				</label>
 				<input
 					id="website_url"
 					type="url"
-					class="input w-full text-wrap text-sm sm:text-base focus:border-primary focus:outline-none"
+					class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
 					bind:value={$productStore.link}
 					placeholder="https://example.com"
 				/>

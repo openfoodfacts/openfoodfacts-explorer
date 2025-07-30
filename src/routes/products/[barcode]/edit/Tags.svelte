@@ -48,7 +48,7 @@
 	function saveEdit(index: number) {
 		const trimmedValue = editingValue.trim();
 		if (trimmedValue !== '' && trimmedValue !== tags[index]) {
-			tags = tags.map((tag, i) => i === index ? trimmedValue : tag);
+			tags = tags.map((tag, i) => (i === index ? trimmedValue : tag));
 			dispatcher('change', { tags });
 		}
 		editingIndex = -1;
@@ -88,15 +88,15 @@
 			{#if editingIndex === index}
 				<input
 					type="text"
-					class="bg-transparent outline-none min-w-0 w-full"
+					class="w-full min-w-0 bg-transparent outline-none"
 					bind:value={editingValue}
 					onkeydown={(e) => handleEditKeydown(e, index)}
 					onblur={() => saveEdit(index)}
 					use:focus
 				/>
 			{:else}
-				<span 
-					class="truncate cursor-pointer" 
+				<span
+					class="cursor-pointer truncate"
 					ondblclick={() => startEditing(index, tag)}
 					title="Double-click to edit"
 					role="button"
@@ -117,7 +117,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="w-full input input-bordered bg-transparent outline-hidden"
+			class="input input-bordered w-full bg-transparent outline-hidden"
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
