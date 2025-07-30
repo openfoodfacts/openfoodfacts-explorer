@@ -16,6 +16,8 @@
 	);
 
 	let newValue = $state('');
+	let editingIndex = $state(-1);
+	let editingValue = $state('');
 
 	let filteredAutocomplete = $derived(
 		newValue.length < 3 ? [] : autoCompleteFuse.search(newValue).slice(0, 10)
@@ -34,10 +36,43 @@
 	}
 
 	function removeTag(tag: string) {
-		return () => {
-			tags = tags.filter((t) => t !== tag);
+		tags = tags.filter((t) => t !== tag);
+		dispatcher('change', { tags });
+	}
+
+	function startEditing(index: number, tag: string) {
+		editingIndex = index;
+		editingValue = tag;
+	}
+
+	function saveEdit(index: number) {
+		const trimmedValue = editingValue.trim();
+		if (trimmedValue !== '' && trimmedValue !== tags[index]) {
+			tags = tags.map((tag, i) => i === index ? trimmedValue : tag);
 			dispatcher('change', { tags });
-		};
+		}
+		editingIndex = -1;
+		editingValue = '';
+	}
+
+	function cancelEdit() {
+		editingIndex = -1;
+		editingValue = '';
+	}
+
+	function handleEditKeydown(event: KeyboardEvent, index: number) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			saveEdit(index);
+		} else if (event.key === 'Escape') {
+			event.preventDefault();
+			cancelEdit();
+		}
+	}
+
+	function focus(element: HTMLInputElement) {
+		element.focus();
+		element.select();
 	}
 
 	const dispatcher = createEventDispatcher<{
@@ -46,18 +81,43 @@
 </script>
 
 <div
-	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md border p-2 focus-within:outline-2 focus-within:outline-offset-2"
+	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap gap-x-1.5 gap-y-1 rounded-md p-2"
 >
-	{#each tags as tag (tag)}
+	{#each tags as tag, index (tag)}
 		<span class="badge badge-ghost overflow-hidden py-3" transition:fade={{ duration: 100 }}>
-			<span class="truncate">{tag}</span>
-			<button class="ml-1 text-xl" onclick={removeTag(tag)}>×</button>
+			{#if editingIndex === index}
+				<input
+					type="text"
+					class="bg-transparent outline-none min-w-0 w-full"
+					bind:value={editingValue}
+					onkeydown={(e) => handleEditKeydown(e, index)}
+					onblur={() => saveEdit(index)}
+					use:focus
+				/>
+			{:else}
+				<span 
+					class="truncate cursor-pointer" 
+					ondblclick={() => startEditing(index, tag)}
+					title="Double-click to edit"
+					role="button"
+					tabindex="0"
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							startEditing(index, tag);
+						}
+					}}
+				>
+					{tag}
+				</span>
+			{/if}
+			<button class="ml-1 text-xl" onclick={() => removeTag(tag)}>×</button>
 		</span>
 	{/each}
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="w-full bg-transparent outline-hidden"
+			class="w-full input input-bordered bg-transparent outline-hidden"
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>

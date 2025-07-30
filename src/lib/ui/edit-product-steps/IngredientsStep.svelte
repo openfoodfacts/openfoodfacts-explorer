@@ -2,8 +2,8 @@
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
+	import { getProductImageUrl } from '$lib/api/product';
 	import ISO6391 from 'iso-639-1';
-	import { PRODUCT_IMAGE_URL } from '$lib/const';
 	import { _ } from '$lib/i18n';
 	type Props = {
 		productStore: Writable<Product>;
@@ -13,29 +13,14 @@
 
 	let showInfoIngredients = $state(false);
 
-	function hasRev(image: unknown): image is { rev: number } {
-		return (
-			typeof image === 'object' &&
-			image !== null &&
-			'rev' in image &&
-			typeof (image as { rev: unknown }).rev === 'number'
-		);
-	}
-
 	const getLanguage = ISO6391.getName;
 
 	function getIngredientsImage(language: string) {
 		const productData = $productStore;
 		if (!productData.code || !productData.images) return null;
-		const paddedBarcode = productData.code.toString().padStart(13, '0');
-		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
-		if (!match) return null;
-		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		
 		const imageName = 'ingredients_' + language;
-		const image = productData.images[imageName];
-		if (!hasRev(image)) return null;
-		const filename = `${imageName}.${image.rev}.400.jpg`;
-		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+		return getProductImageUrl(productData.code, imageName, productData.images);
 	}
 </script>
 

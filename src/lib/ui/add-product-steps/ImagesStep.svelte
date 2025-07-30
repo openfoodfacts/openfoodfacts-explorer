@@ -1,6 +1,6 @@
 <script lang="ts">
-	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
-	import PhotoManager from '../../../routes/products/[barcode]/edit/PhotoManager.svelte';
+	import StepNav from '../StepNav.svelte';
+	import PhotoManager from '../PhotoManager.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
+	import StepNav from '../StepNav.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';

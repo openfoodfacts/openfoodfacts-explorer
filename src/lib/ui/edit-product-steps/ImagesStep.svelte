@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PhotoManager from '../../../routes/products/[barcode]/edit/PhotoManager.svelte';
+	import PhotoManager from '../PhotoManager.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';

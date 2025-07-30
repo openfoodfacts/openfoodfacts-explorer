@@ -79,7 +79,7 @@
 					additionalImages.push({
 						url,
 						alt: `Additional image ${key}`,
-						type: 'additional'
+						type: 'Additional'
 					});
 				}
 			});

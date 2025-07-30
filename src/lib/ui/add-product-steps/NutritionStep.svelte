@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StepNav from '../../../routes/products/[barcode]/edit/StepNav.svelte';
+	import StepNav from '../StepNav.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
@@ -120,13 +120,13 @@
 			{#if !$productStore.no_nutrition_data}
 				<div class="space-y-6">
 					<div class="divider">
-						<span class="text-sm font-medium opacity-60">Nutritional Values</span>
+						<span class="text-sm font-medium opacity-60">{$_('product.edit.nutritional_values')}</span>
 					</div>
 					<!-- Energy -->
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control">
 							<label class="label" for="energy-kj-input">
-								<span class="label-text text-sm font-medium sm:text-base">Energy (kJ)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.energy_kj')}</span>
 							</label>
 							<input
 								id="energy-kj-input"
@@ -141,7 +141,7 @@
 						</div>
 						<div class="form-control">
 							<label class="label" for="energy-kcal-input">
-								<span class="label-text text-sm font-medium sm:text-base">Energy (kcal)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.energy_kcal')}</span>
 							</label>
 							<input
 								id="energy-kcal-input"
@@ -159,7 +159,7 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control">
 							<label class="label" for="fat-input">
-								<span class="label-text text-sm font-medium sm:text-base">Fat (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.fat')}</span>
 							</label>
 							<input
 								id="fat-input"
@@ -174,7 +174,7 @@
 						</div>
 						<div class="form-control">
 							<label class="label" for="saturated-fat-input">
-								<span class="label-text text-sm font-medium sm:text-base">Saturated Fat (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.saturated_fat')}</span>
 							</label>
 							<input
 								id="saturated-fat-input"
@@ -191,7 +191,7 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control">
 							<label class="label" for="carbohydrates-input">
-								<span class="label-text text-sm font-medium sm:text-base">Carbohydrates (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.carbohydrates')}</span>
 							</label>
 							<input
 								id="carbohydrates-input"
@@ -206,7 +206,7 @@
 						</div>
 						<div class="form-control">
 							<label class="label" for="sugars-input">
-								<span class="label-text text-sm font-medium sm:text-base">Sugars (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.sugars')}</span>
 							</label>
 							<input
 								id="sugars-input"
@@ -223,7 +223,7 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 						<div class="form-control">
 							<label class="label" for="proteins-input">
-								<span class="label-text text-sm font-medium sm:text-base">Proteins (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.proteins')}</span>
 							</label>
 							<input
 								id="proteins-input"
@@ -238,7 +238,7 @@
 						</div>
 						<div class="form-control">
 							<label class="label" for="salt-input">
-								<span class="label-text text-sm font-medium sm:text-base">Salt (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.salt')}</span>
 							</label>
 							<input
 								id="salt-input"
@@ -253,7 +253,7 @@
 						</div>
 						<div class="form-control">
 							<label class="label" for="sodium-input">
-								<span class="label-text text-sm font-medium sm:text-base">Sodium (g)</span>
+								<span class="label-text text-sm font-medium sm:text-base">{$_('product.edit.sodium')}</span>
 							</label>
 							<input
 								id="sodium-input"
