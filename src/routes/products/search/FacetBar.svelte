@@ -19,8 +19,7 @@
 		</div>
 	{/if}
 	{#if facets && Object.keys(facets).length > 0}
-		{#each Object.entries(facets) as [facetKey, facetObj] (facetKey)}
-			{@const facet = facetObj as Facet}
+		{#each Object.entries(facets) as [facetKey, facet] (facetKey)}
 			<FacetCard
 				{facet}
 				selected={facet.items.filter((item) => item.selected).map((item) => item.key)}
