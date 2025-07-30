@@ -11,6 +11,9 @@ declare global {
 		}
 		// interface Locals {}
 		// interface PageData {}
+		interface PageState {
+			currentStep?: number;
+		}
 		// interface Platform {}
 	}
 }

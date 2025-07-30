@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { writable, get } from 'svelte/store';
+	import { writable, get, type Writable } from 'svelte/store';
 	import { page } from '$app/stores';
+	import { pushState, replaceState } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
@@ -14,13 +16,11 @@
 		type RawImage
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
-	import Card from '$lib/ui/Card.svelte';
+	import EditProductForm from '$lib/ui/EditProductForm.svelte';
+	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 
 	import type { PageData } from './$types';
-	import TagsString from './TagsString.svelte';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
-	import TraceabilityCodes from './TraceabilityCodes.svelte';
-	import PhotoManager from './PhotoManager.svelte';
 
 	interface Props {
 		data: PageData;
@@ -208,29 +208,30 @@
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
 
-	let productStore = $derived.by(() => {
-		if (data.state.status === PRODUCT_STATUS.EMPTY) {
-			return writable<Product>(emptyProduct);
-		} else if (data.state.product) {
-			return writable<Product>({
-				...data.state.product,
-				emb_codes: data.state.product.emb_codes ?? '',
-				categories: data.state.product.categories ?? '',
-				labels: data.state.product.labels ?? '',
-				brands: data.state.product.brands ?? '',
-				stores: data.state.product.stores ?? '',
-				origins: data.state.product.origins ?? '',
-				countries: data.state.product.countries ?? '',
-				languages_codes: data.state.product.languages_codes ?? {},
-				images: data.state.product.images ?? {},
-				nutriments: data.state.product.nutriments ?? {}
-			});
-		} else {
-			return writable<Product>(emptyProduct);
-		}
-	});
+	function createProductStore(data: PageData): Writable<Product> {
+		return data.state.status === PRODUCT_STATUS.EMPTY
+			? writable<Product>(emptyProduct)
+			: data.state.product
+				? writable<Product>({
+						...data.state.product,
+						emb_codes: data.state.product.emb_codes ?? '',
+						categories: data.state.product.categories ?? '',
+						labels: data.state.product.labels ?? '',
+						brands: data.state.product.brands ?? '',
+						stores: data.state.product.stores ?? '',
+						origins: data.state.product.origins ?? '',
+						countries: data.state.product.countries ?? '',
+						languages_codes: data.state.product.languages_codes ?? {},
+						images: data.state.product.images ?? {},
+						nutriments: data.state.product.nutriments ?? {}
+					})
+				: writable<Product>(emptyProduct);
+	}
 
-	let comment = writable('');
+	let productStore = $derived(createProductStore(data));
+
+	let comment = $state('');
+
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
 	let filteredLanguages = $derived(
@@ -279,7 +280,7 @@
 	async function submit() {
 		isSubmitting = true;
 		const product = get(productStore);
-		const commentValue = get(comment);
+		const commentValue = comment;
 
 		console.group('Product added/edited');
 		console.debug('Submitting', product);
@@ -333,294 +334,225 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
+	function getNutritionImage(language: string) {
+		const productData = get(productStore);
+		if (productData.code == null || productData.images == null) {
+			return null;
+		}
+
+		const paddedBarcode = productData.code.toString().padStart(13, '0');
+		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+		if (!match) {
+			throw new Error('Invalid barcode format');
+		}
+
+		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		const imageName = 'nutrition_' + language;
+		const image = productData.images[imageName];
+
+		if (!image) {
+			return null;
+		}
+
+		const rev = (image as SelectedImage).rev;
+		if (rev == null) {
+			return null;
+		}
+
+		const filename = `${imageName}.${rev}.400.jpg`;
+		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+	}
+
 	$effect(() => {
 		productStore.subscribe((it) => {
 			console.debug('Product store changed', it);
 		});
 	});
+
+	let currentStep = $state(0);
+	const steps = $derived([
+		$_('product.edit.sections.images'),
+		$_('product.edit.sections.basic_info'),
+		$_('product.edit.sections.languages'),
+		$_('product.edit.sections.ingredients'),
+		$_('product.edit.sections.nutrition'),
+		$_('product.edit.sections.comment')
+	]);
+
+	// Determine if we're in add mode (new product) or edit mode (existing product)
+	const isAddMode = $derived(productNotFound);
+
+	// Track if router is ready
+	let routerReady = $state(false);
+
+	onMount(() => {
+		routerReady = true;
+	});
+
+	$effect(() => {
+		if (!isAddMode) return;
+
+		if ($page.state && typeof $page.state.currentStep === 'number') {
+			currentStep = $page.state.currentStep;
+		} else {
+			// Fallback to URL parameter for initial load or direct navigation
+			const stepParam = $page.url.searchParams.get('step');
+			if (stepParam) {
+				const stepNumber = parseInt(stepParam, 10) - 1;
+				if (stepNumber >= 0 && stepNumber < steps.length) {
+					currentStep = stepNumber;
+				}
+			}
+
+			// Set initial state for shallow routing if router is ready
+			if (routerReady) {
+				try {
+					const searchParams = new URLSearchParams($page.url.searchParams);
+					searchParams.set('step', (currentStep + 1).toString());
+					replaceState('?' + searchParams.toString(), { currentStep });
+				} catch (error) {
+					console.warn('Could not set initial state:', error);
+				}
+			}
+		}
+	});
+
+	function updateStep(newStep: number) {
+		if (!isAddMode || !routerReady) return;
+
+		currentStep = newStep;
+		try {
+			const searchParams = new URLSearchParams($page.url.searchParams);
+			searchParams.set('step', (newStep + 1).toString());
+			pushState('?' + searchParams.toString(), { currentStep: newStep });
+		} catch (error) {
+			console.warn('Could not push state:', error);
+		}
+	}
+
+	function goToStep(stepIndex: number) {
+		if (stepIndex >= 0 && stepIndex < steps.length) {
+			updateStep(stepIndex);
+		}
+	}
+
+	function nextStep() {
+		if (currentStep < steps.length - 1) {
+			updateStep(currentStep + 1);
+		}
+	}
+
+	function prevStep() {
+		if (currentStep > 0) {
+			updateStep(currentStep - 1);
+		}
+	}
+
+	// Info box visibility states for each section
+	let showInfoImages = $state(false);
+	let showInfoBasic = $state(false);
+	let showInfoLanguages = $state(false);
+	let showInfoIngredients = $state(false);
+	let showInfoNutrition = $state(false);
+	let showInfoComment = $state(false);
+
+	// Toggle functions for info boxes
+	function toggleInfoImages() {
+		showInfoImages = !showInfoImages;
+	}
+
+	function toggleInfoBasic() {
+		showInfoBasic = !showInfoBasic;
+	}
+
+	function toggleInfoLanguages() {
+		showInfoLanguages = !showInfoLanguages;
+	}
+
+	function toggleInfoIngredients() {
+		showInfoIngredients = !showInfoIngredients;
+	}
+
+	function toggleInfoNutrition() {
+		showInfoNutrition = !showInfoNutrition;
+	}
+
+	function toggleInfoComment() {
+		showInfoComment = !showInfoComment;
+	}
+
+	function handleCommentChange(value: string) {
+		comment = value;
+	}
+
+	let addProductFormProps = $derived({
+		productStore,
+		comment,
+		currentStep,
+		steps,
+		showInfoImages,
+		showInfoBasic,
+		showInfoLanguages,
+		showInfoIngredients,
+		showInfoNutrition,
+		showInfoComment,
+		prevStep,
+		nextStep,
+		goToStep,
+		handleNutrimentInput,
+		addLanguage,
+		getLanguage,
+		getIngredientsImage,
+		getNutritionImage,
+		filteredLanguages,
+		categoryNames,
+		labelNames,
+		brandNames,
+		storeNames,
+		originNames,
+		countriesNames,
+		isSubmitting,
+		submit,
+		toggleInfoImages,
+		toggleInfoBasic,
+		toggleInfoLanguages,
+		toggleInfoIngredients,
+		toggleInfoNutrition,
+		toggleInfoComment,
+		handleCommentChange
+	});
 </script>
 
-<div class="space-y-4">
-	<div class="collapse-arrow dark:bg-base-200 collapse bg-white p-2 shadow-md">
-		<input type="checkbox" />
-		<div class="collapse-title font-semibold">{$_('product.edit.add_language')}</div>
-		<div class="collapse-content text-sm">
-			<label class="input w-full">
-				<span class="icon-[mdi--search] h-5 w-5"></span>
-				<input
-					type="search"
-					placeholder={$_('product.edit.search_languages')}
-					bind:value={languageSearch}
-				/>
-			</label>
-			{#if filteredLanguages.length === 0}
-				<p class="mt-4 text-center opacity-70">{$_('product.edit.no_languages_found')}</p>
+<div class="space-y-8">
+	<!-- Super Title -->
+	<div class="mb-8 space-y-2 text-center">
+		<h1 class="text-primary text-2xl font-semibold tracking-wide sm:text-3xl">
+			{#if isAddMode}
+				{$_('product.edit.add_product_title')}
 			{:else}
-				<div
-					class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 overflow-auto"
-				>
-					{#each filteredLanguages as code (code)}
-						<button class="btn btn-ghost" onclick={() => addLanguage(code)}>
-							{getLanguage(code)}
-						</button>
-					{/each}
-				</div>
+				{$_('product.edit.edit_product_title')}
 			{/if}
-		</div>
+		</h1>
+		<div class="bg-primary/20 mx-auto h-px w-16"></div>
+		<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
+			{#if $productStore.product_name}
+				{$productStore.product_name}
+			{:else if $productStore.product_name_en}
+				{$productStore.product_name_en}
+			{:else}
+				{$page.params.barcode}
+			{/if}
+		</p>
 	</div>
 
-	<div class="tabs tabs-box">
-		{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-			<input
-				type="radio"
-				name="name_tabs"
-				class="tab"
-				aria-label={getLanguage(code)}
-				defaultChecked={code === $productStore.lang}
-			/>
-			<div class="tab-content form-control p-6">
-				<label for="">{$_('product.edit.name')} ({getLanguage(code)})</label>
-				<input
-					type="text"
-					class="input input-bordered w-full"
-					bind:value={$productStore[`product_name_${code}`]}
-				/>
-			</div>
-		{/each}
-
-		{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
-			<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
-		{/if}
-	</div>
-
-	<Card>
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.quantity')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.quantity} />
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.emb_code')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.emb_codes} />
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.packaging')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.packaging} />
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.manufacturing_places')}</label>
-			<input
-				type="text"
-				class="input input-bordered w-full"
-				bind:value={$productStore.manufacturing_places}
-			/>
-		</div>
-
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.categories')}</label>
-			<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.labels')}</label>
-			<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.brands')}</label>
-			<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.stores')}</label>
-			<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.origins')}</label>
-			<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
-		</div>
-		<div class="mb-4">
-			<label for="">{$_('product.edit.countries')}</label>
-			<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
-		</div>
-
-		<div class="mb-4">
-			<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
-		</div>
-
-		<div class="mb-4">
-			<label for="">{$_('product.edit.website_url')}</label>
-			<input type="text" class="input input-bordered w-full" bind:value={$productStore.link} />
-		</div>
-	</Card>
-
-	<Card>
-		<PhotoManager product={$productStore} />
-	</Card>
-
-	<Card>
-		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.ingredients')}</h3>
-		<div class="tabs tabs-box">
-			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-				<input
-					type="radio"
-					name="ingredients_tabs"
-					class="tab"
-					aria-label={getLanguage(code)}
-					defaultChecked={code === $productStore.lang}
-				/>
-				<div class="tab-content form-control p-6">
-					{#if getIngredientsImage(code)}
-						<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
-					{:else}
-						<p class="alert alert-warning mb-4">{$_('product.edit.no_ingredients_image')}</p>
-					{/if}
-					<label for="">{$_('product.edit.ingredients_list')} ({getLanguage(code)})</label>
-					<div class="form-control mb-4">
-						<textarea
-							class="textarea textarea-bordered h-40 w-full"
-							bind:value={$productStore[`ingredients_text_${code}`]}
-						></textarea>
-					</div>
-				</div>
-			{/each}
-
-			{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
-				<div class="alert alert-warning">{$_('product.edit.no_languages_found')}</div>
-			{/if}
-		</div>
-	</Card>
-
-	<Card>
-		<h3 class="mb-4 text-3xl font-bold">{$_('product.edit.nutritional_information')}</h3>
-		<div class="form-control mb-4">
-			<label for="">{$_('product.edit.serving_size')}</label>
-			<input
-				type="text"
-				class="input input-bordered w-full"
-				bind:value={$productStore.serving_size}
-			/>
-		</div>
-
-		<div class="form-control mb-4">
-			<label class="label cursor-pointer justify-start gap-2">
-				<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
-				<span class="label-text">{$_('product.edit.no_nutrition_data')}</span>
-			</label>
-		</div>
-
-		{#if !$productStore.no_nutrition_data}
-			<div class="grid grid-cols-2 gap-4">
-				<div class="form-control mb-4">
-					<label for="">Energy (kJ)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Energy (kcal)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Fat (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.fat_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Saturated Fat (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Carbohydrates (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.carbohydrates_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Sugars (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.sugars_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Proteins (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.proteins_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Salt (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.salt_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
-					/>
-				</div>
-				<div class="form-control mb-4">
-					<label for="">Sodium (g)</label>
-					<input
-						type="number"
-						class="input input-bordered w-full"
-						value={$productStore.nutriments?.sodium_100g ?? ''}
-						oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
-					/>
-				</div>
-			</div>
-		{:else}
-			<div class="alert alert-info">{$_('product.edit.no_nutrition_specified')}</div>
-		{/if}
-	</Card>
-
-	<Card>
-		<div class="form-control mb-4">
-			<label for="comment">{$_('product.edit.comment')}</label>
-			<input
-				id="comment"
-				type="text"
-				class="input input-bordered w-full"
-				placeholder={$_('product.edit.comment_placeholder')}
-				bind:value={$comment}
-			/>
-		</div>
-	</Card>
-
-	<div class="sticky bottom-2.5 z-1 rounded-md">
-		<button class="btn btn-primary w-full" onclick={submit} disabled={isSubmitting}>
-			{#if isSubmitting}
-				<span class="loading loading-spinner loading-sm"></span>
-			{/if}
-			{productNotFound ? $_('product.edit.add_product') : $_('product.edit.save_btn')}
-		</button>
-	</div>
+	{#if isAddMode}
+		<AddProductForm props={addProductFormProps} />
+	{:else}
+		<EditProductForm {productStore} onSave={submit} />
+	{/if}
 </div>
 
-<details>
-	<summary>{$_('product.edit.debug')}</summary>
-	<pre>{JSON.stringify(data, null, 2)}</pre>
+<details class="mt-8">
+	<summary class="cursor-pointer text-sm sm:text-base">{$_('product.edit.debug')}</summary>
+	<pre class="overflow-auto text-xs sm:text-sm">{JSON.stringify(data, null, 2)}</pre>
 </details>
