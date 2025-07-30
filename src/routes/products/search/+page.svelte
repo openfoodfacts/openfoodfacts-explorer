@@ -29,8 +29,8 @@
 	let { data }: Props = $props();
 	let { search: result } = $derived(data);
 
-	// State for showing/hiding analytics
-	let showAnalytics = $state(false);
+	// State for showing/hiding graphs
+	let showGraphs = $state(false);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
@@ -145,14 +145,14 @@
 		<div class="mb-4 flex justify-end">
 			<button
 				class="btn btn-secondary btn-sm gap-2"
-				onclick={() => (showAnalytics = !showAnalytics)}
+				onclick={() => (showGraphs = !showGraphs)}
 			>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
-				{showAnalytics ? 'Hide Analytics' : 'Show Analytics'}
+				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
 			</button>
 		</div>
 
-		{#if showAnalytics}
+		{#if showGraphs}
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
 				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
 					<div class="bg-base-100 rounded-lg p-4 shadow-md">
