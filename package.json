@@ -90,6 +90,8 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.11.0",
-		"@webcomponents/webcomponentsjs": "^2.8.0"
+		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"vega": "^6.1.2",
+		"vega-lite": "^6.2.0"
 	}
 }

@@ -52,7 +52,7 @@ export type FacetResult = Record<string, Facet>;
 // We should use the SDK types.
 export type SearchResult = {
 	aggregations: null;
-	charts: object;
+	charts: Record<string, object>;
 	count: number;
 	debug: object;
 	facets: FacetResult;

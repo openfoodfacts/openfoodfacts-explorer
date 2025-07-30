@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import { slide } from 'svelte/transition';
 
 	import { _ } from '$lib/i18n';
 
@@ -12,6 +13,7 @@
 	import Pagination from '$lib/Pagination.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '$lib/ui/VegaChart.svelte';
 	import FacetBar from './FacetBar.svelte';
 
 	import type { PageData } from './$types';
@@ -27,10 +29,12 @@
 	let { data }: Props = $props();
 	let { search: result } = $derived(data);
 
+	// State for showing/hiding graphs
+	let showGraphs = $state(false);
+
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
 		// Track search queries that return no results
-		console.debug('Search result:', result);
 		if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
 	});
 
@@ -133,6 +137,27 @@
 				refreshQuery();
 			}}
 		/>
+	</div>
+{/if}
+
+{#if result.charts && Object.keys(result.charts).length > 0}
+	<div class="my-8">
+		<div class="mb-4 flex justify-end">
+			<button class="btn btn-secondary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
+				<span class="icon-[mdi--chart-bar] text-lg"></span>
+				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
+			</button>
+		</div>
+
+		{#if showGraphs}
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
+				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
+					<div class="bg-base-100 rounded-lg p-4 shadow-md">
+						<VegaChart spec={chartSpec} title={chartKey.replace(/_/g, ' ').replace(':', ' vs ')} />
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
 {/if}
 
