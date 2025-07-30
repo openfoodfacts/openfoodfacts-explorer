@@ -208,8 +208,8 @@
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
 
-	let productStore = $state<Writable<Product>>(
-		data.state.status === PRODUCT_STATUS.EMPTY
+	function createProductStore(data: PageData): Writable<Product> {
+		return data.state.status === PRODUCT_STATUS.EMPTY
 			? writable<Product>(emptyProduct)
 			: data.state.product
 				? writable<Product>({
@@ -225,8 +225,10 @@
 						images: data.state.product.images ?? {},
 						nutriments: data.state.product.nutriments ?? {}
 					})
-				: writable<Product>(emptyProduct)
-	);
+				: writable<Product>(emptyProduct);
+	}
+
+	let productStore = $derived(createProductStore(data));
 
 	let comment = $state('');
 
