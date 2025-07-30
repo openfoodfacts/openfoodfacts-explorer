@@ -154,7 +154,7 @@
 
 		{#if showAnalytics}
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
-				{#each Object.entries(result.charts) as [chartKey, chartSpec]}
+				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
 					<div class="bg-base-100 rounded-lg p-4 shadow-md">
 						<VegaChart spec={chartSpec} title={chartKey.replace(/_/g, ' ').replace(':', ' vs ')} />
 					</div>

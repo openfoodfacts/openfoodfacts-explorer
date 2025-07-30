@@ -52,6 +52,9 @@
 </script>
 
 <div class="mb-4">
+	{#if title}
+		<h3 class="mb-2 text-lg font-semibold">{title}</h3>
+	{/if}
 	<div bind:this={chartContainer} class="vega-chart relative w-full">
 		{#if isLoading}
 			<div class="flex h-32 items-center justify-center">
