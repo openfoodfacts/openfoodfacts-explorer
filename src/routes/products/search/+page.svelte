@@ -143,10 +143,7 @@
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
 		<div class="mb-4 flex justify-end">
-			<button
-				class="btn btn-secondary btn-sm gap-2"
-				onclick={() => (showGraphs = !showGraphs)}
-			>
+			<button class="btn btn-secondary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
 				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
 			</button>
