@@ -1,6 +1,5 @@
 <script lang="ts">
-	import MobileStepHeader from './add-product-steps/MobileStepHeader.svelte';
-	import DesktopStepNavigation from './add-product-steps/DesktopStepNavigation.svelte';
+	import StepHeader from './add-product-steps/StepHeader.svelte';
 	import ImagesStep from './add-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './add-product-steps/BasicInfoStep.svelte';
 	import LanguagesStep from './add-product-steps/LanguagesStep.svelte';
@@ -106,9 +105,7 @@
 	};
 </script>
 
-<MobileStepHeader {currentStep} {steps} onToggleInfo={getToggleInfo(currentStep)} />
-
-<DesktopStepNavigation {currentStep} {steps} {goToStep} />
+<StepHeader {currentStep} {steps} {goToStep} onToggleInfo={getToggleInfo(currentStep)} />
 
 <StepNav
 	onNext={currentStep < steps.length - 1 ? nextStep : undefined}
