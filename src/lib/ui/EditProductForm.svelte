@@ -10,16 +10,14 @@
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
-	let {
-		productStore,
-		onSave
-	}: { productStore: Writable<Product>; onSave: (data: Product) => void } = $props();
+	type Props = {
+		productStore: Writable<Product>;
+		onSave: (data: Product) => void;
+	};
+
+	let { productStore, onSave }: Props = $props();
 
 	let comment = $state('');
-
-	function handleCommentChange(value: string) {
-		comment = value;
-	}
 
 	function handleSubmit() {
 		productStore.update((p) => {
@@ -46,7 +44,7 @@
 	<NutritionStep {productStore} />
 
 	<!-- Comment Section -->
-	<CommentStep {comment} onCommentChange={handleCommentChange} />
+	<CommentStep bind:comment />
 
 	<div class="mt-8 flex justify-end">
 		<button
