@@ -53,10 +53,10 @@
 
 	<!-- Preferences Toggle Button -->
 	{#if !showPreferences}
-		<div class="mt-6 w-full flex justify-end">
-			<button 
+		<div class="mt-6 flex w-full justify-end">
+			<button
 				class="btn btn-primary flex items-center justify-center gap-2"
-				onclick={() => showPreferences = !showPreferences}
+				onclick={() => (showPreferences = !showPreferences)}
 			>
 				<span class="icon-[mdi--cog] text-lg"></span>
 				{$_('preferences.edit_preferences')}
@@ -68,18 +68,18 @@
 	{#if showPreferences}
 		<div class="mt-4 w-full">
 			<!-- Top Close Button -->
-			<div class="flex justify-end mb-4">
-				<button 
+			<div class="mb-4 flex justify-end">
+				<button
 					class="btn btn-primary flex items-center gap-2"
-					onclick={() => showPreferences = false}
+					onclick={() => (showPreferences = false)}
 					aria-label={$_('preferences.close')}
 				>
 					<span class="icon-[mdi--close] text-lg"></span>
 					{$_('preferences.close')}
 				</button>
 			</div>
-			
-			<PreferencesForm onClose={() => showPreferences = false}/>
+
+			<PreferencesForm onClose={() => (showPreferences = false)} />
 		</div>
 	{/if}
 

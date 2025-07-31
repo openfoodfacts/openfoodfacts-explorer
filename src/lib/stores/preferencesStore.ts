@@ -126,9 +126,9 @@ function createPreferencesStore() {
 		update,
 		// Update a specific preference
 		updatePreference: (category: keyof UserPreferences, preference: string, value: string) => {
-			update(prefs => {
+			update((prefs) => {
 				const newPrefs = { ...prefs };
-				
+
 				// Type-safe preference update
 				if (category === 'nutritionalQuality') {
 					(newPrefs.nutritionalQuality as Record<string, string>)[preference] = value;
@@ -143,7 +143,7 @@ function createPreferencesStore() {
 				} else if (category === 'environment') {
 					(newPrefs.environment as Record<string, string>)[preference] = value;
 				}
-				
+
 				// Save to localStorage
 				if (browser) {
 					try {
@@ -152,7 +152,7 @@ function createPreferencesStore() {
 						console.warn('Failed to save preferences to localStorage:', error);
 					}
 				}
-				
+
 				return newPrefs;
 			});
 		},
@@ -160,7 +160,7 @@ function createPreferencesStore() {
 		resetToDefaults: () => {
 			const defaults = structuredClone(defaultPreferences);
 			set(defaults);
-			
+
 			// Save to localStorage
 			if (browser) {
 				try {
@@ -173,7 +173,7 @@ function createPreferencesStore() {
 		// Get current preferences value (for non-reactive access)
 		getCurrent: (): UserPreferences => {
 			let current: UserPreferences;
-			subscribe(value => current = value)();
+			subscribe((value) => (current = value))();
 			return current!;
 		},
 		// Get default preferences
@@ -188,7 +188,7 @@ function createPreferencesStore() {
 
 	function getCurrent(): UserPreferences {
 		let current: UserPreferences;
-		subscribe(value => current = value)();
+		subscribe((value) => (current = value))();
 		return current!;
 	}
 }

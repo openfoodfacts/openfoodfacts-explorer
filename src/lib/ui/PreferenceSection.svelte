@@ -40,55 +40,57 @@
 	}: PreferenceSectionProps = $props();
 </script>
 
-<div class="collapse bg-base-200 rounded-box" class:collapse-open={expanded}>
-	<div 
-		class="collapse-title text-lg font-medium flex items-center gap-2 cursor-pointer" 
+<div class="bg-base-200 rounded-box collapse" class:collapse-open={expanded}>
+	<div
+		class="collapse-title flex cursor-pointer items-center gap-2 text-lg font-medium"
 		role="button"
 		tabindex="0"
 		onclick={onToggle}
-		onkeydown={(e) => { 
-			if (e.key === 'Enter' || e.key === ' ') { 
-				e.preventDefault(); 
-				onToggle(); 
-			} 
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				onToggle();
+			}
 		}}
 		aria-expanded={expanded}
 	>
-		<span 
-			class="icon-[mdi--chevron-down] transition-transform duration-200" 
+		<span
+			class="icon-[mdi--chevron-down] transition-transform duration-200"
 			class:rotate-180={!expanded}
 		></span>
 		{title}
 	</div>
-	
+
 	<div class="collapse-content space-y-4">
 		{#if showWarning && warningText}
-			<div class="bg-orange-100 dark:bg-orange-900/30 border border-orange-300 dark:border-orange-700 rounded-lg p-3 mb-4">
+			<div
+				class="mb-4 rounded-lg border border-orange-300 bg-orange-100 p-3 dark:border-orange-700 dark:bg-orange-900/30"
+			>
 				<p class="text-sm text-orange-800 dark:text-orange-200">
 					{warningText}
 				</p>
 			</div>
 		{/if}
-		
+
 		{#each options as option}
 			<div class="flex items-start gap-3 p-2">
 				<!-- Icon -->
-				<div class="flex-shrink-0 mt-1">
+				<div class="mt-1 flex-shrink-0">
 					{#if option.iconImg}
-						<img 
-							src={KP_ATTRIBUTE_IMG(option.iconImg)} 
+						<img
+							src={KP_ATTRIBUTE_IMG(option.iconImg)}
 							alt={option.label}
-							class="md:h-10 md:w-10 h-8 w-8 object-contain"
+							class="h-8 w-8 object-contain md:h-10 md:w-10"
 						/>
 					{/if}
 				</div>
 
 				<!-- Label and Options -->
 				<div class="flex-1">
-					<h4 class="text-sm font-medium text-base-content mb-2">{option.label}</h4>
+					<h4 class="text-base-content mb-2 text-sm font-medium">{option.label}</h4>
 					<div class="flex flex-wrap gap-4">
 						{#each option.options as radioOption}
-							<label class="flex items-center gap-2 cursor-pointer">
+							<label class="flex cursor-pointer items-center gap-2">
 								<input
 									type="radio"
 									name={option.id}
@@ -97,12 +99,12 @@
 									checked={getValue(option.id) === radioOption.value}
 									onchange={() => onChange(category, option.id, radioOption.value)}
 								/>
-								<span class="text-sm text-base-content/80">{radioOption.label}</span>
+								<span class="text-base-content/80 text-sm">{radioOption.label}</span>
 							</label>
 						{/each}
 					</div>
 					{#if option.description}
-						<p class="text-xs text-base-content/60 mt-1">{option.description}</p>
+						<p class="text-base-content/60 mt-1 text-xs">{option.description}</p>
 					{/if}
 				</div>
 			</div>

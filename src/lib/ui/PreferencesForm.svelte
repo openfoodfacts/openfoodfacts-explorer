@@ -10,7 +10,7 @@
 		classifyProducts?: boolean;
 		onClassifyToggle?: (value: boolean) => void;
 		onClose?: () => void;
-	}
+	};
 
 	let {
 		onPreferenceChange = () => {},
@@ -298,7 +298,7 @@
 
 	// Value getters
 	const getValueFromCategory = (category: keyof UserPreferences, id: string) => {
-		return $userPreferences[category][id as keyof typeof $userPreferences[typeof category]];
+		return $userPreferences[category][id as keyof (typeof $userPreferences)[typeof category]];
 	};
 </script>
 
@@ -306,8 +306,8 @@
 	<div class="space-y-6">
 		<!-- Header -->
 		<div class="mb-6">
-			<h2 class="text-xl font-semibold text-base-content mb-2">{$_('preferences.title')}</h2>
-			<p class="text-sm text-base-content/70">
+			<h2 class="text-base-content mb-2 text-xl font-semibold">{$_('preferences.title')}</h2>
+			<p class="text-base-content/70 text-sm">
 				{$_('preferences.subtitle')}
 			</p>
 		</div>
@@ -316,9 +316,9 @@
 		{#if showClassifyToggle}
 			<div class="form-control">
 				<label class="label cursor-pointer justify-start gap-3">
-					<input 
-						type="checkbox" 
-						class="toggle toggle-primary" 
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
 						bind:checked={classifyProducts}
 						onchange={() => onClassifyToggle(classifyProducts)}
 					/>
@@ -326,14 +326,11 @@
 				</label>
 			</div>
 
-			<div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 mb-4">
-				<button 
-					class="btn md:btn-sm btn-primary btn-xs"
-					onclick={resetToDefaults}
-				>
+			<div class="mb-4 rounded-lg bg-orange-50 p-3 dark:bg-orange-900/20">
+				<button class="btn md:btn-sm btn-primary btn-xs" onclick={resetToDefaults}>
 					{$_('preferences.use_default')}
 				</button>
-				<span class="text-sm ml-2">{$_('preferences.default_description')}</span>
+				<span class="ml-2 text-sm">{$_('preferences.default_description')}</span>
 			</div>
 		{/if}
 
@@ -342,7 +339,7 @@
 			title={$_('preferences.sections.nutritional_quality')}
 			options={nutritionalQualityOptions}
 			expanded={nutritionalQualityExpanded}
-			onToggle={() => nutritionalQualityExpanded = !nutritionalQualityExpanded}
+			onToggle={() => (nutritionalQualityExpanded = !nutritionalQualityExpanded)}
 			getValue={(id) => getValueFromCategory('nutritionalQuality', id)}
 			onChange={handlePreferenceChange}
 			category="nutritionalQuality"
@@ -352,7 +349,7 @@
 			title={$_('preferences.sections.food_processing')}
 			options={foodProcessingOptions}
 			expanded={foodProcessingExpanded}
-			onToggle={() => foodProcessingExpanded = !foodProcessingExpanded}
+			onToggle={() => (foodProcessingExpanded = !foodProcessingExpanded)}
 			getValue={(id) => getValueFromCategory('foodProcessing', id)}
 			onChange={handlePreferenceChange}
 			category="foodProcessing"
@@ -362,7 +359,7 @@
 			title={$_('preferences.sections.allergens')}
 			options={allergenOptions}
 			expanded={allergensExpanded}
-			onToggle={() => allergensExpanded = !allergensExpanded}
+			onToggle={() => (allergensExpanded = !allergensExpanded)}
 			getValue={(id) => getValueFromCategory('allergens', id)}
 			onChange={handlePreferenceChange}
 			category="allergens"
@@ -374,7 +371,7 @@
 			title={$_('preferences.sections.ingredients')}
 			options={ingredientOptions}
 			expanded={ingredientsExpanded}
-			onToggle={() => ingredientsExpanded = !ingredientsExpanded}
+			onToggle={() => (ingredientsExpanded = !ingredientsExpanded)}
 			getValue={(id) => getValueFromCategory('ingredients', id)}
 			onChange={handlePreferenceChange}
 			category="ingredients"
@@ -384,7 +381,7 @@
 			title={$_('preferences.sections.labels')}
 			options={labelOptions}
 			expanded={labelsExpanded}
-			onToggle={() => labelsExpanded = !labelsExpanded}
+			onToggle={() => (labelsExpanded = !labelsExpanded)}
 			getValue={(id) => getValueFromCategory('labels', id)}
 			onChange={handlePreferenceChange}
 			category="labels"
@@ -394,14 +391,14 @@
 			title={$_('preferences.sections.environment')}
 			options={environmentOptions}
 			expanded={environmentExpanded}
-			onToggle={() => environmentExpanded = !environmentExpanded}
+			onToggle={() => (environmentExpanded = !environmentExpanded)}
 			getValue={(id) => getValueFromCategory('environment', id)}
 			onChange={handlePreferenceChange}
 			category="environment"
 		/>
 
 		<!-- Close Button -->
-		<div class="flex justify-end pt-4 border-t border-base-300">
+		<div class="border-base-300 flex justify-end border-t pt-4">
 			<button class="btn btn-primary" onclick={onClose}>
 				{$_('preferences.close')}
 			</button>
