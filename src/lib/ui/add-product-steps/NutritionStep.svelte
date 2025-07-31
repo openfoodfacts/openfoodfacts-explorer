@@ -1,5 +1,4 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
@@ -7,27 +6,19 @@
 
 	type Props = {
 		productStore: Writable<Product>;
-		currentStep: number;
-		stepsLength: number;
 		showInfoNutrition: boolean;
 		getLanguage: (code: string) => string;
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 	};
 
 	let {
 		productStore,
-		currentStep,
-		stepsLength,
 		showInfoNutrition,
 		getLanguage,
 		getNutritionImage,
 		handleNutrimentInput,
-		prevStep,
-		nextStep,
 		onToggleInfo
 	}: Props = $props();
 </script>
@@ -63,7 +54,6 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="tabs tabs-box mb-4">
 			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 				<input

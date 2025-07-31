@@ -1,28 +1,14 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
 	import { _ } from '$lib/i18n';
 
 	type Props = {
 		comment: string;
-		currentStep: number;
-		stepsLength: number;
 		showInfoComment: boolean;
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 		onCommentChange: (value: string) => void;
 	};
 
-	let {
-		comment,
-		currentStep,
-		stepsLength,
-		showInfoComment,
-		prevStep,
-		nextStep,
-		onToggleInfo,
-		onCommentChange
-	}: Props = $props();
+	let { comment, showInfoComment, onToggleInfo, onCommentChange }: Props = $props();
 </script>
 
 <div class="card bg-base-100 shadow-md">
@@ -56,7 +42,6 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="space-y-6">
 			<div class="mb-6 text-center">
 				<p class="text-base-content/60 text-sm">Add a comment about your changes (optional)</p>
