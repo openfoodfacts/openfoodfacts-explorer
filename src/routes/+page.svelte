@@ -6,12 +6,16 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 
 	let { data }: PageProps = $props();
 	let { products } = $derived(data);
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
+
+	// Track preferences form visibility
+	let showPreferences = $state(false);
 
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
@@ -47,6 +51,38 @@
 		</div>
 	</Card>
 
+	<!-- Preferences Toggle Button -->
+	{#if !showPreferences}
+		<div class="mt-6 w-full flex justify-end">
+			<button 
+				class="btn btn-primary flex items-center justify-center gap-2"
+				onclick={() => showPreferences = !showPreferences}
+			>
+				<span class="icon-[mdi--cog] text-lg"></span>
+				{$_('preferences.edit_preferences')}
+			</button>
+		</div>
+	{/if}
+
+	<!-- Preferences Form -->
+	{#if showPreferences}
+		<div class="mt-4 w-full">
+			<!-- Top Close Button -->
+			<div class="flex justify-end mb-4">
+				<button 
+					class="btn btn-primary flex items-center gap-2"
+					onclick={() => showPreferences = false}
+					aria-label={$_('preferences.close')}
+				>
+					<span class="icon-[mdi--close] text-lg"></span>
+					{$_('preferences.close')}
+				</button>
+			</div>
+			
+			<PreferencesForm onClose={() => showPreferences = false}/>
+		</div>
+	{/if}
+
 	<div class="mt-8 flex w-full">
 		<div
 			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
@@ -66,6 +102,7 @@
 			{/each}
 		</div>
 	</div>
+
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 		<donation-banner></donation-banner>
 	</div>
