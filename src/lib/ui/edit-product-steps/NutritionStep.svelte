@@ -14,15 +14,6 @@
 
 	let showInfoNutrition = $state(false);
 
-	function hasRev(image: unknown): image is { rev: number } {
-		return (
-			typeof image === 'object' &&
-			image !== null &&
-			'rev' in image &&
-			typeof (image as { rev: unknown }).rev === 'number'
-		);
-	}
-
 	const getLanguage = ISO6391.getName;
 
 	function getNutritionImage(language: string) {
@@ -34,7 +25,7 @@
 		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
 		const imageName = 'nutrition_' + language;
 		const image = productData.images[imageName];
-		if (!hasRev(image)) return null;
+		if ('rev' in image === false || !image.rev) return null;
 		const filename = `${imageName}.${image.rev}.400.jpg`;
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
