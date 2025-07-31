@@ -1,10 +1,11 @@
 <script lang="ts">
-	import InfoTooltip from '../InfoTooltip.svelte';
-	import type { Writable } from 'svelte/store';
-	import type { Product } from '$lib/api';
+	import { get, type Writable } from 'svelte/store';
 	import ISO6391 from 'iso-639-1';
-	import { PRODUCT_IMAGE_URL } from '$lib/const';
+
+	import { getProductImageUrl, type Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
+
+	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
 		productStore: Writable<Product>;
@@ -17,17 +18,11 @@
 	const getLanguage = ISO6391.getName;
 
 	function getNutritionImage(language: string) {
-		const productData = $productStore;
+		const productData = get(productStore);
 		if (!productData.code || !productData.images) return null;
-		const paddedBarcode = productData.code.toString().padStart(13, '0');
-		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
-		if (!match) return null;
-		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+
 		const imageName = 'nutrition_' + language;
-		const image = productData.images[imageName];
-		if ('rev' in image === false || !image.rev) return null;
-		const filename = `${imageName}.${image.rev}.400.jpg`;
-		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+		return getProductImageUrl(productData.code, imageName, productData.images);
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
