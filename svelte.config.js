@@ -23,7 +23,10 @@ const config = {
 				'img-src': [
 					'self',
 					'data:',
+
 					'https://*.openfoodfacts.org/',
+					'https://*.openproductsfacts.org/',
+					'https://*.openbeautyfacts.org/',
 
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',
