@@ -14,6 +14,7 @@
 	import Metadata from '$lib/Metadata.svelte';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
 	import VegaChart from '$lib/ui/VegaChart.svelte';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import FacetBar from './FacetBar.svelte';
 
 	import type { PageData } from './$types';
@@ -31,6 +32,9 @@
 
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
+
+	// State for showing/hiding preferences
+	let showPreferences = $state(false);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
@@ -142,12 +146,38 @@
 
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
-		<div class="mb-4 flex justify-end">
-			<button class="btn btn-secondary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
+		<div class="mb-4 flex justify-end gap-2">
+			<button
+				class="btn btn-primary btn-sm flex items-center gap-2"
+				onclick={() => (showPreferences = !showPreferences)}
+			>
+				<span class="icon-[mdi--cog] text-lg"></span>
+				{$_('preferences.edit_preferences')}
+			</button>
+			<button class="btn btn-primary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
 				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
 			</button>
 		</div>
+
+		<!-- Preferences Form -->
+		{#if showPreferences}
+			<div class="mt-4 w-full">
+				<!-- Top Close Button -->
+				<div class="mb-4 flex justify-end">
+					<button
+						class="btn btn-primary flex items-center gap-2"
+						onclick={() => (showPreferences = false)}
+						aria-label={$_('preferences.close')}
+					>
+						<span class="icon-[mdi--close] text-lg"></span>
+						{$_('preferences.close')}
+					</button>
+				</div>
+
+				<PreferencesForm onClose={() => (showPreferences = false)} />
+			</div>
+		{/if}
 
 		{#if showGraphs}
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>

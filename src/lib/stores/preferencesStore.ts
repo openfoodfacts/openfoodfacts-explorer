@@ -1,7 +1,6 @@
-import { writable } from 'svelte/store';
-import { browser } from '$app/environment';
+import { persisted } from 'svelte-persisted-store';
+import { getAttributeGroups } from '$lib/api/attributes';
 
-// Define the preferences structure
 export type NutritionalQuality = {
 	nutriScore: string;
 	saltInLowQuantity: string;
@@ -57,140 +56,135 @@ export type UserPreferences = {
 	environment: Environment;
 };
 
-// Default preferences
-export const defaultPreferences: UserPreferences = {
-	nutritionalQuality: {
-		nutriScore: 'very-important',
-		saltInLowQuantity: 'not-important',
-		sugarsInLowQuantity: 'not-important',
-		fatInLowQuantity: 'not-important',
-		saturatedFatInLowQuantity: 'not-important'
-	},
-	foodProcessing: {
-		novaGroup: 'important',
-		noOrFewAdditives: 'not-important'
-	},
-	allergens: {
-		withoutGluten: 'not-important',
-		withoutMilk: 'not-important',
-		withoutEggs: 'not-important',
-		withoutNuts: 'not-important',
-		withoutPeanuts: 'not-important',
-		withoutSesameSeeds: 'not-important',
-		withoutSoybeans: 'not-important',
-		withoutCelery: 'not-important',
-		withoutMustard: 'not-important',
-		withoutLupin: 'not-important',
-		withoutFish: 'not-important',
-		withoutCrustaceans: 'not-important',
-		withoutMolluscs: 'not-important',
-		withoutSulphurDioxideAndSulphites: 'not-important'
-	},
-	ingredients: {
-		vegan: 'not-important',
-		vegetarian: 'not-important',
-		palmOilFree: 'not-important'
-	},
-	labels: {
-		organicFarming: 'not-important',
-		fairTrade: 'not-important'
-	},
-	environment: {
-		lowEnvironmentalImpact: 'important',
-		lowRiskOfDeforestation: 'not-important'
-	}
+type Attribute = {
+	id: string;
+	name: string;
+	icon_url?: string;
+	setting_name?: string;
+	setting_note?: string;
+	description?: string;
+	description_short?: string;
+	panel_id?: string;
+	default?: string;
+	values: string[];
 };
 
-// Get initial preferences from localStorage or use defaults
-function getInitialPreferences(): UserPreferences {
-	if (browser) {
-		try {
-			const stored = localStorage.getItem('userPreferences');
-			if (stored) {
-				return JSON.parse(stored);
-			}
-		} catch (error) {
-			console.warn('Failed to parse stored preferences, using defaults:', error);
-		}
-	}
-	return structuredClone(defaultPreferences);
-}
+type AttributeGroup = {
+	id: string;
+	name: string;
+	attributes: Attribute[];
+	warning?: string;
+};
 
-// Create the writable store
-function createPreferencesStore() {
-	const { subscribe, set, update } = writable<UserPreferences>(getInitialPreferences());
+function generateDefaultPreferences(): UserPreferences {
+	const attributeGroups = getAttributeGroups();
 
-	return {
-		subscribe,
-		set,
-		update,
-		// Update a specific preference
-		updatePreference: (category: keyof UserPreferences, preference: string, value: string) => {
-			update((prefs) => {
-				const newPrefs = { ...prefs };
-
-				// Type-safe preference update
-				if (category === 'nutritionalQuality') {
-					(newPrefs.nutritionalQuality as Record<string, string>)[preference] = value;
-				} else if (category === 'foodProcessing') {
-					(newPrefs.foodProcessing as Record<string, string>)[preference] = value;
-				} else if (category === 'allergens') {
-					(newPrefs.allergens as Record<string, string>)[preference] = value;
-				} else if (category === 'ingredients') {
-					(newPrefs.ingredients as Record<string, string>)[preference] = value;
-				} else if (category === 'labels') {
-					(newPrefs.labels as Record<string, string>)[preference] = value;
-				} else if (category === 'environment') {
-					(newPrefs.environment as Record<string, string>)[preference] = value;
-				}
-
-				// Save to localStorage
-				if (browser) {
-					try {
-						localStorage.setItem('userPreferences', JSON.stringify(newPrefs));
-					} catch (error) {
-						console.warn('Failed to save preferences to localStorage:', error);
-					}
-				}
-
-				return newPrefs;
-			});
-		},
-		// Reset to default preferences
-		resetToDefaults: () => {
-			const defaults = structuredClone(defaultPreferences);
-			set(defaults);
-
-			// Save to localStorage
-			if (browser) {
-				try {
-					localStorage.setItem('userPreferences', JSON.stringify(defaults));
-				} catch (error) {
-					console.warn('Failed to save default preferences to localStorage:', error);
-				}
-			}
-		},
-		// Get current preferences value (for non-reactive access)
-		getCurrent: (): UserPreferences => {
-			let current: UserPreferences;
-			subscribe((value) => (current = value))();
-			return current!;
-		},
-		// Get default preferences
-		getDefaults: () => structuredClone(defaultPreferences),
-		// Check if current preferences are different from defaults
-		isDifferentFromDefaults: (): boolean => {
-			const current = JSON.stringify(getCurrent());
-			const defaults = JSON.stringify(defaultPreferences);
-			return current !== defaults;
-		}
+	const getDefaultValue = (attribute: Attribute | undefined): string => {
+		return attribute?.default || 'not_important';
 	};
 
-	function getCurrent(): UserPreferences {
-		let current: UserPreferences;
-		subscribe((value) => (current = value))();
-		return current!;
+	const findAttribute = (groupId: string, attributeId: string): Attribute | undefined => {
+		const group = attributeGroups.find((g: AttributeGroup) => g.id === groupId);
+		return group?.attributes.find((attr) => attr.id === attributeId);
+	};
+
+	return {
+		nutritionalQuality: {
+			nutriScore: getDefaultValue(findAttribute('nutritional_quality', 'nutriscore')),
+			saltInLowQuantity: getDefaultValue(findAttribute('nutritional_quality', 'low_salt')),
+			sugarsInLowQuantity: getDefaultValue(findAttribute('nutritional_quality', 'low_sugars')),
+			fatInLowQuantity: getDefaultValue(findAttribute('nutritional_quality', 'low_fat')),
+			saturatedFatInLowQuantity: getDefaultValue(
+				findAttribute('nutritional_quality', 'low_saturated_fat')
+			)
+		},
+		foodProcessing: {
+			novaGroup: getDefaultValue(findAttribute('processing', 'nova')),
+			noOrFewAdditives: getDefaultValue(findAttribute('processing', 'additives'))
+		},
+		allergens: {
+			withoutGluten: getDefaultValue(findAttribute('allergens', 'allergens_no_gluten')),
+			withoutMilk: getDefaultValue(findAttribute('allergens', 'allergens_no_milk')),
+			withoutEggs: getDefaultValue(findAttribute('allergens', 'allergens_no_eggs')),
+			withoutNuts: getDefaultValue(findAttribute('allergens', 'allergens_no_nuts')),
+			withoutPeanuts: getDefaultValue(findAttribute('allergens', 'allergens_no_peanuts')),
+			withoutSesameSeeds: getDefaultValue(findAttribute('allergens', 'allergens_no_sesame_seeds')),
+			withoutSoybeans: getDefaultValue(findAttribute('allergens', 'allergens_no_soybeans')),
+			withoutCelery: getDefaultValue(findAttribute('allergens', 'allergens_no_celery')),
+			withoutMustard: getDefaultValue(findAttribute('allergens', 'allergens_no_mustard')),
+			withoutLupin: getDefaultValue(findAttribute('allergens', 'allergens_no_lupin')),
+			withoutFish: getDefaultValue(findAttribute('allergens', 'allergens_no_fish')),
+			withoutCrustaceans: getDefaultValue(findAttribute('allergens', 'allergens_no_crustaceans')),
+			withoutMolluscs: getDefaultValue(findAttribute('allergens', 'allergens_no_molluscs')),
+			withoutSulphurDioxideAndSulphites: getDefaultValue(
+				findAttribute('allergens', 'allergens_no_sulphur_dioxide_and_sulphites')
+			)
+		},
+		ingredients: {
+			vegan: getDefaultValue(findAttribute('ingredients_analysis', 'vegan')),
+			vegetarian: getDefaultValue(findAttribute('ingredients_analysis', 'vegetarian')),
+			palmOilFree: getDefaultValue(findAttribute('ingredients_analysis', 'palm_oil_free'))
+		},
+		labels: {
+			organicFarming: getDefaultValue(findAttribute('labels', 'labels_organic')),
+			fairTrade: getDefaultValue(findAttribute('labels', 'labels_fair_trade'))
+		},
+		environment: {
+			lowEnvironmentalImpact: getDefaultValue(findAttribute('environment', 'ecoscore')),
+			lowRiskOfDeforestation: getDefaultValue(findAttribute('environment', 'forest_footprint'))
+		}
+	};
+}
+
+export const defaultPreferences: UserPreferences = generateDefaultPreferences();
+
+// Export attribute groups for use in components
+export const attributeGroups = getAttributeGroups();
+
+export function updatePreference(
+	category: keyof UserPreferences,
+	preference: string,
+	value: string
+) {
+	userPreferences.update((prefs: UserPreferences) => {
+		const newPrefs: UserPreferences = {
+			...prefs,
+			[category]: {
+				...prefs[category],
+				[preference]: value
+			}
+		};
+
+		return newPrefs;
+	});
+}
+
+export function resetToDefaults(
+	onReset?: (category: string, preference: string, value: string) => void
+) {
+	const defaults = structuredClone(defaultPreferences);
+	userPreferences.set(defaults);
+
+	if (onReset) {
+		Object.entries(defaults).forEach(([category, categoryPrefs]) => {
+			Object.entries(categoryPrefs).forEach(([preference, value]) => {
+				onReset(category, preference, value);
+			});
+		});
 	}
 }
 
-export const userPreferences = createPreferencesStore();
+export const userPreferences = persisted('userPreferences', defaultPreferences, {
+	syncTabs: true,
+	serializer: {
+		parse: (text: string) => {
+			try {
+				return JSON.parse(text);
+			} catch {
+				// If parsing fails, just return defaults
+				return defaultPreferences;
+			}
+		},
+		stringify: JSON.stringify
+	}
+});

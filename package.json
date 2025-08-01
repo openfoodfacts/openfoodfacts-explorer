@@ -91,6 +91,7 @@
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.11.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"svelte-persisted-store": "0.8.1",
 		"vega": "^6.1.2",
 		"vega-lite": "^6.2.0"
 	}

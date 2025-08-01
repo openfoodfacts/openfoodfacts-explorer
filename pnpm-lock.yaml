@@ -14,6 +14,9 @@ importers:
       '@webcomponents/webcomponentsjs':
         specifier: ^2.8.0
         version: 2.8.0
+      svelte-persisted-store:
+        specifier: 0.8.1
+        version: 0.8.1(svelte@5.35.2)
       vega:
         specifier: ^6.1.2
         version: 6.1.2
@@ -2360,6 +2363,12 @@ packages:
 
   svelte-local-storage-store@0.6.4:
     resolution: {integrity: sha512-45WoY2vSGPQM1sIQJ9jTkPPj20hYeqm+af6mUGRFSPP5WglZf36YYoZqwmZZ8Dt/2SU8lem+BTA8/Z/8TkqNLg==}
+    engines: {node: '>=0.14'}
+    peerDependencies:
+      svelte: ^3.48.0 || >4.0.0
+
+  svelte-persisted-store@0.8.1:
+    resolution: {integrity: sha512-zpX+83XMjIFr/ysVUMWJEr15m/tPuQN+RjY5z887M4x6IBNooB0uR4h+JOdwrMeODoF2UKQH8oghRKSRvBA0XQ==}
     engines: {node: '>=0.14'}
     peerDependencies:
       svelte: ^3.48.0 || >4.0.0
@@ -4746,6 +4755,10 @@ snapshots:
       tiny-glob: 0.2.9
 
   svelte-local-storage-store@0.6.4(svelte@5.35.2):
+    dependencies:
+      svelte: 5.35.2
+
+  svelte-persisted-store@0.8.1(svelte@5.35.2):
     dependencies:
       svelte: 5.35.2
 
