@@ -21,6 +21,7 @@
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
 	import { page } from '$app/state';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	interface Props {
 		data: PageData;
@@ -418,7 +419,7 @@
 			// Set initial state for shallow routing if router is ready
 			if (routerReady) {
 				try {
-					const searchParams = new URLSearchParams(page.url.searchParams);
+					const searchParams = new SvelteURLSearchParams(page.url.searchParams);
 					searchParams.set('step', (currentStep + 1).toString());
 					replaceState('?' + searchParams.toString(), { currentStep });
 				} catch (error) {
@@ -433,7 +434,7 @@
 
 		currentStep = newStep;
 		try {
-			const searchParams = new URLSearchParams(page.url.searchParams);
+			const searchParams = new SvelteURLSearchParams(page.url.searchParams);
 			searchParams.set('step', (newStep + 1).toString());
 			pushState('?' + searchParams.toString(), { currentStep: newStep });
 		} catch (error) {
