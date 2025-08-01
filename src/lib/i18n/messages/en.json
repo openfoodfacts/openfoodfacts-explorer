@@ -82,6 +82,72 @@
 		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
+	"preferences": {
+		"title": "Edit your preferences",
+		"subtitle": "Your preferences are kept in your browser and never sent to Open Food Facts or anyone else.",
+		"edit_preferences": "Edit Preferences",
+		"close": "Close",
+		"classify_products": "Classify products according to your preferences",
+		"use_default": "Use default preferences",
+		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
+		"sections": {
+			"nutritional_quality": "Nutritional quality",
+			"food_processing": "Food processing",
+			"allergens": "Allergens",
+			"ingredients": "Ingredients",
+			"labels": "Labels",
+			"environment": "Environment"
+		},
+		"options": {
+			"not_important": "Not important",
+			"important": "Important",
+			"very_important": "Very important",
+			"mandatory": "Mandatory"
+		},
+		"nutritional_quality": {
+			"nutri_score": "Good nutritional quality (Nutri-Score)",
+			"salt_low": "Salt in low quantity",
+			"sugars_low": "Sugars in low quantity",
+			"fat_low": "Fat in low quantity",
+			"saturated_fat_low": "Saturated fat in low quantity"
+		},
+		"food_processing": {
+			"nova_group": "No or little food processing (NOVA group)",
+			"no_additives": "No or few additives"
+		},
+		"allergens": {
+			"warning": "There is always a possibility that data about allergens may be missing, incomplete, incorrect or that the product's composition has changed. If you are allergic, always check the information on the actual product packaging.",
+			"without_gluten": "Without Gluten",
+			"without_milk": "Without Milk",
+			"without_eggs": "Without Eggs",
+			"without_nuts": "Without Nuts",
+			"without_peanuts": "Without Peanuts",
+			"without_sesame": "Without Sesame seeds",
+			"without_soybeans": "Without Soybeans",
+			"without_celery": "Without Celery",
+			"without_mustard": "Without Mustard",
+			"without_lupin": "Without Lupin",
+			"without_fish": "Without Fish",
+			"without_crustaceans": "Without Crustaceans",
+			"without_molluscs": "Without Molluscs",
+			"without_sulphites": "Without Sulphur dioxide and sulphites"
+		},
+		"ingredients": {
+			"vegan": "Vegan",
+			"vegetarian": "Vegetarian",
+			"palm_oil_free": "Palm oil free"
+		},
+		"labels": {
+			"organic": "Organic farming",
+			"organic_description": "Organic products promote ecological sustainability and biodiversity.",
+			"fair_trade": "Fair trade",
+			"fair_trade_description": "Fair trade products help producers in developing countries."
+		},
+		"environment": {
+			"low_impact": "Low environmental impact (Green-Score)",
+			"low_deforestation": "Low risk of deforestation (Forest footprint)"
+		}
+	},
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
