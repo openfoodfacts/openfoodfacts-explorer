@@ -199,5 +199,8 @@
 		"skip": "Skip",
 		"step": "Step",
 		"of": "of"
+	},
+	"menu": {
+		"button": "Menu"
 	}
 }
