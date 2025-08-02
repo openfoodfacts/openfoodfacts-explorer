@@ -1,10 +1,32 @@
-import { getProduct, getTaxo } from '$lib/api';
-import type { Category, Origin, Label, Brand, Store, Country } from '$lib/api';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from '../$types';
+import { get } from 'svelte/store';
+
+import {
+	getProduct,
+	getTaxo,
+	type Category,
+	type Origin,
+	type Label,
+	type Brand,
+	type Store,
+	type Country
+} from '$lib/api';
+import { userInfo } from '$lib/stores/pkceLoginStore';
 import { PRODUCT_STATUS } from '$lib/const';
 
+import type { PageLoad } from './$types';
+
+export const ssr = false;
+
 export const load = (async ({ fetch, params }) => {
+	if (window == null) {
+		error(500, 'This page requires a browser environment');
+	}
+
+	if (get(userInfo) == null) {
+		error(401, 'You must be logged in to view this page');
+	}
+
 	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
 		getProduct(params.barcode, fetch),
 		getTaxo<Category>('categories', fetch),
