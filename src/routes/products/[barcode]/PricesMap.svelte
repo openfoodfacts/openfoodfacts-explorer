@@ -34,20 +34,18 @@
 		mapInstance = L.map(mapContainer, {});
 		L.tileLayer(TILES_BASE_URL, { maxZoom: MAX_ZOOM, attribution: ATTRIBUTION }).addTo(mapInstance);
 
-		updateMap();
-
 		return () => {
 			cleanupMap();
 		};
 	});
 
 	$effect(() => {
-		if (mapInstance) {
-			updateMap();
+		if (mapInstance && prices) {
+			updateMap(prices);
 		}
 	});
 
-	function updateMap() {
+	function updateMap(prices: PriceFull[]) {
 		if (!mapInstance) return;
 
 		cleanupMarkers();
