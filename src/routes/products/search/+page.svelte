@@ -1,22 +1,12 @@
 <script lang="ts">
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import { slide } from 'svelte/transition';
-
-	import { _ } from '$lib/i18n';
+	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import { navigating, page } from '$app/state';
 	import { goto } from '$app/navigation';
 
+	import { _ } from '$lib/i18n';
 	import { SORT_OPTIONS } from '$lib/const';
-
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import FacetBar from './FacetBar.svelte';
-
-	import type { PageData } from './$types';
 	import {
 		addIncludeFacet,
 		extractQuery,
@@ -25,12 +15,22 @@
 		type FacetsSelection
 	} from '$lib/facets';
 
-	type Props = { data: PageData };
-	let { data }: Props = $props();
+	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '$lib/ui/VegaChart.svelte';
+	import FacetBar from './FacetBar.svelte';
+
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
 
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
+
+	let showPrices = $state(true);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
@@ -85,23 +85,27 @@
 	description={$_('search.description', { values: { query: data.query } })}
 />
 
-<div class="mb-4 flex w-full items-end justify-center gap-2 max-md:flex-col">
-	<div class="flex-1 max-md:w-full">
-		<label>
-			Raw Search Query:
+<div class="mb-4 flex w-full flex-wrap items-end justify-center gap-4 max-md:flex-col">
+	<!-- Raw Search Query -->
+	<div class="min-w-[220px] flex-1 max-md:w-full">
+		<label class="form-control w-full">
+			<span class="label-text mb-1 block text-sm font-semibold">
+				{$_('search.raw_query_label')}
+			</span>
 			<input
 				type="text"
 				placeholder={$_('search.search_placeholder')}
-				class="input wrap w-full font-mono break-words"
+				class="input input-bordered w-full font-mono break-words"
 				value={data.query}
 				disabled
+				readonly
 			/>
 		</label>
 	</div>
 
 	<!-- Sort By Dropdown -->
 	<div class="flex-0 max-lg:hidden">
-		Sort by:
+		{$_('search.sort_by_label')}
 		<details class="dropdown dropdown-center md:w-50 lg:w-60" bind:this={sortDropdown}>
 			<summary
 				class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
@@ -161,20 +165,30 @@
 	</div>
 {/if}
 
+{#if navigating.to != null}
+	<div
+		class="bg-base-100/70 absolute inset-0 z-1000 flex cursor-not-allowed items-center justify-center"
+	>
+		<span class="loading loading-spinner loading-lg"></span>
+	</div>
+{/if}
+
 {#if result.count > 0}
 	<!-- Facet component with binding to access its methods -->
 
 	<div class="relative mt-4 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each result.hits as product (product.code)}
-			<SmallProductCard {product} />
+			{#if product.code != null}
+				<div class="indicator">
+					{#if showPrices}
+						<span class="indicator-item badge badge-secondary badge-sm">
+							{data.prices[product.code]} prices
+						</span>
+					{/if}
+					<SmallProductCard {product} />
+				</div>
+			{/if}
 		{/each}
-		{#if navigating.to != null}
-			<div
-				class="bg-base-100/70 absolute inset-0 z-10 flex cursor-not-allowed items-start justify-center"
-			>
-				<span class="loading loading-spinner loading-lg mt-10"></span>
-			</div>
-		{/if}
 	</div>
 
 	<!-- Pagination -->

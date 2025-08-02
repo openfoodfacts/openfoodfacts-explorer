@@ -23,7 +23,10 @@
 		"product_not_found_desc": "We couldn't find any products matching your search",
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
-		"charts_title": "Search Analytics"
+		"charts_title": "Search Analytics",
+		"show_prices_label": "Show Prices",
+		"sort_by_label": "Sort by",
+		"raw_query_label": "Raw Query"
 	},
 	"auth": {
 		"username": "Username",
