@@ -26,7 +26,9 @@
 <Card>
 	<h1 class="my-4 text-2xl font-bold sm:text-4xl">Prices Map</h1>
 
-	{#if prices.length === 0}
+	{#if PricesMap == null}
+		{$_('product.prices.loading')}
+	{:else if prices.length === 0}
 		{$_('product.prices.no_prices_found')}
 	{:else}
 		{#await PricesMap}
