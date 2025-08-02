@@ -43,6 +43,7 @@
 		"@tailwindcss/postcss": "^4.1.11",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/leaflet": "^1.9.20",
+		"@types/leaflet.markercluster": "^1.5.5",
 		"@typescript-eslint/eslint-plugin": "^8.38.0",
 		"@typescript-eslint/parser": "^8.38.0",
 		"@vercel/speed-insights": "^1.2.0",
@@ -78,7 +79,8 @@
 		"vite": "^6.3.5",
 		"vite-plugin-static-copy": "^3.1.1",
 		"vega": "^6.1.2",
-		"vega-lite": "^6.2.0"
+		"vega-lite": "^6.2.0",
+		"leaflet.markercluster": "^1.5.3"
 	},
 	"type": "module",
 	"packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",

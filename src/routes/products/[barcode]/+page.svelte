@@ -1,27 +1,45 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 
-	import ProductAttributes from './ProductAttributes.svelte';
-
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Folksonomy from './Folksonomy.svelte';
-	import DataSources from './DataSources.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 
-	import type { PageData } from './$types';
-	import Prices from './Prices.svelte';
+	import ProductAttributes from './ProductAttributes.svelte';
+	import Folksonomy from './Folksonomy.svelte';
+	import DataSources from './DataSources.svelte';
+
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
-	import Metadata from '$lib/Metadata.svelte';
+
+	let PricesMap: typeof import('./PricesMap.svelte').default | null = $state(null);
+
+	import type { PageData } from './$types';
 
 	type Props = { data: PageData };
 
 	let { data }: Props = $props();
 	let product = $derived(data.state.product);
 	let productAttributes = $derived(data.productAttributes);
+
+	onMount(() => {
+		(async () => {
+			if (isPriceConfigured() && data?.prices != null && PricesMap == null) {
+				PricesMap = (await import('./PricesMap.svelte')).default;
+			} else {
+				PricesMap = null;
+			}
+		})();
+
+		return () => {
+			PricesMap = null; // Cleanup on unmount
+		};
+	});
 </script>
 
 <Metadata
@@ -36,6 +54,14 @@
 	<ProductAttributes {productAttributes} />
 
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
+
+	{#if PricesMap != null && isPriceConfigured() && data?.prices != null}
+		<Card>
+			<h1 class="my-4 text-2xl font-bold sm:text-4xl">Prices Map</h1>
+
+			<PricesMap prices={data.prices} barcode={product.code} />
+		</Card>
+	{/if}
 
 	<Gs1Country barcode={product.code} />
 
@@ -52,16 +78,6 @@
 				keys={data.keys.map((it) => it.k)}
 				barcode={product.code}
 			/>
-		</Card>
-	{/if}
-
-	{#if isPriceConfigured() && data?.prices?.data != null}
-		<Card>
-			<h1 class="my-4 text-xl font-bold sm:text-4xl">
-				Open prices <span class="font-light italic">(alpha)</span>
-			</h1>
-
-			<Prices prices={data.prices.data} barcode={product.code} />
 		</Card>
 	{/if}
 
