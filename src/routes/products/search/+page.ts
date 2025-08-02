@@ -1,7 +1,8 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
+import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 
 export const ssr = false;
 
@@ -18,6 +19,24 @@ function isValidEAN13(code: string): boolean {
 
 	const checkDigit = (10 - checksum) % 10;
 	return checkDigit === digits[12];
+}
+
+async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
+	const prices: Record<string, number> = {};
+	const results = await Promise.all(
+		barcodes.map(async (code) => ({
+			code: code,
+			prices: await api.getPrices({ product_code: code })
+		}))
+	);
+
+	for (const result of results) {
+		if (result.prices.data && result.prices.data.items) {
+			prices[result.code] = result.prices.data.total;
+		}
+	}
+
+	return prices;
 }
 
 export const load: PageLoad = async ({ fetch, url }) => {
@@ -53,10 +72,19 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		sort_by: sortBy
 	};
 
-	const result = (await api.search(params).then((result) => result.data as SearchResult)) ?? {};
+	const searchRes = await api.search(params);
+	const searchData = searchRes.data as SearchResult;
+
+	let prices: Record<string, number> = {};
+	if (isPricesConfigured()) {
+		const pricesApi = createPricesApi(fetch);
+		const barcodes = searchData.hits.map((hit) => hit.code);
+		prices = await getPrices(pricesApi, barcodes);
+	}
 
 	return {
 		query,
-		search: result
+		search: searchData,
+		prices: prices
 	};
 };

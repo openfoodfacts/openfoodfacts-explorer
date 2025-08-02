@@ -3,6 +3,7 @@ import {
 	type AutocompleteQuery,
 	type Product
 } from '@openfoodfacts/openfoodfacts-nodejs';
+import type { ProductReduced } from './product';
 
 export function getSearchBaseUrl() {
 	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
@@ -56,7 +57,7 @@ export type SearchResult = {
 	count: number;
 	debug: object;
 	facets: FacetResult;
-	hits: Array<Product>;
+	hits: Array<Product & ProductReduced>;
 	is_count_exact: boolean;
 	page: number;
 	page_count: number;
