@@ -170,6 +170,11 @@
 				"nutrition": "Nutritional Information",
 				"comment": "Comment"
 			}
+		},
+		"prices": {
+			"no_prices_found": "No prices found for this product",
+			"loading": "Loading prices...",
+			"view_prices": "View Prices on Open Prices"
 		}
 	},
 	"qr": {
