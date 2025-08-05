@@ -59,7 +59,7 @@ export function prepareImageEditPayload(
 function extractImageIdFromUrl(imageUrl: string): string | null {
 	// Example URL: https://images.openfoodfacts.org/images/products/123/456/789/front_en.jpg
 	// or: https://images.openfoodfacts.org/images/products/123/456/789/1.jpg
-	
+
 	const matches = imageUrl.match(/\/([^/]+)\.(jpg|jpeg|png|gif)$/i);
 	return matches ? matches[1] : null;
 }

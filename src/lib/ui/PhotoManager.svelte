@@ -141,11 +141,11 @@
 			activeLanguageCode,
 			'front' // TODO: Replace with actual image type from data
 		);
-		
+
 		console.log('Prepared edit payload for backend:', editPayload);
-		
+
 		// TODO: Send to backend API
-		
+
 		// For now, showing an alert with the formatted data
 		console.log(`Image edit data prepared for backend:
 		Barcode: ${editPayload.barcode}
@@ -156,7 +156,7 @@
 		Rotation: ${editPayload.rotation}°
 
 		This data is now ready to be sent to the backend API.`);
-		
+
 		closeEditModal();
 	}
 </script>

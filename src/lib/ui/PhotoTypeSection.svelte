@@ -130,17 +130,21 @@
 			{#each imagesToShow as image (image.url)}
 				<button
 					type="button"
-					class="aspect-square overflow-hidden rounded border group relative cursor-pointer bg-transparent p-0 hover:shadow-lg transition-shadow"
+					class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
 					onclick={() => onImageEdit?.(image.url, image.alt)}
 					title="Click to edit this image"
 				>
-					<img 
-						src={image.url} 
-						alt={image.alt} 
-						class="h-full w-full object-cover transition-transform group-hover:scale-105" 
+					<img
+						src={image.url}
+						alt={image.alt}
+						class="h-full w-full object-cover transition-transform group-hover:scale-105"
 					/>
-					<div class="absolute inset-0 bg-transparent group-hover:bg-black/50 transition-colors duration-200 flex items-center justify-center">
-						<span class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
+					<div
+						class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
+					>
+						<span
+							class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+						></span>
 					</div>
 				</button>
 			{/each}
