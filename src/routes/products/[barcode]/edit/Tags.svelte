@@ -1,19 +1,16 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import Fuse from 'fuse.js';
 
-	interface Props {
+	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
-	}
+		onChange?: (tags: string[]) => void;
+	};
 
-	let { tags = $bindable([]), autocomplete = [] }: Props = $props();
-	let autoCompleteFuse = $derived(
-		new Fuse(autocomplete, {
-			threshold: 0.2
-		})
-	);
+	let { tags = $bindable([]), autocomplete = [], onChange }: Props = $props();
+
+	let autoCompleteFuse = $derived(new Fuse(autocomplete, { threshold: 0.2 }));
 
 	let newValue = $state('');
 	let editingIndex = $state(-1);
@@ -28,16 +25,16 @@
 			tags = [...tags, newValue.trim()];
 			newValue = '';
 			event.preventDefault();
-			dispatcher('change', { tags });
+			onChange?.(tags);
 		} else if (newValue.length === 0 && event.key === 'Backspace') {
 			tags = tags.slice(0, -1);
-			dispatcher('change', { tags });
+			onChange?.(tags);
 		}
 	}
 
 	function removeTag(tag: string) {
 		tags = tags.filter((t) => t !== tag);
-		dispatcher('change', { tags });
+		onChange?.(tags);
 	}
 
 	function startEditing(index: number, tag: string) {
@@ -49,7 +46,7 @@
 		const trimmedValue = editingValue.trim();
 		if (trimmedValue !== '' && trimmedValue !== tags[index]) {
 			tags = tags.map((tag, i) => (i === index ? trimmedValue : tag));
-			dispatcher('change', { tags });
+			onChange?.(tags);
 		}
 		editingIndex = -1;
 		editingValue = '';
@@ -74,10 +71,6 @@
 		element.focus();
 		element.select();
 	}
-
-	const dispatcher = createEventDispatcher<{
-		change: { tags: string[] };
-	}>();
 </script>
 
 <div
@@ -135,7 +128,7 @@
 								class="bg-base-200 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full rounded-md px-4 py-2 text-left transition-colors duration-150"
 								onclick={() => {
 									tags = [...tags, key];
-									dispatcher('change', { tags });
+									onChange?.(tags);
 									newValue = '';
 								}}
 							>

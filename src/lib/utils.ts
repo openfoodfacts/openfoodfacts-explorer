@@ -35,3 +35,12 @@ export function getImageFieldName(
 			return `${typeId}_${languageCode}`;
 	}
 }
+
+export function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
+	const seen = new Set<string>();
+	return array.filter((el) => {
+		if (seen.has(key(el))) return false;
+		seen.add(key(el));
+		return true;
+	});
+}

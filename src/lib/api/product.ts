@@ -11,12 +11,21 @@ export class ProductsApi {
 	}
 
 	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
-		const url = `${API_HOST}/api/v2/product/${barcode}?fields=product_name,code,attribute_groups_en`;
+		const params = new URLSearchParams({
+			fields: ['product_name', 'code', 'attribute_groups_en'].join(','),
+			lc: get(preferences).lang,
+			cc: get(preferences).country,
+			product_type: 'all'
+		});
 
-		const res = await this.fetch(url);
+		const url = `${API_HOST}/api/v2/product/${barcode}?${params.toString()}`;
+
+		const res = await this.fetch(url, { redirect: 'follow' });
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch product attributes for barcode: ${barcode}`);
+			throw new Error(
+				`Failed to fetch product attributes for barcode: ${barcode}: ${await res.text()}`
+			);
 		}
 
 		const data = await res.json();
@@ -31,11 +40,12 @@ export class ProductsApi {
 			PRODUCT_URL(barcode) +
 			'?' +
 			new URLSearchParams({
+				product_type: 'all',
 				fields: fields.join(','),
 				lc: get(preferences).lang,
 				cc: get(preferences).country
 			});
-		const res = await this.fetch(url);
+		const res = await this.fetch(url, { redirect: 'follow' });
 		return await res.json();
 	}
 

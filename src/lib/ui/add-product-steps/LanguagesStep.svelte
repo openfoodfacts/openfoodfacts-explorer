@@ -1,33 +1,26 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
-	import InfoTooltip from '../InfoTooltip.svelte';
-	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
+
+	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+
+	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
 		productStore: Writable<Product>;
-		currentStep: number;
-		stepsLength: number;
 		showInfoLanguages: boolean;
 		filteredLanguages: string[];
 		addLanguage: (code: string) => void;
 		getLanguage: (code: string) => string;
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 	};
 
 	let {
 		productStore,
-		currentStep,
-		stepsLength,
 		showInfoLanguages,
 		filteredLanguages,
 		addLanguage,
 		getLanguage,
-		prevStep,
-		nextStep,
 		onToggleInfo
 	}: Props = $props();
 
@@ -66,7 +59,6 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="collapse-arrow bg-base-200 collapse">
 			<input type="checkbox" />
 			<div class="collapse-title text-sm font-semibold sm:text-base">

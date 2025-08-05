@@ -1,16 +1,14 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
+	import type { Writable } from 'svelte/store';
+	import { _ } from '$lib/i18n';
+	import type { Product } from '$lib/api';
+
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import { _ } from '$lib/i18n';
-	import type { Writable } from 'svelte/store';
-	import type { Product } from '$lib/api';
 
 	type Props = {
 		productStore: Writable<Product>;
-		currentStep: number;
-		stepsLength: number;
 		showInfoBasic: boolean;
 		categoryNames: string[];
 		labelNames: string[];
@@ -18,15 +16,11 @@
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 	};
 
 	let {
 		productStore,
-		currentStep,
-		stepsLength,
 		showInfoBasic,
 		categoryNames,
 		labelNames,
@@ -34,8 +28,6 @@
 		storeNames,
 		originNames,
 		countriesNames,
-		prevStep,
-		nextStep,
 		onToggleInfo
 	}: Props = $props();
 </script>
@@ -71,7 +63,6 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="space-y-6">
 			<!-- Primary Fields Grid -->
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">

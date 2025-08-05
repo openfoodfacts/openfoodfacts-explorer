@@ -14,6 +14,8 @@ const config = {
 		adapter: adapter(),
 		csp: {
 			directives: {
+				'object-src': ['none'],
+				'base-uri': ['self'],
 				'script-src': [
 					'self',
 					'unsafe-eval', // Required for Vega charts
@@ -23,7 +25,10 @@ const config = {
 				'img-src': [
 					'self',
 					'data:',
+
 					'https://*.openfoodfacts.org/',
+					'https://*.openproductsfacts.org/',
+					'https://*.openbeautyfacts.org/',
 
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',

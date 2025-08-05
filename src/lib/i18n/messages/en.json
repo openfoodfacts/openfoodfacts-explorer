@@ -23,7 +23,10 @@
 		"product_not_found_desc": "We couldn't find any products matching your search",
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
-		"charts_title": "Search Analytics"
+		"charts_title": "Search Analytics",
+		"show_prices_label": "Show Prices",
+		"sort_by_label": "Sort by",
+		"raw_query_label": "Raw Query"
 	},
 	"auth": {
 		"username": "Username",
@@ -170,6 +173,11 @@
 				"nutrition": "Nutritional Information",
 				"comment": "Comment"
 			}
+		},
+		"prices": {
+			"no_prices_found": "No prices found for this product",
+			"loading": "Loading prices...",
+			"view_prices": "View Prices on Open Prices"
 		}
 	},
 	"qr": {
@@ -191,5 +199,8 @@
 		"skip": "Skip",
 		"step": "Step",
 		"of": "of"
+	},
+	"menu": {
+		"button": "Menu"
 	}
 }

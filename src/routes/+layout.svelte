@@ -126,6 +126,7 @@
 					<i class="icon-[mdi--magnify]"></i>
 				</button>
 				<button
+					title={$_('menu.button')}
 					class="btn btn-square btn-secondary text-lg"
 					onclick={() => {
 						accordionOpen = !accordionOpen;

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { writable, get, type Writable } from 'svelte/store';
-	import { page } from '$app/stores';
-	import { pushState, replaceState } from '$app/navigation';
+	import { goto, pushState, replaceState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
@@ -21,6 +20,8 @@
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
+	import { page } from '$app/state';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	interface Props {
 		data: PageData;
@@ -110,86 +111,93 @@
 		};
 	}
 
-	const emptyProduct: Product = {
-		_id: '',
-		code: $page.params.barcode,
-		created_t: 0,
-		creator: '',
-		last_modified_t: 0,
-		last_editor: '',
+	let emptyProduct: Product = $derived.by(() => {
+		const code = page.params.barcode;
+		if (!code || code.length < 1) {
+			throw new Error('Barcode is required to create an empty product');
+		}
 
-		product_name: '',
-		product_name_en: '',
-		quantity: '',
-		categories: '',
-		labels: '',
-		brands: '',
-		stores: '',
-		origins: '',
-		countries: '',
-		link: '',
-		ingredients_text: '',
-		ingredients_text_en: '',
-		serving_size: '',
-		packaging: '',
-		manufacturing_places: '',
-		product_type: '',
+		return {
+			_id: '',
+			code: code,
+			created_t: 0,
+			creator: '',
+			last_modified_t: 0,
+			last_editor: '',
 
-		images: {
-			front: createEmptyImage(),
-			ingredients: createEmptyImage()
-		},
+			product_name: '',
+			product_name_en: '',
+			quantity: '',
+			categories: '',
+			labels: '',
+			brands: '',
+			stores: '',
+			origins: '',
+			countries: '',
+			link: '',
+			ingredients_text: '',
+			ingredients_text_en: '',
+			serving_size: '',
+			packaging: '',
+			manufacturing_places: '',
+			product_type: '',
 
-		nutriscore_grade: '',
-		nova_group: 0,
-		ecoscore_grade: '',
+			images: {
+				front: createEmptyImage(),
+				ingredients: createEmptyImage()
+			},
 
-		knowledge_panels: {},
-		_keywords: [],
-		additives_n: 0,
-		ingredients: [],
-		additives_tags: [],
+			nutriscore_grade: '',
+			nova_group: 0,
+			ecoscore_grade: '',
 
-		image_front_url: '',
-		image_front_small_url: '',
-		image_ingredients_url: '',
-		image_ingredients_small_url: '',
-		image_ingredients_thumb_url: '',
-		image_nutrition_url: '',
-		image_nutrition_small_url: '',
-		image_nutrition_thumb_url: '',
+			knowledge_panels: {},
+			_keywords: [],
+			additives_n: 0,
+			ingredients: [],
+			additives_tags: [],
 
-		brands_tags: [],
-		categories_tags: [],
-		categories_hierarchy: [],
-		stores_tags: [],
-		labels_tags: [],
-		origins_tags: [],
-		countries_tags: [],
+			image_front_url: '',
+			image_front_small_url: '',
+			image_ingredients_url: '',
+			image_ingredients_small_url: '',
+			image_ingredients_thumb_url: '',
+			image_nutrition_url: '',
+			image_nutrition_small_url: '',
+			image_nutrition_thumb_url: '',
 
-		nutriments: createEmptyNutriments(),
+			brands_tags: [],
+			categories_tags: [],
+			categories_hierarchy: [],
+			stores_tags: [],
+			labels_tags: [],
+			origins_tags: [],
+			countries_tags: [],
 
-		source: {
-			fields: [],
-			id: '',
-			images: [],
-			import_t: 0,
-			manufacturer: '',
-			name: '',
-			source_licence: '',
-			source_licence_url: '',
-			url: ''
-		},
+			nutriments: createEmptyNutriments(),
 
-		languages_codes: { en: 1 },
-		lang: 'en',
-		emb_codes: '',
-		emb_codes_tags: [],
-		editors_tags: [],
-		last_checked_t: 0,
-		checkers_tags: [],
-		states_hierarchy: []
-	};
+			source: {
+				fields: [],
+				id: '',
+				images: [],
+				import_t: 0,
+				manufacturer: '',
+				name: '',
+				source_licence: '',
+				source_licence_url: '',
+				url: ''
+			},
+
+			languages_codes: { en: 1 },
+			lang: 'en',
+			emb_codes: '',
+			emb_codes_tags: [],
+			editors_tags: [],
+			last_checked_t: 0,
+			checkers_tags: [],
+			states_hierarchy: []
+		};
+	});
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
@@ -289,13 +297,17 @@
 			...product,
 			comment: commentValue
 		});
-		console.debug('Submitted', ok);
+		console.debug('Submitted succesfully: ', ok);
 		console.groupEnd();
-		if (ok) {
-			window.location.href = '/products/' + product.code;
-		} else {
+
+		if (!ok) {
 			isSubmitting = false;
+			return;
 		}
+
+		goto('/products/' + product.code, {
+			state: { currentStep: 0 }
+		});
 	}
 
 	function addLanguage(code: string) {
@@ -392,11 +404,11 @@
 	$effect(() => {
 		if (!isAddMode) return;
 
-		if ($page.state && typeof $page.state.currentStep === 'number') {
-			currentStep = $page.state.currentStep;
+		if (typeof page.state?.currentStep === 'number') {
+			currentStep = page.state.currentStep;
 		} else {
 			// Fallback to URL parameter for initial load or direct navigation
-			const stepParam = $page.url.searchParams.get('step');
+			const stepParam = page.url.searchParams.get('step');
 			if (stepParam) {
 				const stepNumber = parseInt(stepParam, 10) - 1;
 				if (stepNumber >= 0 && stepNumber < steps.length) {
@@ -407,7 +419,7 @@
 			// Set initial state for shallow routing if router is ready
 			if (routerReady) {
 				try {
-					const searchParams = new URLSearchParams($page.url.searchParams);
+					const searchParams = new SvelteURLSearchParams(page.url.searchParams);
 					searchParams.set('step', (currentStep + 1).toString());
 					replaceState('?' + searchParams.toString(), { currentStep });
 				} catch (error) {
@@ -422,7 +434,7 @@
 
 		currentStep = newStep;
 		try {
-			const searchParams = new URLSearchParams($page.url.searchParams);
+			const searchParams = new SvelteURLSearchParams(page.url.searchParams);
 			searchParams.set('step', (newStep + 1).toString());
 			pushState('?' + searchParams.toString(), { currentStep: newStep });
 		} catch (error) {
@@ -540,7 +552,7 @@
 			{:else if $productStore.product_name_en}
 				{$productStore.product_name_en}
 			{:else}
-				{$page.params.barcode}
+				{page.params.barcode}
 			{/if}
 		</p>
 	</div>

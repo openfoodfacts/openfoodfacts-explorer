@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { OpenFoodFacts, PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import {
 	type Brand,
@@ -15,7 +15,29 @@ import {
 } from '$lib/api';
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
+import {
+	createPricesApi,
+	isConfigured as isPriceConfigured,
+	type PriceFull
+} from '$lib/api/prices';
+
+async function getPricesCoords(api: PricesApi, code: string) {
+	// load all prices coordinates
+	const prices: PriceFull[] = [];
+	const res = await api.getPrices({ product_code: code });
+	if (res.error != null) throw new Error('Error fetching first page.');
+
+	prices.push(...res.data.items.flat());
+
+	const pages = res.data.pages;
+	for (let page = 2; page <= pages; page++) {
+		const res = await api.getPrices({ product_code: code, page: page });
+		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
+		prices.push(...res.data.items.flat());
+	}
+
+	return prices;
+}
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
@@ -39,7 +61,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
-		? pricesApi.getPrices({ product_code: params.barcode })
+		? getPricesCoords(pricesApi, params.barcode)
 		: Promise.resolve(null);
 
 	const productAttributes = await productsApi.getProductAttributes(params.barcode);
