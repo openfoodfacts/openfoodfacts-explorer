@@ -4,6 +4,8 @@
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
+	import PhotoEditModal from './PhotoEditModal.svelte';
+	import { prepareImageEditPayload, type ImageEditData } from '$lib/utils/imageEdit';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -94,6 +96,11 @@
 
 	let fileInputValues = $state<Record<string, string>>({});
 
+	// Photo edit modal state
+	let isEditModalOpen = $state(false);
+	let editingImageUrl = $state('');
+	let editingImageAlt = $state('');
+
 	function handleLanguageChange(code: string) {
 		activeLanguageCode = code;
 		// Reset expanded categories when language changes
@@ -112,6 +119,45 @@
 
 	function handleFileInputChange(key: string, value: string) {
 		fileInputValues[key] = value;
+	}
+
+	function openEditModal(imageUrl: string, imageAlt: string) {
+		editingImageUrl = imageUrl;
+		editingImageAlt = imageAlt;
+		isEditModalOpen = true;
+	}
+
+	function closeEditModal() {
+		isEditModalOpen = false;
+		editingImageUrl = '';
+		editingImageAlt = '';
+	}
+
+	function handleImageEdit(data: ImageEditData) {
+		const editPayload = prepareImageEditPayload(
+			product,
+			editingImageUrl,
+			data,
+			activeLanguageCode,
+			'front' // TODO: Replace with actual image type from data
+		);
+		
+		console.log('Prepared edit payload for backend:', editPayload);
+		
+		// TODO: Send to backend API
+		
+		// For now, showing an alert with the formatted data
+		console.log(`Image edit data prepared for backend:
+		Barcode: ${editPayload.barcode}
+		Image ID: ${editPayload.imageId}
+		Language: ${editPayload.language}
+		Image Type: ${editPayload.imageType}
+		Crop: x=${editPayload.crop.x}, y=${editPayload.crop.y}, width=${editPayload.crop.width}, height=${editPayload.crop.height}
+		Rotation: ${editPayload.rotation}°
+
+		This data is now ready to be sent to the backend API.`);
+		
+		closeEditModal();
 	}
 </script>
 
@@ -139,6 +185,7 @@
 						{photoTypes}
 						onToggleExpansion={toggleCategoryExpansion}
 						onFileInputChange={handleFileInputChange}
+						onImageEdit={openEditModal}
 					/>
 				{/each}
 
@@ -156,6 +203,7 @@
 						{photoTypes}
 						onToggleExpansion={toggleCategoryExpansion}
 						onFileInputChange={handleFileInputChange}
+						onImageEdit={openEditModal}
 					/>
 				{/each}
 
@@ -171,3 +219,12 @@
 		{/each}
 	</div>
 </div>
+
+<!-- Photo Edit Modal -->
+<PhotoEditModal
+	isOpen={isEditModalOpen}
+	imageUrl={editingImageUrl}
+	imageAlt={editingImageAlt}
+	onClose={closeEditModal}
+	onSave={handleImageEdit}
+/>

@@ -90,7 +90,9 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.11.0",
+		"@types/cropperjs": "^1.3.3",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"cropperjs": "^2.0.1",
 		"vega": "^6.1.2",
 		"vega-lite": "^6.2.0"
 	}

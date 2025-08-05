@@ -19,6 +19,7 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onFileInputChange: (key: string, value: string) => void;
+		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
 	};
 
 	let {
@@ -30,7 +31,8 @@
 		product,
 		photoTypes,
 		onToggleExpansion,
-		onFileInputChange
+		onFileInputChange,
+		onImageEdit
 	}: Props = $props();
 
 	function getLanguage(code: string) {
@@ -126,9 +128,21 @@
 			class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
 		>
 			{#each imagesToShow as image (image.url)}
-				<div class="aspect-square overflow-hidden rounded border">
-					<img src={image.url} alt={image.alt} class="h-full w-full object-cover" />
-				</div>
+				<button
+					type="button"
+					class="aspect-square overflow-hidden rounded border group relative cursor-pointer bg-transparent p-0 hover:shadow-lg transition-shadow"
+					onclick={() => onImageEdit?.(image.url, image.alt)}
+					title="Click to edit this image"
+				>
+					<img 
+						src={image.url} 
+						alt={image.alt} 
+						class="h-full w-full object-cover transition-transform group-hover:scale-105" 
+					/>
+					<div class="absolute inset-0 bg-transparent group-hover:bg-black/50 transition-colors duration-200 flex items-center justify-center">
+						<span class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
+					</div>
+				</button>
 			{/each}
 		</div>
 	{:else}
