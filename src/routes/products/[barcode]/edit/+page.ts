@@ -15,6 +15,7 @@ import { userInfo } from '$lib/stores/pkceLoginStore';
 import { PRODUCT_STATUS } from '$lib/const';
 
 import type { PageLoad } from './$types';
+import { dev } from '$app/environment';
 
 export const ssr = false;
 
@@ -23,7 +24,9 @@ export const load = (async ({ fetch, params }) => {
 		error(500, 'This page requires a browser environment');
 	}
 
-	if (get(userInfo) == null) {
+	if (get(userInfo) == null && !dev) {
+		// If the user is not logged in, redirect to the login page
+		// We allow an exception for development mode
 		error(401, 'You must be logged in to view this page');
 	}
 
