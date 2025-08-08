@@ -29,7 +29,16 @@
 		onSave: (data: EditData) => void;
 	};
 
-	const RESIZE_HANDLES = ['n-resize', 'e-resize', 's-resize', 'w-resize', 'ne-resize', 'nw-resize', 'se-resize', 'sw-resize'];
+	const RESIZE_HANDLES = [
+		'n-resize',
+		'e-resize',
+		's-resize',
+		'w-resize',
+		'ne-resize',
+		'nw-resize',
+		'se-resize',
+		'sw-resize'
+	];
 
 	let { isOpen, imageUrl, imageAlt, onClose, onSave }: Props = $props();
 
@@ -44,7 +53,9 @@
 	let initTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	const canPerformActions = $derived(isMounted && isInitialized);
-	const cropModeStatus = $derived(cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping');
+	const cropModeStatus = $derived(
+		cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping'
+	);
 
 	// Client-side mounting detection
 	$effect(() => {
@@ -166,7 +177,7 @@
 		if (cropEnabled || !cropperSelection) return;
 
 		cropEnabled = true;
-		
+
 		setTimeout(() => {
 			try {
 				cropperSelection.setAttribute('initial-coverage', '0.5');
@@ -195,7 +206,6 @@
 		}
 	}
 
-	
 	function handleRotateLeft(): void {
 		if (!canPerformActions || !cropperImage) return;
 
@@ -318,7 +328,13 @@
 	}
 </script>
 
-<dialog bind:this={modal} class="modal" onclick={handleModalClick} aria-labelledby="modal-title" aria-modal="true">
+<dialog
+	bind:this={modal}
+	class="modal"
+	onclick={handleModalClick}
+	aria-labelledby="modal-title"
+	aria-modal="true"
+>
 	<div class="modal-box w-full max-w-4xl">
 		<header class="mb-4 flex items-center justify-between">
 			<h3 id="modal-title" class="text-lg font-bold">Edit Photo</h3>
@@ -332,7 +348,10 @@
 			</button>
 		</header>
 
-		<section class="bg-base-200 mb-4 max-h-96 overflow-hidden rounded border" aria-label="Image editing area">
+		<section
+			class="bg-base-200 mb-4 max-h-96 overflow-hidden rounded border"
+			aria-label="Image editing area"
+		>
 			{#if isMounted}
 				<cropper-canvas background class="ltr relative block h-96 w-full">
 					<cropper-image
@@ -347,9 +366,9 @@
 					{#if cropEnabled}
 						<cropper-shade></cropper-shade>
 					{/if}
-					<cropper-handle 
-						action="select" 
-						plain 
+					<cropper-handle
+						action="select"
+						plain
 						onpointerdown={enableCropping}
 						aria-label="Start cropping selection"
 					></cropper-handle>
@@ -369,12 +388,9 @@
 							class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.5)_1px,transparent_1px)] bg-[length:33.33%_33.33%] opacity-15"
 							aria-hidden="true"
 						></cropper-grid>
-						<cropper-crosshair 
-							centered 
-							class="pointer-events-none absolute"
-							aria-hidden="true"
+						<cropper-crosshair centered class="pointer-events-none absolute" aria-hidden="true"
 						></cropper-crosshair>
-						
+
 						<cropper-handle
 							action="move"
 							theme-color="rgba(255, 255, 255, 0.35)"
@@ -396,7 +412,11 @@
 				</cropper-canvas>
 			{:else}
 				<!-- Loading fallback -->
-				<div class="text-base-content/50 flex h-96 items-center justify-center" role="status" aria-live="polite">
+				<div
+					class="text-base-content/50 flex h-96 items-center justify-center"
+					role="status"
+					aria-live="polite"
+				>
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg mb-2" aria-hidden="true"></div>
 						<p>Loading image editor...</p>
@@ -476,11 +496,11 @@
 			<section class="bg-base-200 mb-4 rounded p-3 text-sm" aria-label="Current editing status">
 				<div class="grid grid-cols-2 gap-2 text-xs">
 					<div>
-						<strong>Rotation:</strong> 
+						<strong>Rotation:</strong>
 						<span aria-label="Current rotation angle">{rotationAngle}°</span>
 					</div>
 					<div>
-						<strong>Tool:</strong> 
+						<strong>Tool:</strong>
 						<span aria-label="Current tool mode">{cropModeStatus}</span>
 					</div>
 				</div>
@@ -488,18 +508,18 @@
 		{/if}
 
 		<footer class="flex justify-end gap-2">
-			<button 
-				type="button" 
-				class="btn btn-outline" 
+			<button
+				type="button"
+				class="btn btn-outline"
 				onclick={handleClose}
 				aria-label="Cancel editing and close modal"
 			>
 				Cancel
 			</button>
-			<button 
-				type="button" 
-				class="btn btn-primary" 
-				onclick={handleSave} 
+			<button
+				type="button"
+				class="btn btn-primary"
+				onclick={handleSave}
 				disabled={!canPerformActions}
 				aria-label="Save changes and close modal"
 			>

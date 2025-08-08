@@ -26,7 +26,7 @@
 		{ id: 'packaging', label: 'Packaging' }
 	];
 
-	const photoTypeIds = new Set(photoTypes.map(pt => pt.id));
+	const photoTypeIds = new Set(photoTypes.map((pt) => pt.id));
 
 	type ProductImage = {
 		url: string;
@@ -60,7 +60,7 @@
 		for (const photoType of photoTypes) {
 			const imageName = `${photoType.id}_${code}`;
 			const imageData = productImages[imageName];
-			
+
 			if (!imageData || !('imgid' in imageData) || !imageData.imgid) {
 				continue;
 			}
@@ -71,13 +71,9 @@
 			const imgid = parseInt(imageData.imgid, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(createProductImage(
-				imageUrl,
-				imgid,
-				photoType.label,
-				photoType.id,
-				` for ${languageName}`
-			));
+			images.push(
+				createProductImage(imageUrl, imgid, photoType.label, photoType.id, ` for ${languageName}`)
+			);
 		}
 
 		return images;
@@ -88,8 +84,8 @@
 		const languageName = getLanguage(code);
 		const images: ProductImage[] = [];
 
-		const languageKeys = Object.keys(productImages).filter(key => 
-			key.endsWith(`_${code}`) && !photoTypeIds.has(key.split('_')[0])
+		const languageKeys = Object.keys(productImages).filter(
+			(key) => key.endsWith(`_${code}`) && !photoTypeIds.has(key.split('_')[0])
 		);
 
 		for (const key of languageKeys) {
@@ -105,17 +101,11 @@
 			const typePrefix = key.split('_')[0];
 			const typeId = photoTypeIds.has(typePrefix) ? typePrefix : 'other';
 
-			images.push(createProductImage(
-				imageUrl,
-				imgid,
-				typePrefix,
-				typeId,
-				` for ${languageName}`
-			));
+			images.push(createProductImage(imageUrl, imgid, typePrefix, typeId, ` for ${languageName}`));
 		}
 
-		const numericKeys = Object.keys(productImages).filter(key => /^\d+$/.test(key));
-		
+		const numericKeys = Object.keys(productImages).filter((key) => /^\d+$/.test(key));
+
 		for (const key of numericKeys) {
 			const imgObj = productImages[key];
 			if (!imgObj?.sizes?.['400']) continue;
@@ -126,12 +116,7 @@
 			const imgid = parseInt(key, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(createProductImage(
-				url,
-				imgid,
-				'Additional',
-				'other'
-			));
+			images.push(createProductImage(url, imgid, 'Additional', 'other'));
 		}
 
 		return images;
@@ -150,12 +135,10 @@
 	let editingImageData = $state<ProductImage | null>(null);
 
 	const additionalImageTypes = $derived.by(() => {
-		const standardTypes = new Set(photoTypes.map(pt => pt.label));
-		return [...new Set(
-			currentImages
-				.map(img => img.type)
-				.filter(type => !standardTypes.has(type))
-		)];
+		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
+		return [
+			...new Set(currentImages.map((img) => img.type).filter((type) => !standardTypes.has(type)))
+		];
 	});
 
 	function handleLanguageChange(code: string) {
