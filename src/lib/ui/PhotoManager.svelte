@@ -5,14 +5,18 @@
 	import { getProductImageUrl } from '$lib/api/product';
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditModal from './PhotoEditModal.svelte';
-	import { prepareImageEditPayload, type ImageEditData } from '$lib/utils/imageEdit';
+	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
 
-	function getLanguage(code: string) {
-		return ISO6391.getName(code);
+	const languageCache = new Map<string, string>();
+	function getLanguage(code: string): string {
+		if (!languageCache.has(code)) {
+			languageCache.set(code, ISO6391.getName(code));
+		}
+		return languageCache.get(code)!;
 	}
 
 	const photoTypes = [
@@ -22,90 +26,141 @@
 		{ id: 'packaging', label: 'Packaging' }
 	];
 
+	const photoTypeIds = new Set(photoTypes.map(pt => pt.id));
+
 	type ProductImage = {
 		url: string;
 		alt: string;
 		type: string;
+		imgid: number; // The numeric image ID for the API
+		typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
 	};
 
-	// Get all images for a specific language code
-	function getImagesForLanguage(code: string): ProductImage[] {
+	function createProductImage(
+		url: string,
+		imgid: number,
+		type: string,
+		typeId: string,
+		altSuffix: string = ''
+	): ProductImage {
+		return {
+			url,
+			alt: `${type} image${altSuffix}`,
+			type,
+			imgid,
+			typeId
+		};
+	}
+
+	function getStandardImages(code: string): ProductImage[] {
 		const productImages = product.images;
+		const languageName = getLanguage(code);
+		const images: ProductImage[] = [];
 
-		// Get standard images (front, ingredients, nutrition, packaging)
-		const standardImages = photoTypes
-			.map((photoType) => {
-				const imageName = `${photoType.id}_${code}`;
-				const imageUrl = getProductImageUrl(product.code, imageName, productImages);
+		for (const photoType of photoTypes) {
+			const imageName = `${photoType.id}_${code}`;
+			const imageData = productImages[imageName];
+			
+			if (!imageData || !('imgid' in imageData) || !imageData.imgid) {
+				continue;
+			}
 
-				if (imageUrl == null) {
-					return null;
-				}
+			const imageUrl = getProductImageUrl(product.code, imageName, productImages);
+			if (!imageUrl) continue;
 
-				return {
-					url: imageUrl,
-					alt: `${photoType.label} image for ${getLanguage(code)}`,
-					type: photoType.label
-				};
-			})
-			.filter((img): img is ProductImage => img !== null);
+			const imgid = parseInt(imageData.imgid, 10);
+			if (isNaN(imgid)) continue;
 
-		// Get additional non-standard images for this language
-		const additionalImages: { url: string; alt: string; type: string }[] = [];
+			images.push(createProductImage(
+				imageUrl,
+				imgid,
+				photoType.label,
+				photoType.id,
+				` for ${languageName}`
+			));
+		}
 
-		// 1. Images with keys ending in _{code} that are not standard
-		Object.keys(productImages)
-			.filter(
-				(key) => key.endsWith(`_${code}`) && !photoTypes.some((pt) => key === `${pt.id}_${code}`)
-			)
-			.forEach((key) => {
-				const imageUrl = getProductImageUrl(product.code, key, productImages);
-				if (imageUrl) {
-					additionalImages.push({
-						url: imageUrl,
-						alt: `${key} for ${getLanguage(code)}`,
-						type: key.split('_')[0]
-					});
-				}
-			});
+		return images;
+	}
 
-		// 2. Numeric keys (raw images)
-		Object.keys(productImages)
-			.filter((key) => /^\d+$/.test(key))
-			.forEach((key) => {
-				const imgObj = productImages[key];
-				let url = null;
-				if (imgObj && imgObj.sizes && imgObj.sizes['400']) {
-					url = getProductImageUrl(product.code, key, productImages);
-				}
-				if (url) {
-					additionalImages.push({
-						url,
-						alt: `Additional image ${key}`,
-						type: 'Additional'
-					});
-				}
-			});
+	function getAdditionalImages(code: string): ProductImage[] {
+		const productImages = product.images;
+		const languageName = getLanguage(code);
+		const images: ProductImage[] = [];
 
-		// Returns the combined standard and additional(non-standard) images
-		return [...standardImages, ...additionalImages];
+		const languageKeys = Object.keys(productImages).filter(key => 
+			key.endsWith(`_${code}`) && !photoTypeIds.has(key.split('_')[0])
+		);
+
+		for (const key of languageKeys) {
+			const imageData = productImages[key];
+			if (!imageData || !('imgid' in imageData) || !imageData.imgid) continue;
+
+			const imageUrl = getProductImageUrl(product.code, key, productImages);
+			if (!imageUrl) continue;
+
+			const imgid = parseInt(imageData.imgid, 10);
+			if (isNaN(imgid)) continue;
+
+			const typePrefix = key.split('_')[0];
+			const typeId = photoTypeIds.has(typePrefix) ? typePrefix : 'other';
+
+			images.push(createProductImage(
+				imageUrl,
+				imgid,
+				typePrefix,
+				typeId,
+				` for ${languageName}`
+			));
+		}
+
+		const numericKeys = Object.keys(productImages).filter(key => /^\d+$/.test(key));
+		
+		for (const key of numericKeys) {
+			const imgObj = productImages[key];
+			if (!imgObj?.sizes?.['400']) continue;
+
+			const url = getProductImageUrl(product.code, key, productImages);
+			if (!url) continue;
+
+			const imgid = parseInt(key, 10);
+			if (isNaN(imgid)) continue;
+
+			images.push(createProductImage(
+				url,
+				imgid,
+				'Additional',
+				'other'
+			));
+		}
+
+		return images;
+	}
+
+	function getImagesForLanguage(code: string): ProductImage[] {
+		return [...getStandardImages(code), ...getAdditionalImages(code)];
 	}
 
 	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
-
 	let fileInputValues = $state<Record<string, string>>({});
 
-	// Photo edit modal state
 	let isEditModalOpen = $state(false);
-	let editingImageUrl = $state('');
-	let editingImageAlt = $state('');
+	let editingImageData = $state<ProductImage | null>(null);
+
+	const additionalImageTypes = $derived.by(() => {
+		const standardTypes = new Set(photoTypes.map(pt => pt.label));
+		return [...new Set(
+			currentImages
+				.map(img => img.type)
+				.filter(type => !standardTypes.has(type))
+		)];
+	});
 
 	function handleLanguageChange(code: string) {
 		activeLanguageCode = code;
-		// Reset expanded categories when language changes
-		expandedCategories = new SvelteSet<string>();
+		expandedCategories.clear();
 		fileInputValues = {};
 	}
 
@@ -123,42 +178,82 @@
 	}
 
 	function openEditModal(imageUrl: string, imageAlt: string) {
-		editingImageUrl = imageUrl;
-		editingImageAlt = imageAlt;
-		isEditModalOpen = true;
+		const imageData = currentImages.find((img) => img.url === imageUrl && img.alt === imageAlt);
+		if (imageData) {
+			editingImageData = imageData;
+			isEditModalOpen = true;
+		} else {
+			console.error('Could not find image data for URL:', imageUrl);
+		}
 	}
 
 	function closeEditModal() {
 		isEditModalOpen = false;
-		editingImageUrl = '';
-		editingImageAlt = '';
+		editingImageData = null;
 	}
 
-	function handleImageEdit(data: ImageEditData) {
-		const editPayload = prepareImageEditPayload(
-			product,
-			editingImageUrl,
-			data,
-			activeLanguageCode,
-			'front' // TODO: Replace with actual image type from data
-		);
+	async function handleImageEdit(data: ImageEditData) {
+		if (!editingImageData) {
+			console.error('No image data available for editing');
+			return;
+		}
 
-		console.log('Prepared edit payload for backend:', editPayload);
+		try {
+			const { imgid: imageId, typeId: imageTypeId } = editingImageData;
+			const { cropData, rotationAngle } = data;
 
-		// TODO: Send to backend API
+			const hasCropData = cropData.width > 0 && cropData.height > 0;
 
-		// For now, showing an alert with the formatted data
-		console.log(`Image edit data prepared for backend:
-		Barcode: ${editPayload.barcode}
-		Image ID: ${editPayload.imageId}
-		Language: ${editPayload.language}
-		Image Type: ${editPayload.imageType}
-		Crop: x=${editPayload.crop.x}, y=${editPayload.crop.y}, width=${editPayload.crop.width}, height=${editPayload.crop.height}
-		Rotation: ${editPayload.rotation}°
+			if (hasCropData) {
+				await handleImageCropAndRotate(imageId, imageTypeId, cropData, rotationAngle);
+			} else {
+				await handleImageRotateOnly(imageId, imageTypeId, rotationAngle);
+			}
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+			console.error('Error processing image:', error);
+			alert(`Error processing image: ${errorMessage}. Please try again.`);
+		} finally {
+			closeEditModal();
+		}
+	}
 
-		This data is now ready to be sent to the backend API.`);
+	async function handleImageCropAndRotate(
+		imageId: number,
+		imageTypeId: string,
+		cropData: { x: number; y: number; width: number; height: number },
+		rotationAngle: number
+	) {
+		// Prepare crop data for API
+		const apiCropData = {
+			x1: Math.round(cropData.x),
+			y1: Math.round(cropData.y),
+			x2: Math.round(cropData.x + cropData.width),
+			y2: Math.round(cropData.y + cropData.height),
+			angle: rotationAngle
+		};
 
-		closeEditModal();
+		// TODO: Call the crop API when it's implemented
+		console.log('Cropping and rotating image with data:', {
+			imageId,
+			imageTypeId,
+			cropData: apiCropData,
+			operation: 'crop_and_rotate'
+		});
+	}
+
+	async function handleImageRotateOnly(
+		imageId: number,
+		imageTypeId: string,
+		rotationAngle: number
+	) {
+		// TODO: Call the rotation-only API when it's implemented
+		console.log('Rotating image with data:', {
+			imageId,
+			imageTypeId,
+			rotationData: { angle: rotationAngle },
+			operation: 'rotate_only'
+		});
 	}
 </script>
 
@@ -191,9 +286,7 @@
 				{/each}
 
 				<!-- Show additional image types that are not standard -->
-				{#each [...new Set(currentImages
-							.map((img) => img.type)
-							.filter((type) => !photoTypes.some((pt) => pt.label === type)))] as type (type)}
+				{#each additionalImageTypes as type (type)}
 					<PhotoTypeSection
 						photoType={{ id: type.toLowerCase(), label: type, isAdditional: true }}
 						{activeLanguageCode}
@@ -224,8 +317,8 @@
 <!-- Photo Edit Modal -->
 <PhotoEditModal
 	isOpen={isEditModalOpen}
-	imageUrl={editingImageUrl}
-	imageAlt={editingImageAlt}
+	imageUrl={editingImageData?.url || ''}
+	imageAlt={editingImageData?.alt || ''}
 	onClose={closeEditModal}
 	onSave={handleImageEdit}
 />
