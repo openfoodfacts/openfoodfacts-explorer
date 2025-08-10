@@ -237,6 +237,7 @@
 			console.error('Error processing image:', error);
 			alert(`Error processing image: ${errorMessage}. Please try again.`);
 		} finally {
+			await invalidateAll();
 			closeEditModal();
 		}
 	}
