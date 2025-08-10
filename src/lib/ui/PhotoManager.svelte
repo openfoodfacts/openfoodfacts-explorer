@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
+	import { invalidateAll } from '$app/navigation';
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
@@ -127,9 +128,9 @@
 	}
 
 	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
+
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
-	let fileInputValues = $state<Record<string, string>>({});
 
 	let isEditModalOpen = $state(false);
 	let editingImageData = $state<ProductImage | null>(null);
@@ -144,7 +145,6 @@
 	function handleLanguageChange(code: string) {
 		activeLanguageCode = code;
 		expandedCategories.clear();
-		fileInputValues = {};
 	}
 
 	function toggleCategoryExpansion(type: string) {
@@ -154,10 +154,6 @@
 			expandedCategories.add(type);
 		}
 		expandedCategories = new SvelteSet(expandedCategories);
-	}
-
-	function handleFileInputChange(key: string, value: string) {
-		fileInputValues[key] = value;
 	}
 
 	function openEditModal(imageUrl: string, imageAlt: string) {
@@ -173,6 +169,50 @@
 	function closeEditModal() {
 		isEditModalOpen = false;
 		editingImageData = null;
+	}
+
+	type UploadResult = {
+		status: string;
+		imgid?: string | number;
+		error?: string;
+		[key: string]: any;
+	};
+
+	async function handleImageUploaded(uploadInfo?: {
+		type: string;
+		imagefield: string;
+		result: UploadResult;
+	}) {
+		await invalidateAll();
+
+		if (uploadInfo?.result?.status === 'status ok') {
+			setTimeout(() => {
+				openUploadedImage({
+					type: uploadInfo.type,
+					result: uploadInfo.result
+				});
+			}, 1500);
+		}
+	}
+
+	function openUploadedImage(uploadInfo: { type: string; result: UploadResult }) {
+		const typeImages = currentImages.filter((img) => img.type === uploadInfo.type);
+
+		if (typeImages.length === 0) {
+			console.warn(`No images found for type: ${uploadInfo.type}`);
+			return;
+		}
+
+		if (uploadInfo.result?.imgid) {
+			const uploadedImage = typeImages.find(
+				(img) => img.imgid.toString() === uploadInfo.result.imgid!.toString()
+			);
+			if (uploadedImage) {
+				openEditModal(uploadedImage.url, uploadedImage.alt);
+			} else {
+				console.warn(`Could not find uploaded image with imgid: ${uploadInfo.result.imgid}`);
+			}
+		}
 	}
 
 	async function handleImageEdit(data: ImageEditData) {
@@ -259,12 +299,11 @@
 						{activeLanguageCode}
 						{currentImages}
 						{expandedCategories}
-						{fileInputValues}
 						{product}
 						{photoTypes}
 						onToggleExpansion={toggleCategoryExpansion}
-						onFileInputChange={handleFileInputChange}
 						onImageEdit={openEditModal}
+						onImageUploaded={handleImageUploaded}
 					/>
 				{/each}
 
@@ -275,12 +314,11 @@
 						{activeLanguageCode}
 						{currentImages}
 						{expandedCategories}
-						{fileInputValues}
 						{product}
 						{photoTypes}
 						onToggleExpansion={toggleCategoryExpansion}
-						onFileInputChange={handleFileInputChange}
 						onImageEdit={openEditModal}
+						onImageUploaded={handleImageUploaded}
 					/>
 				{/each}
 
