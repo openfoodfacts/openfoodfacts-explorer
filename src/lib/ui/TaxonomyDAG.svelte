@@ -20,19 +20,9 @@
 	let container: HTMLDivElement | null = null;
 	let cy: Core | null = null;
 
-	function isDarkMode() {
-		return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-	}
-
-	let darkMode = $state(false);
-	if (typeof window !== 'undefined') {
-		darkMode = isDarkMode();
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-			darkMode = e.matches;
-			renderGraph();
-			attachCytoscapeNavigation();
-		});
-	}
+	let darkMode = $derived(
+		window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+	);
 
 	// TailwindCSS palette colors (hex values)
 	const light = {
@@ -114,12 +104,6 @@
 	function renderGraph() {
 		if (!container) return;
 
-		// Destroy previous instance if any
-		if (cy) {
-			cy.destroy();
-			cy = null;
-		}
-
 		const colors = darkMode ? dark : light;
 		cy = cytoscape({
 			container,
@@ -197,8 +181,7 @@
 			}
 		});
 
-		// Optional: fit graph to container
-		cy.fit();
+		cy.fit(); // fit graph to container
 	}
 
 	// Navigation on node click (attach once after render)
@@ -224,16 +207,18 @@
 	});
 
 	$effect(() => {
+		// bind to these variables changes
+		const _ = { darkMode, taxonomy, node };
+
 		renderGraph();
 		attachCytoscapeNavigation();
-	});
 
-	onDestroy(() => {
-		if (cy) {
-			cy.destroy();
-			cy = null;
-		}
-		window.removeEventListener('resize', renderGraph);
+		return () => {
+			if (cy) {
+				cy.destroy();
+				cy = null;
+			}
+		};
 	});
 </script>
 
