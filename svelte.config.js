@@ -27,8 +27,11 @@ const config = {
 					'data:',
 
 					'https://*.openfoodfacts.org/',
+					'https://*.openfoodfacts.net/',
 					'https://*.openproductsfacts.org/',
+					'https://*.openproductsfacts.net/',
 					'https://*.openbeautyfacts.org/',
+					'https://*.openbeautyfacts.net/',
 
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',
