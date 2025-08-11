@@ -15,7 +15,6 @@
 		type FacetsSelection
 	} from '$lib/facets';
 
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
 	import Pagination from '$lib/Pagination.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
@@ -77,6 +76,15 @@
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('q', newQuery);
 		goto(newUrl.toString());
+	}
+
+	// Track which product is being navigated to
+	let navigatingTo: string | null = $state(null);
+
+	// Handle navigation to product page
+	function navigateToProduct(barcode: string) {
+		navigatingTo = barcode;
+		goto(`/products/${barcode}`);
 	}
 </script>
 
@@ -176,19 +184,31 @@
 {#if result.count > 0}
 	<!-- Facet component with binding to access its methods -->
 
-	<div class="relative mt-4 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each result.hits as product (product.code)}
-			{#if product.code != null}
-				<div class="indicator">
-					{#if showPrices}
-						<span class="indicator-item badge badge-secondary badge-sm">
-							{data.prices[product.code]} prices
-						</span>
-					{/if}
-					<SmallProductCard {product} />
-				</div>
-			{/if}
-		{/each}
+	<div class="max-md:me-4">
+		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			{#each result.hits as product (product.code)}
+				{#if product.code != null}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+
+					<div class="indicator block w-full">
+						{#if showPrices}
+							<span class="indicator-item badge badge-secondary badge-sm right-4">
+								{data.prices[product.code]} prices
+							</span>
+						{/if}
+						<product-card
+							{product}
+							navigating={{
+								to: navigatingTo === product.code ? { params: { barcode: product.code } } : null
+							}}
+							placeholderImage="/Placeholder.svg"
+							onclick={() => navigateToProduct(product.code)}
+						></product-card>
+					</div>
+				{/if}
+			{/each}
+		</div>
 	</div>
 
 	<!-- Pagination -->
