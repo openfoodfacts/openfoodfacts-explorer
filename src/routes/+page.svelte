@@ -13,7 +13,6 @@
 	import { deduplicate } from '$lib/utils';
 	import type { PageProps } from './$types';
 
-
 	let { data }: PageProps = $props();
 	let { products } = $derived(data);
 

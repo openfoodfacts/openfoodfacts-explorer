@@ -1,0 +1,38 @@
+{
+	"nutritionalQuality": {
+		"nutriScore": "very_important",
+		"saltInLowQuantity": "not_important",
+		"sugarsInLowQuantity": "not_important",
+		"fatInLowQuantity": "not_important",
+		"saturatedFatInLowQuantity": "not_important"
+	},
+	"foodProcessing": { "novaGroup": "important", "noOrFewAdditives": "not_important" },
+	"allergens": {
+		"withoutGluten": "not_important",
+		"withoutMilk": "not_important",
+		"withoutEggs": "not_important",
+		"withoutNuts": "not_important",
+		"withoutPeanuts": "not_important",
+		"withoutSesameSeeds": "not_important",
+		"withoutSoybeans": "not_important",
+		"withoutCelery": "not_important",
+		"withoutMustard": "not_important",
+		"withoutLupin": "not_important",
+		"withoutFish": "not_important",
+		"withoutCrustaceans": "not_important",
+		"withoutMolluscs": "not_important",
+		"withoutSulphurDioxideAndSulphites": "not_important"
+	},
+	"ingredients": {
+		"vegan": "not_important",
+		"vegetarian": "not_important",
+		"palmOilFree": "not_important"
+	},
+	"labels": { "organicFarming": "not_important", "fairTrade": "not_important" },
+	"environment": {
+		"lowEnvironmentalImpact": "important",
+		"lowRiskOfDeforestation": "not_important"
+	},
+	"preferred_attributes": [],
+	"avoided_attributes": []
+}
