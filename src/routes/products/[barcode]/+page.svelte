@@ -3,19 +3,20 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 
-	import ProductAttributes from './ProductAttributes.svelte';
-
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Folksonomy from './Folksonomy.svelte';
-	import DataSources from './DataSources.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Debug from '$lib/ui/Debug.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+
+	import ProductAttributes from './ProductAttributes.svelte';
+	import Folksonomy from './Folksonomy.svelte';
+	import DataSources from './DataSources.svelte';
+
+	import Gs1Country from './GS1Country.svelte';
+	import ProductHeader from './ProductHeader.svelte';
 
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
-	import Gs1Country from './GS1Country.svelte';
-	import ProductHeader from './ProductHeader.svelte';
-	import Metadata from '$lib/Metadata.svelte';
 
 	type Props = { data: PageData };
 
@@ -37,6 +38,10 @@
 
 	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
 
+	{#if isPriceConfigured() && data?.prices != null}
+		<Prices prices={data.prices} barcode={product.code} />
+	{/if}
+
 	<Gs1Country barcode={product.code} />
 
 	<DataSources {product} />
@@ -52,16 +57,6 @@
 				keys={data.keys.map((it) => it.k)}
 				barcode={product.code}
 			/>
-		</Card>
-	{/if}
-
-	{#if isPriceConfigured() && data?.prices?.data != null}
-		<Card>
-			<h1 class="my-4 text-xl font-bold sm:text-4xl">
-				Open prices <span class="font-light italic">(alpha)</span>
-			</h1>
-
-			<Prices prices={data.prices.data} barcode={product.code} />
 		</Card>
 	{/if}
 

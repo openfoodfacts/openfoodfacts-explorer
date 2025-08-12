@@ -1,9 +1,8 @@
 <script lang="ts">
 	import StaticPageIframe from '$lib/ui/StaticPageIframe.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
-	// get id from the URL
-	const pageId = $derived($page.params.id);
+	let iframeUrl = $derived(`https://world.openfoodfacts.org/${page.params.id}?content_only=1`);
 </script>
 
-<StaticPageIframe src={`https://world.openfoodfacts.org/${pageId}?content_only=1`} />
+<StaticPageIframe src={iframeUrl} />

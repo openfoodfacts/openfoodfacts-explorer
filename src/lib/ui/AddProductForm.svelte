@@ -1,6 +1,5 @@
 <script lang="ts">
-	import MobileStepHeader from './add-product-steps/MobileStepHeader.svelte';
-	import DesktopStepNavigation from './add-product-steps/DesktopStepNavigation.svelte';
+	import StepHeader from './add-product-steps/StepHeader.svelte';
 	import ImagesStep from './add-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './add-product-steps/BasicInfoStep.svelte';
 	import LanguagesStep from './add-product-steps/LanguagesStep.svelte';
@@ -10,6 +9,7 @@
 	import NavigationButtons from './add-product-steps/NavigationButtons.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
+	import StepNav from './StepNav.svelte';
 
 	type AddProductFormProps = {
 		productStore: Writable<Product>;
@@ -105,26 +105,19 @@
 	};
 </script>
 
-<MobileStepHeader {currentStep} {steps} onToggleInfo={getToggleInfo(currentStep)} />
+<StepHeader {currentStep} {steps} {goToStep} onToggleInfo={getToggleInfo(currentStep)} />
 
-<DesktopStepNavigation {currentStep} {steps} {goToStep} />
+<StepNav
+	onNext={currentStep < steps.length - 1 ? nextStep : undefined}
+	onPrev={currentStep > 0 ? prevStep : undefined}
+/>
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep
-		{productStore}
-		{currentStep}
-		stepsLength={steps.length}
-		{showInfoImages}
-		{prevStep}
-		{nextStep}
-		onToggleInfo={toggleInfoImages}
-	/>
+	<ImagesStep {productStore} {showInfoImages} onToggleInfo={toggleInfoImages} />
 {:else if currentStep === 1}
 	<BasicInfoStep
 		{productStore}
-		{currentStep}
-		stepsLength={steps.length}
 		{showInfoBasic}
 		{categoryNames}
 		{labelNames}
@@ -132,56 +125,38 @@
 		{storeNames}
 		{originNames}
 		{countriesNames}
-		{prevStep}
-		{nextStep}
 		onToggleInfo={toggleInfoBasic}
 	/>
 {:else if currentStep === 2}
 	<LanguagesStep
 		{productStore}
-		{currentStep}
-		stepsLength={steps.length}
 		{showInfoLanguages}
 		{filteredLanguages}
 		{addLanguage}
 		{getLanguage}
-		{prevStep}
-		{nextStep}
 		onToggleInfo={toggleInfoLanguages}
 	/>
 {:else if currentStep === 3}
 	<IngredientsStep
 		{productStore}
-		{currentStep}
-		stepsLength={steps.length}
 		{showInfoIngredients}
 		{getLanguage}
 		{getIngredientsImage}
-		{prevStep}
-		{nextStep}
 		onToggleInfo={toggleInfoIngredients}
 	/>
 {:else if currentStep === 4}
 	<NutritionStep
 		{productStore}
-		{currentStep}
-		stepsLength={steps.length}
 		{showInfoNutrition}
 		{getLanguage}
 		{getNutritionImage}
 		{handleNutrimentInput}
-		{prevStep}
-		{nextStep}
 		onToggleInfo={toggleInfoNutrition}
 	/>
 {:else if currentStep === 5}
 	<CommentStep
 		{comment}
-		{currentStep}
-		stepsLength={steps.length}
 		{showInfoComment}
-		{prevStep}
-		{nextStep}
 		onToggleInfo={toggleInfoComment}
 		onCommentChange={handleCommentChange}
 	/>

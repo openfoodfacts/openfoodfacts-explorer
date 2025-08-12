@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+
+	import { ProductsApi, type ProductReduced, type ProductStateFound } from '$lib/api';
+	import { onMount } from 'svelte';
+	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { deduplicate } from '$lib/utils';
+	import type { PageProps } from './$types';
+
 
 	let { data }: PageProps = $props();
 	let { products } = $derived(data);
@@ -22,6 +28,36 @@
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
+
+	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
+
+	const INSIGHT_COUNT = 10;
+	const SKELETON_COUNT = 9;
+
+	async function getProducts() {
+		const roffApi = new Robotoff(fetch);
+		const response = await roffApi.insights({ count: INSIGHT_COUNT });
+
+		const productApi = new ProductsApi(fetch);
+
+		const insights = response?.insights ?? [];
+
+		const productsPromises = insights.map((question) =>
+			productApi.getProductReducedForCard(question.barcode.toString())
+		);
+		const states = await Promise.all(productsPromises);
+		// filter out products that failed to load
+		const products = states.filter(
+			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
+		);
+
+		// remove duplicate products
+		return deduplicate(products, (it) => it.product.code);
+	}
+
+	onMount(() => {
+		products = getProducts();
+	});
 </script>
 
 <svelte:head>
@@ -87,19 +123,27 @@
 		<div
 			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 		>
-			{#each products as state (state.product.code)}
-				<product-card
-					product={state.product}
-					navigating={{
-						to:
-							navigatingTo === state.product.code
-								? { params: { barcode: state.product.code } }
-								: null
-					}}
-					placeholderImage="/Placeholder.svg"
-					onclick={() => navigateToProduct(state.product.code)}
-				></product-card>
-			{/each}
+			{#await products}
+				{#each Array(SKELETON_COUNT) as _, index (index)}
+					<div class="skeleton h-36 w-full rounded-lg"></div>
+				{/each}
+			{:then products}
+				{#each products as state (state.product.code)}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<product-card
+						product={state.product}
+						navigating={{
+							to:
+								navigatingTo === state.product.code
+									? { params: { barcode: state.product.code } }
+									: null
+						}}
+						placeholderImage="/Placeholder.svg"
+						onclick={() => navigateToProduct(state.product.code)}
+					></product-card>
+				{/each}
+			{/await}
 		</div>
 	</div>
 

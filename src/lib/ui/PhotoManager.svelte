@@ -4,6 +4,7 @@
 	import type { Product } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -97,7 +98,7 @@
 	function handleLanguageChange(code: string) {
 		activeLanguageCode = code;
 		// Reset expanded categories when language changes
-		expandedCategories = new Set<string>();
+		expandedCategories = new SvelteSet<string>();
 		fileInputValues = {};
 	}
 
@@ -107,7 +108,7 @@
 		} else {
 			expandedCategories.add(type);
 		}
-		expandedCategories = new Set(expandedCategories);
+		expandedCategories = new SvelteSet(expandedCategories);
 	}
 
 	function handleFileInputChange(key: string, value: string) {

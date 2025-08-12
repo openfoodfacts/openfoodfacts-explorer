@@ -1,33 +1,21 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
-	import InfoTooltip from '../InfoTooltip.svelte';
-	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
+
+	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+
+	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
 		productStore: Writable<Product>;
-		currentStep: number;
-		stepsLength: number;
 		showInfoIngredients: boolean;
 		getLanguage: (code: string) => string;
 		getIngredientsImage: (language: string) => string | null;
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 	};
 
-	let {
-		productStore,
-		currentStep,
-		stepsLength,
-		showInfoIngredients,
-		getLanguage,
-		getIngredientsImage,
-		prevStep,
-		nextStep,
-		onToggleInfo
-	}: Props = $props();
+	let { productStore, showInfoIngredients, getLanguage, getIngredientsImage, onToggleInfo }: Props =
+		$props();
 </script>
 
 <div class="card bg-base-100 shadow-md">
@@ -61,7 +49,6 @@
 				>
 			</div>
 		{/if}
-		<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
 		<div class="tabs tabs-box">
 			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
 				<input

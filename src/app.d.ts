@@ -21,6 +21,7 @@ declare global {
 declare global {
 	interface Window {
 		_paq: string[][];
+		L?: typeof import('leaflet');
 	}
 }
 

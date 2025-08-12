@@ -1,29 +1,18 @@
 <script lang="ts">
-	import StepNav from '../StepNav.svelte';
-	import PhotoManager from '../PhotoManager.svelte';
-	import { _ } from '$lib/i18n';
 	import type { Writable } from 'svelte/store';
+
+	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+
+	import PhotoManager from '../PhotoManager.svelte';
 
 	type Props = {
 		productStore: Writable<Product>;
-		currentStep: number;
-		stepsLength: number;
 		showInfoImages: boolean;
-		prevStep: () => void;
-		nextStep: () => void;
 		onToggleInfo: () => void;
 	};
 
-	let {
-		productStore,
-		currentStep,
-		stepsLength,
-		showInfoImages,
-		prevStep,
-		nextStep,
-		onToggleInfo
-	}: Props = $props();
+	let { productStore, showInfoImages, onToggleInfo }: Props = $props();
 </script>
 
 <div class="card bg-base-100 shadow-md">
@@ -52,14 +41,12 @@
 					<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 				</button>
 				<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
-				<span class="text-base-content/80 p-6 text-sm sm:text-base"
-					>{$_('product.edit.info.images')}</span
-				>
+				<span class="text-base-content/80 p-6 text-sm sm:text-base">
+					{$_('product.edit.info.images')}
+				</span>
 			</div>
 		{/if}
-		{#if stepsLength > 1}
-			<StepNav {currentStep} {stepsLength} onPrev={prevStep} onNext={nextStep} />
-		{/if}
+
 		<PhotoManager product={$productStore} />
 	</div>
 </div>

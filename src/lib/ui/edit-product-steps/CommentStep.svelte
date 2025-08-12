@@ -3,17 +3,11 @@
 
 	type Props = {
 		comment: string;
-		onCommentChange: (value: string) => void;
 	};
 
-	let { comment, onCommentChange }: Props = $props();
+	let { comment = $bindable() }: Props = $props();
 
 	let showInfoComment = $state(false);
-
-	function handleCommentChange(event: Event) {
-		const target = event.target as HTMLTextAreaElement;
-		onCommentChange(target.value);
-	}
 </script>
 
 <div class="collapse-arrow bg-base-100 collapse shadow-md">
@@ -61,7 +55,6 @@
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
 				placeholder={$_('product.edit.comment_placeholder')}
 				value={comment}
-				oninput={handleCommentChange}
 				rows="3"
 			></textarea>
 		</div>

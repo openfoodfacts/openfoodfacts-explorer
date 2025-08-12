@@ -2,17 +2,15 @@
 	import { _ } from '$lib/i18n';
 
 	type Props = {
-		currentStep: number;
-		stepsLength: number;
-		onPrev: () => void;
-		onNext: () => void;
+		onPrev?: () => void;
+		onNext?: () => void;
 	};
-	let { currentStep, stepsLength, onPrev, onNext }: Props = $props();
+	let { onPrev, onNext }: Props = $props();
 </script>
 
 <div class="mb-6 flex items-center justify-between">
 	<div>
-		{#if currentStep > 0}
+		{#if onPrev != null}
 			<button
 				class="btn btn-circle btn-sm btn-outline"
 				onclick={onPrev}
@@ -25,7 +23,7 @@
 		{/if}
 	</div>
 	<div>
-		{#if currentStep < stepsLength - 1}
+		{#if onNext != null}
 			<button
 				class="btn btn-circle btn-sm btn-secondary"
 				onclick={onNext}
