@@ -37,11 +37,11 @@
 	$effect(() => {
 		if (result?.hits && result.hits.length > 0) {
 			const { scoredProducts: scored, sortedProducts: sorted } = scoreAndSortProducts(
-				result.hits, 
-				$userPreferences, 
+				result.hits,
+				$userPreferences,
 				$classifyProductsEnabled
 			);
-			
+
 			scoredProducts = scored;
 			sortedProducts = sorted;
 		} else {

@@ -49,11 +49,7 @@ export const defaultPreferences: UserPreferences = generateDefaultPreferences();
 // Export attribute groups for use in components
 export const attributeGroups = getAttributeGroups();
 
-export function updatePreference(
-	category: string,
-	preference: string,
-	value: string
-) {
+export function updatePreference(category: string, preference: string, value: string) {
 	userPreferences.update((prefs: UserPreferences) => {
 		const newPrefs = {
 			...prefs,
@@ -67,10 +63,12 @@ export function updatePreference(
 	});
 }
 
-export function resetToDefaults(onPreferenceChange?: (category: string, preference: string, value: string) => void) {
+export function resetToDefaults(
+	onPreferenceChange?: (category: string, preference: string, value: string) => void
+) {
 	const defaults = structuredClone(defaultPreferences);
 	userPreferences.set(defaults);
-	
+
 	// Notify about all preference changes if callback provided
 	if (onPreferenceChange) {
 		for (const [category, prefs] of Object.entries(defaults)) {
@@ -85,4 +83,3 @@ export const userPreferences = persisted('userPreferences', defaultPreferences);
 
 // Store for classify products toggle state
 export const classifyProductsEnabled = persisted('classifyProductsEnabled', false);
-

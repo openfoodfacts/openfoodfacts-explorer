@@ -37,8 +37,8 @@ export function scoreAndSortProducts<T extends ProductWithAttributes>(
 	const productsWithScores = products.map((product) => {
 		const productAttrs = product.attributes || [];
 		const scoreData = calculateScore(productAttrs, userPreferences);
-		return { 
-			...product, 
+		return {
+			...product,
 			score: scoreData.score,
 			matchStatus: scoreData.matchStatus,
 			scoreData

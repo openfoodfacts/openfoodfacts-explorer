@@ -7,7 +7,6 @@ export type ScoreData = {
 
 // @ts-expect-error: userPreferences may not have group.id as a key, but we handle it safely
 export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
-	
 	let totalWeightedScore = 0;
 	let totalWeights = 0;
 	let hasMandatoryMismatch = false;
@@ -17,11 +16,16 @@ export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
 	// Preference weights
 	const getWeight = (importance: string): number => {
 		switch (importance) {
-			case 'mandatory': return 2;
-			case 'very_important': return 2;
-			case 'important': return 1;
-			case 'not_important': return 0;
-			default: return 0;
+			case 'mandatory':
+				return 2;
+			case 'very_important':
+				return 2;
+			case 'important':
+				return 1;
+			case 'not_important':
+				return 0;
+			default:
+				return 0;
 		}
 	};
 
@@ -29,14 +33,14 @@ export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
 		for (const attr of group.attributes) {
 			const prefValue = currentPrefs[group.id]?.[attr.id] || 'not_important';
 			const weight = getWeight(prefValue);
-			
+
 			if (weight > 0) {
 				totalWeights += weight;
-				
+
 				// Calculate weighted score
 				const match = attr.match || 0;
 				totalWeightedScore += match * weight;
-				
+
 				// Check for mandatory mismatches and uncertainties
 				if (prefValue === 'mandatory') {
 					if (match <= 10) {
@@ -45,7 +49,7 @@ export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
 						hasMandatoryUncertain = true;
 					}
 				}
-				
+
 				// Track unknown attributes
 				if (attr.status === 'unknown') {
 					unknownWeightSum += weight;
@@ -55,11 +59,12 @@ export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
 	}
 
 	// Normalize score to 0-100
-	const normalizedScore = totalWeights > 0 ? Math.round((totalWeightedScore / totalWeights) / 100 * 100) : 0;
-	
+	const normalizedScore =
+		totalWeights > 0 ? Math.round((totalWeightedScore / totalWeights / 100) * 100) : 0;
+
 	let matchStatus = 'unknown_match';
 	const unknownRatio = totalWeights > 0 ? unknownWeightSum / totalWeights : 0;
-	
+
 	if (hasMandatoryMismatch) {
 		matchStatus = 'does_not_match';
 	} else if (hasMandatoryUncertain) {
@@ -95,12 +100,12 @@ export function sortProductsByScore<T extends ProductWithScore>(products: T[]): 
 		// Non-"does_not_match" products come first
 		if (a.matchStatus === 'does_not_match' && b.matchStatus !== 'does_not_match') return 1;
 		if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
-		
+
 		// Then by score (highest first)
 		const scoreA = a.score || 0;
 		const scoreB = b.score || 0;
 		if (scoreB !== scoreA) return scoreB - scoreA;
-		
+
 		// Original order as tiebreaker (maintain existing order)
 		return 0;
 	});

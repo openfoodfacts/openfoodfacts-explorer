@@ -7,7 +7,7 @@
 		attributeGroups,
 		updatePreference,
 		resetToDefaults,
-		classifyProductsEnabled,
+		classifyProductsEnabled
 	} from '$lib/stores/preferencesStore';
 
 	type PreferencesFormProps = {

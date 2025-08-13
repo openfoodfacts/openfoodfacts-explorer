@@ -20,10 +20,7 @@
 	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
-	import {
-		userPreferences,
-		resetToDefaults,
-	} from '$lib/stores/preferencesStore';
+	import { userPreferences, resetToDefaults } from '$lib/stores/preferencesStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');

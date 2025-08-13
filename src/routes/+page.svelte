@@ -15,11 +15,11 @@
 	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
 
 	let sortedProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
-	
+
 	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
-	
+
 	let scoredProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
-	
+
 	let attributesByCode: Record<string, unknown[]> = $state({});
 
 	// Track which product is being navigated to
@@ -60,7 +60,7 @@
 		let dedupProducts = deduplicate(products, (it) => it.product.code);
 
 		// get attributes for all products using the API
-		const productCodes = dedupProducts.map(state => state.product.code);
+		const productCodes = dedupProducts.map((state) => state.product.code);
 		const attrs = await productApi.getBulkProductAttributes(productCodes);
 		attributesByCode = attrs;
 
@@ -75,8 +75,12 @@
 				attributes: attributesByCode[state.product.code] || []
 			}));
 
-			const result = scoreAndSortProducts(productsWithAttributes, $userPreferences, $classifyProductsEnabled);
-			
+			const result = scoreAndSortProducts(
+				productsWithAttributes,
+				$userPreferences,
+				$classifyProductsEnabled
+			);
+
 			scoredProducts = result.scoredProducts;
 			sortedProducts = result.sortedProducts;
 		}

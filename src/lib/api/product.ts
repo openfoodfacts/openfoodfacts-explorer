@@ -38,13 +38,13 @@ export class ProductsApi {
 			`${API_HOST}/api/v2/search?code=${codesParam}&fields=product_name,code,attribute_groups`
 		);
 		const attributesData = await attributesResponse.json();
-		
+
 		// Create a map of product code to attribute groups
 		const attributesByCode: Record<string, unknown[]> = {};
 		for (const product of attributesData.products || []) {
 			attributesByCode[product.code] = product.attribute_groups || [];
 		}
-		
+
 		return attributesByCode;
 	}
 
