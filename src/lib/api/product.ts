@@ -12,7 +12,7 @@ export class ProductsApi {
 
 	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
 		const params = new URLSearchParams({
-			fields: ['product_name', 'code', 'attribute_groups_en'].join(','),
+			fields: ['product_name', 'code', 'attribute_groups'].join(','),
 			lc: get(preferences).lang,
 			cc: get(preferences).country,
 			product_type: 'all'
@@ -29,7 +29,23 @@ export class ProductsApi {
 		}
 
 		const data = await res.json();
-		return data.product?.attribute_groups_en || [];
+		return data.product?.attribute_groups || [];
+	}
+
+	async getBulkProductAttributes(productCodes: string[]): Promise<Record<string, unknown[]>> {
+		const codesParam = productCodes.join(',');
+		const attributesResponse = await this.fetch(
+			`${API_HOST}/api/v2/search?code=${codesParam}&fields=product_name,code,attribute_groups`
+		);
+		const attributesData = await attributesResponse.json();
+		
+		// Create a map of product code to attribute groups
+		const attributesByCode: Record<string, unknown[]> = {};
+		for (const product of attributesData.products || []) {
+			attributesByCode[product.code] = product.attribute_groups || [];
+		}
+		
+		return attributesByCode;
 	}
 
 	async getProduct<T extends Array<keyof Product>>(

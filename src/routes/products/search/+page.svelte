@@ -24,9 +24,31 @@
 	} from '$lib/facets';
 
 	import type { PageProps } from './$types';
+	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { scoreAndSortProducts } from '$lib/productScoring';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
+
+	let sortedProducts: any[] = $state([]);
+	let scoredProducts: any[] = $state([]);
+
+	// Effect to calculate scores and sort products
+	$effect(() => {
+		if (result?.hits && result.hits.length > 0) {
+			const { scoredProducts: scored, sortedProducts: sorted } = scoreAndSortProducts(
+				result.hits, 
+				$userPreferences, 
+				$classifyProductsEnabled
+			);
+			
+			scoredProducts = scored;
+			sortedProducts = sorted;
+		} else {
+			scoredProducts = [];
+			sortedProducts = [];
+		}
+	});
 
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
@@ -216,11 +238,10 @@
 
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each result.hits as product (product.code)}
+			{#each sortedProducts as product (product.code)}
 				{#if product.code != null}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
-
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4">

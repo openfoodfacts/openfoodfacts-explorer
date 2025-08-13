@@ -11,10 +11,16 @@
 	import { onMount } from 'svelte';
 	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
-	import type { PageProps } from './$types';
+	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
 
-	let { data }: PageProps = $props();
-	let { products } = $derived(data);
+	let sortedProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
+	
+	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
+	
+	let scoredProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
+	
+	let attributesByCode: Record<string, unknown[]> = $state({});
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
@@ -51,11 +57,36 @@
 		);
 
 		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
+		let dedupProducts = deduplicate(products, (it) => it.product.code);
+
+		// get attributes for all products using the API
+		const productCodes = dedupProducts.map(state => state.product.code);
+		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		attributesByCode = attrs;
+
+		return dedupProducts;
 	}
+
+	// Effect to add scores to products and sort them based on classify toggle
+	$effect(() => {
+		if (resolvedProducts.length > 0 && Object.keys(attributesByCode).length > 0) {
+			const productsWithAttributes = resolvedProducts.map((state) => ({
+				...state,
+				attributes: attributesByCode[state.product.code] || []
+			}));
+
+			const result = scoreAndSortProducts(productsWithAttributes, $userPreferences, $classifyProductsEnabled);
+			
+			scoredProducts = result.scoredProducts;
+			sortedProducts = result.sortedProducts;
+		}
+	});
 
 	onMount(() => {
 		products = getProducts();
+		products.then((prods) => {
+			resolvedProducts = prods;
+		});
 	});
 </script>
 
@@ -126,8 +157,8 @@
 				{#each Array(SKELETON_COUNT) as _, index (index)}
 					<div class="skeleton h-36 w-full rounded-lg"></div>
 				{/each}
-			{:then products}
-				{#each products as state (state.product.code)}
+			{:then _}
+				{#each sortedProducts as state (state.product.code)}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<product-card

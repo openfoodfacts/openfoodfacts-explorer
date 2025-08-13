@@ -20,6 +20,10 @@
 	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
+	import {
+		userPreferences,
+		resetToDefaults,
+	} from '$lib/stores/preferencesStore';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -39,6 +43,11 @@
 	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
+
+		// if preferences are not present then use defaults to set it in the localstorage
+		if (!Object.keys($userPreferences).length) {
+			resetToDefaults();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
