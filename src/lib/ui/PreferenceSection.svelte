@@ -13,7 +13,7 @@
 		}[];
 	};
 
-	type PreferenceSectionProps = {
+	type Props = {
 		title: string;
 		options: PreferenceOption[];
 		getValue: (id: string) => string;
@@ -31,7 +31,7 @@
 		category,
 		showWarning = false,
 		warningText = ''
-	}: PreferenceSectionProps = $props();
+	}: Props = $props();
 </script>
 
 <div class="bg-base-200 rounded-box collapse-arrow collapse">

@@ -43,7 +43,7 @@
 		injectSpeedInsights();
 
 		// if preferences are not present then use defaults to set it in the localstorage
-		if (!Object.keys($userPreferences).length) {
+		if (!$userPreferences.length) {
 			resetToDefaults();
 		}
 	});

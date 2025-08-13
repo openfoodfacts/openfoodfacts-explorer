@@ -1,4 +1,5 @@
-import { calculateScore, sortProductsByScore, type ScoreData } from '$lib/scoring';
+import { calculateScore, sortProductsByScore, type ScoreData, type ProductAttributeGroup } from '$lib/scoring';
+import type { UserPreferences } from '$lib/stores/preferencesStore';
 
 export interface ProductWithAttributes {
 	[key: string]: unknown;
@@ -6,7 +7,7 @@ export interface ProductWithAttributes {
 	code?: string;
 }
 
-export interface ScoredProduct extends ProductWithAttributes {
+export interface ScoredProduct {
 	score: number;
 	matchStatus: string;
 	scoreData: ScoreData;
@@ -21,7 +22,7 @@ export interface ScoredProduct extends ProductWithAttributes {
  */
 export function scoreAndSortProducts<T extends ProductWithAttributes>(
 	products: T[],
-	userPreferences: Record<string, Record<string, string>>,
+	userPreferences: UserPreferences,
 	classifyEnabled: boolean
 ): {
 	scoredProducts: (T & ScoredProduct)[];
@@ -35,7 +36,7 @@ export function scoreAndSortProducts<T extends ProductWithAttributes>(
 	}
 
 	const productsWithScores = products.map((product) => {
-		const productAttrs = product.attributes || [];
+		const productAttrs = (product.attributes || []) as ProductAttributeGroup[];
 		const scoreData = calculateScore(productAttrs, userPreferences);
 		return {
 			...product,

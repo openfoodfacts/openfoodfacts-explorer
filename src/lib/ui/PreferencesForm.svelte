@@ -7,7 +7,8 @@
 		attributeGroups,
 		updatePreference,
 		resetToDefaults,
-		classifyProductsEnabled
+		classifyProductsEnabled,
+		getPreferenceValue
 	} from '$lib/stores/preferencesStore';
 
 	type PreferencesFormProps = {
@@ -42,7 +43,7 @@
 
 	// Reactive function to get values from the store
 	const getValueFromCategory = (category: string, id: string) => {
-		return $userPreferences?.[category]?.[id] || 'not_important';
+		return getPreferenceValue($userPreferences, category, id);
 	};
 
 	// Dynamic sections based on attribute groups

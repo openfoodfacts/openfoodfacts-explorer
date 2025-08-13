@@ -1,3 +1,6 @@
+import type { UserPreferences } from '$lib/stores/preferencesStore';
+import { getPreferenceValue } from '$lib/stores/preferencesStore';
+
 export type ScoreData = {
 	score: number;
 	matchStatus: string;
@@ -5,8 +8,18 @@ export type ScoreData = {
 	totalWeightedScore: number;
 };
 
-// @ts-expect-error: userPreferences may not have group.id as a key, but we handle it safely
-export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
+export type ProductAttribute = {
+	id: string;
+	match?: number;
+	status?: string;
+};
+
+export type ProductAttributeGroup = {
+	id: string;
+	attributes: ProductAttribute[];
+};
+
+export const calculateScore = (productAttributes: ProductAttributeGroup[], currentPrefs: UserPreferences): ScoreData => {
 	let totalWeightedScore = 0;
 	let totalWeights = 0;
 	let hasMandatoryMismatch = false;
@@ -31,7 +44,7 @@ export const calculateScore = (productAttributes, currentPrefs): ScoreData => {
 
 	for (const group of productAttributes) {
 		for (const attr of group.attributes) {
-			const prefValue = currentPrefs[group.id]?.[attr.id] || 'not_important';
+			const prefValue = getPreferenceValue(currentPrefs, group.id, attr.id);
 			const weight = getWeight(prefValue);
 
 			if (weight > 0) {
