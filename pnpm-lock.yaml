@@ -81,6 +81,9 @@ importers:
       '@zoom-image/svelte':
         specifier: ^0.3.4
         version: 0.3.4(svelte@5.38.0)
+      cytoscape:
+        specifier: ^3.33.0
+        version: 3.33.0
       daisyui:
         specifier: 5.0.50
         version: 5.0.50
@@ -1251,6 +1254,10 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+
+  cytoscape@3.33.0:
+    resolution: {integrity: sha512-2d2EwwhaxLWC8ahkH1PpQwCyu6EY3xDRdcEJXrLTb4fOUtVc+YWQalHU67rFS1a6ngj1fgv9dQLtJxP/KAFZEw==}
+    engines: {node: '>=0.10'}
 
   d3-array@3.2.4:
     resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
@@ -3688,6 +3695,8 @@ snapshots:
       which: 2.0.2
 
   cssesc@3.0.0: {}
+
+  cytoscape@3.33.0: {}
 
   d3-array@3.2.4:
     dependencies:
