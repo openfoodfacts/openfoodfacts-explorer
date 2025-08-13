@@ -50,7 +50,7 @@
 			</div>
 		{/if}
 
-		{#each options as option}
+		{#each options as option (option.id)}
 			<div class="flex items-start gap-3 p-2">
 				<!-- Icon -->
 				<div class="mt-1 flex-shrink-0">
@@ -67,7 +67,7 @@
 				<div class="flex-1">
 					<h4 class="text-base-content mb-2 text-sm font-medium">{option.label}</h4>
 					<div class="flex flex-wrap gap-4">
-						{#each option.options as radioOption}
+						{#each option.options as radioOption (radioOption.value)}
 							<label class="flex cursor-pointer items-center gap-2">
 								<input
 									type="radio"

@@ -18,8 +18,6 @@
 
 	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
 
-	let scoredProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
-
 	let attributesByCode: Record<string, unknown[]> = $state({});
 
 	// Track which product is being navigated to
@@ -81,7 +79,6 @@
 				$classifyProductsEnabled
 			);
 
-			scoredProducts = result.scoredProducts;
 			sortedProducts = result.sortedProducts;
 		}
 	});

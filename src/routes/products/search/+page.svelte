@@ -30,22 +30,19 @@
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
 
-	let sortedProducts: any[] = $state([]);
-	let scoredProducts: any[] = $state([]);
+	let sortedProducts: unknown[] = $state([]);
 
 	// Effect to calculate scores and sort products
 	$effect(() => {
 		if (result?.hits && result.hits.length > 0) {
-			const { scoredProducts: scored, sortedProducts: sorted } = scoreAndSortProducts(
+			const { sortedProducts: sorted } = scoreAndSortProducts(
 				result.hits,
 				$userPreferences,
 				$classifyProductsEnabled
 			);
 
-			scoredProducts = scored;
 			sortedProducts = sorted;
 		} else {
-			scoredProducts = [];
 			sortedProducts = [];
 		}
 	});

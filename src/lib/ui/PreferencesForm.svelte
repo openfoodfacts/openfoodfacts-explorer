@@ -101,7 +101,7 @@
 		{/if}
 
 		<!-- Preference Sections -->
-		{#each sections as section}
+		{#each sections as section (section.id)}
 			<PreferenceSection
 				title={section.title}
 				options={section.options}
