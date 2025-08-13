@@ -19,7 +19,10 @@ export type ProductAttributeGroup = {
 	attributes: ProductAttribute[];
 };
 
-export const calculateScore = (productAttributes: ProductAttributeGroup[], currentPrefs: UserPreferences): ScoreData => {
+export const calculateScore = (
+	productAttributes: ProductAttributeGroup[],
+	currentPrefs: UserPreferences
+): ScoreData => {
 	let totalWeightedScore = 0;
 	let totalWeights = 0;
 	let hasMandatoryMismatch = false;

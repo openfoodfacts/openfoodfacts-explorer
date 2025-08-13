@@ -69,8 +69,8 @@ export const attributeGroups = getAttributeGroups();
 export function updatePreference(category: string, preference: string, value: string) {
 	userPreferences.update((prefs: UserPreferences) => {
 		const preferenceId = `${category}.${preference}`;
-		const existingPreferenceIndex = prefs.findIndex(p => p.id === preferenceId);
-		
+		const existingPreferenceIndex = prefs.findIndex((p) => p.id === preferenceId);
+
 		if (existingPreferenceIndex >= 0) {
 			// Update existing preference
 			const newPrefs = [...prefs];
@@ -110,16 +110,22 @@ export function resetToDefaults(
 }
 
 // Helper function to get preference value by category and attribute
-export function getPreferenceValue(prefs: UserPreferences, category: string, attribute: string): string {
+export function getPreferenceValue(
+	prefs: UserPreferences,
+	category: string,
+	attribute: string
+): string {
 	const preferenceId = `${category}.${attribute}`;
-	const preference = prefs.find(p => p.id === preferenceId);
+	const preference = prefs.find((p) => p.id === preferenceId);
 	return preference?.value || 'not_important';
 }
 
 // Helper function to convert array preferences to old object format for backward compatibility
-export function preferencesToObject(prefs: UserPreferences): Record<string, Record<string, string>> {
+export function preferencesToObject(
+	prefs: UserPreferences
+): Record<string, Record<string, string>> {
 	const result: Record<string, Record<string, string>> = {};
-	
+
 	for (const pref of prefs) {
 		if (pref.type === 'attribute') {
 			if (!result[pref.categoryId]) {
@@ -128,7 +134,7 @@ export function preferencesToObject(prefs: UserPreferences): Record<string, Reco
 			result[pref.categoryId][pref.attributeId] = pref.value;
 		}
 	}
-	
+
 	return result;
 }
 

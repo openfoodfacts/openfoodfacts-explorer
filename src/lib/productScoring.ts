@@ -1,4 +1,9 @@
-import { calculateScore, sortProductsByScore, type ScoreData, type ProductAttributeGroup } from '$lib/scoring';
+import {
+	calculateScore,
+	sortProductsByScore,
+	type ScoreData,
+	type ProductAttributeGroup
+} from '$lib/scoring';
 import type { UserPreferences } from '$lib/stores/preferencesStore';
 
 export interface ProductWithAttributes {
