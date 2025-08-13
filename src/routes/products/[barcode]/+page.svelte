@@ -5,7 +5,6 @@
 
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Card from '$lib/ui/Card.svelte';
-	import Debug from '$lib/ui/Debug.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
@@ -17,6 +16,7 @@
 
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	type Props = { data: PageData };
 
@@ -33,6 +33,9 @@
 
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
+
+	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
+	></robotoff-contribution-message>
 
 	<ProductAttributes {productAttributes} />
 
@@ -59,14 +62,4 @@
 			/>
 		</Card>
 	{/if}
-
-	<Card>
-		{#await data?.questions}
-			Loading...
-		{:then questions}
-			<h1 class="my-4 text-2xl font-bold sm:text-4xl">Questions</h1>
-
-			<Debug data={questions} />
-		{/await}
-	</Card>
 </div>

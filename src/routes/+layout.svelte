@@ -17,10 +17,11 @@
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
+	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { userPreferences, resetToDefaults } from '$lib/stores/preferencesStore';
+	import { dev } from '$app/environment';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -74,11 +75,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
+<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->
-	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
+	<off-webcomponents-configuration
+		language-code="en"
+		assets-images-path="/assets/webcomponents"
+		robotoff-configuration={{
+			dryRun: !dev,
+			apiUrl: 'https://robotoff.openfoodfacts.net/api/v1',
+			imgUrl: 'https://images.openfoodfacts.net/images/products'
+		}}
+	>
 	</off-webcomponents-configuration>
 
 	<div class="flex justify-center">

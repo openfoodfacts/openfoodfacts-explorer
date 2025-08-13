@@ -1,13 +1,16 @@
 import {
 	PUBLIC_AUTH_BASE_URL,
 	PUBLIC_AUTH_PKCE_ID,
-	PUBLIC_KEYCLOAK_REALM
+	PUBLIC_IMAGES_URL,
+	PUBLIC_KEYCLOAK_REALM,
+	PUBLIC_ROBOTOFF_URL
 } from '$env/static/public';
+
+export { PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL, PUBLIC_IMAGES_URL as IMAGE_HOST };
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
-export const IMAGE_HOST = 'https://images.openfoodfacts.org';
 export const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
 export const PRODUCT_REPORT_URL = `${API_HOST}/product/`;
 
@@ -19,7 +22,7 @@ export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_V
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
 export const TAXONOMY_URL = (taxo: string) => `${STATIC_HOST}/data/taxonomies/${taxo}.json`;
 export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${barcode}.json`;
-export const PRODUCT_IMAGE_URL = (path: string) => `${IMAGE_HOST}/images/products/${path}`;
+export const PRODUCT_IMAGE_URL = (path: string) => `${PUBLIC_IMAGES_URL}/images/products/${path}`;
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
@@ -41,3 +44,6 @@ export const SORT_OPTIONS = [
 ];
 
 export const NO_MARGIN_ROUTES = ['/static/discover', '/static/contribute', '/static/producers'];
+
+export const MATOMO_SITE_ID = 17;
+export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';

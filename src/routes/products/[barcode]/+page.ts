@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { OpenFoodFacts, PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import {
 	type Brand,
@@ -41,7 +41,6 @@ async function getPricesCoords(api: PricesApi, code: string) {
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
-	const off = new OpenFoodFacts(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
 	const state = await productsApi.getProduct(params.barcode);
@@ -66,21 +65,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const productAttributes = await productsApi.getProductAttributes(params.barcode);
 
-	// TODO: parseInt should be removed. Barcodes are strings
-	const questions = off.robotoff.questionsByProductCode(parseInt(params.barcode)).then(
-		(res) => {
-			if (res?.status === 'found') {
-				return res.questions ?? [];
-			} else {
-				return [];
-			}
-		},
-		(e) => {
-			console.error(e);
-			return [];
-		}
-	);
-
 	return {
 		state,
 		productAttributes: productAttributes,
@@ -94,7 +78,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			countries,
 			origins
 		},
-		prices: await pricesResponse,
-		questions
+		prices: await pricesResponse
 	};
 };
