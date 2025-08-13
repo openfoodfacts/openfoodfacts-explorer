@@ -17,7 +17,7 @@
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
+	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -69,7 +69,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
+<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->
