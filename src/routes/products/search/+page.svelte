@@ -25,12 +25,14 @@
 
 	import type { PageProps } from './$types';
 	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
-	import { scoreAndSortProducts } from '$lib/productScoring';
+	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductReduced } from '$lib/api/product';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
 
-	let sortedProducts: unknown[] = $state([]);
+	let sortedProducts: (Product & ProductReduced & ScoredProduct)[] = $state([]);
 
 	// Effect to calculate scores and sort products
 	$effect(() => {
