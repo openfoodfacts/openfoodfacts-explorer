@@ -57,7 +57,7 @@
 				iconImg: attribute.icon_url,
 				options: attribute.values.map((value) => ({
 					value,
-					label: value
+					label: $_(`preferences.options.${value}`) || value
 				})),
 				description: 'setting_note' in attribute ? attribute.setting_note : undefined
 			})),
