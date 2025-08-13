@@ -20,6 +20,7 @@
 	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
+	import { dev } from '$app/environment';
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -72,7 +73,15 @@
 
 {#if !$isLoading}
 	<!-- Global OpenFoodFacts Web Components Configuration -->
-	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
+	<off-webcomponents-configuration
+		language-code="en"
+		assets-images-path="/assets/webcomponents"
+		robotoff-configuration={{
+			dryRun: !dev,
+			apiUrl: 'https://robotoff.openfoodfacts.net/api/v1',
+			imgUrl: 'https://images.openfoodfacts.net/images/products'
+		}}
+	>
 	</off-webcomponents-configuration>
 
 	<div class="flex justify-center">
