@@ -121,37 +121,19 @@
 		</div>
 	</Card>
 
-	<!-- Preferences Toggle Button -->
-	{#if !showPreferences}
-		<div class="mt-6 flex w-full justify-end">
-			<button
-				class="btn btn-primary flex items-center justify-center gap-2"
-				onclick={() => (showPreferences = !showPreferences)}
-			>
+	<!-- Preferences Collapsible Section -->
+	<div class="mt-6 w-full">
+		<div class="collapse collapse-arrow border border-base-300 bg-base-200">
+			<input type="checkbox" bind:checked={showPreferences} />
+			<div class="collapse-title text-md font-medium flex items-center gap-2">
 				<span class="icon-[mdi--cog] text-lg"></span>
 				{$_('preferences.edit_preferences')}
-			</button>
-		</div>
-	{/if}
-
-	<!-- Preferences Form -->
-	{#if showPreferences}
-		<div class="mt-4 w-full">
-			<!-- Top Close Button -->
-			<div class="mb-4 flex justify-end">
-				<button
-					class="btn btn-primary flex items-center gap-2"
-					onclick={() => (showPreferences = false)}
-					aria-label={$_('preferences.close')}
-				>
-					<span class="icon-[mdi--close] text-lg"></span>
-					{$_('preferences.close')}
-				</button>
 			</div>
-
-			<PreferencesForm onClose={() => (showPreferences = false)} />
+			<div class="collapse-content">
+				<PreferencesForm onClose={() => (showPreferences = false)} />
+			</div>
 		</div>
-	{/if}
+	</div>
 
 	<div class="mt-8 flex w-full">
 		<div

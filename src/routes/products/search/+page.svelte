@@ -181,37 +181,25 @@
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
 		<div class="mb-4 flex justify-end gap-2">
-			<button
-				class="btn btn-primary btn-sm flex items-center gap-2"
-				onclick={() => (showPreferences = !showPreferences)}
-			>
-				<span class="icon-[mdi--cog] text-lg"></span>
-				{$_('preferences.edit_preferences')}
-			</button>
 			<button class="btn btn-primary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
 				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
 			</button>
 		</div>
 
-		<!-- Preferences Form -->
-		{#if showPreferences}
-			<div class="mt-4 w-full">
-				<!-- Top Close Button -->
-				<div class="mb-4 flex justify-end">
-					<button
-						class="btn btn-primary flex items-center gap-2"
-						onclick={() => (showPreferences = false)}
-						aria-label={$_('preferences.close')}
-					>
-						<span class="icon-[mdi--close] text-lg"></span>
-						{$_('preferences.close')}
-					</button>
-				</div>
-
-				<PreferencesForm onClose={() => (showPreferences = false)} />
+		<!-- Preferences Collapsible Section -->
+		<div class="mb-4 w-full">
+			<div class="collapse collapse-arrow border border-base-300 bg-base-200">
+				<input type="checkbox" bind:checked={showPreferences} />
+				<div class="collapse-title text-md font-medium flex items-center gap-2">
+				<span class="icon-[mdi--cog] text-lg"></span>
+				{$_('preferences.edit_preferences')}
 			</div>
-		{/if}
+				<div class="collapse-content">
+					<PreferencesForm onClose={() => (showPreferences = false)} />
+				</div>
+			</div>
+		</div>
 
 		{#if showGraphs}
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>

@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 
 	type PreferenceOption = {
 		id: string;
 		label: string;
 		icon: string;
 		iconImg?: string;
-		iconColor: string;
 		description?: string;
 		options: {
 			value: string;
@@ -18,8 +16,6 @@
 	type PreferenceSectionProps = {
 		title: string;
 		options: PreferenceOption[];
-		expanded: boolean;
-		onToggle: () => void;
 		getValue: (id: string) => string;
 		onChange: (category: string, preference: string, value: string) => void;
 		category: string;
@@ -30,8 +26,6 @@
 	let {
 		title,
 		options,
-		expanded,
-		onToggle,
 		getValue,
 		onChange,
 		category,
@@ -40,27 +34,11 @@
 	}: PreferenceSectionProps = $props();
 </script>
 
-<div class="bg-base-200 rounded-box collapse" class:collapse-open={expanded}>
-	<div
-		class="collapse-title flex cursor-pointer items-center gap-2 text-lg font-medium"
-		role="button"
-		tabindex="0"
-		onclick={onToggle}
-		onkeydown={(e) => {
-			if (e.key === 'Enter' || e.key === ' ') {
-				e.preventDefault();
-				onToggle();
-			}
-		}}
-		aria-expanded={expanded}
-	>
-		<span
-			class="icon-[mdi--chevron-down] transition-transform duration-200"
-			class:rotate-180={!expanded}
-		></span>
+<div class="bg-base-200 rounded-box collapse collapse-arrow">
+	<input type="checkbox" checked />
+	<div class="collapse-title text-lg font-medium">
 		{title}
 	</div>
-
 	<div class="collapse-content space-y-4">
 		{#if showWarning && warningText}
 			<div
@@ -78,7 +56,7 @@
 				<div class="mt-1 flex-shrink-0">
 					{#if option.iconImg}
 						<img
-							src={KP_ATTRIBUTE_IMG(option.iconImg)}
+							src={option.iconImg}
 							alt={option.label}
 							class="h-8 w-8 object-contain md:h-10 md:w-10"
 						/>
