@@ -41,3 +41,6 @@ export const SORT_OPTIONS = [
 ];
 
 export const NO_MARGIN_ROUTES = ['/static/discover', '/static/contribute', '/static/producers'];
+
+export const MATOMO_SITE_ID = 17;
+export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
