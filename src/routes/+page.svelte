@@ -123,9 +123,9 @@
 
 	<!-- Preferences Collapsible Section -->
 	<div class="mt-6 w-full">
-		<div class="collapse collapse-arrow border border-base-300 bg-base-200">
+		<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
 			<input type="checkbox" bind:checked={showPreferences} />
-			<div class="collapse-title text-md font-medium flex items-center gap-2">
+			<div class="collapse-title text-md flex items-center gap-2 font-medium">
 				<span class="icon-[mdi--cog] text-lg"></span>
 				{$_('preferences.edit_preferences')}
 			</div>

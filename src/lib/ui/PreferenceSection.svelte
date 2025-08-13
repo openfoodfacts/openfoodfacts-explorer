@@ -34,7 +34,7 @@
 	}: PreferenceSectionProps = $props();
 </script>
 
-<div class="bg-base-200 rounded-box collapse collapse-arrow">
+<div class="bg-base-200 rounded-box collapse-arrow collapse">
 	<input type="checkbox" checked />
 	<div class="collapse-title text-lg font-medium">
 		{title}
