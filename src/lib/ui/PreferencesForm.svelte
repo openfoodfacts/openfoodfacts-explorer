@@ -46,17 +46,33 @@
 		return getPreferenceValue($userPreferences, category, id);
 	};
 
-	// Dynamic sections based on attribute groups
+	let resolvedAttributeGroups: any[] = $state([]);
+	let isLoading = $state(true);
+
+	$effect(() => {
+		attributeGroups
+			.then((groups) => {
+				resolvedAttributeGroups = groups || [];
+				isLoading = false;
+			})
+			.catch((error) => {
+				console.error('Failed to load attribute groups:', error);
+				resolvedAttributeGroups = [];
+				isLoading = false;
+			});
+	});
+
+	// Dynamic sections based on resolved attribute groups
 	const sections = $derived(
-		attributeGroups.map((group) => ({
+		resolvedAttributeGroups.map((group) => ({
 			id: group.id,
 			title: group.name,
-			options: group.attributes.map((attribute) => ({
+			options: (group.attributes || []).map((attribute: any) => ({
 				id: attribute.id,
 				label: attribute.setting_name || attribute.name,
 				icon: attribute.id,
 				iconImg: attribute.icon_url,
-				options: attribute.values.map((value) => ({
+				options: (attribute.values || []).map((value: any) => ({
 					value,
 					label: $_(`preferences.options.${value}`) || value
 				})),
@@ -101,17 +117,24 @@
 		{/if}
 
 		<!-- Preference Sections -->
-		{#each sections as section (section.id)}
-			<PreferenceSection
-				title={section.title}
-				options={section.options}
-				getValue={(id) => getValueFromCategory(section.id, id)}
-				onChange={handlePreferenceChange}
-				category={section.id}
-				showWarning={section.showWarning}
-				warningText={section.warningText}
-			/>
-		{/each}
+		{#if isLoading}
+			<div class="flex items-center justify-center py-8">
+				<span class="loading loading-spinner loading-lg"></span>
+				<span class="ml-2">Loading preferences...</span>
+			</div>
+		{:else}
+			{#each sections as section (section.id)}
+				<PreferenceSection
+					title={section.title}
+					options={section.options}
+					getValue={(id) => getValueFromCategory(section.id, id)}
+					onChange={handlePreferenceChange}
+					category={section.id}
+					showWarning={section.showWarning}
+					warningText={section.warningText}
+				/>
+			{/each}
+		{/if}
 
 		<!-- Close Button -->
 		<div class="border-base-300 flex justify-end border-t pt-4">

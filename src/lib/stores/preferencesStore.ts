@@ -35,14 +35,11 @@ export type UserPreference = AttributePreference;
 
 export type UserPreferences = UserPreference[];
 
-function generateDefaultPreferences(): UserPreferences {
-	const attributeGroups = getAttributeGroups();
-
+export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreferences {
 	const getDefaultValue = (attribute: Attribute): string => {
 		return attribute.default || 'not_important';
 	};
 
-	// Build preferences dynamically from the API data
 	const defaultPreferencesArray: UserPreferences = [];
 
 	for (const group of attributeGroups) {
@@ -61,10 +58,10 @@ function generateDefaultPreferences(): UserPreferences {
 	return defaultPreferencesArray;
 }
 
-export const defaultPreferences: UserPreferences = generateDefaultPreferences();
+export const defaultPreferences: UserPreferences = [];
 
-// Export attribute groups for use in components
-export const attributeGroups = getAttributeGroups();
+// Export attribute groups as a promise for use in components
+export const attributeGroups = getAttributeGroups(fetch);
 
 export function updatePreference(category: string, preference: string, value: string) {
 	userPreferences.update((prefs: UserPreferences) => {
