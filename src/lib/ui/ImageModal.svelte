@@ -9,6 +9,8 @@
 	let zoomLevel = $state(1);
 	const MAX_ZOOM = 3;
 
+	let rotation = $state(0);
+
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
 		zoomLevel = 1;
@@ -38,13 +40,19 @@
 		zoomLevel = 1;
 	}
 
+	function rotateRight() {
+		rotation = rotation + 90;
+	}
+
+	function rotateLeft() {
+		rotation = rotation - 90;
+	}
+
 	let container: HTMLDivElement | undefined = $state();
 	const { createZoomImage, setZoomImageState, zoomImageState } = useZoomImageWheel();
 
 	$effect(() => {
-		if (setZoomImageState != null) {
-			setZoomImageState({ currentZoom: zoomLevel });
-		}
+		setZoomImageState?.({ currentZoom: zoomLevel, currentRotation: rotation });
 	});
 
 	onMount(() => {
@@ -62,7 +70,7 @@
 </script>
 
 <dialog
-	class="border-base-300 bg-base-100 fixed inset-0 m-auto max-h-[95vh] max-w-[95vw] border p-0 shadow-lg"
+	class="border-base-300 bg-base-100 fixed inset-0 m-auto h-[90vh] w-[90vw] rounded-xl border p-0 shadow-lg"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={(e) => {
@@ -72,6 +80,40 @@
 	}}
 >
 	<div class="relative flex h-full w-full flex-col">
+		<div
+			bind:this={container}
+			class="flex h-full w-full cursor-move items-center justify-center overflow-hidden p-6"
+		>
+			<img class="max-h-[85vh] max-w-[85vw] object-contain" src={image?.url} alt={image?.alt} />
+		</div>
+
+		<div class="absolute right-2 z-10 flex h-full flex-col items-center justify-center gap-2">
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={zoomIn}
+				title="Zoom In"
+				aria-label="Zoom In"
+				disabled={zoomLevel >= MAX_ZOOM}
+			>
+				<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
+			</button>
+			<button
+				class="btn bg-base-100/80 hover:bg-base-100 text-md px-2 py-2 font-medium text-white"
+				onclick={resetZoom}
+			>
+				{zoomLevel.toFixed(1)} x
+			</button>
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={zoomOut}
+				title="Zoom Out"
+				aria-label="Zoom Out"
+				disabled={zoomLevel <= 1}
+			>
+				<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
+			</button>
+		</div>
+
 		<div class="absolute top-2 right-2 z-10">
 			<button
 				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
@@ -86,45 +128,23 @@
 			</button>
 		</div>
 
-		<div
-			bind:this={container}
-			class="flex h-full w-full cursor-zoom-in items-center justify-center overflow-hidden p-6"
-		>
-			<img class="max-h-[85vh] max-w-[85vw] object-contain" src={image?.url} alt={image?.alt} />
-		</div>
-
-		<div class="absolute right-4 bottom-4 z-10 flex items-center gap-2">
-			{#if zoomLevel > 1}
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={resetZoom}
-					title="Reset Zoom"
-					aria-label="Reset Zoom"
-				>
-					<span class="icon-[mdi--magnify-close] h-6 w-6"></span>
-				</button>
-				<span class="bg-base-100/80 text-md rounded-md px-2 py-2 font-medium text-white">
-					{zoomLevel.toFixed(1)} x
-				</span>
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={zoomOut}
-					title="Zoom Out"
-					aria-label="Zoom Out"
-				>
-					<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
-				</button>
-			{/if}
-			{#if zoomLevel < MAX_ZOOM}
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={zoomIn}
-					title="Zoom In"
-					aria-label="Zoom In"
-				>
-					<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
-				</button>
-			{/if}
+		<div class="absolute right-2 bottom-2 z-10 flex gap-2">
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={rotateLeft}
+				title="Rotate Left"
+				aria-label="Rotate Left"
+			>
+				<span class="icon-[mdi--rotate-left] h-6 w-6"></span>
+			</button>
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={rotateRight}
+				title="Rotate Right"
+				aria-label="Rotate Right"
+			>
+				<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
+			</button>
 		</div>
 	</div>
 </dialog>
