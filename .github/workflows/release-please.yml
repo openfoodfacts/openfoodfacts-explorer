@@ -1,4 +1,7 @@
 name: 🚀 Adding the commit to the next release
+permissions:
+  contents: read
+  pull-requests: write
 on:
   push:
     branches:
