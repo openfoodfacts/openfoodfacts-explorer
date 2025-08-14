@@ -14,15 +14,6 @@ importers:
       '@webcomponents/webcomponentsjs':
         specifier: ^2.8.0
         version: 2.8.0
-      svelte-local-storage-store:
-        specifier: ^0.6.4
-        version: 0.6.4(svelte@5.38.1)
-      vega:
-        specifier: ^6.1.2
-        version: 6.1.2
-      vega-lite:
-        specifier: ^6.2.0
-        version: 6.2.0(vega@6.1.2)
     devDependencies:
       '@crowdin/cli':
         specifier: ^4.9.1
@@ -156,6 +147,9 @@ importers:
       svelte-i18n:
         specifier: ^4.0.1
         version: 4.0.1(svelte@5.38.1)
+      svelte-local-storage-store:
+        specifier: ^0.6.4
+        version: 0.6.4(svelte@5.38.1)
       sveltekit-i18n:
         specifier: ^2.4.2
         version: 2.4.2(svelte@5.38.1)
@@ -174,6 +168,12 @@ importers:
       typescript-eslint:
         specifier: ^8.39.0
         version: 8.39.0(eslint@9.33.0(jiti@2.4.2))(typescript@5.9.2)
+      vega:
+        specifier: ^6.1.2
+        version: 6.1.2
+      vega-lite:
+        specifier: ^6.2.0
+        version: 6.2.0(vega@6.1.2)
       vite:
         specifier: ^7.1.1
         version: 7.1.1(jiti@2.4.2)(lightningcss@1.30.1)
