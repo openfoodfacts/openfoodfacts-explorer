@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import type { FolksonomyKey } from '$lib/api/folksonomy';
+	import { _ } from '$lib/i18n';
 
 	interface Props {
 		data: PageData;
@@ -103,17 +104,16 @@
 	}
 </script>
 
-<div class="folksonomy-container flex flex-col gap-6 p-4" transition:fade={{ duration: 500 }}>
+<div class="folksonomy-container flex flex-col gap-6 sm:p-4" transition:fade={{ duration: 500 }}>
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
 			<h1 class="text-primary mb-4 text-3xl font-bold">
-				Folksonomy Engine
-				<span class="text-base font-normal opacity-70">Keys Explorer</span>
+				{$_('folksonomy.title')}
+				<span class="text-base font-normal opacity-70">{$_('folksonomy.subtitle')}</span>
 			</h1>
 
 			<p class="mb-4 max-w-2xl text-sm opacity-75">
-				Folksonomy allows users to add custom tags to products. Browse all available keys below,
-				search for specific keys, or click on any key to see products that use it.
+				{$_('folksonomy.description')}
 			</p>
 
 			<div class="search-section mb-6">
@@ -121,12 +121,12 @@
 					<div class="input-group">
 						<input
 							type="text"
-							placeholder="Search keys..."
+							placeholder={$_('folksonomy.search_placeholder')}
 							class="input input-bordered w-full max-w-md"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label="Search folksonomy keys">
+						<button class="btn btn-square" aria-label={$_('search.button')}>
 							<span class="icon-[mdi--magnify] h-6 w-6"></span>
 						</button>
 					</div>
@@ -134,9 +134,9 @@
 
 				<div class="mt-2 text-sm">
 					{filteredTags.length}
-					{filteredTags.length === 1 ? 'key' : 'keys'} found
+					{filteredTags.length === 1 ? $_('folksonomy.key_found') : $_('folksonomy.keys_found')}
 					{#if searchQuery != null && searchQuery !== ''}
-						for "<span class="font-medium">{searchQuery}</span>"
+						{$_('folksonomy.for')} "<span class="font-medium">{searchQuery}</span>"
 					{/if}
 				</div>
 			</div>
@@ -198,7 +198,7 @@
 
 	{#snippet groupHeader(group: string, keys: FolksonomyKey[])}
 		<div
-			class="group-header flex cursor-pointer items-center justify-between p-3 text-lg font-semibold"
+			class="group-header flex cursor-pointer items-center justify-between p-3 font-semibold sm:text-lg"
 			role="button"
 			tabindex="0"
 			aria-expanded={expandedGroups[group] ? 'true' : 'false'}
@@ -206,7 +206,7 @@
 			onkeydown={(e) => handleGroupKeyDown(e, group)}
 		>
 			<div class="flex items-center gap-2">
-				<span>{group}</span>
+				<span class="break-all">{group}</span>
 				<div class="badge">{keys.length}</div>
 			</div>
 			<button class="btn btn-sm btn-circle" aria-hidden="true">

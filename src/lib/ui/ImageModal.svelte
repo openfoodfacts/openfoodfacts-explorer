@@ -1,70 +1,131 @@
 <script lang="ts">
-	import { self } from 'svelte/legacy';
 	import { onMount } from 'svelte';
 	import { useZoomImageWheel } from '@zoom-image/svelte';
 
-	let image:
-		| {
-				url: string;
-				alt?: string;
-		  }
-		| undefined = $state();
+	type ImageState = { url: string; alt?: string };
+	let image: ImageState | undefined = $state();
 
 	let dialog: HTMLDialogElement | undefined = $state();
-	let rotation = $state(0);
+	let zoomLevel = $state(1);
+	const MAX_ZOOM = 3;
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
-		rotation = 0;
+		zoomLevel = 1;
 		dialog?.showModal();
 	}
 
 	function close() {
 		dialog?.close();
-		setZoomImageState({ currentZoom: 1 });
-		rotation = 0;
+		zoomLevel = 1;
 	}
 
-	function rotateImage() {
-		rotation = rotation + 90;
+	function zoomIn(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		zoomLevel = Math.min(zoomLevel + 0.5, MAX_ZOOM);
 	}
 
-	onMount(() => {
-		if (container) {
-			createZoomImage(container);
+	function zoomOut(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		zoomLevel = Math.max(zoomLevel - 0.5, 1);
+	}
+
+	function resetZoom(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		zoomLevel = 1;
+	}
+
+	let container: HTMLDivElement | undefined = $state();
+	const { createZoomImage, setZoomImageState, zoomImageState } = useZoomImageWheel();
+
+	$effect(() => {
+		if (setZoomImageState != null) {
+			setZoomImageState({ currentZoom: zoomLevel });
 		}
 	});
 
-	let container: HTMLDivElement | undefined = $state();
-	const { createZoomImage, setZoomImageState } = useZoomImageWheel();
+	onMount(() => {
+		if (container) {
+			createZoomImage(container, {
+				maxZoom: MAX_ZOOM,
+				wheelZoomRatio: 0.5,
+				shouldZoomOnSingleTouch: () => true
+			});
+			zoomImageState.subscribe((state) => {
+				zoomLevel = state.currentZoom;
+			});
+		}
+	});
 </script>
 
 <dialog
-	class="border-none bg-transparent p-4 backdrop:backdrop-brightness-50 md:max-h-max md:max-w-xl"
+	class="border-base-300 bg-base-100 fixed inset-0 m-auto max-h-[95vh] max-w-[95vw] border p-0 shadow-lg"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
-	onclick={self(() => close())}
+	onclick={(e) => {
+		if (e.target === dialog) {
+			close();
+		}
+	}}
 >
-	<div class="relative">
-		<div bind:this={container}>
-			<img
-				class="max-h-full max-w-full"
-				src={image?.url}
-				alt={image?.alt}
-				style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
-			/>
+	<div class="relative flex h-full w-full flex-col">
+		<div class="absolute top-2 right-2 z-10">
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={(e) => {
+					e.stopPropagation();
+					close();
+				}}
+				title="Close"
+				aria-label="Close image"
+			>
+				<span class="icon-[mdi--close] h-6 w-6"></span>
+			</button>
 		</div>
-		<button
-			class="btn btn-circle bg-base-100/80 hover:bg-base-100 absolute right-4 bottom-4"
-			onclick={(e) => {
-				e.stopPropagation();
-				rotateImage();
-			}}
-			title="Rotate image"
-			aria-label="Rotate image 90 degrees clockwise"
+
+		<div
+			bind:this={container}
+			class="flex h-full w-full cursor-zoom-in items-center justify-center overflow-hidden p-6"
 		>
-			<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
-		</button>
+			<img class="max-h-[85vh] max-w-[85vw] object-contain" src={image?.url} alt={image?.alt} />
+		</div>
+
+		<div class="absolute right-4 bottom-4 z-10 flex items-center gap-2">
+			{#if zoomLevel > 1}
+				<button
+					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+					onclick={resetZoom}
+					title="Reset Zoom"
+					aria-label="Reset Zoom"
+				>
+					<span class="icon-[mdi--magnify-close] h-6 w-6"></span>
+				</button>
+				<span class="bg-base-100/80 text-md rounded-md px-2 py-2 font-medium text-white">
+					{zoomLevel.toFixed(1)} x
+				</span>
+				<button
+					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+					onclick={zoomOut}
+					title="Zoom Out"
+					aria-label="Zoom Out"
+				>
+					<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
+				</button>
+			{/if}
+			{#if zoomLevel < MAX_ZOOM}
+				<button
+					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+					onclick={zoomIn}
+					title="Zoom In"
+					aria-label="Zoom In"
+				>
+					<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
+				</button>
+			{/if}
+		</div>
 	</div>
 </dialog>
 

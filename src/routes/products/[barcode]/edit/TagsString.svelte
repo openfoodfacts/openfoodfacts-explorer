@@ -12,6 +12,6 @@
 
 <Tags
 	{autocomplete}
-	tags={tagsString.split(separator).filter((str) => str !== '')}
-	on:change={(e) => (tagsString = e.detail.tags.join(separator))}
+	tags={tagsString?.split(separator)?.filter((str) => str !== '') ?? []}
+	onChange={(tags) => (tagsString = tags.join(separator))}
 />

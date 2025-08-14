@@ -23,6 +23,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
       - run: pnpm check
         if: always()
 

@@ -1,4 +1,8 @@
+import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+
+import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+
 import {
 	type Brand,
 	type Label,
@@ -9,16 +13,36 @@ import {
 	type Country,
 	ProductsApi
 } from '$lib/api';
-import { error } from '@sveltejs/kit';
-import { FolksonomyApi } from '$lib/api/folksonomy';
-import { PricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 
-export const ssr = false;
+import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
+import {
+	createPricesApi,
+	isConfigured as isPriceConfigured,
+	type PriceFull
+} from '$lib/api/prices';
 
-import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+async function getPricesCoords(api: PricesApi, code: string) {
+	// load all prices coordinates
+	const prices: PriceFull[] = [];
+	const res = await api.getPrices({ product_code: code });
+	if (res.error != null) throw new Error('Error fetching first page.');
+
+	prices.push(...res.data.items.flat());
+
+	const pages = res.data.pages;
+	for (let page = 2; page <= pages; page++) {
+		const res = await api.getPrices({ product_code: code, page: page });
+		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
+		prices.push(...res.data.items.flat());
+	}
+
+	return prices;
+}
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
+	const folkApi = createFolksonomyApi(fetch);
+
 	const state = await productsApi.getProduct(params.barcode);
 	if (state.status === 'failure') {
 		error(404, { message: 'Failure to load product', errors: state.errors });
@@ -31,35 +55,19 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const origins = getTaxo<Origin>('origins', fetch);
 	const countries = getTaxo<Country>('countries', fetch);
 
-	const off = new OpenFoodFacts(fetch);
+	const folksonomyTags = isFolksonomyConfigured() ? folkApi.getProductTags(params.barcode) : [];
+	const folksonomyKeys = isFolksonomyConfigured() ? folkApi.getProducts(params.barcode) : [];
 
-	const folkApi = new FolksonomyApi(fetch);
-	const folksonomyTags = folkApi.getProduct(params.barcode);
-	const folksonomyKeys = folkApi.getKeys();
+	const pricesApi = createPricesApi(fetch);
+	const pricesResponse = isPriceConfigured()
+		? getPricesCoords(pricesApi, params.barcode)
+		: Promise.resolve(null);
 
-	const pricesApi = new PricesApi(fetch);
-	let pricesResponse = null;
-	if (isPricesConfigured()) {
-		pricesResponse = pricesApi.getPrices({ product_code: params.barcode });
-	}
-
-	// TODO: parseInt should be removed. Barcodes are strings
-	const questions = off.robotoff.questionsByProductCode(parseInt(params.barcode)).then(
-		(res) => {
-			if (res?.status === 'found') {
-				return res.questions ?? [];
-			} else {
-				return [];
-			}
-		},
-		(e) => {
-			console.error(e);
-			return [];
-		}
-	);
+	const productAttributes = await productsApi.getProductAttributes(params.barcode);
 
 	return {
 		state,
+		productAttributes: productAttributes,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		taxo: {
@@ -70,7 +78,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			countries,
 			origins
 		},
-		prices: await pricesResponse,
-		questions
+		prices: await pricesResponse
 	};
 };

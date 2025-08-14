@@ -1,114 +1,175 @@
 <script lang="ts">
-	const projectLinks = [
-		{ url: 'https://world.openfoodfacts.org/who-we-are', text: 'Who we are' },
-		{
-			url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs',
-			text: 'Vision, Mission, Values and Programs'
-		},
-		{ url: 'https://support.openfoodfacts.org/help/en-gb', text: 'Frequently asked questions' },
-		{ url: 'https://blog.openfoodfacts.org/en/', text: 'Open Food Facts blog' },
-		{ url: 'https://world.openfoodfacts.org/press', text: 'Press' },
-		{ url: 'https://wiki.openfoodfacts.org/', text: 'Open Food Facts wiki (en)' },
-		{ url: 'https://world.openfoodfacts.org/cgi/top_translators.pl', text: 'Translators' },
-		{ url: 'https://world.openfoodfacts.org/partners', text: 'Partners' },
-		{ url: 'https://world.openbeautyfacts.org/', text: 'Open Food Facts - Cosmetics' },
-		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Open Food Facts for Producers' }
+	import footerTopLeft from '$lib/assets/footer-top-left.svg';
+	import footerBottomRight from '$lib/assets/footer-bottom-right.svg';
+	import { _ } from '$lib/i18n';
+	import { page } from '$app/state';
+	import { NO_MARGIN_ROUTES } from '$lib/const';
+
+	const stayUpdatedLinks = [
+		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Newsletter' },
+		{ url: 'https://forum.openfoodfacts.org/', text: 'Forum' }
 	];
+
+	const contributeLinks = [
+		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' },
+		{ url: 'https://world.openfoodfacts.org/cgi/top_translators.pl', text: 'Translators' },
+		{ url: 'https://github.com/openfoodfacts', text: 'GitHub' },
+		{ url: 'https://world.openfoodfacts.org/data', text: 'Data, API, SDKs' },
+		{ url: 'https://wiki.openfoodfacts.org/', text: 'Wiki' }
+	];
+
+	const discoverProjectLinks = {
+		row1: [
+			{
+				url: 'https://world.openfoodfacts.org/who-we-are',
+				key: 'footer.discover.who_we_are'
+			},
+			{
+				url: 'https://blog.openfoodfacts.org/en/',
+				key: 'footer.discover.blog'
+			},
+			{
+				url: 'https://world.openfoodfacts.org/code-of-conduct',
+				key: 'footer.discover.code_of_conduct'
+			}
+		],
+		row2: [
+			{
+				url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs',
+				key: 'footer.discover.vision_mission_values_and_programs'
+			}
+		],
+		row3: [
+			{
+				url: 'https://world.openfoodfacts.org/partners',
+				key: 'footer.discover.partners'
+			},
+			{
+				url: 'https://support.openfoodfacts.org/help/en-gb',
+				key: 'footer.discover.faq'
+			},
+			{
+				url: 'https://world.openfoodfacts.org/press',
+				key: 'footer.discover.press'
+			}
+		]
+	};
 
 	const footerLinks = [
 		{ url: 'https://world.openfoodfacts.org/legal', text: 'Legal' },
 		{ url: 'https://world.openfoodfacts.org/privacy', text: 'Privacy' },
-		{ url: 'https://world.openfoodfacts.org/terms-of-use', text: 'Terms of use' },
-		{ url: 'https://world.openfoodfacts.org/data', text: 'Data, API and SDKs' },
-		{
-			url: 'https://world.openfoodfacts.org/donate-to-open-food-facts',
-			text: 'Donate to Open Food Facts'
-		},
-		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' },
-		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Subscribe to our newsletter' }
+		{ url: 'https://world.openfoodfacts.org/terms-of-use', text: 'Terms of use' }
 	];
 </script>
 
 <div
-	class="bg-secondary text-secondary-content mt-10 flex flex-col justify-between gap-5 px-10 py-8 md:flex-row md:px-20 lg:px-40"
+	class="bg-secondary text-secondary-content relative mt-2 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
+	class:mt-10={!NO_MARGIN_ROUTES.includes(page.url.pathname)}
 >
-	<div class="flex flex-col gap-1">
-		<div class="text-lg font-bold">Join the community</div>
-		<div>
-			Discover our <a href="https://world.openfoodfacts.org/code-of-conduct" class="underline"
-				>Code of conduct</a
-			>
+	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
+		<h2 class="text-3xl font-extrabold">Stay Updated</h2>
+		<div class="flex flex-col gap-0">
+			{#each stayUpdatedLinks as stayUpdatedLink (stayUpdatedLink.url)}
+				<a href={stayUpdatedLink.url} class="underline">{stayUpdatedLink.text}</a>
+			{/each}
+			<div class="mt-1 flex gap-3">
+				<a
+					href="https://twitter.com/OpenFoodFacts"
+					target="_blank"
+					aria-label="X (formerly Twitter)"
+				>
+					<span class="icon-[simple-icons--x] h-6 w-5"></span>
+				</a>
+				<a href="https://www.instagram.com/open.food.facts/" target="_blank" aria-label="Instagram">
+					<span class="icon-[mdi--instagram] h-6 w-6"></span>
+				</a>
+				<a
+					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
+					target="_blank"
+					aria-label="GitHub"
+				>
+					<span class="icon-[mdi--github] h-6 w-6"></span>
+				</a>
+				<a href="https://www.facebook.com/OpenFoodFacts" target="_blank" aria-label="Facebook">
+					<span class="icon-[mdi--facebook] h-6 w-6"></span>
+				</a>
+				<a href="https://slack.openfoodfacts.org/" target="_blank" aria-label="Slack">
+					<span class="icon-[mdi--slack] h-6 w-6"></span>
+				</a>
+			</div>
 		</div>
-		<div>Join us on <a href="https://slack.openfoodfacts.org/" class="underline">Slack</a></div>
-		<div><a href="https://forum.openfoodfacts.org/" class="underline">Forum</a></div>
-		<div class="flex gap-2">
-			<div>Follow us:</div>
-			<a
-				href="https://twitter.com/OpenFoodFacts"
-				target="_blank"
-				aria-label="Open Food Facts X (formerly Twitter)"
-			>
-				<span class="icon-[logos--x] h-6 w-5"></span>
-			</a>
-			<a
-				href="https://www.facebook.com/OpenFoodFacts?utm_source=off&utf_medium=web"
-				target="_blank"
-				aria-label="Open Food Facts Facebook"
-			>
-				<span class="icon-[mdi--facebook] h-6 w-6"></span>
-			</a>
-			<a
-				href="https://www.instagram.com/open.food.facts/"
-				target="_blank"
-				aria-label="Open Food Facts Instagram"
-			>
-				<span class="icon-[mdi--instagram] h-6 w-6"></span>
-			</a>
-			<a
-				href="https://github.com/openfoodfacts/openfoodfacts-explorer"
-				target="_blank"
-				aria-label="Open Food Facts GitHub repository"
-			>
-				<span class="icon-[mdi--github] h-6 w-6"></span>
-			</a>
-		</div>
-		<div>
-			<a href="https://link.openfoodfacts.org/newsletter-en" class="underline"
-				>Subscribe to our newsletter</a
-			>
+
+		<h2 class="mt-3 text-3xl font-extrabold">Contribute</h2>
+		<div class="flex flex-wrap gap-3">
+			{#each contributeLinks as contributeLink (contributeLink.url)}
+				<a href={contributeLink.url} class="underline">{contributeLink.text}</a>
+			{/each}
 		</div>
 	</div>
-	<div class="flex flex-col gap-2 md:max-w-1/2">
-		<div class="text-lg font-bold">Discover the project</div>
-		<div class="flex flex-wrap gap-3 text-sm">
-			{#each projectLinks as link (link.url)}
+	<div class="relative z-20 order-2 mt-8 flex w-full flex-col gap-2 md:mt-0 md:w-1/2">
+		<h2 class="text-3xl font-extrabold">Discover our Project</h2>
+		<div class="mt-2 flex flex-wrap gap-2">
+			{#each discoverProjectLinks.row1 as link (link.url)}
 				<a
 					href={link.url}
-					class="bg-base-300 text-base-content hover:bg-primary hover:text-primary-content rounded-lg px-2 py-1 transition-all duration-300"
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
 				>
-					{link.text}
+					{$_(link.key)}
+				</a>
+			{/each}
+		</div>
+		<div class="mt-1 flex flex-wrap gap-2">
+			{#each discoverProjectLinks.row2 as link (link.url)}
+				<a
+					href={link.url}
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
+				</a>
+			{/each}
+		</div>
+		<div class="mt-1 flex flex-wrap gap-2">
+			{#each discoverProjectLinks.row3 as link (link.url)}
+				<a
+					href={link.url}
+					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
 				</a>
 			{/each}
 		</div>
 	</div>
 </div>
 
-<div class="bg-base-200 flex flex-col items-center justify-center gap-3 px-6 py-5">
-	<picture>
-		<source
-			srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-white.svg"
-			media="(prefers-color-scheme: dark)"
-		/>
-		<img
-			src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-black.svg"
-			alt="Open Food Facts"
-		/>
-	</picture>
-
-	<div class="text-sm">
-		A collaborative, free and open database of food products from around the world.
+<div
+	class="bg-primary-content relative flex flex-col items-center justify-center gap-3 overflow-hidden px-10 py-8"
+>
+	<div class="absolute top-0 left-0 z-0 hidden md:block">
+		<img src={footerTopLeft} alt="" width="177" height="177" />
 	</div>
-	<div class="flex w-full flex-wrap justify-center gap-3 text-xs">
+	<div class="absolute right-0 bottom-0 z-0 hidden md:block">
+		<img src={footerBottomRight} alt="" width="251" height="178" />
+	</div>
+	<div class="relative z-10 flex flex-col items-center gap-4">
+		<picture>
+			<source
+				srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-white.svg"
+				media="(prefers-color-scheme: dark)"
+			/>
+			<img
+				src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-black.svg"
+				alt="Open Food Facts"
+			/>
+		</picture>
+
+		<div class="text-primary text-center md:bg-transparent md:text-inherit">
+			A collaborative, free and open database of food products<span class="hidden md:inline"
+				><br /></span
+			><span class="md:hidden"> </span> from around the world.
+		</div>
+	</div>
+
+	<div class="text-primary relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
 		{#each footerLinks as footerLink (footerLink.url)}
 			<a href={footerLink.url} class="underline">{footerLink.text}</a>
 		{/each}

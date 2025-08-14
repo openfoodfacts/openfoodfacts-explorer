@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { FolksonomyApi, type FolksonomyTag } from '$lib/api/folksonomy';
 	import { preferences } from '$lib/settings';
+
+	import type { FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { createFolksonomyApi } from '$lib/api/folksonomy';
 
 	interface Props {
 		tags: FolksonomyTag[];
@@ -11,11 +13,12 @@
 	let { tags = $bindable(), barcode, keys }: Props = $props();
 
 	async function refreshTags() {
-		const res = await new FolksonomyApi(fetch).getProduct(barcode);
-		if (res.error) {
+		const folksonomyApi = createFolksonomyApi(fetch);
+		const res = await folksonomyApi.getProductTags(barcode);
+		if ('error' in res) {
 			console.error(res.error);
 		} else {
-			tags = res.data;
+			tags = res;
 		}
 	}
 
@@ -36,7 +39,9 @@
 			v: newValue
 		};
 
-		const ok = await new FolksonomyApi(fetch).putTag(newTag);
+		const folksonomyApi = createFolksonomyApi(fetch);
+
+		const ok = await folksonomyApi.putTag(newTag);
 		if (!ok) {
 			console.error('Failed to update tag', oldTag, 'to', newTag);
 			return;
@@ -53,7 +58,15 @@
 			throw new Error('Tag value is null');
 		}
 		// otherwise ts complains about version possibly being null
-		new FolksonomyApi(fetch).removeTag({ ...tag, version });
+		const folksonomyApi = createFolksonomyApi(fetch);
+		const ok = await folksonomyApi.removeTag({ ...tag, version });
+		if (!ok) {
+			console.error('Failed to remove tag', tag);
+			return;
+		}
+
+		console.debug('Removed tag', tag);
+		await refreshTags();
 	}
 
 	let newKey = $state('');
@@ -77,8 +90,9 @@
 			owner: ''
 		};
 
-		const created = await new FolksonomyApi(fetch).addTag(newTag);
+		const folksonomyApi = createFolksonomyApi(fetch);
 
+		const created = await folksonomyApi.addTag(newTag);
 		if (created) {
 			tags = [...tags, newTag];
 			newKey = '';
@@ -112,13 +126,12 @@
 					</div>
 				</td>
 				<td class="flex gap-2" aria-label="Value">
-					<input
-						type="text"
-						class="input grow max-sm:w-20"
-						value={tag.v}
+					<textarea
+						class="textarea grow break-words whitespace-pre-wrap max-sm:w-20"
 						readonly={!loggedIn}
+						value={tag.v}
 						onchange={(e) => updateTag(e.currentTarget.value, i)}
-					/>
+					></textarea>
 				</td>
 				{#if loggedIn}
 					<td>

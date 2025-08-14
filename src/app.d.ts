@@ -11,7 +11,17 @@ declare global {
 		}
 		// interface Locals {}
 		// interface PageData {}
+		interface PageState {
+			currentStep?: number;
+		}
 		// interface Platform {}
+	}
+}
+
+declare global {
+	interface Window {
+		_paq: string[][];
+		L?: typeof import('leaflet');
 	}
 }
 

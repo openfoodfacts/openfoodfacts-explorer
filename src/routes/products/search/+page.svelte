@@ -1,62 +1,239 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import SmallProductCard from '$lib/ui/SmallProductCard.svelte';
-	import type { PageData } from './$types';
+	import { slide } from 'svelte/transition';
+	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
-	interface Props {
-		data: PageData;
+	import { navigating, page } from '$app/state';
+	import { goto } from '$app/navigation';
+
+	import { _ } from '$lib/i18n';
+	import { SORT_OPTIONS } from '$lib/const';
+	import {
+		addIncludeFacet,
+		extractQuery,
+		removeIncludeFacet,
+		toLuceneString,
+		type FacetsSelection
+	} from '$lib/facets';
+
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '$lib/ui/VegaChart.svelte';
+	import FacetBar from './FacetBar.svelte';
+
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
+	let { search: result } = $derived(data);
+
+	// State for showing/hiding graphs
+	let showGraphs = $state(false);
+
+	let showPrices = $state(true);
+
+	// Update facets when search results change or facetBarComponent changes
+	$effect(() => {
+		// Track search queries that return no results
+		if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
+	});
+
+	let selectedSort = $derived.by(() => {
+		const url = new URL(page.url);
+		const sortValue = url.searchParams.get('sort_by') || '-unique_scans_n';
+		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
+	});
+
+	let sortDropdown: HTMLDetailsElement | null = $state(null);
+
+	function getSelectedSortLabel() {
+		return selectedSort.label;
 	}
 
-	let { data }: Props = $props();
+	function handleSortChange(value: string) {
+		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
-	function getPageUrl(url: URL, p: number) {
-		url.searchParams.set('page', p.toString());
-		return url.toString();
+		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('sort_by', selectedSort.value);
+		goto(newUrl.toString());
+	}
+
+	// State to hold selected facets
+	//  { key1 => { include: ['value1', 'value2'], exclude: ['value3'] } }
+	let selectedFacets: FacetsSelection = $derived.by(() => {
+		const entries = Object.entries(result.facets).map(([key, facet]) => {
+			const selectedItems = facet.items.filter((item) => item.selected).map((item) => item.key);
+			return [key, { include: selectedItems, exclude: [] }];
+		});
+		return Object.fromEntries(entries);
+	});
+
+	function refreshQuery() {
+		// recreate the full lucene query with selected facets
+		const mainQuery = extractQuery(data.query);
+		const newQuery = toLuceneString(mainQuery, selectedFacets);
+
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('q', newQuery);
+		goto(newUrl.toString());
+	}
+
+	// Track which product is being navigated to
+	let navigatingTo: string | null = $state(null);
+
+	// Handle navigation to product page
+	function navigateToProduct(barcode: string) {
+		navigatingTo = barcode;
+		goto(`/products/${barcode}`);
 	}
 </script>
 
-{#await data.result}
-	{#each Array(5) as i (i)}
-		<div class="skeleton dark:bg-base-300 h-24 bg-white p-4 shadow-md"></div>
-	{/each}
-{:then result}
-	{#if result.count > 0}
-		{#each result.products as product (product.code)}
-			<SmallProductCard {product} />
-		{/each}
+<Metadata
+	title={$_('search.title', { values: { query: data.query } })}
+	description={$_('search.description', { values: { query: data.query } })}
+/>
 
-		<div class="join my-8 justify-center">
-			{#if result.page > 1}
-				<a href={getPageUrl(page.url, 1)} class="btn join-item"> 1 </a>
-			{/if}
-			{#if result.page > 3}
-				<button class="btn btn-disabled join-item">...</button>
-			{/if}
+<div class="mb-4 flex w-full flex-wrap items-end justify-center gap-4 max-md:flex-col">
+	<!-- Raw Search Query -->
+	<div class="min-w-[220px] flex-1 max-md:w-full">
+		<label class="form-control w-full">
+			<span class="label-text mb-1 block text-sm font-semibold">
+				{$_('search.raw_query_label')}
+			</span>
+			<input
+				type="text"
+				placeholder={$_('search.search_placeholder')}
+				class="input input-bordered w-full font-mono break-words"
+				value={data.query}
+				disabled
+				readonly
+			/>
+		</label>
+	</div>
 
-			{#if result.page > 2}
-				<a href={getPageUrl(page.url, result.page - 1)} class="btn join-item">
-					{result.page - 1}
-				</a>
-			{/if}
+	<!-- Sort By Dropdown -->
+	<div class="flex-0 max-lg:hidden">
+		{$_('search.sort_by_label')}
+		<details class="dropdown dropdown-center md:w-50 lg:w-60" bind:this={sortDropdown}>
+			<summary
+				class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
+			>
+				<span class="inline-block truncate align-middle font-semibold">
+					{getSelectedSortLabel()}
+				</span>
+				<i class="icon-[mdi--chevron-down] text-xl"></i>
+			</summary>
+			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
+				{#each SORT_OPTIONS as { label, value } (value)}
+					<li>
+						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
+							{label}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</details>
+	</div>
+</div>
 
-			<button class="btn join-item btn-active">{result.page}</button>
+{#if result.facets && Object.keys(result.facets).length > 0}
+	<div class="my-4">
+		<FacetBar
+			facets={result.facets}
+			onAddFacet={(key, val) => {
+				selectedFacets = addIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+			onRemoveFacet={(key, val) => {
+				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+		/>
+	</div>
+{/if}
 
-			{#if result.total_pages > result.page + 1}
-				<a href={getPageUrl(page.url, result.page + 1)} class="btn join-item">{result.page + 1}</a>
-			{/if}
-			{#if result.total_pages > result.page + 2}
-				<button class="btn btn-disabled join-item">...</button>
-			{/if}
-			{#if result.total_pages > result.page}
-				<a href={getPageUrl(page.url, result.total_pages)} class="btn join-item">
-					{result.total_pages}
-				</a>
-			{/if}
+{#if result.charts && Object.keys(result.charts).length > 0}
+	<div class="my-8">
+		<div class="mb-4 flex justify-end">
+			<button class="btn btn-secondary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
+				<span class="icon-[mdi--chart-bar] text-lg"></span>
+				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
+			</button>
 		</div>
-	{:else}
-		<div class="mt-8 text-center opacity-70">
-			<p>No products found</p>
-			<p>We couldn't find any products matching your search</p>
+
+		{#if showGraphs}
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
+				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
+					<div class="bg-base-100 rounded-lg p-4 shadow-md">
+						<VegaChart spec={chartSpec} title={chartKey.replace(/_/g, ' ').replace(':', ' vs ')} />
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
+{/if}
+
+{#if navigating.to != null}
+	<div
+		class="bg-base-100/70 absolute inset-0 z-1000 flex cursor-not-allowed items-center justify-center"
+	>
+		<span class="loading loading-spinner loading-lg"></span>
+	</div>
+{/if}
+
+{#if result.count > 0}
+	<!-- Facet component with binding to access its methods -->
+
+	<div class="max-md:me-4">
+		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			{#each result.hits as product (product.code)}
+				{#if product.code != null}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+
+					<div class="indicator block w-full">
+						{#if showPrices}
+							<span class="indicator-item badge badge-secondary badge-sm right-4">
+								{data.prices[product.code]} prices
+							</span>
+						{/if}
+						<product-card
+							{product}
+							navigating={{
+								to: navigatingTo === product.code ? { params: { barcode: product.code } } : null
+							}}
+							placeholderImage="/Placeholder.svg"
+							onclick={() => navigateToProduct(product.code)}
+						></product-card>
+					</div>
+				{/if}
+			{/each}
 		</div>
-	{/if}
-{/await}
+	</div>
+
+	<!-- Pagination -->
+	<div class="mt-8">
+		<Pagination
+			page={result.page}
+			totalPages={result.page_count}
+			pageUrl={(p: number) => {
+				const newUrl = new URL(page.url);
+				newUrl.searchParams.set('page', p.toString());
+				return newUrl.toString();
+			}}
+		/>
+	</div>
+{:else}
+	<div
+		class="flex w-full grid-cols-1 flex-col items-center gap-4 py-50 md:h-auto md:pt-20 md:pb-30 lg:gap-2"
+	>
+		<p class="mb-4 text-3xl font-bold">{$_('search.product_not_found')}</p>
+		<p>{$_('search.product_not_found_desc')}</p>
+	</div>
+{/if}
+
+<!-- Sticky SORT & FILTER Footer -->
+<SearchOptionsFooter
+	onSortOptionSelect={(value) => handleSortChange(value)}
+	sortBy={selectedSort.value}
+/>

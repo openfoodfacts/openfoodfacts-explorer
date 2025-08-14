@@ -1,0 +1,206 @@
+{
+	"nutriscore": "Nutri-Score",
+	"ecoscore": "Eco-Score",
+	"nova": "Nova - Ultra-processing levels",
+	"settings_link": "Settings",
+	"folksonomy_link": "Folksonomy",
+	"discover_link": "Discover",
+	"contribute_link": "Contribute",
+	"producers_link": "Producers",
+	"prices_link": "Prices",
+	"login_link": "Login",
+	"logout_link": "Logout",
+	"account_link": "Account",
+	"world_option": "World",
+	"github_link": "GitHub",
+	"search": {
+		"title": "Search - {query} - Open Food Facts Explorer",
+		"placeholder": "Query or barcode",
+		"go": "Go",
+		"scan": "Scan a barcode",
+		"button": "Search",
+		"product_not_found": "No products found",
+		"product_not_found_desc": "We couldn't find any products matching your search",
+		"add_product": "Add new Product",
+		"description": "Search on Open Food Facts Explorer for {query}",
+		"charts_title": "Search Analytics",
+		"show_prices_label": "Show Prices",
+		"sort_by_label": "Sort by",
+		"raw_query_label": "Raw Query"
+	},
+	"auth": {
+		"username": "Username",
+		"password": "Password",
+		"authenticated": "Authenticated",
+		"signin": "Sign in",
+		"signout": "Sign out",
+		"authenticating": "Authenticating...",
+		"success": "Success",
+		"failed": "Failed",
+		"enter_username": "Enter username",
+		"enter_password": "Enter password",
+		"status": "Status",
+		"actions": "Actions"
+	},
+	"general": {
+		"language": "Language",
+		"country": "Country",
+		"currency": "Currency",
+		"loading": "Loading...",
+		"warning": "Warning",
+		"notes": "Notes",
+		"summary": "Summary",
+		"product_not_found": "Product not found",
+		"error_occurred": "error occurred:",
+		"errors_occurred": "errors occurred:"
+	},
+	"footer": {
+		"discover": {
+			"who_we_are": "Who we are",
+			"blog": "Blog",
+			"code_of_conduct": "Code of Conduct",
+			"vision_mission_values_and_programs": "Vision, Mission, Values and Programs",
+			"partners": "Partners",
+			"faq": "FAQ",
+			"press": "Press"
+		}
+	},
+	"settings": {
+		"general": "General",
+		"influences": "Influences",
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+	},
+	"folksonomy": {
+		"title": "Folksonomy Engine",
+		"subtitle": "Keys Explorer",
+		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
+		"search_placeholder": "Search keys...",
+		"keys_found": "keys found",
+		"key_found": "key found",
+		"for": "for"
+	},
+	"home": {
+		"welcome": "Welcome to",
+		"welcome_user": "Welcome {username} to",
+		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
+	},
+	"product": {
+		"title": "{productName} - Open Food Facts Explorer",
+		"description": "Product page for {productName} on Open Food Facts Explorer",
+
+		"datasources": {
+			"title": "Data Sources",
+			"added_on": "Product added on {date} by: ",
+			"last_edit": "Last edit of product page on {date} by: ",
+			"also_edited_by": "Product page also edited by:",
+			"last_check": "Last check of product page on {date} by: ",
+			"last_modified_t": "Last edit of product page on {date} by: ",
+			"incomplete_or_incorrect": "If the data is incomplete or incorrect, you can complete or correct it by editing this page.",
+			"unknown": "unknown",
+			"done": "Done",
+			"toDo": "To do"
+		},
+		"edit": {
+			"info": {
+				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
+				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
+				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
+				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
+				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"comment": "Optionally, add a comment to describe your changes or provide additional context."
+			},
+			"tooltips": {
+				"serving_size": "This value helps to make a proportional calculation of each nutrient per serving size. For example, 60 g, 60g or 60 G (prefer the first one), 1000 ml or 1L",
+				"ingredients_list": "Keep the original order. Indicate the percentage when specified. Separate with a comma or hyphen and use parentheses for ingredients of an ingredient.",
+				"categories": "Indicate only the most specific category. Parent categories will be automatically added. For example, 'Sardines in olive oil', 'Orange juice from concentrate'.",
+				"product_name": "The product name is the main name printed on the packaging. It can be a registered trademark. For example, 'Nesquik', 'Tomato Ketchup'. Don't include the brand in the name",
+				"brand_name": "Input all the brands of the product. The main brand, generally clearly displayed on the front pack, should be entered first. For example, 'Nutella, 'Oreo, Mondelez'",
+				"quantity": "Copy the value indicated on the product and don't forget the units. For example, 230g, 6(for 6 eggs), 3 x 150g (for a product with 3 boxes, each of 150g).",
+				"labels": "Any characteristic of the product **which is factual** and different from the other fields. For example, 'Nutri-Score, NOVA…', 'Made in Belgium, produced in Brittany…', 'ISO 9001, ISO 22000…'.",
+				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
+				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
+				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
+				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
+			},
+			"add_product": "Add product",
+			"add_product_title": "Add New Product",
+			"edit_product_title": "Edit Product",
+			"add_language": "Add a language",
+			"search_languages": "Search languages to add",
+			"no_languages_found": "No languages found",
+			"name": "Name",
+			"quantity": "Quantity",
+			"emb_code": "EMB Code (Producer code)",
+			"packaging": "Packaging",
+			"manufacturing_places": "Manufacturing places",
+			"categories": "Categories:",
+			"labels": "Labels",
+			"brands": "Brands",
+			"stores": "Stores",
+			"origins": "Origin of the product and/or its ingredients",
+			"countries": "Countries where sold",
+			"product_page_url": "Link to the product page on the official site of the producer",
+			"photos": "Product Photos",
+			"no_photo_available": "No photo available",
+			"ingredients": "Ingredients",
+			"ingredients_list": "Ingredients list",
+			"no_ingredients_image": "No ingredients image",
+			"nutritional_information": "Nutritional Information",
+			"no_nutrition_image": "No nutrition image",
+			"serving_size": "Serving Size",
+			"no_nutrition_data": "No nutrition information on the product",
+			"no_nutrition_specified": "No nutrition data specified",
+			"nutritional_values": "Nutritional Values",
+			"energy_kj": "Energy (kJ)",
+			"energy_kcal": "Energy (kcal)",
+			"fat": "Fat (g)",
+			"saturated_fat": "Saturated Fat (g)",
+			"carbohydrates": "Carbohydrates (g)",
+			"sugars": "Sugars (g)",
+			"proteins": "Proteins (g)",
+			"salt": "Salt (g)",
+			"sodium": "Sodium (g)",
+			"comment": "Comment",
+			"comment_placeholder": "Add a comment to this edit",
+			"save_btn": "Save",
+			"debug": "Debug",
+			"sections": {
+				"images": "Photos",
+				"basic_info": "Basic Information",
+				"languages": "Languages & Product Names",
+				"ingredients": "Ingredients",
+				"nutrition": "Nutritional Information",
+				"comment": "Comment"
+			}
+		},
+		"prices": {
+			"no_prices_found": "No prices found for this product",
+			"loading": "Loading prices...",
+			"view_prices": "View Prices on Open Prices"
+		}
+	},
+	"qr": {
+		"product_not_found": "Product Not Found",
+		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our database.",
+		"add_new_product": "Add New Product",
+		"scan_again": "Scan Again"
+	},
+	"errors": {
+		"network": {
+			"title": "Connection Error",
+			"message": "Failed to connect to the Open Food Facts server. Please check your internet connection and try again.",
+			"instructions": "If the problem persists, visit the Open Food Facts Status Page."
+		}
+	},
+	"common": {
+		"next": "Next",
+		"back": "Back",
+		"skip": "Skip",
+		"step": "Step",
+		"of": "of"
+	},
+	"menu": {
+		"button": "Menu"
+	}
+}

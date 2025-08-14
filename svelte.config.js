@@ -14,12 +14,28 @@ const config = {
 		adapter: adapter(),
 		csp: {
 			directives: {
-				'script-src': ['self', 'https://va.vercel-scripts.com/'],
+				'object-src': ['none'],
+				'base-uri': ['self'],
+				'script-src': [
+					'self',
+					'unsafe-eval', // Required for Vega charts
+					'https://va.vercel-scripts.com/',
+					'https://analytics.openfoodfacts.org/matomo.js'
+				],
 				'img-src': [
 					'self',
 					'data:',
+
 					'https://*.openfoodfacts.org/',
-					'https://tile.openstreetmap.org'
+					'https://*.openfoodfacts.net/',
+					'https://*.openproductsfacts.org/',
+					'https://*.openproductsfacts.net/',
+					'https://*.openbeautyfacts.org/',
+					'https://*.openbeautyfacts.net/',
+
+					'https://tile.openstreetmap.org',
+					'https://play.google.com',
+					'https://fdroid.gitlab.io'
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'frame-ancestors': ['none']

@@ -1,4 +1,4 @@
-import { API_HOST, PRODUCT_URL } from '$lib/const';
+import { API_HOST, PRODUCT_URL, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
@@ -10,6 +10,28 @@ export class ProductsApi {
 		this.fetch = fetch;
 	}
 
+	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
+		const params = new URLSearchParams({
+			fields: ['product_name', 'code', 'attribute_groups_en'].join(','),
+			lc: get(preferences).lang,
+			cc: get(preferences).country,
+			product_type: 'all'
+		});
+
+		const url = `${API_HOST}/api/v2/product/${barcode}?${params.toString()}`;
+
+		const res = await this.fetch(url, { redirect: 'follow' });
+
+		if (!res.ok) {
+			throw new Error(
+				`Failed to fetch product attributes for barcode: ${barcode}: ${await res.text()}`
+			);
+		}
+
+		const data = await res.json();
+		return data.product?.attribute_groups_en || [];
+	}
+
 	async getProduct<T extends Array<keyof Product>>(
 		barcode: string,
 		{ fields }: { fields: T } = { fields: ['all', 'knowledge_panels'] as T }
@@ -18,11 +40,12 @@ export class ProductsApi {
 			PRODUCT_URL(barcode) +
 			'?' +
 			new URLSearchParams({
+				product_type: 'all',
 				fields: fields.join(','),
 				lc: get(preferences).lang,
 				cc: get(preferences).country
 			});
-		const res = await this.fetch(url);
+		const res = await this.fetch(url, { redirect: 'follow' });
 		return await res.json();
 	}
 
@@ -87,6 +110,41 @@ export class ProductsApi {
 		});
 
 		return res.status === 200;
+	}
+
+	/**
+	 * Uploads an image to OpenFoodFacts for a product.
+	 * @param barcode Product barcode
+	 * @param imageFile The image file to upload
+	 * @param imagefield The type of image (e.g. 'front_en', 'ingredients_en', etc.)
+	 * @param user_id Username for authentication
+	 * @param password Password for authentication
+	 */
+	async uploadImage(barcode: string, imageFile: File, imagefield: string) {
+		const url = `${API_HOST}/cgi/product_image_upload.pl`;
+		const formData = new FormData();
+		formData.append('code', barcode);
+		formData.append('imagefield', imagefield);
+		formData.append(`imgupload_${imagefield}`, imageFile);
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!res.ok) {
+				console.error(`Image upload failed for barcode ${barcode}. Status: ${res.status}`);
+				throw new Error(`Failed to upload image for product with barcode: ${barcode}`);
+			}
+
+			const result = await res.json();
+			console.log('Image upload successful:', result);
+			return result;
+		} catch (err) {
+			console.error('Error during image upload:', err);
+			throw err;
+		}
 	}
 
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
@@ -162,6 +220,23 @@ export type ProductSearch<T = Product> = {
 	skip: number;
 };
 
+export type Attribute = {
+	id: string;
+	name: string;
+	grade: string;
+	title: string;
+	description_short?: string;
+	icon_url?: string;
+};
+
+export type ProductAttribute = {
+	id: string;
+	name: string;
+	attributes: Attribute[];
+};
+
+export type ProductAttributes = ProductAttribute[];
+
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 
@@ -190,7 +265,8 @@ export type SelectedImage = {
 	y2: string;
 };
 
-type RawImage = {
+export type RawImage = {
+	url: string;
 	sizes: {
 		full: ImageSize;
 		100: ImageSize;
@@ -200,7 +276,18 @@ type RawImage = {
 	uploader: string;
 };
 
-export type Product = {
+export type ProductDataSection = {
+	created_t: number;
+	creator: string;
+	last_modified_t: number;
+	last_editor: string;
+	editors_tags: string[];
+	last_checked_t: number;
+	checkers_tags: string[];
+	states_hierarchy: string[];
+};
+
+export type Product = ProductDataSection & {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
 	[lang: LangProduct]: string;
@@ -340,4 +427,35 @@ function formData(data: Record<string, string | Blob>) {
 		form.append(key, value);
 	}
 	return form;
+}
+
+/**
+ * Gets URL for a product image based on its barcode and image name
+ */
+export function getProductImageUrl(
+	barcode: string,
+	imageName: string,
+	images: Record<string, SelectedImage | RawImage>
+): string | null {
+	const paddedBarcode = barcode.toString().padStart(13, '0');
+	const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+	if (!match) {
+		throw new Error(`Invalid barcode format: ${paddedBarcode}`);
+	}
+
+	const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+	const image = images[imageName];
+
+	if (!image) {
+		return null;
+	}
+
+	let filename;
+	if ('rev' in image) {
+		const rev = image.rev;
+		filename = `${imageName}.${rev}.400.jpg`;
+	} else {
+		filename = `${imageName}.400.jpg`;
+	}
+	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 }

@@ -3,9 +3,12 @@
 	import { preferences } from '$lib/settings';
 	import Influence from './Influence.svelte';
 	import Heading from './Heading.svelte';
-	import { FolksonomyApi } from '$lib/api/folksonomy';
-	import { t } from '$lib/translations';
+	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
+	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
+	import { locale } from '$lib/i18n';
+
+	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	interface Props {
 		data: PageData;
@@ -24,11 +27,19 @@
 		if (username == null || password == null) throw new Error('Username or password is null');
 
 		try {
-			await new FolksonomyApi(fetch).login(username, password);
+			const folksonomyApi = createFolksonomyApi(fetch);
+			const response = await folksonomyApi.login(username, password);
 			loginStatus = true;
 			setTimeout(() => {
 				loginStatus = undefined;
 			}, 3000);
+
+			if (!('error' in response)) {
+				updateFolksonomyAuthToken(response?.token?.access_token ?? null);
+			} else {
+				loginStatus = false;
+				updateFolksonomyAuthToken(null);
+			}
 		} catch (error) {
 			console.error('Error while logging in', error);
 			loginStatus = false;
@@ -53,12 +64,15 @@
 <div
 	class="mx-auto my-8 grid grid-cols-1 items-center gap-x-4 gap-y-2 md:grid-cols-[1fr_max-content] md:gap-x-8"
 >
-	<Heading>General</Heading>
-	<label for="lang-select" class="justify-self-start md:justify-self-end">Language:</label>
+	<Heading>{$_('settings.general')}</Heading>
+	<label for="lang-select" class="justify-self-start md:justify-self-end"
+		>{$_('general.language')}:</label
+	>
 	<select
 		class="select select-bordered w-full md:w-auto"
 		name="lang-select"
 		bind:value={$preferences.lang}
+		onchange={() => locale.set($preferences.lang)}
 	>
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 		{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
@@ -72,14 +86,16 @@
 		{/each}
 	</select>
 
-	<label for="country-select" class="justify-self-start md:justify-self-end">Country:</label>
+	<label for="country-select" class="justify-self-start md:justify-self-end"
+		>{$_('general.country')}:</label
+	>
 	<select
 		name="country-select"
 		class="select select-bordered w-full md:w-auto"
 		bind:value={$preferences.country}
 	>
 		<option value="world" selected={$preferences.country === 'world'}>
-			{$t('common.world')}
+			{$_('world_option')}
 		</option>
 
 		<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
@@ -96,61 +112,80 @@
 		{/each}
 	</select>
 
-	<Heading>Influences</Heading>
-
-	<label for="nutriscore" class="justify-self-start md:justify-self-end"
-		>{$t('common.nutriscore')}</label
+	<label for="currency-select" class="justify-self-start md:justify-self-end">
+		{$_('general.currency')}:
+	</label>
+	<select
+		name="currency-select"
+		class="select select-bordered w-full md:w-auto"
+		bind:value={$preferences.currency}
 	>
+		{#each data.currencies as currency (currency)}
+			<option value={currency} selected={$preferences.currency === currency}>
+				{currency}
+			</option>
+		{/each}
+	</select>
+
+	<Heading>{$_('settings.influences')}</Heading>
+
+	<label for="nutriscore" class="justify-self-start md:justify-self-end">{$_('nutriscore')}</label>
 	<Influence id="nutriscore" bind:value={$preferences.nutriscoreInfluence} />
 
-	<label for="ecoscore" class="justify-self-start md:justify-self-end"
-		>{$t('common.ecoscore')}</label
-	>
+	<label for="ecoscore" class="justify-self-start md:justify-self-end">{$_('ecoscore')}</label>
 	<Influence id="ecoscore" bind:value={$preferences.ecoscoreInfluence} />
 
-	<label for="nova" class="justify-self-start md:justify-self-end">{$t('common.nova')}</label>
+	<label for="nova" class="justify-self-start md:justify-self-end">{$_('nova')}</label>
 	<Influence id="nova" bind:value={$preferences.novaGroupInfluence} />
 
-	<Heading>Login (saved in localStorage) [UNSAFE - DEBUG ONLY]</Heading>
+	<Heading>{$_('settings.login')}</Heading>
 
 	{#if isAuthenticated}
-		<span class="justify-self-start text-sm font-medium md:justify-self-end">Status</span>
+		<span class="justify-self-start text-sm font-medium md:justify-self-end"
+			>{$_('auth.status')}</span
+		>
 		<div class="flex items-center gap-2">
 			<span class="badge badge-success">
 				<span class="icon-[mdi--check-circle] h-4 w-4"></span>
 			</span>
-			<span class="font-medium">Authenticated</span>
+			<span class="font-medium">{$_('auth.authenticated')}</span>
 		</div>
 
-		<span class="justify-self-start text-sm font-medium md:justify-self-end">Actions</span>
+		<span class="justify-self-start text-sm font-medium md:justify-self-end"
+			>{$_('auth.actions')}</span
+		>
 		<button
 			class="btn btn-sm btn-outline btn-error w-full md:w-auto"
 			onclick={logout}
 			transition:fade={{ duration: 200 }}
 		>
 			<span class="icon-[mdi--logout] mr-1 h-4 w-4"></span>
-			Sign out
+			{$_('auth.signout')}
 		</button>
 	{:else}
-		<label for="username" class="justify-self-start md:justify-self-end">Username</label>
+		<label for="username" class="justify-self-start md:justify-self-end"
+			>{$_('auth.username')}</label
+		>
 		<div class="form-control w-full md:w-auto">
 			<input
 				type="text"
 				id="username"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.username}
-				placeholder="Enter username"
+				placeholder={$_('auth.enter_username')}
 			/>
 		</div>
 
-		<label for="password" class="justify-self-start md:justify-self-end">Password</label>
+		<label for="password" class="justify-self-start md:justify-self-end"
+			>{$_('auth.password')}</label
+		>
 		<div class="form-control w-full md:w-auto">
 			<input
 				type="password"
 				id="password"
 				class="input input-sm input-bordered w-full"
 				bind:value={$preferences.password}
-				placeholder="Enter password"
+				placeholder={$_('auth.enter_password')}
 			/>
 		</div>
 
@@ -163,9 +198,10 @@
 				id="login-button"
 			>
 				{#if isLoggingIn}
-					<span class="loading loading-spinner loading-xs"></span> Authenticating...
+					<span class="loading loading-spinner loading-xs"></span>
+					{$_('auth.authenticating')}
 				{:else}
-					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> Sign in
+					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$_('auth.signin')}
 				{/if}
 			</button>
 
@@ -176,13 +212,22 @@
 				>
 					{#if loginStatus}
 						<span class="icon-[mdi--check-circle] h-4 w-4"></span>
-						<span class="text-sm">Success</span>
+						<span class="text-sm">{$_('auth.success')}</span>
 					{:else}
 						<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
-						<span class="text-sm">Failed</span>
+						<span class="text-sm">{$_('auth.failed')}</span>
 					{/if}
 				</div>
 			{/if}
 		</div>
 	{/if}
+</div>
+
+<div class="divider my-8"></div>
+
+<div class="mt-8 flex justify-center">
+	<a class="btn btn-outline" href={GITHUB_REPO_URL} target="_blank" aria-label="GitHub">
+		<span class="icon-[mdi--github] text-xl"></span>
+		<span class="ml-2">Help us improve Explorer on GitHub</span>
+	</a>
 </div>

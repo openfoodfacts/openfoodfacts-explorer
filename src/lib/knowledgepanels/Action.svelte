@@ -2,6 +2,7 @@
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { PRODUCT_REPORT_URL } from '$lib/const';
+	import { _ } from '$lib/i18n';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -61,24 +62,30 @@
 		const action = element.action_element.actions[0];
 
 		// Handle known action types if product code is available
-		if (productCode != null) {
+		if (productCode != null && action === 'edit_product') {
 			// Edit product action
-			if (action === 'edit_product') {
-				goto(`/products/${productCode}/edit`);
-			}
-			// Report to NutriPatrol action
-			else if (action === 'report_product_to_nutripatrol') {
-				// TODO: Eventually we should link to the internal route instead of opening external URL
-				window.open(`${PRODUCT_REPORT_URL}${productCode}/edit#report_problem`, '_blank');
-			}
-			// Handle URLs directly
-			else if (action.startsWith('http://') || action.startsWith('https://')) {
-				window.open(action, '_blank');
-			}
+			goto(`/products/${productCode}/edit`);
+		} else if (productCode != null && action === 'add_categories') {
+			goto(`/products/${productCode}/edit#categories`);
+		}
+		// Report to NutriPatrol action
+		else if (productCode != null && action === 'report_product_to_nutripatrol') {
+			// TODO: Eventually we should link to the internal route instead of opening external URL
+			window.open(`${PRODUCT_REPORT_URL}${productCode}/edit#report_problem`, '_blank');
+		}
+		// Handle URLs directly
+		else if (
+			productCode != null &&
+			(action.startsWith('http://') || action.startsWith('https://'))
+		) {
+			window.open(action, '_blank');
 		}
 		// If no product code but it's a URL, still try to open it
 		else if (action.startsWith('http://') || action.startsWith('https://')) {
 			window.open(action, '_blank');
+		} else {
+			// If no specific action is defined, just log it or handle it as needed
+			console.warn('No valid action found for the button:', action);
 		}
 
 		// Process any additional actions if necessary
@@ -110,6 +117,6 @@
 	{:else if !isLoading}
 		{getButtonTitle(element.action_element.actions)}
 	{:else}
-		Loading...
+		{$_('general.loading')}
 	{/if}
 </button>
