@@ -11,6 +11,23 @@
 		getPreferenceValue
 	} from '$lib/stores/preferencesStore';
 
+	// Type for the API response which has optional fields
+	type ApiAttributeGroup = {
+		id?: string;
+		name?: string;
+		attributes?: {
+			id?: string;
+			name?: string;
+			icon_url?: string;
+			setting_name?: string;
+			setting_note?: string;
+			default?: string;
+			panel_id?: string;
+			values?: string[];
+		}[];
+		warning?: string;
+	};
+
 	type PreferencesFormProps = {
 		onPreferenceChange?: (category: string, preference: string, value: string) => void;
 		showClassifyToggle?: boolean;
@@ -46,7 +63,7 @@
 		return getPreferenceValue($userPreferences, category, id);
 	};
 
-	let resolvedAttributeGroups: any[] = $state([]);
+	let resolvedAttributeGroups: ApiAttributeGroup[] = $state([]);
 	let isLoading = $state(true);
 
 	$effect(() => {
@@ -65,14 +82,14 @@
 	// Dynamic sections based on resolved attribute groups
 	const sections = $derived(
 		resolvedAttributeGroups.map((group) => ({
-			id: group.id,
-			title: group.name,
-			options: (group.attributes || []).map((attribute: any) => ({
-				id: attribute.id,
-				label: attribute.setting_name || attribute.name,
-				icon: attribute.id,
+			id: group.id || '',
+			title: group.name || '',
+			options: (group.attributes || []).map((attribute) => ({
+				id: attribute.id || '',
+				label: attribute.setting_name || attribute.name || '',
+				icon: attribute.id || '',
 				iconImg: attribute.icon_url,
-				options: (attribute.values || []).map((value: any) => ({
+				options: (attribute.values || []).map((value) => ({
 					value,
 					label: $_(`preferences.options.${value}`) || value
 				})),
