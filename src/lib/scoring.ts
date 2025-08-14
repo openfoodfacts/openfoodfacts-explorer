@@ -110,19 +110,22 @@ export interface ProductWithScore {
 	[key: string]: unknown;
 }
 
+// Comparator function for sorting products by score and match status
+export function compareProductsByScore<T extends ProductWithScore>(a: T, b: T): number {
+	// Non-"does_not_match" products come first
+	if (a.matchStatus === 'does_not_match' && b.matchStatus !== 'does_not_match') return 1;
+	if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
+
+	// Then by score (highest first)
+	const scoreA = a.score || 0;
+	const scoreB = b.score || 0;
+	if (scoreB !== scoreA) return scoreB - scoreA;
+
+	// Original order as tiebreaker (maintain existing order)
+	return 0;
+}
+
 // Sort products by score using the ranking algorithm
 export function sortProductsByScore<T extends ProductWithScore>(products: T[]): T[] {
-	return [...products].sort((a, b) => {
-		// Non-"does_not_match" products come first
-		if (a.matchStatus === 'does_not_match' && b.matchStatus !== 'does_not_match') return 1;
-		if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
-
-		// Then by score (highest first)
-		const scoreA = a.score || 0;
-		const scoreB = b.score || 0;
-		if (scoreB !== scoreA) return scoreB - scoreA;
-
-		// Original order as tiebreaker (maintain existing order)
-		return 0;
-	});
+	return [...products].sort(compareProductsByScore);
 }
