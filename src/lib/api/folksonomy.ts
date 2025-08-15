@@ -51,6 +51,17 @@ export function createFolksonomyApi(fetch: typeof window.fetch): Folksonomy {
 	return folksonomyApi;
 }
 
+// TODO: move to SDK
+export async function getFolksonomyValues(fetch: typeof window.fetch, key: string) {
+	const folksonomyApi = createFolksonomyApi(fetch);
+	const response = await folksonomyApi.raw.GET('/values/{k}', { params: { path: { k: key } } });
+	if ('error' in response) {
+		console.error(response.error);
+		return [];
+	}
+	return response.data;
+}
+
 export function updateFolksonomyAuthToken(token: string | null) {
 	preferences.update((p) => ({
 		...p,

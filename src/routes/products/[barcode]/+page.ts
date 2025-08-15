@@ -56,7 +56,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const countries = getTaxo<Country>('countries', fetch);
 
 	const folksonomyTags = isFolksonomyConfigured() ? folkApi.getProductTags(params.barcode) : [];
-	const folksonomyKeys = isFolksonomyConfigured() ? folkApi.getProducts(params.barcode) : [];
+	const folksonomyKeys = isFolksonomyConfigured() ? folkApi.getKeys() : [];
 
 	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
