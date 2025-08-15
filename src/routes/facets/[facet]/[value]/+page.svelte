@@ -11,10 +11,12 @@
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}: {value}</h2>
 
-<div class="my-4">
-	<h2 class="my-3 grow text-2xl font-bold">Knowledge Panels</h2>
-	<KnowledgePanels {knowledgePanels} summary={false} />
-</div>
+{#if Object.entries(knowledgePanels).length > 0}
+	<div class="my-4">
+		<h2 class="my-3 grow text-2xl font-bold">Knowledge Panels</h2>
+		<KnowledgePanels {knowledgePanels} summary={false} />
+	</div>
+{/if}
 
 <div class="my-8">
 	<h2 class="text-2xl font-bold">Products</h2>
