@@ -2,15 +2,24 @@
 	import { page } from '$app/state';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
+	import { _ } from '$lib/i18n';
+
 	import type { PageProps } from './$types';
+	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
 		return new Intl.NumberFormat().format(n);
 	}
 
-	let { data }: PageProps = $props();
 	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
 </script>
+
+<div class="mb-4">
+	<a href="/facets/" class="btn btn-ghost w-full">
+		<span class="icon icon-[mdi--arrow-left]"></span>
+		{$_('facets.facet_back_to_list')}
+	</a>
+</div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
 

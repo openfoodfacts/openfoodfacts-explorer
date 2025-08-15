@@ -4,10 +4,18 @@
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
 	import type { PageProps } from './$types';
+	import { _ } from '$lib/i18n';
 
 	let { data }: PageProps = $props();
 	let { facet, value, results, knowledgePanels } = $derived(data);
 </script>
+
+<div class="mb-4">
+	<a href={`/facets/${facet}`} class="btn btn-ghost w-full">
+		<span class="icon icon-[mdi--arrow-left]"></span>
+		{$_('facets.facet_back_to_overview', { values: { facet } })}
+	</a>
+</div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}: {value}</h2>
 

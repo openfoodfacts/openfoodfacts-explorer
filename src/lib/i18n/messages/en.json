@@ -89,7 +89,6 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
-
 		"datasources": {
 			"title": "Data Sources",
 			"added_on": "Product added on {date} by: ",
@@ -203,5 +202,9 @@
 	},
 	"menu": {
 		"button": "Menu"
+	},
+	"facets": {
+		"facet_back_to_list": "Back to facets",
+		"facet_back_to_overview": "Back to {facet} overview"
 	}
 }
