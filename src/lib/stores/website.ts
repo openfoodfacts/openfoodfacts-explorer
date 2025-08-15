@@ -10,5 +10,6 @@ export function setWebsiteCtx(ctx: () => WebsiteContext) {
 
 export function getWebsiteCtx() {
 	const lambda = getContext('website-ctx') as () => WebsiteContext;
+	if (!lambda) throw new Error('Website context not found');
 	return lambda();
 }

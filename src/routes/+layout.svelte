@@ -97,7 +97,7 @@
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
-				<a href="/"> <Logo flavor={websiteCtx.flavor} /> </a>
+				<a href="/"> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -131,7 +131,7 @@
 		<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 			<div class="navbar-start">
 				<a href="/">
-					<Logo flavor={websiteCtx.flavor} />
+					<Logo />
 				</a>
 			</div>
 			<div class="navbar-end flex gap-1 sm:gap-2">
