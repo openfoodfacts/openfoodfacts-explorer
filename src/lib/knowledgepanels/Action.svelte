@@ -2,6 +2,7 @@
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
+	import { NUTRIPATROL_URL } from '$lib/const';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -74,7 +75,7 @@
 				source: 'web',
 				flavor: 'off'
 			});
-			window.open(`https://nutripatrol.openfoodfacts.org/flag/product/?${params.toString()}`);
+			window.open(`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`);
 		}
 		// Handle URLs directly
 		else if (
