@@ -66,9 +66,9 @@
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="link"
+				class="btn btn-secondary max-sm:btn-sm"
 			>
-				See on OpenFoodFacts
+				Classic view
 			</a>
 
 			<button class="btn btn-secondary max-sm:btn-sm" onclick={addToCalculator}>
