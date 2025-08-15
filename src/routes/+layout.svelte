@@ -21,6 +21,14 @@
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
+	import type { LayoutProps } from './$types';
+	import { setWebsiteCtx } from '$lib/stores/website';
+
+	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+		flavor: 'food'
+	});
+	$inspect(websiteCtx).with((it) => console.debug('Website context:', it));
+	setWebsiteCtx(() => websiteCtx);
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -31,11 +39,7 @@
 
 	let searchQuery: string = $state('');
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children }: LayoutProps = $props();
 
 	onMount(() => {
 		// only inject the script on the client side
@@ -93,7 +97,7 @@
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
-				<a href="/"> <Logo /> </a>
+				<a href="/"> <Logo flavor={websiteCtx.flavor} /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -127,7 +131,7 @@
 		<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 			<div class="navbar-start">
 				<a href="/">
-					<Logo />
+					<Logo flavor={websiteCtx.flavor} />
 				</a>
 			</div>
 			<div class="navbar-end flex gap-1 sm:gap-2">
