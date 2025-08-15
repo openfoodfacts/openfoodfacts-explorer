@@ -5,11 +5,13 @@
 	let {
 		knowledgePanels,
 		productCode,
-		summary = true
+		summary = true,
+		onlyCards = false
 	}: {
 		knowledgePanels: Record<string, KnowledgePanel>;
 		productCode?: string;
 		summary?: boolean;
+		onlyCards?: boolean;
 	} = $props();
 
 	let panelsArray = $derived(
@@ -46,5 +48,7 @@
 {/if}
 
 {#each panelsArray as [id, panel] (id)}
-	<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + SUMMARY_ID} {productCode} />
+	{#if !onlyCards || panel.type === 'card'}
+		<Panel {panel} allPanels={knowledgePanels} {id} link={'#' + SUMMARY_ID} {productCode} />
+	{/if}
 {/each}

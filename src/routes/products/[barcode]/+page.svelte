@@ -39,7 +39,11 @@
 
 	<ProductAttributes {productAttributes} />
 
-	<KnowledgePanels knowledgePanels={product.knowledge_panels} productCode={product.code} />
+	<KnowledgePanels
+		knowledgePanels={product.knowledge_panels}
+		productCode={product.code}
+		onlyCards={true}
+	/>
 
 	{#if isPriceConfigured() && data?.prices != null}
 		<Prices prices={data.prices} barcode={product.code} />
