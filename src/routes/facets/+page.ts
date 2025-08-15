@@ -2,9 +2,9 @@ import type { PageLoad } from './$types';
 
 const FACETS = [
 	{ taxo: 'countries', name: 'Countries', icon: 'icon-[mdi--earth]' },
-	{ taxo: 'nutrition_grades', name: 'Nutrition grades', icon: 'icon-[mdi--food-apple]' },
-	{ taxo: 'nova_groups', name: 'NOVA groups', icon: 'icon-[mdi--numeric]' },
-	{ taxo: 'environmental_score', name: 'Green-Score', icon: 'icon-[mdi--leaf]' },
+	{ taxo: 'nutrition-grades', name: 'Nutrition grades', icon: 'icon-[mdi--food-apple]' },
+	{ taxo: 'nova-groups', name: 'NOVA groups', icon: 'icon-[mdi--numeric]' },
+	{ taxo: 'environmental-score', name: 'Green-Score', icon: 'icon-[mdi--leaf]' },
 	{ taxo: 'brands', name: 'Brands', icon: 'icon-[mdi--tag]' },
 	{ taxo: 'categories', name: 'Categories', icon: 'icon-[mdi--shape]' },
 	{ taxo: 'labels', name: 'Labels', icon: 'icon-[mdi--label]' },
