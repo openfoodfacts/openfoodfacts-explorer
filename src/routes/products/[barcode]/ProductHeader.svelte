@@ -118,7 +118,7 @@
 					Loading...
 				{:then categories}
 					{#each product.categories_tags as tag (tag)}
-						<a class="badge badge-secondary h-auto break-words" href="/taxo/categories/{tag}">
+						<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
 							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
 						</a>
 					{/each}
@@ -144,7 +144,7 @@
 					Loading...
 				{:then labels}
 					{#each product.labels_tags as tag, i (i)}
-						<a class="badge h-auto break-words" href={'/taxo/labels/' + tag}>
+						<a class="badge h-auto break-words" href={'/facets/labels/' + tag}>
 							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
 						</a>
 					{/each}
@@ -157,7 +157,7 @@
 					Loading...
 				{:then countries}
 					{#each product.countries_tags as tag, i (i)}
-						<a class="badge h-auto break-words" href={'/taxo/countries/' + tag}>
+						<a class="badge h-auto break-words" href={'/facets/countries/' + tag}>
 							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
 						</a>
 					{/each}
@@ -172,7 +172,7 @@
 					{#each product.origins_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
-						<a class="link inline-flex items-center break-words" href={'/taxo/origin/' + tag}>
+						<a class="link inline-flex items-center break-words" href={'/facets/origin/' + tag}>
 							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
 						</a>
 					{/each}

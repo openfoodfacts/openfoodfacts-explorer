@@ -174,6 +174,9 @@
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
 			</a>
+			<a class="btn btn-outline link" href="/facets">
+				{$_('facets_link')}
+			</a>
 
 			<div class="divider md:divider-horizontal"></div>
 			<a
