@@ -3,6 +3,7 @@
 
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
+	import { slide } from 'svelte/transition';
 
 	interface Props {
 		tags: FolksonomyTag[];
@@ -25,13 +26,19 @@
 	function getFilteredArray<T>(
 		arr: readonly T[],
 		value: string,
-		keyExtractor: (item: T) => string
+		keyExtractor: (item: T) => string,
+		{ excluded = [] }: { excluded?: readonly string[] } = {}
 	) {
 		if (value === '') {
 			return arr;
 		}
 
-		const filtered = arr.filter((item) => keyExtractor(item).includes(value));
+		const filtered = arr.filter((item) => {
+			const key = keyExtractor(item);
+			console.log('Filtering item:', item, 'with key:', key);
+			return key.includes(value) && !excluded.includes(key);
+		});
+
 		if (filtered.length === 1 && keyExtractor(filtered[0]) === value) {
 			// do not show the dropdown
 			return null;
@@ -41,6 +48,7 @@
 	}
 
 	async function updateTag(newValue: string, idx: number) {
+		isLoading = true;
 		const oldTag = tags[idx];
 
 		const newTag: FolksonomyTag = {
@@ -55,14 +63,19 @@
 		const ok = await folksonomyApi.putTag(newTag);
 		if (!ok) {
 			console.error('Failed to update tag', oldTag, 'to', newTag);
+			isLoading = false;
 			return;
 		}
 
 		console.debug('Updated tag', oldTag, 'to', newTag);
 		await refreshTags();
+		isLoading = false;
 	}
 
 	async function removeTag(tag: FolksonomyTag) {
+		isLoading = true;
+		console.debug('Removing tag', tag);
+
 		tags = tags.filter((t) => t.k !== tag.k);
 		const version = tag.version;
 		if (version == null) {
@@ -71,13 +84,15 @@
 		// otherwise ts complains about version possibly being null
 		const folksonomyApi = createFolksonomyApi(fetch);
 		const ok = await folksonomyApi.removeTag({ ...tag, version });
-		if (!ok) {
-			console.error('Failed to remove tag', tag);
+		if (ok != null) {
+			console.error('Failed to remove tag', { tag, ok });
+			isLoading = false;
 			return;
 		}
 
 		console.debug('Removed tag', tag);
 		await refreshTags();
+		isLoading = false;
 	}
 
 	let newKey = $state('');
@@ -113,12 +128,14 @@
 		})();
 	}
 
-	let creatingNewTag: boolean = $state(false);
+	let isLoading: boolean = $state(false);
 
 	async function createNewTag() {
-		creatingNewTag = true;
+		isLoading = true;
+		console.debug('Creating new tag with key:', newKey, 'and value:', newValue);
+
 		if (newKey == '' || newValue == '') {
-			creatingNewTag = false;
+			isLoading = false;
 			throw new Error('New key or value is empty');
 		}
 
@@ -140,10 +157,19 @@
 			newValue = '';
 		}
 
-		creatingNewTag = false;
+		await refreshTags();
+
+		newKey = '';
+		newValue = '';
+
+		isLoading = false;
 	}
 
-	let filteredKeys = $derived(getFilteredArray(keys, newKey, (item) => item.k));
+	let filteredKeys = $derived(
+		getFilteredArray(keys, newKey, (item) => item.k, { excluded: tags.map((it) => it.k) })
+	);
+
+	$inspect(tags);
 
 	let filteredValues = $derived.by(() => {
 		return possibleValues == null
@@ -164,7 +190,7 @@
 	</thead>
 	<tbody>
 		{#each tags as tag, i (tag.k)}
-			<tr>
+			<tr transition:slide>
 				<td aria-label="Key">
 					<div class="flex w-full">
 						<a href="/folksonomy/{tag.k}" class="link grow pl-2 font-mono max-sm:w-20" type="text">
@@ -175,7 +201,7 @@
 				<td class="flex gap-2" aria-label="Value">
 					<textarea
 						class="textarea grow break-words whitespace-pre-wrap max-sm:w-20"
-						readonly={!loggedIn}
+						readonly={!loggedIn || isLoading}
 						value={tag.v}
 						onchange={(e) => updateTag(e.currentTarget.value, i)}
 					></textarea>
@@ -184,7 +210,7 @@
 					<td>
 						<button
 							class="btn btn-error"
-							disabled={!loggedIn}
+							disabled={!loggedIn || isLoading}
 							onclick={() => {
 								removeTag(tag);
 							}}
@@ -268,13 +294,13 @@
 				<button
 					class="btn btn-primary"
 					onclick={createNewTag}
-					disabled={creatingNewTag || !loggedIn}
+					disabled={isLoading || !loggedIn}
 					title={!loggedIn
 						? 'You must be logged in to create a new tag'
-						: creatingNewTag
+						: isLoading
 							? 'Creating...'
 							: undefined}
-					class:loading={creatingNewTag}
+					class:loading={isLoading}
 				>
 					Create
 				</button>
