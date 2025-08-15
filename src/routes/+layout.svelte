@@ -21,6 +21,14 @@
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
+	import type { LayoutProps } from './$types';
+	import { setWebsiteCtx } from '$lib/stores/website';
+
+	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+		flavor: 'food'
+	});
+	$inspect(websiteCtx).with((it) => console.debug('Website context:', it));
+	setWebsiteCtx(() => websiteCtx);
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -31,11 +39,7 @@
 
 	let searchQuery: string = $state('');
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children }: LayoutProps = $props();
 
 	onMount(() => {
 		// only inject the script on the client side

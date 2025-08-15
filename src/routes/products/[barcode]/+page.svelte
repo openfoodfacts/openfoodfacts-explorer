@@ -17,12 +17,18 @@
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { getWebsiteCtx } from '$lib/stores/website';
 
 	type Props = { data: PageData };
 
 	let { data }: Props = $props();
 	let product = $derived(data.state.product);
 	let productAttributes = $derived(data.productAttributes);
+
+	let websiteCtx = getWebsiteCtx();
+	$effect(() => {
+		websiteCtx.flavor = product.product_type as 'beauty' | 'food' | 'petfood' | 'product';
+	});
 </script>
 
 <Metadata
