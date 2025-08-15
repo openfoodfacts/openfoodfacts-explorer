@@ -5,13 +5,26 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+
 	import { ProductsApi, type ProductReduced, type ProductStateFound } from '$lib/api';
 	import { onMount } from 'svelte';
 	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
+	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
+
+	let sortedProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
+
+	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
+
+	let attributesByCode: Record<string, unknown[]> = $state({});
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
+
+	// Track preferences form visibility
+	let showPreferences = $state(false);
 
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
@@ -42,11 +55,39 @@
 		);
 
 		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
+		let dedupProducts = deduplicate(products, (it) => it.product.code);
+
+		// get attributes for all products using the API
+		const productCodes = dedupProducts.map((state) => state.product.code);
+		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		attributesByCode = attrs;
+
+		return dedupProducts;
 	}
+
+	// Effect to add scores to products and sort them based on classify toggle
+	$effect(() => {
+		if (resolvedProducts.length > 0 && Object.keys(attributesByCode).length > 0) {
+			const productsWithAttributes = resolvedProducts.map((state) => ({
+				...state,
+				attributes: attributesByCode[state.product.code] || []
+			}));
+
+			const result = scoreAndSortProducts(
+				productsWithAttributes,
+				$userPreferences,
+				$classifyProductsEnabled
+			);
+
+			sortedProducts = result.sortedProducts;
+		}
+	});
 
 	onMount(() => {
 		products = getProducts();
+		products.then((prods) => {
+			resolvedProducts = prods;
+		});
 	});
 </script>
 
@@ -77,6 +118,20 @@
 		</div>
 	</Card>
 
+	<!-- Preferences Collapsible Section -->
+	<div class="mt-6 w-full">
+		<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
+			<input type="checkbox" bind:checked={showPreferences} />
+			<div class="collapse-title text-md flex items-center gap-2 font-medium">
+				<span class="icon-[mdi--cog] text-lg"></span>
+				{$_('preferences.edit_preferences')}
+			</div>
+			<div class="collapse-content">
+				<PreferencesForm onClose={() => (showPreferences = false)} />
+			</div>
+		</div>
+	</div>
+
 	<div class="mt-8 flex w-full">
 		<div
 			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
@@ -85,8 +140,8 @@
 				{#each Array(SKELETON_COUNT) as _, index (index)}
 					<div class="skeleton h-36 w-full rounded-lg"></div>
 				{/each}
-			{:then products}
-				{#each products as state (state.product.code)}
+			{:then _}
+				{#each sortedProducts as state (state.product.code)}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<product-card
@@ -104,6 +159,7 @@
 			{/await}
 		</div>
 	</div>
+
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 		<donation-banner></donation-banner>
 	</div>

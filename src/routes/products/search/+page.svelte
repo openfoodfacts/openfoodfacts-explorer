@@ -7,6 +7,14 @@
 
 	import { _ } from '$lib/i18n';
 	import { SORT_OPTIONS } from '$lib/const';
+
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '$lib/ui/VegaChart.svelte';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import FacetBar from './FacetBar.svelte';
+
 	import {
 		addIncludeFacet,
 		extractQuery,
@@ -15,20 +23,37 @@
 		type FacetsSelection
 	} from '$lib/facets';
 
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import FacetBar from './FacetBar.svelte';
-
 	import type { PageProps } from './$types';
+	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductReduced } from '$lib/api/product';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
 
+	let sortedProducts: (Product & ProductReduced & ScoredProduct)[] = $state([]);
+
+	// Effect to calculate scores and sort products
+	$effect(() => {
+		if (result?.hits && result.hits.length > 0) {
+			const { sortedProducts: sorted } = scoreAndSortProducts(
+				result.hits,
+				$userPreferences,
+				$classifyProductsEnabled
+			);
+
+			sortedProducts = sorted;
+		} else {
+			sortedProducts = [];
+		}
+	});
+
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
 
+	// State for showing/hiding preferences
+	let showPreferences = $state(false);
 	let showPrices = $state(true);
 
 	// Update facets when search results change or facetBarComponent changes
@@ -154,11 +179,25 @@
 
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
-		<div class="mb-4 flex justify-end">
-			<button class="btn btn-secondary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
+		<div class="mb-4 flex justify-end gap-2">
+			<button class="btn btn-primary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
 				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
 			</button>
+		</div>
+
+		<!-- Preferences Collapsible Section -->
+		<div class="mb-4 w-full">
+			<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
+				<input type="checkbox" bind:checked={showPreferences} />
+				<div class="collapse-title text-md flex items-center gap-2 font-medium">
+					<span class="icon-[mdi--cog] text-lg"></span>
+					{$_('preferences.edit_preferences')}
+				</div>
+				<div class="collapse-content">
+					<PreferencesForm onClose={() => (showPreferences = false)} />
+				</div>
+			</div>
 		</div>
 
 		{#if showGraphs}
@@ -186,11 +225,10 @@
 
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each result.hits as product (product.code)}
+			{#each sortedProducts as product (product.code)}
 				{#if product.code != null}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
-
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4">

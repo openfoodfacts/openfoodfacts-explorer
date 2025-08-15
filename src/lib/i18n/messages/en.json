@@ -86,6 +86,21 @@
 		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
+	"preferences": {
+		"title": "Edit your preferences",
+		"subtitle": "Your preferences are kept in your browser and never sent to Open Food Facts or anyone else.",
+		"edit_preferences": "Edit Preferences",
+		"close": "Close",
+		"classify_products": "Classify products according to your preferences",
+		"use_default": "Use default preferences",
+		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
+		"options": {
+			"not_important": "Not important",
+			"important": "Important",
+			"very_important": "Very important",
+			"mandatory": "Mandatory"
+		}
+	},
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
