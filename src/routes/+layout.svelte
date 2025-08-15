@@ -8,7 +8,7 @@
 	import '@fontsource-variable/plus-jakarta-sans';
 
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -71,7 +71,7 @@
 
 <Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
-{#if !$isLoading}
+<div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		language-code="en"
@@ -83,7 +83,13 @@
 		}}
 	>
 	</off-webcomponents-configuration>
+</div>
 
+{#if navigating.to != null}
+	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+{/if}
+
+{#if !$isLoading}
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
