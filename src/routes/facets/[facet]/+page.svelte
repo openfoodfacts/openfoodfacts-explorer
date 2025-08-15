@@ -18,7 +18,7 @@
 	<Panels {knowledgePanels} summary={false} />
 </div>
 
-<table class="table-zebra table">
+<table class="table-zebra my-4 table">
 	<thead>
 		<tr>
 			<th>Name</th>

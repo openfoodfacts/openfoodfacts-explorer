@@ -19,7 +19,7 @@
 <div class="my-8">
 	<h2 class="text-2xl font-bold">Products</h2>
 
-	<table class="table">
+	<table class="my-4 table">
 		<thead>
 			<tr>
 				<th>Code</th>
