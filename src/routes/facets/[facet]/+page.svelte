@@ -1,20 +1,29 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import Panels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
 	import type { PageProps } from './$types';
 
+	function formatNumber(n: number) {
+		return new Intl.NumberFormat().format(n);
+	}
+
 	let { data }: PageProps = $props();
-	let { facet, results, pages, page: currentPage } = $derived(data);
+	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
 </script>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
 
-<table class="table">
+<div class="my-8">
+	<Panels {knowledgePanels} summary={false} />
+</div>
+
+<table class="table-zebra table">
 	<thead>
 		<tr>
 			<th>Name</th>
 			<th>Known</th>
-			<th>Products</th>
+			<th class="text-end">Products</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,7 +35,7 @@
 					</a>
 				</td>
 				<td>{known === 1 ? 'Yes' : 'No'}</td>
-				<td>{products}</td>
+				<td class="text-end">{formatNumber(products)}</td>
 			</tr>
 		{/each}
 	</tbody>
