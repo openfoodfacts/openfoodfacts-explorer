@@ -3,10 +3,15 @@ import {
 	PUBLIC_AUTH_PKCE_ID,
 	PUBLIC_IMAGES_URL,
 	PUBLIC_KEYCLOAK_REALM,
-	PUBLIC_ROBOTOFF_URL
+	PUBLIC_ROBOTOFF_URL,
+	PUBLIC_NUTRIPATROL_URL
 } from '$env/static/public';
 
-export { PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL, PUBLIC_IMAGES_URL as IMAGE_HOST };
+export {
+	PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL,
+	PUBLIC_IMAGES_URL as IMAGE_HOST,
+	PUBLIC_NUTRIPATROL_URL as NUTRIPATROL_URL
+};
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = import.meta.env.VITE_OFF_BASE_URL || 'https://world.openfoodfacts.org';
