@@ -29,6 +29,8 @@
 	$effect(() => {
 		websiteCtx.flavor = product.product_type as 'beauty' | 'food' | 'petfood' | 'product';
 	});
+
+	let useWCFolksonomyEditor = $state(false);
 </script>
 
 <Metadata
@@ -61,15 +63,39 @@
 
 	{#if isFolksonomyConfigured()}
 		<Card>
-			<h1 class="my-4 text-4xl font-bold">
-				Folksonomy Engine <span class="font-light italic">(beta)</span>
-			</h1>
+			<label class="label">
+				<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
+				Use the Web Component Editor
+			</label>
 
-			<Folksonomy
-				tags={data.tags ?? []}
-				keys={data.keys.map((it) => it.k)}
-				barcode={product.code}
-			/>
+			{#if useWCFolksonomyEditor}
+				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
+			{:else}
+				<h1 class="my-4 text-4xl font-bold">Personalized properties (beta)</h1>
+
+				<div class="prose my-4 text-justify">
+					<p>
+						These properties are created and filled by users for any kind of usages. Feel free to
+						add your own. The properties and values you create
+						<strong>must be factual</strong>. You can dive into
+						<a href="https://openfoodfacts-explorer.vercel.app/folksonomy">
+							the list of properties already used by the community
+						</a>
+						or explore the
+						<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
+							properties' documentation and its search engine
+						</a>.
+					</p>
+					<p>Be aware the data model might be modified. Use at your own risk.</p>
+					<p>
+						This is brought by the
+						<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">Folksonomy Engine project</a
+						>. Don't hesitate to participate or give feedback.
+					</p>
+				</div>
+
+				<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code} />
+			{/if}
 		</Card>
 	{/if}
 </div>

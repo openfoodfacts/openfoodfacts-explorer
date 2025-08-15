@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { preferences } from '$lib/settings';
 
-	import type { FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { createFolksonomyApi } from '$lib/api/folksonomy';
+	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
 
 	interface Props {
 		tags: FolksonomyTag[];
 		barcode: string;
-		keys: readonly string[];
+		keys: readonly FolksonomyKey[];
 	}
 
 	let { tags = $bindable(), barcode, keys }: Props = $props();
@@ -22,11 +22,22 @@
 		}
 	}
 
-	function getFilteredKeys(keys: readonly string[], newKey: string) {
-		if (newKey === '') {
-			return keys;
+	function getFilteredArray<T>(
+		arr: readonly T[],
+		value: string,
+		keyExtractor: (item: T) => string
+	) {
+		if (value === '') {
+			return arr;
 		}
-		return keys.filter((key) => key.includes(newKey) && key !== newKey);
+
+		const filtered = arr.filter((item) => keyExtractor(item).includes(value));
+		if (filtered.length === 1 && keyExtractor(filtered[0]) === value) {
+			// do not show the dropdown
+			return null;
+		}
+
+		return filtered;
 	}
 
 	async function updateTag(newValue: string, idx: number) {
@@ -72,6 +83,36 @@
 	let newKey = $state('');
 	let newValue = $state('');
 
+	let possibleValues: { v: string; product_count: number }[] | null = $state(null);
+
+	$effect(() => {
+		// when newKey changes, fetch possible values
+		const key = newKey;
+
+		debounce(100, () => {
+			if (key == '') {
+				possibleValues = null;
+				return;
+			}
+			console.debug('Fetching possible values for key:', key);
+
+			getFolksonomyValues(fetch, key).then((values) => {
+				console.debug('Possible values for key', key, ':', values);
+				possibleValues = values;
+			});
+		});
+	});
+
+	function debounce(delay: number, fn: () => void) {
+		let timeoutId: number | undefined;
+		(() => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			timeoutId = window.setTimeout(fn, delay);
+		})();
+	}
+
 	let creatingNewTag: boolean = $state(false);
 
 	async function createNewTag() {
@@ -101,18 +142,24 @@
 
 		creatingNewTag = false;
 	}
-	let filteredNewKeys = $derived(getFilteredKeys(keys, newKey));
+
+	let filteredKeys = $derived(getFilteredArray(keys, newKey, (item) => item.k));
+
+	let filteredValues = $derived.by(() => {
+		return possibleValues == null
+			? null
+			: getFilteredArray(possibleValues, newValue, (item) => item.v);
+	});
+
 	let loggedIn = $derived($preferences.folksonomy.authToken != null);
 </script>
 
 <table class="table-compact table w-full">
 	<thead>
-		<tr>
+		<tr class="bg-base-200">
 			<th>Key</th>
 			<th>Value</th>
-			{#if loggedIn}
-				<th></th>
-			{/if}
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -149,37 +196,43 @@
 			</tr>
 		{/each}
 
-		{#if loggedIn}
-			<tr>
-				<td>
-					<div class="dropdown dropdown-top flex w-full">
-						<input
-							type="text"
-							class="input grow max-sm:w-20"
-							placeholder="New key"
-							readonly={!loggedIn}
-							bind:value={newKey}
-						/>
+		<tr>
+			<td>
+				<div class="dropdown dropdown-bottom dropdown-start flex w-full">
+					<input
+						type="text"
+						class="input grow max-sm:w-20"
+						placeholder="New key"
+						readonly={!loggedIn}
+						bind:value={newKey}
+					/>
 
+					{#if filteredKeys != null}
 						<div class="dropdown-content max-h-52 overflow-y-auto">
 							<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-							<ul tabindex="0" class=" menu rounded-box bg-base-100 p-2 shadow-sm">
-								{#each filteredNewKeys as key (key)}
-									<li>
-										<button
-											onclick={() => {
-												newKey = key;
-											}}
-										>
-											{key}
-										</button>
-									</li>
-								{/each}
+							<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
+								{#if filteredKeys.length === 0}
+									<li>No results found</li>
+								{:else}
+									{#each filteredKeys as key (key)}
+										<li>
+											<button
+												onclick={() => {
+													newKey = key.k;
+												}}
+											>
+												{key.k} ({key.count})
+											</button>
+										</li>
+									{/each}
+								{/if}
 							</ul>
 						</div>
-					</div>
-				</td>
-				<td class="flex gap-2">
+					{/if}
+				</div>
+			</td>
+			<td class="flex gap-2">
+				<div class="dropdown dropdown-bottom dropdown-start flex w-full">
 					<input
 						type="text"
 						class="input grow max-sm:w-20"
@@ -187,18 +240,45 @@
 						readonly={!loggedIn}
 						bind:value={newValue}
 					/>
-				</td>
-				<td>
-					<button
-						class="btn btn-primary"
-						onclick={createNewTag}
-						disabled={creatingNewTag}
-						class:loading={creatingNewTag}
-					>
-						Create
-					</button>
-				</td>
-			</tr>
-		{/if}
+					<div class="dropdown-content max-h-52 overflow-y-auto">
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						{#if filteredValues != null}
+							<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
+								{#if filteredValues.length > 0}
+									{#each filteredValues as value (value)}
+										<li>
+											<button
+												onclick={() => {
+													newValue = value.v;
+												}}
+											>
+												{value.v} ({value.product_count})
+											</button>
+										</li>
+									{/each}
+								{:else}
+									<li>No results found</li>
+								{/if}
+							</ul>
+						{/if}
+					</div>
+				</div></td
+			>
+			<td>
+				<button
+					class="btn btn-primary"
+					onclick={createNewTag}
+					disabled={creatingNewTag || !loggedIn}
+					title={!loggedIn
+						? 'You must be logged in to create a new tag'
+						: creatingNewTag
+							? 'Creating...'
+							: undefined}
+					class:loading={creatingNewTag}
+				>
+					Create
+				</button>
+			</td>
+		</tr>
 	</tbody>
 </table>
