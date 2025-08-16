@@ -7,17 +7,17 @@
 	import { _ } from '$lib/i18n';
 
 	let { data }: PageProps = $props();
-	let { facet, value, results, knowledgePanels } = $derived(data);
+	let { facet, results, knowledgePanels } = $derived(data);
 </script>
 
 <div class="mb-4">
 	<a href={`/facets/${facet}`} class="btn btn-ghost w-full">
 		<span class="icon icon-[mdi--arrow-left]"></span>
-		{$_('facets.facet_back_to_overview', { values: { facet } })}
+		{$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
 	</a>
 </div>
 
-<h2 class="my-8 text-3xl font-bold">Exploring {facet}: {value}</h2>
+<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
 
 {#if Object.entries(knowledgePanels).length > 0}
 	<div class="my-4">
