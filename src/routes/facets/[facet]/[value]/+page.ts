@@ -18,26 +18,29 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		page: page.toString()
 	});
 
-	const results = (await (
-		await fetch(
-			`https://world.openfoodfacts.org/facets/${facet}/${value}.json?${offParams.toString()}`
-		)
-	).json()) as {
+	const results: Promise<{
 		count: number;
 		page: number;
 		page_count: number;
 		page_size: number;
 		products: Product[];
 		skip: number;
-	};
+	}> = fetch(`https://world.openfoodfacts.org/facets/${facet}/${value}.json?${offParams}`)
+		.then((res) => res.json())
+		// TODO: this is because the "page" field is a string.
+		// The server should output a number here!
+		.then((it) => ({
+			...it,
+			page: parseInt(it.page, 10)
+		}));
 
-	const facetKnowledgePanels = (await (
-		await fetch(
-			`https://facets-kp.openfoodfacts.org/knowledge_panel?facet_tag=${facet}&value_tag=${value}`
-		)
-	).json()) as {
-		knowledge_panels: Record<string, KnowledgePanel>;
-	};
+	const facetKnowledgePanels: Promise<{ knowledge_panels: Record<string, KnowledgePanel> }> = fetch(
+		`https://facets-kp.openfoodfacts.org/knowledge_panel?facet_tag=${facet}&value_tag=${value}`
+	).then((res) => res.json());
 
-	return { facet, value, results, knowledgePanels: facetKnowledgePanels.knowledge_panels };
+	return {
+		facet: { name: facet, value },
+		results: await results,
+		knowledgePanels: (await facetKnowledgePanels).knowledge_panels
+	};
 };
