@@ -1,4 +1,5 @@
 <script lang="ts">
+	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -11,7 +12,7 @@
 	<h2 class="my-4 text-xl font-bold">Has Created</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each contributor.products.slice(0, 6) as product (product.code)}
-			<product-card {product}></product-card>
+			<WcProductCard {product} />
 		{/each}
 	</div>
 
