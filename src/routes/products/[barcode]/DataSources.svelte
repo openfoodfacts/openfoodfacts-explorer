@@ -2,7 +2,6 @@
 	import Card from '$lib/ui/Card.svelte';
 	import { _ } from '$lib/i18n';
 	import type { ProductDataSection } from '$lib/api';
-	import type { State } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { page } from '$app/state';
 
 	type Props = {
