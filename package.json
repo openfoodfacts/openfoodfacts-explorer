@@ -47,8 +47,6 @@
 		"@typescript-eslint/eslint-plugin": "^8.39.0",
 		"@typescript-eslint/parser": "^8.39.0",
 		"@vercel/speed-insights": "^1.2.0",
-		"@zoom-image/core": "^0.41.0",
-		"@zoom-image/svelte": "^0.3.4",
 		"cytoscape": "^3.33.0",
 		"daisyui": "5.0.50",
 		"eslint": "^9.33.0",
