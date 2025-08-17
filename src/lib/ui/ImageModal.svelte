@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { useZoomImageWheel } from '@zoom-image/svelte';
+	import ResizableImage from './ResizableImage.svelte';
 
 	type ImageState = { url: string; alt?: string };
 	let image: ImageState | undefined = $state();
@@ -48,29 +47,11 @@
 		rotation = rotation - 90;
 	}
 
-	let container: HTMLDivElement | undefined = $state();
-	const { createZoomImage, setZoomImageState, zoomImageState } = useZoomImageWheel();
-
-	$effect(() => {
-		setZoomImageState?.({ currentZoom: zoomLevel, currentRotation: rotation });
-	});
-
-	onMount(() => {
-		if (container) {
-			createZoomImage(container, {
-				maxZoom: MAX_ZOOM,
-				wheelZoomRatio: 0.5,
-				shouldZoomOnSingleTouch: () => true
-			});
-			zoomImageState.subscribe((state) => {
-				zoomLevel = state.currentZoom;
-			});
-		}
-	});
+	let imageEl: ResizableImage;
 </script>
 
 <dialog
-	class="border-base-300 bg-base-100 fixed inset-0 m-auto h-[90vh] w-[90vw] rounded-xl border p-0 shadow-lg"
+	class="border-base-300 bg-base-100 h-screen max-h-screen w-screen max-w-screen border p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={(e) => {
@@ -80,13 +61,15 @@
 	}}
 >
 	<div class="relative flex h-full w-full flex-col">
-		<div
-			bind:this={container}
-			class="flex h-full w-full cursor-move items-center justify-center overflow-hidden p-6"
-		>
-			<img class="max-h-[85vh] max-w-[85vw] object-contain" src={image?.url} alt={image?.alt} />
+		<div class="h-full w-full p-5">
+			<ResizableImage
+				src={image?.url}
+				alt={image?.alt ?? 'Image'}
+				bind:zoom={zoomLevel}
+				bind:rotation
+				bind:this={imageEl}
+			/>
 		</div>
-
 		<div class="absolute right-2 z-10 flex h-full flex-col items-center justify-center gap-2">
 			<button
 				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
@@ -98,7 +81,7 @@
 				<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
 			</button>
 			<button
-				class="btn bg-base-100/80 hover:bg-base-100 text-md px-2 py-2 font-medium text-white"
+				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
 				onclick={resetZoom}
 			>
 				{zoomLevel.toFixed(1)} x
@@ -128,7 +111,7 @@
 			</button>
 		</div>
 
-		<div class="absolute right-2 bottom-2 z-10 flex gap-2">
+		<div class="absolute bottom-2 z-10 flex w-full justify-between gap-2 px-4 md:justify-end">
 			<button
 				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
 				onclick={rotateLeft}
@@ -152,14 +135,6 @@
 <style>
 	dialog[open] {
 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-	}
-	@keyframes zoom {
-		from {
-			transform: scale(0.95);
-		}
-		to {
-			transform: scale(1);
-		}
 	}
 	dialog[open]::backdrop {
 		animation: fade 0.2s ease-out;
