@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { Writable } from 'svelte/store';
+	import { type Writable } from 'svelte/store';
 
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import ImageButton from '../ImageButton.svelte';
 
 	type Props = {
 		productStore: Writable<Product>;
@@ -44,9 +45,9 @@
 			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 		</button>
 		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
-		<span class="text-base-content/80 p-6 text-sm sm:text-base"
-			>{$_('product.edit.info.ingredients')}</span
-		>
+		<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			{$_('product.edit.info.ingredients')}
+		</span>
 	</div>
 {/if}
 <div class="tabs tabs-box">
@@ -59,26 +60,28 @@
 			checked={code === $productStore.lang}
 		/>
 		<div class="tab-content form-control p-6">
-			{#if getIngredientsImage(code)}
-				<img src={getIngredientsImage(code)} alt="Ingredients" class="mb-4" />
-			{:else}
-				<p class="alert alert-warning mb-4 text-sm sm:text-base">
-					{$_('product.edit.no_ingredients_image')}
-				</p>
-			{/if}
+			<div class="mb-4">
+				{#if getIngredientsImage(code) != null}
+					<ImageButton src={getIngredientsImage(code) ?? undefined} />
+				{:else}
+					<p class="alert alert-warning mb-4 text-sm sm:text-base">
+						{$_('product.edit.no_ingredients_image')}
+					</p>
+				{/if}
+			</div>
+
 			<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
 				<span class="flex items-center gap-2">
 					{$_('product.edit.ingredients_list')} ({getLanguage(code)})
 					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
 				</span>
 			</label>
-			<div class="form-control mb-4">
-				<textarea
-					id={`ingredients-list-${code}`}
-					class="textarea textarea-bordered h-40 w-full text-sm sm:text-base"
-					bind:value={$productStore[`ingredients_text_${code}`]}
-				></textarea>
-			</div>
+
+			<textarea
+				id={`ingredients-list-${code}`}
+				class="textarea textarea-bordered w-full text-sm sm:text-base"
+				bind:value={$productStore[`ingredients_text_${code}`]}
+			></textarea>
 		</div>
 	{/each}
 	{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
