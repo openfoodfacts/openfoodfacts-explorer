@@ -26,6 +26,7 @@
 			labels: Promise<Taxonomy<Label>>;
 			countries: Promise<Taxonomy<Country>>;
 			origins: Promise<Taxonomy<Origin>>;
+			traceability: Promise<Taxonomy<TraceabilityCode>>;
 		};
 	};
 	let { product, taxonomies }: Props = $props();
@@ -183,8 +184,17 @@
 				{/await}
 			</div>
 
-			{#if product.emb_codes != null && product.emb_codes.length > 0}
+			{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 				<span class="text-end font-bold">Traceability Codes:</span>
+
+				{#each product.emb_codes_tags as tag, i (i)}
+					{#if i > 0},
+					{/if}
+					<a class="link inline-flex items-center break-words" href="/facets/packager-codes/{tag}">
+						{tag}
+					</a>
+				{/each}
+
 				<span>
 					{product.emb_codes}
 					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
