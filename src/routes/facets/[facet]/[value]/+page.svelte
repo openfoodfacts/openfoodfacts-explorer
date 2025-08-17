@@ -11,7 +11,7 @@
 </script>
 
 <div class="mb-4">
-	<a href={`/facets/${facet}`} class="btn btn-ghost w-full">
+	<a href={`/facets/${facet.name}`} class="btn btn-ghost w-full">
 		<span class="icon icon-[mdi--arrow-left]"></span>
 		{$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
 	</a>
