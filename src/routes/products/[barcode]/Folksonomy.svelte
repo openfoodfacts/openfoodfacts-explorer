@@ -189,6 +189,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		{#if tags.length === 0}
+			<tr>
+				<td colspan="3" class="text-center">
+					<p class="mb-4">No tags found</p>
+					{#if loggedIn}
+						<p class="mb-4">You can create a new tag below</p>
+					{/if}
+				</td>
+			</tr>
+		{/if}
 		{#each tags as tag, i (tag.k)}
 			<tr transition:slide>
 				<td aria-label="Key">
