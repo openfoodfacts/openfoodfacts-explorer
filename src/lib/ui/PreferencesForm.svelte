@@ -127,11 +127,11 @@
 		{:else}
 			{#each sections as section (section.id)}
 				<PreferenceSection
-					title={section.title}
-					options={section.options}
+					title={section.title || ''}
+					options={section.options || []}
 					onChange={handlePreferenceChange}
-					category={section.id}
-					showWarning={section.showWarning}
+					category={section.id || ''}
+					showWarning={section.showWarning || false}
 					warningText={section.warningText || ''}
 				/>
 			{/each}
