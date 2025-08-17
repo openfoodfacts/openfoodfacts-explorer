@@ -6,37 +6,33 @@
 
 	type Props = {
 		productStore: Writable<Product>;
-		showInfoNutrition: boolean;
 		getLanguage: (code: string) => string;
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
-		onToggleInfo: () => void;
 	};
 
-	let {
-		productStore,
-		showInfoNutrition,
-		getLanguage,
-		getNutritionImage,
-		handleNutrimentInput,
-		onToggleInfo
-	}: Props = $props();
+	let { productStore, getLanguage, getNutritionImage, handleNutrimentInput }: Props = $props();
+
+	let showInfo = $state(false);
+	function toggleInfo() {
+		showInfo = !showInfo;
+	}
 </script>
 
 <div class="card bg-base-100 shadow-md">
 	<div class="card-body p-4 sm:p-6">
 		<h2
-			class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+			class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 		>
 			<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.nutrition')}
-			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={onToggleInfo}>
+			<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 				<span
 					class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 				></span>
 			</button>
 		</h2>
-		{#if showInfoNutrition}
+		{#if showInfo}
 			<div
 				class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
 			>
@@ -44,7 +40,7 @@
 					type="button"
 					class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
 					aria-label="Close"
-					onclick={onToggleInfo}
+					onclick={toggleInfo}
 				>
 					<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 				</button>

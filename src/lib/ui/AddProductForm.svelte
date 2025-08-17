@@ -1,5 +1,4 @@
 <script lang="ts">
-	import StepHeader from './add-product-steps/StepHeader.svelte';
 	import ImagesStep from './add-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './add-product-steps/BasicInfoStep.svelte';
 	import LanguagesStep from './add-product-steps/LanguagesStep.svelte';
@@ -9,22 +8,42 @@
 	import NavigationButtons from './add-product-steps/NavigationButtons.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
-	import StepNav from './StepNav.svelte';
+
+	import { _ } from '$lib/i18n';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+
+	let currentStep = $derived.by(() => {
+		const params = page.url.searchParams;
+		const step = params.get('step') || '1';
+		return parseInt(step, 10) - 1; // Convert to zero-based index
+	});
+
+	const STEPS = $derived([
+		$_('product.edit.sections.images'),
+		$_('product.edit.sections.basic_info'),
+		$_('product.edit.sections.languages'),
+		$_('product.edit.sections.ingredients'),
+		$_('product.edit.sections.nutrition'),
+		$_('product.edit.sections.comment')
+	]);
+
+	function gotoStep(step: number) {
+		if (step < 0 || step >= STEPS.length) {
+			return;
+		}
+
+		const params = page.url.searchParams;
+		params.set('step', (step + 1).toString());
+		goto(`?${params.toString()}`, { replaceState: true, noScroll: true });
+	}
+
+	const nextStep = () => gotoStep(currentStep + 1);
+	const prevStep = () => gotoStep(currentStep - 1);
 
 	type AddProductFormProps = {
 		productStore: Writable<Product>;
 		comment: string;
-		currentStep: number;
-		steps: string[];
-		showInfoImages: boolean;
-		showInfoBasic: boolean;
-		showInfoLanguages: boolean;
-		showInfoIngredients: boolean;
-		showInfoNutrition: boolean;
-		showInfoComment: boolean;
-		prevStep: () => void;
-		nextStep: () => void;
-		goToStep: (stepIndex: number) => void;
 		handleNutrimentInput: (e: Event, key: string) => void;
 		addLanguage: (code: string) => void;
 		getLanguage: (code: string) => string;
@@ -39,12 +58,6 @@
 		countriesNames: string[];
 		isSubmitting: boolean;
 		submit: () => Promise<void>;
-		toggleInfoImages: () => void;
-		toggleInfoBasic: () => void;
-		toggleInfoLanguages: () => void;
-		toggleInfoIngredients: () => void;
-		toggleInfoNutrition: () => void;
-		toggleInfoComment: () => void;
 		handleCommentChange: (value: string) => void;
 	};
 
@@ -53,17 +66,6 @@
 	// Create reactive references to maintain reactivity
 	let productStore = $derived(props.productStore);
 	let comment = $derived(props.comment);
-	let currentStep = $derived(props.currentStep);
-	let steps = $derived(props.steps);
-	let showInfoImages = $derived(props.showInfoImages);
-	let showInfoBasic = $derived(props.showInfoBasic);
-	let showInfoLanguages = $derived(props.showInfoLanguages);
-	let showInfoIngredients = $derived(props.showInfoIngredients);
-	let showInfoNutrition = $derived(props.showInfoNutrition);
-	let showInfoComment = $derived(props.showInfoComment);
-	let prevStep = $derived(props.prevStep);
-	let nextStep = $derived(props.nextStep);
-	let goToStep = $derived(props.goToStep);
 	let handleNutrimentInput = $derived(props.handleNutrimentInput);
 	let addLanguage = $derived(props.addLanguage);
 	let getLanguage = $derived(props.getLanguage);
@@ -78,93 +80,79 @@
 	let countriesNames = $derived(props.countriesNames);
 	let isSubmitting = $derived(props.isSubmitting);
 	let submit = $derived(props.submit);
-	let toggleInfoImages = $derived(props.toggleInfoImages);
-	let toggleInfoBasic = $derived(props.toggleInfoBasic);
-	let toggleInfoLanguages = $derived(props.toggleInfoLanguages);
-	let toggleInfoIngredients = $derived(props.toggleInfoIngredients);
-	let toggleInfoNutrition = $derived(props.toggleInfoNutrition);
-	let toggleInfoComment = $derived(props.toggleInfoComment);
-	let handleCommentChange = $derived(props.handleCommentChange);
 
-	// Get the appropriate toggle function based on current step
-	const getToggleInfo = (step: number) => {
-		switch (step) {
-			case 0:
-				return toggleInfoImages;
-			case 1:
-				return toggleInfoBasic;
-			case 2:
-				return toggleInfoLanguages;
-			case 3:
-				return toggleInfoIngredients;
-			case 4:
-				return toggleInfoNutrition;
-			default:
-				return toggleInfoComment;
-		}
-	};
+	let handleCommentChange = $derived(props.handleCommentChange);
 </script>
 
-<StepHeader {currentStep} {steps} {goToStep} onToggleInfo={getToggleInfo(currentStep)} />
+<!-- Desktop step navigation -->
+<div class="mb-6 hidden md:block">
+	<ul class="steps w-full text-xs sm:text-sm">
+		{#each STEPS as step, i (step)}
+			<button
+				type="button"
+				class="step {i <= currentStep ? 'step-secondary' : ''} cursor-pointer transition-colors"
+				onclick={() => gotoStep(i)}
+				aria-label={`Go to step ${i + 1}: ${step}`}
+			>
+				{step}
+			</button>
+		{/each}
+	</ul>
+</div>
 
-<StepNav
-	onNext={currentStep < steps.length - 1 ? nextStep : undefined}
-	onPrev={currentStep > 0 ? prevStep : undefined}
-/>
+<!-- Mobile step header -->
+<div class="navigation mb-6 flex items-center justify-between md:hidden">
+	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
+		<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
+		{$_('common.back')}
+	</button>
+
+	<div class="bg-primary/10 my-2 rounded-full px-3 py-2 text-sm">
+		<span class="text-primary/80 font-medium">
+			{$_('common.step')}
+			{`${currentStep + 1}`}
+		</span>
+		<span class="text-primary/60 font-medium">{$_('common.of')}{` ${STEPS.length}`}</span>
+	</div>
+
+	<button
+		class="btn btn-sm btn-secondary"
+		class:opacity-0={currentStep === STEPS.length - 1}
+		disabled={currentStep === STEPS.length - 1}
+		onclick={nextStep}
+		type="button"
+		title={$_('common.next')}
+	>
+		{$_('common.next')} <span class="icon-[mdi--arrow-right] h-4 w-4"></span>
+	</button>
+</div>
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep {productStore} {showInfoImages} onToggleInfo={toggleInfoImages} />
+	<ImagesStep {productStore} />
 {:else if currentStep === 1}
 	<BasicInfoStep
 		{productStore}
-		{showInfoBasic}
 		{categoryNames}
 		{labelNames}
 		{brandNames}
 		{storeNames}
 		{originNames}
 		{countriesNames}
-		onToggleInfo={toggleInfoBasic}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep
-		{productStore}
-		{showInfoLanguages}
-		{filteredLanguages}
-		{addLanguage}
-		{getLanguage}
-		onToggleInfo={toggleInfoLanguages}
-	/>
+	<LanguagesStep {productStore} {filteredLanguages} {addLanguage} {getLanguage} />
 {:else if currentStep === 3}
-	<IngredientsStep
-		{productStore}
-		{showInfoIngredients}
-		{getLanguage}
-		{getIngredientsImage}
-		onToggleInfo={toggleInfoIngredients}
-	/>
+	<IngredientsStep {productStore} {getLanguage} {getIngredientsImage} />
 {:else if currentStep === 4}
-	<NutritionStep
-		{productStore}
-		{showInfoNutrition}
-		{getLanguage}
-		{getNutritionImage}
-		{handleNutrimentInput}
-		onToggleInfo={toggleInfoNutrition}
-	/>
+	<NutritionStep {productStore} {getLanguage} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
-	<CommentStep
-		{comment}
-		{showInfoComment}
-		onToggleInfo={toggleInfoComment}
-		onCommentChange={handleCommentChange}
-	/>
+	<CommentStep {comment} onCommentChange={handleCommentChange} />
 {/if}
 
 <NavigationButtons
 	{currentStep}
-	stepsLength={steps.length}
+	stepsLength={STEPS.length}
 	{isSubmitting}
 	{prevStep}
 	{nextStep}

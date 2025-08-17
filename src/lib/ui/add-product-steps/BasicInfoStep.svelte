@@ -9,33 +9,35 @@
 
 	type Props = {
 		productStore: Writable<Product>;
-		showInfoBasic: boolean;
 		categoryNames: string[];
 		labelNames: string[];
 		brandNames: string[];
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
-		onToggleInfo: () => void;
 	};
+
+	let showInfo = $state(false);
 
 	let {
 		productStore,
-		showInfoBasic,
 		categoryNames,
 		labelNames,
 		brandNames,
 		storeNames,
 		originNames,
-		countriesNames,
-		onToggleInfo
+		countriesNames
 	}: Props = $props();
+
+	function onToggleInfo() {
+		showInfo = !showInfo;
+	}
 </script>
 
 <div class="card bg-base-100 shadow-md">
 	<div class="card-body p-4 sm:p-6">
 		<h2
-			class="text-primary mb-6 hidden items-center justify-center gap-2 text-center text-base font-bold md:block md:text-lg lg:text-xl xl:text-2xl"
+			class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 		>
 			<span class="icon-[mdi--information] mr-1 h-6 w-6 align-middle"></span>
 			{$_('product.edit.sections.basic_info')}
@@ -45,7 +47,7 @@
 				></span>
 			</button>
 		</h2>
-		{#if showInfoBasic}
+		{#if showInfo}
 			<div
 				class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
 			>
@@ -58,9 +60,9 @@
 					<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 				</button>
 				<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
-				<span class="text-base-content/80 p-6 text-sm sm:text-base"
-					>{$_('product.edit.info.basic_info')}</span
-				>
+				<span class="text-base-content/80 p-6 text-sm sm:text-base">
+					{$_('product.edit.info.basic_info')}
+				</span>
 			</div>
 		{/if}
 		<div class="space-y-6">

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { writable, get, type Writable } from 'svelte/store';
-	import { goto, pushState, replaceState } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
 
@@ -21,7 +20,6 @@
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
 	import { page } from '$app/state';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { dev } from '$app/environment';
 
 	interface Props {
@@ -382,117 +380,8 @@
 		});
 	});
 
-	let currentStep = $state(0);
-	const steps = $derived([
-		$_('product.edit.sections.images'),
-		$_('product.edit.sections.basic_info'),
-		$_('product.edit.sections.languages'),
-		$_('product.edit.sections.ingredients'),
-		$_('product.edit.sections.nutrition'),
-		$_('product.edit.sections.comment')
-	]);
-
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
-
-	// Track if router is ready
-	let routerReady = $state(false);
-
-	onMount(() => {
-		routerReady = true;
-	});
-
-	$effect(() => {
-		if (!isAddMode) return;
-
-		if (typeof page.state?.currentStep === 'number') {
-			currentStep = page.state.currentStep;
-		} else {
-			// Fallback to URL parameter for initial load or direct navigation
-			const stepParam = page.url.searchParams.get('step');
-			if (stepParam) {
-				const stepNumber = parseInt(stepParam, 10) - 1;
-				if (stepNumber >= 0 && stepNumber < steps.length) {
-					currentStep = stepNumber;
-				}
-			}
-
-			// Set initial state for shallow routing if router is ready
-			if (routerReady) {
-				try {
-					const searchParams = new SvelteURLSearchParams(page.url.searchParams);
-					searchParams.set('step', (currentStep + 1).toString());
-					replaceState('?' + searchParams.toString(), { currentStep });
-				} catch (error) {
-					console.warn('Could not set initial state:', error);
-				}
-			}
-		}
-	});
-
-	function updateStep(newStep: number) {
-		if (!isAddMode || !routerReady) return;
-
-		currentStep = newStep;
-		try {
-			const searchParams = new SvelteURLSearchParams(page.url.searchParams);
-			searchParams.set('step', (newStep + 1).toString());
-			pushState('?' + searchParams.toString(), { currentStep: newStep });
-		} catch (error) {
-			console.warn('Could not push state:', error);
-		}
-	}
-
-	function goToStep(stepIndex: number) {
-		if (stepIndex >= 0 && stepIndex < steps.length) {
-			updateStep(stepIndex);
-		}
-	}
-
-	function nextStep() {
-		if (currentStep < steps.length - 1) {
-			updateStep(currentStep + 1);
-		}
-	}
-
-	function prevStep() {
-		if (currentStep > 0) {
-			updateStep(currentStep - 1);
-		}
-	}
-
-	// Info box visibility states for each section
-	let showInfoImages = $state(false);
-	let showInfoBasic = $state(false);
-	let showInfoLanguages = $state(false);
-	let showInfoIngredients = $state(false);
-	let showInfoNutrition = $state(false);
-	let showInfoComment = $state(false);
-
-	// Toggle functions for info boxes
-	function toggleInfoImages() {
-		showInfoImages = !showInfoImages;
-	}
-
-	function toggleInfoBasic() {
-		showInfoBasic = !showInfoBasic;
-	}
-
-	function toggleInfoLanguages() {
-		showInfoLanguages = !showInfoLanguages;
-	}
-
-	function toggleInfoIngredients() {
-		showInfoIngredients = !showInfoIngredients;
-	}
-
-	function toggleInfoNutrition() {
-		showInfoNutrition = !showInfoNutrition;
-	}
-
-	function toggleInfoComment() {
-		showInfoComment = !showInfoComment;
-	}
 
 	function handleCommentChange(value: string) {
 		comment = value;
@@ -501,17 +390,6 @@
 	let addProductFormProps = $derived({
 		productStore,
 		comment,
-		currentStep,
-		steps,
-		showInfoImages,
-		showInfoBasic,
-		showInfoLanguages,
-		showInfoIngredients,
-		showInfoNutrition,
-		showInfoComment,
-		prevStep,
-		nextStep,
-		goToStep,
 		handleNutrimentInput,
 		addLanguage,
 		getLanguage,
@@ -526,12 +404,6 @@
 		countriesNames,
 		isSubmitting,
 		submit,
-		toggleInfoImages,
-		toggleInfoBasic,
-		toggleInfoLanguages,
-		toggleInfoIngredients,
-		toggleInfoNutrition,
-		toggleInfoComment,
 		handleCommentChange
 	});
 </script>
@@ -580,8 +452,3 @@
 		<EditProductForm {productStore} onSave={submit} />
 	{/if}
 </div>
-
-<details class="mt-8">
-	<summary class="cursor-pointer text-sm sm:text-base">{$_('product.edit.debug')}</summary>
-	<pre class="overflow-auto text-xs sm:text-sm">{JSON.stringify(data, null, 2)}</pre>
-</details>
