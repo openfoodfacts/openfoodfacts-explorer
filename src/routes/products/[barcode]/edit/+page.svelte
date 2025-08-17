@@ -294,8 +294,6 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
-	$inspect(product);
-
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
 </script>
