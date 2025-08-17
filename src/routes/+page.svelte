@@ -6,6 +6,7 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import type { PageProps } from './$types';
 
 	import { ProductsApi, type ProductReduced, type ProductStateFound } from '$lib/api';
 	import { onMount } from 'svelte';
@@ -15,6 +16,7 @@
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import type { ProductAttributeGroup } from '$lib/scoring';
 
+	let { data }: PageProps = $props();
 	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
 
 	let attributesByCode: Record<string, ProductAttributeGroup[]> = $state({});
@@ -126,7 +128,10 @@
 				{$_('preferences.edit_preferences')}
 			</div>
 			<div class="collapse-content">
-				<PreferencesForm onClose={() => (showPreferences = false)} />
+				<PreferencesForm
+					onClose={() => (showPreferences = false)}
+					attributeGroups={data.attributeGroups}
+				/>
 			</div>
 		</div>
 	</div>

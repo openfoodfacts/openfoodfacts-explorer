@@ -189,7 +189,10 @@
 					{$_('preferences.edit_preferences')}
 				</div>
 				<div class="collapse-content">
-					<PreferencesForm onClose={() => (showPreferences = false)} />
+					<PreferencesForm
+						onClose={() => (showPreferences = false)}
+						attributeGroups={data.attributeGroups}
+					/>
 				</div>
 			</div>
 		</div>

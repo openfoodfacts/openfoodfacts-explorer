@@ -20,8 +20,6 @@
 	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
-	import { personalizedSearch, resetToDefaults } from '$lib/stores/preferencesStore';
-	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
@@ -46,16 +44,6 @@
 	onMount(async () => {
 		// only inject the script on the client side
 		injectSpeedInsights();
-
-		// if preferences are not present then use defaults to set it in the localstorage
-		if (!$personalizedSearch.userPreferences.length) {
-			try {
-				const defaultPreferences = await fetchAndGenerateDefaults(fetch);
-				resetToDefaults(defaultPreferences);
-			} catch (error) {
-				console.error('Failed to load default preferences:', error);
-			}
-		}
 	});
 
 	function updateSearchQuery(url: URL) {

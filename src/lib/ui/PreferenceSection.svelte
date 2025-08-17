@@ -7,6 +7,7 @@
 		icon: string;
 		iconImg?: string;
 		description?: string;
+		selectedValue?: string;
 		options: {
 			value: string;
 			label: string;
@@ -16,17 +17,16 @@
 	type Props = {
 		title: string;
 		options: PreferenceOption[];
-		getValue: (id: string) => string;
 		onChange: (category: string, preference: string, value: string) => void;
 		category: string;
 		showWarning?: boolean;
 		warningText?: string;
+		// Removed getValue as we switched to selectedValue on options
 	};
 
 	let {
 		title,
 		options,
-		getValue,
 		onChange,
 		category,
 		showWarning = false,
@@ -74,7 +74,7 @@
 									name={option.id}
 									value={radioOption.value}
 									class="radio radio-sm radio-primary"
-									checked={getValue(option.id) === radioOption.value}
+									checked={option.selectedValue === radioOption.value}
 									onchange={() => onChange(category, option.id, radioOption.value)}
 								/>
 								<span class="text-base-content/80 text-sm">{radioOption.label}</span>

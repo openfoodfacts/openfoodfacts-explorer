@@ -47,10 +47,10 @@ const getWeight = (importance: string): number => {
 	return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
 };
 
-export const calculateScore = (
+export function calculateScore(
 	productAttributes: ProductAttributeGroup[],
 	currentPrefs: UserPreference[]
-): ScoreData => {
+): ScoreData {
 	let totalWeightedScore = 0;
 	let totalWeights = 0;
 	let hasMandatoryMismatch = false;
@@ -112,7 +112,7 @@ export const calculateScore = (
 		totalWeights,
 		totalWeightedScore
 	};
-};
+}
 
 // Comparator function for sorting products by score and match status
 export function compareProductsByScore<T extends ProductWithScore>(a: T, b: T): number {

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import Card from './Card.svelte';
 	import PreferenceSection from './PreferenceSection.svelte';
@@ -8,17 +7,17 @@
 		updatePreference,
 		resetToDefaults,
 		getPreferenceValue,
+		generatePreferencesFromGroups,
 		type AttributeGroup
 	} from '$lib/stores/preferencesStore';
-	import { fetchAndGenerateDefaults, convertApiToAttributeGroups } from '$lib/preferenceUtils';
-	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
-	type PreferencesFormProps = {
+	export type PreferencesFormProps = {
 		onPreferenceChange?: (category: string, preference: string, value: string) => void;
 		showClassifyToggle?: boolean;
 		classifyProducts?: boolean;
 		onClassifyToggle?: (value: boolean) => void;
 		onClose?: () => void;
+		attributeGroups?: AttributeGroup[];
 	};
 
 	let {
@@ -26,7 +25,8 @@
 		showClassifyToggle = true,
 		classifyProducts = $personalizedSearch.classifyProductsEnabled,
 		onClassifyToggle = () => {},
-		onClose = () => {}
+		onClose = () => {},
+		attributeGroups = []
 	}: PreferencesFormProps = $props();
 
 	function handlePreferenceChange(category: string, preference: string, value: string) {
@@ -34,9 +34,9 @@
 		onPreferenceChange(category, preference, value);
 	}
 
-	async function handleResetToDefaults() {
-		const defaultPreferences = await fetchAndGenerateDefaults(fetch);
-		resetToDefaults(defaultPreferences);
+	function handleResetToDefaults() {
+		const defaults = generatePreferencesFromGroups(attributeGroups);
+		resetToDefaults(defaults);
 	}
 
 	function handleClassifyToggle() {
@@ -47,24 +47,18 @@
 		onClassifyToggle(classifyProducts);
 	}
 
-	// Reactive function to get values from the store
-	function getValueFromCategory(category: string, id: string) {
+	// Helper to get values from the store
+	function getSelectedValue(category: string, id: string) {
 		return getPreferenceValue($personalizedSearch.userPreferences, category, id);
 	}
 
-	let resolvedAttributeGroups: AttributeGroup[] = $state([]);
-	let isLoading = $state(true);
-
-	onMount(async () => {
-		const off = new OpenFoodFacts(fetch);
-		const apiGroups = await off.getAttributeGroups();
-		resolvedAttributeGroups = convertApiToAttributeGroups(apiGroups);
-		isLoading = false;
-	});
+	// Data is provided by the page load
+	let isLoading = $derived(!attributeGroups || attributeGroups.length === 0);
 
 	// Dynamic sections based on resolved attribute groups
+	const DEFAULT_IMPORTANCE_VALUES = ['mandatory', 'very_important', 'important', 'not_important'];
 	const sections = $derived(
-		resolvedAttributeGroups.map((group) => ({
+		attributeGroups.map((group) => ({
 			id: group.id,
 			title: group.name,
 			options: group.attributes.map((attribute) => ({
@@ -72,10 +66,14 @@
 				label: attribute.setting_name || attribute.name,
 				icon: attribute.id,
 				iconImg: attribute.icon_url,
-				options: attribute.values.map((value) => ({
+				options: (attribute.values && attribute.values.length > 0
+					? attribute.values
+					: DEFAULT_IMPORTANCE_VALUES
+				).map((value) => ({
 					value,
 					label: $_(`preferences.options.${value}`) || value
 				})),
+				selectedValue: getSelectedValue(group.id, attribute.id),
 				description: attribute.setting_note
 			})),
 			showWarning: group.id === 'allergens',
@@ -109,7 +107,11 @@
 			</div>
 
 			<div class="mb-4 rounded-lg bg-orange-50 p-3 dark:bg-orange-900/20">
-				<button class="btn md:btn-sm btn-primary btn-xs" onclick={handleResetToDefaults}>
+				<button
+					class="btn md:btn-sm btn-primary btn-xs"
+					onclick={handleResetToDefaults}
+					disabled={isLoading}
+				>
 					{$_('preferences.use_default')}
 				</button>
 				<span class="ml-2 text-sm">{$_('preferences.default_description')}</span>
@@ -127,7 +129,6 @@
 				<PreferenceSection
 					title={section.title}
 					options={section.options}
-					getValue={(id) => getValueFromCategory(section.id, id)}
 					onChange={handlePreferenceChange}
 					category={section.id}
 					showWarning={section.showWarning}

@@ -4,6 +4,8 @@ import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfa
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { ProductsApi } from '$lib/api/product';
+import { getAttributeGroups as fetchAttributeGroups } from '$lib/api/attributes';
+import { convertApiToAttributeGroups } from '$lib/preferenceUtils';
 
 export const ssr = false;
 
@@ -92,6 +94,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		query,
 		search: searchData,
 		attributesByCode,
-		prices: prices
+		prices: prices,
+		attributeGroups: convertApiToAttributeGroups(await fetchAttributeGroups(fetch))
 	};
 };
