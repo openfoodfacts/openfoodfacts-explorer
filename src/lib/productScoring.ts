@@ -1,10 +1,5 @@
-import {
-	calculateScore,
-	sortProductsByScore,
-	type ScoreData,
-	type ProductAttributeGroup
-} from '$lib/scoring';
-import type { UserPreferences } from '$lib/stores/preferencesStore';
+import { calculateScore, type ScoreData, type ProductAttributeGroup } from '$lib/scoring';
+import type { UserPreference } from '$lib/stores/preferencesStore';
 
 export interface ProductWithAttributes {
 	[key: string]: unknown;
@@ -16,31 +11,24 @@ export interface ScoredProduct {
 	score: number;
 	matchStatus: string;
 	scoreData: ScoreData;
+	[key: string]: unknown;
 }
 
 /**
- * Calculates scores for products and sorts them based on classification preference
+ * Calculates scores for products based on user preferences
  * @param products - Array of products with attributes
  * @param userPreferences - Current user preferences for scoring
- * @param classifyEnabled - Whether classification/sorting is enabled
- * @returns Object containing scored products and sorted products
+ * @returns Array of products with scores added
  */
-export function scoreAndSortProducts<T extends ProductWithAttributes>(
+export function scoreProducts<T extends ProductWithAttributes>(
 	products: T[],
-	userPreferences: UserPreferences,
-	classifyEnabled: boolean
-): {
-	scoredProducts: (T & ScoredProduct)[];
-	sortedProducts: (T & ScoredProduct)[];
-} {
+	userPreferences: UserPreference[]
+): (T & ScoredProduct)[] {
 	if (!products || products.length === 0) {
-		return {
-			scoredProducts: [],
-			sortedProducts: []
-		};
+		return [];
 	}
 
-	const productsWithScores = products.map((product) => {
+	return products.map((product) => {
 		const productAttrs = (product.attributes || []) as ProductAttributeGroup[];
 		const scoreData = calculateScore(productAttrs, userPreferences);
 		return {
@@ -50,16 +38,46 @@ export function scoreAndSortProducts<T extends ProductWithAttributes>(
 			scoreData
 		} as T & ScoredProduct;
 	});
+}
 
-	let sortedProducts: (T & ScoredProduct)[];
+/**
+ * Sorts scored products by their score
+ * @param scoredProducts - Array of products that already have scores
+ * @returns Array of products sorted by score
+ */
+export function sortScoredProducts<T extends ScoredProduct>(scoredProducts: T[]): T[] {
+	return [...scoredProducts].sort((a, b) => {
+		// Non-"does_not_match" products come first
+		if (a.matchStatus === 'does_not_match' && b.matchStatus !== 'does_not_match') return 1;
+		if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
+
+		// Then by score (highest first)
+		const scoreA = a.score || 0;
+		const scoreB = b.score || 0;
+		if (scoreB !== scoreA) return scoreB - scoreA;
+
+		// Original order as tiebreaker (maintain existing order)
+		return 0;
+	});
+}
+
+/**
+ * Personalizes search results by scoring and optionally sorting products based on user preferences
+ * @param products - Array of products with attributes
+ * @param userPreferences - Current user preferences for scoring
+ * @param classifyEnabled - Whether classification/sorting is enabled
+ * @returns Array of products with scores, optionally sorted
+ */
+export function personalizeSearchResults<T extends ProductWithAttributes>(
+	products: T[],
+	userPreferences: UserPreference[],
+	classifyEnabled: boolean
+): (T & ScoredProduct)[] {
+	const scoredProducts = scoreProducts(products, userPreferences);
+
 	if (classifyEnabled) {
-		sortedProducts = sortProductsByScore(productsWithScores);
-	} else {
-		sortedProducts = productsWithScores;
+		return sortScoredProducts(scoredProducts);
 	}
 
-	return {
-		scoredProducts: productsWithScores,
-		sortedProducts
-	};
+	return scoredProducts;
 }

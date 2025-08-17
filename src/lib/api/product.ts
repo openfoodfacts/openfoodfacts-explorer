@@ -33,10 +33,12 @@ export class ProductsApi {
 	}
 
 	async getBulkProductAttributes(productCodes: string[]): Promise<Record<string, unknown[]>> {
-		const codesParam = productCodes.join(',');
-		const attributesResponse = await this.fetch(
-			`${API_HOST}/api/v2/search?code=${codesParam}&fields=product_name,code,attribute_groups`
-		);
+		const params = new URLSearchParams({
+			code: productCodes.join(','),
+			fields: 'product_name,code,attribute_groups'
+		});
+
+		const attributesResponse = await this.fetch(`${API_HOST}/api/v2/search?${params.toString()}`);
 		const attributesData = await attributesResponse.json();
 
 		// Create a map of product code to attribute groups

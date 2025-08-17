@@ -4,12 +4,13 @@
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
 		userPreferences,
-		attributeGroups,
 		updatePreference,
 		resetToDefaults,
 		classifyProductsEnabled,
 		getPreferenceValue
 	} from '$lib/stores/preferencesStore';
+	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
+	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	// Type for the API response which has optional fields
 	type ApiAttributeGroup = {
@@ -21,6 +22,8 @@
 			icon_url?: string;
 			setting_name?: string;
 			setting_note?: string;
+			description?: string;
+			description_short?: string;
 			default?: string;
 			panel_id?: string;
 			values?: string[];
@@ -49,8 +52,13 @@
 		onPreferenceChange(category, preference, value);
 	}
 
-	function handleResetToDefaults() {
-		resetToDefaults(onPreferenceChange);
+	async function handleResetToDefaults() {
+		try {
+			const defaultPreferences = await fetchAndGenerateDefaults(fetch);
+			resetToDefaults(defaultPreferences);
+		} catch (error) {
+			console.error('Failed to reset to defaults:', error);
+		}
 	}
 
 	function handleClassifyToggle() {
@@ -67,7 +75,9 @@
 	let isLoading = $state(true);
 
 	$effect(() => {
-		attributeGroups
+		const off = new OpenFoodFacts(fetch);
+		off
+			.getAttributeGroups()
 			.then((groups) => {
 				resolvedAttributeGroups = groups || [];
 				isLoading = false;

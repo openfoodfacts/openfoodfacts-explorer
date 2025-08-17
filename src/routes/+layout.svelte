@@ -21,6 +21,7 @@
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { userPreferences, resetToDefaults } from '$lib/stores/preferencesStore';
+	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
 	import { dev } from '$app/environment';
 
 	onMount(async () => {
@@ -38,13 +39,18 @@
 
 	let { children }: Props = $props();
 
-	onMount(() => {
+	onMount(async () => {
 		// only inject the script on the client side
 		injectSpeedInsights();
 
 		// if preferences are not present then use defaults to set it in the localstorage
 		if (!$userPreferences.length) {
-			resetToDefaults();
+			try {
+				const defaultPreferences = await fetchAndGenerateDefaults(fetch);
+				resetToDefaults(defaultPreferences);
+			} catch (error) {
+				console.error('Failed to load default preferences:', error);
+			}
 		}
 	});
 

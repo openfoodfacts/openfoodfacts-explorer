@@ -1,11 +1,26 @@
-import type { UserPreferences } from '$lib/stores/preferencesStore';
+import type { UserPreference } from '$lib/stores/preferencesStore';
 import { getPreferenceValue } from '$lib/stores/preferencesStore';
+import type { Product } from '$lib/api/product';
+
+export type MatchStatus =
+	| 'unknown_match'
+	| 'does_not_match'
+	| 'may_not_match'
+	| 'very_good_match'
+	| 'good_match'
+	| 'poor_match';
 
 export type ScoreData = {
 	score: number;
-	matchStatus: string;
+	matchStatus: MatchStatus;
 	totalWeights: number;
 	totalWeightedScore: number;
+};
+
+export type ProductWithScore = Product & {
+	score?: number;
+	matchStatus?: MatchStatus;
+	scoreData?: ScoreData;
 };
 
 export type ProductAttribute = {
@@ -19,9 +34,17 @@ export type ProductAttributeGroup = {
 	attributes: ProductAttribute[];
 };
 
+// Preference importance weights
+const PREF_WEIGHTS = {
+	mandatory: 2,
+	very_important: 2,
+	important: 1,
+	not_important: 0
+} as const;
+
 export const calculateScore = (
 	productAttributes: ProductAttributeGroup[],
-	currentPrefs: UserPreferences
+	currentPrefs: UserPreference[]
 ): ScoreData => {
 	let totalWeightedScore = 0;
 	let totalWeights = 0;
@@ -29,20 +52,9 @@ export const calculateScore = (
 	let hasMandatoryUncertain = false;
 	let unknownWeightSum = 0;
 
-	// Preference weights
+	// Get weight for preference importance
 	const getWeight = (importance: string): number => {
-		switch (importance) {
-			case 'mandatory':
-				return 2;
-			case 'very_important':
-				return 2;
-			case 'important':
-				return 1;
-			case 'not_important':
-				return 0;
-			default:
-				return 0;
-		}
+		return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
 	};
 
 	for (const group of productAttributes) {
@@ -75,10 +87,9 @@ export const calculateScore = (
 	}
 
 	// Normalize score to 0-100
-	const normalizedScore =
-		totalWeights > 0 ? Math.round((totalWeightedScore / totalWeights / 100) * 100) : 0;
+	const normalizedScore = totalWeights > 0 ? Math.round(totalWeightedScore / totalWeights) : 0;
 
-	let matchStatus = 'unknown_match';
+	let matchStatus: MatchStatus = 'unknown_match';
 	const unknownRatio = totalWeights > 0 ? unknownWeightSum / totalWeights : 0;
 
 	if (hasMandatoryMismatch) {
@@ -103,13 +114,6 @@ export const calculateScore = (
 	};
 };
 
-export interface ProductWithScore {
-	score?: number;
-	matchStatus?: string;
-	scoreData?: ScoreData;
-	[key: string]: unknown;
-}
-
 // Comparator function for sorting products by score and match status
 export function compareProductsByScore<T extends ProductWithScore>(a: T, b: T): number {
 	// Non-"does_not_match" products come first
@@ -123,9 +127,4 @@ export function compareProductsByScore<T extends ProductWithScore>(a: T, b: T): 
 
 	// Original order as tiebreaker (maintain existing order)
 	return 0;
-}
-
-// Sort products by score using the ranking algorithm
-export function sortProductsByScore<T extends ProductWithScore>(products: T[]): T[] {
-	return [...products].sort(compareProductsByScore);
 }

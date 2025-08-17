@@ -12,7 +12,7 @@
 	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
 	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
-	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
+	import { personalizeSearchResults, type ScoredProduct } from '$lib/productScoring';
 
 	let sortedProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
 
@@ -73,13 +73,11 @@
 				attributes: attributesByCode[state.product.code] || []
 			}));
 
-			const result = scoreAndSortProducts(
+			sortedProducts = personalizeSearchResults(
 				productsWithAttributes,
 				$userPreferences,
 				$classifyProductsEnabled
 			);
-
-			sortedProducts = result.sortedProducts;
 		}
 	});
 
@@ -154,6 +152,8 @@
 						}}
 						placeholderImage="/Placeholder.svg"
 						onclick={() => navigateToProduct(state.product.code)}
+						showMatchTag={$classifyProductsEnabled}
+						personalScore={$classifyProductsEnabled ? state.scoreData : undefined}
 					></product-card>
 				{/each}
 			{/await}

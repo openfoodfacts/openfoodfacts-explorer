@@ -7,14 +7,6 @@
 
 	import { _ } from '$lib/i18n';
 	import { SORT_OPTIONS } from '$lib/const';
-
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
-	import FacetBar from './FacetBar.svelte';
-
 	import {
 		addIncludeFacet,
 		extractQuery,
@@ -22,30 +14,25 @@
 		toLuceneString,
 		type FacetsSelection
 	} from '$lib/facets';
+	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { personalizeSearchResults } from '$lib/productScoring';
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '$lib/ui/VegaChart.svelte';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 
 	import type { PageProps } from './$types';
-	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
-	import { scoreAndSortProducts, type ScoredProduct } from '$lib/productScoring';
-	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { ProductReduced } from '$lib/api/product';
+	import FacetBar from './FacetBar.svelte';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
 
-	let sortedProducts: (Product & ProductReduced & ScoredProduct)[] = $state([]);
-
-	// Effect to calculate scores and sort products
-	$effect(() => {
+	let sortedProducts = $derived.by(() => {
 		if (result?.hits && result.hits.length > 0) {
-			const { sortedProducts: sorted } = scoreAndSortProducts(
-				result.hits,
-				$userPreferences,
-				$classifyProductsEnabled
-			);
-
-			sortedProducts = sorted;
+			return personalizeSearchResults(result.hits, $userPreferences, $classifyProductsEnabled);
 		} else {
-			sortedProducts = [];
+			return [];
 		}
 	});
 
@@ -242,6 +229,8 @@
 							}}
 							placeholderImage="/Placeholder.svg"
 							onclick={() => navigateToProduct(product.code)}
+							showMatchTag={$classifyProductsEnabled}
+							personalScore={$classifyProductsEnabled ? product.scoreData : undefined}
 						></product-card>
 					</div>
 				{/if}

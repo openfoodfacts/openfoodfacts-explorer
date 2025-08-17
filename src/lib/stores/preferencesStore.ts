@@ -1,5 +1,4 @@
 import { persisted } from 'svelte-local-storage-store';
-import { getAttributeGroups } from '$lib/api/attributes';
 
 export type Attribute = {
 	id: string;
@@ -34,13 +33,16 @@ export type AttributePreference = {
 export type UserPreference = AttributePreference;
 
 export type UserPreferences = UserPreference[];
+export type DEFAULT_PREFERENCES = UserPreference[];
 
-export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreferences {
-	const getDefaultValue = (attribute: Attribute): string => {
-		return attribute.default || 'not_important';
-	};
+function getDefaultValue(attribute: Attribute): string {
+	return attribute.default || 'not_important';
+}
 
-	const defaultPreferencesArray: UserPreferences = [];
+export function generatePreferencesFromGroups(
+	attributeGroups: AttributeGroup[]
+): DEFAULT_PREFERENCES {
+	const defaultPreferencesArray: DEFAULT_PREFERENCES = [];
 
 	for (const group of attributeGroups) {
 		for (const attr of group.attributes) {
@@ -58,15 +60,10 @@ export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[])
 	return defaultPreferencesArray;
 }
 
-export const defaultPreferences: UserPreferences = [];
-
-// Export attribute groups as a promise for use in components
-export const attributeGroups = getAttributeGroups(fetch);
-
 export function updatePreference(category: string, preference: string, value: string) {
 	userPreferences.update((prefs: UserPreferences) => {
 		const preferenceId = `${category}.${preference}`;
-		const existingPreferenceIndex = prefs.findIndex((p) => p.id === preferenceId);
+		const existingPreferenceIndex = prefs.findIndex((p: UserPreference) => p.id === preferenceId);
 
 		if (existingPreferenceIndex >= 0) {
 			// Update existing preference
@@ -90,20 +87,9 @@ export function updatePreference(category: string, preference: string, value: st
 	});
 }
 
-export function resetToDefaults(
-	onPreferenceChange?: (category: string, preference: string, value: string) => void
-) {
+export function resetToDefaults(defaultPreferences: DEFAULT_PREFERENCES) {
 	const defaults = structuredClone(defaultPreferences);
 	userPreferences.set(defaults);
-
-	// Notify about all preference changes if callback provided
-	if (onPreferenceChange) {
-		for (const pref of defaults) {
-			if (pref.type === 'attribute') {
-				onPreferenceChange(pref.categoryId, pref.attributeId, pref.value);
-			}
-		}
-	}
 }
 
 // Helper function to get preference value by category and attribute
@@ -113,26 +99,8 @@ export function getPreferenceValue(
 	attribute: string
 ): string {
 	const preferenceId = `${category}.${attribute}`;
-	const preference = prefs.find((p) => p.id === preferenceId);
+	const preference = prefs.find((p: UserPreference) => p.id === preferenceId);
 	return preference?.value || 'not_important';
-}
-
-// Helper function to convert array preferences to old object format for backward compatibility
-export function preferencesToObject(
-	prefs: UserPreferences
-): Record<string, Record<string, string>> {
-	const result: Record<string, Record<string, string>> = {};
-
-	for (const pref of prefs) {
-		if (pref.type === 'attribute') {
-			if (!result[pref.categoryId]) {
-				result[pref.categoryId] = {};
-			}
-			result[pref.categoryId][pref.attributeId] = pref.value;
-		}
-	}
-
-	return result;
 }
 
 export const userPreferences = persisted<UserPreferences>('userPreferences', []);
