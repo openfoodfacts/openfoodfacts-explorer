@@ -5,7 +5,6 @@
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
-	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 
 	import { _ } from '$lib/i18n';
@@ -41,7 +40,7 @@
 	const prevStep = () => gotoStep(currentStep - 1);
 
 	type Props = {
-		productStore: Writable<Product>;
+		product: Product;
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
@@ -70,7 +69,7 @@
 	};
 
 	let {
-		productStore,
+		product = $bindable(),
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
@@ -134,10 +133,10 @@
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep {productStore} />
+	<ImagesStep bind:product />
 {:else if currentStep === 1}
 	<BasicInfoStep
-		{productStore}
+		bind:product
 		{categoryNames}
 		{labelNames}
 		{brandNames}
@@ -146,11 +145,11 @@
 		{countriesNames}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep {productStore} {filteredLanguages} {addLanguage} {getLanguage} />
+	<LanguagesStep bind:product {filteredLanguages} {addLanguage} {getLanguage} />
 {:else if currentStep === 3}
-	<IngredientsStep {productStore} {getLanguage} {getIngredientsImage} />
+	<IngredientsStep bind:product {getLanguage} {getIngredientsImage} />
 {:else if currentStep === 4}
-	<NutritionStep {productStore} {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+	<NutritionStep bind:product {getLanguage} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
 	<CommentStep bind:comment />
 {/if}

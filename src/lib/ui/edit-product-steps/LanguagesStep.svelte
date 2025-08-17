@@ -1,19 +1,17 @@
 <script lang="ts">
-	import type { Writable } from 'svelte/store';
-
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
-		productStore: Writable<Product>;
+		product: Product;
 		filteredLanguages: string[];
 		addLanguage: (code: string) => void;
 		getLanguage: (code: string) => string;
 	};
 
-	let { productStore, filteredLanguages, addLanguage, getLanguage }: Props = $props();
+	let { product = $bindable(), filteredLanguages, addLanguage, getLanguage }: Props = $props();
 
 	// Local state for language search input
 	let languageSearch = $state('');
@@ -86,13 +84,13 @@
 	</div>
 </div>
 <div class="tabs tabs-box mt-4">
-	{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
+	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 		<input
 			type="radio"
 			name="name_tabs"
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguage(code)}
-			checked={code === $productStore.lang}
+			checked={code === product.lang}
 		/>
 		<div class="tab-content form-control p-6">
 			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
@@ -105,11 +103,11 @@
 				id={`product-name-${code}`}
 				type="text"
 				class="input input-bordered w-full text-sm sm:text-base"
-				bind:value={$productStore[`product_name_${code}`]}
+				bind:value={product[`product_name_${code}`]}
 			/>
 		</div>
 	{/each}
-	{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+	{#if Object.keys(product.languages_codes ?? {}).length === 0}
 		<div class="alert alert-warning text-sm sm:text-base">
 			{$_('product.edit.no_languages_found')}
 		</div>

@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	type Props = {
-		comment: string;
-	};
-
+	type Props = { comment: string };
 	let { comment = $bindable() }: Props = $props();
 
 	let showInfo = $state(false);

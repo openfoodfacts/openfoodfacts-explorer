@@ -6,12 +6,11 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 
-	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
 	type Props = {
-		productStore: Writable<Product>;
+		product: Product;
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
@@ -40,7 +39,7 @@
 	};
 
 	let {
-		productStore,
+		product = $bindable(),
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
@@ -68,7 +67,7 @@
 			{$_('product.edit.sections.images')}
 		</div>
 		<div class="collapse-content">
-			<ImagesStep {productStore} />
+			<ImagesStep bind:product />
 		</div>
 	</div>
 
@@ -81,7 +80,7 @@
 		</div>
 		<div class="collapse-content overflow-hidden">
 			<BasicInfoStep
-				{productStore}
+				bind:product
 				{brandNames}
 				{categoryNames}
 				{countriesNames}
@@ -100,7 +99,7 @@
 			{$_('product.edit.sections.languages')}
 		</div>
 		<div class="collapse-content">
-			<LanguagesStep {productStore} {addLanguage} {getLanguage} {filteredLanguages} />
+			<LanguagesStep bind:product {addLanguage} {getLanguage} {filteredLanguages} />
 		</div>
 	</div>
 
@@ -112,7 +111,7 @@
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
-			<IngredientsStep {productStore} {getIngredientsImage} {getLanguage} />
+			<IngredientsStep bind:product {getIngredientsImage} {getLanguage} />
 		</div>
 	</div>
 
@@ -124,7 +123,7 @@
 			{$_('product.edit.sections.nutrition')}
 		</div>
 		<div class="collapse-content">
-			<NutritionStep {productStore} {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+			<NutritionStep bind:product {getLanguage} {getNutritionImage} {handleNutrimentInput} />
 		</div>
 	</div>
 

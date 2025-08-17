@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { writable, get, type Writable } from 'svelte/store';
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
 	import { _ } from '$lib/i18n';
@@ -38,75 +37,6 @@
 			},
 			uploaded_t: '',
 			uploader: ''
-		};
-	}
-
-	function createEmptyNutriments(): Nutriments {
-		return {
-			alcohol: 0,
-			alcohol_100g: 0,
-			alcohol_serving: 0,
-			alcohol_unit: '',
-			alcohol_value: 0,
-			carbohydrates: 0,
-			carbohydrates_100g: 0,
-			carbohydrates_serving: 0,
-			carbohydrates_unit: '',
-			carbohydrates_value: 0,
-			energy: 0,
-			energy_100g: 0,
-			energy_serving: 0,
-			energy_unit: '',
-			energy_value: 0,
-			fat: 0,
-			fat_100g: 0,
-			fat_serving: 0,
-			fat_unit: '',
-			fat_value: 0,
-			'carbon-footprint-from-known-ingredients_product': 0,
-			'carbon-footprint-from-known-ingredients_serving': 0,
-			'energy-kcal': 0,
-			'energy-kcal_100g': 0,
-			'energy-kcal_serving': 0,
-			'energy-kcal_unit': '',
-			'energy-kcal_value': 0,
-			'energy-kj': 0,
-			'energy-kj_100g': 0,
-			'energy-kj_serving': 0,
-			'energy-kj_unit': '',
-			'energy-kj_value': 0,
-			erythritol: 0,
-			erythritol_100g: 0,
-			erythritol_serving: 0,
-			erythritol_unit: '',
-			erythritol_value: 0,
-			'fruits-vegetables-nuts-estimate-from-ingredients_100g': 0,
-			'fruits-vegetables-nuts-estimate-from-ingredients_serving': 0,
-			proteins: 0,
-			proteins_100g: 0,
-			proteins_serving: 0,
-			proteins_unit: '',
-			proteins_value: 0,
-			sugars: 0,
-			sugars_100g: 0,
-			sugars_serving: 0,
-			sugars_unit: '',
-			sugars_value: 0,
-			salt: 0,
-			salt_100g: 0,
-			salt_serving: 0,
-			salt_unit: '',
-			salt_value: 0,
-			'saturated-fat': 0,
-			'saturated-fat_100g': 0,
-			'saturated-fat_serving': 0,
-			'saturated-fat_unit': '',
-			'saturated-fat_value': 0,
-			sodium: 0,
-			sodium_100g: 0,
-			sodium_serving: 0,
-			sodium_unit: '',
-			sodium_value: 0
 		};
 	}
 
@@ -173,7 +103,7 @@
 			origins_tags: [],
 			countries_tags: [],
 
-			nutriments: createEmptyNutriments(),
+			nutriments: {} as Nutriments,
 
 			source: {
 				fields: [],
@@ -215,35 +145,34 @@
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
 
-	function createProductStore(data: PageData): Writable<Product> {
-		return data.state.status === PRODUCT_STATUS.EMPTY
-			? writable<Product>(emptyProduct)
-			: data.state.product
-				? writable<Product>({
-						...data.state.product,
-						emb_codes: data.state.product.emb_codes ?? '',
-						categories: data.state.product.categories ?? '',
-						labels: data.state.product.labels ?? '',
-						brands: data.state.product.brands ?? '',
-						stores: data.state.product.stores ?? '',
-						origins: data.state.product.origins ?? '',
-						countries: data.state.product.countries ?? '',
-						languages_codes: data.state.product.languages_codes ?? {},
-						images: data.state.product.images ?? {},
-						nutriments: data.state.product.nutriments ?? {}
-					})
-				: writable<Product>(emptyProduct);
+	function createProductStore(data: PageData) {
+		return data.state.status === PRODUCT_STATUS.EMPTY || !data.state.product
+			? emptyProduct
+			: {
+					...data.state.product,
+					emb_codes: data.state.product.emb_codes ?? '',
+					categories: data.state.product.categories ?? '',
+					labels: data.state.product.labels ?? '',
+					brands: data.state.product.brands ?? '',
+					stores: data.state.product.stores ?? '',
+					origins: data.state.product.origins ?? '',
+					countries: data.state.product.countries ?? '',
+					languages_codes: data.state.product.languages_codes ?? {},
+					images: data.state.product.images ?? {},
+					nutriments: data.state.product.nutriments ?? {}
+				};
 	}
 
-	let productStore = $derived(createProductStore(data));
+	let product = $state(createProductStore(data));
 
 	let comment = $state('');
 
 	const languageCodes = ISO6391.getAllCodes();
 	let languageSearch = $state('');
+
 	let filteredLanguages = $derived(
 		languageCodes.filter((code) => {
-			if ($productStore.languages_codes[code] !== undefined) {
+			if (product.languages_codes[code] !== undefined) {
 				return false;
 			}
 			const language = getLanguage(code);
@@ -256,27 +185,22 @@
 
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
-		productStore.update((store) => {
-			if (!store.nutriments) {
-				store.nutriments = {} as Nutriments;
-			}
-			return store;
-		});
+		if (!product.nutriments) {
+			product.nutriments = {} as Nutriments;
+		}
 	}
 
 	// Handle nutriment value changes
 	function updateNutriment(key: string, value: number | null) {
 		ensureNutriments();
-		productStore.update((store) => {
-			if (value === null) {
-				// @ts-expect-error - We know this is a valid key for nutriments
-				delete store.nutriments[key];
-			} else {
-				// @ts-expect-error - We know this is a valid key for nutriments
-				store.nutriments[key] = value;
-			}
-			return store;
-		});
+
+		if (value === null) {
+			// @ts-expect-error - We know this is a valid key for nutriments
+			delete product.nutriments[key];
+		} else {
+			// @ts-expect-error - We know this is a valid key for nutriments
+			product.nutriments[key] = value;
+		}
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
@@ -286,7 +210,6 @@
 
 	async function submit() {
 		isSubmitting = true;
-		const product = get(productStore);
 		const commentValue = comment;
 
 		console.group('Product added/edited');
@@ -310,14 +233,11 @@
 	}
 
 	function addLanguage(code: string) {
-		productStore.update((store) => {
-			store.languages_codes = { ...store.languages_codes, [code]: 0 };
-			return store;
-		});
+		product.languages_codes = { ...product.languages_codes, [code]: 0 };
 	}
 
 	function getIngredientsImage(language: string) {
-		const productData = get(productStore);
+		const productData = product;
 		if (productData.code == null || productData.images == null) {
 			return null;
 		}
@@ -346,7 +266,7 @@
 	}
 
 	function getNutritionImage(language: string) {
-		const productData = get(productStore);
+		const productData = product;
 		if (productData.code == null || productData.images == null) {
 			return null;
 		}
@@ -374,11 +294,7 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
-	$effect(() => {
-		productStore.subscribe((it) => {
-			console.debug('Product store changed', it);
-		});
-	});
+	$inspect(product);
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
@@ -412,10 +328,10 @@
 		</h1>
 		<div class="bg-primary/20 mx-auto h-px w-16"></div>
 		<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
-			{#if $productStore.product_name}
-				{$productStore.product_name}
-			{:else if $productStore.product_name_en}
-				{$productStore.product_name_en}
+			{#if product.product_name}
+				{product.product_name}
+			{:else if product.product_name_en}
+				{product.product_name_en}
 			{:else}
 				{page.params.barcode}
 			{/if}
@@ -424,6 +340,7 @@
 
 	{#if isAddMode}
 		<AddProductForm
+			bind:product
 			bind:comment
 			{addLanguage}
 			{brandNames}
@@ -436,7 +353,6 @@
 			{labelNames}
 			{originNames}
 			{submit}
-			{productStore}
 			{storeNames}
 			{getLanguage}
 			{handleNutrimentInput}
@@ -444,11 +360,11 @@
 	{:else}
 		<EditProductForm
 			bind:comment
+			bind:product
 			{handleNutrimentInput}
 			{isSubmitting}
 			{getIngredientsImage}
 			{getNutritionImage}
-			{productStore}
 			{submit}
 			{addLanguage}
 			{brandNames}

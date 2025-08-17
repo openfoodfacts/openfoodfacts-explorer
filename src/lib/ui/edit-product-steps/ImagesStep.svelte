@@ -1,21 +1,16 @@
 <script lang="ts">
-	import type { Writable } from 'svelte/store';
-
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
 	import PhotoManager from '../PhotoManager.svelte';
 
-	type Props = {
-		productStore: Writable<Product>;
-	};
+	type Props = { product: Product };
+	let { product = $bindable() }: Props = $props();
 
 	let showInfo = $state(false);
 	const toggleInfo = () => {
 		showInfo = !showInfo;
 	};
-
-	let { productStore }: Props = $props();
 </script>
 
 <h2
@@ -48,4 +43,4 @@
 	</div>
 {/if}
 
-<PhotoManager product={$productStore} />
+<PhotoManager {product} />

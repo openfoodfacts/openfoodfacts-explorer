@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { type Writable } from 'svelte/store';
-
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
@@ -8,12 +6,12 @@
 	import ImageButton from '../ImageButton.svelte';
 
 	type Props = {
-		productStore: Writable<Product>;
+		product: Product;
 		getLanguage: (code: string) => string;
 		getIngredientsImage: (language: string) => string | null;
 	};
 
-	let { productStore, getLanguage, getIngredientsImage }: Props = $props();
+	let { product = $bindable(), getLanguage, getIngredientsImage }: Props = $props();
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -51,13 +49,13 @@
 	</div>
 {/if}
 <div class="tabs tabs-box">
-	{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
+	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 		<input
 			type="radio"
 			name="ingredients_tabs"
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguage(code)}
-			checked={code === $productStore.lang}
+			checked={code === product.lang}
 		/>
 		<div class="tab-content form-control p-6">
 			<div class="mb-4">
@@ -80,11 +78,11 @@
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
-				bind:value={$productStore[`ingredients_text_${code}`]}
+				bind:value={product[`ingredients_text_${code}`]}
 			></textarea>
 		</div>
 	{/each}
-	{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
+	{#if Object.keys(product.languages_codes ?? {}).length === 0}
 		<div class="alert alert-warning text-sm sm:text-base">
 			{$_('product.edit.no_languages_found')}
 		</div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Writable } from 'svelte/store';
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
@@ -8,8 +7,7 @@
 	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
-		productStore: Writable<Product>;
-
+		product: Product;
 		categoryNames?: string[];
 		labelNames?: string[];
 		brandNames?: string[];
@@ -19,7 +17,7 @@
 	};
 
 	let {
-		productStore,
+		product = $bindable(),
 		categoryNames,
 		labelNames,
 		brandNames,
@@ -77,7 +75,7 @@
 				id="quantity"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={$productStore.quantity}
+				bind:value={product.quantity}
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 		</div>
@@ -91,7 +89,7 @@
 				id="manufacturing_places"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={$productStore.manufacturing_places}
+				bind:value={product.manufacturing_places}
 				placeholder="e.g., France, Italy"
 			/>
 		</div>
@@ -106,7 +104,7 @@
 			id="website_url"
 			type="url"
 			class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
-			bind:value={$productStore.link}
+			bind:value={product.link}
 			placeholder="https://example.com/products/pasta-n8"
 		/>
 	</div>
@@ -120,7 +118,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.categories')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.categories} autocomplete={categoryNames} />
+			<TagsString bind:tagsString={product.categories} autocomplete={categoryNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="labels-input">
@@ -129,7 +127,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.labels')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.labels} autocomplete={labelNames} />
+			<TagsString bind:tagsString={product.labels} autocomplete={labelNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="brands-input">
@@ -138,7 +136,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.brands} autocomplete={brandNames} />
+			<TagsString bind:tagsString={product.brands} autocomplete={brandNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="stores-input">
@@ -147,7 +145,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.stores')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.stores} autocomplete={storeNames} />
+			<TagsString bind:tagsString={product.stores} autocomplete={storeNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="origins-input">
@@ -156,7 +154,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.origins} autocomplete={originNames} />
+			<TagsString bind:tagsString={product.origins} autocomplete={originNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
@@ -165,7 +163,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.countries')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={$productStore.countries} autocomplete={countriesNames} />
+			<TagsString bind:tagsString={product.countries} autocomplete={countriesNames} />
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="traceability-codes-input">
@@ -174,7 +172,7 @@
 					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 				</span>
 			</label>
-			<TraceabilityCodes bind:traceabilityCodes={$productStore.emb_codes} autocomplete={[]} />
+			<TraceabilityCodes bind:traceabilityCodes={product.emb_codes} autocomplete={[]} />
 		</div>
 	</div>
 </div>
