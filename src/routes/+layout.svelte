@@ -8,7 +8,7 @@
 	import '@fontsource-variable/plus-jakarta-sans';
 
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -23,6 +23,14 @@
 	import { userPreferences, resetToDefaults } from '$lib/stores/preferencesStore';
 	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
 	import { dev } from '$app/environment';
+	import type { LayoutProps } from './$types';
+	import { setWebsiteCtx } from '$lib/stores/website';
+
+	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+		flavor: 'food'
+	});
+	$inspect(websiteCtx).with((it) => console.debug('Website context:', it));
+	setWebsiteCtx(() => websiteCtx);
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -33,11 +41,7 @@
 
 	let searchQuery: string = $state('');
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children }: LayoutProps = $props();
 
 	onMount(async () => {
 		// only inject the script on the client side
@@ -83,7 +87,7 @@
 
 <Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
-{#if !$isLoading}
+<div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		language-code="en"
@@ -95,7 +99,13 @@
 		}}
 	>
 	</off-webcomponents-configuration>
+</div>
 
+{#if navigating.to != null}
+	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+{/if}
+
+{#if !$isLoading}
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
@@ -185,6 +195,9 @@
 			</a>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
+			</a>
+			<a class="btn btn-outline link" href="/facets">
+				{$_('facets_link')}
 			</a>
 
 			<div class="divider md:divider-horizontal"></div>

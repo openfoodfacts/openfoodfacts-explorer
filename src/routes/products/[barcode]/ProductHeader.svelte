@@ -53,6 +53,10 @@
 			console.error('Error sharing the page:', error);
 		}
 	}
+
+	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
+		return taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag;
+	}
 </script>
 
 <Card>
@@ -66,9 +70,9 @@
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="link"
+				class="btn btn-secondary max-sm:btn-sm"
 			>
-				See on OpenFoodFacts
+				Classic view
 			</a>
 
 			<button class="btn btn-secondary max-sm:btn-sm" onclick={addToCalculator}>
@@ -105,9 +109,9 @@
 					Loading...
 				{:then brands}
 					{#each product.brands_tags as tag, i (i)}
-						<span class="badge h-auto break-words">
-							{brands[tag] != null ? getOrDefault(brands[tag].name, lang) : tag}
-						</span>
+						<a class="badge h-auto break-words" href="/facets/brands/{tag}">
+							{localizedTaxoName(brands, tag)}
+						</a>
 					{/each}
 				{/await}
 			</div>
@@ -118,8 +122,8 @@
 					Loading...
 				{:then categories}
 					{#each product.categories_tags as tag (tag)}
-						<a class="badge badge-secondary h-auto break-words" href="/taxo/categories/{tag}">
-							{categories[tag] != null ? getOrDefault(categories[tag].name, lang) : tag}
+						<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
+							{localizedTaxoName(categories, tag)}
 						</a>
 					{/each}
 				{/await}
@@ -132,7 +136,7 @@
 				{:then stores}
 					{#each product.stores_tags as tag, i (i)}
 						<span class="badge h-auto break-words">
-							{stores[tag] != null ? getOrDefault(stores[tag].name, lang) : tag}
+							{localizedTaxoName(stores, tag)}
 						</span>
 					{/each}
 				{/await}
@@ -144,8 +148,8 @@
 					Loading...
 				{:then labels}
 					{#each product.labels_tags as tag, i (i)}
-						<a class="badge h-auto break-words" href={'/taxo/labels/' + tag}>
-							{labels[tag] != null ? getOrDefault(labels[tag].name, lang) : tag}
+						<a class="badge h-auto break-words" href="/facets/labels/{tag}">
+							{localizedTaxoName(labels, tag)}
 						</a>
 					{/each}
 				{/await}
@@ -157,8 +161,8 @@
 					Loading...
 				{:then countries}
 					{#each product.countries_tags as tag, i (i)}
-						<a class="badge h-auto break-words" href={'/taxo/countries/' + tag}>
-							{countries[tag] != null ? getOrDefault(countries[tag].name, lang) : tag}
+						<a class="badge h-auto break-words" href="/facets/countries/{tag}">
+							{localizedTaxoName(countries, tag)}
 						</a>
 					{/each}
 				{/await}
@@ -172,8 +176,8 @@
 					{#each product.origins_tags as tag, i (i)}
 						{#if i > 0},
 						{/if}
-						<a class="link inline-flex items-center break-words" href={'/taxo/origin/' + tag}>
-							{origins[tag] != null ? getOrDefault(origins[tag].name, lang) : tag}
+						<a class="link inline-flex items-center break-words" href="/facets/origin/{tag}">
+							{localizedTaxoName(origins, tag)}
 						</a>
 					{/each}
 				{/await}

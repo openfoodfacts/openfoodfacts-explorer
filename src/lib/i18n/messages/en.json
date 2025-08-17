@@ -4,6 +4,7 @@
 	"nova": "Nova - Ultra-processing levels",
 	"settings_link": "Settings",
 	"folksonomy_link": "Folksonomy",
+	"facets_link": "Facets",
 	"discover_link": "Discover",
 	"contribute_link": "Contribute",
 	"producers_link": "Producers",
@@ -103,18 +104,19 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
-
 		"datasources": {
 			"title": "Data Sources",
-			"added_on": "Product added on {date} by: ",
-			"last_edit": "Last edit of product page on {date} by: ",
-			"also_edited_by": "Product page also edited by:",
-			"last_check": "Last check of product page on {date} by: ",
-			"last_modified_t": "Last edit of product page on {date} by: ",
+			"added_on": "Product added on {date} by ",
+			"last_edit": "Last edit of product page on {date} by ",
+			"also_edited_by": "Product page also edited by ",
+			"last_check": "Last check of product page on {date} by ",
+			"also_checked_by": "Product page also checked by ",
+			"last_modified_t": "Last edit of product page on {date} by ",
 			"incomplete_or_incorrect": "If the data is incomplete or incorrect, you can complete or correct it by editing this page.",
 			"unknown": "unknown",
 			"done": "Done",
-			"toDo": "To do"
+			"toDo": "To do",
+			"states": "States"
 		},
 		"edit": {
 			"info": {
@@ -217,5 +219,9 @@
 	},
 	"menu": {
 		"button": "Menu"
+	},
+	"facets": {
+		"facet_back_to_list": "Back to facets",
+		"facet_back_to_overview": "Back to {facet} overview"
 	}
 }

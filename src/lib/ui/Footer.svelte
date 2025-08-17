@@ -14,51 +14,45 @@
 		{ url: 'https://world.pro.openfoodfacts.org/', text: 'Producers' },
 		{ url: 'https://world.openfoodfacts.org/cgi/top_translators.pl', text: 'Translators' },
 		{ url: 'https://github.com/openfoodfacts', text: 'GitHub' },
-		{ url: 'https://world.openfoodfacts.org/data', text: 'Data, API, SDKs' },
+		{ url: '/static/data', text: 'Data, API, SDKs' },
 		{ url: 'https://wiki.openfoodfacts.org/', text: 'Wiki' }
 	];
 
-	const discoverProjectLinks = {
-		row1: [
-			{
-				url: 'https://world.openfoodfacts.org/who-we-are',
-				key: 'footer.discover.who_we_are'
-			},
-			{
-				url: 'https://blog.openfoodfacts.org/en/',
-				key: 'footer.discover.blog'
-			},
-			{
-				url: 'https://world.openfoodfacts.org/code-of-conduct',
-				key: 'footer.discover.code_of_conduct'
-			}
-		],
-		row2: [
-			{
-				url: 'https://world.openfoodfacts.org/open-food-facts-vision-mission-values-and-programs',
-				key: 'footer.discover.vision_mission_values_and_programs'
-			}
-		],
-		row3: [
-			{
-				url: 'https://world.openfoodfacts.org/partners',
-				key: 'footer.discover.partners'
-			},
-			{
-				url: 'https://support.openfoodfacts.org/help/en-gb',
-				key: 'footer.discover.faq'
-			},
-			{
-				url: 'https://world.openfoodfacts.org/press',
-				key: 'footer.discover.press'
-			}
-		]
-	};
+	const discoverProjectLinks = [
+		{
+			url: '/static/who-we-are',
+			key: 'footer.discover.who_we_are'
+		},
+		{
+			url: 'https://blog.openfoodfacts.org/en/',
+			key: 'footer.discover.blog'
+		},
+		{
+			url: '/static/code-of-conduct',
+			key: 'footer.discover.code_of_conduct'
+		},
+		{
+			url: '/static/open-food-facts-vision-mission-values-and-programs',
+			key: 'footer.discover.vision_mission_values_and_programs'
+		},
+		{
+			url: '/static/partners',
+			key: 'footer.discover.partners'
+		},
+		{
+			url: 'https://support.openfoodfacts.org/help/en-gb',
+			key: 'footer.discover.faq'
+		},
+		{
+			url: '/static/presskit',
+			key: 'footer.discover.press'
+		}
+	];
 
 	const footerLinks = [
-		{ url: 'https://world.openfoodfacts.org/legal', text: 'Legal' },
-		{ url: 'https://world.openfoodfacts.org/privacy', text: 'Privacy' },
-		{ url: 'https://world.openfoodfacts.org/terms-of-use', text: 'Terms of use' }
+		{ url: '/static/legal', text: 'Legal' },
+		{ url: '/static/privacy', text: 'Privacy' },
+		{ url: '/static/terms-of-use', text: 'Terms of use' }
 	];
 </script>
 
@@ -109,27 +103,7 @@
 	<div class="relative z-20 order-2 mt-8 flex w-full flex-col gap-2 md:mt-0 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">Discover our Project</h2>
 		<div class="mt-2 flex flex-wrap gap-2">
-			{#each discoverProjectLinks.row1 as link (link.url)}
-				<a
-					href={link.url}
-					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
-				>
-					{$_(link.key)}
-				</a>
-			{/each}
-		</div>
-		<div class="mt-1 flex flex-wrap gap-2">
-			{#each discoverProjectLinks.row2 as link (link.url)}
-				<a
-					href={link.url}
-					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
-				>
-					{$_(link.key)}
-				</a>
-			{/each}
-		</div>
-		<div class="mt-1 flex flex-wrap gap-2">
-			{#each discoverProjectLinks.row3 as link (link.url)}
+			{#each discoverProjectLinks as link (link.url)}
 				<a
 					href={link.url}
 					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
@@ -145,10 +119,10 @@
 	class="bg-primary-content relative flex flex-col items-center justify-center gap-3 overflow-hidden px-10 py-8"
 >
 	<div class="absolute top-0 left-0 z-0 hidden md:block">
-		<img src={footerTopLeft} alt="" width="177" height="177" />
+		<img src={footerTopLeft} style="width: 177px; height: 177px;" alt="A decorative graphic" />
 	</div>
 	<div class="absolute right-0 bottom-0 z-0 hidden md:block">
-		<img src={footerBottomRight} alt="" width="251" height="178" />
+		<img src={footerBottomRight} style="width: 251px; height: 178px;" alt="A decorative graphic" />
 	</div>
 	<div class="relative z-10 flex flex-col items-center gap-4">
 		<picture>
