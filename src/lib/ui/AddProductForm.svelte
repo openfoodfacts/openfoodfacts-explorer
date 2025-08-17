@@ -1,11 +1,10 @@
 <script lang="ts">
-	import ImagesStep from './add-product-steps/ImagesStep.svelte';
-	import BasicInfoStep from './add-product-steps/BasicInfoStep.svelte';
-	import LanguagesStep from './add-product-steps/LanguagesStep.svelte';
-	import IngredientsStep from './add-product-steps/IngredientsStep.svelte';
-	import NutritionStep from './add-product-steps/NutritionStep.svelte';
-	import CommentStep from './add-product-steps/CommentStep.svelte';
-	import NavigationButtons from './add-product-steps/NavigationButtons.svelte';
+	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
+	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
+	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
+	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
+	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import CommentStep from './edit-product-steps/CommentStep.svelte';
 	import type { Writable } from 'svelte/store';
 	import type { Product } from '$lib/api';
 
@@ -41,47 +40,53 @@
 	const nextStep = () => gotoStep(currentStep + 1);
 	const prevStep = () => gotoStep(currentStep - 1);
 
-	type AddProductFormProps = {
+	type Props = {
 		productStore: Writable<Product>;
-		comment: string;
-		handleNutrimentInput: (e: Event, key: string) => void;
-		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
+
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
+
+		// Submission
+
+		isSubmitting: boolean;
+		submit: () => Promise<void>;
+		comment: string;
+		handleNutrimentInput: (e: Event, key: string) => void;
+
+		// Language
+
+		addLanguage: (code: string) => void;
+		getLanguage: (code: string) => string;
 		filteredLanguages: string[];
+
+		// Taxonomy entries
+
 		categoryNames: string[];
 		labelNames: string[];
 		brandNames: string[];
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
-		isSubmitting: boolean;
-		submit: () => Promise<void>;
-		handleCommentChange: (value: string) => void;
 	};
 
-	let { props }: { props: AddProductFormProps } = $props();
-
-	// Create reactive references to maintain reactivity
-	let productStore = $derived(props.productStore);
-	let comment = $derived(props.comment);
-	let handleNutrimentInput = $derived(props.handleNutrimentInput);
-	let addLanguage = $derived(props.addLanguage);
-	let getLanguage = $derived(props.getLanguage);
-	let getIngredientsImage = $derived(props.getIngredientsImage);
-	let getNutritionImage = $derived(props.getNutritionImage);
-	let filteredLanguages = $derived(props.filteredLanguages);
-	let categoryNames = $derived(props.categoryNames);
-	let labelNames = $derived(props.labelNames);
-	let brandNames = $derived(props.brandNames);
-	let storeNames = $derived(props.storeNames);
-	let originNames = $derived(props.originNames);
-	let countriesNames = $derived(props.countriesNames);
-	let isSubmitting = $derived(props.isSubmitting);
-	let submit = $derived(props.submit);
-
-	let handleCommentChange = $derived(props.handleCommentChange);
+	let {
+		productStore,
+		comment = $bindable(),
+		handleNutrimentInput,
+		addLanguage,
+		getLanguage,
+		getIngredientsImage,
+		getNutritionImage,
+		filteredLanguages,
+		categoryNames,
+		labelNames,
+		brandNames,
+		storeNames,
+		originNames,
+		countriesNames,
+		isSubmitting,
+		submit
+	}: Props = $props();
 </script>
 
 <!-- Desktop step navigation -->
@@ -147,14 +152,40 @@
 {:else if currentStep === 4}
 	<NutritionStep {productStore} {getLanguage} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
-	<CommentStep {comment} onCommentChange={handleCommentChange} />
+	<CommentStep bind:comment />
 {/if}
 
-<NavigationButtons
-	{currentStep}
-	stepsLength={STEPS.length}
-	{isSubmitting}
-	{prevStep}
-	{nextStep}
-	{submit}
-/>
+<!-- Navigation Buttons for Add Mode -->
+<div class="mt-8 flex justify-between gap-3">
+	{#if currentStep > 0}
+		<button
+			class="btn btn-outline min-w-50 text-sm max-md:grow sm:text-base"
+			onclick={prevStep}
+			type="button"
+		>
+			<span class="icon-[mdi--arrow-left] mr-2"></span>{$_('common.back')}
+		</button>
+	{/if}
+
+	{#if currentStep < STEPS.length - 1}
+		<button
+			class="btn btn-secondary min-w-50 text-sm max-md:grow sm:text-base"
+			onclick={nextStep}
+			type="button"
+		>
+			{$_('common.next')}<span class="icon-[mdi--arrow-right] ml-2"></span>
+		</button>
+	{:else}
+		<button
+			class="btn btn-success min-w-50 text-sm max-md:grow sm:text-base"
+			onclick={submit}
+			disabled={isSubmitting}
+			type="button"
+		>
+			{#if isSubmitting}
+				<span class="loading loading-spinner loading-sm mr-2"></span>
+			{/if}
+			{$_('product.edit.add_product')}
+		</button>
+	{/if}
+</div>

@@ -382,30 +382,6 @@
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
-
-	function handleCommentChange(value: string) {
-		comment = value;
-	}
-
-	let addProductFormProps = $derived({
-		productStore,
-		comment,
-		handleNutrimentInput,
-		addLanguage,
-		getLanguage,
-		getIngredientsImage,
-		getNutritionImage,
-		filteredLanguages,
-		categoryNames,
-		labelNames,
-		brandNames,
-		storeNames,
-		originNames,
-		countriesNames,
-		isSubmitting,
-		submit,
-		handleCommentChange
-	});
 </script>
 
 {#if dev}
@@ -447,8 +423,42 @@
 	</div>
 
 	{#if isAddMode}
-		<AddProductForm props={addProductFormProps} />
+		<AddProductForm
+			bind:comment
+			{addLanguage}
+			{brandNames}
+			{categoryNames}
+			{countriesNames}
+			{filteredLanguages}
+			{getIngredientsImage}
+			{getNutritionImage}
+			{isSubmitting}
+			{labelNames}
+			{originNames}
+			{submit}
+			{productStore}
+			{storeNames}
+			{getLanguage}
+			{handleNutrimentInput}
+		/>
 	{:else}
-		<EditProductForm {productStore} onSave={submit} />
+		<EditProductForm
+			bind:comment
+			{handleNutrimentInput}
+			{isSubmitting}
+			{getIngredientsImage}
+			{getNutritionImage}
+			{productStore}
+			{submit}
+			{addLanguage}
+			{brandNames}
+			{categoryNames}
+			{countriesNames}
+			{labelNames}
+			{originNames}
+			{storeNames}
+			{getLanguage}
+			{filteredLanguages}
+		/>
 	{/if}
 </div>

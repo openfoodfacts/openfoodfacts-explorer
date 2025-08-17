@@ -12,44 +12,140 @@
 
 	type Props = {
 		productStore: Writable<Product>;
-		onSave: (data: Product) => void;
+
+		getIngredientsImage: (language: string) => string | null;
+		getNutritionImage: (language: string) => string | null;
+
+		// Submission
+
+		isSubmitting: boolean;
+		submit: () => Promise<void>;
+		comment: string;
+		handleNutrimentInput: (e: Event, key: string) => void;
+
+		// Language
+
+		addLanguage: (code: string) => void;
+		getLanguage: (code: string) => string;
+		filteredLanguages: string[];
+
+		// Taxonomy entries
+
+		categoryNames: string[];
+		labelNames: string[];
+		brandNames: string[];
+		storeNames: string[];
+		originNames: string[];
+		countriesNames: string[];
 	};
 
-	let { productStore, onSave }: Props = $props();
-
-	let comment = $state('');
-
-	function handleSubmit() {
-		productStore.update((p) => {
-			onSave(p);
-			return p;
-		});
-	}
+	let {
+		productStore,
+		comment = $bindable(),
+		handleNutrimentInput,
+		addLanguage,
+		getLanguage,
+		getIngredientsImage,
+		getNutritionImage,
+		filteredLanguages,
+		categoryNames,
+		labelNames,
+		brandNames,
+		storeNames,
+		originNames,
+		countriesNames,
+		isSubmitting,
+		submit
+	}: Props = $props();
 </script>
 
 <div class="space-y-4">
 	<!-- Images Section -->
-	<ImagesStep {productStore} />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--image-multiple] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.images')}
+		</div>
+		<div class="collapse-content">
+			<ImagesStep {productStore} />
+		</div>
+	</div>
 
 	<!-- Basic Info Section -->
-	<BasicInfoStep {productStore} />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.basic_info')}
+		</div>
+		<div class="collapse-content overflow-hidden">
+			<BasicInfoStep
+				{productStore}
+				{brandNames}
+				{categoryNames}
+				{countriesNames}
+				{labelNames}
+				{originNames}
+				{storeNames}
+			/>
+		</div>
+	</div>
 
 	<!-- Languages Section -->
-	<LanguagesStep {productStore} />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.languages')}
+		</div>
+		<div class="collapse-content">
+			<LanguagesStep {productStore} {addLanguage} {getLanguage} {filteredLanguages} />
+		</div>
+	</div>
 
 	<!-- Ingredients Section -->
-	<IngredientsStep {productStore} />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--format-list-bulleted] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.ingredients')}
+		</div>
+		<div class="collapse-content">
+			<IngredientsStep {productStore} {getIngredientsImage} {getLanguage} />
+		</div>
+	</div>
 
 	<!-- Nutrition Section -->
-	<NutritionStep {productStore} />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.nutrition')}
+		</div>
+		<div class="collapse-content">
+			<NutritionStep {productStore} {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+		</div>
+	</div>
 
 	<!-- Comment Section -->
-	<CommentStep bind:comment />
+	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+		<input type="checkbox" />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--comment-text] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.comment')}
+		</div>
+		<div class="collapse-content">
+			<CommentStep bind:comment />
+		</div>
+	</div>
 
 	<div class="mt-8 flex justify-end">
 		<button
 			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			onclick={handleSubmit}
+			class:loading={isSubmitting}
+			onclick={submit}
+			disabled={isSubmitting}
 			type="button"
 		>
 			{$_('product.edit.save_btn')}
