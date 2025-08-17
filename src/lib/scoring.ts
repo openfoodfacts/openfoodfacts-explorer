@@ -42,6 +42,11 @@ const PREF_WEIGHTS = {
 	not_important: 0
 } as const;
 
+// Get weight for preference importance
+const getWeight = (importance: string): number => {
+	return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
+};
+
 export const calculateScore = (
 	productAttributes: ProductAttributeGroup[],
 	currentPrefs: UserPreference[]
@@ -51,11 +56,6 @@ export const calculateScore = (
 	let hasMandatoryMismatch = false;
 	let hasMandatoryUncertain = false;
 	let unknownWeightSum = 0;
-
-	// Get weight for preference importance
-	const getWeight = (importance: string): number => {
-		return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
-	};
 
 	for (const group of productAttributes) {
 		for (const attr of group.attributes) {

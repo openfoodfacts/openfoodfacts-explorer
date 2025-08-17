@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
+import type { ProductAttributeGroup } from '$lib/scoring';
 
 export class ProductsApi {
 	private readonly fetch: typeof window.fetch;
@@ -32,7 +33,9 @@ export class ProductsApi {
 		return data.product?.attribute_groups || [];
 	}
 
-	async getBulkProductAttributes(productCodes: string[]): Promise<Record<string, unknown[]>> {
+	async getBulkProductAttributes(
+		productCodes: string[]
+	): Promise<Record<string, ProductAttributeGroup[]>> {
 		const params = new URLSearchParams({
 			code: productCodes.join(','),
 			fields: 'product_name,code,attribute_groups'
@@ -42,7 +45,7 @@ export class ProductsApi {
 		const attributesData = await attributesResponse.json();
 
 		// Create a map of product code to attribute groups
-		const attributesByCode: Record<string, unknown[]> = {};
+		const attributesByCode: Record<string, ProductAttributeGroup[]> = {};
 		for (const product of attributesData.products || []) {
 			attributesByCode[product.code] = product.attribute_groups || [];
 		}

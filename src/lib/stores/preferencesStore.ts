@@ -33,7 +33,7 @@ export type AttributePreference = {
 export type UserPreference = AttributePreference;
 
 export type UserPreferences = UserPreference[];
-export type DEFAULT_PREFERENCES = UserPreference[];
+export type DefaultPreferences = UserPreference[];
 
 function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
@@ -41,8 +41,8 @@ function getDefaultValue(attribute: Attribute): string {
 
 export function generatePreferencesFromGroups(
 	attributeGroups: AttributeGroup[]
-): DEFAULT_PREFERENCES {
-	const defaultPreferencesArray: DEFAULT_PREFERENCES = [];
+): DefaultPreferences {
+	const defaultPreferencesArray: DefaultPreferences = [];
 
 	for (const group of attributeGroups) {
 		for (const attr of group.attributes) {
@@ -61,7 +61,8 @@ export function generatePreferencesFromGroups(
 }
 
 export function updatePreference(category: string, preference: string, value: string) {
-	userPreferences.update((prefs: UserPreferences) => {
+	personalizedSearch.update((store) => {
+		const prefs = store.userPreferences;
 		const preferenceId = `${category}.${preference}`;
 		const existingPreferenceIndex = prefs.findIndex((p: UserPreference) => p.id === preferenceId);
 
@@ -72,7 +73,10 @@ export function updatePreference(category: string, preference: string, value: st
 				...newPrefs[existingPreferenceIndex],
 				value
 			};
-			return newPrefs;
+			return {
+				...store,
+				userPreferences: newPrefs
+			};
 		} else {
 			// Add new preference
 			const newPreference: UserPreference = {
@@ -82,14 +86,20 @@ export function updatePreference(category: string, preference: string, value: st
 				attributeId: preference,
 				value
 			};
-			return [...prefs, newPreference];
+			return {
+				...store,
+				userPreferences: [...prefs, newPreference]
+			};
 		}
 	});
 }
 
-export function resetToDefaults(defaultPreferences: DEFAULT_PREFERENCES) {
+export function resetToDefaults(defaultPreferences: DefaultPreferences) {
 	const defaults = structuredClone(defaultPreferences);
-	userPreferences.set(defaults);
+	personalizedSearch.update((store) => ({
+		...store,
+		userPreferences: defaults
+	}));
 }
 
 // Helper function to get preference value by category and attribute
@@ -103,7 +113,13 @@ export function getPreferenceValue(
 	return preference?.value || 'not_important';
 }
 
-export const userPreferences = persisted<UserPreferences>('userPreferences', []);
+// Combined preferences store
+type PreferencesStoreData = {
+	userPreferences: UserPreferences;
+	classifyProductsEnabled: boolean;
+};
 
-// Store for classify products toggle state
-export const classifyProductsEnabled = persisted('classifyProductsEnabled', false);
+export const personalizedSearch = persisted<PreferencesStoreData>('personalizedSearch', {
+	userPreferences: [],
+	classifyProductsEnabled: false
+});

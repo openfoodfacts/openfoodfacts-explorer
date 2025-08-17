@@ -1,35 +1,17 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import Card from './Card.svelte';
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
-		userPreferences,
+		personalizedSearch,
 		updatePreference,
 		resetToDefaults,
-		classifyProductsEnabled,
-		getPreferenceValue
+		getPreferenceValue,
+		type AttributeGroup
 	} from '$lib/stores/preferencesStore';
-	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
+	import { fetchAndGenerateDefaults, convertApiToAttributeGroups } from '$lib/preferenceUtils';
 	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-
-	// Type for the API response which has optional fields
-	type ApiAttributeGroup = {
-		id?: string;
-		name?: string;
-		attributes?: {
-			id?: string;
-			name?: string;
-			icon_url?: string;
-			setting_name?: string;
-			setting_note?: string;
-			description?: string;
-			description_short?: string;
-			default?: string;
-			panel_id?: string;
-			values?: string[];
-		}[];
-		warning?: string;
-	};
 
 	type PreferencesFormProps = {
 		onPreferenceChange?: (category: string, preference: string, value: string) => void;
@@ -42,7 +24,7 @@
 	let {
 		onPreferenceChange = () => {},
 		showClassifyToggle = true,
-		classifyProducts = $classifyProductsEnabled,
+		classifyProducts = $personalizedSearch.classifyProductsEnabled,
 		onClassifyToggle = () => {},
 		onClose = () => {}
 	}: PreferencesFormProps = $props();
@@ -53,60 +35,51 @@
 	}
 
 	async function handleResetToDefaults() {
-		try {
-			const defaultPreferences = await fetchAndGenerateDefaults(fetch);
-			resetToDefaults(defaultPreferences);
-		} catch (error) {
-			console.error('Failed to reset to defaults:', error);
-		}
+		const defaultPreferences = await fetchAndGenerateDefaults(fetch);
+		resetToDefaults(defaultPreferences);
 	}
 
 	function handleClassifyToggle() {
-		classifyProductsEnabled.set(classifyProducts);
+		personalizedSearch.update((store) => ({
+			...store,
+			classifyProductsEnabled: classifyProducts
+		}));
 		onClassifyToggle(classifyProducts);
 	}
 
 	// Reactive function to get values from the store
-	const getValueFromCategory = (category: string, id: string) => {
-		return getPreferenceValue($userPreferences, category, id);
-	};
+	function getValueFromCategory(category: string, id: string) {
+		return getPreferenceValue($personalizedSearch.userPreferences, category, id);
+	}
 
-	let resolvedAttributeGroups: ApiAttributeGroup[] = $state([]);
+	let resolvedAttributeGroups: AttributeGroup[] = $state([]);
 	let isLoading = $state(true);
 
-	$effect(() => {
+	onMount(async () => {
 		const off = new OpenFoodFacts(fetch);
-		off
-			.getAttributeGroups()
-			.then((groups) => {
-				resolvedAttributeGroups = groups || [];
-				isLoading = false;
-			})
-			.catch((error) => {
-				console.error('Failed to load attribute groups:', error);
-				resolvedAttributeGroups = [];
-				isLoading = false;
-			});
+		const apiGroups = await off.getAttributeGroups();
+		resolvedAttributeGroups = convertApiToAttributeGroups(apiGroups);
+		isLoading = false;
 	});
 
 	// Dynamic sections based on resolved attribute groups
 	const sections = $derived(
 		resolvedAttributeGroups.map((group) => ({
-			id: group.id || '',
-			title: group.name || '',
-			options: (group.attributes || []).map((attribute) => ({
-				id: attribute.id || '',
-				label: attribute.setting_name || attribute.name || '',
-				icon: attribute.id || '',
+			id: group.id,
+			title: group.name,
+			options: group.attributes.map((attribute) => ({
+				id: attribute.id,
+				label: attribute.setting_name || attribute.name,
+				icon: attribute.id,
 				iconImg: attribute.icon_url,
-				options: (attribute.values || []).map((value) => ({
+				options: attribute.values.map((value) => ({
 					value,
 					label: $_(`preferences.options.${value}`) || value
 				})),
-				description: 'setting_note' in attribute ? attribute.setting_note : undefined
+				description: attribute.setting_note
 			})),
 			showWarning: group.id === 'allergens',
-			warningText: group.warning || ''
+			warningText: group.warning
 		}))
 	);
 </script>
@@ -158,7 +131,7 @@
 					onChange={handlePreferenceChange}
 					category={section.id}
 					showWarning={section.showWarning}
-					warningText={section.warningText}
+					warningText={section.warningText || ''}
 				/>
 			{/each}
 		{/if}

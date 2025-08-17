@@ -14,7 +14,7 @@
 		toLuceneString,
 		type FacetsSelection
 	} from '$lib/facets';
-	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import Pagination from '$lib/Pagination.svelte';
 	import Metadata from '$lib/Metadata.svelte';
@@ -29,11 +29,18 @@
 	let { search: result } = $derived(data);
 
 	let sortedProducts = $derived.by(() => {
-		if (result?.hits && result.hits.length > 0) {
-			return personalizeSearchResults(result.hits, $userPreferences, $classifyProductsEnabled);
-		} else {
-			return [];
-		}
+		if (!result?.hits || result.hits.length === 0 || !data.attributesByCode) return [];
+
+		const productsWithAttributes = result.hits.map((product) => ({
+			...product,
+			attributes: data.attributesByCode[product.code] || []
+		}));
+
+		return personalizeSearchResults(
+			productsWithAttributes,
+			$personalizedSearch.userPreferences,
+			$personalizedSearch.classifyProductsEnabled
+		);
 	});
 
 	// State for showing/hiding graphs
@@ -229,8 +236,10 @@
 							}}
 							placeholderImage="/Placeholder.svg"
 							onclick={() => navigateToProduct(product.code)}
-							showMatchTag={$classifyProductsEnabled}
-							personalScore={$classifyProductsEnabled ? product.scoreData : undefined}
+							showMatchTag={$personalizedSearch.classifyProductsEnabled}
+							personalScore={$personalizedSearch.classifyProductsEnabled
+								? product.scoreData
+								: undefined}
 						></product-card>
 					</div>
 				{/if}

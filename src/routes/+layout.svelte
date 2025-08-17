@@ -20,7 +20,7 @@
 	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
-	import { userPreferences, resetToDefaults } from '$lib/stores/preferencesStore';
+	import { personalizedSearch, resetToDefaults } from '$lib/stores/preferencesStore';
 	import { fetchAndGenerateDefaults } from '$lib/preferenceUtils';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
@@ -48,7 +48,7 @@
 		injectSpeedInsights();
 
 		// if preferences are not present then use defaults to set it in the localstorage
-		if (!$userPreferences.length) {
+		if (!$personalizedSearch.userPreferences.length) {
 			try {
 				const defaultPreferences = await fetchAndGenerateDefaults(fetch);
 				resetToDefaults(defaultPreferences);

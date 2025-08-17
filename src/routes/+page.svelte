@@ -11,20 +11,34 @@
 	import { onMount } from 'svelte';
 	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
-	import { classifyProductsEnabled, userPreferences } from '$lib/stores/preferencesStore';
-	import { personalizeSearchResults, type ScoredProduct } from '$lib/productScoring';
-
-	let sortedProducts: (ProductStateFound<ProductReduced> & ScoredProduct)[] = $state([]);
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { personalizeSearchResults } from '$lib/productScoring';
+	import type { ProductAttributeGroup } from '$lib/scoring';
 
 	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
 
-	let attributesByCode: Record<string, unknown[]> = $state({});
+	let attributesByCode: Record<string, ProductAttributeGroup[]> = $state({});
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
 
 	// Track preferences form visibility
 	let showPreferences = $state(false);
+
+	let sortedProducts = $derived.by(() => {
+		if (resolvedProducts.length === 0 || Object.keys(attributesByCode).length === 0) return [];
+
+		const productsWithAttributes = resolvedProducts.map((state) => ({
+			...state,
+			attributes: attributesByCode[state.product.code] || []
+		}));
+
+		return personalizeSearchResults(
+			productsWithAttributes,
+			$personalizedSearch.userPreferences,
+			$personalizedSearch.classifyProductsEnabled
+		);
+	});
 
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
@@ -57,34 +71,21 @@
 		// remove duplicate products
 		let dedupProducts = deduplicate(products, (it) => it.product.code);
 
-		// get attributes for all products using the API
-		const productCodes = dedupProducts.map((state) => state.product.code);
-		const attrs = await productApi.getBulkProductAttributes(productCodes);
-		attributesByCode = attrs;
-
 		return dedupProducts;
 	}
 
-	// Effect to add scores to products and sort them based on classify toggle
-	$effect(() => {
-		if (resolvedProducts.length > 0 && Object.keys(attributesByCode).length > 0) {
-			const productsWithAttributes = resolvedProducts.map((state) => ({
-				...state,
-				attributes: attributesByCode[state.product.code] || []
-			}));
-
-			sortedProducts = personalizeSearchResults(
-				productsWithAttributes,
-				$userPreferences,
-				$classifyProductsEnabled
-			);
-		}
-	});
+	async function loadProductAttributes(products: ProductStateFound<ProductReduced>[]) {
+		const productApi = new ProductsApi(fetch);
+		const productCodes = products.map((state) => state.product.code);
+		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		attributesByCode = attrs;
+	}
 
 	onMount(() => {
 		products = getProducts();
 		products.then((prods) => {
 			resolvedProducts = prods;
+			loadProductAttributes(prods);
 		});
 	});
 </script>
@@ -152,8 +153,10 @@
 						}}
 						placeholderImage="/Placeholder.svg"
 						onclick={() => navigateToProduct(state.product.code)}
-						showMatchTag={$classifyProductsEnabled}
-						personalScore={$classifyProductsEnabled ? state.scoreData : undefined}
+						showMatchTag={$personalizedSearch.classifyProductsEnabled}
+						personalScore={$personalizedSearch.classifyProductsEnabled
+							? state.scoreData
+							: undefined}
 					></product-card>
 				{/each}
 			{/await}
