@@ -222,89 +222,98 @@
 			</tr>
 		{/each}
 
-		<tr>
-			<td>
-				<div class="dropdown dropdown-bottom dropdown-start flex w-full">
-					<input
-						type="text"
-						class="input grow max-sm:w-20"
-						placeholder="New key"
-						readonly={!loggedIn}
-						bind:value={newKey}
-					/>
+		{#if loggedIn}
+			<tr>
+				<td>
+					<div class="dropdown dropdown-bottom dropdown-start flex w-full">
+						<input
+							type="text"
+							class="input grow max-sm:w-20"
+							placeholder="New key"
+							readonly={!loggedIn}
+							bind:value={newKey}
+						/>
 
-					{#if filteredKeys != null}
-						<div class="dropdown-content max-h-52 overflow-y-auto">
-							<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-							<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
-								{#if filteredKeys.length === 0}
-									<li>No results found</li>
-								{:else}
-									{#each filteredKeys as key (key)}
-										<li>
-											<button
-												onclick={() => {
-													newKey = key.k;
-												}}
-											>
-												{key.k} ({key.count})
-											</button>
-										</li>
-									{/each}
-								{/if}
-							</ul>
-						</div>
-					{/if}
-				</div>
-			</td>
-			<td class="flex gap-2">
-				<div class="dropdown dropdown-bottom dropdown-start flex w-full">
-					<input
-						type="text"
-						class="input grow max-sm:w-20"
-						placeholder="New value"
-						readonly={!loggedIn}
-						bind:value={newValue}
-					/>
-					<div class="dropdown-content max-h-52 overflow-y-auto">
-						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-						{#if filteredValues != null}
-							<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
-								{#if filteredValues.length > 0}
-									{#each filteredValues as value (value)}
-										<li>
-											<button
-												onclick={() => {
-													newValue = value.v;
-												}}
-											>
-												{value.v} ({value.product_count})
-											</button>
-										</li>
-									{/each}
-								{:else}
-									<li>No results found</li>
-								{/if}
-							</ul>
+						{#if filteredKeys != null}
+							<div class="dropdown-content max-h-52 overflow-y-auto">
+								<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+								<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
+									{#if filteredKeys.length === 0}
+										<li>No results found</li>
+									{:else}
+										{#each filteredKeys as key (key)}
+											<li>
+												<button
+													onclick={() => {
+														newKey = key.k;
+													}}
+												>
+													{key.k} ({key.count})
+												</button>
+											</li>
+										{/each}
+									{/if}
+								</ul>
+							</div>
 						{/if}
 					</div>
-				</div></td
-			>
-			<td>
-				<button
-					class="btn btn-primary"
-					onclick={createNewTag}
-					disabled={isLoading || !loggedIn}
-					title={!loggedIn
-						? 'You must be logged in to create a new tag'
-						: isLoading
-							? 'Creating...'
-							: undefined}
-					class:loading={isLoading}
+				</td>
+				<td class="flex gap-2">
+					<div class="dropdown dropdown-bottom dropdown-start flex w-full">
+						<input
+							type="text"
+							class="input grow max-sm:w-20"
+							placeholder="New value"
+							readonly={!loggedIn}
+							bind:value={newValue}
+						/>
+						<div class="dropdown-content max-h-52 overflow-y-auto">
+							<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+							{#if filteredValues != null}
+								<ul tabindex="0" class="menu rounded-b-box bg-base-100 p-2 shadow-sm">
+									{#if filteredValues.length > 0}
+										{#each filteredValues as value (value)}
+											<li>
+												<button
+													onclick={() => {
+														newValue = value.v;
+													}}
+												>
+													{value.v} ({value.product_count})
+												</button>
+											</li>
+										{/each}
+									{:else}
+										<li>No results found</li>
+									{/if}
+								</ul>
+							{/if}
+						</div>
+					</div></td
 				>
-					Create
-				</button>
-			</td>
-		</tr>
+				<td>
+					<button
+						class="btn btn-primary"
+						onclick={createNewTag}
+						disabled={isLoading || !loggedIn}
+						title={!loggedIn
+							? 'You must be logged in to create a new tag'
+							: isLoading
+								? 'Creating...'
+								: undefined}
+						class:loading={isLoading}
+					>
+						Create
+					</button>
+				</td>
+			</tr>
+		{:else}
+			<tr>
+				<td colspan="3" class="text-center">
+					<p class="mb-4">You must be logged in to create a new tag</p>
+					<a href="/settings" class="btn btn-primary w-1/4">Login</a>
+				</td>
+			</tr>
+		{/if}
 	</tbody>
 </table>
