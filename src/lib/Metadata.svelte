@@ -21,6 +21,7 @@
 <svelte:head>
 	<!-- HTML Meta Tags -->
 	<title>{title}</title>
+	<meta property="og:logo" content="/favicon.ico" />
 	<meta name="description" content={description} />
 
 	<!-- Facebook Meta Tags -->
