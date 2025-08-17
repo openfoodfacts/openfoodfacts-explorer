@@ -26,19 +26,20 @@ export function convertApiToAttributeGroups(
 	apiAttributeGroups: ApiAttributeGroup[]
 ): AttributeGroup[] {
 	return apiAttributeGroups.map((group) => ({
+		// Keeping required fields with fallbacks
 		id: group.id || '',
 		name: group.name || '',
+		warning: group.warning,
 		attributes: (group.attributes || []).map((attr) => ({
 			id: attr.id || '',
 			name: attr.name || '',
+			values: attr.values || [],
 			icon_url: attr.icon_url,
 			setting_name: attr.setting_name,
 			setting_note: attr.setting_note,
 			panel_id: attr.panel_id,
-			default: attr.default,
-			values: attr.values || []
-		})),
-		warning: group.warning
+			default: attr.default
+		}))
 	}));
 }
 
