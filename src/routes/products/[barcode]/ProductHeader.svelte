@@ -26,7 +26,6 @@
 			labels: Promise<Taxonomy<Label>>;
 			countries: Promise<Taxonomy<Country>>;
 			origins: Promise<Taxonomy<Origin>>;
-			traceability: Promise<Taxonomy<TraceabilityCode>>;
 		};
 	};
 	let { product, taxonomies }: Props = $props();
