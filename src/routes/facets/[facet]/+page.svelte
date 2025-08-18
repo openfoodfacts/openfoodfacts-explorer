@@ -5,6 +5,8 @@
 	import { _ } from '$lib/i18n';
 
 	import type { PageProps } from './$types';
+	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
@@ -15,7 +17,7 @@
 </script>
 
 <div class="mb-4">
-	<a href="/facets/" class="btn btn-ghost w-full">
+	<a href="/facets/" class="btn btn-secondary btn-outline w-full">
 		<span class="icon icon-[mdi--arrow-left]"></span>
 		{$_('facets.facet_back_to_list')}
 	</a>
@@ -23,12 +25,35 @@
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
 
-{#if Object.entries(knowledgePanels).length > 0}
-	<div class="my-4">
-		<h2 class="my-3 grow text-2xl font-bold">Knowledge Panels</h2>
-		<KnowledgePanels {knowledgePanels} summary={false} />
+<div class="my-8 flex gap-4 max-md:flex-col">
+	{#if Object.entries(knowledgePanels).length > 0}
+		<div class="grow">
+			<h2 class="my-3 grow text-2xl font-bold">Knowledge Panels</h2>
+			<KnowledgePanels {knowledgePanels} summary={false} />
+		</div>
+	{/if}
+
+	<div class="grow">
+		<h2 class="my-3 grow text-2xl font-bold">Search Options</h2>
+		<label class="select w-full">
+			<span class="label">Page Size</span>
+			<select
+				id="page_size"
+				value={`${data.pageSize}`}
+				oninput={(e) => {
+					const params = new SvelteURLSearchParams(page.url.search);
+					params.set('page_size', e.currentTarget.value);
+					goto(`?${params}`);
+				}}
+			>
+				<option value="10">10</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="200">200</option>
+			</select>
+		</label>
 	</div>
-{/if}
+</div>
 
 <div>
 	<h2 class="text-2xl font-bold">Products</h2>
@@ -57,12 +82,12 @@
 	</table>
 
 	<Pagination
-		page={currentPage}
+		page={currentPage ?? 1}
 		totalPages={pages}
 		pageUrl={(n) => {
-			const url = page.url;
-			url.searchParams.set('page', n.toString());
-			return url.toString();
+			const params = new SvelteURLSearchParams(page.url.search);
+			params.set('page', n.toString());
+			return `?${params}`;
 		}}
 	/>
 </div>
