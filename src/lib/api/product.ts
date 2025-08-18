@@ -139,7 +139,6 @@ export class ProductsApi {
 			}
 
 			const result = await res.json();
-			console.log('Image upload successful:', result);
 			return result;
 		} catch (err) {
 			console.error('Error during image upload:', err);

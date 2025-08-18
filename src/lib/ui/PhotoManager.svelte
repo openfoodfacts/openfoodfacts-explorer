@@ -8,6 +8,7 @@
 	import PhotoEditModal from './PhotoEditModal.svelte';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { SvelteSet } from 'svelte/reactivity';
+	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -258,16 +259,21 @@
 			y1: Math.round(cropData.y),
 			x2: Math.round(cropData.x + cropData.width),
 			y2: Math.round(cropData.y + cropData.height),
-			angle: rotationAngle
+			angle: rotationAngle,
+			normalize: true,
+			white_magic: false
 		};
 
-		// TODO: Call the crop API when it's implemented
-		console.log('Cropping and rotating image with data:', {
-			imageId,
-			imageTypeId,
-			cropData: apiCropData,
-			operation: 'crop_and_rotate'
-		});
+		try {
+			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
+			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
+			
+			const off = new OpenFoodFacts(fetch);
+			const result = await off.cropImage(product.code, imageId, imageFieldId, apiCropData);
+		} catch (error) {
+			console.error('Error cropping and rotating image:', error);
+			throw error;
+		}
 	}
 
 	async function handleImageRotateOnly(
@@ -275,13 +281,21 @@
 		imageTypeId: string,
 		rotationAngle: number
 	) {
-		// TODO: Call the rotation-only API when it's implemented
-		console.log('Rotating image with data:', {
-			imageId,
-			imageTypeId,
-			rotationData: { angle: rotationAngle },
-			operation: 'rotate_only'
-		});
+		try {
+			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
+			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
+			
+			const off = new OpenFoodFacts(fetch);
+			const result = await off.rotateImage(
+				product.code, 
+				imageFieldId, 
+				imageId.toString(), 
+				rotationAngle.toString()
+			);
+		} catch (error) {
+			console.error('Error rotating image:', error);
+			throw error;
+		}
 	}
 </script>
 

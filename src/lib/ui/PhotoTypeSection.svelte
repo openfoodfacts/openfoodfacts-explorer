@@ -105,7 +105,6 @@
 		try {
 			const off = new OpenFoodFacts(fetch);
 			const result = await off.unselectImage(barcode, imagefield);
-			console.log(result);
 
 			if (result.status === 'success' || result.status_code === 200) {
 				console.log('Image unselected successfully:', result);
