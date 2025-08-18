@@ -171,11 +171,11 @@
 		editingImageData = null;
 	}
 
-	type UploadResult = {
+	export type UploadResult = {
 		status: string;
 		imgid?: string | number;
 		error?: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	};
 
 	async function handleImageUploaded(uploadInfo?: {

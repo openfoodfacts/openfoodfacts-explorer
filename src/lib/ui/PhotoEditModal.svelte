@@ -22,6 +22,26 @@
 		rotationAngle: number;
 	};
 
+	type CropperImage = {
+		$center: () => void;
+		$resetTransform: () => void;
+		$rotate: (angle: string) => void;
+		$zoom: (delta: number) => void;
+		$getTransform: () => number[];
+		closest: (selector: string) => Element | null;
+		getBoundingClientRect: () => DOMRect;
+	};
+
+	type CropperSelection = {
+		$center: () => void;
+		$reset: () => void;
+		setAttribute: (name: string, value: string) => void;
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	};
+
 	type Props = {
 		isOpen: boolean;
 		imageUrl: string;
@@ -44,8 +64,8 @@
 	let { isOpen, imageUrl, imageAlt, onClose, onSave }: Props = $props();
 
 	let modal: HTMLDialogElement;
-	let cropperImage = $state<any>();
-	let cropperSelection = $state<any>();
+	let cropperImage = $state<CropperImage | null>(null);
+	let cropperSelection = $state<CropperSelection | null>(null);
 	let rotationAngle = $state(0);
 	let isInitialized = $state(false);
 	let isMounted = $state(false);
@@ -159,9 +179,11 @@
 
 		setTimeout(() => {
 			try {
-				cropperSelection.setAttribute('initial-coverage', '0.5');
-				cropperSelection.$reset();
-				cropperSelection.$center();
+				if (cropperSelection) {
+					cropperSelection.setAttribute('initial-coverage', '0.5');
+					cropperSelection.$reset();
+					cropperSelection.$center();
+				}
 			} catch (error) {
 				console.warn('Error initializing crop selection:', error);
 			}
@@ -326,7 +348,12 @@
 		}
 	}
 
-	function constrainSelectionToBounds(selection: any): boolean {
+	function constrainSelectionToBounds(selection: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	}): boolean {
 		const imageBounds = getImageBounds();
 		if (!imageBounds) return true; // Allow if we can't determine bounds
 
@@ -344,26 +371,28 @@
 
 		setTimeout(() => {
 			try {
-				const currentSelection = {
-					x: cropperSelection.x || 0,
-					y: cropperSelection.y || 0,
-					width: cropperSelection.width || 0,
-					height: cropperSelection.height || 0
-				};
+				if (cropperSelection) {
+					const currentSelection = {
+						x: cropperSelection.x || 0,
+						y: cropperSelection.y || 0,
+						width: cropperSelection.width || 0,
+						height: cropperSelection.height || 0
+					};
 
-				if (!constrainSelectionToBounds(currentSelection)) {
-					const imageBounds = getImageBounds();
-					if (imageBounds) {
-						const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
-						const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
+					if (!constrainSelectionToBounds(currentSelection)) {
+						const imageBounds = getImageBounds();
+						if (imageBounds && cropperSelection) {
+							const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
+							const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
 
-						const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
-						const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
+							const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
+							const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
 
-						cropperSelection.x = newX;
-						cropperSelection.y = newY;
-						cropperSelection.width = maxWidth;
-						cropperSelection.height = maxHeight;
+							cropperSelection.x = newX;
+							cropperSelection.y = newY;
+							cropperSelection.width = maxWidth;
+							cropperSelection.height = maxHeight;
+						}
 					}
 				}
 			} catch (error) {
@@ -386,7 +415,7 @@
 		}
 	}
 
-	function handleImageTransform(event: CustomEvent): void {
+	function handleImageTransform(): void {
 		if (!canPerformActions) return;
 
 		try {
@@ -477,7 +506,7 @@
 						></cropper-handle>
 
 						<!-- Resize handles -->
-						{#each RESIZE_HANDLES as action}
+						{#each RESIZE_HANDLES as action (action)}
 							<cropper-handle
 								{action}
 								class="absolute z-10 h-[10px] w-[10px] rounded-sm border border-gray-300 bg-white"

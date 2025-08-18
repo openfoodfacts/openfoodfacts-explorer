@@ -5,17 +5,12 @@
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
 	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { UploadResult } from './PhotoManager.svelte';
+
 	type PhotoType = {
 		id: string;
 		label: string;
 		isAdditional?: boolean;
-	};
-
-	type UploadResult = {
-		status: string;
-		imgid?: string | number;
-		error?: string;
-		[key: string]: any;
 	};
 
 	type Props = {
