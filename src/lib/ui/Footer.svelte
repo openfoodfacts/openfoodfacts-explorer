@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { NO_MARGIN_ROUTES } from '$lib/const';
+	import Logo from './Logo.svelte';
 
 	const stayUpdatedLinks = [
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Newsletter' },
@@ -125,21 +126,10 @@
 		<img src={footerBottomRight} style="width: 251px; height: 178px;" alt="A decorative graphic" />
 	</div>
 	<div class="relative z-10 flex flex-col items-center gap-4">
-		<picture>
-			<source
-				srcset="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-white.svg"
-				media="(prefers-color-scheme: dark)"
-			/>
-			<img
-				src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-mono-black.svg"
-				alt="Open Food Facts"
-			/>
-		</picture>
+		<Logo mono />
 
 		<div class="text-primary text-center md:bg-transparent md:text-inherit">
-			A collaborative, free and open database of food products<span class="hidden md:inline"
-				><br /></span
-			><span class="md:hidden"> </span> from around the world.
+			A collaborative, free and open database of food products<br />from around the world.
 		</div>
 	</div>
 
