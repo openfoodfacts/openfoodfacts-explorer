@@ -269,7 +269,7 @@
 			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
 
 			const off = new OpenFoodFacts(fetch);
-			const result = await off.cropImage(product.code, imageId, imageFieldId, apiCropData);
+			await off.cropImage(product.code, imageId, imageFieldId, apiCropData);
 		} catch (error) {
 			console.error('Error cropping and rotating image:', error);
 			throw error;
@@ -286,7 +286,7 @@
 			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
 
 			const off = new OpenFoodFacts(fetch);
-			const result = await off.rotateImage(
+			await off.rotateImage(
 				product.code,
 				imageFieldId,
 				imageId.toString(),
