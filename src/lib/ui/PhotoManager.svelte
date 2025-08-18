@@ -267,7 +267,7 @@
 		try {
 			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
 			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
-			
+
 			const off = new OpenFoodFacts(fetch);
 			const result = await off.cropImage(product.code, imageId, imageFieldId, apiCropData);
 		} catch (error) {
@@ -284,12 +284,12 @@
 		try {
 			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
 			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
-			
+
 			const off = new OpenFoodFacts(fetch);
 			const result = await off.rotateImage(
-				product.code, 
-				imageFieldId, 
-				imageId.toString(), 
+				product.code,
+				imageFieldId,
+				imageId.toString(),
 				rotationAngle.toString()
 			);
 		} catch (error) {
