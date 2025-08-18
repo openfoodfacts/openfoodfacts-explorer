@@ -7,12 +7,18 @@
 	import { _ } from '$lib/i18n';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels } = $derived(data);
 
 	let listView = $state(false);
 </script>
+
+<Metadata
+	title={`Exploring ${facet.name}: ${facet.value} - Open Food Facts Explorer`}
+	description={`Explore the ${facet.name} ${facet.value}`}
+/>
 
 <div class="mb-4">
 	<a href={`/facets/${facet.name}`} class="btn btn-ghost w-full">

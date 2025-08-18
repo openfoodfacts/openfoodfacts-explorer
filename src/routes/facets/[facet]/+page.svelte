@@ -7,6 +7,7 @@
 	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import Metadata from '$lib/Metadata.svelte';
 	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
@@ -15,6 +16,11 @@
 
 	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
 </script>
+
+<Metadata
+	title={`Exploring ${facet} - Open Food Facts Explorer`}
+	description={`Explore the ${facet} facet`}
+/>
 
 <div class="mb-4">
 	<a href="/facets/" class="btn btn-secondary btn-outline w-full">
