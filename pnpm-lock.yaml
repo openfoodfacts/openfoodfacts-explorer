@@ -52,8 +52,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(tailwindcss@4.1.11)
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.9
-        version: 2.0.0-alpha.9
+        specifier: 2.0.0-alpha.11
+        version: 2.0.0-alpha.11
       '@sinnwerkstatt/sveltekit-matomo':
         specifier: github:VaiTon/sveltekit-matomo
         version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7(svelte@5.37.1)
@@ -177,12 +177,6 @@ importers:
       typescript-eslint:
         specifier: ^8.38.0
         version: 8.38.0(eslint@9.32.0(jiti@2.4.2))(typescript@5.8.3)
-      vega:
-        specifier: ^6.1.2
-        version: 6.1.2
-      vega-lite:
-        specifier: ^6.2.0
-        version: 6.2.0(vega@6.1.2)
       vite:
         specifier: ^7.0.6
         version: 7.0.6(jiti@2.4.2)(lightningcss@1.30.1)
@@ -697,8 +691,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.9':
-    resolution: {integrity: sha512-4voc34w3dbNFy9kYhXbK1KkTlau7F7M3fk+5ieghvJbiY6l+os84u/0CD00yeeU8nbwbp/S8+2EsmD5RN3Ziyg==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.11':
+    resolution: {integrity: sha512-r9b8Ztc3Ahclkr/XX+R33FMJSp9oc30j8H8TIvukYq/9cFesbjS47g4YU4PdjrOLPgQMD6Ty2Gp4Brg7p6R0RQ==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.11.0':
     resolution: {integrity: sha512-NtC7Yaq095VpCghshi3xUQiQuET8ji5TgC3hSVHdnUCc6BNVz2LO3lKi6zo1e+3tHkSWSH4hmxWOA84WlQWDRw==}
@@ -976,9 +970,6 @@ packages:
   '@types/cropperjs@1.3.3':
     resolution: {integrity: sha512-xpX516HBzuFpvprQAB+djtV89eYBGhN8Hxw5jM2DPVW6VMmxW1y2keOcna2sKhlFO+QlqpzaJOINQGvX8ai5WQ==}
     deprecated: This is a stub types definition. cropperjs provides its own type definitions, so you do not need this installed.
-
-  '@types/estree@1.0.7':
-    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -3156,7 +3147,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.9':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.11':
     dependencies:
       openapi-fetch: 0.14.0
 
@@ -3416,8 +3407,6 @@ snapshots:
   '@types/cropperjs@1.3.3':
     dependencies:
       cropperjs: 2.0.1
-
-  '@types/estree@1.0.7': {}
 
   '@types/estree@1.0.8': {}
 

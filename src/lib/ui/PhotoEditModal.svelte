@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import 'cropperjs';
 
 	type CropData = {
 		x: number;
@@ -47,7 +48,6 @@
 	let cropperSelection = $state<any>();
 	let rotationAngle = $state(0);
 	let isInitialized = $state(false);
-	let cropperLoaded = $state(false);
 	let isMounted = $state(false);
 	let cropEnabled = $state(false);
 	let initTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -74,29 +74,12 @@
 		}
 	});
 
-	$effect(() => {
-		if (!isMounted || !isOpen || cropperLoaded) return;
-		loadCropper();
-	});
-
 	// Cleanup effect
 	$effect(() => {
 		return () => {
 			cleanupCropper();
 		};
 	});
-
-	async function loadCropper(): Promise<void> {
-		if (cropperLoaded) return;
-
-		try {
-			await import('cropperjs');
-			cropperLoaded = true;
-		} catch (error) {
-			console.error('Failed to load cropperjs:', error);
-			throw new Error('Failed to load image editing library');
-		}
-	}
 
 	function openModal(): void {
 		modal?.showModal();
@@ -110,10 +93,6 @@
 
 	async function initializeCropper(): Promise<void> {
 		if (isInitialized) return;
-
-		if (!cropperLoaded) {
-			await loadCropper();
-		}
 
 		clearInitTimeout();
 
@@ -212,6 +191,7 @@
 		try {
 			cropperImage.$rotate('-90deg');
 			rotationAngle = (rotationAngle - 90 + 360) % 360;
+			adjustSelectionAfterTransform();
 		} catch (error) {
 			console.error('Error rotating left:', error);
 		}
@@ -223,6 +203,7 @@
 		try {
 			cropperImage.$rotate('90deg');
 			rotationAngle = (rotationAngle + 90) % 360;
+			adjustSelectionAfterTransform();
 		} catch (error) {
 			console.error('Error rotating right:', error);
 		}
@@ -238,6 +219,7 @@
 
 		try {
 			cropperImage.$zoom(0.1);
+			adjustSelectionAfterTransform();
 		} catch (error) {
 			console.error('Error zooming in:', error);
 		}
@@ -248,6 +230,7 @@
 
 		try {
 			cropperImage.$zoom(-0.1);
+			adjustSelectionAfterTransform();
 		} catch (error) {
 			console.error('Error zooming out:', error);
 		}
@@ -321,6 +304,99 @@
 		onClose();
 	}
 
+	function getImageBounds() {
+		if (!cropperImage) return null;
+
+		try {
+			const cropperCanvas = cropperImage.closest('cropper-canvas');
+			if (!cropperCanvas) return null;
+
+			const cropperCanvasRect = cropperCanvas.getBoundingClientRect();
+			const cropperImageRect = cropperImage.getBoundingClientRect();
+
+			return {
+				x: cropperImageRect.left - cropperCanvasRect.left,
+				y: cropperImageRect.top - cropperCanvasRect.top,
+				width: cropperImageRect.width,
+				height: cropperImageRect.height
+			};
+		} catch (error) {
+			console.warn('Error getting image bounds:', error);
+			return null;
+		}
+	}
+
+	function constrainSelectionToBounds(selection: any): boolean {
+		const imageBounds = getImageBounds();
+		if (!imageBounds) return true; // Allow if we can't determine bounds
+
+		const isWithinBounds = (
+			selection.x >= imageBounds.x &&
+			selection.y >= imageBounds.y &&
+			(selection.x + selection.width) <= (imageBounds.x + imageBounds.width) &&
+			(selection.y + selection.height) <= (imageBounds.y + imageBounds.height)
+		);
+
+		return isWithinBounds;
+	}
+
+	function adjustSelectionAfterTransform(): void {
+		if (!cropperSelection || !cropEnabled) return;
+
+		setTimeout(() => {
+			try {
+				const currentSelection = {
+					x: cropperSelection.x || 0,
+					y: cropperSelection.y || 0,
+					width: cropperSelection.width || 0,
+					height: cropperSelection.height || 0
+				};
+
+				if (!constrainSelectionToBounds(currentSelection)) {
+					const imageBounds = getImageBounds();
+					if (imageBounds) {
+						const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
+						const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
+						
+						const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
+						const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
+
+						cropperSelection.x = newX;
+						cropperSelection.y = newY;
+						cropperSelection.width = maxWidth;
+						cropperSelection.height = maxHeight;
+					}
+				}
+			} catch (error) {
+				console.warn('Error adjusting selection after transform:', error);
+			}
+		}, 100);
+	}
+
+	function handleSelectionChange(event: CustomEvent): void {
+		if (!cropperImage || !canPerformActions) return;
+
+		try {
+			const selection = event.detail;
+
+			if (!constrainSelectionToBounds(selection)) {
+				event.preventDefault();
+			}
+		} catch (error) {
+			console.warn('Error handling selection change:', error);
+		}
+	}
+
+	function handleImageTransform(event: CustomEvent): void {
+		if (!canPerformActions) return;
+
+		try {
+			adjustSelectionAfterTransform();
+		} catch (error) {
+			console.warn('Error handling image transform:', error);
+		}
+	}
+
 	function handleModalClick(event: MouseEvent): void {
 		if (event.target === modal) {
 			handleClose();
@@ -362,6 +438,7 @@
 						scalable
 						translatable
 						class="block max-h-full max-w-full"
+						ontransform={handleImageTransform}
 					></cropper-image>
 					{#if cropEnabled}
 						<cropper-shade></cropper-shade>
@@ -380,6 +457,7 @@
 						class="absolute cursor-move border-2 border-white bg-transparent shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
 						style="display: {cropEnabled ? 'block' : 'none'}"
 						onpointerdown={enableCropping}
+						onchange={handleSelectionChange}
 						aria-label="Crop selection area"
 					>
 						<cropper-grid
@@ -426,68 +504,72 @@
 		</section>
 
 		<section class="mb-4" aria-label="Image editing controls">
-			<div class="flex flex-wrap justify-center gap-2">
-				<div class="join" role="group" aria-label="Rotation controls">
-					<button
-						type="button"
-						class="btn btn-sm join-item"
-						onclick={handleRotateLeft}
-						disabled={!canPerformActions}
-						title="Rotate left 90°"
-						aria-label="Rotate image left by 90 degrees"
-					>
-						<span class="icon-[mdi--rotate-left] h-4 w-4" aria-hidden="true"></span>
-						<span class="hidden sm:inline">Rotate Left</span>
-					</button>
-					<button
-						type="button"
-						class="btn btn-sm join-item"
-						onclick={handleRotateRight}
-						disabled={!canPerformActions}
-						title="Rotate right 90°"
-						aria-label="Rotate image right by 90 degrees"
-					>
-						<span class="icon-[mdi--rotate-right] h-4 w-4" aria-hidden="true"></span>
-						<span class="hidden sm:inline">Rotate Right</span>
-					</button>
-				</div>
-
-				<div class="join" role="group" aria-label="Zoom controls">
-					<button
-						type="button"
-						class="btn btn-sm join-item"
-						onclick={handleZoomOut}
-						disabled={!canPerformActions}
-						title="Zoom out"
-						aria-label="Zoom out of image"
-					>
-						<span class="icon-[mdi--magnify-minus] h-4 w-4" aria-hidden="true"></span>
-						<span class="hidden sm:inline">Zoom Out</span>
-					</button>
-					<button
-						type="button"
-						class="btn btn-sm join-item"
-						onclick={handleZoomIn}
-						disabled={!canPerformActions}
-						title="Zoom in"
-						aria-label="Zoom into image"
-					>
-						<span class="icon-[mdi--magnify-plus] h-4 w-4" aria-hidden="true"></span>
-						<span class="hidden sm:inline">Zoom In</span>
-					</button>
-				</div>
-
-				<!-- Reset control -->
+			<div class="flex flex-wrap justify-between items-center gap-2">
+				<!-- Left rotate button -->
 				<button
 					type="button"
-					class="btn btn-sm btn-outline"
-					onclick={handleReset}
+					class="btn btn-sm"
+					onclick={handleRotateLeft}
 					disabled={!canPerformActions}
-					title="Reset to original"
-					aria-label="Reset image to original state"
+					title="Rotate left 90°"
+					aria-label="Rotate image left by 90 degrees"
 				>
-					<span class="icon-[mdi--restore] h-4 w-4" aria-hidden="true"></span>
-					<span class="hidden sm:inline">Reset</span>
+					<span class="icon-[mdi--rotate-left] h-4 w-4" aria-hidden="true"></span>
+					<span class="hidden sm:inline">Rotate Left</span>
+				</button>
+
+				<!-- Center controls -->
+				<div class="flex gap-2">
+					<div class="join" role="group" aria-label="Zoom controls">
+						<button
+							type="button"
+							class="btn btn-sm join-item"
+							onclick={handleZoomOut}
+							disabled={!canPerformActions}
+							title="Zoom out"
+							aria-label="Zoom out of image"
+						>
+							<span class="icon-[mdi--magnify-minus] h-4 w-4" aria-hidden="true"></span>
+							<span class="hidden sm:inline">Zoom Out</span>
+						</button>
+						<button
+							type="button"
+							class="btn btn-sm join-item"
+							onclick={handleZoomIn}
+							disabled={!canPerformActions}
+							title="Zoom in"
+							aria-label="Zoom into image"
+						>
+							<span class="icon-[mdi--magnify-plus] h-4 w-4" aria-hidden="true"></span>
+							<span class="hidden sm:inline">Zoom In</span>
+						</button>
+					</div>
+
+					<!-- Reset control -->
+					<button
+						type="button"
+						class="btn btn-sm btn-outline"
+						onclick={handleReset}
+						disabled={!canPerformActions}
+						title="Reset to original"
+						aria-label="Reset image to original state"
+					>
+						<span class="icon-[mdi--restore] h-4 w-4" aria-hidden="true"></span>
+						<span class="hidden sm:inline">Reset</span>
+					</button>
+				</div>
+
+				<!-- Right rotate button -->
+				<button
+					type="button"
+					class="btn btn-sm"
+					onclick={handleRotateRight}
+					disabled={!canPerformActions}
+					title="Rotate right 90°"
+					aria-label="Rotate image right by 90 degrees"
+				>
+					<span class="icon-[mdi--rotate-right] h-4 w-4" aria-hidden="true"></span>
+					<span class="hidden sm:inline">Rotate Right</span>
 				</button>
 			</div>
 		</section>
