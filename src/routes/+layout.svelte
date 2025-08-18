@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
@@ -23,11 +23,17 @@
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
+	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
 	});
 	setWebsiteCtx(() => websiteCtx);
+
+	let shortcuts: Shortcut[] = $state([
+		// Add more shortcuts here
+	]);
+	setContext('shortcuts', () => shortcuts);
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -73,6 +79,8 @@
 </svelte:head>
 
 <Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+
+<Shortcuts {shortcuts} />
 
 <div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
