@@ -102,29 +102,33 @@
 				</p>
 			{/if}
 
-			<div class="gap-4 max-md:flex max-md:flex-col-reverse md:grid md:grid-cols-2">
-				<div class="">
-					<div class="space-y-2">
-						<label class="label" for="serving-size-input">
-							<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-								{$_('product.edit.serving_size')}
-								<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-							</span>
-						</label>
-						<input
-							id="serving-size-input"
-							type="text"
-							class="input input-bordered w-full text-sm sm:text-base"
-							bind:value={product.serving_size}
-							placeholder="e.g., 100g, 1 serving (30g)"
-						/>
+			<div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
+				<div>
+					<div class="space-y-4">
+						<div>
+							<label>
+								<span class="label mb-2 flex items-center gap-2 leading-0">
+									{$_('product.edit.serving_size')}
+									<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+								</span>
+								<input
+									id="serving-size-input"
+									type="text"
+									class="input input-bordered w-full text-sm sm:text-base"
+									bind:value={product.serving_size}
+									placeholder="e.g., 100g, 1 serving (30g)"
+								/>
+							</label>
+						</div>
 
-						<label class="label cursor-pointer justify-start gap-3">
-							<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
-							<span class="label-text text-sm font-medium sm:text-base">
-								{$_('product.edit.no_nutrition_data')}
-							</span>
-						</label>
+						<div>
+							<label class="label">
+								<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
+								<span>
+									{$_('product.edit.no_nutrition_data')}
+								</span>
+							</label>
+						</div>
 					</div>
 
 					{#if !product.no_nutrition_data}
@@ -276,11 +280,13 @@
 				</div>
 
 				{#if getNutritionImage(code)}
-					<div class="grow">
-						<ImageButton
-							src={getNutritionImage(code) ?? undefined}
-							alt={`Nutrition facts for ${getLanguage(code)}`}
-						/>
+					<div>
+						<div class="sticky top-4">
+							<ImageButton
+								src={getNutritionImage(code) ?? undefined}
+								alt={`Nutrition facts for ${getLanguage(code)}`}
+							/>
+						</div>
 					</div>
 				{/if}
 			</div>

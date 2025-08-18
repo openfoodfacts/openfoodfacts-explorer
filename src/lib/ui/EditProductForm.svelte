@@ -60,7 +60,7 @@
 
 <div class="space-y-4">
 	<!-- Images Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--image-multiple] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
@@ -72,7 +72,7 @@
 	</div>
 
 	<!-- Basic Info Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
@@ -92,7 +92,7 @@
 	</div>
 
 	<!-- Languages Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
@@ -104,7 +104,7 @@
 	</div>
 
 	<!-- Ingredients Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--format-list-bulleted] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
@@ -116,7 +116,8 @@
 	</div>
 
 	<!-- Nutrition Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<!-- overflow-visible is needed for the sticky image -->
+	<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
@@ -128,7 +129,7 @@
 	</div>
 
 	<!-- Comment Section -->
-	<div class="collapse-arrow bg-base-100 collapse shadow-md">
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--comment-text] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
