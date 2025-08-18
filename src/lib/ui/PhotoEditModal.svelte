@@ -330,12 +330,11 @@
 		const imageBounds = getImageBounds();
 		if (!imageBounds) return true; // Allow if we can't determine bounds
 
-		const isWithinBounds = (
+		const isWithinBounds =
 			selection.x >= imageBounds.x &&
 			selection.y >= imageBounds.y &&
-			(selection.x + selection.width) <= (imageBounds.x + imageBounds.width) &&
-			(selection.y + selection.height) <= (imageBounds.y + imageBounds.height)
-		);
+			selection.x + selection.width <= imageBounds.x + imageBounds.width &&
+			selection.y + selection.height <= imageBounds.y + imageBounds.height;
 
 		return isWithinBounds;
 	}
@@ -357,7 +356,7 @@
 					if (imageBounds) {
 						const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
 						const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
-						
+
 						const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
 						const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
 
@@ -504,7 +503,7 @@
 		</section>
 
 		<section class="mb-4" aria-label="Image editing controls">
-			<div class="flex flex-wrap justify-between items-center gap-2">
+			<div class="flex flex-wrap items-center justify-between gap-2">
 				<!-- Left rotate button -->
 				<button
 					type="button"
