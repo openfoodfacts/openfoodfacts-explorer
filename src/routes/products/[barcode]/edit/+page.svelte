@@ -22,6 +22,7 @@
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
 	import { page } from '$app/state';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { dev } from '$app/environment';
 
 	interface Props {
 		data: PageData;
@@ -534,6 +535,22 @@
 		handleCommentChange
 	});
 </script>
+
+{#if dev}
+	<div class="alert alert-warning my-8 text-lg" role="alert">
+		<span class="icon-[mdi--alert]"></span>
+		<div>
+			<p>
+				<strong> You are not logged in! </strong>
+				This means that the product will not be saved to the database.
+			</p>
+			<p class="text-sm">
+				We allow opening this page because you're in development mode, but the submit button will
+				not work.
+			</p>
+		</div>
+	</div>
+{/if}
 
 <div class="space-y-8">
 	<!-- Super Title -->

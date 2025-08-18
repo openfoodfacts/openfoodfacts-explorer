@@ -87,6 +87,8 @@
 				{/each}
 			{:then products}
 				{#each products as state (state.product.code)}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<product-card
 						product={state.product}
 						navigating={{
@@ -97,6 +99,7 @@
 						}}
 						placeholderImage="/Placeholder.svg"
 						onclick={() => navigateToProduct(state.product.code)}
+						class="h-full w-full"
 					></product-card>
 				{/each}
 			{/await}

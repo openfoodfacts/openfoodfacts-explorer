@@ -27,12 +27,16 @@ const config = {
 					'data:',
 
 					'https://*.openfoodfacts.org/',
+					'https://*.openfoodfacts.net/',
 					'https://*.openproductsfacts.org/',
+					'https://*.openproductsfacts.net/',
 					'https://*.openbeautyfacts.org/',
+					'https://*.openbeautyfacts.net/',
 
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',
-					'https://fdroid.gitlab.io'
+					'https://fdroid.gitlab.io',
+					'https://upload.wikimedia.org'
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'frame-ancestors': ['none']

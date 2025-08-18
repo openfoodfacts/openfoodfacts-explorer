@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
 	import { goto } from '$app/navigation';
-	import { PRODUCT_REPORT_URL } from '$lib/const';
 	import { _ } from '$lib/i18n';
+	import { NUTRIPATROL_URL } from '$lib/const';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -70,8 +70,12 @@
 		}
 		// Report to NutriPatrol action
 		else if (productCode != null && action === 'report_product_to_nutripatrol') {
-			// TODO: Eventually we should link to the internal route instead of opening external URL
-			window.open(`${PRODUCT_REPORT_URL}${productCode}/edit#report_problem`, '_blank');
+			const params = new URLSearchParams({
+				barcode: productCode,
+				source: 'web',
+				flavor: 'off'
+			});
+			window.open(`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`);
 		}
 		// Handle URLs directly
 		else if (

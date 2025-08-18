@@ -16,25 +16,15 @@
 		}
 		return () => modal.displayImage(getFullSizeImageUrl(src), alt);
 	});
-
-	let rotation = $state(0);
-
-	function rotateImage() {
-		rotation = rotation + 90;
-	}
 </script>
 
 <ImageModal bind:this={modal} />
+
 <div class="relative flex h-full w-full items-center justify-center">
 	<button class="flex cursor-pointer items-center justify-center" {onclick}>
 		{#if src != null}
 			<div class="flex items-center justify-center">
-				<img
-					{src}
-					{alt}
-					class="max-h-full max-w-full cursor-pointer rounded-lg object-contain"
-					style="transform: rotate({rotation}deg); transition: transform 0.3s ease;"
-				/>
+				<img {src} {alt} class="max-h-full max-w-full cursor-pointer rounded-lg object-contain" />
 			</div>
 		{:else}
 			<div
@@ -44,17 +34,4 @@
 			</div>
 		{/if}
 	</button>
-	{#if src != null}
-		<button
-			class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100 absolute right-2 bottom-2"
-			onclick={(e) => {
-				e.stopPropagation();
-				rotateImage();
-			}}
-			title="Rotate image"
-			aria-label="Rotate image 90 degrees clockwise"
-		>
-			<span class="icon-[mdi--rotate-right] h-4 w-4"></span>
-		</button>
-	{/if}
 </div>

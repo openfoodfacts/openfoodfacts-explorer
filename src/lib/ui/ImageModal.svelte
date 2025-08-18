@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { useZoomImageWheel } from '@zoom-image/svelte';
+	import ResizableImage from './ResizableImage.svelte';
 
 	type ImageState = { url: string; alt?: string };
 	let image: ImageState | undefined = $state();
@@ -8,6 +7,8 @@
 	let dialog: HTMLDialogElement | undefined = $state();
 	let zoomLevel = $state(1);
 	const MAX_ZOOM = 3;
+
+	let rotation = $state(0);
 
 	export function displayImage(url: string, alt?: string) {
 		image = { url, alt };
@@ -38,31 +39,19 @@
 		zoomLevel = 1;
 	}
 
-	let container: HTMLDivElement | undefined = $state();
-	const { createZoomImage, setZoomImageState, zoomImageState } = useZoomImageWheel();
+	function rotateRight() {
+		rotation = rotation + 90;
+	}
 
-	$effect(() => {
-		if (setZoomImageState != null) {
-			setZoomImageState({ currentZoom: zoomLevel });
-		}
-	});
+	function rotateLeft() {
+		rotation = rotation - 90;
+	}
 
-	onMount(() => {
-		if (container) {
-			createZoomImage(container, {
-				maxZoom: MAX_ZOOM,
-				wheelZoomRatio: 0.5,
-				shouldZoomOnSingleTouch: () => true
-			});
-			zoomImageState.subscribe((state) => {
-				zoomLevel = state.currentZoom;
-			});
-		}
-	});
+	let imageEl: ResizableImage;
 </script>
 
 <dialog
-	class="border-base-300 bg-base-100 fixed inset-0 m-auto max-h-[95vh] max-w-[95vw] border p-0 shadow-lg"
+	class="border-base-300 bg-base-100 h-screen max-h-screen w-screen max-w-screen border p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={(e) => {
@@ -72,6 +61,42 @@
 	}}
 >
 	<div class="relative flex h-full w-full flex-col">
+		<div class="h-full w-full p-5">
+			<ResizableImage
+				src={image?.url}
+				alt={image?.alt ?? 'Image'}
+				bind:zoom={zoomLevel}
+				bind:rotation
+				bind:this={imageEl}
+			/>
+		</div>
+		<div class="absolute right-2 z-10 flex h-full flex-col items-center justify-center gap-2">
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={zoomIn}
+				title="Zoom In"
+				aria-label="Zoom In"
+				disabled={zoomLevel >= MAX_ZOOM}
+			>
+				<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
+			</button>
+			<button
+				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
+				onclick={resetZoom}
+			>
+				{zoomLevel.toFixed(1)} x
+			</button>
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={zoomOut}
+				title="Zoom Out"
+				aria-label="Zoom Out"
+				disabled={zoomLevel <= 1}
+			>
+				<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
+			</button>
+		</div>
+
 		<div class="absolute top-2 right-2 z-10">
 			<button
 				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
@@ -86,45 +111,23 @@
 			</button>
 		</div>
 
-		<div
-			bind:this={container}
-			class="flex h-full w-full cursor-zoom-in items-center justify-center overflow-hidden p-6"
-		>
-			<img class="max-h-[85vh] max-w-[85vw] object-contain" src={image?.url} alt={image?.alt} />
-		</div>
-
-		<div class="absolute right-4 bottom-4 z-10 flex items-center gap-2">
-			{#if zoomLevel > 1}
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={resetZoom}
-					title="Reset Zoom"
-					aria-label="Reset Zoom"
-				>
-					<span class="icon-[mdi--magnify-close] h-6 w-6"></span>
-				</button>
-				<span class="bg-base-100/80 text-md rounded-md px-2 py-2 font-medium text-white">
-					{zoomLevel.toFixed(1)} x
-				</span>
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={zoomOut}
-					title="Zoom Out"
-					aria-label="Zoom Out"
-				>
-					<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
-				</button>
-			{/if}
-			{#if zoomLevel < MAX_ZOOM}
-				<button
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					onclick={zoomIn}
-					title="Zoom In"
-					aria-label="Zoom In"
-				>
-					<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
-				</button>
-			{/if}
+		<div class="absolute bottom-2 z-10 flex w-full justify-between gap-2 px-4 md:justify-end">
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={rotateLeft}
+				title="Rotate Left"
+				aria-label="Rotate Left"
+			>
+				<span class="icon-[mdi--rotate-left] h-6 w-6"></span>
+			</button>
+			<button
+				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+				onclick={rotateRight}
+				title="Rotate Right"
+				aria-label="Rotate Right"
+			>
+				<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
+			</button>
 		</div>
 	</div>
 </dialog>
@@ -132,14 +135,6 @@
 <style>
 	dialog[open] {
 		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-	}
-	@keyframes zoom {
-		from {
-			transform: scale(0.95);
-		}
-		to {
-			transform: scale(1);
-		}
 	}
 	dialog[open]::backdrop {
 		animation: fade 0.2s ease-out;

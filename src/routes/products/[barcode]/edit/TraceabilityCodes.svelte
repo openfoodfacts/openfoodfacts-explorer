@@ -20,10 +20,9 @@
 		return codeStr.split(',');
 	});
 
-	function handleChange(event: CustomEvent<{ tags: string[] }>) {
-		const newCodes = event.detail.tags.join(',');
-		traceabilityCodes = newCodes;
-		onChange?.({ traceabilityCodes: newCodes });
+	function handleChange(tags: string[]) {
+		traceabilityCodes = tags.join(',');
+		onChange?.({ traceabilityCodes });
 	}
 </script>
 
@@ -34,7 +33,7 @@
 			Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE
 		</div>
 	</div>
-	<Tags tags={traceabilityCodesArray} {autocomplete} on:change={handleChange} />
+	<Tags tags={traceabilityCodesArray} {autocomplete} onChange={handleChange} />
 	<div class="mt-1 text-xs">
 		<p>Format depends on country (e.g., FR XX.XXX.XXX CE for France)</p>
 		<p>

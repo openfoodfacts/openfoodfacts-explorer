@@ -8,7 +8,7 @@
 	import '@fontsource-variable/plus-jakarta-sans';
 
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -17,9 +17,18 @@
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { KEYCLOAK_ACCOUNT_URL, NO_MARGIN_ROUTES } from '$lib/const';
+	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
+	import { dev } from '$app/environment';
+	import type { LayoutProps } from './$types';
+	import { setWebsiteCtx } from '$lib/stores/website';
+
+	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+		flavor: 'food'
+	});
+	$inspect(websiteCtx).with((it) => console.debug('Website context:', it));
+	setWebsiteCtx(() => websiteCtx);
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
@@ -30,11 +39,7 @@
 
 	let searchQuery: string = $state('');
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children }: LayoutProps = $props();
 
 	onMount(() => {
 		// only inject the script on the client side
@@ -68,13 +73,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url="https://analytics.openfoodfacts.org" siteId={17} />
+<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+
+<div class="hidden">
+	<!-- Global OpenFoodFacts Web Components Configuration -->
+	<off-webcomponents-configuration
+		language-code="en"
+		assets-images-path="/assets/webcomponents"
+		robotoff-configuration={{
+			dryRun: !dev,
+			apiUrl: 'https://robotoff.openfoodfacts.net/api/v1',
+			imgUrl: 'https://images.openfoodfacts.net/images/products'
+		}}
+	>
+	</off-webcomponents-configuration>
+</div>
+
+{#if navigating.to != null}
+	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+{/if}
 
 {#if !$isLoading}
-	<!-- Global OpenFoodFacts Web Components Configuration -->
-	<off-webcomponents-configuration language-code="en" assets-images-path="assets/webcomponents">
-	</off-webcomponents-configuration>
-
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
 			<div class="navbar-start">
@@ -164,6 +183,9 @@
 			</a>
 			<a class="btn btn-outline link" href="/folksonomy">
 				{$_('folksonomy_link')}
+			</a>
+			<a class="btn btn-outline link" href="/facets">
+				{$_('facets_link')}
 			</a>
 
 			<div class="divider md:divider-horizontal"></div>
