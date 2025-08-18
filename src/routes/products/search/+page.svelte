@@ -198,7 +198,7 @@
 							</span>
 						{/if}
 						<product-card
-							class="h-[10rem] w-full"
+							class="h-[11rem] w-full"
 							{product}
 							navigating={{
 								to: navigatingTo === product.code ? { params: { barcode: product.code } } : null
