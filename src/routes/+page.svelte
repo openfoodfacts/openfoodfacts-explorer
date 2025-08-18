@@ -99,6 +99,7 @@
 						}}
 						placeholderImage="/Placeholder.svg"
 						onclick={() => navigateToProduct(state.product.code)}
+						class="w-full h-full"
 					></product-card>
 				{/each}
 			{/await}
