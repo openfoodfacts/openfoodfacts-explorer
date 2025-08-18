@@ -10,7 +10,7 @@ Wraps the <product-card> web component and adds accessibility features.
 </script>
 
 <product-card
-	class="cursor-pointer"
+	class="cursor-pointer w-full h-full"
 	{product}
 	onclick={() => goto(`/products/${product.code}`)}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && goto(`/products/${product.code}`)}
