@@ -25,7 +25,7 @@
 	<h2 class="my-4 text-xl font-bold">Has Edited</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each editor.products.slice(0, 6) as product (product.code)}
-			<product-card {product} class="h-full w-full"></product-card>
+			<product-card {product} class="h-[11rem] w-full"></product-card>
 		{/each}
 	</div>
 
