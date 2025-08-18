@@ -16,8 +16,12 @@
 </script>
 
 <Metadata
-	title={`Exploring ${facet.name}: ${facet.value} - Open Food Facts Explorer`}
-	description={`Explore the ${facet.name} ${facet.value}`}
+	title={$_('facets.facet_value_website_title', {
+		values: { facet: facet.name, value: facet.value }
+	})}
+	description={$_('facets.facet_value_website_description', {
+		values: { facet: facet.name, value: facet.value }
+	})}
 />
 
 <div class="mb-4">
