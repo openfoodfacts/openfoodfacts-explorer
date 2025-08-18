@@ -169,8 +169,6 @@
 		getFilteredArray(keys, newKey, (item) => item.k, { excluded: tags.map((it) => it.k) })
 	);
 
-	$inspect(tags);
-
 	let filteredValues = $derived.by(() => {
 		return possibleValues == null
 			? null

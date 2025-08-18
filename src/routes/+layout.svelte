@@ -27,7 +27,6 @@
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
 	});
-	$inspect(websiteCtx).with((it) => console.debug('Website context:', it));
 	setWebsiteCtx(() => websiteCtx);
 
 	onMount(async () => {

@@ -1,292 +1,294 @@
 <script lang="ts">
-	import { get, type Writable } from 'svelte/store';
-	import ISO6391 from 'iso-639-1';
-
-	import { getProductImageUrl, type Product } from '$lib/api';
-	import { _ } from '$lib/i18n';
-
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import { _ } from '$lib/i18n';
+	import { NUTRIENTS, type NutrientKey, type Product } from '$lib/api';
+	import ImageButton from '../ImageButton.svelte';
 
 	type Props = {
-		productStore: Writable<Product>;
+		product: Product;
+		getLanguage: (code: string) => string;
+		getNutritionImage: (language: string) => string | null;
+		handleNutrimentInput: (e: Event, key: string) => void;
 	};
 
-	let { productStore }: Props = $props();
+	let {
+		product = $bindable(),
+		getLanguage,
+		getNutritionImage,
+		handleNutrimentInput
+	}: Props = $props();
 
-	let showInfoNutrition = $state(false);
+	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
+	const DEFAULT_SHOWN: NutrientKey[] = [
+		'fat',
+		'saturated-fat',
+		'carbohydrates',
+		'sugars',
+		'proteins',
+		'fibers',
+		'salt',
+		'sodium'
+	];
 
-	const getLanguage = ISO6391.getName;
-
-	function getNutritionImage(language: string) {
-		const productData = get(productStore);
-		if (!productData.code || !productData.images) return null;
-
-		const imageName = 'nutrition_' + language;
-		return getProductImageUrl(productData.code, imageName, productData.images);
+	let showInfo = $state(false);
+	function toggleInfo() {
+		showInfo = !showInfo;
 	}
 
-	function handleNutrimentInput(e: Event, key: string) {
-		const target = e.currentTarget as HTMLInputElement;
-		productStore.update((store) => {
-			store.nutriments = { ...store.nutriments, [key]: target.value ? Number(target.value) : null };
-			return store;
-		});
-	}
+	let additionalNutrients: NutrientKey[] = $state(
+		NUTRIENTS.filter(
+			(key) =>
+				!IGNORE_NUTRIENTS.includes(key) &&
+				!DEFAULT_SHOWN.includes(key) &&
+				product.nutriments[key] != null
+		)
+	);
+
+	let canAddNutrients = $derived(
+		NUTRIENTS.filter((key) => {
+			return (
+				!IGNORE_NUTRIENTS.includes(key) && // Ignore certain nutrients
+				!DEFAULT_SHOWN.includes(key) && // Ignore default shown nutrients
+				!additionalNutrients.includes(key) // Ignore already added nutrients
+			);
+		})
+	);
 </script>
 
-<div class="collapse-arrow bg-base-100 collapse shadow-md">
-	<input type="checkbox" />
-	<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-		<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
-		{$_('product.edit.sections.nutrition')}
-	</div>
-	<div class="collapse-content">
+<h2
+	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+>
+	<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
+	{$_('product.edit.sections.nutrition')}
+	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+		<span
+			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		></span>
+	</button>
+</h2>
+{#if showInfo}
+	<div
+		class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+	>
 		<button
 			type="button"
-			class="mb-2"
-			aria-label="Info"
-			onclick={() => (showInfoNutrition = !showInfoNutrition)}
+			class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+			aria-label="Close"
+			onclick={toggleInfo}
 		>
-			<span
-				class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-			></span>
+			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 		</button>
-		{#if showInfoNutrition}
-			<div
-				class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
-			>
-				<span class="icon-[mdi--information] text-primary mt-0.5 flex-shrink-0"></span>
-				<span class="text-base-content/80 p-4 text-sm sm:text-base"
-					>{$_('product.edit.info.nutrition')}</span
-				>
-				<button
-					type="button"
-					class="hover:bg-primary/10 absolute top-2 right-2 rounded p-1"
-					aria-label="Close"
-					onclick={() => (showInfoNutrition = false)}
-				>
-					<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
-				</button>
-			</div>
-		{/if}
-		<div class="tabs tabs-box mb-4">
-			{#each Object.keys($productStore.languages_codes ?? {}) as code (code)}
-				<input
-					type="radio"
-					name="nutrition_image_tabs_edit"
-					class="tab text-xs sm:text-sm"
-					aria-label={getLanguage(code)}
-					checked={code === $productStore.lang}
-				/>
-				<div class="tab-content p-6">
-					{#if getNutritionImage(code)}
-						<img
-							src={getNutritionImage(code)}
-							alt="Nutrition facts for {getLanguage(code)}"
-							class="mb-4 h-auto max-w-full"
+		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<span class="text-base-content/80 p-6 text-sm sm:text-base"
+			>{$_('product.edit.info.nutrition')}</span
+		>
+	</div>
+{/if}
+<div class="tabs tabs-box mb-4">
+	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+		<input
+			type="radio"
+			name="nutrition_image_tabs"
+			class="tab text-xs sm:text-sm"
+			aria-label={getLanguage(code)}
+			checked={code === product.lang}
+		/>
+		<div class="tab-content p-6">
+			{#if getNutritionImage(code) == null && product.lang !== code}
+				<p class="alert alert-warning mb-4 text-sm sm:text-base">
+					{$_('product.edit.no_nutrition_image_for_language', {
+						values: { language: getLanguage(code) }
+					})}
+				</p>
+			{/if}
+
+			<div class="gap-4 max-md:flex max-md:flex-col-reverse md:grid md:grid-cols-2">
+				<div class="">
+					<div class="space-y-2">
+						<label class="label" for="serving-size-input">
+							<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+								{$_('product.edit.serving_size')}
+								<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+							</span>
+						</label>
+						<input
+							id="serving-size-input"
+							type="text"
+							class="input input-bordered w-full text-sm sm:text-base"
+							bind:value={product.serving_size}
+							placeholder="e.g., 100g, 1 serving (30g)"
 						/>
+
+						<label class="label cursor-pointer justify-start gap-3">
+							<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
+							<span class="label-text text-sm font-medium sm:text-base">
+								{$_('product.edit.no_nutrition_data')}
+							</span>
+						</label>
+					</div>
+
+					{#if !product.no_nutrition_data}
+						<div class="divider">
+							<span class="text-sm font-medium opacity-60">
+								{$_('product.edit.nutritional_values')}
+							</span>
+						</div>
+
+						<!-- Energy -->
+						<fieldset class="fieldset">
+							<legend class="fieldset-legend">{$_('product.edit.energy')}</legend>
+							<div class="flex gap-2">
+								<label class="input w-full">
+									<input
+										id="energy-kj-input"
+										type="number"
+										value={product.nutriments?.['energy-kj_100g'] ??
+											product.nutriments?.['energy_100g'] ??
+											''}
+										oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
+										placeholder="2100"
+										step="1"
+										min="0"
+									/>
+									<span class="label">
+										{$_('product.edit.si_kilojoules')}
+									</span>
+								</label>
+
+								<label class="input w-full">
+									<input
+										id="energy-kcal-input"
+										type="number"
+										value={product.nutriments?.['energy-kcal_100g'] ?? ''}
+										oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
+										placeholder="500"
+										step="1"
+										min="0"
+									/>
+									<span class="label">
+										{$_('product.edit.si_kilocalories')}
+									</span>
+								</label>
+							</div>
+
+							{#each DEFAULT_SHOWN as nutrient (nutrient)}
+								<label class="input w-full">
+									<span class="label w-60">
+										{$_(`product.edit.nutrient.${nutrient}`)}
+									</span>
+									<input
+										id={`${nutrient}-input`}
+										type="number"
+										value={product.nutriments?.[nutrient] ?? ''}
+										oninput={(e) => handleNutrimentInput(e, nutrient)}
+										placeholder="0.0"
+										step="0.1"
+										min="0"
+									/>
+									<span class="label">
+										<select
+											class=""
+											onchange={(e) => {
+												const unit = e.currentTarget.value;
+												product.nutriments[`${nutrient}_unit`] = unit;
+											}}
+											value={product.nutriments?.[`${nutrient}_unit`] ?? 'g'}
+										>
+											<option value="g">{$_('product.edit.si_grams')}</option>
+											<option value="mg">{$_('product.edit.si_milligrams')}</option>
+											<option value="µg">{$_('product.edit.si_micrograms')}</option>
+										</select>
+									</span>
+								</label>
+							{/each}
+						</fieldset>
+
+						<fieldset class="fieldset">
+							<legend class="fieldset-legend">
+								{$_('product.edit.additional_nutrients')}
+							</legend>
+							{#each additionalNutrients as nutrient (nutrient)}
+								<div class="join">
+									<label class="input join-item w-full">
+										<span class="label w-60">
+											{$_(`product.edit.nutrient.${nutrient}`)}
+										</span>
+										<input
+											id={`${nutrient}-input`}
+											type="number"
+											value={product.nutriments?.[nutrient] ?? ''}
+											oninput={(e) => handleNutrimentInput(e, nutrient)}
+											placeholder="0.0"
+											step="0.1"
+											min="0"
+										/>
+										<span class="label">
+											{$_('product.edit.si_grams')}
+										</span>
+									</label>
+									<button
+										type="button"
+										class="btn btn-error join-item"
+										aria-label="Remove nutrient"
+										disabled={product.nutriments?.[nutrient] != null}
+										onclick={() => {
+											// Remove the nutrient from additional nutrients
+											additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
+										}}
+									>
+										<span class="icon-[mdi--close]"></span>
+									</button>
+								</div>
+							{/each}
+
+							{#if canAddNutrients.length > 0}
+								<span class="label">
+									{$_('product.edit.add_nutrient')}
+								</span>
+
+								<select
+									class="select w-full"
+									oninput={(e) => {
+										const selectedNutrient = e.currentTarget.value;
+										if (selectedNutrient) {
+											// Add the selected nutrient to the additional nutrients
+											additionalNutrients.push(selectedNutrient as NutrientKey);
+										}
+									}}
+								>
+									<option disabled selected>
+										{$_('product.edit.additional_nutrients')}
+									</option>
+									{#each canAddNutrients as nutrient (nutrient)}
+										<option value={nutrient}>
+											{$_(`product.edit.nutrient.${nutrient}`)}
+										</option>
+									{/each}
+								</select>
+							{/if}
+						</fieldset>
 					{:else}
-						<p class="alert alert-warning mb-4 text-sm sm:text-base">
-							{$_('product.edit.no_nutrition_image')}
-						</p>
+						<div class="alert alert-info">
+							<span class="icon-[mdi--information] h-5 w-5"></span>
+							<span class="text-sm sm:text-base">{$_('product.edit.no_nutrition_specified')}</span>
+						</div>
 					{/if}
 				</div>
-			{/each}
-			{#if Object.keys($productStore.languages_codes ?? {}).length === 0}
-				<div class="alert alert-warning text-sm sm:text-base">
-					{$_('product.edit.no_languages_found')}
-				</div>
-			{/if}
-		</div>
-		<div class="space-y-6">
-			<div class="form-control">
-				<label class="label" for="serving-size-edit">
-					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.serving_size')}
-						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-					</span>
-				</label>
-				<input
-					id="serving-size-edit"
-					type="text"
-					class="input input-bordered w-full text-sm sm:text-base"
-					bind:value={$productStore.serving_size}
-					placeholder="e.g., 100g, 1 serving (30g)"
-				/>
+
+				{#if getNutritionImage(code)}
+					<div class="grow">
+						<ImageButton
+							src={getNutritionImage(code) ?? undefined}
+							alt={`Nutrition facts for ${getLanguage(code)}`}
+						/>
+					</div>
+				{/if}
 			</div>
-			<div class="form-control">
-				<label class="label cursor-pointer justify-start gap-3">
-					<input type="checkbox" class="checkbox" bind:checked={$productStore.no_nutrition_data} />
-					<span class="label-text text-sm font-medium sm:text-base"
-						>{$_('product.edit.no_nutrition_data')}</span
-					>
-				</label>
-			</div>
-			{#if !$productStore.no_nutrition_data}
-				<div class="space-y-6">
-					<div class="divider">
-						<span class="text-sm font-medium opacity-60">Nutritional Values</span>
-					</div>
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-						<div class="form-control">
-							<label class="label" for="energy-kj-edit">
-								<span class="label-text text-sm font-medium sm:text-base">Energy (kJ)</span>
-							</label>
-							<input
-								id="energy-kj-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.['energy-kj_100g'] ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
-								placeholder="2100"
-								step="1"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="energy-kcal-edit">
-								<span class="label-text text-sm font-medium sm:text-base">Energy (kcal)</span>
-							</label>
-							<input
-								id="energy-kcal-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.['energy-kcal_100g'] ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
-								placeholder="500"
-								step="1"
-								min="0"
-							/>
-						</div>
-					</div>
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-						<div class="form-control">
-							<label class="label" for="fat-edit">
-								<span class="label-text text-sm font-medium sm:text-base">Fat (g)</span>
-							</label>
-							<input
-								id="fat-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.fat_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'fat_100g')}
-								placeholder="10.5"
-								step="0.1"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="saturated-fat-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.saturated_fat')}</span
-								>
-							</label>
-							<input
-								id="saturated-fat-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.['saturated-fat_100g'] ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'saturated-fat_100g')}
-								placeholder="3.2"
-								step="0.1"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="carbohydrates-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.carbohydrates')}</span
-								>
-							</label>
-							<input
-								id="carbohydrates-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.carbohydrates_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'carbohydrates_100g')}
-								placeholder="60.0"
-								step="0.1"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="sugars-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.sugars')}</span
-								>
-							</label>
-							<input
-								id="sugars-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.sugars_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'sugars_100g')}
-								placeholder="5.0"
-								step="0.1"
-								min="0"
-							/>
-						</div>
-					</div>
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-						<div class="form-control">
-							<label class="label" for="proteins-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.proteins')}</span
-								>
-							</label>
-							<input
-								id="proteins-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.proteins_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'proteins_100g')}
-								placeholder="12.0"
-								step="0.1"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="salt-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.salt')}</span
-								>
-							</label>
-							<input
-								id="salt-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.salt_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'salt_100g')}
-								placeholder="1.2"
-								step="0.01"
-								min="0"
-							/>
-						</div>
-						<div class="form-control">
-							<label class="label" for="sodium-edit">
-								<span class="label-text text-sm font-medium sm:text-base"
-									>{$_('product.edit.sodium')}</span
-								>
-							</label>
-							<input
-								id="sodium-edit"
-								type="number"
-								class="input input-bordered w-full text-sm sm:text-base"
-								value={$productStore.nutriments?.sodium_100g ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'sodium_100g')}
-								placeholder="0.48"
-								step="0.01"
-								min="0"
-							/>
-						</div>
-					</div>
-				</div>
-			{:else}
-				<div class="alert alert-info">
-					<span class="icon-[mdi--information] h-5 w-5"></span>
-					<span class="text-sm sm:text-base">{$_('product.edit.no_nutrition_specified')}</span>
-				</div>
-			{/if}
 		</div>
-	</div>
+	{/each}
+	{#if Object.keys(product.languages_codes ?? {}).length === 0}
+		<div class="alert alert-warning text-sm sm:text-base">
+			{$_('product.edit.no_languages_found')}
+		</div>
+	{/if}
 </div>
