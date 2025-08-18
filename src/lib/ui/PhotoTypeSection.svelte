@@ -4,7 +4,7 @@
 	import { ProductsApi } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
-
+	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 	type PhotoType = {
 		id: string;
 		label: string;
@@ -107,8 +107,20 @@
 		const barcode = product.code;
 		const imagefield = getImageFieldName(type, activeLanguageCode, photoTypes);
 
-		// TODO: Implement actual unselect API call
-		console.log('Unselect requested for:', { code: barcode, imagefield });
+		try {
+			const off = new OpenFoodFacts(fetch);
+			const result = await off.unselectImage(barcode, imagefield);
+			console.log(result);
+
+			if (result.status === 'success' || result.status_code === 200) {
+				console.log('Image unselected successfully:', result);
+			} else {
+				console.warn('Image unselect failed:', result);
+			}
+		} catch (error) {
+			console.error('Error unselecting image:', error);
+			alert('Error unselecting image. Please try again.');
+		}
 	}
 
 	// Derived values

@@ -410,7 +410,7 @@
 	aria-labelledby="modal-title"
 	aria-modal="true"
 >
-	<div class="modal-box w-full max-w-4xl">
+	<div class="modal-box h-full w-full max-w-4xl md:h-auto">
 		<header class="mb-4 flex items-center justify-between">
 			<h3 id="modal-title" class="text-lg font-bold">Edit Photo</h3>
 			<button
