@@ -12,6 +12,10 @@
 	type Props = { product: Product };
 	let { product }: Props = $props();
 
+	// Use regular Map for language cache since it's not reactive data,
+	// just a performance optimization to avoid repeated ISO6391.getName() calls
+	// Using SvelteMap would cause state_unsafe_mutation error in $derived computations
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const languageCache = new Map<string, string>();
 	function getLanguage(code: string): string {
 		if (!languageCache.has(code)) {
