@@ -19,7 +19,9 @@
 	let { data }: PageProps = $props();
 
 	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
-	let attributesByCode: Promise<Record<string, ProductAttributeGroup[]>> = $state(Promise.resolve({}));
+	let attributesByCode: Promise<Record<string, ProductAttributeGroup[]>> = $state(
+		Promise.resolve({})
+	);
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
