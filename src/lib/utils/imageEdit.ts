@@ -84,11 +84,7 @@ function normalizeRotation(angle: number): number {
  * @param maxHeight - Maximum allowed height
  * @returns Clamped crop data
  */
-export function clampCropData(
-	cropData: CropData,
-	maxWidth: number,
-	maxHeight: number
-): CropData {
+export function clampCropData(cropData: CropData, maxWidth: number, maxHeight: number): CropData {
 	return {
 		...cropData,
 		x: Math.max(0, Math.min(cropData.x, maxWidth)),
