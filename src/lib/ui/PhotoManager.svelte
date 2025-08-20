@@ -359,10 +359,10 @@
 	bind:this={photoEditModal}
 	imageUrl={editingImageData?.url || ''}
 	imageAlt={editingImageData?.alt || ''}
-	product={product}
+	{product}
 	photoType={editingImageData?.type}
-	activeLanguageCode={activeLanguageCode}
-	photoTypes={photoTypes}
+	{activeLanguageCode}
+	{photoTypes}
 	onClose={closeEditModal}
 	onSave={handleImageEdit}
 	onImageUnselected={() => {

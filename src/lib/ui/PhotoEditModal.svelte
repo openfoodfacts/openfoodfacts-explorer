@@ -68,7 +68,17 @@
 		'sw-resize'
 	];
 
-	let { imageUrl, imageAlt, onClose, onSave, product, photoType, activeLanguageCode, photoTypes, onImageUnselected }: Props = $props();
+	let {
+		imageUrl,
+		imageAlt,
+		onClose,
+		onSave,
+		product,
+		photoType,
+		activeLanguageCode,
+		photoTypes,
+		onImageUnselected
+	}: Props = $props();
 
 	let modal: HTMLDialogElement;
 	let cropperImage = $state<CropperImage | null>(null);
@@ -651,7 +661,7 @@
 					</button>
 				{/if}
 			</div>
-			
+
 			<div class="flex gap-2">
 				<button
 					type="button"
