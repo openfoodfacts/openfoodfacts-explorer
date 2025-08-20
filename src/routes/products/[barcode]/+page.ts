@@ -11,7 +11,7 @@ import {
 	type Category,
 	type Origin,
 	type Country,
-	ProductsApi
+	createProductsApi
 } from '$lib/api';
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
@@ -39,12 +39,16 @@ async function getPricesCoords(api: PricesApi, code: string) {
 	return prices;
 }
 export const load: PageLoad = async ({ params, fetch }) => {
-	const productsApi = new ProductsApi(fetch);
+	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const state = await productsApi.getProduct(params.barcode);
-	if (state.status === 'failure') {
-		error(404, { message: 'Failure to load product', errors: state.errors });
+	const state = await productsApi.getProductV3(params.barcode, {
+		// @ts-expect-error - will be fixed in next sdk version
+		fields: ['all', 'knowledge_panels']
+	});
+
+	if (state == null || state.status === 'failure') {
+		error(404, { message: 'Failure to load product', errors: state?.errors });
 	}
 
 	const categories = getTaxo<Category>('categories', fetch);
