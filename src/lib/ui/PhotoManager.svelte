@@ -140,6 +140,13 @@
 	let editingImageData = $state<ProductImage | null>(null);
 	let photoEditModal = $state<{ openModal: () => void; closeModal: () => void }>();
 
+	// Effect to automatically open modal when editingImageData is set
+	$effect(() => {
+		if (editingImageData && photoEditModal) {
+			photoEditModal.openModal();
+		}
+	});
+
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
 		return [
@@ -165,7 +172,6 @@
 		const imageData = currentImages.find((img) => img.url === imageUrl && img.alt === imageAlt);
 		if (imageData) {
 			editingImageData = imageData;
-			photoEditModal?.openModal();
 		} else {
 			console.error('Could not find image data for URL:', imageUrl);
 		}
@@ -213,7 +219,7 @@
 				(img) => img.imgid.toString() === uploadInfo.result.imgid!.toString()
 			);
 			if (uploadedImage) {
-				openEditModal(uploadedImage.url, uploadedImage.alt);
+				editingImageData = uploadedImage;
 			} else {
 				console.warn(`Could not find uploaded image with imgid: ${uploadInfo.result.imgid}`);
 			}
@@ -355,19 +361,21 @@
 </div>
 
 <!-- Photo Edit Modal -->
-<PhotoEditModal
-	bind:this={photoEditModal}
-	imageUrl={editingImageData?.url || ''}
-	imageAlt={editingImageData?.alt || ''}
-	imageId={editingImageData?.imgid}
-	{product}
-	photoType={editingImageData?.type}
-	{activeLanguageCode}
-	{photoTypes}
-	onClose={closeEditModal}
-	onSave={handleImageEdit}
-	onImageUnselected={() => {
-		invalidateAll();
-		closeEditModal();
-	}}
-/>
+{#if editingImageData}
+	<PhotoEditModal
+		bind:this={photoEditModal}
+		imageUrl={editingImageData.url}
+		imageAlt={editingImageData.alt}
+		imageId={editingImageData.imgid}
+		{product}
+		photoType={editingImageData.type}
+		{activeLanguageCode}
+		{photoTypes}
+		onClose={closeEditModal}
+		onSave={handleImageEdit}
+		onImageUnselected={() => {
+			invalidateAll();
+			closeEditModal();
+		}}
+	/>
+{/if}
