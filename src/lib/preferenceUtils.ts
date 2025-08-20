@@ -1,7 +1,7 @@
 import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import {
 	generatePreferencesFromGroups,
-	type DefaultPreferences,
+	type UserPreferences,
 	type AttributeGroup
 } from '$lib/stores/preferencesStore';
 
@@ -43,7 +43,7 @@ export function convertApiToAttributeGroups(
 
 export async function fetchAndGenerateDefaults(
 	fetch: typeof window.fetch
-): Promise<DefaultPreferences> {
+): Promise<UserPreferences> {
 	const off = new OpenFoodFacts(fetch);
 	const apiAttributeGroups: ApiAttributeGroup[] = await off.getAttributeGroups();
 	const attributeGroups = convertApiToAttributeGroups(apiAttributeGroups);
