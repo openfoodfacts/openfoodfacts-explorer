@@ -42,6 +42,12 @@ export type Nutriments = {
 	fat_serving: number;
 	fat_unit: string;
 	fat_value: number;
+	fibers: number;
+	fibers_100g: number;
+	fibers_serving: number;
+	fibers_unit: string;
+	fibers_value: number;
+
 	'fruits-vegetables-nuts-estimate-from-ingredients_100g': number;
 	'fruits-vegetables-nuts-estimate-from-ingredients_serving': number;
 
@@ -71,3 +77,20 @@ export type Nutriments = {
 	sugars_unit: string;
 	sugars_value: number;
 };
+
+export const NUTRIENTS = [
+	'alcohol',
+	'sodium',
+	'energy',
+	'energy-kcal',
+	'energy-kj',
+	'fat',
+	'proteins',
+	'salt',
+	'saturated-fat',
+	'carbohydrates',
+	'sugars',
+	'fibers'
+] as const;
+
+export type NutrientKey = (typeof NUTRIENTS)[number];

@@ -1,46 +1,42 @@
 import { error } from '@sveltejs/kit';
+
+import {
+	FACETS_SORT_OPTIONS,
+	getFacetKnowledgePanels,
+	getFacetValue,
+	type FacetSortOption
+} from '$lib/api/facets';
 import type { PageLoad } from './$types';
-import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-import type { KnowledgePanel } from '$lib/api/knowledgepanels';
+import { requireInt } from '$lib/utils';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
+
 	const pageStr = url.searchParams.get('page') || '1';
+	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
 
-	let page: number;
-	try {
-		page = parseInt(pageStr, 10);
-	} catch {
-		error(400, 'Invalid page number');
+	const pageSizeStr = url.searchParams.get('page_size') || '50';
+	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
+
+	const sortByStr = url.searchParams.get('sort_by');
+	if (sortByStr && !FACETS_SORT_OPTIONS.includes(sortByStr as FacetSortOption)) {
+		error(400, 'Invalid sort option');
 	}
+	const sortBy = sortByStr as FacetSortOption | undefined;
 
-	const offParams = new URLSearchParams({
-		page: page.toString()
-	});
+	const searchOptions = {
+		page,
+		pageSize,
+		sortBy
+	};
 
-	const results: Promise<{
-		count: number;
-		page: number;
-		page_count: number;
-		page_size: number;
-		products: Product[];
-		skip: number;
-	}> = fetch(`https://world.openfoodfacts.org/facets/${facet}/${value}.json?${offParams}`)
-		.then((res) => res.json())
-		// TODO: this is because the "page" field is a string.
-		// The server should output a number here!
-		.then((it) => ({
-			...it,
-			page: parseInt(it.page, 10)
-		}));
-
-	const facetKnowledgePanels: Promise<{ knowledge_panels: Record<string, KnowledgePanel> }> = fetch(
-		`https://facets-kp.openfoodfacts.org/knowledge_panel?facet_tag=${facet}&value_tag=${value}`
-	).then((res) => res.json());
+	const results = getFacetValue(fetch, facet, value, searchOptions);
+	const kp = getFacetKnowledgePanels(fetch, facet, value);
 
 	return {
+		searchOptions,
 		facet: { name: facet, value },
 		results: await results,
-		knowledgePanels: (await facetKnowledgePanels).knowledge_panels
+		knowledgePanels: (await kp).knowledge_panels
 	};
 };

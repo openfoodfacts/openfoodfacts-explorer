@@ -2,14 +2,22 @@ import type { PageLoad } from './$types';
 
 const FACETS = [
 	{ taxo: 'countries', name: 'Countries', icon: 'icon-[mdi--earth]' },
-	{ taxo: 'nutrition-grades', name: 'Nutrition grades', icon: 'icon-[mdi--food-apple]' },
+	{
+		taxo: 'nutrition-grades',
+		name: 'Nutrition grades',
+		icon: 'icon-[material-symbols--traffic-outline]'
+	},
 	{ taxo: 'nova-groups', name: 'NOVA groups', icon: 'icon-[mdi--numeric]' },
 	{ taxo: 'environmental-score', name: 'Green-Score', icon: 'icon-[mdi--leaf]' },
 	{ taxo: 'brands', name: 'Brands', icon: 'icon-[mdi--tag]' },
 	{ taxo: 'categories', name: 'Categories', icon: 'icon-[mdi--shape]' },
 	{ taxo: 'labels', name: 'Labels', icon: 'icon-[mdi--label]' },
 	{ taxo: 'packaging', name: 'Packaging', icon: 'icon-[mdi--package]' },
-	{ taxo: 'origins', name: 'Origins of ingredients', icon: 'icon-[mdi--source-branch]' },
+	{
+		taxo: 'origins',
+		name: 'Origins of ingredients',
+		icon: 'icon-[material-symbols--globe-location-pin]'
+	},
 	{
 		taxo: 'manufacturing-places',
 		name: 'Manufacturing or processing places',

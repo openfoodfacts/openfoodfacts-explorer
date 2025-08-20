@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Tags from './Tags.svelte';
 
-	interface Props {
+	type Props = {
 		tagsString: string;
 		separator?: string;
 		autocomplete?: readonly string[];
-	}
+	};
 
 	let { tagsString = $bindable(), separator = ',', autocomplete = [] }: Props = $props();
 </script>
