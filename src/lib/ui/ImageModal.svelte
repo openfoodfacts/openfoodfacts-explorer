@@ -6,6 +6,7 @@
 
 	let dialog: HTMLDialogElement | undefined = $state();
 	let zoomLevel = $state(1);
+	let translation = $state({ x: 0, y: 0 });
 	const MAX_ZOOM = 3;
 
 	let rotation = $state(0);
@@ -37,6 +38,7 @@
 		e.preventDefault();
 		e.stopPropagation();
 		zoomLevel = 1;
+		translation = { x: 0, y: 0 };
 	}
 
 	function rotateRight() {
@@ -46,8 +48,6 @@
 	function rotateLeft() {
 		rotation = rotation - 90;
 	}
-
-	let imageEl: ResizableImage;
 </script>
 
 <dialog
@@ -62,13 +62,16 @@
 >
 	<div class="relative flex h-full w-full flex-col">
 		<div class="h-full w-full p-5">
-			<ResizableImage
-				src={image?.url}
-				alt={image?.alt ?? 'Image'}
-				bind:zoom={zoomLevel}
-				bind:rotation
-				bind:this={imageEl}
-			/>
+			{#if image}
+				<ResizableImage
+					src={image.url}
+					alt={image.alt ?? 'Image'}
+					bind:zoom={zoomLevel}
+					bind:rotation
+					bind:translation
+					maxzoom={10}
+				/>
+			{/if}
 		</div>
 		<div class="absolute right-2 z-10 flex h-full flex-col items-center justify-center gap-2">
 			<button
