@@ -48,6 +48,7 @@
 	type Props = {
 		imageUrl: string;
 		imageAlt: string;
+		imageId?: number;
 		onClose: () => void;
 		onSave: (data: EditData) => void;
 		product?: Product;
@@ -71,6 +72,7 @@
 	let {
 		imageUrl,
 		imageAlt,
+		imageId,
 		onClose,
 		onSave,
 		product,
@@ -93,6 +95,10 @@
 	const cropModeStatus = $derived(
 		cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping'
 	);
+	const reportImageUrl = $derived.by(() => {
+		if (!product?.code || !imageId) return null;
+		return `https://nutripatrol.openfoodfacts.org/flag/image/?barcode=${product.code}&image_id=${imageId}&source=web&flavor=off`;
+	});
 
 	// Client-side mounting detection
 	$effect(() => {
@@ -647,11 +653,11 @@
 		{/if}
 
 		<div class="flex justify-between gap-2">
-			<div>
+			<div class="flex gap-2">
 				{#if product && photoType && activeLanguageCode && photoTypes}
 					<button
 						type="button"
-						class="btn btn-outline btn-error"
+						class="btn btn-outline hover:btn-outline hover:btn-error"
 						onclick={handleImageUnselect}
 						disabled={!canPerformActions}
 						aria-label="Unselect this image"
@@ -659,6 +665,19 @@
 						<span class="icon-[mdi--image-remove] h-4 w-4" aria-hidden="true"></span>
 						Unselect Image
 					</button>
+				{/if}
+
+				{#if reportImageUrl}
+					<a
+						href={reportImageUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-outline hover:btn-outline hover:btn-warning"
+						aria-label="Report this image"
+					>
+						<span class="icon-[mdi--flag] h-4 w-4" aria-hidden="true"></span>
+						Report Image
+					</a>
 				{/if}
 			</div>
 
