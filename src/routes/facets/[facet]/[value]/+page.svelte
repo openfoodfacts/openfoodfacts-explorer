@@ -10,7 +10,7 @@
 	import Metadata from '$lib/Metadata.svelte';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels } = $derived(data);
+	let { facet, results, knowledgePanels, searchOptions } = $derived(data);
 
 	let listView = $state(false);
 </script>
@@ -41,10 +41,10 @@
 		</div>
 	{/if}
 
-	<div class="w-full">
-		<h2 class="mb-2 grow text-2xl font-bold">Search Options</h2>
-		<label class="select mb-2 w-full">
-			<span class="label">Page Size</span>
+	<div class="w-full space-y-2">
+		<h2 class="grow text-2xl font-bold">Search Options</h2>
+		<label class="select w-full">
+			<span class="label w-50">Page Size</span>
 			<select
 				value={`${results.page_size}`}
 				oninput={(e) => {
@@ -60,8 +60,26 @@
 			</select>
 		</label>
 
+		<label class="select w-full">
+			<span class="label w-50">Sort By</span>
+			<select
+				value={searchOptions.sortBy || 'last_modified_t'}
+				oninput={(e) => {
+					const params = new SvelteURLSearchParams(page.url.search);
+					params.set('sort_by', e.currentTarget.value);
+					goto(`?${params}`);
+				}}
+			>
+				<option value="popularity">Popularity</option>
+				<option value="nutriscore_score">Nutriscore</option>
+				<option value="environmental_score_score">Environmental Score</option>
+				<option value="created_t">Created Time</option>
+				<option value="last_modified_t">Last Modified Time</option>
+			</select>
+		</label>
+
 		<label class="select mb-2 w-full">
-			<span class="label">Advanced View</span>
+			<span class="label w-50">Advanced View</span>
 			<select
 				value={`${listView}`}
 				oninput={(e) => {
