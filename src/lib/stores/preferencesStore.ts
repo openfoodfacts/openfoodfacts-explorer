@@ -1,8 +1,8 @@
 import { persisted } from 'svelte-local-storage-store';
 
 export type Attribute = {
-	id: string;
-	name: string;
+	id?: string;
+	name?: string;
 	icon_url?: string;
 	setting_name?: string;
 	setting_note?: string;
@@ -10,13 +10,13 @@ export type Attribute = {
 	description_short?: string;
 	panel_id?: string;
 	default?: string;
-	values: string[];
+	values?: string[];
 };
 
 export type AttributeGroup = {
-	id: string;
-	name: string;
-	attributes: Attribute[];
+	id?: string;
+	name?: string;
+	attributes?: Attribute[];
 	warning?: string;
 };
 
@@ -33,7 +33,12 @@ export type AttributePreference = {
 export type UserPreference = AttributePreference;
 
 export type UserPreferences = UserPreference[];
-export type DefaultPreferences = UserPreference[];
+
+export const personalizedSearch = persisted<PreferencesStoreData>('personalizedSearch', {
+	userPreferences: [],
+	classifyProductsEnabled: false
+});
+
 
 function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
@@ -41,23 +46,16 @@ function getDefaultValue(attribute: Attribute): string {
 
 export function generatePreferencesFromGroups(
 	attributeGroups: AttributeGroup[]
-): DefaultPreferences {
-	const defaultPreferencesArray: DefaultPreferences = [];
-
-	for (const group of attributeGroups) {
-		for (const attr of group.attributes) {
-			const preference: UserPreference = {
-				type: 'attribute',
-				id: `${group.id}.${attr.id}`,
-				categoryId: group.id,
-				attributeId: attr.id,
-				value: getDefaultValue(attr)
-			};
-			defaultPreferencesArray.push(preference);
-		}
-	}
-
-	return defaultPreferencesArray;
+): UserPreferences {
+	return attributeGroups.flatMap(group => 
+		group.attributes!.map(attr => ({
+			type: 'attribute' as const,
+			id: `${group.id!}.${attr.id!}`,
+			categoryId: group.id!,
+			attributeId: attr.id!,
+			value: getDefaultValue(attr)
+		}))
+	);
 }
 
 export function updatePreference(category: string, preference: string, value: string) {
@@ -77,24 +75,23 @@ export function updatePreference(category: string, preference: string, value: st
 				...store,
 				userPreferences: newPrefs
 			};
-		} else {
-			// Add new preference
-			const newPreference: UserPreference = {
-				type: 'attribute',
-				id: preferenceId,
-				categoryId: category,
-				attributeId: preference,
-				value
-			};
-			return {
-				...store,
-				userPreferences: [...prefs, newPreference]
-			};
 		}
+		
+		const newPreference: UserPreference = {
+			type: 'attribute',
+			id: preferenceId,
+			categoryId: category,
+			attributeId: preference,
+			value
+		};
+		return {
+			...store,
+			userPreferences: [...prefs, newPreference]
+		};
 	});
 }
 
-export function resetToDefaults(defaultPreferences: DefaultPreferences) {
+export function resetToDefaults(defaultPreferences: UserPreferences) {
 	const defaults = structuredClone(defaultPreferences);
 	personalizedSearch.update((store) => ({
 		...store,
@@ -118,8 +115,3 @@ type PreferencesStoreData = {
 	userPreferences: UserPreferences;
 	classifyProductsEnabled: boolean;
 };
-
-export const personalizedSearch = persisted<PreferencesStoreData>('personalizedSearch', {
-	userPreferences: [],
-	classifyProductsEnabled: false
-});

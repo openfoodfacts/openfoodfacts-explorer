@@ -58,26 +58,30 @@
 	// Dynamic sections based on resolved attribute groups
 	const DEFAULT_IMPORTANCE_VALUES = ['mandatory', 'very_important', 'important', 'not_important'];
 	const sections = $derived(
-		attributeGroups.map((group) => ({
-			id: group.id,
-			title: group.name,
-			options: group.attributes.map((attribute) => ({
-				id: attribute.id,
-				label: attribute.setting_name || attribute.name,
-				icon: attribute.id,
-				iconImg: attribute.icon_url,
-				options: (attribute.values && attribute.values.length > 0
-					? attribute.values
-					: DEFAULT_IMPORTANCE_VALUES
-				).map((value) => ({
-					value,
-					label: $_(`preferences.options.${value}`) || value
-				})),
-				selectedValue: getSelectedValue(group.id, attribute.id),
-				description: attribute.setting_note
-			})),
-			showWarning: group.id === 'allergens',
-			warningText: group.warning
+		attributeGroups
+			.filter((group) => group.id && group.name && group.attributes)
+			.map((group) => ({
+				id: group.id!,
+				title: group.name!,
+				options: group.attributes!
+					.filter((attribute) => attribute.id)
+					.map((attribute) => ({
+						id: attribute.id!,
+						label: attribute.setting_name || attribute.name,
+						icon: attribute.id!,
+						iconImg: attribute.icon_url,
+						options: (attribute.values && attribute.values.length > 0
+							? attribute.values
+							: DEFAULT_IMPORTANCE_VALUES
+						).map((value) => ({
+							value,
+							label: $_(`preferences.options.${value}`) || value
+						})),
+						selectedValue: getSelectedValue(group.id!, attribute.id!),
+						description: attribute.setting_note
+					})),
+				showWarning: group.id === 'allergens',
+				warningText: group.warning
 		}))
 	);
 </script>

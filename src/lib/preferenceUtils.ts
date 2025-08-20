@@ -5,7 +5,6 @@ import {
 	type AttributeGroup
 } from '$lib/stores/preferencesStore';
 
-// Type for the API response which has optional fields
 type ApiAttributeGroup = {
 	id?: string;
 	name?: string;
@@ -26,14 +25,13 @@ export function convertApiToAttributeGroups(
 	apiAttributeGroups: ApiAttributeGroup[]
 ): AttributeGroup[] {
 	return apiAttributeGroups.map((group) => ({
-		// Keeping required fields with fallbacks
-		id: group.id || '',
-		name: group.name || '',
+		id: group.id,
+		name: group.name,
 		warning: group.warning,
-		attributes: (group.attributes || []).map((attr) => ({
-			id: attr.id || '',
-			name: attr.name || '',
-			values: attr.values || [],
+		attributes: group.attributes?.map((attr) => ({
+			id: attr.id,
+			name: attr.name,
+			values: attr.values,
 			icon_url: attr.icon_url,
 			setting_name: attr.setting_name,
 			setting_note: attr.setting_note,

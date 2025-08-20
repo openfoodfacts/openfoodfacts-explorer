@@ -41,7 +41,7 @@
 
 	let { children }: LayoutProps = $props();
 
-	onMount(async () => {
+	onMount(() => {
 		// only inject the script on the client side
 		injectSpeedInsights();
 	});

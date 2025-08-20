@@ -3,7 +3,7 @@
 
 	type PreferenceOption = {
 		id: string;
-		label: string;
+		label?: string;
 		icon: string;
 		iconImg?: string;
 		description?: string;
@@ -65,7 +65,9 @@
 
 				<!-- Label and Options -->
 				<div class="flex-1">
-					<h4 class="text-base-content mb-2 text-sm font-medium">{option.label}</h4>
+					<h4 class="text-base-content mb-2 text-sm font-medium">
+						{option.label || option.id || 'Unknown'}
+					</h4>
 					<div class="flex flex-wrap gap-4">
 						{#each option.options as radioOption (radioOption.value)}
 							<label class="flex cursor-pointer items-center gap-2">
