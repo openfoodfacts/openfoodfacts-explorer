@@ -355,21 +355,19 @@
 </div>
 
 <!-- Photo Edit Modal -->
-{#if editingImageData}
-	<PhotoEditModal
-		bind:this={photoEditModal}
-		imageUrl={editingImageData.url}
-		imageAlt={editingImageData.alt}
-		imageId={editingImageData.imgid}
-		{product}
-		photoType={editingImageData.type}
-		{activeLanguageCode}
-		{photoTypes}
-		onClose={closeEditModal}
-		onSave={handleImageEdit}
-		onImageUnselected={() => {
-			invalidateAll();
-			closeEditModal();
-		}}
-	/>
-{/if}
+<PhotoEditModal
+	bind:this={photoEditModal}
+	imageUrl={editingImageData?.url || ''}
+	imageAlt={editingImageData?.alt || ''}
+	imageId={editingImageData?.imgid}
+	{product}
+	photoType={editingImageData?.type}
+	{activeLanguageCode}
+	{photoTypes}
+	onClose={closeEditModal}
+	onSave={handleImageEdit}
+	onImageUnselected={() => {
+		invalidateAll();
+		closeEditModal();
+	}}
+/>
