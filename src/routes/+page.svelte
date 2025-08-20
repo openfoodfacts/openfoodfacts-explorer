@@ -68,6 +68,26 @@
 		return attrs;
 	}
 
+	function sortProducts(
+		products: ProductStateFound<ProductReduced>[],
+		attributes: Record<string, ProductAttributeGroup[]> | null
+	) {
+		if (attributes === null || !$personalizedSearch.classifyProductsEnabled) {
+			return products;
+		}
+
+		const productsWithAttributes = products.map((state) => ({
+			...state,
+			attributes: attributes[state.product.code] || []
+		}));
+
+		return personalizeSearchResults(
+			productsWithAttributes,
+			$personalizedSearch.userPreferences,
+			$personalizedSearch.classifyProductsEnabled
+		);
+	}
+
 	onMount(() => {
 		products = getProducts();
 		products.then((prod) => {
@@ -130,15 +150,7 @@
 				{/each}
 			{:then resolvedProducts}
 				{#await attributesByCode then attributes}
-					{@const productsWithAttributes = resolvedProducts.map((state) => ({
-						...state,
-						attributes: attributes[state.product.code] || []
-					}))}
-					{@const sortedProducts = personalizeSearchResults(
-						productsWithAttributes,
-						$personalizedSearch.userPreferences,
-						$personalizedSearch.classifyProductsEnabled
-					)}
+					{@const sortedProducts = sortProducts(resolvedProducts, attributes)}
 					{#each sortedProducts as state (state.product.code)}
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -153,7 +165,7 @@
 							placeholderImage="/Placeholder.svg"
 							onclick={() => navigateToProduct(state.product.code)}
 							showMatchTag={$personalizedSearch.classifyProductsEnabled}
-							personalScore={$personalizedSearch.classifyProductsEnabled
+							personalScore={$personalizedSearch.classifyProductsEnabled && 'scoreData' in state
 								? state.scoreData
 								: undefined}
 						></product-card>
