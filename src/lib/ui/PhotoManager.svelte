@@ -138,7 +138,7 @@
 	let expandedCategories = $state(new Set<string>());
 
 	let editingImageData = $state<ProductImage | null>(null);
-	let photoEditModal: { openModal: () => void; closeModal: () => void }; // Reference to the modal component
+	let photoEditModal = $state<{ openModal: () => void; closeModal: () => void }>();
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -355,18 +355,20 @@
 </div>
 
 <!-- Photo Edit Modal -->
-<PhotoEditModal
-	bind:this={photoEditModal}
-	imageUrl={editingImageData?.url || ''}
-	imageAlt={editingImageData?.alt || ''}
-	{product}
-	photoType={editingImageData?.type}
-	{activeLanguageCode}
-	{photoTypes}
-	onClose={closeEditModal}
-	onSave={handleImageEdit}
-	onImageUnselected={() => {
-		invalidateAll();
-		closeEditModal();
-	}}
-/>
+{#if editingImageData}
+	<PhotoEditModal
+		bind:this={photoEditModal}
+		imageUrl={editingImageData.url}
+		imageAlt={editingImageData.alt}
+		{product}
+		photoType={editingImageData.type}
+		{activeLanguageCode}
+		{photoTypes}
+		onClose={closeEditModal}
+		onSave={handleImageEdit}
+		onImageUnselected={() => {
+			invalidateAll();
+			closeEditModal();
+		}}
+	/>
+{/if}
