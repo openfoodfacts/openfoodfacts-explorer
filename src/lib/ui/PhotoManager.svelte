@@ -137,8 +137,8 @@
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
 
-	let isEditModalOpen = $state(false);
 	let editingImageData = $state<ProductImage | null>(null);
+	let photoEditModal: { openModal: () => void; closeModal: () => void }; // Reference to the modal component
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -165,14 +165,14 @@
 		const imageData = currentImages.find((img) => img.url === imageUrl && img.alt === imageAlt);
 		if (imageData) {
 			editingImageData = imageData;
-			isEditModalOpen = true;
+			photoEditModal?.openModal();
 		} else {
 			console.error('Could not find image data for URL:', imageUrl);
 		}
 	}
 
 	function closeEditModal() {
-		isEditModalOpen = false;
+		photoEditModal?.closeModal();
 		editingImageData = null;
 	}
 
@@ -356,7 +356,7 @@
 
 <!-- Photo Edit Modal -->
 <PhotoEditModal
-	isOpen={isEditModalOpen}
+	bind:this={photoEditModal}
 	imageUrl={editingImageData?.url || ''}
 	imageAlt={editingImageData?.alt || ''}
 	onClose={closeEditModal}

@@ -43,7 +43,6 @@
 	};
 
 	type Props = {
-		isOpen: boolean;
 		imageUrl: string;
 		imageAlt: string;
 		onClose: () => void;
@@ -61,7 +60,7 @@
 		'sw-resize'
 	];
 
-	let { isOpen, imageUrl, imageAlt, onClose, onSave }: Props = $props();
+	let { imageUrl, imageAlt, onClose, onSave }: Props = $props();
 
 	let modal: HTMLDialogElement;
 	let cropperImage = $state<CropperImage | null>(null);
@@ -84,16 +83,6 @@
 		});
 	});
 
-	$effect(() => {
-		if (!isMounted) return;
-
-		if (isOpen && !isInitialized) {
-			openModal();
-		} else if (!isOpen && isInitialized) {
-			closeModal();
-		}
-	});
-
 	// Cleanup effect
 	$effect(() => {
 		return () => {
@@ -101,12 +90,12 @@
 		};
 	});
 
-	function openModal(): void {
+	export function openModal(): void {
 		modal?.showModal();
 		initializeCropper();
 	}
 
-	function closeModal(): void {
+	export function closeModal(): void {
 		modal?.close();
 		cleanupCropper();
 	}
@@ -116,27 +105,25 @@
 
 		clearInitTimeout();
 
-		initTimeout = setTimeout(() => {
-			untrack(() => {
-				if (!cropperImage) {
-					console.warn('Cropper image not available for initialization');
-					return;
+		untrack(() => {
+			if (!cropperImage) {
+				console.warn('Cropper image not available for initialization');
+				return;
+			}
+
+			try {
+				cropperImage.$center();
+
+				if (cropperSelection) {
+					cropperSelection.$center();
 				}
 
-				try {
-					cropperImage.$center();
-
-					if (cropperSelection) {
-						cropperSelection.$center();
-					}
-
-					isInitialized = true;
-				} catch (error) {
-					console.warn('Error during cropper initialization:', error);
-					isInitialized = true; // Set to true even if centering fails
-				}
-			});
-		}, 200);
+				isInitialized = true;
+			} catch (error) {
+				console.warn('Error during cropper initialization:', error);
+				isInitialized = true; // Set to true even if centering fails
+			}
+		});
 	}
 
 	function clearInitTimeout(): void {
@@ -177,17 +164,15 @@
 
 		cropEnabled = true;
 
-		setTimeout(() => {
-			try {
-				if (cropperSelection) {
-					cropperSelection.setAttribute('initial-coverage', '0.5');
-					cropperSelection.$reset();
-					cropperSelection.$center();
-				}
-			} catch (error) {
-				console.warn('Error initializing crop selection:', error);
+		try {
+			if (cropperSelection) {
+				cropperSelection.setAttribute('initial-coverage', '0.5');
+				cropperSelection.$reset();
+				cropperSelection.$center();
 			}
-		}, 10);
+		} catch (error) {
+			console.warn('Error initializing crop selection:', error);
+		}
 	}
 
 	function getTransformData(): TransformData {
@@ -321,8 +306,7 @@
 	}
 
 	function handleClose(): void {
-		modal?.close();
-		cleanupCropper();
+		closeModal();
 		onClose();
 	}
 
@@ -369,36 +353,34 @@
 	function adjustSelectionAfterTransform(): void {
 		if (!cropperSelection || !cropEnabled) return;
 
-		setTimeout(() => {
-			try {
-				if (cropperSelection) {
-					const currentSelection = {
-						x: cropperSelection.x || 0,
-						y: cropperSelection.y || 0,
-						width: cropperSelection.width || 0,
-						height: cropperSelection.height || 0
-					};
+		try {
+			if (cropperSelection) {
+				const currentSelection = {
+					x: cropperSelection.x || 0,
+					y: cropperSelection.y || 0,
+					width: cropperSelection.width || 0,
+					height: cropperSelection.height || 0
+				};
 
-					if (!constrainSelectionToBounds(currentSelection)) {
-						const imageBounds = getImageBounds();
-						if (imageBounds && cropperSelection) {
-							const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
-							const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
+				if (!constrainSelectionToBounds(currentSelection)) {
+					const imageBounds = getImageBounds();
+					if (imageBounds && cropperSelection) {
+						const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
+						const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
 
-							const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
-							const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
+						const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
+						const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
 
-							cropperSelection.x = newX;
-							cropperSelection.y = newY;
-							cropperSelection.width = maxWidth;
-							cropperSelection.height = maxHeight;
-						}
+						cropperSelection.x = newX;
+						cropperSelection.y = newY;
+						cropperSelection.width = maxWidth;
+						cropperSelection.height = maxHeight;
 					}
 				}
-			} catch (error) {
-				console.warn('Error adjusting selection after transform:', error);
 			}
-		}, 100);
+		} catch (error) {
+			console.warn('Error adjusting selection after transform:', error);
+		}
 	}
 
 	function handleSelectionChange(event: CustomEvent): void {
@@ -440,7 +422,7 @@
 	aria-modal="true"
 >
 	<div class="modal-box h-full w-full max-w-4xl md:h-auto">
-		<header class="mb-4 flex items-center justify-between">
+		<div class="mb-4 flex items-center justify-between">
 			<h3 id="modal-title" class="text-lg font-bold">Edit Photo</h3>
 			<button
 				type="button"
@@ -450,9 +432,9 @@
 			>
 				<span class="icon-[mdi--close] h-5 w-5" aria-hidden="true"></span>
 			</button>
-		</header>
+		</div>
 
-		<section
+		<div
 			class="bg-base-200 mb-4 max-h-96 overflow-hidden rounded border"
 			aria-label="Image editing area"
 		>
@@ -529,9 +511,9 @@
 					</div>
 				</div>
 			{/if}
-		</section>
+		</div>
 
-		<section class="mb-4" aria-label="Image editing controls">
+		<div class="mb-4" aria-label="Image editing controls">
 			<div class="flex flex-wrap items-center justify-between gap-2">
 				<!-- Left rotate button -->
 				<button
@@ -600,10 +582,10 @@
 					<span class="hidden sm:inline">Rotate Right</span>
 				</button>
 			</div>
-		</section>
+		</div>
 
 		{#if canPerformActions}
-			<section class="bg-base-200 mb-4 rounded p-3 text-sm" aria-label="Current editing status">
+			<div class="bg-base-200 mb-4 rounded p-3 text-sm" aria-label="Current editing status">
 				<div class="grid grid-cols-2 gap-2 text-xs">
 					<div>
 						<strong>Rotation:</strong>
@@ -614,10 +596,10 @@
 						<span aria-label="Current tool mode">{cropModeStatus}</span>
 					</div>
 				</div>
-			</section>
+			</div>
 		{/if}
 
-		<footer class="flex justify-end gap-2">
+		<div class="flex justify-end gap-2">
 			<button
 				type="button"
 				class="btn btn-outline"
@@ -636,6 +618,6 @@
 				<span class="icon-[mdi--check] h-4 w-4" aria-hidden="true"></span>
 				Save Changes
 			</button>
-		</footer>
+		</div>
 	</div>
 </dialog>

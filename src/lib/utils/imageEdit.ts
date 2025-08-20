@@ -78,13 +78,13 @@ function normalizeRotation(angle: number): number {
 }
 
 /**
- * Validate crop data to ensure it's within reasonable bounds
- * @param cropData - The crop data to validate
+ * Clamp crop data to ensure it's within reasonable bounds
+ * @param cropData - The crop data to clamp
  * @param maxWidth - Maximum allowed width
  * @param maxHeight - Maximum allowed height
- * @returns Validated and clamped crop data
+ * @returns Clamped crop data
  */
-export function validateCropData(
+export function clampCropData(
 	cropData: CropData,
 	maxWidth: number,
 	maxHeight: number
