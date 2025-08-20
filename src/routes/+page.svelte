@@ -17,9 +17,9 @@
 	import type { ProductAttributeGroup } from '$lib/scoring';
 
 	let { data }: PageProps = $props();
-	let resolvedProducts: ProductStateFound<ProductReduced>[] = $state([]);
 
-	let attributesByCode: Record<string, ProductAttributeGroup[]> = $state({});
+	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
+	let attributesByCode: Promise<Record<string, ProductAttributeGroup[]>> = $state(Promise.resolve({}));
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
@@ -27,28 +27,11 @@
 	// Track preferences form visibility
 	let showPreferences = $state(false);
 
-	let sortedProducts = $derived.by(() => {
-		if (resolvedProducts.length === 0 || Object.keys(attributesByCode).length === 0) return [];
-
-		const productsWithAttributes = resolvedProducts.map((state) => ({
-			...state,
-			attributes: attributesByCode[state.product.code] || []
-		}));
-
-		return personalizeSearchResults(
-			productsWithAttributes,
-			$personalizedSearch.userPreferences,
-			$personalizedSearch.classifyProductsEnabled
-		);
-	});
-
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
-
-	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
 
 	const INSIGHT_COUNT = 10;
 	const SKELETON_COUNT = 9;
@@ -76,18 +59,17 @@
 		return dedupProducts;
 	}
 
-	async function loadProductAttributes(products: ProductStateFound<ProductReduced>[]) {
+	async function getAttributes(products: ProductStateFound<ProductReduced>[]) {
 		const productApi = new ProductsApi(fetch);
 		const productCodes = products.map((state) => state.product.code);
 		const attrs = await productApi.getBulkProductAttributes(productCodes);
-		attributesByCode = attrs;
+		return attrs;
 	}
 
 	onMount(() => {
 		products = getProducts();
-		products.then((prods) => {
-			resolvedProducts = prods;
-			loadProductAttributes(prods);
+		products.then((prod) => {
+			attributesByCode = getAttributes(prod);
 		});
 	});
 </script>
@@ -144,26 +126,37 @@
 				{#each Array(SKELETON_COUNT) as _, index (index)}
 					<div class="skeleton h-36 w-full rounded-lg"></div>
 				{/each}
-			{:then _}
-				{#each sortedProducts as state (state.product.code)}
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<product-card
-						product={state.product}
-						navigating={{
-							to:
-								navigatingTo === state.product.code
-									? { params: { barcode: state.product.code } }
-									: null
-						}}
-						placeholderImage="/Placeholder.svg"
-						onclick={() => navigateToProduct(state.product.code)}
-						showMatchTag={$personalizedSearch.classifyProductsEnabled}
-						personalScore={$personalizedSearch.classifyProductsEnabled
-							? state.scoreData
-							: undefined}
-					></product-card>
-				{/each}
+			{:then resolvedProducts}
+				{#await attributesByCode then attributes}
+					{@const productsWithAttributes = resolvedProducts.map((state) => ({
+						...state,
+						attributes: attributes[state.product.code] || []
+					}))}
+					{@const sortedProducts = personalizeSearchResults(
+						productsWithAttributes,
+						$personalizedSearch.userPreferences,
+						$personalizedSearch.classifyProductsEnabled
+					)}
+					{#each sortedProducts as state (state.product.code)}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<product-card
+							product={state.product}
+							navigating={{
+								to:
+									navigatingTo === state.product.code
+										? { params: { barcode: state.product.code } }
+										: null
+							}}
+							placeholderImage="/Placeholder.svg"
+							onclick={() => navigateToProduct(state.product.code)}
+							showMatchTag={$personalizedSearch.classifyProductsEnabled}
+							personalScore={$personalizedSearch.classifyProductsEnabled
+								? state.scoreData
+								: undefined}
+						></product-card>
+					{/each}
+				{/await}
 			{/await}
 		</div>
 	</div>
