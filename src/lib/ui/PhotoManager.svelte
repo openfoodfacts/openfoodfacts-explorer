@@ -7,13 +7,14 @@
 
 	import { _ } from '$lib/i18n';
 	import type { Product, ProductImage } from '$lib/api';
-	import { getProductImageUrl } from '$lib/api/product';
+	import { getProductImageUrl, selectImage } from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { getImageFieldName } from '$lib/utils';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditModal from './PhotoEditModal.svelte';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
+	import SelectImageDialog from './SelectImageDialog.svelte';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -337,6 +338,32 @@
 		});
 		return `https://nutripatrol.openfoodfacts.org/flag/image/?${params.toString()}`;
 	}
+
+	let selectingImageModal: SelectImageDialog | undefined = $state();
+	let selectingImageSection: string | undefined = $state();
+	function openImageSelection(section: string) {
+		console.debug(`Opening image selection for section: ${section}`);
+		selectingImageSection = section;
+		selectingImageModal?.openModal();
+	}
+
+	async function onImageSelection(image: ProductImage) {
+		if (!selectingImageSection) {
+			console.error('No section selected for image selection');
+			return;
+		}
+
+		console.log(`Selecting image for section ${selectingImageSection}:`, image);
+
+		const fieldId = `${selectingImageSection}_${activeLanguageCode}`;
+		try {
+			await selectImage(fetch, product.code, image, fieldId);
+			invalidateAll();
+		} catch (error) {
+			console.error('Error selecting image:', error);
+			alert('Error selecting image. Please try again.');
+		}
+	}
 </script>
 
 <div class="mb-4 sm:mb-6">
@@ -363,6 +390,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
+						onSelectImage={() => openImageSelection(photoType.id)}
 					/>
 				{/each}
 
@@ -406,3 +434,10 @@
 		onImageUnselected={unselectCurrentImage}
 	/>
 {/if}
+
+<SelectImageDialog
+	bind:this={selectingImageModal}
+	images={currentImages}
+	onSelect={onImageSelection}
+	onClose={() => (selectingImageSection = undefined)}
+/>

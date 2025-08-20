@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
+import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 export class ProductsApi {
 	private readonly fetch: typeof window.fetch;
@@ -466,3 +467,25 @@ export type ProductImage = {
 	imgid: number; // The numeric image ID for the API
 	typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
 };
+
+/**
+ * Select an image for a specific field.
+ * @param image - The image to select.
+ * @param field - The field to select the image for. It must be in the format `{IMAGE_TYPE}_{LANG}`.
+ */
+export async function selectImage(
+	fetch: typeof window.fetch,
+	code: string,
+	imgid: ProductImage,
+	field: string
+) {
+	try {
+		const off = new OpenFoodFacts(fetch);
+
+		// @ts-expect-error - cropdata should not be mandatory
+		await off.cropImage(code, imgid, field, {});
+	} catch (error) {
+		console.error('Error cropping and rotating image:', error);
+		throw error;
+	}
+}

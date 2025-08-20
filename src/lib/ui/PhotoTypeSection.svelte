@@ -25,6 +25,7 @@
 			imagefield: string;
 			result: UploadResult;
 		}) => void;
+		onSelectImage?: () => void;
 	};
 
 	let {
@@ -38,7 +39,8 @@
 		photoTypes,
 		onToggleExpansion,
 		onImageEdit,
-		onImageUploaded
+		onImageUploaded,
+		onSelectImage
 	}: Props = $props();
 
 	function getLanguage(code: string) {
@@ -228,7 +230,9 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="bg-base-200 relative flex w-full items-center justify-center rounded p-3 sm:p-4">
+		<div
+			class="bg-base-200 relative flex w-full flex-col items-center justify-center gap-2 rounded p-3 sm:p-4"
+		>
 			{#if isUploading}
 				<div class="text-center">
 					<div class="loading loading-spinner loading-lg text-primary"></div>
@@ -240,6 +244,14 @@
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
 					No {sectionType.label.toLowerCase()} photos available
 				</p>
+				<button
+					type="button"
+					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					onclick={() => onSelectImage?.()}
+				>
+					<span class="icon-[mdi--image-plus] h-3 w-3 sm:h-4 sm:w-4"></span>
+					<span class="text-xs sm:text-sm">Add {sectionType.label}</span>
+				</button>
 			{/if}
 		</div>
 	{/if}
