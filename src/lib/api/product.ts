@@ -1,14 +1,23 @@
-import { API_HOST, PRODUCT_URL, PRODUCT_IMAGE_URL } from '$lib/const';
+import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
-import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
+import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+
+export function createProductsApi(fetch: typeof window.fetch) {
+	return new OpenFoodFacts(fetch, {
+		host: API_HOST
+	});
+}
 
 export class ProductsApi {
 	private readonly fetch: typeof window.fetch;
+	private readonly off: OpenFoodFacts;
+
 	constructor(fetch: typeof window.fetch) {
 		this.fetch = fetch;
+		this.off = createProductsApi(fetch);
 	}
 
 	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
@@ -53,118 +62,13 @@ export class ProductsApi {
 		return attributesByCode;
 	}
 
-	async getProduct<T extends Array<keyof Product>>(
-		barcode: string,
-		{ fields }: { fields: T } = { fields: ['all', 'knowledge_panels'] as T }
-	): Promise<ProductState<Pick<Product, T[number]>>> {
-		const url =
-			PRODUCT_URL(barcode) +
-			'?' +
-			new URLSearchParams({
-				product_type: 'all',
-				fields: fields.join(','),
-				lc: get(preferences).lang,
-				cc: get(preferences).country
-			});
-		const res = await this.fetch(url, { redirect: 'follow' });
-		return await res.json();
-	}
-
 	async addOrEditProductV2(product: Product & { comment?: string }) {
-		const url = `${API_HOST}/cgi/product_jqm2.pl`;
-
 		const username = get(preferences).username;
 		const password = get(preferences).password;
 
 		if (!username || !password) throw new Error('No username or password set');
 
-		const languageCodes = Object.keys(product.languages_codes);
-		const productNames = languageCodes.reduce(
-			(acc, lang) => {
-				const productName = getProductNameInLang(product, lang);
-				if (productName != null) {
-					acc[`product_name_${lang}`] = productName;
-				}
-				return acc;
-			},
-			{} as Record<string, string>
-		);
-		const ingredientsTexts = languageCodes.reduce(
-			(acc, lang) => {
-				const ingredientsText = getProductIngredientsInLang(product, lang);
-				if (ingredientsText != null) {
-					acc[`ingredients_text_${lang}`] = ingredientsText;
-				}
-				return acc;
-			},
-			{} as Record<string, string>
-		);
-
-		const body = formData({
-			code: product.code,
-			user_id: username,
-			password: password,
-			categories: product.categories,
-			labels: product.labels,
-			brands: product.brands,
-			quantity: product.quantity,
-			serving_size: product.serving_size,
-			stores: product.stores,
-			origins: product.origins,
-			countries: product.countries,
-			emb_codes: product.emb_codes,
-			packaging: product.packaging,
-			manufacturing_places: product.manufacturing_places,
-			comment: product.comment ?? '',
-
-			product_name: product.product_name,
-			...productNames,
-
-			ingredients_text: product.ingredients_text,
-			...ingredientsTexts
-		});
-
-		const res = await this.fetch(url, {
-			method: 'POST',
-			body,
-			headers: { 'Content-Type': 'multipart/form-data' }
-		});
-
-		return res.status === 200;
-	}
-
-	/**
-	 * Uploads an image to OpenFoodFacts for a product.
-	 * @param barcode Product barcode
-	 * @param imageFile The image file to upload
-	 * @param imagefield The type of image (e.g. 'front_en', 'ingredients_en', etc.)
-	 * @param user_id Username for authentication
-	 * @param password Password for authentication
-	 */
-	async uploadImage(barcode: string, imageFile: File, imagefield: string) {
-		const url = `${API_HOST}/cgi/product_image_upload.pl`;
-		const formData = new FormData();
-		formData.append('code', barcode);
-		formData.append('imagefield', imagefield);
-		formData.append(`imgupload_${imagefield}`, imageFile);
-
-		try {
-			const res = await this.fetch(url, {
-				method: 'POST',
-				body: formData
-			});
-
-			if (!res.ok) {
-				console.error(`Image upload failed for barcode ${barcode}. Status: ${res.status}`);
-				throw new Error(`Failed to upload image for product with barcode: ${barcode}`);
-			}
-
-			const result = await res.json();
-			return result;
-		} catch (err) {
-			console.error('Error during image upload:', err);
-			throw err;
-		}
+		return this.off.addOrEditProductV2(product, { password, username });
 	}
 
 	// TODO: move this to the sdk
@@ -293,40 +197,20 @@ export class ProductsApi {
 		return this.selectAndCropImagesV3(barcode, images);
 	}
 
-	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
-		const params = new URLSearchParams({
-			fields: REDUCED_FIELDS.join(','),
-			lc: get(preferences).lang
+	async getProductReducedForCard(barcode: string) {
+		const fields = [...REDUCED_FIELDS] as Array<keyof ProductV3>;
+
+		return this.off.getProductV3(barcode, {
+			fields
 		});
-
-		const res = await this.fetch(`${PRODUCT_URL(barcode)}?${params.toString()}`);
-		const productState = (await res.json()) as ProductState<ProductReduced>;
-
-		return productState;
-	}
-
-	async getProductName(barcode: string): Promise<Pick<Product, 'product_name'> | null> {
-		const params = new URLSearchParams({
-			fields: 'product_name',
-			lc: get(preferences).lang
-		});
-
-		const res = await this.fetch(PRODUCT_URL(barcode) + '?' + params);
-		const productState = (await res.json()) as ProductState<Pick<Product, 'product_name'>>;
-
-		if (productState.status !== 'success') return null;
-		else return productState.product;
 	}
 }
 
 /**
  * @deprecated use ProductsApi instead
  */
-export async function getProduct(
-	barcode: string,
-	fetch: typeof window.fetch
-): Promise<ProductState> {
-	return new ProductsApi(fetch).getProduct(barcode);
+export async function getProduct(barcode: string, fetch: typeof window.fetch) {
+	return createProductsApi(fetch).getProductV3(barcode);
 }
 
 export type ProductStateBase = {
@@ -338,9 +222,9 @@ export type ProductStateBase = {
 };
 
 export type ProductStateError = {
-	field: { id: string; value: string };
-	impact: { lc_name: string; name: string; id: string };
-	message: { lc_name: string; name: string; id: string };
+	field?: { id?: string; value?: string };
+	impact?: { lc_name?: string; name?: string; id?: string };
+	message?: { lc_name?: string; name?: string; id?: string };
 };
 
 export type ProductStateFailure = ProductStateBase & {
@@ -622,42 +506,6 @@ const REDUCED_FIELDS = [
 ] as const;
 
 export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
-
-/** @deprecated */
-export async function getProductReducedForCard(
-	barcode: string,
-	fetch: typeof window.fetch
-): Promise<ProductState<ProductReduced>> {
-	return new ProductsApi(fetch).getProductReducedForCard(barcode);
-}
-/** @deprecated */
-export async function getProductName(
-	fetch: typeof window.fetch,
-	barcode: string
-): Promise<Pick<Product, 'product_name'> | null> {
-	return new ProductsApi(fetch).getProductName(barcode);
-}
-
-/** @deprecated */
-export async function addOrEditProductV2(product: Product, fetch: typeof window.fetch) {
-	return new ProductsApi(fetch).addOrEditProductV2(product);
-}
-
-function getProductNameInLang(product: Product, lang: string) {
-	return product[`product_name_${lang}`] ?? product.product_name;
-}
-
-function getProductIngredientsInLang(product: Product, lang: string) {
-	return product[`ingredients_text_${lang}`] ?? product.ingredients_text;
-}
-
-function formData(data: Record<string, string | Blob>) {
-	const form = new FormData();
-	for (const [key, value] of Object.entries(data)) {
-		form.append(key, value);
-	}
-	return form;
-}
 
 /**
  * Gets URL for a product image based on its barcode and image name
