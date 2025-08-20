@@ -31,6 +31,7 @@
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.33.0",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.6",
+		"@iconify-json/material-symbols": "^1.2.32",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/simple-icons": "^1.2.48",
 		"@iconify/tailwind": "^1.2.0",
