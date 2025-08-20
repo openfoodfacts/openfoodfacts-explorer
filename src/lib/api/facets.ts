@@ -10,6 +10,7 @@ export const FACETS_SORT_OPTIONS = [
 	'popularity',
 	'environmental_score_score',
 	'created_t',
+	'nutriscore_score',
 	'last_modified_t'
 ] as const;
 

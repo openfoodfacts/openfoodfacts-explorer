@@ -70,10 +70,11 @@
 					goto(`?${params}`);
 				}}
 			>
-				<option value="last_modified_t">Last Modified</option>
 				<option value="popularity">Popularity</option>
-				<option value="envirFonmental_score_score">Environmental Score</option>
-				<option value="created_t">Created Date</option>
+				<option value="nutriscore_score">Nutriscore</option>
+				<option value="environmental_score_score">Environmental Score</option>
+				<option value="created_t">Created Time</option>
+				<option value="last_modified_t">Last Modified Time</option>
 			</select>
 		</label>
 
