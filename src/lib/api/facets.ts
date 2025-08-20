@@ -5,6 +5,16 @@ import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import { API_HOST, STATIC_HOST } from '$lib/const';
 import type { KnowledgePanel } from './knowledgepanels';
 
+export const FACETS_SORT_OPTIONS = [
+	'last_modified_t',
+	'popularity',
+	'environmental_score_score',
+	'created_t',
+	'last_modified_t'
+] as const;
+
+export type FacetSortOption = (typeof FACETS_SORT_OPTIONS)[number];
+
 export type FacetResponse = {
 	count: number;
 	tags: { id: string; known: number; name: string; products: number }[];
@@ -13,11 +23,12 @@ export type FacetResponse = {
 export async function getFacet(
 	fetch: typeof window.fetch,
 	facet: string,
-	opts?: { page?: number; page_size?: number }
+	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const params = new URLSearchParams();
 	if (opts?.page) params.set('page', `${opts.page}`);
-	if (opts?.page_size) params.set('page_size', `${opts.page_size}`);
+	if (opts?.pageSize) params.set('page_size', `${opts.pageSize}`);
+	if (opts?.sortBy) params.set('sort_by', opts.sortBy);
 
 	const res = await fetch(`${API_HOST}/facets/${facet}.json?${params}`);
 	return (await res.json()) as FacetResponse;
@@ -35,11 +46,12 @@ export async function getFacetValue(
 	fetch: typeof window.fetch,
 	facet: string,
 	value: string,
-	opts: { page?: number; page_size?: number }
+	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const params = new URLSearchParams();
 	if (opts?.page) params.set('page', `${opts.page}`);
-	if (opts?.page_size) params.set('page_size', `${opts.page_size}`);
+	if (opts?.pageSize) params.set('page_size', `${opts.pageSize}`);
+	if (opts?.sortBy) params.set('sort_by', opts.sortBy);
 
 	const res = await fetch(`${STATIC_HOST}/facets/${facet}/${value}.json?${params}`);
 	return (await res.json()) as FacetValueResponse;

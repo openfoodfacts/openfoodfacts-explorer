@@ -44,3 +44,14 @@ export function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 		return true;
 	});
 }
+
+export function requireInt(value: string | null, error: () => never) {
+	if (value == null) {
+		error();
+	}
+	const intValue = parseInt(value, 10);
+	if (isNaN(intValue)) {
+		error();
+	}
+	return intValue;
+}
