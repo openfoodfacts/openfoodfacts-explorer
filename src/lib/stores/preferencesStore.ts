@@ -39,16 +39,13 @@ export const personalizedSearch = persisted<PreferencesStoreData>('personalizedS
 	classifyProductsEnabled: false
 });
 
-
 function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
 }
 
-export function generatePreferencesFromGroups(
-	attributeGroups: AttributeGroup[]
-): UserPreferences {
-	return attributeGroups.flatMap(group => 
-		group.attributes!.map(attr => ({
+export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreferences {
+	return attributeGroups.flatMap((group) =>
+		group.attributes!.map((attr) => ({
 			type: 'attribute' as const,
 			id: `${group.id!}.${attr.id!}`,
 			categoryId: group.id!,
@@ -76,7 +73,7 @@ export function updatePreference(category: string, preference: string, value: st
 				userPreferences: newPrefs
 			};
 		}
-		
+
 		const newPreference: UserPreference = {
 			type: 'attribute',
 			id: preferenceId,

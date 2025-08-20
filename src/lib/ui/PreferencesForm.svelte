@@ -63,8 +63,8 @@
 			.map((group) => ({
 				id: group.id!,
 				title: group.name!,
-				options: group.attributes!
-					.filter((attribute) => attribute.id)
+				options: group
+					.attributes!.filter((attribute) => attribute.id)
 					.map((attribute) => ({
 						id: attribute.id!,
 						label: attribute.setting_name || attribute.name,
@@ -82,7 +82,7 @@
 					})),
 				showWarning: group.id === 'allergens',
 				warningText: group.warning
-		}))
+			}))
 	);
 </script>
 
