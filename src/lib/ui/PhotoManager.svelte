@@ -1,13 +1,18 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
-	import { _ } from '$lib/i18n';
+	import { tick } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
+
 	import { invalidateAll } from '$app/navigation';
-	import type { Product } from '$lib/api';
+
+	import { _ } from '$lib/i18n';
+	import type { Product, ProductImage } from '$lib/api';
 	import { getProductImageUrl } from '$lib/api/product';
+	import type { ImageEditData } from '$lib/utils/imageEdit';
+	import { getImageFieldName } from '$lib/utils';
+
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditModal from './PhotoEditModal.svelte';
-	import type { ImageEditData } from '$lib/utils/imageEdit';
-	import { SvelteSet } from 'svelte/reactivity';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = { product: Product };
@@ -34,14 +39,6 @@
 
 	const photoTypeIds = new Set(photoTypes.map((pt) => pt.id));
 
-	type ProductImage = {
-		url: string;
-		alt: string;
-		type: string;
-		imgid: number; // The numeric image ID for the API
-		typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
-	};
-
 	function createProductImage(
 		url: string,
 		imgid: number,
@@ -58,17 +55,22 @@
 		};
 	}
 
-	function getStandardImages(code: string): ProductImage[] {
+	function getStandardImages(code: string) {
 		const productImages = product.images;
 		const languageName = getLanguage(code);
 		const images: ProductImage[] = [];
 
 		for (const photoType of photoTypes) {
 			const imageName = `${photoType.id}_${code}`;
+			if (!(imageName in productImages)) {
+				continue; // No image data found for this photo type
+			}
+
 			const imageData = productImages[imageName];
 
-			if (!imageData || !('imgid' in imageData) || !imageData.imgid) {
-				continue;
+			if (!('imgid' in imageData) || !imageData.imgid) {
+				console.warn(`No imgid found for ${imageName} in product images: `, imageData);
+				continue; // No valid image data found for this photo type
 			}
 
 			const imageUrl = getProductImageUrl(product.code, imageName, productImages);
@@ -128,7 +130,7 @@
 		return images;
 	}
 
-	function getImagesForLanguage(code: string): ProductImage[] {
+	function getImagesForLanguage(code: string) {
 		return [...getStandardImages(code), ...getAdditionalImages(code)];
 	}
 
@@ -137,15 +139,8 @@
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
 
-	let editingImageData = $state<ProductImage | null>(null);
-	let photoEditModal = $state<{ openModal: () => void; closeModal: () => void }>();
-
-	// Effect to automatically open modal when editingImageData is set
-	$effect(() => {
-		if (editingImageData && photoEditModal) {
-			photoEditModal.openModal();
-		}
-	});
+	let editingImageData: ProductImage | undefined = $state();
+	let editingImageModal: PhotoEditModal | undefined = $state();
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -168,18 +163,20 @@
 		expandedCategories = new SvelteSet(expandedCategories);
 	}
 
-	function openEditModal(imageUrl: string, imageAlt: string) {
+	async function openEditModal(imageUrl: string, imageAlt: string) {
 		const imageData = currentImages.find((img) => img.url === imageUrl && img.alt === imageAlt);
-		if (imageData) {
-			editingImageData = imageData;
-		} else {
-			console.error('Could not find image data for URL:', imageUrl);
+		if (!imageData) {
+			console.error('Image data not found for URL:', imageUrl);
+			return;
 		}
+
+		editingImageData = imageData;
+		await tick(); // let svelte create the node in the DOM
+		editingImageModal?.openModal();
 	}
 
 	function closeEditModal() {
-		photoEditModal?.closeModal();
-		editingImageData = null;
+		editingImageData = undefined;
 	}
 
 	export type UploadResult = {
@@ -226,22 +223,20 @@
 		}
 	}
 
-	async function handleImageEdit(data: ImageEditData) {
+	async function saveCurrentImage(data: ImageEditData) {
 		if (!editingImageData) {
 			console.error('No image data available for editing');
 			return;
 		}
 
 		try {
-			const { imgid: imageId, typeId: imageTypeId } = editingImageData;
 			const { cropData, rotationAngle } = data;
-
 			const hasCropData = cropData.width > 0 && cropData.height > 0;
 
 			if (hasCropData) {
-				await handleImageCropAndRotate(imageId, imageTypeId, cropData, rotationAngle);
+				await saveImageCropAndRotate(editingImageData, cropData, rotationAngle);
 			} else {
-				await handleImageRotateOnly(imageId, imageTypeId, rotationAngle);
+				await handleImageRotateOnly(editingImageData, rotationAngle);
 			}
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -253,9 +248,8 @@
 		}
 	}
 
-	async function handleImageCropAndRotate(
-		imageId: number,
-		imageTypeId: string,
+	async function saveImageCropAndRotate(
+		image: ProductImage,
 		cropData: { x: number; y: number; width: number; height: number },
 		rotationAngle: number
 	) {
@@ -272,36 +266,76 @@
 
 		try {
 			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
-			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
+			const imageFieldId = `${image.typeId}_${activeLanguageCode}`;
 
 			const off = new OpenFoodFacts(fetch);
-			await off.cropImage(product.code, imageId, imageFieldId, apiCropData);
+			await off.cropImage(product.code, image.imgid, imageFieldId, apiCropData);
 		} catch (error) {
 			console.error('Error cropping and rotating image:', error);
 			throw error;
 		}
 	}
 
-	async function handleImageRotateOnly(
-		imageId: number,
-		imageTypeId: string,
-		rotationAngle: number
-	) {
+	async function handleImageRotateOnly(image: ProductImage, rotationAngle: number) {
 		try {
 			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
-			const imageFieldId = `${imageTypeId}_${activeLanguageCode}`;
+			const imageFieldId = `${image.typeId}_${activeLanguageCode}`;
 
 			const off = new OpenFoodFacts(fetch);
 			await off.rotateImage(
 				product.code,
 				imageFieldId,
-				imageId.toString(),
+				image.imgid.toString(),
 				rotationAngle.toString()
 			);
 		} catch (error) {
 			console.error('Error rotating image:', error);
 			throw error;
 		}
+	}
+
+	async function unselectCurrentImage() {
+		const image = editingImageData;
+		const barcode = product.code;
+
+		if (!image) {
+			console.warn('No editing image data available for unselect');
+			return;
+		}
+
+		if (!product || !image.type || !activeLanguageCode || !photoTypes) {
+			console.warn('Missing required data for image unselect');
+			return;
+		}
+
+		const imagefield = getImageFieldName(image.type, activeLanguageCode, photoTypes);
+
+		try {
+			const off = new OpenFoodFacts(fetch);
+			const result = await off.unselectImage(barcode, imagefield);
+
+			if (result.status === 'success' || result.status_code === 200) {
+				console.log('Image unselected successfully:', result);
+				invalidateAll();
+				editingImageModal?.closeModal();
+			} else {
+				console.warn('Image unselect failed:', result);
+				alert('Failed to unselect image. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error unselecting image:', error);
+			alert('Error unselecting image. Please try again.');
+		}
+	}
+
+	function getNutriPatrolReportUrl(image: ProductImage) {
+		const params = new URLSearchParams({
+			barcode: product.code,
+			image_id: String(image.imgid),
+			source: 'web',
+			flavor: 'off'
+		});
+		return `https://nutripatrol.openfoodfacts.org/flag/image/?${params.toString()}`;
 	}
 </script>
 
@@ -320,7 +354,7 @@
 				<!-- Show standard photo types first -->
 				{#each photoTypes as photoType (photoType.id)}
 					<PhotoTypeSection
-						{photoType}
+						type={photoType}
 						{activeLanguageCode}
 						{currentImages}
 						{expandedCategories}
@@ -335,7 +369,8 @@
 				<!-- Show additional image types that are not standard -->
 				{#each additionalImageTypes as type (type)}
 					<PhotoTypeSection
-						photoType={{ id: type.toLowerCase(), label: type, isAdditional: true }}
+						type={{ id: type.toLowerCase(), label: type }}
+						isAdditional
 						{activeLanguageCode}
 						{currentImages}
 						{expandedCategories}
@@ -363,19 +398,11 @@
 <!-- Photo Edit Modal -->
 {#if editingImageData}
 	<PhotoEditModal
-		bind:this={photoEditModal}
-		imageUrl={editingImageData.url}
-		imageAlt={editingImageData.alt}
-		imageId={editingImageData.imgid}
-		{product}
-		photoType={editingImageData.type}
-		{activeLanguageCode}
-		{photoTypes}
+		bind:this={editingImageModal}
+		reportImageUrl={getNutriPatrolReportUrl(editingImageData)}
+		image={editingImageData}
 		onClose={closeEditModal}
-		onSave={handleImageEdit}
-		onImageUnselected={() => {
-			invalidateAll();
-			closeEditModal();
-		}}
+		onSave={saveCurrentImage}
+		onImageUnselected={unselectCurrentImage}
 	/>
 {/if}

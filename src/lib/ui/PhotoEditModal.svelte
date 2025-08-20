@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import 'cropperjs';
-	import { getImageFieldName } from '$lib/utils';
-	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { Product } from '$lib/api';
+	import type { ProductImage } from '$lib/api';
 
 	type CropData = {
 		x: number;
@@ -46,17 +44,19 @@
 	};
 
 	type Props = {
-		imageUrl: string;
-		imageAlt: string;
-		imageId?: number;
-		onClose: () => void;
+		image: ProductImage;
+		reportImageUrl: string;
 		onSave: (data: EditData) => void;
-		product?: Product;
-		photoType?: string;
-		activeLanguageCode?: string;
-		photoTypes?: Array<{ id: string; label: string }>;
-		onImageUnselected?: () => void;
+		onImageUnselected: () => void;
+		onClose?: () => void;
 	};
+
+	let { image, reportImageUrl, onClose, onSave, onImageUnselected }: Props = $props();
+
+	export function openImage(imageData: ProductImage): void {
+		image = imageData;
+		modal.showModal();
+	}
 
 	const RESIZE_HANDLES = [
 		'n-resize',
@@ -68,19 +68,6 @@
 		'se-resize',
 		'sw-resize'
 	];
-
-	let {
-		imageUrl,
-		imageAlt,
-		imageId,
-		onClose,
-		onSave,
-		product,
-		photoType,
-		activeLanguageCode,
-		photoTypes,
-		onImageUnselected
-	}: Props = $props();
 
 	let modal: HTMLDialogElement;
 	let cropperImage = $state<CropperImage | null>(null);
@@ -95,10 +82,6 @@
 	const cropModeStatus = $derived(
 		cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping'
 	);
-	const reportImageUrl = $derived.by(() => {
-		if (!product?.code || !imageId) return null;
-		return `https://nutripatrol.openfoodfacts.org/flag/image/?barcode=${product.code}&image_id=${imageId}&source=web&flavor=off`;
-	});
 
 	// Client-side mounting detection
 	$effect(() => {
@@ -329,38 +312,10 @@
 		}
 	}
 
-	function handleClose(): void {
+	/** Called when the user closes the dialog via button or backdrop click */
+	function handleDialogClose(): void {
 		closeModal();
-		onClose();
-	}
-
-	async function handleImageUnselect(): Promise<void> {
-		if (!product || !photoType || !activeLanguageCode || !photoTypes) {
-			console.warn('Missing required data for image unselect');
-			return;
-		}
-
-		const barcode = product.code;
-		const imagefield = getImageFieldName(photoType, activeLanguageCode, photoTypes);
-
-		try {
-			const off = new OpenFoodFacts(fetch);
-			const result = await off.unselectImage(barcode, imagefield);
-
-			if (result.status === 'success' || result.status_code === 200) {
-				console.log('Image unselected successfully:', result);
-				if (onImageUnselected) {
-					onImageUnselected();
-				}
-				handleClose();
-			} else {
-				console.warn('Image unselect failed:', result);
-				alert('Failed to unselect image. Please try again.');
-			}
-		} catch (error) {
-			console.error('Error unselecting image:', error);
-			alert('Error unselecting image. Please try again.');
-		}
+		onClose?.();
 	}
 
 	function getImageBounds() {
@@ -462,7 +417,7 @@
 
 	function handleModalClick(event: MouseEvent): void {
 		if (event.target === modal) {
-			handleClose();
+			handleDialogClose();
 		}
 	}
 </script>
@@ -480,7 +435,7 @@
 			<button
 				type="button"
 				class="btn btn-sm btn-circle btn-ghost"
-				onclick={handleClose}
+				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
 				<span class="icon-[mdi--close] h-5 w-5" aria-hidden="true"></span>
@@ -495,8 +450,8 @@
 				<cropper-canvas background class="ltr relative block h-96 w-full">
 					<cropper-image
 						bind:this={cropperImage}
-						src={imageUrl}
-						alt={imageAlt}
+						src={image.url}
+						alt={image.alt}
 						rotatable
 						scalable
 						translatable
@@ -654,18 +609,16 @@
 
 		<div class="flex justify-between gap-2">
 			<div class="flex gap-2">
-				{#if product && photoType && activeLanguageCode && photoTypes}
-					<button
-						type="button"
-						class="btn btn-outline hover:btn-outline hover:btn-error"
-						onclick={handleImageUnselect}
-						disabled={!canPerformActions}
-						aria-label="Unselect this image"
-					>
-						<span class="icon-[mdi--image-remove] h-4 w-4" aria-hidden="true"></span>
-						Unselect Image
-					</button>
-				{/if}
+				<button
+					type="button"
+					class="btn btn-outline hover:btn-outline hover:btn-error"
+					onclick={onImageUnselected}
+					disabled={!canPerformActions}
+					aria-label="Unselect this image"
+				>
+					<span class="icon-[mdi--image-remove] h-4 w-4" aria-hidden="true"></span>
+					Unselect Image
+				</button>
 
 				{#if reportImageUrl}
 					<a
@@ -685,7 +638,7 @@
 				<button
 					type="button"
 					class="btn btn-outline"
-					onclick={handleClose}
+					onclick={handleDialogClose}
 					aria-label="Cancel editing and close modal"
 				>
 					Cancel

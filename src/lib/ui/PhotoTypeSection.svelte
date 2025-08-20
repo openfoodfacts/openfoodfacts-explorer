@@ -7,14 +7,12 @@
 	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { UploadResult } from './PhotoManager.svelte';
 
-	type PhotoType = {
-		id: string;
-		label: string;
-		isAdditional?: boolean;
-	};
+	type PhotoType = { id: string; label: string };
 
 	type Props = {
-		photoType: PhotoType;
+		type: PhotoType;
+		isAdditional?: boolean;
+
 		activeLanguageCode: string;
 		currentImages: Array<{ url: string; alt: string; type: string }>;
 		expandedCategories: Set<string>;
@@ -30,7 +28,9 @@
 	};
 
 	let {
-		photoType,
+		type: sectionType,
+		isAdditional,
+
 		activeLanguageCode,
 		currentImages,
 		expandedCategories,
@@ -50,14 +50,14 @@
 		if (input) input.click();
 	}
 
-	async function handleImageUpload(e: Event, type: string) {
+	async function handleImageUpload(e: Event, imageType: string) {
 		const input = e.target as HTMLInputElement;
 		if (!input.files || input.files.length === 0) return;
 
 		const file = input.files[0];
 
 		// Map type to OpenFoodFacts imagefield value using utility function
-		const imagefield = getImageFieldName(type, activeLanguageCode, photoTypes);
+		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
 
 		const barcode = product.code;
 		const user_id = $preferences.username;
@@ -79,7 +79,7 @@
 			if (uploadResult.status === 'status ok') {
 				if (onImageUploaded) {
 					onImageUploaded({
-						type: photoType.label,
+						type: sectionType.label,
 						imagefield: imagefield,
 						result: uploadResult
 					});
@@ -118,13 +118,13 @@
 	}
 
 	// Derived values
-	const imagesOfType = $derived(currentImages.filter((img) => img.type === photoType.label));
-	const isExpanded = $derived(expandedCategories.has(photoType.label));
-	const imagesToShow = $derived(isExpanded ? imagesOfType : imagesOfType.slice(0, 10));
-	const hasMoreImages = $derived(imagesOfType.length > 10);
-	const inputId = $derived(`${photoType.id}-${activeLanguageCode}-upload`);
-	const isStandardType = $derived(!photoType.isAdditional);
-	const hasImagesOfType = $derived(imagesOfType.length > 0);
+	let imagesOfType = $derived(currentImages.filter((img) => img.type === sectionType.label));
+	let isExpanded = $derived(expandedCategories.has(sectionType.label));
+	let imagesToShow = $derived(isExpanded ? imagesOfType : imagesOfType.slice(0, 10));
+	let hasMoreImages = $derived(imagesOfType.length > 10);
+	let inputId = $derived(`${sectionType.id}-${activeLanguageCode}-upload`);
+	let isStandardType = $derived(!isAdditional);
+	let hasImagesOfType = $derived(imagesOfType.length > 0);
 
 	// Loading state for image upload
 	let isUploading = $state(false);
@@ -133,7 +133,7 @@
 <div class="mb-6">
 	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 		<h4 class="sm:text-md text-sm font-semibold">
-			{photoType.label} picture ({getLanguage(activeLanguageCode)})
+			{sectionType.label} picture ({getLanguage(activeLanguageCode)})
 		</h4>
 		<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
 			<!-- Upload button for this category -->
@@ -143,7 +143,7 @@
 				accept="image/*"
 				class="hidden"
 				disabled={isUploading}
-				onchange={(e) => handleImageUpload(e, photoType.label)}
+				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
 			<button
 				type="button"
@@ -157,7 +157,7 @@
 					<span class="text-xs sm:text-sm">Uploading...</span>
 				{:else}
 					<span class="icon-[mdi--upload] h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Upload {photoType.label}</span>
+					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
 				{/if}
 			</button>
 			{#if isStandardType && hasImagesOfType}
@@ -165,10 +165,10 @@
 					type="button"
 					class="btn btn-xs sm:btn-sm btn-outline btn-error w-full sm:w-auto"
 					disabled={isUploading}
-					onclick={() => handleImageUnselect(photoType.label)}
+					onclick={() => handleImageUnselect(sectionType.label)}
 				>
 					<span class="icon-[mdi--image-remove] h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Unselect {photoType.label}</span>
+					<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
 				</button>
 			{/if}
 			{#if hasMoreImages}
@@ -176,7 +176,7 @@
 					type="button"
 					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
 					disabled={isUploading}
-					onclick={() => onToggleExpansion(photoType.label)}
+					onclick={() => onToggleExpansion(sectionType.label)}
 				>
 					<span class="text-xs sm:text-sm"
 						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
@@ -233,12 +233,12 @@
 				<div class="text-center">
 					<div class="loading loading-spinner loading-lg text-primary"></div>
 					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
-						Uploading {photoType.label.toLowerCase()} photo...
+						Uploading {sectionType.label.toLowerCase()} photo...
 					</p>
 				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
-					No {photoType.label.toLowerCase()} photos available
+					No {sectionType.label.toLowerCase()} photos available
 				</p>
 			{/if}
 		</div>

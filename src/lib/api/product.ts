@@ -458,3 +458,11 @@ export function getProductImageUrl(
 	}
 	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 }
+
+export type ProductImage = {
+	url: string;
+	alt: string;
+	type: string;
+	imgid: number; // The numeric image ID for the API
+	typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
+};
