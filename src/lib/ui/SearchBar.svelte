@@ -70,11 +70,12 @@
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (loading || autocompleteList == null) return;
+		if (loading) return; // prevent interactions while loading
 
-		if (autocompleteList.length == 0) return;
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
+			if (autocompleteList == null || autocompleteList.length === 0) return;
+
 			if (highlightedIndex === null || highlightedIndex === autocompleteList.length - 1) {
 				highlightedIndex = 0;
 			} else {
@@ -82,18 +83,22 @@
 			}
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
+			if (autocompleteList == null || autocompleteList.length === 0) return;
+
 			if (highlightedIndex === null || highlightedIndex === 0) {
 				highlightedIndex = autocompleteList.length - 1;
 			} else {
 				highlightedIndex = highlightedIndex - 1;
 			}
-		} else if (e.key === 'Enter' && highlightedIndex !== null) {
-			e.preventDefault();
-			handleSelect(autocompleteList[highlightedIndex]);
-			highlightedIndex = null;
-		} else if (e.key === 'Enter' && searchQuery.trim() !== '') {
-			e.preventDefault();
-			onSearch?.(searchQuery);
+		} else if (e.key === 'Enter') {
+			if (highlightedIndex !== null && autocompleteList !== null) {
+				e.preventDefault();
+				handleSelect(autocompleteList[highlightedIndex]);
+				highlightedIndex = null;
+			} else if (searchQuery.trim() !== '') {
+				e.preventDefault();
+				onSearch?.(searchQuery);
+			}
 		} else if (e.key === 'Escape') {
 			highlightedIndex = null;
 		}
