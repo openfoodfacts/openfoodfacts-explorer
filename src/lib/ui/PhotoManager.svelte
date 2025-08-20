@@ -359,6 +359,14 @@
 	bind:this={photoEditModal}
 	imageUrl={editingImageData?.url || ''}
 	imageAlt={editingImageData?.alt || ''}
+	product={product}
+	photoType={editingImageData?.type}
+	activeLanguageCode={activeLanguageCode}
+	photoTypes={photoTypes}
 	onClose={closeEditModal}
 	onSave={handleImageEdit}
+	onImageUnselected={() => {
+		invalidateAll();
+		closeEditModal();
+	}}
 />

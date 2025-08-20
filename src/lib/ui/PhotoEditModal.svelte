@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import 'cropperjs';
+	import { getImageFieldName } from '$lib/utils';
+	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '$lib/api';
 
 	type CropData = {
 		x: number;
@@ -47,6 +50,11 @@
 		imageAlt: string;
 		onClose: () => void;
 		onSave: (data: EditData) => void;
+		product?: Product;
+		photoType?: string;
+		activeLanguageCode?: string;
+		photoTypes?: Array<{ id: string; label: string }>;
+		onImageUnselected?: () => void;
 	};
 
 	const RESIZE_HANDLES = [
@@ -60,7 +68,7 @@
 		'sw-resize'
 	];
 
-	let { imageUrl, imageAlt, onClose, onSave }: Props = $props();
+	let { imageUrl, imageAlt, onClose, onSave, product, photoType, activeLanguageCode, photoTypes, onImageUnselected }: Props = $props();
 
 	let modal: HTMLDialogElement;
 	let cropperImage = $state<CropperImage | null>(null);
@@ -308,6 +316,35 @@
 	function handleClose(): void {
 		closeModal();
 		onClose();
+	}
+
+	async function handleImageUnselect(): Promise<void> {
+		if (!product || !photoType || !activeLanguageCode || !photoTypes) {
+			console.warn('Missing required data for image unselect');
+			return;
+		}
+
+		const barcode = product.code;
+		const imagefield = getImageFieldName(photoType, activeLanguageCode, photoTypes);
+
+		try {
+			const off = new OpenFoodFacts(fetch);
+			const result = await off.unselectImage(barcode, imagefield);
+
+			if (result.status === 'success' || result.status_code === 200) {
+				console.log('Image unselected successfully:', result);
+				if (onImageUnselected) {
+					onImageUnselected();
+				}
+				handleClose();
+			} else {
+				console.warn('Image unselect failed:', result);
+				alert('Failed to unselect image. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error unselecting image:', error);
+			alert('Error unselecting image. Please try again.');
+		}
 	}
 
 	function getImageBounds() {
@@ -599,25 +636,42 @@
 			</div>
 		{/if}
 
-		<div class="flex justify-end gap-2">
-			<button
-				type="button"
-				class="btn btn-outline"
-				onclick={handleClose}
-				aria-label="Cancel editing and close modal"
-			>
-				Cancel
-			</button>
-			<button
-				type="button"
-				class="btn btn-primary"
-				onclick={handleSave}
-				disabled={!canPerformActions}
-				aria-label="Save changes and close modal"
-			>
-				<span class="icon-[mdi--check] h-4 w-4" aria-hidden="true"></span>
-				Save Changes
-			</button>
+		<div class="flex justify-between gap-2">
+			<div>
+				{#if product && photoType && activeLanguageCode && photoTypes}
+					<button
+						type="button"
+						class="btn btn-outline btn-error"
+						onclick={handleImageUnselect}
+						disabled={!canPerformActions}
+						aria-label="Unselect this image"
+					>
+						<span class="icon-[mdi--image-remove] h-4 w-4" aria-hidden="true"></span>
+						Unselect Image
+					</button>
+				{/if}
+			</div>
+			
+			<div class="flex gap-2">
+				<button
+					type="button"
+					class="btn btn-outline"
+					onclick={handleClose}
+					aria-label="Cancel editing and close modal"
+				>
+					Cancel
+				</button>
+				<button
+					type="button"
+					class="btn btn-primary"
+					onclick={handleSave}
+					disabled={!canPerformActions}
+					aria-label="Save changes and close modal"
+				>
+					<span class="icon-[mdi--check] h-4 w-4" aria-hidden="true"></span>
+					Save Changes
+				</button>
+			</div>
 		</div>
 	</div>
 </dialog>
