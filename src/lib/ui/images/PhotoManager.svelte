@@ -1,4 +1,5 @@
 <script lang="ts">
+	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 	import ISO6391 from 'iso-639-1';
 	import { tick } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -12,9 +13,8 @@
 	import { getImageFieldName } from '$lib/utils';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
-	import PhotoEditModal from './PhotoEditModal.svelte';
-	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
-	import SelectImageDialog from './SelectImageDialog.svelte';
+	import PhotoEditDialog from './PhotoEditDialog.svelte';
+	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -141,7 +141,7 @@
 	let expandedCategories = $state(new Set<string>());
 
 	let editingImageData: ProductImage | undefined = $state();
-	let editingImageModal: PhotoEditModal | undefined = $state();
+	let editingImageModal: PhotoEditDialog | undefined = $state();
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -339,7 +339,7 @@
 		return `https://nutripatrol.openfoodfacts.org/flag/image/?${params.toString()}`;
 	}
 
-	let selectingImageModal: SelectImageDialog | undefined = $state();
+	let selectingImageModal: PhotoSelectDialog | undefined = $state();
 	let selectingImageSection: string | undefined = $state();
 	function openImageSelection(section: string) {
 		console.debug(`Opening image selection for section: ${section}`);
@@ -425,7 +425,7 @@
 
 <!-- Photo Edit Modal -->
 {#if editingImageData}
-	<PhotoEditModal
+	<PhotoEditDialog
 		bind:this={editingImageModal}
 		reportImageUrl={getNutriPatrolReportUrl(editingImageData)}
 		image={editingImageData}
@@ -435,7 +435,7 @@
 	/>
 {/if}
 
-<SelectImageDialog
+<PhotoSelectDialog
 	bind:this={selectingImageModal}
 	images={currentImages}
 	onSelect={onImageSelection}

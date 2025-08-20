@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 	import ISO6391 from 'iso-639-1';
+
 	import { getImageFieldName } from '$lib/utils';
 	import { ProductsApi } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
-	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+
 	import type { UploadResult } from './PhotoManager.svelte';
 
 	type PhotoType = { id: string; label: string };
