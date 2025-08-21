@@ -32,8 +32,6 @@ export type AttributePreference = {
 // Base type for all user preferences (can be extended with other preference types)
 export type UserPreference = AttributePreference;
 
-export type UserPreferences = UserPreference[];
-
 export const personalizedSearch = persisted<PreferencesStoreData>('personalizedSearch', {
 	userPreferences: [],
 	classifyProductsEnabled: false
@@ -43,7 +41,7 @@ function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
 }
 
-export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreferences {
+export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreference[] {
 	return attributeGroups.flatMap((group) =>
 		group.attributes!.map((attr) => ({
 			type: 'attribute' as const,
@@ -88,7 +86,7 @@ export function updatePreference(category: string, preference: string, value: st
 	});
 }
 
-export function resetToDefaults(defaultPreferences: UserPreferences) {
+export function resetToDefaults(defaultPreferences: UserPreference[]) {
 	const defaults = structuredClone(defaultPreferences);
 	personalizedSearch.update((store) => ({
 		...store,
@@ -98,7 +96,7 @@ export function resetToDefaults(defaultPreferences: UserPreferences) {
 
 // Helper function to get preference value by category and attribute
 export function getPreferenceValue(
-	prefs: UserPreferences,
+	prefs: UserPreference[],
 	category: string,
 	attribute: string
 ): string {
@@ -109,6 +107,6 @@ export function getPreferenceValue(
 
 // Combined preferences store
 type PreferencesStoreData = {
-	userPreferences: UserPreferences;
+	userPreferences: UserPreference[];
 	classifyProductsEnabled: boolean;
 };

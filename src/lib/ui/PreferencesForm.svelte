@@ -8,7 +8,8 @@
 		resetToDefaults,
 		getPreferenceValue,
 		generatePreferencesFromGroups,
-		type AttributeGroup
+		type AttributeGroup,
+		type Attribute
 	} from '$lib/stores/preferencesStore';
 
 	export type PreferencesFormProps = {
@@ -47,43 +48,61 @@
 		onClassifyToggle(classifyProducts);
 	}
 
-	// Helper to get values from the store
 	function getSelectedValue(category: string, id: string) {
 		return getPreferenceValue($personalizedSearch.userPreferences, category, id);
 	}
 
-	// Data is provided by the page load
 	let isLoading = $derived(!attributeGroups || attributeGroups.length === 0);
 
-	// Dynamic sections based on resolved attribute groups
 	const DEFAULT_IMPORTANCE_VALUES = ['mandatory', 'very_important', 'important', 'not_important'];
-	const sections = $derived(
-		attributeGroups
-			.filter((group) => group.id && group.name && group.attributes)
-			.map((group) => ({
+
+	const validGroups = $derived(
+		attributeGroups.filter((group) => group.id && group.name && group.attributes)
+	);
+
+	const createOptionObjects = (values: string[]) => {
+		return values.map((value) => ({
+			value,
+			label: $_(`preferences.options.${value}`) || value
+		}));
+	};
+
+	const processAttribute = (attribute: Attribute, groupId: string) => {
+		const attributeValues =
+			attribute.values && attribute.values.length > 0
+				? attribute.values
+				: DEFAULT_IMPORTANCE_VALUES;
+
+		const optionObjects = createOptionObjects(attributeValues);
+
+		return {
+			id: attribute.id!,
+			label: attribute.setting_name || attribute.name,
+			icon: attribute.id!,
+			iconImg: attribute.icon_url,
+			options: optionObjects,
+			selectedValue: getSelectedValue(groupId, attribute.id!),
+			description: attribute.setting_note
+		};
+	};
+
+	const sections = $derived.by(() => {
+		return validGroups.map((group) => {
+			const validAttributes = group.attributes!.filter((attribute) => attribute.id);
+
+			const processedOptions = validAttributes.map((attribute) =>
+				processAttribute(attribute, group.id!)
+			);
+
+			return {
 				id: group.id!,
 				title: group.name!,
-				options: group
-					.attributes!.filter((attribute) => attribute.id)
-					.map((attribute) => ({
-						id: attribute.id!,
-						label: attribute.setting_name || attribute.name,
-						icon: attribute.id!,
-						iconImg: attribute.icon_url,
-						options: (attribute.values && attribute.values.length > 0
-							? attribute.values
-							: DEFAULT_IMPORTANCE_VALUES
-						).map((value) => ({
-							value,
-							label: $_(`preferences.options.${value}`) || value
-						})),
-						selectedValue: getSelectedValue(group.id!, attribute.id!),
-						description: attribute.setting_note
-					})),
+				options: processedOptions,
 				showWarning: group.id === 'allergens',
 				warningText: group.warning
-			}))
-	);
+			};
+		});
+	});
 </script>
 
 <Card>

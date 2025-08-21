@@ -72,8 +72,18 @@
 		products: ProductStateFound<ProductReduced>[],
 		attributes: Record<string, ProductAttributeGroup[]> | null
 	) {
-		if (attributes === null || !$personalizedSearch.classifyProductsEnabled) {
-			return products;
+		if (attributes === null) {
+			return products.map((state) => ({
+				product: state,
+				score: 0,
+				matchStatus: 'unknown_match' as const,
+				scoreData: {
+					score: 0,
+					matchStatus: 'unknown_match' as const,
+					totalWeights: 0,
+					totalWeightedScore: 0
+				}
+			}));
 		}
 
 		const productsWithAttributes = products.map((state) => ({
@@ -151,22 +161,22 @@
 			{:then resolvedProducts}
 				{#await attributesByCode then attributes}
 					{@const sortedProducts = sortProducts(resolvedProducts, attributes)}
-					{#each sortedProducts as state (state.product.code)}
+					{#each sortedProducts as scoredProduct (scoredProduct.product.product.code)}
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<!-- svelte-ignore a11y_no_static_element_interactions -->
 						<product-card
-							product={state.product}
+							product={scoredProduct.product.product}
 							navigating={{
 								to:
-									navigatingTo === state.product.code
-										? { params: { barcode: state.product.code } }
+									navigatingTo === scoredProduct.product.product.code
+										? { params: { barcode: scoredProduct.product.product.code } }
 										: null
 							}}
 							placeholderImage="/Placeholder.svg"
-							onclick={() => navigateToProduct(state.product.code)}
+							onclick={() => navigateToProduct(scoredProduct.product.product.code)}
 							showMatchTag={$personalizedSearch.classifyProductsEnabled}
-							personalScore={$personalizedSearch.classifyProductsEnabled && 'scoreData' in state
-								? state.scoreData
+							personalScore={$personalizedSearch.classifyProductsEnabled
+								? scoredProduct.scoreData
 								: undefined}
 						></product-card>
 					{/each}

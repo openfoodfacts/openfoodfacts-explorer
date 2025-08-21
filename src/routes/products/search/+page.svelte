@@ -222,27 +222,30 @@
 
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each sortedProducts as product (product.code)}
-				{#if product.code != null}
+			{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
+				{#if scoredProduct.product.code != null}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4">
-								{data.prices[product.code]} prices
+								{data.prices[scoredProduct.product.code]} prices
 							</span>
 						{/if}
 						<product-card
 							class="h-[11rem] w-full"
-							{product}
+							product={scoredProduct.product}
 							navigating={{
-								to: navigatingTo === product.code ? { params: { barcode: product.code } } : null
+								to:
+									navigatingTo === scoredProduct.product.code
+										? { params: { barcode: scoredProduct.product.code } }
+										: null
 							}}
 							placeholderImage="/Placeholder.svg"
-							onclick={() => navigateToProduct(product.code)}
+							onclick={() => navigateToProduct(scoredProduct.product.code)}
 							showMatchTag={$personalizedSearch.classifyProductsEnabled}
 							personalScore={$personalizedSearch.classifyProductsEnabled
-								? product.scoreData
+								? scoredProduct.scoreData
 								: undefined}
 						></product-card>
 					</div>

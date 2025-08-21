@@ -1,11 +1,49 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	PricesApi,
+	SearchApi,
+	type SearchBody,
+	OpenFoodFacts
+} from '@openfoodfacts/openfoodfacts-nodejs';
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { ProductsApi } from '$lib/api/product';
-import { getAttributeGroups as fetchAttributeGroups } from '$lib/api/attributes';
-import { convertApiToAttributeGroups } from '$lib/preferenceUtils';
+import type { AttributeGroup } from '$lib/stores/preferencesStore';
+
+type ApiAttributeGroup = {
+	id?: string;
+	name?: string;
+	attributes?: {
+		id?: string;
+		name?: string;
+		icon_url?: string;
+		setting_name?: string;
+		setting_note?: string;
+		default?: string;
+		panel_id?: string;
+		values?: string[];
+	}[];
+	warning?: string;
+};
+
+function convertApiToAttributeGroups(apiAttributeGroups: ApiAttributeGroup[]): AttributeGroup[] {
+	return apiAttributeGroups.map((group) => ({
+		id: group.id,
+		name: group.name,
+		warning: group.warning,
+		attributes: group.attributes?.map((attr) => ({
+			id: attr.id,
+			name: attr.name,
+			values: attr.values,
+			icon_url: attr.icon_url,
+			setting_name: attr.setting_name,
+			setting_note: attr.setting_note,
+			panel_id: attr.panel_id,
+			default: attr.default
+		}))
+	}));
+}
 
 export const ssr = false;
 
@@ -95,6 +133,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		search: searchData,
 		attributesByCode,
 		prices: prices,
-		attributeGroups: convertApiToAttributeGroups(await fetchAttributeGroups(fetch))
+		attributeGroups: convertApiToAttributeGroups(
+			await new OpenFoodFacts(fetch).getAttributeGroups()
+		)
 	};
 };
