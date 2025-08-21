@@ -47,6 +47,7 @@ const getWeight = (importance: string): number => {
 	return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
 };
 
+// source of algorithm: https://github.com/openfoodfacts/openfoodfacts-server/blob/main/html/js/product-search.js
 export function calculateScore(
 	productAttributes: ProductAttributeGroup[],
 	currentPrefs: UserPreference[]
