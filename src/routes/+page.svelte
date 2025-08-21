@@ -56,9 +56,7 @@
 		);
 
 		// remove duplicate products
-		let dedupProducts = deduplicate(products, (it) => it.product.code);
-
-		return dedupProducts;
+		return deduplicate(products, (it) => it.product.code);
 	}
 
 	async function getAttributes(products: ProductStateFound<ProductReduced>[]) {
@@ -72,7 +70,7 @@
 		products: ProductStateFound<ProductReduced>[],
 		attributes: Record<string, ProductAttributeGroup[]> | null
 	) {
-		if (attributes === null) {
+		if (!attributes) {
 			return products.map((state) => ({
 				product: state,
 				score: 0,
@@ -88,7 +86,7 @@
 
 		const productsWithAttributes = products.map((state) => ({
 			...state,
-			attributes: attributes[state.product.code] || []
+			attributes: attributes[state.product.code] ?? []
 		}));
 
 		return personalizeSearchResults(

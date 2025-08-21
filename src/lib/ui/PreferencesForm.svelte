@@ -48,9 +48,8 @@
 		onClassifyToggle(classifyProducts);
 	}
 
-	function getSelectedValue(category: string, id: string) {
-		return getPreferenceValue($personalizedSearch.userPreferences, category, id);
-	}
+	const getSelectedValue = (category: string, id: string) =>
+		getPreferenceValue($personalizedSearch.userPreferences, category, id);
 
 	let isLoading = $derived(!attributeGroups || attributeGroups.length === 0);
 
@@ -60,49 +59,30 @@
 		attributeGroups.filter((group) => group.id && group.name && group.attributes)
 	);
 
-	const createOptionObjects = (values: string[]) => {
-		return values.map((value) => ({
-			value,
-			label: $_(`preferences.options.${value}`) || value
-		}));
-	};
+	const createOptionObjects = (values: string[]) =>
+		values.map((value) => ({ value, label: $_(`preferences.options.${value}`) || value }));
 
 	const processAttribute = (attribute: Attribute, groupId: string) => {
-		const attributeValues =
-			attribute.values && attribute.values.length > 0
-				? attribute.values
-				: DEFAULT_IMPORTANCE_VALUES;
-
-		const optionObjects = createOptionObjects(attributeValues);
-
+		const attributeValues = attribute.values?.length ? attribute.values : DEFAULT_IMPORTANCE_VALUES;
 		return {
 			id: attribute.id!,
 			label: attribute.setting_name || attribute.name,
-			icon: attribute.id!,
 			iconImg: attribute.icon_url,
-			options: optionObjects,
+			options: createOptionObjects(attributeValues),
 			selectedValue: getSelectedValue(groupId, attribute.id!),
 			description: attribute.setting_note
 		};
 	};
 
-	const sections = $derived.by(() => {
-		return validGroups.map((group) => {
-			const validAttributes = group.attributes!.filter((attribute) => attribute.id);
-
-			const processedOptions = validAttributes.map((attribute) =>
-				processAttribute(attribute, group.id!)
-			);
-
-			return {
-				id: group.id!,
-				title: group.name!,
-				options: processedOptions,
-				showWarning: group.id === 'allergens',
-				warningText: group.warning
-			};
-		});
-	});
+	const sections = $derived.by(() =>
+		validGroups.map((group) => ({
+			id: group.id!,
+			title: group.name!,
+			options: group.attributes!.filter((a) => a.id).map((a) => processAttribute(a, group.id!)),
+			showWarning: group.id === 'allergens',
+			warningText: group.warning
+		}))
+	);
 </script>
 
 <Card>

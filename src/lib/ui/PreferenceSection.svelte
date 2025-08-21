@@ -4,7 +4,6 @@
 	type PreferenceOption = {
 		id: string;
 		label?: string;
-		icon: string;
 		iconImg?: string;
 		description?: string;
 		selectedValue?: string;
@@ -21,7 +20,6 @@
 		category: string;
 		showWarning?: boolean;
 		warningText?: string;
-		// Removed getValue as we switched to selectedValue on options
 	};
 
 	let {
@@ -73,7 +71,7 @@
 							<label class="flex cursor-pointer items-center gap-2">
 								<input
 									type="radio"
-									name={option.id}
+									name={`${category}.${option.id}`}
 									value={radioOption.value}
 									class="radio radio-sm radio-primary"
 									checked={option.selectedValue === radioOption.value}

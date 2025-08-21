@@ -52,9 +52,7 @@ export function byMatchScore<T>(a: ScoredProduct<T>, b: ScoredProduct<T>): numbe
 	if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
 
 	// Then by score (highest first)
-	const scoreA = a.score || 0;
-	const scoreB = b.score || 0;
-	if (scoreB !== scoreA) return scoreB - scoreA;
+	if (b.score !== a.score) return (b.score ?? 0) - (a.score ?? 0);
 
 	// Original order as tiebreaker (maintain existing order)
 	return 0;

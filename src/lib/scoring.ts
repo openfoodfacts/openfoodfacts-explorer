@@ -1,6 +1,5 @@
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import { getPreferenceValue } from '$lib/stores/preferencesStore';
-import type { Product } from '$lib/api/product';
 
 export type MatchStatus =
 	| 'unknown_match'
@@ -15,12 +14,6 @@ export type ScoreData = {
 	matchStatus: MatchStatus;
 	totalWeights: number;
 	totalWeightedScore: number;
-};
-
-export type ProductWithScore = Product & {
-	score?: number;
-	matchStatus?: MatchStatus;
-	scoreData?: ScoreData;
 };
 
 export type ProductAttribute = {
@@ -43,9 +36,8 @@ const PREF_WEIGHTS = {
 } as const;
 
 // Get weight for preference importance
-const getWeight = (importance: string): number => {
-	return PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] || 0;
-};
+const getWeight = (importance: string): number =>
+	PREF_WEIGHTS[importance as keyof typeof PREF_WEIGHTS] ?? 0;
 
 // source of algorithm: https://github.com/openfoodfacts/openfoodfacts-server/blob/main/html/js/product-search.js
 export function calculateScore(
@@ -67,7 +59,7 @@ export function calculateScore(
 				totalWeights += weight;
 
 				// Calculate weighted score
-				const match = attr.match || 0;
+				const match = attr.match ?? 0;
 				totalWeightedScore += match * weight;
 
 				// Check for mandatory mismatches and uncertainties
@@ -113,19 +105,4 @@ export function calculateScore(
 		totalWeights,
 		totalWeightedScore
 	};
-}
-
-// Comparator function for sorting products by score and match status
-export function compareProductsByScore<T extends ProductWithScore>(a: T, b: T): number {
-	// Non-"does_not_match" products come first
-	if (a.matchStatus === 'does_not_match' && b.matchStatus !== 'does_not_match') return 1;
-	if (b.matchStatus === 'does_not_match' && a.matchStatus !== 'does_not_match') return -1;
-
-	// Then by score (highest first)
-	const scoreA = a.score || 0;
-	const scoreB = b.score || 0;
-	if (scoreB !== scoreA) return scoreB - scoreA;
-
-	// Original order as tiebreaker (maintain existing order)
-	return 0;
 }

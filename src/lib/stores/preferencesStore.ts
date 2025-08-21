@@ -62,10 +62,7 @@ export function updatePreference(category: string, preference: string, value: st
 		if (existingPreferenceIndex >= 0) {
 			// Update existing preference
 			const newPrefs = [...prefs];
-			newPrefs[existingPreferenceIndex] = {
-				...newPrefs[existingPreferenceIndex],
-				value
-			};
+			newPrefs[existingPreferenceIndex] = { ...newPrefs[existingPreferenceIndex], value };
 			return {
 				...store,
 				userPreferences: newPrefs
@@ -102,7 +99,7 @@ export function getPreferenceValue(
 ): string {
 	const preferenceId = `${category}.${attribute}`;
 	const preference = prefs.find((p: UserPreference) => p.id === preferenceId);
-	return preference?.value || 'not_important';
+	return preference?.value ?? 'not_important';
 }
 
 // Combined preferences store
