@@ -1,8 +1,14 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	PricesApi,
+	SearchApi,
+	type SearchBody,
+	OpenFoodFacts
+} from '@openfoodfacts/openfoodfacts-nodejs';
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { ProductsApi } from '$lib/api/product';
 
 export const ssr = false;
 
@@ -75,16 +81,22 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const searchRes = await api.search(params);
 	const searchData = searchRes.data as SearchResult;
 
+	// Get attributes for all products using the API
+	const productsApi = new ProductsApi(fetch);
+	const productCodes = searchData.hits.map((hit) => hit.code);
+	const attributesByCode = await productsApi.getBulkProductAttributes(productCodes);
+
 	let prices: Record<string, number> = {};
 	if (isPricesConfigured()) {
 		const pricesApi = createPricesApi(fetch);
-		const barcodes = searchData.hits.map((hit) => hit.code);
-		prices = await getPrices(pricesApi, barcodes);
+		prices = await getPrices(pricesApi, productCodes);
 	}
 
 	return {
 		query,
 		search: searchData,
-		prices: prices
+		attributesByCode,
+		prices: prices,
+		attributeGroups: await new OpenFoodFacts(fetch).getAttributeGroups()
 	};
 };
