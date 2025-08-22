@@ -8,6 +8,10 @@ declare global {
 				impact: { lc_name: string; name: string; id: string };
 				message: { lc_name: string; name: string; id: string };
 			}[];
+			actions?: {
+				label: string;
+				url?: string;
+			}[];
 		}
 		// interface Locals {}
 		// interface PageData {}
