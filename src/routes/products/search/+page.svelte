@@ -228,7 +228,7 @@
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div class="indicator block w-full">
 						{#if showPrices}
-							<span class="indicator-item badge badge-secondary badge-sm right-4">
+							<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
 								{data.prices[scoredProduct.product.code]} prices
 							</span>
 						{/if}
