@@ -31,9 +31,9 @@
 	let sortedProducts = $derived.by(() => {
 		if (!result?.hits || result.hits.length === 0 || !data.attributesByCode) return [];
 
-		const productsWithAttributes = result.hits.map((product) => ({
-			product: product,
-			attributes: data.attributesByCode[product.code] || []
+		const productsWithAttributes = result.hits.map((hit) => ({
+			...hit,
+			attributes: data.attributesByCode[hit.code] || []
 		}));
 
 		return personalizeSearchResults(
@@ -222,27 +222,27 @@
 
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each sortedProducts as scoredProduct (scoredProduct.product.product.code)}
-				{#if scoredProduct.product.product.code != null}
+			{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
+				{#if scoredProduct.product.code != null}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4">
-								{data.prices[scoredProduct.product.product.code]} prices
+								{data.prices[scoredProduct.product.code]} prices
 							</span>
 						{/if}
 						<product-card
 							class="h-[11rem] w-full"
-							product={scoredProduct.product.product}
+							product={scoredProduct.product}
 							navigating={{
 								to:
-									navigatingTo === scoredProduct.product.product.code
-										? { params: { barcode: scoredProduct.product.product.code } }
+									navigatingTo === scoredProduct.product.code
+										? { params: { barcode: scoredProduct.product.code } }
 										: null
 							}}
 							placeholderImage="/Placeholder.svg"
-							onclick={() => navigateToProduct(scoredProduct.product.product.code)}
+							onclick={() => navigateToProduct(scoredProduct.product.code)}
 							showMatchTag={$personalizedSearch.classifyProductsEnabled}
 							personalScore={$personalizedSearch.classifyProductsEnabled
 								? scoredProduct.scoreData

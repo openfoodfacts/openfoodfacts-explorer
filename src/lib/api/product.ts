@@ -3,7 +3,6 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
-import type { ProductAttributeGroup } from '$lib/scoring';
 
 export class ProductsApi {
 	private readonly fetch: typeof window.fetch;
@@ -257,6 +256,17 @@ export type ProductAttribute = {
 };
 
 export type ProductAttributes = ProductAttribute[];
+
+export type ProductAttributeForScoring = {
+	id: string;
+	match?: number;
+	status?: string;
+};
+
+export type ProductAttributeGroup = {
+	id: string;
+	attributes: ProductAttributeForScoring[];
+};
 
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;

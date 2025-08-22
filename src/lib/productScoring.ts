@@ -1,9 +1,5 @@
-import {
-	calculateScore,
-	type ProductAttributeGroup,
-	type ScoreData,
-	type MatchStatus
-} from '$lib/scoring';
+import { calculateScore, type ScoreData, type MatchStatus } from '$lib/scoring';
+import type { ProductAttributeGroup } from '$lib/api/product';
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import type { Product } from '$lib/api/product';
 

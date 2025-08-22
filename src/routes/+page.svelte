@@ -14,7 +14,7 @@
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
-	import type { ProductAttributeGroup } from '$lib/scoring';
+	import type { ProductAttributeGroup } from '$lib/api/product';
 
 	let { data }: PageProps = $props();
 

@@ -1,5 +1,6 @@
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import { getPreferenceValue } from '$lib/stores/preferencesStore';
+import type { ProductAttributeGroup } from '$lib/api/product';
 
 export type MatchStatus =
 	| 'unknown_match'
@@ -14,17 +15,6 @@ export type ScoreData = {
 	matchStatus: MatchStatus;
 	totalWeights: number;
 	totalWeightedScore: number;
-};
-
-export type ProductAttribute = {
-	id: string;
-	match?: number;
-	status?: string;
-};
-
-export type ProductAttributeGroup = {
-	id: string;
-	attributes: ProductAttribute[];
 };
 
 // Preference importance weights
