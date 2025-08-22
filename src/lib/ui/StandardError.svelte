@@ -2,13 +2,13 @@
 	import type { ProductStateError } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
-	type Props = { message?: string; errors?: ProductStateError[] };
+	type Props = { error: globalThis.App.Error };
+	let { error }: Props = $props();
+	let { message, errors, actions } = $derived(error);
 
-	const { errors = [], message = '' }: Props = $props();
-
-	const isError = $derived(
-		(error: string) => errors?.some((e: ProductStateError) => e.message.id === error) ?? false
-	);
+	function errorType(error: ProductStateError) {
+		return error.message.id;
+	}
 </script>
 
 {#snippet errorLi(error: ProductStateError)}
@@ -31,11 +31,11 @@
 	</li>
 {/snippet}
 
-<div class="flex flex-col">
+<div class="flex w-full flex-col">
 	<h1 class="mb-3 text-xl font-bold">{message}</h1>
 
 	{#if errors != null && errors.length > 0}
-		{#if isError('product_not_found')}
+		{#if errors.map(errorType).some((it) => it === 'product_not_found')}
 			<h2>{$_('general.product_not_found')}</h2>
 		{:else}
 			<p>
@@ -48,5 +48,19 @@
 				{/each}
 			</ul>
 		{/if}
+	{/if}
+
+	{#if actions != null}
+		<div class="flex w-full gap-2">
+			{#each actions as action, i (i)}
+				{#if action.url}
+					<a href={action.url} class="btn btn-primary btn-outline grow"> {action.label} </a>
+				{:else}
+					<p class="btn btn-primary btn-outline grow">
+						{action.label}
+					</p>
+				{/if}
+			{/each}
+		</div>
 	{/if}
 </div>

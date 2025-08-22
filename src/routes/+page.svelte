@@ -5,21 +5,35 @@
 	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import type { PageProps } from './$types';
+
 	import { ProductsApi, type ProductReduced, type ProductStateFound } from '$lib/api';
 	import { onMount } from 'svelte';
 	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { personalizeSearchResults } from '$lib/productScoring';
+	import type { ProductAttributeGroup } from '$lib/api/product';
+
+	let { data }: PageProps = $props();
+
+	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
+	let attributesByCode: Promise<Record<string, ProductAttributeGroup[]>> = $state(
+		Promise.resolve({})
+	);
 
 	// Track which product is being navigated to
 	let navigatingTo: string | null = $state(null);
+
+	// Track preferences form visibility
+	let showPreferences = $state(false);
 
 	// Handle navigation to product page
 	function navigateToProduct(barcode: string) {
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
-
-	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
 
 	const INSIGHT_COUNT = 10;
 	const SKELETON_COUNT = 9;
@@ -45,8 +59,48 @@
 		return deduplicate(products, (it) => it.product.code);
 	}
 
+	async function getAttributes(products: ProductStateFound<ProductReduced>[]) {
+		const productApi = new ProductsApi(fetch);
+		const productCodes = products.map((state) => state.product.code);
+		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		return attrs;
+	}
+
+	function sortProducts(
+		products: ProductStateFound<ProductReduced>[],
+		attributes: Record<string, ProductAttributeGroup[]> | null
+	) {
+		if (!attributes) {
+			return products.map((state) => ({
+				product: state,
+				score: 0,
+				matchStatus: 'unknown_match' as const,
+				scoreData: {
+					score: 0,
+					matchStatus: 'unknown_match' as const,
+					totalWeights: 0,
+					totalWeightedScore: 0
+				}
+			}));
+		}
+
+		const productsWithAttributes = products.map((state) => ({
+			...state,
+			attributes: attributes[state.product.code] ?? []
+		}));
+
+		return personalizeSearchResults(
+			productsWithAttributes,
+			$personalizedSearch.userPreferences,
+			$personalizedSearch.classifyProductsEnabled
+		);
+	}
+
 	onMount(() => {
 		products = getProducts();
+		products.then((prod) => {
+			attributesByCode = getAttributes(prod);
+		});
 	});
 </script>
 
@@ -77,6 +131,23 @@
 		</div>
 	</Card>
 
+	<!-- Preferences Collapsible Section -->
+	<div class="mt-6 w-full">
+		<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
+			<input type="checkbox" bind:checked={showPreferences} />
+			<div class="collapse-title text-md flex items-center gap-2 font-medium">
+				<span class="icon-[mdi--cog] text-lg"></span>
+				{$_('preferences.edit_preferences')}
+			</div>
+			<div class="collapse-content">
+				<PreferencesForm
+					onClose={() => (showPreferences = false)}
+					attributeGroups={data.attributeGroups}
+				/>
+			</div>
+		</div>
+	</div>
+
 	<div class="mt-8 flex w-full">
 		<div
 			class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
@@ -85,26 +156,33 @@
 				{#each Array(SKELETON_COUNT) as _, index (index)}
 					<div class="skeleton h-36 w-full rounded-lg"></div>
 				{/each}
-			{:then products}
-				{#each products as state (state.product.code)}
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
-					<product-card
-						product={state.product}
-						navigating={{
-							to:
-								navigatingTo === state.product.code
-									? { params: { barcode: state.product.code } }
-									: null
-						}}
-						placeholderImage="/Placeholder.svg"
-						onclick={() => navigateToProduct(state.product.code)}
-						class="h-[11rem] w-full"
-					></product-card>
-				{/each}
+			{:then resolvedProducts}
+				{#await attributesByCode then attributes}
+					{@const sortedProducts = sortProducts(resolvedProducts, attributes)}
+					{#each sortedProducts as scoredProduct (scoredProduct.product.product.code)}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_static_element_interactions -->
+						<product-card
+							product={scoredProduct.product.product}
+							navigating={{
+								to:
+									navigatingTo === scoredProduct.product.product.code
+										? { params: { barcode: scoredProduct.product.product.code } }
+										: null
+							}}
+							placeholderImage="/Placeholder.svg"
+							onclick={() => navigateToProduct(scoredProduct.product.product.code)}
+							showMatchTag={$personalizedSearch.classifyProductsEnabled}
+							personalScore={$personalizedSearch.classifyProductsEnabled
+								? scoredProduct.scoreData
+								: undefined}
+						></product-card>
+					{/each}
+				{/await}
 			{/await}
 		</div>
 	</div>
+
 	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 		<donation-banner></donation-banner>
 	</div>
