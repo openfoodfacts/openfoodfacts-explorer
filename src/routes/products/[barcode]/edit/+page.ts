@@ -27,7 +27,15 @@ export const load = (async ({ fetch, params }) => {
 	if (get(userInfo) == null && !dev) {
 		// If the user is not logged in, redirect to the login page
 		// We allow an exception for development mode
-		error(401, 'You must be logged in to view this page');
+		error(401, {
+			message: 'You must be logged in to view this page',
+			actions: [
+				{
+					label: 'Login',
+					url: '/login'
+				}
+			]
+		});
 	}
 
 	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([

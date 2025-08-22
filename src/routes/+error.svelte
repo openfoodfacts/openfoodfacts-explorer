@@ -23,9 +23,12 @@
 <div
 	class="alert alert-error text-error-content bg-error bg-opacity-10 rounded-xl p-6 font-semibold shadow-lg"
 >
+	<span class="icon-[mdi--error] text-3xl"></span>
 	{#if isNetworkError}
 		<NetworkError />
+	{:else if page.error != null}
+		<StandardError error={page.error} />
 	{:else}
-		<StandardError errors={errorDetails} message={errorMessage} />
+		<p>{$_('general.unknown_error')}</p>
 	{/if}
 </div>
