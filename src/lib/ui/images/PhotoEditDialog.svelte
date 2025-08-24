@@ -174,9 +174,7 @@
 
 		try {
 			if (cropperSelection) {
-				cropperSelection.setAttribute('initial-coverage', '0.5');
-				cropperSelection.$reset();
-				cropperSelection.$center();
+				cropperSelection.setAttribute('initial-coverage', '0');
 			}
 		} catch (error) {
 			console.warn('Error initializing crop selection:', error);
@@ -398,6 +396,11 @@
 		try {
 			const selection = event.detail;
 
+			// Enable cropping when a selection is first created
+			if (!cropEnabled && selection.width > 0 && selection.height > 0) {
+				cropEnabled = true;
+			}
+
 			if (!constrainSelectionToBounds(selection)) {
 				event.preventDefault();
 			}
@@ -465,7 +468,6 @@
 					<cropper-handle
 						action="select"
 						plain
-						onpointerdown={enableCropping}
 						aria-label="Start cropping selection"
 					></cropper-handle>
 					<cropper-selection
@@ -475,7 +477,6 @@
 						resizable
 						class="absolute cursor-move border-2 border-white bg-transparent shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
 						style="display: {cropEnabled ? 'block' : 'none'}"
-						onpointerdown={enableCropping}
 						onchange={handleSelectionChange}
 						aria-label="Crop selection area"
 					>
@@ -492,7 +493,6 @@
 							action="move"
 							theme-color="rgba(255, 255, 255, 0.35)"
 							class="absolute z-[5] h-full w-full cursor-move rounded-none border-none bg-transparent"
-							onpointerdown={enableCropping}
 							aria-label="Move crop selection"
 						></cropper-handle>
 
