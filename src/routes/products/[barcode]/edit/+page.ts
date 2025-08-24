@@ -19,7 +19,9 @@ import { dev } from '$app/environment';
 
 export const ssr = false;
 
-export const load = (async ({ fetch, params }) => {
+export const load = (async ({ fetch, params, depends }) => {
+	depends(`product:${params.barcode}`);
+
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
