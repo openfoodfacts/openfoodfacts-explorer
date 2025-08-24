@@ -465,10 +465,7 @@
 					{#if cropEnabled}
 						<cropper-shade></cropper-shade>
 					{/if}
-					<cropper-handle
-						action="select"
-						plain
-						aria-label="Start cropping selection"
+					<cropper-handle action="select" plain aria-label="Start cropping selection"
 					></cropper-handle>
 					<cropper-selection
 						bind:this={cropperSelection}
