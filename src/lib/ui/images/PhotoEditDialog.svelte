@@ -2,6 +2,7 @@
 	import { untrack } from 'svelte';
 	import 'cropperjs';
 	import type { ProductImage } from '$lib/api';
+	import { toast } from '$lib/stores/toastStore';
 
 	type CropData = {
 		x: number;
@@ -301,14 +302,14 @@
 			const cropData = createCropDataFromSelection(transformData);
 
 			if (!cropData) {
-				alert('Please select a valid crop area.');
+				toast.warning('Please select a valid crop area.');
 				return;
 			}
 
 			onSave({ cropData, rotationAngle });
 		} catch (error) {
 			console.error('Error getting crop data:', error);
-			alert('Error processing crop data. Please try again.');
+			toast.error('Error processing crop data. Please try again.');
 		}
 	}
 

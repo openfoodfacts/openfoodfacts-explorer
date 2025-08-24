@@ -15,6 +15,7 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
+	import Toast from '$lib/ui/Toast.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
@@ -225,6 +226,7 @@
 	{/if}
 	<NutritionCalculator />
 	<Footer />
+	<Toast />
 {:else}
 	<div class="py-10 text-center text-xl font-medium">Loading translations...</div>
 {/if}

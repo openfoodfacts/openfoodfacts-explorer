@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 	import ISO6391 from 'iso-639-1';
+	import { invalidateAll } from '$app/navigation';
 
 	import { getImageFieldName } from '$lib/utils';
-	import { ProductsApi } from '$lib/api';
+	import { ProductsApi, fileToBase64 } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
-
-	import type { UploadResult } from './PhotoManager.svelte';
+	import { toast } from '$lib/stores/toastStore';
 
 	type PhotoType = { id: string; label: string };
 
@@ -22,12 +21,9 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
-		onImageUploaded?: (uploadResult?: {
-			type: string;
-			imagefield: string;
-			result: UploadResult;
-		}) => void;
+		onImageUploaded?: (imgId: number) => void;
 		onSelectImage?: () => void;
+		isSelectingImage?: boolean;
 	};
 
 	let {
@@ -42,7 +38,8 @@
 		onToggleExpansion,
 		onImageEdit,
 		onImageUploaded,
-		onSelectImage
+		onSelectImage,
+		isSelectingImage = false
 	}: Props = $props();
 
 	function getLanguage(code: string) {
@@ -62,13 +59,12 @@
 
 		// Map type to OpenFoodFacts imagefield value using utility function
 		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
-
 		const barcode = product.code;
 		const user_id = $preferences.username;
 		const password = $preferences.password;
 
 		if (!user_id || !password) {
-			alert('Please set your OpenFoodFacts username and password in settings.');
+			toast.warning('Please set your OpenFoodFacts username and password in settings.');
 			return;
 		}
 
@@ -77,23 +73,34 @@
 
 		try {
 			const api = new ProductsApi(fetch);
-			const uploadResult = await api.uploadImage(barcode, file, imagefield);
 
-			// Check if upload was successful based on status field
-			if (uploadResult.status === 'status ok') {
+			const base64Data = await fileToBase64(file);
+
+			const uploadResult = await api.uploadImageV3(barcode, base64Data, imagefield);
+
+			if (uploadResult.status === 'success') {
 				if (onImageUploaded) {
-					onImageUploaded({
-						type: sectionType.label,
-						imagefield: imagefield,
-						result: uploadResult
-					});
+					const uploadedImages = uploadResult.product?.images?.uploaded;
+					const firstImageKey = uploadedImages ? Object.keys(uploadedImages)[0] : null;
+					const imgid = firstImageKey ? uploadedImages[firstImageKey]?.imgid : null;
+
+					if (imgid) {
+						toast.success('Image uploaded successfully!');
+						onImageUploaded(imgid);
+					} else {
+						console.warn('Image upload successful but no valid imgid received:', uploadResult);
+					}
 				}
 			} else {
-				alert(`Upload failed: ${uploadResult.error || 'Unknown error'}`);
+				const errorMessages =
+					uploadResult.errors?.length > 0
+						? uploadResult.errors.join(', ')
+						: uploadResult.error || 'Unknown error';
+				toast.error(`Upload failed: ${errorMessages}`);
 			}
 		} catch (err) {
 			console.error('Image upload failed:', err);
-			alert('Image upload failed. Please try again.');
+			toast.error('Image upload failed. Please try again.');
 		} finally {
 			// Clear loading state
 			isUploading = false;
@@ -102,22 +109,32 @@
 		input.value = '';
 	}
 
-	async function handleImageUnselect(type: string) {
+	async function handleImageUnselect() {
 		const barcode = product.code;
-		const imagefield = getImageFieldName(type, activeLanguageCode, photoTypes);
+
+		// Use the type ID directly from the sectionType prop
+		const imageType = sectionType.id;
+
+		// Set loading state
+		isUnselecting = true;
 
 		try {
-			const off = new OpenFoodFacts(fetch);
-			const result = await off.unselectImage(barcode, imagefield);
+			const api = new ProductsApi(fetch);
+			const result = await api.unselectImageV3(barcode, imageType, activeLanguageCode);
 
 			if (result.status === 'success' || result.status_code === 200) {
-				console.log('Image unselected successfully:', result);
+				toast.success('Image unselected successfully');
+				await invalidateAll();
 			} else {
 				console.warn('Image unselect failed:', result);
+				toast.error('Failed to unselect image. Please try again.');
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			alert('Error unselecting image. Please try again.');
+			toast.error('Error unselecting image. Please try again.');
+		} finally {
+			// Clear loading state
+			isUnselecting = false;
 		}
 	}
 
@@ -130,8 +147,9 @@
 	let isStandardType = $derived(!isAdditional);
 	let hasImagesOfType = $derived(imagesOfType.length > 0);
 
-	// Loading state for image upload
+	// Loading states
 	let isUploading = $state(false);
+	let isUnselecting = $state(false);
 </script>
 
 <div class="mb-6">
@@ -168,11 +186,17 @@
 				<button
 					type="button"
 					class="btn btn-xs sm:btn-sm btn-outline btn-error w-full sm:w-auto"
-					disabled={isUploading}
-					onclick={() => handleImageUnselect(sectionType.label)}
+					class:loading={isUnselecting}
+					disabled={isUploading || isUnselecting}
+					onclick={() => handleImageUnselect()}
 				>
-					<span class="icon-[mdi--image-remove] h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+					{#if isUnselecting}
+						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm">Unselecting...</span>
+					{:else}
+						<span class="icon-[mdi--image-remove] h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+					{/if}
 				</button>
 			{/if}
 			{#if hasMoreImages}
@@ -193,13 +217,13 @@
 		<div class="relative">
 			<div
 				class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-				class:opacity-50={isUploading}
+				class:opacity-50={isUploading || isUnselecting}
 			>
 				{#each imagesToShow as image (image.url)}
 					<button
 						type="button"
 						class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
-						disabled={isUploading}
+						disabled={isUploading || isUnselecting}
 						onclick={() => onImageEdit?.(image.url, image.alt)}
 						title="Click to edit this image"
 					>
@@ -219,14 +243,16 @@
 				{/each}
 			</div>
 
-			<!-- Upload loading overlay -->
-			{#if isUploading}
+			<!-- Upload/Unselect loading overlay -->
+			{#if isUploading || isUnselecting}
 				<div
 					class="bg-base-100/80 absolute inset-0 flex items-center justify-center rounded backdrop-blur-sm"
 				>
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg text-primary"></div>
-						<p class="text-base-content/70 mt-2 text-sm">Processing upload...</p>
+						<p class="text-base-content/70 mt-2 text-sm">
+							{isUploading ? 'Processing upload...' : 'Unselecting image...'}
+						</p>
 					</div>
 				</div>
 			{/if}
@@ -234,12 +260,20 @@
 	{:else}
 		<div
 			class="bg-base-200 relative flex w-full flex-col items-center justify-center gap-2 rounded p-3 sm:p-4"
+			class:opacity-50={isSelectingImage}
 		>
 			{#if isUploading}
 				<div class="text-center">
 					<div class="loading loading-spinner loading-lg text-primary"></div>
 					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
 						Uploading {sectionType.label.toLowerCase()} photo...
+					</p>
+				</div>
+			{:else if isSelectingImage}
+				<div class="text-center">
+					<div class="loading loading-spinner loading-lg text-primary"></div>
+					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
+						Selecting {sectionType.label.toLowerCase()} photo...
 					</p>
 				</div>
 			{:else}
@@ -249,10 +283,17 @@
 				<button
 					type="button"
 					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					class:loading={isSelectingImage}
+					disabled={isSelectingImage}
 					onclick={() => onSelectImage?.()}
 				>
-					<span class="icon-[mdi--image-plus] h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Add {sectionType.label}</span>
+					{#if isSelectingImage}
+						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm">Selecting...</span>
+					{:else}
+						<span class="icon-[mdi--image-plus] h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
+					{/if}
 				</button>
 			{/if}
 		</div>

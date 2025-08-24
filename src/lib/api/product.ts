@@ -167,6 +167,116 @@ export class ProductsApi {
 		}
 	}
 
+	/**
+	 * Upload image using API v3.3 with base64 encoded data
+	 * @param barcode Product barcode
+	 * @param imageDataBase64 Base64 encoded image data
+	 * @param imagefield The type of image (optional, defaults to 'other')
+	 */
+	async uploadImageV3(barcode: string, imageDataBase64: string, imagefield?: string) {
+		const url = `${API_HOST}/api/v3/product/${barcode}/images`;
+
+		const user_id = get(preferences).username;
+		const password = get(preferences).password;
+		const lc = get(preferences).lang;
+		const cc = get(preferences).country;
+
+		if (!user_id || !password) {
+			throw new Error('Username and password are required for image upload');
+		}
+
+		const body = {
+			lc,
+			cc,
+			user_id,
+			password,
+			image_data_base64: imageDataBase64,
+			...(imagefield && {
+				selected: {
+					[imagefield.split('_')[0]]: {
+						[imagefield.split('_')[1] || 'en']: {}
+					}
+				}
+			})
+		};
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+
+			if (!res.ok) {
+				const errorData = await res.json();
+				throw new Error(`Failed to upload image: ${JSON.stringify(errorData)}`);
+			}
+
+			const result = await res.json();
+			return result;
+		} catch (err) {
+			console.error('Error during v3.3 image upload:', err);
+			throw err;
+		}
+	}
+
+	/**
+	 * Select and crop images using API v3.3
+	 * @param barcode Product barcode
+	 * @param images Object containing image selections and crop parameters
+	 */
+	async selectAndCropImagesV3(barcode: string, images: ImageSelectionData) {
+		const url = `${API_HOST}/api/v3.3/product/${barcode}`;
+
+		const body = {
+			fields: 'updated',
+			product: {
+				images
+			}
+		};
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+
+			if (!res.ok) {
+				const errorData = await res.json();
+				throw new Error(`Failed to select/crop images: ${JSON.stringify(errorData)}`);
+			}
+
+			const result = await res.json();
+			return result;
+		} catch (err) {
+			console.error('Error during v3.3 image selection/cropping:', err);
+			throw err;
+		}
+	}
+
+	/**
+	 * Unselect an image for a specific language and type
+	 * @param barcode Product barcode
+	 * @param imageType Image type (front, ingredients, nutrition, etc.)
+	 * @param language Language code (en, fr, es, etc.)
+	 */
+	async unselectImageV3(barcode: string, imageType: string, language: string) {
+		const images = {
+			selected: {
+				[imageType]: {
+					[language]: null
+				}
+			}
+		};
+
+		return this.selectAndCropImagesV3(barcode, images);
+	}
+
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
 		const params = new URLSearchParams({
 			fields: REDUCED_FIELDS.join(','),
@@ -266,6 +376,35 @@ export type ProductAttributeForScoring = {
 export type ProductAttributeGroup = {
 	id: string;
 	attributes: ProductAttributeForScoring[];
+};
+
+// Image selection and cropping types for v3.3 API
+export type ImageGenerationParameters = {
+	angle?: number;
+	x1?: number;
+	y1?: number;
+	x2?: number;
+	y2?: number;
+	coordinates_image_size?: string;
+	white_magic?: boolean | string;
+	normalize?: boolean | string;
+};
+
+export type ImageSelection = {
+	imgid: string;
+	generation?: ImageGenerationParameters;
+};
+
+export type ImageSelectionByLanguage = {
+	[language: string]: ImageSelection | null | undefined;
+};
+
+export type ImageSelectionByType = {
+	[imageType: string]: ImageSelectionByLanguage;
+};
+
+export type ImageSelectionData = {
+	selected: ImageSelectionByType;
 };
 
 type LangIngredient = `ingredients_text_${string}`;
@@ -518,5 +657,155 @@ export async function selectImage(
 	} catch (error) {
 		console.error('Error cropping and rotating image:', error);
 		throw error;
+	}
+}
+
+/**
+ * Convert a File to base64 string
+ * @param file The file to convert
+ * @returns Promise that resolves to base64 string
+ */
+export function fileToBase64(file: File): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => {
+			if (typeof reader.result === 'string') {
+				// Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+				const base64 = reader.result.split(',')[1];
+				resolve(base64);
+			} else {
+				reject(new Error('Failed to convert file to base64'));
+			}
+		};
+		reader.onerror = () => reject(reader.error);
+		reader.readAsDataURL(file);
+	});
+}
+
+/**
+ * Create image selection data for a single image without cropping
+ * @param imageType The type of image (front, ingredients, nutrition, etc.)
+ * @param language The language code
+ * @param imgid The image ID (string or number)
+ */
+export function createSimpleImageSelection(
+	imageType: string,
+	language: string,
+	imgid: string | number
+): ImageSelectionData {
+	return {
+		selected: {
+			[imageType]: {
+				[language]: {
+					imgid: imgid.toString()
+				}
+			}
+		}
+	};
+}
+
+/**
+ * Create image selection data with cropping parameters
+ * @param imageType The type of image (front, ingredients, nutrition, etc.)
+ * @param language The language code
+ * @param imgid The image ID (string or number)
+ * @param cropParams The cropping parameters
+ */
+export function createImageSelectionWithCrop(
+	imageType: string,
+	language: string,
+	imgid: string | number,
+	cropParams: ImageGenerationParameters
+): ImageSelectionData {
+	return {
+		selected: {
+			[imageType]: {
+				[language]: {
+					imgid: imgid.toString(),
+					generation: cropParams
+				}
+			}
+		}
+	};
+}
+
+/**
+ * Example usage of the v3.3 API for uploading and selecting images
+ */
+export class ImageApiV3Helper {
+	private api: ProductsApi;
+
+	constructor(fetch: typeof window.fetch) {
+		this.api = new ProductsApi(fetch);
+	}
+
+	/**
+	 * Upload an image file and select it for a specific type and language
+	 * @param barcode Product barcode
+	 * @param imageFile The image file to upload
+	 * @param imageType Type of image (front, ingredients, nutrition, etc.)
+	 * @param language Language code
+	 */
+	async uploadAndSelectImage(
+		barcode: string,
+		imageFile: File,
+		imageType: string,
+		language: string
+	) {
+		// Convert file to base64
+		const base64Data = await fileToBase64(imageFile);
+
+		// Upload the image
+		const uploadResult = await this.api.uploadImageV3(barcode, base64Data);
+
+		if (uploadResult.status === 'success') {
+			// Extract imgid from the nested response structure
+			let imgid = null;
+			const uploadedImages = uploadResult.product?.images?.uploaded;
+
+			if (uploadedImages) {
+				const imageKeys = Object.keys(uploadedImages);
+				if (imageKeys.length > 0) {
+					const firstImageKey = imageKeys[0];
+					imgid = uploadedImages[firstImageKey]?.imgid;
+				}
+			}
+
+			if (imgid) {
+				// Select the uploaded image
+				const selectionData = createSimpleImageSelection(imageType, language, imgid);
+				const selectResult = await this.api.selectAndCropImagesV3(barcode, selectionData);
+
+				return {
+					upload: uploadResult,
+					selection: selectResult
+				};
+			} else {
+				throw new Error('Failed to extract image ID from upload result');
+			}
+		}
+
+		const errorMessages =
+			uploadResult.errors?.length > 0 ? uploadResult.errors.join(', ') : 'Failed to upload image';
+		throw new Error(errorMessages);
+	}
+
+	/**
+	 * Select and crop an existing image
+	 * @param barcode Product barcode
+	 * @param imgid Existing image ID
+	 * @param imageType Type of image
+	 * @param language Language code
+	 * @param cropParams Cropping parameters
+	 */
+	async selectAndCropImage(
+		barcode: string,
+		imgid: string,
+		imageType: string,
+		language: string,
+		cropParams: ImageGenerationParameters
+	) {
+		const selectionData = createImageSelectionWithCrop(imageType, language, imgid, cropParams);
+		return await this.api.selectAndCropImagesV3(barcode, selectionData);
 	}
 }

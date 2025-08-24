@@ -1,5 +1,4 @@
 <script lang="ts">
-	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 	import ISO6391 from 'iso-639-1';
 	import { tick } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -8,9 +7,14 @@
 
 	import { _ } from '$lib/i18n';
 	import type { Product, ProductImage } from '$lib/api';
-	import { getProductImageUrl, selectImage } from '$lib/api/product';
+	import {
+		getProductImageUrl,
+		ProductsApi,
+		createImageSelectionWithCrop,
+		createSimpleImageSelection
+	} from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
-	import { getImageFieldName } from '$lib/utils';
+	import { toast } from '$lib/stores/toastStore';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
@@ -180,48 +184,62 @@
 		editingImageData = undefined;
 	}
 
+	// Auto-open modal when editingImageData is set
+	$effect(() => {
+		if (editingImageData && editingImageModal) {
+			tick().then(() => {
+				editingImageModal?.openModal();
+			});
+		}
+	});
+
 	export type UploadResult = {
+		code?: string;
 		status: string;
-		imgid?: string | number;
-		error?: string;
-		[key: string]: unknown;
+		errors?: string[];
+		warnings?: string[];
+		result?: {
+			id: string;
+			lc_name: string;
+			name: string;
+		};
+		product?: {
+			images?: {
+				uploaded?: {
+					[imgid: string]: {
+						imgid: number;
+						sizes: {
+							[size: string]: {
+								h: number;
+								w: number;
+							};
+						};
+						uploaded_t: number;
+						uploader: string;
+					};
+				};
+			};
+		};
 	};
 
-	async function handleImageUploaded(uploadInfo?: {
-		type: string;
-		imagefield: string;
-		result: UploadResult;
-	}) {
-		await invalidateAll();
-
-		if (uploadInfo?.result?.status === 'status ok') {
+	function handleImageUploaded(imgId: number) {
+		invalidateAll().then(() => {
 			setTimeout(() => {
-				openUploadedImage({
-					type: uploadInfo.type,
-					result: uploadInfo.result
-				});
+				openUploadedImage(imgId);
 			}, 1500);
-		}
+		});
 	}
 
-	function openUploadedImage(uploadInfo: { type: string; result: UploadResult }) {
-		const typeImages = currentImages.filter((img) => img.type === uploadInfo.type);
+	function openUploadedImage(imgId: number) {
+		const typeImages = currentImages.filter((img) => img.imgid === imgId);
 
 		if (typeImages.length === 0) {
-			console.warn(`No images found for type: ${uploadInfo.type}`);
+			console.warn(`No images found for imgId: ${imgId}`);
 			return;
 		}
 
-		if (uploadInfo.result?.imgid) {
-			const uploadedImage = typeImages.find(
-				(img) => img.imgid.toString() === uploadInfo.result.imgid!.toString()
-			);
-			if (uploadedImage) {
-				editingImageData = uploadedImage;
-			} else {
-				console.warn(`Could not find uploaded image with imgid: ${uploadInfo.result.imgid}`);
-			}
-		}
+		const uploadedImage = typeImages[0];
+		editingImageData = uploadedImage;
 	}
 
 	async function saveCurrentImage(data: ImageEditData) {
@@ -232,65 +250,52 @@
 
 		try {
 			const { cropData, rotationAngle } = data;
-			const hasCropData = cropData.width > 0 && cropData.height > 0;
+			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
 
-			if (hasCropData) {
-				await saveImageCropAndRotate(editingImageData, cropData, rotationAngle);
-			} else {
-				await handleImageRotateOnly(editingImageData, rotationAngle);
-			}
+			toast.success('Image saved successfully!');
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 			console.error('Error processing image:', error);
-			alert(`Error processing image: ${errorMessage}. Please try again.`);
+			toast.error(`Error processing image: ${errorMessage}. Please try again.`);
 		} finally {
 			await invalidateAll();
 			closeEditModal();
 		}
 	}
 
-	async function saveImageCropAndRotate(
+	async function saveImageWithSelectAndCrop(
 		image: ProductImage,
 		cropData: { x: number; y: number; width: number; height: number },
 		rotationAngle: number
 	) {
-		// Prepare crop data for API
-		const apiCropData = {
-			x1: Math.round(cropData.x),
-			y1: Math.round(cropData.y),
-			x2: Math.round(cropData.x + cropData.width),
-			y2: Math.round(cropData.y + cropData.height),
-			angle: rotationAngle,
-			normalize: true,
-			white_magic: false
-		};
-
 		try {
-			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
-			const imageFieldId = `${image.typeId}_${activeLanguageCode}`;
+			const api = new ProductsApi(fetch);
 
-			const off = new OpenFoodFacts(fetch);
-			await off.cropImage(product.code, image.imgid, imageFieldId, apiCropData);
-		} catch (error) {
-			console.error('Error cropping and rotating image:', error);
-			throw error;
-		}
-	}
+			// Always use the same API, but include crop parameters only if there's actual cropping
+			const hasCropData = cropData.width > 0 && cropData.height > 0;
 
-	async function handleImageRotateOnly(image: ProductImage, rotationAngle: number) {
-		try {
-			// Create the image field ID in the format {IMAGE_TYPE}_{LANG}
-			const imageFieldId = `${image.typeId}_${activeLanguageCode}`;
+			const params = {
+				angle: rotationAngle,
+				normalize: true,
+				white_magic: false,
+				...(hasCropData && {
+					x1: Math.round(cropData.x),
+					y1: Math.round(cropData.y),
+					x2: Math.round(cropData.x + cropData.width),
+					y2: Math.round(cropData.y + cropData.height)
+				})
+			};
 
-			const off = new OpenFoodFacts(fetch);
-			await off.rotateImage(
-				product.code,
-				imageFieldId,
-				image.imgid.toString(),
-				rotationAngle.toString()
+			const imageSelectionData = createImageSelectionWithCrop(
+				image.typeId,
+				activeLanguageCode,
+				image.imgid,
+				params
 			);
+
+			await api.selectAndCropImagesV3(product.code, imageSelectionData);
 		} catch (error) {
-			console.error('Error rotating image:', error);
+			console.error('Error processing image with selectAndCrop API:', error);
 			throw error;
 		}
 	}
@@ -309,23 +314,21 @@
 			return;
 		}
 
-		const imagefield = getImageFieldName(image.type, activeLanguageCode, photoTypes);
-
 		try {
-			const off = new OpenFoodFacts(fetch);
-			const result = await off.unselectImage(barcode, imagefield);
+			const api = new ProductsApi(fetch);
+			const result = await api.unselectImageV3(barcode, image.typeId, activeLanguageCode);
 
 			if (result.status === 'success' || result.status_code === 200) {
-				console.log('Image unselected successfully:', result);
-				invalidateAll();
+				toast.success('Image unselected successfully');
+				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
-				alert('Failed to unselect image. Please try again.');
+				toast.error('Failed to unselect image. Please try again.');
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			alert('Error unselecting image. Please try again.');
+			toast.error('Error unselecting image. Please try again.');
 		}
 	}
 
@@ -341,6 +344,8 @@
 
 	let selectingImageModal: PhotoSelectDialog | undefined = $state();
 	let selectingImageSection: string | undefined = $state();
+	let isSelectingImage = $state(false);
+
 	function openImageSelection(section: string) {
 		console.debug(`Opening image selection for section: ${section}`);
 		selectingImageSection = section;
@@ -353,15 +358,25 @@
 			return;
 		}
 
-		console.log(`Selecting image for section ${selectingImageSection}:`, image);
+		// Set loading state
+		isSelectingImage = true;
 
-		const fieldId = `${selectingImageSection}_${activeLanguageCode}`;
 		try {
-			await selectImage(fetch, product.code, image, fieldId);
-			invalidateAll();
+			const api = new ProductsApi(fetch);
+			const selectionData = createSimpleImageSelection(
+				selectingImageSection,
+				activeLanguageCode,
+				image.imgid
+			);
+
+			await api.selectAndCropImagesV3(product.code, selectionData);
+			await invalidateAll();
+			toast.success('Image selected successfully');
 		} catch (error) {
 			console.error('Error selecting image:', error);
-			alert('Error selecting image. Please try again.');
+			toast.error('Error selecting image. Please try again.');
+		} finally {
+			isSelectingImage = false;
 		}
 	}
 </script>
@@ -391,6 +406,7 @@
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
 						onSelectImage={() => openImageSelection(photoType.id)}
+						isSelectingImage={isSelectingImage && selectingImageSection === photoType.id}
 					/>
 				{/each}
 
