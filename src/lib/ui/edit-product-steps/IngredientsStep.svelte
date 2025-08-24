@@ -1,9 +1,19 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
+
+	type OCRResult = {
+		status?: number;
+		ingredients_text_from_image?: string | null;
+		ingredients_text_from_image_orig?: string | null;
+		text?: string;
+		ingredients_text?: string;
+		ocr_engine?: string;
+	};
 
 	type Props = {
 		product: Product;
@@ -14,8 +24,49 @@
 	let { product = $bindable(), getLanguage, getIngredientsImage }: Props = $props();
 
 	let showInfo = $state(false);
+	let ocrLoadingForLanguage: string | null = $state(null);
+
 	function toggleInfo() {
 		showInfo = !showInfo;
+	}
+
+	async function performOCR(languageCode: string) {
+		// Check if there's an ingredients image for this language
+		if (!getIngredientsImage(languageCode)) {
+			console.error('No ingredients image available for OCR');
+			return;
+		}
+
+		// Set loading state
+		ocrLoadingForLanguage = languageCode;
+
+		try {
+			const openfoodfacts = new OpenFoodFacts(fetch);
+			const imagefield = `ingredients_${languageCode}`;
+
+			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
+			const result = (await openfoodfacts.performOCR(product.code, imagefield)) as OCRResult;
+
+			if (result && typeof result === 'object') {
+				// Extract text from OCR result - check multiple possible fields
+				const ocrText =
+					result.ingredients_text_from_image || result.text || result.ingredients_text || '';
+
+				if (ocrText && ocrText.trim()) {
+					// Update the ingredients text for this language
+					product[`ingredients_text_${languageCode}`] = ocrText;
+				} else {
+					console.warn('No text could be extracted from the image');
+				}
+			} else {
+				console.warn('OCR failed - invalid result:', result);
+			}
+		} catch (error) {
+			console.error('Error performing OCR:', error);
+		} finally {
+			// Clear loading state
+			ocrLoadingForLanguage = null;
+		}
 	}
 </script>
 
@@ -60,7 +111,26 @@
 		<div class="tab-content form-control p-6">
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
-					<ImageButton src={getIngredientsImage(code) ?? undefined} />
+					<div class="flex flex-col gap-3">
+						<ImageButton src={getIngredientsImage(code) ?? undefined} />
+
+						<!-- OCR Button -->
+						<button
+							type="button"
+							class="btn btn-outline btn-sm self-start"
+							class:loading={ocrLoadingForLanguage === code}
+							disabled={ocrLoadingForLanguage !== null}
+							onclick={() => performOCR(code)}
+						>
+							{#if ocrLoadingForLanguage === code}
+								<span class="loading loading-spinner h-4 w-4"></span>
+								<span>Extracting ingredients...</span>
+							{:else}
+								<span class="icon-[mdi--text-recognition] h-4 w-4"></span>
+								<span>Extract ingredients from image</span>
+							{/if}
+						</button>
+					</div>
 				{:else}
 					<p class="alert alert-warning mb-4 text-sm sm:text-base">
 						{$_('product.edit.no_ingredients_image')}
@@ -78,7 +148,9 @@
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
+				class:opacity-50={ocrLoadingForLanguage === code}
 				bind:value={product[`ingredients_text_${code}`]}
+				disabled={ocrLoadingForLanguage === code}
 			></textarea>
 		</div>
 	{/each}
