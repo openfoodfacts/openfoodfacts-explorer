@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi, type PaginatedPriceFullList } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import {
 	type Brand,
@@ -15,21 +15,18 @@ import {
 } from '$lib/api';
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-import {
-	createPricesApi,
-	isConfigured as isPriceConfigured,
-	type PriceFull
-} from '$lib/api/prices';
+import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
-	const prices: PriceFull[] = [];
-	const res = await api.getPrices({ product_code: code });
-	if (res.error != null) throw new Error('Error fetching first page.');
+	const prices: PaginatedPriceFullList['items'][number] = [];
+	const { data, error } = await api.getPrices({ product_code: code });
+	if (error != null) throw new Error('Error fetching first page.');
 
-	prices.push(...res.data.items.flat());
+	const { items, pages } = data;
 
-	const pages = res.data.pages;
+	prices.push(...items.flat());
+
 	for (let page = 2; page <= pages; page++) {
 		const res = await api.getPrices({ product_code: code, page: page });
 		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
@@ -42,12 +39,15 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const state = await productsApi.getProductV3(params.barcode, {
-		// @ts-expect-error - will be fixed in next sdk version
+	const { data: state, error: apiError } = await productsApi.getProductV3(params.barcode, {
 		fields: ['all', 'knowledge_panels']
 	});
 
-	if (state == null || state.status === 'failure') {
+	if (state == null) {
+		error(500, { message: 'Error loading product', errors: [apiError] });
+	}
+	// product not found
+	else if (state.status === 'failure') {
 		error(404, { message: 'Failure to load product', errors: state?.errors });
 	}
 
@@ -58,8 +58,13 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const origins = getTaxo<Origin>('origins', fetch);
 	const countries = getTaxo<Country>('countries', fetch);
 
-	const folksonomyTags = isFolksonomyConfigured() ? folkApi.getProductTags(params.barcode) : [];
-	const folksonomyKeys = isFolksonomyConfigured() ? folkApi.getKeys() : [];
+	const folksonomyTags = isFolksonomyConfigured()
+		? folkApi.getProductTags(params.barcode).then((it) => it.data ?? [])
+		: Promise.resolve([]);
+
+	const folksonomyKeys = isFolksonomyConfigured()
+		? folkApi.getKeys().then((it) => it.data)
+		: Promise.resolve([]);
 
 	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
