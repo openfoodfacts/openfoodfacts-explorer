@@ -200,9 +200,7 @@ export class ProductsApi {
 	async getProductReducedForCard(barcode: string) {
 		const fields = [...REDUCED_FIELDS] as Array<keyof ProductV3>;
 
-		return this.off.getProductV3(barcode, {
-			fields
-		});
+		return this.off.getProductV3(barcode, { fields });
 	}
 }
 
