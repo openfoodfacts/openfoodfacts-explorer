@@ -15,12 +15,13 @@
 
 	async function refreshTags() {
 		const folksonomyApi = createFolksonomyApi(fetch);
-		const res = await folksonomyApi.getProductTags(barcode);
-		if ('error' in res) {
-			console.error(res.error);
-		} else {
-			tags = res;
+		const { data, error } = await folksonomyApi.getProductTags(barcode);
+		if (!data) {
+			console.error('Failed to fetch tags:', error);
+			return;
 		}
+
+		tags = data;
 	}
 
 	function getFilteredArray<T>(
