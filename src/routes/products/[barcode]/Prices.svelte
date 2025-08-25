@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 
 	import Card from '$lib/ui/Card.svelte';
+	import type { PriceFull } from '$lib/api/prices';
 
 	let PricesMap: Promise<typeof import('./PricesMap.svelte').default> | null = $state(null);
 
