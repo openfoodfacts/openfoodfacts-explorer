@@ -145,7 +145,7 @@
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
 
-	function createProductStore(data: PageData) {
+	function createProductStore(data: PageData): Product {
 		return data.state.status === PRODUCT_STATUS.EMPTY || !data.state.product
 			? emptyProduct
 			: {
