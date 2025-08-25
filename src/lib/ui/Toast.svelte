@@ -1,15 +1,8 @@
 <script lang="ts">
-	import { toast, type Toast } from '$lib/stores/toastStore';
+	import { getToastCtx, type Toast } from '$lib/stores/toasts';
 	import { fly } from 'svelte/transition';
 
-	let toasts: Toast[] = $state([]);
-
-	// Subscribe to toast store
-	$effect(() => {
-		return toast.subscribe((value) => {
-			toasts = value;
-		});
-	});
+	const toastCtx = getToastCtx();
 
 	function getToastClass(type: Toast['type']): string {
 		const baseClasses = 'alert shadow-lg max-w-sm';
@@ -43,12 +36,12 @@
 	}
 
 	function handleClose(toastId: string) {
-		toast.remove(toastId);
+		toastCtx.remove(toastId);
 	}
 </script>
 
 <div class="toast toast-top toast-end z-50">
-	{#each toasts as toastItem (toastItem.id)}
+	{#each toastCtx.toasts as toastItem (toastItem.id)}
 		<div
 			class={getToastClass(toastItem.type)}
 			transition:fly={{ x: 300, duration: 200 }}

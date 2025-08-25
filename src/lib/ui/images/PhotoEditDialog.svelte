@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import 'cropperjs';
 	import type { ProductImage } from '$lib/api';
-	import { toast } from '$lib/stores/toastStore';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	type CropData = {
 		x: number;
@@ -53,6 +53,8 @@
 	};
 
 	let { image, reportImageUrl, onClose, onSave, onImageUnselected }: Props = $props();
+
+	const toast = getToastCtx();
 
 	export function openImage(imageData: ProductImage): void {
 		image = imageData;

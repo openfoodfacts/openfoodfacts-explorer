@@ -6,7 +6,7 @@
 	import { ProductsApi, fileToBase64 } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
-	import { toast } from '$lib/stores/toastStore';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	type PhotoType = { id: string; label: string };
 
@@ -41,6 +41,8 @@
 		onSelectImage,
 		isSelectingImage = false
 	}: Props = $props();
+
+	const toast = getToastCtx();
 
 	function getLanguage(code: string) {
 		return ISO6391.getName(code);
@@ -78,24 +80,30 @@
 
 			const uploadResult = await api.uploadImageV3(barcode, base64Data, imagefield);
 
-			if (uploadResult.status === 'success') {
+			if (uploadResult.error) {
+				toast.error(`Upload failed: ${uploadResult.error}`);
+				return;
+			}
+
+			if (uploadResult.data?.status === 'success') {
 				if (onImageUploaded) {
-					const uploadedImages = uploadResult.product?.images?.uploaded;
+					const uploadedImages = uploadResult.data.product?.images?.uploaded;
 					const firstImageKey = uploadedImages ? Object.keys(uploadedImages)[0] : null;
-					const imgid = firstImageKey ? uploadedImages[firstImageKey]?.imgid : null;
+					const imgid =
+						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
 
 					if (imgid) {
 						toast.success('Image uploaded successfully!');
 						onImageUploaded(imgid);
 					} else {
-						console.warn('Image upload successful but no valid imgid received:', uploadResult);
+						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
 					}
 				}
 			} else {
 				const errorMessages =
-					uploadResult.errors?.length > 0
-						? uploadResult.errors.join(', ')
-						: uploadResult.error || 'Unknown error';
+					uploadResult.data?.errors && uploadResult.data.errors.length > 0
+						? uploadResult.data.errors.join(', ')
+						: 'Unknown error';
 				toast.error(`Upload failed: ${errorMessages}`);
 			}
 		} catch (err) {
@@ -122,7 +130,7 @@
 			const api = new ProductsApi(fetch);
 			const result = await api.unselectImageV3(barcode, imageType, activeLanguageCode);
 
-			if (result.status === 'success' || result.status_code === 200) {
+			if (result.data?.status === 'success' || !result.error) {
 				toast.success('Image unselected successfully');
 				await invalidateAll();
 			} else {

@@ -14,7 +14,7 @@
 		createSimpleImageSelection
 	} from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
-	import { toast } from '$lib/stores/toastStore';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
@@ -22,6 +22,8 @@
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
+
+	const toast = getToastCtx();
 
 	// Use regular Map for language cache since it's not reactive data,
 	// just a performance optimization to avoid repeated ISO6391.getName() calls
@@ -318,7 +320,7 @@
 			const api = new ProductsApi(fetch);
 			const result = await api.unselectImageV3(barcode, image.typeId, activeLanguageCode);
 
-			if (result.status === 'success' || result.status_code === 200) {
+			if (result.data?.status === 'success' || !result.error) {
 				toast.success('Image unselected successfully');
 				await invalidateAll();
 				editingImageModal?.closeModal();

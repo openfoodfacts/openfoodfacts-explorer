@@ -167,13 +167,18 @@ export class ProductsApi {
 		}
 	}
 
+	// TODO: move this to the sdk
 	/**
 	 * Upload image using API v3.3 with base64 encoded data
 	 * @param barcode Product barcode
 	 * @param imageDataBase64 Base64 encoded image data
 	 * @param imagefield The type of image (optional, defaults to 'other')
 	 */
-	async uploadImageV3(barcode: string, imageDataBase64: string, imagefield?: string) {
+	async uploadImageV3(
+		barcode: string,
+		imageDataBase64: string,
+		imagefield?: string
+	): Promise<{ data?: ImageUploadResponse; error?: string }> {
 		const url = `${API_HOST}/api/v3/product/${barcode}/images`;
 
 		const user_id = get(preferences).username;
@@ -182,7 +187,7 @@ export class ProductsApi {
 		const cc = get(preferences).country;
 
 		if (!user_id || !password) {
-			throw new Error('Username and password are required for image upload');
+			return { error: 'Username and password are required for image upload' };
 		}
 
 		const body = {
@@ -210,15 +215,17 @@ export class ProductsApi {
 			});
 
 			if (!res.ok) {
-				const errorData = await res.json();
-				throw new Error(`Failed to upload image: ${JSON.stringify(errorData)}`);
+				const errorData = await res.json().catch(() => ({}));
+				return { error: `Failed to upload image: ${JSON.stringify(errorData)}` };
 			}
 
 			const result = await res.json();
-			return result;
+			return { data: result };
 		} catch (err) {
 			console.error('Error during v3.3 image upload:', err);
-			throw err;
+			return {
+				error: `Error during v3.3 image upload: ${err instanceof Error ? err.message : String(err)}`
+			};
 		}
 	}
 
@@ -227,7 +234,10 @@ export class ProductsApi {
 	 * @param barcode Product barcode
 	 * @param images Object containing image selections and crop parameters
 	 */
-	async selectAndCropImagesV3(barcode: string, images: ImageSelectionData) {
+	async selectAndCropImagesV3(
+		barcode: string,
+		images: ImageSelectionData
+	): Promise<{ data?: ImageOperationResponse; error?: string }> {
 		const url = `${API_HOST}/api/v3.3/product/${barcode}`;
 
 		const body = {
@@ -247,15 +257,17 @@ export class ProductsApi {
 			});
 
 			if (!res.ok) {
-				const errorData = await res.json();
-				throw new Error(`Failed to select/crop images: ${JSON.stringify(errorData)}`);
+				const errorData = await res.json().catch(() => ({}));
+				return { error: `Failed to select/crop images: ${JSON.stringify(errorData)}` };
 			}
 
-			const result = await res.json();
-			return result;
+			const result = (await res.json()) as ImageOperationResponse;
+			return { data: result };
 		} catch (err) {
 			console.error('Error during v3.3 image selection/cropping:', err);
-			throw err;
+			return {
+				error: `Error during v3.3 image selection/cropping: ${err instanceof Error ? err.message : String(err)}`
+			};
 		}
 	}
 
@@ -265,7 +277,11 @@ export class ProductsApi {
 	 * @param imageType Image type (front, ingredients, nutrition, etc.)
 	 * @param language Language code (en, fr, es, etc.)
 	 */
-	async unselectImageV3(barcode: string, imageType: string, language: string) {
+	async unselectImageV3(
+		barcode: string,
+		imageType: string,
+		language: string
+	): Promise<{ data?: ImageOperationResponse; error?: string }> {
 		const images = {
 			selected: {
 				[imageType]: {
@@ -405,6 +421,50 @@ export type ImageSelectionByType = {
 
 export type ImageSelectionData = {
 	selected: ImageSelectionByType;
+};
+
+// Response type for v3 image upload operations
+export type ImageUploadResponse = {
+	status: 'success' | 'failure';
+	result?: {
+		id: string;
+		name: string;
+	};
+	product?: {
+		code: string;
+		images?: {
+			uploaded?: {
+				[imgid: string]: {
+					imgid: number;
+					sizes: {
+						[size: string]: {
+							h: number;
+							w: number;
+						};
+					};
+					uploaded_t: number;
+					uploader: string;
+				};
+			};
+		};
+	};
+	errors?: string[];
+	warnings?: string[];
+};
+
+// Response type for v3.3 image operations
+export type ImageOperationResponse = {
+	status: 'success' | 'failure';
+	result?: {
+		id: string;
+		name: string;
+	};
+	product?: {
+		code: string;
+		images?: Record<string, SelectedImage | RawImage>;
+	};
+	errors?: string[];
+	warnings?: string[];
 };
 
 type LangIngredient = `ingredients_text_${string}`;
@@ -727,85 +787,4 @@ export function createImageSelectionWithCrop(
 			}
 		}
 	};
-}
-
-/**
- * Example usage of the v3.3 API for uploading and selecting images
- */
-export class ImageApiV3Helper {
-	private api: ProductsApi;
-
-	constructor(fetch: typeof window.fetch) {
-		this.api = new ProductsApi(fetch);
-	}
-
-	/**
-	 * Upload an image file and select it for a specific type and language
-	 * @param barcode Product barcode
-	 * @param imageFile The image file to upload
-	 * @param imageType Type of image (front, ingredients, nutrition, etc.)
-	 * @param language Language code
-	 */
-	async uploadAndSelectImage(
-		barcode: string,
-		imageFile: File,
-		imageType: string,
-		language: string
-	) {
-		// Convert file to base64
-		const base64Data = await fileToBase64(imageFile);
-
-		// Upload the image
-		const uploadResult = await this.api.uploadImageV3(barcode, base64Data);
-
-		if (uploadResult.status === 'success') {
-			// Extract imgid from the nested response structure
-			let imgid = null;
-			const uploadedImages = uploadResult.product?.images?.uploaded;
-
-			if (uploadedImages) {
-				const imageKeys = Object.keys(uploadedImages);
-				if (imageKeys.length > 0) {
-					const firstImageKey = imageKeys[0];
-					imgid = uploadedImages[firstImageKey]?.imgid;
-				}
-			}
-
-			if (imgid) {
-				// Select the uploaded image
-				const selectionData = createSimpleImageSelection(imageType, language, imgid);
-				const selectResult = await this.api.selectAndCropImagesV3(barcode, selectionData);
-
-				return {
-					upload: uploadResult,
-					selection: selectResult
-				};
-			} else {
-				throw new Error('Failed to extract image ID from upload result');
-			}
-		}
-
-		const errorMessages =
-			uploadResult.errors?.length > 0 ? uploadResult.errors.join(', ') : 'Failed to upload image';
-		throw new Error(errorMessages);
-	}
-
-	/**
-	 * Select and crop an existing image
-	 * @param barcode Product barcode
-	 * @param imgid Existing image ID
-	 * @param imageType Type of image
-	 * @param language Language code
-	 * @param cropParams Cropping parameters
-	 */
-	async selectAndCropImage(
-		barcode: string,
-		imgid: string,
-		imageType: string,
-		language: string,
-		cropParams: ImageGenerationParameters
-	) {
-		const selectionData = createImageSelectionWithCrop(imageType, language, imgid, cropParams);
-		return await this.api.selectAndCropImagesV3(barcode, selectionData);
-	}
 }
