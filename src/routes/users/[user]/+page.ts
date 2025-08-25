@@ -12,11 +12,23 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		(it) => it.json()
 	) as Promise<{ products: Product[] }>;
 
-	const [contributorData, editorData] = await Promise.all([contributorResponse, editorResponse]);
+	// Try to fetch photographers data, but handle if it doesn't exist
+	const photographerResponse = fetch(
+		`https://world.openfoodfacts.org/facets/photographers/${user}.json`
+	)
+		.then((it) => it.json())
+		.catch(() => ({ products: [] })) as Promise<{ products: Product[] }>;
+
+	const [contributorData, editorData, photographerData] = await Promise.all([
+		contributorResponse,
+		editorResponse,
+		photographerResponse
+	]);
 
 	return {
 		user,
 		contributor: contributorData,
-		editor: editorData
+		editor: editorData,
+		photographer: photographerData
 	};
 };
