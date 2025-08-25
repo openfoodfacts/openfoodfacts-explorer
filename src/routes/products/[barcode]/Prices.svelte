@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 
 	import { _ } from '$lib/i18n';
-	import type { PriceFull } from '$lib/api/prices';
 
 	import Card from '$lib/ui/Card.svelte';
 
