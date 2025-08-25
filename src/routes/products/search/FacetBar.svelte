@@ -4,7 +4,6 @@
 
 	type Props = {
 		facets: Record<string, Facet>;
-		selected?: Record<string, string[]>;
 		onAddFacet: (facetKey: string, itemKey: string) => void;
 		onRemoveFacet: (facetKey: string, itemKey: string) => void;
 	};
