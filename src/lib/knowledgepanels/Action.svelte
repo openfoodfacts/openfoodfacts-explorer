@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { KnowledgeActionElement, KnowledgePanel } from '$lib/api';
+	import type { KnowledgeActionElement } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
 
 	type Props = {
 		element: KnowledgeActionElement;
-		allPanels: Record<string, KnowledgePanel>;
 		productCode?: string;
 	};
 	let { element, productCode }: Props = $props();

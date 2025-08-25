@@ -34,7 +34,7 @@
 		{#await PricesMap}
 			{$_('product.prices.loading')}
 		{:then PricesMap}
-			<PricesMap {prices} {barcode} />
+			<PricesMap {prices} />
 		{/await}
 	{/if}
 
