@@ -4,6 +4,18 @@ import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 const BASE_URL = import.meta.env.VITE_PRICES_API_URL;
 
+// TODO: Replace with the one from the SDK
+export type PriceFull = {
+	price: number;
+	location: {
+		osm_lat?: number;
+		osm_lon?: number;
+		osm_display_name?: string;
+		osm_address_city?: string;
+		osm_address_country?: string;
+	};
+};
+
 export function isConfigured() {
 	return BASE_URL != null;
 }
