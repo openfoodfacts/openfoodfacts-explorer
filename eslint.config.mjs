@@ -1,25 +1,34 @@
-import tsEslint from 'typescript-eslint';
-import eslintPluginSvelte from 'eslint-plugin-svelte';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import eslint from '@eslint/js';
-import svelteParser from 'svelte-eslint-parser';
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
+import svelte from 'eslint-plugin-svelte';
+import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import svelteConfig from './svelte.config.js';
 
 export default [
-	eslint.configs.recommended,
-	...tsEslint.configs.recommended,
-	...eslintPluginSvelte.configs['flat/recommended'],
-	eslintConfigPrettier,
-	...eslintPluginSvelte.configs['flat/prettier'],
+	js.configs.recommended,
+	...ts.configs.recommended,
+	...svelte.configs['flat/recommended'],
+	prettier,
+	...svelte.configs['flat/prettier'],
 	{
-		files: ['**/*.svelte'],
 		languageOptions: {
-			ecmaVersion: 2022,
-			sourceType: 'module',
-			globals: { ...globals.node, ...globals.browser },
-			parser: svelteParser,
+			globals: {
+				...globals.browser,
+				...globals.node
+			}
+		}
+	},
+	{
+		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+		// See more details at: https://typescript-eslint.io/packages/parser/
+		languageOptions: {
 			parserOptions: {
-				parser: tsEslint.parser
+				projectService: true,
+				extraFileExtensions: ['.svelte'], // Add support for additional file extensions, such as .svelte
+				parser: ts.parser,
+
+				svelteConfig
 			}
 		}
 	},

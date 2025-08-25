@@ -45,7 +45,7 @@
 	{#if element.element_type === 'panel_group'}
 		<PanelGroup {element} {allPanels} {productCode} />
 	{:else if element.element_type === 'action'}
-		<Action {element} {allPanels} {productCode} />
+		<Action {element} {productCode} />
 	{:else if element.element_type === 'panel'}
 		{#if 'panel_element' in element}
 			{@const id = element.panel_element.panel_id}
