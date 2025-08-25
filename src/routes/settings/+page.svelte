@@ -27,14 +27,14 @@
 
 		try {
 			const folksonomyApi = createFolksonomyApi(fetch);
-			const response = await folksonomyApi.login(username, password);
+			const { data, error } = await folksonomyApi.login(username, password);
 			loginStatus = true;
 			setTimeout(() => {
 				loginStatus = undefined;
 			}, 3000);
 
-			if (!('error' in response)) {
-				updateFolksonomyAuthToken(response?.token?.access_token ?? null);
+			if (data && !error) {
+				updateFolksonomyAuthToken(data.access_token);
 			} else {
 				loginStatus = false;
 				updateFolksonomyAuthToken(null);

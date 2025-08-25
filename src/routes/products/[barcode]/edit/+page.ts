@@ -41,9 +41,8 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
 	const off = createProductsApi(fetch);
 
-	const [productState, categories, labels, brands, stores, origins, countries] = await Promise.all([
+	const [productReq, categories, labels, brands, stores, origins, countries] = await Promise.all([
 		off.getProductV3(params.barcode, {
-			// @ts-expect-error - TODO: To be fixed in the SDK
 			lc: get(preferences).lang,
 			cc: get(preferences).country
 		}),
@@ -55,14 +54,13 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		getTaxo<Country>('countries', fetch)
 	]);
 
-	if (productState == null) {
-		error(404, 'Product not found');
+	const { data: productState, error: productError } = productReq;
+	if (productError || !productState) {
+		error(500, 'Error loading product');
 	}
 
-	// @ts-expect-error - https://github.com/openfoodfacts/openfoodfacts-server/issues/12273
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
 
-	// @ts-expect-error - https://github.com/openfoodfacts/openfoodfacts-server/issues/12273
 	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
 		return {
 			state: {
@@ -77,9 +75,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			origins,
 			countries
 		};
-	}
-	// @ts-expect-error - https://github.com/openfoodfacts/openfoodfacts-server/issues/12273
-	else if (productState.status === 'failure') {
+	} else if (productState.status === 'failure') {
 		error(404, {
 			message: 'Failure to load product',
 			errors: productState.errors

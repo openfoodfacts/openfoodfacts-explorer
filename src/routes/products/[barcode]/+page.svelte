@@ -22,8 +22,8 @@
 	type Props = { data: PageData };
 
 	let { data }: Props = $props();
-	let { state, productAttributes } = $derived(data);
-	let { product } = $derived(state);
+	let { state: productState, productAttributes } = $derived(data);
+	let { product } = $derived(productState);
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
@@ -95,7 +95,7 @@
 				</div>
 
 				{#if data.tags != null && data.keys != null}
-					<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code} />
+					<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code!} />
 				{/if}
 			{/if}
 		</Card>
