@@ -15,7 +15,6 @@
 
 	type Props = {
 		prices: PriceFull[];
-		barcode: string;
 	};
 
 	let { prices }: Props = $props();

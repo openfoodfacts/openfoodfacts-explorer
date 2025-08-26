@@ -1,2 +1,2 @@
 echo "Running formatter before commit..."
-pnpm format
+pnpm run format:changed
