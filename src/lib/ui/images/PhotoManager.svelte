@@ -398,7 +398,7 @@
 				<!-- Show standard photo types first -->
 				{#each photoTypes as photoType (photoType.id)}
 					<PhotoTypeSection
-						type={photoType}
+						sectionType={photoType}
 						{activeLanguageCode}
 						{currentImages}
 						{expandedCategories}
@@ -415,7 +415,7 @@
 				<!-- Show additional image types that are not standard -->
 				{#each additionalImageTypes as type (type)}
 					<PhotoTypeSection
-						type={{ id: type.toLowerCase(), label: type }}
+						sectionType={{ id: type.toLowerCase(), label: type }}
 						isAdditional
 						{activeLanguageCode}
 						{currentImages}

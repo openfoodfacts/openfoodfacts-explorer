@@ -11,7 +11,7 @@
 	type PhotoType = { id: string; label: string };
 
 	type Props = {
-		type: PhotoType;
+		sectionType: PhotoType;
 		isAdditional?: boolean;
 
 		activeLanguageCode: string;
@@ -27,7 +27,7 @@
 	};
 
 	let {
-		type: sectionType,
+		sectionType,
 		isAdditional,
 
 		activeLanguageCode,
