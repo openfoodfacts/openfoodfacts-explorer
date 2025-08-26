@@ -18,13 +18,13 @@ updates:
         patterns: ['*']
         update-types: ['minor', 'patch']
 
-  - package-ecosystem: "devcontainers"
-    directory: "/"
+  - package-ecosystem: 'devcontainers'
+    directory: '/'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     groups:
       devcontainers:
         patterns:
-          - "*"
+          - '*'
