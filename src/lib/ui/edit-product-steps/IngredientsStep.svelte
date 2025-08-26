@@ -35,8 +35,8 @@
 			throw new Error('No ingredients image available for OCR');
 		}
 
-	// Set loading state
-	ocrLoading = true;
+		// Set loading state
+		ocrLoading = true;
 
 		try {
 			const openfoodfacts = new OpenFoodFacts(fetch);
