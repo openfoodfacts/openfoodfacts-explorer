@@ -24,21 +24,19 @@
 	let { product = $bindable(), getLanguage, getIngredientsImage }: Props = $props();
 
 	let showInfo = $state(false);
-	let ocrLoadingForLanguage: string | null = $state(null);
+	let ocrLoading = $state(false);
 
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
 
 	async function performOCR(languageCode: string) {
-		// Check if there's an ingredients image for this language
 		if (!getIngredientsImage(languageCode)) {
-			console.error('No ingredients image available for OCR');
-			return;
+			throw new Error('No ingredients image available for OCR');
 		}
 
-		// Set loading state
-		ocrLoadingForLanguage = languageCode;
+	// Set loading state
+	ocrLoading = true;
 
 		try {
 			const openfoodfacts = new OpenFoodFacts(fetch);
@@ -47,25 +45,25 @@
 			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
 			const result = (await openfoodfacts.performOCR(product.code, imagefield)) as OCRResult;
 
-			if (result && typeof result === 'object') {
-				// Extract text from OCR result - check multiple possible fields
-				const ocrText =
-					result.ingredients_text_from_image || result.text || result.ingredients_text || '';
-
-				if (ocrText && ocrText.trim()) {
-					// Update the ingredients text for this language
-					product[`ingredients_text_${languageCode}`] = ocrText;
-				} else {
-					console.warn('No text could be extracted from the image');
-				}
-			} else {
+			if (!result || typeof result !== 'object') {
 				console.warn('OCR failed - invalid result:', result);
+				return;
+			}
+			// Extract text from OCR result - check multiple possible fields
+			const ocrText =
+				result.ingredients_text_from_image || result.text || result.ingredients_text || '';
+
+			if (ocrText && ocrText.trim()) {
+				// Update the ingredients text for this language
+				product[`ingredients_text_${languageCode}`] = ocrText;
+			} else {
+				console.warn('No text could be extracted from the image');
 			}
 		} catch (error) {
 			console.error('Error performing OCR:', error);
 		} finally {
 			// Clear loading state
-			ocrLoadingForLanguage = null;
+			ocrLoading = false;
 		}
 	}
 </script>
@@ -118,11 +116,11 @@
 						<button
 							type="button"
 							class="btn btn-outline btn-sm self-start"
-							class:loading={ocrLoadingForLanguage === code}
-							disabled={ocrLoadingForLanguage !== null}
+							class:loading={ocrLoading}
+							disabled={ocrLoading}
 							onclick={() => performOCR(code)}
 						>
-							{#if ocrLoadingForLanguage === code}
+							{#if ocrLoading}
 								<span class="loading loading-spinner h-4 w-4"></span>
 								<span>Extracting ingredients...</span>
 							{:else}
@@ -148,9 +146,9 @@
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
-				class:opacity-50={ocrLoadingForLanguage === code}
+				class:opacity-50={ocrLoading}
 				bind:value={product[`ingredients_text_${code}`]}
-				disabled={ocrLoadingForLanguage === code}
+				disabled={ocrLoading}
 			></textarea>
 		</div>
 	{/each}
