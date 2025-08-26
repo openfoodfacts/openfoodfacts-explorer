@@ -1,6 +1,6 @@
 {
 	"nutriscore": "Nutri-Score",
-	"ecoscore": "Eco-Score",
+	"ecoscore": "Green-Score",
 	"nova": "Nova - Ultra-processing levels",
 	"settings_link": "Settings",
 	"folksonomy_link": "Folksonomy",
@@ -47,7 +47,7 @@
 		"language": "Language",
 		"country": "Country",
 		"currency": "Currency",
-		"loading": "Loading...",
+		"loading": "Loading…",
 		"warning": "Warning",
 		"notes": "Notes",
 		"summary": "Summary",
@@ -75,7 +75,7 @@
 		"title": "Folksonomy Engine",
 		"subtitle": "Keys Explorer",
 		"description": "Folksonomy allows users to add custom tags to products. Browse all available keys below, search for specific keys, or click on any key to see products that use it.",
-		"search_placeholder": "Search keys...",
+		"search_placeholder": "Search keys…",
 		"keys_found": "keys found",
 		"key_found": "key found",
 		"for": "for"
@@ -83,7 +83,7 @@
 	"home": {
 		"welcome": "Welcome to",
 		"welcome_user": "Welcome {username} to",
-		"intro_1": "<strong>OpenFoodFacts Explorer</strong> is a tool to explore the OpenFoodFacts database.",
+		"intro_1": "<strong>Open Food Facts Explorer</strong> is a tool to explore the Open Food Facts database.",
 		"intro_2": "You can enter a product code in the search bar above to get started or click on one of the products below."
 	},
 	"preferences": {
@@ -141,14 +141,14 @@
 				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
 			},
 			"add_product": "Add product",
-			"add_product_title": "Add New Product",
-			"edit_product_title": "Edit Product",
+			"add_product_title": "Add a new product",
+			"edit_product_title": "Edit product",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
 			"name": "Name",
 			"quantity": "Quantity",
-			"emb_code": "EMB Code (Producer code)",
+			"emb_code": "Traceability codes",
 			"packaging": "Packaging",
 			"manufacturing_places": "Manufacturing places",
 			"categories": "Categories:",
@@ -170,8 +170,8 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"nutritional_values": "Nutritional Values",
 			"energy": "Energy",
-			"macronutrients": "Macronutrients",
-			"micronutrients": "Micronutrients",
+			"macronutrients": "Macro-nutrients",
+			"micronutrients": "Micro-nutrients",
 			"nutrient": {
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
@@ -183,14 +183,14 @@
 				"sodium": "Sodium",
 				"alcohol": "Alcohol"
 			},
-			"additional_nutrients": "Additional Nutrients",
+			"additional_nutrients": "Additional nutrients",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"add_nutrient": "Add Nutrient",
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
-			"si_kilocalories": "kcal",
+			"si_kilocalories": "kCal",
 			"si_grams": "g",
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
@@ -205,15 +205,15 @@
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
-			"loading": "Loading prices...",
-			"view_prices": "View Prices on Open Prices"
+			"loading": "Loading prices…",
+			"view_prices": "View prices on Open Prices"
 		}
 	},
 	"qr": {
 		"product_not_found": "Product Not Found",
-		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our database.",
-		"add_new_product": "Add New Product",
-		"scan_again": "Scan Again"
+		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
+		"add_new_product": "Add new product",
+		"scan_again": "Scan again"
 	},
 	"errors": {
 		"network": {
