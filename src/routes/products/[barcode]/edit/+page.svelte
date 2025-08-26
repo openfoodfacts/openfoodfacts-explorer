@@ -163,16 +163,7 @@
 				};
 	}
 
-	let product = $state(createProductStore(data));
-
-	// Update product images when data changes (e.g., after invalidateAll)
-	$effect(() => {
-		const newProduct = createProductStore(data);
-		// Only update the images if they have actually changed
-		if (JSON.stringify(newProduct.images) !== JSON.stringify(product.images)) {
-			product.images = newProduct.images;
-		}
-	});
+	let product = $derived(createProductStore(data));
 
 	let comment = $state('');
 

@@ -4,36 +4,19 @@
 
 	const toastCtx = getToastCtx();
 
-	function getToastClass(type: Toast['type']): string {
-		const baseClasses = 'alert shadow-lg max-w-sm';
-		switch (type) {
-			case 'success':
-				return `${baseClasses} alert-success`;
-			case 'error':
-				return `${baseClasses} alert-error`;
-			case 'warning':
-				return `${baseClasses} alert-warning`;
-			case 'info':
-				return `${baseClasses} alert-info`;
-			default:
-				return `${baseClasses}`;
-		}
-	}
+	const toastTypeClass: Record<Toast['type'], string> = {
+		success: 'alert-success',
+		error: 'alert-error',
+		warning: 'alert-warning',
+		info: 'alert-info'
+	};
 
-	function getToastIcon(type: Toast['type']): string {
-		switch (type) {
-			case 'success':
-				return 'icon-[mdi--check-circle]';
-			case 'error':
-				return 'icon-[mdi--close-circle]';
-			case 'warning':
-				return 'icon-[mdi--alert]';
-			case 'info':
-				return 'icon-[mdi--information]';
-			default:
-				return 'icon-[mdi--information]';
-		}
-	}
+	const toastTypeIcon: Record<Toast['type'], string> = {
+		success: 'icon-[mdi--check-circle]',
+		error: 'icon-[mdi--close-circle]',
+		warning: 'icon-[mdi--alert]',
+		info: 'icon-[mdi--information]'
+	};
 
 	function handleClose(toastId: string) {
 		toastCtx.remove(toastId);
@@ -43,13 +26,13 @@
 <div class="toast toast-top toast-end z-50">
 	{#each toastCtx.toasts as toastItem (toastItem.id)}
 		<div
-			class={getToastClass(toastItem.type)}
+			class={`alert max-w-sm shadow-lg ${toastTypeClass[toastItem.type]}`}
 			transition:fly={{ x: 300, duration: 200 }}
 			role="alert"
 			aria-live="polite"
 		>
 			<div class="flex items-center gap-2">
-				<span class="{getToastIcon(toastItem.type)} h-5 w-5 flex-shrink-0" aria-hidden="true"
+				<span class={`${toastTypeIcon[toastItem.type]} h-5 w-5 flex-shrink-0`} aria-hidden="true"
 				></span>
 				<span class="text-sm">{toastItem.message}</span>
 				<button
