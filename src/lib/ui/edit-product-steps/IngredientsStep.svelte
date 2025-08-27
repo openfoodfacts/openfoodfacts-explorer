@@ -35,7 +35,6 @@
 			throw new Error('No ingredients image available for OCR');
 		}
 
-		// Set loading state
 		ocrLoading = true;
 
 		try {
@@ -43,18 +42,18 @@
 			const imagefield = `ingredients_${languageCode}`;
 
 			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
+
+			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const result = (await openfoodfacts.performOCR(product.code, imagefield)) as OCRResult;
 
 			if (!result || typeof result !== 'object') {
 				console.warn('OCR failed - invalid result:', result);
 				return;
 			}
-			// Extract text from OCR result - check multiple possible fields
 			const ocrText =
 				result.ingredients_text_from_image || result.text || result.ingredients_text || '';
 
 			if (ocrText && ocrText.trim()) {
-				// Update the ingredients text for this language
 				product[`ingredients_text_${languageCode}`] = ocrText;
 			} else {
 				console.warn('No text could be extracted from the image');
@@ -62,7 +61,6 @@
 		} catch (error) {
 			console.error('Error performing OCR:', error);
 		} finally {
-			// Clear loading state
 			ocrLoading = false;
 		}
 	}
