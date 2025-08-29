@@ -15,6 +15,7 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
+	import Toast from '$lib/ui/Toast.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
 	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
@@ -23,12 +24,58 @@
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
+	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
 	});
 	setWebsiteCtx(() => websiteCtx);
+
+	// Toast context setup
+	let toasts = $state<ToastType[]>([]);
+	let toastId = 0;
+
+	function addToast(
+		message: string,
+		type: 'success' | 'error' | 'warning' | 'info' = 'info',
+		duration: number = 5000
+	) {
+		const id = `toast-${++toastId}`;
+		const toast: ToastType = { id, message, type, duration };
+
+		toasts = [...toasts, toast];
+
+		// Auto-remove toast after duration
+		if (duration > 0) {
+			setTimeout(() => {
+				removeToast(id);
+			}, duration);
+		}
+
+		return id;
+	}
+
+	function removeToast(id: string) {
+		toasts = toasts.filter((toast) => toast.id !== id);
+	}
+
+	function clearAllToasts() {
+		toasts = [];
+	}
+
+	const toastCtx: ToastContext = {
+		get toasts() {
+			return toasts;
+		},
+		success: (message: string, duration?: number) => addToast(message, 'success', duration),
+		error: (message: string, duration?: number) => addToast(message, 'error', duration),
+		warning: (message: string, duration?: number) => addToast(message, 'warning', duration),
+		info: (message: string, duration?: number) => addToast(message, 'info', duration),
+		remove: removeToast,
+		clear: clearAllToasts
+	};
+	setToastCtx(() => toastCtx);
 
 	let shortcuts: Shortcut[] = $state([
 		// Add more shortcuts here
@@ -225,6 +272,7 @@
 	{/if}
 	<NutritionCalculator />
 	<Footer />
+	<Toast />
 {:else}
 	<div class="py-10 text-center text-xl font-medium">Loading translations...</div>
 {/if}

@@ -38,7 +38,6 @@ async function getPricesCoords(api: PricesApi, code: string) {
 
 	return prices;
 }
-
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = new ProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);

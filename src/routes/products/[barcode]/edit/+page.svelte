@@ -163,7 +163,7 @@
 				};
 	}
 
-	let product = $state(createProductStore(data));
+	let product = $derived(createProductStore(data));
 
 	let comment = $state('');
 

@@ -2,7 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
-	import PhotoManager from '../PhotoManager.svelte';
+	import PhotoManager from '../images/PhotoManager.svelte';
 
 	type Props = { product: Product };
 	let { product = $bindable() }: Props = $props();
