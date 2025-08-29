@@ -15,8 +15,24 @@
 	} = $props();
 
 	let showAll: boolean = $state(false);
+	let dropdownElement: HTMLDetailsElement;
+
 	function toggleShowAll() {
 		showAll = !showAll;
+	}
+
+	function handleSelect(item: FacetItem) {
+		onSelect(item);
+		if (dropdownElement) {
+			dropdownElement.open = false;
+		}
+	}
+
+	function handleUnselect(item: FacetItem) {
+		onUnselect(item);
+		if (dropdownElement) {
+			dropdownElement.open = false;
+		}
 	}
 
 	let searchQuery: string = $state('');
@@ -35,7 +51,7 @@
 	});
 </script>
 
-<details class="dropdown dropdown-center">
+<details class="dropdown dropdown-center" bind:this={dropdownElement}>
 	<summary class="btn flex w-58 items-center justify-start gap-2">
 		{facet.name} ({facet.items.length})
 		<span class="flex-grow"></span>
@@ -60,9 +76,9 @@
 						onchange={(e) => {
 							const isSelected = e.currentTarget.checked;
 							if (isSelected) {
-								onSelect(item);
+								handleSelect(item);
 							} else {
-								onUnselect(item);
+								handleUnselect(item);
 							}
 						}}
 					/>
