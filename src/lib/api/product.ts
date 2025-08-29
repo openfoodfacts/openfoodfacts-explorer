@@ -3,6 +3,7 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
+import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 export class ProductsApi {
 	private readonly fetch: typeof window.fetch;
@@ -159,12 +160,137 @@ export class ProductsApi {
 			}
 
 			const result = await res.json();
-			console.log('Image upload successful:', result);
 			return result;
 		} catch (err) {
 			console.error('Error during image upload:', err);
 			throw err;
 		}
+	}
+
+	// TODO: move this to the sdk
+	/**
+	 * Upload image using API v3.3 with base64 encoded data
+	 * @param barcode Product barcode
+	 * @param imageDataBase64 Base64 encoded image data
+	 * @param imagefield The type of image (optional, defaults to 'other')
+	 */
+	async uploadImageV3(
+		barcode: string,
+		imageDataBase64: string,
+		imagefield?: string
+	): Promise<{ data?: ImageUploadResponse; error?: string }> {
+		const url = `${API_HOST}/api/v3/product/${barcode}/images`;
+
+		const user_id = get(preferences).username;
+		const password = get(preferences).password;
+		const lc = get(preferences).lang;
+		const cc = get(preferences).country;
+
+		if (!user_id || !password) {
+			return { error: 'Username and password are required for image upload' };
+		}
+
+		const body = {
+			lc,
+			cc,
+			user_id,
+			password,
+			image_data_base64: imageDataBase64,
+			...(imagefield && {
+				selected: {
+					[imagefield.split('_')[0]]: {
+						[imagefield.split('_')[1] || 'en']: {}
+					}
+				}
+			})
+		};
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+
+			if (!res.ok) {
+				const errorData = await res.json().catch(() => ({}));
+				return { error: `Failed to upload image: ${JSON.stringify(errorData)}` };
+			}
+
+			const result = await res.json();
+			return { data: result };
+		} catch (err) {
+			console.error('Error during v3.3 image upload:', err);
+			return {
+				error: `Error during v3.3 image upload: ${err instanceof Error ? err.message : String(err)}`
+			};
+		}
+	}
+
+	/**
+	 * Select and crop images using API v3.3
+	 * @param barcode Product barcode
+	 * @param images Object containing image selections and crop parameters
+	 */
+	async selectAndCropImagesV3(
+		barcode: string,
+		images: ImageSelectionData
+	): Promise<{ data?: ImageOperationResponse; error?: string }> {
+		const url = `${API_HOST}/api/v3.3/product/${barcode}`;
+
+		const body = {
+			fields: 'updated',
+			product: {
+				images
+			}
+		};
+
+		try {
+			const res = await this.fetch(url, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+
+			if (!res.ok) {
+				const errorData = await res.json().catch(() => ({}));
+				return { error: `Failed to select/crop images: ${JSON.stringify(errorData)}` };
+			}
+
+			const result = (await res.json()) as ImageOperationResponse;
+			return { data: result };
+		} catch (err) {
+			console.error('Error during v3.3 image selection/cropping:', err);
+			return {
+				error: `Error during v3.3 image selection/cropping: ${err instanceof Error ? err.message : String(err)}`
+			};
+		}
+	}
+
+	/**
+	 * Unselect an image for a specific language and type
+	 * @param barcode Product barcode
+	 * @param imageType Image type (front, ingredients, nutrition, etc.)
+	 * @param language Language code (en, fr, es, etc.)
+	 */
+	async unselectImageV3(
+		barcode: string,
+		imageType: string,
+		language: string
+	): Promise<{ data?: ImageOperationResponse; error?: string }> {
+		const images = {
+			selected: {
+				[imageType]: {
+					[language]: null
+				}
+			}
+		};
+
+		return this.selectAndCropImagesV3(barcode, images);
 	}
 
 	async getProductReducedForCard(barcode: string): Promise<ProductState<ProductReduced>> {
@@ -266,6 +392,79 @@ export type ProductAttributeForScoring = {
 export type ProductAttributeGroup = {
 	id: string;
 	attributes: ProductAttributeForScoring[];
+};
+
+// Image selection and cropping types for v3.3 API
+export type ImageGenerationParameters = {
+	angle?: number;
+	x1?: number;
+	y1?: number;
+	x2?: number;
+	y2?: number;
+	coordinates_image_size?: string;
+	white_magic?: boolean | string;
+	normalize?: boolean | string;
+};
+
+export type ImageSelection = {
+	imgid: string;
+	generation?: ImageGenerationParameters;
+};
+
+export type ImageSelectionByLanguage = {
+	[language: string]: ImageSelection | null | undefined;
+};
+
+export type ImageSelectionByType = {
+	[imageType: string]: ImageSelectionByLanguage;
+};
+
+export type ImageSelectionData = {
+	selected: ImageSelectionByType;
+};
+
+// Response type for v3 image upload operations
+export type ImageUploadResponse = {
+	status: 'success' | 'failure';
+	result?: {
+		id: string;
+		name: string;
+	};
+	product?: {
+		code: string;
+		images?: {
+			uploaded?: {
+				[imgid: string]: {
+					imgid: number;
+					sizes: {
+						[size: string]: {
+							h: number;
+							w: number;
+						};
+					};
+					uploaded_t: number;
+					uploader: string;
+				};
+			};
+		};
+	};
+	errors?: string[];
+	warnings?: string[];
+};
+
+// Response type for v3.3 image operations
+export type ImageOperationResponse = {
+	status: 'success' | 'failure';
+	result?: {
+		id: string;
+		name: string;
+	};
+	product?: {
+		code: string;
+		images?: Record<string, SelectedImage | RawImage>;
+	};
+	errors?: string[];
+	warnings?: string[];
 };
 
 type LangIngredient = `ingredients_text_${string}`;
@@ -489,4 +688,103 @@ export function getProductImageUrl(
 		filename = `${imageName}.400.jpg`;
 	}
 	return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+}
+
+export type ProductImage = {
+	url: string;
+	alt: string;
+	type: string;
+	imgid: number; // The numeric image ID for the API
+	typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
+};
+
+/**
+ * Select an image for a specific field.
+ * @param image - The image to select.
+ * @param field - The field to select the image for. It must be in the format `{IMAGE_TYPE}_{LANG}`.
+ */
+export async function selectImage(
+	fetch: typeof window.fetch,
+	code: string,
+	imgid: ProductImage,
+	field: string
+) {
+	try {
+		const off = new OpenFoodFacts(fetch);
+
+		// @ts-expect-error - cropdata should not be mandatory
+		await off.cropImage(code, imgid, field, {});
+	} catch (error) {
+		console.error('Error cropping and rotating image:', error);
+		throw error;
+	}
+}
+
+/**
+ * Convert a File to base64 string
+ * @param file The file to convert
+ * @returns Promise that resolves to base64 string
+ */
+export function fileToBase64(file: File): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => {
+			if (typeof reader.result === 'string') {
+				// Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+				const base64 = reader.result.split(',')[1];
+				resolve(base64);
+			} else {
+				reject(new Error('Failed to convert file to base64'));
+			}
+		};
+		reader.onerror = () => reject(reader.error);
+		reader.readAsDataURL(file);
+	});
+}
+
+/**
+ * Create image selection data for a single image without cropping
+ * @param imageType The type of image (front, ingredients, nutrition, etc.)
+ * @param language The language code
+ * @param imgid The image ID (string or number)
+ */
+export function createSimpleImageSelection(
+	imageType: string,
+	language: string,
+	imgid: string | number
+): ImageSelectionData {
+	return {
+		selected: {
+			[imageType]: {
+				[language]: {
+					imgid: imgid.toString()
+				}
+			}
+		}
+	};
+}
+
+/**
+ * Create image selection data with cropping parameters
+ * @param imageType The type of image (front, ingredients, nutrition, etc.)
+ * @param language The language code
+ * @param imgid The image ID (string or number)
+ * @param cropParams The cropping parameters
+ */
+export function createImageSelectionWithCrop(
+	imageType: string,
+	language: string,
+	imgid: string | number,
+	cropParams: ImageGenerationParameters
+): ImageSelectionData {
+	return {
+		selected: {
+			[imageType]: {
+				[language]: {
+					imgid: imgid.toString(),
+					generation: cropParams
+				}
+			}
+		}
+	};
 }
