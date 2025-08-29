@@ -79,9 +79,9 @@
 	let isInitialized = $state(false);
 	let isMounted = $state(false);
 	let cropEnabled = $state(false);
-	let initTimeout: ReturnType<typeof setTimeout> | null = null;
+	let imageNaturalDimensions = $state<{ width: number; height: number } | null>(null);
 
-	const canPerformActions = $derived(isMounted && isInitialized);
+	const canPerformActions = $derived(isMounted && isInitialized && imageNaturalDimensions !== null);
 	const cropModeStatus = $derived(
 		cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping'
 	);
@@ -90,6 +90,7 @@
 	$effect(() => {
 		untrack(() => {
 			isMounted = true;
+			preloadImageDimensions();
 		});
 	});
 
@@ -99,6 +100,33 @@
 			cleanupCropper();
 		};
 	});
+
+	async function preloadImageDimensions(): Promise<void> {
+		if (!image?.url) {
+			console.error('No image URL provided for dimension preloading');
+			return;
+		}
+
+		try {
+			const img = new Image();
+			img.src = image.url;
+
+			await new Promise<void>((resolve, reject) => {
+				img.onload = () => {
+					imageNaturalDimensions = {
+						width: img.naturalWidth,
+						height: img.naturalHeight
+					};
+					resolve();
+				};
+				img.onerror = () => reject(new Error('Failed to load image'));
+			});
+		} catch (error) {
+			console.error('Critical error preloading image dimensions:', error);
+			// Reset to null to ensure we don't have stale data
+			imageNaturalDimensions = null;
+		}
+	}
 
 	export function openModal(): void {
 		modal?.showModal();
@@ -112,8 +140,6 @@
 
 	async function initializeCropper(): Promise<void> {
 		if (isInitialized) return;
-
-		clearInitTimeout();
 
 		untrack(() => {
 			if (!cropperImage) {
@@ -131,40 +157,26 @@
 				isInitialized = true;
 			} catch (error) {
 				console.warn('Error during cropper initialization:', error);
-				isInitialized = true; // Set to true even if centering fails
+				isInitialized = true;
 			}
 		});
-	}
-
-	function clearInitTimeout(): void {
-		if (initTimeout) {
-			clearTimeout(initTimeout);
-			initTimeout = null;
-		}
 	}
 
 	function resetCropperState(): void {
-		const resetOperations = [
-			() => cropperImage?.$resetTransform?.(),
-			() => cropperImage?.$center?.(),
-			() => cropperSelection?.$reset?.(),
-			() => cropperSelection?.$center?.()
-		];
-
-		resetOperations.forEach((operation) => {
-			try {
-				operation();
-			} catch (error) {
-				console.warn('Error during cropper state reset:', error);
-			}
-		});
+		try {
+			cropperImage?.$resetTransform?.();
+			cropperImage?.$center?.();
+			cropperSelection?.$reset?.();
+			cropperSelection?.$center?.();
+		} catch (error) {
+			console.warn('Error during cropper state reset:', error);
+		}
 
 		rotationAngle = 0;
 		cropEnabled = false;
 	}
 
 	function cleanupCropper(): void {
-		clearInitTimeout();
 		resetCropperState();
 		isInitialized = false;
 	}
@@ -173,14 +185,7 @@
 		if (cropEnabled || !cropperSelection) return;
 
 		cropEnabled = true;
-
-		try {
-			if (cropperSelection) {
-				cropperSelection.setAttribute('initial-coverage', '0');
-			}
-		} catch (error) {
-			console.warn('Error initializing crop selection:', error);
-		}
+		cropperSelection.setAttribute('initial-coverage', '0');
 	}
 
 	function getTransformData(): TransformData {
@@ -263,22 +268,65 @@
 	}
 
 	function createCropDataFromSelection(transformData: TransformData): CropData | null {
-		if (!cropperSelection) return null;
-
-		const selectionX = cropperSelection.x || 0;
-		const selectionY = cropperSelection.y || 0;
-		const selectionWidth = cropperSelection.width || 0;
-		const selectionHeight = cropperSelection.height || 0;
-
-		if (selectionWidth <= 0 || selectionHeight <= 0) {
+		if (!cropperSelection || !cropperImage || !imageNaturalDimensions) {
 			return null;
 		}
 
+		const selection = {
+			x: cropperSelection.x,
+			y: cropperSelection.y,
+			width: cropperSelection.width,
+			height: cropperSelection.height
+		};
+
+		if (selection.width <= 0 || selection.height <= 0) {
+			return null;
+		}
+
+		const { width: naturalWidth, height: naturalHeight } = imageNaturalDimensions;
+
+		// Get display dimensions
+		const imageRect = cropperImage.getBoundingClientRect();
+		if (imageRect.width <= 0 || imageRect.height <= 0) {
+			console.error('Invalid display image dimensions');
+			return null;
+		}
+
+		// Get canvas for relative positioning
+		const cropperCanvas = cropperImage.closest('cropper-canvas');
+		if (!cropperCanvas) {
+			console.error('Cropper canvas not found');
+			return null;
+		}
+
+		const canvasRect = cropperCanvas.getBoundingClientRect();
+
+		// Calculate coordinate transformation: canvas → image → natural
+		const imageOffsetX = imageRect.left - canvasRect.left;
+		const imageOffsetY = imageRect.top - canvasRect.top;
+
+		const relativeX = selection.x - imageOffsetX;
+		const relativeY = selection.y - imageOffsetY;
+
+		const scaleX = naturalWidth / imageRect.width;
+		const scaleY = naturalHeight / imageRect.height;
+
+		const naturalX = relativeX * scaleX;
+		const naturalY = relativeY * scaleY;
+		const naturalW = selection.width * scaleX;
+		const naturalH = selection.height * scaleY;
+
+		// Clamp coordinates to image bounds
+		const clampedX = Math.max(0, Math.min(naturalX, naturalWidth));
+		const clampedY = Math.max(0, Math.min(naturalY, naturalHeight));
+		const clampedW = Math.max(0, Math.min(naturalW, naturalWidth - clampedX));
+		const clampedH = Math.max(0, Math.min(naturalH, naturalHeight - clampedY));
+
 		return {
-			x: Math.round(selectionX),
-			y: Math.round(selectionY),
-			width: Math.round(selectionWidth),
-			height: Math.round(selectionHeight),
+			x: Math.round(clampedX),
+			y: Math.round(clampedY),
+			width: Math.round(clampedW),
+			height: Math.round(clampedH),
 			rotate: rotationAngle,
 			...transformData
 		};
@@ -290,6 +338,13 @@
 			return;
 		}
 
+		// Ensure image dimensions are available before processing
+		if (!imageNaturalDimensions) {
+			console.error('Image dimensions not available - cannot save crop data');
+			toast.error('Image not fully loaded. Please wait and try again.');
+			return;
+		}
+
 		const transformData = getTransformData();
 
 		if (!cropEnabled || !cropperSelection) {
@@ -298,19 +353,14 @@
 			return;
 		}
 
-		try {
-			const cropData = createCropDataFromSelection(transformData);
+		const cropData = createCropDataFromSelection(transformData);
 
-			if (!cropData) {
-				toast.warning('Please select a valid crop area.');
-				return;
-			}
-
-			onSave({ cropData, rotationAngle });
-		} catch (error) {
-			console.error('Error getting crop data:', error);
-			toast.error('Error processing crop data. Please try again.');
+		if (!cropData) {
+			toast.warning('Please select a valid crop area.');
+			return;
 		}
+
+		onSave({ cropData, rotationAngle });
 	}
 
 	/** Called when the user closes the dialog via button or backdrop click */
@@ -363,28 +413,26 @@
 		if (!cropperSelection || !cropEnabled) return;
 
 		try {
-			if (cropperSelection) {
-				const currentSelection = {
-					x: cropperSelection.x || 0,
-					y: cropperSelection.y || 0,
-					width: cropperSelection.width || 0,
-					height: cropperSelection.height || 0
-				};
+			const currentSelection = {
+				x: cropperSelection.x || 0,
+				y: cropperSelection.y || 0,
+				width: cropperSelection.width || 0,
+				height: cropperSelection.height || 0
+			};
 
-				if (!constrainSelectionToBounds(currentSelection)) {
-					const imageBounds = getImageBounds();
-					if (imageBounds && cropperSelection) {
-						const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
-						const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
+			if (!constrainSelectionToBounds(currentSelection)) {
+				const imageBounds = getImageBounds();
+				if (imageBounds && cropperSelection) {
+					const maxWidth = Math.min(imageBounds.width * 0.8, currentSelection.width);
+					const maxHeight = Math.min(imageBounds.height * 0.8, currentSelection.height);
 
-						const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
-						const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
+					const newX = imageBounds.x + (imageBounds.width - maxWidth) / 2;
+					const newY = imageBounds.y + (imageBounds.height - maxHeight) / 2;
 
-						cropperSelection.x = newX;
-						cropperSelection.y = newY;
-						cropperSelection.width = maxWidth;
-						cropperSelection.height = maxHeight;
-					}
+					cropperSelection.x = newX;
+					cropperSelection.y = newY;
+					cropperSelection.width = maxWidth;
+					cropperSelection.height = maxHeight;
 				}
 			}
 		} catch (error) {
@@ -413,12 +461,7 @@
 
 	function handleImageTransform(): void {
 		if (!canPerformActions) return;
-
-		try {
-			adjustSelectionAfterTransform();
-		} catch (error) {
-			console.warn('Error handling image transform:', error);
-		}
+		adjustSelectionAfterTransform();
 	}
 
 	function handleModalClick(event: MouseEvent): void {
