@@ -176,6 +176,7 @@
 							personalScore={$personalizedSearch.classifyProductsEnabled
 								? scoredProduct.scoreData
 								: undefined}
+							class="h-[11rem] w-full"
 						></product-card>
 					{/each}
 				{/await}
