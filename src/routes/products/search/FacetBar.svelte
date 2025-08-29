@@ -6,9 +6,20 @@
 		facets: Record<string, Facet>;
 		onAddFacet: (facetKey: string, itemKey: string) => void;
 		onRemoveFacet: (facetKey: string, itemKey: string) => void;
+		onClose?: () => void;
 	};
 
-	let { facets, onAddFacet, onRemoveFacet }: Props = $props();
+	let { facets, onAddFacet, onRemoveFacet, onClose }: Props = $props();
+
+	function handleAddFacet(facetKey: string, itemKey: string) {
+		onAddFacet(facetKey, itemKey);
+		onClose?.();
+	}
+
+	function handleRemoveFacet(facetKey: string, itemKey: string) {
+		onRemoveFacet(facetKey, itemKey);
+		onClose?.();
+	}
 </script>
 
 <div class="flex flex-wrap justify-center gap-4">
@@ -22,8 +33,8 @@
 			<FacetCard
 				{facet}
 				selected={facet.items.filter((item) => item.selected).map((item) => item.key)}
-				onSelect={(item) => onAddFacet(facetKey, item.key)}
-				onUnselect={(item) => onRemoveFacet(facetKey, item.key)}
+				onSelect={(item) => handleAddFacet(facetKey, item.key)}
+				onUnselect={(item) => handleRemoveFacet(facetKey, item.key)}
 			/>
 		{/each}
 	{/if}
