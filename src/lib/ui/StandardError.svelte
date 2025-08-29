@@ -7,7 +7,7 @@
 	let { message, errors, actions } = $derived(error);
 
 	function errorType(error: ProductStateError) {
-		return error.message.id;
+		return error?.message?.id;
 	}
 </script>
 
@@ -17,14 +17,15 @@
 			class="border-l-error-content grid grid-cols-[auto_auto] gap-x-2 border-l-2 ps-2 font-mono text-xs"
 		>
 			<span class="text-right">Impact ID:</span>
-			<span>{error.impact.id}</span>
+			<span>{error?.impact?.id ?? 'unknown'}</span>
 			<span class="text-right">Message ID:</span>
-			<span>{error.message.id}</span>
-			{#if error.field}
+			<span>{error?.message?.id ?? 'unknown'}</span>
+			{#if error?.field}
+				{@const field = error.field}
 				<span class="text-right">Caused by:</span>
 				<span>
-					<code>{error.field.id}</code> has value
-					<code>{error.field.value.length != 0 ? error.field.value : '<empty>'}</code>
+					<code>{field.id ?? '<unknown field>'}</code> has value
+					<code>{field.value ?? '<unknown value>'}</code>
 				</span>
 			{/if}
 		</ul>
