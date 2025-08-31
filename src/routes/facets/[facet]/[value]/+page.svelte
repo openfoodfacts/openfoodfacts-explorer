@@ -6,11 +6,13 @@
 	import type { PageProps } from './$types';
 	import { _ } from '$lib/i18n';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import Metadata from '$lib/Metadata.svelte';
+	import ProductGrid from '$lib/ui/ProductGrid.svelte';
+	import type { ProductReduced } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions } = $derived(data);
+	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
 
 	let listView = $state(false);
 </script>
@@ -97,11 +99,24 @@
 	<h2 class="text-2xl font-bold">Products</h2>
 	<div class="my-8">
 		{#if !listView}
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				{#each results.products as product (product.code)}
-					<WcProductCard {product} />
-				{/each}
+			<!-- Preferences Collapsible Section -->
+			<div class="mt-6 w-full">
+				<div class="form-control">
+					<label class="label cursor-pointer justify-start gap-3">
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={$personalizedSearch.classifyProductsEnabled}
+						/>
+						<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
+					</label>
+				</div>
 			</div>
+			<ProductGrid
+				products={results.products as ProductReduced[]}
+				attributes={productAttributes}
+				sortByScore={$personalizedSearch.classifyProductsEnabled}
+			/>
 		{:else}
 			<table class="my-4 table">
 				<thead>

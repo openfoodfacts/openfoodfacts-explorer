@@ -32,6 +32,12 @@ export type AttributePreference = {
 // Base type for all user preferences (can be extended with other preference types)
 export type UserPreference = AttributePreference;
 
+// Combined preferences store
+type PreferencesStoreData = {
+	userPreferences: UserPreference[];
+	classifyProductsEnabled: boolean;
+};
+
 export const personalizedSearch = persisted<PreferencesStoreData>('personalizedSearch', {
 	userPreferences: [],
 	classifyProductsEnabled: false
@@ -101,9 +107,3 @@ export function getPreferenceValue(
 	const preference = prefs.find((p: UserPreference) => p.id === preferenceId);
 	return preference?.value ?? 'not_important';
 }
-
-// Combined preferences store
-type PreferencesStoreData = {
-	userPreferences: UserPreference[];
-	classifyProductsEnabled: boolean;
-};

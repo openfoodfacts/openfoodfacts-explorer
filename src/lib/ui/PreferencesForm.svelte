@@ -141,10 +141,12 @@
 		{/if}
 
 		<!-- Close Button -->
-		<div class="border-base-300 flex justify-end border-t pt-4">
-			<button class="btn btn-primary" onclick={onClose}>
-				{$_('preferences.close')}
-			</button>
-		</div>
+		{#if onClose}
+			<div class="border-base-300 flex justify-end border-t pt-4">
+				<button class="btn btn-primary" onclick={onClose}>
+					{$_('preferences.close')}
+				</button>
+			</div>
+		{/if}
 	</div>
 </Card>
