@@ -8,6 +8,7 @@ import {
 } from '$lib/api/facets';
 import type { PageLoad } from './$types';
 import { requireInt } from '$lib/utils';
+import { ProductsApi } from '$lib/api';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
@@ -33,10 +34,19 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const results = getFacetValue(fetch, facet, value, searchOptions);
 	const kp = getFacetKnowledgePanels(fetch, facet, value);
 
+	const productApi = new ProductsApi(fetch);
+
+	const productCodes = (async () => {
+		const productCodes = (await results).products.map((state) => state.code as string);
+		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		return attrs;
+	})();
+
 	return {
 		searchOptions,
 		facet: { name: facet, value },
 		results: await results,
-		knowledgePanels: (await kp).knowledge_panels
+		knowledgePanels: (await kp).knowledge_panels,
+		productAttributes: await productCodes
 	};
 };
