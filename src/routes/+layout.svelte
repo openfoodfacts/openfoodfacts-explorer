@@ -18,7 +18,14 @@
 	import Toast from '$lib/ui/Toast.svelte';
 
 	import { initI18n, _, isLoading } from '$lib/i18n';
-	import { KEYCLOAK_ACCOUNT_URL, MATOMO_HOST, MATOMO_SITE_ID, NO_MARGIN_ROUTES } from '$lib/const';
+	import {
+		IMAGE_HOST,
+		KEYCLOAK_ACCOUNT_URL,
+		MATOMO_HOST,
+		MATOMO_SITE_ID,
+		NO_MARGIN_ROUTES,
+		ROBOTOFF_URL
+	} from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -136,8 +143,8 @@
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={{
 			dryRun: !dev,
-			apiUrl: 'https://robotoff.openfoodfacts.net/api/v1',
-			imgUrl: 'https://images.openfoodfacts.net/images/products'
+			apiUrl: ROBOTOFF_URL + '/api/v1',
+			imgUrl: IMAGE_HOST + '/images/products'
 		}}
 	>
 	</off-webcomponents-configuration>

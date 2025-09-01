@@ -5,9 +5,13 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 
-	import { ProductsApi, type ProductReduced, type ProductStateFound } from '$lib/api';
+	import {
+		createRobotoffApi,
+		ProductsApi,
+		type ProductReduced,
+		type ProductStateFound
+	} from '$lib/api';
 	import { onMount } from 'svelte';
-	import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import type { ProductAttributeGroup } from '$lib/api/product';
@@ -22,7 +26,7 @@
 	const SKELETON_COUNT = 9;
 
 	async function getProducts() {
-		const roffApi = new Robotoff(fetch);
+		const roffApi = createRobotoffApi(fetch);
 		const response = await roffApi.insights({ count: INSIGHT_COUNT });
 
 		const productApi = new ProductsApi(fetch);
