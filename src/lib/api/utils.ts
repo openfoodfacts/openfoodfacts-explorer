@@ -12,10 +12,13 @@ export function wrapFetchWithCredentials(
 	fetch: typeof globalThis.fetch,
 	url: URL
 ): { fetch: typeof globalThis.fetch; url: URL } {
+	let wrappedFetch = fetch;
 	if (url.username && url.password) {
-		fetch = async (input, init) => {
+		const username = url.username; // copy value
+		const password = url.password; // copy value
+		wrappedFetch = async (input, init) => {
 			const headers = new Headers(init?.headers);
-			headers.set('Authorization', 'Basic ' + btoa(url.username + ':' + url.password));
+			headers.set('Authorization', 'Basic ' + btoa(username + ':' + password));
 			return fetch(input, { ...init, headers });
 		};
 	}
@@ -23,5 +26,5 @@ export function wrapFetchWithCredentials(
 	url.username = '';
 	url.password = '';
 
-	return { fetch, url };
+	return { fetch: wrappedFetch, url };
 }
