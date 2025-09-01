@@ -23,8 +23,9 @@ export function wrapFetchWithCredentials(
 		};
 	}
 
-	url.username = '';
-	url.password = '';
+	const newUrl = new URL(url.toString());
+	newUrl.username = '';
+	newUrl.password = '';
 
-	return { fetch: wrappedFetch, url };
+	return { fetch: wrappedFetch, url: newUrl };
 }
