@@ -92,11 +92,14 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		prices = await getPrices(pricesApi, productCodes);
 	}
 
+	const off = new OpenFoodFacts(fetch);
+	const { data: attributeGroups } = await off.getAttributeGroups();
+
 	return {
 		query,
 		search: searchData,
 		attributesByCode,
 		prices: prices,
-		attributeGroups: await new OpenFoodFacts(fetch).getAttributeGroups()
+		attributeGroups: attributeGroups ?? []
 	};
 };

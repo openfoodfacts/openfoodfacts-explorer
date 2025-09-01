@@ -1,17 +1,13 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { ProductStateError } from '$lib/api';
+
 // for information about these interfaces
 declare global {
 	namespace App {
 		interface Error {
-			errors?: {
-				field: { id: string; value: string };
-				impact: { lc_name: string; name: string; id: string };
-				message: { lc_name: string; name: string; id: string };
-			}[];
-			actions?: {
-				label: string;
-				url?: string;
-			}[];
+			errors?: ProductStateError[];
+			actions?: { label: string; url?: string }[];
 		}
 		// interface Locals {}
 		// interface PageData {}
@@ -20,9 +16,7 @@ declare global {
 		}
 		// interface Platform {}
 	}
-}
 
-declare global {
 	interface Window {
 		_paq: string[][];
 		L?: typeof import('leaflet');

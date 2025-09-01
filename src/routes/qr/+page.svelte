@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
+
 	import { goto } from '$app/navigation';
-	import { getProduct } from '$lib/api/product';
 	import { _ } from '$lib/i18n';
 
 	let error: string | null = $state(null);
@@ -31,21 +32,21 @@
 				// 3. Ensures the camera is available for other applications
 				await scanner.stop();
 
-				try {
-					// Use getProduct to check if product exists before navigating
-					const productState = await getProduct(text, fetch);
-					if (!productState || productState.status !== 'success') {
-						// Product doesn't exist in the database
-						console.log('Product not found in database');
-						productNotFound = true;
-						return;
-					}
-					// Product exists, navigate to product page
-					await goto('/products/' + text);
-				} catch (err) {
-					console.error('Error checking product:', err);
+				const productsApi = new OpenFoodFacts(fetch);
+
+				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
+				if (!productState || error) {
+					console.error('Error fetching product:', error);
 					productNotFound = true;
+					return;
 				}
+				if (productState.status !== 'success') {
+					productNotFound = true;
+					return;
+				}
+
+				// If product is found, navigate to its page
+				await goto('/products/' + text);
 			},
 			() => {
 				/* ignored */
@@ -78,7 +79,7 @@
 		if (html5QrCode != null) {
 			try {
 				await html5QrCode.stop();
-				await html5QrCode.clear();
+				html5QrCode.clear();
 			} catch (e) {
 				console.error('Error cleaning up scanner:', e);
 			}

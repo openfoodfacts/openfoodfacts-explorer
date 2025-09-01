@@ -34,9 +34,10 @@
 		);
 		const states = await Promise.all(productsPromises);
 		// filter out products that failed to load
-		const products = states.filter(
-			(state): state is ProductStateFound<ProductReduced> => state.status !== 'failure'
-		);
+		const products = states
+			.filter((res) => res.data)
+			.map((res) => res.data)
+			.filter((state) => state?.status !== 'failure') as ProductStateFound<ProductReduced>[];
 
 		// remove duplicate products
 		return deduplicate(products, (it) => it.product.code);

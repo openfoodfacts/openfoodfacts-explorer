@@ -2,24 +2,25 @@ import { error } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
-	getProduct,
 	getTaxo,
 	type Category,
 	type Origin,
 	type Label,
 	type Brand,
 	type Store,
-	type Country
+	type Country,
+	createProductsApi
 } from '$lib/api';
 import { userInfo } from '$lib/stores/pkceLoginStore';
 import { PRODUCT_STATUS } from '$lib/const';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
+import { preferences } from '$lib/settings';
 
 export const ssr = false;
 
-export const load = (async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
@@ -38,8 +39,13 @@ export const load = (async ({ fetch, params }) => {
 		});
 	}
 
-	const [product, categories, labels, brands, stores, origins, countries] = await Promise.all([
-		getProduct(params.barcode, fetch),
+	const off = createProductsApi(fetch);
+
+	const [productReq, categories, labels, brands, stores, origins, countries] = await Promise.all([
+		off.getProductV3(params.barcode, {
+			lc: get(preferences).lang,
+			cc: get(preferences).country
+		}),
 		getTaxo<Category>('categories', fetch),
 		getTaxo<Label>('labels', fetch),
 		getTaxo<Brand>('brands', fetch),
@@ -48,12 +54,19 @@ export const load = (async ({ fetch, params }) => {
 		getTaxo<Country>('countries', fetch)
 	]);
 
-	if (product.status === 'failure' && product.result.id === 'product_not_found') {
+	const { data: productState, error: productError } = productReq;
+	if (productError || !productState) {
+		error(500, 'Error loading product');
+	}
+
+	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
+
+	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
 		return {
 			state: {
 				status: PRODUCT_STATUS.EMPTY,
 				product: null,
-				errors: product.errors
+				errors: productState.errors
 			},
 			categories,
 			labels,
@@ -62,15 +75,15 @@ export const load = (async ({ fetch, params }) => {
 			origins,
 			countries
 		};
-	} else if (product.status === 'failure') {
+	} else if (productState.status === 'failure') {
 		error(404, {
 			message: 'Failure to load product',
-			errors: product.errors
+			errors: productState.errors
 		});
 	}
 
 	return {
-		state: product,
+		state: productState,
 		categories,
 		labels,
 		brands,
@@ -78,4 +91,4 @@ export const load = (async ({ fetch, params }) => {
 		origins,
 		countries
 	};
-}) satisfies PageLoad;
+};

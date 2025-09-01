@@ -1,15 +1,12 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import type { FolksonomyKey } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 
-	interface Props {
-		data: PageData;
-	}
+	import type { PageProps } from './$types';
 
-	let { data }: Props = $props();
+	let { data }: PageProps = $props();
 
 	// Ensure data.keys exists and has a default empty array if undefined
 	let sortedTags = $derived.by(() => {

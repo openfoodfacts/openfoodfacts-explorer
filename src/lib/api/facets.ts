@@ -1,8 +1,6 @@
-// TODO: move this to SDK
+import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-
-import { API_HOST, STATIC_HOST } from '$lib/const';
+import { API_HOST } from '$lib/const';
 import type { KnowledgePanel } from './knowledgepanels';
 
 export const FACETS_SORT_OPTIONS = [
@@ -16,32 +14,15 @@ export const FACETS_SORT_OPTIONS = [
 
 export type FacetSortOption = (typeof FACETS_SORT_OPTIONS)[number];
 
-export type FacetResponse = {
-	count: number;
-	tags: { id: string; known: number; name: string; products: number }[];
-};
-
 export async function getFacet(
 	fetch: typeof window.fetch,
 	facet: string,
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const params = new URLSearchParams();
-	if (opts?.page) params.set('page', `${opts.page}`);
-	if (opts?.pageSize) params.set('page_size', `${opts.pageSize}`);
-	if (opts?.sortBy) params.set('sort_by', opts.sortBy);
-
-	const res = await fetch(`${API_HOST}/facets/${facet}.json?${params}`);
-	return (await res.json()) as FacetResponse;
+	const client = new OpenFoodFacts({ fetch, apiHost: API_HOST });
+	// @ts-expect-error - TODO: sortBy does not contain all possible values
+	return client.getFacet(facet, opts);
 }
-
-export type FacetValueResponse = {
-	count: number;
-	page: number;
-	page_count: number;
-	page_size: number;
-	products: Product[];
-};
 
 export async function getFacetValue(
 	fetch: typeof window.fetch,
@@ -49,13 +30,9 @@ export async function getFacetValue(
 	value: string,
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const params = new URLSearchParams();
-	if (opts?.page) params.set('page', `${opts.page}`);
-	if (opts?.pageSize) params.set('page_size', `${opts.pageSize}`);
-	if (opts?.sortBy) params.set('sort_by', opts.sortBy);
-
-	const res = await fetch(`${STATIC_HOST}/facets/${facet}/${value}.json?${params}`);
-	return (await res.json()) as FacetValueResponse;
+	const client = new OpenFoodFacts({ fetch, apiHost: API_HOST });
+	// @ts-expect-error - TODO: sortBy does not contain all possible values
+	return client.getFacetValue(facet, value, opts);
 }
 
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';

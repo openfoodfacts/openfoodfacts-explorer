@@ -9,9 +9,11 @@
 	let { data }: Props = $props();
 
 	function productNameOrBarcode(
-		product: { product_name: string } | null,
+		product: { product_name?: string } | null,
 		tag: { product: string }
 	) {
+		console.debug('Product:', product);
+		console.debug('Tag:', tag);
 		return product?.product_name ?? tag.product;
 	}
 </script>
@@ -35,13 +37,9 @@
 		{#each data.tags as tag, i (i)}
 			<tr>
 				<td>
-					{#await data.streamed.products}
-						Loading product name...
-					{:then products}
-						<a class="link" href="/products/{tag.product}">
-							{productNameOrBarcode(products[i], tag)}
-						</a>
-					{/await}
+					<a class="link" href="/products/{tag.product}">
+						{productNameOrBarcode(data.products[i], tag)}
+					</a>
 				</td>
 				<td>
 					{tag.product}
