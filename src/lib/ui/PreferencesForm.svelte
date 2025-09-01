@@ -26,7 +26,7 @@
 		showClassifyToggle = true,
 		classifyProducts = $personalizedSearch.classifyProductsEnabled,
 		onClassifyToggle = () => {},
-		onClose = () => {},
+		onClose,
 		attributeGroups = []
 	}: PreferencesFormProps = $props();
 
