@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import { createProductsApi, type Product } from '$lib/api';
-	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
@@ -44,20 +43,25 @@
 			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
 
 			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
-			const result = (await openfoodfacts.performOCR(product.code, imagefield)) as OCRResult;
-
-			if (!result || typeof result !== 'object') {
-				console.warn('OCR failed - invalid result:', result);
+			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
+			if (error) {
+				console.error('Error performing OCR:', error);
 				return;
 			}
-			const ocrText =
-				result.ingredients_text_from_image || result.text || result.ingredients_text || '';
 
-			if (ocrText && ocrText.trim()) {
-				product[`ingredients_text_${languageCode}`] = ocrText;
-			} else {
-				console.warn('No text could be extracted from the image');
+			const data = tmpData as OCRResult;
+			if (!data || typeof data !== 'object') {
+				console.warn('OCR failed - invalid result:', data);
+				return;
 			}
+			const ocrText = data.ingredients_text_from_image || data.text || data.ingredients_text || '';
+			if (!ocrText || !ocrText.trim()) {
+				console.warn('OCR returned empty text:', data);
+				return;
+			}
+
+			// Set OCR result
+			product[`ingredients_text_${languageCode}`] = ocrText;
 		} catch (error) {
 			console.error('Error performing OCR:', error);
 		} finally {
