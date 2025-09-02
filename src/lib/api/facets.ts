@@ -1,6 +1,3 @@
-import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-
-import { API_HOST } from '$lib/const';
 import type { KnowledgePanel } from './knowledgepanels';
 import { createProductsApi } from './product';
 

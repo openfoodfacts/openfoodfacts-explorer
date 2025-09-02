@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
-	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
