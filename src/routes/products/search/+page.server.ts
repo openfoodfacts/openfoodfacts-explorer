@@ -8,7 +8,7 @@ import {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
-import { ProductsApi } from '$lib/api/product';
+import { createProductsApi, ProductsApi } from '$lib/api/product';
 
 export const ssr = false;
 
@@ -92,7 +92,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		prices = await getPrices(pricesApi, productCodes);
 	}
 
-	const off = new OpenFoodFacts(fetch);
+	const off = createProductsApi(fetch);
 	const { data: attributeGroups } = await off.getAttributeGroups();
 
 	return {

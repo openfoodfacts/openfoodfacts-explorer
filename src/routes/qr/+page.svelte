@@ -5,6 +5,7 @@
 
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
+	import { createProductsApi } from '$lib/api';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -32,7 +33,7 @@
 				// 3. Ensures the camera is available for other applications
 				await scanner.stop();
 
-				const productsApi = new OpenFoodFacts(fetch);
+				const productsApi = createProductsApi(fetch);
 
 				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
 				if (!productState || error) {

@@ -549,21 +549,15 @@ export type ProductImage = {
  * @param image - The image to select.
  * @param field - The field to select the image for. It must be in the format `{IMAGE_TYPE}_{LANG}`.
  */
-export async function selectImage(
+export function selectImage(
 	fetch: typeof window.fetch,
 	code: string,
 	imgid: ProductImage,
 	field: string
 ) {
-	try {
-		const off = new OpenFoodFacts(fetch);
-
-		// @ts-expect-error - cropdata should not be mandatory
-		await off.cropImage(code, imgid, field, {});
-	} catch (error) {
-		console.error('Error cropping and rotating image:', error);
-		throw error;
-	}
+	const off = createProductsApi(fetch);
+	// @ts-expect-error - cropdata should not be mandatory
+	return off.cropImage(code, imgid, field, {});
 }
 
 /**

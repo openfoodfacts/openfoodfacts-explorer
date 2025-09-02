@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
+	import { createProductsApi, type Product } from '$lib/api';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
@@ -38,7 +38,7 @@
 		ocrLoading = true;
 
 		try {
-			const openfoodfacts = new OpenFoodFacts(fetch);
+			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
 			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
