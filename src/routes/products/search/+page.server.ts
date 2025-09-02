@@ -1,11 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import {
-	PricesApi,
-	SearchApi,
-	type SearchBody,
-	OpenFoodFacts
-} from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, ProductsApi } from '$lib/api/product';
