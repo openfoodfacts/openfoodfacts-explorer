@@ -2,6 +2,7 @@ import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import { API_HOST } from '$lib/const';
 import type { KnowledgePanel } from './knowledgepanels';
+import { createProductsApi } from './product';
 
 export const FACETS_SORT_OPTIONS = [
 	'last_modified_t',
@@ -19,7 +20,7 @@ export async function getFacet(
 	facet: string,
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const client = new OpenFoodFacts({ fetch, apiHost: API_HOST });
+	const client = createProductsApi(fetch);
 	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacet(facet, opts);
 }
@@ -30,7 +31,7 @@ export async function getFacetValue(
 	value: string,
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const client = new OpenFoodFacts({ fetch, apiHost: API_HOST });
+	const client = createProductsApi(fetch);
 	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacetValue(facet, value, opts);
 }
