@@ -4,11 +4,11 @@ import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { wrapFetchWithCredentials } from './utils';
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	return new OpenFoodFacts(fetch, {
-		host: API_HOST
-	});
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
+	return new OpenFoodFacts(wrappedFetch, { host: url.toString() });
 }
 
 export class ProductsApi {
