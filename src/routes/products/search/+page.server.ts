@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
-import { getSearchBaseUrl, type SearchResult } from '$lib/api/search';
+import { PricesApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, ProductsApi } from '$lib/api/product';
 
@@ -56,7 +56,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
-	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
+	const api = createSearchApi(fetch);
 
 	const params: SearchBody = {
 		q: query,
@@ -73,12 +73,17 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		sort_by: sortBy
 	};
 
-	const searchRes = await api.search(params);
-	const searchData = searchRes.data as SearchResult;
+	const { data: searchData, error: searchError } = await api.search(params);
+	if (searchError || !searchData) {
+		console.error('Search API error:', searchError);
+		error(500, 'Failed to fetch search results');
+	}
+
+	const searchDataTyped = searchData as SearchResult;
 
 	// Get attributes for all products using the API
 	const productsApi = new ProductsApi(fetch);
-	const productCodes = searchData.hits.map((hit) => hit.code);
+	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
 	const attributesByCode = await productsApi.getBulkProductAttributes(productCodes);
 
 	let prices: Record<string, number> = {};
@@ -92,7 +97,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 	return {
 		query,
-		search: searchData,
+		search: searchDataTyped,
 		attributesByCode,
 		prices: prices,
 		attributeGroups: attributeGroups ?? []

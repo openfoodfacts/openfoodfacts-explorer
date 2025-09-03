@@ -4,6 +4,7 @@ import {
 	type Product
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
+import { wrapFetchWithCredentials } from './utils';
 
 export function getSearchBaseUrl() {
 	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
@@ -15,11 +16,16 @@ export function getSearchBaseUrl() {
 	return import.meta.env.VITE_SEARCH_BASE_URL;
 }
 
+export function createSearchApi(fetch: typeof window.fetch): SearchApi {
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(getSearchBaseUrl()));
+	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
+}
+
 export const autocomplete = async (
 	query: AutocompleteQuery,
 	fetch: typeof window.fetch
 ): Promise<AutocompleteResponse> => {
-	const api = new SearchApi(fetch, { baseUrl: getSearchBaseUrl() });
+	const api = createSearchApi(fetch);
 	const response = await api.autocomplete(query);
 	return response.data as AutocompleteResponse;
 };
