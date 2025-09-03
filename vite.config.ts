@@ -1,3 +1,4 @@
+import { sentrySvelteKit } from '@sentry/sveltekit';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { version as packageVersion } from './package.json';
@@ -14,6 +15,12 @@ export default defineConfig({
 		}
 	},
 	plugins: [
+		sentrySvelteKit({
+			sourceMapsUploadOptions: {
+				org: 'openfoodfacts',
+				project: 'openfoodfacts-explorer'
+			}
+		}),
 		sveltekit(),
 		viteStaticCopy({
 			targets: [
