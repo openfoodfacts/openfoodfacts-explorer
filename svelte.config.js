@@ -12,6 +12,7 @@ const config = {
 		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
+
 		csp: {
 			directives: {
 				'object-src': ['none'],
@@ -40,6 +41,16 @@ const config = {
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'frame-ancestors': ['none']
+			}
+		},
+
+		experimental: {
+			tracing: {
+				server: true
+			},
+
+			instrumentation: {
+				server: true
 			}
 		}
 	}
