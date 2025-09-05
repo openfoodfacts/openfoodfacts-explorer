@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+
 	import { navigating } from '$app/state';
 	import {
 		getOrDefault,
@@ -7,7 +9,6 @@
 		type Country,
 		type Label,
 		type Origin,
-		type Product,
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
@@ -35,11 +36,16 @@
 	let isShareSupported = navigator?.share != null;
 
 	function addToCalculator() {
+		// FIXME: product.code cannot be null
+		const code = product.code!;
+
 		addItemToCalculator({
-			id: product.code,
-			name: product.product_name || product.code,
+			id: code,
+			name: product.product_name || code,
 			quantity: 100,
+			// @ts-expect-error - image_front_small_url cannot be null
 			imageUrl: product.image_front_small_url,
+			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
 			nutriments: extractNutriments(product.nutriments)
 		});
 	}
@@ -57,6 +63,10 @@
 	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
 		return taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag;
 	}
+
+	let frontImage = $derived(
+		'image_front_url' in product ? (product.image_front_url as string) : undefined
+	);
 </script>
 
 <Card>
@@ -108,7 +118,7 @@
 				{#await taxonomies.brands}
 					Loading...
 				{:then brands}
-					{#each product.brands_tags as tag, i (i)}
+					{#each product.brands_tags ?? [] as tag, i (i)}
 						<a class="badge h-auto break-words" href="/facets/brands/{tag}">
 							{localizedTaxoName(brands, tag)}
 						</a>
@@ -121,7 +131,7 @@
 				{#await taxonomies.categories}
 					Loading...
 				{:then categories}
-					{#each product.categories_tags as tag (tag)}
+					{#each product.categories_tags ?? [] as tag (tag)}
 						<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
 							{localizedTaxoName(categories, tag)}
 						</a>
@@ -134,7 +144,7 @@
 				{#await taxonomies.stores}
 					Loading...
 				{:then stores}
-					{#each product.stores_tags as tag, i (i)}
+					{#each product.stores_tags ?? [] as tag, i (i)}
 						<span class="badge h-auto break-words">
 							{localizedTaxoName(stores, tag)}
 						</span>
@@ -147,7 +157,7 @@
 				{#await taxonomies.labels}
 					Loading...
 				{:then labels}
-					{#each product.labels_tags as tag, i (i)}
+					{#each product.labels_tags ?? [] as tag, i (i)}
 						<a class="badge h-auto break-words" href="/facets/labels/{tag}">
 							{localizedTaxoName(labels, tag)}
 						</a>
@@ -160,7 +170,7 @@
 				{#await taxonomies.countries}
 					Loading...
 				{:then countries}
-					{#each product.countries_tags as tag, i (i)}
+					{#each product.countries_tags ?? [] as tag, i (i)}
 						<a class="badge h-auto break-words" href="/facets/countries/{tag}">
 							{localizedTaxoName(countries, tag)}
 						</a>
@@ -173,7 +183,8 @@
 				{#await taxonomies.origins}
 					Loading...
 				{:then origins}
-					{#each product.origins_tags as tag, i (i)}
+					<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
+					{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
 						{#if i > 0},
 						{/if}
 						<a class="link inline-flex items-center break-words" href="/facets/origin/{tag}">
@@ -204,7 +215,7 @@
 		</div>
 
 		<div class="m-4 flex h-auto min-h-[40vh] grow justify-center max-md:min-h-[30vh]">
-			<ImageButton src={product.image_front_url} alt={product.product_name} />
+			<ImageButton src={frontImage} alt={product.product_name} />
 		</div>
 	</div>
 </Card>
