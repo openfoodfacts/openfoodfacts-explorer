@@ -8,8 +8,8 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
-	import type { ProductReduced } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import type { ProductReduced } from '$lib/api';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
