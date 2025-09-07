@@ -1,19 +1,24 @@
 <script lang="ts">
-	import type { ProductAttributeGroup } from '$lib/api';
-	import { personalizeSearchResults } from '$lib/productScoring';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import type { ProductReduced } from '@openfoodfacts/openfoodfacts-nodejs';
-	import WcProductCard from './WcProductCard.svelte';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+
+	import type { ProductAttributeGroup, ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
+	import { personalizeSearchResults, type ScoredProduct } from '$lib/productScoring';
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
+
+	import WcProductCard from './WcProductCard.svelte';
+
+	type AcceptableProduct = (Product & { code: string }) | ProductReduced;
 
 	type Props = {
-		products: ProductReduced[];
+		// TODO: replace Product & ... with Product when code becomes non-optional in the API
+		products: AcceptableProduct[];
 		attributes?: Record<string, ProductAttributeGroup[]>;
 		sortByScore?: boolean;
 	};
 	let { products, attributes, sortByScore }: Props = $props();
 
-	let sortedProducts = $derived.by(() => {
+	let sortedProducts: Array<ScoredProduct<AcceptableProduct>> = $derived.by(() => {
 		if (!sortByScore || !attributes) {
 			return products.map((state) => ({
 				product: state,
