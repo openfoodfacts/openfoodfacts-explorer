@@ -25,5 +25,9 @@
 	});
 </script>
 
-<iframe {src} class="w-full border-0" scrolling="no" frameborder="0" style="height: {frameHeight};"
+<iframe
+	{src}
+	title="External Content"
+	class="w-full overflow-visible border-0"
+	style="height: {frameHeight};"
 ></iframe>
