@@ -18,25 +18,44 @@
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { getWebsiteCtx } from '$lib/stores/website';
+	import type { KnowledgePanel, Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = { data: PageData };
 
 	let { data }: Props = $props();
 	let { state: productState, productAttributes } = $derived(data);
-	let { product } = $derived(productState);
+
+	// TODO: Remove the casts once the external types are fixed
+	let product = $derived(
+		productState.product as Product & {
+			// mandatory fields
+			code: string;
+			created_t: string;
+			creator: string;
+			last_modified_t: string;
+			last_editor: string;
+			// optional fields
+			knowledge_panels: Record<string, KnowledgePanel>;
+			taxonomies?: string[];
+			image_front_small_url?: string;
+			image_front_url?: string;
+		}
+	);
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
-		websiteCtx.flavor = product.product_type as 'beauty' | 'food' | 'petfood' | 'product';
+		// Update website context based on product type
+		if (product.product_type) websiteCtx.flavor = product.product_type;
 	});
 
 	let useWCFolksonomyEditor = $state(false);
 </script>
 
+<!-- FIXME: Remove this cast once product.image_front_small_url and product.image_front_url are not nullable in the API -->
 <Metadata
 	title={$_('product.title', { values: { productName: product.product_name } })}
 	description={$_('product.description', { values: { productName: product.product_name } })}
-	imageUrl={product.image_front_small_url ?? product.image_front_url}
+	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
 <div class="flex flex-col gap-4">
