@@ -4,7 +4,7 @@
 	import { _ } from '$lib/i18n';
 
 	import Card from '$lib/ui/Card.svelte';
-	import type { PriceFull } from '$lib/api/prices';
+	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	let PricesMap: Promise<typeof import('./PricesMap.svelte').default> | null = $state(null);
 

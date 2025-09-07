@@ -68,6 +68,7 @@ export class ProductsApi {
 
 		if (!username || !password) throw new Error('No username or password set');
 
+		// @ts-expect-error - we should use v3
 		return this.off.addOrEditProductV2(product, { password, username });
 	}
 

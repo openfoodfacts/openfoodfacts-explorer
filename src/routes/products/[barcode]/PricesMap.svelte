@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { type PriceFull } from '$lib/api/prices';
 	import { onMount } from 'svelte';
+	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 	import L, {
 		type Map,
 		type Marker,

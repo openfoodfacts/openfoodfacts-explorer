@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { PricesApi, type PaginatedPriceFullList } from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import {
 	type Brand,
@@ -19,14 +19,12 @@ import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/pri
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
-	const prices: PaginatedPriceFullList['items'][number] = [];
 	const { data, error } = await api.getPrices({ product_code: code });
 	if (error != null) throw new Error('Error fetching first page.');
 
 	const { items, pages } = data;
 
-	prices.push(...items.flat());
-
+	const prices = [...items.flat()];
 	for (let page = 2; page <= pages; page++) {
 		const res = await api.getPrices({ product_code: code, page: page });
 		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
