@@ -8,7 +8,7 @@
 		product: ProductDataSection;
 	};
 
-	const { product }: Props = $props();
+	let { product }: Props = $props();
 
 	function formatUnixToDateString(unix: number) {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
