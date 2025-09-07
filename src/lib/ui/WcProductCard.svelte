@@ -4,8 +4,9 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
-	import type { Product, ProductReduced } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = {
 		product: ProductReduced | Product;
