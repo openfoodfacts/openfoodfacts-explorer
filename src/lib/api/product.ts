@@ -393,10 +393,10 @@ export type ProductDataSection = {
 	creator: string;
 	last_modified_t: number;
 	last_editor: string;
-	editors_tags: string[];
-	last_checked_t: number;
-	checkers_tags: string[];
-	states_hierarchy: string[];
+	editors_tags?: string[];
+	last_checked_t?: number;
+	checkers_tags?: string[];
+	states_hierarchy?: string[];
 };
 
 export type Product = ProductDataSection & {

@@ -10,7 +10,7 @@
 
 	let { product }: Props = $props();
 
-	function formatUnixToDateString(unix: number) {
+	function formatUnixToDateString(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
 		}
@@ -38,13 +38,13 @@
 	}
 
 	const doneStates = $derived(
-		product.states_hierarchy
+		(product.states_hierarchy ?? [])
 			.filter((state: string) => !state.includes('to-be-completed'))
 			.map((state: string) => ({ key: state, label: formatState(state) }))
 	);
 
 	const toDoStates = $derived(
-		product.states_hierarchy
+		(product.states_hierarchy ?? [])
 			.filter((state: string) => state.includes('to-be-completed'))
 			.map((state: string) => ({ key: state, label: formatState(state) }))
 	);
@@ -80,7 +80,7 @@
 	</p>
 
 	<!-- Last check -->
-	{#if product.checkers_tags.length > 0}
+	{#if product.checkers_tags && product.checkers_tags.length > 0}
 		<p class="mt-2 text-sm">
 			<span class="text-gray-600 dark:text-gray-300">
 				{$_('product.datasources.last_check', {
@@ -92,7 +92,7 @@
 	{/if}
 
 	<!-- Editors -->
-	{#if product.editors_tags.length > 1}
+	{#if product.editors_tags && product.editors_tags.length > 1}
 		<p class="mt-2 overflow-hidden text-sm break-words">
 			<span class="text-gray-600 dark:text-gray-300">
 				{$_('product.datasources.also_edited_by')}
@@ -107,7 +107,7 @@
 	{/if}
 
 	<!-- Checkers -->
-	{#if product.checkers_tags.length > 1}
+	{#if product.checkers_tags && product.checkers_tags.length > 1}
 		<p class="mt-2 text-sm">
 			<span class="text-gray-600 dark:text-gray-300">
 				{$_('product.datasources.also_checked_by')}
