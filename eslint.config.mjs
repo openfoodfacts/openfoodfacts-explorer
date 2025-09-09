@@ -63,7 +63,13 @@ export default [
 					varsIgnorePattern: '^_$',
 					argsIgnorePattern: '^_$'
 				}
-			]
+			],
+			// Re-enable when the following issues are resolved:
+			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1336
+			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1329
+			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1327
+			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1324
+			'svelte/no-navigation-without-resolve': 'off'
 		}
 	}
 ];
