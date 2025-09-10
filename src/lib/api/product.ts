@@ -28,18 +28,16 @@ export class ProductsApi {
 			product_type: 'all'
 		});
 
-		const url = `${API_HOST}/api/v2/product/${barcode}?${params.toString()}`;
+		const { data, error } = await this.off.apiv2.client.GET('/api/v2/product/{barcode}', {
+			params: { path: { barcode }, query: Object.fromEntries(params) }
+		});
 
-		const res = await this.fetch(url, { redirect: 'follow' });
-
-		if (!res.ok) {
-			throw new Error(
-				`Failed to fetch product attributes for barcode: ${barcode}: ${await res.text()}`
-			);
+		if (error) {
+			throw new Error(`Failed to fetch product attributes for barcode: ${barcode}: ${error}`);
 		}
 
-		const data = await res.json();
-		return data.product?.attribute_groups || [];
+		// @ts-expect-error - attribute_groups is missing in the sdk types
+		return data?.product?.attribute_groups || [];
 	}
 
 	async getBulkProductAttributes(
@@ -50,13 +48,19 @@ export class ProductsApi {
 			fields: 'product_name,code,attribute_groups'
 		});
 
-		const attributesResponse = await this.fetch(`${API_HOST}/api/v2/search?${params.toString()}`);
-		const attributesData = await attributesResponse.json();
+		const { data, error } = await this.off.apiv2.client.GET('/api/v2/search', {
+			params: { query: Object.fromEntries(params) }
+		});
+
+		if (!data) {
+			throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
+		}
 
 		// Create a map of product code to attribute groups
 		const attributesByCode: Record<string, ProductAttributeGroup[]> = {};
-		for (const product of attributesData.products || []) {
-			attributesByCode[product.code] = product.attribute_groups || [];
+		for (const product of data.products || []) {
+			// @ts-expect-error - FIXME: deduplicate attribute groups definition
+			attributesByCode[product.code!] = product.attribute_groups || [];
 		}
 
 		return attributesByCode;
