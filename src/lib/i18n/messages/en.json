@@ -27,7 +27,8 @@
 		"charts_title": "Search Analytics",
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
-		"raw_query_label": "Raw Query"
+		"raw_query_label": "Raw Query",
+		"no_results": "No results"
 	},
 	"auth": {
 		"username": "Username",
