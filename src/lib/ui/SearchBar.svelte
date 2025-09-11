@@ -35,7 +35,7 @@
 
 		const autocompleteQuery = {
 			q: query,
-			taxonomy_names: 'brand,category',
+			taxonomy_names: 'brands,categories,labels',
 			lang: 'en',
 			size: 5,
 			fuzziness: null,
