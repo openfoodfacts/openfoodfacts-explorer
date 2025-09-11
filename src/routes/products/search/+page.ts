@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 import { PricesApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
@@ -40,7 +40,7 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 	return prices;
 }
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
