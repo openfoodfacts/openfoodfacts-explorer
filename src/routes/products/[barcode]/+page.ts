@@ -16,6 +16,7 @@ import {
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
+import { attributesToDefaultPreferences } from '$lib/stores/preferencesStore';
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -71,9 +72,16 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const productAttributes = await productsApi.getProductAttributes(params.barcode);
 
+	const defaultPreferences = (async () => {
+		const { data: attributeGroups } = await productsApi.getAttributeGroups();
+		const attributeGroupsList = attributeGroups ?? [];
+		return attributesToDefaultPreferences(attributeGroupsList);
+	})();
+
 	return {
 		state,
 		productAttributes: productAttributes,
+		defaultProductPreferences: await defaultPreferences,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		taxo: {

@@ -20,7 +20,7 @@ export class ProductsApi {
 		this.off = createProductsApi(fetch);
 	}
 
-	async getProductAttributes(barcode: string): Promise<ProductAttribute[]> {
+	async getProductAttributes(barcode: string): Promise<ProductAttributeGroup[]> {
 		const params = new URLSearchParams({
 			fields: ['product_name', 'code', 'attribute_groups'].join(','),
 			lc: get(preferences).lang,
@@ -42,7 +42,7 @@ export class ProductsApi {
 
 	async getBulkProductAttributes(
 		productCodes: string[]
-	): Promise<Record<string, ProductAttributeGroup[]>> {
+	): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
 		const params = new URLSearchParams({
 			code: productCodes.join(','),
 			fields: 'product_name,code,attribute_groups'
@@ -57,7 +57,7 @@ export class ProductsApi {
 		}
 
 		// Create a map of product code to attribute groups
-		const attributesByCode: Record<string, ProductAttributeGroup[]> = {};
+		const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
 		for (const product of data.products || []) {
 			// @ts-expect-error - FIXME: deduplicate attribute groups definition
 			attributesByCode[product.code!] = product.attribute_groups || [];
@@ -253,7 +253,7 @@ export type ProductSearch<T = Product> = {
 	skip: number;
 };
 
-export type Attribute = {
+export type ProductAttribute = {
 	id: string;
 	name: string;
 	grade: string;
@@ -262,13 +262,12 @@ export type Attribute = {
 	icon_url?: string;
 };
 
-export type ProductAttribute = {
+export type ProductAttributeGroup = {
 	id: string;
 	name: string;
-	attributes: Attribute[];
+	warning?: string;
+	attributes: ProductAttribute[];
 };
-
-export type ProductAttributes = ProductAttribute[];
 
 export type ProductAttributeForScoring = {
 	id: string;
@@ -276,7 +275,7 @@ export type ProductAttributeForScoring = {
 	status?: string;
 };
 
-export type ProductAttributeGroup = {
+export type ProductAttributeForScoringGroup = {
 	id: string;
 	attributes: ProductAttributeForScoring[];
 };

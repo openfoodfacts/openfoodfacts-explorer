@@ -64,7 +64,10 @@
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
 	></robotoff-contribution-message>
 
-	<ProductAttributes {productAttributes} />
+	<ProductAttributes
+		groups={productAttributes}
+		defaultPreferences={data.defaultProductPreferences}
+	/>
 
 	<KnowledgePanels
 		knowledgePanels={product.knowledge_panels}

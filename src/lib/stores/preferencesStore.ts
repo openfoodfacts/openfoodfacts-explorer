@@ -47,7 +47,9 @@ function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
 }
 
-export function generatePreferencesFromGroups(attributeGroups: AttributeGroup[]): UserPreference[] {
+export function attributesToDefaultPreferences(
+	attributeGroups: AttributeGroup[]
+): AttributePreference[] {
 	return attributeGroups.flatMap((group) =>
 		group.attributes!.map((attr) => ({
 			type: 'attribute' as const,

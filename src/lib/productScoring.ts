@@ -1,10 +1,10 @@
 import { calculateScore, type ScoreData, type MatchStatus } from '$lib/scoring';
-import type { ProductAttributeGroup } from '$lib/api/product';
+import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import type { Product } from '$lib/api/product';
 
 export type ProductWithAttributes<T = Product> = T & {
-	attributes?: ProductAttributeGroup[];
+	attributes?: ProductAttributeForScoringGroup[];
 };
 
 export type ScoredProduct<T = Product> = {
@@ -15,25 +15,23 @@ export type ScoredProduct<T = Product> = {
 };
 
 /**
- * Calculates scores for products based on user preferences
- * @param products - Array of products with attributes
+ * Calculates the score and match status for a single product based on user preferences
+ * @param product - Product with attributes to be scored
  * @param userPreferences - Current user preferences for scoring
- * @returns Array of scored products
+ * @returns Scored product with score and match status
  */
-export function scoreProducts<T>(
-	products: ProductWithAttributes<T>[],
+export function scoreProduct<T>(
+	product: ProductWithAttributes<T>,
 	userPreferences: UserPreference[]
-): ScoredProduct<T>[] {
-	return products.map((product) => {
-		const productAttrs = (product.attributes || []) as ProductAttributeGroup[];
-		const scoreData = calculateScore(productAttrs, userPreferences);
-		return {
-			product,
-			score: scoreData.score,
-			matchStatus: scoreData.matchStatus,
-			scoreData
-		};
-	});
+): ScoredProduct<T> {
+	const productAttrs = (product.attributes || []) as ProductAttributeForScoringGroup[];
+	const scoreData = calculateScore(productAttrs, userPreferences);
+	return {
+		product,
+		score: scoreData.score,
+		matchStatus: scoreData.matchStatus,
+		scoreData
+	};
 }
 
 /**
@@ -66,7 +64,7 @@ export function personalizeSearchResults<T>(
 	userPreferences: UserPreference[],
 	classifyEnabled: boolean
 ): ScoredProduct<T>[] {
-	const scoredProducts = scoreProducts(products, userPreferences);
+	const scoredProducts = products.map((product) => scoreProduct(product, userPreferences));
 
 	if (classifyEnabled) {
 		return scoredProducts.sort(byMatchScore);

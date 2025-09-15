@@ -7,7 +7,7 @@
 		updatePreference,
 		resetToDefaults,
 		getPreferenceValue,
-		generatePreferencesFromGroups,
+		attributesToDefaultPreferences,
 		type AttributeGroup,
 		type Attribute
 	} from '$lib/stores/preferencesStore';
@@ -36,7 +36,7 @@
 	}
 
 	function handleResetToDefaults() {
-		const defaults = generatePreferencesFromGroups(attributeGroups);
+		const defaults = attributesToDefaultPreferences(attributeGroups);
 		resetToDefaults(defaults);
 	}
 

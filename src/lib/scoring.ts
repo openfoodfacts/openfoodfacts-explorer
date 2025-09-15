@@ -1,6 +1,6 @@
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import { getPreferenceValue } from '$lib/stores/preferencesStore';
-import type { ProductAttributeGroup } from '$lib/api/product';
+import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 
 export type MatchStatus =
 	| 'unknown_match'
@@ -31,7 +31,7 @@ const getWeight = (importance: string): number =>
 
 // source of algorithm: https://github.com/openfoodfacts/openfoodfacts-server/blob/main/html/js/product-search.js
 export function calculateScore(
-	productAttributes: ProductAttributeGroup[],
+	productAttributes: ProductAttributeForScoringGroup[],
 	currentPrefs: UserPreference[]
 ): ScoreData {
 	let totalWeightedScore = 0;

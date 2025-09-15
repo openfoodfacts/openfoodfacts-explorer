@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
-	import type { ProductAttributeGroup, ProductReduced } from '$lib/api';
+	import type { ProductAttributeForScoringGroup, ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
 	import { personalizeSearchResults, type ScoredProduct } from '$lib/productScoring';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
@@ -13,7 +13,7 @@
 	type Props = {
 		// TODO: replace Product & ... with Product when code becomes non-optional in the API
 		products: AcceptableProduct[];
-		attributes?: Record<string, ProductAttributeGroup[]>;
+		attributes?: Record<string, ProductAttributeForScoringGroup[]>;
 		sortByScore?: boolean;
 	};
 	let { products, attributes, sortByScore }: Props = $props();
