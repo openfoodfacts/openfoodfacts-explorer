@@ -14,11 +14,11 @@
 	import { onMount } from 'svelte';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import type { ProductAttributeGroup } from '$lib/api/product';
+	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 
 	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
-	let attributesByCode: Promise<Record<string, ProductAttributeGroup[]>> = $state(
+	let attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $state(
 		Promise.resolve({})
 	);
 

@@ -1,5 +1,19 @@
 <script lang="ts">
-	import type { Attribute, ProductAttribute, ProductAttributes } from '$lib/api/product';
+	import type { ProductAttribute, ProductAttributeGroup } from '$lib/api/product';
+	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
+	import { get } from 'svelte/store';
+
+	type Props = {
+		groups: ProductAttributeGroup[];
+		defaultPreferences: AttributePreference[];
+	};
+
+	const { groups: productGroups, defaultPreferences }: Props = $props();
+
+	function getColorStyle(grade: string) {
+		const normalizedGrade = grade.toLowerCase();
+		return COLOR_MAP[normalizedGrade] ?? COLOR_MAP['unknown'];
+	}
 
 	const COLOR_MAP: Record<string, { textColor: string; bgColor: string }> = {
 		a: {
@@ -28,86 +42,62 @@
 		}
 	};
 
-	interface Props {
-		productAttributes: ProductAttributes;
+	function shouldShowAttribute(attr: ProductAttribute) {
+		const attributeId = attr.id.toLowerCase();
+
+		let preferences = get(personalizedSearch).userPreferences;
+		if (preferences.length === 0) {
+			console.debug('No user preferences found, using default preferences');
+			preferences = defaultPreferences;
+		}
+
+		const attribute = preferences.find((pref) => pref.attributeId === attributeId);
+		if (attribute == null) {
+			return false;
+		}
+
+		const { value } = attribute;
+		if (value === 'not_important') {
+			return false;
+		}
+
+		return true;
 	}
-
-	const { productAttributes }: Props = $props();
-
-	function getAttributeByName(name: string): Attribute | undefined {
-		const attributeGroup = productAttributes.find((pa: ProductAttribute) =>
-			pa.name.toLowerCase().includes(name.toLowerCase())
-		);
-		return attributeGroup?.attributes[0];
-	}
-
-	function getColorStyle(grade: string) {
-		const normalizedGrade = grade.toLowerCase();
-		return COLOR_MAP[normalizedGrade] ?? COLOR_MAP['unknown'];
-	}
-
-	let nutriScore = $derived(getAttributeByName('nutri'));
-	let novaScore = $derived(getAttributeByName('processing'));
-	let greenScore = $derived(getAttributeByName('environment'));
-	let organicScore = $derived(getAttributeByName('labels'));
-
-	function scoreCard(attribute: Attribute | undefined, href: string) {
-		if (!attribute) return null;
-
-		const colors = getColorStyle(attribute.grade);
-
-		return {
-			href,
-			icon: attribute.icon_url,
-			title: attribute.title,
-			description: attribute.description_short,
-			textColor: colors.textColor,
-			bgColor: colors.bgColor
-		};
-	}
-
-	type CardData = {
-		href: string;
-		icon: string;
-		title: string;
-		description: string;
-		textColor: string;
-		bgColor: string;
-	};
-
-	const cards = $derived(
-		[
-			scoreCard(nutriScore, '#health_card'),
-			scoreCard(novaScore, '#nova'),
-			scoreCard(greenScore, '#environment_card'),
-			scoreCard(organicScore, '#')
-		].filter((card): card is CardData => card !== null)
-	);
 </script>
 
-{#snippet productAttributesCard(card: CardData)}
-	<a href={card.href} class="md:w-full">
-		<div
-			class="flex h-full w-full items-center justify-evenly gap-4 rounded-lg p-4 text-center md:max-lg:flex-col {card.bgColor}"
-		>
-			{#if card.icon}
-				<img alt={card.title} src={card.icon} class="h-16" />
-			{/if}
-			<div class="flex flex-col">
-				<div class="text-xl font-semibold {card.textColor}">{card.title}</div>
-				{#if card.description}
-					<div class="text-sm text-black">{card.description}</div>
-				{/if}
-			</div>
-		</div>
-	</a>
-{/snippet}
+<div class="my-8">
+	<h2 class="mb-4 text-center text-3xl font-bold">Attributes</h2>
 
-<div>
-	<h2 class="mb-4 text-center text-3xl font-bold">Product Preferences</h2>
-	<div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-		{#each cards as card (card.href)}
-			{@render productAttributesCard(card)}
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+		{#each productGroups as group (group.id)}
+			{#each group.attributes as attr (attr.id)}
+				{#if shouldShowAttribute(attr)}
+					{@const colors = getColorStyle(attr.grade)}
+					<div class="indicator mt-4 h-20 w-full">
+						<div
+							class="indicator-item indicator-top indicator-center badge badge-soft badge-primary"
+						>
+							<div>{group.name}</div>
+							{#if group.warning}
+								<div class="tooltip" data-tip={group.warning}>
+									<span class="icon-[mdi--warning] text-orange-400 dark:text-orange-300"></span>
+								</div>
+							{/if}
+						</div>
+
+						<div
+							class="m-1 flex h-full w-full items-center justify-start gap-4 rounded-lg p-4 {colors.bgColor}"
+							title={attr.title}
+						>
+							<img alt={attr.title} src={attr.icon_url} class="h-15 w-15 object-contain" />
+							<div>
+								<p class="text-sm font-semibold {colors.textColor}">{attr.title}</p>
+								<p class="text-xs text-black">{attr.description_short}</p>
+							</div>
+						</div>
+					</div>
+				{/if}
+			{/each}
 		{/each}
 	</div>
 </div>
