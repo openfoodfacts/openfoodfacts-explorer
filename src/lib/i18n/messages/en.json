@@ -240,5 +240,23 @@
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview"
+	},
+	"landing": {
+		"title": "Open Food Facts Explorer",
+		"subtitle": "A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.",
+		"search_products": "Search Products",
+		"discover_project": "Discover the Project",
+		"contribute": "Contribute",
+		"discover_title": "Discover",
+		"discover_desc": "Browse millions of food products, see nutrition facts, and make informed choices.",
+		"discover_link": "Start exploring",
+		"contribute_title": "Contribute",
+		"contribute_desc": "Join thousands of volunteers. Add products, improve data, and help the world eat better.",
+		"contribute_link": "How to contribute",
+		"get_app_title": "Get the App",
+		"get_app_desc": "Scan barcodes and add products on the go. Available for iOS and Android.",
+		"google_play": "Google Play",
+		"app_store": "App Store",
+		"footer": "Open Food Facts is a non-profit project developed by thousands of volunteers from around the world. Your support helps keep our database open and independent."
 	}
 }
