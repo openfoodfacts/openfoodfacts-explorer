@@ -1,11 +1,13 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import * as publicEnv from '$env/static/public';
 	import { preferences } from '$lib/settings';
 	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+
+	import type { PageData } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -221,3 +223,24 @@
 		<span class="ml-2">Help us improve Explorer on GitHub</span>
 	</a>
 </div>
+
+<div class="divider my-8"></div>
+
+<h2 class="mb-4 text-center text-2xl font-bold">Environment Variables</h2>
+
+<table class="table-zebra table-sm table w-full">
+	<thead>
+		<tr>
+			<th class="text-end">Variable</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		{#each Object.entries(publicEnv) as [key, value] (key)}
+			<tr>
+				<td class="text-end font-bold">{key}</td>
+				<td class="font-mono break-all">{value}</td>
+			</tr>
+		{/each}
+	</tbody>
+</table>
