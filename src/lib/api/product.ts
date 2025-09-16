@@ -20,26 +20,6 @@ export class ProductsApi {
 		this.off = createProductsApi(fetch);
 	}
 
-	async getProductAttributes(barcode: string): Promise<ProductAttributeGroup[]> {
-		const params = new URLSearchParams({
-			fields: ['product_name', 'code', 'attribute_groups'].join(','),
-			lc: get(preferences).lang,
-			cc: get(preferences).country,
-			product_type: 'all'
-		});
-
-		const { data, error } = await this.off.apiv2.client.GET('/api/v2/product/{barcode}', {
-			params: { path: { barcode }, query: Object.fromEntries(params) }
-		});
-
-		if (error) {
-			throw new Error(`Failed to fetch product attributes for barcode: ${barcode}: ${error}`);
-		}
-
-		// @ts-expect-error - attribute_groups is missing in the sdk types
-		return data?.product?.attribute_groups || [];
-	}
-
 	async getBulkProductAttributes(
 		productCodes: string[]
 	): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
@@ -83,27 +63,17 @@ export class ProductsApi {
 	 * @param imageDataBase64 Base64 encoded image data
 	 * @param imagefield The type of image (optional, defaults to 'other')
 	 */
-	async uploadImageV3(
-		barcode: string,
-		imageDataBase64: string,
-		imagefield?: string
-	): Promise<{ data?: ImageUploadResponse; error?: string }> {
-		const url = `${API_HOST}/api/v3/product/${barcode}/images`;
-
-		const user_id = get(preferences).username;
-		const password = get(preferences).password;
+	async uploadImageV3(barcode: string, imageDataBase64: string, imagefield?: string) {
+		const user_id = get(preferences).username ?? undefined;
+		const password = get(preferences).password ?? undefined;
 		const lc = get(preferences).lang;
 		const cc = get(preferences).country;
 
-		if (!user_id || !password) {
-			return { error: 'Username and password are required for image upload' };
-		}
-
-		const body = {
+		return this.off.apiv3.uploadProductImage(barcode, {
 			lc,
 			cc,
-			user_id,
-			password,
+			user_id: user_id,
+			password: password,
 			image_data_base64: imageDataBase64,
 			...(imagefield && {
 				selected: {
@@ -112,30 +82,7 @@ export class ProductsApi {
 					}
 				}
 			})
-		};
-
-		try {
-			const res = await this.fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(body)
-			});
-
-			if (!res.ok) {
-				const errorData = await res.json().catch(() => ({}));
-				return { error: `Failed to upload image: ${JSON.stringify(errorData)}` };
-			}
-
-			const result = await res.json();
-			return { data: result };
-		} catch (err) {
-			console.error('Error during v3.3 image upload:', err);
-			return {
-				error: `Error during v3.3 image upload: ${err instanceof Error ? err.message : String(err)}`
-			};
-		}
+		});
 	}
 
 	/**
