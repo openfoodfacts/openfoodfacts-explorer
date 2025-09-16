@@ -33,6 +33,7 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
+	import { preferences } from '$lib/settings';
 
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
@@ -124,6 +125,17 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+
+	let config: HTMLElement;
+
+	onMount(() => {
+		const unsubscribe = preferences.subscribe((n) => {
+			config.setAttribute('language-code', n.lang);
+		});
+		return () => {
+			unsubscribe();
+		};
+	});
 </script>
 
 <svelte:head>
@@ -139,7 +151,8 @@
 <div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
-		language-code="en"
+		bind:this={config}
+		language-code={$preferences.lang}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={{
 			dryRun: !dev,
