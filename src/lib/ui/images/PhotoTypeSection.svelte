@@ -80,14 +80,19 @@
 
 			const uploadResult = await api.uploadImageV3(barcode, base64Data, imagefield);
 
-			if (uploadResult.error) {
-				toast.error(`Upload failed: ${uploadResult.error}`);
+			if (!uploadResult || uploadResult.error || !uploadResult.data) {
+				toast.error(`Upload failed: ${uploadResult}`);
 				return;
 			}
 
 			if (uploadResult.data?.status === 'success') {
 				if (onImageUploaded) {
-					const uploadedImages = uploadResult.data.product?.images?.uploaded;
+					// FIXME: The API response typing is incorrect, so we need to cast here
+					// to access the uploaded images
+					const uploadedImages = uploadResult.data.product?.images?.uploaded as null | {
+						[key: string]: { imgid: number };
+					};
+
 					const firstImageKey = uploadedImages ? Object.keys(uploadedImages)[0] : null;
 					const imgid =
 						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
