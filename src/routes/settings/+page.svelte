@@ -63,6 +63,11 @@
 </script>
 
 <div class="mx-auto my-8">
+	<p class="mb-4 font-semibold">{$_('settings.news')}</p>
+	<news-feed
+		url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
+	></news-feed>
+
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.general')}</p>
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
