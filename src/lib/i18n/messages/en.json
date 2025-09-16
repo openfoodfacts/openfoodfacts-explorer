@@ -70,7 +70,8 @@
 	"settings": {
 		"general": "General",
 		"influences": "Influences",
-		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
+		"news": "News"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
