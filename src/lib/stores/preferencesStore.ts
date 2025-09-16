@@ -1,7 +1,7 @@
 import { persisted } from 'svelte-local-storage-store';
 
 export type Attribute = {
-	id?: string;
+	id: string;
 	name?: string;
 	icon_url?: string;
 	setting_name?: string;
@@ -14,7 +14,7 @@ export type Attribute = {
 };
 
 export type AttributeGroup = {
-	id?: string;
+	id: string;
 	name?: string;
 	attributes?: Attribute[];
 	warning?: string;

@@ -16,7 +16,7 @@ import {
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
-import { attributesToDefaultPreferences } from '$lib/stores/preferencesStore';
+import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -74,7 +74,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const defaultPreferences = (async () => {
 		const { data: attributeGroups } = await productsApi.getAttributeGroups();
-		const attributeGroupsList = attributeGroups ?? [];
+		// FIXME: Remove cast when SDK fixes ids type being string | undefined
+		const attributeGroupsList = (attributeGroups ?? []) as AttributeGroup[];
 		return attributesToDefaultPreferences(attributeGroupsList);
 	})();
 
