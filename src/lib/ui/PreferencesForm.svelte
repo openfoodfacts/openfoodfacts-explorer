@@ -6,37 +6,37 @@
 		personalizedSearch,
 		updatePreference,
 		resetToDefaults,
-		getPreferenceValue,
 		attributesToDefaultPreferences,
-		type AttributeGroup,
-		type Attribute
+		type AttributeGroup
 	} from '$lib/stores/preferencesStore';
+	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {
-		onPreferenceChange?: (category: string, preference: string, value: string) => void;
 		showClassifyToggle?: boolean;
 		classifyProducts?: boolean;
+		groups: AttributeGroup[] | Promise<AttributeGroup[]>;
+
+		onPreferenceChange?: (category: string, preference: string, value: string) => void;
 		onClassifyToggle?: (value: boolean) => void;
 		onClose?: () => void;
-		attributeGroups?: AttributeGroup[];
 	};
 
 	let {
-		onPreferenceChange = () => {},
+		groups,
 		showClassifyToggle = true,
 		classifyProducts = $personalizedSearch.classifyProductsEnabled,
-		onClassifyToggle = () => {},
-		onClose,
-		attributeGroups = []
+		onPreferenceChange,
+		onClassifyToggle,
+		onClose
 	}: PreferencesFormProps = $props();
 
 	function handlePreferenceChange(category: string, preference: string, value: string) {
 		updatePreference(category, preference, value);
-		onPreferenceChange(category, preference, value);
+		onPreferenceChange?.(category, preference, value);
 	}
 
-	function handleResetToDefaults() {
-		const defaults = attributesToDefaultPreferences(attributeGroups);
+	function handleResetToDefaults(groups: AttributeGroup[]) {
+		const defaults = attributesToDefaultPreferences(groups);
 		resetToDefaults(defaults);
 	}
 
@@ -45,44 +45,18 @@
 			...store,
 			classifyProductsEnabled: classifyProducts
 		}));
-		onClassifyToggle(classifyProducts);
+		onClassifyToggle?.(classifyProducts);
 	}
 
-	const getSelectedValue = (category: string, id: string) =>
-		getPreferenceValue($personalizedSearch.userPreferences, category, id);
+	onMount(() => {
+		const unsubscribe = personalizedSearch.subscribe((value) => {
+			console.debug('Personalized Search Store Updated:', value);
+		});
 
-	let isLoading = $derived(!attributeGroups || attributeGroups.length === 0);
-
-	const DEFAULT_IMPORTANCE_VALUES = ['mandatory', 'very_important', 'important', 'not_important'];
-
-	const validGroups = $derived(
-		attributeGroups.filter((group) => group.id && group.name && group.attributes)
-	);
-
-	const createOptionObjects = (values: string[]) =>
-		values.map((value) => ({ value, label: $_(`preferences.options.${value}`) || value }));
-
-	const processAttribute = (attribute: Attribute, groupId: string) => {
-		const attributeValues = attribute.values?.length ? attribute.values : DEFAULT_IMPORTANCE_VALUES;
-		return {
-			id: attribute.id!,
-			label: attribute.setting_name || attribute.name,
-			iconImg: attribute.icon_url,
-			options: createOptionObjects(attributeValues),
-			selectedValue: getSelectedValue(groupId, attribute.id!),
-			description: attribute.setting_note
+		return () => {
+			unsubscribe();
 		};
-	};
-
-	const sections = $derived.by(() =>
-		validGroups.map((group) => ({
-			id: group.id!,
-			title: group.name!,
-			options: group.attributes!.filter((a) => a.id).map((a) => processAttribute(a, group.id!)),
-			showWarning: group.id === 'allergens',
-			warningText: group.warning
-		}))
-	);
+	});
 </script>
 
 <Card>
@@ -95,50 +69,47 @@
 			</p>
 		</div>
 
-		<!-- Classify Products Toggle -->
-		{#if showClassifyToggle}
-			<div class="form-control">
-				<label class="label cursor-pointer justify-start gap-3">
-					<input
-						type="checkbox"
-						class="toggle toggle-primary"
-						bind:checked={classifyProducts}
-						onchange={handleClassifyToggle}
-					/>
-					<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-				</label>
-			</div>
-
-			<div class="mb-4 rounded-lg bg-orange-50 p-3 dark:bg-orange-900/20">
-				<button
-					class="btn md:btn-sm btn-primary btn-xs"
-					onclick={handleResetToDefaults}
-					disabled={isLoading}
-				>
-					{$_('preferences.use_default')}
-				</button>
-				<span class="ml-2 text-sm">{$_('preferences.default_description')}</span>
-			</div>
-		{/if}
-
 		<!-- Preference Sections -->
-		{#if isLoading}
+		{#await groups}
 			<div class="flex items-center justify-center py-8">
 				<span class="loading loading-spinner loading-lg"></span>
 				<span class="ml-2">Loading preferences...</span>
 			</div>
-		{:else}
-			{#each sections as section (section.id)}
+		{:then groups}
+			<!-- Classify Products Toggle -->
+			{#if showClassifyToggle}
+				<div class="form-control">
+					<label class="label cursor-pointer justify-start gap-3">
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={classifyProducts}
+							onchange={handleClassifyToggle}
+						/>
+						<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
+					</label>
+				</div>
+
+				<div class="mb-4 rounded-lg bg-orange-50 p-3 dark:bg-orange-900/20">
+					<button
+						class="btn md:btn-sm btn-primary btn-xs"
+						onclick={() => handleResetToDefaults(groups)}
+					>
+						{$_('preferences.use_default')}
+					</button>
+					<span class="ml-2 text-sm">{$_('preferences.default_description')}</span>
+				</div>
+			{/if}
+			{#each groups as group (group.id)}
 				<PreferenceSection
-					title={section.title || ''}
-					options={section.options || []}
+					title={group.name || ''}
+					groupId={group.id}
+					options={group.attributes ?? []}
 					onChange={handlePreferenceChange}
-					category={section.id || ''}
-					showWarning={section.showWarning || false}
-					warningText={section.warningText || ''}
+					warningText={group.warning}
 				/>
 			{/each}
-		{/if}
+		{/await}
 
 		<!-- Close Button -->
 		{#if onClose}

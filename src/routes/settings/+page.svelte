@@ -1,21 +1,19 @@
 <script lang="ts">
 	import * as publicEnv from '$env/static/public';
+
 	import { preferences } from '$lib/settings';
 	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data }: PageProps = $props();
 	let isLoggingIn: boolean = $state(false);
 
 	let isAuthenticated = $derived($preferences.folksonomy.authToken !== null);
@@ -136,7 +134,8 @@
 
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.influences')}</p>
 
-	<PreferencesForm attributeGroups={data.attributeGroups} />
+	<!-- FIXME: Remove cast when id gets changes to a required property in SDK -->
+	<PreferencesForm groups={data.attributeGroups as AttributeGroup[]} />
 
 	<div class="my-8">
 		<p class="mt-8 mb-4 font-semibold">{$_('settings.login')}</p>

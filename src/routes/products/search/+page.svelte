@@ -14,7 +14,7 @@
 		toLuceneString,
 		type FacetsSelection
 	} from '$lib/facets';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import Pagination from '$lib/Pagination.svelte';
 	import Metadata from '$lib/Metadata.svelte';
@@ -211,9 +211,10 @@
 					{$_('preferences.edit_preferences')}
 				</div>
 				<div class="collapse-content">
+					<!-- FIXME: Remove cast when SDK fixes ids type being string | undefined -->
 					<PreferencesForm
 						onClose={() => (showPreferences = false)}
-						attributeGroups={data.attributeGroups}
+						groups={data.attributeGroups as AttributeGroup[]}
 					/>
 				</div>
 			</div>
