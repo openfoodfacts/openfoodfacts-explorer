@@ -28,7 +28,13 @@
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Query",
-		"no_results": "No results"
+		"no_results": "No results",
+		"show_graphs": "Show Graphs",
+		"hide_graphs": "Hide Graphs",
+		"chart_title": "{chartKey}",
+		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
+		"advanced_search_classic": "Advanced Search for {term} (classic version)",
+		"prices_badge": "{count} prices"
 	},
 	"auth": {
 		"username": "Username",

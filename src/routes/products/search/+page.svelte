@@ -105,6 +105,8 @@
 		navigatingTo = barcode;
 		goto(`/products/${barcode}`);
 	}
+
+	let mainSearchTerm = $derived(extractQuery(data.query));
 </script>
 
 <Metadata
@@ -121,7 +123,7 @@
 			</span>
 			<input
 				type="text"
-				placeholder={$_('search.search_placeholder')}
+				placeholder={$_('search.placeholder')}
 				class="input input-bordered w-full font-mono break-words"
 				value={data.query}
 				disabled
@@ -146,7 +148,7 @@
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
 						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
-							{label}
+							{$_(label)}
 						</button>
 					</li>
 				{/each}
@@ -173,10 +175,30 @@
 
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
-		<div class="mb-4 flex justify-end gap-2">
-			<button class="btn btn-primary btn-sm gap-2" onclick={() => (showGraphs = !showGraphs)}>
+		<div class="mb-4 flex flex-wrap justify-end gap-2 max-sm:justify-center">
+			<a
+				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
+				target="_blank"
+				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
+			>
+				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
+				<span class="icon-[mdi--open-in-new] text-lg"></span>
+			</a>
+			<a
+				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
+				target="_blank"
+				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
+			>
+				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
+				<span class="icon-[mdi--open-in-new] text-lg"></span>
+			</a>
+
+			<button
+				class="btn btn-primary btn-sm gap-2 max-sm:w-full"
+				onclick={() => (showGraphs = !showGraphs)}
+			>
 				<span class="icon-[mdi--chart-bar] text-lg"></span>
-				{showGraphs ? 'Hide Graphs' : 'Show Graphs'}
+				{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
 			</button>
 		</div>
 
@@ -201,7 +223,12 @@
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
 				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
 					<div class="bg-base-100 rounded-lg p-4 shadow-md">
-						<VegaChart spec={chartSpec} title={chartKey.replace(/_/g, ' ').replace(':', ' vs ')} />
+						<VegaChart
+							spec={chartSpec}
+							title={$_('search.chart_title', {
+								values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') }
+							})}
+						/>
 					</div>
 				{/each}
 			</div>
@@ -229,7 +256,9 @@
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
-								{data.prices[scoredProduct.product.code]} prices
+								{$_('search.prices_badge', {
+									values: { count: data.prices[scoredProduct.product.code] }
+								})}
 							</span>
 						{/if}
 						<product-card
