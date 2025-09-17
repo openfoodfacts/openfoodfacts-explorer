@@ -94,37 +94,16 @@ export class ProductsApi {
 		barcode: string,
 		images: ImageSelectionData
 	): Promise<{ data?: ImageOperationResponse; error?: string }> {
-		const url = `${API_HOST}/api/v3.3/product/${barcode}`;
+		const { data, error } = await this.off.apiv3.client.PATCH('/api/v3/product/{barcode}', {
+			params: { path: { barcode } },
+			body: { fields: 'updated', product: { images } }
+		});
 
-		const body = {
-			fields: 'updated',
-			product: {
-				images
-			}
-		};
-
-		try {
-			const res = await this.fetch(url, {
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(body)
-			});
-
-			if (!res.ok) {
-				const errorData = await res.json().catch(() => ({}));
-				return { error: `Failed to select/crop images: ${JSON.stringify(errorData)}` };
-			}
-
-			const result = (await res.json()) as ImageOperationResponse;
-			return { data: result };
-		} catch (err) {
-			console.error('Error during v3.3 image selection/cropping:', err);
-			return {
-				error: `Error during v3.3 image selection/cropping: ${err instanceof Error ? err.message : String(err)}`
-			};
+		if (error) {
+			return { error: `Failed to select/crop images: ${error}` };
 		}
+
+		return { data: data as ImageOperationResponse };
 	}
 
 	/**
