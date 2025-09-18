@@ -1,27 +1,28 @@
 <script lang="ts">
-	import type { KnowledgePanel, KnowledgePanelGroupElement } from '$lib/api';
+	import type { KnowledgeElementPanelGroup, KnowledgePanel } from '$lib/api';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 	import Panel from './Panel.svelte';
 
 	let {
 		element,
-		allPanels,
-		productCode
+		panels: panels,
+		code: code
 	}: {
-		element: KnowledgePanelGroupElement;
-		allPanels: Record<string, KnowledgePanel>;
-		productCode?: string;
+		element: KnowledgeElementPanelGroup;
+		panels: Record<string, KnowledgePanel>;
+		/** Optional product code to enable product-specific features like product links */
+		code?: string;
 	} = $props();
 
 	let groupEl = $derived(element.panel_group_element);
 </script>
 
+<h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
 <div class="flex flex-col gap-4 md:flex-row">
-	<div class="grow">
-		<h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
+	<div class="flex grow flex-col gap-2">
 		{#each groupEl.panel_ids as id (id)}
-			{@const panel = allPanels[id]}
-			<Panel {panel} {allPanels} {id} {productCode} />
+			{@const panel = panels[id]}
+			<Panel {panel} allPanels={panels} {id} productCode={code} />
 		{/each}
 	</div>
 

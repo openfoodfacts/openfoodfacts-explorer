@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { KnowledgeTextElement } from '$lib/api';
+	import type { KnowledgeElementText } from '$lib/api';
 	import { _ } from '$lib/i18n';
 
-	let { element }: { element: KnowledgeTextElement } = $props();
+	let { element }: { element: KnowledgeElementText } = $props();
 
 	let text_el = $derived(element.text_element);
 	let type = $derived(text_el.type);
