@@ -33,7 +33,7 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
-	import { preferences } from '$lib/settings';
+	import { preferences, runPreferencesMigrations } from '$lib/settings';
 
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
@@ -129,6 +129,7 @@
 	let config: HTMLElement;
 
 	onMount(() => {
+		runPreferencesMigrations();
 		const unsubscribe = preferences.subscribe((n) => {
 			config.setAttribute('language-code', n.lang);
 		});

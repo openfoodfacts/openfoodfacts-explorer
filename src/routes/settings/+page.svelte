@@ -66,7 +66,7 @@
 		url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
 	></news-feed>
 
-	<p class="mt-8 mb-4 font-semibold">{$_('settings.general')}</p>
+	<p class="mt-8 mb-4 font-semibold">{$_('settings.section_general')}</p>
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 		<label for="lang-select" class="justify-self-start md:justify-self-end">
@@ -130,6 +130,20 @@
 				</option>
 			{/each}
 		</select>
+	</div>
+
+	<p class="mt-8 mb-4 font-semibold">{$_('settings.section_editing')}</p>
+
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+		<label for="expanded-sections" class="justify-self-start md:justify-self-end">
+			{$_('settings.expand_all_sections')}:
+		</label>
+		<input
+			id="expanded-sections"
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={$preferences.editing.expandAllSections}
+		/>
 	</div>
 
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.influences')}</p>
