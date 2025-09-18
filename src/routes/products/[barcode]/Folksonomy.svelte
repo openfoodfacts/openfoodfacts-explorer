@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { preferences } from '$lib/settings';
+	import { _ } from '$lib/i18n';
 
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
@@ -306,7 +307,7 @@
 						onclick={createNewTag}
 						disabled={isLoading || !loggedIn}
 						title={!loggedIn
-							? 'Please log in to create new tags and contribute to food transparency'
+							? $_('auth.login_to_create_tags_tooltip')
 							: isLoading
 								? 'Creating...'
 								: undefined}
@@ -320,10 +321,9 @@
 			<tr>
 				<td colspan="3" class="text-center">
 					<p class="mb-4">
-						To create new tags and contribute to food transparency, please log in to your Open Food
-						Facts account
+						{$_('auth.login_to_create_tags_message')}
 					</p>
-					<a href="/settings" class="btn btn-primary w-1/4">Login</a>
+					<a href="/settings" class="btn btn-primary w-1/4">{$_('auth.login')}</a>
 				</td>
 			</tr>
 		{/if}
