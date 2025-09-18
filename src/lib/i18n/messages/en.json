@@ -74,10 +74,12 @@
 		}
 	},
 	"settings": {
-		"general": "General",
+		"section_general": "General",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
-		"news": "News"
+		"news": "News",
+		"setion_editing": "Editing",
+		"expand_all_sections": "Expand all sections"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",

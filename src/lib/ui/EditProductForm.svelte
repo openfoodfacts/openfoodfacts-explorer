@@ -8,6 +8,7 @@
 
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
+	import { preferences } from '$lib/settings';
 
 	type Props = {
 		product: Product;
@@ -61,7 +62,7 @@
 <div class="space-y-4">
 	<!-- Images Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--image-multiple] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.images')}
@@ -73,7 +74,7 @@
 
 	<!-- Basic Info Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.basic_info')}
@@ -93,7 +94,7 @@
 
 	<!-- Languages Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.languages')}
@@ -105,7 +106,7 @@
 
 	<!-- Ingredients Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--format-list-bulleted] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.ingredients')}
@@ -118,7 +119,7 @@
 	<!-- Nutrition Section -->
 	<!-- overflow-visible is needed for the sticky image -->
 	<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.nutrition')}
@@ -130,7 +131,7 @@
 
 	<!-- Comment Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" />
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 			<span class="icon-[mdi--comment-text] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.comment')}
