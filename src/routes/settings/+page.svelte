@@ -14,10 +14,12 @@
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
+	let { loginStatus } = $derived(data);
+
 	let isLoggingIn: boolean = $state(false);
 
 	let isAuthenticated = $derived($preferences.folksonomy.authToken !== null);
-	let loginStatus: undefined | boolean = $state();
+	let folksonomyLoginStatus: undefined | boolean = $state();
 
 	async function loginToFolksonomy() {
 		isLoggingIn = true;
@@ -28,22 +30,22 @@
 		try {
 			const folksonomyApi = createFolksonomyApi(fetch);
 			const { data, error } = await folksonomyApi.login(username, password);
-			loginStatus = true;
+			folksonomyLoginStatus = true;
 			setTimeout(() => {
-				loginStatus = undefined;
+				folksonomyLoginStatus = undefined;
 			}, 3000);
 
 			if (data && !error) {
 				updateFolksonomyAuthToken(data.access_token);
 			} else {
-				loginStatus = false;
+				folksonomyLoginStatus = false;
 				updateFolksonomyAuthToken(null);
 			}
 		} catch (error) {
 			console.error('Error while logging in', error);
-			loginStatus = false;
+			folksonomyLoginStatus = false;
 			setTimeout(() => {
-				loginStatus = undefined;
+				folksonomyLoginStatus = undefined;
 			}, 3000);
 		} finally {
 			isLoggingIn = false;
@@ -61,6 +63,34 @@
 </script>
 
 <div class="mx-auto my-8">
+	<p class="mb-4 font-semibold">{$_('settings.section_user')}</p>
+	{#if loginStatus?.user}
+		<p class="mb-4 text-center text-xl font-medium">
+			{$_('settings.logged_in_as', { values: { username: loginStatus.user.name } })}
+		</p>
+		<div class="flex justify-center gap-2">
+			{#if loginStatus.user.admin}
+				<span class="badge badge-primary badge-xl">
+					<span class="icon-[mdi--shield-account]"></span>
+					<span class="">{$_('auth.admin')}</span>
+				</span>
+			{/if}
+			{#if loginStatus.user.moderator}
+				<span class="badge badge-secondary badge-xl">
+					<span class="icon-[mdi--shield-account]"></span>
+					<span class="">{$_('auth.moderator')}</span>
+				</span>
+			{:else}
+				<span class="badge badge-accent badge-xl">
+					<span class="icon-[mdi--account]"></span>
+					<span class="">{$_('auth.user')}</span>
+				</span>
+			{/if}
+		</div>
+	{:else}
+		<p class="mb-2 text-center text-sm font-medium">{$_('settings.not_logged_in')}</p>
+	{/if}
+
 	<p class="mb-4 font-semibold">{$_('settings.news')}</p>
 	<news-feed
 		url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
@@ -214,12 +244,12 @@
 					{/if}
 				</button>
 
-				{#if loginStatus !== undefined}
+				{#if folksonomyLoginStatus !== undefined}
 					<div
-						class="alert {loginStatus ? 'alert-success' : 'alert-error'} px-3 py-2"
+						class="alert {folksonomyLoginStatus ? 'alert-success' : 'alert-error'} px-3 py-2"
 						transition:fade={{ duration: 200 }}
 					>
-						{#if loginStatus}
+						{#if folksonomyLoginStatus}
 							<span class="icon-[mdi--check-circle] h-4 w-4"></span>
 							<span class="text-sm">{$_('auth.success')}</span>
 						{:else}
