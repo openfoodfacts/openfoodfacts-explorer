@@ -29,10 +29,15 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		// If the user is not logged in, redirect to the login page
 		// We allow an exception for development mode
 		error(401, {
-			message: 'You must be logged in to view this page',
+			message:
+				'In order to edit this product, and contribute to food transparency, you need to be logged in to your Open Food Facts account.',
 			actions: [
 				{
 					label: 'Login',
+					url: '/login'
+				},
+				{
+					label: 'Create my Open Food Facts account',
 					url: '/login'
 				}
 			]

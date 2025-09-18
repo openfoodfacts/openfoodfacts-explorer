@@ -306,7 +306,7 @@
 						onclick={createNewTag}
 						disabled={isLoading || !loggedIn}
 						title={!loggedIn
-							? 'You must be logged in to create a new tag'
+							? 'Please log in to create new tags and contribute to food transparency'
 							: isLoading
 								? 'Creating...'
 								: undefined}
@@ -319,7 +319,10 @@
 		{:else}
 			<tr>
 				<td colspan="3" class="text-center">
-					<p class="mb-4">You must be logged in to create a new tag</p>
+					<p class="mb-4">
+						To create new tags and contribute to food transparency, please log in to your Open Food
+						Facts account
+					</p>
 					<a href="/settings" class="btn btn-primary w-1/4">Login</a>
 				</td>
 			</tr>
