@@ -41,6 +41,7 @@
 		"password": "Password",
 		"authenticated": "Authenticated",
 		"signin": "Sign in",
+		"login": "Login",
 		"signout": "Sign out",
 		"authenticating": "Authenticating...",
 		"success": "Success",
@@ -48,7 +49,11 @@
 		"enter_username": "Enter username",
 		"enter_password": "Enter password",
 		"status": "Status",
-		"actions": "Actions"
+		"actions": "Actions",
+		"login_to_edit_message": "In order to edit this product, and contribute to food transparency, you need to be logged in to your Open Food Facts account.",
+		"login_to_create_tags_message": "To create new tags and contribute to food transparency, please log in to your Open Food Facts account",
+		"login_to_create_tags_tooltip": "Please log in to create new tags and contribute to food transparency",
+		"create_account": "Create my Open Food Facts account"
 	},
 	"general": {
 		"language": "Language",

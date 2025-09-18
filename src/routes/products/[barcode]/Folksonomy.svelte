@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { preferences } from '$lib/settings';
+	import { _ } from '$lib/i18n';
 
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
@@ -306,7 +307,7 @@
 						onclick={createNewTag}
 						disabled={isLoading || !loggedIn}
 						title={!loggedIn
-							? 'You must be logged in to create a new tag'
+							? $_('auth.login_to_create_tags_tooltip')
 							: isLoading
 								? 'Creating...'
 								: undefined}
@@ -319,8 +320,10 @@
 		{:else}
 			<tr>
 				<td colspan="3" class="text-center">
-					<p class="mb-4">You must be logged in to create a new tag</p>
-					<a href="/settings" class="btn btn-primary w-1/4">Login</a>
+					<p class="mb-4">
+						{$_('auth.login_to_create_tags_message')}
+					</p>
+					<a href="/settings" class="btn btn-primary w-1/4">{$_('auth.login')}</a>
 				</td>
 			</tr>
 		{/if}

@@ -13,6 +13,7 @@ import {
 } from '$lib/api';
 import { userInfo } from '$lib/stores/pkceLoginStore';
 import { PRODUCT_STATUS } from '$lib/const';
+import { _ } from '$lib/i18n';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
@@ -29,10 +30,14 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		// If the user is not logged in, redirect to the login page
 		// We allow an exception for development mode
 		error(401, {
-			message: 'You must be logged in to view this page',
+			message: get(_)('auth.login_to_edit_message'),
 			actions: [
 				{
-					label: 'Login',
+					label: get(_)('auth.login'),
+					url: '/login'
+				},
+				{
+					label: get(_)('auth.create_account'),
 					url: '/login'
 				}
 			]
