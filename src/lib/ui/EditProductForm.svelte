@@ -78,7 +78,7 @@
 			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
 			{$_('product.edit.sections.basic_info')}
 		</div>
-		<div class="collapse-content overflow-hidden">
+		<div class="collapse-content">
 			<BasicInfoStep
 				bind:product
 				{brandNames}
