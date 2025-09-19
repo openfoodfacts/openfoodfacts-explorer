@@ -3,7 +3,7 @@
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
+	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 
@@ -18,7 +18,8 @@
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { getWebsiteCtx } from '$lib/stores/website';
-	import type { KnowledgePanel, Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { KnowledgePanels } from '$lib/api';
 
 	type Props = { data: PageData };
 
@@ -35,7 +36,7 @@
 			last_modified_t: string;
 			last_editor: string;
 			// optional fields
-			knowledge_panels: Record<string, KnowledgePanel>;
+			knowledge_panels: KnowledgePanels;
 			taxonomies?: string[];
 			image_front_small_url?: string;
 			image_front_url?: string;
@@ -69,11 +70,7 @@
 		defaultPreferences={data.defaultProductPreferences}
 	/>
 
-	<KnowledgePanels
-		knowledgePanels={product.knowledge_panels}
-		productCode={product.code}
-		onlyCards={true}
-	/>
+	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
 
 	{#if isPriceConfigured() && data?.prices != null}
 		<Prices prices={data.prices} barcode={product.code} />

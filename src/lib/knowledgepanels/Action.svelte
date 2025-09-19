@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { KnowledgeActionElement } from '$lib/api';
+	import type { KnowledgeElementAction } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
 
 	type Props = {
-		element: KnowledgeActionElement;
-		productCode?: string;
+		element: KnowledgeElementAction;
+		code?: string;
 	};
-	let { element, productCode }: Props = $props();
+	let { element, code: code }: Props = $props();
 
 	// Action-related functionality
 	const BUTTON_ACTIONS_TITLES: Record<string, string> = {
@@ -61,26 +61,23 @@
 		const action = element.action_element.actions[0];
 
 		// Handle known action types if product code is available
-		if (productCode != null && action === 'edit_product') {
+		if (code != null && action === 'edit_product') {
 			// Edit product action
-			goto(`/products/${productCode}/edit`);
-		} else if (productCode != null && action === 'add_categories') {
-			goto(`/products/${productCode}/edit#categories`);
+			goto(`/products/${code}/edit`);
+		} else if (code != null && action === 'add_categories') {
+			goto(`/products/${code}/edit#categories`);
 		}
 		// Report to NutriPatrol action
-		else if (productCode != null && action === 'report_product_to_nutripatrol') {
+		else if (code != null && action === 'report_product_to_nutripatrol') {
 			const params = new URLSearchParams({
-				barcode: productCode,
+				barcode: code,
 				source: 'web',
 				flavor: 'off'
 			});
 			window.open(`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`);
 		}
 		// Handle URLs directly
-		else if (
-			productCode != null &&
-			(action.startsWith('http://') || action.startsWith('https://'))
-		) {
+		else if (code != null && (action.startsWith('http://') || action.startsWith('https://'))) {
 			window.open(action, '_blank');
 		}
 		// If no product code but it's a URL, still try to open it

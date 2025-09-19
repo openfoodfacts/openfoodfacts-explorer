@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElement, KnowledgePanel, KnowledgeTableElement } from '$lib/api';
-	import Debug from '$lib/ui/Debug.svelte';
+	import type { KnowledgeElement, KnowledgeElementTable, KnowledgePanel } from '$lib/api';
 
 	import Panel from './Panel.svelte';
 	import Map from './Map.svelte';
@@ -9,6 +8,7 @@
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 	import Action from './Action.svelte';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import Debug from '$lib/ui/Debug.svelte';
 
 	type Props = {
 		allPanels: Record<string, KnowledgePanel>;
@@ -18,13 +18,14 @@
 	let { allPanels, element, productCode }: Props = $props();
 </script>
 
-{#snippet table(element: KnowledgeTableElement)}
+{#snippet table(element: KnowledgeElementTable)}
 	<div class="overflow-x-auto">
 		<table class="table-compact table w-full">
 			<thead>
 				<tr>
 					{#each element.table_element.columns as column, columnIndex (columnIndex)}
-						<th>{column.text}</th>
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+						<th>{@html column.text}</th>
 					{/each}
 				</tr>
 			</thead>
@@ -32,7 +33,8 @@
 				{#each element.table_element.rows as row, rowIndex (rowIndex)}
 					<tr>
 						{#each row.values as cell, cellIndex (cellIndex)}
-							<td>{cell.text}</td>
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							<td>{@html cell.text}</td>
 						{/each}
 					</tr>
 				{/each}
@@ -43,9 +45,9 @@
 
 <div class="my-1">
 	{#if element.element_type === 'panel_group'}
-		<PanelGroup {element} {allPanels} {productCode} />
+		<PanelGroup {element} panels={allPanels} code={productCode} />
 	{:else if element.element_type === 'action'}
-		<Action {element} {productCode} />
+		<Action {element} code={productCode} />
 	{:else if element.element_type === 'panel'}
 		{#if 'panel_element' in element}
 			{@const id = element.panel_element.panel_id}

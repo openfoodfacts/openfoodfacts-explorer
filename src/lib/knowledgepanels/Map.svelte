@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { KnowledgeMapElement } from '$lib/api';
+	import type { KnowledgeElementMap } from '$lib/api';
 	import { onMount } from 'svelte';
 
 	import type { Map, Marker } from 'leaflet';
 
-	let { element }: { element: KnowledgeMapElement } = $props();
+	let { element }: { element: KnowledgeElementMap } = $props();
 
 	const MAX_INITIAL_ZOOM = 3;
 	const MAX_ZOOM = 19;

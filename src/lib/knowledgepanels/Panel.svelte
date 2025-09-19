@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 
-	import type { KnowledgeElement, KnowledgePanel, KnowledgePanelTitle } from '$lib/api';
+	import type { KnowledgeElement, KnowledgePanel, KnowledgeTitleElement } from '$lib/api';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
@@ -10,11 +10,12 @@
 		allPanels: Record<string, KnowledgePanel>;
 
 		panel: KnowledgePanel;
+		inline?: boolean;
 		id: string;
 		link?: string;
 		productCode?: string;
 	};
-	let { allPanels, panel, id, link, productCode }: Props = $props();
+	let { allPanels, panel, inline = false, id, link, productCode }: Props = $props();
 
 	let expanded = $state(panel?.expanded ?? false);
 </script>
@@ -28,43 +29,45 @@
 	{/each}
 {/snippet}
 
-{#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[])}
-	<details
-		bind:open={expanded}
-		class:border-l-secondary={expanded}
-		class:border-l-2={expanded}
-		class:pl-4={expanded}
-		class="collapse-arrow collapse"
+{#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[])}
+	<div
+		class={[
+			'collapse-arrow border-base-300 collapse border-1',
+			panel.size && `kp-panel-size-${panel.size}`,
+			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
+			panel.level && `kp-panel-level-${panel.level}`,
+			'type' in title && `kp-panel-type-${title.type}`
+		]}
 	>
-		<summary
-			class="hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 !flex w-full cursor-pointer items-center rounded-lg p-2 select-none"
+		<input type="checkbox" checked={expanded} />
+
+		<div
+			class={[
+				'hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none'
+			]}
 		>
-			{#if title != null}
-				{#if title.icon_url != null}
-					{#if title.type === 'grade'}
-						<img class="mr-4 h-12" src={title.icon_url} alt={title.title} />
-					{:else}
-						<img
-							class="mr-8 w-8 rounded-md bg-white object-contain"
-							src={title.icon_url}
-							alt={title.title}
-						/>
-					{/if}
+			{#if title.icon_url != null}
+				<img
+					class={[
+						'kp-icon mr-4 h-12',
+						title.icon_size && `kp-icon-${title.icon_size}`,
+						title.icon_color_from_evaluation && 'kp-icon-from-eval'
+					]}
+					src={title.icon_url}
+					alt={title.title}
+				/>
+			{/if}
+			<div class="grow">
+				<div class="kp-title">{title.title}</div>
+				{#if title.subtitle != null}
+					<h3 class="kp-subtitle text-secondary text-sm italic">{title.subtitle}</h3>
 				{/if}
-				<div class="grow sm:text-xl">
-					<div>{title.title}</div>
-					{#if title.subtitle != null}
-						<h3 class="text-secondary text-sm italic">{title.subtitle}</h3>
-					{/if}
-				</div>
-			{/if}
-		</summary>
-		<div class="collapse-content">
-			{#if elements != null}
-				{@render elementList(panel.elements)}
-			{/if}
+			</div>
 		</div>
-	</details>
+		<div class="collapse-content">
+			{@render elementList(elements)}
+		</div>
+	</div>
 {/snippet}
 
 <div {id}>
@@ -72,7 +75,11 @@
 		{#if dev}
 			<div class="alert alert-warning">Panel is null</div>
 		{/if}
-	{:else if panel.type === 'card'}
+	{:else if panel.type === 'inline' || inline}
+		{#if panel.elements != null}
+			<div>{@render elementList(panel.elements)}</div>
+		{/if}
+	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null}
 		<Card>
 			<div class="flex items-center">
 				<h2 class="my-3 grow text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
@@ -83,13 +90,50 @@
 
 			{@render elementList(panel.elements)}
 		</Card>
-	{:else if panel.type === 'inline'}
-		{#if panel.elements != null}
-			<div class="border-l-secondary border-l-2 pl-4">
-				{@render elementList(panel.elements)}
-			</div>
-		{/if}
-	{:else}
+	{:else if panel.title_element != null && panel.elements != null}
 		{@render detailsElement(panel.title_element, panel.elements)}
+	{:else if dev}
+		<div class="alert alert-warning">Panel is missing title or elements</div>
+		<pre class="break-all whitespace-pre-wrap">{JSON.stringify(panel, null, 2)}</pre>
 	{/if}
 </div>
+
+<style lang="postcss">
+	@reference '../../app.css';
+
+	.kp-icon-small {
+		@apply h-6 w-6;
+	}
+
+	.kp-panel-size-small .kp-title {
+		@apply text-sm;
+	}
+	.kp-panel-size-small .kp-subtitle {
+		@apply text-xs;
+	}
+
+	.kp-panel-eval-good {
+		@apply border-green-500;
+	}
+	.kp-panel-eval-good .kp-icon-from-eval.kp-icon {
+		@apply text-green-500;
+	}
+
+	.kp-panel-eval-unknown {
+		@apply border-yellow-500;
+	}
+	.kp-panel-eval-unknown .kp-icon-from-eval.kp-icon {
+		@apply text-yellow-500;
+	}
+
+	.kp-panel-eval-bad {
+		@apply border-red-500;
+	}
+	.kp-panel-eval-bad .kp-icon-from-eval.kp-icon {
+		@apply text-red-500;
+	}
+
+	.kp-panel-type-percentage .kp-title {
+		@apply border-none;
+	}
+</style>

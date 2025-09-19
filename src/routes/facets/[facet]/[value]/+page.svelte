@@ -39,7 +39,7 @@
 	{#if Object.entries(knowledgePanels).length > 0}
 		<div class="w-full">
 			<h2 class="mb-2 grow text-2xl font-bold">Knowledge Panels</h2>
-			<KnowledgePanels {knowledgePanels} summary={false} />
+			<KnowledgePanels panels={knowledgePanels} summary={false} />
 		</div>
 	{/if}
 
