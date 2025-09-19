@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
 	version: 1,
-	lang: 'en',
+	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
 	nutriscoreInfluence: 50,

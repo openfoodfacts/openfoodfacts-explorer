@@ -1,7 +1,13 @@
 export type LocalizedString = Record<string, string>;
 
-export function getOrDefault<T>(localized: Record<string, T>, lang: string): T | undefined {
-	return localized[lang] ?? localized['en'] ?? Object.values(localized)[0];
+export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en'): T | undefined {
+	const nonNullLang = lang?.toLowerCase() ?? 'en';
+
+	return (
+		localized[nonNullLang] ?? // try full locale
+		localized['en'] ?? // fallback to english
+		Object.values(localized)[0] // fallback to first available
+	);
 }
 
 export type Taxonomy<T extends TaxoNode = TaxoNode> = Record<string, T>;

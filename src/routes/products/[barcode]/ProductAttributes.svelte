@@ -47,7 +47,6 @@
 
 		let preferences = get(personalizedSearch).userPreferences;
 		if (preferences.length === 0) {
-			console.debug('No user preferences found, using default preferences');
 			preferences = defaultPreferences;
 		}
 
