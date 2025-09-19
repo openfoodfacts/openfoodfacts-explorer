@@ -18,8 +18,10 @@
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 	import { getWebsiteCtx } from '$lib/stores/website';
+
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { KnowledgePanels } from '$lib/api';
+	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	type Props = { data: PageData };
 
@@ -120,3 +122,5 @@
 		</Card>
 	{/if}
 </div>
+
+<NutritionCalculator />

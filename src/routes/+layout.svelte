@@ -13,7 +13,6 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
 	import Footer from '$lib/ui/Footer.svelte';
-	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
 
@@ -176,7 +175,6 @@
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 		<div class="navbar-end gap-2">
-			<NutritionCalculator />
 			{#if $userInfo != null}
 				<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
 				<a class="btn btn-outline link" href="/logout">Log out</a>
@@ -289,6 +287,5 @@
 		{@render children?.()}
 	</div>
 {/if}
-<NutritionCalculator />
 <Footer />
 <Toast />
