@@ -98,8 +98,9 @@
 
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.section_general')}</p>
 
-	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-		<label for="lang-select" class="justify-self-start md:justify-self-end">
+	<div class="mx-auto grid w-max grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
+		<label for="lang-select" class="flex items-center gap-2 justify-self-start md:justify-self-end">
+			<span class="icon-[material-symbols--translate] text-xl"></span>
 			{$_('general.language')}:
 		</label>
 		<select
@@ -120,7 +121,8 @@
 			{/each}
 		</select>
 
-		<label for="country-select" class="justify-self-start md:justify-self-end">
+		<label for="country-select" class="flex items-center gap-2">
+			<span class="icon-[material-symbols--public] text-xl"></span>
 			{$_('general.country')}:
 		</label>
 		<select
@@ -146,7 +148,8 @@
 			{/each}
 		</select>
 
-		<label for="currency-select" class="justify-self-start md:justify-self-end">
+		<label for="currency-select" class="flex items-center gap-2">
+			<span class="icon-[material-symbols--universal-currency-alt] text-xl"></span>
 			{$_('general.currency')}:
 		</label>
 		<select
@@ -164,8 +167,8 @@
 
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.section_editing')}</p>
 
-	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-		<label for="expanded-sections" class="justify-self-start md:justify-self-end">
+	<div class="mx-auto grid w-max grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
+		<label for="expanded-sections">
 			{$_('settings.expand_all_sections')}:
 		</label>
 		<input
