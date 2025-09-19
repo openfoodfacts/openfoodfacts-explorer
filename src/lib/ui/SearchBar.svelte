@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
-	import { _ } from '$lib/i18n';
+	import { _, getBrowserLocale } from '$lib/i18n';
 
 	let {
 		searchQuery = $bindable(''),
@@ -36,7 +36,7 @@
 		const autocompleteQuery = {
 			q: query,
 			taxonomy_names: 'brands,categories,labels',
-			lang: 'en',
+			lang: getBrowserLocale(),
 			size: 5,
 			fuzziness: null,
 			index_id: null

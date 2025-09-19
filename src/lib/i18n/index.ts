@@ -1,9 +1,11 @@
-import { browser } from '$app/environment';
 import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
+import { browser } from '$app/environment';
 
-const locales = ['en', 'it'];
+const locales = ['en-US', 'it-IT'];
+
+const FALLBACK_LOCALE = 'en-US';
 
 locales.forEach((locale) => {
 	register(locale, async () => {
@@ -12,13 +14,16 @@ locales.forEach((locale) => {
 	});
 });
 
-export function initI18n() {
-	const userPreferredLanguage = browser ? get(preferences).lang : 'en';
+init({
+	fallbackLocale: FALLBACK_LOCALE,
+	initialLocale: browser ? getBrowserLocale() : FALLBACK_LOCALE
+});
 
-	init({
-		fallbackLocale: 'en',
-		initialLocale: userPreferredLanguage || (browser ? getLocaleFromNavigator() : 'en')
-	});
+export function getBrowserLocale() {
+	if (!browser) throw new Error('getBrowserLocale should only be called in the browser');
+	const preferredLang = get(preferences).lang;
+	const navLang = getLocaleFromNavigator();
+	return preferredLang || navLang || FALLBACK_LOCALE;
 }
 
 export { isLoading };

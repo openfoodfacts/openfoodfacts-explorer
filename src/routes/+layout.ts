@@ -1,13 +1,13 @@
-import { get } from 'svelte/store';
-import { preferences } from '$lib/settings';
-import type { Load } from '@sveltejs/kit';
-import { locale } from '$lib/i18n';
+import { locale, waitLocale } from '$lib/i18n';
+import { browser } from '$app/environment';
+import type { LayoutLoad } from './$types';
 
-export const load: Load = async () => {
-	const lang = get(preferences).lang;
-
-	// Set the current locale based on user preferences
-	locale.set(lang);
+export const load: LayoutLoad = async () => {
+	if (browser) {
+		locale.set(window.navigator.language);
+		console.log('i18n: Set locale to', window.navigator.language);
+	}
+	await waitLocale();
 
 	return {};
 };
