@@ -48,7 +48,9 @@
 		"enter_username": "Enter username",
 		"enter_password": "Enter password",
 		"status": "Status",
-		"actions": "Actions"
+		"actions": "Actions",
+		"admin": "Administrator",
+		"moderator": "Moderator"
 	},
 	"general": {
 		"language": "Language",
@@ -75,11 +77,14 @@
 	},
 	"settings": {
 		"section_general": "General",
+		"section_editing": "Editing",
+		"section_user": "User",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
-		"setion_editing": "Editing",
-		"expand_all_sections": "Expand all sections"
+		"expand_all_sections": "Expand all sections",
+		"logged_in_as": "Logged in as {username}",
+		"not_logged_in": "Not logged in"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
