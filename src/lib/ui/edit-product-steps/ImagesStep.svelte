@@ -43,4 +43,14 @@
 	</div>
 {/if}
 
+<!-- Legal warning about photo copyright -->
+<div class="alert alert-error mb-4" role="alert">
+	<span class="icon-[mdi--alert-circle] text-xl"></span>
+	<div>
+		<h4 class="text-xl font-bold">{$_('product.edit.legal_warning_title')}</h4>
+		<p class="mt-1">{$_('product.edit.legal_warning_photos_1')}</p>
+		<p class="mt-1 font-bold">{$_('product.edit.legal_warning_photos_2')}</p>
+	</div>
+</div>
+
 <PhotoManager {product} />
