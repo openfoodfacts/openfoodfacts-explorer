@@ -115,7 +115,7 @@
 
 	async function gotoProductsSearch() {
 		isSearching = true;
-		await goto('/products/search?q=' + searchQuery);
+		await goto('/search?q=' + searchQuery);
 		isSearching = false;
 	}
 

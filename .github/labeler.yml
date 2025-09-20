@@ -57,7 +57,7 @@ Settings:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/PriceEdit.svelte'
 Search:
   - changed-files:
-      - any-glob-to-any-file: 'src/routes/products/search/**/*'
+      - any-glob-to-any-file: 'src/routes/search/**/*'
 Green-Score:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/greenscore/**/*'

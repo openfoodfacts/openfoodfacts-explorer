@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 
-	import Card from '$lib/ui/Card.svelte';
 	import Logo from '$lib/ui/Logo.svelte';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	import { createRobotoffApi, ProductsApi } from '$lib/api';
 	import { onMount } from 'svelte';
@@ -12,22 +10,26 @@
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 
-	import { persisted } from 'svelte-local-storage-store';
-
 	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
-
-	const alreadyVisited = persisted('alreadyVisited', false);
-	function markAsVisited() {
-		alreadyVisited.set(true);
-	}
-
 	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
+
 	let attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $state(
 		Promise.resolve({})
 	);
 
-	const INSIGHT_COUNT = 10;
-	const SKELETON_COUNT = 9;
+	import chocoBarIcon from '$lib/assets/chocolate-bar.svg';
+	import cheeseIcon from '$lib/assets/cheese.svg';
+	import butterIcon from '$lib/assets/butter.svg';
+	import eggIcon from '$lib/assets/egg-01.svg';
+	import pastaIcon from '$lib/assets/pasta.svg';
+
+	const heroIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
+
+	// random icons
+	heroIcons.sort(() => Math.random() - 0.5);
+
+	const INSIGHT_COUNT = 12;
+	const SKELETON_COUNT = 6;
 
 	async function getProducts() {
 		const roffApi = createRobotoffApi(fetch);
@@ -71,125 +73,70 @@
 	<!-- Preconnect to static assets -->
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
 
-	<title>Open Food Facts Explorer</title>
+	<title>Open Food Facts</title>
 </svelte:head>
 
-{#if $alreadyVisited}
-	<div class="mx-auto my-4 flex flex-col items-center md:container xl:max-w-6xl">
-		<Card>
-			<div class="card-body items-center px-0 text-center">
-				<h3 class="card-title mb-4 block text-2xl md:flex">
-					{#if $userInfo != null}
-						{$_('home.welcome_user', { values: { username: $userInfo.preferred_username } })}
-					{:else}
-						{$_('home.welcome')}
-					{/if}
-					<div class="block xl:inline-block">
-						<Logo />
-					</div>
-					Explorer!
-				</h3>
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				<p>{@html $_('home.intro_1')}</p>
-				<p>{$_('home.intro_2')}</p>
-			</div>
-		</Card>
+<section
+	class="relative flex min-h-[480px] flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
+>
+	<!-- Decorative SVG assets -->
+	<img src={heroIcons[0]} alt="hero icon" class="decorative-svg -top-10 -left-10 w-40" />
+	<img src={heroIcons[1]} alt="hero icon" class="decorative-svg -right-10 -bottom-10 w-40" />
 
-		<!-- Preferences Collapsible Section -->
-		<div class="mt-6 w-full">
-			<div class="form-control">
-				<label class="label cursor-pointer justify-start gap-3">
-					<input
-						type="checkbox"
-						class="toggle toggle-primary"
-						bind:checked={$personalizedSearch.classifyProductsEnabled}
-					/>
-					<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-				</label>
-			</div>
+	<div
+		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-8 shadow-xl backdrop-blur-md"
+	>
+		<div class="mb-4 h-14 w-full scale-110 px-16 drop-shadow-lg md:h-20">
+			<Logo class="h-full w-full" />
 		</div>
 
-		<div class="mt-8 flex w-full">
-			{#await Promise.all([products, attributesByCode])}
-				<div
-					class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
-				>
-					{#each Array(SKELETON_COUNT) as _, index (index)}
-						<div class="skeleton h-36 w-full rounded-lg"></div>
-					{/each}
-				</div>
-			{:then [resolvedProducts, attributes]}
-				<ProductGrid
-					products={resolvedProducts.map((state) => state.product)}
-					{attributes}
-					sortByScore={$personalizedSearch.classifyProductsEnabled}
-				/>
-			{/await}
+		<p class="text-base-content/80 mb-6 max-w-xl text-center text-lg font-medium md:text-xl">
+			The world's largest open database of food products. <br class="hidden md:inline" />Search,
+			contribute, and help make food transparent for everyone.
+		</p>
+		<div class="flex w-full flex-wrap justify-center gap-4">
+			<a
+				href="/explore"
+				class="btn btn-primary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+			>
+				<span class="icon-[mdi--compass-outline] h-5 w-5"></span>
+				Explore Products
+			</a>
+			<a
+				href="/static/discover"
+				class="btn btn-secondary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+			>
+				<span class="icon-[mdi--lightbulb-on-outline] h-5 w-5"></span>
+				Discover the Project
+			</a>
+			<a
+				href="/static/contribute"
+				class="btn btn-outline btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+			>
+				<span class="icon-[mdi--account-heart-outline] h-5 w-5"></span>
+				Contribute
+			</a>
 		</div>
 	</div>
-{:else}
-	<section class="bg-base-100 flex min-h-[80vh] flex-col items-center justify-center px-4 py-8">
-		<div class="mb-8 flex flex-col items-center">
-			<Logo />
+</section>
 
-			<h1 class="text-primary mb-2 text-center text-3xl font-bold sm:text-4xl">
-				{$_('landing.title')}
-			</h1>
-			<p class="text-secondary-content mb-4 max-w-2xl text-center text-lg">
-				{$_('landing.subtitle')}
-			</p>
-			<div class="mt-4 flex flex-wrap justify-center gap-4">
-				<button onclick={markAsVisited} class="btn btn-primary btn-lg">
-					{$_('landing.search_products')}
-				</button>
-				<a href="/static/discover" class="btn btn-secondary btn-lg">
-					{$_('landing.discover_project')}
-				</a>
-				<a href="/static/contribute" class="btn btn-outline btn-lg">{$_('landing.contribute')}</a>
-			</div>
-		</div>
-
-		<div class="mt-8 grid w-full grid-cols-1 gap-6 md:grid-cols-3">
-			<Card>
-				<div class="flex flex-col items-center text-center">
-					<span class="icon-[mdi--magnify] text-primary mb-2 text-4xl"></span>
-					<h2 class="mb-1 text-xl font-semibold">{$_('landing.discover_title')}</h2>
-					<p class="mb-2 text-base">{$_('landing.discover_desc')}</p>
-					<a href="/products/search" class="link link-primary">{$_('landing.discover_link')}</a>
-				</div>
-			</Card>
-			<Card>
-				<div class="flex flex-col items-center text-center">
-					<span class="icon-[mdi--account-group] text-primary mb-2 text-4xl"></span>
-					<h2 class="mb-1 text-xl font-semibold">{$_('landing.contribute_title')}</h2>
-					<p class="mb-2 text-base">{$_('landing.contribute_desc')}</p>
-					<a href="/static/contribute" class="link link-primary">{$_('landing.contribute_link')}</a>
-				</div>
-			</Card>
-			<Card>
-				<div class="flex flex-col items-center text-center">
-					<span class="icon-[mdi--cellphone] text-primary mb-2 text-4xl"></span>
-					<h2 class="mb-1 text-xl font-semibold">{$_('landing.get_app_title')}</h2>
-					<p class="mb-2 text-base">{$_('landing.get_app_desc')}</p>
-					<div class="mt-2 flex justify-center gap-2">
-						<a
-							href="https://play.google.com/store/apps/details?id=org.openfoodfacts.scanner"
-							target="_blank"
-							rel="noopener"
-							class="btn btn-sm btn-outline">{$_('landing.google_play')}</a
-						>
-						<a
-							href="https://apps.apple.com/app/open-food-facts/id588797948"
-							target="_blank"
-							rel="noopener"
-							class="btn btn-sm btn-outline">{$_('landing.app_store')}</a
-						>
-					</div>
-				</div>
-			</Card>
-		</div>
-	</section>
-{/if}
+<div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
+	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
+		<h2 class="text-xl font-bold">3M+</h2>
+		<p class="text-base-content/70">Products in the database</p>
+	</div>
+	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
+		<h2 class="text-xl font-bold">200K+</h2>
+		<p class="text-base-content/70">Contributors worldwide</p>
+	</div>
+	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+		<span class="icon-[mdi--open-in-new] text-primary mb-4 h-12 w-12"></span>
+		<h2 class="text-xl font-bold">100%</h2>
+		<p class="text-base-content/70">Open data and open source</p>
+	</div>
+</div>
 
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 	<donation-banner></donation-banner>
@@ -197,3 +144,77 @@
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 	<mobile-badges></mobile-badges>
 </div>
+
+<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
+
+<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
+
+<section class="container mx-auto mt-16 w-full max-w-7xl px-4">
+	<div class="mb-6 text-center">
+		<h2 class="text-primary mb-2 text-2xl font-bold">Help Improve These Products</h2>
+		<p class="text-base-content/70 mx-auto max-w-2xl text-base">
+			These products have open questions or missing information. Your answers and edits help make
+			Open Food Facts better for everyone!
+		</p>
+		<div class="bg-primary/30 mx-auto mt-4 mb-2 h-1 w-16 rounded"></div>
+	</div>
+
+	<!-- Preferences Collapsible Section -->
+	<div class="mx-auto mt-10 w-full max-w-2xl">
+		<div class="form-control">
+			<label class="label cursor-pointer justify-start gap-3">
+				<input
+					type="checkbox"
+					class="toggle toggle-primary"
+					bind:checked={$personalizedSearch.classifyProductsEnabled}
+				/>
+				<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
+			</label>
+		</div>
+	</div>
+
+	<div class="flex w-full">
+		{#await Promise.all([products, attributesByCode])}
+			<div
+				class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+			>
+				{#each Array(SKELETON_COUNT) as _, index (index)}
+					<div class="skeleton h-36 w-full rounded-lg"></div>
+				{/each}
+			</div>
+		{:then [resolvedProducts, attributes]}
+			<ProductGrid
+				products={resolvedProducts.map((state) => state.product)}
+				{attributes}
+				sortByScore={$personalizedSearch.classifyProductsEnabled}
+			/>
+		{/await}
+	</div>
+</section>
+
+<style>
+	@keyframes gentleFloat {
+		0% {
+			transform: translateY(0) scale(1);
+		}
+		50% {
+			transform: translateY(-8px) scale(1.05);
+		}
+		100% {
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	.decorative-svg {
+		pointer-events: none;
+		position: absolute;
+		z-index: -10;
+		opacity: 0.7;
+		filter: brightness(1.15) grayscale(0.15);
+		animation: gentleFloat 7s ease-in-out infinite;
+
+		@media (prefers-color-scheme: dark) {
+			opacity: 0.2;
+		}
+	}
+</style>

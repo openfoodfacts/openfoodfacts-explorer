@@ -11,10 +11,16 @@
 	};
 
 	let logoSuffix = $derived(FLAVOR_MAP[websiteCtx.flavor] ?? 'off');
-	let { mono = false }: { mono?: boolean } = $props();
+	let {
+		class: className = '',
+		mono = false
+	}: {
+		mono?: boolean;
+		class?: string;
+	} = $props();
 </script>
 
-<picture class="mx-2 block h-10 w-44 sm:h-12 sm:w-68 lg:mx-6">
+<picture class={className}>
 	<source
 		srcset={mono
 			? `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-mono-white.svg`
@@ -26,6 +32,6 @@
 			? `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-mono-black.svg`
 			: `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-light.svg`}
 		alt="OpenFoodFacts Explorer"
-		class="h-full w-full"
+		class="h-full w-full object-contain"
 	/>
 </picture>
