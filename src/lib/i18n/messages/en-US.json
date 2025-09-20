@@ -261,7 +261,10 @@
 	"landing": {
 		"title": "Open Food Facts Explorer",
 		"subtitle": "A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.",
-		"search_products": "Search Products",
+		"explore_products": "Explore Products",
+		"explore_products_title": "Explore Products",
+		"explore_products_desc": "Browse millions of food products, see nutrition facts, and make informed choices.",
+		"explore_products_link": "Start exploring",
 		"discover_project": "Discover the Project",
 		"contribute": "Contribute",
 		"discover_title": "Discover",
@@ -281,5 +284,21 @@
 		"products_edited": "Products edited",
 		"html_title": "User Profile - {user} - Open Food Facts Explorer",
 		"title": "User Profile of {user}"
+	},
+	"explore": {
+		"title": "Explore Open Food Facts",
+		"subtitle": "Discover trending products, popular categories, and contribute to food transparency!",
+		"trending_products": "Trending Products",
+		"trending_products_desc": "See what products are being viewed and edited the most right now.",
+		"popular_categories": "Popular Categories",
+		"popular_categories_desc": "Browse the most popular food categories in our database.",
+		"recently_added": "Recently Added",
+		"recently_added_desc": "Check out the latest products added by the community.",
+		"contribute_now": "Contribute Now",
+		"contribute_now_desc": "Help improve Open Food Facts by adding or editing products, or answering questions.",
+		"random_product": "Random Product",
+		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
+		"learn_more": "Learn More",
+		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
 	}
 }

@@ -105,7 +105,7 @@ OpenFoodFacts Explorer is a modern SvelteKit frontend application for the Open F
 ### Key Components
 
 - `/src/routes/products/[barcode]/` -- Product detail pages
-- `/src/routes/products/search/` -- Search functionality
+- `/src/routes/search/` -- Search functionality
 - `/src/routes/settings/` -- User preferences
 - `/src/lib/ui/edit-product-steps/` -- Product editing forms
 - `/src/lib/knowledgepanels/` -- Knowledge panel components
