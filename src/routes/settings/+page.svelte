@@ -4,52 +4,68 @@
 	import { preferences } from '$lib/settings';
 	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
-	import { fade } from 'svelte/transition';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 
 	import type { PageProps } from './$types';
+	import { createProductsApi } from '$lib/api';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
 	let { loginStatus } = $derived(data);
 
+	let isFolksonomyAuthenticated = $derived($preferences.folksonomy.authToken !== null);
+
+	type LoginResult = { success: false; error: string } | { success: true };
+
+	// Login Process
 	let isLoggingIn: boolean = $state(false);
+	let folksonomyLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
+	let productLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
 
-	let isAuthenticated = $derived($preferences.folksonomy.authToken !== null);
-	let folksonomyLoginStatus: undefined | boolean = $state();
-
-	async function loginToFolksonomy() {
-		isLoggingIn = true;
-		const username = $preferences.username;
-		const password = $preferences.password;
+	async function login() {
+		const { username, password } = $preferences;
 		if (username == null || password == null) throw new Error('Username or password is null');
 
+		isLoggingIn = true;
 		try {
-			const folksonomyApi = createFolksonomyApi(fetch);
-			const { data, error } = await folksonomyApi.login(username, password);
-			folksonomyLoginStatus = true;
-			setTimeout(() => {
-				folksonomyLoginStatus = undefined;
-			}, 3000);
-
-			if (data && !error) {
-				updateFolksonomyAuthToken(data.access_token);
-			} else {
-				folksonomyLoginStatus = false;
-				updateFolksonomyAuthToken(null);
-			}
-		} catch (error) {
-			console.error('Error while logging in', error);
-			folksonomyLoginStatus = false;
-			setTimeout(() => {
-				folksonomyLoginStatus = undefined;
-			}, 3000);
+			folksonomyLoginStatus = loginToFolksonomy(username, password);
+			productLoginStatus = loginToPO(username, password);
+			await Promise.all([folksonomyLoginStatus, productLoginStatus]);
 		} finally {
 			isLoggingIn = false;
 		}
+
+		setTimeout(() => {
+			folksonomyLoginStatus = undefined;
+			productLoginStatus = undefined;
+		}, 5000);
+	}
+
+	async function loginToPO(username: string, password: string): Promise<LoginResult> {
+		const { data, error } = await createProductsApi(fetch).apiv2.client.POST('/cgi/session.pl', {
+			body: { user_id: username, password: password }
+		});
+
+		if (error || !data) {
+			return { success: false, error: 'Login failed' };
+		}
+
+		return { success: true };
+	}
+
+	async function loginToFolksonomy(username: string, password: string): Promise<LoginResult> {
+		const folksonomyApi = createFolksonomyApi(fetch);
+		const { data, error } = await folksonomyApi.login(username, password);
+		if (error || !data) {
+			updateFolksonomyAuthToken(null);
+			return { success: false, error: 'Login failed' };
+		}
+
+		updateFolksonomyAuthToken(data.access_token);
+		return { success: true };
 	}
 
 	function logout() {
@@ -90,6 +106,26 @@
 	{:else}
 		<p class="mb-2 text-center text-sm font-medium">{$_('settings.not_logged_in')}</p>
 	{/if}
+
+	<div class="divider my-4"></div>
+
+	<div class="mt-4 mb-2 text-center text-sm font-medium">
+		{#if isFolksonomyAuthenticated}
+			<div class="text-success my-2">
+				<span class="icon-[mdi--check-circle] mr-1"></span>
+				{$_('Folksonomy API: Authenticated')}
+			</div>
+			<button class="btn btn-xs btn-outline ml-2" onclick={logout}>
+				<span class="icon-[mdi--logout] mr-1"></span>
+				{$_('auth.signout')}
+			</button>
+		{:else}
+			<span class="text-error">
+				<span class="icon-[mdi--alert-circle] mr-1"></span>
+				{$_('Folksonomy API: Not authenticated')}
+			</span>
+		{/if}
+	</div>
 
 	<p class="mb-4 font-semibold">{$_('settings.news')}</p>
 	<news-feed
@@ -187,82 +223,67 @@
 	<div class="my-8">
 		<p class="mt-8 mb-4 font-semibold">{$_('settings.login')}</p>
 
-		{#if isAuthenticated}
-			<p class="my-2 text-sm font-medium md:justify-self-end">
-				{$_('auth.status')}
-			</p>
+		<label class="my-2 block">
+			<p>{$_('auth.username')}</p>
 
-			<span class="badge badge-success badge-xl w-full">
-				<span class="icon-[mdi--check-circle]"></span>
-				<span class="">{$_('auth.authenticated')}</span>
-			</span>
+			<input
+				type="text"
+				class="input input-sm input-bordered w-full"
+				bind:value={$preferences.username}
+				placeholder={$_('auth.enter_username')}
+			/>
+		</label>
 
-			<p class="mt-2 text-sm font-medium">
-				{$_('auth.actions')}
-			</p>
+		<label class="my-2 block">
+			<p>{$_('auth.password')}</p>
 
+			<input
+				type="password"
+				class="input input-sm input-bordered w-full"
+				bind:value={$preferences.password}
+				placeholder={$_('auth.enter_password')}
+			/>
+		</label>
+
+		<div class="my-2 flex w-full flex-col gap-2 md:w-auto">
 			<button
-				class="btn btn-sm btn-outline btn-error w-full"
-				onclick={logout}
-				transition:fade={{ duration: 200 }}
+				disabled={$preferences.username == null || $preferences.password == null || isLoggingIn}
+				class="btn btn-sm btn-primary w-full"
+				onclick={login}
+				id="login-button"
 			>
-				<span class="icon-[mdi--logout]"></span>
-				{$_('auth.signout')}
-			</button>
-		{:else}
-			<label class="my-2 block">
-				<p>{$_('auth.username')}</p>
-
-				<input
-					type="text"
-					class="input input-sm input-bordered w-full"
-					bind:value={$preferences.username}
-					placeholder={$_('auth.enter_username')}
-				/>
-			</label>
-
-			<label class="my-2 block">
-				<p>{$_('auth.password')}</p>
-
-				<input
-					type="password"
-					class="input input-sm input-bordered w-full"
-					bind:value={$preferences.password}
-					placeholder={$_('auth.enter_password')}
-				/>
-			</label>
-
-			<div class="my-2 flex w-full flex-col gap-2 md:w-auto">
-				<button
-					disabled={$preferences.username == null || $preferences.password == null || isLoggingIn}
-					class="btn btn-sm btn-primary w-full"
-					onclick={loginToFolksonomy}
-					id="login-button"
-				>
-					{#if isLoggingIn}
-						<span class="loading loading-spinner loading-xs"></span>
-						{$_('auth.authenticating')}
-					{:else}
-						<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$_('auth.signin')}
-					{/if}
-				</button>
-
-				{#if folksonomyLoginStatus !== undefined}
-					<div
-						class="alert {folksonomyLoginStatus ? 'alert-success' : 'alert-error'} px-3 py-2"
-						transition:fade={{ duration: 200 }}
-					>
-						{#if folksonomyLoginStatus}
-							<span class="icon-[mdi--check-circle] h-4 w-4"></span>
-							<span class="text-sm">{$_('auth.success')}</span>
-						{:else}
-							<span class="icon-[mdi--alert-circle] h-4 w-4"></span>
-							<span class="text-sm">{$_('auth.failed')}</span>
-						{/if}
-					</div>
+				{#if isLoggingIn}
+					<span class="loading loading-spinner loading-xs"></span>
+					{$_('auth.authenticating')}
+				{:else}
+					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$_('auth.signin')}
 				{/if}
-			</div>
-		{/if}
+			</button>
+
+			{#if folksonomyLoginStatus !== undefined}
+				{#await folksonomyLoginStatus}
+					<p class="text-sm">Folksonomy: {$_('auth.authenticating')}</p>
+				{:then result}
+					{#if result.success}
+						<p class="text-success text-sm">Folksonomy: {$_('auth.login_successful')}</p>
+					{:else}
+						<p class="text-error text-sm">Folksonomy: {result.error}</p>
+					{/if}
+				{/await}
+			{/if}
+
+			{#if productLoginStatus !== undefined}
+				{#await productLoginStatus}
+					<p class="text-sm">Product Opener: {$_('auth.authenticating')}</p>
+				{:then result}
+					{#if result.success}
+						<p class="text-success text-sm">Product Opener: {$_('auth.login_successful')}</p>
+					{:else}
+						<p class="text-error text-sm">Product Opener: {result.error}</p>
+					{/if}
+				{/await}
+			{/if}
+		</div>
 	</div>
 </div>
 
