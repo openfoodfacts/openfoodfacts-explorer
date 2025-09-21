@@ -1,12 +1,47 @@
 <script lang="ts">
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
+	import { _ } from 'svelte-i18n';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 	let { contributor, editor, user } = $derived(data);
+
+	import ShoppingCartIcon from './shopping-cart.svg';
+	import ScaleIcon from './scale.svg';
+
+	let cards = $derived([
+		{
+			title: $_('dashboard.products_created'),
+			count: contributor.count,
+			icon: ShoppingCartIcon
+		},
+		{
+			title: $_('dashboard.products_edited'),
+			count: editor.count,
+			icon: ScaleIcon
+		}
+	]);
 </script>
 
-<h1 class="my-8 text-3xl font-bold">User profile of {user}</h1>
+<svelte:head>
+	<title>{$_('dashboard.html_title', { values: { user } })}</title>
+</svelte:head>
+
+<h1 class="my-8 text-3xl font-bold">{$_('dashboard.title', { values: { user } })}</h1>
+
+<div class="mb-8 flex flex-wrap gap-4 max-md:flex-col md:grid-cols-2">
+	{#each cards as card (card.title)}
+		<div class="card bg-base-100 border-secondary border-1">
+			<div class="card-body flex-row items-center gap-4 text-center">
+				<img src={card.icon} alt={card.title} class="w-10" />
+				<div class="flex-1">
+					<h2 class="card-title justify-center">{card.title}</h2>
+					<p class="w-full text-4xl font-bold">{card.count}</p>
+				</div>
+			</div>
+		</div>
+	{/each}
+</div>
 
 <section class="mb-8">
 	<h2 class="my-4 text-xl font-bold">Has Created</h2>

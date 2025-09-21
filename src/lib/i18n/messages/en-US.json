@@ -275,5 +275,11 @@
 		"google_play": "Google Play",
 		"app_store": "App Store",
 		"footer": "Open Food Facts is a non-profit project developed by thousands of volunteers from around the world. Your support helps keep our database open and independent."
+	},
+	"dashboard": {
+		"products_created": "Products created",
+		"products_edited": "Products edited",
+		"html_title": "User Profile - {user} - Open Food Facts Explorer",
+		"title": "User Profile of {user}"
 	}
 }
