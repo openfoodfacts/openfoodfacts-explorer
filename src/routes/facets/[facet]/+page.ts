@@ -12,16 +12,22 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
 
 	const kp = getFacetKnowledgePanels(fetch, facet);
+	try {
+		const results = await getFacet(fetch, facet, { page, pageSize });
+		const pages = Math.ceil(results.count / (pageSize || 100));
 
-	const results = await getFacet(fetch, facet, { page, pageSize });
-	const pages = Math.ceil(results.count / (pageSize || 100));
-
-	return {
-		facet,
-		results,
-		pages,
-		pageSize,
-		page,
-		knowledgePanels: (await kp).knowledge_panels
-	};
+		return {
+			facet,
+			results,
+			pages,
+			pageSize,
+			page,
+			knowledgePanels: (await kp).knowledge_panels
+		};
+	} catch (e) {
+		throw error(500, {
+			message: 'An error occurred while fetching the facet data',
+			errors: [e instanceof Error ? e.message : 'Unknown error']
+		});
+	}
 };
