@@ -6,7 +6,7 @@ import type { ProductStateError } from '$lib/api';
 declare global {
 	namespace App {
 		interface Error {
-			errors?: ProductStateError[];
+			errors?: (ProductStateError | string)[];
 			actions?: { label: string; url?: string }[];
 		}
 		// interface Locals {}
