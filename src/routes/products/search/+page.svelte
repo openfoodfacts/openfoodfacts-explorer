@@ -2,7 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
-	import { navigating, page } from '$app/state';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 
 	import { _ } from '$lib/i18n';
@@ -24,6 +24,7 @@
 
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
+	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
@@ -95,15 +96,6 @@
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('q', newQuery);
 		goto(newUrl.toString());
-	}
-
-	// Track which product is being navigated to
-	let navigatingTo: string | null = $state(null);
-
-	// Handle navigation to product page
-	function navigateToProduct(barcode: string) {
-		navigatingTo = barcode;
-		goto(`/products/${barcode}`);
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));
@@ -237,14 +229,6 @@
 	</div>
 {/if}
 
-{#if navigating.to != null}
-	<div
-		class="bg-base-100/70 absolute inset-0 z-1000 flex cursor-not-allowed items-center justify-center"
-	>
-		<span class="loading loading-spinner loading-lg"></span>
-	</div>
-{/if}
-
 {#if result.count > 0}
 	<!-- Facet component with binding to access its methods -->
 
@@ -252,8 +236,6 @@
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
 				{#if scoredProduct.product.code != null}
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div class="indicator block w-full">
 						{#if showPrices}
 							<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
@@ -262,22 +244,12 @@
 								})}
 							</span>
 						{/if}
-						<product-card
-							class="h-[11rem] w-full"
+						<WcProductCard
 							product={scoredProduct.product}
-							navigating={{
-								to:
-									navigatingTo === scoredProduct.product.code
-										? { params: { barcode: scoredProduct.product.code } }
-										: null
-							}}
-							placeholderImage="/Placeholder.svg"
-							onclick={() => navigateToProduct(scoredProduct.product.code)}
-							showMatchTag={$personalizedSearch.classifyProductsEnabled}
 							personalScore={$personalizedSearch.classifyProductsEnabled
 								? scoredProduct.scoreData
 								: undefined}
-						></product-card>
+						/>
 					</div>
 				{/if}
 			{/each}
