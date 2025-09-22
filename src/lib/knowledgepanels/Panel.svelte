@@ -22,9 +22,6 @@
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		{#if i > 0}
-			<hr class="border-base-100 bg-base-100 my-2" />
-		{/if}
 		<Element {element} {allPanels} {productCode} />
 	{/each}
 {/snippet}
