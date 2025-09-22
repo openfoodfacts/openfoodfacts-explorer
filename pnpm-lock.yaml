@@ -51,8 +51,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(tailwindcss@4.1.13)
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.17
-        version: 2.0.0-alpha.17
+        specifier: 2.0.0-alpha.19
+        version: 2.0.0-alpha.19
       '@sinnwerkstatt/sveltekit-matomo':
         specifier: github:VaiTon/sveltekit-matomo
         version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7(svelte@5.38.10)
@@ -782,8 +782,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.17':
-    resolution: {integrity: sha512-yglRJAgJ3TEoQki77ehKbtAMm+GDQAAiesK2JfAD4wCcPuhgR6/EoO2RzHq99klrAXvmSYZuv+1U7xPEaM2VxA==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.19':
+    resolution: {integrity: sha512-FUWRp5iPDDV9IQtXwfDowFg3EUPjnohF7zH3Cb0PddhnB+HqE/Uon9O5mODU6RhrOCfBASEJLLZYHrW+sjOJ0Q==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.14.1':
     resolution: {integrity: sha512-LpBYV+l6/9iVm4n1j3PsarNI9j2ikod7BeC2U2alKI/sIcYxvGxoCdbdkTcX27NhQMlotbFifHsm8JlwSEf8Sg==}
@@ -3948,7 +3948,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.17':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.19':
     dependencies:
       openapi-fetch: 0.14.0
 
