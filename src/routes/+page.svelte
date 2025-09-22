@@ -5,12 +5,7 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
 
-	import {
-		createRobotoffApi,
-		ProductsApi,
-		type ProductReduced,
-		type ProductStateFound
-	} from '$lib/api';
+	import { createRobotoffApi, ProductsApi } from '$lib/api';
 	import { onMount } from 'svelte';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
@@ -19,12 +14,14 @@
 
 	import { persisted } from 'svelte-local-storage-store';
 
+	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
+
 	const alreadyVisited = persisted('alreadyVisited', false);
 	function markAsVisited() {
 		alreadyVisited.set(true);
 	}
 
-	let products: Promise<ProductStateFound<ProductReduced>[]> = $state(Promise.resolve([]));
+	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
 	let attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $state(
 		Promise.resolve({})
 	);
@@ -43,18 +40,19 @@
 		const productsPromises = insights.map((question) =>
 			productApi.getProductReducedForCard(question.barcode.toString())
 		);
-		const states = await Promise.all(productsPromises);
+		const productStates = await Promise.all(productsPromises);
+
 		// filter out products that failed to load
-		const products = states
-			.filter((res) => res.data)
+		const products = productStates
 			.map((res) => res.data)
-			.filter((state) => state?.status !== 'failure') as ProductStateFound<ProductReduced>[];
+			.filter((res) => res != null)
+			.filter((state) => state?.status !== 'failure');
 
 		// remove duplicate products
 		return deduplicate(products, (it) => it.product.code);
 	}
 
-	async function getAttributes(products: ProductStateFound<ProductReduced>[]) {
+	async function getAttributes(products: ReducedState[]) {
 		const productApi = new ProductsApi(fetch);
 		const productCodes = products.map((state) => state.product.code);
 		const attrs = await productApi.getBulkProductAttributes(productCodes);

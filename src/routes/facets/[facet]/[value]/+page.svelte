@@ -9,7 +9,6 @@
 	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import type { ProductReduced } from '$lib/api';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
@@ -113,7 +112,7 @@
 				</div>
 			</div>
 			<ProductGrid
-				products={results.products as ProductReduced[]}
+				products={results.products}
 				attributes={productAttributes}
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>
