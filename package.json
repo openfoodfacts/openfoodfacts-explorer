@@ -37,7 +37,7 @@
 		"@iconify-json/simple-icons": "^1.2.52",
 		"@iconify/tailwind": "^1.2.0",
 		"@iconify/tailwind4": "^1.0.6",
-		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.17",
+		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.19",
 		"@sinnwerkstatt/sveltekit-matomo": "github:VaiTon/sveltekit-matomo",
 		"@sveltejs/adapter-vercel": "^5.10.2",
 		"@sveltejs/kit": "^2.39.1",
