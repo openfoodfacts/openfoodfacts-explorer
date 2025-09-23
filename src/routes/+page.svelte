@@ -10,6 +10,9 @@
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 
+	import type { PageProps } from './$types';
+	let { data }: PageProps = $props();
+
 	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
 	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
 
@@ -123,12 +126,12 @@
 <div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
 		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
-		<h2 class="text-xl font-bold">3M+</h2>
+		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.productCount)}</h2>
 		<p class="text-base-content/70">Products in the database</p>
 	</div>
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
 		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
-		<h2 class="text-xl font-bold">200K+</h2>
+		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.editorCount)}</h2>
 		<p class="text-base-content/70">Contributors worldwide</p>
 	</div>
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
