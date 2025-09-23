@@ -76,7 +76,7 @@
 	<!-- Preconnect to static assets -->
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
 
-	<title>Open Food Facts</title>
+	<title>{$_('landing.title')}</title>
 </svelte:head>
 
 <section
@@ -94,8 +94,7 @@
 		</div>
 
 		<p class="text-base-content/80 mb-6 max-w-xl text-center text-lg font-medium md:text-xl">
-			The world's largest open database of food products. <br class="hidden md:inline" />Search,
-			contribute, and help make food transparent for everyone.
+			{$_('landing.subtitle')}
 		</p>
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
@@ -103,21 +102,21 @@
 				class="btn btn-primary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
 				<span class="icon-[mdi--compass-outline] h-5 w-5"></span>
-				Explore Products
+				{$_('landing.explore_products')}
 			</a>
 			<a
 				href="/static/discover"
 				class="btn btn-secondary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
 				<span class="icon-[mdi--lightbulb-on-outline] h-5 w-5"></span>
-				Discover the Project
+				{$_('landing.discover_project')}
 			</a>
 			<a
 				href="/static/contribute"
 				class="btn btn-outline btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
 				<span class="icon-[mdi--account-heart-outline] h-5 w-5"></span>
-				Contribute
+				{$_('landing.contribute')}
 			</a>
 		</div>
 	</div>
@@ -127,17 +126,17 @@
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
 		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.productCount)}</h2>
-		<p class="text-base-content/70">Products in the database</p>
+		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</div>
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
 		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.editorCount)}</h2>
-		<p class="text-base-content/70">Contributors worldwide</p>
+		<p class="text-base-content/70">{$_('landing.editors_count')}</p>
 	</div>
 	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
-		<span class="icon-[mdi--open-in-new] text-primary mb-4 h-12 w-12"></span>
+		<span class="icon-[mdi--license] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">100%</h2>
-		<p class="text-base-content/70">Open data and open source</p>
+		<p class="text-base-content/70">{$_('landing.open_data')}</p>
 	</div>
 </div>
 
@@ -154,10 +153,11 @@
 
 <section class="container mx-auto mt-16 w-full max-w-7xl px-4">
 	<div class="mb-6 text-center">
-		<h2 class="text-primary mb-2 text-2xl font-bold">Help Improve These Products</h2>
+		<h2 class="text-primary mb-2 text-2xl font-bold">
+			{$_('landing.help_improve_title')}
+		</h2>
 		<p class="text-base-content/70 mx-auto max-w-2xl text-base">
-			These products have open questions or missing information. Your answers and edits help make
-			Open Food Facts better for everyone!
+			{$_('landing.help_improve_desc')}
 		</p>
 		<div class="bg-primary/30 mx-auto mt-4 mb-2 h-1 w-16 rounded"></div>
 	</div>

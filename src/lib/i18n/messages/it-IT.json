@@ -108,5 +108,18 @@
 			"message": "Impossibile connettersi al server di Open Food Facts. Controlla la tua connessione a Internet e riprova.",
 			"instructions": "Se il problema persiste, visita la pagina di stato di Open Food Facts."
 		}
+	},
+	"landing": {
+		"title": "Open Food Facts Explorer",
+		"subtitle": "Un database collaborativo, gratuito e aperto di prodotti alimentari da tutto il mondo. Scopri, cerca e contribuisci alla trasparenza alimentare per tutti.",
+		"explore_products": "Esplora Prodotti",
+		"explore_products_title": "Esplora Prodotti",
+		"explore_products_desc": "Sfoglia milioni di prodotti alimentari, consulta i valori nutrizionali e fai scelte consapevoli.",
+		"explore_products_link": "Inizia a esplorare",
+		"discover_project": "Scopri il Progetto",
+		"contribute": "Contribuisci",
+		"products_count": "Prodotti",
+		"editors_count": "Editor",
+		"open_data": "Open Data"
 	}
 }
