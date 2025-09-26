@@ -269,7 +269,9 @@
 		"contribute": "Contribute",
 		"products_count": "Products",
 		"editors_count": "Editors",
-		"open_data": "Open Data"
+		"open_data": "Open Data",
+		"help_improve_title": "Help Improve Open Food Facts",
+		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
 	},
 	"dashboard": {
 		"products_created": "Products created",
