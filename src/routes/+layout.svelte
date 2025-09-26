@@ -16,7 +16,7 @@
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
 
-	import { _, locale } from '$lib/i18n';
+	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
 	import {
 		IMAGE_HOST,
 		KEYCLOAK_ACCOUNT_URL,
@@ -151,13 +151,15 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang}
+		language-code={$preferences.lang ??
+			getLocaleFromNavigator()?.split('-')[0]?.toLowerCase() ??
+			'en'}
 		assets-images-path="/assets/webcomponents"
-		robotoff-configuration={{
+		robotoff-configuration={JSON.stringify({
 			dryRun: !dev,
 			apiUrl: ROBOTOFF_URL + '/api/v1',
 			imgUrl: IMAGE_HOST + '/images/products'
-		}}
+		})}
 	>
 	</off-webcomponents-configuration>
 </div>
