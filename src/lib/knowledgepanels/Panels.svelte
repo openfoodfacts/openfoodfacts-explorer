@@ -71,6 +71,6 @@ Props:
 
 {#each Object.entries(panels) as [id, panel] (id)}
 	{#if roots == null || (panel.type != null && roots.includes(panel.type))}
-		<Panel {panel} allPanels={panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
+		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
 	{/if}
 {/each}

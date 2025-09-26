@@ -22,7 +22,7 @@
 	<div class="flex grow flex-col gap-2">
 		{#each groupEl.panel_ids as id (id)}
 			{@const panel = panels[id]}
-			<Panel {panel} allPanels={panels} {id} productCode={code} />
+			<Panel {panel} {panels} {id} productCode={code} />
 		{/each}
 	</div>
 
