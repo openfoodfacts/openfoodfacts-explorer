@@ -7,7 +7,7 @@
 	import Element from './Element.svelte';
 
 	type Props = {
-		allPanels: Record<string, KnowledgePanel>;
+		panels: Record<string, KnowledgePanel>;
 
 		panel: KnowledgePanel;
 		inline?: boolean;
@@ -15,21 +15,22 @@
 		link?: string;
 		productCode?: string;
 	};
-	let { allPanels, panel, inline = false, id, link, productCode }: Props = $props();
+	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
 	let expanded = $state(panel?.expanded ?? false);
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		<Element {element} {allPanels} {productCode} />
+		<Element {element} {panels} {productCode} />
 	{/each}
 {/snippet}
 
-{#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[])}
+{#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
-			'collapse-arrow border-base-300 collapse border-1',
+			'border-base-300 collapse border-1',
+			elements.length !== 0 ? 'collapse-arrow' : 'collapse-close',
 			panel.size && `kp-panel-size-${panel.size}`,
 			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
 			panel.level && `kp-panel-level-${panel.level}`,
@@ -62,7 +63,9 @@
 			</div>
 		</div>
 		<div class="collapse-content">
-			{@render elementList(elements)}
+			{#if elements}
+				{@render elementList(elements)}
+			{/if}
 		</div>
 	</div>
 {/snippet}
@@ -87,7 +90,7 @@
 
 			{@render elementList(panel.elements)}
 		</Card>
-	{:else if panel.title_element != null && panel.elements != null}
+	{:else if panel.title_element != null}
 		{@render detailsElement(panel.title_element, panel.elements)}
 	{:else if dev}
 		<div class="alert alert-warning">Panel is missing title or elements</div>
@@ -97,6 +100,12 @@
 
 <style lang="postcss">
 	@reference '../../app.css';
+
+	@media (prefers-color-scheme: dark) {
+		.kp-icon-from-eval {
+			@apply invert;
+		}
+	}
 
 	.kp-icon-small {
 		@apply h-6 w-6;
@@ -116,11 +125,18 @@
 		@apply text-green-500;
 	}
 
-	.kp-panel-eval-unknown {
+	.kp-panel-eval-average {
 		@apply border-yellow-500;
 	}
-	.kp-panel-eval-unknown .kp-icon-from-eval.kp-icon {
+	.kp-panel-eval-average .kp-icon-from-eval.kp-icon {
 		@apply text-yellow-500;
+	}
+
+	.kp-panel-eval-unknown {
+		@apply border-gray-500;
+	}
+	.kp-panel-eval-unknown .kp-icon-from-eval.kp-icon {
+		@apply text-gray-500;
 	}
 
 	.kp-panel-eval-bad {
