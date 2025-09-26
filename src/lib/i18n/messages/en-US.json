@@ -121,17 +121,20 @@
 		"description": "Product page for {productName} on Open Food Facts Explorer",
 		"datasources": {
 			"title": "Data Sources",
-			"added_on": "Product added on {date} by ",
-			"last_edit": "Last edit of product page on {date} by ",
+			"user": "User: ",
+			"added_on_title": "Product added",
+			"last_edit_title": "Last edit",
+			"last_check_title": "Last check",
 			"also_edited_by": "Product page also edited by ",
-			"last_check": "Last check of product page on {date} by ",
 			"also_checked_by": "Product page also checked by ",
 			"last_modified_t": "Last edit of product page on {date} by ",
 			"incomplete_or_incorrect": "If the data is incomplete or incorrect, you can complete or correct it by editing this page.",
 			"unknown": "unknown",
 			"done": "Done",
 			"toDo": "To do",
-			"states": "States"
+			"states": "States",
+			"never_checked": "Never checked",
+			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
 			"info": {
