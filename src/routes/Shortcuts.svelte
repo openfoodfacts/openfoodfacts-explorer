@@ -6,21 +6,11 @@
 
 	// Define shortcuts: { combo, description, action }
 	export type Shortcut = {
-		combo: string;
 		description: string;
 		action: () => void;
 	};
 
-	let { shortcuts: shortcutsProps }: { shortcuts: Shortcut[] } = $props();
-
-	let shortcuts = $derived([
-		...shortcutsProps,
-		{
-			combo: 'Ctrl+Shift+?',
-			description: 'Show this help modal',
-			action: () => helpModal.showModal()
-		}
-	]);
+	let { shortcuts }: { shortcuts: Map<string, Shortcut> } = $props();
 
 	// Parse event to combo string
 	function getCombo(event: KeyboardEvent): string {
@@ -39,8 +29,8 @@
 				helpModal.close();
 			}
 			const combo = getCombo(event);
-			shortcuts.forEach((shortcut) => {
-				if (combo === shortcut.combo.replace('?', '?')) {
+			shortcuts.forEach((shortcut, key) => {
+				if (combo === key.replace('?', '?')) {
 					shortcut.action();
 				}
 			});
@@ -60,21 +50,20 @@
 <!-- Open the modal using ID.showModal() method -->
 <dialog id="my_modal_1" class="modal" bind:this={helpModal}>
 	<div class="modal-box">
-		<h3 class="text-lg font-bold">Keyboard Shortcuts</h3>
-		<ul class="py-4">
-			{#each shortcuts as shortcut (shortcut.combo)}
-				{@const keys = shortcut.combo.split('+')}
-				<li>
-					{#each keys as key, i (i)}
-						{#if i > 0}
-							+
-						{/if}
-						<kbd class="kbd">{key}</kbd>
+		<h3 class="mb-4 text-lg font-bold">Keyboard Shortcuts</h3>
+
+		<div class="grid grid-cols-2 gap-2">
+			{#each shortcuts as [combo, shortcut] (combo)}
+				<span class="font-mono">
+					{#each combo.split('+') as key, i (key)}
+						{#if i > 0}<span class="mx-1">+</span>{/if}<kbd class="kbd">{key}</kbd>
 					{/each}
-					: {shortcut.description}
-				</li>
+				</span>
+
+				<span class="ml-2">{shortcut.description}</span>
 			{/each}
-		</ul>
+		</div>
+
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">Close</button>

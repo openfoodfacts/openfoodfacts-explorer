@@ -64,7 +64,7 @@
 	}
 </script>
 
-<div class="my-8">
+<div class="my-4">
 	<h2 class="mb-4 text-center text-3xl font-bold">Attributes</h2>
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

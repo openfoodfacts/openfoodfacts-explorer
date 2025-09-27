@@ -33,6 +33,7 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
@@ -88,9 +89,17 @@
 	// == Global shortcuts context setup ==
 
 	let shortcutsComp: Shortcuts;
-	let shortcuts: Shortcut[] = $state([
+	let shortcuts = new SvelteMap<string, Shortcut>([
+		[
+			'Shift+?',
+			{
+				description: 'Show this help modal',
+				action: () => shortcutsComp.show()
+			}
+		]
 		// Add more shortcuts here
 	]);
+
 	setContext('shortcuts', () => shortcuts);
 
 	// Load OpenFoodFacts Web Components

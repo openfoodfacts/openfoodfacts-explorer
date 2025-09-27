@@ -22,6 +22,8 @@
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import { getContext } from 'svelte';
+	import type { Shortcut } from '../../Shortcuts.svelte';
 
 	type Props = { data: PageData };
 
@@ -52,6 +54,20 @@
 	});
 
 	let useWCFolksonomyEditor = $state(false);
+
+	let showBarcode = $state(false);
+
+	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
+	shortcuts.set('Shift+B', {
+		description: 'Show product barcode',
+		action: () => (showBarcode = !showBarcode)
+	});
+
+	import JsBarcode from 'jsbarcode';
+
+	$effect(() => {
+		JsBarcode('#barcode', product.code, { format: 'ean13' });
+	});
 </script>
 
 <!-- FIXME: Remove this cast once product.image_front_small_url and product.image_front_url are not nullable in the API -->
@@ -63,6 +79,11 @@
 
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
+
+	<div class={['flex flex-col items-center gap-4', showBarcode || 'hidden'].join(' ')}>
+		<svg id="barcode"></svg>
+		<p class="text-sm text-gray-500">Barcode: {product.code}</p>
+	</div>
 
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
 	></robotoff-contribution-message>
