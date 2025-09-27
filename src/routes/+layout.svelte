@@ -34,12 +34,13 @@
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 
+	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
 		flavor: 'food'
 	});
 	setWebsiteCtx(() => websiteCtx);
 
-	// Toast context setup
+	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
 	let toastId = 0;
 
@@ -84,14 +85,21 @@
 	};
 	setToastCtx(() => toastCtx);
 
+	// == Global shortcuts context setup ==
+
+	let shortcutsComp: Shortcuts;
 	let shortcuts: Shortcut[] = $state([
 		// Add more shortcuts here
 	]);
 	setContext('shortcuts', () => shortcuts);
 
+	// Load OpenFoodFacts Web Components
+
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
 	});
+
+	// == Layout logic ==
 
 	let searchQuery: string = $state('');
 
@@ -145,7 +153,7 @@
 
 <Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
-<Shortcuts {shortcuts} />
+<Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
 <div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
@@ -168,38 +176,52 @@
 	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
 {/if}
 
-<div class="flex justify-center">
-	<div class="bg-base-100 navbar hidden max-w-7xl px-10 xl:flex">
-		<div class="navbar-start">
-			<a href="/"> <Logo /> </a>
+<!-- Desktop Header -->
+<div class="hidden xl:block">
+	<div class="flex justify-center">
+		<div class="bg-base-100 navbar flex max-w-7xl px-10">
+			<div class="navbar-start">
+				<a href="/"> <Logo /> </a>
+			</div>
+			<div class="navbar-center">
+				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
+			</div>
+			<div class="navbar-end gap-2">
+				{#if $userInfo != null}
+					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
+					<a class="btn btn-outline link" href="/logout">Log out</a>
+				{:else}
+					<a class="btn btn-outline link" href="/login"> Login </a>
+				{/if}
+				<!-- Settings button -->
+				<a
+					class="btn btn-ghost link"
+					href="/settings"
+					aria-label={$_('settings_link')}
+					title={$_('settings_link')}
+				>
+					<span class="icon-[mdi--cog] text-2xl"></span>
+				</a>
+				<!-- Shortcuts button -->
+				<button
+					class="btn btn-ghost"
+					title={$_('help.button')}
+					aria-label={$_('help.button')}
+					onclick={() => shortcutsComp.show()}
+				>
+					<span class="icon-[mdi--help-circle-outline] text-2xl"></span>
+				</button>
+			</div>
 		</div>
-		<div class="navbar-center">
-			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
-		</div>
-		<div class="navbar-end gap-2">
-			{#if $userInfo != null}
-				<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
-				<a class="btn btn-outline link" href="/logout">Log out</a>
-			{:else}
-				<a class="btn btn-outline link" href="/login"> Login </a>
-			{/if}
-			<a
-				class="btn btn-ghost link"
-				href="/settings"
-				aria-label={$_('settings_link')}
-				title={$_('settings_link')}
-			>
-				<span class="icon-[mdi--cog] text-2xl"></span>
-			</a>
-		</div>
+	</div>
+
+	<!-- Only show Navbar on lg and up -->
+	<div>
+		<Navbar />
 	</div>
 </div>
 
-<!-- Only show Navbar on lg and up -->
-<div class="hidden xl:block">
-	<Navbar />
-</div>
-
+<!-- Mobile Header -->
 <div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">

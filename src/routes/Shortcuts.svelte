@@ -51,6 +51,10 @@
 			window.removeEventListener('keydown', keyDownListener);
 		};
 	});
+
+	export function show() {
+		helpModal.showModal();
+	}
 </script>
 
 <!-- Open the modal using ID.showModal() method -->
