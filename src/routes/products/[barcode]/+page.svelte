@@ -13,6 +13,7 @@
 
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
+	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
 
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
@@ -62,12 +63,6 @@
 		description: 'Show product barcode',
 		action: () => (showBarcode = !showBarcode)
 	});
-
-	import JsBarcode from 'jsbarcode';
-
-	$effect(() => {
-		JsBarcode('#barcode', product.code, { format: 'ean13' });
-	});
 </script>
 
 <!-- FIXME: Remove this cast once product.image_front_small_url and product.image_front_url are not nullable in the API -->
@@ -80,10 +75,9 @@
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
 
-	<div class={['flex flex-col items-center gap-4', showBarcode || 'hidden'].join(' ')}>
-		<svg id="barcode"></svg>
-		<p class="text-sm text-gray-500">Barcode: {product.code}</p>
-	</div>
+	{#if showBarcode && product.code != null}
+		<BarcodeInfo code={product.code} />
+	{/if}
 
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
 	></robotoff-contribution-message>
