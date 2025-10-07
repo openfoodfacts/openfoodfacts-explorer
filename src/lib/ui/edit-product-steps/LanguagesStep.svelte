@@ -1,20 +1,26 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 
 	type Props = {
 		product: Product;
-		filteredLanguages: string[];
+		codes: string[];
+
 		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
 	};
 
-	let { product = $bindable(), filteredLanguages, addLanguage, getLanguage }: Props = $props();
+	let { product = $bindable(), codes, addLanguage }: Props = $props();
 
 	// Local state for language search input
 	let languageSearch = $state('');
+	let filteredLanguages = $derived(
+		codes.filter((code) =>
+			getLanguageName(code).toLowerCase().includes(languageSearch.toLowerCase())
+		)
+	);
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -51,7 +57,18 @@
 		>
 	</div>
 {/if}
-<div class="collapse-arrow bg-base-200 collapse">
+
+<fieldset class="fieldset">
+	<legend class="fieldset-legend">{$_('product.edit.main_language')}</legend>
+	<select class="select w-full">
+		{#each Object.keys(product.languages_codes) ?? [] as lang (lang)}
+			<option value={lang} selected={product.lang === lang}>{getLanguageName(lang)}</option>
+		{/each}
+	</select>
+	<span class="label">The main language of the product</span>
+</fieldset>
+
+<div class="collapse-arrow bg-base-300 dark:bg-base-200 collapse">
 	<input type="checkbox" />
 	<div class="collapse-title text-sm font-semibold sm:text-base">
 		{$_('product.edit.add_language')}
@@ -76,26 +93,34 @@
 			>
 				{#each filteredLanguages as code (code)}
 					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(code)}>
-						{getLanguage(code)}
+						{getLanguageName(code)}
 					</button>
 				{/each}
 			</div>
 		{/if}
 	</div>
 </div>
+
+<div class="divider"></div>
+
 <div class="tabs tabs-box mt-4">
+	{#if Object.keys(product.languages_codes ?? {}).length === 0}
+		<div class="alert alert-warning text-sm sm:text-base">
+			{$_('product.edit.no_languages_found')}
+		</div>
+	{/if}
 	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 		<input
 			type="radio"
 			name="name_tabs"
 			class="tab text-xs sm:text-sm"
-			aria-label={getLanguage(code)}
+			aria-label={getLanguageName(code)}
 			checked={code === product.lang}
 		/>
 		<div class="tab-content form-control p-6">
 			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
 				<span class="flex items-center gap-2">
-					{$_('product.edit.name')} ({getLanguage(code)})
+					{$_('product.edit.name')} ({getLanguageName(code)})
 					<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
 				</span>
 			</label>
@@ -107,9 +132,4 @@
 			/>
 		</div>
 	{/each}
-	{#if Object.keys(product.languages_codes ?? {}).length === 0}
-		<div class="alert alert-warning text-sm sm:text-base">
-			{$_('product.edit.no_languages_found')}
-		</div>
-	{/if}
 </div>

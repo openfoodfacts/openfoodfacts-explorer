@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import { createProductsApi, type Product } from '$lib/api';
+	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
@@ -16,11 +17,10 @@
 
 	type Props = {
 		product: Product;
-		getLanguage: (code: string) => string;
 		getIngredientsImage: (language: string) => string | null;
 	};
 
-	let { product = $bindable(), getLanguage, getIngredientsImage }: Props = $props();
+	let { product = $bindable(), getIngredientsImage }: Props = $props();
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
@@ -105,7 +105,7 @@
 			type="radio"
 			name="ingredients_tabs"
 			class="tab text-xs sm:text-sm"
-			aria-label={getLanguage(code)}
+			aria-label={getLanguageName(code)}
 			checked={code === product.lang}
 		/>
 		<div class="tab-content form-control p-6">
@@ -140,7 +140,7 @@
 
 			<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
 				<span class="flex items-center gap-2">
-					{$_('product.edit.ingredients_list')} ({getLanguage(code)})
+					{$_('product.edit.ingredients_list')} ({getLanguageName(code)})
 					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
 				</span>
 			</label>

@@ -18,6 +18,7 @@
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
+	import { getLanguageName } from '$lib/languages';
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
 
@@ -134,10 +135,6 @@
 			.filter((t): t is string => t !== undefined);
 	}
 
-	function getLanguage(code: string) {
-		return ISO6391.getName(code);
-	}
-
 	let categoryNames = $derived(getNames(data.categories));
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
@@ -178,7 +175,7 @@
 			if (product.languages_codes[code] !== undefined) {
 				return false;
 			}
-			const language = getLanguage(code);
+			const language = getLanguageName(code);
 			return language.toLowerCase().includes(languageSearch.toLowerCase());
 		})
 	);
@@ -236,7 +233,10 @@
 	}
 
 	function addLanguage(code: string) {
-		product.languages_codes = { ...product.languages_codes, [code]: 0 };
+		product = {
+			...product,
+			languages_codes: { ...product.languages_codes, [code]: 0 }
+		};
 	}
 
 	function getIngredientsImage(language: string) {
@@ -347,7 +347,7 @@
 			{brandNames}
 			{categoryNames}
 			{countriesNames}
-			{filteredLanguages}
+			languages={filteredLanguages}
 			{getIngredientsImage}
 			{getNutritionImage}
 			{isSubmitting}
@@ -355,7 +355,6 @@
 			{originNames}
 			{submit}
 			{storeNames}
-			{getLanguage}
 			{handleNutrimentInput}
 		/>
 	{:else}
@@ -374,8 +373,7 @@
 			{labelNames}
 			{originNames}
 			{storeNames}
-			{getLanguage}
-			{filteredLanguages}
+			languages={filteredLanguages}
 		/>
 	{/if}
 </div>

@@ -1,22 +1,18 @@
 <script lang="ts">
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
+	import { getLanguageName } from '$lib/languages';
 	import { NUTRIENTS, type NutrientKey, type Product } from '$lib/api';
+
 	import ImageButton from '../ImageButton.svelte';
 
 	type Props = {
 		product: Product;
-		getLanguage: (code: string) => string;
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
 	};
 
-	let {
-		product = $bindable(),
-		getLanguage,
-		getNutritionImage,
-		handleNutrimentInput
-	}: Props = $props();
+	let { product = $bindable(), getNutritionImage, handleNutrimentInput }: Props = $props();
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -90,14 +86,14 @@
 			type="radio"
 			name="nutrition_image_tabs"
 			class="tab text-xs sm:text-sm"
-			aria-label={getLanguage(code)}
+			aria-label={getLanguageName(code)}
 			checked={code === product.lang}
 		/>
 		<div class="tab-content p-6">
 			{#if getNutritionImage(code) == null && product.lang !== code}
 				<p class="alert alert-warning mb-4 text-sm sm:text-base">
 					{$_('product.edit.no_nutrition_image_for_language', {
-						values: { language: getLanguage(code) }
+						values: { language: getLanguageName(code) }
 					})}
 				</p>
 			{/if}
@@ -284,7 +280,7 @@
 						<div class="sticky top-4">
 							<ImageButton
 								src={getNutritionImage(code) ?? undefined}
-								alt={`Nutrition facts for ${getLanguage(code)}`}
+								alt={`Nutrition facts for ${getLanguageName(code)}`}
 							/>
 						</div>
 					</div>

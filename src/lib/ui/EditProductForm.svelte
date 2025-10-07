@@ -26,8 +26,7 @@
 		// Language
 
 		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
-		filteredLanguages: string[];
+		languages: string[];
 
 		// Taxonomy entries
 
@@ -44,10 +43,9 @@
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
-		getLanguage,
 		getIngredientsImage,
 		getNutritionImage,
-		filteredLanguages,
+		languages,
 		categoryNames,
 		labelNames,
 		brandNames,
@@ -60,6 +58,18 @@
 </script>
 
 <div class="space-y-4">
+	<!-- Languages Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			{$_('product.edit.sections.languages')}
+		</div>
+		<div class="collapse-content">
+			<LanguagesStep bind:product {addLanguage} codes={languages} />
+		</div>
+	</div>
+
 	<!-- Images Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -92,18 +102,6 @@
 		</div>
 	</div>
 
-	<!-- Languages Section -->
-	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
-		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
-			{$_('product.edit.sections.languages')}
-		</div>
-		<div class="collapse-content">
-			<LanguagesStep bind:product {addLanguage} {getLanguage} {filteredLanguages} />
-		</div>
-	</div>
-
 	<!-- Ingredients Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -112,7 +110,7 @@
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
-			<IngredientsStep bind:product {getIngredientsImage} {getLanguage} />
+			<IngredientsStep bind:product {getIngredientsImage} />
 		</div>
 	</div>
 
@@ -125,7 +123,7 @@
 			{$_('product.edit.sections.nutrition')}
 		</div>
 		<div class="collapse-content">
-			<NutritionStep bind:product {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+			<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
 		</div>
 	</div>
 
