@@ -49,6 +49,20 @@
 			);
 		})
 	);
+
+	function switchKjAndKcal() {
+		const energyKj = product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g'];
+		const energyKcal = product.nutriments?.['energy-kcal_100g'];
+
+		product = {
+			...product,
+			nutriments: {
+				...product.nutriments,
+				'energy-kj_100g': energyKcal,
+				'energy-kcal_100g': energyKj
+			}
+		};
+	}
 </script>
 
 <h2
@@ -154,6 +168,15 @@
 										{$_('product.edit.si_kilojoules')}
 									</span>
 								</label>
+
+								<button
+									type="button"
+									class="btn btn-ghost btn-square btn-sm"
+									aria-label="Swap units"
+									onclick={switchKjAndKcal}
+								>
+									<span class="icon-[mdi--swap-horizontal] h-5 w-5"></span>
+								</button>
 
 								<label class="input w-full">
 									<input
