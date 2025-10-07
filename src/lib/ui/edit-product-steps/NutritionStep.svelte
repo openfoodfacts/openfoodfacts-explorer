@@ -150,7 +150,6 @@
 
 						<!-- Energy -->
 						<fieldset class="fieldset">
-							<legend class="fieldset-legend">{$_('product.edit.energy')}</legend>
 							<div class="flex gap-2">
 								<label class="input w-full">
 									<input
