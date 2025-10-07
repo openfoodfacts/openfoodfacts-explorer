@@ -14,11 +14,19 @@
 
 	let { product = $bindable(), codes, addLanguage }: Props = $props();
 
+	let languageNames = $derived(
+		codes.map((code) => {
+			return { code: code, en: getLanguageName(code, 'en'), locale: getLanguageName(code) };
+		})
+	);
+
 	// Local state for language search input
 	let languageSearch = $state('');
 	let filteredLanguages = $derived(
-		codes.filter((code) =>
-			getLanguageName(code).toLowerCase().includes(languageSearch.toLowerCase())
+		languageNames.filter((code) =>
+			[code.code, code.en, code.locale].some((name) =>
+				name.toLowerCase().includes(languageSearch.toLowerCase())
+			)
 		)
 	);
 
@@ -52,9 +60,9 @@
 			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
 		</button>
 		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
-		<span class="text-base-content/80 p-6 text-sm sm:text-base"
-			>{$_('product.edit.info.languages')}</span
-		>
+		<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			{$_('product.edit.info.languages')}
+		</span>
 	</div>
 {/if}
 
@@ -91,9 +99,9 @@
 			<div
 				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 overflow-auto sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
 			>
-				{#each filteredLanguages as code (code)}
-					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(code)}>
-						{getLanguageName(code)}
+				{#each filteredLanguages as lang (lang)}
+					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(lang.code)}>
+						{lang.locale} ({lang.en}) - {lang.code}
 					</button>
 				{/each}
 			</div>
