@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ISO6391 from 'iso-639-1';
 	import { invalidateAll } from '$app/navigation';
 
 	import { getImageFieldName } from '$lib/utils';
@@ -7,6 +6,7 @@
 	import { preferences } from '$lib/settings';
 	import type { Product } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { getLanguageName } from '$lib/languages';
 
 	type PhotoType = { id: string; label: string };
 
@@ -43,10 +43,6 @@
 	}: Props = $props();
 
 	const toast = getToastCtx();
-
-	function getLanguage(code: string) {
-		return ISO6391.getName(code);
-	}
 
 	function triggerFileInput(id: string) {
 		const input = document.getElementById(id) as HTMLInputElement;
@@ -168,7 +164,7 @@
 <div class="mb-6">
 	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 		<h4 class="sm:text-md text-sm font-semibold">
-			{sectionType.label} picture ({getLanguage(activeLanguageCode)})
+			{sectionType.label} picture ({getLanguageName(activeLanguageCode)})
 		</h4>
 		<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
 			<!-- Upload button for this category -->

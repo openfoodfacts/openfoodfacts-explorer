@@ -158,6 +158,7 @@
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
 				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
 			},
+			"main_language": "Main language",
 			"add_product": "Add product",
 			"add_product_title": "Add a new product",
 			"edit_product_title": "Edit product",
