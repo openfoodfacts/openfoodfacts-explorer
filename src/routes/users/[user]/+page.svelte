@@ -1,6 +1,6 @@
 <script lang="ts">
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
-	import { _ } from 'svelte-i18n';
+	import { _, getNumberFormatter } from 'svelte-i18n';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -21,6 +21,8 @@
 			icon: ScaleIcon
 		}
 	]);
+
+	const formatNumber = (n: number) => getNumberFormatter().format(n);
 </script>
 
 <svelte:head>
@@ -36,7 +38,7 @@
 				<img src={card.icon} alt={card.title} class="w-10" />
 				<div class="flex-1">
 					<h2 class="card-title justify-center">{card.title}</h2>
-					<p class="w-full text-4xl font-bold">{card.count}</p>
+					<p class="w-full text-4xl font-bold">{formatNumber(card.count)}</p>
 				</div>
 			</div>
 		</div>
