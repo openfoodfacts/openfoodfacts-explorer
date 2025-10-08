@@ -160,6 +160,8 @@
 			},
 			"main_language": "Main language",
 			"add_product": "Add product",
+			"nutrition_issues": "Nutrition issues",
+			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
 			"add_product_title": "Add a new product",
 			"edit_product_title": "Edit product",
 			"add_language": "Add a language",
