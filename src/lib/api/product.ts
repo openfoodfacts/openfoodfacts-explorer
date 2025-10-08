@@ -314,7 +314,7 @@ export type RawImage = {
 		100: ImageSize;
 		400: ImageSize;
 	};
-	uploaded_t: string;
+	uploaded_t: number;
 	uploader: string;
 };
 
@@ -472,6 +472,8 @@ export type ProductImage = {
 	type: string;
 	imgid: number; // The numeric image ID for the API
 	typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
+	uploaded_t: number; // Upload timestamp
+	uploader: string; // Uploader username
 };
 
 /**

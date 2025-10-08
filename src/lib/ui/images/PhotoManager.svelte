@@ -6,7 +6,7 @@
 	import { invalidateAll } from '$app/navigation';
 
 	import { _ } from '$lib/i18n';
-	import type { Product, ProductImage } from '$lib/api';
+	import type { Product, ProductImage, RawImage } from '$lib/api';
 	import {
 		getProductImageUrl,
 		ProductsApi,
@@ -46,22 +46,6 @@
 
 	const photoTypeIds = new Set(photoTypes.map((pt) => pt.id));
 
-	function createProductImage(
-		url: string,
-		imgid: number,
-		type: string,
-		typeId: string,
-		altSuffix: string = ''
-	): ProductImage {
-		return {
-			url,
-			alt: `${type} image${altSuffix}`,
-			type,
-			imgid,
-			typeId
-		};
-	}
-
 	function getStandardImages(code: string) {
 		const productImages = product.images;
 		const languageName = getLanguage(code);
@@ -86,9 +70,17 @@
 			const imgid = parseInt(imageData.imgid, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(
-				createProductImage(imageUrl, imgid, photoType.label, photoType.id, ` for ${languageName}`)
-			);
+			const originalImage = productImages[imgid] as RawImage;
+
+			images.push({
+				url: imageUrl,
+				alt: `${photoType.label} photo${languageName ? ` for ${languageName}` : ''}`,
+				type: photoType.label,
+				imgid,
+				typeId: photoType.id,
+				uploaded_t: originalImage?.uploaded_t || 0,
+				uploader: originalImage?.uploader || 'unknown'
+			});
 		}
 
 		return images;
@@ -116,13 +108,23 @@
 			const typePrefix = key.split('_')[0];
 			const typeId = photoTypeIds.has(typePrefix) ? typePrefix : 'other';
 
-			images.push(createProductImage(imageUrl, imgid, typePrefix, typeId, ` for ${languageName}`));
+			const rawImage = productImages[imgid] as RawImage;
+
+			images.push({
+				url: imageUrl,
+				alt: `Additional photo (${typePrefix})${languageName ? ` for ${languageName}` : ''}`,
+				type: typePrefix.charAt(0).toUpperCase() + typePrefix.slice(1),
+				imgid,
+				typeId,
+				uploaded_t: rawImage?.uploaded_t || 0,
+				uploader: rawImage?.uploader || 'unknown'
+			});
 		}
 
 		const numericKeys = Object.keys(productImages).filter((key) => /^\d+$/.test(key));
 
 		for (const key of numericKeys) {
-			const imgObj = productImages[key];
+			const imgObj = productImages[key] as RawImage;
 			if (!imgObj?.sizes?.['400']) continue;
 
 			const url = getProductImageUrl(product.code, key, productImages);
@@ -131,7 +133,15 @@
 			const imgid = parseInt(key, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(createProductImage(url, imgid, 'Additional', 'other'));
+			images.push({
+				url,
+				alt: `Additional photo${languageName ? ` for ${languageName}` : ''}`,
+				type: 'Other',
+				imgid,
+				typeId: 'other',
+				uploaded_t: imgObj?.uploaded_t || 0,
+				uploader: imgObj?.uploader || 'unknown'
+			});
 		}
 
 		return images;

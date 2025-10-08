@@ -4,9 +4,11 @@
 	import { getImageFieldName } from '$lib/utils';
 	import { ProductsApi, fileToBase64 } from '$lib/api';
 	import { preferences } from '$lib/settings';
-	import type { Product } from '$lib/api';
+	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { getLanguageName } from '$lib/languages';
+	import { getDateFormatter } from 'svelte-i18n';
+	import { resolve } from '$app/paths';
 
 	type PhotoType = { id: string; label: string };
 
@@ -15,7 +17,7 @@
 		isAdditional?: boolean;
 
 		activeLanguageCode: string;
-		currentImages: Array<{ url: string; alt: string; type: string }>;
+		currentImages: Array<ProductImage>;
 		expandedCategories: Set<string>;
 		product: Product;
 		photoTypes: Array<{ id: string; label: string }>;
@@ -229,26 +231,39 @@
 				class:opacity-50={isUploading || isUnselecting}
 			>
 				{#each imagesToShow as image (image.url)}
-					<button
-						type="button"
-						class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
-						disabled={isUploading || isUnselecting}
-						onclick={() => onImageEdit?.(image.url, image.alt)}
-						title="Click to edit this image"
-					>
-						<img
-							src={image.url}
-							alt={image.alt}
-							class="h-full w-full object-cover transition-transform group-hover:scale-105"
-						/>
-						<div
-							class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
+					<div>
+						<button
+							type="button"
+							class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
+							disabled={isUploading || isUnselecting}
+							onclick={() => onImageEdit?.(image.url, image.alt)}
+							title="Click to edit this image"
 						>
-							<span
-								class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-							></span>
-						</div>
-					</button>
+							<img
+								src={image.url}
+								alt={image.alt}
+								class="h-full w-full object-cover transition-transform group-hover:scale-105"
+							/>
+							<div
+								class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
+							>
+								<span
+									class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+								></span>
+							</div>
+						</button>
+						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
+							<a href={resolve('/users/[user]', { user: image.uploader })} class="hover:underline">
+								{image.uploader}
+							</a>
+						</p>
+						<p class="text-base-content/50 mt-0.5 line-clamp-1 text-center text-xs">
+							{getDateFormatter({
+								dateStyle: 'medium',
+								timeStyle: 'medium'
+							}).format(new Date(image.uploaded_t * 1000))}
+						</p>
+					</div>
 				{/each}
 			</div>
 
