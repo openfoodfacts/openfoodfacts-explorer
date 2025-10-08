@@ -36,7 +36,7 @@
 				100: { w: 0, h: 0 },
 				400: { w: 0, h: 0 }
 			},
-			uploaded_t: '',
+			uploaded_t: 0,
 			uploader: ''
 		};
 	}
