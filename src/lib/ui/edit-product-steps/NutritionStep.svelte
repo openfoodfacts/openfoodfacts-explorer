@@ -5,6 +5,7 @@
 	import { NUTRIENTS, type NutrientKey, type Product } from '$lib/api';
 
 	import ImageButton from '../ImageButton.svelte';
+	import { analyzeNutrition } from './nutrition';
 
 	type Props = {
 		product: Product;
@@ -63,6 +64,30 @@
 			}
 		};
 	}
+
+	let analysisResults = $derived(analyzeNutrition(product));
+
+	const bySeverity = (a: { severity: string }, b: { severity: string }) => {
+		if (a.severity === b.severity) return 0;
+		if (a.severity === 'error') return -1;
+		return 1;
+	};
+
+	let issuesByField = $derived((keys: string | string[]) => {
+		const keysArray = Array.isArray(keys) ? keys : [keys];
+
+		return analysisResults
+			.filter((r) => r.field && keysArray.includes(r.field))
+			.toSorted(bySeverity);
+	});
+
+	let fieldInputClasses = $derived((field: string | string[]) => {
+		const results = issuesByField(field);
+		if (results.length === 0) return '';
+		if (results.some((r) => r.severity === 'error')) return 'input-error';
+		if (results.some((r) => r.severity === 'warning')) return 'input-warning';
+		return '';
+	});
 </script>
 
 <h2
@@ -94,225 +119,319 @@
 		>
 	</div>
 {/if}
-<div class="tabs tabs-box mb-4">
-	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-		<input
-			type="radio"
-			name="nutrition_image_tabs"
-			class="tab text-xs sm:text-sm"
-			aria-label={getLanguageName(code)}
-			checked={code === product.lang}
-		/>
-		<div class="tab-content p-6">
-			{#if getNutritionImage(code) == null && product.lang !== code}
-				<p class="alert alert-warning mb-4 text-sm sm:text-base">
-					{$_('product.edit.no_nutrition_image_for_language', {
-						values: { language: getLanguageName(code) }
-					})}
-				</p>
-			{/if}
 
-			<div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
-				<div>
-					<div class="space-y-4">
-						<div>
-							<label>
-								<span class="label mb-2 flex items-center gap-2 leading-0">
-									{$_('product.edit.serving_size')}
-									<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-								</span>
-								<input
-									id="serving-size-input"
-									type="text"
-									class="input input-bordered w-full text-sm sm:text-base"
-									bind:value={product.serving_size}
-									placeholder="e.g., 100g, 1 serving (30g)"
-								/>
-							</label>
-						</div>
+<div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
+	<div>
+		<div class="space-y-4">
+			<div>
+				<label>
+					<span class="label mb-2 flex items-center gap-2 leading-0">
+						{$_('product.edit.serving_size')}
+						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+					</span>title
+					<input
+						id="serving-size-input"
+						type="text"
+						class="input input-bordered w-full text-sm sm:text-base"
+						bind:value={product.serving_size}
+						placeholder="e.g., 100g, 1 serving (30g)"
+					/>
+				</label>
+			</div>
 
-						<div>
-							<label class="label">
-								<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
-								<span>
-									{$_('product.edit.no_nutrition_data')}
-								</span>
-							</label>
-						</div>
-					</div>
+			<div>
+				<label class="label">
+					<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
+					<span>
+						{$_('product.edit.no_nutrition_data')}
+					</span>
+				</label>
+			</div>
+		</div>
 
-					{#if !product.no_nutrition_data}
-						<div class="divider">
-							<span class="text-sm font-medium opacity-60">
-								{$_('product.edit.nutritional_values')}
-							</span>
-						</div>
+		{#if !product.no_nutrition_data}
+			<div class="divider">
+				<span class="text-sm font-medium opacity-60">
+					{$_('product.edit.nutritional_values')}
+				</span>
+			</div>
 
-						<!-- Energy -->
-						<fieldset class="fieldset">
-							<div class="flex gap-2">
-								<label class="input w-full">
-									<input
-										id="energy-kj-input"
-										type="number"
-										value={product.nutriments?.['energy-kj_100g'] ??
-											product.nutriments?.['energy_100g'] ??
-											''}
-										oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
-										placeholder="2100"
-										step="1"
-										min="0"
-									/>
-									<span class="label">
-										{$_('product.edit.si_kilojoules')}
-									</span>
-								</label>
-
-								<button
-									type="button"
-									class="btn btn-ghost btn-square btn-sm"
-									aria-label="Swap units"
-									onclick={switchKjAndKcal}
-								>
-									<span class="icon-[mdi--swap-horizontal] h-5 w-5"></span>
-								</button>
-
-								<label class="input w-full">
-									<input
-										id="energy-kcal-input"
-										type="number"
-										value={product.nutriments?.['energy-kcal_100g'] ?? ''}
-										oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
-										placeholder="500"
-										step="1"
-										min="0"
-									/>
-									<span class="label">
-										{$_('product.edit.si_kilocalories')}
-									</span>
-								</label>
+			<!-- Energy -->
+			<fieldset class="fieldset">
+				<div class="flex gap-2">
+					<label class={['input grow', fieldInputClasses('energy')]}>
+						<span class="label">
+							{$_('product.edit.energy')}
+						</span>
+						<input
+							id="energy-kj-input"
+							type="number"
+							value={product.nutriments?.['energy-kj_100g'] ??
+								product.nutriments?.['energy_100g'] ??
+								''}
+							oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
+							placeholder="2100"
+							step="1"
+							min="0"
+						/>
+						<span class="label">
+							{$_('product.edit.si_kilojoules')}
+						</span>
+						{#if issuesByField('energy').length > 0}
+							{@const issue = issuesByField('energy')[0]}
+							<div
+								class={[
+									'tooltip',
+									issue?.severity === 'error' && 'tooltip-error',
+									issue?.severity === 'warning' && 'tooltip-warning'
+								]}
+								data-tip={issue?.title}
+							>
+								<span
+									class={[
+										'ml-2 h-5 w-5',
+										issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
+										issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
+									]}
+								></span>
 							</div>
+						{/if}
+					</label>
 
-							{#each DEFAULT_SHOWN as nutrient (nutrient)}
-								<label class="input w-full">
-									<span class="label w-60">
-										{$_(`product.edit.nutrient.${nutrient}`)}
-									</span>
-									<input
-										id={`${nutrient}-input`}
-										type="number"
-										value={product.nutriments?.[nutrient] ?? ''}
-										oninput={(e) => handleNutrimentInput(e, nutrient)}
-										placeholder="0.0"
-										step="0.1"
-										min="0"
-									/>
-									<span class="label">
-										<select
-											class=""
-											onchange={(e) => {
-												const unit = e.currentTarget.value;
-												product.nutriments[`${nutrient}_unit`] = unit;
-											}}
-											value={product.nutriments?.[`${nutrient}_unit`] ?? 'g'}
-										>
-											<option value="g">{$_('product.edit.si_grams')}</option>
-											<option value="mg">{$_('product.edit.si_milligrams')}</option>
-											<option value="µg">{$_('product.edit.si_micrograms')}</option>
-										</select>
-									</span>
-								</label>
-							{/each}
-						</fieldset>
+					<button
+						type="button"
+						class="btn btn-ghost btn-square btn-sm"
+						aria-label="Swap units"
+						onclick={switchKjAndKcal}
+					>
+						<span class="icon-[mdi--swap-horizontal] h-5 w-5"></span>
+					</button>
 
-						<fieldset class="fieldset">
-							<legend class="fieldset-legend">
-								{$_('product.edit.additional_nutrients')}
-							</legend>
-							{#each additionalNutrients as nutrient (nutrient)}
-								<div class="join">
-									<label class="input join-item w-full">
-										<span class="label w-60">
-											{$_(`product.edit.nutrient.${nutrient}`)}
-										</span>
-										<input
-											id={`${nutrient}-input`}
-											type="number"
-											value={product.nutriments?.[nutrient] ?? ''}
-											oninput={(e) => handleNutrimentInput(e, nutrient)}
-											placeholder="0.0"
-											step="0.1"
-											min="0"
-										/>
-										<span class="label">
-											{$_('product.edit.si_grams')}
-										</span>
-									</label>
-									<button
-										type="button"
-										class="btn btn-error join-item"
-										aria-label="Remove nutrient"
-										disabled={product.nutriments?.[nutrient] != null}
-										onclick={() => {
-											// Remove the nutrient from additional nutrients
-											additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
-										}}
-									>
-										<span class="icon-[mdi--close]"></span>
-									</button>
-								</div>
-							{/each}
-
-							{#if canAddNutrients.length > 0}
-								<span class="label">
-									{$_('product.edit.add_nutrient')}
-								</span>
-
-								<select
-									class="select w-full"
-									oninput={(e) => {
-										const selectedNutrient = e.currentTarget.value;
-										if (selectedNutrient) {
-											// Add the selected nutrient to the additional nutrients
-											additionalNutrients.push(selectedNutrient as NutrientKey);
-										}
-									}}
+					<label class={['input grow', fieldInputClasses('energy')]}>
+						<span class="label">
+							{$_('product.edit.energy')}
+						</span>
+						<input
+							id="energy-kcal-input"
+							type="number"
+							value={product.nutriments?.['energy-kcal_100g'] ?? ''}
+							oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
+							placeholder="500"
+							step="1"
+							min="0"
+						/>
+						<span class="label">
+							{$_('product.edit.si_kilocalories')}
+						</span>
+						{#if issuesByField('energy').length > 0}
+							{@const issue = issuesByField('energy')[0]}
+							<div class="tooltip tooltip-warning" data-tip={issue?.title}>
+								<span
+									class={[
+										'icon-[mdi--alert] text-warning ml-2 h-5 w-5',
+										issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
+										issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
+									]}
+								></span>
+							</div>
+						{/if}
+					</label>
+				</div>
+			</fieldset>
+			<fieldset class="fieldset">
+				{#each DEFAULT_SHOWN as nutrient (nutrient)}
+					<label class={['input w-full', fieldInputClasses([nutrient, 'all'])]}>
+						<span class="label w-60">
+							<span class="grow">
+								{$_(`product.edit.nutrient.${nutrient}`)}
+							</span>
+							{#if issuesByField([nutrient, 'all']).length > 0}
+								{@const issue = issuesByField(nutrient)[0] ?? issuesByField('all')[0]}
+								<div
+									class={[
+										'tooltip cursor-default',
+										issue?.severity === 'error' && 'tooltip-error',
+										issue?.severity === 'warning' && 'tooltip-warning'
+									]}
+									data-tip={issue?.title}
 								>
-									<option disabled selected>
-										{$_('product.edit.additional_nutrients')}
-									</option>
-									{#each canAddNutrients as nutrient (nutrient)}
-										<option value={nutrient}>
-											{$_(`product.edit.nutrient.${nutrient}`)}
-										</option>
-									{/each}
-								</select>
+									<span
+										class={[
+											'text-lg',
+											issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
+											issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
+										]}
+									></span>
+								</div>
 							{/if}
-						</fieldset>
-					{:else}
-						<div class="alert alert-info">
-							<span class="icon-[mdi--information] h-5 w-5"></span>
-							<span class="text-sm sm:text-base">{$_('product.edit.no_nutrition_specified')}</span>
+						</span>
+
+						<input
+							id={`${nutrient}-input`}
+							type="number"
+							value={product.nutriments?.[nutrient] ?? ''}
+							oninput={(e) => handleNutrimentInput(e, nutrient)}
+							placeholder="0.0"
+							step="0.1"
+							min="0"
+						/>
+						<span class="label">
+							<select
+								class=""
+								onchange={(e) => {
+									const unit = e.currentTarget.value;
+									product.nutriments[`${nutrient}_unit`] = unit;
+								}}
+								value={product.nutriments?.[`${nutrient}_unit`] ?? 'g'}
+							>
+								<option value="g">{$_('product.edit.si_grams')}</option>
+								<option value="mg">{$_('product.edit.si_milligrams')}</option>
+								<option value="µg">{$_('product.edit.si_micrograms')}</option>
+							</select>
+						</span>
+					</label>
+				{/each}
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">
+					{$_('product.edit.additional_nutrients')}
+				</legend>
+				{#each additionalNutrients as nutrient (nutrient)}
+					<div class="join">
+						<label class="input join-item w-full">
+							<span class="label w-60">
+								{$_(`product.edit.nutrient.${nutrient}`)}
+							</span>
+							<input
+								id={`${nutrient}-input`}
+								type="number"
+								value={product.nutriments?.[nutrient] ?? ''}
+								oninput={(e) => handleNutrimentInput(e, nutrient)}
+								placeholder="0.0"
+								step="0.1"
+								min="0"
+							/>
+							<span class="label">
+								{$_('product.edit.si_grams')}
+							</span>
+						</label>
+						<button
+							type="button"
+							class="btn btn-error join-item"
+							aria-label="Remove nutrient"
+							disabled={product.nutriments?.[nutrient] != null}
+							onclick={() => {
+								// Remove the nutrient from additional nutrients
+								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
+							}}
+						>
+							<span class="icon-[mdi--close]"></span>
+						</button>
+					</div>
+				{/each}
+
+				{#if canAddNutrients.length > 0}
+					<span class="label">
+						{$_('product.edit.add_nutrient')}
+					</span>
+
+					<select
+						class="select w-full"
+						oninput={(e) => {
+							const selectedNutrient = e.currentTarget.value;
+							if (selectedNutrient) {
+								// Add the selected nutrient to the additional nutrients
+								additionalNutrients.push(selectedNutrient as NutrientKey);
+							}
+						}}
+					>
+						<option disabled selected>
+							{$_('product.edit.additional_nutrients')}
+						</option>
+						{#each canAddNutrients as nutrient (nutrient)}
+							<option value={nutrient}>
+								{$_(`product.edit.nutrient.${nutrient}`)}
+							</option>
+						{/each}
+					</select>
+				{/if}
+			</fieldset>
+
+			{#if analysisResults.length > 0}
+				<div class="divider"></div>
+				<h3 class="text-lg font-bold">{$_('product.edit.nutrition_issues')}</h3>
+				<p class="text-base-content/80 text-sm">
+					{$_('product.edit.nutrition_issues_description')}
+				</p>
+				{#each analysisResults.toSorted(bySeverity) as result (result.title)}
+					{#if result.severity === 'error'}
+						<div class="alert alert-error mt-4">
+							<span class="icon-[mdi--alert-circle] h-5 w-5"></span>
+							<div>
+								<p class="text-sm font-bold sm:text-base">{result.title}</p>
+								{#if result.desc}
+									<p class="mt-2 text-sm sm:text-base">{result.desc}</p>
+								{/if}
+							</div>
+						</div>
+					{:else if result.severity === 'warning'}
+						<div class="alert alert-warning mt-4">
+							<span class="icon-[mdi--alert-circle] h-5 w-5"></span>
+							<div>
+								<p class="text-sm font-bold sm:text-base">{result.title}</p>
+								{#if result.desc}
+									<p class="mt-2 text-sm sm:text-base">{result.desc}</p>
+								{/if}
+							</div>
 						</div>
 					{/if}
-				</div>
-
-				{#if getNutritionImage(code)}
-					<div>
-						<div class="sticky top-4">
-							<ImageButton
-								src={getNutritionImage(code) ?? undefined}
-								alt={`Nutrition facts for ${getLanguageName(code)}`}
-							/>
-						</div>
+				{/each}
+			{/if}
+		{:else}
+			<div class="alert alert-info">
+				<span class="icon-[mdi--information] h-5 w-5"></span>
+				<span class="text-sm sm:text-base">{$_('product.edit.no_nutrition_specified')}</span>
+			</div>
+		{/if}
+	</div>
+	<div class="tabs tabs-box mb-4">
+		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+			{@const nutritionImage = getNutritionImage(code)}
+			<input
+				type="radio"
+				name="nutrition_image_tabs"
+				class="tab text-xs sm:text-sm"
+				aria-label={getLanguageName(code)}
+				checked={code === product.lang}
+			/>
+			<div class="tab-content p-6">
+				{#if nutritionImage == null && product.lang !== code}
+					<p class="alert alert-warning mb-4 text-sm sm:text-base">
+						{$_('product.edit.no_nutrition_image_for_language', {
+							values: { language: getLanguageName(code) }
+						})}
+					</p>
+				{:else if nutritionImage == null && product.lang === code}
+					<p class="alert alert-info mb-4 text-sm sm:text-base">
+						{$_('product.edit.no_nutrition_image_for_current_language', {
+							values: { language: getLanguageName(code) }
+						})}
+					</p>
+				{:else}
+					<div class="sticky top-4">
+						<ImageButton
+							src={nutritionImage ?? undefined}
+							alt={`Nutrition facts for ${getLanguageName(code)}`}
+						/>
 					</div>
 				{/if}
 			</div>
-		</div>
-	{/each}
-	{#if Object.keys(product.languages_codes ?? {}).length === 0}
-		<div class="alert alert-warning text-sm sm:text-base">
-			{$_('product.edit.no_languages_found')}
-		</div>
-	{/if}
+		{/each}
+		{#if Object.keys(product.languages_codes ?? {}).length === 0}
+			<div class="alert alert-warning text-sm sm:text-base">
+				{$_('product.edit.no_languages_found')}
+			</div>
+		{/if}
+	</div>
 </div>
