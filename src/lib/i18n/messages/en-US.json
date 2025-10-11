@@ -185,7 +185,7 @@
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
 			"nutritional_information": "Nutritional Information",
-			"no_nutrition_image": "No nutrition image",
+			"no_nutrition_image": "No nutrition image for language {language}",
 			"serving_size": "Serving Size",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",

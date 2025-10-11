@@ -406,15 +406,9 @@
 				checked={code === product.lang}
 			/>
 			<div class="tab-content p-6">
-				{#if nutritionImage == null && product.lang !== code}
+				{#if nutritionImage == null}
 					<p class="alert alert-warning mb-4 text-sm sm:text-base">
-						{$_('product.edit.no_nutrition_image_for_language', {
-							values: { language: getLanguageName(code) }
-						})}
-					</p>
-				{:else if nutritionImage == null && product.lang === code}
-					<p class="alert alert-info mb-4 text-sm sm:text-base">
-						{$_('product.edit.no_nutrition_image_for_current_language', {
+						{$_('product.edit.no_nutrition_image', {
 							values: { language: getLanguageName(code) }
 						})}
 					</p>
