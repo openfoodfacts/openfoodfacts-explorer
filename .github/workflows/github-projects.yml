@@ -157,3 +157,9 @@ jobs:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           labeled: 'autorelease: pending'
           label-operator: OR
+      - uses: actions/add-to-project@main
+        with:
+          project-url: https://github.com/orgs/openfoodfacts/projects/16 # Add issue to the Artificial Intelligence project
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          labeled: '🤖 Robotoff'
+          label-operator: OR
