@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as publicEnv from '$env/static/public';
+	import * as publicEnv from '$env/dynamic/public';
 
 	import { preferences } from '$lib/settings';
 	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';

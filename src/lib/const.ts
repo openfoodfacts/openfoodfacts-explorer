@@ -1,11 +1,13 @@
-import {
+import { env as publicEnv } from '$env/dynamic/public';
+
+const {
+	PUBLIC_ROBOTOFF_URL,
+	PUBLIC_IMAGES_URL,
+	PUBLIC_NUTRIPATROL_URL,
 	PUBLIC_AUTH_BASE_URL,
 	PUBLIC_AUTH_PKCE_ID,
-	PUBLIC_IMAGES_URL,
-	PUBLIC_KEYCLOAK_REALM,
-	PUBLIC_ROBOTOFF_URL,
-	PUBLIC_NUTRIPATROL_URL
-} from '$env/static/public';
+	PUBLIC_KEYCLOAK_REALM
+} = publicEnv;
 
 export {
 	PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL,
