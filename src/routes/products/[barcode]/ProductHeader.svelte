@@ -187,7 +187,7 @@
 					{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
 						{#if i > 0},
 						{/if}
-						<a class="link inline-flex items-center break-words" href="/facets/origin/{tag}">
+						<a class=" badge h-auto break-words" href="/facets/origin/{tag}">
 							{localizedTaxoName(origins, tag)}
 						</a>
 					{/each}
