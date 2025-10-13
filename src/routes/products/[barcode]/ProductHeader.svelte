@@ -12,7 +12,7 @@
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
-	import { TRACEABILITY_CODES_URL } from '$lib/const';
+	import { PRODUCT_REPORT_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import Card from '$lib/ui/Card.svelte';
@@ -33,7 +33,7 @@
 
 	let { lang } = $derived($preferences);
 
-	let isShareSupported = navigator?.share != null;
+	let isShareSupported = $derived(navigator?.share != null);
 
 	function addToCalculator() {
 		// FIXME: product.code cannot be null
@@ -85,26 +85,41 @@
 				Classic view
 			</a>
 
-			<button class="btn btn-secondary max-sm:btn-sm" onclick={addToCalculator}>
-				Add to Calculator
-			</button>
 			<a
 				href={`/products/${product.code}/edit`}
 				class="btn btn-secondary max-sm:btn-sm"
 				class:pointer-events-none={navigating.to}
 			>
-				{#if navigating.to?.params?.barcode === product.code}
-					<span class="loading loading-ring loading-lg mx-auto my-auto"></span>
-				{:else}
-					Edit
-				{/if}
+				<span class="icon-[mdi--pencil] h-5 w-5"></span>
+				<span class="hidden md:block"> Edit </span>
 			</a>
+
 			{#if isShareSupported}
 				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
 					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
 					<span class="hidden md:block">Share</span>
 				</button>
 			{/if}
+
+			<a
+				class="btn btn-secondary max-sm:btn-sm flex items-center gap-2"
+				href={PRODUCT_REPORT_URL(product.code!)}
+				target="_blank"
+				rel="noopener noreferrer"
+				title="Report an issue with this product"
+				aria-label="Report an issue with this product"
+			>
+				<span class="icon-[mdi--flag] h-5 w-5"></span>
+			</a>
+
+			<button
+				class="btn btn-secondary max-sm:btn-sm"
+				onclick={addToCalculator}
+				title="Add product to nutritional calculator"
+				aria-label="Add product to nutritional calculator"
+			>
+				<span class="icon-[mdi--calculator] h-5 w-5"></span>
+			</button>
 		</div>
 	</div>
 
