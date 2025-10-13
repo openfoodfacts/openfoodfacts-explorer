@@ -28,7 +28,12 @@
 
 	{#if groupEl.image != null}
 		<div class="md:max-w-64">
-			<ImageButton src={groupEl.image.sizes['full'].url} alt={groupEl.image.alt} />
+			<ImageButton
+				src={groupEl.image.sizes['full'].url}
+				alt={groupEl.image.alt}
+				imageid={groupEl.image.id}
+				productCode={code}
+			/>
 		</div>
 	{/if}
 </div>

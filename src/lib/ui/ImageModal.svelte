@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { IMAGE_REPORT_URL } from '$lib/const';
 	import ResizableImage from './ResizableImage.svelte';
 
-	type ImageState = { url: string; alt?: string };
+	type ImageState = { url: string; alt?: string; imageid?: number; productCode?: string };
 	let image: ImageState | undefined = $state();
 
 	let dialog: HTMLDialogElement | undefined = $state();
@@ -11,8 +12,8 @@
 
 	let rotation = $state(0);
 
-	export function displayImage(url: string, alt?: string) {
-		image = { url, alt };
+	export function displayImage(url: string, alt?: string, imageid?: number, productCode?: string) {
+		image = { url, alt, imageid, productCode };
 		zoomLevel = 1;
 		dialog?.showModal();
 	}
@@ -131,6 +132,31 @@
 			>
 				<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
 			</button>
+		</div>
+
+		<div class="absolute bottom-2 left-2 z-10">
+			{#if image?.alt}
+				<div
+					class="bg-base-100/80 text-base-content rounded-md px-3 py-1 text-sm font-medium shadow-md backdrop-blur-sm"
+				>
+					{image.alt}
+				</div>
+			{/if}
+		</div>
+
+		<div class="absolute top-2 left-2 z-10">
+			{#if image?.imageid && image?.productCode}
+				<a
+					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+					href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
+					target="_blank"
+					rel="noopener"
+					aria-label="Report to NutriPatrol"
+					title="Report to NutriPatrol"
+				>
+					<span class="icon-[mdi--flag-outline] h-6 w-6"></span>
+				</a>
+			{/if}
 		</div>
 	</div>
 </dialog>
