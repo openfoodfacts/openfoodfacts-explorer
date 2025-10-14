@@ -17,6 +17,7 @@
 	"creation_date": "Creation date",
 	"last_modified_date": "Last modified date",
 	"page_size": "Page size",
+	"advanced_view": "Advanced view",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",

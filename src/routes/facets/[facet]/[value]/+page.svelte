@@ -80,7 +80,7 @@
 		</label>
 
 		<label class="select mb-2 w-full">
-			<span class="label w-50">Advanced view</span>
+			<span class="label w-50">{$_('advanced_view')}</span>
 			<select
 				value={`${listView}`}
 				oninput={(e) => {
