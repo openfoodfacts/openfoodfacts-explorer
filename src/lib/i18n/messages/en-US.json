@@ -14,6 +14,9 @@
 	"account_link": "Account",
 	"world_option": "World",
 	"github_link": "GitHub",
+	"creation_date": "Creation date",
+	"last_modified_date": "Last modified date",
+	"page_size": "Page size",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",

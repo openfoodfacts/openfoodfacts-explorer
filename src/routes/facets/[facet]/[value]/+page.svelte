@@ -45,7 +45,7 @@
 	<div class="w-full space-y-2">
 		<h2 class="grow text-2xl font-bold">Search Options</h2>
 		<label class="select w-full">
-			<span class="label w-50">Page size</span>
+			<span class="label w-50">{$_('page_size')}</span>
 			<select
 				value={`${results.page_size}`}
 				oninput={(e) => {
@@ -62,7 +62,7 @@
 		</label>
 
 		<label class="select w-full">
-			<span class="label w-50">Sort by</span>
+			<span class="label w-50">{$_('search.sort_by_label')}</span>
 			<select
 				value={searchOptions.sortBy || 'last_modified_t'}
 				oninput={(e) => {
@@ -72,10 +72,10 @@
 				}}
 			>
 				<option value="popularity">Popularity</option>
-				<option value="nutriscore_score">Nutri-Score</option>
-				<option value="environmental_score_score">Green-Score</option>
-				<option value="created_t">Creation date</option>
-				<option value="last_modified_t">Last modified date</option>
+				<option value="nutriscore_score">{$_('nutriscore')}</option>
+				<option value="environmental_score_score">{$_('ecoscore')}</option>
+				<option value="created_t">{$_('creation_date')}</option>
+				<option value="last_modified_t">{$_('last_modified_date')}</option>
 			</select>
 		</label>
 
