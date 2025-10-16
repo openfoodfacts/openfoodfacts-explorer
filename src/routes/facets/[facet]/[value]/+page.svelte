@@ -45,7 +45,7 @@
 	<div class="w-full space-y-2">
 		<h2 class="grow text-2xl font-bold">Search Options</h2>
 		<label class="select w-full">
-			<span class="label w-50">Page Size</span>
+			<span class="label w-50">{$_('search.page_size')}</span>
 			<select
 				value={`${results.page_size}`}
 				oninput={(e) => {
@@ -62,7 +62,7 @@
 		</label>
 
 		<label class="select w-full">
-			<span class="label w-50">Sort By</span>
+			<span class="label w-50">{$_('search.sort_by_label')}</span>
 			<select
 				value={searchOptions.sortBy || 'last_modified_t'}
 				oninput={(e) => {
@@ -72,15 +72,15 @@
 				}}
 			>
 				<option value="popularity">Popularity</option>
-				<option value="nutriscore_score">Nutriscore</option>
-				<option value="environmental_score_score">Environmental Score</option>
-				<option value="created_t">Created Time</option>
-				<option value="last_modified_t">Last Modified Time</option>
+				<option value="nutriscore_score">{$_('nutriscore')}</option>
+				<option value="environmental_score_score">{$_('ecoscore')}</option>
+				<option value="created_t">{$_('search.creation_date')}</option>
+				<option value="last_modified_t">{$_('search.last_modified_date')}</option>
 			</select>
 		</label>
 
 		<label class="select mb-2 w-full">
-			<span class="label w-50">Advanced View</span>
+			<span class="label w-50">{$_('search.advanced_view')}</span>
 			<select
 				value={`${listView}`}
 				oninput={(e) => {
