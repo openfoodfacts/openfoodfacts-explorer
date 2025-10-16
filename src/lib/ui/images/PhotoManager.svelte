@@ -19,6 +19,7 @@
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
+	import { IMAGE_REPORT_URL } from '$lib/const';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -345,13 +346,7 @@
 	}
 
 	function getNutriPatrolReportUrl(image: ProductImage) {
-		const params = new URLSearchParams({
-			barcode: product.code,
-			image_id: String(image.imgid),
-			source: 'web',
-			flavor: 'off'
-		});
-		return `https://nutripatrol.openfoodfacts.org/flag/image/?${params.toString()}`;
+		return IMAGE_REPORT_URL(product.code, image.imgid);
 	}
 
 	let selectingImageModal: PhotoSelectDialog | undefined = $state();

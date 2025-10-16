@@ -61,3 +61,18 @@ export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
 
 export const PRODUCT_REPORT_URL = (code: string) =>
 	`${PUBLIC_NUTRIPATROL_URL}/flag/product/?barcode=${code}&source=web&flavor=off`;
+
+export const IMAGE_REPORT_URL = (
+	barcode: string,
+	image_id: number,
+	flavor: 'off' = 'off',
+	source: 'web' = 'web'
+) => {
+	const params = new URLSearchParams({
+		barcode,
+		image_id: image_id.toString(),
+		source,
+		flavor
+	});
+	return `${PUBLIC_NUTRIPATROL_URL}/flag/image/?${params.toString()}`;
+};

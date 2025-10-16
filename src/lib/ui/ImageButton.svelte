@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ImageModal from './ImageModal.svelte';
 
-	type Props = { src?: string; alt?: string };
-	let { src, alt }: Props = $props();
+	type Props = { src?: string; alt?: string; imageid?: number; productCode?: string };
+	let { src, alt, imageid, productCode }: Props = $props();
 
 	let modal: ImageModal;
 
@@ -14,7 +14,7 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt);
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageid, productCode);
 	});
 </script>
 

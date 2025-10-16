@@ -136,7 +136,7 @@ export type KnowledgeElementPanelGroup = KnowledgeElementBase & {
 
 export type KnowledgePanelImage = {
 	alt: string;
-	id: string;
+	id: number;
 	lc: string;
 	sizes: Record<string, { height: number; width: number; url: string }>;
 };

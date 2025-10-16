@@ -40,7 +40,11 @@
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
-		<ImageButton src={element.image_element.url} alt={element.image_element.alt_text} />
+		<ImageButton
+			src={element.image_element.url}
+			alt={element.image_element.alt_text}
+			{productCode}
+		/>
 	{:else if element.element_type === 'table'}
 		<Table {element} />
 	{:else if element.element_type === 'map'}

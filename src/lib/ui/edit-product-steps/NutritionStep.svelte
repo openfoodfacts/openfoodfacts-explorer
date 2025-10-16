@@ -417,6 +417,7 @@
 						<ImageButton
 							src={nutritionImage ?? undefined}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
+							productCode={product.code}
 						/>
 					</div>
 				{/if}
