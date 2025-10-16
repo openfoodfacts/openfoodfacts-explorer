@@ -39,6 +39,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const folkApi = createFolksonomyApi(fetch);
 
 	const { data: state, error: apiError } = await productsApi.getProductV3(params.barcode, {
+		product_type: 'all',
 		fields: ['all', 'knowledge_panels']
 	});
 
