@@ -14,10 +14,6 @@
 	"account_link": "Account",
 	"world_option": "World",
 	"github_link": "GitHub",
-	"creation_date": "Creation date",
-	"last_modified_date": "Last modified date",
-	"page_size": "Page size",
-	"advanced_view": "Advanced view",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -38,7 +34,11 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
 		"advanced_search_classic": "Advanced Search for {term} (classic version)",
-		"prices_badge": "{count} prices"
+		"prices_badge": "{count} prices",
+		"creation_date": "Creation date",
+		"last_modified_date": "Last modified date",
+		"page_size": "Page size",
+		"advanced_view": "Advanced view"
 	},
 	"auth": {
 		"username": "Username",
