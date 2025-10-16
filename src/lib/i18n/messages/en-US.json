@@ -123,6 +123,11 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"buttons": {
+			"classic_view": "Classic view",
+			"edit": "Edit",
+			"share": "Share"
+		},
 		"datasources": {
 			"title": "Data Sources",
 			"user": "User: ",
