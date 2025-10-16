@@ -70,24 +70,26 @@
 </script>
 
 <Card>
-	<div class="items-center gap-2 max-md:mb-4 max-md:text-center md:flex">
-		<h1 class="my-4 grow text-2xl font-bold md:text-4xl">
-			{product.product_name ?? product.code}
+	<div
+		class="flex flex-col gap-2 max-md:mb-4 max-md:text-center md:flex-row md:items-center md:justify-between"
+	>
+		<h1 class="my-4 grow text-3xl leading-tight font-bold break-words md:text-4xl">
+			{product.product_name ?? '[' + product.code + ']'}
 		</h1>
 
-		<div class="flex flex-wrap items-center justify-center gap-2">
+		<div class="flex flex-wrap items-center justify-center gap-2 md:justify-end">
 			<a
 				href={'https://world.openfoodfacts.org/product/' + product.code}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="btn btn-secondary max-sm:btn-sm"
+				class="btn btn-secondary"
 			>
 				Classic view
 			</a>
 
 			<a
 				href={`/products/${product.code}/edit`}
-				class="btn btn-secondary max-sm:btn-sm"
+				class="btn btn-secondary"
 				class:pointer-events-none={navigating.to}
 			>
 				<span class="icon-[mdi--pencil] h-5 w-5"></span>
@@ -95,14 +97,14 @@
 			</a>
 
 			{#if isShareSupported}
-				<button class="btn btn-secondary max-sm:btn-sm flex items-center gap-2" onclick={sharePage}>
+				<button class="btn btn-secondary flex items-center gap-2" onclick={sharePage}>
 					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
 					<span class="hidden md:block">Share</span>
 				</button>
 			{/if}
 
 			<a
-				class="btn btn-secondary max-sm:btn-sm flex items-center gap-2"
+				class="btn btn-secondary flex items-center gap-2"
 				href={PRODUCT_REPORT_URL(product.code!)}
 				target="_blank"
 				rel="noopener noreferrer"
@@ -113,7 +115,7 @@
 			</a>
 
 			<button
-				class="btn btn-secondary max-sm:btn-sm"
+				class="btn btn-secondary"
 				onclick={addToCalculator}
 				title="Add product to nutritional calculator"
 				aria-label="Add product to nutritional calculator"
@@ -124,112 +126,159 @@
 	</div>
 
 	<div class="flex flex-col-reverse gap-4 md:flex-row">
-		<div class="grid h-max w-full grid-cols-[max-content_1fr] gap-x-4 gap-y-2 md:w-3/4">
-			<span class="text-end font-bold">Quantity:</span>
-			<span>{product.quantity}</span>
-
-			<span class="text-end font-bold">Brands:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.brands}
-					Loading...
-				{:then brands}
-					{#each product.brands_tags ?? [] as tag, i (i)}
-						<a class="badge h-auto break-words" href="/facets/brands/{tag}">
-							{localizedTaxoName(brands, tag)}
-						</a>
-					{/each}
-				{/await}
+		<div class="grid h-max w-full gap-3 md:w-3/4">
+			<!-- Quantity -->
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Quantity</div>
+				<div>{product.quantity}</div>
 			</div>
 
-			<span class="text-end font-bold">Categories:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.categories}
-					Loading...
-				{:then categories}
-					{#each product.categories_tags ?? [] as tag (tag)}
-						<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
-							{localizedTaxoName(categories, tag)}
-						</a>
-					{/each}
-				{/await}
+			<!-- Brands -->
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Brands</div>
+				<div class="flex flex-wrap gap-1">
+					{#await taxonomies.brands}
+						Loading...
+					{:then brands}
+						{#each product.brands_tags ?? [] as tag, i (i)}
+							<a class="badge h-auto break-words" href="/facets/brands/{tag}">
+								{localizedTaxoName(brands, tag)}
+							</a>
+						{/each}
+					{/await}
+				</div>
 			</div>
 
-			<span class="text-end font-bold">Stores:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.stores}
-					Loading...
-				{:then stores}
-					{#each product.stores_tags ?? [] as tag, i (i)}
-						<span class="badge h-auto break-words">
-							{localizedTaxoName(stores, tag)}
-						</span>
-					{/each}
-				{/await}
+			<!-- Categories -->
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Categories</div>
+				<div class="flex flex-wrap gap-1">
+					{#await taxonomies.categories}
+						Loading...
+					{:then categories}
+						{#each product.categories_tags ?? [] as tag (tag)}
+							<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
+								{localizedTaxoName(categories, tag)}
+							</a>
+						{/each}
+					{/await}
+				</div>
 			</div>
 
-			<span class="text-end font-bold">Labels:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.labels}
-					Loading...
-				{:then labels}
-					{#each product.labels_tags ?? [] as tag, i (i)}
-						<a class="badge h-auto break-words" href="/facets/labels/{tag}">
-							{localizedTaxoName(labels, tag)}
-						</a>
-					{/each}
-				{/await}
+			<!-- Labels -->
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Labels</div>
+				<div class="flex flex-wrap gap-1">
+					{#await taxonomies.labels}
+						Loading...
+					{:then labels}
+						{#each product.labels_tags ?? [] as tag, i (i)}
+							<a class="badge h-auto break-words" href="/facets/labels/{tag}">
+								{localizedTaxoName(labels, tag)}
+							</a>
+						{/each}
+					{/await}
+				</div>
 			</div>
 
-			<span class="text-end font-bold">Countries:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.countries}
-					Loading...
-				{:then countries}
-					{#each product.countries_tags ?? [] as tag, i (i)}
-						<a class="badge h-auto break-words" href="/facets/countries/{tag}">
-							{localizedTaxoName(countries, tag)}
-						</a>
-					{/each}
-				{/await}
-			</div>
-
-			<span class="text-end font-bold">Origins:</span>
-			<div class="flex flex-wrap gap-1">
-				{#await taxonomies.origins}
-					Loading...
-				{:then origins}
-					<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
-					{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-						{#if i > 0},
-						{/if}
-						<a class=" badge h-auto break-words" href="/facets/origin/{tag}">
-							{localizedTaxoName(origins, tag)}
-						</a>
-					{/each}
-				{/await}
-			</div>
-
-			{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
-				<span class="text-end font-bold">Traceability Codes:</span>
-
-				{#each product.emb_codes_tags as tag, i (i)}
-					{#if i > 0},
-					{/if}
-					<a class="link inline-flex items-center break-words" href="/facets/packager-codes/{tag}">
-						{tag}
-					</a>
-				{/each}
-
-				<span>
-					{product.emb_codes}
-					<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
-						(Learn more)
-					</a>
-				</span>
+			<!-- Origins -->
+			{#if product.origins_tags != null && product.origins_tags.length > 0}
+				<div class="mb-2">
+					<div class="text-secondary mb-1 text-sm font-bold">Origins</div>
+					<div class="flex flex-wrap gap-1">
+						{#await taxonomies.origins}
+							Loading...
+						{:then origins}
+							<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
+							{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
+								{#if i > 0},
+								{/if}
+								<a class=" badge h-auto break-words" href="/facets/origin/{tag}">
+									{localizedTaxoName(origins, tag)}
+								</a>
+							{/each}
+						{/await}
+					</div>
+				</div>
 			{/if}
+
+			<!-- Traceability Codes -->
+			{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
+				<div class="mb-2">
+					<div class="text-secondary mb-1 text-sm font-bold">Traceability Codes</div>
+
+					<div class="flex flex-wrap items-center gap-2">
+						{#each product.emb_codes_tags as tag, i (i)}
+							{#if i > 0},
+							{/if}
+							<a
+								class="link inline-flex items-center break-words"
+								href="/facets/packager-codes/{tag}"
+							>
+								{tag}
+							</a>
+						{/each}
+					</div>
+
+					<div class="text-secondary text-sm">
+						{product.emb_codes}
+						<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
+							(Learn more)
+						</a>
+					</div>
+				</div>
+			{/if}
+
+			{#if product.link != null}
+				<div class="mb-2">
+					<div class="text-secondary mb-1 text-sm font-bold">Producer link</div>
+					<a
+						class="link break-words"
+						href={product.link}
+						target="_blank"
+						rel="noopener noreferrer"
+						title="View product on Open Food Facts"
+						aria-label="View product on Open Food Facts"
+					>
+						{product.link}
+					</a>
+				</div>
+			{/if}
+
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Stores</div>
+				<div class="flex flex-wrap gap-1">
+					{#await taxonomies.stores}
+						Loading...
+					{:then stores}
+						{#each product.stores_tags ?? [] as tag, i (i)}
+							<span class="badge h-auto break-words">
+								{localizedTaxoName(stores, tag)}
+							</span>
+						{/each}
+					{/await}
+				</div>
+			</div>
+
+			<div class="mb-2">
+				<div class="text-secondary mb-1 text-sm font-bold">Countries</div>
+				<div class="flex flex-wrap gap-1">
+					{#await taxonomies.countries}
+						Loading...
+					{:then countries}
+						{#each product.countries_tags ?? [] as tag, i (i)}
+							<a class="badge h-auto break-words" href="/facets/countries/{tag}">
+								{localizedTaxoName(countries, tag)}
+							</a>
+						{/each}
+					{/await}
+				</div>
+			</div>
 		</div>
 
-		<div class="m-4 flex h-auto min-h-[40vh] grow justify-center max-md:min-h-[30vh]">
+		<div
+			class="m-4 flex h-auto min-h-[40vh] items-start justify-center max-md:min-h-[30vh] md:w-1/4"
+		>
 			<ImageButton src={frontImage} alt={product.product_name} />
 		</div>
 	</div>
