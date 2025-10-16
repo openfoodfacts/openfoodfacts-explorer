@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { _ } from '$lib/i18n';
 
 	import { navigating } from '$app/state';
 	import {
@@ -69,6 +70,10 @@
 	);
 </script>
 
+{#snippet loadingTaxonomy()}
+	<div class="skeleton h-6 w-full"></div>
+{/snippet}
+
 <Card>
 	<div
 		class="flex flex-col gap-2 max-md:mb-4 max-md:text-center md:flex-row md:items-center md:justify-between"
@@ -84,7 +89,7 @@
 				rel="noopener noreferrer"
 				class="btn btn-secondary"
 			>
-				Classic view
+				{$_('product.buttons.classic_view')}
 			</a>
 
 			<a
@@ -93,13 +98,13 @@
 				class:pointer-events-none={navigating.to}
 			>
 				<span class="icon-[mdi--pencil] h-5 w-5"></span>
-				<span class="hidden md:block"> Edit </span>
+				<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 			</a>
 
 			{#if isShareSupported}
 				<button class="btn btn-secondary flex items-center gap-2" onclick={sharePage}>
 					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
-					<span class="hidden md:block">Share</span>
+					<span class="hidden md:block">{$_('product.buttons.share')}</span>
 				</button>
 			{/if}
 
@@ -138,10 +143,10 @@
 				<div class="text-secondary mb-1 text-sm font-bold">Brands</div>
 				<div class="flex flex-wrap gap-1">
 					{#await taxonomies.brands}
-						Loading...
+						{@render loadingTaxonomy()}
 					{:then brands}
 						{#each product.brands_tags ?? [] as tag, i (i)}
-							<a class="badge h-auto break-words" href="/facets/brands/{tag}">
+							<a class="badge break-words" href="/facets/brands/{tag}">
 								{localizedTaxoName(brands, tag)}
 							</a>
 						{/each}
@@ -154,10 +159,10 @@
 				<div class="text-secondary mb-1 text-sm font-bold">Categories</div>
 				<div class="flex flex-wrap gap-1">
 					{#await taxonomies.categories}
-						Loading...
+						{@render loadingTaxonomy()}
 					{:then categories}
 						{#each product.categories_tags ?? [] as tag (tag)}
-							<a class="badge badge-secondary h-auto break-words" href="/facets/categories/{tag}">
+							<a class="badge badge-secondary break-words" href="/facets/categories/{tag}">
 								{localizedTaxoName(categories, tag)}
 							</a>
 						{/each}
@@ -170,10 +175,10 @@
 				<div class="text-secondary mb-1 text-sm font-bold">Labels</div>
 				<div class="flex flex-wrap gap-1">
 					{#await taxonomies.labels}
-						Loading...
+						{@render loadingTaxonomy()}
 					{:then labels}
 						{#each product.labels_tags ?? [] as tag, i (i)}
-							<a class="badge h-auto break-words" href="/facets/labels/{tag}">
+							<a class="badge break-words" href="/facets/labels/{tag}">
 								{localizedTaxoName(labels, tag)}
 							</a>
 						{/each}
@@ -187,13 +192,11 @@
 					<div class="text-secondary mb-1 text-sm font-bold">Origins</div>
 					<div class="flex flex-wrap gap-1">
 						{#await taxonomies.origins}
-							Loading...
+							{@render loadingTaxonomy()}
 						{:then origins}
 							<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
 							{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-								{#if i > 0},
-								{/if}
-								<a class=" badge h-auto break-words" href="/facets/origin/{tag}">
+								<a class="badge break-words" href="/facets/origin/{tag}">
 									{localizedTaxoName(origins, tag)}
 								</a>
 							{/each}
@@ -205,26 +208,19 @@
 			<!-- Traceability Codes -->
 			{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 				<div class="mb-2">
-					<div class="text-secondary mb-1 text-sm font-bold">Traceability Codes</div>
-
-					<div class="flex flex-wrap items-center gap-2">
-						{#each product.emb_codes_tags as tag, i (i)}
-							{#if i > 0},
-							{/if}
-							<a
-								class="link inline-flex items-center break-words"
-								href="/facets/packager-codes/{tag}"
-							>
-								{tag}
-							</a>
-						{/each}
-					</div>
-
-					<div class="text-secondary text-sm">
-						{product.emb_codes}
-						<a href={TRACEABILITY_CODES_URL} target="_blank" class="ml-2 text-xs text-gray-500">
+					<div class="text-secondary mb-1 text-sm font-bold">
+						<span> Traceability Codes </span>
+						<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
 							(Learn more)
 						</a>
+					</div>
+
+					<div class="flex flex-wrap items-center gap-2">
+						{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
+							<a class="badge font-mono break-words" href="/facets/packager-codes/{tag}">
+								{tag.toUpperCase()}
+							</a>
+						{/each}
 					</div>
 				</div>
 			{/if}
@@ -249,10 +245,10 @@
 				<div class="text-secondary mb-1 text-sm font-bold">Stores</div>
 				<div class="flex flex-wrap gap-1">
 					{#await taxonomies.stores}
-						Loading...
+						{@render loadingTaxonomy()}
 					{:then stores}
 						{#each product.stores_tags ?? [] as tag, i (i)}
-							<span class="badge h-auto break-words">
+							<span class="badge break-words">
 								{localizedTaxoName(stores, tag)}
 							</span>
 						{/each}
@@ -264,10 +260,10 @@
 				<div class="text-secondary mb-1 text-sm font-bold">Countries</div>
 				<div class="flex flex-wrap gap-1">
 					{#await taxonomies.countries}
-						Loading...
+						{@render loadingTaxonomy()}
 					{:then countries}
 						{#each product.countries_tags ?? [] as tag, i (i)}
-							<a class="badge h-auto break-words" href="/facets/countries/{tag}">
+							<a class="badge break-words" href="/facets/countries/{tag}">
 								{localizedTaxoName(countries, tag)}
 							</a>
 						{/each}
