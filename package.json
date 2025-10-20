@@ -40,7 +40,7 @@
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.19",
 		"@sinnwerkstatt/sveltekit-matomo": "github:VaiTon/sveltekit-matomo",
 		"@sveltejs/adapter-node": "^5.3.3",
-		"@sveltejs/adapter-vercel": "^5.10.3",
+		"@sveltejs/adapter-vercel": "^6.0.0",
 		"@sveltejs/kit": "^2.46.4",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/postcss": "^4.1.14",
