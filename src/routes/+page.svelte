@@ -123,21 +123,30 @@
 </section>
 
 <div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
-	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+	<a
+		href="/explore"
+		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+	>
 		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.productCount)}</h2>
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
-	</div>
-	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+	</a>
+	<a
+		href="/facets/editors"
+		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+	>
 		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.editorCount)}</h2>
 		<p class="text-base-content/70">{$_('landing.editors_count')}</p>
-	</div>
-	<div class="border-secondary flex flex-col items-center rounded-lg border p-6 text-center">
+	</a>
+	<a
+		href="/facets/data-sources"
+		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+	>
 		<span class="icon-[mdi--license] text-primary mb-4 h-12 w-12"></span>
 		<h2 class="text-xl font-bold">100%</h2>
 		<p class="text-base-content/70">{$_('landing.open_data')}</p>
-	</div>
+	</a>
 </div>
 
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
