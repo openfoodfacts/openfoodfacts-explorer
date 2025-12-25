@@ -25,6 +25,7 @@
 	import butterIcon from '$lib/assets/butter.svg';
 	import eggIcon from '$lib/assets/egg-01.svg';
 	import pastaIcon from '$lib/assets/pasta.svg';
+	import { resolve } from '$app/paths';
 
 	const heroIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
 
@@ -124,7 +125,7 @@
 
 <div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
 	<a
-		href="/explore"
+		href={resolve('/explore')}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
@@ -132,7 +133,7 @@
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</a>
 	<a
-		href="/facets/editors"
+		href={resolve('/facets/[facet]', { facet: 'editors' })}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
@@ -140,7 +141,7 @@
 		<p class="text-base-content/70">{$_('landing.editors_count')}</p>
 	</a>
 	<a
-		href="/facets/data-sources"
+		href={resolve('/static/[id]', { id: 'data' })}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<span class="icon-[mdi--license] text-primary mb-4 h-12 w-12"></span>
