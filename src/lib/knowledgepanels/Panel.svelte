@@ -17,7 +17,7 @@
 	};
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
-	let expanded = $state(panel?.expanded ?? false);
+	let expanded = $derived(panel?.expanded ?? false);
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
@@ -29,7 +29,7 @@
 {#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
-			'border-base-300 collapse border-1',
+			'border-base-300 collapse border',
 			elements.length !== 0 ? 'collapse-arrow' : 'collapse-close',
 			panel.size && `kp-panel-size-${panel.size}`,
 			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
