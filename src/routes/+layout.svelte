@@ -22,7 +22,6 @@
 		KEYCLOAK_ACCOUNT_URL,
 		MATOMO_HOST,
 		MATOMO_SITE_ID,
-		NO_MARGIN_ROUTES,
 		ROBOTOFF_URL
 	} from '$lib/const';
 	import { userInfo } from '$lib/stores/pkceLoginStore';
@@ -34,6 +33,7 @@
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
+	import { shouldBeContainer } from '$lib/layout';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
@@ -311,7 +311,7 @@
 	</div>
 </div>
 
-{#if NO_MARGIN_ROUTES.includes(page.url.pathname)}
+{#if shouldBeContainer(page.url.pathname)}
 	<div class="w-full">
 		{@render children?.()}
 	</div>

@@ -1,7 +1,7 @@
 <script>
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
-	import { NO_MARGIN_ROUTES } from '$lib/const';
+	import { shouldBeContainer } from '$lib/layout';
 
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },
@@ -13,7 +13,7 @@
 	];
 </script>
 
-<nav class="bg-secondary mt-2 px-4 {NO_MARGIN_ROUTES.includes(page.url.pathname) ? '' : 'mb-8'}">
+<nav class="bg-secondary mt-2 px-4 {!shouldBeContainer(page.url.pathname) ? '' : 'mb-8'}">
 	<ul class="flex justify-center">
 		<div class="m-2 flex w-3/4 items-center justify-evenly 2xl:w-[60%]">
 			{#each navItems as item (item.name)}
