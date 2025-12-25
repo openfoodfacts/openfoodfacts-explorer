@@ -11,7 +11,8 @@ import {
 	type Category,
 	type Origin,
 	type Country,
-	createProductsApi
+	createProductsApi,
+	type ProductStateError
 } from '$lib/api';
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
@@ -34,17 +35,21 @@ async function getPricesCoords(api: PricesApi, code: string) {
 
 	return prices;
 }
+
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const { data: state, error: apiError } = await productsApi.getProductV3(params.barcode, {
+	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
 		fields: ['all', 'knowledge_panels']
 	});
 
+	// FIXME: Understand why here we have to take this field
+	const apiError = (apiErrorWrapped as unknown as { errors: ProductStateError[] }).errors;
+
 	if (state == null) {
-		error(500, { message: 'Error loading product', errors: [apiError] });
+		error(500, { message: 'Error loading product', errors: apiError });
 	}
 	// product not found
 	else if (state.status === 'failure') {
