@@ -19,6 +19,44 @@ import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$li
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
 
+// Error Type
+export type OffMessage = {
+	field: {
+		id: string;
+		value: string | null;
+	};
+	impact?: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+		description?: string;
+		lc_description?: string;
+	};
+	message: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+		description?: string;
+		lc_description?: string;
+	};
+};
+
+// Response Type
+export type ProductStateResponse = {
+	code?: string | null;
+
+	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
+
+	result: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+	};
+
+	errors: OffMessage[];
+	warnings: OffMessage[];
+};
+
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
 	const { data, error } = await api.getPrices({ product_code: code });
