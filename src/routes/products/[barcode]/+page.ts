@@ -11,13 +11,50 @@ import {
 	type Category,
 	type Origin,
 	type Country,
-	createProductsApi,
-	type ProductStateError
+	createProductsApi
 } from '$lib/api';
 
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
+
+// Error Type
+export type OffMessage = {
+	field: {
+		id: string;
+		value: string | null;
+	};
+	impact?: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+		description?: string;
+		lc_description?: string;
+	};
+	message: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+		description?: string;
+		lc_description?: string;
+	};
+};
+
+// Response Type
+export type ProductStateResponse = {
+	code?: string | null;
+
+	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
+
+	result: {
+		id: string;
+		name?: string;
+		lc_name?: string;
+	};
+
+	errors: OffMessage[];
+	warnings: OffMessage[];
+};
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -45,15 +82,36 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		fields: ['all', 'knowledge_panels']
 	});
 
-	// FIXME: Understand why here we have to take this field
-	const apiError = (apiErrorWrapped as unknown as { errors: ProductStateError[] }).errors;
+	if (apiErrorWrapped) {
+		const err = apiErrorWrapped as ProductStateResponse;
+		const isInvalidFormat = err.errors?.some((e) => e.message?.id === 'invalid_code');
+		const cleanErrors = err.errors?.map((e) => ({
+			...e,
+			field: e.field ? { ...e.field, value: e.field.value ?? undefined } : undefined
+		}));
+		if (isInvalidFormat) {
+			error(400, {
+				message: 'Invalid Barcode Format',
+				errors: cleanErrors
+			});
+		}
+		if (err.result?.id === 'product_not_found') {
+			error(404, {
+				message: 'Product Not Found',
+				errors: cleanErrors
+			});
+		}
 
-	if (state == null) {
-		error(500, { message: 'Error loading product', errors: apiError });
+		error(500, {
+			message: 'Server Error',
+			errors: cleanErrors
+		});
 	}
-	// product not found
-	else if (state.status === 'failure') {
-		error(404, { message: 'Failure to load product', errors: state?.errors });
+	if (!state) {
+		error(500, {
+			message: 'Unable to connect to Open Food Facts API',
+			errors: []
+		});
 	}
 
 	const categories = getTaxo<Category>('categories', fetch);
