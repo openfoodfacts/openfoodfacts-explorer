@@ -6,7 +6,7 @@
 	let { error }: Props = $props();
 
 	const status = page.status;
-	let { message, errors, actions } = $derived(error);
+	let { message, errors } = $derived(error);
 	let isProductError = $derived(
 		message === 'Product Not Found' || message === 'Invalid Barcode Format'
 	);
