@@ -6,11 +6,13 @@
 	import { ERROR_TYPES } from '$lib/errors';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
+	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
+
 	let errorMessage = $derived(page.error?.message || '');
 	let errorDetails = $derived(page.error?.errors || []);
 	let isNetworkError = $derived(errorMessage === ERROR_TYPES.NETWORK_ERROR);
 
-	let isGlobal404 = $derived(page.status === 404 && errorMessage !== 'Product Not Found');
+	let isGlobal404 = $derived(page.status === 404 && errorMessage !== ERR_PRODUCT_NOT_FOUND);
 
 	$effect(() => {
 		if (!isGlobal404) {

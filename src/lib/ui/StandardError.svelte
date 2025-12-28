@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { _ } from '$lib/i18n';
+	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
 
 	type Props = { error: globalThis.App.Error };
 	let { error }: Props = $props();
 
-	const status = page.status;
+	let { status } = $derived(page);
 	let { message, errors } = $derived(error);
 	let isProductError = $derived(
-		message === 'Product Not Found' || message === 'Invalid Barcode Format'
+		message === ERR_PRODUCT_NOT_FOUND || message === ERR_INVALID_BARCODE
 	);
 </script>
 
@@ -62,20 +63,10 @@
 	{:else}
 		<div class="card bg-base-100 border-error w-full max-w-2xl overflow-hidden border-2 shadow-xl">
 			<div class="bg-error flex items-center gap-4 p-6">
-				<div class="bg-base-100 text-error rounded-full p-3 shadow-sm">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-8 w-8"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-						/></svg
-					>
+				<div
+					class="bg-base-100 text-error flex aspect-square shrink-0 items-center justify-center rounded-full p-3 shadow-sm"
+				>
+					<span class="icon-[mdi--alert-circle-outline] h-8 w-8"></span>
 				</div>
 				<div>
 					<h3 class="text-error-content text-xl font-bold">
