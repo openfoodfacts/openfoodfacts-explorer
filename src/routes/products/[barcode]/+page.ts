@@ -17,7 +17,11 @@ import {
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
-import { handleProductApiError } from '$lib/api/errorUtils';
+import {
+	ERR_INVALID_BARCODE,
+	ERR_PRODUCT_NOT_FOUND,
+	type ProductStateResponse
+} from '$lib/api/errorUtils';
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -34,6 +38,37 @@ async function getPricesCoords(api: PricesApi, code: string) {
 	}
 
 	return prices;
+}
+
+function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | undefined) {
+	if (!apiErrorWrapped) return;
+
+	const err = apiErrorWrapped as ProductStateResponse;
+	const isInvalidFormat = err.errors?.some((e) => e.message?.id === 'invalid_code');
+	// FIXME: This is a workaround until the SDK or API returns cleaner data.
+	const cleanErrors = err.errors?.map((e) => ({
+		...e,
+		field: e.field ? { ...e.field, value: e.field.value ?? undefined } : undefined
+	}));
+
+	if (isInvalidFormat) {
+		error(400, {
+			message: ERR_INVALID_BARCODE,
+			errors: cleanErrors
+		});
+	}
+
+	if (err.result?.id === 'product_not_found') {
+		error(404, {
+			message: ERR_PRODUCT_NOT_FOUND,
+			errors: cleanErrors
+		});
+	}
+
+	error(500, {
+		message: 'Server Error',
+		errors: cleanErrors
+	});
 }
 
 export const load: PageLoad = async ({ params, fetch }) => {
