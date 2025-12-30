@@ -33,19 +33,21 @@
 
 	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
-		productState.product as Product & {
-			// mandatory fields
-			code: string;
-			created_t: string;
-			creator: string;
-			last_modified_t: string;
-			last_editor: string;
-			// optional fields
-			knowledge_panels: KnowledgePanels;
-			taxonomies?: string[];
-			image_front_small_url?: string;
-			image_front_url?: string;
-		}
+		productState.status === 'success'
+			? (productState.product as Product & {
+					// mandatory fields
+					code: string;
+					created_t: string;
+					creator: string;
+					last_modified_t: string;
+					last_editor: string;
+					// optional fields
+					knowledge_panels: KnowledgePanels;
+					taxonomies?: string[];
+					image_front_small_url?: string;
+					image_front_url?: string;
+				})
+			: ({} as any)
 	);
 
 	let websiteCtx = getWebsiteCtx();

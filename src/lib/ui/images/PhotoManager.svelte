@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	import { invalidateAll } from '$app/navigation';
@@ -152,7 +152,20 @@
 		return [...getStandardImages(code), ...getAdditionalImages(code)];
 	}
 
-	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
+	function getDefaultLanguage(p: Product) {
+		if (p.lang) return p.lang;
+		if (p.languages_codes) {
+			const codes = Object.keys(p.languages_codes);
+			if (codes.length > 0) return codes[0];
+		}
+		return 'en';
+	}
+
+	let activeLanguageCode = $state(untrack(() => getDefaultLanguage(product)));
+
+	$effect(() => {
+		activeLanguageCode = getDefaultLanguage(product);
+	});
 
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
