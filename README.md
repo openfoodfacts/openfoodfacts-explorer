@@ -63,6 +63,14 @@ First, install dependencies:
 pnpm install
 ```
 
+### First-time Setup Notes
+
+- The first `pnpm run dev` may take 1–2 minutes. This is normal.
+- The dev server keeps running after startup — this does not mean it is stuck.
+- You may see a warning about `.svelte-kit/tsconfig.json` on first run.
+  This file is generated automatically and the warning can be safely ignored.
+- Once ready, Vite will print a local URL such as `http://localhost:5173`.
+
 ### Environment Variables Setup
 
 Before running the project, set up the environment variables:
