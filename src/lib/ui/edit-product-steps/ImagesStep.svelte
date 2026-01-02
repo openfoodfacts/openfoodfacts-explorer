@@ -53,4 +53,6 @@
 	</div>
 </div>
 
-<PhotoManager {product} />
+{#key product.code}
+	<PhotoManager {product} />
+{/key}

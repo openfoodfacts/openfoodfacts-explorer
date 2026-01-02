@@ -31,21 +31,22 @@
 	let { data }: Props = $props();
 	let { state: productState, productAttributes } = $derived(data);
 
+	type UiProduct = Product & {
+		code: string;
+		created_t: number;
+		creator: string;
+		last_modified_t: number;
+		last_editor: string;
+
+		knowledge_panels: KnowledgePanels;
+		image_front_small_url?: string;
+		image_front_url?: string;
+		taxonomies?: string[];
+	};
+
 	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
-		productState.product as Product & {
-			// mandatory fields
-			code: string;
-			created_t: string;
-			creator: string;
-			last_modified_t: string;
-			last_editor: string;
-			// optional fields
-			knowledge_panels: KnowledgePanels;
-			taxonomies?: string[];
-			image_front_small_url?: string;
-			image_front_url?: string;
-		}
+		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
 
 	let websiteCtx = getWebsiteCtx();
