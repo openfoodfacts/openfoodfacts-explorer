@@ -163,10 +163,6 @@
 
 	let activeLanguageCode = $state(untrack(() => getDefaultLanguage(product)));
 
-	$effect(() => {
-		activeLanguageCode = getDefaultLanguage(product);
-	});
-
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
 
