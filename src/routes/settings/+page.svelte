@@ -300,7 +300,7 @@
 
 <h2 class="mb-4 text-center text-2xl font-bold">Environment Variables</h2>
 
-<table class="table-zebra table-sm table w-full">
+<table class="table-zebra table-sm mb-8 table w-full">
 	<thead>
 		<tr>
 			<th class="text-end">Variable</th>
@@ -316,3 +316,21 @@
 		{/each}
 	</tbody>
 </table>
+
+<h2 class="my-4 text-center text-2xl font-bold">Development Settings</h2>
+
+<div class="mx-auto mb-8 grid w-max grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
+	<label
+		for="dev-mode-toggle"
+		class="flex items-center gap-2 justify-self-start md:justify-self-end"
+	>
+		<span class="icon-[mdi--tools] text-xl"></span>
+		Moderator Mode:
+	</label>
+	<input
+		id="dev-mode-toggle"
+		type="checkbox"
+		class="toggle toggle-accent"
+		bind:checked={$preferences.moderator}
+	/>
+</div>
