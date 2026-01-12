@@ -25,6 +25,7 @@
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
+	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
 
 	let { data }: PageProps = $props();
 	let { search: result } = $derived(data);
@@ -116,7 +117,7 @@
 			<input
 				type="text"
 				placeholder={$_('search.placeholder')}
-				class="input input-bordered w-full font-mono break-words"
+				class="input input-bordered w-full font-mono wrap-break-word"
 				value={data.query}
 				disabled
 				readonly
@@ -136,7 +137,7 @@
 				</span>
 				<i class="icon-[mdi--chevron-down] text-xl"></i>
 			</summary>
-			<ul class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
+			<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow">
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
 						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
@@ -149,6 +150,7 @@
 	</div>
 </div>
 
+<!-- Facet Bar -->
 {#if result.facets && Object.keys(result.facets).length > 0}
 	<div class="my-4">
 		<FacetBar
@@ -165,6 +167,9 @@
 	</div>
 {/if}
 
+<div class="divider"></div>
+
+<!-- Charts Section -->
 {#if result.charts && Object.keys(result.charts).length > 0}
 	<div class="my-8">
 		<div class="mb-4 flex flex-wrap justify-end gap-2 max-sm:justify-center">
@@ -195,6 +200,9 @@
 		</div>
 
 		<!-- Preferences Collapsible Section -->
+		<div class="mb-4">
+			<PersonalizedSearchToggle></PersonalizedSearchToggle>
+		</div>
 		<div class="mb-4 w-full">
 			<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
 				<input type="checkbox" bind:checked={showPreferences} />
@@ -229,9 +237,9 @@
 	</div>
 {/if}
 
-{#if result.count > 0}
-	<!-- Facet component with binding to access its methods -->
+<div class="divider"></div>
 
+{#if result.count > 0}
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each sortedProducts as scoredProduct (scoredProduct.product.code)}

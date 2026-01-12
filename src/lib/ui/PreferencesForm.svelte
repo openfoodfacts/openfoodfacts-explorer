@@ -5,47 +5,22 @@
 	import {
 		personalizedSearch,
 		updatePreference,
-		resetToDefaults,
-		attributesToDefaultPreferences,
 		type AttributeGroup
 	} from '$lib/stores/preferencesStore';
 	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {
-		showClassifyToggle?: boolean;
-		classifyProducts?: boolean;
 		groups: AttributeGroup[] | Promise<AttributeGroup[]>;
 
 		onPreferenceChange?: (category: string, preference: string, value: string) => void;
-		onClassifyToggle?: (value: boolean) => void;
 		onClose?: () => void;
 	};
 
-	let {
-		groups,
-		showClassifyToggle = true,
-		classifyProducts = $personalizedSearch.classifyProductsEnabled,
-		onPreferenceChange,
-		onClassifyToggle,
-		onClose
-	}: PreferencesFormProps = $props();
+	let { groups, onPreferenceChange, onClose }: PreferencesFormProps = $props();
 
 	function handlePreferenceChange(category: string, preference: string, value: string) {
 		updatePreference(category, preference, value);
 		onPreferenceChange?.(category, preference, value);
-	}
-
-	function handleResetToDefaults(groups: AttributeGroup[]) {
-		const defaults = attributesToDefaultPreferences(groups);
-		resetToDefaults(defaults);
-	}
-
-	function handleClassifyToggle() {
-		personalizedSearch.update((store) => ({
-			...store,
-			classifyProductsEnabled: classifyProducts
-		}));
-		onClassifyToggle?.(classifyProducts);
 	}
 
 	onMount(() => {
@@ -76,30 +51,6 @@
 				<span class="ml-2">Loading preferences...</span>
 			</div>
 		{:then groups}
-			<!-- Classify Products Toggle -->
-			{#if showClassifyToggle}
-				<div class="form-control">
-					<label class="label cursor-pointer justify-start gap-3">
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={classifyProducts}
-							onchange={handleClassifyToggle}
-						/>
-						<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-					</label>
-				</div>
-
-				<div class="mb-4 rounded-lg bg-orange-50 p-3 dark:bg-orange-900/20">
-					<button
-						class="btn md:btn-sm btn-primary btn-xs"
-						onclick={() => handleResetToDefaults(groups)}
-					>
-						{$_('preferences.use_default')}
-					</button>
-					<span class="ml-2 text-sm">{$_('preferences.default_description')}</span>
-				</div>
-			{/if}
 			{#each groups as group (group.id)}
 				<PreferenceSection
 					title={group.name || ''}

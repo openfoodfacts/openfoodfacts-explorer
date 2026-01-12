@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-
-	import Logo from '$lib/ui/Logo.svelte';
-
-	import { createRobotoffApi, ProductsApi } from '$lib/api';
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+
+	import { _ } from '$lib/i18n';
+	import { createRobotoffApi, ProductsApi } from '$lib/api';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
+
+	import Logo from '$lib/ui/Logo.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
+	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
 
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
@@ -25,7 +27,6 @@
 	import butterIcon from '$lib/assets/butter.svg';
 	import eggIcon from '$lib/assets/egg-01.svg';
 	import pastaIcon from '$lib/assets/pasta.svg';
-	import { resolve } from '$app/paths';
 
 	const heroIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
 
@@ -173,17 +174,8 @@
 	</div>
 
 	<!-- Preferences Collapsible Section -->
-	<div class="mx-auto mt-10 w-full max-w-2xl">
-		<div class="form-control">
-			<label class="label cursor-pointer justify-start gap-3">
-				<input
-					type="checkbox"
-					class="toggle toggle-primary"
-					bind:checked={$personalizedSearch.classifyProductsEnabled}
-				/>
-				<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-			</label>
-		</div>
+	<div class="mx-auto mb-4 w-full max-w-2xl">
+		<PersonalizedSearchToggle></PersonalizedSearchToggle>
 	</div>
 
 	<div class="flex w-full">
