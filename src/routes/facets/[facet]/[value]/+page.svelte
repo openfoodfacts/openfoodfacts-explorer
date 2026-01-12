@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+
+	import { _ } from '$lib/i18n';
+	import { personalizedSearch } from '$lib/stores/preferencesStore';
+
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
-	import type { PageProps } from './$types';
-	import { _ } from '$lib/i18n';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
+
+	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
@@ -101,17 +105,8 @@
 	<div class="my-8">
 		{#if !listView}
 			<!-- Preferences Collapsible Section -->
-			<div class="mt-6 w-full">
-				<div class="form-control">
-					<label class="label cursor-pointer justify-start gap-3">
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={$personalizedSearch.classifyProductsEnabled}
-						/>
-						<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-					</label>
-				</div>
+			<div class="mb-4">
+				<PersonalizedSearchToggle></PersonalizedSearchToggle>
 			</div>
 			<ProductGrid
 				products={results.products}

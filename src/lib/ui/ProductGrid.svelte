@@ -46,13 +46,11 @@
 	});
 </script>
 
-<div class="mt-8 flex w-full">
-	<div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3">
-		{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
-			<WcProductCard
-				product={scoredProduct.product}
-				personalScore={sortByScore ? scoredProduct.scoreData : undefined}
-			/>
-		{/each}
-	</div>
+<div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3">
+	{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
+		<WcProductCard
+			product={scoredProduct.product}
+			personalScore={sortByScore ? scoredProduct.scoreData : undefined}
+		/>
+	{/each}
 </div>
