@@ -11,7 +11,14 @@ export const ssr = false;
 async function getUserLogin(fetch: typeof window.fetch) {
 	try {
 		const offApi = createProductsApi(fetch);
-		return offApi.getLoginStatus();
+		const loginStatus = await offApi.getLoginStatus();
+		if (loginStatus == null) {
+			throw new Error('Login status is null');
+		} else if (!('user' in loginStatus) || loginStatus.user == null || loginStatus.status !== 0) {
+			throw new Error(loginStatus.status_verbose);
+		}
+
+		return loginStatus;
 	} catch {
 		console.warn('Could not reach the API, using dummy user in dev mode');
 		if (dev) {
