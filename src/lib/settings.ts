@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 1,
+	version: 2,
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -20,7 +20,9 @@ const DEFAULT_PREFERENCES = {
 
 	editing: {
 		expandAllSections: false
-	}
+	},
+
+	moderator: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -59,6 +61,16 @@ const MIGRATIONS: {
 			preferences.editing = {
 				expandAllSections: false
 			};
+			return preferences;
+		}
+	},
+	{
+		version: 2,
+		upgrade: (preferences) => {
+			if (!('moderator' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.moderator = false;
+			}
 			return preferences;
 		}
 	}
