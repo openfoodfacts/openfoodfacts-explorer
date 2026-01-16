@@ -20,6 +20,7 @@
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
+	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
 	import {
@@ -332,5 +333,6 @@
 		{@render children?.()}
 	</div>
 {/if}
+<CompareFloatingButton />
 <Footer />
 <Toast />
