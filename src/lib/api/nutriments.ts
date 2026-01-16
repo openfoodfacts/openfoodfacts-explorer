@@ -76,6 +76,8 @@ export type Nutriments = {
 	sugars_serving: number;
 	sugars_unit: string;
 	sugars_value: number;
+
+	[key: string]: number | string | undefined;
 };
 
 export const NUTRIENTS = [

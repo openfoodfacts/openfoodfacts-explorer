@@ -396,7 +396,8 @@ const REDUCED_FIELDS = [
 	'nutriscore_grade',
 	'ecoscore_grade',
 	'nova_group',
-	'product_type'
+	'product_type',
+	'nutriments'
 ] as const;
 
 export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;

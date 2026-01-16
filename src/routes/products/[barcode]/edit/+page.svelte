@@ -196,7 +196,6 @@
 		ensureNutriments();
 
 		if (value === null) {
-			// @ts-expect-error - We know this is a valid key for nutriments
 			delete product.nutriments[key];
 			product = { ...product, nutriments: { ...product.nutriments } }; // Trigger reactivity
 		} else {
