@@ -5,6 +5,12 @@
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 
+	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiSearch from '@iconify-svelte/mdi/search';
+
 	type Props = {
 		product: Product;
 		codes: string[];
@@ -39,12 +45,12 @@
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
-	<span class="icon-[mdi--translate] mr-1 h-6 w-6 align-middle"></span>
+	<IconMdiTranslate class="mr-1 h-6 w-6 align-middle" />
 	{$_('product.edit.sections.languages')}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<span
-			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		/>
 	</button>
 </h2>
 {#if showInfo}
@@ -57,9 +63,9 @@
 			aria-label="Close"
 			onclick={toggleInfo}
 		>
-			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+			<IconMdiClose class="text-primary h-5 w-5" />
 		</button>
-		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
 		<span class="text-base-content/80 p-6 text-sm sm:text-base">
 			{$_('product.edit.info.languages')}
 		</span>
@@ -83,7 +89,7 @@
 	</div>
 	<div class="collapse-content">
 		<label class="input w-full text-sm sm:text-base">
-			<span class="icon-[mdi--search] h-5 w-5"></span>
+			<IconMdiSearch class="h-5 w-5" />
 			<input
 				type="search"
 				placeholder={$_('product.edit.search_languages')}

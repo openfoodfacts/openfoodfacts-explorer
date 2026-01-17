@@ -10,6 +10,12 @@
 	} from '$lib/stores/calculatorStore';
 	import { onMount } from 'svelte';
 
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiMinus from '@iconify-svelte/mdi/minus';
+	import IconMdiPlus from '@iconify-svelte/mdi/plus';
+	import IconMdiDelete from '@iconify-svelte/mdi/delete';
+
 	onMount(() => {
 		calculatorItems.update((items) => [...items]);
 	});
@@ -21,7 +27,7 @@
 		on:click={toggleCalculator}
 		aria-label="Nutrition Calculator"
 	>
-		<span class="icon-[mdi--calculator] h-6 w-6"></span>
+		<IconMdiCalculator class="h-6 w-6" />
 		{#if $calculatorItems.length > 0}
 			<span
 				class="bg-secondary absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white"
@@ -43,7 +49,7 @@
 				on:click={toggleCalculator}
 				aria-label="Close calculator"
 			>
-				<span class="icon-[mdi--close] h-5 w-5"></span>
+				<IconMdiClose class="h-5 w-5" />
 			</button>
 		</div>
 
@@ -74,21 +80,21 @@
 								on:click={() => updateItemQuantity(item.id, -25)}
 								aria-label="Decrease quantity"
 							>
-								<span class="icon-[mdi--minus] h-4 w-4"></span>
+								<IconMdiMinus class="h-4 w-4" />
 							</button>
 							<button
 								class="btn btn-sm btn-square ml-1"
 								on:click={() => updateItemQuantity(item.id, 25)}
 								aria-label="Increase quantity"
 							>
-								<span class="icon-[mdi--plus] h-4 w-4"></span>
+								<IconMdiPlus class="h-4 w-4" />
 							</button>
 							<button
 								class="btn btn-sm btn-square ml-1"
 								on:click={() => removeItem(item.id)}
 								aria-label="Remove item"
 							>
-								<span class="icon-[mdi--delete] h-4 w-4"></span>
+								<IconMdiDelete class="h-4 w-4" />
 							</button>
 						</div>
 					</div>

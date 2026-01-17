@@ -21,6 +21,7 @@
 	import { getLanguageName } from '$lib/languages';
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 
 	interface Props {
 		data: PageData;
@@ -306,7 +307,7 @@
 
 {#if dev}
 	<div class="alert alert-warning my-8 text-lg" role="alert">
-		<span class="icon-[mdi--alert]"></span>
+		<IconMdiAlert class="mr-2" />
 		<div>
 			<p>
 				<strong> You are not logged in! </strong>

@@ -5,6 +5,10 @@
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
 
 	type Props = {
 		product: Product;
@@ -35,12 +39,12 @@
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
-	<span class="icon-[mdi--information] mr-1 h-6 w-6 align-middle"></span>
+	<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 	{$_('product.edit.sections.basic_info')}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<span
-			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		/>
 	</button>
 </h2>
 {#if showInfo}
@@ -53,9 +57,9 @@
 			aria-label="Close"
 			onclick={toggleInfo}
 		>
-			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+			<IconMdiClose class="text-primary h-5 w-5" />
 		</button>
-		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
 		<span class="text-base-content/80 p-6 text-sm sm:text-base">
 			{$_('product.edit.info.basic_info')}
 		</span>

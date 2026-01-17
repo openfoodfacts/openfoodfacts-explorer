@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Facet, FacetItem } from '$lib/api/search';
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 
 	let {
 		facet,
@@ -55,7 +56,7 @@
 	<summary class="btn flex w-58 items-center justify-start gap-2">
 		{facet.name} ({facet.items.length})
 		<span class="flex-grow"></span>
-		<i class="icon-[mdi--chevron-down] text-xl"></i>
+		<IconMdiChevronDown class="text-xl" />
 	</summary>
 	<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
 		<li>

@@ -4,6 +4,14 @@
 	import { getLanguageName } from '$lib/languages';
 	import { NUTRIENTS, type NutrientKey, type Product } from '$lib/api';
 
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
+	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
+	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
+
 	import ImageButton from '../ImageButton.svelte';
 	import { analyzeNutrition } from './nutrition';
 
@@ -93,12 +101,12 @@
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
-	<span class="icon-[mdi--nutrition] mr-1 h-6 w-6 align-middle"></span>
+	<IconMdiNutrition class="mr-1 h-6 w-6 align-middle" />
 	{$_('product.edit.sections.nutrition')}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<span
-			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		/>
 	</button>
 </h2>
 {#if showInfo}
@@ -111,15 +119,14 @@
 			aria-label="Close"
 			onclick={toggleInfo}
 		>
-			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+			<IconMdiClose class="text-primary h-5 w-5" />
 		</button>
-		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
 		<span class="text-base-content/80 p-6 text-sm sm:text-base"
 			>{$_('product.edit.info.nutrition')}</span
 		>
 	</div>
 {/if}
-
 <div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
 	<div>
 		<div class="space-y-4">
@@ -187,13 +194,13 @@
 								]}
 								data-tip={issue?.title}
 							>
-								<span
-									class={[
-										'ml-2 h-5 w-5',
-										issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
-										issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
-									]}
-								></span>
+								<div class="ml-2 h-5 w-5">
+									{#if issue.severity === 'warning'}
+										<IconMdiAlert class="text-warning h-5 w-5" />
+									{:else if issue.severity === 'error'}
+										<IconMdiAlertCircle class="text-error h-5 w-5" />
+									{/if}
+								</div>
 							</div>
 						{/if}
 					</label>
@@ -204,7 +211,7 @@
 						aria-label="Swap units"
 						onclick={switchKjAndKcal}
 					>
-						<span class="icon-[mdi--swap-horizontal] h-5 w-5"></span>
+						<IconMdiSwapHorizontal class="h-5 w-5" />
 					</button>
 
 					<label class={['input grow', fieldInputClasses('energy')]}>
@@ -226,13 +233,11 @@
 						{#if issuesByField('energy').length > 0}
 							{@const issue = issuesByField('energy')[0]}
 							<div class="tooltip tooltip-warning" data-tip={issue?.title}>
-								<span
-									class={[
-										'icon-[mdi--alert] text-warning ml-2 h-5 w-5',
-										issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
-										issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
-									]}
-								></span>
+								{#if issue.severity === 'warning'}
+									<IconMdiAlert class="text-warning ml-2 h-5 w-5" />
+								{:else if issue.severity === 'error'}
+									<IconMdiAlertCircle class="text-error ml-2 h-5 w-5" />
+								{/if}
 							</div>
 						{/if}
 					</label>
@@ -255,13 +260,11 @@
 									]}
 									data-tip={issue?.title}
 								>
-									<span
-										class={[
-											'text-lg',
-											issue.severity === 'warning' && 'icon-[mdi--alert] text-warning',
-											issue.severity === 'error' && 'icon-[mdi--alert-circle] text-error'
-										]}
-									></span>
+									{#if issue.severity === 'warning'}
+										<IconMdiAlert class="text-warning ml-2 h-5 w-5 text-lg" />
+									{:else if issue.severity === 'error'}
+										<IconMdiAlertCircle class="text-error ml-2 h-5 w-5 text-lg" />
+									{/if}
 								</div>
 							{/if}
 						</span>
@@ -326,7 +329,7 @@
 								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
 							}}
 						>
-							<span class="icon-[mdi--close]"></span>
+							<IconMdiClose />
 						</button>
 					</div>
 				{/each}
@@ -367,7 +370,7 @@
 				{#each analysisResults.toSorted(bySeverity) as result (result.title)}
 					{#if result.severity === 'error'}
 						<div class="alert alert-error mt-4">
-							<span class="icon-[mdi--alert-circle] h-5 w-5"></span>
+							<IconMdiAlertCircle class="h-5 w-5" />
 							<div>
 								<p class="text-sm font-bold sm:text-base">{result.title}</p>
 								{#if result.desc}
@@ -377,7 +380,7 @@
 						</div>
 					{:else if result.severity === 'warning'}
 						<div class="alert alert-warning mt-4">
-							<span class="icon-[mdi--alert-circle] h-5 w-5"></span>
+							<IconMdiAlertCircle class="h-5 w-5" />
 							<div>
 								<p class="text-sm font-bold sm:text-base">{result.title}</p>
 								{#if result.desc}
@@ -390,7 +393,7 @@
 			{/if}
 		{:else}
 			<div class="alert alert-info">
-				<span class="icon-[mdi--information] h-5 w-5"></span>
+				<IconMdiInformation class="h-5 w-5" />
 				<span class="text-sm sm:text-base">{$_('product.edit.no_nutrition_specified')}</span>
 			</div>
 		{/if}

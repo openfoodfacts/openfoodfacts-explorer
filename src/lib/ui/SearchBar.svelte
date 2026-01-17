@@ -2,6 +2,8 @@
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
 
+	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
+
 	let {
 		searchQuery = $bindable(''),
 		minQueryLength = 3,
@@ -176,7 +178,7 @@
 			aria-label={$_('search.scan')}
 			class="btn btn-secondary join-item ms-2 text-lg"
 		>
-			<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
+			<IconMdiBarcodeScan class="h-6 w-6" />
 		</a>
 	</div>
 </div>

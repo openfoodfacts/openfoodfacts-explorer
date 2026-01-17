@@ -5,6 +5,8 @@
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
+	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
+	import IconMdiArrowRight from '@iconify-svelte/mdi/arrow-right';
 	import type { Product } from '$lib/api';
 
 	import { _ } from '$lib/i18n';
@@ -105,7 +107,7 @@
 <!-- Mobile step header -->
 <div class="navigation mb-6 flex items-center justify-between md:hidden">
 	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
-		<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
+		<IconMdiArrowLeft class="h-4 w-4" />
 		{$_('common.back')}
 	</button>
 
@@ -125,7 +127,8 @@
 		type="button"
 		title={$_('common.next')}
 	>
-		{$_('common.next')} <span class="icon-[mdi--arrow-right] h-4 w-4"></span>
+		{$_('common.next')}
+		<IconMdiArrowRight class="h-4 w-4" />
 	</button>
 </div>
 
@@ -160,7 +163,7 @@
 			onclick={prevStep}
 			type="button"
 		>
-			<span class="icon-[mdi--arrow-left] mr-2"></span>{$_('common.back')}
+			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back')}
 		</button>
 	{/if}
 
@@ -170,7 +173,7 @@
 			onclick={nextStep}
 			type="button"
 		>
-			{$_('common.next')}<span class="icon-[mdi--arrow-right] ml-2"></span>
+			{$_('common.next')}<IconMdiArrowRight class="ml-2 h-4 w-4" />
 		</button>
 	{:else}
 		<button

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ProductImage } from '$lib/api';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
 
 	type Props = {
 		images: ProductImage[];
@@ -36,7 +37,7 @@
 				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
-				<span class="icon-[mdi--close] h-5 w-5" aria-hidden="true"></span>
+				<IconMdiClose class="h-5 w-5" aria-hidden="true" />
 			</button>
 		</div>
 

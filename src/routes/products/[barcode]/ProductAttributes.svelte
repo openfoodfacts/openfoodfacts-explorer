@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ProductAttribute, ProductAttributeGroup } from '$lib/api/product';
+	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
 	import { get } from 'svelte/store';
 
@@ -79,7 +80,7 @@
 							<div>{group.name}</div>
 							{#if group.warning}
 								<div class="tooltip" data-tip={group.warning}>
-									<span class="icon-[mdi--warning] text-orange-400 dark:text-orange-300"></span>
+									<IconMdiWarning class="text-orange-400 dark:text-orange-300" />
 								</div>
 							{/if}
 						</div>

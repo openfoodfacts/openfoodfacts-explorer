@@ -6,6 +6,13 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 
+	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
+	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
@@ -62,7 +69,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.languages')}
 		</div>
 		<div class="collapse-content">
@@ -74,7 +81,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--image-multiple] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.images')}
 		</div>
 		<div class="collapse-content">
@@ -86,7 +93,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.basic_info')}
 		</div>
 		<div class="collapse-content">
@@ -106,7 +113,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--format-list-bulleted] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
@@ -119,7 +126,7 @@
 	<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.nutrition')}
 		</div>
 		<div class="collapse-content">
@@ -131,7 +138,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--comment-text] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.comment')}
 		</div>
 		<div class="collapse-content">

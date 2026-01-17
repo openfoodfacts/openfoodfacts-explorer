@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '$lib/Metadata.svelte';
+	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
@@ -24,7 +25,7 @@
 
 <div class="mb-4">
 	<a href="/facets/" class="btn btn-secondary btn-outline w-full">
-		<span class="icon icon-[mdi--arrow-left]"></span>
+		<IconMdiArrowLeft />
 		{$_('facets.facet_back_to_list')}
 	</a>
 </div>

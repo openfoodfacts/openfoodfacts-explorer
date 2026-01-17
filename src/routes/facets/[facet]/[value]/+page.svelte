@@ -12,6 +12,8 @@
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
 
+	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
+
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -31,7 +33,7 @@
 
 <div class="mb-4">
 	<a href={`/facets/${facet.name}`} class="btn btn-ghost w-full">
-		<span class="icon icon-[mdi--arrow-left]"></span>
+		<IconMdiArrowLeft class="mr-2" />
 		{$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
 	</a>
 </div>

@@ -22,6 +22,11 @@
 	import VegaChart from '$lib/ui/VegaChart.svelte';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
+	import IconMdiCog from '@iconify-svelte/mdi/cog';
+
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
@@ -135,7 +140,7 @@
 				<span class="inline-block truncate align-middle font-semibold">
 					{getSelectedSortLabel()}
 				</span>
-				<i class="icon-[mdi--chevron-down] text-xl"></i>
+				<IconMdiChevronDown class="text-xl" />
 			</summary>
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow">
 				{#each SORT_OPTIONS as { label, value } (value)}
@@ -179,7 +184,7 @@
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
-				<span class="icon-[mdi--open-in-new] text-lg"></span>
+				<IconMdiOpenInNew class="text-lg" />
 			</a>
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
@@ -187,14 +192,14 @@
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
-				<span class="icon-[mdi--open-in-new] text-lg"></span>
+				<IconMdiOpenInNew class="text-lg" />
 			</a>
 
 			<button
 				class="btn btn-primary btn-sm gap-2 max-sm:w-full"
 				onclick={() => (showGraphs = !showGraphs)}
 			>
-				<span class="icon-[mdi--chart-bar] text-lg"></span>
+				<IconMdiChartBar class="text-lg" />
 				{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
 			</button>
 		</div>
@@ -207,7 +212,7 @@
 			<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
 				<input type="checkbox" bind:checked={showPreferences} />
 				<div class="collapse-title text-md flex items-center gap-2 font-medium">
-					<span class="icon-[mdi--cog] text-lg"></span>
+					<IconMdiCog class="text-lg" />
 					{$_('preferences.edit_preferences')}
 				</div>
 				<div class="collapse-content">

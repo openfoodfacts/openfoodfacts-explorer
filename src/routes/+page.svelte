@@ -12,6 +12,13 @@
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
 
+	import IconMdiCompassOutline from '@iconify-svelte/mdi/compass-outline';
+	import IconMdiLightbulbOnOutline from '@iconify-svelte/mdi/lightbulb-on-outline';
+	import IconMdiAccountHeartOutline from '@iconify-svelte/mdi/account-heart-outline';
+	import IconMdiDatabase from '@iconify-svelte/mdi/database';
+	import IconMdiAccountGroup from '@iconify-svelte/mdi/account-group';
+	import IconMdiLicense from '@iconify-svelte/mdi/license';
+
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
 
@@ -103,21 +110,21 @@
 				href="/explore"
 				class="btn btn-primary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
-				<span class="icon-[mdi--compass-outline] h-5 w-5"></span>
+				<IconMdiCompassOutline class="h-5 w-5" />
 				{$_('landing.explore_products')}
 			</a>
 			<a
 				href="/static/discover"
 				class="btn btn-secondary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
-				<span class="icon-[mdi--lightbulb-on-outline] h-5 w-5"></span>
+				<IconMdiLightbulbOnOutline class="h-5 w-5" />
 				{$_('landing.discover_project')}
 			</a>
 			<a
 				href="/static/contribute"
 				class="btn btn-outline btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
 			>
-				<span class="icon-[mdi--account-heart-outline] h-5 w-5"></span>
+				<IconMdiAccountHeartOutline class="h-5 w-5" />
 				{$_('landing.contribute')}
 			</a>
 		</div>
@@ -129,7 +136,7 @@
 		href={resolve('/explore')}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
-		<span class="icon-[mdi--database] text-primary mb-4 h-12 w-12"></span>
+		<IconMdiDatabase class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.productCount)}</h2>
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</a>
@@ -137,7 +144,7 @@
 		href={resolve('/facets/[facet]', { facet: 'editors' })}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
-		<span class="icon-[mdi--account-group] text-primary mb-4 h-12 w-12"></span>
+		<IconMdiAccountGroup class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.editorCount)}</h2>
 		<p class="text-base-content/70">{$_('landing.editors_count')}</p>
 	</a>
@@ -145,7 +152,7 @@
 		href={resolve('/static/[id]', { id: 'data' })}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
-		<span class="icon-[mdi--license] text-primary mb-4 h-12 w-12"></span>
+		<IconMdiLicense class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">100%</h2>
 		<p class="text-base-content/70">{$_('landing.open_data')}</p>
 	</a>

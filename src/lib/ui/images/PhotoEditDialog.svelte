@@ -4,6 +4,16 @@
 	import type { ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
+	import IconMdiMagnifyMinus from '@iconify-svelte/mdi/magnify-minus';
+	import IconMdiMagnifyPlus from '@iconify-svelte/mdi/magnify-plus';
+	import IconMdiRestore from '@iconify-svelte/mdi/restore';
+	import IconMdiRotateRight from '@iconify-svelte/mdi/rotate-right';
+	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
+	import IconMdiFlag from '@iconify-svelte/mdi/flag';
+	import IconMdiCheck from '@iconify-svelte/mdi/check';
+
 	type CropData = {
 		x: number;
 		y: number;
@@ -487,7 +497,7 @@
 				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
-				<span class="icon-[mdi--close] h-5 w-5" aria-hidden="true"></span>
+				<IconMdiClose class="h-5 w-5" aria-hidden="true" />
 			</button>
 		</div>
 
@@ -575,7 +585,7 @@
 					title="Rotate left 90°"
 					aria-label="Rotate image left by 90 degrees"
 				>
-					<span class="icon-[mdi--rotate-left] h-4 w-4" aria-hidden="true"></span>
+					<IconMdiRotateLeft class="h-4 w-4" aria-hidden="true" />
 					<span class="hidden sm:inline">Rotate Left</span>
 				</button>
 
@@ -590,7 +600,7 @@
 							title="Zoom out"
 							aria-label="Zoom out of image"
 						>
-							<span class="icon-[mdi--magnify-minus] h-4 w-4" aria-hidden="true"></span>
+							<IconMdiMagnifyMinus class="h-4 w-4" aria-hidden="true" />
 							<span class="hidden sm:inline">Zoom Out</span>
 						</button>
 						<button
@@ -601,7 +611,7 @@
 							title="Zoom in"
 							aria-label="Zoom into image"
 						>
-							<span class="icon-[mdi--magnify-plus] h-4 w-4" aria-hidden="true"></span>
+							<IconMdiMagnifyPlus class="h-4 w-4" aria-hidden="true" />
 							<span class="hidden sm:inline">Zoom In</span>
 						</button>
 					</div>
@@ -615,7 +625,7 @@
 						title="Reset to original"
 						aria-label="Reset image to original state"
 					>
-						<span class="icon-[mdi--restore] h-4 w-4" aria-hidden="true"></span>
+						<IconMdiRestore class="h-4 w-4" aria-hidden="true" />
 						<span class="hidden sm:inline">Reset</span>
 					</button>
 				</div>
@@ -629,7 +639,7 @@
 					title="Rotate right 90°"
 					aria-label="Rotate image right by 90 degrees"
 				>
-					<span class="icon-[mdi--rotate-right] h-4 w-4" aria-hidden="true"></span>
+					<IconMdiRotateRight class="h-4 w-4" aria-hidden="true" />
 					<span class="hidden sm:inline">Rotate Right</span>
 				</button>
 			</div>
@@ -659,7 +669,7 @@
 					disabled={!canPerformActions}
 					aria-label="Unselect this image"
 				>
-					<span class="icon-[mdi--image-remove] h-4 w-4" aria-hidden="true"></span>
+					<IconMdiImageRemove class="h-4 w-4" aria-hidden="true" />
 					Unselect Image
 				</button>
 
@@ -671,7 +681,7 @@
 						class="btn btn-outline hover:btn-outline hover:btn-warning"
 						aria-label="Report this image"
 					>
-						<span class="icon-[mdi--flag] h-4 w-4" aria-hidden="true"></span>
+						<IconMdiFlag class="h-4 w-4" aria-hidden="true" />
 						Report Image
 					</a>
 				{/if}
@@ -693,7 +703,7 @@
 					disabled={!canPerformActions}
 					aria-label="Save changes and close modal"
 				>
-					<span class="icon-[mdi--check] h-4 w-4" aria-hidden="true"></span>
+					<IconMdiCheck class="h-4 w-4" aria-hidden="true" />
 					Save Changes
 				</button>
 			</div>

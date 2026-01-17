@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { _ } from '$lib/i18n';
 	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
+	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
 
 	type Props = { error: globalThis.App.Error };
 	let { error }: Props = $props();
@@ -66,7 +67,7 @@
 				<div
 					class="bg-base-100 text-error flex aspect-square shrink-0 items-center justify-center rounded-full p-3 shadow-sm"
 				>
-					<span class="icon-[mdi--alert-circle-outline] h-8 w-8"></span>
+					<IconMdiAlertCircleOutline class="h-8 w-8" />
 				</div>
 				<div>
 					<h3 class="text-error-content text-xl font-bold">
