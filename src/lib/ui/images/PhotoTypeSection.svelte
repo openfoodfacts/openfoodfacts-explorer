@@ -10,6 +10,11 @@
 	import { getDateFormatter } from 'svelte-i18n';
 	import { resolve } from '$app/paths';
 
+	import IconMdiUpload from '@iconify-svelte/mdi/upload';
+	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
+
 	type PhotoType = { id: string; label: string };
 
 	type Props = {
@@ -189,7 +194,7 @@
 					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
 					<span class="text-xs sm:text-sm">Uploading...</span>
 				{:else}
-					<span class="icon-[mdi--upload] h-3 w-3 sm:h-4 sm:w-4"></span>
+					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
 					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
 				{/if}
 			</button>
@@ -205,7 +210,7 @@
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
 						<span class="text-xs sm:text-sm">Unselecting...</span>
 					{:else}
-						<span class="icon-[mdi--image-remove] h-3 w-3 sm:h-4 sm:w-4"></span>
+						<IconMdiImageRemove class="h-3 w-3 sm:h-4 sm:w-4" />
 						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
 					{/if}
 				</button>
@@ -247,9 +252,9 @@
 							<div
 								class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
 							>
-								<span
-									class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-								></span>
+								<IconMdiPencil
+									class="h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+								/>
 							</div>
 						</button>
 						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
@@ -279,27 +284,6 @@
 						</p>
 					</div>
 				</div>
-			{/if}
-		</div>
-	{:else}
-		<div
-			class="bg-base-200 relative flex w-full flex-col items-center justify-center gap-2 rounded p-3 sm:p-4"
-			class:opacity-50={isSelectingImage}
-		>
-			{#if isUploading}
-				<div class="text-center">
-					<div class="loading loading-spinner loading-lg text-primary"></div>
-					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
-						Uploading {sectionType.label.toLowerCase()} photo...
-					</p>
-				</div>
-			{:else if isSelectingImage}
-				<div class="text-center">
-					<div class="loading loading-spinner loading-lg text-primary"></div>
-					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
-						Selecting {sectionType.label.toLowerCase()} photo...
-					</p>
-				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
 					No {sectionType.label.toLowerCase()} photos available
@@ -315,7 +299,7 @@
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
 						<span class="text-xs sm:text-sm">Selecting...</span>
 					{:else}
-						<span class="icon-[mdi--image-plus] h-3 w-3 sm:h-4 sm:w-4"></span>
+						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
 						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
 					{/if}
 				</button>

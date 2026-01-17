@@ -15,6 +15,11 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import IconMdiCog from '@iconify-svelte/mdi/cog';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 
 	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
 	import {
@@ -209,7 +214,7 @@
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
 				>
-					<span class="icon-[mdi--cog] text-2xl"></span>
+					<IconMdiCog class="text-2xl" />
 				</a>
 				<!-- Shortcuts button -->
 				<button
@@ -218,7 +223,7 @@
 					aria-label={$_('help.button')}
 					onclick={() => shortcutsComp.show()}
 				>
-					<span class="icon-[mdi--help-circle-outline] text-2xl"></span>
+					<IconMdiHelpCircleOutline class="text-2xl" />
 				</button>
 			</div>
 		</div>
@@ -246,7 +251,7 @@
 					searchActive = !searchActive;
 				}}
 			>
-				<i class="icon-[mdi--magnify]"></i>
+				<IconMdiMagnify class="h-5 w-5" />
 			</button>
 			<button
 				title={$_('menu.button')}
@@ -256,9 +261,9 @@
 				}}
 			>
 				{#if accordionOpen}
-					<i class="icon-[mdi--close]"></i>
+					<IconMdiClose class="h-5 w-5" />
 				{:else}
-					<i class="icon-[mdi--menu]"></i>
+					<IconMdiMenu class="h-5 w-5" />
 				{/if}
 			</button>
 		</div>

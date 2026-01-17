@@ -1,4 +1,6 @@
 <script lang="ts">
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+
 	type Props = {
 		text: string;
 	};
@@ -24,8 +26,8 @@
 		class="btn btn-ghost btn-xs hover:bg-primary/10 h-5 min-h-0 w-5 rounded-full p-0 transition-colors duration-200"
 		aria-label="More information"
 	>
-		<span
-			class="icon-[mdi--help-circle-outline] text-primary hover:text-primary/70 h-4 w-4 transition-colors duration-200"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="text-primary hover:text-primary/70 h-4 w-4 transition-colors duration-200"
+		/>
 	</button>
 </div>

@@ -2,7 +2,6 @@
 
 @plugin 'daisyui';
 @plugin '@tailwindcss/typography';
-@plugin '@iconify/tailwind4';
 
 @theme {
 	--font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;

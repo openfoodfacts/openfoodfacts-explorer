@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
 	import { _ } from '$lib/i18n';
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
+	import IconMdiCheck from '@iconify-svelte/mdi/check';
+	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
 
@@ -118,7 +122,7 @@
 		<div class={['stat', oldnessClass(product.last_modified_t)]}>
 			<div class="stat-title">{$_('product.datasources.last_edit_title')}</div>
 			<div class="stat-figure">
-				<span class="icon-[mdi--pencil] h-8 w-8"></span>
+				<IconMdiPencil class="h-8 w-8" />
 			</div>
 			<div class="stat-value" title={formatFullDate(product.last_modified_t)}>
 				{formatTimeSince(product.last_modified_t)}
@@ -145,9 +149,9 @@
 			<div class="stat-title">{$_('product.datasources.last_check_title')}</div>
 			<div class="stat-figure">
 				{#if product.last_checked_t === null || product.last_checked_t === undefined || Number.isNaN(product.last_checked_t)}
-					<span class="icon-[mdi--alert-circle] h-8 w-8"></span>
+					<IconMdiAlertCircle class="h-8 w-8" />
 				{:else}
-					<span class="icon-[mdi--check] h-8 w-8"></span>
+					<IconMdiCheck class="h-8 w-8" />
 				{/if}
 			</div>
 			<div class="stat-value" title={formatFullDate(product.last_checked_t)}>
@@ -174,7 +178,7 @@
 		<div class="stat">
 			<div class="stat-title">{$_('product.datasources.added_on_title')}</div>
 			<div class="stat-figure">
-				<span class="icon-[mdi--calendar-plus] h-8 w-8"></span>
+				<IconMdiCalendarPlus class="h-8 w-8" />
 			</div>
 			<div class="stat-value" title={formatFullDate(product.created_t)}>
 				{formatShortDate(product.created_t)}

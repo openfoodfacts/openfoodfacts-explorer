@@ -2,6 +2,13 @@
 	import { IMAGE_REPORT_URL } from '$lib/const';
 	import ResizableImage from './ResizableImage.svelte';
 
+	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
+	import IconMdiMagnifyMinusOutline from '@iconify-svelte/mdi/magnify-minus-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
+	import IconMdiRotateRight from '@iconify-svelte/mdi/rotate-right';
+	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
+
 	type ImageState = { url: string; alt?: string; imageid?: number; productCode?: string };
 	let image: ImageState | undefined = $state();
 
@@ -82,7 +89,7 @@
 				aria-label="Zoom In"
 				disabled={zoomLevel >= MAX_ZOOM}
 			>
-				<span class="icon-[mdi--magnify-plus-outline] h-6 w-6"></span>
+				<IconMdiMagnifyPlusOutline class="h-6 w-6" />
 			</button>
 			<button
 				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
@@ -97,7 +104,7 @@
 				aria-label="Zoom Out"
 				disabled={zoomLevel <= 1}
 			>
-				<span class="icon-[mdi--magnify-minus-outline] h-6 w-6"></span>
+				<IconMdiMagnifyMinusOutline class="h-6 w-6" />
 			</button>
 		</div>
 
@@ -111,7 +118,7 @@
 				title="Close"
 				aria-label="Close image"
 			>
-				<span class="icon-[mdi--close] h-6 w-6"></span>
+				<IconMdiClose class="h-6 w-6" />
 			</button>
 		</div>
 
@@ -122,7 +129,7 @@
 				title="Rotate Left"
 				aria-label="Rotate Left"
 			>
-				<span class="icon-[mdi--rotate-left] h-6 w-6"></span>
+				<IconMdiRotateLeft class="h-6 w-6" />
 			</button>
 			<button
 				class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
@@ -130,7 +137,7 @@
 				title="Rotate Right"
 				aria-label="Rotate Right"
 			>
-				<span class="icon-[mdi--rotate-right] h-6 w-6"></span>
+				<IconMdiRotateRight class="h-6 w-6" />
 			</button>
 		</div>
 
@@ -154,7 +161,7 @@
 					aria-label="Report to NutriPatrol"
 					title="Report to NutriPatrol"
 				>
-					<span class="icon-[mdi--flag-outline] h-6 w-6"></span>
+					<IconMdiFlagOutline class="h-6 w-6" />
 				</a>
 			{/if}
 		</div>

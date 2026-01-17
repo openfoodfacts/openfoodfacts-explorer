@@ -8,6 +8,18 @@
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
+	import IconMdiAccount from '@iconify-svelte/mdi/account';
+	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';
+	import IconMdiLogout from '@iconify-svelte/mdi/logout';
+	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
+	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
+	import IconMaterialPublic from '@iconify-svelte/material-symbols/public';
+	import IconMaterialUniversalCurrencyAlt from '@iconify-svelte/material-symbols/universal-currency-alt';
+	import IconMdiLogin from '@iconify-svelte/mdi/login';
+	import IconMdiGithub from '@iconify-svelte/mdi/github';
+	import IconMdiTools from '@iconify-svelte/mdi/tools';
+
 	import type { PageProps } from './$types';
 	import { createProductsApi } from '$lib/api';
 
@@ -87,18 +99,18 @@
 		<div class="flex justify-center gap-2">
 			{#if loginStatus.user.admin}
 				<span class="badge badge-primary badge-xl">
-					<span class="icon-[mdi--shield-account]"></span>
+					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.admin')}</span>
 				</span>
 			{/if}
 			{#if loginStatus.user.moderator}
 				<span class="badge badge-secondary badge-xl">
-					<span class="icon-[mdi--shield-account]"></span>
+					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.moderator')}</span>
 				</span>
 			{:else}
 				<span class="badge badge-accent badge-xl">
-					<span class="icon-[mdi--account]"></span>
+					<IconMdiAccount class="h-4 w-4" />
 					<span class="">{$_('auth.user')}</span>
 				</span>
 			{/if}
@@ -112,16 +124,16 @@
 	<div class="mt-4 mb-2 text-center text-sm font-medium">
 		{#if isFolksonomyAuthenticated}
 			<div class="text-success my-2">
-				<span class="icon-[mdi--check-circle] mr-1"></span>
+				<IconMdiCheckCircle class="mr-1 h-4 w-4" />
 				{$_('Folksonomy API: Authenticated')}
 			</div>
 			<button class="btn btn-xs btn-outline ml-2" onclick={logout}>
-				<span class="icon-[mdi--logout] mr-1"></span>
+				<IconMdiLogout class="mr-1 h-4 w-4" />
 				{$_('auth.signout')}
 			</button>
 		{:else}
 			<span class="text-error">
-				<span class="icon-[mdi--alert-circle] mr-1"></span>
+				<IconMdiAlertCircle class="mr-1 h-4 w-4" />
 				{$_('Folksonomy API: Not authenticated')}
 			</span>
 		{/if}
@@ -136,7 +148,7 @@
 
 	<div class="mx-auto grid w-max grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
 		<label for="lang-select" class="flex items-center gap-2 justify-self-start md:justify-self-end">
-			<span class="icon-[material-symbols--translate] text-xl"></span>
+			<IconMaterialTranslate class="h-5 w-5" />
 			{$_('general.language')}:
 		</label>
 		<select
@@ -158,7 +170,7 @@
 		</select>
 
 		<label for="country-select" class="flex items-center gap-2">
-			<span class="icon-[material-symbols--public] text-xl"></span>
+			<IconMaterialPublic class="h-5 w-5" />
 			{$_('general.country')}:
 		</label>
 		<select
@@ -185,7 +197,7 @@
 		</select>
 
 		<label for="currency-select" class="flex items-center gap-2">
-			<span class="icon-[material-symbols--universal-currency-alt] text-xl"></span>
+			<IconMaterialUniversalCurrencyAlt class="h-5 w-5" />
 			{$_('general.currency')}:
 		</label>
 		<select
@@ -256,7 +268,7 @@
 					<span class="loading loading-spinner loading-xs"></span>
 					{$_('auth.authenticating')}
 				{:else}
-					<span class="icon-[mdi--login] mr-1 h-4 w-4"></span> {$_('auth.signin')}
+					<IconMdiLogin class="mr-1 h-4 w-4" /> {$_('auth.signin')}
 				{/if}
 			</button>
 
@@ -291,7 +303,7 @@
 
 <div class="mt-8 flex justify-center">
 	<a class="btn btn-outline" href={GITHUB_REPO_URL} target="_blank" aria-label="GitHub">
-		<span class="icon-[mdi--github] text-xl"></span>
+		<IconMdiGithub class="h-5 w-5" />
 		<span class="ml-2">Help us improve Explorer on GitHub</span>
 	</a>
 </div>
@@ -324,7 +336,7 @@
 		for="dev-mode-toggle"
 		class="flex items-center gap-2 justify-self-start md:justify-self-end"
 	>
-		<span class="icon-[mdi--tools] text-xl"></span>
+		<IconMdiTools class="h-5 w-5" />
 		Moderator Mode:
 	</label>
 	<input

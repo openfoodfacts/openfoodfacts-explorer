@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { SORT_OPTIONS } from '$lib/const';
 
+	import IconMdiSort from '@iconify-svelte/mdi/sort';
+	import IconMdiFilter from '@iconify-svelte/mdi/filter';
+
 	let {
 		onSortOptionSelect = () => {},
 		sortBy = ''
@@ -41,7 +44,7 @@
 			aria-label="Sort"
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
-				Sort <i class="icon-[mdi--sort] ml-2 text-lg"></i>
+				Sort <IconMdiSort class="ml-2 text-lg" />
 			</span>
 		</button>
 		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
@@ -50,7 +53,7 @@
 			aria-label="Filter"
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
-				Filter <i class="icon-[mdi--filter] ml-2 text-lg"></i>
+				Filter <IconMdiFilter class="ml-2 text-lg" />
 			</span>
 		</button>
 	</div>

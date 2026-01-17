@@ -6,6 +6,12 @@
 	import Logo from './Logo.svelte';
 	import { shouldBeContainer } from '$lib/layout';
 
+	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
+	import IconMdiInstagram from '@iconify-svelte/mdi/instagram';
+	import IconMdiGithub from '@iconify-svelte/mdi/github';
+	import IconMdiFacebook from '@iconify-svelte/mdi/facebook';
+	import IconMdiSlack from '@iconify-svelte/mdi/slack';
+
 	const stayUpdatedLinks = [
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', text: 'Newsletter' },
 		{ url: 'https://forum.openfoodfacts.org/', text: 'Forum' }
@@ -73,23 +79,23 @@
 					target="_blank"
 					aria-label="X (formerly Twitter)"
 				>
-					<span class="icon-[simple-icons--x] h-6 w-5"></span>
+					<IconSimpleIconsX class="h-6 w-5" />
 				</a>
 				<a href="https://www.instagram.com/open.food.facts/" target="_blank" aria-label="Instagram">
-					<span class="icon-[mdi--instagram] h-6 w-6"></span>
+					<IconMdiInstagram class="h-6 w-6" />
 				</a>
 				<a
 					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
 					target="_blank"
 					aria-label="GitHub"
 				>
-					<span class="icon-[mdi--github] h-6 w-6"></span>
+					<IconMdiGithub class="h-6 w-6" />
 				</a>
 				<a href="https://www.facebook.com/OpenFoodFacts" target="_blank" aria-label="Facebook">
-					<span class="icon-[mdi--facebook] h-6 w-6"></span>
+					<IconMdiFacebook class="h-6 w-6" />
 				</a>
 				<a href="https://slack.openfoodfacts.org/" target="_blank" aria-label="Slack">
-					<span class="icon-[mdi--slack] h-6 w-6"></span>
+					<IconMdiSlack class="h-6 w-6" />
 				</a>
 			</div>
 		</div>

@@ -19,6 +19,11 @@
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
+	import IconMdiFlag from '@iconify-svelte/mdi/flag';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+
 	type Props = {
 		product: Product;
 		taxonomies: {
@@ -97,13 +102,13 @@
 				class="btn btn-secondary"
 				class:pointer-events-none={navigating.to}
 			>
-				<span class="icon-[mdi--pencil] h-5 w-5"></span>
+				<IconMdiPencil class="h-5 w-5" />
 				<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 			</a>
 
 			{#if isShareSupported}
 				<button class="btn btn-secondary flex items-center gap-2" onclick={sharePage}>
-					<span class="icon-[mdi--share-variant] h-5 w-5"></span>
+					<IconMdiShareVariant class="h-5 w-5" />
 					<span class="hidden md:block">{$_('product.buttons.share')}</span>
 				</button>
 			{/if}
@@ -116,7 +121,7 @@
 				title="Report an issue with this product"
 				aria-label="Report an issue with this product"
 			>
-				<span class="icon-[mdi--flag] h-5 w-5"></span>
+				<IconMdiFlag class="h-5 w-5" />
 			</a>
 
 			<button
@@ -125,7 +130,7 @@
 				title="Add product to nutritional calculator"
 				aria-label="Add product to nutritional calculator"
 			>
-				<span class="icon-[mdi--calculator] h-5 w-5"></span>
+				<IconMdiCalculator class="h-5 w-5" />
 			</button>
 		</div>
 	</div>
