@@ -69,7 +69,7 @@
 		}
 	];
 
-	function getNutriscoreImage(grade: string | null | undefined) {
+	function getNutriScoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('nutriscore-' + (grade ?? 'unknown') + '-new-en.svg');
 	}
 
@@ -79,8 +79,8 @@
 			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
 	}
 
-	function getEcoscoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('ecoscore-' + (grade ?? 'unknown') + '.svg');
+	function getGreenScoreImage(grade: string | null | undefined) {
+		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
 	}
 
 	// Number formatters
@@ -398,7 +398,7 @@
 											'nutriscore'
 										)}
 										{@render scoreImage(
-											getNutriscoreImage(product.nutriscore_grade),
+											getNutriScoreImage(product.nutriscore_grade),
 											`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
 											comparison.isBest
 										)}
@@ -418,8 +418,8 @@
 											'ecoscore'
 										)}
 										{@render scoreImage(
-											getEcoscoreImage(product.ecoscore_grade),
-											`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+											getGreenScoreImage(product.ecoscore_grade),
+											`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
 											comparison.isBest
 										)}
 									{/if}
@@ -508,7 +508,7 @@
 							<td>
 								{#if product.nutriscore_grade}
 									{@render scoreImage(
-										getNutriscoreImage(product.nutriscore_grade),
+										getNutriScoreImage(product.nutriscore_grade),
 										`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
 										comparison.isBest
 									)}
@@ -536,7 +536,7 @@
 						{/each}
 					</tr>
 					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Eco-Score</td>
+						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
 						{#each $compareStore as product (product.code)}
 							{@const comparison = getScoreComparison(
 								product.ecoscore_grade,
@@ -546,7 +546,7 @@
 							<td>
 								{#if product.ecoscore_grade}
 									{@render scoreImage(
-										getEcoscoreImage(product.ecoscore_grade),
+										getGreenScoreImage(product.ecoscore_grade),
 										`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
 										comparison.isBest
 									)}
