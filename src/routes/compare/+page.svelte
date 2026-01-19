@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+
 	import Card from '$lib/ui/Card.svelte';
+	import { _ } from '$lib/i18n';
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 	import { compareStore } from '$lib/stores/compareStore';
 	import type { ProductReduced } from '$lib/api/product';
@@ -51,17 +53,58 @@
 
 	// Predefined list of nutrients to display in comparison
 	const availableNutrients: Array<AvailableNutrient> = [
-		{ key: 'energy-kcal_100g', label: 'Energy', unit: 'kcal' },
-		{ key: 'energy-kj_100g', label: 'Energy', unit: 'kJ' },
-		{ key: 'fat_100g', label: 'Fat', unit: 'g' },
-		{ key: 'saturated-fat_100g', label: 'Saturated Fat', unit: 'g' },
-		{ key: 'carbohydrates_100g', label: 'Carbohydrates', unit: 'g' },
-		{ key: 'sugars_100g', label: 'Sugars', unit: 'g' },
-		{ key: 'fibers_100g', label: 'Fiber', unit: 'g' },
-		{ key: 'proteins_100g', label: 'Proteins', unit: 'g' },
-		{ key: 'salt_100g', label: 'Salt', unit: 'g' },
-		{ key: 'sodium_100g', label: 'Sodium', unit: 'g' },
-		{ key: 'alcohol_100g', label: 'Alcohol', unit: '% vol' },
+		{
+			key: 'energy-kcal_100g',
+			label: `${$_('product.edit.energy')} (${$_('product.edit.si_kilocalories')})`,
+			unit: $_('product.edit.si_kilocalories')
+		},
+
+		{
+			key: 'energy-kj_100g',
+			label: `${$_('product.edit.energy')} (${$_('product.edit.si_kilojoules')})`,
+			unit: $_('product.edit')
+		},
+		{ key: 'fat_100g', label: $_('product.edit.nutrient.fat'), unit: $_('product.edit.si_grams') },
+		{
+			key: 'saturated-fat_100g',
+			label: $_('product.edit.nutrient.saturated-fat'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'carbohydrates_100g',
+			label: $_('product.edit.nutrient.carbohydrates'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'sugars_100g',
+			label: $_('product.edit.nutrient.sugars'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'fibers_100g',
+			label: $_('product.edit.nutrient.fibers'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'proteins_100g',
+			label: $_('product.edit.nutrient.proteins'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'salt_100g',
+			label: $_('product.edit.nutrient.salt'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'sodium_100g',
+			label: $_('product.edit.nutrient.sodium'),
+			unit: $_('product.edit.si_grams')
+		},
+		{
+			key: 'alcohol_100g',
+			label: $_('product.edit.nutrient.alcohol'),
+			unit: $_('product.edit.si_percent_vol')
+		},
 		{
 			key: 'fruits-vegetables-nuts-estimate-from-ingredients_100g',
 			label: 'Fruits/Vegetables/Nuts',
@@ -304,292 +347,306 @@
 	{/if}
 {/snippet}
 
-<Card>
-	<div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-		<h1 class="text-2xl font-bold">Compare Products</h1>
-		<div class="flex flex-wrap items-center gap-2">
-			{#if $compareStore.length > 0}
-				<div class="join">
-					<button
-						class="join-item btn btn-sm"
-						class:btn-active={comparisonMode === 'absolute'}
-						onclick={() => (comparisonMode = 'absolute')}
-					>
-						Absolute
-					</button>
-					<button
-						class="join-item btn btn-sm"
-						class:btn-active={comparisonMode === 'relative-first'}
-						onclick={() => (comparisonMode = 'relative-first')}
-					>
-						vs First
-					</button>
-					<button
-						class="join-item btn btn-sm"
-						class:btn-active={comparisonMode === 'relative-best'}
-						onclick={() => (comparisonMode = 'relative-best')}
-					>
-						vs Best
-					</button>
-				</div>
-				<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
-					Clear All
-				</button>
-			{/if}
-		</div>
-	</div>
-
-	{#if $compareStore.length === 0}
-		{#if !mounted}
-			<div class="py-8 text-center">
-				<span class="loading loading-spinner loading-lg text-primary"></span>
-			</div>
-		{:else}
-			<div class="py-8 text-center">
-				<p class="mb-4 text-lg">No products selected for comparison</p>
-				<p class="mb-4 text-sm text-gray-600">
-					Add products from their detail pages to start comparing nutritional values
-				</p>
-				<a href="/products/search?q=chocolate" class="btn btn-primary">Browse Products</a>
-			</div>
-		{/if}
-	{:else}
-		<!-- Mobile: Card View -->
-		<div class="block lg:hidden">
-			<div class="flex flex-col gap-4">
-				{#each $compareStore as product, index (product.code)}
-					<div class="relative rounded-lg border-2 p-4 shadow-md">
+<div class="mx-4">
+	<Card>
+		<div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+			<h1 class="text-2xl font-bold">Compare Products</h1>
+			<div class="flex flex-wrap items-center gap-2">
+				{#if $compareStore.length > 0}
+					<div class="join">
 						<button
-							class="absolute top-2 right-2 z-10 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-							onclick={() => compareStore.removeProduct(product.code)}
-							aria-label="Remove product from comparison"
+							class="join-item btn btn-sm"
+							class:btn-active={comparisonMode === 'absolute'}
+							onclick={() => (comparisonMode = 'absolute')}
 						>
-							<IconMdiClose class="block h-4 w-4" />
+							Absolute
 						</button>
+						<button
+							class="join-item btn btn-sm"
+							class:btn-active={comparisonMode === 'relative-first'}
+							onclick={() => (comparisonMode = 'relative-first')}
+						>
+							vs First
+						</button>
+						<button
+							class="join-item btn btn-sm"
+							class:btn-active={comparisonMode === 'relative-best'}
+							onclick={() => (comparisonMode = 'relative-best')}
+						>
+							vs Best
+						</button>
+					</div>
+					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
+						Clear All
+					</button>
+				{/if}
+			</div>
+		</div>
 
-						<div class="flex flex-col items-center pt-4">
-							{#if product.image_front_small_url}
-								<img
-									src={product.image_front_small_url}
-									alt={product.product_name ?? product.code}
-									class="mb-2 h-24 object-contain"
-								/>
+		{#if $compareStore.length === 0}
+			{#if !mounted}
+				<div class="py-8 text-center">
+					<span class="loading loading-spinner loading-lg text-primary"></span>
+				</div>
+			{:else}
+				<div class="py-8 text-center">
+					<p class="mb-4 text-lg">No products selected for comparison</p>
+					<p class="mb-4 text-sm text-gray-600">
+						Add products from their detail pages to start comparing nutritional values
+					</p>
+					<a href="/products/search?q=chocolate" class="btn btn-primary">Browse Products</a>
+				</div>
+			{/if}
+		{:else}
+			<!-- Mobile: Card View -->
+			<div class="block lg:hidden">
+				<div class="flex flex-col gap-4">
+					{#each $compareStore as product, index (product.code)}
+						<div class="relative rounded-lg border-2 p-4 shadow-md">
+							<button
+								class="absolute top-2 right-2 z-10 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+								onclick={() => compareStore.removeProduct(product.code)}
+								aria-label="Remove product from comparison"
+							>
+								<IconMdiClose class="block h-4 w-4" />
+							</button>
+
+							<div class="flex flex-col items-center pt-4">
+								{#if product.image_front_small_url}
+									<img
+										src={product.image_front_small_url}
+										alt={product.product_name ?? product.code}
+										class="mb-2 h-24 object-contain"
+									/>
+								{/if}
+								<h3 class="mt-2 text-center font-semibold">
+									<a href={`/products/${product.code}`} class="link">
+										{product.product_name ?? product.code}
+									</a>
+								</h3>
+								<p class="mt-1 text-center text-sm text-gray-600">
+									{product.brands ?? ''}
+									{#if product.brands && product.quantity},{/if}
+									{product.quantity ?? ''}
+								</p>
+							</div>
+
+							{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
+								<div class="mt-4 border-t pt-4">
+									<p class="mb-2 text-sm font-semibold">Scores:</p>
+									<div class="flex items-center justify-around gap-2">
+										{#if product.nutriscore_grade}
+											{@const comparison = getScoreComparison(
+												product.nutriscore_grade,
+												$compareStore,
+												'nutriscore'
+											)}
+											{@render scoreImage(
+												getNutriScoreImage(product.nutriscore_grade),
+												`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
+												comparison.isBest
+											)}
+										{/if}
+										{#if product.nova_group}
+											{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
+											{@render scoreImage(
+												getNovaImage(product.nova_group),
+												`Nova Group ${product.nova_group}`,
+												comparison.isBest
+											)}
+										{/if}
+										{#if product.ecoscore_grade}
+											{@const comparison = getScoreComparison(
+												product.ecoscore_grade,
+												$compareStore,
+												'ecoscore'
+											)}
+											{@render scoreImage(
+												getGreenScoreImage(product.ecoscore_grade),
+												`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
+												comparison.isBest
+											)}
+										{/if}
+									</div>
+								</div>
 							{/if}
-							<h3 class="mt-2 text-center font-semibold">
-								<a href={`/products/${product.code}`} class="link">
-									{product.product_name ?? product.code}
-								</a>
-							</h3>
-							<p class="mt-1 text-center text-sm text-gray-600">
-								{product.brands ?? ''}
-								{#if product.brands && product.quantity},{/if}
-								{product.quantity ?? ''}
-							</p>
-						</div>
 
-						{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
-							<div class="mt-4 border-t pt-4">
-								<p class="mb-2 text-sm font-semibold">Scores:</p>
-								<div class="flex items-center justify-around gap-2">
+							{#if product.nutriments}
+								<div class="mt-4 border-t pt-4">
+									<p class="mb-2 text-sm font-semibold">Nutrients / 100g:</p>
+									<div class="space-y-1 text-sm">
+										{#each availableNutrients as nutrient (nutrient.key)}
+											{@const comparison = getNutrientComparison(
+												product,
+												nutrient.key,
+												$compareStore,
+												index
+											)}
+											{#if comparison.value != null}
+												<div class="flex items-center justify-between">
+													<span class="font-medium">{nutrient.label}:</span>
+													{@render nutrientValue(comparison, nutrient.unit)}
+												</div>
+											{/if}
+										{/each}
+									</div>
+								</div>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<!-- Desktop: Table View -->
+			<div class="hidden overflow-x-auto lg:block">
+				<table class="table-zebra table w-full table-fixed">
+					<thead>
+						<tr>
+							<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+							{#each $compareStore as product (product.code)}
+								<th class="relative">
+									<button
+										class="absolute top-2 right-2 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+										onclick={() => compareStore.removeProduct(product.code)}
+										aria-label="Remove product"
+									>
+										<IconMdiClose class="block h-4 w-4" />
+									</button>
+									<div class="pr-8">
+										{#if product.image_front_small_url}
+											<img
+												src={product.image_front_small_url}
+												alt={product.product_name ?? product.code}
+												class="mx-auto mb-2 h-32 object-contain"
+											/>
+										{/if}
+									</div>
+								</th>
+							{/each}
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Name</td>
+							{#each $compareStore as product (product.code)}
+								<td class="text-center text-sm">
+									{product.product_name ?? '-'}
+								</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Code (Barcode)</td>
+							{#each $compareStore as product (product.code)}
+								<td class="text-center font-mono text-sm">{product.code}</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
+							{#each $compareStore as product (product.code)}
+								<td class="text-center text-sm">{product.brands ?? '-'}</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
+							{#each $compareStore as product (product.code)}
+								<td class="text-center text-sm">{product.quantity ?? '-'}</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
+							{#each $compareStore as product (product.code)}
+								{@const comparison = getScoreComparison(
+									product.nutriscore_grade,
+									$compareStore,
+									'nutriscore'
+								)}
+								<td>
 									{#if product.nutriscore_grade}
-										{@const comparison = getScoreComparison(
-											product.nutriscore_grade,
-											$compareStore,
-											'nutriscore'
-										)}
 										{@render scoreImage(
 											getNutriScoreImage(product.nutriscore_grade),
 											`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
 											comparison.isBest
 										)}
+									{:else}
+										-
 									{/if}
+								</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
+							{#each $compareStore as product (product.code)}
+								{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
+								<td>
 									{#if product.nova_group}
-										{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
 										{@render scoreImage(
 											getNovaImage(product.nova_group),
 											`Nova Group ${product.nova_group}`,
 											comparison.isBest
 										)}
+									{:else}
+										-
 									{/if}
-									{#if product.ecoscore_grade}
-										{@const comparison = getScoreComparison(
-											product.ecoscore_grade,
-											$compareStore,
-											'ecoscore'
-										)}
-										{@render scoreImage(
-											getGreenScoreImage(product.ecoscore_grade),
-											`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
-											comparison.isBest
-										)}
-									{/if}
-								</div>
-							</div>
-						{/if}
-
-						{#if product.nutriments}
-							<div class="mt-4 border-t pt-4">
-								<p class="mb-2 text-sm font-semibold">Nutrients / 100g:</p>
-								<div class="space-y-1 text-sm">
-									{#each availableNutrients as nutrient (nutrient.key)}
-										{@const comparison = getNutrientComparison(
-											product,
-											nutrient.key,
-											$compareStore,
-											index
-										)}
-										{#if comparison.value != null}
-											<div class="flex items-center justify-between">
-												<span class="font-medium">{nutrient.label}:</span>
-												{@render nutrientValue(comparison, nutrient.unit)}
-											</div>
-										{/if}
-									{/each}
-								</div>
-							</div>
-						{/if}
-					</div>
-				{/each}
-			</div>
-		</div>
-
-		<!-- Desktop: Table View -->
-		<div class="hidden overflow-x-auto lg:block">
-			<table class="table-zebra table w-full table-fixed">
-				<thead>
-					<tr>
-						<th class="bg-base-100 sticky left-0 z-10 w-40">Attribute</th>
-						{#each $compareStore as product (product.code)}
-							<th class="relative">
-								<button
-									class="absolute top-2 right-2 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-									onclick={() => compareStore.removeProduct(product.code)}
-									aria-label="Remove product"
-								>
-									<IconMdiClose class="block h-4 w-4" />
-								</button>
-								<div class="pr-8">
-									{#if product.image_front_small_url}
-										<img
-											src={product.image_front_small_url}
-											alt={product.product_name ?? product.code}
-											class="mx-auto mb-2 h-32 object-contain"
-										/>
-									{/if}
-									<a href={`/products/${product.code}`} class="link text-sm font-semibold">
-										{product.product_name ?? product.code}
-									</a>
-								</div>
-							</th>
-						{/each}
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
-						{#each $compareStore as product (product.code)}
-							<td class="text-sm">{product.brands ?? '-'}</td>
-						{/each}
-					</tr>
-					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
-						{#each $compareStore as product (product.code)}
-							<td class="text-sm">{product.quantity ?? '-'}</td>
-						{/each}
-					</tr>
-					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
-						{#each $compareStore as product (product.code)}
-							{@const comparison = getScoreComparison(
-								product.nutriscore_grade,
-								$compareStore,
-								'nutriscore'
-							)}
-							<td>
-								{#if product.nutriscore_grade}
-									{@render scoreImage(
-										getNutriScoreImage(product.nutriscore_grade),
-										`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
-										comparison.isBest
-									)}
-								{:else}
-									-
-								{/if}
-							</td>
-						{/each}
-					</tr>
-					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
-						{#each $compareStore as product (product.code)}
-							{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
-							<td>
-								{#if product.nova_group}
-									{@render scoreImage(
-										getNovaImage(product.nova_group),
-										`Nova Group ${product.nova_group}`,
-										comparison.isBest
-									)}
-								{:else}
-									-
-								{/if}
-							</td>
-						{/each}
-					</tr>
-					<tr>
-						<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
-						{#each $compareStore as product (product.code)}
-							{@const comparison = getScoreComparison(
-								product.ecoscore_grade,
-								$compareStore,
-								'ecoscore'
-							)}
-							<td>
-								{#if product.ecoscore_grade}
-									{@render scoreImage(
-										getGreenScoreImage(product.ecoscore_grade),
-										`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
-										comparison.isBest
-									)}
-								{:else}
-									-
-								{/if}
-							</td>
-						{/each}
-					</tr>
-					<tr class="bg-base-200">
-						<td colspan={$compareStore.length + 1} class="sticky left-0 text-center font-bold">
-							Nutritional Values (per 100g)
-						</td>
-					</tr>
-					{#each availableNutrients as nutrient (nutrient.key)}
-						<tr>
-							<td class="bg-base-100 sticky left-0 w-40 font-semibold">{nutrient.label}</td>
-							{#each $compareStore as product, index (product.code)}
-								{@const comparison = getNutrientComparison(
-									product,
-									nutrient.key,
-									$compareStore,
-									index
-								)}
-								<td>
-									{@render nutrientValueDesktop(comparison, nutrient.unit)}
 								</td>
 							{/each}
 						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
+							{#each $compareStore as product (product.code)}
+								{@const comparison = getScoreComparison(
+									product.ecoscore_grade,
+									$compareStore,
+									'ecoscore'
+								)}
+								<td>
+									{#if product.ecoscore_grade}
+										{@render scoreImage(
+											getGreenScoreImage(product.ecoscore_grade),
+											`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+											comparison.isBest
+										)}
+									{:else}
+										-
+									{/if}
+								</td>
+							{/each}
+						</tr>
+						<tr class="bg-base-200">
+							<td></td>
+							<td colspan={$compareStore.length} class="sticky left-0 text-center font-bold">
+								Nutritional Values (per 100g)
+							</td>
+						</tr>
+						{#each availableNutrients as nutrient (nutrient.key)}
+							<tr>
+								<td class="bg-base-100 sticky left-0 w-40 font-semibold">{nutrient.label}</td>
+								{#each $compareStore as product, index (product.code)}
+									{@const comparison = getNutrientComparison(
+										product,
+										nutrient.key,
+										$compareStore,
+										index
+									)}
+									<td>
+										{@render nutrientValueDesktop(comparison, nutrient.unit)}
+									</td>
+								{/each}
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 
-		{#if comparisonMode === 'relative-first'}
-			<div class="mt-4 text-center text-sm text-gray-600">
-				💡 Percentages show difference compared to the first product
-			</div>
-		{:else if comparisonMode === 'relative-best'}
-			<div class="mt-4 text-center text-sm text-gray-600">
-				💡 Percentages show difference compared to the best value (lower is better for most
-				nutrients)
-			</div>
+			{#if comparisonMode === 'relative-first'}
+				<div class="mt-4 text-center text-sm text-gray-600">
+					💡 Percentages show difference compared to the first product
+				</div>
+			{:else if comparisonMode === 'relative-best'}
+				<div class="mt-4 text-center text-sm text-gray-600">
+					💡 Percentages show difference compared to the best value (lower is better for most
+					nutrients)
+				</div>
+			{/if}
 		{/if}
-	{/if}
-</Card>
+	</Card>
+</div>
