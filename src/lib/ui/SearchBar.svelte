@@ -108,12 +108,12 @@
 </script>
 
 <div class="form-control">
-	<div>
-		<div class="join dropdown dropdown-bottom dropdown-center md:w-98">
+	<div class="flex w-full items-center gap-2">
+		<div class="join dropdown dropdown-bottom dropdown-center min-w-0 flex-1 md:w-98 md:flex-none">
 			<input
 				type="text"
 				bind:value={searchQuery}
-				class="input join-item input-bordered xl:w-full"
+				class="input join-item input-bordered w-full"
 				placeholder={$_('search.placeholder')}
 				disabled={loading}
 				aria-label={$_('search.placeholder')}
@@ -176,7 +176,7 @@
 			href="/qr"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
-			class="btn btn-secondary join-item ms-2 text-lg"
+			class="btn btn-secondary join-item text-lg"
 		>
 			<IconMdiBarcodeScan class="h-6 w-6" />
 		</a>
