@@ -12,13 +12,13 @@
 			class="toggle toggle-primary toggle-lg"
 			bind:checked={$personalizedSearch.classifyProductsEnabled}
 		/>
-		<div class="flex flex-col gap-1">
-			<span class="label-text text-base font-medium">
+		<div class="flex min-w-0 flex-1 flex-col gap-1">
+			<span class="label-text text-base font-medium break-words whitespace-normal">
 				{$_('preferences.classify_products', {
 					default: 'Enable Personalized Product Classification'
 				})}
 			</span>
-			<span class="text-base-content/60 text-xs">
+			<span class="text-base-content/60 text-xs break-words whitespace-normal">
 				{$_('preferences.classify_products_desc', {
 					default: 'Enable personalized product classification based on your preferences.'
 				})}
