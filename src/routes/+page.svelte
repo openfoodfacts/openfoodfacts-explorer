@@ -96,9 +96,9 @@
 	<img src={heroIcons[1]} alt="hero icon" class="decorative-svg -right-10 -bottom-10 w-40" />
 
 	<div
-		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-8 shadow-xl backdrop-blur-md"
+		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8"
 	>
-		<div class="mb-4 h-14 w-full scale-110 px-16 drop-shadow-lg md:h-20">
+		<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
 			<Logo class="h-full w-full" />
 		</div>
 
@@ -108,21 +108,21 @@
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
 				href="/explore"
-				class="btn btn-primary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+				class="btn btn-primary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiCompassOutline class="h-5 w-5" />
 				{$_('landing.explore_products')}
 			</a>
 			<a
 				href="/static/discover"
-				class="btn btn-secondary btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+				class="btn btn-secondary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiLightbulbOnOutline class="h-5 w-5" />
 				{$_('landing.discover_project')}
 			</a>
 			<a
 				href="/static/contribute"
-				class="btn btn-outline btn-lg flex items-center gap-2 px-6 shadow-md transition-transform hover:scale-105"
+				class="btn btn-outline btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiAccountHeartOutline class="h-5 w-5" />
 				{$_('landing.contribute')}
