@@ -144,6 +144,13 @@
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
 
+	// Automatically close mobile menu on navigation
+	$effect(() => {
+		// track dependency
+		const _ = page.url.pathname;
+		accordionOpen = false;
+	});
+
 	let config: HTMLElement;
 
 	onMount(() => {

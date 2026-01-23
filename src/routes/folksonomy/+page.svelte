@@ -121,15 +121,15 @@
 
 			<div class="search-section mb-6">
 				<div class="form-control">
-					<div class="input-group">
+					<div class="join w-full max-w-md">
 						<input
 							type="text"
 							placeholder={$_('folksonomy.search_placeholder')}
-							class="input input-bordered w-full max-w-md"
+							class="input input-bordered join-item w-full"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label={$_('search.button')}>
+						<button class="btn btn-square join-item" aria-label={$_('search.button')}>
 							<IconMdiMagnify class="h-6 w-6" />
 						</button>
 					</div>
