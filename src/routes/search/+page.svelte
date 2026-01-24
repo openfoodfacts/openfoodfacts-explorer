@@ -137,10 +137,10 @@
 			<summary
 				class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
 			>
-				<span class="inline-block truncate align-middle font-semibold">
+				<span class="inline-block flex-1 truncate align-middle font-semibold">
 					{getSelectedSortLabel()}
 				</span>
-				<IconMdiChevronDown class="text-xl" />
+				<IconMdiChevronDown class="h-5 w-5" />
 			</summary>
 			<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow">
 				{#each SORT_OPTIONS as { label, value } (value)}
@@ -184,7 +184,7 @@
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
-				<IconMdiOpenInNew class="text-lg" />
+				<IconMdiOpenInNew class="h-5 w-5" />
 			</a>
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
@@ -192,14 +192,14 @@
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
-				<IconMdiOpenInNew class="text-lg" />
+				<IconMdiOpenInNew class="h-5 w-5" />
 			</a>
 
 			<button
 				class="btn btn-primary btn-sm gap-2 max-sm:w-full"
 				onclick={() => (showGraphs = !showGraphs)}
 			>
-				<IconMdiChartBar class="text-lg" />
+				<IconMdiChartBar class="h-5 w-5" />
 				{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
 			</button>
 		</div>
@@ -212,7 +212,7 @@
 			<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
 				<input type="checkbox" bind:checked={showPreferences} />
 				<div class="collapse-title text-md flex items-center gap-2 font-medium">
-					<IconMdiCog class="text-lg" />
+					<IconMdiCog class="h-5 w-5" />
 					{$_('preferences.edit_preferences')}
 				</div>
 				<div class="collapse-content">

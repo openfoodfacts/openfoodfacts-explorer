@@ -55,8 +55,8 @@
 <details class="dropdown dropdown-center" bind:this={dropdownElement}>
 	<summary class="btn flex w-58 items-center justify-start gap-2">
 		{facet.name} ({facet.items.length})
-		<span class="flex-grow"></span>
-		<IconMdiChevronDown class="text-xl" />
+		<span class="grow"></span>
+		<IconMdiChevronDown class="h-5 w-5" />
 	</summary>
 	<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
 		<li>
