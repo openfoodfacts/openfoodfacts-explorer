@@ -20,7 +20,7 @@
 </script>
 
 <h2
-	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+	class="text-primary mb-6 flex items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
 	<IconMdiImageMultiple class="mr-1 h-6 w-6 align-middle" />
 	{$_('product.edit.sections.images')}
@@ -51,7 +51,7 @@
 
 <!-- Legal warning about photo copyright -->
 <div class="alert alert-error mb-4" role="alert">
-	<IconMdiAlertCircle class="text-xl" />
+	<IconMdiAlertCircle class="h-6 w-6" />
 	<div>
 		<h4 class="text-xl font-bold">{$_('product.edit.legal_warning_title')}</h4>
 		<p class="mt-1">{$_('product.edit.legal_warning_photos_1')}</p>
