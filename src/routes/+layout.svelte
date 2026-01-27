@@ -12,7 +12,7 @@
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
-	import Footer from '$lib/ui/Footer.svelte';
+	import FooterNew from '$lib/ui/FooterNew.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
@@ -323,14 +323,14 @@
 	</div>
 </div>
 
-{#if shouldBeContainer(page.url.pathname)}
-	<div class="w-full">
+{#if shouldBeContainer(page.url.pathname) && page.status !== 404}
+	<div class="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pb-12 md:px-12 md:pb-24">
 		{@render children?.()}
 	</div>
 {:else}
-	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
+	<div class="mx-auto flex w-full flex-col gap-4">
 		{@render children?.()}
 	</div>
 {/if}
-<Footer />
+<FooterNew />
 <Toast />

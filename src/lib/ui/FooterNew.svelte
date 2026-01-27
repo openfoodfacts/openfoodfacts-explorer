@@ -69,7 +69,7 @@
 		<div class="flex flex-col items-center gap-4">
 			<img src={footerLogo} alt="Open Food Facts" class="h-auto w-[200px]" />
 			<div class="flex w-[200px] items-center justify-between">
-				{#each socialLinks as social}
+				{#each socialLinks as social (social.name)}
 					<a
 						href={social.url}
 						target="_blank"
@@ -88,7 +88,7 @@
 				<div class="flex flex-col gap-2">
 					<h3 class="text-xs font-normal text-black">{columns[1].title}</h3>
 					<ul class="flex flex-col gap-2">
-						{#each columns[1].links as link}
+						{#each columns[1].links as link (link.url)}
 							<li>
 								<a href={link.url} class="text-xs font-bold text-black hover:underline"
 									>{link.text}</a
@@ -101,7 +101,7 @@
 				<div class="flex flex-col gap-2">
 					<h3 class="text-xs font-normal text-black">{columns[0].title}</h3>
 					<ul class="flex flex-col gap-2">
-						{#each columns[0].links as link}
+						{#each columns[0].links as link (link.url)}
 							<li>
 								<a href={link.url} class="text-xs font-bold text-black hover:underline"
 									>{link.text}</a
@@ -115,7 +115,7 @@
 			<div class="flex flex-col gap-2">
 				<h3 class="text-xs font-normal text-black">{columns[2].title}</h3>
 				<ul class="flex flex-col gap-2">
-					{#each columns[2].links as link}
+					{#each columns[2].links as link (link.url)}
 						<li>
 							<a href={link.url} class="text-xs font-bold text-black hover:underline">{link.text}</a
 							>
@@ -126,7 +126,7 @@
 		</div>
 
 		<div class="flex w-[200px] flex-wrap justify-center gap-4 text-xs font-bold text-black">
-			{#each legalLinks as link}
+			{#each legalLinks as link (link.url)}
 				<a href={link.url} class="underline decoration-1 underline-offset-2 hover:decoration-2"
 					>{link.text}</a
 				>
@@ -138,7 +138,7 @@
 		<div class="flex flex-col gap-4">
 			<img src={footerLogo} alt="Open Food Facts" class="h-auto w-[200px]" />
 			<div class="flex w-[200px] items-center justify-between">
-				{#each socialLinks as social}
+				{#each socialLinks as social (social.name)}
 					<a
 						href={social.url}
 						target="_blank"
@@ -156,7 +156,7 @@
 			<div class="flex flex-col gap-4">
 				<h3 class="text-base font-normal text-black">{columns[0].title}</h3>
 				<ul class="flex flex-col gap-4">
-					{#each columns[0].links as link}
+					{#each columns[0].links as link (link.url)}
 						<li>
 							<a href={link.url} class="text-base font-bold text-black hover:underline"
 								>{link.text}</a
@@ -166,7 +166,7 @@
 				</ul>
 
 				<div class="mt-auto flex flex-row gap-6 text-base font-bold text-black">
-					{#each legalLinks as link}
+					{#each legalLinks as link (link.url)}
 						<a href={link.url} class="underline decoration-1 underline-offset-2 hover:decoration-2"
 							>{link.text}</a
 						>
@@ -177,7 +177,7 @@
 			<div class="flex flex-col gap-4">
 				<h3 class="text-base font-normal text-black">{columns[1].title}</h3>
 				<ul class="flex flex-col gap-4">
-					{#each columns[1].links as link}
+					{#each columns[1].links as link (link.url)}
 						<li>
 							<a href={link.url} class="text-base font-bold text-black hover:underline"
 								>{link.text}</a
@@ -190,7 +190,7 @@
 			<div class="flex flex-col gap-4">
 				<h3 class="text-base font-normal text-black">{columns[2].title}</h3>
 				<ul class="flex flex-col gap-4">
-					{#each columns[2].links as link}
+					{#each columns[2].links as link (link.url)}
 						<li>
 							<a href={link.url} class="text-base font-bold text-black hover:underline"
 								>{link.text}</a
@@ -207,7 +207,7 @@
 			<div class="flex flex-col gap-6">
 				<img src={footerLogo} alt="Open Food Facts" class="h-auto w-[200px] xl:w-[280px]" />
 				<div class="flex w-[200px] items-center justify-between xl:w-[280px]">
-					{#each socialLinks as social}
+					{#each socialLinks as social (social.name)}
 						<a
 							href={social.url}
 							target="_blank"
@@ -223,7 +223,7 @@
 			<div
 				class="mt-auto flex flex-row gap-5 pt-8 text-[16px] font-bold text-black xl:gap-6 xl:text-[18px]"
 			>
-				{#each legalLinks as link}
+				{#each legalLinks as link (link.url)}
 					<a href={link.url} class="underline decoration-1 underline-offset-2 hover:decoration-2"
 						>{link.text}</a
 					>
@@ -232,11 +232,11 @@
 		</div>
 
 		<div class="flex flex-row gap-10 min-[1200px]:gap-16 xl:gap-24">
-			{#each columns as column}
+			{#each columns as column (column.title)}
 				<div class="flex flex-col gap-5 xl:gap-6">
 					<h3 class="text-[16px] font-normal text-black xl:text-[18px]">{column.title}</h3>
 					<ul class="flex flex-col gap-5 xl:gap-6">
-						{#each column.links as link}
+						{#each column.links as link (link.url)}
 							<li>
 								<a
 									href={link.url}
