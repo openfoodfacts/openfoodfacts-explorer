@@ -5,6 +5,7 @@
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import logo from '$lib/assets/404-logo.svg';
 
 	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
 
@@ -24,29 +25,34 @@
 	});
 </script>
 
-<div class="flex min-h-[60vh] w-full flex-col items-center justify-center p-6">
-	{#if isNetworkError}
+{#if isNetworkError}
+	<div class="flex min-h-[60vh] w-full flex-col items-center justify-center p-6">
 		<NetworkError />
-	{:else if isGlobal404}
-		<div class="animate-in fade-in max-w-md text-center duration-500">
-			<div class="mb-4 text-8xl grayscale-[20%]">🧭</div>
-			<h1 class="mb-4 text-4xl font-bold">
-				{$_('general.page_not_found', { default: 'Page Not Found' })}
-			</h1>
-			<p class="text-base-content/70 mb-8 text-lg">
-				{$_('general.page_not_found_desc', {
-					default: "We looked everywhere, but we couldn't find the page you requested."
-				})}
-			</p>
-			<div class="flex justify-center gap-4">
-				<a href="/" class="btn btn-primary btn-lg">
-					{$_('general.return_home', { default: 'Return Home' })}
-				</a>
-			</div>
+	</div>
+{:else if isGlobal404}
+	<div
+		class="flex min-h-[calc(100vh-120px)] w-full flex-col items-center justify-center p-4 text-center"
+	>
+		<div class="mb-6 flex items-center gap-2 md:gap-6">
+			<span class="text-[8rem] leading-none font-extrabold md:text-[12rem] lg:text-[16rem]">4</span>
+			<img src={logo} alt="0" class="h-24 w-auto md:h-40 lg:h-56" />
+			<span class="text-[8rem] leading-none font-extrabold md:text-[12rem] lg:text-[16rem]">4</span>
 		</div>
-	{:else if page.error != null}
+		<p class="text-base-content/70 mb-8 max-w-md text-lg font-light md:text-xl">
+			{$_('general.page_not_found_desc', {
+				default: "We looked everywhere, but we couldn't find the page you requested."
+			})}
+		</p>
+		<a href="/" class="btn btn-primary btn-lg">
+			{$_('general.return_home', { default: 'Return Home' })}
+		</a>
+	</div>
+{:else if page.error != null}
+	<div class="flex min-h-[60vh] w-full flex-col items-center justify-center p-6">
 		<StandardError error={page.error} />
-	{:else}
+	</div>
+{:else}
+	<div class="flex min-h-[60vh] w-full flex-col items-center justify-center p-6">
 		<p>{$_('general.unknown_error')}</p>
-	{/if}
-</div>
+	</div>
+{/if}
