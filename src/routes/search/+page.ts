@@ -3,7 +3,7 @@ import type { PageLoad } from './$types';
 import { PricesApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
-import { createProductsApi, ProductsApi } from '$lib/api/product';
+import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
 
 export const ssr = false;
 
@@ -86,9 +86,8 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const searchDataTyped = searchData as SearchResult;
 
 	// Get attributes for all products using the API
-	const productsApi = new ProductsApi(fetch);
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
-	const attributesByCode = await productsApi.getBulkProductAttributes(productCodes);
+	const attributesByCode = await getBulkProductAttributes(fetch, productCodes);
 
 	let prices: Record<string, number> = {};
 	if (isPricesConfigured()) {
