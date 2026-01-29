@@ -16,6 +16,9 @@
 	import { PRODUCT_REPORT_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
+	import { compareStore } from '$lib/stores/compareStore';
+	import { getToastCtx } from '$lib/stores/toasts';
+	import type { ProductReduced } from '$lib/api/product';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
@@ -23,6 +26,7 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 
 	type Props = {
 		product: Product;
@@ -38,6 +42,8 @@
 	let { product, taxonomies }: Props = $props();
 
 	let { lang } = $derived($preferences);
+
+	let toastCtx = getToastCtx();
 
 	let isShareSupported = $derived(navigator?.share != null);
 
@@ -73,6 +79,16 @@
 	let frontImage = $derived(
 		'image_front_url' in product ? (product.image_front_url as string) : undefined
 	);
+
+	function addToComparison() {
+		// Convert Product to ProductReduced - using type assertion since the product exists
+		const added = compareStore.addProduct(product as unknown as ProductReduced);
+		if (added) {
+			toastCtx.success('Product added to comparison');
+		} else {
+			toastCtx.warning('Product is already in comparison or comparison is full');
+		}
+	}
 </script>
 
 {#snippet loadingTaxonomy()}
@@ -132,12 +148,15 @@
 			>
 				<IconMdiCalculator class="h-5 w-5" />
 			</button>
-		</div>
-	</div>
 
-	<div class="flex flex-col-reverse gap-4 md:flex-row">
-		<div class="grid h-max w-full gap-3 md:w-3/4">
-			<!-- Quantity -->
+			<button
+				class="btn btn-secondary"
+				onclick={addToComparison}
+				title="Add to compare"
+				aria-label="Add to compare"
+			>
+				<IconMdiCompare class="h-5 w-5" />
+			</button>
 			<div class="mb-2">
 				<div class="text-secondary mb-1 text-sm font-bold">Quantity</div>
 				<div>{product.quantity}</div>
