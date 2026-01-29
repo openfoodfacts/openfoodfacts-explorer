@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 
 	import { _ } from '$lib/i18n';
-	import { createRobotoffApi, ProductsApi } from '$lib/api';
+	import { createRobotoffApi, getProductReducedForCard, getBulkProductAttributes } from '$lib/api';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
@@ -47,12 +47,10 @@
 		const roffApi = createRobotoffApi(fetch);
 		const { data: robotoffData } = await roffApi.insights({ count: INSIGHT_COUNT });
 
-		const productApi = new ProductsApi(fetch);
-
 		const insights = robotoffData?.insights ?? [];
 
 		const productsPromises = insights.map((question) =>
-			productApi.getProductReducedForCard(question.barcode.toString())
+			getProductReducedForCard(fetch, question.barcode.toString())
 		);
 		const productStates = await Promise.all(productsPromises);
 
@@ -67,9 +65,8 @@
 	}
 
 	async function getAttributes(products: ReducedState[]) {
-		const productApi = new ProductsApi(fetch);
 		const productCodes = products.map((state) => state.product.code);
-		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		const attrs = await getBulkProductAttributes(fetch, productCodes);
 		return attrs;
 	}
 
