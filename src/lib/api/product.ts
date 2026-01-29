@@ -133,13 +133,6 @@ export async function getProductReducedForCard(fetch: typeof window.fetch, barco
 	return off.getProductV3(barcode, { fields });
 }
 
-/**
- * @deprecated use ProductsApi instead
- */
-export async function getProduct(fetch: typeof window.fetch, barcode: string) {
-	return createProductsApi(fetch).getProductV3(barcode);
-}
-
 export type ProductStateBase = {
 	result: {
 		id: string;
