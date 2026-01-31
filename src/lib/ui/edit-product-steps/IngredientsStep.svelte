@@ -4,7 +4,7 @@
 	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import ImageButton from '../ImageButton.svelte';
+	import InteractiveProductImage from '../InteractiveProductImage.svelte';
 
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -118,7 +118,10 @@
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
-						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
+						<InteractiveProductImage
+							src={getIngredientsImage(code) ?? undefined}
+							productCode={product.code}
+						/>
 
 						<!-- OCR Button -->
 						<button
