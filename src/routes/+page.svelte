@@ -89,8 +89,13 @@
 	class="relative flex min-h-[480px] flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 >
 	<!-- Decorative SVG assets -->
-	<img src={heroIcons[0]} alt="hero icon" class="decorative-svg -top-10 -left-10 w-40" />
-	<img src={heroIcons[1]} alt="hero icon" class="decorative-svg -right-10 -bottom-10 w-40" />
+	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
+	<img
+		src={heroIcons[1]}
+		alt=""
+		aria-hidden="true"
+		class="decorative-svg -right-10 -bottom-10 w-40"
+	/>
 
 	<div
 		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8"
@@ -161,10 +166,6 @@
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 	<mobile-badges></mobile-badges>
 </div>
-
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
-
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
 
 <section class="container mx-auto mt-16 w-full max-w-7xl px-4">
 	<div class="mb-6 text-center">
