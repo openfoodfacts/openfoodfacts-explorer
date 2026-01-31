@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { KnowledgeElementPanelGroup, KnowledgePanel } from '$lib/api';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import InteractiveProductImage from '$lib/ui/InteractiveProductImage.svelte';
 	import Panel from './Panel.svelte';
 
 	let {
@@ -28,7 +28,7 @@
 
 	{#if groupEl.image != null}
 		<div class="md:max-w-64">
-			<ImageButton
+			<InteractiveProductImage
 				src={groupEl.image.sizes['full'].url}
 				alt={groupEl.image.alt}
 				imageid={groupEl.image.id}
