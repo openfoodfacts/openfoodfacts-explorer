@@ -64,7 +64,7 @@
 		{
 			key: 'energy-kj_100g',
 			label: `${$_('product.edit.energy')} (${$_('product.edit.si_kilojoules')})`,
-			unit: $_('product.edit')
+			unit: $_('product.edit.si_kilojoules')
 		},
 		{ key: 'fat_100g', label: $_('product.edit.nutrient.fat'), unit: $_('product.edit.si_grams') },
 		{
