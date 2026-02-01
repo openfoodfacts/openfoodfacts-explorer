@@ -8,6 +8,7 @@
 	import type { ProductReduced } from '$lib/api/product';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
 
 	type NutrientKey = string;
 
@@ -514,10 +515,10 @@
 									</button>
 									<div class="pr-8">
 										{#if product.image_front_small_url}
-											<img
+											<BlurredImageDisplay
 												src={product.image_front_small_url}
 												alt={product.product_name ?? product.code}
-												class="mx-auto mb-2 h-32 object-contain"
+												class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
 											/>
 										{/if}
 									</div>
