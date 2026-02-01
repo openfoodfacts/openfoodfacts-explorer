@@ -28,6 +28,8 @@ Wraps the <product-card> web component and adds accessibility features.
 
 	let showContextMenu = $state(false);
 	let pos = $state({ x: 0, y: 0 });
+	let contextFocusIndex = $state(0);
+
 	function contextMenu(event: MouseEvent) {
 		// if Alt/Option or Ctrl/Cmd is pressed, let the browser handle it
 		if (event.altKey || event.ctrlKey || event.metaKey) {
@@ -37,6 +39,7 @@ Wraps the <product-card> web component and adds accessibility features.
 		event.preventDefault();
 		pos = { x: event.clientX, y: event.clientY };
 		showContextMenu = true;
+		contextFocusIndex = 0;
 	}
 
 	function closeContextMenu() {
@@ -44,8 +47,35 @@ Wraps the <product-card> web component and adds accessibility features.
 		pos = { x: 0, y: 0 };
 	}
 
+	const contextItems = [
+		{
+			id: 'add-to-comparison',
+			label: $_('product.menu.add_to_comparison', { default: 'Add to comparison' }),
+			icon: IconMdiAdd,
+			action: addToComparison
+		}
+	];
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === 'ArrowDown') {
+			event.preventDefault();
+			contextFocusIndex = (contextFocusIndex + 1) % contextItems.length;
+		} else if (event.key === 'ArrowUp') {
+			event.preventDefault();
+			contextFocusIndex = (contextFocusIndex - 1 + contextItems.length) % contextItems.length;
+		} else if (event.key === 'Enter') {
+			event.preventDefault();
+			contextItems[contextFocusIndex].action();
+		} else if (event.key === 'Escape') {
+			closeContextMenu();
+		}
+	}
+
+	const toastCtx = getToastCtx();
+
 	function addToComparison() {
 		closeContextMenu();
+
 		const ok = compareStore.addProduct(product as ProductReduced);
 		if (ok) {
 			toastCtx.success(
@@ -54,15 +84,13 @@ Wraps the <product-card> web component and adds accessibility features.
 				})
 			);
 		} else {
-			toastCtx.info(
+			toastCtx.warning(
 				$_('product.menu.add_to_comparison_failed', {
 					default: 'Product is already in comparison or comparison list is full'
 				})
 			);
 		}
 	}
-
-	const toastCtx = getToastCtx();
 </script>
 
 <svelte:window
@@ -90,19 +118,24 @@ Wraps the <product-card> web component and adds accessibility features.
 
 {#if showContextMenu}
 	<div
-		role="none"
+		role="menu"
+		tabindex="-1"
 		class="bg-base-100 border-base-300 animate-in fade-in slide-in-from-top-1 fixed z-50 min-w-48 rounded-xl border shadow-2xl backdrop-blur-sm duration-200"
 		style="top: {pos.y}px; left: {pos.x}px;"
 		onmousedown={(e) => e.stopPropagation()}
+		onkeydown={handleKeyDown}
 	>
 		<div class="p-1.5">
-			<button
-				class="hover:bg-base-200 active:bg-base-300 focus:bg-base-200 focus:ring-primary flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out focus:ring-2 focus:ring-offset-1 focus:outline-none"
-				onclick={addToComparison}
-			>
-				<IconMdiAdd class="h-5 w-5 opacity-70" />
-				<span>{$_('product.menu.add_to_comparison', { default: 'Add to comparison' })}</span>
-			</button>
+			{#each contextItems as item (item.id)}
+				<button
+					role="menuitem"
+					class="hover:bg-base-200 active:bg-base-300 focus:bg-base-200 focus:ring-primary flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out focus:ring-2 focus:ring-offset-1 focus:outline-none"
+					onclick={item.action}
+				>
+					<item.icon class="h-5 w-5 opacity-70" />
+					<span>{item.label}</span>
+				</button>
+			{/each}
 		</div>
 	</div>
 {/if}
