@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { flip } from 'svelte/animate';
 
 	import Card from '$lib/ui/Card.svelte';
 	import { _ } from '$lib/i18n';
@@ -276,6 +277,8 @@
 			isWorst: novaGroup === worstGroup
 		};
 	}
+
+	let dragSrcIndex: { code: string; idx: number } | null = null;
 </script>
 
 <svelte:head>
@@ -504,8 +507,20 @@
 					<thead>
 						<tr>
 							<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
-							{#each $compareStore as product (product.code)}
-								<th class="relative">
+							{#each $compareStore as product, index (product.code)}
+								<th
+									animate:flip={{ duration: 300 }}
+									class="relative cursor-grab active:cursor-grabbing"
+									draggable="true"
+									ondragstart={() => (dragSrcIndex = { code: product.code, idx: index })}
+									ondragover={() => {
+										if (dragSrcIndex === null || dragSrcIndex.code === product.code) return;
+
+										compareStore.reorder(dragSrcIndex.idx, index);
+										dragSrcIndex = { code: product.code, idx: index };
+									}}
+									ondrop={(e) => e.preventDefault()}
+								>
 									<button
 										class="absolute top-2 right-2 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
 										onclick={() => compareStore.removeProduct(product.code)}
@@ -530,7 +545,7 @@
 						<tr>
 							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Name</td>
 							{#each $compareStore as product (product.code)}
-								<td class="text-center text-sm">
+								<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 									{product.product_name ?? '-'}
 								</td>
 							{/each}
@@ -538,19 +553,25 @@
 						<tr>
 							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Code (Barcode)</td>
 							{#each $compareStore as product (product.code)}
-								<td class="text-center font-mono text-sm">{product.code}</td>
+								<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
+									{product.code}
+								</td>
 							{/each}
 						</tr>
 						<tr>
 							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
 							{#each $compareStore as product (product.code)}
-								<td class="text-center text-sm">{product.brands ?? '-'}</td>
+								<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
+									{product.brands ?? '-'}
+								</td>
 							{/each}
 						</tr>
 						<tr>
 							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
 							{#each $compareStore as product (product.code)}
-								<td class="text-center text-sm">{product.quantity ?? '-'}</td>
+								<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
+									{product.quantity ?? '-'}
+								</td>
 							{/each}
 						</tr>
 						<tr>
@@ -561,7 +582,7 @@
 									$compareStore,
 									'nutriscore'
 								)}
-								<td>
+								<td animate:flip={{ duration: 300 }}>
 									{#if product.nutriscore_grade}
 										{@render scoreImage(
 											getNutriScoreImage(product.nutriscore_grade),
@@ -578,7 +599,7 @@
 							<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
 							{#each $compareStore as product (product.code)}
 								{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
-								<td>
+								<td animate:flip={{ duration: 300 }}>
 									{#if product.nova_group}
 										{@render scoreImage(
 											getNovaImage(product.nova_group),
@@ -599,7 +620,7 @@
 									$compareStore,
 									'ecoscore'
 								)}
-								<td>
+								<td animate:flip={{ duration: 300 }}>
 									{#if product.ecoscore_grade}
 										{@render scoreImage(
 											getGreenScoreImage(product.ecoscore_grade),
@@ -628,7 +649,7 @@
 										$compareStore,
 										index
 									)}
-									<td>
+									<td animate:flip={{ duration: 300 }}>
 										{@render nutrientValueDesktop(comparison, nutrient.unit)}
 									</td>
 								{/each}
