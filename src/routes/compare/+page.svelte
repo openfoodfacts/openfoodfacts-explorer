@@ -455,7 +455,7 @@
 											{@const comparison = getNovaComparison(product.nova_group, $compareStore)}
 											{@render scoreImage(
 												getNovaImage(product.nova_group),
-												`Nova Group ${product.nova_group}`,
+												`Ultra-processing level ${product.nova_group}`,
 												comparison.isBest
 											)}
 										{/if}
@@ -630,6 +630,14 @@
 									{:else}
 										-
 									{/if}
+								</td>
+							{/each}
+						</tr>
+						<tr>
+							<td class="bg-base-100 sticky left-0 w-40 font-semibold">N. of additives</td>
+							{#each $compareStore as product (product.code)}
+								<td class="text-center" animate:flip={{ duration: 300 }}>
+									{product.additives_n ?? '-'}
 								</td>
 							{/each}
 						</tr>
