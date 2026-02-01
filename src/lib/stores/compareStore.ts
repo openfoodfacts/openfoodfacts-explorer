@@ -22,5 +22,13 @@ export const compareStore = {
 	},
 	clear: () => {
 		compareProducts.set([]);
+	},
+	reorder: (fromIndex: number, toIndex: number) => {
+		compareProducts.update((products) => {
+			const updatedProducts = [...products];
+			const [movedProduct] = updatedProducts.splice(fromIndex, 1);
+			updatedProducts.splice(toIndex, 0, movedProduct);
+			return updatedProducts;
+		});
 	}
 };
