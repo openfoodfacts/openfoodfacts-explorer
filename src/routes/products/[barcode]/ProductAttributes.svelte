@@ -1,8 +1,15 @@
 <script lang="ts">
-	import type { ProductAttribute, ProductAttributeGroup } from '$lib/api/product';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
 	import { get } from 'svelte/store';
+	import type { AttributeV2 } from '@openfoodfacts/openfoodfacts-nodejs';
+
+	type ProductAttributeGroup = {
+		id: string;
+		name: string;
+		warning?: string;
+		attributes: AttributeV2[];
+	};
 
 	type Props = {
 		groups: ProductAttributeGroup[];
@@ -43,7 +50,7 @@
 		}
 	};
 
-	function shouldShowAttribute(attr: ProductAttribute) {
+	function shouldShowAttribute(attr: AttributeV2) {
 		const attributeId = attr.id.toLowerCase();
 
 		let preferences = get(personalizedSearch).userPreferences;

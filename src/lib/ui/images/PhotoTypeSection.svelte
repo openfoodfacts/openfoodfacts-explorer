@@ -2,7 +2,7 @@
 	import { invalidateAll } from '$app/navigation';
 
 	import { getImageFieldName } from '$lib/utils';
-	import { ProductsApi, fileToBase64 } from '$lib/api';
+	import { fileToBase64, unselectImageV3, uploadImageV3 } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -77,11 +77,8 @@
 		isUploading = true;
 
 		try {
-			const api = new ProductsApi(fetch);
-
 			const base64Data = await fileToBase64(file);
-
-			const uploadResult = await api.uploadImageV3(barcode, base64Data, imagefield);
+			const uploadResult = await uploadImageV3(fetch, barcode, base64Data, imagefield);
 
 			if (!uploadResult || uploadResult.error || !uploadResult.data) {
 				toast.error(`Upload failed: ${uploadResult}`);
@@ -135,8 +132,7 @@
 		isUnselecting = true;
 
 		try {
-			const api = new ProductsApi(fetch);
-			const result = await api.unselectImageV3(barcode, imageType, activeLanguageCode);
+			const result = await unselectImageV3(fetch, barcode, imageType, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success('Image unselected successfully');

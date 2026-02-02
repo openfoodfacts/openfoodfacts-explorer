@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 
 	import { _ } from '$lib/i18n';
-	import { createRobotoffApi, ProductsApi } from '$lib/api';
+	import { createRobotoffApi, getProductReducedForCard, getBulkProductAttributes } from '$lib/api';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
@@ -47,12 +47,10 @@
 		const roffApi = createRobotoffApi(fetch);
 		const { data: robotoffData } = await roffApi.insights({ count: INSIGHT_COUNT });
 
-		const productApi = new ProductsApi(fetch);
-
 		const insights = robotoffData?.insights ?? [];
 
 		const productsPromises = insights.map((question) =>
-			productApi.getProductReducedForCard(question.barcode.toString())
+			getProductReducedForCard(fetch, question.barcode.toString())
 		);
 		const productStates = await Promise.all(productsPromises);
 
@@ -67,9 +65,8 @@
 	}
 
 	async function getAttributes(products: ReducedState[]) {
-		const productApi = new ProductsApi(fetch);
 		const productCodes = products.map((state) => state.product.code);
-		const attrs = await productApi.getBulkProductAttributes(productCodes);
+		const attrs = await getBulkProductAttributes(fetch, productCodes);
 		return attrs;
 	}
 
@@ -92,8 +89,13 @@
 	class="relative flex min-h-[480px] flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 >
 	<!-- Decorative SVG assets -->
-	<img src={heroIcons[0]} alt="hero icon" class="decorative-svg -top-10 -left-10 w-40" />
-	<img src={heroIcons[1]} alt="hero icon" class="decorative-svg -right-10 -bottom-10 w-40" />
+	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
+	<img
+		src={heroIcons[1]}
+		alt=""
+		aria-hidden="true"
+		class="decorative-svg -right-10 -bottom-10 w-40"
+	/>
 
 	<div
 		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8"
@@ -164,10 +166,6 @@
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 	<mobile-badges></mobile-badges>
 </div>
-
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
-
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4"></div>
 
 <section class="container mx-auto mt-16 w-full max-w-7xl px-4">
 	<div class="mb-6 text-center">
