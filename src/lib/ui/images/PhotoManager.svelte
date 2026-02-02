@@ -9,9 +9,10 @@
 	import type { Product, ProductImage, RawImage } from '$lib/api';
 	import {
 		getProductImageUrl,
-		ProductsApi,
 		createImageSelectionWithCrop,
-		createSimpleImageSelection
+		createSimpleImageSelection,
+		selectAndCropImagesV3,
+		unselectImageV3
 	} from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -291,8 +292,6 @@
 		rotationAngle: number
 	) {
 		try {
-			const api = new ProductsApi(fetch);
-
 			// Always use the same API, but include crop parameters only if there's actual cropping
 			const hasCropData = cropData.width > 0 && cropData.height > 0;
 
@@ -315,7 +314,7 @@
 				params
 			);
 
-			await api.selectAndCropImagesV3(product.code, imageSelectionData);
+			await selectAndCropImagesV3(fetch, product.code, imageSelectionData);
 		} catch (error) {
 			console.error('Error processing image with selectAndCrop API:', error);
 			throw error;
@@ -337,8 +336,7 @@
 		}
 
 		try {
-			const api = new ProductsApi(fetch);
-			const result = await api.unselectImageV3(barcode, image.typeId, activeLanguageCode);
+			const result = await unselectImageV3(fetch, barcode, image.typeId, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success('Image unselected successfully');
@@ -378,14 +376,13 @@
 		isSelectingImage = true;
 
 		try {
-			const api = new ProductsApi(fetch);
 			const selectionData = createSimpleImageSelection(
 				selectingImageSection,
 				activeLanguageCode,
 				image.imgid
 			);
 
-			await api.selectAndCropImagesV3(product.code, selectionData);
+			await selectAndCropImagesV3(fetch, product.code, selectionData);
 			await invalidateAll();
 			toast.success('Image selected successfully');
 		} catch (error) {

@@ -5,12 +5,12 @@
 
 	import {
 		getOrDefault,
-		ProductsApi,
 		type SelectedImage,
 		type Taxonomy,
 		type Product,
 		type Nutriments,
-		type RawImage
+		type RawImage,
+		addOrEditProductV2
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
@@ -196,7 +196,6 @@
 		ensureNutriments();
 
 		if (value === null) {
-			// @ts-expect-error - We know this is a valid key for nutriments
 			delete product.nutriments[key];
 			product = { ...product, nutriments: { ...product.nutriments } }; // Trigger reactivity
 		} else {
@@ -218,15 +217,11 @@
 
 		console.group('Product added/edited');
 		console.debug('Submitting', product);
-
-		const ok = await new ProductsApi(fetch).addOrEditProductV2({
-			...product,
-			comment: commentValue
-		});
-		console.debug('Submitted succesfully: ', ok);
+		const submittedOk = await addOrEditProductV2(fetch, { ...product, comment: commentValue });
+		console.debug('Submitted succesfully: ', submittedOk);
 		console.groupEnd();
 
-		if (!ok) {
+		if (!submittedOk) {
 			isSubmitting = false;
 			return;
 		}
