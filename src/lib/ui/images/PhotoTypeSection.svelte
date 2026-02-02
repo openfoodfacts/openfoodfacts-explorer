@@ -14,6 +14,8 @@
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
+	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
+	import { IMAGE_REPORT_URL } from '$lib/const';
 
 	type PhotoType = { id: string; label: string };
 
@@ -253,6 +255,22 @@
 								/>
 							</div>
 						</button>
+						<div
+							class="absolute top-1 right-1 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+						>
+							<a
+								class="btn btn-circle btn-xs bg-base-100/80 hover:bg-base-100 text-base-content border-none"
+								href={IMAGE_REPORT_URL(product.code, image.imgid)}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label="Report to NutriPatrol"
+								title="Report to NutriPatrol"
+								onclick={(e) => e.stopPropagation()}
+							>
+								<IconMdiFlagOutline class="h-3.5 w-3.5" />
+							</a>
+						</div>
+
 						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
 							<a href={resolve('/users/[user]', { user: image.uploader })} class="hover:underline">
 								{image.uploader}
