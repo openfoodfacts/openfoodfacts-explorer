@@ -3,8 +3,8 @@
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
-	type Props = { src?: string; alt?: string; imageid?: number; productCode?: string };
-	let { src, alt, imageid, productCode }: Props = $props();
+	type Props = { src?: string; alt?: string; rawImageId?: number; productCode?: string };
+	let { src, alt, rawImageId, productCode }: Props = $props();
 
 	let modal: ImageModal;
 
@@ -13,8 +13,8 @@
 	}
 
 	// Extract image ID from URL if not provided
-	let derivedImageId = $derived.by(() => {
-		if (imageid != null) return imageid;
+	let imageId = $derived.by(() => {
+		if (rawImageId != null) return rawImageId;
 		if (src == null) return undefined;
 		const match = src.match(/\/(\d+)\.(full|400|200|100)\.jpg/);
 		return match ? parseInt(match[1]) : undefined;
@@ -24,7 +24,7 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, derivedImageId, productCode);
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode);
 	});
 </script>
 
@@ -45,11 +45,11 @@
 		{/if}
 	</button>
 
-	{#if derivedImageId && productCode}
+	{#if imageId && productCode}
 		<div class="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100">
 			<a
 				class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100"
-				href={IMAGE_REPORT_URL(productCode, derivedImageId)}
+				href={IMAGE_REPORT_URL(productCode, imageId)}
 				target="_blank"
 				rel="noopener"
 				aria-label="Report to NutriPatrol"

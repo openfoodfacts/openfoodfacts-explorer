@@ -31,7 +31,7 @@
 			<ImageButton
 				src={groupEl.image.sizes['full'].url}
 				alt={groupEl.image.alt}
-				imageid={groupEl.image.id}
+				rawImageId={groupEl.image.id}
 				productCode={code}
 			/>
 		</div>
