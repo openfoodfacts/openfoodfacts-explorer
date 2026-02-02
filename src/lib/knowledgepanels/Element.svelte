@@ -3,7 +3,7 @@
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 
 	import Debug from '$lib/ui/Debug.svelte';
-	import InteractiveProductImage from '$lib/ui/InteractiveProductImage.svelte';
+	import ImageButton from '$lib/ui/ImageButton.svelte';
 
 	import Panel from './Panel.svelte';
 	import Map from './Map.svelte';
@@ -40,7 +40,7 @@
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
-		<InteractiveProductImage
+		<ImageButton
 			src={element.image_element.url}
 			alt={element.image_element.alt_text}
 			{productCode}

@@ -13,7 +13,7 @@
 	}
 
 	// Extract image ID from URL if not provided
-	let derivedImageId = $derived.by(() => {
+	let imageIdFromUrl = $derived.by(() => {
 		if (imageid != null) return imageid;
 		if (src == null) return undefined;
 		const match = src.match(/\/(\d+)\.(full|400|200|100)\.jpg/);
@@ -24,7 +24,7 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, derivedImageId, productCode);
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageIdFromUrl, productCode);
 	});
 </script>
 
@@ -45,11 +45,11 @@
 		{/if}
 	</button>
 
-	{#if derivedImageId && productCode}
+	{#if imageIdFromUrl && productCode}
 		<div class="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100">
 			<a
 				class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100"
-				href={IMAGE_REPORT_URL(productCode, derivedImageId)}
+				href={IMAGE_REPORT_URL(productCode, imageIdFromUrl)}
 				target="_blank"
 				rel="noopener"
 				aria-label="Report to NutriPatrol"

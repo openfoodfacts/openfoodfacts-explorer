@@ -17,7 +17,7 @@
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import Card from '$lib/ui/Card.svelte';
-	import InteractiveProductImage from '$lib/ui/InteractiveProductImage.svelte';
+	import ImageButton from '$lib/ui/ImageButton.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
@@ -280,11 +280,8 @@
 		<div
 			class="m-4 flex h-auto min-h-[40vh] items-start justify-center max-md:min-h-[30vh] md:w-1/4"
 		>
-			<InteractiveProductImage
-				src={frontImage}
-				alt={product.product_name}
-				productCode={product.code}
-			/>
+			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
 		</div>
 	</div>
 </Card>
+```

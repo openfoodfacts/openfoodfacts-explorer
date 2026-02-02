@@ -12,7 +12,7 @@
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 
-	import InteractiveProductImage from '../InteractiveProductImage.svelte';
+	import ImageButton from '../ImageButton.svelte';
 	import { analyzeNutrition } from './nutrition';
 
 	type Props = {
@@ -417,7 +417,7 @@
 					</p>
 				{:else}
 					<div class="sticky top-4">
-						<InteractiveProductImage
+						<ImageButton
 							src={nutritionImage ?? undefined}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
 							productCode={product.code}
