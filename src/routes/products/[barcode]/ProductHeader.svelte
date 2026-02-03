@@ -299,7 +299,7 @@
 		<div
 			class="m-4 flex h-auto min-h-[40vh] items-start justify-center max-md:min-h-[30vh] md:w-1/4"
 		>
-			<ImageButton src={frontImage} alt={product.product_name} />
+			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
 		</div>
 	</div>
 </Card>
