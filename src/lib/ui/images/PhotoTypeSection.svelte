@@ -3,7 +3,6 @@
 
 	import { getImageFieldName } from '$lib/utils';
 	import { fileToBase64, unselectImageV3, uploadImageV3 } from '$lib/api';
-	import { preferences } from '$lib/settings';
 	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { getLanguageName } from '$lib/languages';
@@ -16,6 +15,7 @@
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	type PhotoType = { id: string; label: string };
 
@@ -67,10 +67,8 @@
 		// Map type to OpenFoodFacts imagefield value using utility function
 		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
 		const barcode = product.code;
-		const user_id = $preferences.username;
-		const password = $preferences.password;
 
-		if (!user_id || !password) {
+		if ($userInfo == null) {
 			toast.warning('Please set your OpenFoodFacts username and password in settings.');
 			return;
 		}
