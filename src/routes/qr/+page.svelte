@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+	import type { Html5Qrcode } from 'html5-qrcode';
 
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
@@ -54,11 +54,13 @@
 		);
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			error = 'Your browser does not support the camera API';
 			return;
 		}
+
+		const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
 
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,

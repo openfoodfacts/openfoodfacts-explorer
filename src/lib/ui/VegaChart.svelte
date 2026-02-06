@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import * as vegaLite from 'vega-lite';
-	import * as vega from 'vega';
+	import type { Spec } from 'vega';
+	import type { TopLevelSpec } from 'vega-lite';
 
 	type Props = {
-		spec: vega.Spec | vegaLite.TopLevelSpec;
+		spec: Spec | TopLevelSpec;
 		title?: string;
 	};
 
@@ -13,8 +13,11 @@
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
 
-	function updateSpec(spec: vega.Spec | vegaLite.TopLevelSpec) {
+	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
+
+		const vega = await import('vega');
+		const vegaLite = await import('vega-lite');
 
 		isLoading = true;
 		error = null;
@@ -22,9 +25,7 @@
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
 
-			let compiledSpec = isVegaLite
-				? vegaLite.compile(spec as vegaLite.TopLevelSpec).spec
-				: (spec as vega.Spec);
+			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			const runtime = vega.parse(compiledSpec);
 			if (!runtime) {
@@ -37,10 +38,8 @@
 				hover: true
 			});
 
-			(async () => {
-				await view.runAsync();
-				isLoading = false;
-			})();
+			await view.runAsync();
+			isLoading = false;
 		} catch (err) {
 			console.error('Chart rendering error:', err);
 			error = err instanceof Error ? err.message : 'Chart failed to load';
@@ -48,7 +47,9 @@
 		}
 	}
 
-	$effect(() => updateSpec(spec));
+	$effect(() => {
+		updateSpec(spec);
+	});
 </script>
 
 <div class="mb-4">
