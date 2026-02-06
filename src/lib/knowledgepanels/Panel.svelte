@@ -99,7 +99,7 @@
 </div>
 
 <style lang="postcss">
-	@reference '../../app.css';
+	@reference 'tailwindcss';
 
 	@media (prefers-color-scheme: dark) {
 		.kp-icon-from-eval {
