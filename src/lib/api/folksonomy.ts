@@ -2,6 +2,7 @@ import { preferences } from '$lib/settings';
 import { get } from 'svelte/store';
 
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
+import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
 
 const BASE_URL = import.meta.env.VITE_FOLKSONOMY_API_URL;
 
@@ -10,11 +11,8 @@ export function isConfigured() {
 }
 
 export function createFolksonomyApi(fetch: typeof window.fetch): Folksonomy {
-	const folksonomyApi = new Folksonomy(fetch, {
-		baseUrl: BASE_URL,
-		authToken: `${get(preferences).folksonomy.authToken}`
-	});
-	return folksonomyApi;
+	const wrappedFetch = wrapFetchWithAuth(fetch);
+	return new Folksonomy(wrappedFetch, { baseUrl: BASE_URL });
 }
 
 // TODO: move to SDK
@@ -26,11 +24,4 @@ export async function getFolksonomyValues(fetch: typeof window.fetch, key: strin
 		return [];
 	}
 	return response.data;
-}
-
-export function updateFolksonomyAuthToken(token: string | null) {
-	preferences.update((p) => ({
-		...p,
-		folksonomy: { ...p.folksonomy, authToken: token }
-	}));
 }
