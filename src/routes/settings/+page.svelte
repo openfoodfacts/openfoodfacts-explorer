@@ -6,11 +6,10 @@
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
-	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';
-	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
 	import IconMaterialPublic from '@iconify-svelte/material-symbols/public';
 	import IconMaterialUniversalCurrencyAlt from '@iconify-svelte/material-symbols/universal-currency-alt';
@@ -22,30 +21,31 @@
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
-	let { loginStatus } = $derived(data);
 
-	let isFolksonomyAuthenticated = $derived($preferences.folksonomy.authToken !== null);
+	let isAdmin = $derived($userInfo?.roles?.includes('admin') ?? false);
+	let isModerator = $derived($userInfo?.roles?.includes('moderator') ?? false);
 </script>
 
 <div class="mx-auto my-8">
 	<p class="mb-4 font-semibold">{$_('settings.section_user')}</p>
-	{#if loginStatus?.user}
+	{#if $userInfo}
 		<p class="mb-4 text-center text-xl font-medium">
-			{$_('settings.logged_in_as', { values: { username: loginStatus.user.name } })}
+			{$_('settings.logged_in_as', { values: { username: $userInfo.preferred_username } })}
 		</p>
 		<div class="flex justify-center gap-2">
-			{#if loginStatus.user.admin}
+			{#if isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.admin')}</span>
 				</span>
 			{/if}
-			{#if loginStatus.user.moderator}
+			{#if isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.moderator')}</span>
 				</span>
-			{:else}
+			{/if}
+			{#if !isAdmin && !isModerator}
 				<span class="badge badge-accent badge-xl">
 					<IconMdiAccount class="h-4 w-4" />
 					<span class="">{$_('auth.user')}</span>
@@ -57,20 +57,6 @@
 	{/if}
 
 	<div class="divider my-4"></div>
-
-	<div class="mt-4 mb-2 text-center text-sm font-medium">
-		{#if isFolksonomyAuthenticated}
-			<div class="text-success my-2">
-				<IconMdiCheckCircle class="mr-1 h-4 w-4" />
-				{$_('Folksonomy API: Authenticated')}
-			</div>
-		{:else}
-			<span class="text-error">
-				<IconMdiAlertCircle class="mr-1 h-4 w-4" />
-				{$_('Folksonomy API: Not authenticated')}
-			</span>
-		{/if}
-	</div>
 
 	<p class="mb-4 font-semibold">{$_('settings.news')}</p>
 	<news-feed
