@@ -110,7 +110,7 @@
 			<!-- Header Section: Title & Actions -->
 			<div class="flex flex-col gap-8">
 				<h1
-					class="text-center text-3xl leading-tight font-bold break-words md:text-left md:text-4xl"
+					class="text-center text-3xl leading-tight font-bold wrap-break-word md:text-left md:text-4xl"
 				>
 					{product.product_name ?? '[' + product.code + ']'}
 				</h1>
@@ -191,7 +191,7 @@
 							{@render loadingTaxonomy()}
 						{:then brands}
 							{#each product.brands_tags ?? [] as tag, i (i)}
-								<a class="badge break-words" href="/facets/brands/{tag}">
+								<a class="badge wrap-break-word" href="/facets/brands/{tag}">
 									{localizedTaxoName(brands, tag)}
 								</a>
 							{/each}
@@ -207,7 +207,7 @@
 							{@render loadingTaxonomy()}
 						{:then categories}
 							{#each product.categories_tags ?? [] as tag (tag)}
-								<a class="badge badge-secondary break-words" href="/facets/categories/{tag}">
+								<a class="badge badge-secondary wrap-break-word" href="/facets/categories/{tag}">
 									{localizedTaxoName(categories, tag)}
 								</a>
 							{/each}
@@ -223,7 +223,7 @@
 							{@render loadingTaxonomy()}
 						{:then labels}
 							{#each product.labels_tags ?? [] as tag, i (i)}
-								<a class="badge break-words" href="/facets/labels/{tag}">
+								<a class="badge wrap-break-word" href="/facets/labels/{tag}">
 									{localizedTaxoName(labels, tag)}
 								</a>
 							{/each}
@@ -241,7 +241,7 @@
 							{:then origins}
 								<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
 								{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-									<a class="badge break-words" href="/facets/origin/{tag}">
+									<a class="badge wrap-break-word" href="/facets/origin/{tag}">
 										{localizedTaxoName(origins, tag)}
 									</a>
 								{/each}
@@ -262,7 +262,7 @@
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono break-words" href="/facets/packager-codes/{tag}">
+								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
 									{tag.toUpperCase()}
 								</a>
 							{/each}
@@ -293,7 +293,7 @@
 							{@render loadingTaxonomy()}
 						{:then stores}
 							{#each product.stores_tags ?? [] as tag, i (i)}
-								<span class="badge break-words">
+								<span class="badge wrap-break-word">
 									{localizedTaxoName(stores, tag)}
 								</span>
 							{/each}
@@ -308,7 +308,7 @@
 							{@render loadingTaxonomy()}
 						{:then countries}
 							{#each product.countries_tags ?? [] as tag, i (i)}
-								<a class="badge break-words" href="/facets/countries/{tag}">
+								<a class="badge wrap-break-word" href="/facets/countries/{tag}">
 									{localizedTaxoName(countries, tag)}
 								</a>
 							{/each}
