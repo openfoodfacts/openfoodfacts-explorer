@@ -38,6 +38,6 @@
 
 	/* border radius */
 	--radius-selector: 1rem;
-	--radius-field: 0.5rem;
+	--radius-field: 1rem;
 	--radius-box: 0.5rem;
 }
