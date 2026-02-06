@@ -222,7 +222,7 @@
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
 				>
-					<IconMdiCog class="text-2xl" />
+					<IconMdiCog class="w-6" />
 				</a>
 				<!-- Shortcuts button -->
 				<button
@@ -231,7 +231,7 @@
 					aria-label={$_('help.button')}
 					onclick={() => shortcutsComp.show()}
 				>
-					<IconMdiHelpCircleOutline class="text-2xl" />
+					<IconMdiHelpCircleOutline class="w-6" />
 				</button>
 			</div>
 		</div>
