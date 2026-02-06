@@ -62,13 +62,8 @@ export async function addOrEditProductV2(
 	product: Product & { comment?: string }
 ) {
 	const off = createProductsApi(fetch);
-	const username = get(preferences).username;
-	const password = get(preferences).password;
-
-	if (!username || !password) throw new Error('No username or password set');
-
 	// @ts-expect-error - we should use v3
-	return off.addOrEditProductV2(product, { password, username });
+	return off.addOrEditProductV2(product);
 }
 
 /**
@@ -84,16 +79,12 @@ export async function uploadImageV3(
 	imagefield?: string
 ) {
 	const off = createProductsApi(fetch);
-	const user_id = get(preferences).username ?? undefined;
-	const password = get(preferences).password ?? undefined;
 	const lc = get(preferences).lang;
 	const cc = get(preferences).country;
 
 	return off.apiv3.uploadProductImage(barcode, {
 		lc,
 		cc,
-		user_id: user_id,
-		password: password,
 		image_data_base64: imageDataBase64,
 		...(imagefield && {
 			selected: {
