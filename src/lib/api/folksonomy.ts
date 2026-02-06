@@ -1,6 +1,3 @@
-import { preferences } from '$lib/settings';
-import { get } from 'svelte/store';
-
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
 
