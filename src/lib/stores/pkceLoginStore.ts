@@ -1,6 +1,7 @@
 import { OAUTH_CLIENT_ID, KEYCLOAK_URL, OAUTH_REDIRECT_URI } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
 import { derived, get } from 'svelte/store';
+import { decodeJwt } from 'jose';
 
 export type AuthTokens = {
 	access_token: string;
@@ -145,16 +146,7 @@ export function clearAuthTokens() {
 	userAuthTokens.set(null);
 }
 
-function parseJWT<T extends Record<string, unknown>>(token: string): T {
-	const payload = token.split('.')[1];
-	const decoded = atob(payload);
-	return JSON.parse(decoded) as T;
-}
-
-type JWTPayload = {
-	exp: number;
-	iat: number;
-};
+const CLOCK_SKEW_SECONDS = 30;
 
 /**
  * Checks if the access token is expired or will expire soon.
@@ -164,12 +156,17 @@ type JWTPayload = {
  */
 export function isTokenExpired(tokens: AuthTokens, bufferSeconds = 60): boolean {
 	try {
-		const payload = parseJWT<JWTPayload>(tokens.access_token);
+		const payload = decodeJwt(tokens.access_token);
+
+		// If exp is missing, treat token as invalid
+		if (!payload.exp) {
+			return true;
+		}
+
 		const nowInSeconds = Math.floor(Date.now() / 1000);
-		return nowInSeconds >= payload.exp - bufferSeconds;
+		return nowInSeconds >= payload.exp - bufferSeconds - CLOCK_SKEW_SECONDS;
 	} catch (error) {
 		console.error('Failed to parse token expiration:', error);
-		// If we can't parse the token, consider it expired
 		return true;
 	}
 }
@@ -200,7 +197,7 @@ function parseIdToken(idToken: string): UserInfo {
 	}
 
 	try {
-		const token = parseJWT<KeycloakToken>(idToken);
+		const token = decodeJwt<KeycloakToken>(idToken);
 		return {
 			preferred_username: token.preferred_username,
 			email: token.email,
