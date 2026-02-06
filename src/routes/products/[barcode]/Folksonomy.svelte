@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { preferences } from '$lib/settings';
-
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
 	import { slide } from 'svelte/transition';
