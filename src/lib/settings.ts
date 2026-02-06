@@ -9,9 +9,7 @@ const DEFAULT_PREFERENCES = {
 	nutriscoreInfluence: 50,
 	ecoscoreInfluence: 50,
 	novaGroupInfluence: 50,
-	folksonomy: {
-		authToken: null as string | null
-	},
+
 	prices: {
 		authToken: null as string | null
 	},
@@ -81,6 +79,9 @@ const MIGRATIONS: {
 			}
 			if ('password' in preferences) {
 				delete preferences.password;
+			}
+			if ('folksonomy' in preferences) {
+				delete preferences.folksonomy;
 			}
 			return preferences;
 		}
