@@ -96,210 +96,226 @@
 {/snippet}
 
 <Card>
-	<div
-		class="flex flex-col gap-2 max-md:mb-4 max-md:text-center md:flex-row md:items-center md:justify-between"
-	>
-		<h1 class="my-4 grow text-3xl leading-tight font-bold break-words md:text-4xl">
-			{product.product_name ?? '[' + product.code + ']'}
-		</h1>
+	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
+		<!-- 1. Image Column (Visual Anchor) -->
+		<!-- Left on Desktop, Top on Mobile -->
+		<div
+			class="mx-auto flex w-full max-w-[200px] shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
+		>
+			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
+		</div>
 
-		<div class="flex flex-wrap items-center justify-center gap-2 md:justify-end">
-			<a
-				href={'https://world.openfoodfacts.org/product/' + product.code}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-secondary"
-			>
-				{$_('product.buttons.classic_view')}
-			</a>
+		<!-- 2. Content Column -->
+		<div class="flex min-w-0 flex-1 flex-col gap-8">
+			<!-- Header Section: Title & Actions -->
+			<div class="flex flex-col gap-8">
+				<h1
+					class="text-center text-3xl leading-tight font-bold break-words md:text-left md:text-4xl"
+				>
+					{product.product_name ?? '[' + product.code + ']'}
+				</h1>
 
-			<a
-				href={`/products/${product.code}/edit`}
-				class="btn btn-secondary"
-				class:pointer-events-none={navigating.to}
-			>
-				<IconMdiPencil class="h-5 w-5" />
-				<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
-			</a>
+				<!-- Action Toolbar -->
+				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
+					<a
+						href={'https://world.openfoodfacts.org/product/' + product.code}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-secondary btn-sm md:btn-md"
+					>
+						{$_('product.buttons.classic_view')}
+					</a>
 
-			{#if isShareSupported}
-				<button class="btn btn-secondary flex items-center gap-2" onclick={sharePage}>
-					<IconMdiShareVariant class="h-5 w-5" />
-					<span class="hidden md:block">{$_('product.buttons.share')}</span>
-				</button>
-			{/if}
+					<a
+						href={`/products/${product.code}/edit`}
+						class="btn btn-secondary btn-sm md:btn-md"
+						class:pointer-events-none={navigating.to}
+					>
+						<IconMdiPencil class="h-5 w-5" />
+						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
+					</a>
 
-			<a
-				class="btn btn-secondary flex items-center gap-2"
-				href={PRODUCT_REPORT_URL(product.code!)}
-				target="_blank"
-				rel="noopener noreferrer"
-				title="Report an issue with this product"
-				aria-label="Report an issue with this product"
-			>
-				<IconMdiFlag class="h-5 w-5" />
-			</a>
+					{#if isShareSupported}
+						<button
+							class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+							onclick={sharePage}
+						>
+							<IconMdiShareVariant class="h-5 w-5" />
+							<span class="hidden md:block">{$_('product.buttons.share')}</span>
+						</button>
+					{/if}
 
-			<button
-				class="btn btn-secondary"
-				onclick={addToCalculator}
-				title="Add product to nutritional calculator"
-				aria-label="Add product to nutritional calculator"
-			>
-				<IconMdiCalculator class="h-5 w-5" />
-			</button>
+					<a
+						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						href={PRODUCT_REPORT_URL(product.code!)}
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Report an issue with this product"
+						aria-label="Report an issue with this product"
+					>
+						<IconMdiFlag class="h-5 w-5" />
+					</a>
 
-			<button
-				class="btn btn-secondary"
-				onclick={addToComparison}
-				title="Add to compare"
-				aria-label="Add to compare"
-			>
-				<IconMdiCompare class="h-5 w-5" />
-			</button>
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Quantity</div>
-				<div>{product.quantity}</div>
-			</div>
+					<button
+						class="btn btn-secondary btn-sm md:btn-md"
+						onclick={addToCalculator}
+						title="Add product to nutritional calculator"
+						aria-label="Add product to nutritional calculator"
+					>
+						<IconMdiCalculator class="h-5 w-5" />
+					</button>
 
-			<!-- Brands -->
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Brands</div>
-				<div class="flex flex-wrap gap-1">
-					{#await taxonomies.brands}
-						{@render loadingTaxonomy()}
-					{:then brands}
-						{#each product.brands_tags ?? [] as tag, i (i)}
-							<a class="badge break-words" href="/facets/brands/{tag}">
-								{localizedTaxoName(brands, tag)}
-							</a>
-						{/each}
-					{/await}
+					<button
+						class="btn btn-secondary btn-sm md:btn-md"
+						onclick={addToComparison}
+						title="Add to compare"
+						aria-label="Add to compare"
+					>
+						<IconMdiCompare class="h-5 w-5" />
+					</button>
 				</div>
 			</div>
 
-			<!-- Categories -->
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Categories</div>
-				<div class="flex flex-wrap gap-1">
-					{#await taxonomies.categories}
-						{@render loadingTaxonomy()}
-					{:then categories}
-						{#each product.categories_tags ?? [] as tag (tag)}
-							<a class="badge badge-secondary break-words" href="/facets/categories/{tag}">
-								{localizedTaxoName(categories, tag)}
-							</a>
-						{/each}
-					{/await}
-				</div>
-			</div>
-
-			<!-- Labels -->
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Labels</div>
-				<div class="flex flex-wrap gap-1">
-					{#await taxonomies.labels}
-						{@render loadingTaxonomy()}
-					{:then labels}
-						{#each product.labels_tags ?? [] as tag, i (i)}
-							<a class="badge break-words" href="/facets/labels/{tag}">
-								{localizedTaxoName(labels, tag)}
-							</a>
-						{/each}
-					{/await}
-				</div>
-			</div>
-
-			<!-- Origins -->
-			{#if product.origins_tags != null && product.origins_tags.length > 0}
+			<!-- Metadata Body -->
+			<div class="flex flex-col gap-3 text-center md:text-left">
 				<div class="mb-2">
-					<div class="text-secondary mb-1 text-sm font-bold">Origins</div>
-					<div class="flex flex-wrap gap-1">
-						{#await taxonomies.origins}
+					<div class="text-secondary mb-2 text-sm font-bold">Quantity</div>
+					<div>{product.quantity}</div>
+				</div>
+
+				<!-- Brands -->
+				<div class="mb-2">
+					<div class="text-secondary mb-2 text-sm font-bold">Brands</div>
+					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+						{#await taxonomies.brands}
 							{@render loadingTaxonomy()}
-						{:then origins}
-							<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
-							{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-								<a class="badge break-words" href="/facets/origin/{tag}">
-									{localizedTaxoName(origins, tag)}
+						{:then brands}
+							{#each product.brands_tags ?? [] as tag, i (i)}
+								<a class="badge break-words" href="/facets/brands/{tag}">
+									{localizedTaxoName(brands, tag)}
 								</a>
 							{/each}
 						{/await}
 					</div>
 				</div>
-			{/if}
 
-			<!-- Traceability Codes -->
-			{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
+				<!-- Categories -->
 				<div class="mb-2">
-					<div class="text-secondary mb-1 text-sm font-bold">
-						<span> Traceability Codes </span>
-						<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
-							(Learn more)
+					<div class="text-secondary mb-2 text-sm font-bold">Categories</div>
+					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+						{#await taxonomies.categories}
+							{@render loadingTaxonomy()}
+						{:then categories}
+							{#each product.categories_tags ?? [] as tag (tag)}
+								<a class="badge badge-secondary break-words" href="/facets/categories/{tag}">
+									{localizedTaxoName(categories, tag)}
+								</a>
+							{/each}
+						{/await}
+					</div>
+				</div>
+
+				<!-- Labels -->
+				<div class="mb-2">
+					<div class="text-secondary mb-2 text-sm font-bold">Labels</div>
+					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+						{#await taxonomies.labels}
+							{@render loadingTaxonomy()}
+						{:then labels}
+							{#each product.labels_tags ?? [] as tag, i (i)}
+								<a class="badge break-words" href="/facets/labels/{tag}">
+									{localizedTaxoName(labels, tag)}
+								</a>
+							{/each}
+						{/await}
+					</div>
+				</div>
+
+				<!-- Origins -->
+				{#if product.origins_tags != null && product.origins_tags.length > 0}
+					<div class="mb-2">
+						<div class="text-secondary mb-2 text-sm font-bold">Origins</div>
+						<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+							{#await taxonomies.origins}
+								{@render loadingTaxonomy()}
+							{:then origins}
+								<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
+								{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
+									<a class="badge break-words" href="/facets/origin/{tag}">
+										{localizedTaxoName(origins, tag)}
+									</a>
+								{/each}
+							{/await}
+						</div>
+					</div>
+				{/if}
+
+				<!-- Traceability Codes -->
+				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
+					<div class="mb-2">
+						<div class="text-secondary mb-2 text-sm font-bold">
+							<span> Traceability Codes </span>
+							<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
+								(Learn more)
+							</a>
+						</div>
+
+						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
+							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
+								<a class="badge font-mono break-words" href="/facets/packager-codes/{tag}">
+									{tag.toUpperCase()}
+								</a>
+							{/each}
+						</div>
+					</div>
+				{/if}
+
+				{#if product.link != null}
+					<div class="mb-2">
+						<div class="text-secondary mb-2 text-sm font-bold">Producer link</div>
+						<a
+							class="link break-all"
+							href={product.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							title="View product on Open Food Facts"
+							aria-label="View product on Open Food Facts"
+						>
+							{product.link}
 						</a>
 					</div>
+				{/if}
 
-					<div class="flex flex-wrap items-center gap-2">
-						{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-							<a class="badge font-mono break-words" href="/facets/packager-codes/{tag}">
-								{tag.toUpperCase()}
-							</a>
-						{/each}
+				<div class="mb-2">
+					<div class="text-secondary mb-2 text-sm font-bold">Stores</div>
+					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+						{#await taxonomies.stores}
+							{@render loadingTaxonomy()}
+						{:then stores}
+							{#each product.stores_tags ?? [] as tag, i (i)}
+								<span class="badge break-words">
+									{localizedTaxoName(stores, tag)}
+								</span>
+							{/each}
+						{/await}
 					</div>
 				</div>
-			{/if}
 
-			{#if product.link != null}
 				<div class="mb-2">
-					<div class="text-secondary mb-1 text-sm font-bold">Producer link</div>
-					<a
-						class="link break-words"
-						href={product.link}
-						target="_blank"
-						rel="noopener noreferrer"
-						title="View product on Open Food Facts"
-						aria-label="View product on Open Food Facts"
-					>
-						{product.link}
-					</a>
-				</div>
-			{/if}
-
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Stores</div>
-				<div class="flex flex-wrap gap-1">
-					{#await taxonomies.stores}
-						{@render loadingTaxonomy()}
-					{:then stores}
-						{#each product.stores_tags ?? [] as tag, i (i)}
-							<span class="badge break-words">
-								{localizedTaxoName(stores, tag)}
-							</span>
-						{/each}
-					{/await}
+					<div class="text-secondary mb-2 text-sm font-bold">Countries</div>
+					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+						{#await taxonomies.countries}
+							{@render loadingTaxonomy()}
+						{:then countries}
+							{#each product.countries_tags ?? [] as tag, i (i)}
+								<a class="badge break-words" href="/facets/countries/{tag}">
+									{localizedTaxoName(countries, tag)}
+								</a>
+							{/each}
+						{/await}
+					</div>
 				</div>
 			</div>
-
-			<div class="mb-2">
-				<div class="text-secondary mb-1 text-sm font-bold">Countries</div>
-				<div class="flex flex-wrap gap-1">
-					{#await taxonomies.countries}
-						{@render loadingTaxonomy()}
-					{:then countries}
-						{#each product.countries_tags ?? [] as tag, i (i)}
-							<a class="badge break-words" href="/facets/countries/{tag}">
-								{localizedTaxoName(countries, tag)}
-							</a>
-						{/each}
-					{/await}
-				</div>
-			</div>
-		</div>
-
-		<div
-			class="m-4 flex h-auto min-h-[40vh] items-start justify-center max-md:min-h-[30vh] md:w-1/4"
-		>
-			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
 		</div>
 	</div>
 </Card>
