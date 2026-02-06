@@ -2,7 +2,6 @@
 	import * as publicEnv from '$env/dynamic/public';
 
 	import { preferences } from '$lib/settings';
-	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
@@ -11,17 +10,14 @@
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';
-	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
 	import IconMaterialPublic from '@iconify-svelte/material-symbols/public';
 	import IconMaterialUniversalCurrencyAlt from '@iconify-svelte/material-symbols/universal-currency-alt';
-	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiGithub from '@iconify-svelte/mdi/github';
 	import IconMdiTools from '@iconify-svelte/mdi/tools';
 
 	import type { PageProps } from './$types';
-	import { createProductsApi } from '$lib/api';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
@@ -29,65 +25,6 @@
 	let { loginStatus } = $derived(data);
 
 	let isFolksonomyAuthenticated = $derived($preferences.folksonomy.authToken !== null);
-
-	type LoginResult = { success: false; error: string } | { success: true };
-
-	// Login Process
-	let isLoggingIn: boolean = $state(false);
-	let folksonomyLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
-	let productLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
-
-	async function login() {
-		const { username, password } = $preferences;
-		if (username == null || password == null) throw new Error('Username or password is null');
-
-		isLoggingIn = true;
-		try {
-			folksonomyLoginStatus = loginToFolksonomy(username, password);
-			productLoginStatus = loginToPO(username, password);
-			await Promise.all([folksonomyLoginStatus, productLoginStatus]);
-		} finally {
-			isLoggingIn = false;
-		}
-
-		setTimeout(() => {
-			folksonomyLoginStatus = undefined;
-			productLoginStatus = undefined;
-		}, 5000);
-	}
-
-	async function loginToPO(username: string, password: string): Promise<LoginResult> {
-		const { data, error } = await createProductsApi(fetch).apiv2.client.POST('/cgi/session.pl', {
-			body: { user_id: username, password: password }
-		});
-
-		if (error || !data) {
-			return { success: false, error: 'Login failed' };
-		}
-
-		return { success: true };
-	}
-
-	async function loginToFolksonomy(username: string, password: string): Promise<LoginResult> {
-		const folksonomyApi = createFolksonomyApi(fetch);
-		const { data, error } = await folksonomyApi.login(username, password);
-		if (error || !data) {
-			updateFolksonomyAuthToken(null);
-			return { success: false, error: 'Login failed' };
-		}
-
-		updateFolksonomyAuthToken(data.access_token);
-		return { success: true };
-	}
-
-	function logout() {
-		preferences.update((p) => ({
-			...p,
-			folksonomy: { ...p.folksonomy, authToken: null },
-			username: null,
-			password: null
-		}));
-	}
 </script>
 
 <div class="mx-auto my-8">
@@ -127,10 +64,6 @@
 				<IconMdiCheckCircle class="mr-1 h-4 w-4" />
 				{$_('Folksonomy API: Authenticated')}
 			</div>
-			<button class="btn btn-xs btn-outline ml-2" onclick={logout}>
-				<IconMdiLogout class="mr-1 h-4 w-4" />
-				{$_('auth.signout')}
-			</button>
 		{:else}
 			<span class="text-error">
 				<IconMdiAlertCircle class="mr-1 h-4 w-4" />
