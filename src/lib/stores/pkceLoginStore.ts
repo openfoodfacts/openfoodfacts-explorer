@@ -177,6 +177,16 @@ export function isTokenExpired(tokens: AuthTokens, bufferSeconds = 60): boolean 
 export type UserInfo = {
 	preferred_username: string;
 	email: string;
+	roles?: string[];
+};
+
+type KeycloakToken = {
+	preferred_username: string;
+	email: string;
+	realm_access?: {
+		roles: string[];
+	};
+	resource_access?: Record<string, { roles: string[] }>;
 };
 
 /**
@@ -184,13 +194,18 @@ export type UserInfo = {
  * @param idToken - the ID token from the JWT.
  * @returns the parsed user information.
  */
-function parseIdToken(idToken: string) {
+function parseIdToken(idToken: string): UserInfo {
 	if (!idToken) {
 		throw new Error('ID token is required for parsing');
 	}
 
 	try {
-		return parseJWT<UserInfo>(idToken);
+		const token = parseJWT<KeycloakToken>(idToken);
+		return {
+			preferred_username: token.preferred_username,
+			email: token.email,
+			roles: token.realm_access?.roles || []
+		};
 	} catch (error) {
 		throw new Error(`Failed to parse ID token: ${error}`);
 	}
