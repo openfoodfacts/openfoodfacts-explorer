@@ -234,7 +234,11 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 			const url = new URL(window.location.href);
 			const validTokens = await ensureValidToken(url);
 
-			const headers = new Headers(init?.headers);
+			const headers = new Headers(input instanceof Request ? input.headers : undefined);
+			if (init?.headers) {
+				const initHeaders = new Headers(init.headers);
+				initHeaders.forEach((value, key) => headers.set(key, value));
+			}
 			headers.set('Authorization', 'Bearer ' + validTokens.access_token);
 
 			const response = await fetch(input, { ...init, headers });
