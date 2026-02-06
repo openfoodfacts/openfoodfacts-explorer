@@ -3,40 +3,6 @@ import { get } from 'svelte/store';
 
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
-// TODO: remove this import when the nodejs type is updated
-export type FolksonomyTag = {
-	/** Product */
-	product: string;
-	/** K */
-	k: string;
-	/** V */
-	v: string;
-	/**
-	 * Owner
-	 * @default
-	 */
-	owner: string;
-	/**
-	 * Version
-	 * @default 1
-	 */
-	version: number;
-	/** Editor */
-	editor?: string | null;
-	/** Last Edit */
-	last_edit?: string | null;
-	/**
-	 * Comment
-	 * @default
-	 */
-	comment: string | null;
-};
-export type FolksonomyKey = {
-	k: string;
-	count: number;
-	values: number;
-};
-
 const BASE_URL = import.meta.env.VITE_FOLKSONOMY_API_URL;
 
 export function isConfigured() {
