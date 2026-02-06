@@ -69,7 +69,7 @@
 		const barcode = product.code;
 
 		if ($userInfo == null) {
-			toast.warning('Please set your OpenFoodFacts username and password in settings.');
+			toast.warning('Please log in to upload images.');
 			return;
 		}
 
