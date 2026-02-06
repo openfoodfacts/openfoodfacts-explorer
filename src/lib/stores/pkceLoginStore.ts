@@ -8,6 +8,10 @@ export type AuthTokens = {
 	id_token: string;
 };
 
+// Module-level variable to track ongoing refresh operations
+// This prevents multiple concurrent refresh attempts (race conditions)
+let refreshPromise: Promise<AuthTokens> | null = null;
+
 export const userAuthTokens = persisted<AuthTokens | null>('userAuthTokens', null);
 
 /**
@@ -78,8 +82,51 @@ export async function refreshAccessToken(url: URL) {
 		body: body
 	});
 
+	if (!response.ok) {
+		const errorData = await response.json().catch(() => null);
+		throw new Error(`Token refresh failed: ${errorData?.error_description || response.statusText}`);
+	}
+
 	const jwt = await response.json();
 	return jwt;
+}
+
+/**
+ * Ensures valid authentication tokens are available, refreshing them if necessary.
+ * This function implements token refresh deduplication - if multiple calls happen
+ * simultaneously, they will all wait for the same refresh operation to complete.
+ * @param url - the current URL (needed for redirect_uri)
+ * @returns valid authentication tokens
+ */
+export async function ensureValidToken(url: URL): Promise<AuthTokens> {
+	const tokens = get(userAuthTokens);
+
+	if (!tokens) {
+		throw new Error('No authentication tokens available');
+	}
+
+	// If token is still valid, return it immediately
+	if (!isTokenExpired(tokens)) {
+		return tokens;
+	}
+
+	// If a refresh is already in progress, wait for it
+	if (refreshPromise) {
+		return refreshPromise;
+	}
+
+	// Start a new refresh operation
+	refreshPromise = refreshAccessToken(url)
+		.then((newTokens) => {
+			saveAuthTokens(newTokens);
+			return newTokens;
+		})
+		.finally(() => {
+			// Clear the promise once the refresh is complete (success or failure)
+			refreshPromise = null;
+		});
+
+	return refreshPromise;
 }
 
 /**
@@ -102,6 +149,29 @@ function parseJWT<T extends Record<string, unknown>>(token: string): T {
 	const payload = token.split('.')[1];
 	const decoded = atob(payload);
 	return JSON.parse(decoded) as T;
+}
+
+type JWTPayload = {
+	exp: number;
+	iat: number;
+};
+
+/**
+ * Checks if the access token is expired or will expire soon.
+ * @param tokens - the authentication tokens
+ * @param bufferSeconds - number of seconds before expiration to consider token expired (default: 60)
+ * @returns true if the token is expired or will expire within the buffer period
+ */
+export function isTokenExpired(tokens: AuthTokens, bufferSeconds = 60): boolean {
+	try {
+		const payload = parseJWT<JWTPayload>(tokens.access_token);
+		const nowInSeconds = Math.floor(Date.now() / 1000);
+		return nowInSeconds >= payload.exp - bufferSeconds;
+	} catch (error) {
+		console.error('Failed to parse token expiration:', error);
+		// If we can't parse the token, consider it expired
+		return true;
+	}
 }
 
 export type UserInfo = {
@@ -138,3 +208,48 @@ export const userInfo = derived(userAuthTokens, ($tokens) => {
 		return null;
 	}
 });
+
+export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fetch {
+	return async (input, init) => {
+		const tokens = get(userAuthTokens);
+		if (!tokens) {
+			return fetch(input, init);
+		}
+
+		// Proactively ensure token is valid before making the request
+		// This prevents unnecessary 401 errors and reduces failed requests
+		try {
+			const url = new URL(window.location.href);
+			const validTokens = await ensureValidToken(url);
+
+			const headers = new Headers(init?.headers);
+			headers.set('Authorization', 'Bearer ' + validTokens.access_token);
+
+			const response = await fetch(input, { ...init, headers });
+
+			// If still getting 401 (e.g., token was revoked), try one more refresh
+			if (response.status === 401) {
+				try {
+					// Force a new refresh by clearing the current tokens first
+					const newTokens = await refreshAccessToken(url);
+					saveAuthTokens(newTokens);
+
+					headers.set('Authorization', 'Bearer ' + newTokens.access_token);
+					return fetch(input, { ...init, headers });
+				} catch (refreshError) {
+					console.error('Failed to refresh access token:', refreshError);
+					clearAuthTokens();
+					throw new Error('Authentication failed. Please log in again.');
+				}
+			}
+
+			return response;
+		} catch (error) {
+			// If token validation/refresh fails, clear tokens and propagate error
+			if (error instanceof Error && error.message.includes('No authentication tokens')) {
+				clearAuthTokens();
+			}
+			throw error;
+		}
+	};
+}

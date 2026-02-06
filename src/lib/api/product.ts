@@ -4,29 +4,11 @@ import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithCredentials } from './utils';
-import { userAuthTokens } from '$lib/stores/pkceLoginStore';
+import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	let fetchToUse = fetch;
-	let urlToUse = new URL(API_HOST);
-
-	// Remove credentials from URL and wrap fetch to include Basic auth if credentials are present
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetchToUse, urlToUse);
-	fetchToUse = wrappedFetch;
-	urlToUse = url;
-
-	// If user is authenticated, wrap fetch to include Bearer token
-	const currentTokens = get(userAuthTokens);
-	if (currentTokens) {
-		const reWrappedFetch: typeof wrappedFetch = async (input, init) => {
-			const headers = new Headers(init?.headers);
-			headers.append('Authorization', 'Bearer ' + currentTokens.access_token);
-			return wrappedFetch(input, { ...init, headers });
-		};
-		fetchToUse = reWrappedFetch;
-	}
-
+	const fetchToUse = wrapFetchWithAuth(fetch);
+	const urlToUse = new URL(API_HOST);
 	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
 }
 
