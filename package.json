@@ -1,6 +1,6 @@
 {
-	"name": "openfoodfacts-sveltekit",
-	"version": "0.0.1",
+	"name": "openfoodfacts-explorer",
+	"version": "0.1.0",
 	"private": true,
 	"description": "Modern JavaScript frontend for Open Food Facts",
 	"license": "AGPL-3.0",
