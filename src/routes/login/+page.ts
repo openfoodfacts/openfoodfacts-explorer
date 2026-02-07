@@ -45,7 +45,7 @@ export const load: PageLoad = async ({ url }) => {
 		code_challenge_method: 'S256'
 	});
 
-	console.log(`Redirecting to Keycloak with params: ${params.toString()}`);
+	console.log('Redirecting to Keycloak...');
 
 	const oauthLoginUrl = `${baseUrl}?${params.toString()}`;
 	throw redirect(302, oauthLoginUrl);

@@ -1,0 +1,69 @@
+<script lang="ts">
+	import { page } from '$app/state';
+
+	import { pkceTokenExchange, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+
+	async function doPkceExchange() {
+		const url = page.url;
+
+		const returnedState = url.searchParams.get('state');
+		const storedState = localStorage.getItem('authState');
+
+		if (!returnedState || returnedState !== storedState) {
+			console.error('State validation failed');
+			throw new Error('Authentication failed: Invalid state parameter');
+		}
+
+		localStorage.removeItem('authState');
+
+		const verifier = localStorage.getItem('verifier');
+		const code = url.searchParams.get('code');
+
+		if (!verifier) {
+			console.error('Missing PKCE verifier in localStorage');
+			throw new Error('Authentication failed: Missing PKCE verifier');
+		}
+		if (!code) {
+			console.error('Missing authorization code in URL');
+			throw new Error('Authentication failed: Missing authorization code');
+		}
+
+		try {
+			const jwt = await pkceTokenExchange(verifier, code, url);
+			saveAuthTokens(jwt);
+			await goto('/');
+		} catch (error) {
+			console.error('Error getting access token:', error);
+			throw new Error('Authentication failed: Unable to get access token');
+		}
+	}
+
+	let loginResult: Promise<void> | null = $state(null);
+
+	onMount(() => {
+		loginResult = doPkceExchange();
+	});
+</script>
+
+<div class="flex h-screen w-full items-center justify-center">
+	<div class="text-center">
+		{#if loginResult}
+			{#await loginResult}
+				<div class="mb-4 text-4xl font-bold">Logging in...</div>
+				<progress class="progress progress-primary my-3 w-56"></progress>
+				<p class="text-lg text-gray-600">You will be redirected shortly.</p>
+			{:then _}
+				<!-- This block will likely never be seen since we redirect on success -->
+				<div class="mb-4 text-4xl font-bold text-green-600">Login Successful</div>
+				<p class="text-lg text-gray-600">Redirecting to the homepage...</p>
+			{:catch error}
+				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
+				<p class="text-base-content text-lg">{error.message}</p>
+				<a class="btn btn-outline btn-primary mt-4" href={resolve('/login')}> Try Again </a>
+			{/await}
+		{/if}
+	</div>
+</div>

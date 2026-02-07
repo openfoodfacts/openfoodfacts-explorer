@@ -1,38 +1,11 @@
 import { type Country, type Language } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import { dev } from '$app/environment';
 import { createProductsApi, getTaxo } from '$lib/api';
 import { createPricesApi } from '$lib/api/prices';
 
 import type { PageLoad } from './$types';
 
 export const ssr = false;
-
-async function getUserLogin(fetch: typeof window.fetch) {
-	try {
-		const offApi = createProductsApi(fetch);
-		const loginStatus = await offApi.getLoginStatus();
-		if (loginStatus == null) {
-			throw new Error('Login status is null');
-		} else if (!('user' in loginStatus) || loginStatus.user == null || loginStatus.status !== 0) {
-			throw new Error(loginStatus.status_verbose);
-		}
-
-		return loginStatus;
-	} catch {
-		console.warn('Could not reach the API, using dummy user in dev mode');
-		if (dev) {
-			return {
-				status: 0,
-				status_verbose: 'DEVELOPMENT',
-				user: { admin: 1, moderator: 1, name: 'Developer (dev mode)' },
-				user_id: 'developer'
-			};
-		} else {
-			return null;
-		}
-	}
-}
 
 export const load: PageLoad = async ({ fetch }) => {
 	const languages = await getTaxo<Language>('languages', fetch);
@@ -51,15 +24,11 @@ export const load: PageLoad = async ({ fetch }) => {
 	const attributeGroups = off.getAttributeGroups();
 	const currencies = pricesApi.getCurrenciesList();
 
-	const user = getUserLogin(fetch);
-
 	return {
 		languages,
 		countries,
 
 		currencies: await currencies,
-		attributeGroups: (await attributeGroups).data,
-
-		loginStatus: await user
+		attributeGroups: (await attributeGroups).data
 	};
 };

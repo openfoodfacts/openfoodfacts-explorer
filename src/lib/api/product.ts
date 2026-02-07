@@ -4,11 +4,12 @@ import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithCredentials } from './utils';
+import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
-	return new OpenFoodFacts(wrappedFetch, { host: url.toString() });
+	const fetchToUse = wrapFetchWithAuth(fetch);
+	const urlToUse = new URL(API_HOST);
+	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
 }
 
 export async function getBulkProductAttributes(
@@ -43,13 +44,8 @@ export async function addOrEditProductV2(
 	product: Product & { comment?: string }
 ) {
 	const off = createProductsApi(fetch);
-	const username = get(preferences).username;
-	const password = get(preferences).password;
-
-	if (!username || !password) throw new Error('No username or password set');
-
 	// @ts-expect-error - we should use v3
-	return off.addOrEditProductV2(product, { password, username });
+	return off.addOrEditProductV2(product);
 }
 
 /**
@@ -65,16 +61,12 @@ export async function uploadImageV3(
 	imagefield?: string
 ) {
 	const off = createProductsApi(fetch);
-	const user_id = get(preferences).username ?? undefined;
-	const password = get(preferences).password ?? undefined;
 	const lc = get(preferences).lang;
 	const cc = get(preferences).country;
 
 	return off.apiv3.uploadProductImage(barcode, {
 		lc,
 		cc,
-		user_id: user_id,
-		password: password,
 		image_data_base64: imageDataBase64,
 		...(imagefield && {
 			selected: {

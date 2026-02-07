@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { preferences } from '$lib/settings';
-
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
 	import { slide } from 'svelte/transition';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	interface Props {
 		tags: FolksonomyTag[];
@@ -176,7 +175,7 @@
 			: getFilteredArray(possibleValues, newValue, (item) => item.v);
 	});
 
-	let loggedIn = $derived($preferences.folksonomy.authToken != null);
+	let loggedIn = $derived($userInfo != null);
 </script>
 
 <table class="table-compact table w-full">

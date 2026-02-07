@@ -2,21 +2,17 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 2,
+	version: 3,
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
 	nutriscoreInfluence: 50,
 	ecoscoreInfluence: 50,
 	novaGroupInfluence: 50,
-	folksonomy: {
-		authToken: null as string | null
-	},
+
 	prices: {
 		authToken: null as string | null
 	},
-	username: null as string | null,
-	password: null as string | null,
 
 	editing: {
 		expandAllSections: false
@@ -70,6 +66,22 @@ const MIGRATIONS: {
 			if (!('moderator' in preferences)) {
 				// @ts-expect-error - adding new field
 				preferences.moderator = false;
+			}
+			return preferences;
+		}
+	},
+	{
+		// 2026-02-06: Migrating to full OAuth tokens, removing username/password
+		version: 3,
+		upgrade: (preferences) => {
+			if ('username' in preferences) {
+				delete preferences.username;
+			}
+			if ('password' in preferences) {
+				delete preferences.password;
+			}
+			if ('folksonomy' in preferences) {
+				delete preferences.folksonomy;
 			}
 			return preferences;
 		}

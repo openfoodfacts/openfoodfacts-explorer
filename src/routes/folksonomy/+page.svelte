@@ -7,7 +7,7 @@
 	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 
-	import type { FolksonomyKey } from '$lib/api/folksonomy';
+	import type { FolksonomyKey } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '$lib/i18n';
 
 	import type { PageProps } from './$types';

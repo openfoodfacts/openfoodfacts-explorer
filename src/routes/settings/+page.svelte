@@ -2,113 +2,50 @@
 	import * as publicEnv from '$env/dynamic/public';
 
 	import { preferences } from '$lib/settings';
-	import { createFolksonomyApi, updateFolksonomyAuthToken } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
+	import { userInfo } from '$lib/stores/pkceLoginStore';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
-	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';
-	import IconMdiLogout from '@iconify-svelte/mdi/logout';
-	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
 	import IconMaterialPublic from '@iconify-svelte/material-symbols/public';
 	import IconMaterialUniversalCurrencyAlt from '@iconify-svelte/material-symbols/universal-currency-alt';
-	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiGithub from '@iconify-svelte/mdi/github';
 	import IconMdiTools from '@iconify-svelte/mdi/tools';
 
 	import type { PageProps } from './$types';
-	import { createProductsApi } from '$lib/api';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
-	let { loginStatus } = $derived(data);
 
-	let isFolksonomyAuthenticated = $derived($preferences.folksonomy.authToken !== null);
-
-	type LoginResult = { success: false; error: string } | { success: true };
-
-	// Login Process
-	let isLoggingIn: boolean = $state(false);
-	let folksonomyLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
-	let productLoginStatus: Promise<LoginResult> | undefined = $state(undefined);
-
-	async function login() {
-		const { username, password } = $preferences;
-		if (username == null || password == null) throw new Error('Username or password is null');
-
-		isLoggingIn = true;
-		try {
-			folksonomyLoginStatus = loginToFolksonomy(username, password);
-			productLoginStatus = loginToPO(username, password);
-			await Promise.all([folksonomyLoginStatus, productLoginStatus]);
-		} finally {
-			isLoggingIn = false;
-		}
-
-		setTimeout(() => {
-			folksonomyLoginStatus = undefined;
-			productLoginStatus = undefined;
-		}, 5000);
-	}
-
-	async function loginToPO(username: string, password: string): Promise<LoginResult> {
-		const { data, error } = await createProductsApi(fetch).apiv2.client.POST('/cgi/session.pl', {
-			body: { user_id: username, password: password }
-		});
-
-		if (error || !data) {
-			return { success: false, error: 'Login failed' };
-		}
-
-		return { success: true };
-	}
-
-	async function loginToFolksonomy(username: string, password: string): Promise<LoginResult> {
-		const folksonomyApi = createFolksonomyApi(fetch);
-		const { data, error } = await folksonomyApi.login(username, password);
-		if (error || !data) {
-			updateFolksonomyAuthToken(null);
-			return { success: false, error: 'Login failed' };
-		}
-
-		updateFolksonomyAuthToken(data.access_token);
-		return { success: true };
-	}
-
-	function logout() {
-		preferences.update((p) => ({
-			...p,
-			folksonomy: { ...p.folksonomy, authToken: null },
-			username: null,
-			password: null
-		}));
-	}
+	let isAdmin = $derived($userInfo?.roles?.includes('admin') ?? false);
+	let isModerator = $derived($userInfo?.roles?.includes('moderator') ?? false);
 </script>
 
 <div class="mx-auto my-8">
 	<p class="mb-4 font-semibold">{$_('settings.section_user')}</p>
-	{#if loginStatus?.user}
+	{#if $userInfo}
 		<p class="mb-4 text-center text-xl font-medium">
-			{$_('settings.logged_in_as', { values: { username: loginStatus.user.name } })}
+			{$_('settings.logged_in_as', { values: { username: $userInfo.preferred_username } })}
 		</p>
 		<div class="flex justify-center gap-2">
-			{#if loginStatus.user.admin}
+			{#if isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.admin')}</span>
 				</span>
 			{/if}
-			{#if loginStatus.user.moderator}
+			{#if isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.moderator')}</span>
 				</span>
-			{:else}
+			{/if}
+			{#if !isAdmin && !isModerator}
 				<span class="badge badge-accent badge-xl">
 					<IconMdiAccount class="h-4 w-4" />
 					<span class="">{$_('auth.user')}</span>
@@ -120,24 +57,6 @@
 	{/if}
 
 	<div class="divider my-4"></div>
-
-	<div class="mt-4 mb-2 text-center text-sm font-medium">
-		{#if isFolksonomyAuthenticated}
-			<div class="text-success my-2">
-				<IconMdiCheckCircle class="mr-1 h-4 w-4" />
-				{$_('Folksonomy API: Authenticated')}
-			</div>
-			<button class="btn btn-xs btn-outline ml-2" onclick={logout}>
-				<IconMdiLogout class="mr-1 h-4 w-4" />
-				{$_('auth.signout')}
-			</button>
-		{:else}
-			<span class="text-error">
-				<IconMdiAlertCircle class="mr-1 h-4 w-4" />
-				{$_('Folksonomy API: Not authenticated')}
-			</span>
-		{/if}
-	</div>
 
 	<p class="mb-4 font-semibold">{$_('settings.news')}</p>
 	<news-feed
@@ -231,72 +150,6 @@
 
 	<!-- FIXME: Remove cast when id gets changes to a required property in SDK -->
 	<PreferencesForm groups={data.attributeGroups as AttributeGroup[]} />
-
-	<div class="my-8">
-		<p class="mt-8 mb-4 font-semibold">{$_('settings.login')}</p>
-
-		<label class="my-2 block">
-			<p>{$_('auth.username')}</p>
-
-			<input
-				type="text"
-				class="input input-sm input-bordered w-full"
-				bind:value={$preferences.username}
-				placeholder={$_('auth.enter_username')}
-			/>
-		</label>
-
-		<label class="my-2 block">
-			<p>{$_('auth.password')}</p>
-
-			<input
-				type="password"
-				class="input input-sm input-bordered w-full"
-				bind:value={$preferences.password}
-				placeholder={$_('auth.enter_password')}
-			/>
-		</label>
-
-		<div class="my-2 flex w-full flex-col gap-2 md:w-auto">
-			<button
-				disabled={$preferences.username == null || $preferences.password == null || isLoggingIn}
-				class="btn btn-sm btn-primary w-full"
-				onclick={login}
-				id="login-button"
-			>
-				{#if isLoggingIn}
-					<span class="loading loading-spinner loading-xs"></span>
-					{$_('auth.authenticating')}
-				{:else}
-					<IconMdiLogin class="mr-1 h-4 w-4" /> {$_('auth.signin')}
-				{/if}
-			</button>
-
-			{#if folksonomyLoginStatus !== undefined}
-				{#await folksonomyLoginStatus}
-					<p class="text-sm">Folksonomy: {$_('auth.authenticating')}</p>
-				{:then result}
-					{#if result.success}
-						<p class="text-success text-sm">Folksonomy: {$_('auth.login_successful')}</p>
-					{:else}
-						<p class="text-error text-sm">Folksonomy: {result.error}</p>
-					{/if}
-				{/await}
-			{/if}
-
-			{#if productLoginStatus !== undefined}
-				{#await productLoginStatus}
-					<p class="text-sm">Product Opener: {$_('auth.authenticating')}</p>
-				{:then result}
-					{#if result.success}
-						<p class="text-success text-sm">Product Opener: {$_('auth.login_successful')}</p>
-					{:else}
-						<p class="text-error text-sm">Product Opener: {result.error}</p>
-					{/if}
-				{/await}
-			{/if}
-		</div>
-	</div>
 </div>
 
 <div class="divider my-8"></div>
