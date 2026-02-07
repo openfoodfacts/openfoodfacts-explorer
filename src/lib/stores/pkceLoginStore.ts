@@ -93,6 +93,33 @@ export async function refreshAccessToken(url: URL) {
 }
 
 /**
+ * Initiates a token refresh with deduplication logic.
+ * If a refresh is already in progress, returns the existing promise.
+ * Otherwise, starts a new refresh operation.
+ * @param url - the current URL (needed for redirect_uri)
+ * @returns promise that resolves to new authentication tokens
+ */
+function initiateTokenRefresh(url: URL): Promise<AuthTokens> {
+	// If a refresh is already in progress, wait for it
+	if (refreshPromise) {
+		return refreshPromise;
+	}
+
+	// Start a new refresh operation with deduplication
+	refreshPromise = refreshAccessToken(url)
+		.then((newTokens) => {
+			saveAuthTokens(newTokens);
+			return newTokens;
+		})
+		.finally(() => {
+			// Clear the promise once the refresh is complete (success or failure)
+			refreshPromise = null;
+		});
+
+	return refreshPromise;
+}
+
+/**
  * Ensures valid authentication tokens are available, refreshing them if necessary.
  * This function implements token refresh deduplication - if multiple calls happen
  * simultaneously, they will all wait for the same refresh operation to complete.
@@ -111,23 +138,8 @@ export async function ensureValidToken(url: URL): Promise<AuthTokens> {
 		return tokens;
 	}
 
-	// If a refresh is already in progress, wait for it
-	if (refreshPromise) {
-		return refreshPromise;
-	}
-
-	// Start a new refresh operation
-	refreshPromise = refreshAccessToken(url)
-		.then((newTokens) => {
-			saveAuthTokens(newTokens);
-			return newTokens;
-		})
-		.finally(() => {
-			// Clear the promise once the refresh is complete (success or failure)
-			refreshPromise = null;
-		});
-
-	return refreshPromise;
+	// Initiate refresh with deduplication
+	return initiateTokenRefresh(url);
 }
 
 /**
@@ -245,20 +257,13 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 
 			// If still getting 401 (e.g., token was revoked), try one more refresh
 			if (response.status === 401) {
-				try {
-					// Force a new refresh by clearing the current tokens first
-					const newTokens = await refreshAccessToken(url);
-					saveAuthTokens(newTokens);
+				// Use the deduplication logic to prevent refresh storms
+				// when multiple parallel requests all get 401 responses
+				const newTokens = await initiateTokenRefresh(url);
 
-					headers.set('Authorization', 'Bearer ' + newTokens.access_token);
-					return fetch(input, { ...init, headers });
-				} catch (refreshError) {
-					console.error('Failed to refresh access token:', refreshError);
-					clearAuthTokens();
-					throw new Error('Authentication failed. Please log in again.');
-				}
+				headers.set('Authorization', 'Bearer ' + newTokens.access_token);
+				return fetch(input, { ...init, headers });
 			}
-
 			return response;
 		} catch (error) {
 			// If token validation/refresh fails, clear tokens and propagate error
