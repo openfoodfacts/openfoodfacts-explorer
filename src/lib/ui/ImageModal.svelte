@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
 	import ResizableImage from './ResizableImage.svelte';
 
 	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
@@ -8,7 +9,9 @@
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
 	import IconMdiRotateRight from '@iconify-svelte/mdi/rotate-right';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
+	import IconMdiPencilOutline from '@iconify-svelte/mdi/pencil-outline';
 
+	let isLoggedIn = $derived($userAuthTokens != null);
 	type ImageState = { url: string; alt?: string; imageid?: number; productCode?: string };
 	let image: ImageState | undefined = $state();
 
@@ -151,18 +154,31 @@
 			{/if}
 		</div>
 
-		<div class="absolute top-2 left-2 z-10">
-			{#if image?.imageid && image?.productCode}
+		<div class="absolute top-2 left-2 z-10 flex gap-2">
+			{#if isLoggedIn && image?.productCode}
+				<!-- Edit button -->
 				<a
 					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
-					target="_blank"
-					rel="noopener"
-					aria-label="Report to NutriPatrol"
-					title="Report to NutriPatrol"
+					href={`/products/${image.productCode}/edit`}
+					aria-label="Edit product"
+					title="Edit product"
 				>
-					<IconMdiFlagOutline class="h-6 w-6" />
+					<IconMdiPencilOutline class="h-6 w-6" />
 				</a>
+
+				<!-- Flag/Report button -->
+				{#if image?.imageid}
+					<a
+						class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
+						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
+						target="_blank"
+						rel="noopener"
+						aria-label="Report to NutriPatrol"
+						title="Report to NutriPatrol"
+					>
+						<IconMdiFlagOutline class="h-6 w-6" />
+					</a>
+				{/if}
 			{/if}
 		</div>
 	</div>
