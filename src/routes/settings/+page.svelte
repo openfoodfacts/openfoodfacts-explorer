@@ -1,6 +1,4 @@
 <script lang="ts">
-	import * as publicEnv from '$env/static/public';
-
 	import { preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
@@ -160,25 +158,6 @@
 </div>
 
 <div class="divider my-8"></div>
-
-<h2 class="mb-4 text-center text-2xl font-bold">Environment Variables</h2>
-
-<table class="table-zebra table-sm mb-8 table w-full">
-	<thead>
-		<tr>
-			<th class="text-end">Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each Object.entries(publicEnv) as [key, value] (key)}
-			<tr>
-				<td class="text-end font-bold">{key}</td>
-				<td class="font-mono break-all">{value}</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
 
 <h2 class="my-4 text-center text-2xl font-bold">Development Settings</h2>
 
