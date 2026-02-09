@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { KEYCLOAK_URL, OAUTH_CLIENT_ID } from '$lib/const';
+import { createKeycloakApi } from '$lib/api/keycloak';
 
 export const ssr = false;
 
@@ -15,38 +15,38 @@ function base64URLEncode(bytes: Uint8Array): string {
 	return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
+async function createChallengeS256(verifier: string): Promise<string> {
+	const encoder = new TextEncoder();
+	const data = encoder.encode(verifier);
+	const hash = await crypto.subtle.digest('SHA-256', data);
+	return base64URLEncode(new Uint8Array(hash));
+}
+
 /**
  * Redirects the user to the Keycloak login page with PKCE.
  */
 export const load: PageLoad = async ({ url }) => {
+	// 1. Generate PKCE values
 	const verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
+	const codeChallenge = await createChallengeS256(verifier);
+
+	// 2. Generate a random state parameter
+	const state = base64URLEncode(crypto.getRandomValues(new Uint8Array(16)));
+
+	// 3. Store the verifier and state in local storage for later verification
 	localStorage.setItem('verifier', verifier);
+	localStorage.setItem('authState', state);
 
-	const codeChallenge = base64URLEncode(
-		new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
-	);
+	// 4. Create and redirect to the Keycloak login URL
+	const api = createKeycloakApi(fetch, url);
 
-	const nonce = crypto.getRandomValues(new BigUint64Array(1))[0].toString();
-
-	// Store the state parameter for validation in the callback
-	localStorage.setItem('authState', nonce);
-	const lang = 'en';
-	const redirectUri = `${url.origin}/login_callback`;
-
-	const baseUrl = `${KEYCLOAK_URL}/protocol/openid-connect/auth`;
-	const params = new URLSearchParams({
-		response_type: 'code',
-		client_id: OAUTH_CLIENT_ID,
-		redirect_uri: redirectUri,
+	const oauthLoginUrl = api.loginUrl({
+		state: state,
+		lang: 'en',
 		scope: 'openid profile offline_access',
-		state: nonce,
-		ui_locales: lang,
-		code_challenge: codeChallenge,
-		code_challenge_method: 'S256'
+		codeChallenge,
+		codeChallengeMethod: 'S256'
 	});
 
-	console.log('Redirecting to Keycloak...');
-
-	const oauthLoginUrl = `${baseUrl}?${params.toString()}`;
-	throw redirect(302, oauthLoginUrl);
+	redirect(302, oauthLoginUrl);
 };

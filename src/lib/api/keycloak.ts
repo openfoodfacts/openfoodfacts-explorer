@@ -85,12 +85,38 @@ export class KeycloakApi {
 
 		return await this.tokenRequest(body);
 	}
+
+	loginUrl(params: {
+		state: string;
+		lang?: string;
+		scope?: string;
+		codeChallenge: string;
+		codeChallengeMethod: string;
+	}) {
+		const url = new URL(`${this.keycloakUrl}/protocol/openid-connect/auth`);
+
+		url.searchParams.set('client_id', this.clientId);
+		url.searchParams.set('redirect_uri', this.redirectUri);
+		url.searchParams.set('response_type', 'code');
+		url.searchParams.set('state', params.state);
+		url.searchParams.set('code_challenge', params.codeChallenge);
+		url.searchParams.set('code_challenge_method', params.codeChallengeMethod);
+		url.searchParams.set('scope', params.scope || 'openid');
+
+		if (params.lang) {
+			url.searchParams.set('ui_locales', params.lang);
+		}
+
+		return url.toString();
+	}
 }
 
 export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
 	const keycloakUrl = KEYCLOAK_URL;
 	const clientId = OAUTH_CLIENT_ID;
-	const redirectUri = OAUTH_REDIRECT_URI(url);
+
+	const cleanUrl = new URL(url.pathname, url.origin);
+	const redirectUri = OAUTH_REDIRECT_URI(cleanUrl);
 
 	return new KeycloakApi(fetch, { keycloakUrl, clientId, redirectUri });
 }
