@@ -1,5 +1,5 @@
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
+import { wrapFetchWithAuth } from '$lib/stores/auth';
 
 const BASE_URL = import.meta.env.VITE_FOLKSONOMY_API_URL;
 

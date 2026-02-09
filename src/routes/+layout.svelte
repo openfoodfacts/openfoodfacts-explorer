@@ -30,7 +30,7 @@
 		MATOMO_SITE_ID,
 		ROBOTOFF_URL
 	} from '$lib/const';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';

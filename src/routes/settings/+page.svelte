@@ -4,7 +4,7 @@
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
@@ -19,9 +19,6 @@
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
-
-	let isAdmin = $derived($userInfo?.roles?.includes('admin') ?? false);
-	let isModerator = $derived($userInfo?.roles?.includes('moderator') ?? false);
 </script>
 
 <div class="mx-auto my-8">
@@ -35,13 +32,13 @@
 				<IconMdiAccount class="h-4 w-4" />
 				<span class="">{$_('auth.role.user')}</span>
 			</span>
-			{#if isAdmin}
+			{#if $userInfo.isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.admin')}</span>
 				</span>
 			{/if}
-			{#if isModerator}
+			{#if $userInfo.isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.moderator')}</span>

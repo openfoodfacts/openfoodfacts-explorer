@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
-	import { pkceTokenExchange, saveAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { saveAuthTokens } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
+	import { createKeycloakApi } from '$lib/api/keycloak';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -32,12 +33,16 @@
 		}
 
 		try {
-			const jwt = await pkceTokenExchange(verifier, code, url);
+			const jwt = await createKeycloakApi(fetch, url).exchangeCode({
+				code,
+				verifier
+			});
+			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
-			await goto('/');
+			await goto(resolve('/'));
 		} catch (error) {
-			console.error('Error getting access token:', error);
-			throw new Error('Authentication failed: Unable to get access token');
+			console.error('Token exchange failed:', error);
+			throw new Error('Authentication failed: Token exchange error');
 		}
 	}
 
@@ -56,7 +61,6 @@
 				<progress class="progress progress-primary my-3 w-56"></progress>
 				<p class="text-lg text-gray-600">You will be redirected shortly.</p>
 			{:then _}
-				<!-- This block will likely never be seen since we redirect on success -->
 				<div class="mb-4 text-4xl font-bold text-green-600">Login Successful</div>
 				<p class="text-lg text-gray-600">Redirecting to the homepage...</p>
 			{:catch error}

@@ -1,95 +1,26 @@
-import { OAUTH_CLIENT_ID, KEYCLOAK_URL, OAUTH_REDIRECT_URI } from '$lib/const';
 import { persisted } from 'svelte-local-storage-store';
-import { derived, get } from 'svelte/store';
+import { get } from 'svelte/store';
 import { decodeJwt } from 'jose';
-
-export type AuthTokens = {
-	access_token: string;
-	refresh_token: string;
-	id_token: string;
-};
+import { createKeycloakApi, type KeycloakTokens } from '$lib/api/keycloak';
 
 // Module-level variable to track ongoing refresh operations
 // This prevents multiple concurrent refresh attempts (race conditions)
-let refreshPromise: Promise<AuthTokens> | null = null;
+let refreshPromise: Promise<KeycloakTokens> | null = null;
 
-export const userAuthTokens = persisted<AuthTokens | null>('userAuthTokens', null);
-
-/**
- * Complete the PKCE token exchange process by exchanging the authorization code
- * for access and refresh tokens.
- * @param verifier - the code verifier created during the initial login request.
- * @param code - the authorization code received from the Keycloak callback URL.
- * @returns the JWT tokens containing access, refresh, and ID tokens.
- */
-export async function pkceTokenExchange(verifier: string, code: string, url: URL) {
-	if (!code) {
-		throw new Error('Authorization code missing from callback URL');
-	}
-
-	if (!verifier) {
-		throw new Error('Code verifier missing from local storage');
-	}
-
-	const redirectUri = OAUTH_REDIRECT_URI(url);
-
-	const body = new URLSearchParams({
-		code: code,
-		grant_type: 'authorization_code',
-		client_id: OAUTH_CLIENT_ID,
-		code_verifier: verifier,
-		redirect_uri: redirectUri
-	});
-
-	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
-		method: 'POST',
-		body: body
-	});
-
-	if (!response.ok) {
-		const errorData = await response.json().catch(() => null);
-		throw new Error(
-			`Token exchange failed: ${errorData?.error_description || response.statusText}`
-		);
-	}
-
-	const jwt = await response.json();
-	localStorage.removeItem('verifier');
-	return jwt;
-}
+export const userAuthTokens = persisted<KeycloakTokens | null>('userAuthTokens', null);
 
 /**
  * Refreshes the access token using the stored refresh token.
  * @returns the new JWT tokens containing access, refresh, and ID tokens.
  */
-export async function refreshAccessToken(url: URL) {
+export async function renewAccessToken(url: URL) {
 	const refreshToken = get(userAuthTokens)?.refresh_token;
 
 	if (!refreshToken) {
 		throw new Error('No refresh token available');
 	}
 
-	const redirectUri = OAUTH_REDIRECT_URI(url);
-
-	const body = new URLSearchParams({
-		grant_type: 'refresh_token',
-		refresh_token: refreshToken,
-		client_id: OAUTH_CLIENT_ID,
-		redirect_uri: redirectUri
-	});
-
-	const response = await fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, {
-		method: 'POST',
-		body: body
-	});
-
-	if (!response.ok) {
-		const errorData = await response.json().catch(() => null);
-		throw new Error(`Token refresh failed: ${errorData?.error_description || response.statusText}`);
-	}
-
-	const jwt = await response.json();
-	return jwt;
+	return await createKeycloakApi(fetch, url).refreshTokens(refreshToken);
 }
 
 /**
@@ -99,14 +30,14 @@ export async function refreshAccessToken(url: URL) {
  * @param url - the current URL (needed for redirect_uri)
  * @returns promise that resolves to new authentication tokens
  */
-function initiateTokenRefresh(url: URL): Promise<AuthTokens> {
+function initiateTokenRefresh(url: URL): Promise<KeycloakTokens> {
 	// If a refresh is already in progress, wait for it
 	if (refreshPromise) {
 		return refreshPromise;
 	}
 
 	// Start a new refresh operation with deduplication
-	refreshPromise = refreshAccessToken(url)
+	refreshPromise = renewAccessToken(url)
 		.then((newTokens) => {
 			saveAuthTokens(newTokens);
 			return newTokens;
@@ -126,7 +57,7 @@ function initiateTokenRefresh(url: URL): Promise<AuthTokens> {
  * @param url - the current URL (needed for redirect_uri)
  * @returns valid authentication tokens
  */
-export async function ensureValidToken(url: URL): Promise<AuthTokens> {
+export async function ensureValidToken(url: URL): Promise<KeycloakTokens> {
 	const tokens = get(userAuthTokens);
 
 	if (!tokens) {
@@ -146,7 +77,7 @@ export async function ensureValidToken(url: URL): Promise<AuthTokens> {
  * Saves the JWT tokens to the local storage store.
  * @param jwt - the JWT tokens containing access, refresh, and ID tokens.
  */
-export function saveAuthTokens(tokens: AuthTokens) {
+export function saveAuthTokens(tokens: KeycloakTokens) {
 	userAuthTokens.set(tokens);
 }
 
@@ -166,7 +97,7 @@ const CLOCK_SKEW_SECONDS = 30;
  * @param bufferSeconds - number of seconds before expiration to consider token expired (default: 60)
  * @returns true if the token is expired or will expire within the buffer period
  */
-export function isTokenExpired(tokens: AuthTokens, bufferSeconds = 60): boolean {
+export function isTokenExpired(tokens: KeycloakTokens, bufferSeconds = 60): boolean {
 	try {
 		const payload = decodeJwt(tokens.access_token);
 
@@ -182,56 +113,6 @@ export function isTokenExpired(tokens: AuthTokens, bufferSeconds = 60): boolean 
 		return true;
 	}
 }
-
-export type UserInfo = {
-	preferred_username: string;
-	email: string;
-	roles?: string[];
-};
-
-type KeycloakToken = {
-	preferred_username: string;
-	email: string;
-	realm_access?: {
-		roles: string[];
-	};
-	resource_access?: Record<string, { roles: string[] }>;
-};
-
-/**
- * Parses the ID token to extract user information.
- * @param idToken - the ID token from the JWT.
- * @returns the parsed user information.
- */
-function parseIdToken(idToken: string): UserInfo {
-	if (!idToken) {
-		throw new Error('ID token is required for parsing');
-	}
-
-	try {
-		const token = decodeJwt<KeycloakToken>(idToken);
-		return {
-			preferred_username: token.preferred_username,
-			email: token.email,
-			roles: token.realm_access?.roles || []
-		};
-	} catch (error) {
-		throw new Error(`Failed to parse ID token: ${error}`);
-	}
-}
-
-export const userInfo = derived(userAuthTokens, ($tokens) => {
-	if (!$tokens) {
-		return null;
-	}
-
-	try {
-		return parseIdToken($tokens.id_token);
-	} catch (error) {
-		console.error('Failed to parse user info:', error);
-		return null;
-	}
-});
 
 export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fetch {
 	return async (input, init) => {

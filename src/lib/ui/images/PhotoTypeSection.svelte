@@ -15,7 +15,7 @@
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 	import { IMAGE_REPORT_URL } from '$lib/const';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 
 	type PhotoType = { id: string; label: string };
 
