@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 import { resolve } from '$app/paths';
-import { createKeycloakApi } from '$lib/api/keycloak';
+import { createKeycloakApi } from '$lib/api';
 
 export const load: PageLoad = async ({ fetch }) => {
 	const redirectUri = resolve('/oauth/logout/callback');

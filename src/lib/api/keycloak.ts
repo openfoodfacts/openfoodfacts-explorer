@@ -1,5 +1,3 @@
-import { KEYCLOAK_URL, OAUTH_CLIENT_ID, OAUTH_REDIRECT_URI } from '$lib/const';
-
 export type KeycloakTokens = {
 	access_token: string;
 	refresh_token: string;
@@ -119,14 +117,4 @@ export class KeycloakApi {
 
 		return url.toString();
 	}
-}
-
-export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
-	const keycloakUrl = KEYCLOAK_URL;
-	const clientId = OAUTH_CLIENT_ID;
-
-	const cleanUrl = new URL(url.pathname, url.origin);
-	const redirectUri = OAUTH_REDIRECT_URI(cleanUrl);
-
-	return new KeycloakApi(fetch, { keycloakUrl, clientId, redirectUri });
 }

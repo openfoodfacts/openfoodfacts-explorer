@@ -4,7 +4,7 @@ export const ssr = false;
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { createKeycloakApi } from '$lib/api/keycloak';
+import { createKeycloakApi } from '$lib/api';
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
