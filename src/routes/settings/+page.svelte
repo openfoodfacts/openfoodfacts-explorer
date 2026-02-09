@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as publicEnv from '$env/dynamic/public';
+	import * as publicEnv from '$env/static/public';
 
 	import { preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
@@ -33,22 +33,20 @@
 			{$_('settings.logged_in_as', { values: { username: $userInfo.preferred_username } })}
 		</p>
 		<div class="flex justify-center gap-2">
+			<span class="badge badge-accent badge-xl">
+				<IconMdiAccount class="h-4 w-4" />
+				<span class="">{$_('auth.role.user')}</span>
+			</span>
 			{#if isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
-					<span class="">{$_('auth.admin')}</span>
+					<span class="">{$_('auth.role.admin')}</span>
 				</span>
 			{/if}
 			{#if isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
-					<span class="">{$_('auth.moderator')}</span>
-				</span>
-			{/if}
-			{#if !isAdmin && !isModerator}
-				<span class="badge badge-accent badge-xl">
-					<IconMdiAccount class="h-4 w-4" />
-					<span class="">{$_('auth.user')}</span>
+					<span class="">{$_('auth.role.moderator')}</span>
 				</span>
 			{/if}
 		</div>
