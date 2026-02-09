@@ -17,6 +17,34 @@
 	const toggleInfo = () => {
 		showInfo = !showInfo;
 	};
+
+	let showLegalWarning = $state(true);
+
+	const COOKIE_NAME = 'off_legal_warning_understood';
+
+	function setCookie(name: string, value: string, days: number) {
+		const d = new Date();
+		.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+		document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+	}
+
+	function getCookie(name: string): string | null {
+		const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+		return match ? match[2] : null;
+	}
+
+	// run only in browser
+	if (typeof document !== 'undefined') {
+		if (getCookie(COOKIE_NAME) === 'true') {
+			showLegalWarning = false;
+		}
+	}
+
+	function acknowledgeLegalWarning() {
+		setCookie(COOKIE_NAME, 'true', 365);
+		showLegalWarning = false;
+	}
+
 </script>
 
 <h2
@@ -50,14 +78,22 @@
 {/if}
 
 <!-- Legal warning about photo copyright -->
+{#if showLegalWarning}
 <div class="alert alert-error mb-4" role="alert">
 	<IconMdiAlertCircle class="h-6 w-6" />
 	<div>
 		<h4 class="text-xl font-bold">{$_('product.edit.legal_warning_title')}</h4>
 		<p class="mt-1">{$_('product.edit.legal_warning_photos_1')}</p>
 		<p class="mt-1 font-bold">{$_('product.edit.legal_warning_photos_2')}</p>
+
+		<button type="button"
+		class="btn btn-sm btn-outline mt-3"
+		onclick={acknowledgeLegalWarning}
+		>
+		Understood</button>
 	</div>
 </div>
+{/if}
 
 {#key product.code}
 	<PhotoManager {product} />
