@@ -66,7 +66,7 @@
 			{:catch error}
 				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
 				<p class="text-base-content text-lg">{error.message}</p>
-				<a class="btn btn-outline btn-primary mt-4" href={resolve('/login')}> Try Again </a>
+				<a class="btn btn-outline btn-primary mt-4" href={resolve('/oauth/login')}> Try Again </a>
 			{/await}
 		{/if}
 	</div>

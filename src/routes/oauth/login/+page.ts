@@ -1,9 +1,10 @@
+// THIS IS A CLIENT-SIDE ONLY PAGE
+export const ssr = false;
+
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 import { createKeycloakApi } from '$lib/api/keycloak';
-
-export const ssr = false;
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
