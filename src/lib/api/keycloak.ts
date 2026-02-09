@@ -1,0 +1,96 @@
+import { KEYCLOAK_URL, OAUTH_CLIENT_ID, OAUTH_REDIRECT_URI } from '$lib/const';
+
+export type KeycloakTokens = {
+	access_token: string;
+	refresh_token: string;
+	id_token?: string;
+	expires_in: number;
+	refresh_expires_in: number;
+	token_type: string;
+};
+
+export class KeycloakApi {
+	private fetch: typeof window.fetch;
+	private keycloakUrl: string;
+	private clientId: string;
+	private redirectUri: string;
+
+	constructor(
+		fetch: typeof window.fetch,
+		config: { keycloakUrl: string; clientId: string; redirectUri: string }
+	) {
+		this.fetch = fetch;
+		this.keycloakUrl = config.keycloakUrl;
+		this.clientId = config.clientId;
+		this.redirectUri = config.redirectUri;
+	}
+
+	private async tokenRequest(body: URLSearchParams): Promise<KeycloakTokens> {
+		const tokenEndpoint = `${this.keycloakUrl}/protocol/openid-connect/token`;
+
+		const response = await this.fetch(tokenEndpoint, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: body
+		});
+
+		if (!response.ok) {
+			const errorData = await response.json().catch(() => null);
+			throw new Error(
+				`Token request failed: ${errorData?.error_description || response.statusText}`
+			);
+		}
+
+		return response.json();
+	}
+
+	/**
+	 * Exchanges the authorization code for JWT tokens (access, refresh, ID).
+	 *
+	 * This is used in the PKCE flow after the user is redirected back from Keycloak with the authorization code.
+	 *
+	 * @param verifier - the PKCE code verifier stored in local storage before redirecting to Keycloak.
+	 * @param code - the authorization code received from the Keycloak callback URL.
+	 * @returns the JWT tokens containing access, refresh, and ID tokens.
+	 */
+	async exchangeCode(params: { verifier: string; code: string }) {
+		const body = new URLSearchParams({
+			grant_type: 'authorization_code',
+			code: params.code,
+			code_verifier: params.verifier,
+
+			redirect_uri: this.redirectUri,
+			client_id: this.clientId
+		});
+
+		return await this.tokenRequest(body);
+	}
+
+	/**
+	 * Refreshes the access token using the provided refresh token.
+	 *
+	 * @param refreshToken - the refresh token used to obtain new tokens.
+	 * @returns the new JWT tokens containing access, refresh, and ID tokens.
+	 */
+	async refreshTokens(refreshToken: string) {
+		const body = new URLSearchParams({
+			grant_type: 'refresh_token',
+			refresh_token: refreshToken,
+
+			redirect_uri: this.redirectUri,
+			client_id: this.clientId
+		});
+
+		return await this.tokenRequest(body);
+	}
+}
+
+export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
+	const keycloakUrl = KEYCLOAK_URL;
+	const clientId = OAUTH_CLIENT_ID;
+	const redirectUri = OAUTH_REDIRECT_URI(url);
+
+	return new KeycloakApi(fetch, { keycloakUrl, clientId, redirectUri });
+}

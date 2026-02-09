@@ -17,7 +17,7 @@
 
 	import type { PageData } from './$types';
 	import Prices from './Prices.svelte';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';

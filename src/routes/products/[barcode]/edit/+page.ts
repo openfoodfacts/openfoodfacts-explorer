@@ -11,7 +11,7 @@ import {
 	type Country,
 	createProductsApi
 } from '$lib/api';
-import { userInfo } from '$lib/stores/pkceLoginStore';
+import { userInfo } from '$lib/stores/user';
 import { PRODUCT_STATUS } from '$lib/const';
 
 import type { PageLoad } from './$types';
