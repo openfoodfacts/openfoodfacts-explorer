@@ -17,6 +17,7 @@ import { PRODUCT_STATUS } from '$lib/const';
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
 import { preferences } from '$lib/settings';
+import { resolve } from '$app/paths';
 
 export const ssr = false;
 
@@ -33,7 +34,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			actions: [
 				{
 					label: 'Login',
-					url: '/login'
+					url: resolve('/oauth/login')
 				}
 			]
 		});
