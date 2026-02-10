@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { IMAGE_REPORT_URL } from '$lib/const';
-	import { userAuthTokens } from '$lib/stores/pkceLoginStore';
+	import { userAuthTokens } from '$lib/stores/auth';
+	import { resolve } from '$app/paths';
 	import ResizableImage from './ResizableImage.svelte';
 
 	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
@@ -155,16 +156,18 @@
 		</div>
 
 		<div class="absolute top-2 left-2 z-10 flex gap-2">
-			{#if isLoggedIn && image?.productCode}
-				<!-- Edit button -->
-				<a
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					href={`/products/${image.productCode}/edit`}
-					aria-label="Edit product"
-					title="Edit product"
-				>
-					<IconMdiPencilOutline class="h-6 w-6" />
-				</a>
+			{#if image?.productCode}
+				<!-- Edit button - prominent for logged-in users -->
+				{#if isLoggedIn}
+					<a
+						class="btn btn-circle btn-md bg-primary/90 hover:bg-primary text-primary-content"
+						href={resolve('/products/[barcode]/edit', { barcode: image.productCode })}
+						aria-label="Edit Product"
+						title="Edit Product"
+					>
+						<IconMdiPencilOutline class="h-6 w-6" />
+					</a>
+				{/if}
 
 				<!-- Flag/Report button -->
 				{#if image?.imageid}

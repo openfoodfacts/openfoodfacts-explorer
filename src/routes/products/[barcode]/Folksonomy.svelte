@@ -2,7 +2,7 @@
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
 	import { slide } from 'svelte/transition';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 
 	interface Props {
 		tags: FolksonomyTag[];

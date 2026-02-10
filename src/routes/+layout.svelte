@@ -30,7 +30,7 @@
 		MATOMO_SITE_ID,
 		ROBOTOFF_URL
 	} from '$lib/const';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
@@ -40,6 +40,7 @@
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
+	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
@@ -211,14 +212,14 @@
 			<div class="navbar-end gap-2">
 				{#if $userInfo != null}
 					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
-					<a class="btn btn-outline link" href="/logout">Log out</a>
+					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
 				{:else}
-					<a class="btn btn-outline link" href="/login"> Login </a>
+					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
 				{/if}
 				<!-- Settings button -->
 				<a
 					class="btn btn-ghost link"
-					href="/settings"
+					href={resolve('/settings')}
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
 				>
@@ -317,9 +318,9 @@
 
 		{#if $userInfo != null}
 			<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
-			<a class="btn btn-outline link" href="/logout">Log out</a>
+			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
 		{:else}
-			<a class="btn btn-outline link" href="/login"> Login </a>
+			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
 		{/if}
 	</div>
 </div>

@@ -4,7 +4,7 @@ import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithAuth } from '$lib/stores/pkceLoginStore';
+import { wrapFetchWithAuth } from '$lib/stores/auth';
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);

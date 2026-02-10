@@ -1,12 +1,10 @@
 <script lang="ts">
-	import * as publicEnv from '$env/dynamic/public';
-
 	import { preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo } from '$lib/stores/pkceLoginStore';
+	import { userInfo } from '$lib/stores/user';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
@@ -21,9 +19,6 @@
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
-
-	let isAdmin = $derived($userInfo?.roles?.includes('admin') ?? false);
-	let isModerator = $derived($userInfo?.roles?.includes('moderator') ?? false);
 </script>
 
 <div class="mx-auto my-8">
@@ -33,22 +28,20 @@
 			{$_('settings.logged_in_as', { values: { username: $userInfo.preferred_username } })}
 		</p>
 		<div class="flex justify-center gap-2">
-			{#if isAdmin}
+			<span class="badge badge-accent badge-xl">
+				<IconMdiAccount class="h-4 w-4" />
+				<span class="">{$_('auth.role.user')}</span>
+			</span>
+			{#if $userInfo.isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
-					<span class="">{$_('auth.admin')}</span>
+					<span class="">{$_('auth.role.admin')}</span>
 				</span>
 			{/if}
-			{#if isModerator}
+			{#if $userInfo.isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
-					<span class="">{$_('auth.moderator')}</span>
-				</span>
-			{/if}
-			{#if !isAdmin && !isModerator}
-				<span class="badge badge-accent badge-xl">
-					<IconMdiAccount class="h-4 w-4" />
-					<span class="">{$_('auth.user')}</span>
+					<span class="">{$_('auth.role.moderator')}</span>
 				</span>
 			{/if}
 		</div>
@@ -162,25 +155,6 @@
 </div>
 
 <div class="divider my-8"></div>
-
-<h2 class="mb-4 text-center text-2xl font-bold">Environment Variables</h2>
-
-<table class="table-zebra table-sm mb-8 table w-full">
-	<thead>
-		<tr>
-			<th class="text-end">Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each Object.entries(publicEnv) as [key, value] (key)}
-			<tr>
-				<td class="text-end font-bold">{key}</td>
-				<td class="font-mono break-all">{value}</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
 
 <h2 class="my-4 text-center text-2xl font-bold">Development Settings</h2>
 
