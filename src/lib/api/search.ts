@@ -5,15 +5,16 @@ import {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
+import { PUBLIC_SEARCH_BASE_URL } from '$env/static/public';
 
 export function getSearchBaseUrl() {
-	if (import.meta.env.VITE_SEARCH_BASE_URL == '') {
+	if (PUBLIC_SEARCH_BASE_URL == '') {
 		throw new Error(
-			'VITE_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
+			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
 		);
 	}
 
-	return import.meta.env.VITE_SEARCH_BASE_URL;
+	return PUBLIC_SEARCH_BASE_URL;
 }
 
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
