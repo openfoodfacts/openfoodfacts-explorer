@@ -30,7 +30,7 @@
 	{/if}
 {/snippet}
 
-<div class="my-1">
+<div class="mt-4">
 	{#if element.element_type === 'panel'}
 		{@render panel(element.panel_element.panel_id)}
 	{:else if element.element_type === 'panel_group'}
