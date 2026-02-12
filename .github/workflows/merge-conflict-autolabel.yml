@@ -1,4 +1,4 @@
-name: '💥 Auto-Label Merge Conflicts on PRs'
+name: '💥 Merge Conflicts'
 on:
   # So that PRs touching the same files as the push are updated
   push:
@@ -10,6 +10,7 @@ on:
 
 jobs:
   main:
+    name: 'Label PRs with merge conflicts'
     runs-on: ubuntu-slim
     permissions: write-all
     steps:

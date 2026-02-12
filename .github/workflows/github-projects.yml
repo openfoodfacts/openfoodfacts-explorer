@@ -1,4 +1,4 @@
-name: Automatically add relevant issues to the relevant GitHub projects
+name: '📋 GitHub Projects Automation'
 
 permissions:
   contents: read
@@ -46,7 +46,7 @@ on:
 
 jobs:
   add-to-design-project:
-    name: Automatically add relevant issues to the relevant GitHub projects
+    name: 'Add to relevant projects'
     runs-on: ubuntu-slim
     steps:
       - uses: actions/add-to-project@158aad9ed186a4842abf69d0f8071a0ff95312d0 # ratchet:actions/add-to-project@main
