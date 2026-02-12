@@ -243,6 +243,13 @@
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
 			"view_prices": "View prices on Open Prices"
+		},
+		"knowledge_panels": {
+			"action": {
+				"add_packaging_components": "Add packaging components",
+				"add_origins": "Add origins",
+				"add_ingredients_text": "Add ingredients text"
+			}
 		}
 	},
 	"qr": {

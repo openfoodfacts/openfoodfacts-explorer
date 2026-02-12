@@ -77,7 +77,9 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
-		fields: ['all', 'knowledge_panels']
+		fields: ['all', 'knowledge_panels'],
+		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
+		knowledge_panels_client: 'web'
 	});
 
 	handleProductApiError(apiErrorWrapped);
