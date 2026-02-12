@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { userInfo } from '$lib/stores/user';
+	import { resolve } from '$app/paths';
+	import { _ } from 'svelte-i18n';
 	import ResizableImage from './ResizableImage.svelte';
 
 	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
@@ -8,6 +11,7 @@
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
 	import IconMdiRotateRight from '@iconify-svelte/mdi/rotate-right';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
+	import IconMdiPencilOutline from '@iconify-svelte/mdi/pencil-outline';
 
 	type ImageState = { url: string; alt?: string; imageid?: number; productCode?: string };
 	let image: ImageState | undefined = $state();
@@ -21,6 +25,7 @@
 
 	export function displayImage(url: string, alt?: string, imageid?: number, productCode?: string) {
 		image = { url, alt, imageid, productCode };
+
 		zoomLevel = 1;
 		dialog?.showModal();
 	}
@@ -151,18 +156,31 @@
 			{/if}
 		</div>
 
-		<div class="absolute top-2 left-2 z-10">
-			{#if image?.imageid && image?.productCode}
-				<a
-					class="btn btn-circle btn-md bg-base-100/80 hover:bg-base-100"
-					href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
-					target="_blank"
-					rel="noopener"
-					aria-label="Report to NutriPatrol"
-					title="Report to NutriPatrol"
-				>
-					<IconMdiFlagOutline class="h-6 w-6" />
-				</a>
+		<div class="absolute top-2 left-2 z-10 flex gap-2">
+			{#if image?.productCode}
+				<!-- Edit button -->
+				{#if $userInfo}
+					<a
+						class="btn btn-sm bg-primary/90 hover:bg-primary text-primary-content gap-2"
+						href={resolve('/products/[barcode]/edit', { barcode: image.productCode })}
+					>
+						<IconMdiPencilOutline class="h-5 w-5" />
+						<span>{$_('product.buttons.edit', { default: 'Edit' })}</span>
+					</a>
+				{/if}
+
+				<!-- Flag/Report button -->
+				{#if image?.imageid}
+					<a
+						class="btn btn-sm bg-base-100/80 hover:bg-base-100 gap-2"
+						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
+						target="_blank"
+						rel="noopener"
+					>
+						<IconMdiFlagOutline class="h-5 w-5" />
+						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
+					</a>
+				{/if}
 			{/if}
 		</div>
 	</div>
