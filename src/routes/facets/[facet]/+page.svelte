@@ -25,7 +25,7 @@
 
 <div class="mb-4">
 	<a href="/facets/" class="btn btn-secondary btn-outline w-full">
-		<IconMdiArrowLeft />
+		<IconMdiArrowLeft class="w-4" />
 		{$_('facets.facet_back_to_list')}
 	</a>
 </div>
