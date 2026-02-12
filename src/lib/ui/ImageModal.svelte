@@ -165,7 +165,7 @@
 						href={resolve('/products/[barcode]/edit', { barcode: image.productCode })}
 					>
 						<IconMdiPencilOutline class="h-5 w-5" />
-						<span>{$_('product.buttons.edit')}</span>
+						<span>{$_('product.buttons.edit', { default: 'Edit' })}</span>
 					</a>
 				{/if}
 
@@ -178,7 +178,7 @@
 						rel="noopener"
 					>
 						<IconMdiFlagOutline class="h-5 w-5" />
-						<span>Report</span>
+						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
 					</a>
 				{/if}
 			{/if}
