@@ -65,13 +65,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		page_size: pageSize,
 		facets: ['brands', 'categories', 'nutrition_grades', 'ecoscore_grade'],
 		charts: [
-			// @ts-expect-error - FIXME: update the API types
 			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			// @ts-expect-error - FIXME: update the API types
 			{ chart_type: 'DistributionChart', field: 'ecoscore_grade' },
-			// @ts-expect-error - FIXME: update the API types
 			{ chart_type: 'DistributionChart', field: 'nova_groups' },
-			// @ts-expect-error - FIXME: update the API types
 			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		],
 		sort_by: sortBy
