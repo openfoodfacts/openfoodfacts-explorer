@@ -155,7 +155,6 @@
 					stores: data.state.product.stores ?? '',
 					origins: data.state.product.origins ?? '',
 					countries: data.state.product.countries ?? '',
-					// @ts-expect-error - FIXME: to be fixed in the SDK
 					languages_codes: data.state.product.languages_codes ?? {},
 					// @ts-expect-error - FIXME: to be fixed in the SDK
 					images: data.state.product.images ?? {},

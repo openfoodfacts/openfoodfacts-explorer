@@ -31,23 +31,30 @@
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
+	import type { SearchResult } from '$lib/api/search';
 
 	let { data }: PageProps = $props();
-	let { search: result } = $derived(data);
+	let { search: searchResult } = $derived(data);
 
 	let sortedProducts = $derived.by(() => {
-		if (!result?.hits || result.hits.length === 0 || !data.attributesByCode) return [];
+		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
 
-		const productsWithAttributes = result.hits.map((hit) => ({
-			...hit,
-			attributes: data.attributesByCode[hit.code] || []
-		}));
+		const associateAttributes = (p: SearchResult['hits'][number]) => ({
+			product: p,
+			attributes: data.attributesByCode[p.code] || []
+		});
 
-		return personalizeSearchResults(
+		const productsWithAttributes = searchResult.hits.map(associateAttributes);
+		const personalizedResults = personalizeSearchResults(
 			productsWithAttributes,
 			$personalizedSearch.userPreferences,
 			$personalizedSearch.classifyProductsEnabled
 		);
+
+		return personalizedResults.map(({ product, scoreData }) => ({
+			product: product.product,
+			scoreData
+		}));
 	});
 
 	// State for showing/hiding graphs
@@ -60,7 +67,7 @@
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
 		// Track search queries that return no results
-		if (result.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
+		if (searchResult.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
 	});
 
 	let selectedSort = $derived.by(() => {
@@ -87,7 +94,7 @@
 	// State to hold selected facets
 	//  { key1 => { include: ['value1', 'value2'], exclude: ['value3'] } }
 	let selectedFacets: FacetsSelection = $derived.by(() => {
-		const entries = Object.entries(result.facets).map(([key, facet]) => {
+		const entries = Object.entries(searchResult.facets).map(([key, facet]) => {
 			const selectedItems = facet.items.filter((item) => item.selected).map((item) => item.key);
 			return [key, { include: selectedItems, exclude: [] }];
 		});
@@ -156,10 +163,10 @@
 </div>
 
 <!-- Facet Bar -->
-{#if result.facets && Object.keys(result.facets).length > 0}
+{#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
 	<div class="my-4">
 		<FacetBar
-			facets={result.facets}
+			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
 				selectedFacets = addIncludeFacet(selectedFacets, key, val);
 				refreshQuery();
@@ -175,7 +182,7 @@
 <div class="divider"></div>
 
 <!-- Charts Section -->
-{#if result.charts && Object.keys(result.charts).length > 0}
+{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
 	<div class="my-8">
 		<div class="mb-4 flex flex-wrap justify-end gap-2 max-sm:justify-center">
 			<a
@@ -227,7 +234,7 @@
 
 		{#if showGraphs}
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
-				{#each Object.entries(result.charts) as [chartKey, chartSpec] (chartKey)}
+				{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
 					<div class="bg-base-100 rounded-lg p-4 shadow-md">
 						<VegaChart
 							spec={chartSpec}
@@ -244,27 +251,23 @@
 
 <div class="divider"></div>
 
-{#if result.count > 0}
+{#if searchResult.count > 0}
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each sortedProducts as scoredProduct (scoredProduct.product.code)}
-				{#if scoredProduct.product.code != null}
-					<div class="indicator block w-full">
-						{#if showPrices}
-							<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
-								{$_('search.prices_badge', {
-									values: { count: data.prices[scoredProduct.product.code] }
-								})}
-							</span>
-						{/if}
-						<WcProductCard
-							product={scoredProduct.product}
-							personalScore={$personalizedSearch.classifyProductsEnabled
-								? scoredProduct.scoreData
-								: undefined}
-						/>
-					</div>
-				{/if}
+			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
+				<div class="indicator block w-full">
+					{#if showPrices}
+						<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
+							{$_('search.prices_badge', {
+								values: { count: data.prices[product.code] }
+							})}
+						</span>
+					{/if}
+					<WcProductCard
+						{product}
+						personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
+					/>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -272,8 +275,8 @@
 	<!-- Pagination -->
 	<div class="mt-8">
 		<Pagination
-			page={result.page}
-			totalPages={result.page_count}
+			page={searchResult.page}
+			totalPages={searchResult.page_count}
 			pageUrl={(p: number) => {
 				const newUrl = new URL(page.url);
 				newUrl.searchParams.set('page', p.toString());

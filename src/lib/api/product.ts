@@ -80,17 +80,17 @@ export async function uploadImageV3(
 
 /**
  * Select and crop images using API v3.3
- * @param barcode Product barcode
+ * @param code Product barcode
  * @param images Object containing image selections and crop parameters
  */
 export async function selectAndCropImagesV3(
 	fetch: typeof window.fetch,
-	barcode: string,
+	code: string,
 	images: ImageSelectionData
 ): Promise<{ data?: ImageOperationResponse; error?: string }> {
 	const off = createProductsApi(fetch);
-	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{barcode}', {
-		params: { path: { barcode } },
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
 		body: { fields: 'updated', product: { images } }
 	});
 
@@ -103,26 +103,25 @@ export async function selectAndCropImagesV3(
 
 /**
  * Unselect an image for a specific language and type
- * @param barcode Product barcode
+ * @param code Product barcode
  * @param imageType Image type (front, ingredients, nutrition, etc.)
  * @param language Language code (en, fr, es, etc.)
  */
 export async function unselectImageV3(
 	fetch: typeof window.fetch,
-	barcode: string,
+	code: string,
 	imageType: string,
 	language: string
 ): Promise<{ data?: ImageOperationResponse; error?: string }> {
 	const images = {
 		selected: { [imageType]: { [language]: null } }
 	};
-	return selectAndCropImagesV3(fetch, barcode, images);
+	return selectAndCropImagesV3(fetch, code, images);
 }
 
-export async function getProductReducedForCard(fetch: typeof window.fetch, barcode: string) {
+export async function getProductReducedForCard(fetch: typeof window.fetch, code: string) {
 	const off = createProductsApi(fetch);
-	const fields = [...REDUCED_FIELDS] as Array<keyof ProductV3>;
-	return off.getProductV3(barcode, { fields });
+	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
 }
 
 export type ProductStateBase = {
@@ -393,7 +392,7 @@ const REDUCED_FIELDS = [
 	'additives_n'
 ] as const;
 
-export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
+export type ProductReduced = Pick<ProductV3, (typeof REDUCED_FIELDS)[number]>;
 
 /**
  * Gets URL for a product image based on its barcode and image name

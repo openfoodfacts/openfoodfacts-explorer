@@ -18,7 +18,6 @@
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
-	import type { ProductReduced } from '$lib/api/product';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
@@ -55,7 +54,6 @@
 			id: code,
 			name: product.product_name || code,
 			quantity: 100,
-			// @ts-expect-error - image_front_small_url cannot be null
 			imageUrl: product.image_front_small_url,
 			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
 			nutriments: extractNutriments(product.nutriments)
@@ -82,7 +80,7 @@
 
 	function addToComparison() {
 		// Convert Product to ProductReduced - using type assertion since the product exists
-		const added = compareStore.addProduct(product as unknown as ProductReduced);
+		const added = compareStore.addProduct(product);
 		if (added) {
 			toastCtx.success('Product added to comparison');
 		} else {

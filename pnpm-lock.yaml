@@ -55,8 +55,8 @@ importers:
         specifier: ^1.0.13
         version: 1.0.13(svelte@5.45.5)
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.19
-        version: 2.0.0-alpha.19
+        specifier: 2.0.0-alpha.29
+        version: 2.0.0-alpha.29
       '@sinnwerkstatt/sveltekit-matomo':
         specifier: github:VaiTon/sveltekit-matomo
         version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/aa9fba5b23956dfc5a9b7dc3f46b1e4ab20da1c7(svelte@5.45.5)
@@ -787,8 +787,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.19':
-    resolution: {integrity: sha512-FUWRp5iPDDV9IQtXwfDowFg3EUPjnohF7zH3Cb0PddhnB+HqE/Uon9O5mODU6RhrOCfBASEJLLZYHrW+sjOJ0Q==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.29':
+    resolution: {integrity: sha512-063EZyqR7rc51X7LusdbkEIc0CK4KLE0uMKi5Ee7K72H9nAFlo3OGByreAK/7eryzCNVuAHSy2uLjNjhmbyJ4w==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.15.1':
     resolution: {integrity: sha512-9LPLxQMXxGdYXD7NYlI7U6F1Teq7dYbfIx2x7dYpe4jQl52/R8iuRe6YL0BvFplaZbZClHhf+ch+rBm48oKJxw==}
@@ -2683,9 +2683,6 @@ packages:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
 
-  openapi-fetch@0.14.1:
-    resolution: {integrity: sha512-l7RarRHxlEZYjMLd/PR0slfMVse2/vvIAGm75/F7J6MlQ8/b9uUQmUF2kCPrQhJqMXSxmYWObVgeYXbFYzZR+A==}
-
   openapi-fetch@0.15.0:
     resolution: {integrity: sha512-OjQUdi61WO4HYhr9+byCPMj0+bgste/LtSBEcV6FzDdONTs7x0fWn8/ndoYwzqCsKWIxEZwo4FN/TG1c1rI8IQ==}
 
@@ -3983,9 +3980,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.19':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.29':
     dependencies:
-      openapi-fetch: 0.14.1
+      openapi-fetch: 0.15.0
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.15.1':
     dependencies:
@@ -5897,10 +5894,6 @@ snapshots:
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
-
-  openapi-fetch@0.14.1:
-    dependencies:
-      openapi-typescript-helpers: 0.0.15
 
   openapi-fetch@0.15.0:
     dependencies:

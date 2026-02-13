@@ -1,13 +1,13 @@
 import { persisted } from 'svelte-local-storage-store';
-import type { ProductReduced } from '$lib/api/product';
+import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const MAX_COMPARE_PRODUCTS = 4;
 
-const compareProducts = persisted<ProductReduced[]>('compareProducts', []);
+const compareProducts = persisted<Product[]>('compareProducts', []);
 
 export const compareStore = {
 	subscribe: compareProducts.subscribe,
-	addProduct: (product: ProductReduced): boolean => {
+	addProduct: (product: Product): boolean => {
 		let added = false;
 		compareProducts.update((products) => {
 			if (products.some((p) => p.code === product.code)) return products;
