@@ -1,7 +1,6 @@
 import { resolve } from '$app/paths';
 import { env as publicEnv } from '$env/dynamic/public';
 import { PUBLIC_OFF_BASE_URL } from '$env/static/public';
-import { version as PACKAGE_VERSION } from '../../package.json';
 
 const {
 	PUBLIC_ROBOTOFF_URL,
@@ -26,7 +25,7 @@ export const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
 export const TRACEABILITY_CODES_URL =
 	'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
-export const USER_AGENT = `Open Food Facts Explorer (${PACKAGE_VERSION})`;
+export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_VERSION})`;
 
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
 export const TAXONOMY_URL = (taxo: string) => `${STATIC_HOST}/data/taxonomies/${taxo}.json`;
