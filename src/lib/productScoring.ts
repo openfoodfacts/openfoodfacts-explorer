@@ -3,7 +3,8 @@ import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 import type { UserPreference } from '$lib/stores/preferencesStore';
 import type { Product } from '$lib/api/product';
 
-export type ProductWithAttributes<T = Product> = T & {
+export type ProductWithAttributes<T = Product> = {
+	product: T;
 	attributes?: ProductAttributeForScoringGroup[];
 };
 
