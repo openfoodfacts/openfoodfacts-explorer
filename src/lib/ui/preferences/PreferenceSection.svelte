@@ -18,23 +18,30 @@
 
 	let { name: groupName, id: groupId, attributes = [], warning: warningText } = $derived(group);
 
-	function attributePreferenceValue(attributeId: string): string | undefined {
+	function preferenceValue<T>(type: string, attributeId: string): T | undefined {
 		const userPreference = getPreference($personalizedSearch.userPreferences, groupId, attributeId);
 		if (!userPreference) {
 			return undefined;
-		} else if (userPreference?.type !== 'attribute') {
+		} else if (userPreference?.type !== type) {
 			console.warn(
 				`Preference with groupId=${groupId} and attributeId=${attributeId} has unexpected type: ${userPreference.type}`
 			);
 			return undefined;
 		}
-		return userPreference.value;
+		return userPreference.value as T;
 	}
+
+	const attributePreferenceValue = (attributeId: string): string | undefined =>
+		preferenceValue<string>('attribute', attributeId);
+
+	const tagsPreferenceValue = (attributeId: string): string[] =>
+		preferenceValue<string[]>('tags', attributeId) ?? [];
 </script>
 
 {#snippet showParams(params: AttributeParameters)}
 	{#if params.type === 'tags'}
 		<Tags
+			tags={tagsPreferenceValue(params.id)}
 			onChange={(tags) => {
 				onChange({
 					type: 'tags',
