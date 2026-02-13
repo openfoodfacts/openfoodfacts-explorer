@@ -2,7 +2,7 @@
 	import { preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 	import { userInfo } from '$lib/stores/user';
 
@@ -19,6 +19,7 @@
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
 	let { data }: PageProps = $props();
+	let { attributeGroups } = $derived(data);
 </script>
 
 <div class="mx-auto my-8">
@@ -142,7 +143,8 @@
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.influences')}</p>
 
 	<!-- FIXME: Remove cast when id gets changes to a required property in SDK -->
-	<PreferencesForm groups={data.attributeGroups as AttributeGroup[]} />
+
+	<PreferencesForm groups={attributeGroups as AttributeGroup[]} />
 </div>
 
 <div class="divider my-8"></div>

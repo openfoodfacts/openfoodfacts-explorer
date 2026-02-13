@@ -1,36 +1,46 @@
+import type { AttributeGroupV2 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { persisted } from 'svelte-local-storage-store';
 
-export type Attribute = {
+export type AttributeParameters = { type: 'tags'; id: string; name: string; tagtype: string };
+
+// FIXME: Remove this type when we fix all type errors in SDK
+// - `parameters` field missing
+// - `values` field missing
+// - `id` field should not be optional
+export type Attribute = Omit<NonNullable<AttributeGroupV2[number]['attributes']>[number], 'id'> & {
 	id: string;
-	name?: string;
-	icon_url?: string;
-	setting_name?: string;
-	setting_note?: string;
+	parameters: AttributeParameters[];
+	values: string[];
 	description?: string;
-	description_short?: string;
-	panel_id?: string;
-	default?: string;
-	values?: string[];
 };
 
-export type AttributeGroup = {
+// FIXME: Remove this type when we fix all type errors in SDK
+// - [number] should not be necessary. The API should return a single object, not an array.
+export type AttributeGroup = Omit<AttributeGroupV2[number], 'attributes' | 'id'> & {
 	id: string;
-	name?: string;
-	attributes?: Attribute[];
 	warning?: string;
+	attributes?: Attribute[];
+};
+
+type BaseUserPreference = {
+	groupId: string;
+	attributeId: string;
 };
 
 // Specific preference type for attributes
-export type AttributePreference = {
+export type AttributePreference = BaseUserPreference & {
 	type: 'attribute';
-	id: string;
-	categoryId: string;
-	attributeId: string;
 	value: string;
 };
 
+export type TagsPreference = BaseUserPreference & {
+	type: 'tags';
+	tagtype: string;
+	value: string[];
+};
+
 // Base type for all user preferences (can be extended with other preference types)
-export type UserPreference = AttributePreference;
+export type UserPreference = AttributePreference | TagsPreference;
 
 // Combined preferences store
 type PreferencesStoreData = {
@@ -53,40 +63,34 @@ export function attributesToDefaultPreferences(
 	return attributeGroups.flatMap((group) =>
 		group.attributes!.map((attr) => ({
 			type: 'attribute' as const,
-			id: `${group.id!}.${attr.id!}`,
-			categoryId: group.id!,
-			attributeId: attr.id!,
+			groupId: group.id,
+			attributeId: attr.id,
 			value: getDefaultValue(attr)
 		}))
 	);
 }
 
-export function updatePreference(category: string, preference: string, value: string) {
+export function updateAttributePreference(preference: UserPreference) {
 	personalizedSearch.update((store) => {
 		const prefs = store.userPreferences;
-		const preferenceId = `${category}.${preference}`;
-		const existingPreferenceIndex = prefs.findIndex((p: UserPreference) => p.id === preferenceId);
+
+		const existingPreferenceIndex = prefs.findIndex(
+			(p) => p.groupId === preference.groupId && p.attributeId === preference.attributeId
+		);
 
 		if (existingPreferenceIndex >= 0) {
 			// Update existing preference
-			const newPrefs = [...prefs];
-			newPrefs[existingPreferenceIndex] = { ...newPrefs[existingPreferenceIndex], value };
+			const newPrefs = prefs.with(existingPreferenceIndex, preference);
+
 			return {
 				...store,
 				userPreferences: newPrefs
 			};
 		}
 
-		const newPreference: UserPreference = {
-			type: 'attribute',
-			id: preferenceId,
-			categoryId: category,
-			attributeId: preference,
-			value
-		};
 		return {
 			...store,
-			userPreferences: [...prefs, newPreference]
+			userPreferences: [...prefs, preference]
 		};
 	});
 }
@@ -99,13 +103,12 @@ export function resetToDefaults(defaultPreferences: UserPreference[]) {
 	}));
 }
 
-// Helper function to get preference value by category and attribute
-export function getPreferenceValue(
+export function getPreference(
 	prefs: UserPreference[],
-	category: string,
-	attribute: string
-): string {
-	const preferenceId = `${category}.${attribute}`;
-	const preference = prefs.find((p: UserPreference) => p.id === preferenceId);
-	return preference?.value ?? 'not_important';
+	categoryId: string,
+	attributeId: string
+): UserPreference | undefined {
+	return prefs.find(
+		(p: UserPreference) => p.groupId === categoryId && p.attributeId === attributeId
+	);
 }

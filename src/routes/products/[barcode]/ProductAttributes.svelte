@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
-	import { get } from 'svelte/store';
-
-	import type { ProductGroupedAttributes } from './+page';
 	import type { ProductAttributeV2 } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductGroupedAttributes } from './types';
 
 	type Props = {
 		groups: ProductGroupedAttributes[];
@@ -47,7 +45,7 @@
 	function shouldShowAttribute(attr: ProductAttributeV2) {
 		const attributeId = attr.id!.toLowerCase();
 
-		let preferences = get(personalizedSearch).userPreferences;
+		let preferences = $personalizedSearch.userPreferences;
 		if (preferences.length === 0) {
 			preferences = defaultPreferences;
 		}
@@ -64,6 +62,10 @@
 
 		return true;
 	}
+
+	let visibleAttributes = $derived(
+		groups.flatMap((group) => group.attributes.filter((attr) => shouldShowAttribute(attr)))
+	);
 </script>
 
 {#snippet attributeCard(attribute: ProductAttributeV2)}
@@ -90,7 +92,7 @@
 	<h2 class="mb-4 text-center text-3xl font-bold">Attributes</h2>
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-		{#each groups.flatMap((it) => it.attributes).filter(shouldShowAttribute) as attr (attr.id)}
+		{#each visibleAttributes as attr (attr.id)}
 			{@render attributeCard(attr)}
 		{/each}
 	</div>

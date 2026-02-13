@@ -21,7 +21,10 @@ export const load: PageLoad = async ({ fetch }) => {
 	const off = createProductsApi(fetch);
 	const pricesApi = createPricesApi(fetch);
 
-	const attributeGroups = off.getAttributeGroups();
+	// TODO: Replace with SDK call when available (API v3.4)
+	const { data: attributeGroupsRaw } = await off.apiv3.client.GET('/api/v3.4/attribute_groups');
+	const attributeGroups = attributeGroupsRaw?.attribute_groups ?? [];
+
 	const currencies = pricesApi.getCurrenciesList();
 
 	return {
@@ -29,6 +32,6 @@ export const load: PageLoad = async ({ fetch }) => {
 		countries,
 
 		currencies: await currencies,
-		attributeGroups: (await attributeGroups).data
+		attributeGroups: attributeGroups
 	};
 };

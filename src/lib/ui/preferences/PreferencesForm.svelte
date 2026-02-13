@@ -1,26 +1,27 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import Card from './Card.svelte';
+	import Card from '../Card.svelte';
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
 		personalizedSearch,
-		updatePreference,
-		type AttributeGroup
+		updateAttributePreference,
+		type AttributeGroup,
+		type UserPreference
 	} from '$lib/stores/preferencesStore';
 	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {
 		groups: AttributeGroup[] | Promise<AttributeGroup[]>;
 
-		onPreferenceChange?: (category: string, preference: string, value: string) => void;
+		onPreferenceChange?: (preference: UserPreference) => void;
 		onClose?: () => void;
 	};
 
 	let { groups, onPreferenceChange, onClose }: PreferencesFormProps = $props();
 
-	function handlePreferenceChange(category: string, preference: string, value: string) {
-		updatePreference(category, preference, value);
-		onPreferenceChange?.(category, preference, value);
+	function handlePreferenceChange(preference: UserPreference) {
+		updateAttributePreference(preference);
+		onPreferenceChange?.(preference);
 	}
 
 	onMount(() => {
@@ -52,13 +53,7 @@
 			</div>
 		{:then groups}
 			{#each groups as group (group.id)}
-				<PreferenceSection
-					title={group.name || ''}
-					groupId={group.id}
-					options={group.attributes ?? []}
-					onChange={handlePreferenceChange}
-					warningText={group.warning}
-				/>
+				<PreferenceSection {group} onChange={handlePreferenceChange} />
 			{/each}
 		{/await}
 
