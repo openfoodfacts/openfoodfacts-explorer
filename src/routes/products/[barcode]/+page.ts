@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+import { PricesApi, type AttributeV2 } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import {
 	type Brand,
@@ -22,6 +22,13 @@ import {
 	ERR_PRODUCT_NOT_FOUND,
 	type ProductStateResponse
 } from '$lib/api/errorUtils';
+
+export type ProductGroupedAttributes = {
+	id: string;
+	name: string;
+	warning?: string;
+	attributes: AttributeV2[];
+};
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -111,7 +118,10 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		? getPricesCoords(pricesApi, params.barcode)
 		: Promise.resolve(null);
 
-	const productAttributes = await productsApi.getProductAttributes(params.barcode);
+	//@ts-expect-error - SDK returns wrong type for attributes
+	const productAttributes: ProductGroupedAttributes[] = await productsApi.getProductAttributes(
+		params.barcode
+	);
 
 	const defaultPreferences = (async () => {
 		const { data: attributeGroups } = await productsApi.getAttributeGroups();
