@@ -55,7 +55,6 @@
 			id: code,
 			name: product.product_name || code,
 			quantity: 100,
-			// @ts-expect-error - image_front_small_url cannot be null
 			imageUrl: product.image_front_small_url,
 			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
 			nutriments: extractNutriments(product.nutriments)
