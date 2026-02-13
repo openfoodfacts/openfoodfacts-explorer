@@ -1,28 +1,36 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import {
-		getPreferenceValue,
+		getAttributePreferenceValue,
 		personalizedSearch,
-		type Attribute
+		type AttributeGroup,
+		type AttributeParameters
 	} from '$lib/stores/preferencesStore';
+	import Tags from '../../../routes/products/[barcode]/edit/Tags.svelte';
 
 	type Props = {
-		title: string;
-		options: Attribute[];
-		groupId: string;
+		group: AttributeGroup;
 		onChange: (category: string, preference: string, value: string) => void;
-		warningText?: string;
 	};
 
-	let { title, options: attributes, onChange, groupId, warningText }: Props = $props();
+	let { group, onChange }: Props = $props();
 
-	const DEFAULT_IMPORTANCE_VALUES = ['mandatory', 'very_important', 'important', 'not_important'];
+	let { name: groupName, id: groupId, attributes = [], warning: warningText } = $derived(group);
 </script>
+
+{#snippet showParams(params: AttributeParameters)}
+	{#if params.type === 'tags'}
+		<Tags />
+	{:else}
+		<!-- Fallback for unknown parameter types -->
+		<div class="text-sm text-red-500">Unknown parameter type: {params.type}</div>
+	{/if}
+{/snippet}
 
 <div class="bg-base-200 rounded-box collapse-arrow collapse">
 	<input type="checkbox" checked />
 	<div class="collapse-title text-lg font-medium">
-		{title}
+		{groupName || groupId || 'Unnamed Group'}
 	</div>
 	<div class="collapse-content space-y-4">
 		{#if warningText}
@@ -36,15 +44,9 @@
 		{/if}
 
 		{#each attributes as attribute (attribute.id)}
-			{@const selectedValue = getPreferenceValue(
-				$personalizedSearch.userPreferences,
-				groupId,
-				attribute.id!
-			)}
-
 			<div class="flex items-start gap-3 p-2">
 				<!-- Icon -->
-				<div class="mt-1 flex-shrink-0">
+				<div class="mt-1 shrink-0">
 					{#if attribute.icon_url}
 						<img
 							src={attribute.icon_url}
@@ -60,21 +62,33 @@
 						{attribute.setting_name || attribute.name || attribute.id || 'Unknown'}
 					</h4>
 					<div class="flex flex-wrap gap-4">
-						{#each attribute.values || DEFAULT_IMPORTANCE_VALUES as value (value)}
-							<label class="flex cursor-pointer items-center gap-2">
-								<input
-									type="radio"
-									name={`${groupId}.${attribute.id}`}
-									{value}
-									class="radio radio-sm radio-primary"
-									checked={selectedValue === value}
-									onchange={() => onChange(groupId, attribute.id, value)}
-								/>
-								<span class="text-base-content/80 text-sm">
-									{$_(`preferences.options.${value}`) || value}
-								</span>
-							</label>
-						{/each}
+						<!-- If it has `parameters`, use them first, otherwise fall back to `values -->
+						{#if attribute.parameters}
+							{#each attribute.parameters as param (param.id)}
+								{@render showParams(param)}
+							{/each}
+						{:else if attribute.values}
+							{@const selectedValue = getAttributePreferenceValue(
+								$personalizedSearch.userPreferences,
+								groupId,
+								attribute.id!
+							)}
+							{#each attribute.values as value (value)}
+								<label class="flex cursor-pointer items-center gap-2">
+									<input
+										type="radio"
+										name={`${groupId}.${attribute.id}`}
+										{value}
+										class="radio radio-sm radio-primary"
+										checked={selectedValue === value}
+										onchange={() => onChange(groupId, attribute.id, value)}
+									/>
+									<span class="text-base-content/80 text-sm">
+										{$_(`preferences.options.${value}`) || value}
+									</span>
+								</label>
+							{/each}
+						{/if}
 					</div>
 					{#if attribute.description}
 						<p class="text-base-content/60 mt-1 text-xs">{attribute.description}</p>

@@ -4,7 +4,7 @@
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
 		personalizedSearch,
-		updatePreference,
+		updateAttributePreference,
 		type AttributeGroup
 	} from '$lib/stores/preferencesStore';
 	import { onMount } from 'svelte';
@@ -19,7 +19,7 @@
 	let { groups, onPreferenceChange, onClose }: PreferencesFormProps = $props();
 
 	function handlePreferenceChange(category: string, preference: string, value: string) {
-		updatePreference(category, preference, value);
+		updateAttributePreference(category, preference, value);
 		onPreferenceChange?.(category, preference, value);
 	}
 
@@ -52,13 +52,7 @@
 			</div>
 		{:then groups}
 			{#each groups as group (group.id)}
-				<PreferenceSection
-					title={group.name || ''}
-					groupId={group.id}
-					options={group.attributes ?? []}
-					onChange={handlePreferenceChange}
-					warningText={group.warning}
-				/>
+				<PreferenceSection {group} onChange={handlePreferenceChange} />
 			{/each}
 		{/await}
 

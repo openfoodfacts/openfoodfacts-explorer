@@ -1,5 +1,5 @@
 import type { UserPreference } from '$lib/stores/preferencesStore';
-import { getPreferenceValue } from '$lib/stores/preferencesStore';
+import { getAttributePreferenceValue } from '$lib/stores/preferencesStore';
 import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 
 export type MatchStatus =
@@ -42,7 +42,7 @@ export function calculateScore(
 
 	for (const group of productAttributes) {
 		for (const attr of group.attributes) {
-			const prefValue = getPreferenceValue(currentPrefs, group.id, attr.id);
+			const prefValue = getAttributePreferenceValue(currentPrefs, group.id, attr.id);
 			const weight = getWeight(prefValue);
 
 			if (weight > 0) {
