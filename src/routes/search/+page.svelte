@@ -20,7 +20,7 @@
 	import Metadata from '$lib/Metadata.svelte';
 	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
 	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';

@@ -2,7 +2,7 @@
 	import { preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/PreferencesForm.svelte';
+	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 	import { userInfo } from '$lib/stores/user';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import Card from './Card.svelte';
+	import Card from '../Card.svelte';
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
 		personalizedSearch,
