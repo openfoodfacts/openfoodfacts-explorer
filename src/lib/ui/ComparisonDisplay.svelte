@@ -3,14 +3,14 @@
 
 	import { _ } from '$lib/i18n';
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
-	import type { ProductReduced } from '$lib/api/product';
 	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = {
-		products: ProductReduced[];
+		products: Product[];
 		comparisonMode: 'absolute' | 'relative-first' | 'relative-best';
 		onRemoveProduct?: (code: string) => void;
 		onReorderProduct?: (fromIndex: number, toIndex: number) => void;
@@ -37,7 +37,7 @@
 	};
 
 	// Helper to safely get a nutrient value from a product
-	function getNutrientValue(product: ProductReduced, nutrientKey: string): number | null {
+	function getNutrientValue(product: Product, nutrientKey: string): number | null {
 		const rawValue = product.nutriments?.[nutrientKey];
 		if (typeof rawValue === 'number') {
 			return rawValue;
@@ -166,7 +166,7 @@
 	});
 
 	// Get the best value for a nutrient (lower is better for most nutrients)
-	function getBestValue(products: ProductReduced[], nutrientKey: NutrientKey): number | null {
+	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
 		const values = products
 			.map((p) => getNutrientValue(p, nutrientKey))
 			.filter((v): v is number => v !== null);
@@ -178,9 +178,9 @@
 
 	// Get nutrient value with comparison data
 	function getNutrientComparison(
-		product: ProductReduced,
+		product: Product,
 		nutrientKey: NutrientKey,
-		products: ProductReduced[],
+		products: Product[],
 		index: number
 	): NutrientComparison {
 		const value = getNutrientValue(product, nutrientKey);
@@ -239,7 +239,7 @@
 	// Get score comparison
 	function getScoreComparison(
 		grade: string | undefined,
-		products: ProductReduced[],
+		products: Product[],
 		scoreType: 'nutriscore' | 'ecoscore'
 	): { isBest: boolean; isWorst: boolean } {
 		if (!grade) return { isBest: false, isWorst: false };
@@ -266,7 +266,7 @@
 	// Get Nova score comparison (lower is better)
 	function getNovaComparison(
 		novaGroup: number | undefined,
-		products: ProductReduced[]
+		products: Product[]
 	): { isBest: boolean; isWorst: boolean } {
 		if (!novaGroup) return { isBest: false, isWorst: false };
 
