@@ -1,26 +1,50 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import {
-		getAttributePreferenceValue,
+		getPreference,
 		personalizedSearch,
 		type AttributeGroup,
-		type AttributeParameters
+		type AttributeParameters,
+		type UserPreference
 	} from '$lib/stores/preferencesStore';
 	import Tags from '../../../routes/products/[barcode]/edit/Tags.svelte';
 
 	type Props = {
 		group: AttributeGroup;
-		onChange: (category: string, preference: string, value: string) => void;
+		onChange: (preference: UserPreference) => void;
 	};
 
 	let { group, onChange }: Props = $props();
 
 	let { name: groupName, id: groupId, attributes = [], warning: warningText } = $derived(group);
+
+	function attributePreferenceValue(attributeId: string): string | undefined {
+		const userPreference = getPreference($personalizedSearch.userPreferences, groupId, attributeId);
+		if (!userPreference) {
+			return undefined;
+		} else if (userPreference?.type !== 'attribute') {
+			console.warn(
+				`Preference with groupId=${groupId} and attributeId=${attributeId} has unexpected type: ${userPreference.type}`
+			);
+			return undefined;
+		}
+		return userPreference.value;
+	}
 </script>
 
 {#snippet showParams(params: AttributeParameters)}
 	{#if params.type === 'tags'}
-		<Tags />
+		<Tags
+			onChange={(tags) => {
+				onChange({
+					type: 'tags',
+					tagtype: params.tagtype,
+					groupId: groupId,
+					attributeId: params.id,
+					value: tags
+				});
+			}}
+		/>
 	{:else}
 		<!-- Fallback for unknown parameter types -->
 		<div class="text-sm text-red-500">Unknown parameter type: {params.type}</div>
@@ -67,12 +91,9 @@
 							{#each attribute.parameters as param (param.id)}
 								{@render showParams(param)}
 							{/each}
-						{:else if attribute.values}
-							{@const selectedValue = getAttributePreferenceValue(
-								$personalizedSearch.userPreferences,
-								groupId,
-								attribute.id!
-							)}
+						{/if}
+						{#if attribute.values}
+							{@const selectedValue = attributePreferenceValue(attribute.id)}
 							{#each attribute.values as value (value)}
 								<label class="flex cursor-pointer items-center gap-2">
 									<input
@@ -81,7 +102,13 @@
 										{value}
 										class="radio radio-sm radio-primary"
 										checked={selectedValue === value}
-										onchange={() => onChange(groupId, attribute.id, value)}
+										onchange={() =>
+											onChange({
+												groupId: groupId,
+												attributeId: attribute.id,
+												type: 'attribute',
+												value
+											})}
 									/>
 									<span class="text-base-content/80 text-sm">
 										{$_(`preferences.options.${value}`) || value}

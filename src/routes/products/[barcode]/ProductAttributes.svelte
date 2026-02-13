@@ -2,8 +2,8 @@
 	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
 	import { get } from 'svelte/store';
 
-	import type { ProductGroupedAttributes } from './+page';
 	import type { ProductAttributeV2 } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductGroupedAttributes } from './types';
 
 	type Props = {
 		groups: ProductGroupedAttributes[];

@@ -22,19 +22,20 @@ export type AttributeGroup = Omit<AttributeGroupV2[number], 'attributes' | 'id'>
 	attributes?: Attribute[];
 };
 
-// Specific preference type for attributes
-export type AttributePreference = {
-	type: 'attribute';
-	id: string;
-	categoryId: string;
+type BaseUserPreference = {
+	groupId: string;
 	attributeId: string;
+};
+
+// Specific preference type for attributes
+export type AttributePreference = BaseUserPreference & {
+	type: 'attribute';
 	value: string;
 };
 
-export type TagsPreference = {
+export type TagsPreference = BaseUserPreference & {
 	type: 'tags';
-	id: string;
-	tagType: string;
+	tagtype: string;
 	value: string[];
 };
 
@@ -62,28 +63,24 @@ export function attributesToDefaultPreferences(
 	return attributeGroups.flatMap((group) =>
 		group.attributes!.map((attr) => ({
 			type: 'attribute' as const,
-			id: `${group.id!}.${attr.id!}`,
-			categoryId: group.id!,
-			attributeId: attr.id!,
+			groupId: group.id,
+			attributeId: attr.id,
 			value: getDefaultValue(attr)
 		}))
 	);
 }
 
-export function updateAttributePreference(category: string, preference: string, value: string) {
+export function updateAttributePreference(preference: UserPreference) {
 	personalizedSearch.update((store) => {
 		const prefs = store.userPreferences;
-		const preferenceId = `${category}.${preference}`;
 
-		const existingPreferenceIndex = prefs
-			.filter((p: UserPreference): p is AttributePreference => p.type === 'attribute')
-			.findIndex((p: UserPreference) => p.id === preferenceId);
+		const existingPreferenceIndex = prefs.findIndex(
+			(p) => p.groupId === preference.groupId && p.attributeId === preference.attributeId
+		);
 
 		if (existingPreferenceIndex >= 0) {
 			// Update existing preference
-			const oldPreference = prefs[existingPreferenceIndex] as AttributePreference;
-			const newPref = { ...oldPreference, value };
-			const newPrefs = prefs.with(existingPreferenceIndex, newPref);
+			const newPrefs = prefs.with(existingPreferenceIndex, preference);
 
 			return {
 				...store,
@@ -91,16 +88,9 @@ export function updateAttributePreference(category: string, preference: string, 
 			};
 		}
 
-		const newPreference: UserPreference = {
-			type: 'attribute',
-			id: preferenceId,
-			categoryId: category,
-			attributeId: preference,
-			value
-		};
 		return {
 			...store,
-			userPreferences: [...prefs, newPreference]
+			userPreferences: [...prefs, preference]
 		};
 	});
 }
@@ -113,15 +103,12 @@ export function resetToDefaults(defaultPreferences: UserPreference[]) {
 	}));
 }
 
-// Helper function to get preference value by category and attribute
-export function getAttributePreferenceValue(
+export function getPreference(
 	prefs: UserPreference[],
-	category: string,
-	attribute: string
-): string {
-	const preferenceId = `${category}.${attribute}`;
-	const preference = prefs
-		.filter((p: UserPreference): p is AttributePreference => p.type === 'attribute')
-		.find((p: UserPreference) => p.id === preferenceId);
-	return preference?.value ?? 'not_important';
+	categoryId: string,
+	attributeId: string
+): UserPreference | undefined {
+	return prefs.find(
+		(p: UserPreference) => p.groupId === categoryId && p.attributeId === attributeId
+	);
 }

@@ -5,22 +5,23 @@
 	import {
 		personalizedSearch,
 		updateAttributePreference,
-		type AttributeGroup
+		type AttributeGroup,
+		type UserPreference
 	} from '$lib/stores/preferencesStore';
 	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {
 		groups: AttributeGroup[] | Promise<AttributeGroup[]>;
 
-		onPreferenceChange?: (category: string, preference: string, value: string) => void;
+		onPreferenceChange?: (preference: UserPreference) => void;
 		onClose?: () => void;
 	};
 
 	let { groups, onPreferenceChange, onClose }: PreferencesFormProps = $props();
 
-	function handlePreferenceChange(category: string, preference: string, value: string) {
-		updateAttributePreference(category, preference, value);
-		onPreferenceChange?.(category, preference, value);
+	function handlePreferenceChange(preference: UserPreference) {
+		updateAttributePreference(preference);
+		onPreferenceChange?.(preference);
 	}
 
 	onMount(() => {
