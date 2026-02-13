@@ -6,7 +6,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	import { goto } from '$app/navigation';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
-	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
@@ -73,10 +73,14 @@ Wraps the <product-card> web component and adds accessibility features.
 
 	const toastCtx = getToastCtx();
 
-	function addToComparison() {
+	async function addToComparison() {
 		closeContextMenu();
 
-		const ok = compareStore.addProduct(product as ProductReduced);
+		// @ts-expect-error - Product should not have { [key: string]: string },
+		// because that means it ONLY has string values
+		const fullProduct: Product = await new OpenFoodFacts(fetch).getProductV3(product.code);
+
+		const ok = compareStore.addProduct(fullProduct);
 		if (ok) {
 			toastCtx.success(
 				$_('product.menu.added_to_comparison', {

@@ -1,5 +1,4 @@
-import { getProductReducedForCard } from '$lib/api/product';
-import type { ProductReduced } from '$lib/api/product';
+import OpenFoodFacts, { type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ url, fetch }) => {
@@ -15,10 +14,12 @@ export const load: PageLoad = async ({ url, fetch }) => {
 
 	const barcodes = barcodesParam.split(',').filter(Boolean);
 
+	const offApi = new OpenFoodFacts(fetch);
+
 	// Fetch all products in parallel
 	const productPromises = barcodes.map(async (barcode) => {
 		try {
-			const { data, error } = await getProductReducedForCard(fetch, barcode.trim());
+			const { data, error } = await offApi.getProductV3(barcode.trim());
 			if (error) {
 				console.error(`Error fetching product ${barcode}:`, error);
 				return null;
@@ -29,17 +30,16 @@ export const load: PageLoad = async ({ url, fetch }) => {
 				console.error(`Product ${barcode} not found:`, data.errors);
 				return null;
 			}
-			// @ts-expect-error - TODO: fix typing issue
-			return data.product as ProductReduced;
+			return data.product;
 		} catch (error) {
 			console.error(`Failed to fetch product ${barcode}:`, error);
 			return null;
 		}
 	});
 
-	const products = (await Promise.all(productPromises)).filter(
-		(p): p is ProductReduced => p !== null
-	);
+	// @ts-expect-error - Product should not have { [key: string]: string }, because
+	// that means it ONLY has string values
+	const products: Product[] = (await Promise.all(productPromises)).filter((p) => p !== null);
 
 	return {
 		products,

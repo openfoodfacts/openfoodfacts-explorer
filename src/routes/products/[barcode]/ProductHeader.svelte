@@ -18,7 +18,6 @@
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
-	import type { ProductReduced } from '$lib/api/product';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
@@ -81,7 +80,7 @@
 
 	function addToComparison() {
 		// Convert Product to ProductReduced - using type assertion since the product exists
-		const added = compareStore.addProduct(product as unknown as ProductReduced);
+		const added = compareStore.addProduct(product);
 		if (added) {
 			toastCtx.success('Product added to comparison');
 		} else {
