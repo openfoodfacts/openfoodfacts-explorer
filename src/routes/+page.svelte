@@ -109,21 +109,21 @@
 		</p>
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
-				href="/explore"
+				href={resolve('/explore')}
 				class="btn btn-primary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiCompassOutline class="h-5 w-5" />
 				{$_('landing.explore_products')}
 			</a>
 			<a
-				href="/static/discover"
+				href={resolve('/static/[id]', { id: 'discover' })}
 				class="btn btn-secondary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiLightbulbOnOutline class="h-5 w-5" />
 				{$_('landing.discover_project')}
 			</a>
 			<a
-				href="/static/contribute"
+				href={resolve('/static/[id]', { id: 'contribute' })}
 				class="btn btn-outline btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
 			>
 				<IconMdiAccountHeartOutline class="h-5 w-5" />
