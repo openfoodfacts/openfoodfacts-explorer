@@ -166,6 +166,22 @@
 			unsubscribe();
 		};
 	});
+
+	// Track navigation time. If > 5s, show a popup suggesting server is slow or down
+	let navigationTooSlow: Promise<void> | null = $state(null);
+	$effect(() => {
+		if (navigating.to != null) {
+			navigationTooSlow = new Promise((resolve) => {
+				const timeout = setTimeout(() => {
+					resolve();
+				}, 5000);
+
+				return () => clearTimeout(timeout);
+			});
+		} else {
+			navigationTooSlow = null;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -337,3 +353,26 @@
 <CompareFloatingButton />
 <Footer />
 <Toast />
+
+{#if navigationTooSlow != null}
+	{#await navigationTooSlow then}
+		<dialog id="slow-server-dialog" class="modal" open>
+			<div class="modal-box">
+				<h3 class="text-lg font-bold">
+					{$_('slow_server.title', { default: 'This is taking longer than expected...' })}
+				</h3>
+				<p class="py-4">
+					{$_('slow_server.message', {
+						default:
+							'Check your internet connection and our status page to see if there are any ongoing issues.'
+					})}
+				</p>
+				<div class="modal-action">
+					<a href="https://status.openfoodfacts.org" target="_blank" class="btn btn-primary">
+						{$_('slow_server.status_page', { default: 'View Status Page' })}
+					</a>
+				</div>
+			</div>
+		</dialog>
+	{/await}
+{/if}
