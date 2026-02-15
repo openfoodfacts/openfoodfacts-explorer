@@ -227,7 +227,10 @@
 			</div>
 			<div class="navbar-end gap-2">
 				{#if $userInfo != null}
-					<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
+					<a
+						class="btn btn-outline link"
+						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+					>
 					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
 				{:else}
 					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
