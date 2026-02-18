@@ -1,7 +1,5 @@
 # UX Contributing Guide
 
-Welcome to the **Open Food Facts Explorer** design guide! 🎨
-
 This document outlines the UI/UX patterns, design system conventions, and best practices used in this project. Following these guidelines helps keep our interface consistent, accessible, and easy to maintain.
 
 ---
@@ -40,7 +38,7 @@ We define custom **Light** and **Dark** themes in [`src/app.css`](src/app.css). 
 | `base-200`          | Secondary backgrounds          | `#f3f0ee`                | `#2d2724`              |
 | `base-300`          | Borders, dividers, highlights  | `#ebe8e6`                | `#3a332f`              |
 
-> **Tip:** Always use DaisyUI semantic tokens (`bg-primary`, `text-base-content`) instead of hard-coded hex values. This ensures automatic dark mode support.
+> **Note:** Always use DaisyUI semantic tokens (`bg-primary`, `text-base-content`) instead of hard-coded hex values. This ensures automatic dark mode support.
 
 ### Typography
 
@@ -186,20 +184,23 @@ Translation files are located in `src/lib/i18n/messages/`.
 1. **Always provide a default value.** This ensures the UI remains functional even when a translation key is missing or the locale bundle hasn't loaded yet.
 
    ```svelte
-   <!-- ✅ Correct: always provide a default -->
+   <!-- Recommended: always provide a default -->
    <span>{$_('product.buttons.edit', { default: 'Edit' })}</span>
 
-   <!-- ❌ Incorrect: no fallback, may render the raw key -->
+   <!-- Avoid: no fallback, may render the raw key -->
    <span>{$_('product.buttons.edit')}</span>
    ```
 
 2. **Use dot-separated, nested keys** for logical grouping.
 
    ```
-   ✅ product.buttons.edit
-   ✅ search.placeholder
-   ❌ edit_button
-   ❌ searchPlaceholder
+   # Recommended
+   product.buttons.edit
+   search.placeholder
+
+   # Avoid
+   edit_button
+   searchPlaceholder
    ```
 
 3. **Adding a new translation key:**
@@ -298,4 +299,4 @@ DaisyUI / Tailwind CSS breakpoints used in this project:
 
 ---
 
-_This guide is a living document. If you spot something missing or outdated, feel free to open a PR to improve it!_
+_This guide is a living document. If you spot something missing or outdated, feel free to open a PR to improve it._
