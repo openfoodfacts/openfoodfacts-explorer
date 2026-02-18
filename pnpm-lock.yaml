@@ -78,15 +78,21 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
-      '@types/cropperjs':
-        specifier: ^1.3.3
-        version: 1.3.3
+      '@types/geojson':
+        specifier: ^7946.0.16
+        version: 7946.0.16
       '@types/leaflet':
         specifier: ^1.9.21
         version: 1.9.21
       '@types/leaflet.markercluster':
         specifier: ^1.5.6
         version: 1.5.6
+      '@types/topojson-client':
+        specifier: ^3.1.5
+        version: 3.1.5
+      '@types/topojson-specification':
+        specifier: ^1.0.5
+        version: 1.0.5
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.48.1
         version: 8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
@@ -117,12 +123,18 @@ importers:
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
+      geojson:
+        specifier: ^0.5.0
+        version: 0.5.0
       globals:
         specifier: ^16.5.0
         version: 16.5.0
       html5-qrcode:
         specifier: ^2.3.8
         version: 2.3.8
+      iso-3166-1:
+        specifier: ^2.1.1
+        version: 2.1.1
       iso-639-1:
         specifier: ^3.1.5
         version: 3.1.5
@@ -183,6 +195,9 @@ importers:
       tailwindcss-opentype:
         specifier: ^1.2.0
         version: 1.2.0(tailwindcss@4.1.17)
+      topojson-client:
+        specifier: ^3.1.0
+        version: 3.1.0
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -204,6 +219,9 @@ importers:
       vite-plugin-static-copy:
         specifier: ^3.1.4
         version: 3.1.4(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
+      world-atlas:
+        specifier: ^2.0.2
+        version: 2.0.2
 
 packages:
 
@@ -1563,10 +1581,6 @@ packages:
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
-  '@types/cropperjs@1.3.3':
-    resolution: {integrity: sha512-xpX516HBzuFpvprQAB+djtV89eYBGhN8Hxw5jM2DPVW6VMmxW1y2keOcna2sKhlFO+QlqpzaJOINQGvX8ai5WQ==}
-    deprecated: This is a stub types definition. cropperjs provides its own type definitions, so you do not need this installed.
-
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -1599,6 +1613,12 @@ packages:
 
   '@types/tedious@4.0.14':
     resolution: {integrity: sha512-KHPsfX/FoVbUGbyYvk1q9MMQHLPeRZhRJZdO45Q4YjvFkv4hMNghCWTvy7rdKessBsmtz4euWCWAB6/tVpI1Iw==}
+
+  '@types/topojson-client@3.1.5':
+    resolution: {integrity: sha512-C79rySTyPxnQNNguTZNI1Ct4D7IXgvyAs3p9HPecnl6mNrJ5+UhvGNYcZfpROYV2lMHI48kJPxwR+F9C6c7nmw==}
+
+  '@types/topojson-specification@1.0.5':
+    resolution: {integrity: sha512-C7KvcQh+C2nr6Y2Ub4YfgvWvWCgP2nOQMtfhlnwsRL4pYmmwzBS7HclGiS87eQfDOU/DLQpX6GEscviaz4yLIQ==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -2227,6 +2247,10 @@ packages:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
 
+  geojson@0.5.0:
+    resolution: {integrity: sha512-/Bx5lEn+qRF4TfQ5aLu6NH+UKtvIv7Lhc487y/c8BdludrCTpiWf9wyI0RTyqg49MFefIAvFDuEi5Dfd/zgNxQ==}
+    engines: {node: '>= 0.10'}
+
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -2379,6 +2403,9 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  iso-3166-1@2.1.1:
+    resolution: {integrity: sha512-RZxXf8cw5Y8LyHZIwIRvKw8sWTIHh2/txBT+ehO0QroesVfnz3JNFFX4i/OC/Yuv2bDIVYrHna5PMvjtpefq5w==}
 
   iso-639-1@3.1.5:
     resolution: {integrity: sha512-gXkz5+KN7HrG0Q5UGqSMO2qB9AsbEeyLP54kF1YrMsIxmu+g4BdB7rflReZTSTZGpfj8wywu6pfPBCylPIzGQA==}
@@ -3382,6 +3409,9 @@ packages:
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
+
+  world-atlas@2.0.2:
+    resolution: {integrity: sha512-IXfV0qwlKXpckz1FhwXVwKRjiIhOnWttOskm5CtxMsjgE/MXAYRHWJqgXOpM8IkcPBoXnyTU5lFHcYa5ChG0LQ==}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -4782,10 +4812,6 @@ snapshots:
 
   '@types/cookie@0.6.0': {}
 
-  '@types/cropperjs@1.3.3':
-    dependencies:
-      cropperjs: 2.1.0
-
   '@types/estree@1.0.8': {}
 
   '@types/geojson@7946.0.16': {}
@@ -4823,6 +4849,15 @@ snapshots:
   '@types/tedious@4.0.14':
     dependencies:
       '@types/node': 24.10.1
+
+  '@types/topojson-client@3.1.5':
+    dependencies:
+      '@types/geojson': 7946.0.16
+      '@types/topojson-specification': 1.0.5
+
+  '@types/topojson-specification@1.0.5':
+    dependencies:
+      '@types/geojson': 7946.0.16
 
   '@types/trusted-types@2.0.7': {}
 
@@ -5519,6 +5554,8 @@ snapshots:
 
   gensync@1.0.0-beta.2: {}
 
+  geojson@0.5.0: {}
+
   get-caller-file@2.0.5: {}
 
   get-east-asian-width@1.4.0: {}
@@ -5652,6 +5689,8 @@ snapshots:
   is-stream@2.0.1: {}
 
   isexe@2.0.0: {}
+
+  iso-3166-1@2.1.1: {}
 
   iso-639-1@3.1.5: {}
 
@@ -6676,6 +6715,8 @@ snapshots:
       isexe: 2.0.0
 
   word-wrap@1.2.5: {}
+
+  world-atlas@2.0.2: {}
 
   wrap-ansi@7.0.0:
     dependencies:
