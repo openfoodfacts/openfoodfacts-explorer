@@ -34,6 +34,8 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const PRODUCT_TYPES = ['food', 'beauty', 'petfood', 'product'] as const;
 </script>
 
 <h2
@@ -66,6 +68,25 @@
 	</div>
 {/if}
 <div class="space-y-6">
+	<!-- Product Type -->
+	<div class="form-control w-full sm:w-1/2">
+		<label class="label" for="product_type">
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+				{$_('product.edit.product_type')}
+				<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+			</span>
+		</label>
+		<select
+			id="product_type"
+			class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+			bind:value={product.product_type}
+		>
+			{#each PRODUCT_TYPES as type (type)}
+				<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
+			{/each}
+		</select>
+	</div>
+
 	<!-- Primary Fields Grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 		<div class="form-control w-full">
