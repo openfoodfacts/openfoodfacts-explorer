@@ -3,6 +3,7 @@
 	import 'cropperjs';
 	import type { ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { _ } from '$lib/i18n';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
@@ -351,7 +352,7 @@
 		// Ensure image dimensions are available before processing
 		if (!imageNaturalDimensions) {
 			console.error('Image dimensions not available - cannot save crop data');
-			toast.error('Image not fully loaded. Please wait and try again.');
+			toast.error($_('product.edit.images.toast.not_loaded'));
 			return;
 		}
 
@@ -366,7 +367,7 @@
 		const cropData = createCropDataFromSelection(transformData);
 
 		if (!cropData) {
-			toast.warning('Please select a valid crop area.');
+			toast.warning($_('product.edit.images.toast.invalid_crop'));
 			return;
 		}
 

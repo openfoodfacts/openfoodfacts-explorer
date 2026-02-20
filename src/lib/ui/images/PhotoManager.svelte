@@ -275,11 +275,13 @@
 			const { cropData, rotationAngle } = data;
 			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
 
-			toast.success('Image saved successfully!');
+			toast.success($_('product.edit.images.toast.save_success'));
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 			console.error('Error processing image:', error);
-			toast.error(`Error processing image: ${errorMessage}. Please try again.`);
+			toast.error(
+				$_('product.edit.images.toast.process_error', { values: { error: errorMessage } })
+			);
 		} finally {
 			await invalidateAll();
 			closeEditModal();
@@ -339,16 +341,16 @@
 			const result = await unselectImageV3(fetch, barcode, image.typeId, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
-				toast.success('Image unselected successfully');
+				toast.success($_('product.edit.images.toast.unselect_success'));
 				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
-				toast.error('Failed to unselect image. Please try again.');
+				toast.error($_('product.edit.images.toast.unselect_failed'));
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			toast.error('Error unselecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.unselect_error'));
 		}
 	}
 
@@ -384,10 +386,10 @@
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
 			await invalidateAll();
-			toast.success('Image selected successfully');
+			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
-			toast.error('Error selecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.select_error'));
 		} finally {
 			isSelectingImage = false;
 		}

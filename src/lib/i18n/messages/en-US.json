@@ -237,7 +237,25 @@
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
-			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use."
+			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
+			"images": {
+				"toast": {
+					"login_required": "Please log in to upload images.",
+					"upload_success": "Image uploaded successfully!",
+					"upload_failed": "Upload failed: {error}",
+					"upload_failed_generic": "Upload failed. Please try again.",
+					"upload_error": "Image upload failed. Please try again.",
+					"unselect_success": "Image unselected successfully",
+					"unselect_failed": "Failed to unselect image. Please try again.",
+					"unselect_error": "Error unselecting image. Please try again.",
+					"save_success": "Image saved successfully!",
+					"process_error": "Error processing image: {error}. Please try again.",
+					"select_success": "Image selected successfully",
+					"select_error": "Error selecting image. Please try again.",
+					"not_loaded": "Image not fully loaded. Please wait and try again.",
+					"invalid_crop": "Please select a valid crop area."
+				}
+			}
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
