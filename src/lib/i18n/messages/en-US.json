@@ -237,7 +237,36 @@
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
-			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use."
+			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
+			"product_tags": "Product Tags",
+			"images": {
+				"select_image": "Select an Image",
+				"uploading": "Uploading...",
+				"upload_type": "Upload {type}",
+				"unselecting": "Unselecting...",
+				"unselect_type": "Unselect {type}",
+				"unselect_image": "Unselect Image",
+				"selecting": "Selecting...",
+				"select_type": "Select {type}",
+				"show_less": "Show Less",
+				"see_all": "See All ({count})",
+				"processing_upload": "Processing upload...",
+				"unselecting_image": "Unselecting image...",
+				"photos_available": "photos available",
+				"edit_photo": "Edit Photo",
+				"loading_editor": "Loading image editor...",
+				"rotate_left": "Rotate Left",
+				"rotate_right": "Rotate Right",
+				"zoom_in": "Zoom In",
+				"zoom_out": "Zoom Out",
+				"reset": "Reset",
+				"rotation": "Rotation",
+				"tool": "Tool",
+				"crop_drag_to_move": "Drag to move, corners to resize",
+				"crop_click_to_start": "Click and drag to start cropping",
+				"report_image": "Report Image",
+				"save_changes": "Save Changes"
+			}
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -270,7 +299,8 @@
 		"back": "Back",
 		"skip": "Skip",
 		"step": "Step",
-		"of": "of"
+		"of": "of",
+		"cancel": "Cancel"
 	},
 	"menu": {
 		"button": "Menu"
@@ -302,7 +332,11 @@
 		"products_created": "Products created",
 		"products_edited": "Products edited",
 		"html_title": "User Profile - {user} - Open Food Facts Explorer",
-		"title": "User Profile of {user}"
+		"title": "User Profile of {user}",
+		"has_created": "Has Created",
+		"has_edited": "Has Edited",
+		"view_all_contributions": "View all contributions",
+		"view_all_edits": "View all edits"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",

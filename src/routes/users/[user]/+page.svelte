@@ -46,7 +46,7 @@
 </div>
 
 <section class="mb-8">
-	<h2 class="my-4 text-xl font-bold">Has Created</h2>
+	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_created')}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each contributor.products.slice(0, 6) as product (product.code)}
 			<WcProductCard {product} />
@@ -54,17 +54,19 @@
 	</div>
 
 	<a href={`/facets/contributors/${user}`} class="btn btn-outline mt-4 w-full">
-		View all contributions
+		{$_('dashboard.view_all_contributions')}
 	</a>
 </section>
 
 <section class="mb-8">
-	<h2 class="my-4 text-xl font-bold">Has Edited</h2>
+	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_edited')}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each editor.products.slice(0, 6) as product (product.code)}
 			<product-card {product} class="h-[11rem] w-full"></product-card>
 		{/each}
 	</div>
 
-	<a href={`/facets/editors/${user}`} class="btn btn-outline mt-4 w-full"> View all edits </a>
+	<a href={`/facets/editors/${user}`} class="btn btn-outline mt-4 w-full"
+		>{$_('dashboard.view_all_edits')}</a
+	>
 </section>
