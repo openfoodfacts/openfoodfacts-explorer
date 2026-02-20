@@ -237,7 +237,8 @@
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
-			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use."
+			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
+			"legal_warning_understood": "Understood"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
