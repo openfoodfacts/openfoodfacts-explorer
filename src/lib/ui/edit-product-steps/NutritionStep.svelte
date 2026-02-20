@@ -247,8 +247,14 @@
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					<label class={['input w-full', fieldInputClasses([nutrient, 'all'])]}>
 						<span class="label w-60">
-							<span class="grow">
+							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
+
+								{#if nutrient === 'fibers' && product.nutriments?.[nutrient] == null}
+									<InfoTooltip
+										text="Enter a hyphen (-) if the value is not present on the packaging."
+									/>
+								{/if}
 							</span>
 							{#if issuesByField([nutrient, 'all']).length > 0}
 								{@const issue = issuesByField(nutrient)[0] ?? issuesByField('all')[0]}
