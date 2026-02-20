@@ -282,10 +282,17 @@
 				<IconMdiMagnify class="h-5 w-5" />
 			</button>
 			<button
+			    type="button"
 				title={$_('menu.button')}
+				aria-label={$_('menu.button')}
+				aria-expanded={accordionOpen}
+				aria-controls="mobile-menu-panel"
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
+				}}
+				onkeydown={(e) => {
+					if (e.key === 'Escape') accordionOpen = false;
 				}}
 			>
 				{#if accordionOpen}
@@ -302,10 +309,13 @@
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
-	<div
-		class:hidden={!accordionOpen}
-		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
-	>
+<div
+	id="mobile-menu-panel"
+	role="region"
+	aria-label="Mobile navigation menu"
+	class:hidden={!accordionOpen}
+	class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
+>
 		<a class="btn btn-outline link" href="/static/discover">
 			{$_('discover_link')}
 		</a>
