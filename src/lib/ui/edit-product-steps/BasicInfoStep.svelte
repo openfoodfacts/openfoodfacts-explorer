@@ -34,6 +34,8 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const PRODUCT_TYPES = ['food', 'beauty', 'petfood', 'product'] as const;
 </script>
 
 <h2
@@ -79,10 +81,9 @@
 			class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 			bind:value={product.product_type}
 		>
-			<option value="food">{$_('product.edit.product_types.food')}</option>
-			<option value="beauty">{$_('product.edit.product_types.beauty')}</option>
-			<option value="petfood">{$_('product.edit.product_types.petfood')}</option>
-			<option value="product">{$_('product.edit.product_types.product')}</option>
+			{#each PRODUCT_TYPES as type (type)}
+				<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
+			{/each}
 		</select>
 	</div>
 
