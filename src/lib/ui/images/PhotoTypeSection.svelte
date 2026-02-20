@@ -6,7 +6,7 @@
 	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { getLanguageName } from '$lib/languages';
-	import { getDateFormatter } from 'svelte-i18n';
+	import { _, getDateFormatter } from 'svelte-i18n';
 	import { resolve } from '$app/paths';
 
 	import IconMdiUpload from '@iconify-svelte/mdi/upload';
@@ -188,10 +188,12 @@
 			>
 				{#if isUploading}
 					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Uploading...</span>
+					<span class="text-xs sm:text-sm">{$_('product.edit.images.uploading')}</span>
 				{:else}
 					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
-					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.upload_type', { values: { type: sectionType.label } })}</span
+					>
 				{/if}
 			</button>
 			{#if isStandardType && hasImagesOfType}
@@ -204,10 +206,14 @@
 				>
 					{#if isUnselecting}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Unselecting...</span>
+						<span class="text-xs sm:text-sm">{$_('product.edit.images.unselecting')}</span>
 					{:else}
 						<IconMdiImageRemove class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselect_type', {
+								values: { type: sectionType.label }
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}
@@ -219,7 +225,9 @@
 					onclick={() => onToggleExpansion(sectionType.label)}
 				>
 					<span class="text-xs sm:text-sm"
-						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+						>{isExpanded
+							? $_('product.edit.images.show_less')
+							: $_('product.edit.images.see_all', { values: { count: imagesOfType.length } })}</span
 					>
 				</button>
 			{/if}
@@ -292,13 +300,16 @@
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg text-primary"></div>
 						<p class="text-base-content/70 mt-2 text-sm">
-							{isUploading ? 'Processing upload...' : 'Unselecting image...'}
+							{isUploading
+								? $_('product.edit.images.processing_upload')
+								: $_('product.edit.images.unselecting_image')}
 						</p>
 					</div>
 				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
-					No {sectionType.label.toLowerCase()} photos available
+					No {sectionType.label.toLowerCase()}
+					{$_('product.edit.images.photos_available')}
 				</p>
 				<button
 					type="button"
@@ -309,10 +320,14 @@
 				>
 					{#if isSelectingImage}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Selecting...</span>
+						<span class="text-xs sm:text-sm">{$_('product.edit.images.selecting')}</span>
 					{:else}
 						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.select_type', {
+								values: { type: sectionType.label }
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}

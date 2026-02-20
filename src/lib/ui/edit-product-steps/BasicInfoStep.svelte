@@ -113,7 +113,7 @@
 		/>
 	</div>
 	<!-- Tags Section -->
-	<div class="divider text-sm font-medium opacity-60">Product Tags</div>
+	<div class="divider text-sm font-medium opacity-60">{$_('product.edit.product_tags')}</div>
 	<div class="space-y-4">
 		<div class="form-control w-full">
 			<label class="label" for="categories-input">
