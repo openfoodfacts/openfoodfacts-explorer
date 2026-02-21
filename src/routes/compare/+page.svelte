@@ -4,6 +4,7 @@
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
+	import { _ } from '$lib/i18n';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -42,8 +43,8 @@
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
 
 		const data = {
-			title: 'Product Comparison',
-			text: 'Check out this product comparison I made!',
+			title: $_('compare.share.title'),
+			text: $_('compare.share.text'),
 			url
 		};
 
@@ -53,16 +54,16 @@
 				return;
 			} catch (err) {
 				console.error('Share failed:', err);
-				toastCtx.error('Sharing failed.');
+				toastCtx.error($_('compare.share.failed'));
 			}
 		}
 
 		try {
 			await navigator.clipboard.writeText(url);
-			toastCtx.success('Comparison link copied to clipboard!');
+			toastCtx.success($_('compare.share.copy_success'));
 		} catch (err) {
 			console.error('Failed to copy:', err);
-			toastCtx.error('Failed to copy link to clipboard.');
+			toastCtx.error($_('compare.share.copy_failed'));
 		}
 	}
 
@@ -78,8 +79,8 @@
 </script>
 
 <svelte:head>
-	<title>Compare Products</title>
-	<meta name="description" content="Compare nutritional information of food products" />
+	<title>{$_('compare.meta_title')}</title>
+	<meta name="description" content={$_('compare.meta_description')} />
 </svelte:head>
 
 <div class="mx-4">
@@ -91,7 +92,7 @@
 						bind:this={titleInput}
 						bind:value={comparisonTitle}
 						type="text"
-						placeholder="Enter comparison title..."
+						placeholder={$_('compare.title_placeholder')}
 						class="input input-bordered input-lg w-full max-w-md text-2xl font-bold"
 						onblur={finishEditingTitle}
 						onkeydown={(e) => {
@@ -108,12 +109,12 @@
 						onclick={startEditingTitle}
 					>
 						<h1 class="text-2xl font-bold">
-							{comparisonTitle || 'Compare Products'}
+							{comparisonTitle || $_('compare.title_default')}
 							<span class="ml-2 text-sm opacity-0 transition-opacity group-hover:opacity-50"
 								>✏️</span
 							>
 						</h1>
-						<p class="text-base-content/50 text-xs">Click to edit title</p>
+						<p class="text-base-content/50 text-xs">{$_('compare.title_edit_hint')}</p>
 					</button>
 				{/if}
 			</div>
@@ -125,29 +126,29 @@
 							class:btn-active={comparisonMode === 'absolute'}
 							onclick={() => (comparisonMode = 'absolute')}
 						>
-							Absolute
+							{$_('compare.mode.absolute')}
 						</button>
 						<button
 							class="join-item btn btn-sm"
 							class:btn-active={comparisonMode === 'relative-first'}
 							onclick={() => (comparisonMode = 'relative-first')}
 						>
-							vs First
+							{$_('compare.mode.relative_first')}
 						</button>
 						<button
 							class="join-item btn btn-sm"
 							class:btn-active={comparisonMode === 'relative-best'}
 							onclick={() => (comparisonMode = 'relative-best')}
 						>
-							vs Best
+							{$_('compare.mode.relative_best')}
 						</button>
 					</div>
 					<button class="btn btn-sm btn-primary" onclick={shareComparison}>
 						<IconMdiShareVariant class="h-4 w-4" />
-						Share
+						{$_('compare.share.button')}
 					</button>
 					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
-						Clear All
+						{$_('compare.clear.button')}
 					</button>
 				{/if}
 			</div>
@@ -160,11 +161,11 @@
 				</div>
 			{:else}
 				<div class="py-8 text-center">
-					<p class="mb-4 text-lg">No products selected for comparison</p>
-					<p class="mb-4 text-sm text-gray-600">
-						Add products from their detail pages to start comparing nutritional values
-					</p>
-					<a href="/products/search?q=chocolate" class="btn btn-primary">Browse Products</a>
+					<p class="mb-4 text-lg">{$_('compare.empty.title')}</p>
+					<p class="mb-4 text-sm text-gray-600">{$_('compare.empty.description')}</p>
+					<a href="/products/search?q=chocolate" class="btn btn-primary">
+						{$_('compare.empty.cta')}
+					</a>
 				</div>
 			{/if}
 		{:else}
