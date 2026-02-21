@@ -21,17 +21,10 @@
 </div>
 
 <!-- Specialization for ingredients_text -->
-{#if edit_field_type == 'ingredients_text'}
-	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html sanitizeHtml(html)}
-	</div>
-{:else}
-	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html sanitizeHtml(html)}
-	</div>
-{/if}
+<div class="prose w-full max-w-full dark:text-white">
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html sanitizeHtml(html)}
+</div>
 
 {#if source_url}
 	<a class="link" href={source_url}>
