@@ -5,10 +5,16 @@ import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
+import { wrapFetchWithCredentials } from './utils';
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	const fetchToUse = wrapFetchWithAuth(fetch);
-	const urlToUse = new URL(API_HOST);
+	let fetchToUse = wrapFetchWithAuth(fetch);
+	let urlToUse = new URL(API_HOST);
+	
+	const { fetch: credentialsFetch, url: cleanUrl } = wrapFetchWithCredentials(fetchToUse, urlToUse);
+	fetchToUse = credentialsFetch;
+	urlToUse = cleanUrl;
+	
 	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
 }
 
