@@ -10,11 +10,11 @@ import { wrapFetchWithCredentials } from './utils';
 export function createProductsApi(fetch: typeof window.fetch) {
 	let fetchToUse = wrapFetchWithAuth(fetch);
 	let urlToUse = new URL(API_HOST);
-	
+
 	const { fetch: credentialsFetch, url: cleanUrl } = wrapFetchWithCredentials(fetchToUse, urlToUse);
 	fetchToUse = credentialsFetch;
 	urlToUse = cleanUrl;
-	
+
 	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
 }
 
