@@ -250,6 +250,14 @@
 				"add_origins": "Add origins",
 				"add_ingredients_text": "Add ingredients text"
 			}
+		},
+		"moderator": {
+			"barcode_correction_title": "Correct Barcode",
+			"barcode_correction_description": "If the barcode is not correct, please correct it here:",
+			"barcode_correction_placeholder": "Enter the correct barcode",
+			"barcode_correction_submit": "Correct Barcode",
+			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
+			"barcode_correction_error": "Failed to correct barcode. Please try again."
 		}
 	},
 	"qr": {

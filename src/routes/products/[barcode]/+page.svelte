@@ -14,6 +14,8 @@
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import BarcodeCorrectionCard from '$lib/ui/BarcodeCorrectionCard.svelte';
+	import { preferences } from '$lib/settings';
 
 	import type { PageProps } from './$types';
 	import Prices from './Prices.svelte';
@@ -120,6 +122,10 @@
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />
+	{/if}
+
+	{#if product.code != null && ($userInfo?.isModerator || $preferences.moderator)}
+		<BarcodeCorrectionCard currentCode={product.code} />
 	{/if}
 
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
