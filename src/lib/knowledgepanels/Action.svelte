@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
+	import { sanitizeHtml } from '$lib/sanitize';
 	import { resolve } from '$app/paths';
 
 	type Props = {
@@ -79,7 +80,7 @@
 {#if element.action_element.html != ''}
 	<button class="btn btn-primary" onclick={handleHtmlActionElementClick}>
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html element.action_element.html}
+		{@html sanitizeHtml(element.action_element.html)}
 	</button>
 {:else}
 	{#each element.action_element.actions as action (action)}

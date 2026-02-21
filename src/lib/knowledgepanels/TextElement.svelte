@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { KnowledgeElementText } from '$lib/api';
 	import { _ } from '$lib/i18n';
+	import { sanitizeHtml } from '$lib/sanitize';
 
 	let { element }: { element: KnowledgeElementText } = $props();
 
@@ -23,12 +24,12 @@
 {#if edit_field_type == 'ingredients_text'}
 	<div class="prose w-full max-w-full dark:text-white">
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
+		{@html sanitizeHtml(html)}
 	</div>
 {:else}
 	<div class="prose w-full max-w-full dark:text-white">
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
+		{@html sanitizeHtml(html)}
 	</div>
 {/if}
 
