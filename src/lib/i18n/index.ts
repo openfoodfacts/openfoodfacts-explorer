@@ -1,4 +1,4 @@
-import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
+import { init, register, getLocaleFromNavigator, isLoading, locale } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { browser } from '$app/environment';
@@ -14,9 +14,19 @@ locales.forEach((locale) => {
 	});
 });
 
+const storedLang = browser ? JSON.parse(localStorage.getItem('preferences') || '{}')?.lang : null;
+
+const normalizedLang = locales.includes(storedLang)
+	? storedLang
+	: storedLang === 'it'
+		? 'it-IT'
+		: storedLang === 'en'
+			? 'en-US'
+			: FALLBACK_LOCALE;
+
 init({
 	fallbackLocale: FALLBACK_LOCALE,
-	initialLocale: getLocale()
+	initialLocale: normalizedLang || FALLBACK_LOCALE
 });
 
 export function getLocale() {
