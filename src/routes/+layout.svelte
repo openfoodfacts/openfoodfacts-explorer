@@ -145,6 +145,7 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+	const mobileMenuId = 'mobile-menu-panel';
 
 	// Automatically close mobile menu on navigation
 	$effect(() => {
@@ -282,11 +283,11 @@
 				<IconMdiMagnify class="h-5 w-5" />
 			</button>
 			<button
-			    type="button"
+				type="button"
 				title={$_('menu.button')}
 				aria-label={$_('menu.button')}
 				aria-expanded={accordionOpen}
-				aria-controls="mobile-menu-panel"
+				aria-controls={mobileMenuId}
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
@@ -309,13 +310,13 @@
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
-<div
-	id="mobile-menu-panel"
-	role="region"
-	aria-label="Mobile navigation menu"
-	class:hidden={!accordionOpen}
-	class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
->
+	<div
+		id={mobileMenuId}
+		role="region"
+		aria-label={$_('menu.mobile_nav', { default: 'Mobile navigation menu' })}
+		class:hidden={!accordionOpen}
+		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
+	>
 		<a class="btn btn-outline link" href="/static/discover">
 			{$_('discover_link')}
 		</a>
