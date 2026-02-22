@@ -1,16 +1,15 @@
 import type { KnowledgePanel } from './knowledgepanels';
+import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
 
 export const FACETS_SORT_OPTIONS = [
 	'last_modified_t',
 	'popularity',
 	'environmental_score_score',
-	'created_t',
-	'nutriscore_score',
-	'last_modified_t'
-] as const;
+	'created_t'
+] as const satisfies readonly ProductFacetsSortOption[];
 
-export type FacetSortOption = (typeof FACETS_SORT_OPTIONS)[number];
+export type FacetSortOption = ProductFacetsSortOption;
 
 export async function getFacet(
 	fetch: typeof window.fetch,
@@ -18,7 +17,6 @@ export async function getFacet(
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacet(facet, opts);
 }
 
@@ -29,7 +27,6 @@ export async function getFacetValue(
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacetValue(facet, value, opts);
 }
 
