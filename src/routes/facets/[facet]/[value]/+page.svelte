@@ -79,7 +79,8 @@
 					}}
 				>
 					<option value="popularity">Popularity</option>
-					<option value="nutriscore_score">{$_('nutriscore')}</option>
+					<!-- TODO: Add nutriscore_score to FacetSortOption in the SDK  -->
+					<!-- <option value="nutriscore_score">{$_('nutriscore')}</option> -->
 					<option value="environmental_score_score">{$_('ecoscore')}</option>
 					<option value="created_t">{$_('search.creation_date')}</option>
 					<option value="last_modified_t">{$_('search.last_modified_date')}</option>
