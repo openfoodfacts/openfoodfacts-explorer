@@ -49,6 +49,46 @@ export async function addOrEditProductV2(
 }
 
 /**
+ * Update the barcode of a product (moderator-only action).
+ * This sends a POST request to the OFF API with the current code and the new code.
+ * @param currentCode - The current barcode of the product
+ * @param newCode - The correct barcode to replace the current one
+ * @returns true if the barcode was updated successfully, false otherwise
+ */
+export async function updateBarcode(
+	fetch: typeof window.fetch,
+	currentCode: string,
+	newCode: string
+): Promise<boolean> {
+	const authedFetch = wrapFetchWithAuth(fetch);
+
+	const body = new URLSearchParams();
+	body.append('code', currentCode);
+	body.append('new_code', newCode);
+
+	try {
+		const response = await authedFetch(`${API_HOST}/cgi/product_jqm2.pl`, {
+			method: 'POST',
+			body: body.toString(),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		});
+
+		if (!response.ok) {
+			console.error('Failed to update barcode:', response.status, response.statusText);
+			return false;
+		}
+
+		const data = await response.json();
+		return data.status === 1;
+	} catch (error) {
+		console.error('Error updating barcode:', error);
+		return false;
+	}
+}
+
+/**
  * Upload image using API v3.3 with base64 encoded data
  * @param barcode Product barcode
  * @param imageDataBase64 Base64 encoded image data

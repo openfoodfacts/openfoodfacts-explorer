@@ -12,10 +12,14 @@
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
-	import type { Product } from '$lib/api';
+	import type { Product, RawImage, addOrEditProductV2 } from '$lib/api';
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
+	import { userInfo } from '$lib/stores/user';
+	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 
 	type Props = {
 		product: Product;
@@ -145,6 +149,23 @@
 			<CommentStep bind:comment />
 		</div>
 	</div>
+
+	<!-- Moderator Tools Section -->
+	{#if $userInfo?.isModerator || $preferences.moderator}
+		<div class="collapse-arrow bg-base-200 collapse shadow-md">
+			<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+			<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">
+				<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+				{$_('product.edit.sections.moderator_tools')}
+			</div>
+			<div class="collapse-content">
+				<p class="text-base-content/70 mb-4 text-sm">
+					{$_('product.edit.info.moderator_tools')}
+				</p>
+				<BarcodeCorrectionCard currentCode={product.code} />
+			</div>
+		</div>
+	{/if}
 
 	<div class="mt-8 flex justify-end">
 		<button
