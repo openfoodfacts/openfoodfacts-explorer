@@ -8,7 +8,7 @@ export function formBody(params: Record<string, string | null | undefined>) {
 	return formBody;
 }
 
-const ALLOWED_CREDENTIALS_REGEX = /^[A-Za-z]*$/;
+const ALLOWED_CREDENTIALS_REGEX = /^[\x20-\x7E]*$/;
 
 export function wrapFetchWithCredentials(
 	fetch: typeof globalThis.fetch,
