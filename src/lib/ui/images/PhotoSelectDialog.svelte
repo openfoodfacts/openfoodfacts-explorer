@@ -32,7 +32,7 @@
 	<div class="modal-box w-full max-w-3xl">
 		<div class="mb-4 flex items-center justify-between">
 			<h3 id="select-image-title" class="text-lg font-bold">
-				{$_('product.edit.images.select_image')}
+				{$_('product.edit.images.select_image', { default: 'Select Image' })}
 			</h3>
 			<button
 				type="button"
@@ -71,7 +71,7 @@
 				onclick={handleDialogClose}
 				aria-label="Cancel and close"
 			>
-				{$_('common.cancel')}
+				{$_('common.cancel', { default: 'Cancel' })}
 			</button>
 		</div>
 	</div>
