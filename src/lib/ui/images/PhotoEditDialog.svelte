@@ -95,7 +95,7 @@
 	const canPerformActions = $derived(isMounted && isInitialized && imageNaturalDimensions !== null);
 	const cropModeStatus = $derived(
 		cropEnabled
-			? $_('product.edit.images.crop_drag_to_move', { default: 'Drag to move selection' })
+			? $_('product.edit.images.crop_drag_to_move', { default: 'Drag to move, corners to resize' })
 			: $_('product.edit.images.crop_click_to_start', {
 					default: 'Click or drag to start cropping'
 				})
@@ -656,7 +656,7 @@
 				>
 					<IconMdiRotateRight class="h-4 w-4" aria-hidden="true" />
 					<span class="hidden sm:inline"
-						>{$_('product.edit.images.rotate_right', { default: 'Right' })}</span
+						>{$_('product.edit.images.rotate_right', { default: 'Rotate Right' })}</span
 					>
 				</button>
 			</div>
