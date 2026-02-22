@@ -1,6 +1,5 @@
 import { resolve } from '$app/paths';
 import { env as publicEnv } from '$env/dynamic/public';
-import { PUBLIC_OFF_BASE_URL } from '$env/static/public';
 
 const {
 	PUBLIC_ROBOTOFF_URL,
@@ -18,7 +17,7 @@ export {
 };
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
-export const API_HOST = PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
+export const API_HOST = publicEnv.PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
 export const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
 
