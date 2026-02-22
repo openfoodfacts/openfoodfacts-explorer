@@ -13,7 +13,6 @@
 	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
-	"github_link": "GitHub",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -72,6 +71,31 @@
 		"errors_occurred": "errors occurred:"
 	},
 	"footer": {
+		"stay_updated": "Stay Updated",
+		"contribute": "Contribute",
+		"discover_title": "Discover our Project",
+		"tagline": "A collaborative, free and open database of food products",
+		"tagline_break": "from around the world.",
+		"decorative_alt": "A decorative graphic",
+		"social": {
+			"x": "X (formerly Twitter)",
+			"instagram": "Instagram",
+			"github": "GitHub",
+			"facebook": "Facebook",
+			"slack": "Slack"
+		},
+		"links": {
+			"newsletter": "Newsletter",
+			"forum": "Forum",
+			"producers": "Producers",
+			"translators": "Translators",
+			"github": "GitHub",
+			"data_api_sdks": "Data, API, SDKs",
+			"wiki": "Wiki",
+			"legal": "Legal",
+			"privacy": "Privacy",
+			"terms_of_use": "Terms of use"
+		},
 		"discover": {
 			"who_we_are": "Who we are",
 			"blog": "Blog",
@@ -91,7 +115,11 @@
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
 		"logged_in_as": "Logged in as: {username}",
-		"not_logged_in": "Not logged in"
+		"not_logged_in": "Not logged in",
+		"github_link": "GitHub",
+		"github_cta": "Help us improve Explorer on GitHub",
+		"dev_settings_title": "Development Settings",
+		"moderator_mode": "Moderator Mode"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -126,10 +154,30 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"loading_attributes": "Loading product attributes...",
+		"attributes_error_title": "Unable to load personalized attributes",
+		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"shortcuts": {
+			"show_barcode": "Show product barcode"
+		},
 		"buttons": {
 			"classic_view": "Classic view",
 			"edit": "Edit",
 			"share": "Share"
+		},
+		"folksonomy": {
+			"use_wc_editor": "Use the Web Component Editor",
+			"title_beta": "Personalized properties (beta)",
+			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
+			"intro_emphasis": "must be factual",
+			"intro_after": ". You can dive into ",
+			"link_properties": "the list of properties already used by the community",
+			"link_middle": " or explore the ",
+			"link_docs": "properties' documentation and its search engine",
+			"warning": "Be aware the data model might be modified. Use at your own risk.",
+			"footer_before": "This is brought by the ",
+			"footer_link": "Folksonomy Engine project",
+			"footer_after": ". Don't hesitate to participate or give feedback."
 		},
 		"datasources": {
 			"title": "Data Sources",
@@ -257,6 +305,34 @@
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again"
+	},
+	"compare": {
+		"meta_title": "Compare Products",
+		"meta_description": "Compare nutritional information of food products",
+		"title_placeholder": "Enter comparison title...",
+		"title_default": "Compare Products",
+		"title_edit_hint": "Click to edit title",
+		"mode": {
+			"absolute": "Absolute",
+			"relative_first": "vs First",
+			"relative_best": "vs Best"
+		},
+		"share": {
+			"button": "Share",
+			"title": "Product Comparison",
+			"text": "Check out this product comparison I made!",
+			"failed": "Sharing failed.",
+			"copy_success": "Comparison link copied to clipboard!",
+			"copy_failed": "Failed to copy link to clipboard."
+		},
+		"clear": {
+			"button": "Clear All"
+		},
+		"empty": {
+			"title": "No products selected for comparison",
+			"description": "Add products from their detail pages to start comparing nutritional values",
+			"cta": "Browse Products"
+		}
 	},
 	"errors": {
 		"network": {
