@@ -64,30 +64,14 @@
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
 		return handler ? handler.action : DEFAULT_ACTION.bind(null, action);
 	}
-
-	function handleHtmlActionElementClick(event: MouseEvent) {
-		// If the click was on a link, let it handle the navigation
-		const target = event.target as HTMLElement;
-		if (target.tagName === 'A' || target.closest('a')) {
-			return;
-		}
-		// Execute the first action handler if available
-		if (element.action_element.actions && element.action_element.actions.length > 0) {
-			const firstAction = element.action_element.actions[0];
-			const actionHandler = getActionHandler(firstAction);
-			actionHandler();
-		} else {
-			console.warn('HTML action element clicked, but no actions are defined.', element);
-		}
-	}
 </script>
 
 {#if element.action_element.html != ''}
-	<button class="btn btn-primary" onclick={handleHtmlActionElementClick}>
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html element.action_element.html}
-	</button>
-{:else}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html element.action_element.html}
+{/if}
+
+{#if element.action_element.actions && element.action_element.actions.length > 0}
 	{#each element.action_element.actions as action (action)}
 		{@const actionHandler = getActionHandler(action)}
 
