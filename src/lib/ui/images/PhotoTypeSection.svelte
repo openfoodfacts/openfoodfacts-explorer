@@ -237,7 +237,7 @@
 							? $_('product.edit.images.show_less', { default: 'Show Less' })
 							: $_('product.edit.images.see_all', {
 									values: { count: imagesOfType.length },
-									default: 'See all ' + imagesOfType.length
+									default: 'See All (' + imagesOfType.length + ')'
 								})}</span
 					>
 				</button>

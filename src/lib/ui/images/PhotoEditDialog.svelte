@@ -575,7 +575,9 @@
 				>
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg mb-2" aria-hidden="true"></div>
-						<p>{$_('product.edit.images.loading_editor', { default: 'Loading image editor...' })}</p>
+						<p>
+							{$_('product.edit.images.loading_editor', { default: 'Loading image editor...' })}
+						</p>
 					</div>
 				</div>
 			{/if}
@@ -594,7 +596,7 @@
 				>
 					<IconMdiRotateLeft class="h-4 w-4" aria-hidden="true" />
 					<span class="hidden sm:inline"
-						>{$_('product.edit.images.rotate_left', { default: 'Left' })}</span
+						>{$_('product.edit.images.rotate_left', { default: 'Rotate Left' })}</span
 					>
 				</button>
 
@@ -611,7 +613,7 @@
 						>
 							<IconMdiMagnifyMinus class="h-4 w-4" aria-hidden="true" />
 							<span class="hidden sm:inline"
-								>{$_('product.edit.images.zoom_out', { default: 'Out' })}</span
+								>{$_('product.edit.images.zoom_out', { default: 'Zoom Out' })}</span
 							>
 						</button>
 						<button
@@ -624,7 +626,7 @@
 						>
 							<IconMdiMagnifyPlus class="h-4 w-4" aria-hidden="true" />
 							<span class="hidden sm:inline"
-								>{$_('product.edit.images.zoom_in', { default: 'In' })}</span
+								>{$_('product.edit.images.zoom_in', { default: 'Zoom In' })}</span
 							>
 						</button>
 					</div>
