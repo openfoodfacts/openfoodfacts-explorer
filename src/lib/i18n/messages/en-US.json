@@ -13,7 +13,6 @@
 	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
-	"github_link": "GitHub",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -117,6 +116,7 @@
 		"expand_all_sections": "Expand all sections",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
+		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode"

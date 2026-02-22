@@ -150,7 +150,12 @@
 <div class="divider my-8"></div>
 
 <div class="mt-8 flex justify-center">
-	<a class="btn btn-outline" href={GITHUB_REPO_URL} target="_blank" aria-label={$_('github_link')}>
+	<a
+		class="btn btn-outline"
+		href={GITHUB_REPO_URL}
+		target="_blank"
+		aria-label={$_('settings.github_link')}
+	>
 		<IconMdiGithub class="h-5 w-5" />
 		<span class="ml-2">{$_('settings.github_cta')}</span>
 	</a>

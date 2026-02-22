@@ -8,7 +8,6 @@
 	"contribute_link": "Contribuisci",
 	"producers_link": "Produttori",
 	"prices_link": "Prezzi",
-	"github_link": "GitHub",
 	"world_option": "Mondo",
 	"search": {
 		"placeholder": "Query or barcode",
@@ -82,6 +81,7 @@
 		"general": "General",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
+		"github_link": "GitHub",
 		"github_cta": "Aiutaci a migliorare Explorer su GitHub",
 		"dev_settings_title": "Impostazioni di sviluppo",
 		"moderator_mode": "Modalita moderatore"
