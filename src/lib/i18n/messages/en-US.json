@@ -379,7 +379,8 @@
 		"cancel": "Cancel"
 	},
 	"menu": {
-		"button": "Menu"
+		"button": "Menu",
+		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
