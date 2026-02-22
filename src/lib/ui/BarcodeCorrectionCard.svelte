@@ -46,39 +46,37 @@
 	}
 </script>
 
-<Card>
-	<div class="flex flex-col gap-3">
-		<div class="flex items-center gap-2">
-			<IconMdiBarcode class="text-warning h-5 w-5" />
-			<h2 class="text-lg font-bold">{$_('product.moderator.barcode_correction_title')}</h2>
-		</div>
-
-		<p class="text-base-content/70 text-sm">
-			{$_('product.moderator.barcode_correction_description')}
-		</p>
-
-		<div class="flex flex-col gap-2 sm:flex-row sm:items-end">
-			<label class="input w-full">
-				<span class="label">{$_('product.moderator.barcode_correction_title')}</span>
-				<input
-					type="text"
-					bind:value={newCode}
-					placeholder={$_('product.moderator.barcode_correction_placeholder')}
-					disabled={isSubmitting}
-				/>
-			</label>
-
-			<button
-				class="btn btn-warning btn-sm sm:btn-md"
-				onclick={handleSubmit}
-				disabled={isSubmitting || !newCode.trim() || newCode.trim() === currentCode}
-				type="button"
-			>
-				{#if isSubmitting}
-					<span class="loading loading-spinner loading-sm"></span>
-				{/if}
-				{$_('product.moderator.barcode_correction_submit')}
-			</button>
-		</div>
+<div class="flex flex-col gap-3 p-2">
+	<div class="flex items-center gap-2">
+		<IconMdiBarcode class="text-warning h-5 w-5" />
+		<h2 class="text-lg font-bold">{$_('product.moderator.barcode_correction_title')}</h2>
 	</div>
-</Card>
+
+	<p class="text-base-content/70 text-sm">
+		{$_('product.moderator.barcode_correction_description')}
+	</p>
+
+	<div class="flex flex-col gap-2 sm:flex-row sm:items-end">
+		<label class="input w-full">
+			<span class="label">{$_('product.moderator.barcode_correction_title')}</span>
+			<input
+				type="text"
+				bind:value={newCode}
+				placeholder={$_('product.moderator.barcode_correction_placeholder')}
+				disabled={isSubmitting}
+			/>
+		</label>
+
+		<button
+			class="btn btn-warning btn-sm sm:btn-md"
+			onclick={handleSubmit}
+			disabled={isSubmitting || !newCode.trim() || newCode.trim() === currentCode}
+			type="button"
+		>
+			{#if isSubmitting}
+				<span class="loading loading-spinner loading-sm"></span>
+			{/if}
+			{$_('product.moderator.barcode_correction_submit')}
+		</button>
+	</div>
+</div>

@@ -155,6 +155,7 @@
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context."
 			},
 			"tooltips": {
@@ -233,6 +234,7 @@
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"moderator_tools": "Moderator Tools",
 				"comment": "Comment"
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
