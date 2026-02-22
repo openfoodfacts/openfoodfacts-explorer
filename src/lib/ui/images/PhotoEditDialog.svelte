@@ -575,7 +575,7 @@
 				>
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg mb-2" aria-hidden="true"></div>
-						<p>{$_('product.edit.images.loading_editor', { default: 'Loading editor...' })}</p>
+						<p>{$_('product.edit.images.loading_editor', { default: 'Loading image editor...' })}</p>
 					</div>
 				</div>
 			{/if}
