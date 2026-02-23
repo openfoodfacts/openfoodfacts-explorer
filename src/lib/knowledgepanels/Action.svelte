@@ -56,19 +56,30 @@
 		}
 	];
 
-	const DEFAULT_ACTION = (action: string) => {
-		console.warn(`No specific handler for action: ${action}`);
-	};
-
 	function getActionHandler(action: string) {
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler ? handler.action : DEFAULT_ACTION.bind(null, action);
+		return handler
+			? handler.action
+			: () => {
+					console.warn(`No specific handler for action: ${action}`);
+				};
+	}
+
+	function handleHtmlActionElementClick() {
+		const actions = element.action_element.actions;
+		if (actions && actions.length > 0) {
+			getActionHandler(actions[0])();
+		} else {
+			console.warn('No actions defined for this HTML action element.');
+		}
 	}
 </script>
 
 {#if element.action_element.html != ''}
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	{@html element.action_element.html}
+	<div class="kpanel-html" onclick={handleHtmlActionElementClick}>
+		{@html element.action_element.html}
+	</div>
 {/if}
 
 {#if element.action_element.actions && element.action_element.actions.length > 0}
