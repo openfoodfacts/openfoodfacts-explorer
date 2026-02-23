@@ -62,31 +62,27 @@
 
 	function getActionHandler(action: string) {
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler ? handler.action : DEFAULT_ACTION.bind(null, action);
-	}
-
-	function handleHtmlActionElementClick(event: MouseEvent) {
-		// If the click was on a link, let it handle the navigation
-		const target = event.target as HTMLElement;
-		if (target.tagName === 'A' || target.closest('a')) {
-			return;
-		}
-		// TODO
-		console.warn('HTML action element clicked, but no handler is defined.', element);
+		return handler ? handler.action : () => DEFAULT_ACTION(action);
 	}
 </script>
 
-{#if element.action_element.html != ''}
-	<button class="btn btn-primary" onclick={handleHtmlActionElementClick}>
+<div class="border-accent bg-accent/10 rounded border-s p-4">
+	{#if element.action_element.html != ''}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html element.action_element.html}
-	</button>
-{:else}
-	{#each element.action_element.actions as action (action)}
-		{@const actionHandler = getActionHandler(action)}
+		<div class="mb-4 text-sm">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html element.action_element.html}
+		</div>
+	{/if}
 
-		<button class="btn btn-primary" onclick={actionHandler}>
-			{$_(`product.knowledge_panels.action.${action}`, { default: action })}
-		</button>
-	{/each}
-{/if}
+	{#if element.action_element.actions && element.action_element.actions.length > 0}
+		<div class="flex flex-wrap gap-2">
+			{#each element.action_element.actions as action (action)}
+				{@const actionHandler = getActionHandler(action)}
+				<button class="btn btn-primary btn-sm" onclick={actionHandler}>
+					{$_(`product.knowledge_panels.action.${action}`, { default: action })}
+				</button>
+			{/each}
+		</div>
+	{/if}
+</div>
