@@ -56,38 +56,33 @@
 		}
 	];
 
+	const DEFAULT_ACTION = (action: string) => {
+		console.warn(`No specific handler for action: ${action}`);
+	};
+
 	function getActionHandler(action: string) {
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler
-			? handler.action
-			: () => {
-					console.warn(`No specific handler for action: ${action}`);
-				};
-	}
-
-	function handleHtmlActionElementClick() {
-		const actions = element.action_element.actions;
-		if (actions && actions.length > 0) {
-			getActionHandler(actions[0])();
-		} else {
-			console.warn('No actions defined for this HTML action element.');
-		}
+		return handler ? handler.action : () => DEFAULT_ACTION(action);
 	}
 </script>
 
-{#if element.action_element.html != ''}
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	<div class="kpanel-html" onclick={handleHtmlActionElementClick}>
-		{@html element.action_element.html}
-	</div>
-{/if}
+<div class="border-accent bg-accent/10 rounded border-s p-4">
+	{#if element.action_element.html != ''}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<div class="mb-4 text-sm">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html element.action_element.html}
+		</div>
+	{/if}
 
-{#if element.action_element.actions && element.action_element.actions.length > 0}
-	{#each element.action_element.actions as action (action)}
-		{@const actionHandler = getActionHandler(action)}
-
-		<button class="btn btn-primary" onclick={actionHandler}>
-			{$_(`product.knowledge_panels.action.${action}`, { default: action })}
-		</button>
-	{/each}
-{/if}
+	{#if element.action_element.actions && element.action_element.actions.length > 0}
+		<div class="flex flex-wrap gap-2">
+			{#each element.action_element.actions as action (action)}
+				{@const actionHandler = getActionHandler(action)}
+				<button class="btn btn-primary btn-sm" onclick={actionHandler}>
+					{$_(`product.knowledge_panels.action.${action}`, { default: action })}
+				</button>
+			{/each}
+		</div>
+	{/if}
+</div>
