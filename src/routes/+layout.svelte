@@ -213,7 +213,8 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	></progress>
 {/if}
 
 <!-- Desktop Header -->
