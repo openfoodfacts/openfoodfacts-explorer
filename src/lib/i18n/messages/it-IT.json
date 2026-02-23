@@ -8,7 +8,6 @@
 	"contribute_link": "Contribuisci",
 	"producers_link": "Produttori",
 	"prices_link": "Prezzi",
-	"github_link": "GitHub",
 	"world_option": "Mondo",
 	"search": {
 		"placeholder": "Query or barcode",
@@ -43,6 +42,31 @@
 		"errors_occurred": "errors occurred:"
 	},
 	"footer": {
+		"stay_updated": "Resta aggiornato",
+		"contribute": "Contribuisci",
+		"discover_title": "Scopri il nostro progetto",
+		"tagline": "Un database collaborativo, libero e aperto di prodotti alimentari",
+		"tagline_break": "da tutto il mondo.",
+		"decorative_alt": "Grafica decorativa",
+		"social": {
+			"x": "X (ex Twitter)",
+			"instagram": "Instagram",
+			"github": "GitHub",
+			"facebook": "Facebook",
+			"slack": "Slack"
+		},
+		"links": {
+			"newsletter": "Newsletter",
+			"forum": "Forum",
+			"producers": "Produttori",
+			"translators": "Traduttori",
+			"github": "GitHub",
+			"data_api_sdks": "Dati, API, SDK",
+			"wiki": "Wiki",
+			"legal": "Legale",
+			"privacy": "Privacy",
+			"terms_of_use": "Termini di utilizzo"
+		},
 		"discover": {
 			"who_we_are": "Chi siamo?",
 			"blog": "Il blog di Open Food Facts",
@@ -56,7 +80,11 @@
 	"settings": {
 		"general": "General",
 		"influences": "Influences",
-		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]"
+		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
+		"github_link": "GitHub",
+		"github_cta": "Aiutaci a migliorare Explorer su GitHub",
+		"dev_settings_title": "Impostazioni di sviluppo",
+		"moderator_mode": "Modalita moderatore"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -73,6 +101,26 @@
 		"intro_2": "Puoi inserire un codice prodotto nella barra di ricerca sopra per iniziare o fare clic su uno dei prodotti sottostanti."
 	},
 	"product": {
+		"loading_attributes": "Caricamento attributi prodotto...",
+		"attributes_error_title": "Impossibile caricare gli attributi personalizzati",
+		"attributes_error_body": "Si e verificato un errore durante il caricamento degli attributi personalizzati. Riprova piu tardi.",
+		"shortcuts": {
+			"show_barcode": "Mostra codice a barre del prodotto"
+		},
+		"folksonomy": {
+			"use_wc_editor": "Usa l'editor Web Component",
+			"title_beta": "Proprieta personalizzate (beta)",
+			"intro_before": "Queste proprieta sono create e compilate dagli utenti per qualsiasi uso. Sentiti libero di aggiungere le tue. Le proprieta e i valori che crei ",
+			"intro_emphasis": "devono essere fattuali",
+			"intro_after": ". Puoi consultare ",
+			"link_properties": "l'elenco delle proprieta gia usate dalla comunita",
+			"link_middle": " oppure esplorare la ",
+			"link_docs": "documentazione delle proprieta e il suo motore di ricerca",
+			"warning": "Il modello dati potrebbe essere modificato. Usalo a tuo rischio.",
+			"footer_before": "Questo e portato avanti dal ",
+			"footer_link": "progetto Folksonomy Engine",
+			"footer_after": ". Non esitare a partecipare o a dare feedback."
+		},
 		"edit": {
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
@@ -121,5 +169,33 @@
 		"products_count": "Prodotti",
 		"editors_count": "Editor",
 		"open_data": "Open Data"
+	},
+	"compare": {
+		"meta_title": "Confronta prodotti",
+		"meta_description": "Confronta le informazioni nutrizionali dei prodotti alimentari",
+		"title_placeholder": "Inserisci un titolo per il confronto...",
+		"title_default": "Confronta prodotti",
+		"title_edit_hint": "Clicca per modificare il titolo",
+		"mode": {
+			"absolute": "Assoluto",
+			"relative_first": "vs Primo",
+			"relative_best": "vs Migliore"
+		},
+		"share": {
+			"button": "Condividi",
+			"title": "Confronto prodotti",
+			"text": "Guarda il confronto prodotti che ho creato!",
+			"failed": "Condivisione non riuscita.",
+			"copy_success": "Link del confronto copiato negli appunti!",
+			"copy_failed": "Impossibile copiare il link negli appunti."
+		},
+		"clear": {
+			"button": "Cancella tutto"
+		},
+		"empty": {
+			"title": "Nessun prodotto selezionato per il confronto",
+			"description": "Aggiungi prodotti dalle loro pagine per iniziare a confrontare i valori nutrizionali",
+			"cta": "Sfoglia prodotti"
+		}
 	}
 }
