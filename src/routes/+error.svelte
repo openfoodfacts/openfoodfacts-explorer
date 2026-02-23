@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { invalidateAll } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
@@ -22,11 +23,22 @@
 		// track the error event with Matomo
 		$tracker?.trackEvent('Error', 'Error Occurred', errorMessage, errorDetails.length);
 	});
+
+	function handleRetry() {
+		invalidateAll();
+	}
+
+	let networkErrorDetails = $derived(
+		errorDetails
+			.map((e) => (typeof e === 'string' ? e : (e.message?.id ?? JSON.stringify(e))))
+			.filter(Boolean)
+			.join('\n')
+	);
 </script>
 
 <div class="flex min-h-[60vh] w-full flex-col items-center justify-center p-6">
 	{#if isNetworkError}
-		<NetworkError />
+		<NetworkError errorDetails={networkErrorDetails} on:retry={handleRetry} />
 	{:else if isGlobal404}
 		<div class="animate-in fade-in max-w-md text-center duration-500">
 			<div class="mb-4 text-8xl grayscale-[20%]">🧭</div>
