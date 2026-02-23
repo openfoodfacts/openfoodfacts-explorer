@@ -249,6 +249,7 @@
 			"serving_size": "Serving Size",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
+			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
 			"energy": "Energy",
 			"macronutrients": "Macro-nutrients",
