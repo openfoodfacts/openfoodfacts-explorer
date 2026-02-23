@@ -11,12 +11,12 @@
 
 	let cards = $derived([
 		{
-			title: $_('dashboard.products_created'),
+			title: $_('dashboard.products_created', { default: 'Products Created' }),
 			count: contributor.count,
 			icon: ShoppingCartIcon
 		},
 		{
-			title: $_('dashboard.products_edited'),
+			title: $_('dashboard.products_edited', { default: 'Products Edited' }),
 			count: editor.count,
 			icon: ScaleIcon
 		}
@@ -26,10 +26,13 @@
 </script>
 
 <svelte:head>
-	<title>{$_('dashboard.html_title', { values: { user } })}</title>
+	<title>{$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}</title
+	>
 </svelte:head>
 
-<h1 class="my-8 text-3xl font-bold">{$_('dashboard.title', { values: { user } })}</h1>
+<h1 class="my-8 text-3xl font-bold">
+	{$_('dashboard.title', { values: { user }, default: 'Dashboard for ' + user })}
+</h1>
 
 <div class="mb-8 flex flex-wrap gap-4 max-md:flex-col md:grid-cols-2">
 	{#each cards as card (card.title)}
@@ -46,7 +49,7 @@
 </div>
 
 <section class="mb-8">
-	<h2 class="my-4 text-xl font-bold">Has Created</h2>
+	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_created', { default: 'Has Created' })}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each contributor.products.slice(0, 6) as product (product.code)}
 			<WcProductCard {product} />
@@ -54,17 +57,19 @@
 	</div>
 
 	<a href={`/facets/contributors/${user}`} class="btn btn-outline mt-4 w-full">
-		View all contributions
+		{$_('dashboard.view_all_contributions', { default: 'View all contributions' })}
 	</a>
 </section>
 
 <section class="mb-8">
-	<h2 class="my-4 text-xl font-bold">Has Edited</h2>
+	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_edited', { default: 'Has Edited' })}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each editor.products.slice(0, 6) as product (product.code)}
 			<product-card {product} class="h-[11rem] w-full"></product-card>
 		{/each}
 	</div>
 
-	<a href={`/facets/editors/${user}`} class="btn btn-outline mt-4 w-full"> View all edits </a>
+	<a href={`/facets/editors/${user}`} class="btn btn-outline mt-4 w-full"
+		>{$_('dashboard.view_all_edits', { default: 'View all edits' })}</a
+	>
 </section>

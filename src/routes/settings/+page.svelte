@@ -150,15 +150,20 @@
 <div class="divider my-8"></div>
 
 <div class="mt-8 flex justify-center">
-	<a class="btn btn-outline" href={GITHUB_REPO_URL} target="_blank" aria-label="GitHub">
+	<a
+		class="btn btn-outline"
+		href={GITHUB_REPO_URL}
+		target="_blank"
+		aria-label={$_('settings.github_link')}
+	>
 		<IconMdiGithub class="h-5 w-5" />
-		<span class="ml-2">Help us improve Explorer on GitHub</span>
+		<span class="ml-2">{$_('settings.github_cta')}</span>
 	</a>
 </div>
 
 <div class="divider my-8"></div>
 
-<h2 class="my-4 text-center text-2xl font-bold">Development Settings</h2>
+<h2 class="my-4 text-center text-2xl font-bold">{$_('settings.dev_settings_title')}</h2>
 
 <div class="mx-auto mb-8 grid w-max grid-cols-1 gap-4 md:grid-cols-[auto_1fr]">
 	<label
@@ -166,7 +171,7 @@
 		class="flex items-center gap-2 justify-self-start md:justify-self-end"
 	>
 		<IconMdiTools class="h-5 w-5" />
-		Moderator Mode:
+		{$_('settings.moderator_mode')}:
 	</label>
 	<input
 		id="dev-mode-toggle"

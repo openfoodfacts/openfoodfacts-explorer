@@ -9,6 +9,9 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '$lib/Metadata.svelte';
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
+
+	import CountriesMap from './CountriesMap.svelte';
+
 	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
@@ -31,6 +34,10 @@
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
+
+{#if facet === 'countries'}
+	<CountriesMap facet={data.results} />
+{/if}
 
 <div class="my-8 flex gap-4 max-md:flex-col">
 	{#if Object.entries(knowledgePanels).length > 0}
