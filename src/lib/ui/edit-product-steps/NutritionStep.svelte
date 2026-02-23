@@ -174,7 +174,7 @@
 				</span>
 			</div>
 
-			{#if $preferences.moderator || $userInfo?.isModerator}
+			{#if $preferences.moderator && $userInfo?.isModerator}
 				<div class="mb-4">
 					<button type="button" class="btn btn-error btn-sm" onclick={wipeAllNutrientValues}>
 						<IconMdiDeleteSweep class="h-4 w-4" />
