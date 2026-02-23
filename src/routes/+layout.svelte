@@ -139,7 +139,7 @@
 
 	async function gotoProductsSearch() {
 		isSearching = true;
-		await goto('/search?q=' + searchQuery);
+		await goto('/search?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
 	}
 
