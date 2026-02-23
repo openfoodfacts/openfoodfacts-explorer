@@ -1,9 +1,9 @@
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
-import { PUBLIC_PRICES_API_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
-const BASE_URL = PUBLIC_PRICES_API_URL;
+const BASE_URL = env.PUBLIC_PRICES_API_URL;
 
 export function isConfigured() {
 	return BASE_URL != null;

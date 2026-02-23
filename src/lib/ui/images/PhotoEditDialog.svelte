@@ -94,7 +94,11 @@
 
 	const canPerformActions = $derived(isMounted && isInitialized && imageNaturalDimensions !== null);
 	const cropModeStatus = $derived(
-		cropEnabled ? 'Drag to move, corners to resize' : 'Click and drag to start cropping'
+		cropEnabled
+			? $_('product.edit.images.crop_drag_to_move', { default: 'Drag to move, corners to resize' })
+			: $_('product.edit.images.crop_click_to_start', {
+					default: 'Click or drag to start cropping'
+				})
 	);
 
 	// Client-side mounting detection
@@ -491,7 +495,9 @@
 >
 	<div class="modal-box h-full w-full max-w-4xl md:h-auto">
 		<div class="mb-4 flex items-center justify-between">
-			<h3 id="modal-title" class="text-lg font-bold">Edit Photo</h3>
+			<h3 id="modal-title" class="text-lg font-bold">
+				{$_('product.edit.images.edit_photo', { default: 'Edit Photo' })}
+			</h3>
 			<button
 				type="button"
 				class="btn btn-sm btn-circle btn-ghost"
@@ -569,7 +575,9 @@
 				>
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg mb-2" aria-hidden="true"></div>
-						<p>Loading image editor...</p>
+						<p>
+							{$_('product.edit.images.loading_editor', { default: 'Loading image editor...' })}
+						</p>
 					</div>
 				</div>
 			{/if}
@@ -587,7 +595,9 @@
 					aria-label="Rotate image left by 90 degrees"
 				>
 					<IconMdiRotateLeft class="h-4 w-4" aria-hidden="true" />
-					<span class="hidden sm:inline">Rotate Left</span>
+					<span class="hidden sm:inline"
+						>{$_('product.edit.images.rotate_left', { default: 'Rotate Left' })}</span
+					>
 				</button>
 
 				<!-- Center controls -->
@@ -602,7 +612,9 @@
 							aria-label="Zoom out of image"
 						>
 							<IconMdiMagnifyMinus class="h-4 w-4" aria-hidden="true" />
-							<span class="hidden sm:inline">Zoom Out</span>
+							<span class="hidden sm:inline"
+								>{$_('product.edit.images.zoom_out', { default: 'Zoom Out' })}</span
+							>
 						</button>
 						<button
 							type="button"
@@ -613,7 +625,9 @@
 							aria-label="Zoom into image"
 						>
 							<IconMdiMagnifyPlus class="h-4 w-4" aria-hidden="true" />
-							<span class="hidden sm:inline">Zoom In</span>
+							<span class="hidden sm:inline"
+								>{$_('product.edit.images.zoom_in', { default: 'Zoom In' })}</span
+							>
 						</button>
 					</div>
 
@@ -627,7 +641,9 @@
 						aria-label="Reset image to original state"
 					>
 						<IconMdiRestore class="h-4 w-4" aria-hidden="true" />
-						<span class="hidden sm:inline">Reset</span>
+						<span class="hidden sm:inline"
+							>{$_('product.edit.images.reset', { default: 'Reset' })}</span
+						>
 					</button>
 				</div>
 
@@ -641,7 +657,9 @@
 					aria-label="Rotate image right by 90 degrees"
 				>
 					<IconMdiRotateRight class="h-4 w-4" aria-hidden="true" />
-					<span class="hidden sm:inline">Rotate Right</span>
+					<span class="hidden sm:inline"
+						>{$_('product.edit.images.rotate_right', { default: 'Rotate Right' })}</span
+					>
 				</button>
 			</div>
 		</div>
@@ -650,11 +668,11 @@
 			<div class="bg-base-200 mb-4 rounded p-3 text-sm" aria-label="Current editing status">
 				<div class="grid grid-cols-2 gap-2 text-xs">
 					<div>
-						<strong>Rotation:</strong>
+						<strong>{$_('product.edit.images.rotation', { default: 'Rotation' })}:</strong>
 						<span aria-label="Current rotation angle">{rotationAngle}°</span>
 					</div>
 					<div>
-						<strong>Tool:</strong>
+						<strong>{$_('product.edit.images.tool', { default: 'Tool' })}:</strong>
 						<span aria-label="Current tool mode">{cropModeStatus}</span>
 					</div>
 				</div>
@@ -671,7 +689,7 @@
 					aria-label="Unselect this image"
 				>
 					<IconMdiImageRemove class="h-4 w-4" aria-hidden="true" />
-					Unselect Image
+					{$_('product.edit.images.unselect_image', { default: 'Unselect Image' })}
 				</button>
 
 				{#if reportImageUrl}
@@ -683,7 +701,7 @@
 						aria-label="Report this image"
 					>
 						<IconMdiFlag class="h-4 w-4" aria-hidden="true" />
-						Report Image
+						{$_('product.edit.images.report_image', { default: 'Report Image' })}
 					</a>
 				{/if}
 			</div>
@@ -695,7 +713,7 @@
 					onclick={handleDialogClose}
 					aria-label="Cancel editing and close modal"
 				>
-					Cancel
+					{$_('common.cancel', { default: 'Cancel' })}
 				</button>
 				<button
 					type="button"
@@ -705,7 +723,7 @@
 					aria-label="Save changes and close modal"
 				>
 					<IconMdiCheck class="h-4 w-4" aria-hidden="true" />
-					Save Changes
+					{$_('product.edit.images.save_changes', { default: 'Save Changes' })}
 				</button>
 			</div>
 		</div>

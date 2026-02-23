@@ -13,7 +13,6 @@
 	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
-	"github_link": "GitHub",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -72,6 +71,31 @@
 		"errors_occurred": "errors occurred:"
 	},
 	"footer": {
+		"stay_updated": "Stay Updated",
+		"contribute": "Contribute",
+		"discover_title": "Discover our Project",
+		"tagline": "A collaborative, free and open database of food products",
+		"tagline_break": "from around the world.",
+		"decorative_alt": "A decorative graphic",
+		"social": {
+			"x": "X (formerly Twitter)",
+			"instagram": "Instagram",
+			"github": "GitHub",
+			"facebook": "Facebook",
+			"slack": "Slack"
+		},
+		"links": {
+			"newsletter": "Newsletter",
+			"forum": "Forum",
+			"producers": "Producers",
+			"translators": "Translators",
+			"github": "GitHub",
+			"data_api_sdks": "Data, API, SDKs",
+			"wiki": "Wiki",
+			"legal": "Legal",
+			"privacy": "Privacy",
+			"terms_of_use": "Terms of use"
+		},
 		"discover": {
 			"who_we_are": "Who we are",
 			"blog": "Blog",
@@ -91,7 +115,11 @@
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
 		"logged_in_as": "Logged in as: {username}",
-		"not_logged_in": "Not logged in"
+		"not_logged_in": "Not logged in",
+		"github_link": "GitHub",
+		"github_cta": "Help us improve Explorer on GitHub",
+		"dev_settings_title": "Development Settings",
+		"moderator_mode": "Moderator Mode"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -126,10 +154,30 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"loading_attributes": "Loading product attributes...",
+		"attributes_error_title": "Unable to load personalized attributes",
+		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"shortcuts": {
+			"show_barcode": "Show product barcode"
+		},
 		"buttons": {
 			"classic_view": "Classic view",
 			"edit": "Edit",
 			"share": "Share"
+		},
+		"folksonomy": {
+			"use_wc_editor": "Use the Web Component Editor",
+			"title_beta": "Personalized properties (beta)",
+			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
+			"intro_emphasis": "must be factual",
+			"intro_after": ". You can dive into ",
+			"link_properties": "the list of properties already used by the community",
+			"link_middle": " or explore the ",
+			"link_docs": "properties' documentation and its search engine",
+			"warning": "Be aware the data model might be modified. Use at your own risk.",
+			"footer_before": "This is brought by the ",
+			"footer_link": "Folksonomy Engine project",
+			"footer_after": ". Don't hesitate to participate or give feedback."
 		},
 		"datasources": {
 			"title": "Data Sources",
@@ -238,23 +286,7 @@
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
 			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
-			"images": {
-				"toast": {
-					"login_required": "Please log in to upload images.",
-					"upload_success": "Image uploaded successfully!",
-					"upload_failed": "Upload failed: {error}",
-					"upload_failed_generic": "Upload failed. Please try again.",
-					"upload_error": "Image upload failed. Please try again.",
-					"unselect_success": "Image unselected successfully",
-					"unselect_failed": "Failed to unselect image. Please try again.",
-					"unselect_error": "Error unselecting image. Please try again.",
-					"save_success": "Image saved successfully!",
-					"process_error": "Error processing image: {error}. Please try again.",
-					"select_success": "Image selected successfully",
-					"select_error": "Error selecting image. Please try again.",
-					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
-				}
+
 			}
 		},
 		"prices": {
@@ -276,6 +308,34 @@
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again"
 	},
+	"compare": {
+		"meta_title": "Compare Products",
+		"meta_description": "Compare nutritional information of food products",
+		"title_placeholder": "Enter comparison title...",
+		"title_default": "Compare Products",
+		"title_edit_hint": "Click to edit title",
+		"mode": {
+			"absolute": "Absolute",
+			"relative_first": "vs First",
+			"relative_best": "vs Best"
+		},
+		"share": {
+			"button": "Share",
+			"title": "Product Comparison",
+			"text": "Check out this product comparison I made!",
+			"failed": "Sharing failed.",
+			"copy_success": "Comparison link copied to clipboard!",
+			"copy_failed": "Failed to copy link to clipboard."
+		},
+		"clear": {
+			"button": "Clear All"
+		},
+		"empty": {
+			"title": "No products selected for comparison",
+			"description": "Add products from their detail pages to start comparing nutritional values",
+			"cta": "Browse Products"
+		}
+	},
 	"errors": {
 		"network": {
 			"title": "Connection Error",
@@ -288,10 +348,12 @@
 		"back": "Back",
 		"skip": "Skip",
 		"step": "Step",
-		"of": "of"
+		"of": "of",
+		"cancel": "Cancel"
 	},
 	"menu": {
-		"button": "Menu"
+		"button": "Menu",
+		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
@@ -320,7 +382,11 @@
 		"products_created": "Products created",
 		"products_edited": "Products edited",
 		"html_title": "User Profile - {user} - Open Food Facts Explorer",
-		"title": "User Profile of {user}"
+		"title": "User Profile of {user}",
+		"has_created": "Has Created",
+		"has_edited": "Has Edited",
+		"view_all_contributions": "View all contributions",
+		"view_all_edits": "View all edits"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",

@@ -40,7 +40,7 @@
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
 	<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
-	{$_('product.edit.sections.basic_info')}
+	{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 		<IconMdiHelpCircleOutline
 			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
@@ -113,7 +113,7 @@
 		/>
 	</div>
 	<!-- Tags Section -->
-	<div class="divider text-sm font-medium opacity-60">Product Tags</div>
+	<div class="divider text-sm font-medium opacity-60">{$_('product.edit.product_tags')}</div>
 	<div class="space-y-4">
 		<div class="form-control w-full">
 			<label class="label" for="categories-input">

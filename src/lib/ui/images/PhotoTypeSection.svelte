@@ -190,10 +190,17 @@
 			>
 				{#if isUploading}
 					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Uploading...</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+					>
 				{:else}
 					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
-					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.upload_type', {
+							values: { type: sectionType.label },
+							default: 'Upload ' + sectionType.label
+						})}</span
+					>
 				{/if}
 			</button>
 			{#if isStandardType && hasImagesOfType}
@@ -206,10 +213,17 @@
 				>
 					{#if isUnselecting}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Unselecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselecting', { default: 'Unselecting...' })}</span
+						>
 					{:else}
 						<IconMdiImageRemove class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselect_type', {
+								values: { type: sectionType.label },
+								default: 'Unselect ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}
@@ -221,7 +235,12 @@
 					onclick={() => onToggleExpansion(sectionType.label)}
 				>
 					<span class="text-xs sm:text-sm"
-						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+						>{isExpanded
+							? $_('product.edit.images.show_less', { default: 'Show Less' })
+							: $_('product.edit.images.see_all', {
+									values: { count: imagesOfType.length },
+									default: 'See All (' + imagesOfType.length + ')'
+								})}</span
 					>
 				</button>
 			{/if}
@@ -294,13 +313,16 @@
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg text-primary"></div>
 						<p class="text-base-content/70 mt-2 text-sm">
-							{isUploading ? 'Processing upload...' : 'Unselecting image...'}
+							{isUploading
+								? $_('product.edit.images.processing_upload', { default: 'Processing upload...' })
+								: $_('product.edit.images.unselecting_image', { default: 'Unselecting image...' })}
 						</p>
 					</div>
 				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
-					No {sectionType.label.toLowerCase()} photos available
+					No {sectionType.label.toLowerCase()}
+					{$_('product.edit.images.photos_available', { default: 'photos available' })}
 				</p>
 				<button
 					type="button"
@@ -311,10 +333,17 @@
 				>
 					{#if isSelectingImage}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Selecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
+						>
 					{:else}
 						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.select_type', {
+								values: { type: sectionType.label },
+								default: 'Select ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}

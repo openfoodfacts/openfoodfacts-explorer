@@ -145,6 +145,7 @@
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+	const mobileMenuId = 'mobile-menu-panel';
 
 	// Automatically close mobile menu on navigation
 	$effect(() => {
@@ -212,7 +213,8 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	></progress>
 {/if}
 
 <!-- Desktop Header -->
@@ -282,10 +284,17 @@
 				<IconMdiMagnify class="h-5 w-5" />
 			</button>
 			<button
+				type="button"
 				title={$_('menu.button')}
+				aria-label={$_('menu.button')}
+				aria-expanded={accordionOpen}
+				aria-controls={mobileMenuId}
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
+				}}
+				onkeydown={(e) => {
+					if (e.key === 'Escape') accordionOpen = false;
 				}}
 			>
 				{#if accordionOpen}
@@ -303,6 +312,9 @@
 		</div>
 	{/if}
 	<div
+		id={mobileMenuId}
+		role="region"
+		aria-label={$_('menu.mobile_nav', { default: 'Mobile navigation menu' })}
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
