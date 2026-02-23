@@ -329,7 +329,8 @@
 				"crop_click_to_start": "Click and drag to start cropping",
 				"report_image": "Report Image",
 				"save_changes": "Save Changes"
-			}
+			},
+			"comment_description": "Add a comment about your changes (optional)"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -445,5 +446,36 @@
 		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
 		"learn_more": "Learn More",
 		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
+	},
+	"compare": {
+		"page_title": "Compare Products",
+		"page_description": "Compare nutritional information of food products",
+		"title_placeholder": "Enter comparison title...",
+		"click_to_edit": "Click to edit title",
+		"mode_absolute": "Absolute",
+		"mode_vs_first": "vs First",
+		"mode_vs_best": "vs Best",
+		"share": "Share",
+		"share_title": "Product Comparison",
+		"share_text": "Check out this product comparison I made!",
+		"clear_all": "Clear All",
+		"no_products_selected": "No products selected for comparison",
+		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
+		"browse_products": "Browse Products",
+		"shared_comparison": "Shared Comparison",
+		"shared_description": "Shared product comparison",
+		"shared_product_comparison": "Shared Product Comparison",
+		"read_only": "Read-only comparison",
+		"import_to_my": "Import to My Comparison",
+		"import_dialog_title": "Import Comparison",
+		"continue_question": "Continue?",
+		"import": "Import",
+		"no_products_to_compare": "No products to compare",
+		"invalid_link_hint": "This link doesn't contain any valid products to compare",
+		"toast": {
+			"share_failed": "Sharing failed.",
+			"link_copied": "Comparison link copied to clipboard!",
+			"copy_failed": "Failed to copy link to clipboard."
+		}
 	}
 }
