@@ -18,7 +18,7 @@
 		unsubscribe();
 	});
 
-	// Locale-aware URL
+	// ✅ IMPORTANT: reactive locale-aware URL
 	$: iframeUrl = `https://${currentLocale}.openfoodfacts.org/${page.params.id}?content_only=1`;
 
 	function handleLoad() {
@@ -31,3 +31,13 @@
 		error = true;
 	}
 </script>
+
+{#if loading}
+	<p style="text-align:center; padding:2rem;">Loading content...</p>
+{/if}
+
+{#if error}
+	<p style="text-align:center; padding:2rem; color:red;">Failed to load page.</p>
+{/if}
+
+<StaticPageIframe src={iframeUrl} on:load={handleLoad} on:error={handleError} />
