@@ -21,7 +21,7 @@ describe('formBody', () => {
 describe('wrapFetchWithCredentials', () => {
 	it('should return the original fetch and URL if no credentials are provided', () => {
 		const url = new URL('https://example.com/api');
-		const mockFetch = vi.fn() as any;
+		const mockFetch = vi.fn() as ReturnType<typeof vi.fn> & typeof fetch;
 		const result = wrapFetchWithCredentials(mockFetch, url);
 
 		expect(result.fetch).toBe(mockFetch);
@@ -30,7 +30,8 @@ describe('wrapFetchWithCredentials', () => {
 
 	it('should wrap fetch and remove credentials from URL if valid credentials are provided', async () => {
 		const url = new URL('https://user:pass@example.com/api');
-		const mockFetch = vi.fn().mockResolvedValue(new Response('ok')) as any;
+		const mockFetch = vi.fn().mockResolvedValue(new Response('ok')) as ReturnType<typeof vi.fn> &
+			typeof fetch;
 		const result = wrapFetchWithCredentials(mockFetch, url);
 
 		expect(result.fetch).not.toBe(mockFetch);
@@ -53,7 +54,7 @@ describe('wrapFetchWithCredentials', () => {
 		const url = new URL('https://example.com/api');
 		Object.defineProperty(url, 'username', { value: 'usér' });
 		Object.defineProperty(url, 'password', { value: 'pass' });
-		const mockFetch = vi.fn() as any;
+		const mockFetch = vi.fn() as ReturnType<typeof vi.fn> & typeof fetch;
 
 		expect(() => wrapFetchWithCredentials(mockFetch, url)).toThrow(
 			'Non-ASCII characters are not allowed in credentials'

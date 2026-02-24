@@ -3041,9 +3041,6 @@ packages:
     peerDependencies:
       svelte: '>=5.53.5'
 
-  symbol-tree@3.2.4:
-    resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
-
   tailwindcss-opentype@1.2.0:
     resolution: {integrity: sha512-vQ+Od/E57o6CG2pt4IBalN4yzs67a9QrP5at6NdD2wb4bMBLwnfyMity6QeP3HPtWVwjaCdUbP4vMYMLo/PCSw==}
     engines: {node: '>=16'}
