@@ -207,7 +207,7 @@
 							title={editor ?? $_('product.datasources.unknown')}
 							class="bg-base-300 text-base-content flex h-10 items-center justify-center rounded p-2 text-center"
 						>
-							<span class="overflow-hidden align-middle overflow-ellipsis">
+							<span class="truncate align-middle">
 								{editor ?? $_('product.datasources.unknown')}
 							</span>
 						</a>
