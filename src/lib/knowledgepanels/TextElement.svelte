@@ -83,4 +83,13 @@
 		list-style-type: decimal;
 		padding-left: 1.5em;
 	}
+
+	:global([id^='data-error-']) {
+		font-weight: bold;
+	}
+
+	:global([id^='data-error-'] > .description) {
+		font-style: italic;
+		font-weight: normal;
+	}
 </style>
