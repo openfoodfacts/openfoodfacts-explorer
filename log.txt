@@ -1,0 +1,10 @@
+﻿91cf7aa6f3a8257a681d7cc6cdb7e8e7c0fef267 fix(api): allow all printable ASCII characters in password credentials
+5dad0462c5a095aa0153181f46c351cc40951c23 fix(api): use globalThis.fetch for SSR compatibility
+fdea6b0bc49a31fff582391e2d59b0ba957c65ec chore(deps): bump docker/build-push-action in the minor group
+73cd725bb666a4d0cdf0010e101f9cb0fdf10359 fix: Use resolve for routing on home page
+1b8e7ff92c988728200b3e4beaaec9150f984f04 chore: Update .prettierignore to include CHANGELOG.md
+496ec55276227de028b18fa349101f11bbe8b495 feat: Update account link to use  internal user page
+0830748e312cfd6f6137d24a14f400d8c9210acb feat: Add dialog for slow navigation feedback
+ddb1713d80bec6eb3f8c0e6e1e69ca435d54ffbe chore: Migrate Vite env vars to SvelteKit env vars (#912)
+f6c3eec795082e60338baf757e29e4aee4d9df79 feat: Allow to specify "Unwanted ingredients" (#914)
+759714a6476b90863737c7169c2bb37d29a6c9ba feat: Update SDK to newer version
