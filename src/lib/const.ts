@@ -10,9 +10,11 @@ const {
 	PUBLIC_KEYCLOAK_REALM
 } = publicEnv;
 
-export const ROBOTOFF_URL = PUBLIC_ROBOTOFF_URL || 'https://robotoff.openfoodfacts.net';
-export const IMAGE_HOST = PUBLIC_IMAGES_URL;
-export const NUTRIPATROL_URL = PUBLIC_NUTRIPATROL_URL;
+export {
+	PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL,
+	PUBLIC_IMAGES_URL as IMAGE_HOST,
+	PUBLIC_NUTRIPATROL_URL as NUTRIPATROL_URL
+};
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = publicEnv.PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
