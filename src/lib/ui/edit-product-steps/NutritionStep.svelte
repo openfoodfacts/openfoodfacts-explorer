@@ -2,7 +2,9 @@
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _ } from '$lib/i18n';
 	import { getLanguageName } from '$lib/languages';
-	import { NUTRIENTS, type NutrientKey, type Product } from '$lib/api';
+	import { NUTRIENTS, type NutrientKey, type Product, type Nutriments } from '$lib/api';
+	import { preferences } from '$lib/settings';
+	import { userInfo } from '$lib/stores/user';
 
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -11,6 +13,7 @@
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
+	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
 	import { analyzeNutrition } from './nutrition';
@@ -34,6 +37,9 @@
 		'salt',
 		'sodium'
 	];
+	const EMPTY_NUTRIENT_TOOLTIPS: Record<string, string> = {
+		fibers: 'product.edit.tooltips.empty_fiber'
+	};
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -96,6 +102,14 @@
 		if (results.some((r) => r.severity === 'warning')) return 'input-warning';
 		return '';
 	});
+
+	function wipeAllNutrientValues() {
+		product = {
+			...product,
+			nutriments: {} as Nutriments
+		};
+		additionalNutrients = [];
+	}
 </script>
 
 <h2
@@ -162,6 +176,15 @@
 					{$_('product.edit.nutritional_values')}
 				</span>
 			</div>
+
+			{#if $preferences.moderator && $userInfo?.isModerator}
+				<div class="mb-4">
+					<button type="button" class="btn btn-error btn-sm" onclick={wipeAllNutrientValues}>
+						<IconMdiDeleteSweep class="h-4 w-4" />
+						{$_('product.edit.remove_all_nutrient_values')}
+					</button>
+				</div>
+			{/if}
 
 			<!-- Energy -->
 			<fieldset class="fieldset">
@@ -247,8 +270,12 @@
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					<label class={['input w-full', fieldInputClasses([nutrient, 'all'])]}>
 						<span class="label w-60">
-							<span class="grow">
+							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
+
+								{#if EMPTY_NUTRIENT_TOOLTIPS[nutrient] && (product.nutriments?.[nutrient] === undefined || product.nutriments?.[nutrient] === null || (product.nutriments?.[nutrient] as unknown) === '')}
+									<InfoTooltip text={$_(EMPTY_NUTRIENT_TOOLTIPS[nutrient])} />
+								{/if}
 							</span>
 							{#if issuesByField([nutrient, 'all']).length > 0}
 								{@const issue = issuesByField(nutrient)[0] ?? issuesByField('all')[0]}
