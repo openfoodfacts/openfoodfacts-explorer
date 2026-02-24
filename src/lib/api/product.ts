@@ -3,8 +3,17 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
-import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	type ProductV3,
+	// @ts-expect-error - Packaging types will be available in next SDK version
+	type PackagingComponent,
+	// @ts-expect-error
+	type PackagingTaxonomyTag,
+	OpenFoodFacts
+} from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
+
+export { type ProductV3, type PackagingComponent, type PackagingTaxonomyTag };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -46,6 +55,121 @@ export async function addOrEditProductV2(
 	const off = createProductsApi(fetch);
 	// @ts-expect-error - we should use v3
 	return off.addOrEditProductV2(product);
+}
+
+/**
+ * Fetch taxonomy suggestions for packaging fields (shapes, materials, recycling)
+ * @param fetch - The fetch function
+ * @param tagtype - The taxonomy type: 'packaging_shapes', 'packaging_materials', or 'packaging_recycling'
+ * @param searchString - Optional search string for autocomplete filtering
+ * @param limit - Maximum number of suggestions (default 25, max 400)
+ * @returns Array of suggestion strings
+ */
+export async function getPackagingTaxonomySuggestions(
+	fetch: typeof window.fetch,
+	tagtype: 'packaging_shapes' | 'packaging_materials' | 'packaging_recycling',
+	searchString?: string,
+	limit: number = 25
+): Promise<string[]> {
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+	const cc = get(preferences).country;
+
+	const { data, error } = await off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
+		params: {
+			query: {
+				tagtype,
+				lc,
+				...(cc && { cc }),
+				...(searchString && { string: searchString }),
+				limit: String(limit)
+			}
+		}
+	});
+
+	if (error || !data) {
+		console.warn(`Failed to fetch taxonomy suggestions for ${tagtype}:`, error);
+		return [];
+	}
+
+	return (data as { suggestions?: string[] }).suggestions ?? [];
+}
+
+/**
+ * Update packaging data for a product using the V3 PATCH API
+ * @param fetch - The fetch function
+ * @param code - Product barcode
+ * @param packagings - Array of packaging components
+ * @param packagingsComplete - Whether all packaging components have been listed (0 or 1)
+ * @param packagingText - Localized packaging text (string)
+ * @returns Object with data/error
+ */
+export async function updatePackagingsV3(
+	fetch: typeof window.fetch,
+	code: string,
+	packagings: PackagingComponent[],
+	packagingsComplete?: number,
+	packagingText?: string
+): Promise<{ data?: unknown; error?: string }> {
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+
+	const filteredPackagings = packagings
+		.map((component) => {
+			const cleaned: Record<string, unknown> = {};
+
+			if (component.number_of_units != null) {
+				cleaned.number_of_units = component.number_of_units;
+			}
+
+			// For taxonomy fields, send the lc_name (localized name) as a string
+			if (component.shape?.lc_name || component.shape?.id) {
+				cleaned.shape = component.shape.lc_name || component.shape.id;
+			}
+			if (component.material?.lc_name || component.material?.id) {
+				cleaned.material = component.material.lc_name || component.material.id;
+			}
+			if (component.recycling?.lc_name || component.recycling?.id) {
+				cleaned.recycling = component.recycling.lc_name || component.recycling.id;
+			}
+
+			if (component.quantity_per_unit) {
+				cleaned.quantity_per_unit = component.quantity_per_unit;
+			}
+			if (component.weight_measured != null) {
+				cleaned.weight_measured = component.weight_measured;
+			}
+
+			return cleaned;
+		})
+		.filter((component) => Object.keys(component).length > 0);
+
+	const productBody: Record<string, unknown> = {
+		packagings: filteredPackagings
+	};
+
+	if (packagingsComplete != null) {
+		productBody.packagings_complete = packagingsComplete;
+	}
+
+	if (packagingText != null) {
+		productBody[`packaging_text_${lc}`] = packagingText;
+	}
+
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
+		body: {
+			lc,
+			fields: 'updated',
+			product: productBody
+		}
+	});
+
+	if (error) {
+		return { error: `Failed to update packagings: ${JSON.stringify(error)}` };
+	}
+
+	return { data };
 }
 
 /**
@@ -238,6 +362,7 @@ export type ImageOperationResponse = {
 
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
+type LangPackagingText = `packaging_text_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -289,7 +414,6 @@ export type ProductDataSection = {
 export type Product = ProductDataSection & {
 	knowledge_panels: Record<string, KnowledgePanel>;
 	product_name: string;
-	[lang: LangProduct]: string;
 	_id: string;
 	code: string;
 	_keywords: string[];
@@ -307,7 +431,6 @@ export type Product = ProductDataSection & {
 	additives_tags: string[];
 
 	ingredients_text: string;
-	[lang: LangIngredient]: string;
 
 	image_front_url: string;
 	image_front_small_url: string;
@@ -329,6 +452,9 @@ export type Product = ProductDataSection & {
 	nova_group: number;
 
 	packaging: string;
+	packaging_text?: string;
+	packagings?: PackagingComponent[];
+	packagings_complete?: number;
 	manufacturing_places: string;
 
 	brands: string;
@@ -376,7 +502,8 @@ export type Product = ProductDataSection & {
 		[lang: string]: number;
 	};
 	lang: string;
-};
+	// TODO: Reemove this after the SDK is updated, simply import these types from the SDK
+} & Partial<Record<LangProduct | LangIngredient | LangPackagingText, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',
