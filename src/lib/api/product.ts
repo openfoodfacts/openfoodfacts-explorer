@@ -7,7 +7,7 @@ import {
 	type ProductV3,
 	// @ts-expect-error - Packaging types will be available in next SDK version
 	type PackagingComponent,
-	// @ts-expect-error
+	// @ts-expect-error - Taxonomy types will be available in next SDK version
 	type PackagingTaxonomyTag,
 	OpenFoodFacts
 } from '@openfoodfacts/openfoodfacts-nodejs';

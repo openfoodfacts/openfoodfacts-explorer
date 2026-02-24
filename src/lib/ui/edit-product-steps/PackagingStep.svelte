@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _, getDateFormatter } from '$lib/i18n';
+	import { _ } from '$lib/i18n';
 	import type { Product, PackagingComponent } from '$lib/api';
 	import { getPackagingTaxonomySuggestions, fileToBase64, uploadImageV3 } from '$lib/api';
 	import { userInfo } from '$lib/stores/user';
@@ -7,7 +7,6 @@
 	import { invalidateAll } from '$app/navigation';
 	import { getLanguageName } from '$lib/languages';
 	import ImageButton from '../ImageButton.svelte';
-	import InfoTooltip from '../InfoTooltip.svelte';
 
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
