@@ -2,24 +2,22 @@
 	import StaticPageIframe from '$lib/ui/StaticPageIframe.svelte';
 	import { page } from '$app/state';
 	import { locale } from 'svelte-i18n';
-	import { onDestroy } from 'svelte';
+	import { get } from 'svelte/store';
 
-	let currentLocale = 'en';
-	let loading = true;
-	let error = false;
+	let loading = $state(true);
+	let error = $state(false);
 
-	const unsubscribe = locale.subscribe((val) => {
-		if (val) {
-			currentLocale = val.split('-')[0];
-		}
+	// Use get() safely for initial value
+	let currentLocale = $state('en');
+
+	$effect(() => {
+		const val = get(locale);
+		currentLocale = val ? val.split('-')[0] : 'en';
 	});
 
-	onDestroy(() => {
-		unsubscribe();
+	const iframeUrl = $derived(() => {
+		return `https://${currentLocale}.openfoodfacts.org/${page.params.id}?content_only=1`;
 	});
-
-	// ✅ IMPORTANT: reactive locale-aware URL
-	$: iframeUrl = `https://${currentLocale}.openfoodfacts.org/${page.params.id}?content_only=1`;
 
 	function handleLoad() {
 		loading = false;
@@ -31,13 +29,3 @@
 		error = true;
 	}
 </script>
-
-{#if loading}
-	<p style="text-align:center; padding:2rem;">Loading content...</p>
-{/if}
-
-{#if error}
-	<p style="text-align:center; padding:2rem; color:red;">Failed to load page.</p>
-{/if}
-
-<StaticPageIframe src={iframeUrl} on:load={handleLoad} on:error={handleError} />
