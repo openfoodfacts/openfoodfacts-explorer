@@ -10,6 +10,7 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	}
 
 	return resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%lang%', lang || 'en'),
 		filterSerializedResponseHeaders(name) {
 			return ['content-length', 'content-type', 'etag', 'cache-control'].includes(
 				name.toLowerCase()
