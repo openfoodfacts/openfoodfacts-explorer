@@ -351,34 +351,6 @@
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again"
 	},
-	"compare": {
-		"meta_title": "Compare Products",
-		"meta_description": "Compare nutritional information of food products",
-		"title_placeholder": "Enter comparison title...",
-		"title_default": "Compare Products",
-		"title_edit_hint": "Click to edit title",
-		"mode": {
-			"absolute": "Absolute",
-			"relative_first": "vs First",
-			"relative_best": "vs Best"
-		},
-		"share": {
-			"button": "Share",
-			"title": "Product Comparison",
-			"text": "Check out this product comparison I made!",
-			"failed": "Sharing failed.",
-			"copy_success": "Comparison link copied to clipboard!",
-			"copy_failed": "Failed to copy link to clipboard."
-		},
-		"clear": {
-			"button": "Clear All"
-		},
-		"empty": {
-			"title": "No products selected for comparison",
-			"description": "Add products from their detail pages to start comparing nutritional values",
-			"cta": "Browse Products"
-		}
-	},
 	"errors": {
 		"network": {
 			"title": "Connection Error",
@@ -469,6 +441,7 @@
 		"import_to_my": "Import to My Comparison",
 		"import_dialog_title": "Import Comparison",
 		"continue_question": "Continue?",
+		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
 		"import": "Import",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",

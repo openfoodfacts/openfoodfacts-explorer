@@ -130,10 +130,7 @@
 		</div>
 
 		<p class="mb-6">
-			This will replace your current comparison with {data.products.length} product{data.products
-				.length !== 1
-				? 's'
-				: ''}. {$_('compare.continue_question')}
+			{$_('compare.replace_comparison', { values: { count: data.products.length } })}
 		</p>
 
 		<div class="flex justify-end gap-2">
