@@ -451,7 +451,7 @@ export type Product = ProductDataSection & {
 	ecoscore_grade: string;
 	nova_group: number;
 
-	packaging: string;
+	packaging?: string;
 	packaging_text?: string;
 	packagings?: PackagingComponent[];
 	packagings_complete?: number;
