@@ -87,7 +87,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 		try {
 			const { data, error } = await productsApi.getProductV3(product.code);
-			if (error != null || data == null || data.status === 'failure' || data.product == null) {
+			if (error != null || data?.status === 'failure' || data?.product == null) {
 				showLoadForComparisonFailedToast();
 				return;
 			}
