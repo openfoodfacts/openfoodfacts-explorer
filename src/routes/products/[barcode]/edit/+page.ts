@@ -55,8 +55,8 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		getTaxo<Country>('countries', fetch)
 	]);
 
-	const { data: productState, error: productError } = productReq;
-	if (productError || !productState) {
+	const productState = productReq.data ?? productReq.error;
+	if (!productState) {
 		error(500, 'Error loading product');
 	}
 
