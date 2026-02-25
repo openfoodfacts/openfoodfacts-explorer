@@ -169,6 +169,12 @@
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
 		},
+		"menu": {
+			"add_to_comparison": "Add to comparison",
+			"load_for_comparison_failed": "Could not load product details for comparison",
+			"added_to_comparison": "Product added to comparison",
+			"add_to_comparison_failed": "Product is already in comparison or comparison list is full"
+		},
 		"header": {
 			"quantity": "Quantity",
 			"brands": "Brands",
