@@ -73,6 +73,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	}
 
 	const toastCtx = getToastCtx();
+	const productsApi = createProductsApi(fetch);
 	function showLoadForComparisonFailedToast() {
 		toastCtx.error(
 			$_('product.menu.load_for_comparison_failed', {
@@ -84,7 +85,6 @@ Wraps the <product-card> web component and adds accessibility features.
 	async function addToComparison() {
 		closeContextMenu();
 
-		const productsApi = createProductsApi(fetch);
 		try {
 			const { data, error } = await productsApi.getProductV3(product.code);
 			if (error != null || data == null || data.status === 'failure' || data.product == null) {
