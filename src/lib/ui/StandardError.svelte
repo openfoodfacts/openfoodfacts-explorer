@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { _ } from '$lib/i18n';
 	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
@@ -11,6 +12,12 @@
 	let { message, errors } = $derived(error);
 	let isProductError = $derived(
 		message === ERR_PRODUCT_NOT_FOUND || message === ERR_INVALID_BARCODE
+	);
+	let barcode = $derived(page.params.barcode?.trim());
+	let addProductHref = $derived(
+		barcode
+			? resolve('/products/[barcode]/edit', { barcode })
+			: 'https://world.openfoodfacts.org/cgi/product.pl'
 	);
 </script>
 
@@ -29,7 +36,7 @@
 				</p>
 				<div class="card-actions mt-4 flex w-full flex-col gap-3">
 					<a
-						href="https://world.openfoodfacts.org/cgi/product.pl"
+						href={addProductHref}
 						class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
 					>
 						<span class="text-xl">➕</span>
