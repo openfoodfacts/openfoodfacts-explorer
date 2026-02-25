@@ -33,6 +33,7 @@ export const PRODUCT_IMAGE_URL = (path: string) => `${PUBLIC_IMAGES_URL}/images/
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
 };
+export const PRODUCT_TYPES = ['food', 'beauty', 'petfood', 'product'] as const;
 
 export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
 export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;

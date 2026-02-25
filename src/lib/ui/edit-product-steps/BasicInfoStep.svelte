@@ -3,6 +3,7 @@
 	import type { Product } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import { userInfo } from '$lib/stores/user';
+	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
@@ -36,8 +37,6 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
-
-	const PRODUCT_TYPES = ['food', 'beauty', 'petfood', 'product'] as const;
 </script>
 
 <h2
