@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+import { resolve } from '$app/paths';
 
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
@@ -40,7 +41,10 @@ async function getPricesCoords(api: PricesApi, code: string) {
 	return prices;
 }
 
-function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | undefined) {
+function handleProductApiError(
+	apiErrorWrapped: ProductStateResponse | null | undefined,
+	barcode: string
+) {
 	if (!apiErrorWrapped) return;
 
 	const err = apiErrorWrapped as ProductStateResponse;
@@ -61,7 +65,10 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	if (err.result?.id === 'product_not_found') {
 		error(404, {
 			message: ERR_PRODUCT_NOT_FOUND,
-			errors: cleanErrors
+			errors: cleanErrors,
+			actions: [
+				{ label: 'Add This Product', url: resolve('/products/[barcode]/edit', { barcode }) }
+			]
 		});
 	}
 
@@ -82,7 +89,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		knowledge_panels_client: 'web'
 	});
 
-	handleProductApiError(apiErrorWrapped);
+	handleProductApiError(apiErrorWrapped, params.barcode);
 
 	if (!state) {
 		error(500, {
