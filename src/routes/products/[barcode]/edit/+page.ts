@@ -11,6 +11,7 @@ import {
 	type Country,
 	createProductsApi
 } from '$lib/api';
+import { ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
 import { userInfo } from '$lib/stores/user';
 import { PRODUCT_STATUS } from '$lib/const';
 
@@ -61,6 +62,16 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	}
 
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
+
+	if (
+		productState.status === 'failure' &&
+		productState.errors?.some((error) => error.message?.id === 'invalid_code')
+	) {
+		error(400, {
+			message: ERR_INVALID_BARCODE,
+			errors: productState.errors
+		});
+	}
 
 	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
 		return {
