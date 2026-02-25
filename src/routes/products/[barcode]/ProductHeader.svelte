@@ -148,8 +148,8 @@
 						href={PRODUCT_REPORT_URL(product.code!)}
 						target="_blank"
 						rel="noopener noreferrer"
-						title="Report an issue with this product"
-						aria-label="Report an issue with this product"
+						title={$_('product.buttons.report')}
+						aria-label={$_('product.buttons.report')}
 					>
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
@@ -157,8 +157,8 @@
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
 						onclick={addToCalculator}
-						title="Add product to nutritional calculator"
-						aria-label="Add product to nutritional calculator"
+						title={$_('product.buttons.add_to_calculator')}
+						aria-label={$_('product.buttons.add_to_calculator')}
 					>
 						<IconMdiCalculator class="h-5 w-5" />
 					</button>
@@ -166,8 +166,8 @@
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
 						onclick={addToComparison}
-						title="Add to compare"
-						aria-label="Add to compare"
+						title={$_('product.buttons.compare')}
+						aria-label={$_('product.buttons.compare')}
 					>
 						<IconMdiCompare class="h-5 w-5" />
 					</button>
@@ -177,13 +177,13 @@
 			<!-- Metadata Body -->
 			<div class="flex flex-col gap-3 text-center md:text-left">
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Quantity</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.quantity')}</div>
 					<div>{product.quantity}</div>
 				</div>
 
 				<!-- Brands -->
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Brands</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.brands')}</div>
 					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 						{#await taxonomies.brands}
 							{@render loadingTaxonomy()}
@@ -199,7 +199,7 @@
 
 				<!-- Categories -->
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Categories</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.categories')}</div>
 					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 						{#await taxonomies.categories}
 							{@render loadingTaxonomy()}
@@ -215,7 +215,7 @@
 
 				<!-- Labels -->
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Labels</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.labels')}</div>
 					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 						{#await taxonomies.labels}
 							{@render loadingTaxonomy()}
@@ -232,7 +232,7 @@
 				<!-- Origins -->
 				{#if product.origins_tags != null && product.origins_tags.length > 0}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">Origins</div>
+						<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.origins')}</div>
 						<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 							{#await taxonomies.origins}
 								{@render loadingTaxonomy()}
@@ -252,9 +252,9 @@
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
 						<div class="text-secondary mb-2 text-sm font-bold">
-							<span> Traceability Codes </span>
+							<span>{$_('product.header.traceability_codes')}</span>
 							<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
-								(Learn more)
+								({$_('product.header.traceability_codes_learn_more')})
 							</a>
 						</div>
 
@@ -270,14 +270,16 @@
 
 				{#if product.link != null}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">Producer link</div>
+						<div class="text-secondary mb-2 text-sm font-bold">
+							{$_('product.header.producer_link')}
+						</div>
 						<a
 							class="link break-all"
 							href={product.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							title="View product on Open Food Facts"
-							aria-label="View product on Open Food Facts"
+							title={$_('product.buttons.view_on_off')}
+							aria-label={$_('product.buttons.view_on_off')}
 						>
 							{product.link}
 						</a>
@@ -285,7 +287,7 @@
 				{/if}
 
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Stores</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.stores')}</div>
 					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 						{#await taxonomies.stores}
 							{@render loadingTaxonomy()}
@@ -300,7 +302,7 @@
 				</div>
 
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">Countries</div>
+					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.countries')}</div>
 					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
 						{#await taxonomies.countries}
 							{@render loadingTaxonomy()}
