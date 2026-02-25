@@ -19,7 +19,8 @@ export async function getFacet(
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	return client.getFacet(facet, { ...opts, sortBy: opts?.sortBy as ProductFacetsSortOption });
+	// @ts-expect-error - TODO: sortBy does not contain all possible values
+	return client.getFacet(facet, opts);
 }
 
 export async function getFacetValue(
@@ -29,10 +30,8 @@ export async function getFacetValue(
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	return client.getFacetValue(facet, value, {
-		...opts,
-		sortBy: opts.sortBy as ProductFacetsSortOption
-	});
+	// @ts-expect-error - TODO: sortBy does not contain all possible values
+	return client.getFacetValue(facet, value, opts);
 }
 
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';
