@@ -163,7 +163,23 @@
 		"buttons": {
 			"classic_view": "Classic view",
 			"edit": "Edit",
-			"share": "Share"
+			"share": "Share",
+			"report": "Report an issue with this product",
+			"add_to_calculator": "Add product to nutritional calculator",
+			"compare": "Add to compare",
+			"view_on_off": "View product on Open Food Facts"
+		},
+		"header": {
+			"quantity": "Quantity",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"origins": "Origins",
+			"traceability_codes": "Traceability Codes",
+			"traceability_codes_learn_more": "Learn more",
+			"producer_link": "Producer link",
+			"stores": "Stores",
+			"countries": "Countries"
 		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",

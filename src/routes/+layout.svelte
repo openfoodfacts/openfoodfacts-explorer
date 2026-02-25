@@ -172,13 +172,15 @@
 	let navigationTooSlow: Promise<void> | null = $state(null);
 	$effect(() => {
 		if (navigating.to != null) {
+			let timeout: ReturnType<typeof setTimeout>;
+
 			navigationTooSlow = new Promise((resolve) => {
-				const timeout = setTimeout(() => {
+				timeout = setTimeout(() => {
 					resolve();
 				}, 5000);
-
-				return () => clearTimeout(timeout);
 			});
+
+			return () => clearTimeout(timeout);
 		} else {
 			navigationTooSlow = null;
 		}
