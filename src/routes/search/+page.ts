@@ -83,22 +83,19 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	// Get attributes for all products using the API
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
-	const attributesByCode = await getBulkProductAttributes(fetch, productCodes);
-
-	let prices: Record<string, number> = {};
-	if (isPricesConfigured()) {
-		const pricesApi = createPricesApi(fetch);
-		prices = await getPrices(pricesApi, productCodes);
-	}
-
 	const off = createProductsApi(fetch);
-	const { data: attributeGroups } = await off.getAttributeGroups();
+
+	const [attributesByCode, prices, { data: attributeGroups }] = await Promise.all([
+		getBulkProductAttributes(fetch, productCodes),
+		isPricesConfigured() ? getPrices(createPricesApi(fetch), productCodes) : Promise.resolve({}),
+		off.getAttributeGroups()
+	]);
 
 	return {
 		query,
 		search: searchDataTyped,
 		attributesByCode,
-		prices: prices,
+		prices,
 		attributeGroups: attributeGroups ?? []
 	};
 };
