@@ -1,6 +1,7 @@
 <script lang="ts">
 	import JsBarcode from 'jsbarcode';
 	import Card from './Card.svelte';
+	import { createPricesApi } from '$lib/api/prices';
 
 	let { code }: { code: string } = $props();
 
@@ -9,8 +10,11 @@
 
 	$effect(() => {
 		JsBarcode('#barcode', code, { format: 'ean13' });
-		fetch(`https://prices.openfoodfacts.org/product/${code}`)
-			.then((r) => (openPricesStatus = r.status))
+		createPricesApi(window.fetch)
+			.getPrices({ product_code: code, size: 1 })
+			.then((r) => {
+				openPricesStatus = r.data && r.data.items && r.data.items.length > 0 ? 200 : 404;
+			})
 			.catch(() => (openPricesStatus = 0));
 		fetch(`https://pro.openfoodfacts.dev/products/${code}`)
 			.then((r) => (proOffStatus = r.status))
