@@ -6,9 +6,9 @@ name: Weekly Issue Summary
 
 on:
   workflow_dispatch:
-  schedule:
+  #schedule:
     # Run every Monday at 9:00 UTC
-    - cron: '0 9 * * 1'
+    # - cron: '0 9 * * 1'
 
 permissions:
   issues: write
