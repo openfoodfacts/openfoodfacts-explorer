@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
+	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	type Props = {
 		element: KnowledgeElementAction;
@@ -70,10 +71,8 @@
 	class={[element.action_element.html != '' && 'border-accent bg-accent/10 rounded border-s p-4']}
 >
 	{#if element.action_element.html != ''}
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		<div class="mb-4 text-sm">
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html element.action_element.html}
+			<HtmlPurify dirty={element.action_element.html} />
 		</div>
 	{/if}
 
