@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { KnowledgeElementTable } from '$lib/api';
+	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	let { element }: { element: KnowledgeElementTable } = $props();
 </script>
@@ -9,8 +10,7 @@
 		<thead>
 			<tr>
 				{#each element.table_element.columns as column, columnIndex (columnIndex)}
-					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					<th>{@html column.text}</th>
+					<th><HtmlPurify dirty={column.text} /></th>
 				{/each}
 			</tr>
 		</thead>
@@ -18,8 +18,7 @@
 			{#each element.table_element.rows as row, rowIndex (rowIndex)}
 				<tr>
 					{#each row.values as cell, cellIndex (cellIndex)}
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						<td>{@html cell.text}</td>
+						<td><HtmlPurify dirty={cell.text} /></td>
 					{/each}
 				</tr>
 			{/each}

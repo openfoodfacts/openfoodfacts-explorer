@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { KnowledgeElementText } from '$lib/api';
 	import { _ } from '$lib/i18n';
+	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	let { element }: { element: KnowledgeElementText } = $props();
 
@@ -22,13 +23,11 @@
 <!-- Specialization for ingredients_text -->
 {#if edit_field_type == 'ingredients_text'}
 	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
+		<HtmlPurify dirty={html} />
 	</div>
 {:else}
 	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
+		<HtmlPurify dirty={html} />
 	</div>
 {/if}
 
