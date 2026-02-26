@@ -1,0 +1,46 @@
+# This workflow will open a new issue weekly summarizing the issues created in the last week.
+# Requires the associated .prompt.yml file to exist anywhere in the repository.
+# Make sure to fix the path to the .prompt.yml file on line 40.
+
+name: Weekly Issue Summary
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every Monday at 9:00 UTC
+    - cron: '0 9 * * 1'
+
+permissions:
+  issues: write
+  contents: read
+  models: read
+
+jobs:
+  create_weekly_summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install gh-models extension
+        run: gh extension install https://github.com/github/gh-models
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get issues from the past week and summarize
+        id: get_issues
+        run: |-
+          # Calculate the date 7 days ago
+          LAST_WEEK=$(date -d "7 days ago" +"%Y-%m-%d")
+
+          # Fetch issues created since that date and save to a file
+          gh search issues "created:>$LAST_WEEK" --state=open --json title,body,url --repo ${{ github.repository }} > issues.json
+
+          # Generate summary using the model by reading from file
+          cat issues.json | gh models run --file path/to/issue-summary.prompt.yml > summary.md
+
+          # Create the summary issue
+          ISSUE_TITLE="Issue Summary - $(date -d '7 days ago' '+%B %d') to $(date '+%B %d')"
+          gh issue create --title "$ISSUE_TITLE" --label summary --body-file summary.md
+        env:
+          GH_TOKEN: ${{ github.token }}
