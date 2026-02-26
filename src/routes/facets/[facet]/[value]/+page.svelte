@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -11,7 +12,7 @@
 	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '$lib/ui/BackLink.svelte';
+	import BackLink from '$lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 
@@ -32,7 +33,7 @@
 
 <div class="mb-4">
 	<BackLink
-		href={`/facets/${facet.name}`}
+		href={resolve('/facets/[facet]', { facet: facet.name })}
 		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
 	/>
 </div>

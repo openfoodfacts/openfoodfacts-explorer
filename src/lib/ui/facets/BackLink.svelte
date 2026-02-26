@@ -10,6 +10,6 @@
 </script>
 
 <a {href} class="btn btn-secondary btn-outline w-full">
-	<IconMdiArrowLeft class="w-4" />
+	<IconMdiArrowLeft class="h-4 w-4 shrink-0" />
 	{label}
 </a>

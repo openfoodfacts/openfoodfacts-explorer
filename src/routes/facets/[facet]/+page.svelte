@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
 	import { _ } from '$lib/i18n';
-	import BackLink from '$lib/ui/BackLink.svelte';
+	import BackLink from '$lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
@@ -27,7 +28,7 @@
 />
 
 <div class="mb-4">
-	<BackLink href="/facets/" label={$_('facets.facet_back_to_list')} />
+	<BackLink href={resolve('/facets')} label={$_('facets.facet_back_to_list')} />
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
