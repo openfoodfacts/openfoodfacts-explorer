@@ -23,13 +23,7 @@
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
-	import {
-		IMAGE_HOST,
-		KEYCLOAK_ACCOUNT_URL,
-		MATOMO_HOST,
-		MATOMO_SITE_ID,
-		ROBOTOFF_URL
-	} from '$lib/const';
+	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -350,7 +344,10 @@
 		</a>
 
 		{#if $userInfo != null}
-			<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
+			<a
+				class="btn btn-outline link"
+				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+			>
 			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
 		{:else}
 			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>

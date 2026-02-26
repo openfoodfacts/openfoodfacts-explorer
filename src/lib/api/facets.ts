@@ -1,16 +1,17 @@
 import type { KnowledgePanel } from './knowledgepanels';
+import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
+
+// TODO: Remove 'nutriscore_score' workaround once the SDK is updated
+export type FacetSortOption = ProductFacetsSortOption | 'nutriscore_score';
 
 export const FACETS_SORT_OPTIONS = [
 	'last_modified_t',
 	'popularity',
 	'environmental_score_score',
 	'created_t',
-	'nutriscore_score',
-	'last_modified_t'
-] as const;
-
-export type FacetSortOption = (typeof FACETS_SORT_OPTIONS)[number];
+	'nutriscore_score'
+] as const satisfies readonly FacetSortOption[];
 
 export async function getFacet(
 	fetch: typeof window.fetch,

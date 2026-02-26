@@ -138,6 +138,16 @@
 			class="toggle toggle-primary"
 			bind:checked={$preferences.editing.expandAllSections}
 		/>
+
+		<label for="display-prices">
+			{$_('settings.display_prices_in_search')}:
+		</label>
+		<input
+			id="display-prices"
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={$preferences.displayPricesInSearch}
+		/>
 	</div>
 
 	<p class="mt-8 mb-4 font-semibold">{$_('settings.influences')}</p>
