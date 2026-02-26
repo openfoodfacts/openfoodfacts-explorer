@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { KnowledgeElementMap } from '$lib/api';
-	import { onMount } from 'svelte';
 
 	import type { Map, Marker } from 'leaflet';
 
@@ -17,7 +16,7 @@
 	let L: typeof import('leaflet') | null = null;
 
 	// Initialize map on mount
-	onMount(() => {
+	$effect(() => {
 		let mounted = true;
 
 		// Using async function for several reasons:

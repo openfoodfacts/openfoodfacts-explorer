@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
@@ -15,7 +13,7 @@
 	let comparisonMode = $state<ComparisonMode>('relative-first');
 	let mounted = $state(false);
 
-	onMount(() => {
+	$effect(() => {
 		mounted = true;
 	});
 

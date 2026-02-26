@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import { _ } from '$lib/i18n';
 
 	import Card from '$lib/ui/Card.svelte';
@@ -10,7 +8,7 @@
 
 	let { prices, barcode }: { barcode: string; prices: PriceFull[] } = $props();
 
-	onMount(() => {
+	$effect(() => {
 		(async () => {
 			if (PricesMap == null) {
 				PricesMap = import('./PricesMap.svelte').then((module) => module.default);

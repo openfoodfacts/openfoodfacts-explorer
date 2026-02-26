@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;
 
@@ -23,7 +22,7 @@
 		return combo;
 	}
 
-	onMount(() => {
+	$effect(() => {
 		const keyDownListener = (event: KeyboardEvent) => {
 			if (event.key === 'Escape' && helpModal.open) {
 				helpModal.close();

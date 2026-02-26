@@ -54,29 +54,6 @@
 		);
 	}
 
-	onMount(async () => {
-		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-			error = 'Your browser does not support the camera API';
-			return;
-		}
-
-		const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
-
-		const scanner = new Html5Qrcode('reader', {
-			useBarCodeDetectorIfSupported: true,
-			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
-			verbose: false
-		});
-
-		startScanning(scanner).catch(async (err) => {
-			error = 'Camera access is required. Please enable it in your browser settings.';
-			console.error('QR Code Scanner Error:', err);
-			await cleanupScanner();
-		});
-
-		html5QrCode = scanner;
-	});
-
 	async function cleanupScanner() {
 		if (html5QrCode != null) {
 			try {
@@ -89,8 +66,33 @@
 		}
 	}
 
-	onDestroy(() => {
-		cleanupScanner();
+	$effect(() => {
+		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+			error = 'Your browser does not support the camera API';
+			return;
+		}
+
+		(async () => {
+			const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
+
+			const scanner = new Html5Qrcode('reader', {
+				useBarCodeDetectorIfSupported: true,
+				formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
+				verbose: false
+			});
+
+			startScanning(scanner).catch(async (err) => {
+				error = 'Camera access is required. Please enable it in your browser settings.';
+				console.error('QR Code Scanner Error:', err);
+				await cleanupScanner();
+			});
+
+			html5QrCode = scanner;
+		})();
+
+		return () => {
+			cleanupScanner();
+		};
 	});
 
 	function addNewProduct() {

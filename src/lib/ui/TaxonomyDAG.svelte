@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
 	import cytoscape from 'cytoscape';
 	import type { Core, ElementDefinition } from 'cytoscape';
 
@@ -196,14 +195,14 @@
 		});
 	}
 
-	onMount(() => {
+	$effect(() => {
 		const fitOnResize = () => {
 			if (cy) cy.fit();
 		};
 		window.addEventListener('resize', fitOnResize);
-		onDestroy(() => {
+		return () => {
 			window.removeEventListener('resize', fitOnResize);
-		});
+		};
 	});
 
 	$effect(() => {

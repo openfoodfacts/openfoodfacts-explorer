@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	type Props = {
 		src?: string;
 		alt?: string;
@@ -25,7 +23,7 @@
 	let isDragging = $state(false);
 	let prev = $state({ x: 0, y: 0 });
 
-	onMount(() => {
+	$effect(() => {
 		const wheelListener = (e: WheelEvent) => {
 			e.preventDefault();
 			if (e.deltaY < 0) {

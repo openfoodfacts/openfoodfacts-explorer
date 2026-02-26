@@ -3,7 +3,6 @@
 
 	import { saveAuthTokens } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
 
@@ -48,7 +47,7 @@
 
 	let loginResult: Promise<void> | null = $state(null);
 
-	onMount(() => {
+	$effect(() => {
 		loginResult = doPkceExchange();
 	});
 </script>

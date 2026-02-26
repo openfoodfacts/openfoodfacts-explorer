@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 
 	import { _ } from '$lib/i18n';
@@ -70,7 +69,7 @@
 		return attrs;
 	}
 
-	onMount(() => {
+	$effect(() => {
 		products = getProducts();
 		products.then((prod) => {
 			attributesByCode = getAttributes(prod);

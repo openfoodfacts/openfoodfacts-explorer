@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import DOMPurify from 'isomorphic-dompurify';
 	import worldAtlas from 'world-atlas/countries-110m.json' with { type: 'json' };
 	import * as topojson from 'topojson-client';
@@ -88,7 +86,7 @@
 	let legendControl: import('leaflet').Control | null = null;
 	let isDark: boolean = $state(false);
 
-	onMount(() => {
+	$effect(() => {
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
 		isDark = mq.matches;
 		mq.addEventListener('change', (e) => (isDark = e.matches));

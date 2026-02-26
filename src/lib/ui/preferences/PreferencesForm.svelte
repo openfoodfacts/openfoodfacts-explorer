@@ -8,7 +8,6 @@
 		type AttributeGroup,
 		type UserPreference
 	} from '$lib/stores/preferencesStore';
-	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {
 		groups: AttributeGroup[] | Promise<AttributeGroup[]>;
@@ -24,7 +23,7 @@
 		onPreferenceChange?.(preference);
 	}
 
-	onMount(() => {
+	$effect(() => {
 		const unsubscribe = personalizedSearch.subscribe((value) => {
 			console.debug('Personalized Search Store Updated:', value);
 		});
