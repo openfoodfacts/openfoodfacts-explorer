@@ -184,7 +184,7 @@
 						{$_('product.edit.remove_all_nutrient_values')}
 					</button>
 					<span class="badge badge-info badge-outline badge-sm">
-						{$_('auth.role.moderator_only')}
+						{$_('product.edit.moderator_only')}
 					</span>
 				</div>
 			{/if}

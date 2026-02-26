@@ -55,8 +55,7 @@
 		"role": {
 			"user": "User",
 			"admin": "Administrator",
-			"moderator": "Moderator",
-			"moderator_only": "Moderator only"
+			"moderator": "Moderator"
 		}
 	},
 	"general": {
@@ -215,6 +214,7 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
