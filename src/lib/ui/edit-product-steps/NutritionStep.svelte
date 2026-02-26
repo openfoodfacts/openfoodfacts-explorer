@@ -178,11 +178,14 @@
 			</div>
 
 			{#if $preferences.moderator && $userInfo?.isModerator}
-				<div class="mb-4">
+				<div class="mb-4 flex items-center gap-2">
 					<button type="button" class="btn btn-error btn-sm" onclick={wipeAllNutrientValues}>
 						<IconMdiDeleteSweep class="h-4 w-4" />
 						{$_('product.edit.remove_all_nutrient_values')}
 					</button>
+					<span class="badge badge-info badge-outline badge-sm">
+						{$_('auth.role.moderator_only')}
+					</span>
 				</div>
 			{/if}
 

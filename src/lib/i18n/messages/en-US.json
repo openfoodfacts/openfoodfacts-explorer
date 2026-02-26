@@ -55,7 +55,8 @@
 		"role": {
 			"user": "User",
 			"admin": "Administrator",
-			"moderator": "Moderator"
+			"moderator": "Moderator",
+			"moderator_only": "Moderator only"
 		}
 	},
 	"general": {

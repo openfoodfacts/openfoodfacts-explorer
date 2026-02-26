@@ -75,6 +75,9 @@
 			<label class="label" for="product_type">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 					{$_('product.edit.product_type')}
+					<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
+						{$_('auth.role.moderator_only')}
+					</span>
 					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
 				</span>
 			</label>
