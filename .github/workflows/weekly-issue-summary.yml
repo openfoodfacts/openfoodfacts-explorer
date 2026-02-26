@@ -37,7 +37,7 @@ jobs:
           gh search issues "created:>$LAST_WEEK" --state=open --json title,body,url --repo ${{ github.repository }} > issues.json
 
           # Generate summary using the model by reading from file
-          cat issues.json | gh models run --file path/to/issue-summary.prompt.yml > summary.md
+          cat issues.json | gh models run --file .github/workflows/issue-summary.prompt.yml > summary.md
 
           # Create the summary issue
           ISSUE_TITLE="Issue Summary - $(date -d '7 days ago' '+%B %d') to $(date '+%B %d')"
