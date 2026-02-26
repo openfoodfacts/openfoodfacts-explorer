@@ -89,10 +89,7 @@ export async function selectAndCropImagesV3(
 	images: ImageSelectionData
 ): Promise<{ data?: ImageOperationResponse; error?: string }> {
 	const off = createProductsApi(fetch);
-	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
-		params: { path: { code } },
-		body: { fields: 'updated', product: { images } }
-	});
+	const { data, error } = await off.apiv3.selectAndCropImagesV3(code, images);
 
 	if (error) {
 		return { error: `Failed to select/crop images: ${error}` };

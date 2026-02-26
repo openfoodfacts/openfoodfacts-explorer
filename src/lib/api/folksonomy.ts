@@ -13,10 +13,9 @@ export function createFolksonomyApi(fetch: typeof window.fetch): Folksonomy {
 	return new Folksonomy(wrappedFetch, { baseUrl: BASE_URL });
 }
 
-// TODO: move to SDK
 export async function getFolksonomyValues(fetch: typeof window.fetch, key: string) {
 	const folksonomyApi = createFolksonomyApi(fetch);
-	const response = await folksonomyApi.client.GET('/values/{k}', { params: { path: { k: key } } });
+	const response = await folksonomyApi.getValues(key);
 	if ('error' in response) {
 		console.error(response.error);
 		return [];
