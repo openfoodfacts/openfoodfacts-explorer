@@ -379,7 +379,7 @@
 							{product.product_name ?? product.code}
 						</a>
 					</h3>
-					<p class="mt-1 text-center text-sm text-gray-600">
+					<p class="text-base-content/70 mt-1 text-center text-sm">
 						{product.brands ?? ''}
 						{#if product.brands && product.quantity},{/if}
 						{product.quantity ?? ''}
@@ -452,11 +452,11 @@
 	<table class="table-zebra table w-full table-fixed">
 		<thead>
 			<tr>
-				<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+				<th class="bg-base-100 sticky left-0 z-10 w-56"></th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
-						class="relative"
+						class="relative min-w-40"
 						ondragover={(e) => {
 							if (
 								!readonly &&
@@ -514,7 +514,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Name</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Name</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.product_name ?? '-'}
@@ -522,7 +522,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Code (Barcode)</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Code (Barcode)</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
 						{product.code}
@@ -530,7 +530,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Brand</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
@@ -538,7 +538,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Quantity</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
@@ -546,7 +546,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Nutri-Score</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -563,7 +563,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Nova Group</td>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
@@ -580,7 +580,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">Green-Score</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -597,7 +597,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">N. of additives</td>
+				<td class="bg-base-100 sticky left-0 w-56 font-semibold">N. of additives</td>
 				{#each products as product (product.code)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
@@ -612,7 +612,10 @@
 			</tr>
 			{#each availableNutrients as nutrient (nutrient.key)}
 				<tr>
-					<td class="bg-base-100 sticky left-0 w-40 font-semibold">{nutrient.label}</td>
+					<td
+						class="bg-base-100 sticky left-0 w-56 leading-tight font-semibold text-balance whitespace-normal"
+						>{nutrient.label}</td
+					>
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
 						<td animate:flip={{ duration: 300 }}>
@@ -626,11 +629,11 @@
 </div>
 
 {#if comparisonMode === 'relative-first'}
-	<div class="mt-4 text-center text-sm text-gray-600">
+	<div class="text-base-content/70 mt-4 text-center text-sm">
 		💡 Percentages show difference compared to the first product
 	</div>
 {:else if comparisonMode === 'relative-best'}
-	<div class="mt-4 text-center text-sm text-gray-600">
+	<div class="text-base-content/70 mt-4 text-center text-sm">
 		💡 Percentages show difference compared to the best value (lower is better for most nutrients)
 	</div>
 {/if}

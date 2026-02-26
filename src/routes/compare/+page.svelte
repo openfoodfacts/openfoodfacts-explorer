@@ -120,34 +120,40 @@
 			</div>
 			<div class="flex flex-wrap items-center gap-2">
 				{#if $compareStore.length > 0}
-					<div class="join">
+					<div class="flex flex-wrap items-center gap-2">
 						<button
-							class="join-item btn btn-sm"
-							class:btn-active={comparisonMode === 'absolute'}
+							class="btn btn-sm"
+							class:btn-outline={comparisonMode === 'absolute'}
+							class:btn-ghost={comparisonMode !== 'absolute'}
 							onclick={() => (comparisonMode = 'absolute')}
 						>
 							{$_('compare.mode.absolute')}
 						</button>
 						<button
-							class="join-item btn btn-sm"
-							class:btn-active={comparisonMode === 'relative-first'}
+							class="btn btn-sm"
+							class:btn-outline={comparisonMode === 'relative-first'}
+							class:btn-ghost={comparisonMode !== 'relative-first'}
 							onclick={() => (comparisonMode = 'relative-first')}
 						>
 							{$_('compare.mode.relative_first')}
 						</button>
 						<button
-							class="join-item btn btn-sm"
-							class:btn-active={comparisonMode === 'relative-best'}
+							class="btn btn-sm"
+							class:btn-outline={comparisonMode === 'relative-best'}
+							class:btn-ghost={comparisonMode !== 'relative-best'}
 							onclick={() => (comparisonMode = 'relative-best')}
 						>
 							{$_('compare.mode.relative_best')}
 						</button>
 					</div>
-					<button class="btn btn-sm btn-primary" onclick={shareComparison}>
+					<button
+						class="btn btn-sm bg-white text-black hover:bg-gray-200"
+						onclick={shareComparison}
+					>
 						<IconMdiShareVariant class="h-4 w-4" />
 						{$_('compare.share.button')}
 					</button>
-					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
+					<button class="btn btn-outline btn-sm" onclick={() => compareStore.clear()}>
 						{$_('compare.clear.button')}
 					</button>
 				{/if}
@@ -162,7 +168,7 @@
 			{:else}
 				<div class="py-8 text-center">
 					<p class="mb-4 text-lg">{$_('compare.empty.title')}</p>
-					<p class="mb-4 text-sm text-gray-600">{$_('compare.empty.description')}</p>
+					<p class="text-base-content/70 mb-4 text-sm">{$_('compare.empty.description')}</p>
 					<a href="/products/search?q=chocolate" class="btn btn-primary">
 						{$_('compare.empty.cta')}
 					</a>
