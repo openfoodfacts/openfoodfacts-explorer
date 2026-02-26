@@ -5,7 +5,6 @@ import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 import { createKeycloakApi } from '$lib/api';
-import { getLocale } from '$lib/i18n';
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
@@ -44,7 +43,6 @@ export const load: PageLoad = async ({ url }) => {
 
 	const oauthLoginUrl = api.loginUrl({
 		state: state,
-		lang: getLocale().split('-')[0],
 		scope: 'openid profile offline_access',
 		codeChallenge,
 		codeChallengeMethod: 'S256'
