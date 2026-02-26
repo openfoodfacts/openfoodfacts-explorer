@@ -200,7 +200,7 @@
 			'en'}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
-			dryRun: !dev,
+			dryRun: dev,
 			apiUrl: ROBOTOFF_URL + '/api/v1',
 			imgUrl: IMAGE_HOST + '/images/products'
 		})}
