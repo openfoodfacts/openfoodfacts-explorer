@@ -103,6 +103,7 @@
 			}
 		} else if (e.key === 'Escape') {
 			highlightedIndex = null;
+			autocompleteList = null;
 		}
 	}
 </script>
