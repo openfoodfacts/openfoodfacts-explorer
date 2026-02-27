@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // create a mutable mock object
-let mockEnv = { PUBLIC_SEARCH_BASE_URL: '' };
+const mockEnv = { PUBLIC_SEARCH_BASE_URL: '' };
 
 vi.mock('$env/dynamic/public', () => ({
 	get env() {

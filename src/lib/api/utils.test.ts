@@ -6,7 +6,7 @@ describe('wrapFetchWithCredentials', () => {
 		const url = new URL('https://user:pass@example.com/api');
 		const mockFetch = vi.fn();
 
-		const { url: cleanedUrl } = wrapFetchWithCredentials(mockFetch as any, url);
+		const { url: cleanedUrl } = wrapFetchWithCredentials(mockFetch as typeof fetch, url);
 
 		expect(cleanedUrl.toString()).toBe('https://example.com/api');
 	});
@@ -15,7 +15,7 @@ describe('wrapFetchWithCredentials', () => {
 		const url = new URL('https://example.com/api');
 		const mockFetch = vi.fn();
 
-		const result = wrapFetchWithCredentials(mockFetch as any, url);
+		const result = wrapFetchWithCredentials(mockFetch as typeof fetch, url);
 
 		expect(result.fetch).toBe(mockFetch);
 	});
