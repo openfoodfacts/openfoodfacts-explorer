@@ -5,6 +5,8 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
+	import { browser } from '$app/environment';
+	import { untrack } from 'svelte';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -45,11 +47,7 @@
 		}
 	}
 
-	let loginResult: Promise<void> | null = $state(null);
-
-	$effect(() => {
-		loginResult = doPkceExchange();
-	});
+	let loginResult: Promise<void> | null = $derived(browser ? untrack(doPkceExchange) : null);
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">

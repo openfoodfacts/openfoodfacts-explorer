@@ -7,15 +7,11 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { browser } from '$app/environment';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
 	let comparisonMode = $state<ComparisonMode>('relative-first');
-	let mounted = $state(false);
-
-	$effect(() => {
-		mounted = true;
-	});
 
 	let comparisonTitle = $state('');
 	let isEditingTitle = $state(false);
@@ -159,7 +155,7 @@
 		</div>
 
 		{#if $compareStore.length === 0}
-			{#if !mounted}
+			{#if !browser}
 				<div class="py-8 text-center">
 					<span class="loading loading-spinner loading-lg text-primary"></span>
 				</div>
