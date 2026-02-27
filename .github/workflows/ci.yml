@@ -29,6 +29,10 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
+      - name: Run tests
+        run: pnpm test
+        if: always()
+
       - run: pnpm check
         if: always()
 
