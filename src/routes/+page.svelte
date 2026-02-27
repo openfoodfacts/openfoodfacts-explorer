@@ -143,12 +143,12 @@
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</a>
 	<a
-		href={resolve('/facets/[facet]', { facet: 'editors' })}
+		href={resolve('/facets/[facet]', { facet: 'contributors' })}
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<IconMdiAccountGroup class="text-primary mb-4 h-12 w-12" />
-		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.editorCount)}</h2>
-		<p class="text-base-content/70">{$_('landing.editors_count')}</p>
+		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.contributorCount)}</h2>
+		<p class="text-base-content/70">{$_('landing.contributors_count')}</p>
 	</a>
 	<a
 		href={resolve('/static/[id]', { id: 'data' })}

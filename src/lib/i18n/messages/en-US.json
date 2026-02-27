@@ -87,7 +87,7 @@
 		"links": {
 			"newsletter": "Newsletter",
 			"forum": "Forum",
-			"producers": "Producers",
+			"producers": "Producers Platform",
 			"translators": "Translators",
 			"github": "GitHub",
 			"data_api_sdks": "Data, API, SDKs",
@@ -114,6 +114,7 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"display_prices_in_search": "Display prices in search results",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
@@ -163,7 +164,23 @@
 		"buttons": {
 			"classic_view": "Classic view",
 			"edit": "Edit",
-			"share": "Share"
+			"share": "Share",
+			"report": "Report an issue with this product",
+			"add_to_calculator": "Add product to nutritional calculator",
+			"compare": "Add to compare",
+			"view_on_off": "View product on Open Food Facts"
+		},
+		"header": {
+			"quantity": "Quantity",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"origins": "Origins",
+			"traceability_codes": "Traceability Codes",
+			"traceability_codes_learn_more": "Learn more",
+			"producer_link": "Producer link",
+			"stores": "Stores",
+			"countries": "Countries"
 		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
@@ -197,6 +214,7 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
@@ -216,7 +234,9 @@
 				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
-				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
+				"countries": "Countries where the product is widely available (not including stores specialising in foreign products).",
+				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
 			},
 			"main_language": "Main language",
 			"add_product": "Add product",
@@ -238,6 +258,13 @@
 			"stores": "Stores",
 			"origins": "Origin of the product and/or its ingredients",
 			"countries": "Countries where sold",
+			"product_type": "Product type",
+			"product_types": {
+				"food": "Food",
+				"beauty": "Beauty",
+				"petfood": "Pet Food",
+				"product": "Other"
+			},
 			"product_page_url": "Link to the product page on the official site of the producer",
 			"photos": "Product Photos",
 			"no_photo_available": "No photo available",
@@ -249,6 +276,7 @@
 			"serving_size": "Serving Size",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
+			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
 			"energy": "Energy",
 			"macronutrients": "Macro-nutrients",
@@ -285,7 +313,52 @@
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
-			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use."
+			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
+			"images": {
+				"toast": {
+					"login_required": "Please log in to upload images.",
+					"upload_success": "Image uploaded successfully!",
+					"upload_failed": "Upload failed: {error}",
+					"upload_failed_generic": "Upload failed. Please try again.",
+					"upload_error": "Image upload failed. Please try again.",
+					"unselect_success": "Image unselected successfully.",
+					"unselect_failed": "Failed to unselect image. Please try again.",
+					"unselect_error": "Error unselecting image. Please try again.",
+					"save_success": "Image saved successfully!",
+					"process_error": "Error processing image: {error}. Please try again.",
+					"select_success": "Image selected successfully!",
+					"select_error": "Error selecting image. Please try again.",
+					"not_loaded": "Image not fully loaded. Please wait and try again.",
+					"invalid_crop": "Please select a valid crop area."
+				},
+				"select_image": "Select an Image",
+				"uploading": "Uploading...",
+				"upload_type": "Upload {type}",
+				"unselecting": "Unselecting...",
+				"unselect_type": "Unselect {type}",
+				"unselect_image": "Unselect Image",
+				"selecting": "Selecting...",
+				"select_type": "Select {type}",
+				"show_less": "Show Less",
+				"see_all": "See All ({count})",
+				"processing_upload": "Processing upload...",
+				"unselecting_image": "Unselecting image...",
+				"photos_available": "Photos available",
+				"edit_photo": "Edit Photo",
+				"loading_editor": "Loading image editor...",
+				"rotate_left": "Rotate Left",
+				"rotate_right": "Rotate Right",
+				"zoom_in": "Zoom In",
+				"zoom_out": "Zoom Out",
+				"reset": "Reset",
+				"rotation": "Rotation",
+				"tool": "Tool",
+				"crop_drag_to_move": "Drag to move, corners to resize",
+				"crop_click_to_start": "Click and drag to start cropping",
+				"report_image": "Report Image",
+				"save_changes": "Save Changes"
+			},
+			"comment_description": "Add a comment about your changes (optional)"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -306,34 +379,6 @@
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again"
 	},
-	"compare": {
-		"meta_title": "Compare Products",
-		"meta_description": "Compare nutritional information of food products",
-		"title_placeholder": "Enter comparison title...",
-		"title_default": "Compare Products",
-		"title_edit_hint": "Click to edit title",
-		"mode": {
-			"absolute": "Absolute",
-			"relative_first": "vs First",
-			"relative_best": "vs Best"
-		},
-		"share": {
-			"button": "Share",
-			"title": "Product Comparison",
-			"text": "Check out this product comparison I made!",
-			"failed": "Sharing failed.",
-			"copy_success": "Comparison link copied to clipboard!",
-			"copy_failed": "Failed to copy link to clipboard."
-		},
-		"clear": {
-			"button": "Clear All"
-		},
-		"empty": {
-			"title": "No products selected for comparison",
-			"description": "Add products from their detail pages to start comparing nutritional values",
-			"cta": "Browse Products"
-		}
-	},
 	"errors": {
 		"network": {
 			"title": "Connection Error",
@@ -346,7 +391,8 @@
 		"back": "Back",
 		"skip": "Skip",
 		"step": "Step",
-		"of": "of"
+		"of": "of",
+		"cancel": "Cancel"
 	},
 	"menu": {
 		"button": "Menu",
@@ -370,7 +416,7 @@
 		"discover_project": "Discover the Project",
 		"contribute": "Contribute",
 		"products_count": "Products",
-		"editors_count": "Editors",
+		"contributors_count": "Contributors",
 		"open_data": "Open Data",
 		"help_improve_title": "Help Improve Open Food Facts",
 		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
@@ -379,7 +425,11 @@
 		"products_created": "Products created",
 		"products_edited": "Products edited",
 		"html_title": "User Profile - {user} - Open Food Facts Explorer",
-		"title": "User Profile of {user}"
+		"title": "User Profile of {user}",
+		"has_created": "Has Created",
+		"has_edited": "Has Edited",
+		"view_all_contributions": "View all contributions",
+		"view_all_edits": "View all edits"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",
@@ -396,5 +446,37 @@
 		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
 		"learn_more": "Learn More",
 		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
+	},
+	"compare": {
+		"page_title": "Compare Products",
+		"page_description": "Compare nutritional information of food products",
+		"title_placeholder": "Enter comparison title...",
+		"click_to_edit": "Click to edit title",
+		"mode_absolute": "Absolute",
+		"mode_vs_first": "vs First",
+		"mode_vs_best": "vs Best",
+		"share": "Share",
+		"share_title": "Product Comparison",
+		"share_text": "Check out this product comparison I made!",
+		"clear_all": "Clear All",
+		"no_products_selected": "No products selected for comparison",
+		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
+		"browse_products": "Browse Products",
+		"shared_comparison": "Shared Comparison",
+		"shared_description": "Shared product comparison",
+		"shared_product_comparison": "Shared Product Comparison",
+		"read_only": "Read-only comparison",
+		"import_to_my": "Import to My Comparison",
+		"import_dialog_title": "Import Comparison",
+		"continue_question": "Continue?",
+		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
+		"import": "Import",
+		"no_products_to_compare": "No products to compare",
+		"invalid_link_hint": "This link doesn't contain any valid products to compare",
+		"toast": {
+			"share_failed": "Sharing failed.",
+			"link_copied": "Comparison link copied to clipboard!",
+			"copy_failed": "Failed to copy link to clipboard."
+		}
 	}
 }

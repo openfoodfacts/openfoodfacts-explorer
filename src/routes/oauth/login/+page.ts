@@ -43,7 +43,6 @@ export const load: PageLoad = async ({ url }) => {
 
 	const oauthLoginUrl = api.loginUrl({
 		state: state,
-		lang: 'en',
 		scope: 'openid profile offline_access',
 		codeChallenge,
 		codeChallengeMethod: 'S256'

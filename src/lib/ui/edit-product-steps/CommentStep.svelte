@@ -45,7 +45,7 @@
 {/if}
 <div class="space-y-6">
 	<div class="mb-6 text-center">
-		<p class="text-base-content/60 text-sm">Add a comment about your changes (optional)</p>
+		<p class="text-base-content/60 text-sm">{$_('product.edit.comment_description')}</p>
 	</div>
 	<div class="form-control">
 		<label class="label" for="comment">

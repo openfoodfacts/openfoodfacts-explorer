@@ -69,7 +69,6 @@
 			ingredients_text: '',
 			ingredients_text_en: '',
 			serving_size: '',
-			packaging: '',
 			manufacturing_places: '',
 			product_type: '',
 

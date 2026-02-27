@@ -6,3 +6,4 @@ services:
       - '3000:3000'
     environment:
       - WORKERS=4
+      - ORIGIN=${ORIGIN:-http://localhost:3000}
