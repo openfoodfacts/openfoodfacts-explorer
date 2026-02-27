@@ -35,4 +35,4 @@
 	</div>
 {/if}
 
-<StaticPageIframe src={$iframeUrl} on:load={handleLoad} on:error={handleError} />
+<StaticPageIframe src={$iframeUrl} onload={handleLoad} onerror={handleError} />
