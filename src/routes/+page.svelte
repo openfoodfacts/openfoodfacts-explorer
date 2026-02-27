@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-
+	import { onMount } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import { createRobotoffApi, getProductReducedForCard, getBulkProductAttributes } from '$lib/api';
 	import { deduplicate } from '$lib/utils';
@@ -69,7 +69,7 @@
 		return attrs;
 	}
 
-	$effect(() => {
+	onMount(() => {
 		products = getProducts();
 		products.then((prod) => {
 			attributesByCode = getAttributes(prod);

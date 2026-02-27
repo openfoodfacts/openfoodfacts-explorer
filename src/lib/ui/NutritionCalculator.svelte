@@ -8,6 +8,7 @@
 		toggleCalculator,
 		totalNutrition
 	} from '$lib/stores/calculatorStore';
+	import { onMount } from 'svelte';
 
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
@@ -15,7 +16,7 @@
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 
-	$effect(() => {
+	onMount(() => {
 		calculatorItems.update((items) => [...items]);
 	});
 </script>

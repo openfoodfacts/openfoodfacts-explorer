@@ -1,19 +1,24 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '$lib/i18n';
-
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { browser } from '$app/environment';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
 	let comparisonMode = $state<ComparisonMode>('relative-first');
 
 	let comparisonTitle = $state('');
+	let mounted = $state(false);
+
+	onMount(() => {
+		mounted = true;
+	});
+
 	let isEditingTitle = $state(false);
 	let titleInput: HTMLInputElement | null = $state(null);
 
@@ -155,7 +160,7 @@
 		</div>
 
 		{#if $compareStore.length === 0}
-			{#if !browser}
+			{#if !mounted}
 				<div class="py-8 text-center">
 					<span class="loading loading-spinner loading-lg text-primary"></span>
 				</div>

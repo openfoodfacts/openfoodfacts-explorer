@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { KnowledgeElementMap } from '$lib/api';
-
+	import { onMount } from 'svelte';
 	import type { Map, Marker } from 'leaflet';
 
 	let { element }: { element: KnowledgeElementMap } = $props();
@@ -16,7 +16,7 @@
 	let L: typeof import('leaflet') | null = null;
 
 	// Initialize map on mount
-	$effect(() => {
+	onMount(() => {
 		let mounted = true;
 
 		// Using async function for several reasons:

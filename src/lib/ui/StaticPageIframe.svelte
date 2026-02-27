@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	type Props = { src: string };
 	let { src }: Props = $props();
 
 	let frameHeight = $state('100vh'); // Default height, can be adjusted
 
-	$effect(() => {
+	onMount(() => {
 		const abortController = new AbortController();
 		window.addEventListener(
 			'message',

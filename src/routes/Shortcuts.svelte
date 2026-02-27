@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-
+	import { onMount } from 'svelte';
 	let helpModal: HTMLDialogElement;
 
 	// Define shortcuts: { combo, description, action }
@@ -22,7 +22,7 @@
 		return combo;
 	}
 
-	$effect(() => {
+	onMount(() => {
 		const keyDownListener = (event: KeyboardEvent) => {
 			if (event.key === 'Escape' && helpModal.open) {
 				helpModal.close();

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fly, fade } from 'svelte/transition';
-
+	import { onMount } from 'svelte';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information-outline';
 	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
@@ -69,7 +69,7 @@
 	}
 
 	// Initialize all groups as expanded
-	$effect(() => {
+	onMount(() => {
 		// Fix: use the computed value, not the function
 		for (const [group] of groupedTags) {
 			expandedGroups[group] = true;

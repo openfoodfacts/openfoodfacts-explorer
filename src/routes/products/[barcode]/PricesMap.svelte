@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { onMount } from 'svelte';
 	import L, {
 		type Map,
 		type Marker,
@@ -28,7 +29,7 @@
 	const TILES_BASE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 	const ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-	$effect(() => {
+	onMount(() => {
 		mapInstance = L.map(mapContainer, {});
 		L.tileLayer(TILES_BASE_URL, { maxZoom: MAX_ZOOM, attribution: ATTRIBUTION }).addTo(mapInstance);
 

@@ -3,10 +3,9 @@
 
 	import { saveAuthTokens } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
-	import { browser } from '$app/environment';
-	import { untrack } from 'svelte';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -47,7 +46,11 @@
 		}
 	}
 
-	let loginResult: Promise<void> | null = $derived(browser ? untrack(doPkceExchange) : null);
+	let loginResult: Promise<void> | null = $state(null);
+
+	onMount(() => {
+		loginResult = doPkceExchange();
+	});
 </script>
 
 <div class="flex h-screen w-full items-center justify-center">

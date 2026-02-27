@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-
+	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 
@@ -8,7 +8,7 @@
 
 	let { prices, barcode }: { barcode: string; prices: PriceFull[] } = $props();
 
-	$effect(() => {
+	onMount(() => {
 		(async () => {
 			if (PricesMap == null) {
 				PricesMap = import('./PricesMap.svelte').then((module) => module.default);

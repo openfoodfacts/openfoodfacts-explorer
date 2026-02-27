@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { clearAuthTokens } from '$lib/stores/auth';
+	import { onMount } from 'svelte';
 
 	async function doLogout() {
 		clearAuthTokens();
 		goto('/'); // Redirect to home page after logout
 	}
 
-	$effect(() => {
+	onMount(() => {
 		doLogout();
 	});
 </script>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import cytoscape from 'cytoscape';
+	import { onMount, onDestroy } from 'svelte';
 	import type { Core, ElementDefinition } from 'cytoscape';
 
 	import type { TaxoNode, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -195,14 +196,14 @@
 		});
 	}
 
-	$effect(() => {
+	onMount(() => {
 		const fitOnResize = () => {
 			if (cy) cy.fit();
 		};
 		window.addEventListener('resize', fitOnResize);
-		return () => {
+		onDestroy(() => {
 			window.removeEventListener('resize', fitOnResize);
-		};
+		});
 	});
 
 	$effect(() => {
