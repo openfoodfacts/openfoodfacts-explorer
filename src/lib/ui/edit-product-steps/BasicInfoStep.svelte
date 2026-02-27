@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+	import { preferences } from '$lib/settings';
+	import { userInfo } from '$lib/stores/user';
+	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
@@ -66,6 +69,30 @@
 	</div>
 {/if}
 <div class="space-y-6">
+	<!-- Product Type (Moderators Only) -->
+	{#if $userInfo?.isModerator && $preferences.moderator}
+		<div class="form-control w-full sm:w-1/2">
+			<label class="label" for="product_type">
+				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+					{$_('product.edit.product_type')}
+					<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
+						{$_('product.edit.moderator_only')}
+					</span>
+					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+				</span>
+			</label>
+			<select
+				id="product_type"
+				class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				bind:value={product.product_type}
+			>
+				{#each PRODUCT_TYPES as type (type)}
+					<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
+				{/each}
+			</select>
+		</div>
+	{/if}
+
 	<!-- Primary Fields Grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 		<div class="form-control w-full">
