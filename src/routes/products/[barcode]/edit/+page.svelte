@@ -226,8 +226,8 @@
 		}
 
 		// Submit packaging data via V3 API
-		const packagingTextField = `packaging_text_${product.lang || 'en'}`;
-		const packagingText = (product as Product & Record<string, string>)[packagingTextField];
+		const packagingTextField = `packaging_text_${product.lang || 'en'}` as keyof Product;
+		const packagingText = product[packagingTextField] as unknown as string;
 		if ((product.packagings && product.packagings.length > 0) || packagingText) {
 			console.group('Packaging update (V3)');
 			console.debug('Submitting packaging data');

@@ -3,17 +3,26 @@ import { get } from 'svelte/store';
 import type { KnowledgePanel } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
-import {
-	type ProductV3,
-	// @ts-expect-error - Packaging types will be available in next SDK version
-	type PackagingComponent,
-	// @ts-expect-error - Taxonomy types will be available in next SDK version
-	type PackagingTaxonomyTag,
-	OpenFoodFacts
-} from '@openfoodfacts/openfoodfacts-nodejs';
+import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 
-export { type ProductV3, type PackagingComponent, type PackagingTaxonomyTag };
+// TODO: switch to SDK once it is updated
+export type PackagingTaxonomyTag = {
+	id?: string;
+	lc_name?: string;
+};
+
+// TODO: switch to SDK once it is updated
+export type PackagingComponent = {
+	number_of_units?: number;
+	shape?: PackagingTaxonomyTag;
+	material?: PackagingTaxonomyTag;
+	recycling?: PackagingTaxonomyTag;
+	quantity_per_unit?: string;
+	weight_measured?: number;
+};
+
+export { type ProductV3 };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -58,16 +67,17 @@ export async function addOrEditProductV2(
 }
 
 /**
- * Fetch taxonomy suggestions for packaging fields (shapes, materials, recycling)
+ * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
+ * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function
- * @param tagtype - The taxonomy type: 'packaging_shapes', 'packaging_materials', or 'packaging_recycling'
+ * @param tagtype - The taxonomy type (e.g. 'packaging_shapes', 'labels')
  * @param searchString - Optional search string for autocomplete filtering
  * @param limit - Maximum number of suggestions (default 25, max 400)
  * @returns Array of suggestion strings
  */
-export async function getPackagingTaxonomySuggestions(
+export async function getTaxonomySuggestions(
 	fetch: typeof window.fetch,
-	tagtype: 'packaging_shapes' | 'packaging_materials' | 'packaging_recycling',
+	tagtype: string,
 	searchString?: string,
 	limit: number = 25
 ): Promise<string[]> {
@@ -92,7 +102,41 @@ export async function getPackagingTaxonomySuggestions(
 		return [];
 	}
 
-	return (data as { suggestions?: string[] }).suggestions ?? [];
+	return data.suggestions ?? [];
+}
+
+/**
+ * Cleans a packaging component object before sending it to the API.
+ * This extracts localized strings from taxonomy fields and removes null/empty values.
+ * @param component The raw packaging component
+ * @returns A clean object ready for the V3 API
+ */
+export function cleanPackagingComponent(component: PackagingComponent): Record<string, unknown> {
+	const cleaned: Record<string, unknown> = {};
+
+	if (component.number_of_units != null) {
+		cleaned.number_of_units = component.number_of_units;
+	}
+
+	// For taxonomy fields, send the lc_name (localized name) as a string
+	if (component.shape?.lc_name || component.shape?.id) {
+		cleaned.shape = component.shape.lc_name || component.shape.id;
+	}
+	if (component.material?.lc_name || component.material?.id) {
+		cleaned.material = component.material.lc_name || component.material.id;
+	}
+	if (component.recycling?.lc_name || component.recycling?.id) {
+		cleaned.recycling = component.recycling.lc_name || component.recycling.id;
+	}
+
+	if (component.quantity_per_unit) {
+		cleaned.quantity_per_unit = component.quantity_per_unit;
+	}
+	if (component.weight_measured != null) {
+		cleaned.weight_measured = component.weight_measured;
+	}
+
+	return cleaned;
 }
 
 /**
@@ -115,33 +159,7 @@ export async function updatePackagingsV3(
 	const lc = get(preferences).lang || 'en';
 
 	const filteredPackagings = packagings
-		.map((component) => {
-			const cleaned: Record<string, unknown> = {};
-
-			if (component.number_of_units != null) {
-				cleaned.number_of_units = component.number_of_units;
-			}
-
-			// For taxonomy fields, send the lc_name (localized name) as a string
-			if (component.shape?.lc_name || component.shape?.id) {
-				cleaned.shape = component.shape.lc_name || component.shape.id;
-			}
-			if (component.material?.lc_name || component.material?.id) {
-				cleaned.material = component.material.lc_name || component.material.id;
-			}
-			if (component.recycling?.lc_name || component.recycling?.id) {
-				cleaned.recycling = component.recycling.lc_name || component.recycling.id;
-			}
-
-			if (component.quantity_per_unit) {
-				cleaned.quantity_per_unit = component.quantity_per_unit;
-			}
-			if (component.weight_measured != null) {
-				cleaned.weight_measured = component.weight_measured;
-			}
-
-			return cleaned;
-		})
+		.map(cleanPackagingComponent)
 		.filter((component) => Object.keys(component).length > 0);
 
 	const productBody: Record<string, unknown> = {
@@ -502,8 +520,9 @@ export type Product = ProductDataSection & {
 		[lang: string]: number;
 	};
 	lang: string;
-	// TODO: Reemove this after the SDK is updated, simply import these types from the SDK
-} & Partial<Record<LangProduct | LangIngredient | LangPackagingText, string>>;
+} & {
+	[lang in LangProduct | LangIngredient | LangPackagingText]?: string;
+};
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',
