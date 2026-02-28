@@ -8,18 +8,29 @@
 		title?: string;
 	};
 
+	type VegaMarkEncodeEntry = {
+		fill?: { value: string };
+		stroke?: { value: string };
+	};
+
+	type VegaMarkEncode = {
+		enter?: VegaMarkEncodeEntry;
+		update?: VegaMarkEncodeEntry;
+	};
+
+	type VegaMark = {
+		type: string;
+		encode?: VegaMarkEncode;
+		[key: string]: unknown;
+	};
+
 	let { spec, title }: Props = $props();
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
-
-	function isDarkMode(): boolean {
-		return (
-			document.documentElement.classList.contains('dark') ||
-			document.documentElement.getAttribute('data-theme') === 'dark' ||
-			window.matchMedia('(prefers-color-scheme: dark)').matches
-		);
-	}
+	let darkMode = $state(
+		browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
+	);
 
 	function getDarkModeConfig() {
 		return {
@@ -44,6 +55,16 @@
 		};
 	}
 
+	$effect(() => {
+		if (!browser) return;
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handler = (e: MediaQueryListEvent) => {
+			darkMode = e.matches;
+		};
+		mediaQuery.addEventListener('change', handler);
+		return () => mediaQuery.removeEventListener('change', handler);
+	});
+
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
 
@@ -55,23 +76,23 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
-			const darkMode = isDarkMode();
-
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
-				const patchedMarks = ((compiledSpec as any).marks || []).map((mark: any) => {
-					const patched = { ...mark, encode: JSON.parse(JSON.stringify(mark.encode || {})) };
+				const patchedMarks = ((compiledSpec as Spec).marks || []).map((mark) => {
+					const patched = {
+						...(mark as unknown as VegaMark),
+						encode: JSON.parse(
+							JSON.stringify((mark as unknown as VegaMark).encode || {})
+						) as VegaMarkEncode
+					};
 
-					// patch bar/symbol fill color
 					if (patched.encode?.update?.fill?.value === '#341100') {
 						patched.encode.update.fill = { value: '#ff8714' };
 					}
-					// patch scatter plot stroke color
 					if (patched.encode?.update?.stroke?.value === '#341100') {
 						patched.encode.update.stroke = { value: '#ff8714' };
 					}
-					// patch tooltip text color
 					if (patched.encode?.enter?.fill?.value === '#333') {
 						patched.encode.enter.fill = { value: '#e5e7eb' };
 					}
@@ -81,7 +102,7 @@
 
 				compiledSpec = {
 					...compiledSpec,
-					marks: patchedMarks,
+					marks: patchedMarks as unknown as Spec['marks'],
 					config: {
 						...compiledSpec.config,
 						...getDarkModeConfig()
@@ -110,6 +131,11 @@
 	}
 
 	$effect(() => {
+		updateSpec(spec);
+	});
+
+	$effect(() => {
+		darkMode;
 		updateSpec(spec);
 	});
 </script>
