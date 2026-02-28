@@ -9,7 +9,6 @@
 		totalNutrition
 	} from '$lib/stores/calculatorStore';
 	import { onMount } from 'svelte';
-
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';

@@ -5,10 +5,8 @@
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information-outline';
 	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
-
 	import type { FolksonomyKey } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '$lib/i18n';
-
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -44,7 +42,6 @@
 			}
 			groups[prefix].push(key);
 		});
-
 		// Sort groups by name
 		return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b));
 	}

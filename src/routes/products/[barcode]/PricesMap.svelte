@@ -7,7 +7,6 @@
 		type MarkerClusterGroup,
 		type LatLngBoundsExpression
 	} from 'leaflet';
-
 	import 'leaflet/dist/leaflet.css';
 	import 'leaflet.markercluster';
 	import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -18,7 +17,6 @@
 	};
 
 	let { prices }: Props = $props();
-
 	let mapContainer: HTMLElement;
 	let mapInstance: Map | null = null;
 	let markerClusterGroup: MarkerClusterGroup | null = null;

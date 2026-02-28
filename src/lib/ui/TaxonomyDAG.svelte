@@ -2,9 +2,7 @@
 	import cytoscape from 'cytoscape';
 	import { onMount, onDestroy } from 'svelte';
 	import type { Core, ElementDefinition } from 'cytoscape';
-
 	import type { TaxoNode, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-
 	import { getOrDefault } from '$lib/api';
 	import { preferences } from '$lib/settings';
 
@@ -97,13 +95,11 @@
 				});
 			}
 		}
-
 		return elements;
 	}
 
 	function renderGraph() {
 		if (!container) return;
-
 		const colors = darkMode ? dark : light;
 		cy = cytoscape({
 			container,
@@ -180,7 +176,6 @@
 				direction: 'rightward'
 			}
 		});
-
 		cy.fit(); // fit graph to container
 	}
 
@@ -209,10 +204,8 @@
 	$effect(() => {
 		// bind to these variables changes
 		const _ = { darkMode, taxonomy, node };
-
 		renderGraph();
 		attachCytoscapeNavigation();
-
 		return () => {
 			if (cy) {
 				cy.destroy();

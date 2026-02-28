@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import { onMount } from 'svelte';
+
 	let helpModal: HTMLDialogElement;
 
 	// Define shortcuts: { combo, description, action }
@@ -34,13 +35,11 @@
 				}
 			});
 		};
-
 		window.addEventListener('keydown', keyDownListener);
 		return () => {
 			window.removeEventListener('keydown', keyDownListener);
 		};
 	});
-
 	export function show() {
 		helpModal.showModal();
 	}
@@ -50,7 +49,6 @@
 <dialog id="my_modal_1" class="modal" bind:this={helpModal}>
 	<div class="modal-box">
 		<h3 class="mb-4 text-lg font-bold">Keyboard Shortcuts</h3>
-
 		<div class="grid grid-cols-2 gap-2">
 			{#each shortcuts as [combo, shortcut] (combo)}
 				<span class="font-mono">
@@ -58,11 +56,9 @@
 						{#if i > 0}<span class="mx-1">+</span>{/if}<kbd class="kbd">{key}</kbd>
 					{/each}
 				</span>
-
 				<span class="ml-2">{shortcut.description}</span>
 			{/each}
 		</div>
-
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">Close</button>

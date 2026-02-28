@@ -5,7 +5,6 @@
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	let PricesMap: Promise<typeof import('./PricesMap.svelte').default> | null = $state(null);
-
 	let { prices, barcode }: { barcode: string; prices: PriceFull[] } = $props();
 
 	onMount(() => {

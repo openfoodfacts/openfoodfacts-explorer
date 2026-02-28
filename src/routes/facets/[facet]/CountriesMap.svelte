@@ -4,9 +4,7 @@
 	import worldAtlas from 'world-atlas/countries-110m.json' with { type: 'json' };
 	import * as topojson from 'topojson-client';
 	import * as iso from 'iso-3166-1';
-
 	import { getTaxo } from '$lib/api';
-
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Feature, Geometry } from 'geojson';
@@ -99,10 +97,8 @@
 				INITIAL_ZOOM
 			);
 			mapInstance = map;
-
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
-
 			countryTaxonomy = await getTaxo<Country>('countries', fetch);
 		})();
 
@@ -116,7 +112,6 @@
 				legendControl.remove();
 				legendControl = null;
 			}
-
 			L = null;
 			countryTaxonomy = null;
 		};
@@ -146,7 +141,6 @@
 
 	function updateMap(map: Leaflet.Map, taxo: Taxonomy<Country>, dark: boolean) {
 		if (L == null) return;
-
 		// Remove existing GeoJSON layers
 		map.eachLayer((layer) => {
 			if (layer instanceof Leaflet.GeoJSON) map.removeLayer(layer);
@@ -207,14 +201,11 @@
 				const numericId = String(feature?.id).padStart(3, '0');
 				const data = countryData.get(numericId);
 				const pathLayer = layer as Leaflet.Path;
-
 				// Tooltip shown on hover for every country
 				const tooltipContent = data
 					? `<strong>${DOMPurify.sanitize(data.name)}</strong><br>${fmt.format(data.products)} products`
 					: (feature.properties?.name ?? numericId);
-
 				pathLayer.bindTooltip(tooltipContent, { sticky: true });
-
 				// Hover highlight
 				pathLayer.on({
 					mouseover(e) {
@@ -227,7 +218,6 @@
 						path.setStyle(getStyle(feature));
 					}
 				});
-
 				// Click popup with full detail (only for countries with data)
 				if (data) {
 					const safeName = DOMPurify.sanitize(data.name);

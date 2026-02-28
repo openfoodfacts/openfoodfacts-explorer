@@ -36,7 +36,6 @@
 
 	async function shareComparison() {
 		const url = generateShareUrl();
-
 		// If on chrome-based browser, use share API
 		const ua = navigator.userAgent;
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
