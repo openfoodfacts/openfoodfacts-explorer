@@ -81,3 +81,4 @@ The app was initially created by @VaiTon. Since then, many people have contribut
 <a href="https://github.com/openfoodfacts/openfoodfacts-explorer/graphs/contributors">
 <img alt="List of contributors to this repository" src="https://contrib.rocks/image?repo=openfoodfacts/openfoodfacts-explorer" />
 </a>
+Fix: Improve README clarity
