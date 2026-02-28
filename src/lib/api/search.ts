@@ -8,7 +8,7 @@ import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
 export function getSearchBaseUrl() {
-	if (env.PUBLIC_SEARCH_BASE_URL == '') {
+	if (!env.PUBLIC_SEARCH_BASE_URL) {
 		throw new Error(
 			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
 		);

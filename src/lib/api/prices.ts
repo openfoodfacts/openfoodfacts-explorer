@@ -11,7 +11,7 @@ export function isConfigured() {
 
 export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
 	const pricesApi = new PricesApi(fetch, {
-		baseUrl: BASE_URL,
+		baseUrl: BASE_URL || '',
 		authToken: `${get(preferences)?.prices?.authToken}`
 	});
 	return pricesApi;
