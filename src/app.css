@@ -12,7 +12,7 @@
 	default: true;
 	--color-primary: #201a17;
 	--color-primary-content: #faf7f5;
-	--color-secondary: #52443d;
+	--color-secondary: #c08457;
 	--color-secondary-content: #faf7f5;
 	--color-base-100: #faf7f5;
 	--color-base-200: #f3f0ee;
@@ -30,7 +30,7 @@
 
 	--color-primary: #faf7f5;
 	--color-primary-content: #201a17;
-	--color-secondary: #ebc3a8;
+	--color-secondary: #f4a261;
 	--color-secondary-content: #201a17;
 	--color-base-100: #201a17;
 	--color-base-200: #2d2724;
