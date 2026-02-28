@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -23,7 +22,7 @@
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
-	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
+	import { IMAGE_HOST, ROBOTOFF_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -182,12 +181,10 @@
 </script>
 
 <svelte:head>
-	<title>OFF Explorer</title>
-	<meta name="description" content="Open Food Facts Explorer" />
+	<title>Nikhil Food Facts</title>
+	<meta name="description" content="Nikhil Food Facts" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
-
-<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
