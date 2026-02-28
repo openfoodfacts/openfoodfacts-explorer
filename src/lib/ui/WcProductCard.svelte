@@ -51,7 +51,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	const contextItems = [
 		{
 			id: 'add-to-comparison',
-			label: $_('product.buttons.compare', { default: 'Add to compare' }),
+			label: $_('product.menu.add_to_comparison', { default: 'Add to compare' }),
 			icon: IconMdiAdd,
 			action: addToComparison
 		}
