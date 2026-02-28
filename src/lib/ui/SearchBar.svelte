@@ -145,7 +145,7 @@
 						<ul>
 							{#each autocompleteList as item, i (item.id)}
 								<li>
-									<button
+									<button aria-label="Search"
 										onmousedown={() => handleSelect(item)}
 										class:bg-base-300={highlightedIndex === i}
 									>
