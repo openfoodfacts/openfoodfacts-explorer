@@ -161,9 +161,7 @@
 		lang={product.lang || 'en'}
 		bind:packagings={product.packagings}
 		bind:packagingsComplete={product.packagings_complete}
-		bind:packagingText={
-			product[`packaging_text_${product.lang || 'en'}` as keyof Product] as unknown as string
-		}
+		bind:packagingText={product[`packaging_text_${product.lang || 'en'}`]}
 		{getPackagingImage}
 	/>
 {:else if currentStep === 6}

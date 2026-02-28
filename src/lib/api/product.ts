@@ -520,9 +520,9 @@ export type Product = ProductDataSection & {
 		[lang: string]: number;
 	};
 	lang: string;
-} & {
-	[lang in LangProduct | LangIngredient | LangPackagingText]?: string;
-};
+} & Partial<Record<LangProduct, string>> &
+	Partial<Record<LangIngredient, string>> &
+	Partial<Record<LangPackagingText, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',
