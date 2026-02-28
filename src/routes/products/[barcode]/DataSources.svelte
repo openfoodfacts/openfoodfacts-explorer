@@ -46,22 +46,21 @@
 			return $_('product.datasources.unknown');
 		}
 
-		// TODO: on NodeJS 23, we can use Intl.DurationFormat
 		const seconds = Math.floor(Date.now() / 1000) - unix;
 
-		const intervals: { [key: string]: number } = {
-			year: 31536000,
-			month: 2592000,
-			day: 86400,
-			hour: 3600,
-			minute: 60,
-			second: 1
-		};
+		const intervals: { key: string; secs: number }[] = [
+			{ key: 'year', secs: 31536000 },
+			{ key: 'month', secs: 2592000 },
+			{ key: 'day', secs: 86400 },
+			{ key: 'hour', secs: 3600 },
+			{ key: 'minute', secs: 60 },
+			{ key: 'second', secs: 1 }
+		];
 
-		for (const i in intervals) {
-			const interval = Math.floor(seconds / intervals[i]);
+		for (const { key, secs } of intervals) {
+			const interval = Math.floor(seconds / secs);
 			if (interval >= 1) {
-				return interval + ' ' + i + (interval > 1 ? 's' : '') + ' ago';
+				return $_(`product.datasources.time_since_${key}`, { values: { count: interval } });
 			}
 		}
 		return $_('product.datasources.just_now');
