@@ -8,7 +8,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
 
-	import PackagingImageUpload from './PackagingImageUpload.svelte';
+	import PackagingImage from './PackagingImage.svelte';
 	import PackagingRecyclingInstructions from './PackagingRecyclingInstructions.svelte';
 	import PackagingComponentsEditor from './PackagingComponentsEditor.svelte';
 
@@ -66,6 +66,6 @@
 	</div>
 {/if}
 
-<PackagingImageUpload {barcode} {lang} {getPackagingImage} />
+<PackagingImage {barcode} {lang} {getPackagingImage} />
 <PackagingRecyclingInstructions bind:packagingText {lang} />
 <PackagingComponentsEditor bind:packagings bind:packagingsComplete />
