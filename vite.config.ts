@@ -44,7 +44,6 @@ export default defineConfig(({ mode }) => {
 			'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion)
 		},
 		test: {
-			environment: 'jsdom',
 			globals: true,
 			include: ['src/**/*.{test,spec}.{js,ts}'],
 			coverage: {
