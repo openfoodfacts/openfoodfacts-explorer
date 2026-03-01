@@ -59,7 +59,7 @@
 		try {
 			const t = dayjs(unix * 1000);
 			return dayjs().to(t);
-		} catch (e) {
+		} catch {
 			const seconds = Math.floor(Date.now() / 1000) - unix;
 
 			const intervals: { key: string; secs: number }[] = [
