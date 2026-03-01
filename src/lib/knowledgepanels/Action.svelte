@@ -53,6 +53,12 @@
 			action: () => {
 				goto(`/products/${requireCode()}/edit#packaging`);
 			}
+		},
+		{
+			type: 'add_origins',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#origins`);
+			}
 		}
 	];
 
