@@ -87,7 +87,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const [attributesByCode, prices, { data: attributeGroups }] = await Promise.all([
 		getBulkProductAttributes(fetch, productCodes),
-		isPricesConfigured() ? getPrices(createPricesApi(fetch), productCodes) : Promise.resolve({}),
+		isPricesConfigured()
+			? getPrices(createPricesApi(fetch), productCodes)
+			: Promise.resolve({} as Record<string, number>),
 		off.getAttributeGroups()
 	]);
 
