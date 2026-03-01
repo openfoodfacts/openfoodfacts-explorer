@@ -7,6 +7,16 @@
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
+	import dayjs from 'dayjs';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+
+	dayjs.extend(relativeTime);
+
+	const _detectedLocale =
+		typeof navigator !== 'undefined' ? (navigator.language || 'en').split('-')[0] : 'en';
+	import(/* @vite-ignore */ `dayjs/locale/${_detectedLocale}`)
+		.then(() => dayjs.locale(_detectedLocale))
+		.catch(() => {});
 
 	type Props = {
 		product: ProductDataSection;
@@ -46,24 +56,29 @@
 			return $_('product.datasources.unknown');
 		}
 
-		const seconds = Math.floor(Date.now() / 1000) - unix;
+		try {
+			const t = dayjs(unix * 1000);
+			return dayjs().to(t);
+		} catch (e) {
+			const seconds = Math.floor(Date.now() / 1000) - unix;
 
-		const intervals: { key: string; secs: number }[] = [
-			{ key: 'year', secs: 31536000 },
-			{ key: 'month', secs: 2592000 },
-			{ key: 'day', secs: 86400 },
-			{ key: 'hour', secs: 3600 },
-			{ key: 'minute', secs: 60 },
-			{ key: 'second', secs: 1 }
-		];
+			const intervals: { key: string; secs: number }[] = [
+				{ key: 'year', secs: 31536000 },
+				{ key: 'month', secs: 2592000 },
+				{ key: 'day', secs: 86400 },
+				{ key: 'hour', secs: 3600 },
+				{ key: 'minute', secs: 60 },
+				{ key: 'second', secs: 1 }
+			];
 
-		for (const { key, secs } of intervals) {
-			const interval = Math.floor(seconds / secs);
-			if (interval >= 1) {
-				return $_(`product.datasources.time_since_${key}`, { values: { count: interval } });
+			for (const { key, secs } of intervals) {
+				const interval = Math.floor(seconds / secs);
+				if (interval >= 1) {
+					return $_(`product.datasources.time_since_${key}`, { values: { count: interval } });
+				}
 			}
+			return $_('product.datasources.just_now');
 		}
-		return $_('product.datasources.just_now');
 	}
 
 	function oldnessClass(unix: number | null | undefined): string {
