@@ -6,6 +6,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
+	import StickyEditSaveButton from './StickyEditSaveButton.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -66,6 +67,29 @@
 		isSubmitting,
 		submit
 	}: Props = $props();
+
+	/**
+	 * Track whether the inline save button at the bottom is out of viewport.
+	 * When it scrolls out of view, the sticky floating button becomes visible.
+	 */
+	let inlineSaveButtonEl: HTMLDivElement | undefined = $state();
+	let showStickyButton = $state(false);
+
+	$effect(() => {
+		if (!inlineSaveButtonEl) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				// Show sticky button when inline button is NOT visible
+				showStickyButton = !entry.isIntersecting;
+			},
+			{ threshold: 0.1 }
+		);
+
+		observer.observe(inlineSaveButtonEl);
+
+		return () => observer.disconnect();
+	});
 </script>
 
 <div class="space-y-4">
@@ -162,7 +186,8 @@
 		</div>
 	</div>
 
-	<div class="mt-8 flex justify-end">
+	<!-- Inline save button at form bottom — acts as anchor for the IntersectionObserver -->
+	<div class="mt-8 flex justify-end" bind:this={inlineSaveButtonEl}>
 		<button
 			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
 			class:loading={isSubmitting}
@@ -174,3 +199,6 @@
 		</button>
 	</div>
 </div>
+
+<!-- Sticky floating save button — appears when inline button scrolls out of view -->
+<StickyEditSaveButton {isSubmitting} {submit} visible={showStickyButton} />
