@@ -38,17 +38,14 @@
 	async function shareComparison() {
 		const url = generateShareUrl();
 
-		// If on chrome-based browser, use share API
-		const ua = navigator.userAgent;
-		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
-
 		const data = {
 			title: $_('compare.share.title'),
 			text: $_('compare.share.text'),
 			url
 		};
 
-		if (isChromeBrowser && navigator.share && navigator.canShare(data)) {
+		// Use native share API if available (works on many browsers, not just Chrome)
+		if (navigator.share && navigator.canShare(data)) {
 			try {
 				await navigator.share(data);
 				return;
@@ -58,6 +55,7 @@
 			}
 		}
 
+		// Fallback to clipboard if share API not available
 		try {
 			await navigator.clipboard.writeText(url);
 			toastCtx.success($_('compare.share.copy_success'));
