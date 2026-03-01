@@ -67,32 +67,10 @@
 		isSubmitting,
 		submit
 	}: Props = $props();
-
-	/**
-	 * Track whether the inline save button at the bottom is out of viewport.
-	 * When it scrolls out of view, the sticky floating button becomes visible.
-	 */
-	let inlineSaveButtonEl: HTMLDivElement | undefined = $state();
-	let showStickyButton = $state(false);
-
-	$effect(() => {
-		if (!inlineSaveButtonEl) return;
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				// Show sticky button when inline button is NOT visible
-				showStickyButton = !entry.isIntersecting;
-			},
-			{ threshold: 0.1 }
-		);
-
-		observer.observe(inlineSaveButtonEl);
-
-		return () => observer.disconnect();
-	});
 </script>
 
-<div class="space-y-4">
+<!-- pb-24 ensures the last section is not hidden behind the fixed floating bar -->
+<div class="space-y-4 pb-24">
 	<!-- Languages Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -185,20 +163,7 @@
 			<CommentStep bind:comment />
 		</div>
 	</div>
-
-	<!-- Inline save button at form bottom — acts as anchor for the IntersectionObserver -->
-	<div class="mt-8 flex justify-end" bind:this={inlineSaveButtonEl}>
-		<button
-			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			class:loading={isSubmitting}
-			onclick={submit}
-			disabled={isSubmitting}
-			type="button"
-		>
-			{$_('product.edit.save_btn')}
-		</button>
-	</div>
 </div>
 
-<!-- Sticky floating save button — appears when inline button scrolls out of view -->
-<StickyEditSaveButton {isSubmitting} {submit} visible={showStickyButton} />
+<!-- Floating comment + save bar — always visible at bottom of viewport -->
+<StickyEditSaveButton {isSubmitting} {submit} bind:comment />
