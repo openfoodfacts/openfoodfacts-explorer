@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
 
@@ -30,28 +31,26 @@
 	let error = $state<string | null>(null);
 	let darkMode = $state(false);
 
-	function getDarkModeConfig() {
-		return {
-			background: 'transparent',
-			axis: {
-				domainColor: '#9ca3af',
-				gridColor: '#374151',
-				labelColor: '#d1d5db',
-				tickColor: '#9ca3af',
-				titleColor: '#d1d5db'
-			},
-			legend: {
-				labelColor: '#d1d5db',
-				titleColor: '#d1d5db'
-			},
-			title: {
-				color: '#f3f4f6'
-			},
-			view: {
-				stroke: 'transparent'
-			}
-		};
-	}
+	const getDarkModeConfig = () => ({
+		background: 'transparent',
+		axis: {
+			domainColor: '#9ca3af',
+			gridColor: '#374151',
+			labelColor: '#d1d5db',
+			tickColor: '#9ca3af',
+			titleColor: '#d1d5db'
+		},
+		legend: {
+			labelColor: '#d1d5db',
+			titleColor: '#d1d5db'
+		},
+		title: {
+			color: '#f3f4f6'
+		},
+		view: {
+			stroke: 'transparent'
+		}
+	});
 
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
@@ -69,11 +68,14 @@
 
 			if (darkMode) {
 				const patchedMarks = ((compiledSpec as Spec).marks || []).map((mark) => {
-					const patched = {
-						...(mark as unknown as VegaMark),
-						encode: JSON.parse(
-							JSON.stringify((mark as unknown as VegaMark).encode || {})
-						) as VegaMarkEncode
+					const m = mark as unknown as VegaMark;
+					const patched: VegaMark = {
+						...m,
+						encode: {
+							...m.encode,
+							update: { ...m.encode?.update },
+							enter: { ...m.encode?.enter }
+						} as VegaMarkEncode
 					};
 
 					if (patched.encode?.update?.fill?.value === '#341100') {
@@ -119,8 +121,7 @@
 		}
 	}
 
-	$effect(() => {
-		if (!browser) return;
+	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		darkMode = mediaQuery.matches;
 		const handler = (e: MediaQueryListEvent) => {
