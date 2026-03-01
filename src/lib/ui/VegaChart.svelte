@@ -28,9 +28,7 @@
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
-	let darkMode = $state(
-		browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
-	);
+	let darkMode = $state(false);
 
 	function getDarkModeConfig() {
 		return {
@@ -55,16 +53,6 @@
 		};
 	}
 
-	$effect(() => {
-		if (!browser) return;
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		const handler = (e: MediaQueryListEvent) => {
-			darkMode = e.matches;
-		};
-		mediaQuery.addEventListener('change', handler);
-		return () => mediaQuery.removeEventListener('change', handler);
-	});
-
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
 
@@ -76,6 +64,7 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
+
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
@@ -131,7 +120,14 @@
 	}
 
 	$effect(() => {
-		updateSpec(spec);
+		if (!browser) return;
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		darkMode = mediaQuery.matches;
+		const handler = (e: MediaQueryListEvent) => {
+			darkMode = e.matches;
+		};
+		mediaQuery.addEventListener('change', handler);
+		return () => mediaQuery.removeEventListener('change', handler);
 	});
 
 	$effect(() => {
