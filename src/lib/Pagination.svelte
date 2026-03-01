@@ -9,7 +9,7 @@
 		<a href={pageUrl(1)} class="btn join-item"> 1 </a>
 	{/if}
 	{#if page > 3}
-		<button class="btn btn-disabled join-item">...</button>
+		<span class="btn btn-disabled join-item" aria-hidden="true">...</span>
 	{/if}
 
 	{#if page > 2}
@@ -18,14 +18,14 @@
 		</a>
 	{/if}
 
-	<button class="btn join-item btn-active">{page}</button>
+	<span class="btn join-item btn-active">{page}</span>
 
 	{#if totalPages > page + 1}
 		<a href={pageUrl(page + 1)} class="btn join-item"> {page + 1}</a>
 	{/if}
 
 	{#if totalPages > page + 2}
-		<button class="btn btn-disabled join-item">...</button>
+		<span class="btn btn-disabled join-item" aria-hidden="true">...</span>
 	{/if}
 
 	{#if totalPages > page}
