@@ -73,13 +73,6 @@ Wraps the <product-card> web component and adds accessibility features.
 	}
 
 	const toastCtx = getToastCtx();
-	function showLoadForComparisonFailedToast() {
-		toastCtx.error(
-			$_('product.menu.load_for_comparison_failed', {
-				default: 'Could not load product details for comparison'
-			})
-		);
-	}
 
 	async function addToComparison() {
 		closeContextMenu();
@@ -88,11 +81,11 @@ Wraps the <product-card> web component and adds accessibility features.
 			const productsApi = createProductsApi(fetch);
 			const { data, error } = await productsApi.getProductV3(product.code);
 			if (error != null || data?.status === 'failure' || data?.product == null) {
-				showLoadForComparisonFailedToast();
-				return;
+				throw new Error('Could not load product details for comparison');
 			}
 
-			const ok = compareStore.addProduct(data.product as Product);
+			// @ts-expect-error - SDK response typing for getProductV3 product payload is incompatible here
+			const ok = compareStore.addProduct(data.product);
 			if (ok) {
 				toastCtx.success(
 					$_('product.menu.added_to_comparison', {
@@ -108,7 +101,11 @@ Wraps the <product-card> web component and adds accessibility features.
 			}
 		} catch (error) {
 			console.error('Failed to load product for comparison:', error);
-			showLoadForComparisonFailedToast();
+			toastCtx.error(
+				$_('product.menu.load_for_comparison_failed', {
+					default: 'Could not load product details for comparison'
+				})
+			);
 			return;
 		}
 	}
