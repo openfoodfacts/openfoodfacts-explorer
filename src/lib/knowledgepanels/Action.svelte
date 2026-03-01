@@ -77,8 +77,11 @@
 		if (target.tagName === 'A' || target.closest('a')) {
 			return;
 		}
-		// TODO
-		console.warn('HTML action element clicked, but no handler is defined.', element);
+		//Call the handler for the first action in the list
+		const action = element.action_element.actions?.[0];
+		if (action) {
+			getActionHandler(action)();
+		}
 	}
 </script>
 
