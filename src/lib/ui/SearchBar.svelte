@@ -21,6 +21,10 @@
 	let autocompleteList = $state<AutocompleteOption[] | null>(null);
 	let highlightedIndex = $state<number | null>(null);
 
+	// debounce for autocomplete
+	let debounceTimeoutId: number | undefined;
+	const DEBOUNCE_DELAY = 300;
+
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
@@ -59,6 +63,23 @@
 		}
 		autocompleteLoading = false;
 	}
+
+	function debouncedFetchAutocomplete(query: string) {
+		if (debounceTimeoutId) {
+			clearTimeout(debounceTimeoutId);
+		}
+		debounceTimeoutId = window.setTimeout(() => {
+			fetchAutocomplete(query);
+		}, DEBOUNCE_DELAY);
+	}
+
+	$effect(() => {
+		return () => {
+			if (debounceTimeoutId) {
+				clearTimeout(debounceTimeoutId);
+			}
+		};
+	});
 
 	function handleEnter() {
 		if (searchQuery.trim() !== '') {
@@ -120,7 +141,7 @@
 				aria-label={$_('search.placeholder')}
 				onkeydown={handleKeyDown}
 				oninput={() => {
-					fetchAutocomplete(searchQuery);
+					debouncedFetchAutocomplete(searchQuery);
 					highlightedIndex = null;
 				}}
 				onfocus={() => {
