@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '$lib/i18n';
+
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -11,14 +13,13 @@
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
 	let comparisonMode = $state<ComparisonMode>('relative-first');
-
-	let comparisonTitle = $state('');
 	let mounted = $state(false);
 
 	onMount(() => {
 		mounted = true;
 	});
 
+	let comparisonTitle = $state('');
 	let isEditingTitle = $state(false);
 	let titleInput: HTMLInputElement | null = $state(null);
 
@@ -36,6 +37,7 @@
 
 	async function shareComparison() {
 		const url = generateShareUrl();
+
 		// If on chrome-based browser, use share API
 		const ua = navigator.userAgent;
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
