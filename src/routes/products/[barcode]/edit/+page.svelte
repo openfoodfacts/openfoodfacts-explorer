@@ -15,6 +15,7 @@
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -28,6 +29,8 @@
 	}
 
 	let { data }: Props = $props();
+
+	const toastCtx = getToastCtx();
 
 	function createEmptyImage(): SelectedImage | RawImage {
 		return {
@@ -213,20 +216,31 @@
 		isSubmitting = true;
 		const commentValue = comment;
 
-		console.group('Product added/edited');
-		console.debug('Submitting', product);
-		const submittedOk = await addOrEditProductV2(fetch, { ...product, comment: commentValue });
-		console.debug('Submitted succesfully: ', submittedOk);
-		console.groupEnd();
+		try {
+			console.group('Product added/edited');
+			console.debug('Submitting', product);
+			const submittedOk = await addOrEditProductV2(fetch, {
+				...product,
+				comment: commentValue
+			});
+			console.debug('Submitted successfully: ', submittedOk);
+			console.groupEnd();
 
-		if (!submittedOk) {
+			if (!submittedOk) {
+				isSubmitting = false;
+				toastCtx.error($_('product.edit.toast.save_error'));
+				return;
+			}
+
+			toastCtx.success($_('product.edit.toast.save_success'));
+			goto('/products/' + product.code, {
+				state: { currentStep: 0 }
+			});
+		} catch (err) {
+			console.error('Error saving product:', err);
+			toastCtx.error($_('product.edit.toast.save_error'));
 			isSubmitting = false;
-			return;
 		}
-
-		goto('/products/' + product.code, {
-			state: { currentStep: 0 }
-		});
 	}
 
 	function addLanguage(code: string) {
