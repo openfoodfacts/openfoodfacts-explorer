@@ -65,20 +65,6 @@
 		</div>
 
 		<div class="mb-4 space-y-2">
-			<!-- {#if logo.type}
-				<div>
-					<span class="text-xs font-semibold text-base-content/70">TYPE</span>
-					<p class="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-900 dark:bg-blue-900/30 dark:text-blue-300 w-fit">
-						{logo.type}
-					</p>
-				</div>
-			{/if}
-			{#if logo.value}
-				<div>
-					<span class="text-xs font-semibold text-base-content/70">VALUE</span>
-					<p class="text-sm text-base-content/70">{logo.value}</p>
-				</div>
-			{/if} -->
 			{#if logo.confidence}
 				<div>
 					<span class="text-xs font-semibold text-base-content/70">CONFIDENCE</span>
