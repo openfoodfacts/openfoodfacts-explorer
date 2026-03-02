@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { KnowledgeElementMap } from '$lib/api';
 	import { onMount } from 'svelte';
+
 	import type { Map, Marker } from 'leaflet';
 
 	let { element }: { element: KnowledgeElementMap } = $props();
