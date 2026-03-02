@@ -66,7 +66,6 @@ export async function idToName(fetch: typeof window.fetch, id: number): Promise<
 	}
 
 	const res = await response.json();
-	console.debug(res);
 
 	if (res.elements.length === 0) {
 		return 'Unknown';
