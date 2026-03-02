@@ -123,6 +123,7 @@
 		},
 		"edit": {
 			"add_language": "Add a language",
+			"remove_language": "Rimuovi lingua",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
 			"name": "Name",

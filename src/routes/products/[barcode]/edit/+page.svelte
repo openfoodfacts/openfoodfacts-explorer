@@ -162,7 +162,7 @@
 				};
 	}
 
-	let product = $derived(createProductStore(data));
+	let product = $state(createProductStore(data));
 
 	let comment = $state('');
 
@@ -233,6 +233,17 @@
 		product = {
 			...product,
 			languages_codes: { ...product.languages_codes, [code]: 0 }
+		};
+	}
+
+	function removeLanguage(code: string) {
+		if (code === product.lang) return;
+		const { [code]: _, ...remainingCodes } = product.languages_codes;
+		product = {
+			...product,
+			languages_codes: remainingCodes,
+			[`product_name_${code}`]: '',
+			[`ingredients_text_${code}`]: ''
 		};
 	}
 
@@ -341,6 +352,7 @@
 			bind:product
 			bind:comment
 			{addLanguage}
+			{removeLanguage}
 			{brandNames}
 			{categoryNames}
 			{countriesNames}
@@ -364,6 +376,7 @@
 			{getNutritionImage}
 			{submit}
 			{addLanguage}
+			{removeLanguage}
 			{brandNames}
 			{categoryNames}
 			{countriesNames}

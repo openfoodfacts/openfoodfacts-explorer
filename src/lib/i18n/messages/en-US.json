@@ -245,6 +245,7 @@
 			"add_product_title": "Add a new product",
 			"edit_product_title": "Edit product",
 			"add_language": "Add a language",
+			"remove_language": "Remove language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
 			"name": "Name",

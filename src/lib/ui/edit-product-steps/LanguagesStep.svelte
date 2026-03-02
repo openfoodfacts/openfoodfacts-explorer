@@ -16,9 +16,10 @@
 		codes: string[];
 
 		addLanguage: (code: string) => void;
+		removeLanguage: (code: string) => void;
 	};
 
-	let { product = $bindable(), codes, addLanguage }: Props = $props();
+	let { product = $bindable(), codes, addLanguage, removeLanguage }: Props = $props();
 
 	let languageNames = $derived(
 		codes.map((code) => {
@@ -74,7 +75,7 @@
 
 <fieldset class="fieldset">
 	<legend class="fieldset-legend">{$_('product.edit.main_language')}</legend>
-	<select class="select w-full">
+	<select class="select w-full" bind:value={product.lang}>
 		{#each Object.keys(product.languages_codes) ?? [] as lang (lang)}
 			<option value={lang} selected={product.lang === lang}>{getLanguageName(lang)}</option>
 		{/each}
@@ -106,7 +107,13 @@
 				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 overflow-auto sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
 			>
 				{#each filteredLanguages as lang (lang)}
-					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(lang.code)}>
+					<button
+						class="btn btn-ghost text-xs sm:text-sm"
+						onclick={() => {
+							addLanguage(lang.code);
+							languageSearch = '';
+						}}
+					>
 						{lang.locale} ({lang.en}) - {lang.code}
 					</button>
 				{/each}
@@ -132,6 +139,19 @@
 			checked={code === product.lang}
 		/>
 		<div class="tab-content form-control p-6">
+			{#if code !== product.lang}
+				<div class="mb-4 flex justify-end">
+					<button
+						type="button"
+						class="btn btn-ghost btn-sm text-error hover:bg-error hover:text-error-content flex items-center gap-1 text-xs"
+						onclick={() => removeLanguage(code)}
+						aria-label={`Remove language ${getLanguageName(code)}`}
+					>
+						<IconMdiClose class="h-4 w-4" />
+						{$_('product.edit.remove_language')}
+					</button>
+				</div>
+			{/if}
 			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
 				<span class="flex items-center gap-2">
 					{$_('product.edit.name')} ({getLanguageName(code)})

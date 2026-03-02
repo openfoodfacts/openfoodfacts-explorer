@@ -33,6 +33,7 @@
 		// Language
 
 		addLanguage: (code: string) => void;
+		removeLanguage: (code: string) => void;
 		languages: string[];
 
 		// Taxonomy entries
@@ -50,6 +51,7 @@
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
+		removeLanguage,
 		getIngredientsImage,
 		getNutritionImage,
 		languages,
@@ -73,7 +75,7 @@
 			{$_('product.edit.sections.languages')}
 		</div>
 		<div class="collapse-content">
-			<LanguagesStep bind:product {addLanguage} codes={languages} />
+			<LanguagesStep bind:product {addLanguage} {removeLanguage} codes={languages} />
 		</div>
 	</div>
 

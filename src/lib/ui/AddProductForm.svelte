@@ -57,6 +57,7 @@
 		// Language
 
 		addLanguage: (code: string) => void;
+		removeLanguage: (code: string) => void;
 		languages: string[];
 
 		// Taxonomy entries
@@ -74,6 +75,7 @@
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
+		removeLanguage,
 		getIngredientsImage,
 		getNutritionImage,
 		languages,
@@ -146,7 +148,7 @@
 		{countriesNames}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep bind:product codes={languages} {addLanguage} />
+	<LanguagesStep bind:product codes={languages} {addLanguage} {removeLanguage} />
 {:else if currentStep === 3}
 	<IngredientsStep bind:product {getIngredientsImage} />
 {:else if currentStep === 4}
