@@ -146,14 +146,7 @@
 			{$_('product.edit.sections.packaging')}
 		</div>
 		<div class="collapse-content">
-			<PackagingStep
-				barcode={product.code}
-				lang={product.lang || 'en'}
-				bind:packagings={product.packagings}
-				bind:packagingsComplete={product.packagings_complete}
-				bind:packagingText={product[`packaging_text_${product.lang || 'en'}`]}
-				{getPackagingImage}
-			/>
+			<PackagingStep bind:product {getPackagingImage} />
 		</div>
 	</div>
 

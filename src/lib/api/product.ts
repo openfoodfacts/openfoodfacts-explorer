@@ -22,8 +22,6 @@ export type PackagingComponent = {
 	weight_measured?: number;
 };
 
-export { type ProductV3 };
-
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
 	const urlToUse = new URL(API_HOST);
@@ -80,12 +78,12 @@ export async function getTaxonomySuggestions(
 	tagtype: string,
 	searchString?: string,
 	limit: number = 25
-): Promise<string[]> {
+) {
 	const off = createProductsApi(fetch);
 	const lc = get(preferences).lang || 'en';
 	const cc = get(preferences).country;
 
-	const { data, error } = await off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
+	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
 		params: {
 			query: {
 				tagtype,
@@ -96,13 +94,6 @@ export async function getTaxonomySuggestions(
 			}
 		}
 	});
-
-	if (error || !data) {
-		console.warn(`Failed to fetch taxonomy suggestions for ${tagtype}:`, error);
-		return [];
-	}
-
-	return data.suggestions ?? [];
 }
 
 /**
@@ -111,8 +102,10 @@ export async function getTaxonomySuggestions(
  * @param component The raw packaging component
  * @returns A clean object ready for the V3 API
  */
-export function cleanPackagingComponent(component: PackagingComponent): Record<string, unknown> {
-	const cleaned: Record<string, unknown> = {};
+export function cleanPackagingComponent(
+	component: PackagingComponent
+): Record<string, string | number> {
+	const cleaned: Record<string, string | number> = {};
 
 	if (component.number_of_units != null) {
 		cleaned.number_of_units = component.number_of_units;
@@ -120,13 +113,13 @@ export function cleanPackagingComponent(component: PackagingComponent): Record<s
 
 	// For taxonomy fields, send the lc_name (localized name) as a string
 	if (component.shape?.lc_name || component.shape?.id) {
-		cleaned.shape = component.shape.lc_name || component.shape.id;
+		cleaned.shape = component.shape.lc_name || component.shape.id || '';
 	}
 	if (component.material?.lc_name || component.material?.id) {
-		cleaned.material = component.material.lc_name || component.material.id;
+		cleaned.material = component.material.lc_name || component.material.id || '';
 	}
 	if (component.recycling?.lc_name || component.recycling?.id) {
-		cleaned.recycling = component.recycling.lc_name || component.recycling.id;
+		cleaned.recycling = component.recycling.lc_name || component.recycling.id || '';
 	}
 
 	if (component.quantity_per_unit) {

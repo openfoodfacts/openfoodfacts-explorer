@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	// TODO: switch to SDK
-	import type { PackagingComponent } from '$lib/api';
+	import type { Product } from '$lib/api';
 
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -13,22 +13,11 @@
 	import PackagingComponentsEditor from './PackagingComponentsEditor.svelte';
 
 	type Props = {
-		packagings?: PackagingComponent[];
-		packagingsComplete?: number;
-		packagingText?: string;
-		barcode?: string;
-		lang?: string;
+		product: Product;
 		getPackagingImage: (language: string) => string | null;
 	};
 
-	let {
-		packagings = $bindable([]),
-		packagingsComplete = $bindable(0),
-		packagingText = $bindable(''),
-		barcode = '',
-		lang = 'en',
-		getPackagingImage
-	}: Props = $props();
+	let { product = $bindable(), getPackagingImage }: Props = $props();
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -66,6 +55,13 @@
 	</div>
 {/if}
 
-<PackagingImage {barcode} {lang} {getPackagingImage} />
-<PackagingRecyclingInstructions bind:packagingText {lang} />
-<PackagingComponentsEditor bind:packagings bind:packagingsComplete />
+<PackagingImage
+	src={getPackagingImage(product.lang || 'en')}
+	productCode={product.code}
+	alt={`Packaging photo (${product.lang || 'en'})`}
+/>
+<PackagingRecyclingInstructions bind:product />
+<PackagingComponentsEditor
+	bind:packagings={product.packagings}
+	bind:packagingsComplete={product.packagings_complete}
+/>

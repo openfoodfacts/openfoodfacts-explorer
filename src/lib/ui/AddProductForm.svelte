@@ -156,14 +156,7 @@
 {:else if currentStep === 4}
 	<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
-	<PackagingStep
-		barcode={product.code}
-		lang={product.lang || 'en'}
-		bind:packagings={product.packagings}
-		bind:packagingsComplete={product.packagings_complete}
-		bind:packagingText={product[`packaging_text_${product.lang || 'en'}`]}
-		{getPackagingImage}
-	/>
+	<PackagingStep bind:product {getPackagingImage} />
 {:else if currentStep === 6}
 	<CommentStep bind:comment />
 {/if}
