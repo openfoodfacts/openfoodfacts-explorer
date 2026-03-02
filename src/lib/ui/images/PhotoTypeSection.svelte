@@ -6,7 +6,7 @@
 	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { getLanguageName } from '$lib/languages';
-	import { getDateFormatter } from 'svelte-i18n';
+	import { _, getDateFormatter } from 'svelte-i18n';
 	import { resolve } from '$app/paths';
 
 	import IconMdiUpload from '@iconify-svelte/mdi/upload';
@@ -69,7 +69,7 @@
 		const barcode = product.code;
 
 		if ($userInfo == null) {
-			toast.warning('Please log in to upload images.');
+			toast.warning($_('product.edit.images.toast.login_required'));
 			return;
 		}
 
@@ -81,7 +81,7 @@
 			const uploadResult = await uploadImageV3(fetch, barcode, base64Data, imagefield);
 
 			if (!uploadResult || uploadResult.error || !uploadResult.data) {
-				toast.error(`Upload failed: ${uploadResult}`);
+				toast.error($_('product.edit.images.toast.upload_failed_generic'));
 				return;
 			}
 
@@ -98,7 +98,7 @@
 						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
 
 					if (imgid) {
-						toast.success('Image uploaded successfully!');
+						toast.success($_('product.edit.images.toast.upload_success'));
 						onImageUploaded(imgid);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
@@ -109,11 +109,13 @@
 					uploadResult.data?.errors && uploadResult.data.errors.length > 0
 						? uploadResult.data.errors.join(', ')
 						: 'Unknown error';
-				toast.error(`Upload failed: ${errorMessages}`);
+				toast.error(
+					$_('product.edit.images.toast.upload_failed', { values: { error: errorMessages } })
+				);
 			}
 		} catch (err) {
 			console.error('Image upload failed:', err);
-			toast.error('Image upload failed. Please try again.');
+			toast.error($_('product.edit.images.toast.upload_error'));
 		} finally {
 			// Clear loading state
 			isUploading = false;
@@ -135,15 +137,15 @@
 			const result = await unselectImageV3(fetch, barcode, imageType, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
-				toast.success('Image unselected successfully');
+				toast.success($_('product.edit.images.toast.unselect_success'));
 				await invalidateAll();
 			} else {
 				console.warn('Image unselect failed:', result);
-				toast.error('Failed to unselect image. Please try again.');
+				toast.error($_('product.edit.images.toast.unselect_failed'));
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			toast.error('Error unselecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.unselect_error'));
 		} finally {
 			// Clear loading state
 			isUnselecting = false;
@@ -188,10 +190,17 @@
 			>
 				{#if isUploading}
 					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Uploading...</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+					>
 				{:else}
 					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
-					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.upload_type', {
+							values: { type: sectionType.label },
+							default: 'Upload ' + sectionType.label
+						})}</span
+					>
 				{/if}
 			</button>
 			{#if isStandardType && hasImagesOfType}
@@ -204,10 +213,17 @@
 				>
 					{#if isUnselecting}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Unselecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselecting', { default: 'Unselecting...' })}</span
+						>
 					{:else}
 						<IconMdiImageRemove class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselect_type', {
+								values: { type: sectionType.label },
+								default: 'Unselect ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}
@@ -219,7 +235,12 @@
 					onclick={() => onToggleExpansion(sectionType.label)}
 				>
 					<span class="text-xs sm:text-sm"
-						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+						>{isExpanded
+							? $_('product.edit.images.show_less', { default: 'Show Less' })
+							: $_('product.edit.images.see_all', {
+									values: { count: imagesOfType.length },
+									default: 'See All (' + imagesOfType.length + ')'
+								})}</span
 					>
 				</button>
 			{/if}
@@ -292,13 +313,16 @@
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg text-primary"></div>
 						<p class="text-base-content/70 mt-2 text-sm">
-							{isUploading ? 'Processing upload...' : 'Unselecting image...'}
+							{isUploading
+								? $_('product.edit.images.processing_upload', { default: 'Processing upload...' })
+								: $_('product.edit.images.unselecting_image', { default: 'Unselecting image...' })}
 						</p>
 					</div>
 				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
-					No {sectionType.label.toLowerCase()} photos available
+					No {sectionType.label.toLowerCase()}
+					{$_('product.edit.images.photos_available', { default: 'photos available' })}
 				</p>
 				<button
 					type="button"
@@ -309,10 +333,17 @@
 				>
 					{#if isSelectingImage}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Selecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
+						>
 					{:else}
 						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.select_type', {
+								values: { type: sectionType.label },
+								default: 'Select ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}

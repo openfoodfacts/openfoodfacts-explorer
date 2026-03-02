@@ -9,7 +9,7 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 	return data?.count || 0;
 }
 
-async function getNumberOfEditors(fetch: typeof window.fetch): Promise<number> {
+async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
 	const res = await wrappedFetch(`${url}facets/contributors.json`);
 	const data = await res.json();
@@ -18,9 +18,9 @@ async function getNumberOfEditors(fetch: typeof window.fetch): Promise<number> {
 
 export const load: PageLoad = async ({ fetch }) => {
 	const productCount = getNumberOfProducts(fetch);
-	const editorCount = getNumberOfEditors(fetch);
+	const contributorCount = getNumberOfContributors(fetch);
 	return {
 		productCount: await productCount,
-		editorCount: await editorCount
+		contributorCount: await contributorCount
 	};
 };

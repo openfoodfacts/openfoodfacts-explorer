@@ -24,7 +24,7 @@
 <div class="fixed right-6 bottom-6 z-50">
 	<button
 		class="btn btn-circle btn-primary shadow-lg"
-		on:click={toggleCalculator}
+		onclick={toggleCalculator}
 		aria-label="Nutrition Calculator"
 	>
 		<IconMdiCalculator class="h-6 w-6" />
@@ -46,7 +46,7 @@
 			<h3 class="text-lg font-bold">Nutrition Calculator</h3>
 			<button
 				class="btn btn-sm btn-circle"
-				on:click={toggleCalculator}
+				onclick={toggleCalculator}
 				aria-label="Close calculator"
 			>
 				<IconMdiClose class="h-5 w-5" />
@@ -77,21 +77,21 @@
 						<div class="flex items-center">
 							<button
 								class="btn btn-sm btn-square"
-								on:click={() => updateItemQuantity(item.id, -25)}
+								onclick={() => updateItemQuantity(item.id, -25)}
 								aria-label="Decrease quantity"
 							>
 								<IconMdiMinus class="h-4 w-4" />
 							</button>
 							<button
 								class="btn btn-sm btn-square ml-1"
-								on:click={() => updateItemQuantity(item.id, 25)}
+								onclick={() => updateItemQuantity(item.id, 25)}
 								aria-label="Increase quantity"
 							>
 								<IconMdiPlus class="h-4 w-4" />
 							</button>
 							<button
 								class="btn btn-sm btn-square ml-1"
-								on:click={() => removeItem(item.id)}
+								onclick={() => removeItem(item.id)}
 								aria-label="Remove item"
 							>
 								<IconMdiDelete class="h-4 w-4" />
@@ -118,7 +118,7 @@
 			</div>
 
 			<div class="mt-4 flex justify-end">
-				<button class="btn btn-sm btn-error" on:click={clearCalculator}> Clear All </button>
+				<button class="btn btn-sm btn-error" onclick={clearCalculator}> Clear All </button>
 			</div>
 		{/if}
 	</div>
