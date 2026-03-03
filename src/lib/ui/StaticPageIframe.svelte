@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import ScrollToTop from './ScrollToTop.svelte';
 
 	type Props = { src: string };
 	let { src }: Props = $props();
@@ -31,3 +32,5 @@
 	class="w-full overflow-visible border-0"
 	style="height: {frameHeight};"
 ></iframe>
+
+<ScrollToTop />
