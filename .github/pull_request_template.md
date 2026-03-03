@@ -36,4 +36,4 @@ _Please be transparent about the use of AI assistance._
 <!-- Insert a screenshot or a video to provide visual record of your changes (if visible) -->
 
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
-<!-- ⚠️ **Triggering an AI Code Review:** You can request an AI-powered code review by commenting `/gemini review` on this PR (or requesting @copilot as a reviewer after it's been created.-->
+<!-- ⚠️ **Triggering an AI Code Review:** You can request an AI-powered code review by commenting `/gemini review` on this PR (or requesting @copilot as a reviewer after it's been created).-->
