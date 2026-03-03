@@ -2,12 +2,15 @@
 	import type { KnowledgeElementText } from '$lib/api';
 	import { _ } from '$lib/i18n';
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
+	import { extractSingleListLink } from './textElement';
 
 	let { element }: { element: KnowledgeElementText } = $props();
 
 	let { type, edit_field_type, html, source_url, source_text, source_language } = $derived(
 		element.text_element
 	);
+
+	let actionLink = $derived(extractSingleListLink(html));
 </script>
 
 <div class="mb-2 flex items-center space-x-2">
@@ -21,7 +24,11 @@
 </div>
 
 <!-- Specialization for ingredients_text -->
-{#if edit_field_type == 'ingredients_text'}
+{#if actionLink}
+	<a href={actionLink.href} class="btn btn-soft btn-block rounded-none text-left normal-case">
+		{actionLink.label}
+	</a>
+{:else if edit_field_type == 'ingredients_text'}
 	<div class="prose w-full max-w-full dark:text-white">
 		<HtmlPurify dirty={html} />
 	</div>
