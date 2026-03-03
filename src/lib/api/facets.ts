@@ -52,6 +52,13 @@ export async function getFacetKnowledgePanels(
 		params.set('value_tag', value);
 	}
 
-	const response = await fetch(`${FACETS_KP_HOST}/knowledge_panel?${params}`);
+	const url = `${FACETS_KP_HOST}/knowledge_panel?${params.toString()}`;
+	const response = await fetch(url);
+	if (!response.ok) {
+		const statusText = response.statusText || 'Unknown status';
+		throw new Error(
+			`Failed to fetch facet knowledge panels (${response.status} ${statusText}) for ${url}`
+		);
+	}
 	return (await response.json()) as FacetKnowledgePanelResponse;
 }
