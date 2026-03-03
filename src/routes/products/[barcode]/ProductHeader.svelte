@@ -3,6 +3,7 @@
 	import { _ } from '$lib/i18n';
 	import { shareContent } from '$lib/utils/webShare';
 
+	import { browser } from '$app/environment';
 	import { navigating } from '$app/state';
 	import {
 		getOrDefault,
@@ -14,7 +15,12 @@
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
-	import { PRODUCT_REPORT_URL, TRACEABILITY_CODES_URL } from '$lib/const';
+	import {
+		PRODUCT_REPORT_URL,
+		PRODUCT_WEBSITE_NAME,
+		PRODUCT_WEBSITE_URL,
+		TRACEABILITY_CODES_URL
+	} from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
@@ -81,6 +87,9 @@
 		'image_front_url' in product ? (product.image_front_url as string) : undefined
 	);
 
+	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
+	let productWebsiteName = $derived(PRODUCT_WEBSITE_NAME(product.product_type));
+
 	function addToComparison() {
 		// Convert Product to ProductReduced - using type assertion since the product exists
 		const added = compareStore.addProduct(product);
@@ -119,12 +128,12 @@
 				<!-- Action Toolbar -->
 				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
 					<a
-						href={'https://world.openfoodfacts.org/product/' + product.code}
+						href={productWebsiteUrl}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
 					>
-						{$_('product.buttons.classic_view')}
+						{$_('product.buttons.see_on_openx', { values: { website: productWebsiteName } })}
 					</a>
 
 					<a
@@ -146,7 +155,7 @@
 
 					<a
 						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-						href={PRODUCT_REPORT_URL(product.code!)}
+						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
 						rel="noopener noreferrer"
 						title={$_('product.buttons.report')}
@@ -284,8 +293,12 @@
 							href={product.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							title={$_('product.buttons.view_on_off')}
-							aria-label={$_('product.buttons.view_on_off')}
+							title={$_('product.buttons.see_on_openx', {
+								values: { website: productWebsiteName }
+							})}
+							aria-label={$_('product.buttons.see_on_openx', {
+								values: { website: productWebsiteName }
+							})}
 						>
 							{product.link}
 						</a>

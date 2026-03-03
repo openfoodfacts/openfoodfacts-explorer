@@ -1,5 +1,6 @@
 import { resolve } from '$app/paths';
 import { env as publicEnv } from '$env/dynamic/public';
+import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA, type WebsiteFlavor } from '$lib/flavor';
 
 const {
 	PUBLIC_ROBOTOFF_URL,
@@ -29,6 +30,16 @@ export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_V
 
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
 export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${barcode}.json`;
+
+export const PRODUCT_WEBSITE_URL = (barcode: string, productType?: string | null) => {
+	const flavor = toWebsiteFlavor(productType);
+	return `${WEBSITE_FLAVOR_METADATA[flavor].apiBaseUrl}/product/${barcode}`;
+};
+
+export const PRODUCT_WEBSITE_NAME = (productType?: string | null) => {
+	const flavor = toWebsiteFlavor(productType);
+	return WEBSITE_FLAVOR_METADATA[flavor].displayName;
+};
 export const PRODUCT_IMAGE_URL = (path: string) => `${PUBLIC_IMAGES_URL}/images/products/${path}`;
 export const PRODUCT_STATUS = {
 	EMPTY: 'empty'
@@ -75,8 +86,10 @@ export const SORT_OPTIONS = [
 export const MATOMO_SITE_ID = 17;
 export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
 
-export const PRODUCT_REPORT_URL = (code: string) =>
-	`${PUBLIC_NUTRIPATROL_URL}/flag/product/?barcode=${code}&source=web&flavor=off`;
+export const PRODUCT_REPORT_URL = (code: string, productType?: string | null) => {
+	const flavor = toWebsiteFlavor(productType);
+	return `${PUBLIC_NUTRIPATROL_URL}/flag/product/?barcode=${code}&source=web&flavor=${WEBSITE_FLAVOR_METADATA[flavor].reportFlavor}`;
+};
 
 export const IMAGE_REPORT_URL = (
 	barcode: string,
