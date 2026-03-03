@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconMdiArrowUp from '@iconify-svelte/mdi/arrow-up';
+	import { _ } from '$lib/i18n';
 
 	let isVisible = $state(false);
 
@@ -22,7 +23,7 @@
 		<button
 			class="btn btn-circle btn-primary shadow-lg"
 			onclick={scrollToTop}
-			aria-label="Scroll to top"
+			aria-label={$_('action.scroll_to_top', { default: 'Scroll to top' })}
 		>
 			<IconMdiArrowUp class="h-6 w-6" />
 		</button>
