@@ -25,7 +25,8 @@
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
 		"prepare": "husky",
-		"pre-commit": "pnpm format"
+		"pre-commit": "pnpm format",
+		"test": "vitest run --passWithNoTests"
 	},
 	"devDependencies": {
 		"@crowdin/cli": "^4.12.0",

@@ -43,8 +43,8 @@
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
 
 		const data = {
-			title: $_('compare.share.title'),
-			text: $_('compare.share.text'),
+			title: $_('compare.share_title'),
+			text: $_('compare.share_text'),
 			url
 		};
 
@@ -54,16 +54,16 @@
 				return;
 			} catch (err) {
 				console.error('Share failed:', err);
-				toastCtx.error($_('compare.share.failed'));
+				toastCtx.error($_('compare.toast.share_failed'));
 			}
 		}
 
 		try {
 			await navigator.clipboard.writeText(url);
-			toastCtx.success($_('compare.share.copy_success'));
+			toastCtx.success($_('compare.toast.link_copied'));
 		} catch (err) {
 			console.error('Failed to copy:', err);
-			toastCtx.error($_('compare.share.copy_failed'));
+			toastCtx.error($_('compare.toast.copy_failed'));
 		}
 	}
 
@@ -79,8 +79,8 @@
 </script>
 
 <svelte:head>
-	<title>{$_('compare.meta_title')}</title>
-	<meta name="description" content={$_('compare.meta_description')} />
+	<title>{$_('compare.page_title')}</title>
+	<meta name="description" content={$_('compare.page_description')} />
 </svelte:head>
 
 <div class="mx-4">
@@ -109,12 +109,12 @@
 						onclick={startEditingTitle}
 					>
 						<h1 class="text-2xl font-bold">
-							{comparisonTitle || $_('compare.title_default')}
+							{comparisonTitle || $_('compare.page_title')}
 							<span class="ml-2 text-sm opacity-0 transition-opacity group-hover:opacity-50"
 								>✏️</span
 							>
 						</h1>
-						<p class="text-base-content/50 text-xs">{$_('compare.title_edit_hint')}</p>
+						<p class="text-base-content/50 text-xs">{$_('compare.click_to_edit')}</p>
 					</button>
 				{/if}
 			</div>
@@ -127,7 +127,7 @@
 							class:btn-ghost={comparisonMode !== 'absolute'}
 							onclick={() => (comparisonMode = 'absolute')}
 						>
-							{$_('compare.mode.absolute')}
+							{$_('compare.mode_absolute')}
 						</button>
 						<button
 							class="btn btn-sm"
@@ -135,7 +135,7 @@
 							class:btn-ghost={comparisonMode !== 'relative-first'}
 							onclick={() => (comparisonMode = 'relative-first')}
 						>
-							{$_('compare.mode.relative_first')}
+							{$_('compare.mode_vs_first')}
 						</button>
 						<button
 							class="btn btn-sm"
@@ -143,7 +143,7 @@
 							class:btn-ghost={comparisonMode !== 'relative-best'}
 							onclick={() => (comparisonMode = 'relative-best')}
 						>
-							{$_('compare.mode.relative_best')}
+							{$_('compare.mode_vs_best')}
 						</button>
 					</div>
 					<button
@@ -151,10 +151,10 @@
 						onclick={shareComparison}
 					>
 						<IconMdiShareVariant class="h-4 w-4" />
-						{$_('compare.share.button')}
+						{$_('compare.share')}
 					</button>
-					<button class="btn btn-outline btn-sm" onclick={() => compareStore.clear()}>
-						{$_('compare.clear.button')}
+					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
+						{$_('compare.clear_all')}
 					</button>
 				{/if}
 			</div>
@@ -167,10 +167,10 @@
 				</div>
 			{:else}
 				<div class="py-8 text-center">
-					<p class="mb-4 text-lg">{$_('compare.empty.title')}</p>
-					<p class="text-base-content/70 mb-4 text-sm">{$_('compare.empty.description')}</p>
+					<p class="mb-4 text-lg">{$_('compare.no_products_selected')}</p>
+					<p class="mb-4 text-sm text-gray-600">{$_('compare.add_products_hint')}</p>
 					<a href="/products/search?q=chocolate" class="btn btn-primary">
-						{$_('compare.empty.cta')}
+						{$_('compare.browse_products')}
 					</a>
 				</div>
 			{/if}
