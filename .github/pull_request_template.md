@@ -30,7 +30,7 @@ _Please be transparent about the use of AI assistance._
 - [ ] I have run successfully the code on my device
 - [ ] I have reviewed the generated code/text to ensure its accuracy, security, and relevance to the project's context and licensing.
 - [ ] I have ensured no unrelated changes or files were added by mistake
-- [ ] <!-- ⚠️ please disclose which LLM you used (and its version) and how (agentic, autocomplete) -->
+- [ ] LLM details (name, version, and how it was used) <!-- ⚠️ please disclose which LLM you used (and its version) and how (agentic, autocomplete) -->
 
 ### Screenshot or video
 <!-- Insert a screenshot or a video to provide visual record of your changes (if visible) -->
