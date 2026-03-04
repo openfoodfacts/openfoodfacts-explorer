@@ -37,7 +37,7 @@
 			'type' in title && `kp-panel-type-${title.type}`
 		]}
 	>
-		<input type="checkbox" checked={expanded} />
+		<input type="checkbox" bind:checked={expanded} />
 
 		<div
 			class={[
