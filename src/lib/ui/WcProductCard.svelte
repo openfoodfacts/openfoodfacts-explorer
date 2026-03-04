@@ -86,19 +86,20 @@ Wraps the <product-card> web component and adds accessibility features.
 
 			// @ts-expect-error - SDK response typing for getProductV3 product payload is incompatible here
 			const ok = compareStore.addProduct(data.product);
-			if (ok) {
-				toastCtx.success(
-					$_('product.menu.added_to_comparison', {
-						default: 'Product added to comparison'
-					})
-				);
-			} else {
+			if (!ok) {
 				toastCtx.warning(
 					$_('product.menu.add_to_comparison_failed', {
 						default: 'Product is already in comparison or comparison list is full'
 					})
 				);
+				return;
 			}
+
+			toastCtx.success(
+				$_('product.menu.added_to_comparison', {
+					default: 'Product added to comparison'
+				})
+			);
 		} catch (error) {
 			console.error('Failed to load product for comparison:', error);
 			toastCtx.error(
@@ -106,7 +107,6 @@ Wraps the <product-card> web component and adds accessibility features.
 					default: 'Could not load product details for comparison'
 				})
 			);
-			return;
 		}
 	}
 </script>
