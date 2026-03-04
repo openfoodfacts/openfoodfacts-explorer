@@ -31,26 +31,32 @@
 	let error = $state<string | null>(null);
 	let darkMode = $state(false);
 
-	const getDarkModeConfig = () => ({
-		background: 'transparent',
-		axis: {
-			domainColor: '#9ca3af',
-			gridColor: '#374151',
-			labelColor: '#d1d5db',
-			tickColor: '#9ca3af',
-			titleColor: '#d1d5db'
-		},
-		legend: {
-			labelColor: '#d1d5db',
-			titleColor: '#d1d5db'
-		},
-		title: {
-			color: '#f3f4f6'
-		},
-		view: {
-			stroke: 'transparent'
-		}
-	});
+	function getDarkModeConfig() {
+		const style = getComputedStyle(document.documentElement);
+		const labelColor = style.getPropertyValue('--color-base-content').trim();
+		const gridColor = style.getPropertyValue('--color-base-300').trim();
+
+		return {
+			background: 'transparent',
+			axis: {
+				domainColor: labelColor,
+				gridColor: gridColor,
+				labelColor: labelColor,
+				tickColor: labelColor,
+				titleColor: labelColor
+			},
+			legend: {
+				labelColor: labelColor,
+				titleColor: labelColor
+			},
+			title: {
+				color: labelColor
+			},
+			view: {
+				stroke: 'transparent'
+			}
+		};
+	}
 
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
@@ -63,7 +69,6 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
-
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
