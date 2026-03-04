@@ -23,7 +23,7 @@
 
 	// debounce for autocomplete
 	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
-	const DEBOUNCE_DELAY = 300;
+	const DEBOUNCE_DELAY_MS = 300;
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
@@ -72,15 +72,16 @@
 
 		debounceTimeoutId = window.setTimeout(() => {
 			fetchAutocomplete(query);
-		}, DEBOUNCE_DELAY);
+		}, DEBOUNCE_DELAY_MS);
 	}
 
 	$effect(() => {
-		return () => {
-			if (debounceTimeoutId) {
-				clearTimeout(debounceTimeoutId);
-			}
-		};
+  		return () => {
+   		  if (debounceTimeoutId !== undefined) {
+		      clearTimeout(debounceTimeoutId);
+		      debounceTimeoutId = undefined;
+	    }
+	  };
 	});
 
 	function handleEnter() {
