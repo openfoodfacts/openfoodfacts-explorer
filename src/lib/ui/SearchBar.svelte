@@ -22,7 +22,7 @@
 	let highlightedIndex = $state<number | null>(null);
 
 	// debounce for autocomplete
-	let debounceTimeoutId: number | undefined;
+	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
 	const DEBOUNCE_DELAY = 300;
 
 	// used for aborting previously executing autocomplete requests
@@ -65,9 +65,11 @@
 	}
 
 	function debouncedFetchAutocomplete(query: string) {
-		if (debounceTimeoutId) {
-			clearTimeout(debounceTimeoutId);
+		if (debounceTimeoutId !== undefined) {
+  			clearTimeout(debounceTimeoutId);
+  			debounceTimeoutId = undefined;
 		}
+
 		debounceTimeoutId = window.setTimeout(() => {
 			fetchAutocomplete(query);
 		}, DEBOUNCE_DELAY);
