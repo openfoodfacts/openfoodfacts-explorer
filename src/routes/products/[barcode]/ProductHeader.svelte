@@ -3,7 +3,6 @@
 	import { _ } from '$lib/i18n';
 	import { shareContent } from '$lib/utils/webShare';
 
-	import { browser } from '$app/environment';
 	import { navigating } from '$app/state';
 	import {
 		getOrDefault,
@@ -15,12 +14,7 @@
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
-	import {
-		PRODUCT_REPORT_URL,
-		PRODUCT_WEBSITE_NAME,
-		PRODUCT_WEBSITE_URL,
-		TRACEABILITY_CODES_URL
-	} from '$lib/const';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
@@ -88,7 +82,6 @@
 	);
 
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
-	let productWebsiteName = $derived(PRODUCT_WEBSITE_NAME(product.product_type));
 
 	function addToComparison() {
 		// Convert Product to ProductReduced - using type assertion since the product exists
@@ -133,7 +126,7 @@
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
 					>
-						{$_('product.buttons.see_on_openx', { values: { website: productWebsiteName } })}
+						{$_('product.buttons.classic_view')}
 					</a>
 
 					<a
@@ -293,12 +286,8 @@
 							href={product.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							title={$_('product.buttons.see_on_openx', {
-								values: { website: productWebsiteName }
-							})}
-							aria-label={$_('product.buttons.see_on_openx', {
-								values: { website: productWebsiteName }
-							})}
+							title={$_('product.buttons.view_on_off')}
+							aria-label={$_('product.buttons.view_on_off')}
 						>
 							{product.link}
 						</a>

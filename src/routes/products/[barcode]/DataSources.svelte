@@ -6,7 +6,6 @@
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
-	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 
 	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)

@@ -26,7 +26,6 @@
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import { browser } from '$app/environment';
 	import { getContext } from 'svelte';
 	import type { Shortcut } from '../../Shortcuts.svelte';
 	import type { ProductGroupedAttributes } from './types';
@@ -70,15 +69,10 @@
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
-		if (!browser) {
-			return [];
-		}
-
 		const offApi = new OpenFoodFacts(fetch);
 
 		const searchParams: Record<string, unknown> = {
-			fields: ['attribute_groups_en'],
-			product_type: 'all'
+			fields: ['attribute_groups_en']
 		};
 
 		const SENT_ATTRIBUTES = ['attribute_unwanted_ingredients_tags'];

@@ -1,4 +1,5 @@
-export type WebsiteFlavor = 'food' | 'beauty' | 'petfood' | 'product';
+export const WEBSITE_FLAVORS = ['food', 'beauty', 'petfood', 'product'] as const;
+export type WebsiteFlavor = (typeof WEBSITE_FLAVORS)[number];
 
 export type WebsiteFlavorMetadata = {
 	apiBaseUrl: string;
