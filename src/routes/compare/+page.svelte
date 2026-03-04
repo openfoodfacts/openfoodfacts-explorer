@@ -39,8 +39,8 @@
 		const url = generateShareUrl();
 
 		const data = {
-			title: $_('compare.share.title'),
-			text: $_('compare.share.text'),
+			title: $_('compare.share_title'),
+			text: $_('compare.share_text'),
 			url
 		};
 
@@ -51,17 +51,17 @@
 				return;
 			} catch (err) {
 				console.error('Share failed:', err);
-				toastCtx.error($_('compare.share.failed'));
+				toastCtx.error($_('compare.toast.share_failed'));
 			}
 		}
 
 		// Fallback to clipboard if share API not available
 		try {
 			await navigator.clipboard.writeText(url);
-			toastCtx.success($_('compare.share.copy_success'));
+			toastCtx.success($_('compare.toast.link_copied'));
 		} catch (err) {
 			console.error('Failed to copy:', err);
-			toastCtx.error($_('compare.share.copy_failed'));
+			toastCtx.error($_('compare.toast.copy_failed'));
 		}
 	}
 

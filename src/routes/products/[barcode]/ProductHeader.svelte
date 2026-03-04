@@ -61,12 +61,30 @@
 	}
 
 	async function sharePage() {
+		const shareData = {
+			url: window.location.href,
+			title: product.product_name || product.code,
+			text: `Check out this product on Open Food Facts: ${product.product_name || product.code}`
+		};
+
+		// Use native share API if available and supported (works on many browsers, not just Chrome)
+		if (navigator.share && navigator.canShare(shareData)) {
+			try {
+				await navigator.share(shareData);
+				return;
+			} catch (error) {
+				console.error('Share failed:', error);
+				toastCtx.error('Failed to share product');
+			}
+		}
+
+		// Fallback to clipboard if share API not available
 		try {
-			await navigator.share({
-				url: window.location.href
-			});
+			await navigator.clipboard.writeText(shareData.url);
+			toastCtx.success('Product link copied to clipboard!');
 		} catch (error) {
-			console.error('Error sharing the page:', error);
+			console.error('Failed to copy to clipboard:', error);
+			toastCtx.error('Failed to copy link to clipboard');
 		}
 	}
 
