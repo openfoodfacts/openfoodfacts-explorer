@@ -31,12 +31,9 @@ export const WEBSITE_FLAVOR_METADATA: Record<WebsiteFlavor, WebsiteFlavorMetadat
 };
 
 export function toWebsiteFlavor(productType: string | null | undefined): WebsiteFlavor {
-	switch (productType) {
-		case 'beauty':
-		case 'petfood':
-		case 'product':
-			return productType;
-		default:
-			return 'food';
+	if (productType && productType in WEBSITE_FLAVOR_METADATA) {
+		return productType as WebsiteFlavor;
 	}
+
+	return 'food';
 }
