@@ -91,12 +91,15 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		});
 	}
 
-	const categories = getTaxo<Category>('categories', fetch);
-	const labels = getTaxo<Label>('labels', fetch);
-	const stores = getTaxo<Store>('stores', fetch);
-	const brands = getTaxo<Brand>('brands', fetch);
-	const origins = getTaxo<Origin>('origins', fetch);
-	const countries = getTaxo<Country>('countries', fetch);
+	// TODO: switch to SDK
+	const productType = 'product' in state ? state.product?.product_type : undefined;
+
+	const categories = getTaxo<Category>('categories', fetch, productType);
+	const labels = getTaxo<Label>('labels', fetch, productType);
+	const stores = getTaxo<Store>('stores', fetch, productType);
+	const brands = getTaxo<Brand>('brands', fetch, productType);
+	const origins = getTaxo<Origin>('origins', fetch, productType);
+	const countries = getTaxo<Country>('countries', fetch, productType);
 
 	const folksonomyTags = isFolksonomyConfigured()
 		? folkApi.getProductTags(params.barcode).then((it) => it.data ?? [])
