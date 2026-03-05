@@ -68,7 +68,7 @@
 
 	function getActionHandler(action: string) {
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler ? handler.action : DEFAULT_ACTION.bind(null, action);
+		return handler ? handler.action : () => DEFAULT_ACTION(action);
 	}
 
 	function handleHtmlActionElementClick(event: MouseEvent) {
