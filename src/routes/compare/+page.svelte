@@ -10,6 +10,7 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { browser } from '$app/environment';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -31,7 +32,8 @@
 		if (comparisonTitle.trim()) {
 			params.set('title', comparisonTitle.trim());
 		}
-		return `${window.location.origin}/compare/shared?${params.toString()}`;
+		const origin = browser ? window.location.origin : '';
+		return `${origin}/compare/shared?${params.toString()}`;
 	}
 
 	const toastCtx = getToastCtx();
@@ -40,6 +42,7 @@
 		const url = generateShareUrl();
 
 		// If on chrome-based browser, use share API
+		if (!browser) return;
 		const ua = navigator.userAgent;
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
 

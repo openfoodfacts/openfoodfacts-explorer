@@ -26,7 +26,7 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
-
+	import { browser } from '$app/environment';
 	type Props = {
 		product: Product;
 		taxonomies: {
@@ -44,7 +44,7 @@
 
 	let toastCtx = getToastCtx();
 
-	let isShareSupported = $derived(navigator?.share != null);
+	let isShareSupported = $derived(browser && navigator?.share != null);
 
 	function addToCalculator() {
 		// FIXME: product.code cannot be null
@@ -61,6 +61,7 @@
 	}
 
 	async function sharePage() {
+		if (!browser) return;
 		try {
 			await navigator.share({
 				url: window.location.href

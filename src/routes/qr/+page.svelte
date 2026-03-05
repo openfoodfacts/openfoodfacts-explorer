@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { createProductsApi } from '$lib/api';
+	import { browser } from '$app/environment';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -12,7 +13,7 @@
 	let lastScannedCode = $state('');
 
 	function getQrBoxSize() {
-		const screenWidth = window.innerWidth;
+		const screenWidth = browser ? window.innerWidth : 1024;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
 
@@ -55,7 +56,7 @@
 	}
 
 	onMount(async () => {
-		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+		if (!browser || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			error = 'Your browser does not support the camera API';
 			return;
 		}

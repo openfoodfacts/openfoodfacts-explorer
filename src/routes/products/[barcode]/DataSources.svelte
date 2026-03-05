@@ -7,6 +7,7 @@
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
+	import { browser } from '$app/environment';
 
 	type Props = {
 		product: ProductDataSection;
@@ -23,7 +24,7 @@
 			dateStyle: 'medium'
 		};
 
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = browser ? navigator.language : 'en-GB';
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
@@ -37,7 +38,7 @@
 			timeStyle: 'short'
 		};
 
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = browser ? navigator.language : 'en-GB';
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 

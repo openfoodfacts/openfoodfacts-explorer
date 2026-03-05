@@ -35,6 +35,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
+	import { browser } from '$app/environment';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
@@ -196,7 +197,7 @@
 	<off-webcomponents-configuration
 		bind:this={config}
 		language-code={$preferences.lang ??
-			getLocaleFromNavigator()?.split('-')[0]?.toLowerCase() ??
+			(browser ? getLocaleFromNavigator()?.split('-')[0]?.toLowerCase() : 'en') ??
 			'en'}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
