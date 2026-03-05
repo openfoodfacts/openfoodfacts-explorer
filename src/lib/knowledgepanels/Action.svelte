@@ -82,7 +82,7 @@
 		const action = element.action_element.actions?.[0];
 		if (action) {
 			getActionHandler(action)();
-    }
+		}
 	}
 </script>
 
