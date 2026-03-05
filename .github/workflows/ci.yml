@@ -38,6 +38,9 @@ jobs:
       - run: pnpm build
         if: always()
 
+      - name: Run tests
+        run: pnpm test
+
   dependency-review:
     name: 'Dependency Review'
     runs-on: ubuntu-latest

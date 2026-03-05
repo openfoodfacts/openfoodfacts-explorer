@@ -65,7 +65,7 @@
 	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_edited', { default: 'Has Edited' })}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each editor.products.slice(0, 6) as product (product.code)}
-			<product-card {product} class="h-[11rem] w-full"></product-card>
+			<WcProductCard {product} />
 		{/each}
 	</div>
 
