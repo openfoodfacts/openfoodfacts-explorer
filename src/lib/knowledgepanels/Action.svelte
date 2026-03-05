@@ -71,19 +71,6 @@
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
 		return handler ? handler.action : () => DEFAULT_ACTION(action);
 	}
-
-	function handleHtmlActionElementClick(event: MouseEvent) {
-		// If the click was on a link, let it handle the navigation
-		const target = event.target as HTMLElement;
-		if (target.tagName === 'A' || target.closest('a')) {
-			return;
-		}
-		//Call the handler for the first action in the list
-		const action = element.action_element.actions?.[0];
-		if (action) {
-			getActionHandler(action)();
-		}
-	}
 </script>
 
 <div
