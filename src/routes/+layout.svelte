@@ -35,6 +35,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
+	import { browser } from '$app/environment';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({

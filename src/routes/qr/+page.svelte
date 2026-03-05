@@ -58,7 +58,7 @@
 	}
 
 	onMount(async () => {
-		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+		if (!browser || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			error = 'Your browser does not support the camera API';
 			return;
 		}
