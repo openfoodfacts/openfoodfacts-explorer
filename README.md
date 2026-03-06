@@ -74,6 +74,17 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+## Project Structure
+
+The main source code of the application lives inside the `src` directory.
+
+- `src/routes` – Defines application routes and page components.
+- `src/lib` – Shared utilities, reusable logic, and helper modules.
+- `src/lib/i18n` – Translation files and internationalization configuration.
+- `static` – Static assets such as images or icons served directly.
+
+Understanding this structure helps contributors quickly locate relevant files when working on features or fixes.
+
 ## Contributors
 
 The app was initially created by @VaiTon. Since then, many people have contributed to it:
