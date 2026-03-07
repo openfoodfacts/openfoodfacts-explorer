@@ -7,6 +7,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { stripTaxonomyPrefix } from '$lib/api';
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
@@ -18,6 +19,22 @@ Wraps the <product-card> web component and adds accessibility features.
 		personalScore?: ScoreData;
 	};
 	let { product, personalScore }: Props = $props();
+
+	let sanitizedProduct = $derived.by(() => {
+		const p = product as Product;
+		return {
+			...product,
+			brands: p.brands
+				?.split(',')
+				.map((b: string) => stripTaxonomyPrefix(b.trim()))
+				.join(', '),
+			...(p.brands_tags && {
+				brands_tags: Array.isArray(p.brands_tags)
+					? p.brands_tags.map(stripTaxonomyPrefix)
+					: p.brands_tags
+			})
+		};
+	});
 
 	let navigating = $state(false);
 	async function navigateToProduct() {
@@ -106,7 +123,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 <product-card
 	class="h-44 w-full cursor-pointer"
-	{product}
+	product={sanitizedProduct}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
 	aria-label={`Go to product ${product.product_name} with code ${product.code}`}

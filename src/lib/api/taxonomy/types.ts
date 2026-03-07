@@ -5,6 +5,7 @@ export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en
 
 	return (
 		localized[nonNullLang] ?? // try full locale
+		localized['xx'] ?? // fallback to neutral language (common for brands)
 		localized['en'] ?? // fallback to english
 		Object.values(localized)[0] // fallback to first available
 	);

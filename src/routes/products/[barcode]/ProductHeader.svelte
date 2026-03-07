@@ -11,7 +11,8 @@
 		type Label,
 		type Origin,
 		type Store,
-		type Taxonomy
+		type Taxonomy,
+		stripTaxonomyPrefix
 	} from '$lib/api';
 	import { PRODUCT_REPORT_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
@@ -71,7 +72,8 @@
 	}
 
 	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
-		return taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag;
+		const localized = taxonomy?.[tag] ? getOrDefault(taxonomy[tag].name, lang) : null;
+		return localized ?? stripTaxonomyPrefix(tag);
 	}
 
 	let frontImage = $derived(
