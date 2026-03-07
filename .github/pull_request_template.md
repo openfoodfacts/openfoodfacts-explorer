@@ -23,7 +23,7 @@ _Please include a summary of the change and which issue is fixed. Please also in
 - [ ] I have made corresponding changes to the documentation (if applicable).
 
 ### Large Language Models usage disclosure
-<!-- Open-Source is a community and human process. Let's keep it that way :-) -->
+<!-- Open-Source is a community and human process. Let's keep it that way, so that it is enjoyable for contributors AND reviewers :-) -->
 
 - [ ] <!-- ⚠️ If you used an LLM, please disclose which LLM you used (name, version) and how (agentic, autocomplete…) -->
 
