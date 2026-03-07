@@ -26,23 +26,23 @@
 	let titleInput: HTMLInputElement | null = $state(null);
 
 	function generateShareUrl(): string {
+		if (!browser) throw new Error('generateShareUrl can only be called inside browser');
 		const barcodes = $compareStore.map((p) => p.code).join(',');
 		const params = new SvelteURLSearchParams();
 		params.set('barcodes', barcodes);
 		if (comparisonTitle.trim()) {
 			params.set('title', comparisonTitle.trim());
 		}
-		const origin = browser ? window.location.origin : '';
-		return `${origin}/compare/shared?${params.toString()}`;
+		return `${window.location.origin}/compare/shared?${params.toString()}`;
 	}
 
 	const toastCtx = getToastCtx();
 
 	async function shareComparison() {
+		if (!browser) return;
 		const url = generateShareUrl();
 
 		// If on chrome-based browser, use share API
-		if (!browser) return;
 		const ua = navigator.userAgent;
 		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
 

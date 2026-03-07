@@ -13,7 +13,9 @@
 	let lastScannedCode = $state('');
 
 	function getQrBoxSize() {
-		const screenWidth = browser ? window.innerWidth : 1024;
+		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
+
+		const screenWidth = window.innerWidth;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
 
@@ -56,7 +58,7 @@
 	}
 
 	onMount(async () => {
-		if (!browser || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			error = 'Your browser does not support the camera API';
 			return;
 		}

@@ -22,7 +22,7 @@
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
-	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
+	import { _, getLocale, locale } from '$lib/i18n';
 	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
@@ -196,9 +196,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ??
-			(browser ? getLocaleFromNavigator()?.split('-')[0]?.toLowerCase() : 'en') ??
-			'en'}
+		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
