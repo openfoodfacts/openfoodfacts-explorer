@@ -26,10 +26,6 @@ _Please include a summary of the change and which issue is fixed. Please also in
 <!-- ⚠️ If you used an LLM, please disclose which LLM you used (and its version) and how (agentic, autocomplete). Please confirm you have run successfully the code on your device. Also provide a screenshot or video as proof -->
 _Please be transparent about the use of AI assistance._
 
-- [ ] I did use an AI Large Language Model (LLM)
-- [ ] I have run successfully the code on my device
-- [ ] I have reviewed the generated code/text to ensure its accuracy, security, and relevance to the project's context and licensing.
-- [ ] I have ensured no unrelated changes or files were added by mistake
 - [ ] LLM details (name, version, and how it was used) <!-- ⚠️ please disclose which LLM you used (and its version) and how (agentic, autocomplete) -->
 
 ### Screenshot or video
