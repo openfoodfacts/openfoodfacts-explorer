@@ -23,8 +23,7 @@ _Please include a summary of the change and which issue is fixed. Please also in
 - [ ] I have made corresponding changes to the documentation (if applicable).
 
 ### Large Language Models usage disclosure
-<!-- ⚠️ If you used an LLM, please disclose which LLM you used (and its version) and how (agentic, autocomplete). Please confirm you have run successfully the code on your device. Also provide a screenshot or video as proof -->
-_Please be transparent about the use of AI assistance._
+<!-- Open-Source is a community and human process. Let's keep it that way :-) -->
 
 - [ ] <!-- ⚠️ If you used an LLM, please disclose which LLM you used (name, version) and how (agentic, autocomplete…) -->
 
