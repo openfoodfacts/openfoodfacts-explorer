@@ -34,4 +34,4 @@ _Please be transparent about the use of AI assistance._
 
 <!-- Notes -->
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
-<!-- ⚠️ **Triggering an AI Code Review:** You can request an AI-powered code review by commenting `/gemini review` on this PR (or requesting @copilot as a reviewer after it's been created).-->
+<!-- ⚠️ **Triggering an AI Code Review:** You can request an AI-powered code review by requesting @copilot as a reviewer after it's been created. (or commenting `/gemini review`)-->
