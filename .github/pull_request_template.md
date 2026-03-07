@@ -8,8 +8,8 @@ Please provide a description of your changes below.
 _Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context._
 
 ### Related issue(s) and discussion
-<!-- Please use a linking keyword https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword -->
-- Fixes: <!-- #1 Note: you can also use Closes: -->
+<!-- Please use a linking keyword like `Fixes:` or `Closes:` followed by the issue number - doc: https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword -->
+- Fixes: <!-- #1 -->
 
 ---
 
