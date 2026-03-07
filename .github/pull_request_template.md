@@ -26,7 +26,7 @@ _Please include a summary of the change and which issue is fixed. Please also in
 <!-- ⚠️ If you used an LLM, please disclose which LLM you used (and its version) and how (agentic, autocomplete). Please confirm you have run successfully the code on your device. Also provide a screenshot or video as proof -->
 _Please be transparent about the use of AI assistance._
 
-- [ ] LLM details (name, version, and how it was used) <!-- ⚠️ please disclose which LLM you used (and its version) and how (agentic, autocomplete) -->
+- [ ] <!-- ⚠️ please disclose which LLM you used (name, version) and how (agentic, autocomplete…) -->
 
 ### Screenshot or video
 <!-- Insert a screenshot or a video to provide visual record of your changes (if visible) -->
