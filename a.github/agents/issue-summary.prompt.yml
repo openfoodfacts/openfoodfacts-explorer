@@ -1,6 +1,6 @@
 name: Issue summarizer
 description: Summarizes weekly issues
-model: xai/grok-3-mini
+model: openai/gpt-4.1
 messages:
   - role: system
     content: You are a helpful issue summarizer. When given issue content, respond in markdown format.
