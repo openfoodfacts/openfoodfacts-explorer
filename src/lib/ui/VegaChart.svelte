@@ -137,8 +137,9 @@
 	});
 
 	$effect(() => {
-		darkMode;
-		updateSpec(spec);
+		if (darkMode !== undefined) {
+			updateSpec(spec);
+		}
 	});
 </script>
 
