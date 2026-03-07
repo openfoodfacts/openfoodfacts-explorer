@@ -91,8 +91,15 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		});
 	}
 
+	if (state.status === 'failure') {
+		error(404, {
+			message: 'Failure to load product',
+			errors: state.errors
+		});
+	}
+
 	// TODO: switch to SDK
-	const productType = 'product' in state ? state.product?.product_type : undefined;
+	const productType = state.product.product_type;
 
 	const categories = getTaxo<Category>('categories', fetch, productType);
 	const labels = getTaxo<Label>('labels', fetch, productType);
