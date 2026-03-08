@@ -11,7 +11,7 @@
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Feature, Geometry } from 'geojson';
-	import Leaflet from 'leaflet';
+	import type * as Leaflet from 'leaflet';
 
 	type Props = { facet: FacetResponse };
 	let { facet }: Props = $props();
@@ -150,7 +150,7 @@
 
 		// Remove existing GeoJSON layers
 		map.eachLayer((layer) => {
-			if (layer instanceof Leaflet.GeoJSON) map.removeLayer(layer);
+			if (layer instanceof L!.GeoJSON) map.removeLayer(layer);
 		});
 
 		// Remove existing legend
