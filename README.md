@@ -74,6 +74,25 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+## Project Structure
+
+```
+src/
+├── routes/          # SvelteKit file-based routing — each folder maps to a URL path
+│   ├── products/    # Product detail pages (e.g. /products/[barcode])
+│   ├── explore/     # Browsing and faceted exploration
+│   ├── search/      # Search results page
+│   └── ...          # Other top-level routes
+├── lib/
+│   ├── api/         # API clients (Open Food Facts, Prices, Folksonomy, Robotoff…)
+│   ├── stores/      # Svelte stores for global state (auth, preferences, toasts…)
+│   ├── ui/          # Reusable UI components (cards, navbar, modals…)
+│   ├── i18n/        # Internationalisation setup and message catalogs
+│   ├── utils/       # General-purpose utility functions
+│   └── const.ts     # App-wide constants sourced from environment variables
+static/              # Static assets served as-is (icons, fonts, manifest…)
+```
+
 ## Contributors
 
 The app was initially created by @VaiTon. Since then, many people have contributed to it:
