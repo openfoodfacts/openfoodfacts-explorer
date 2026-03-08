@@ -221,6 +221,7 @@
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"prices": "Help track this product's price history on Open Prices.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context."
 			},
 			"tooltips": {
@@ -309,6 +310,7 @@
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"prices": "Prices",
 				"comment": "Comment"
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
@@ -358,7 +360,10 @@
 				"report_image": "Report Image",
 				"save_changes": "Save Changes"
 			},
-			"comment_description": "Add a comment about your changes (optional)"
+			"comment_description": "Add a comment about your changes (optional)",
+			"prices": {
+				"add_price_btn": "Add a price on Open Prices"
+			}
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",

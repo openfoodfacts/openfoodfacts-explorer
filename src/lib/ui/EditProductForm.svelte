@@ -12,6 +12,8 @@
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
@@ -131,6 +133,29 @@
 		</div>
 		<div class="collapse-content">
 			<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
+		</div>
+	</div>
+
+	<!-- Prices Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+			{$_('product.edit.sections.prices')}
+		</div>
+		<div class="collapse-content">
+			<p class="text-base-content/70 mt-2 mb-4 text-sm">
+				{$_('product.edit.info.prices')}
+			</p>
+			<a
+				href="https://prices.openfoodfacts.org/prices/add/single?code={product.code}"
+				class="btn btn-secondary btn-sm"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<IconMdiOpenInNew class="mr-1 h-4 w-4" />
+				{$_('product.edit.prices.add_price_btn')}
+			</a>
 		</div>
 	</div>
 
