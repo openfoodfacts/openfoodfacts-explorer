@@ -52,20 +52,20 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	}));
 
 	if (isInvalidFormat) {
-		error(400, {
+		throw error(400, {
 			message: ERR_INVALID_BARCODE,
 			errors: cleanErrors
 		});
 	}
 
 	if (err.result?.id === 'product_not_found') {
-		error(404, {
+		throw error(404, {
 			message: ERR_PRODUCT_NOT_FOUND,
 			errors: cleanErrors
 		});
 	}
 
-	error(500, {
+	throw error(500, {
 		message: 'Server Error',
 		errors: cleanErrors
 	});
