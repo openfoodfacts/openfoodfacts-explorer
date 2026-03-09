@@ -6,7 +6,7 @@
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },
 		{ name: 'contribute_link', href: '/static/contribute' },
-		{ name: 'producers_link', href: '/static/producers' },
+		{ name: 'producers_link', href: '/producers' },
 		{ name: 'prices_link', href: 'https://prices.openfoodfacts.org' },
 		{ name: 'folksonomy_link', href: '/folksonomy' },
 		{ name: 'facets_link', href: '/facets' }

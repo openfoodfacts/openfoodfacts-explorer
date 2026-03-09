@@ -320,7 +320,7 @@
 		<a class="btn btn-outline link" href="/static/contribute">
 			{$_('contribute_link')}
 		</a>
-		<a class="btn btn-outline link" href="/static/producers">
+		<a class="btn btn-outline link" href="/producers">
 			{$_('producers_link')}
 		</a>
 		<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
