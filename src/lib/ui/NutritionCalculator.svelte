@@ -108,12 +108,8 @@
 					<div>Protein: {$totalNutrition.proteins.toFixed(1)}g</div>
 					<div>Carbs: {$totalNutrition.carbohydrates.toFixed(1)}g</div>
 					<div>Fat: {$totalNutrition.fat.toFixed(1)}g</div>
-					{#if $totalNutrition.sugars > 0}
-						<div>Sugars: {$totalNutrition.sugars.toFixed(1)}g</div>
-					{/if}
-					{#if $totalNutrition.salt > 0}
-						<div>Salt: {$totalNutrition.salt.toFixed(1)}g</div>
-					{/if}
+					<div>Sugars: {$totalNutrition.sugars.toFixed(1)}g</div>
+					<div>Salt: {$totalNutrition.salt.toFixed(1)}g</div>
 				</div>
 			</div>
 
