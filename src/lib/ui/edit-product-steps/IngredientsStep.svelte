@@ -46,7 +46,7 @@
 			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
-			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
+			console.debug(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
 
 			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
