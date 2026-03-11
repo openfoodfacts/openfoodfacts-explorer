@@ -214,16 +214,16 @@
 {/if}
 
 <!-- Desktop Header -->
-<div class="hidden xl:block">
+<div class="sticky top-0 z-[100] hidden shadow-md lg:block">
 	<div class="flex justify-center">
 		<div class="bg-base-100 navbar flex max-w-7xl px-10">
 			<div class="navbar-start">
 				<a href="/"> <Logo /> </a>
 			</div>
-			<div class="navbar-center">
+			<div class="navbar-center w-full max-w-lg px-4">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
-			<div class="navbar-end gap-2">
+			<div class="navbar-end items-center gap-3">
 				{#if $userInfo != null}
 					<a
 						class="btn btn-outline link"
@@ -262,14 +262,14 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
+<div class="bg-base-100 sticky top-0 right-0 left-0 z-50 z-[100] px-4 shadow-md lg:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
 			</a>
 		</div>
-		<div class="navbar-end flex gap-1 sm:gap-2">
+		<div class="navbar-end flex gap-3 sm:gap-2">
 			<button
 				aria-label={$_('search.button')}
 				class="btn btn-square btn-secondary text-lg"

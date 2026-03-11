@@ -13,7 +13,7 @@
 	];
 </script>
 
-<nav class="bg-secondary mt-2 px-4 {!shouldBeContainer(page.url.pathname) ? '' : 'mb-8'}">
+<nav class="bg-secondary px-4 {!shouldBeContainer(page.url.pathname) ? '' : 'mb-8'}">
 	<ul class="flex justify-center">
 		<div class="m-2 flex w-3/4 items-center justify-evenly 2xl:w-[60%]">
 			{#each navItems as item (item.name)}
