@@ -50,6 +50,9 @@
 		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
+			onclick={() => {
+				console.debug('Filter button clicked');
+			}}
 			aria-label="Filter"
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
@@ -63,6 +66,6 @@
 	@reference './../../app.css';
 
 	.search-options-footer {
-		@apply bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0 lg:hidden;
+		@apply bg-base-100 border-base-200 sticky bottom-0 left-0 z-50 mt-4 flex h-14 min-h-0 w-full flex-col items-center justify-between border-t px-0;
 	}
 </style>
