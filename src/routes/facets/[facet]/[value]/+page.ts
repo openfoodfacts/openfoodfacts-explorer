@@ -6,14 +6,14 @@ import {
 	getFacetValue,
 	type FacetSortOption
 } from '$lib/api/facets';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 import { requireInt } from '$lib/utils';
 import { getBulkProductAttributes } from '$lib/api';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
-export const load: PageServerLoad = async ({ fetch, params, url }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 
 	const pageStr = url.searchParams.get('page') || '1';
