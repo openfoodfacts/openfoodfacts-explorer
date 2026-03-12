@@ -13,8 +13,10 @@ tools:
     toolsets: [issues, labels]
 safe-outputs:
   add-labels:
+    max: 50
     allowed: [GitHub Actions, 🏷️ Folksonomy Engine, 📖 Knowledge panels, 🌐 Translations, Dependencies, 📚 Documentation, 🚦 Nutri-Score, facets, 💸 Prices, 🖼️ Images, Product page, Home page, QR, Settings, ✏️ Editing, Search, Green-Score, Ultra-processed foods - NOVA, User Interface, Nutrients, Footer, good first issue]
-  add-comment: {}
+  add-comment:
+    max: 50
 imports:
   - shared/mood.md
   - shared/reporting.md
