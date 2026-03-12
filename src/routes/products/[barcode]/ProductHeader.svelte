@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '$lib/i18n';
+	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
 	import {
@@ -61,13 +62,20 @@
 	}
 
 	async function sharePage() {
-		try {
-			await navigator.share({
-				url: window.location.href
-			});
-		} catch (error) {
-			console.error('Error sharing the page:', error);
-		}
+		await shareContent(
+			{
+				url: window.location.href,
+				title: product.product_name || product.code,
+				text: $_('product.share_text', {
+					values: { productName: product.product_name || product.code }
+				})
+			},
+			toastCtx,
+			{
+				copiedLink: $_('product.toast.copied_link'),
+				failedCopy: $_('product.toast.failed_copy')
+			}
+		);
 	}
 
 	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
