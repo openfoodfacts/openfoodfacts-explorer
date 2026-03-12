@@ -79,7 +79,7 @@ export function calculateScore(
 	// Normalize score to 0-100
 	const normalizedScore = totalWeights > 0 ? Math.round(totalWeightedScore / totalWeights) : 0;
 
-	let matchStatus: MatchStatus = 'unknown_match';
+	let matchStatus: MatchStatus;
 	const unknownRatio = totalWeights > 0 ? unknownWeightSum / totalWeights : 0;
 
 	if (hasMandatoryMismatch) {
