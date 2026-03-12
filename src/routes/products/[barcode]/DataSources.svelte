@@ -13,7 +13,6 @@
 	};
 
 	let { product }: Props = $props();
-	const locale = getLocale();
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -22,8 +21,8 @@
 		const options: Intl.DateTimeFormatOptions = {
 			dateStyle: 'medium'
 		};
-
-		return new Intl.DateTimeFormat(locale, options).format(date);
+		const userLanguage = getLocale();
+		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
 	function formatFullDate(unix: number | null | undefined): string {
@@ -35,8 +34,8 @@
 			dateStyle: 'medium',
 			timeStyle: 'short'
 		};
-
-		return new Intl.DateTimeFormat(locale, options).format(date);
+		const userLanguage = getLocale();
+		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
