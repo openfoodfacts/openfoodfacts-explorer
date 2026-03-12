@@ -53,6 +53,12 @@
 			action: () => {
 				goto(`/products/${requireCode()}/edit#packaging`);
 			}
+		},
+		{
+			type: 'add_packaging_image',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#packaging`);
+			}
 		}
 	];
 
@@ -71,8 +77,10 @@
 		if (target.tagName === 'A' || target.closest('a')) {
 			return;
 		}
-		// TODO
-		console.warn('HTML action element clicked, but no handler is defined.', element);
+		const action = element.action_element.actions?.[0];
+		if (action) {
+			getActionHandler(action)();
+		}
 	}
 </script>
 
