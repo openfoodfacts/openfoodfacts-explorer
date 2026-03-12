@@ -74,6 +74,18 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+## Deployment
+
+For production or self-hosted deployments, ensure the following environment variables are set in addition to the ones in `.env`:
+
+- `ORIGIN`: The public-facing URL of your application (e.g., `https://world.openfoodfacts.org`). This is required for SvelteKit CSRF validation.
+- `WORKERS`: The number of worker processes to spawn (defaults to 4 in our `compose.yml`).
+
+Example using Docker Compose:
+```bash
+ORIGIN=https://my-explorer.example.com WORKERS=4 docker compose up -d
+```
+
 ## Contributors
 
 The app was initially created by @VaiTon. Since then, many people have contributed to it:
