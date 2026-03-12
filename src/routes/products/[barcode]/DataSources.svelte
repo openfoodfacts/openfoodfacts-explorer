@@ -1,20 +1,19 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, getLocale } from '$lib/i18n';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
-	import { browser } from '$app/environment';
 
 	type Props = {
 		product: ProductDataSection;
 	};
 
 	let { product }: Props = $props();
-
+	const locale = getLocale();
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -24,8 +23,7 @@
 			dateStyle: 'medium'
 		};
 
-		const userLanguage = browser ? navigator.language : 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+		return new Intl.DateTimeFormat(locale, options).format(date);
 	}
 
 	function formatFullDate(unix: number | null | undefined): string {
@@ -38,8 +36,7 @@
 			timeStyle: 'short'
 		};
 
-		const userLanguage = browser ? navigator.language : 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+		return new Intl.DateTimeFormat(locale, options).format(date);
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
