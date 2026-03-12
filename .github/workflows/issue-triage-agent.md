@@ -56,7 +56,7 @@ Hi @{author}! I've categorized this issue as **{label_name}** based on the follo
 
 </details>
 
-**References**: [Triage run §{run_id}](https://github.com/github/gh-aw/actions/runs/{run_id})
+**References**: [Triage run §{run_id}](${{ github.server_url }}/${{ github.repository }}/actions/runs/{run_id})
 ```
 
 **Key formatting requirements**:
