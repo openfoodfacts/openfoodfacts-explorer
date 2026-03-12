@@ -16,6 +16,7 @@
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -29,6 +30,8 @@
 	}
 
 	let { data }: Props = $props();
+
+	const toastCtx = getToastCtx();
 
 	function createEmptyImage(): SelectedImage | RawImage {
 		return {
@@ -214,41 +217,52 @@
 		isSubmitting = true;
 		const commentValue = comment;
 
-		console.group('Product added/edited');
-		console.debug('Submitting', product);
-		const submittedOk = await addOrEditProductV2(fetch, { ...product, comment: commentValue });
-		console.debug('Submitted succesfully: ', submittedOk);
-		console.groupEnd();
-
-		if (!submittedOk) {
-			isSubmitting = false;
-			return;
-		}
-
-		// Submit packaging data via V3 API
-		const packagingTextField = `packaging_text_${product.lang || 'en'}` as keyof Product;
-		const packagingText = product[packagingTextField] as unknown as string;
-		if ((product.packagings && product.packagings.length > 0) || packagingText) {
-			console.group('Packaging update (V3)');
-			console.debug('Submitting packaging data');
-			const packResult = await updatePackagingsV3(
-				fetch,
-				product.code,
-				product.packagings || [],
-				product.packagings_complete,
-				packagingText
-			);
-			if (packResult.error) {
-				console.error('Packaging update failed:', packResult.error);
-			} else {
-				console.debug('Packaging updated successfully');
-			}
+		try {
+			console.group('Product added/edited');
+			console.debug('Submitting', product);
+			const submittedOk = await addOrEditProductV2(fetch, {
+				...product,
+				comment: commentValue
+			});
+			console.debug('Submitted successfully: ', submittedOk);
 			console.groupEnd();
-		}
 
-		goto('/products/' + product.code, {
-			state: { currentStep: 0 }
-		});
+			if (!submittedOk) {
+				toastCtx.error($_('product.edit.toast.save_error'));
+				return;
+			}
+
+			// Submit packaging data via V3 API
+			const packagingTextField = `packaging_text_${product.lang || 'en'}` as keyof Product;
+			const packagingText = product[packagingTextField] as unknown as string;
+			if ((product.packagings && product.packagings.length > 0) || packagingText) {
+				console.group('Packaging update (V3)');
+				console.debug('Submitting packaging data');
+				const packResult = await updatePackagingsV3(
+					fetch,
+					product.code,
+					product.packagings || [],
+					product.packagings_complete,
+					packagingText
+				);
+				if (packResult.error) {
+					console.error('Packaging update failed:', packResult.error);
+				} else {
+					console.debug('Packaging updated successfully');
+				}
+				console.groupEnd();
+			}
+
+			toastCtx.success($_('product.edit.toast.save_success'));
+			goto('/products/' + product.code, {
+				state: { currentStep: 0 }
+			});
+		} catch (err) {
+			console.error('Error saving product:', err);
+			toastCtx.error($_('product.edit.toast.save_error'));
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	function addLanguage(code: string) {
