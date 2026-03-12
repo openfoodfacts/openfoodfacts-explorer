@@ -10,9 +10,10 @@ export function isConfigured() {
 }
 
 export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
+	const authToken = get(preferences)?.prices?.authToken ?? undefined;
 	const pricesApi = new PricesApi(fetch, {
 		baseUrl: BASE_URL,
-		authToken: `${get(preferences)?.prices?.authToken}`
+		authToken
 	});
 	return pricesApi;
 };
