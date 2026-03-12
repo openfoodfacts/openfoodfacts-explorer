@@ -227,7 +227,6 @@
 			console.groupEnd();
 
 			if (!submittedOk) {
-				isSubmitting = false;
 				toastCtx.error($_('product.edit.toast.save_error'));
 				return;
 			}
@@ -239,6 +238,7 @@
 		} catch (err) {
 			console.error('Error saving product:', err);
 			toastCtx.error($_('product.edit.toast.save_error'));
+		} finally {
 			isSubmitting = false;
 		}
 	}
