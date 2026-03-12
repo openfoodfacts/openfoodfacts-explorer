@@ -118,11 +118,7 @@
 			</div>
 
 			<div class="mt-4 flex justify-end">
-				<button
-					class="btn btn-sm btn-error"
-					onclick={clearCalculator}
-					aria-label="Clear All"
-				>
+				<button class="btn btn-sm btn-error" onclick={clearCalculator} aria-label="Clear All">
 					Clear All
 				</button>
 			</div>

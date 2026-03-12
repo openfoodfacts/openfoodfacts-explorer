@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { searchFilters, resetFilters, type SearchFiltersState } from '$lib/stores/searchFilters';
+	import { searchFilters, resetFilters } from '$lib/stores/searchFilters';
 	import { _ } from '$lib/i18n';
 
 	import IconMdiFilterVariant from '@iconify-svelte/mdi/filter-variant';
@@ -140,7 +140,7 @@
 						bind:value={nutriscore}
 					>
 						<option value="">All</option>
-						{#each GRADES as grade}
+						{#each GRADES as grade (grade)}
 							<option value={grade}>{grade.toUpperCase()}</option>
 						{/each}
 					</select>
@@ -157,7 +157,7 @@
 						bind:value={ecoscore}
 					>
 						<option value="">All</option>
-						{#each GRADES as grade}
+						{#each GRADES as grade (grade)}
 							<option value={grade}>{grade.toUpperCase()}</option>
 						{/each}
 					</select>
@@ -174,7 +174,7 @@
 						bind:value={country}
 					>
 						<option value="">All</option>
-						{#each COUNTRIES as { label, value }}
+						{#each COUNTRIES as { label, value } (value)}
 							<option {value}>{label}</option>
 						{/each}
 					</select>
@@ -225,7 +225,13 @@
 					{#if nutriscore}
 						<span class="badge gap-1 border {gradeColor(nutriscore)}">
 							NutriScore: {nutriscore.toUpperCase()}
-							<button class="btn btn-ghost btn-xs p-0" onclick={() => { nutriscore = ''; applyFilters(); }}>
+							<button
+								class="btn btn-ghost btn-xs p-0"
+								onclick={() => {
+									nutriscore = '';
+									applyFilters();
+								}}
+							>
 								<IconMdiClose class="h-3 w-3" />
 							</button>
 						</span>
@@ -233,15 +239,27 @@
 					{#if ecoscore}
 						<span class="badge gap-1 border {gradeColor(ecoscore)}">
 							EcoScore: {ecoscore.toUpperCase()}
-							<button class="btn btn-ghost btn-xs p-0" onclick={() => { ecoscore = ''; applyFilters(); }}>
+							<button
+								class="btn btn-ghost btn-xs p-0"
+								onclick={() => {
+									ecoscore = '';
+									applyFilters();
+								}}
+							>
 								<IconMdiClose class="h-3 w-3" />
 							</button>
 						</span>
 					{/if}
 					{#if country}
 						<span class="badge badge-outline gap-1">
-							Country: {COUNTRIES.find(c => c.value === country)?.label || country}
-							<button class="btn btn-ghost btn-xs p-0" onclick={() => { country = ''; applyFilters(); }}>
+							Country: {COUNTRIES.find((c) => c.value === country)?.label || country}
+							<button
+								class="btn btn-ghost btn-xs p-0"
+								onclick={() => {
+									country = '';
+									applyFilters();
+								}}
+							>
 								<IconMdiClose class="h-3 w-3" />
 							</button>
 						</span>
@@ -249,7 +267,13 @@
 					{#if category}
 						<span class="badge badge-outline gap-1">
 							Category: {category}
-							<button class="btn btn-ghost btn-xs p-0" onclick={() => { category = ''; applyFilters(); }}>
+							<button
+								class="btn btn-ghost btn-xs p-0"
+								onclick={() => {
+									category = '';
+									applyFilters();
+								}}
+							>
 								<IconMdiClose class="h-3 w-3" />
 							</button>
 						</span>
