@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-
-import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA } from './flavor';
+import { toWebsiteFlavor } from './flavor';
 
 describe('toWebsiteFlavor', () => {
 	it('maps known product types to their website flavor', () => {
