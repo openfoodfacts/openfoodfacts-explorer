@@ -19,7 +19,7 @@ jobs:
 
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # ratchet:pnpm/action-setup@v4
 
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # ratchet:actions/setup-node@v6.2.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # ratchet:actions/setup-node@v6.3.0
         with:
           node-version: 20
           cache: 'pnpm'
@@ -53,4 +53,4 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # ratchet:actions/checkout@v6
 
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@05fe4576374b728f0c523d6a13d64c25081e0803 # ratchet:actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # ratchet:actions/dependency-review-action@v4

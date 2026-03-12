@@ -10,7 +10,8 @@
 		type Product,
 		type Nutriments,
 		type RawImage,
-		addOrEditProductV2
+		addOrEditProductV2,
+		updatePackagingsV3
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
@@ -224,6 +225,27 @@
 			return;
 		}
 
+		// Submit packaging data via V3 API
+		const packagingTextField = `packaging_text_${product.lang || 'en'}` as keyof Product;
+		const packagingText = product[packagingTextField] as unknown as string;
+		if ((product.packagings && product.packagings.length > 0) || packagingText) {
+			console.group('Packaging update (V3)');
+			console.debug('Submitting packaging data');
+			const packResult = await updatePackagingsV3(
+				fetch,
+				product.code,
+				product.packagings || [],
+				product.packagings_complete,
+				packagingText
+			);
+			if (packResult.error) {
+				console.error('Packaging update failed:', packResult.error);
+			} else {
+				console.debug('Packaging updated successfully');
+			}
+			console.groupEnd();
+		}
+
 		goto('/products/' + product.code, {
 			state: { currentStep: 0 }
 		});
@@ -294,6 +316,35 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
+	function getPackagingImage(language: string) {
+		const productData = product;
+		if (productData.code == null || productData.images == null) {
+			return null;
+		}
+
+		const paddedBarcode = productData.code.toString().padStart(13, '0');
+		const match = paddedBarcode.match(/^(.{3})(.{3})(.{3})(.*)$/);
+		if (!match) {
+			throw new Error('Invalid barcode format');
+		}
+
+		const path = `${match[1]}/${match[2]}/${match[3]}/${match[4]}`;
+		const imageName = 'packaging_' + language;
+		const image = productData.images[imageName];
+
+		if (!image) {
+			return null;
+		}
+
+		const rev = (image as SelectedImage).rev;
+		if (rev == null) {
+			return null;
+		}
+
+		const filename = `${imageName}.${rev}.400.jpg`;
+		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
+	}
+
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
 </script>
@@ -347,6 +398,7 @@
 			languages={filteredLanguages}
 			{getIngredientsImage}
 			{getNutritionImage}
+			{getPackagingImage}
 			{isSubmitting}
 			{labelNames}
 			{originNames}
@@ -362,6 +414,7 @@
 			{isSubmitting}
 			{getIngredientsImage}
 			{getNutritionImage}
+			{getPackagingImage}
 			{submit}
 			{addLanguage}
 			{brandNames}
