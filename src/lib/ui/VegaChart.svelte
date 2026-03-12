@@ -57,6 +57,33 @@
 			}
 		};
 	}
+	// Vega compiles specs with hardcoded color values and does not support
+	// CSS variables natively, so we manually patch those hardcoded colors
+	// in the compiled spec to make charts visible in dark mode.
+	function patchMarksForDarkMode(marks: VegaMark[]): VegaMark[] {
+		return marks.map((mark) => {
+			const patched: VegaMark = {
+				...mark,
+				encode: {
+					...mark.encode,
+					update: { ...mark.encode?.update },
+					enter: { ...mark.encode?.enter }
+				} as VegaMarkEncode
+			};
+
+			if (patched.encode?.update?.fill?.value === '#341100') {
+				patched.encode.update.fill = { value: '#ff8714' };
+			}
+			if (patched.encode?.update?.stroke?.value === '#341100') {
+				patched.encode.update.stroke = { value: '#ff8714' };
+			}
+			if (patched.encode?.enter?.fill?.value === '#333') {
+				patched.encode.enter.fill = { value: '#e5e7eb' };
+			}
+
+			return patched;
+		});
+	}
 
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
@@ -72,29 +99,8 @@
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
-				const patchedMarks = ((compiledSpec as Spec).marks || []).map((mark) => {
-					const m = mark as unknown as VegaMark;
-					const patched: VegaMark = {
-						...m,
-						encode: {
-							...m.encode,
-							update: { ...m.encode?.update },
-							enter: { ...m.encode?.enter }
-						} as VegaMarkEncode
-					};
-
-					if (patched.encode?.update?.fill?.value === '#341100') {
-						patched.encode.update.fill = { value: '#ff8714' };
-					}
-					if (patched.encode?.update?.stroke?.value === '#341100') {
-						patched.encode.update.stroke = { value: '#ff8714' };
-					}
-					if (patched.encode?.enter?.fill?.value === '#333') {
-						patched.encode.enter.fill = { value: '#e5e7eb' };
-					}
-
-					return patched;
-				});
+				const rawMarks = ((compiledSpec as Spec).marks || []) as unknown as VegaMark[];
+				const patchedMarks = patchMarksForDarkMode(rawMarks);
 
 				compiledSpec = {
 					...compiledSpec,
