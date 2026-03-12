@@ -13,7 +13,7 @@ tools:
     toolsets: [issues, labels]
 safe-outputs:
   add-labels:
-    allowed: [bug, feature, enhancement, documentation, question, help-wanted, good-first-issue]
+    allowed: [GitHub Actions, 🏷️ Folksonomy Engine, 📖 Knowledge panels, 🌐 Translations, Dependencies, 📚 Documentation, 🚦 Nutri-Score, facets, 💸 Prices, 🖼️ Images, Product page, Home page, QR, Settings, ✏️ Editing, Search, Green-Score, Ultra-processed foods - NOVA, User Interface, Nutrients, Footer, good first issue]
   add-comment: {}
 imports:
   - shared/mood.md
