@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
 	import Pagination from '$lib/Pagination.svelte';
 	import { _ } from '$lib/i18n';
+	import BackLink from '$lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '$lib/Metadata.svelte';
-	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
+
+	import CountriesMap from './CountriesMap.svelte';
+
 	let { data }: PageProps = $props();
 
 	function formatNumber(n: number) {
@@ -24,13 +28,14 @@
 />
 
 <div class="mb-4">
-	<a href="/facets/" class="btn btn-secondary btn-outline w-full">
-		<IconMdiArrowLeft class="w-4" />
-		{$_('facets.facet_back_to_list')}
-	</a>
+	<BackLink href={resolve('/facets')} label={$_('facets.facet_back_to_list')} />
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
+
+{#if facet === 'countries'}
+	<CountriesMap facet={data.results} />
+{/if}
 
 <div class="my-8 flex gap-4 max-md:flex-col">
 	{#if Object.entries(knowledgePanels).length > 0}

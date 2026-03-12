@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
+	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	type Props = {
 		element: KnowledgeElementAction;
@@ -53,6 +54,12 @@
 			action: () => {
 				goto(`/products/${requireCode()}/edit#packaging`);
 			}
+		},
+		{
+			type: 'add_origins',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#origins`);
+			}
 		}
 	];
 
@@ -62,31 +69,27 @@
 
 	function getActionHandler(action: string) {
 		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler ? handler.action : DEFAULT_ACTION.bind(null, action);
-	}
-
-	function handleHtmlActionElementClick(event: MouseEvent) {
-		// If the click was on a link, let it handle the navigation
-		const target = event.target as HTMLElement;
-		if (target.tagName === 'A' || target.closest('a')) {
-			return;
-		}
-		// TODO
-		console.warn('HTML action element clicked, but no handler is defined.', element);
+		return handler ? handler.action : () => DEFAULT_ACTION(action);
 	}
 </script>
 
-{#if element.action_element.html != ''}
-	<button class="btn btn-primary" onclick={handleHtmlActionElementClick}>
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html element.action_element.html}
-	</button>
-{:else}
-	{#each element.action_element.actions as action (action)}
-		{@const actionHandler = getActionHandler(action)}
+<div
+	class={[element.action_element.html != '' && 'border-accent bg-accent/10 rounded border-s p-4']}
+>
+	{#if element.action_element.html != ''}
+		<div class="mb-4 text-sm">
+			<HtmlPurify dirty={element.action_element.html} />
+		</div>
+	{/if}
 
-		<button class="btn btn-primary" onclick={actionHandler}>
-			{$_(`product.knowledge_panels.action.${action}`, { default: action })}
-		</button>
-	{/each}
-{/if}
+	{#if element.action_element.actions && element.action_element.actions.length > 0}
+		<div class="flex flex-wrap gap-2">
+			{#each element.action_element.actions as action (action)}
+				{@const actionHandler = getActionHandler(action)}
+				<button class="btn btn-primary btn-sm" onclick={actionHandler}>
+					{$_(`product.knowledge_panels.action.${action}`, { default: action })}
+				</button>
+			{/each}
+		</div>
+	{/if}
+</div>

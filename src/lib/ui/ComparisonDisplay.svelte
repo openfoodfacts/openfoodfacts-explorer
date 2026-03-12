@@ -379,7 +379,7 @@
 							{product.product_name ?? product.code}
 						</a>
 					</h3>
-					<p class="mt-1 text-center text-sm text-gray-600">
+					<p class="text-base-content/70 mt-1 text-center text-sm">
 						{product.brands ?? ''}
 						{#if product.brands && product.quantity},{/if}
 						{product.quantity ?? ''}
@@ -456,7 +456,7 @@
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
-						class="relative"
+						class="relative min-w-40"
 						ondragover={(e) => {
 							if (
 								!readonly &&
@@ -612,7 +612,10 @@
 			</tr>
 			{#each availableNutrients as nutrient (nutrient.key)}
 				<tr>
-					<td class="bg-base-100 sticky left-0 w-40 font-semibold">{nutrient.label}</td>
+					<td
+						class="bg-base-100 sticky left-0 w-40 overflow-hidden leading-tight font-semibold break-words whitespace-normal"
+						>{nutrient.label}</td
+					>
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
 						<td animate:flip={{ duration: 300 }}>
@@ -626,11 +629,11 @@
 </div>
 
 {#if comparisonMode === 'relative-first'}
-	<div class="mt-4 text-center text-sm text-gray-600">
+	<div class="text-base-content/70 mt-4 text-center text-sm">
 		💡 Percentages show difference compared to the first product
 	</div>
 {:else if comparisonMode === 'relative-best'}
-	<div class="mt-4 text-center text-sm text-gray-600">
+	<div class="text-base-content/70 mt-4 text-center text-sm">
 		💡 Percentages show difference compared to the best value (lower is better for most nutrients)
 	</div>
 {/if}

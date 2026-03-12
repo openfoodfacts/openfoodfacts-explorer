@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 3,
+	version: 4,
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -17,6 +17,8 @@ const DEFAULT_PREFERENCES = {
 	editing: {
 		expandAllSections: false
 	},
+
+	displayPricesInSearch: true,
 
 	moderator: false
 };
@@ -82,6 +84,16 @@ const MIGRATIONS: {
 			}
 			if ('folksonomy' in preferences) {
 				delete preferences.folksonomy;
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 4,
+		upgrade: (preferences) => {
+			if (!('displayPricesInSearch' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.displayPricesInSearch = true;
 			}
 			return preferences;
 		}
