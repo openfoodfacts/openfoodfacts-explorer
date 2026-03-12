@@ -74,6 +74,51 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+## Deploying (Self-Hosted / Docker)
+
+The Explorer can be deployed as a standalone Docker container using the
+[Node adapter](https://kit.svelte.dev/docs/adapter-node).
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and
+  [Docker Compose](https://docs.docker.com/compose/install/) (v2)
+
+### 1. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` to configure your deployment. See [`.env.example`](.env.example) for the full list of available variables.
+
+### 2. Start with Docker Compose
+
+```bash
+docker compose up -d
+```
+
+The container listens on port **3000** by default.
+
+### 3. Reverse proxy (nginx)
+
+If you are placing the app behind nginx, here is a basic configuration example:
+
+```nginx
+server {
+    listen 80;
+    server_name explorer.yourdomain.com;
+
+    location / {
+        proxy_pass         http://localhost:3000;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-Host  $host;
+    }
+}
+```
+
 ## Contributors
 
 The app was initially created by @VaiTon. Since then, many people have contributed to it:
