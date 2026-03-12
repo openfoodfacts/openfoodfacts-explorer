@@ -74,7 +74,7 @@ export function extractNutriments(nutriments: Nutriments): NutritionData {
 		carbohydrates: nutriments.carbohydrates_100g || 0,
 		fat: nutriments.fat_100g || 0,
 		sugars: nutriments.sugars_100g || 0,
-		salt: nutriments.salt_100g || 0,
+		salt: nutriments.salt_100g || 0
 	};
 }
 
