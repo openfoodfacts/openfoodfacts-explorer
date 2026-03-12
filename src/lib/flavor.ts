@@ -30,8 +30,8 @@ export const WEBSITE_FLAVOR_METADATA: Record<WebsiteFlavor, WebsiteFlavorMetadat
 	}
 };
 
-export function toWebsiteFlavor(productType: string | null | undefined): WebsiteFlavor {
-	if (productType && productType in WEBSITE_FLAVOR_METADATA) {
+export function toWebsiteFlavor(productType: string): WebsiteFlavor {
+	if ((WEBSITE_FLAVORS as readonly string[]).includes(productType)) {
 		return productType as WebsiteFlavor;
 	}
 

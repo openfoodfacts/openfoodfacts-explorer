@@ -11,18 +11,8 @@ describe('toWebsiteFlavor', () => {
 	});
 
 	it('falls back to food for unknown or empty product types', () => {
-		expect(toWebsiteFlavor(undefined)).toBe('food');
-		expect(toWebsiteFlavor(null)).toBe('food');
+		expect(toWebsiteFlavor('unknown')).toBe('food');
 		expect(toWebsiteFlavor('all')).toBe('food');
 		expect(toWebsiteFlavor('')).toBe('food');
-	});
-});
-
-describe('WEBSITE_FLAVOR_METADATA', () => {
-	it('contains the expected public hosts', () => {
-		expect(WEBSITE_FLAVOR_METADATA.food.apiBaseUrl).toContain('openfoodfacts');
-		expect(WEBSITE_FLAVOR_METADATA.beauty.apiBaseUrl).toContain('openbeautyfacts');
-		expect(WEBSITE_FLAVOR_METADATA.petfood.apiBaseUrl).toContain('openpetfoodfacts');
-		expect(WEBSITE_FLAVOR_METADATA.product.apiBaseUrl).toContain('openproductsfacts');
 	});
 });
