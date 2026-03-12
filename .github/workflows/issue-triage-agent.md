@@ -24,7 +24,7 @@ engine: copilot
 
 # Issue Triage Agent
 
-List open issues in ${{ github.repository }} that have no labels. For each unlabeled issue, analyze the title and body, then add one of the allowed labels: `bug`, `feature`, `enhancement`, `documentation`, `question`, `help-wanted`, or `good-first-issue`, `community`.
+List open issues in ${{ github.repository }} that have no labels. For each unlabeled issue, analyze the title and body, then add one of the allowed labels: `GitHub Actions`, `🏷️ Folksonomy Engine`, `📖 Knowledge panels`, `🌐 Translations`, `Dependencies`, `📚 Documentation`, `🚦 Nutri-Score`, `facets`, `💸 Prices`, `🖼️ Images`, `Product page`, `Home page`, `QR`, `Settings`, `✏️ Editing`, `Search`, `Green-Score`, `Ultra-processed foods - NOVA`, `User Interface`, `Nutrients`, `Footer`, or `good-first-issue`.
 
 Skip issues that:
 - Already have any of these labels
