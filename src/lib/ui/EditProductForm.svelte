@@ -160,6 +160,9 @@
 				<IconMdiOpenInNew class="mr-1 h-4 w-4" />
 				{$_('product.edit.prices.add_price_btn')}
 			</a>
+		</div>
+	</div>
+
 	<!-- Packaging Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md" id="packaging">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
