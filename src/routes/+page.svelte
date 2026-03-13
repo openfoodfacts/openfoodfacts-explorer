@@ -11,6 +11,7 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
+	import CountUp from '$lib/ui/CountUp.svelte';
 
 	import IconMdiCompassOutline from '@iconify-svelte/mdi/compass-outline';
 	import IconMdiLightbulbOnOutline from '@iconify-svelte/mdi/lightbulb-on-outline';
@@ -139,7 +140,9 @@
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<IconMdiDatabase class="text-primary mb-4 h-12 w-12" />
-		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.productCount)}</h2>
+		<h2 class="text-xl font-bold">
+			<CountUp value={data.productCount} />
+		</h2>
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</a>
 	<a
@@ -147,7 +150,9 @@
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<IconMdiAccountGroup class="text-primary mb-4 h-12 w-12" />
-		<h2 class="text-xl font-bold">{Intl.NumberFormat().format(data.contributorCount)}</h2>
+		<h2 class="text-xl font-bold">
+			<CountUp value={data.contributorCount} />
+		</h2>
 		<p class="text-base-content/70">{$_('landing.contributors_count')}</p>
 	</a>
 	<a
@@ -155,7 +160,9 @@
 		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
 	>
 		<IconMdiLicense class="text-primary mb-4 h-12 w-12" />
-		<h2 class="text-xl font-bold">100%</h2>
+		<h2 class="text-xl font-bold">
+			<CountUp value={100} />%
+		</h2>
 		<p class="text-base-content/70">{$_('landing.open_data')}</p>
 	</a>
 </div>
