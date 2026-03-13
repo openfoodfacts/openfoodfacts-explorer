@@ -452,7 +452,7 @@
 	<table class="table-zebra table w-full table-fixed">
 		<thead>
 			<tr>
-				<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+				<th class="bg-base-100 sticky left-0 z-10 w-40 text-white">Product Image</th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
@@ -613,12 +613,12 @@
 			{#each availableNutrients as nutrient (nutrient.key)}
 				<tr>
 					<td
-						class="bg-base-100 sticky left-0 w-40 overflow-hidden leading-tight font-semibold break-words whitespace-normal"
+						class="bg-base-100 sticky left-0 z-10 w-40 overflow-hidden leading-tight font-semibold break-words whitespace-normal"
 						>{nutrient.label}</td
 					>
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-						<td animate:flip={{ duration: 300 }}>
+						<td class="text-center" animate:flip={{ duration: 300 }}>
 							{@render nutrientValueDesktop(comparison, nutrient.unit)}
 						</td>
 					{/each}
