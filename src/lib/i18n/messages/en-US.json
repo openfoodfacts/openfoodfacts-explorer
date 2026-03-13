@@ -58,6 +58,9 @@
 			"moderator": "Moderator"
 		}
 	},
+	"help": {
+		"button": "Help and Shortcuts"
+	},
 	"general": {
 		"language": "Language",
 		"country": "Country",
