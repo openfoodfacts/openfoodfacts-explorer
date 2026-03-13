@@ -11,18 +11,52 @@ export type UserInfo = {
 	roles?: string[];
 } & Record<SpecialRoleKeys, boolean>;
 
-export const userInfo = derived(userAuthTokens, ($tokens) => {
-	if (!$tokens || !$tokens.id_token) {
-		return null;
-	}
+import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
+import { fetchCurrentUserPermissions } from '$lib/api/permissions';
 
-	try {
-		return parseIdToken($tokens.id_token);
-	} catch (error) {
-		console.error('Failed to parse user info:', error);
-		return null;
-	}
-});
+export const userInfo = derived<typeof userAuthTokens, UserInfo | null>(
+	userAuthTokens,
+	($tokens, set) => {
+		if (!$tokens || !$tokens.id_token) {
+			set(null);
+			return;
+		}
+
+		let baseInfo: UserInfo;
+		try {
+			baseInfo = parseIdToken($tokens.id_token);
+			// Set initial state from JWT (roles are usually false from Keycloak)
+			set(baseInfo);
+		} catch (error) {
+			console.error('Failed to parse user info:', error);
+			set(null);
+			return;
+		}
+
+		// Fetch admin/moderator roles
+		if (typeof globalThis !== 'undefined' && globalThis.fetch) {
+			fetchCurrentUserPermissions(
+				globalThis.fetch,
+				CURRENT_USER_PERMISSIONS_URL,
+				$tokens.access_token
+			)
+				.then((permissions) => {
+					if (permissions && permissions.status === 'success' && permissions.user) {
+						// Merge permissions into the existing derived store value
+						set({
+							...baseInfo,
+							isAdmin: baseInfo.isAdmin || permissions.user.admin === 1,
+							isModerator: baseInfo.isModerator || permissions.user.moderator === 1
+						});
+					}
+				})
+				.catch((err) => {
+					console.error('Failed to fetch OFF user permissions', err);
+				});
+		}
+	},
+	null
+);
 
 type KeycloakToken = {
 	preferred_username: string;
