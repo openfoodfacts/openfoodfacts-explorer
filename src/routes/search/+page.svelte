@@ -89,7 +89,7 @@
 		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('sort_by', selectedSort.value);
-		goto(newUrl.toString());
+		goto(newUrl.toString(), { noScroll: true, keepFocus: true });
 	}
 
 	// State to hold selected facets
@@ -109,7 +109,7 @@
 
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('q', newQuery);
-		goto(newUrl.toString());
+		goto(newUrl.toString(), { noScroll: true, keepFocus: true });
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));

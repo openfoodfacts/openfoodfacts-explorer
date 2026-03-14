@@ -16,6 +16,7 @@
 	} = $props();
 
 	let showAll: boolean = $state(false);
+	let isOpen: boolean = $state(false);
 	let dropdownElement: HTMLDetailsElement;
 
 	function toggleShowAll() {
@@ -46,7 +47,7 @@
 	});
 </script>
 
-<details class="dropdown dropdown-center" bind:this={dropdownElement}>
+<details class="dropdown dropdown-center" bind:this={dropdownElement} bind:open={isOpen}>
 	<summary class="btn flex w-58 items-center justify-start gap-2">
 		{facet.name} ({facet.items.length})
 		<span class="grow"></span>
