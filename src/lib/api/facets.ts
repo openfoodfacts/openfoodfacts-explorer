@@ -20,7 +20,16 @@ export async function getFacet(
 ) {
 	const client = createProductsApi(fetch);
 	// @ts-expect-error - TODO: sortBy does not contain all possible values
-	return client.getFacet(facet, opts);
+	const result = await client.getFacet(facet, opts);
+
+	// Strip HTML from tag names - the OFF API sometimes returns names containing markup
+	if (result?.tags) {
+		for (const tag of result.tags) {
+			if (tag.name) tag.name = tag.name.replace(/<[^>]*>?/g, '').trim();
+		}
+	}
+
+	return result;
 }
 
 export async function getFacetValue(

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import DOMPurify from 'isomorphic-dompurify';
 	import worldAtlas from 'world-atlas/countries-110m.json' with { type: 'json' };
 	import * as topojson from 'topojson-client';
 	import * as iso from 'iso-3166-1';
@@ -211,7 +210,7 @@
 
 				// Tooltip shown on hover for every country
 				const tooltipContent = data
-					? `<strong>${DOMPurify.sanitize(data.name)}</strong><br>${fmt.format(data.products)} products`
+					? `<strong>${data.name}</strong><br>${fmt.format(data.products)} products`
 					: (feature.properties?.name ?? numericId);
 
 				pathLayer.bindTooltip(tooltipContent, { sticky: true });
@@ -231,9 +230,8 @@
 
 				// Click popup with full detail (only for countries with data)
 				if (data) {
-					const safeName = DOMPurify.sanitize(data.name);
 					pathLayer.bindPopup(
-						`<strong>${safeName}</strong>: ${fmt.format(data.products)} products`
+						`<strong>${data.name}</strong>: ${fmt.format(data.products)} products`
 					);
 				}
 			}
