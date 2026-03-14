@@ -163,6 +163,7 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
+				<!-- TODO: use the SDK directly in the webcomponent -->
 				<folksonomy-editor
 					page-type="edit"
 					product-code={product.code}
