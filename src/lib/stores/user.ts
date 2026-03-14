@@ -1,62 +1,43 @@
 import { derived } from 'svelte/store';
+import { getContext, setContext } from 'svelte';
 import { userAuthTokens } from './auth';
 import { decodeJwt } from 'jose';
-
-type SpecialRole = 'admin' | 'moderator';
-type SpecialRoleKeys = `is${Capitalize<SpecialRole>}`;
 
 export type UserInfo = {
 	preferred_username: string;
 	email: string;
 	roles?: string[];
-} & Record<SpecialRoleKeys, boolean>;
+};
 
-import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
-import { fetchCurrentUserPermissions } from '$lib/api/permissions';
+export type UserPermissionsContext = {
+	isAdmin: boolean;
+	isModerator: boolean;
+};
 
-export const userInfo = derived<typeof userAuthTokens, UserInfo | null>(
-	userAuthTokens,
-	($tokens, set) => {
-		if (!$tokens || !$tokens.id_token) {
-			set(null);
-			return;
-		}
+export function setPermissionsCtx(ctx: () => UserPermissionsContext) {
+	setContext('permissions-ctx', ctx);
+}
 
-		let baseInfo: UserInfo;
-		try {
-			baseInfo = parseIdToken($tokens.id_token);
-			// Set initial state from JWT (roles are usually false from Keycloak)
-			set(baseInfo);
-		} catch (error) {
-			console.error('Failed to parse user info:', error);
-			set(null);
-			return;
-		}
+export function getPermissionsCtx(): UserPermissionsContext {
+	const lambda = getContext('permissions-ctx') as (() => UserPermissionsContext) | undefined;
+	if (!lambda) {
+		return { isAdmin: false, isModerator: false };
+	}
+	return lambda();
+}
 
-		// Fetch admin/moderator roles
-		if (typeof globalThis !== 'undefined' && globalThis.fetch) {
-			fetchCurrentUserPermissions(
-				globalThis.fetch,
-				CURRENT_USER_PERMISSIONS_URL,
-				$tokens.access_token
-			)
-				.then((permissions) => {
-					if (permissions && permissions.status === 'success' && permissions.user) {
-						// Merge permissions into the existing derived store value
-						set({
-							...baseInfo,
-							isAdmin: baseInfo.isAdmin || permissions.user.admin === 1,
-							isModerator: baseInfo.isModerator || permissions.user.moderator === 1
-						});
-					}
-				})
-				.catch((err) => {
-					console.error('Failed to fetch OFF user permissions', err);
-				});
-		}
-	},
-	null
-);
+export const userInfo = derived(userAuthTokens, ($tokens) => {
+	if (!$tokens || !$tokens.id_token) {
+		return null;
+	}
+
+	try {
+		return parseIdToken($tokens.id_token);
+	} catch (error) {
+		console.error('Failed to parse user info:', error);
+		return null;
+	}
+});
 
 type KeycloakToken = {
 	preferred_username: string;
@@ -84,9 +65,7 @@ function parseIdToken(idToken: string): UserInfo {
 		return {
 			preferred_username: token.preferred_username,
 			email: token.email,
-			roles,
-			isAdmin: roles.includes('admin'),
-			isModerator: roles.includes('moderator')
+			roles
 		};
 	} catch (error) {
 		throw new Error(`Failed to parse ID token`, { cause: error });

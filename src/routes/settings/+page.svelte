@@ -4,7 +4,7 @@
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo } from '$lib/stores/user';
+	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
@@ -20,6 +20,8 @@
 
 	let { data }: PageProps = $props();
 	let { attributeGroups } = $derived(data);
+
+	let permissions = $derived(getPermissionsCtx());
 </script>
 
 <div class="mx-auto my-8">
@@ -33,13 +35,13 @@
 				<IconMdiAccount class="h-4 w-4" />
 				<span class="">{$_('auth.role.user')}</span>
 			</span>
-			{#if $userInfo.isAdmin}
+			{#if permissions.isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.admin')}</span>
 				</span>
 			{/if}
-			{#if $userInfo.isModerator}
+			{#if permissions.isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.moderator')}</span>

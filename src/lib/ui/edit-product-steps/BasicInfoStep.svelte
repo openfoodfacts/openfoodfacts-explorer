@@ -2,7 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 	import { preferences } from '$lib/settings';
-	import { userInfo } from '$lib/stores/user';
+	import { getPermissionsCtx } from '$lib/stores/user';
 	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
@@ -34,6 +34,9 @@
 	}: Props = $props();
 
 	let showInfo = $state(false);
+
+	let permissions = $derived(getPermissionsCtx());
+
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
@@ -70,7 +73,7 @@
 {/if}
 <div class="space-y-6">
 	<!-- Product Type (Moderators Only) -->
-	{#if $userInfo?.isModerator && $preferences.moderator}
+	{#if permissions.isModerator && $preferences.moderator}
 		<div class="form-control w-full sm:w-1/2">
 			<label class="label" for="product_type">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">

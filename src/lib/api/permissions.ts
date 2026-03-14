@@ -16,15 +16,10 @@ export type CurrentUserPermissions = {
 
 export async function fetchCurrentUserPermissions(
 	fetch: typeof globalThis.fetch,
-	url: string,
-	accessToken: string
+	url: string
 ): Promise<CurrentUserPermissions | null> {
 	try {
-		const response = await fetch(url, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`
-			}
-		});
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			console.error(`Failed to fetch user permissions: HTTP ${response.status}`);
