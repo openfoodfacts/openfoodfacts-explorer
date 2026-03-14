@@ -18,6 +18,7 @@
 	import type { PageProps } from './$types';
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
+	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
@@ -162,7 +163,11 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
-				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
+				<folksonomy-editor
+					page-type="edit"
+					product-code={product.code}
+					auth-token={$userAuthTokens?.access_token ?? ''}
+				></folksonomy-editor>
 			{:else}
 				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
 
