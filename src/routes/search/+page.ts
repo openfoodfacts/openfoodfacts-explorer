@@ -22,23 +22,66 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
-	const prices: Record<string, number> = {};
-	const results = await Promise.all(
-		barcodes.map(async (code) => ({
-			code: code,
-			prices: await api.getPrices({ product_code: code })
-		}))
-	);
+//---------------------------------------------------------------------------
 
-	for (const result of results) {
-		if (result.prices.data && result.prices.data.items) {
-			prices[result.code] = result.prices.data.total;
+//Simultaneous requests allowed to the Prices API
+//It helps to prevent sending too many request at same time when the result contain many products
+//rate limiting=5
+//Default concurrency chosen to balance performance and API safety
+
+const PRICES_CONCURRENCY_LIMIT = 5;
+
+async function withConcurrencyLimit<T>(
+	tasks: (() => Promise<T>)[],
+	limit: number
+): Promise<PromiseSettledResult<T>[]> {
+	const results: PromiseSettledResult<T>[] = new Array(tasks.length);
+	let nextIndex = 0;
+
+	async function worker(): Promise<void> {
+		while (nextIndex < tasks.length) {
+			const index = nextIndex++;
+			try {
+				results[index] = { status: 'fulfilled', value: await tasks[index]() };
+			} catch (reason) {
+				results[index] = { status: 'rejected', reason };
+			}
+		}
+	}
+
+	await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+
+	return results;
+}
+
+async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
+	if (barcodes.length === 0) return {};
+
+	const tasks = barcodes.map((code) => async () => ({
+		code,
+		prices: await api.getPrices({ product_code: code })
+	}));
+	//Executed tasks with concurrency control
+	const settled = await withConcurrencyLimit(tasks, PRICES_CONCURRENCY_LIMIT);
+	//Final Result
+	const prices: Record<string, number> = {};
+
+	for (const result of settled) {
+		if (result.status === 'rejected') {
+			console.warn('[getPrices] Failed to fetch price for a barcode:', result.reason);
+			continue;
+		}
+
+		const { code, prices: apiResult } = result.value;
+		//Only store price if API returned data
+		if (apiResult.data?.items) {
+			prices[code] = apiResult.data.total;
 		}
 	}
 
 	return prices;
 }
+//---------------------------------------------------------------------------
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
