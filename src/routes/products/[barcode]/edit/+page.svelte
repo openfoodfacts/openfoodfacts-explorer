@@ -24,6 +24,9 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
+	import type { Shortcut } from '../../../Shortcuts.svelte';
+	import { getContext } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	interface Props {
 		data: PageData;
@@ -361,6 +364,22 @@
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
+
+	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
+	$effect(() => {
+		if (!isAddMode) {
+			shortcuts.set('V', {
+				description: $_('product.shortcuts.view_page'),
+				action: () => {
+					if (page.params.barcode) {
+						goto(resolve('/products/[barcode]', { barcode: page.params.barcode }));
+					}
+				}
+			});
+
+			return () => shortcuts.delete('V');
+		}
+	});
 </script>
 
 {#if dev}

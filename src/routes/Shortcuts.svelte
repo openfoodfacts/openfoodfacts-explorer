@@ -28,6 +28,18 @@
 			if (event.key === 'Escape' && helpModal.open) {
 				helpModal.close();
 			}
+
+			// Ignore if user is typing in an input field
+			const target = event.target as HTMLElement;
+			if (
+				target instanceof HTMLInputElement ||
+				target instanceof HTMLTextAreaElement ||
+				target instanceof HTMLSelectElement ||
+				target.isContentEditable
+			) {
+				return;
+			}
+
 			const combo = getCombo(event);
 			shortcuts.forEach((shortcut, key) => {
 				if (combo === key.replace('?', '?')) {
@@ -52,7 +64,7 @@
 	<div class="modal-box">
 		<h3 class="mb-4 text-lg font-bold">Keyboard Shortcuts</h3>
 
-		<div class="grid grid-cols-2 gap-2">
+		<div class="grid grid-cols-[1.5fr_2fr] gap-2">
 			{#each shortcuts as [combo, shortcut] (combo)}
 				<span class="font-mono">
 					{#each combo.split('+') as key, i (key)}
@@ -60,7 +72,7 @@
 					{/each}
 				</span>
 
-				<span class="ml-2">{shortcut.description}</span>
+				<span>{shortcut.description}</span>
 			{/each}
 		</div>
 
