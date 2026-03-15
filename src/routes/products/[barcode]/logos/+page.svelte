@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { SvelteSet } from 'svelte/reactivity';
 	import { createRobotoffApi } from '$lib/api';
+	import { wrapFetchWithAuth } from '$lib/stores/auth';
+	import { userInfo } from '$lib/stores/user';
 	import type { LogoAnnotation } from '@openfoodfacts/openfoodfacts-nodejs';
 	import LogoAnnotationCard from '$lib/ui/LogoAnnotationCard.svelte';
+	import { resolve } from '$app/paths';
 
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
@@ -22,14 +26,13 @@
 		data: {
 			barcode: string;
 			logos: LogoImage[];
-			logoCount: number;
 			error?: string;
 		};
 	}
 
 	let { data }: PageProps = $props();
 
-	let removedLogos = $state<Set<number>>(new Set());
+	let removedLogos = new SvelteSet<number>();
 	let selectedAnnotations = $state<Record<number, AnnotationType>>({});
 	let selectedValues = $state<Record<number, string>>({});
 
@@ -62,6 +65,11 @@
 	}
 
 	async function annotateLogo(logoId: number) {
+		if ($userInfo == null) {
+			error = 'You must be logged in to submit logo annotations.';
+			return;
+		}
+
 		const annotationType = selectedAnnotations[logoId];
 		if (!annotationType) {
 			error = 'Please select an annotation type';
@@ -73,7 +81,7 @@
 		successMessage = null;
 
 		try {
-			const robotoff = createRobotoffApi(fetch);
+			const robotoff = createRobotoffApi(wrapFetchWithAuth(fetch));
 			const annotationValue = selectedValues[logoId] || '';
 
 			const annotation = {
@@ -86,7 +94,7 @@
 			if (response.data) {
 				successMessage = `Logo annotated successfully!`;
 
-				removedLogos = new Set(removedLogos.add(logoId));
+				removedLogos.add(logoId);
 				delete selectedAnnotations[logoId];
 				delete selectedValues[logoId];
 
@@ -123,6 +131,19 @@
 
 	<div class="flex-1 px-4 py-6 sm:px-6">
 		<div class="mx-auto max-w-4xl">
+			{#if $userInfo == null}
+				<div class="alert alert-warning mb-6">
+					<IconMdiInformation class="h-6 w-6 shrink-0" />
+					<div>
+						<h3 class="font-bold">Login required to submit annotations</h3>
+						<div class="text-xs">
+							You can view detected logos without logging in, but submitting annotations requires a valid Explorer session.
+							<a class="link link-primary ml-1" href={resolve('/oauth/login')}>Log in</a>
+						</div>
+					</div>
+				</div>
+			{/if}
+
 			{#if displayedError}
 				<div class="alert alert-error mb-6">
 					<IconMdiAlert class="h-6 w-6 shrink-0" />
