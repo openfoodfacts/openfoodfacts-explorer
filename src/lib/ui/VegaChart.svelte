@@ -60,27 +60,24 @@
 	// Vega compiles specs with hardcoded color values and does not support
 	// CSS variables natively, so we manually patch those hardcoded colors
 	// in the compiled spec to make charts visible in dark mode.
-	function patchMarksForDarkMode(marks: VegaMark[]): VegaMark[] {
+	function patchMarksForDarkMode(
+		marks: VegaMark[],
+		primaryColor: string,
+		textColor: string
+	): VegaMark[] {
 		return marks.map((mark) => {
 			const patched: VegaMark = {
 				...mark,
 				encode: {
 					...mark.encode,
-					update: { ...mark.encode?.update },
-					enter: { ...mark.encode?.enter }
+					update: {
+						...mark.encode?.update,
+						fill: { value: primaryColor },
+						stroke: { value: primaryColor }
+					},
+					enter: { ...mark.encode?.enter, fill: { value: textColor } }
 				} as VegaMarkEncode
 			};
-
-			if (patched.encode?.update?.fill?.value === '#341100') {
-				patched.encode.update.fill = { value: '#ff8714' };
-			}
-			if (patched.encode?.update?.stroke?.value === '#341100') {
-				patched.encode.update.stroke = { value: '#ff8714' };
-			}
-			if (patched.encode?.enter?.fill?.value === '#333') {
-				patched.encode.enter.fill = { value: '#e5e7eb' };
-			}
-
 			return patched;
 		});
 	}
@@ -99,8 +96,12 @@
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
+				const style = getComputedStyle(document.documentElement);
+				const primaryColor = style.getPropertyValue('--color-primary').trim();
+				const textColor = style.getPropertyValue('--color-base-content').trim();
+
 				const rawMarks = ((compiledSpec as Spec).marks || []) as unknown as VegaMark[];
-				const patchedMarks = patchMarksForDarkMode(rawMarks);
+				const patchedMarks = patchMarksForDarkMode(rawMarks, primaryColor, textColor);
 
 				compiledSpec = {
 					...compiledSpec,
