@@ -287,7 +287,7 @@
 </script>
 
 {#snippet scoreImage(imageSrc: string, altText: string, isBest: boolean)}
-	<div class="flex flex-col items-center gap-1">
+	<div class="mx-auto flex flex-col items-center gap-1">
 		<img src={imageSrc} alt={altText} title={altText} class="h-12" />
 		{#if isBest}
 			<span class="badge badge-success badge-sm">Best</span>
@@ -324,7 +324,7 @@
 
 {#snippet nutrientValueDesktop(comparison: NutrientComparison, unit: string | undefined)}
 	{#if comparison.value != null}
-		<div class="flex flex-col">
+		<div class="flex flex-col items-center">
 			<span class={comparison.isBest ? 'font-semibold' : ''}>
 				{comparison.formatted}
 				{unit}
@@ -452,7 +452,9 @@
 	<table class="table-zebra table w-full table-fixed">
 		<thead>
 			<tr>
-				<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+				<th class="bg-base-100 sticky left-0 z-10 w-40 font-semibold">
+					{$_('compare.product_image')}
+				</th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
@@ -549,7 +551,7 @@
 				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
 							{@render scoreImage(
 								getNutriScoreImage(product.nutriscore_grade),
@@ -566,7 +568,7 @@
 				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
@@ -583,7 +585,7 @@
 				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
@@ -618,7 +620,7 @@
 					>
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-						<td animate:flip={{ duration: 300 }}>
+						<td class="text-center" animate:flip={{ duration: 300 }}>
 							{@render nutrientValueDesktop(comparison, nutrient.unit)}
 						</td>
 					{/each}

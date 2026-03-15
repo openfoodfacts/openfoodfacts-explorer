@@ -516,6 +516,7 @@
 		"import": "Import",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
+		"product_image": "Images",
 		"toast": {
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
