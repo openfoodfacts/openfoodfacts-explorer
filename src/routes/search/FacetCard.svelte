@@ -32,6 +32,11 @@
 	}
 
 	let searchQuery: string = $state('');
+	$effect(() => {
+		if (!isOpen) {
+			searchQuery = '';
+		}
+	});
 	let visibleValues = $derived.by(() => {
 		if (searchQuery) {
 			return facet.items.filter((item) =>
