@@ -6,9 +6,11 @@
 
 	let {
 		onSortOptionSelect = () => {},
+		onFilterClick = () => {},
 		sortBy = ''
 	}: {
 		onSortOptionSelect: (value: string) => void;
+		onFilterClick: () => void;
 		sortBy: string;
 	} = $props();
 
@@ -50,9 +52,10 @@
 				Sort <IconMdiSort class="ml-2 text-lg" />
 			</span>
 		</button>
-		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
+
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
+			onclick={onFilterClick}
 			aria-label="Filter"
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
