@@ -80,6 +80,7 @@
 				<a
 					href="https://twitter.com/OpenFoodFacts"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.x')}
 				>
 					<IconSimpleIconsX class="h-6 w-5" />
@@ -87,6 +88,7 @@
 				<a
 					href="https://www.instagram.com/open.food.facts/"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.instagram')}
 				>
 					<IconMdiInstagram class="h-6 w-6" />
@@ -94,6 +96,7 @@
 				<a
 					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.github')}
 				>
 					<IconMdiGithub class="h-6 w-6" />
@@ -101,6 +104,7 @@
 				<a
 					href="https://www.facebook.com/OpenFoodFacts"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.facebook')}
 				>
 					<IconMdiFacebook class="h-6 w-6" />
@@ -108,6 +112,7 @@
 				<a
 					href="https://slack.openfoodfacts.org/"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.slack')}
 				>
 					<IconMdiSlack class="h-6 w-6" />
