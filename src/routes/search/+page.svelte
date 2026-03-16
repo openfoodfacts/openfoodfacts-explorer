@@ -296,5 +296,6 @@
 <!-- Sticky SORT & FILTER Footer -->
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
-	sortBy={selectedSort.value}
+	onFilterClick={() => {}}
+	{sortBy}
 />
