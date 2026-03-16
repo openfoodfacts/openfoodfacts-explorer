@@ -303,7 +303,7 @@
 	</div>
 
 	{#if searchActive}
-		<div class="flex justify-center">
+		<div class="flex justify-center pb-4">
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
@@ -312,7 +312,7 @@
 		role="region"
 		aria-label={$_('menu.mobile_nav', { default: 'Mobile navigation menu' })}
 		class:hidden={!accordionOpen}
-		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
+		class="mt-3 flex flex-col gap-2 pb-4 md:flex-row md:flex-wrap md:justify-center"
 	>
 		<a class="btn btn-outline link" href="/static/discover">
 			{$_('discover_link')}
