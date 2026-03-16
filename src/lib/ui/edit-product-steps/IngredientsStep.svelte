@@ -55,6 +55,11 @@
 				return;
 			}
 
+			if (!tmpData || typeof tmpData !== 'object') {
+				console.warn('OCR returned invalid data:', tmpData);
+				return;
+			}
+
 			const data = tmpData as OCRResult;
 			if (!data || typeof data !== 'object') {
 				console.warn('OCR failed - invalid result:', data);
