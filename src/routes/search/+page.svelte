@@ -297,5 +297,5 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	onFilterClick={() => {}}
-	{sortBy}
+	sortBy={sortOption}
 />
