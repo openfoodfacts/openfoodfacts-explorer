@@ -15,14 +15,15 @@
 		const screenWidth = window.innerWidth;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
-
 	async function startScanning(scanner: Html5Qrcode) {
 		return scanner.start(
 			{ facingMode: 'environment' },
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
-				console.log('QR code detected:', text);
+				if (import.meta.env.DEV) {
+					console.debug('QR code detected:', text);
+				}
 				lastScannedCode = text;
 
 				// We must stop the scanner first to release the camera
