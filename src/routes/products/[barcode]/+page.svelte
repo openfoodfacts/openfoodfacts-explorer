@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
+	import RadarChart from '$lib/ui/RadarChart.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 
@@ -119,12 +120,16 @@
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
 
-	{#if showBarcode && product.code != null}
-		<BarcodeInfo code={product.code} />
-	{/if}
+	<div class="mt-4">
+		<RadarChart {product} />
+	</div>
 
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
 	></robotoff-contribution-message>
+
+	{#if showBarcode && product.code != null}
+		<BarcodeInfo code={product.code} />
+	{/if}
 
 	{#await productAttributes}
 		<div class="flex items-center justify-center py-8">

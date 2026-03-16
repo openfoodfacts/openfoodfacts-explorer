@@ -6,9 +6,10 @@
 	type Props = {
 		spec: Spec | TopLevelSpec;
 		title?: string;
+		height?: string;
 	};
 
-	let { spec, title }: Props = $props();
+	let { spec, title, height = '200px' }: Props = $props();
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
@@ -52,7 +53,7 @@
 	});
 </script>
 
-<div class="mb-4">
+<div class="mb-4" style="--chart-height: {height}">
 	{#if title}
 		<h3 class="mb-2 text-lg font-semibold">{title}</h3>
 	{/if}
@@ -75,7 +76,7 @@
 <style>
 	:global(.vega-chart svg) {
 		width: 100%;
-		height: 200px;
+		height: var(--chart-height);
 		display: block;
 	}
 </style>

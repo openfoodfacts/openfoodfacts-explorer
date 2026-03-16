@@ -7,6 +7,7 @@ export type NutritionData = {
 	proteins: number;
 	carbohydrates: number;
 	fat: number;
+	saturatedFat: number;
 	sugars: number;
 	salt: number;
 };
@@ -73,8 +74,9 @@ export function extractNutriments(nutriments: Nutriments): NutritionData {
 		proteins: nutriments.proteins_100g || 0,
 		carbohydrates: nutriments.carbohydrates_100g || 0,
 		fat: nutriments.fat_100g || 0,
-		sugars: nutriments.sugars_100g,
-		salt: nutriments.salt_100g
+		saturatedFat: nutriments['saturated-fat_100g'] || 0,
+		sugars: nutriments.sugars_100g || 0,
+		salt: nutriments.salt_100g || 0
 	};
 }
 
@@ -84,6 +86,7 @@ function calculateTotals(items: CalculatorItem[]): NutritionData {
 		proteins: 0,
 		carbohydrates: 0,
 		fat: 0,
+		saturatedFat: 0,
 		sugars: 0,
 		salt: 0
 	};
@@ -94,6 +97,7 @@ function calculateTotals(items: CalculatorItem[]): NutritionData {
 		totals.proteins += item.nutriments.proteins * factor;
 		totals.carbohydrates += item.nutriments.carbohydrates * factor;
 		totals.fat += item.nutriments.fat * factor;
+		totals.saturatedFat += (item.nutriments.saturatedFat || 0) * factor;
 
 		if (item.nutriments.sugars) {
 			totals.sugars += item.nutriments.sugars * factor;

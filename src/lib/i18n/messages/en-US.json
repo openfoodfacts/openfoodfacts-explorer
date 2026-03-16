@@ -182,6 +182,17 @@
 			"stores": "Stores",
 			"countries": "Countries"
 		},
+		"nutrition": {
+			"radar_chart_title": "Nutrient Comparison (% of RI)",
+			"radar_chart_note": "Values based on {basis} and {intake} daily reference intake.",
+			"radar_chart_no_data": "No nutritional data available.",
+			"radar_chart_legend_level": "Nutrient level",
+			"radar_chart_legend_limit": "100% RI limit",
+			"radar_chart_label_100_ri": "100% RI",
+			"radar_chart_tooltip_nutrient": "Nutrient",
+			"radar_chart_tooltip_amount": "Amount (per 100g)",
+			"radar_chart_tooltip_intake": "% of Daily Intake"
+		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
@@ -332,7 +343,9 @@
 				"salt": "Salt",
 				"fibers": "Fibers",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"nutrient": "Nutrient",
+				"amount_g": "Amount (g)"
 			},
 			"additional_nutrients": "Additional nutrients",
 			"comment": "Comment",
