@@ -13,12 +13,8 @@
 	const count = new Tween(0, { easing: cubicOut });
 
 	let element: HTMLElement | undefined = $state();
-	let display = $state(0);
+	let display = $derived(Math.floor(count.current));
 	let hasStarted = false;
-
-	$effect(() => {
-		display = Math.floor(count.current);
-	});
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
