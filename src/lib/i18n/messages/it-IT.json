@@ -107,6 +107,17 @@
 		"shortcuts": {
 			"show_barcode": "Mostra codice a barre del prodotto"
 		},
+		"nutrition": {
+			"radar_chart_title": "Confronto nutrienti (% di RI)",
+			"radar_chart_note": "Valori basati su {basis} e {intake} di assunzione giornaliera di riferimento.",
+			"radar_chart_no_data": "Nessun dato nutrizionale disponibile.",
+			"radar_chart_legend_level": "Livello di nutrienti",
+			"radar_chart_legend_limit": "Limite del 100% RI",
+			"radar_chart_label_100_ri": "100% RI",
+			"radar_chart_tooltip_nutrient": "Nutriente",
+			"radar_chart_tooltip_amount": "Quantità (per 100g)",
+			"radar_chart_tooltip_intake": "% dell'assunzione giornaliera"
+		},
 		"folksonomy": {
 			"use_wc_editor": "Usa l'editor Web Component",
 			"title_beta": "Proprieta personalizzate (beta)",

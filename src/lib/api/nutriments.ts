@@ -96,3 +96,26 @@ export const NUTRIENTS = [
 ] as const;
 
 export type NutrientKey = (typeof NUTRIENTS)[number];
+
+/**
+ * EU daily reference intake values (based on a 2000 kcal diet).
+ * Source: EU Regulation No 1169/2011, Annex XIII
+ */
+export const REFERENCE_INTAKES = {
+	fat: 70,
+	'saturated-fat': 20,
+	sugars: 90,
+	salt: 6
+} as const;
+
+/**
+ * Calculates the percentage of a nutrient value against its EU daily reference intake.
+ */
+export function calculateNutrientPercentage(
+	value: number,
+	nutrient: keyof typeof REFERENCE_INTAKES
+): number {
+	const refValue = REFERENCE_INTAKES[nutrient];
+	if (!refValue) return 0;
+	return (value / refValue) * 100;
+}
