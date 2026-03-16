@@ -6,10 +6,12 @@
 
 	let {
 		onSortOptionSelect = () => {},
-		sortBy = ''
+		sortBy = '',
+		onFilterClick = () => {}
 	}: {
 		onSortOptionSelect: (value: string) => void;
 		sortBy: string;
+		onFilterClick: () => void;
 	} = $props();
 
 	let sortDropdownOpen = $state(false);
@@ -54,6 +56,8 @@
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
 			aria-label="Filter"
+			aria-controls="facets"
+			onclick={() => onFilterClick()}
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
 				Filter <IconMdiFilter class="ml-2 text-lg" />
