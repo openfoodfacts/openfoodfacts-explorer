@@ -35,7 +35,8 @@
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
-		return formatRelativeTime(unix, getFormattedLocale());
+		const relativeTime = formatRelativeTime(unix, getFormattedLocale());
+		return relativeTime ?? $_('product.datasources.unknown');
 	}
 
 	function oldnessClass(unix: number | null | undefined): string {

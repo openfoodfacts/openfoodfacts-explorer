@@ -10,9 +10,9 @@ dayjs.extend(utc);
 export function formatRelativeTime(
 	unix: number | null | undefined,
 	locale: string = 'en-US'
-): string {
+): string | null {
 	if (unix == null || unix === undefined || Number.isNaN(unix)) {
-		return 'Unknown';
+		return null;
 	}
 
 	try {
