@@ -71,6 +71,7 @@ export async function addOrEditProductV2(
  * @param tagtype - The taxonomy type (e.g. 'packaging_shapes', 'labels')
  * @param searchString - Optional search string for autocomplete filtering
  * @param limit - Maximum number of suggestions (default 25, max 400)
+ * @throws {Error} Throws if the API request returns an error.
  * @returns Array of suggestion strings
  */
 export async function getTaxonomySuggestions(
@@ -83,7 +84,7 @@ export async function getTaxonomySuggestions(
 	const lc = get(preferences).lang || 'en';
 	const cc = get(preferences).country;
 
-	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
+	const { data, error } = await off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
 		params: {
 			query: {
 				tagtype,
@@ -94,6 +95,12 @@ export async function getTaxonomySuggestions(
 			}
 		}
 	});
+
+	if (error) {
+		throw new Error(`Failed to fetch taxonomy suggestions: ${JSON.stringify(error)}`);
+	}
+
+	return data;
 }
 
 /**

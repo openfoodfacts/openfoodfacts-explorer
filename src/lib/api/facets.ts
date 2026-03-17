@@ -1,6 +1,7 @@
 import type { KnowledgePanel } from './knowledgepanels';
 import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
+import type { ProductReduced } from './product';
 
 // TODO: Remove 'nutriscore_score' workaround once the SDK is updated
 export type FacetSortOption = ProductFacetsSortOption | 'nutriscore_score';
@@ -20,7 +21,16 @@ export async function getFacet(
 ) {
 	const client = createProductsApi(fetch);
 	// @ts-expect-error - TODO: sortBy does not contain all possible values
-	return client.getFacet(facet, opts);
+	const results = await client.getFacet(facet, opts);
+	if (!results) throw new Error(`Failed to fetch facet ${facet}: No data returned`);
+	return results;
+}
+
+export interface FacetValueResponse {
+	products?: ProductReduced[];
+	count: number;
+	page: number;
+	page_size: number;
 }
 
 export async function getFacetValue(
@@ -28,10 +38,12 @@ export async function getFacetValue(
 	facet: string,
 	value: string,
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
-) {
+): Promise<FacetValueResponse> {
 	const client = createProductsApi(fetch);
 	// @ts-expect-error - TODO: sortBy does not contain all possible values
-	return client.getFacetValue(facet, value, opts);
+	const results = (await client.getFacetValue(facet, value, opts)) as FacetValueResponse;
+	if (!results) throw new Error(`Failed to fetch facet value ${facet}/${value}: No data returned`);
+	return results;
 }
 
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';

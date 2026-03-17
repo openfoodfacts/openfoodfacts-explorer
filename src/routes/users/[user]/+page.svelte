@@ -51,7 +51,7 @@
 <section class="mb-8">
 	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_created', { default: 'Has Created' })}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-		{#each contributor.products.slice(0, 6) as product (product.code)}
+		{#each (contributor.products ?? []).slice(0, 6) as product (product.code)}
 			<WcProductCard {product} />
 		{/each}
 	</div>
@@ -64,7 +64,7 @@
 <section class="mb-8">
 	<h2 class="my-4 text-xl font-bold">{$_('dashboard.has_edited', { default: 'Has Edited' })}</h2>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-		{#each editor.products.slice(0, 6) as product (product.code)}
+		{#each (editor.products ?? []).slice(0, 6) as product (product.code)}
 			<WcProductCard {product} />
 		{/each}
 	</div>

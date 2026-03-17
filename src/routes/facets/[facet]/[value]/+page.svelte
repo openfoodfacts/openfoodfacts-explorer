@@ -111,7 +111,7 @@
 				<PersonalizedSearchToggle></PersonalizedSearchToggle>
 			</div>
 			<ProductGrid
-				products={results.products}
+				products={results.products ?? []}
 				attributes={productAttributes}
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>
@@ -124,7 +124,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each results.products as { product_name, code } (code)}
+					{#each results.products ?? [] as { product_name, code } (code)}
 						<tr class="hover:bg-base-200 cursor-pointer" onclick={() => goto(`/products/${code}`)}>
 							<td>
 								<a href={`/products/${code}`} class="link">

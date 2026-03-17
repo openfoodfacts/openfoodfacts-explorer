@@ -22,12 +22,23 @@ export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
 
+/**
+ * Performs an autocomplete search query.
+ *
+ * @param {AutocompleteQuery} query - The search query configuration.
+ * @param {typeof window.fetch} fetch - The fetch function to use.
+ * @throws {Error} Throws an error if the API does not return a data object.
+ * @returns {Promise<AutocompleteResponse>} A promise that resolves to the autocomplete results.
+ */
 export const autocomplete = async (
 	query: AutocompleteQuery,
 	fetch: typeof window.fetch
 ): Promise<AutocompleteResponse> => {
 	const api = createSearchApi(fetch);
 	const response = await api.autocomplete(query);
+	if (!response.data) {
+		throw new Error(`No data returned from autocomplete API for query: "${JSON.stringify(query)}"`);
+	}
 	return response.data as AutocompleteResponse;
 };
 

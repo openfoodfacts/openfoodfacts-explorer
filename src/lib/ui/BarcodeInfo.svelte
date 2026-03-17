@@ -39,7 +39,7 @@
 						class="text-xs text-blue-500 hover:underline"
 						href={`https://www.google.com/search?q=${code}`}
 						target="_blank"
-						rel="noopener noreferrer"
+						rel="noopener"
 						title="Search on Google"
 					>
 						Google
@@ -50,7 +50,7 @@
 						class="text-xs text-blue-500 hover:underline"
 						href={`https://duckduckgo.com/?q=${code}`}
 						target="_blank"
-						rel="noopener noreferrer"
+						rel="noopener"
 						title="Search on DuckDuckGo"
 					>
 						DuckDuckGo
@@ -61,7 +61,7 @@
 						class="text-xs text-green-600 hover:underline"
 						href={`https://prices.openfoodfacts.org/product/${code}`}
 						target="_blank"
-						rel="noopener noreferrer"
+						rel="noopener"
 						title="Open Prices"
 					>
 						Open Prices {openPricesStatus === null
@@ -76,7 +76,7 @@
 						class="text-xs text-green-600 hover:underline"
 						href={`https://pro.openfoodfacts.dev/products/${code}`}
 						target="_blank"
-						rel="noopener noreferrer"
+						rel="noopener"
 						title="Pro OFF"
 					>
 						Pro OFF{proOffStatus === null ? '…' : proOffStatus === 200 ? '' : ' (Not found)'}

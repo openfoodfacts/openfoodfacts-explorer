@@ -35,7 +35,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const kp = getFacetKnowledgePanels(fetch, facet, value);
 
 	const productCodes = (async () => {
-		const productCodes = (await results).products.map((state) => state.code as string);
+		const productCodes = (await results).products?.map((state) => state.code as string) ?? [];
 		const attrs = await getBulkProductAttributes(fetch, productCodes);
 		return attrs;
 	})();
