@@ -70,7 +70,6 @@
 			bind:value={$preferences.lang}
 			onchange={() => locale.set($preferences.lang)}
 		>
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
 				{@const lang = data.languages[langKey]}
 				<option
@@ -95,7 +94,6 @@
 				{$_('world_option')}
 			</option>
 
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.countries).toSorted() as countryKey (countryKey)}
 				{@const country = data.countries[countryKey]}
 				{@const code2 = country.country_code_2.en}
