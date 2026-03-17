@@ -74,23 +74,9 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
+	const pricesApi = createPricesApi(fetch);
 
-	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
-		product_type: 'all',
-		fields: ['all', 'knowledge_panels'],
-		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
-		knowledge_panels_client: 'web'
-	});
-
-	handleProductApiError(apiErrorWrapped);
-
-	if (!state) {
-		error(500, {
-			message: 'Unable to connect to Open Food Facts API',
-			errors: []
-		});
-	}
-
+	// Start parallel fetches immediately
 	const categories = getTaxo<Category>('categories', fetch);
 	const labels = getTaxo<Label>('labels', fetch);
 	const stores = getTaxo<Store>('stores', fetch);
@@ -106,7 +92,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		? folkApi.getKeys().then((it) => it.data)
 		: Promise.resolve([]);
 
-	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
 		? getPricesCoords(pricesApi, params.barcode)
 		: Promise.resolve(null);
@@ -117,6 +102,23 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		const attributeGroupsList = (attributeGroups ?? []) as AttributeGroup[];
 		return attributesToDefaultPreferences(attributeGroupsList);
 	})();
+
+	// Fetch main product data simultaneously
+	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
+		product_type: 'all',
+		fields: ['all', 'knowledge_panels'],
+		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
+		knowledge_panels_client: 'web'
+	});
+
+	handleProductApiError(apiErrorWrapped);
+
+	if (!state) {
+		throw error(500, {
+			message: 'Unable to connect to Open Food Facts API',
+			errors: []
+		});
+	}
 
 	return {
 		state,
