@@ -109,6 +109,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		state = result.data;
 		apiErrorWrapped = result.error;
 	} catch (err) {
+		// Prevent unhandled promise rejections if the main fetch throws unexpectedly
 		void Promise.allSettled([folksonomyTags, folksonomyKeys, pricesResponse, defaultPreferences]);
 		throw err;
 	}
@@ -120,6 +121,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	handleProductApiError(apiErrorWrapped);
 
 	if (!state) {
+		// Also settle promises if we are going to throw an error response
 		void Promise.allSettled([folksonomyTags, folksonomyKeys, pricesResponse, defaultPreferences]);
 		throw error(500, {
 			message: 'Unable to connect to Open Food Facts API',
