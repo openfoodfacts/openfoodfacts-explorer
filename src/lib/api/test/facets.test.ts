@@ -4,13 +4,7 @@ import { createProductsApi } from '../product';
 
 // Mock the product.ts dependency specifically for createProductsApi
 vi.mock('../product', async (importOriginal) => {
-vi.mock('../product', async (importOriginal) => {
 	const actual = await importOriginal<typeof import('../product')>();
-	return {
-		...actual,
-		createProductsApi: vi.fn()
-	};
-});
 	return {
 		...actual,
 		createProductsApi: vi.fn()
