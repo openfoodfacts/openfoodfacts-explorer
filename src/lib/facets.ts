@@ -31,13 +31,47 @@ export function toLuceneString(query: string, facets: FacetsSelection): string {
 
 export function extractQuery(luceneQuery: string): string {
 	// split at first AND / OR / NOT
-	const queryParts = luceneQuery
+	return luceneQuery
 		.split(/ AND /)
 		.map((part) => part.trim())
-		.filter((it) => it.length > 0 && ['AND', 'OR', 'NOT'].includes(it) === false);
+		.filter(
+			(it) =>
+				it.length > 0 &&
+				!['AND', 'OR', 'NOT'].includes(it) &&
+				// the main query is not in 'key:value' format
+				!it.includes(':')
+		)
+		.join(' ');
+}
 
-	// the main query is not in 'key:value' format
-	return queryParts.filter((part) => !part.includes(':')).join(' ');
+type FacetType = 'include' | 'exclude';
+
+function updateFacet(
+	query: FacetsSelection,
+	facet: string,
+	value: string,
+	type: FacetType,
+	action: 'add' | 'remove'
+): FacetsSelection {
+	const newQuery: FacetsSelection = { ...query };
+
+	if (action === 'add') {
+		if (!newQuery[facet]) {
+			newQuery[facet] = { include: [], exclude: [] };
+		}
+		if (!newQuery[facet][type].includes(value)) {
+			newQuery[facet][type].push(value);
+		}
+	} else if (action === 'remove') {
+		if (newQuery[facet]) {
+			newQuery[facet] = {
+				...newQuery[facet],
+				[type]: newQuery[facet][type].filter((v: string) => v !== value)
+			};
+		}
+	}
+
+	return newQuery;
 }
 
 export function addIncludeFacet(
@@ -45,14 +79,7 @@ export function addIncludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...sel };
-	if (!newQuery[facet]) {
-		newQuery[facet] = { include: [], exclude: [] };
-	}
-	if (!newQuery[facet].include.includes(value)) {
-		newQuery[facet].include.push(value);
-	}
-	return newQuery;
+	return updateFacet(sel, facet, value, 'include', 'add');
 }
 
 export function addExcludeFacet(
@@ -60,14 +87,7 @@ export function addExcludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...sel };
-	if (!newQuery[facet]) {
-		newQuery[facet] = { include: [], exclude: [] };
-	}
-	if (!newQuery[facet].exclude.includes(value)) {
-		newQuery[facet].exclude.push(value);
-	}
-	return newQuery;
+	return updateFacet(sel, facet, value, 'exclude', 'add');
 }
 
 export function removeIncludeFacet(
@@ -75,14 +95,7 @@ export function removeIncludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...query };
-	if (newQuery[facet]) {
-		newQuery[facet] = {
-			...newQuery[facet],
-			include: newQuery[facet].include.filter((v: string) => v !== value)
-		};
-	}
-	return newQuery;
+	return updateFacet(query, facet, value, 'include', 'remove');
 }
 
 export function removeExcludeFacet(
@@ -90,12 +103,5 @@ export function removeExcludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...query };
-	if (newQuery[facet]) {
-		newQuery[facet] = {
-			...newQuery[facet],
-			exclude: newQuery[facet].exclude.filter((v: string) => v !== value)
-		};
-	}
-	return newQuery;
+	return updateFacet(query, facet, value, 'exclude', 'remove');
 }
