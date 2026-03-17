@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import type { Html5Qrcode } from 'html5-qrcode';
 
 	import { goto } from '$app/navigation';
@@ -105,6 +105,9 @@
 			productNotFound = false;
 			error = null;
 			lastScannedCode = '';
+
+			// Ensure page is fully rendered before restarting the scan
+			await tick();
 
 			if (html5QrCode) {
 				await startScanning(html5QrCode);

@@ -18,6 +18,7 @@
 	import type { PageProps } from './$types';
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
+	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
@@ -63,7 +64,7 @@
 
 	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
 	shortcuts.set('Shift+B', {
-		description: 'Show product barcode',
+		description: $_('product.shortcuts.show_barcode'),
 		action: () => (showBarcode = !showBarcode)
 	});
 
@@ -128,7 +129,7 @@
 	{#await productAttributes}
 		<div class="flex items-center justify-center py-8">
 			<span class="loading loading-spinner loading-lg"></span>
-			<span class="ml-2">Loading product attributes...</span>
+			<span class="ml-2">{$_('product.loading_attributes')}</span>
 		</div>
 	{:then attributes}
 		{#if attributes != null}
@@ -137,10 +138,8 @@
 			<div class="alert alert-warning">
 				<IconMdiWarning class="h-6 w-6 shrink-0" />
 				<div>
-					<h3 class="font-bold">Unable to load personalized attributes</h3>
-					<p>
-						There was an error while loading the personalized attributes. Please try again later.
-					</p>
+					<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
+					<p>{$_('product.attributes_error_body')}</p>
 				</div>
 			</div>
 		{/if}
@@ -160,32 +159,39 @@
 		<Card>
 			<label class="label">
 				<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
-				Use the Web Component Editor
+				{$_('product.folksonomy.use_wc_editor')}
 			</label>
 
 			{#if useWCFolksonomyEditor}
-				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
+				<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
+				<folksonomy-editor
+					page-type="edit"
+					product-code={product.code}
+					auth-token={$userAuthTokens?.access_token ?? ''}
+				></folksonomy-editor>
 			{:else}
-				<h1 class="my-4 text-4xl font-bold">Personalized properties (beta)</h1>
+				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
 
 				<div class="prose my-4 text-justify">
 					<p>
-						These properties are created and filled by users for any kind of usages. Feel free to
-						add your own. The properties and values you create
-						<strong>must be factual</strong>. You can dive into
+						{$_('product.folksonomy.intro_before')}
+						<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
+						{$_('product.folksonomy.intro_after')}
 						<a href="https://openfoodfacts-explorer.vercel.app/folksonomy">
-							the list of properties already used by the community
+							{$_('product.folksonomy.link_properties')}
 						</a>
-						or explore the
+						{$_('product.folksonomy.link_middle')}
 						<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
-							properties' documentation and its search engine
+							{$_('product.folksonomy.link_docs')}
 						</a>.
 					</p>
-					<p>Be aware the data model might be modified. Use at your own risk.</p>
+					<p>{$_('product.folksonomy.warning')}</p>
 					<p>
-						This is brought by the
-						<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">Folksonomy Engine project</a
-						>. Don't hesitate to participate or give feedback.
+						{$_('product.folksonomy.footer_before')}
+						<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">
+							{$_('product.folksonomy.footer_link')}
+						</a>
+						{$_('product.folksonomy.footer_after')}
 					</p>
 				</div>
 

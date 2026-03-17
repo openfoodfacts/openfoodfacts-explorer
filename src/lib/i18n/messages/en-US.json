@@ -13,7 +13,6 @@
 	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
-	"github_link": "GitHub",
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -72,6 +71,31 @@
 		"errors_occurred": "errors occurred:"
 	},
 	"footer": {
+		"stay_updated": "Stay Updated",
+		"contribute": "Contribute",
+		"discover_title": "Discover our Project",
+		"tagline": "A collaborative, free and open database of food products",
+		"tagline_break": "from around the world.",
+		"decorative_alt": "A decorative graphic",
+		"social": {
+			"x": "X (formerly Twitter)",
+			"instagram": "Instagram",
+			"github": "GitHub",
+			"facebook": "Facebook",
+			"slack": "Slack"
+		},
+		"links": {
+			"newsletter": "Newsletter",
+			"forum": "Forum",
+			"producers": "Producers Platform",
+			"translators": "Translators",
+			"github": "GitHub",
+			"data_api_sdks": "Data, API, SDKs",
+			"wiki": "Wiki",
+			"legal": "Legal",
+			"privacy": "Privacy",
+			"terms_of_use": "Terms of use"
+		},
 		"discover": {
 			"who_we_are": "Who we are",
 			"blog": "Blog",
@@ -90,8 +114,13 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"display_prices_in_search": "Display prices in search results",
 		"logged_in_as": "Logged in as: {username}",
-		"not_logged_in": "Not logged in"
+		"not_logged_in": "Not logged in",
+		"github_link": "GitHub",
+		"github_cta": "Help us improve Explorer on GitHub",
+		"dev_settings_title": "Development Settings",
+		"moderator_mode": "Moderator Mode"
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -126,10 +155,46 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"loading_attributes": "Loading product attributes...",
+		"attributes_error_title": "Unable to load personalized attributes",
+		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"shortcuts": {
+			"show_barcode": "Show product barcode"
+		},
 		"buttons": {
 			"classic_view": "Classic view",
 			"edit": "Edit",
-			"share": "Share"
+			"share": "Share",
+			"report": "Report an issue with this product",
+			"add_to_calculator": "Add product to nutritional calculator",
+			"compare": "Add to compare",
+			"view_on_off": "View product on Open Food Facts"
+		},
+		"header": {
+			"quantity": "Quantity",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"origins": "Origins",
+			"traceability_codes": "Traceability Codes",
+			"traceability_codes_learn_more": "Learn more",
+			"producer_link": "Producer link",
+			"stores": "Stores",
+			"countries": "Countries"
+		},
+		"folksonomy": {
+			"use_wc_editor": "Use the Web Component Editor",
+			"title_beta": "Personalized properties (beta)",
+			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
+			"intro_emphasis": "must be factual",
+			"intro_after": ". You can dive into ",
+			"link_properties": "the list of properties already used by the community",
+			"link_middle": " or explore the ",
+			"link_docs": "properties' documentation and its search engine",
+			"warning": "Be aware the data model might be modified. Use at your own risk.",
+			"footer_before": "This is brought by the ",
+			"footer_link": "Folksonomy Engine project",
+			"footer_after": ". Don't hesitate to participate or give feedback."
 		},
 		"datasources": {
 			"title": "Data Sources",
@@ -149,13 +214,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
-				"comment": "Optionally, add a comment to describe your changes or provide additional context."
+				"comment": "Optionally, add a comment to describe your changes or provide additional context.",
+				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
 			},
 			"tooltips": {
 				"serving_size": "This value helps to make a proportional calculation of each nutrient per serving size. For example, 60 g, 60g or 60 G (prefer the first one), 1000 ml or 1L",
@@ -168,7 +235,9 @@
 				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
-				"countries": "Countries where the product is widely available (not including stores specialising in foreign products)."
+				"countries": "Countries where the product is widely available (not including stores specialising in foreign products).",
+				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
 			},
 			"main_language": "Main language",
 			"add_product": "Add product",
@@ -183,6 +252,47 @@
 			"quantity": "Quantity",
 			"emb_code": "Traceability codes",
 			"packaging": "Packaging",
+			"packaging_component": {
+				"number_of_units": "Number of units",
+				"number_of_units_placeholder": "e.g. 1",
+				"shape": "Shape",
+				"shape_placeholder": "e.g. bottle, box, pouch...",
+				"material": "Material",
+				"material_placeholder": "e.g. plastic, glass, PET, cardboard...",
+				"recycling": "Recycling",
+				"recycling_placeholder": "e.g. recycle, discard, compost...",
+				"weight_measured": "Weight of one empty unit (g)",
+				"weight_measured_label": "Weight of one empty unit",
+				"weight_placeholder": "e.g. 10",
+				"quantity_per_unit": "Quantity per unit",
+				"quantity_per_unit_label": "Quantity of product contained per unit",
+				"quantity_per_unit_placeholder": "e.g. 1.5 L, 500g...",
+				"add_component": "Add packaging component",
+				"remove_component": "Remove",
+				"all_listed": "All packaging components have been listed",
+				"parts_title": "Packaging parts",
+				"instructions_title": "Guidance for packaging parts:",
+				"component_number": "Component {number}",
+				"number_of_units_desc": "Enter the number of packaging units of the same shape and material contained in the product.",
+				"shape_desc": "Enter the shape name listed in the recycling instructions if they are available, or select a shape.",
+				"material_desc": "Enter the specific material if it can be determined (a material code inside a triangle can often be found on packaging parts), or a generic material (for instance plastic or metal) if you are unsure.",
+				"recycling_desc": "Enter recycling instructions only if they are listed on the product.",
+				"weight_measured_desc": "Remove any remaining food and wash and dry the packaging part before weighting. If possible, use a scale with 0.1g or 0.01g precision.",
+				"quantity_per_unit_desc": "Enter the net weight or net volume and indicate the unit (for example g or ml).",
+				"recycling_instructions": "Recycling instructions and/or packaging information",
+				"recycling_instructions_desc": "Write here the packaging information and/or the recycling instructions that are present on the product.",
+				"recycling_instructions_placeholder": "e.g. 1 plastic bottle, 1 plastic cap",
+				"recycling_instructions_list": "List all packaging parts separated by a comma or line feed, with their amount (e.g. 1 or 6) type (e.g. bottle, box, can), material (e.g. plastic, metal, aluminium) and if available their size (e.g. 33cl) and recycling instructions.",
+				"recycling_instructions_specificity": "Try to be as specific as possible. For plastic, please indicate if it is opaque or transparent, colored, PET or PEHD.",
+				"recycling_instructions_combination": "Data from this field will be combined with any data provided for each packaging part. It is possible to provide one or the other, or both.",
+				"recycling_instructions_examples_label": "Examples:",
+				"recycling_instructions_examples": "1 plastic film to discard, 1 FSC carboard box to recycle, 6 1.5L transparent PET plastic bottles to recycle, 6 colored opaque plastic caps, 12 33cl aluminium cans",
+				"packaging_photo": "Packaging photo",
+				"packaging_photo_desc": "Photos of the packaging info and recycling instructions help to verify the data.",
+				"no_packaging_image": "No packaging photo available",
+				"upload_packaging_photo": "Upload packaging photo",
+				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
+			},
 			"manufacturing_places": "Manufacturing places",
 			"categories": "Categories:",
 			"labels": "Labels",
@@ -190,6 +300,13 @@
 			"stores": "Stores",
 			"origins": "Origin of the product and/or its ingredients",
 			"countries": "Countries where sold",
+			"product_type": "Product type",
+			"product_types": {
+				"food": "Food",
+				"beauty": "Beauty",
+				"petfood": "Pet Food",
+				"product": "Other"
+			},
 			"product_page_url": "Link to the product page on the official site of the producer",
 			"photos": "Product Photos",
 			"no_photo_available": "No photo available",
@@ -201,6 +318,7 @@
 			"serving_size": "Serving Size",
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
+			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
 			"energy": "Energy",
 			"macronutrients": "Macro-nutrients",
@@ -220,6 +338,10 @@
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
+			"toast": {
+				"save_success": "Product saved successfully!",
+				"save_error": "Failed to save product. Please try again."
+			},
 			"add_nutrient": "Add Nutrient",
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
@@ -233,11 +355,57 @@
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"packaging": "Packaging",
 				"comment": "Comment"
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
-			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use."
+			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
+			"images": {
+				"toast": {
+					"login_required": "Please log in to upload images.",
+					"upload_success": "Image uploaded successfully!",
+					"upload_failed": "Upload failed: {error}",
+					"upload_failed_generic": "Upload failed. Please try again.",
+					"upload_error": "Image upload failed. Please try again.",
+					"unselect_success": "Image unselected successfully.",
+					"unselect_failed": "Failed to unselect image. Please try again.",
+					"unselect_error": "Error unselecting image. Please try again.",
+					"save_success": "Image saved successfully!",
+					"process_error": "Error processing image: {error}. Please try again.",
+					"select_success": "Image selected successfully!",
+					"select_error": "Error selecting image. Please try again.",
+					"not_loaded": "Image not fully loaded. Please wait and try again.",
+					"invalid_crop": "Please select a valid crop area."
+				},
+				"select_image": "Select an Image",
+				"uploading": "Uploading...",
+				"upload_type": "Upload {type}",
+				"unselecting": "Unselecting...",
+				"unselect_type": "Unselect {type}",
+				"unselect_image": "Unselect Image",
+				"selecting": "Selecting...",
+				"select_type": "Select {type}",
+				"show_less": "Show Less",
+				"see_all": "See All ({count})",
+				"processing_upload": "Processing upload...",
+				"unselecting_image": "Unselecting image...",
+				"photos_available": "Photos available",
+				"edit_photo": "Edit Photo",
+				"loading_editor": "Loading image editor...",
+				"rotate_left": "Rotate Left",
+				"rotate_right": "Rotate Right",
+				"zoom_in": "Zoom In",
+				"zoom_out": "Zoom Out",
+				"reset": "Reset",
+				"rotation": "Rotation",
+				"tool": "Tool",
+				"crop_drag_to_move": "Drag to move, corners to resize",
+				"crop_click_to_start": "Click and drag to start cropping",
+				"report_image": "Report Image",
+				"save_changes": "Save Changes"
+			},
+			"comment_description": "Add a comment about your changes (optional)"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -270,10 +438,12 @@
 		"back": "Back",
 		"skip": "Skip",
 		"step": "Step",
-		"of": "of"
+		"of": "of",
+		"cancel": "Cancel"
 	},
 	"menu": {
-		"button": "Menu"
+		"button": "Menu",
+		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
@@ -293,7 +463,7 @@
 		"discover_project": "Discover the Project",
 		"contribute": "Contribute",
 		"products_count": "Products",
-		"editors_count": "Editors",
+		"contributors_count": "Contributors",
 		"open_data": "Open Data",
 		"help_improve_title": "Help Improve Open Food Facts",
 		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
@@ -302,7 +472,11 @@
 		"products_created": "Products created",
 		"products_edited": "Products edited",
 		"html_title": "User Profile - {user} - Open Food Facts Explorer",
-		"title": "User Profile of {user}"
+		"title": "User Profile of {user}",
+		"has_created": "Has Created",
+		"has_edited": "Has Edited",
+		"view_all_contributions": "View all contributions",
+		"view_all_edits": "View all edits"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",
@@ -319,5 +493,37 @@
 		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
 		"learn_more": "Learn More",
 		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
+	},
+	"compare": {
+		"page_title": "Compare Products",
+		"page_description": "Compare nutritional information of food products",
+		"title_placeholder": "Enter comparison title...",
+		"click_to_edit": "Click to edit title",
+		"mode_absolute": "Absolute",
+		"mode_vs_first": "vs First",
+		"mode_vs_best": "vs Best",
+		"share": "Share",
+		"share_title": "Product Comparison",
+		"share_text": "Check out this product comparison I made!",
+		"clear_all": "Clear All",
+		"no_products_selected": "No products selected for comparison",
+		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
+		"browse_products": "Browse Products",
+		"shared_comparison": "Shared Comparison",
+		"shared_description": "Shared product comparison",
+		"shared_product_comparison": "Shared Product Comparison",
+		"read_only": "Read-only comparison",
+		"import_to_my": "Import to My Comparison",
+		"import_dialog_title": "Import Comparison",
+		"continue_question": "Continue?",
+		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
+		"import": "Import",
+		"no_products_to_compare": "No products to compare",
+		"invalid_link_hint": "This link doesn't contain any valid products to compare",
+		"toast": {
+			"share_failed": "Sharing failed.",
+			"link_copied": "Comparison link copied to clipboard!",
+			"copy_failed": "Failed to copy link to clipboard."
+		}
 	}
 }

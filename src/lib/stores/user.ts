@@ -55,6 +55,6 @@ function parseIdToken(idToken: string): UserInfo {
 			isModerator: roles.includes('moderator')
 		};
 	} catch (error) {
-		throw new Error(`Failed to parse ID token: ${error}`);
+		throw new Error(`Failed to parse ID token`, { cause: error });
 	}
 }

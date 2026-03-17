@@ -1,6 +1,7 @@
 <script lang="ts">
 	import JsBarcode from 'jsbarcode';
 	import Card from './Card.svelte';
+	import { createPricesApi } from '$lib/api/prices';
 
 	let { code }: { code: string } = $props();
 
@@ -9,8 +10,11 @@
 
 	$effect(() => {
 		JsBarcode('#barcode', code, { format: 'ean13' });
-		fetch(`https://prices.openfoodfacts.org/product/${code}`)
-			.then((r) => (openPricesStatus = r.status))
+		createPricesApi(window.fetch)
+			.getPrices({ product_code: code, size: 1 })
+			.then((r) => {
+				openPricesStatus = r.data && r.data.items && r.data.items.length > 0 ? 200 : 404;
+			})
 			.catch(() => (openPricesStatus = 0));
 		fetch(`https://pro.openfoodfacts.dev/products/${code}`)
 			.then((r) => (proOffStatus = r.status))
@@ -35,7 +39,7 @@
 						class="text-xs text-blue-500 hover:underline"
 						href={`https://www.google.com/search?q=${code}`}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 						title="Search on Google"
 					>
 						Google
@@ -46,7 +50,7 @@
 						class="text-xs text-blue-500 hover:underline"
 						href={`https://duckduckgo.com/?q=${code}`}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 						title="Search on DuckDuckGo"
 					>
 						DuckDuckGo
@@ -57,7 +61,7 @@
 						class="text-xs text-green-600 hover:underline"
 						href={`https://prices.openfoodfacts.org/product/${code}`}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 						title="Open Prices"
 					>
 						Open Prices {openPricesStatus === null
@@ -72,7 +76,7 @@
 						class="text-xs text-green-600 hover:underline"
 						href={`https://pro.openfoodfacts.dev/products/${code}`}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 						title="Pro OFF"
 					>
 						Pro OFF{proOffStatus === null ? '…' : proOffStatus === 200 ? '' : ' (Not found)'}

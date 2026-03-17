@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import { _ } from '$lib/i18n';
+	import { preferences } from '$lib/settings';
 	import { SORT_OPTIONS } from '$lib/const';
 	import {
 		addIncludeFacet,
@@ -62,7 +63,6 @@
 
 	// State for showing/hiding preferences
 	let showPreferences = $state(false);
-	let showPrices = $state(true);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
@@ -188,6 +188,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
@@ -196,6 +197,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
@@ -256,7 +258,7 @@
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
 				<div class="indicator block w-full">
-					{#if showPrices}
+					{#if $preferences.displayPricesInSearch}
 						<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
 							{$_('search.prices_badge', {
 								values: { count: data.prices[product.code] }

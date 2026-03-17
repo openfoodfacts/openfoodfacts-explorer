@@ -23,13 +23,7 @@
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
-	import {
-		IMAGE_HOST,
-		KEYCLOAK_ACCOUNT_URL,
-		MATOMO_HOST,
-		MATOMO_SITE_ID,
-		ROBOTOFF_URL
-	} from '$lib/const';
+	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -139,12 +133,13 @@
 
 	async function gotoProductsSearch() {
 		isSearching = true;
-		await goto('/search?q=' + searchQuery);
+		await goto('/search?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
 	}
 
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
+	const mobileMenuId = 'mobile-menu-panel';
 
 	// Automatically close mobile menu on navigation
 	$effect(() => {
@@ -171,13 +166,15 @@
 	let navigationTooSlow: Promise<void> | null = $state(null);
 	$effect(() => {
 		if (navigating.to != null) {
+			let timeout: ReturnType<typeof setTimeout>;
+
 			navigationTooSlow = new Promise((resolve) => {
-				const timeout = setTimeout(() => {
+				timeout = setTimeout(() => {
 					resolve();
 				}, 5000);
-
-				return () => clearTimeout(timeout);
 			});
+
+			return () => clearTimeout(timeout);
 		} else {
 			navigationTooSlow = null;
 		}
@@ -203,7 +200,7 @@
 			'en'}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
-			dryRun: !dev,
+			dryRun: dev,
 			apiUrl: ROBOTOFF_URL + '/api/v1',
 			imgUrl: IMAGE_HOST + '/images/products'
 		})}
@@ -212,7 +209,8 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 h-1 rounded-none"></progress>
+	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	></progress>
 {/if}
 
 <!-- Desktop Header -->
@@ -282,10 +280,17 @@
 				<IconMdiMagnify class="h-5 w-5" />
 			</button>
 			<button
+				type="button"
 				title={$_('menu.button')}
+				aria-label={$_('menu.button')}
+				aria-expanded={accordionOpen}
+				aria-controls={mobileMenuId}
 				class="btn btn-square btn-secondary text-lg"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
+				}}
+				onkeydown={(e) => {
+					if (e.key === 'Escape') accordionOpen = false;
 				}}
 			>
 				{#if accordionOpen}
@@ -303,6 +308,9 @@
 		</div>
 	{/if}
 	<div
+		id={mobileMenuId}
+		role="region"
+		aria-label={$_('menu.mobile_nav', { default: 'Mobile navigation menu' })}
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
@@ -336,7 +344,10 @@
 		</a>
 
 		{#if $userInfo != null}
-			<a class="btn btn-outline link" href={KEYCLOAK_ACCOUNT_URL}>Account</a>
+			<a
+				class="btn btn-outline link"
+				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+			>
 			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
 		{:else}
 			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
@@ -371,7 +382,12 @@
 					})}
 				</p>
 				<div class="modal-action">
-					<a href="https://status.openfoodfacts.org" target="_blank" class="btn btn-primary">
+					<a
+						href="https://status.openfoodfacts.org"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-primary"
+					>
 						{$_('slow_server.status_page', { default: 'View Status Page' })}
 					</a>
 				</div>
