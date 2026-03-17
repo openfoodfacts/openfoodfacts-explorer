@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
@@ -169,7 +170,7 @@
 				<div class="py-8 text-center">
 					<p class="mb-4 text-lg">{$_('compare.no_products_selected')}</p>
 					<p class="mb-4 text-sm text-gray-600">{$_('compare.add_products_hint')}</p>
-					<a href="/products/search?q=chocolate" class="btn btn-primary">
+					<a href={resolve('/explore')} class="btn btn-primary">
 						{$_('compare.browse_products')}
 					</a>
 				</div>

@@ -188,6 +188,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
@@ -196,6 +197,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}

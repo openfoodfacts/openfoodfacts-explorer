@@ -70,7 +70,6 @@
 			bind:value={$preferences.lang}
 			onchange={() => locale.set($preferences.lang)}
 		>
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
 				{@const lang = data.languages[langKey]}
 				<option
@@ -95,7 +94,6 @@
 				{$_('world_option')}
 			</option>
 
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.countries).toSorted() as countryKey (countryKey)}
 				{@const country = data.countries[countryKey]}
 				{@const code2 = country.country_code_2.en}
@@ -164,6 +162,7 @@
 		class="btn btn-outline"
 		href={GITHUB_REPO_URL}
 		target="_blank"
+		rel="noopener noreferrer"
 		aria-label={$_('settings.github_link')}
 	>
 		<IconMdiGithub class="h-5 w-5" />
