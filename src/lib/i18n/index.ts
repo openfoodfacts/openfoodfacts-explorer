@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { browser } from '$app/environment';
 
-const locales = ['en-US', 'it-IT'];
+export const locales = ['en-US', 'it-IT'];
 
 const FALLBACK_LOCALE = 'en-US';
 
@@ -30,7 +30,7 @@ export function getBrowserLocale() {
 	return preferredLang || navLang || FALLBACK_LOCALE;
 }
 
-export function getFormattedLocale(): string {
+export function getUILocale(): string {
 	try {
 		return getLocale();
 	} catch {

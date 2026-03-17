@@ -212,13 +212,7 @@
 			"states": "States",
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product",
-			"just_now": "just now",
-			"time_since_year": "{count, plural, one {# year ago} other {# years ago}}",
-			"time_since_month": "{count, plural, one {# month ago} other {# months ago}}",
-			"time_since_day": "{count, plural, one {# day ago} other {# days ago}}",
-			"time_since_hour": "{count, plural, one {# hour ago} other {# hours ago}}",
-			"time_since_minute": "{count, plural, one {# minute ago} other {# minutes ago}}",
-			"time_since_second": "{count, plural, one {# second ago} other {# seconds ago}}"
+			"just_now": "just now"
 		},
 		"edit": {
 			"moderator_only": "Moderator only",

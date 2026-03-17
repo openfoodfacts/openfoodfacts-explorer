@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _, getFormattedLocale } from '$lib/i18n';
+	import { _, getUILocale } from '$lib/i18n';
 	import { formatRelativeTime } from '$lib/utils/dayjs';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
@@ -23,7 +23,7 @@
 			return $_('product.datasources.unknown');
 		}
 		const date = new Date(unix * 1000);
-		return new Intl.DateTimeFormat(getFormattedLocale(), options).format(date);
+		return new Intl.DateTimeFormat(getUILocale(), options).format(date);
 	}
 
 	function formatShortDate(unix: number | null | undefined): string {
@@ -35,7 +35,7 @@
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
-		const relativeTime = formatRelativeTime(unix, getFormattedLocale());
+		const relativeTime = formatRelativeTime(unix, getUILocale());
 		return relativeTime ?? $_('product.datasources.unknown');
 	}
 

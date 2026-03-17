@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
+import { locales } from '$lib/i18n';
 import 'dayjs/locale/en';
 import 'dayjs/locale/it';
 
