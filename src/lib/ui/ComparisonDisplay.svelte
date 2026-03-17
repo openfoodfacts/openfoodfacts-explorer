@@ -361,7 +361,6 @@
 						class="btn btn-circle btn-sm btn-soft btn-error absolute top-2 right-2 z-10"
 						onclick={() => onRemoveProduct(product.code)}
 						aria-label="Remove product from comparison"
-						title="Remove product from comparison"
 					>
 						<IconMdiClose class="block h-4 w-4" />
 					</button>
