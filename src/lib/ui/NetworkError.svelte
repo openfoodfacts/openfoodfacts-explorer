@@ -12,7 +12,12 @@
 
 	<p class="text-sm">
 		{$_('errors.network.instructions')}
-		<a href="https://status.openfoodfacts.org/" target="_blank" rel="noopener" class="link">
+		<a
+			href="https://status.openfoodfacts.org/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="link"
+		>
 			Open Food Facts Status Page
 		</a>
 	</p>
