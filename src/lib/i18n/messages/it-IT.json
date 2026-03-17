@@ -13,7 +13,7 @@
 		"placeholder": "Query or barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
-		"button": "Search"
+		"button": "Ricerca"
 	},
 	"auth": {
 		"username": "Username",
@@ -30,11 +30,11 @@
 		"actions": "Actions"
 	},
 	"general": {
-		"language": "Language",
+		"language": "lingua",
 		"country": "Paese",
 		"currency": "Valuta",
 		"loading": "Loading...",
-		"warning": "Warning",
+		"warning": "Avvertimento",
 		"notes": "Notes",
 		"summary": "Summary",
 		"product_not_found": "Product not found",
