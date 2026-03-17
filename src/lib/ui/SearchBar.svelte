@@ -70,6 +70,16 @@
   			debounceTimeoutId = undefined;
 		}
 
+		if (query.trim().length < minQueryLength) {
+			if (autocompleteAbortController) {
+				autocompleteAbortController.abort();
+				autocompleteAbortController = null;
+			}
+			autocompleteLoading = false;
+			autocompleteList = null;
+			return;  
+   		 }
+
 		debounceTimeoutId = window.setTimeout(() => {
 			fetchAutocomplete(query);
 		}, DEBOUNCE_DELAY_MS);
