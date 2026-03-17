@@ -382,7 +382,12 @@
 					})}
 				</p>
 				<div class="modal-action">
-					<a href="https://status.openfoodfacts.org" target="_blank" class="btn btn-primary">
+					<a
+						href="https://status.openfoodfacts.org"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-primary"
+					>
 						{$_('slow_server.status_page', { default: 'View Status Page' })}
 					</a>
 				</div>
