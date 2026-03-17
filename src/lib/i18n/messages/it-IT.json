@@ -157,6 +157,9 @@
 			"instructions": "Se il problema persiste, visita la pagina di stato di Open Food Facts."
 		}
 	},
+	"help": {
+		"button": "Mostra le scorciatoie della guida"
+	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
 		"subtitle": "Un database collaborativo, gratuito e aperto di prodotti alimentari da tutto il mondo. Scopri, cerca e contribuisci alla trasparenza alimentare per tutti.",

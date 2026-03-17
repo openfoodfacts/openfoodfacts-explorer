@@ -445,6 +445,9 @@
 		"button": "Menu",
 		"mobile_nav": "Mobile navigation menu"
 	},
+	"help": {
+		"button": "Show help shortcuts"
+	},
 	"facets": {
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
 		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
