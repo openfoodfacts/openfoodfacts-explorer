@@ -163,7 +163,7 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
-				<!-- TODO: use the SDK directly in the webcomponent -->
+				<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
 				<folksonomy-editor
 					page-type="edit"
 					product-code={product.code}
