@@ -30,5 +30,13 @@ export function getBrowserLocale() {
 	return preferredLang || navLang || FALLBACK_LOCALE;
 }
 
+export function getFormattedLocale(): string {
+	try {
+		return getLocale();
+	} catch {
+		return FALLBACK_LOCALE;
+	}
+}
+
 export { isLoading };
 export * from 'svelte-i18n';

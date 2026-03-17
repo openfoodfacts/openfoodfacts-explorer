@@ -1,22 +1,13 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, getFormattedLocale } from '$lib/i18n';
+	import { formatRelativeTime } from '$lib/utils/dayjs';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-
-	dayjs.extend(relativeTime);
-
-	const _detectedLocale =
-		typeof navigator !== 'undefined' ? (navigator.language || 'en').split('-')[0] : 'en';
-	import(/* @vite-ignore */ `dayjs/locale/${_detectedLocale}`)
-		.then(() => dayjs.locale(_detectedLocale))
-		.catch(() => {});
 
 	type Props = {
 		product: ProductDataSection;
@@ -24,61 +15,27 @@
 
 	let { product }: Props = $props();
 
-	function formatShortDate(unix: number | null | undefined): string {
+	function formatDate(
+		unix: number | null | undefined,
+		options: Intl.DateTimeFormatOptions
+	): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
 		}
 		const date = new Date(unix * 1000);
-		const options: Intl.DateTimeFormatOptions = {
-			dateStyle: 'medium'
-		};
+		return new Intl.DateTimeFormat(getFormattedLocale(), options).format(date);
+	}
 
-		const userLanguage = navigator.language || 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+	function formatShortDate(unix: number | null | undefined): string {
+		return formatDate(unix, { dateStyle: 'medium' });
 	}
 
 	function formatFullDate(unix: number | null | undefined): string {
-		if (unix == null || unix === undefined || Number.isNaN(unix)) {
-			return $_('product.datasources.unknown');
-		}
-		const date = new Date(unix * 1000);
-		const options: Intl.DateTimeFormatOptions = {
-			dateStyle: 'medium',
-			timeStyle: 'short'
-		};
-
-		const userLanguage = navigator.language || 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+		return formatDate(unix, { dateStyle: 'medium', timeStyle: 'short' });
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
-		if (unix == null || unix === undefined || Number.isNaN(unix)) {
-			return $_('product.datasources.unknown');
-		}
-
-		try {
-			const t = dayjs(unix * 1000);
-			return dayjs().to(t);
-		} catch {
-			const seconds = Math.floor(Date.now() / 1000) - unix;
-
-			const intervals: { key: string; secs: number }[] = [
-				{ key: 'year', secs: 31536000 },
-				{ key: 'month', secs: 2592000 },
-				{ key: 'day', secs: 86400 },
-				{ key: 'hour', secs: 3600 },
-				{ key: 'minute', secs: 60 },
-				{ key: 'second', secs: 1 }
-			];
-
-			for (const { key, secs } of intervals) {
-				const interval = Math.floor(seconds / secs);
-				if (interval >= 1) {
-					return $_(`product.datasources.time_since_${key}`, { values: { count: interval } });
-				}
-			}
-			return $_('product.datasources.just_now');
-		}
+		return formatRelativeTime(unix, getFormattedLocale());
 	}
 
 	function oldnessClass(unix: number | null | undefined): string {
