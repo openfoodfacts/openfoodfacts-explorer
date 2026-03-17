@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	// import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 
 	import Debug from '$lib/ui/Debug.svelte';
@@ -25,7 +25,7 @@
 	{#if panel !== null}
 		<Panel {panel} {panels} {id} {productCode} />
 	{:else}
-		{$tracker?.trackEvent('Panel Not Found', 'Panel ID', id)}
+		<!-- tracker?.trackEvent('Panel Not Found', 'Panel ID', id) -->
 		<div class="alert alert-warning">Panel not found: {id}</div>
 	{/if}
 {/snippet}
@@ -51,7 +51,7 @@
 		<Map {element} />
 	{:else}
 		<div class="alert alert-warning">No renderer for element type!</div>
-		{$tracker?.trackEvent('Element Not Found', 'Element', JSON.stringify(element))}
+		<!-- tracker?.trackEvent('Element Not Found', 'Element', JSON.stringify(element)) -->
 		<Debug data={element} />
 	{/if}
 </div>
