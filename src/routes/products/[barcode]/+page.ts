@@ -131,6 +131,21 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		throw err;
 	}
 
+	if (apiErrorWrapped) {
+		// Settle parallel promises before throwing API errors (404/400)
+		await Promise.allSettled([
+			categories,
+			labels,
+			stores,
+			brands,
+			origins,
+			countries,
+			folksonomyTags,
+			folksonomyKeys,
+			pricesResponse,
+			defaultPreferences
+		]);
+	}
 	handleProductApiError(apiErrorWrapped);
 
 	if (!state) {
