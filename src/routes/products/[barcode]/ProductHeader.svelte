@@ -253,7 +253,12 @@
 					<div class="mb-2">
 						<div class="text-secondary mb-2 text-sm font-bold">
 							<span>{$_('product.header.traceability_codes')}</span>
-							<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
+							<a
+								href={TRACEABILITY_CODES_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link link-secondary text-xs"
+							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
 						</div>

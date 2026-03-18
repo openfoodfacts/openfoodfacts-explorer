@@ -4,6 +4,7 @@
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 	import IconMdiArrowRight from '@iconify-svelte/mdi/arrow-right';
@@ -25,6 +26,7 @@
 		$_('product.edit.sections.languages'),
 		$_('product.edit.sections.ingredients'),
 		$_('product.edit.sections.nutrition'),
+		$_('product.edit.sections.packaging'),
 		$_('product.edit.sections.comment')
 	]);
 
@@ -46,6 +48,7 @@
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
+		getPackagingImage: (language: string) => string | null;
 
 		// Submission
 
@@ -76,6 +79,7 @@
 		addLanguage,
 		getIngredientsImage,
 		getNutritionImage,
+		getPackagingImage,
 		languages,
 		categoryNames,
 		labelNames,
@@ -152,6 +156,8 @@
 {:else if currentStep === 4}
 	<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
+	<PackagingStep bind:product {getPackagingImage} />
+{:else if currentStep === 6}
 	<CommentStep bind:comment />
 {/if}
 

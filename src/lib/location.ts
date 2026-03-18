@@ -56,11 +56,16 @@ export async function getNearStores(radius: number = 1000): Promise<OverpassAPIR
 }
 
 export async function idToName(fetch: typeof window.fetch, id: number): Promise<string> {
-	const res = await fetch('https://overpass-api.de/api/interpreter', {
+	const response = await fetch('https://overpass-api.de/api/interpreter', {
 		method: 'POST',
 		body: 'data=' + encodeURIComponent(`[out:json][timeout:90];(nwr(id:${id}););out tags;`)
-	}).then((data) => data.json());
-	console.debug(res);
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to fetch location name: ${response.status} ${response.statusText}`);
+	}
+
+	const res = await response.json();
 
 	if (res.elements.length === 0) {
 		return 'Unknown';
