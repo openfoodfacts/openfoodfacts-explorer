@@ -2,11 +2,19 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import { locales } from '$lib/i18n';
-import 'dayjs/locale/en';
-import 'dayjs/locale/it';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
+
+const languageCodes = locales.map((locale) => locale.split('-')[0].toLowerCase());
+const dayjsLocaleModules = import.meta.glob('dayjs/locale/*.js', { eager: true });
+
+languageCodes.forEach((code) => {
+	const modulePath = `dayjs/locale/${code}.js`;
+	if (!dayjsLocaleModules[modulePath]) {
+		console.warn(`Dayjs locale not found: ${code}`);
+	}
+});
 
 export function formatRelativeTime(
 	unix: number | null | undefined,
