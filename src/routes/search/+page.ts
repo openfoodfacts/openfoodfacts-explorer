@@ -81,23 +81,33 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const searchDataTyped = searchData as SearchResult;
 
-	// Get attributes for all products using the API
+	// Prepare data
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
 	const off = createProductsApi(fetch);
 
-	const [attributesByCode, prices, { data: attributeGroups }] = await Promise.all([
-		getBulkProductAttributes(fetch, productCodes),
-		isPricesConfigured()
-			? getPrices(createPricesApi(fetch), productCodes)
-			: Promise.resolve({} as Record<string, number>),
-		off.getAttributeGroups()
+	// Create promises (clean & readable)
+	const attributesPromise = getBulkProductAttributes(fetch, productCodes);
+
+	const pricesPromise = isPricesConfigured()
+		? getPrices(createPricesApi(fetch), productCodes)
+		: Promise.resolve({} as Record<string, number>);
+
+	const attributeGroupsPromise = off.getAttributeGroups();
+
+	// Execute in parallel
+	const [attributesByCode, prices, attributeGroupsResponse] = await Promise.all([
+		attributesPromise,
+		pricesPromise,
+		attributeGroupsPromise
 	]);
+
+	const attributeGroups = attributeGroupsResponse.data ?? [];
 
 	return {
 		query,
 		search: searchDataTyped,
 		attributesByCode,
 		prices,
-		attributeGroups: attributeGroups ?? []
+		attributeGroups
 	};
 };
