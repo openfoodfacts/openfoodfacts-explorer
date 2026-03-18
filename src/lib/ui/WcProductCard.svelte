@@ -84,8 +84,7 @@ Wraps the <product-card> web component and adds accessibility features.
 				throw new Error('Could not load product details for comparison');
 			}
 
-			// @ts-expect-error - SDK response typing for getProductV3 product payload is incompatible here
-			const ok = compareStore.addProduct(data.product);
+			const ok = compareStore.addProduct(data.product as unknown as Product);
 			if (!ok) {
 				toastCtx.warning(
 					$_('product.menu.add_to_comparison_failed', {
