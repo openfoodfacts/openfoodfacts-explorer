@@ -36,6 +36,7 @@ export const PRODUCT_STATUS = {
 export const PRODUCT_TYPES = ['food', 'beauty', 'petfood', 'product'] as const;
 export type ProductType = (typeof PRODUCT_TYPES)[number];
 
+// TODO: Make this configurable via env vars
 export const BACKEND_DOMAINS: Record<ProductType, string> = {
 	food: 'openfoodfacts.org',
 	beauty: 'openbeautyfacts.org',
