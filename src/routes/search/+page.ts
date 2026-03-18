@@ -22,19 +22,17 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-//---------------------------------------------------------------------------
-
-//Simultaneous requests allowed to the Prices API
-//It helps to prevent sending too many request at same time when the result contain many products
-//rate limiting=5
-//Default concurrency chosen to balance performance and API safety
-
+ // Maximum number of simultaneous requests allowed to the Prices API.
+ // This helps prevent sending too many requests at the same time when the result contains many products.
+ // Rate limiting value: 5.
+ // Default concurrency chosen to balance performance and API safety.
 const PRICES_CONCURRENCY_LIMIT = 5;
 
-async function withConcurrencyLimit<T>(
-	tasks: (() => Promise<T>)[],
-	limit: number
-): Promise<PromiseSettledResult<T>[]> {
+async function withConcurrencyLimit<T>(tasks: (() => Promise<T>)[],limit: number): Promise<PromiseSettledResult<T>[]> {
+	
+	// Ensure limit is a safe positive integer; default to 1 if invalid.
+	const safeLimit = Number.isInteger(limit) && limit > 0 ? limit : 1;
+
 	const results: PromiseSettledResult<T>[] = new Array(tasks.length);
 	let nextIndex = 0;
 
@@ -49,7 +47,8 @@ async function withConcurrencyLimit<T>(
 		}
 	}
 
-	await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, worker));
+	// Spawn workers up to safeLimit.
+	await Promise.all(Array.from({ length: Math.min(safeLimit, tasks.length) }, worker));
 
 	return results;
 }
@@ -57,31 +56,44 @@ async function withConcurrencyLimit<T>(
 async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
 	if (barcodes.length === 0) return {};
 
-	const tasks = barcodes.map((code) => async () => ({
-		code,
-		prices: await api.getPrices({ product_code: code })
-	}));
-	//Executed tasks with concurrency control
+	// Each task preserves its barcode on both success and failure.
+	const tasks = barcodes.map((code) => async () => {
+		try {
+			const pricesResponse = await api.getPrices({ product_code: code });
+			return { code, pricesResponse };
+		} catch (error) {
+			throw { code, error };
+		}
+	});
+
+	// Execute tasks with concurrency control.
 	const settled = await withConcurrencyLimit(tasks, PRICES_CONCURRENCY_LIMIT);
-	//Final Result
+
+	// Final result map (distinct from pricesResponse above)
 	const prices: Record<string, number> = {};
 
 	for (const result of settled) {
 		if (result.status === 'rejected') {
-			console.warn('[getPrices] Failed to fetch price for a barcode:', result.reason);
+			// Extract barcode and error from rejected result for meaningful logging
+			const { code, error } = result.reason as { code?: string; error?: unknown };
+			if (code) {
+				console.warn(`[getPrices] Failed to fetch price for barcode "${code}":`, error);
+			} else {
+				console.warn('[getPrices] Failed to fetch price (unknown barcode):', result.reason);
+			}
 			continue;
 		}
 
-		const { code, prices: apiResult } = result.value;
-		//Only store price if API returned data
-		if (apiResult.data?.items) {
-			prices[code] = apiResult.data.total;
+		const { code, pricesResponse } = result.value;
+
+		// Only store price if API returned data.
+		if (pricesResponse.data?.items) {
+			prices[code] = pricesResponse.data.total;
 		}
 	}
 
 	return prices;
 }
-//---------------------------------------------------------------------------
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
@@ -91,7 +103,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		error(400, 'Missing query parameter');
 	}
 
-	// If the code is an EAN13 code, we can directly fetch the product
+	// If the code is an EAN13 code, we can directly fetch the product.
 	if (isValidEAN13(query)) {
 		redirect(308, `/products/${query}`);
 	}
@@ -124,7 +136,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const searchDataTyped = searchData as SearchResult;
 
-	// Get attributes for all products using the API
+	// Get attributes for all products using the API.
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
 	const attributesByCode = await getBulkProductAttributes(fetch, productCodes);
 
