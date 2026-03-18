@@ -91,21 +91,14 @@
 			return;
 		}
 
-		const { data, error } = await getTaxonomySuggestions(
-			fetch,
-			tagtype,
-			searchString || undefined,
-			50
-		);
-
-		if (error || !data) {
+		try {
+			const data = await getTaxonomySuggestions(fetch, tagtype, searchString || undefined, 50);
+			const suggestions = data.suggestions ?? [];
+			suggestionsCache[cacheKey] = suggestions;
+			activeSuggestions = { ...activeSuggestions, [fieldKey]: suggestions };
+		} catch (error) {
 			console.warn(`Failed to fetch suggestions for ${tagtype}:`, error);
-			return;
 		}
-
-		const suggestions = data.suggestions ?? [];
-		suggestionsCache[cacheKey] = suggestions;
-		activeSuggestions = { ...activeSuggestions, [fieldKey]: suggestions };
 	}
 
 	function handleTaxonomyInput(

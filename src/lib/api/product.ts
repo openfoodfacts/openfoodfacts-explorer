@@ -96,8 +96,10 @@ export async function getTaxonomySuggestions(
 		}
 	});
 
-	if (error) {
-		throw new Error(`Failed to fetch taxonomy suggestions: ${JSON.stringify(error)}`);
+	if (error || !data) {
+		throw new Error(
+			`Failed to fetch taxonomy suggestions: ${error ? JSON.stringify(error) : 'No data returned'}`
+		);
 	}
 
 	return data;
