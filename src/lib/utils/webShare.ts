@@ -54,7 +54,14 @@ export async function shareContent(
 	}
 
 	try {
-		await navigator.clipboard.writeText(data.url);
+		// Build complete text for clipboard: title + text + URL for better context
+		const textParts: string[] = [];
+		if (data.text) textParts.push(data.text);
+		if (data.title && data.title !== data.text) textParts.push(data.title);
+		textParts.push(data.url);
+		const clipboardText = textParts.join('\n');
+
+		await navigator.clipboard.writeText(clipboardText);
 		callbacks.onClipboard?.();
 	} catch (error) {
 		console.error('Failed to copy to clipboard:', error);
