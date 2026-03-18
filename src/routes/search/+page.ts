@@ -87,8 +87,8 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 		const { code, pricesResponse } = result.value;
 
 		// Only store price if API returned data.
-		if (pricesResponse.data?.items) {
-			prices[code] = pricesResponse.data.total;
+		if (Array.isArray(pricesResponse.data?.items) &&pricesResponse.data.items.length > 0 &&typeof pricesResponse.data.total === 'number') {
+    		prices[code] = pricesResponse.data.total;
 		}
 	}
 
