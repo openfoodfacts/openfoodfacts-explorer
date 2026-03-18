@@ -45,8 +45,6 @@
 
 	let toastCtx = getToastCtx();
 
-	let isShareSupported = $derived(navigator?.share != null);
-
 	function addToCalculator() {
 		// FIXME: product.code cannot be null
 		const code = product.code!;
@@ -64,16 +62,15 @@
 	async function sharePage() {
 		await shareContent(
 			{
-				url: window.location.href,
+				url: `${window.location.origin}${window.location.pathname}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
 					values: { productName: product.product_name || product.code }
 				})
 			},
-			toastCtx,
 			{
-				copiedLink: $_('product.toast.copied_link'),
-				failedCopy: $_('product.toast.failed_copy')
+				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
+				onError: () => toastCtx.error($_('product.toast.failed_copy'))
 			}
 		);
 	}
@@ -141,15 +138,13 @@
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 					</a>
 
-					{#if isShareSupported}
-						<button
-							class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-							onclick={sharePage}
-						>
-							<IconMdiShareVariant class="h-5 w-5" />
-							<span class="hidden md:block">{$_('product.buttons.share')}</span>
-						</button>
-					{/if}
+					<button
+						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						onclick={sharePage}
+					>
+						<IconMdiShareVariant class="h-5 w-5" />
+						<span class="hidden md:block">{$_('product.buttons.share')}</span>
+					</button>
 
 					<a
 						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"

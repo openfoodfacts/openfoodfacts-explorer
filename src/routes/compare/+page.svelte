@@ -45,8 +45,8 @@
 				url
 			},
 			{
-				onclipboard: () => toastCtx.success($_('compare.toast.link_copied')),
-				onerror: () => toastCtx.error($_('compare.toast.copy_failed'))
+				onClipboard: () => toastCtx.success($_('compare.toast.link_copied')),
+				onError: () => toastCtx.error($_('compare.toast.copy_failed'))
 			}
 		);
 	}

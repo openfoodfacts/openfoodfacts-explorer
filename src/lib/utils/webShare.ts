@@ -12,45 +12,52 @@ type ShareData = {
 };
 
 /**
- * Share content using the Web Share API with clipboard fallback
- * @param data - The data to share (url is required)
- * @param toastCtx - Toast notification context
- * @param messages - Optional custom toast messages (e.g., for i18n)
+ * Share content using the Web Share API with clipboard fallback.
+ *
+ * If native share succeeds (user shares via email, messaging, etc.):
+ *   - callbacks.onSuccess is invoked
+ *
+ * If native share is unavailable or fails, falls back to clipboard copy:
+ *   - callbacks.onClipboard is invoked when copy succeeds
+ *   - callbacks.onError is invoked when copy fails
  */
 export async function shareContent(
 	data: ShareData,
 	callbacks: {
-		onsuccess?: () => void;
-		onclipboard?: () => void;
-		onerror?: () => void;
+		onSuccess?: () => void;
+		onClipboard?: () => void;
+		onError?: () => void;
 	} = {}
 ) {
 	if (!browser) {
 		throw new Error('shareContent must be called in a browser context');
 	}
 
-	// Try native share API if available and supported
-	if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+	const hasShareAPI = navigator.share !== undefined;
+	// Note: Safari 16.3 and below don't have navigator.canShare, so we need to handle undefined
+	const canShareData = navigator.canShare ? navigator.canShare(data) : true;
+
+	if (hasShareAPI && canShareData) {
 		try {
 			await navigator.share(data);
-			callbacks.onsuccess?.();
+			callbacks.onSuccess?.();
 			return;
 		} catch (error) {
-			// User likely cancelled the share, not a real error
+			// Only skip if user explicitly cancelled
 			if (error instanceof Error && error.name === 'AbortError') {
 				return;
 			}
+			// Log any other error but continue to clipboard fallback
 			console.error('Share API failed:', error);
-			// Only show error if clipboard fallback also fails
+			// Intentionally fall through to clipboard fallback
 		}
 	}
 
-	// Fallback to clipboard copy
 	try {
 		await navigator.clipboard.writeText(data.url);
-		callbacks.onclipboard?.();
+		callbacks.onClipboard?.();
 	} catch (error) {
 		console.error('Failed to copy to clipboard:', error);
-		callbacks.onerror?.();
+		callbacks.onError?.();
 	}
 }
