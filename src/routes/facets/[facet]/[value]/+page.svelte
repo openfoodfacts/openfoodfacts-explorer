@@ -51,6 +51,10 @@
 	<div class="my-8 w-full">
 		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
 		<MapComponent facet={distributionData} />
+		<p class="mt-2 text-sm text-gray-500">
+			Note: The geographic distribution shown on this map is based only on the products visible on
+			the current page.
+		</p>
 	</div>
 {/if}
 
