@@ -4,18 +4,11 @@
  */
 
 import { browser } from '$app/environment';
-import type { ToastContext } from '$lib/stores/toasts';
 
 type ShareData = {
 	url: string;
 	title?: string;
 	text?: string;
-};
-
-type ShareMessages = {
-	failedShare?: string;
-	copiedLink?: string;
-	failedCopy?: string;
 };
 
 /**
@@ -26,25 +19,21 @@ type ShareMessages = {
  */
 export async function shareContent(
 	data: ShareData,
-	toastCtx: ToastContext,
-	messages?: ShareMessages
+	callbacks: {
+		onsuccess?: () => void;
+		onclipboard?: () => void;
+		onerror?: () => void;
+	} = {}
 ) {
 	if (!browser) {
 		throw new Error('shareContent must be called in a browser context');
 	}
 
-	const defaultMessages = {
-		failedShare: 'Failed to share',
-		copiedLink: 'Link copied to clipboard!',
-		failedCopy: 'Failed to copy link'
-	};
-
-	const msgs = { ...defaultMessages, ...messages };
-
 	// Try native share API if available and supported
 	if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
 		try {
 			await navigator.share(data);
+			callbacks.onsuccess?.();
 			return;
 		} catch (error) {
 			// User likely cancelled the share, not a real error
@@ -59,9 +48,9 @@ export async function shareContent(
 	// Fallback to clipboard copy
 	try {
 		await navigator.clipboard.writeText(data.url);
-		toastCtx.success(msgs.copiedLink);
+		callbacks.onclipboard?.();
 	} catch (error) {
 		console.error('Failed to copy to clipboard:', error);
-		toastCtx.error(msgs.failedCopy);
+		callbacks.onerror?.();
 	}
 }

@@ -44,10 +44,9 @@
 				text: $_('compare.share_text'),
 				url
 			},
-			toastCtx,
 			{
-				copiedLink: $_('compare.toast.link_copied'),
-				failedCopy: $_('compare.toast.copy_failed')
+				onclipboard: () => toastCtx.success($_('compare.toast.link_copied')),
+				onerror: () => toastCtx.error($_('compare.toast.copy_failed'))
 			}
 		);
 	}
