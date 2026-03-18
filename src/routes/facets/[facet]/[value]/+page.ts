@@ -6,6 +6,7 @@ import {
 	getFacetValue,
 	type FacetSortOption
 } from '$lib/api/facets';
+
 import type { PageLoad } from './$types';
 import { requireInt } from '$lib/utils';
 import { getBulkProductAttributes } from '$lib/api';
@@ -13,12 +14,14 @@ import { getBulkProductAttributes } from '$lib/api';
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 
+	// Pagination
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
 
 	const pageSizeStr = url.searchParams.get('page_size') || '50';
 	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
 
+	// Sorting
 	const sortByStr = url.searchParams.get('sort_by');
 	if (sortByStr && !FACETS_SORT_OPTIONS.includes(sortByStr as FacetSortOption)) {
 		error(400, 'Invalid sort option');
@@ -31,20 +34,27 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		sortBy
 	};
 
-	const results = getFacetValue(fetch, facet, value, searchOptions);
-	const kp = getFacetKnowledgePanels(fetch, facet, value);
+	// Start requests in parallel
+	const resultsPromise = getFacetValue(fetch, facet, value, searchOptions);
+	const knowledgePanelsPromise = getFacetKnowledgePanels(fetch, facet, value);
 
-	const productCodes = (async () => {
-		const productCodes = (await results).products.map((state) => state.code as string);
-		const attrs = await getBulkProductAttributes(fetch, productCodes);
-		return attrs;
-	})();
+	// Await main results
+	const results = await resultsPromise;
+
+	// Prevent crash if products is undefined
+	const products = results.products ?? [];
+
+	const productCodes = products.map((state) => state.code as string);
+
+	// Only fetch attributes if we actually have product codes
+	const productAttributes =
+		productCodes.length > 0 ? await getBulkProductAttributes(fetch, productCodes) : {};
 
 	return {
 		searchOptions,
 		facet: { name: facet, value },
-		results: await results,
-		knowledgePanels: (await kp).knowledge_panels,
-		productAttributes: await productCodes
+		results,
+		knowledgePanels: (await knowledgePanelsPromise).knowledge_panels,
+		productAttributes
 	};
 };
