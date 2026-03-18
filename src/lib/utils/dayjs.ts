@@ -7,10 +7,12 @@ dayjs.extend(relativeTime);
 dayjs.extend(utc);
 
 const languageCodes = locales.map((locale) => locale.split('-')[0].toLowerCase());
-const dayjsLocaleModules = import.meta.glob('dayjs/locale/*.js', { eager: true });
+const dayjsLocaleModules = import.meta.glob('../../../node_modules/dayjs/locale/*.js', {
+	eager: true
+});
 
 languageCodes.forEach((code) => {
-	const modulePath = `dayjs/locale/${code}.js`;
+	const modulePath = `../../../node_modules/dayjs/locale/${code}.js`;
 	if (!dayjsLocaleModules[modulePath]) {
 		console.warn(`Dayjs locale not found: ${code}`);
 	}
