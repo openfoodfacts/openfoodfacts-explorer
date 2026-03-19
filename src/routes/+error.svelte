@@ -4,7 +4,7 @@
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	// import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
 
@@ -19,8 +19,8 @@
 			for (const err of errorDetails) console.error('Error detail:', err);
 		}
 
-		// track the error event with Matomo
-		$tracker?.trackEvent('Error', 'Error Occurred', errorMessage, errorDetails.length);
+		// Disabled Matomo tracking for local development
+		// $tracker?.trackEvent('Error', 'Error Occurred', errorMessage, errorDetails.length);
 	});
 </script>
 
