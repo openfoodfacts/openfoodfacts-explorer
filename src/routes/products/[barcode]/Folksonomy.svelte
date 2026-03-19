@@ -100,32 +100,37 @@
 
 	let possibleValues: { v: string; product_count: number }[] | null = $state(null);
 
-	$effect(() => {
-		// when newKey changes, fetch possible values
-		const key = newKey;
+	// Create a single debounced function that maintains state across calls
+	const debouncedFetchValues = createDebounce(100, () => {
+		if (newKey == '') {
+			possibleValues = null;
+			return;
+		}
+		console.debug('Fetching possible values for key:', newKey);
 
-		debounce(100, () => {
-			if (key == '') {
-				possibleValues = null;
-				return;
-			}
-			console.debug('Fetching possible values for key:', key);
-
-			getFolksonomyValues(fetch, key).then((values) => {
-				console.debug('Possible values for key', key, ':', values);
-				possibleValues = values;
-			});
+		getFolksonomyValues(fetch, newKey).then((values) => {
+			console.debug('Possible values for key', newKey, ':', values);
+			possibleValues = values;
 		});
 	});
 
-	function debounce(delay: number, fn: () => void) {
+	$effect(() => {
+		// when newKey changes, call the debounced fetch
+		// Reference newKey to make it a reactive dependency
+		void newKey;
+		debouncedFetchValues();
+	});
+
+	function createDebounce(delay: number, fn: () => void) {
 		let timeoutId: number | undefined;
-		(() => {
-			if (timeoutId) {
+
+		// Return a function that maintains timeoutId through closure
+		return () => {
+			if (timeoutId !== undefined) {
 				clearTimeout(timeoutId);
 			}
 			timeoutId = window.setTimeout(fn, delay);
-		})();
+		};
 	}
 
 	let isLoading: boolean = $state(false);
