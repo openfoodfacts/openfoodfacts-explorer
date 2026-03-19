@@ -3,13 +3,42 @@ import {
 	scoreProduct,
 	byMatchScore,
 	personalizeSearchResults,
-	type ProductWithAttributes
+	type ProductWithAttributes,
+	type ScoredProduct
 } from '../productScoring';
-import { calculateScore } from '$lib/scoring';
+import { calculateScore, type ScoreData } from '$lib/scoring';
+import type { UserPreference } from '$lib/stores/preferencesStore';
+import type { MatchStatus } from '$lib/scoring';
 
 vi.mock('$lib/scoring', () => ({
 	calculateScore: vi.fn()
 }));
+
+const makeScoreData = (
+	score: number,
+	matchStatus: MatchStatus,
+	totalWeights = 1,
+	totalWeightedScore = score
+): ScoreData => ({
+	score,
+	matchStatus,
+	totalWeights,
+	totalWeightedScore
+});
+
+const mockUserPreferences = (prefs: Array<{ id: string }>): UserPreference[] =>
+	prefs as UserPreference[];
+
+const makeScoredProduct = (
+	code: string,
+	score: number,
+	matchStatus: MatchStatus
+): ScoredProduct<{ code: string }> => ({
+	product: { product: { code } },
+	score,
+	matchStatus,
+	scoreData: makeScoreData(score, matchStatus)
+});
 
 describe('productScoring', () => {
 	beforeEach(() => {
@@ -18,20 +47,15 @@ describe('productScoring', () => {
 
 	describe('scoreProduct', () => {
 		it('returns scored product using calculateScore result', () => {
-			vi.mocked(calculateScore).mockReturnValue({
-				score: 12,
-				matchStatus: 'match',
-				matched: [],
-				unmatched: [],
-				doesNotMatch: []
-			});
+			const scoreData = makeScoreData(12, 'good_match', 10, 120);
+			vi.mocked(calculateScore).mockReturnValue(scoreData);
 
 			const product = {
 				product: { code: '123' },
 				attributes: [{ id: 'a1' }]
-			} as ProductWithAttributes;
+			} as ProductWithAttributes<{ code: string }>;
 
-			const userPreferences = [{ id: 'pref1' }] as any;
+			const userPreferences = mockUserPreferences([{ id: 'pref1' }]);
 
 			const result = scoreProduct(product, userPreferences);
 
@@ -39,31 +63,19 @@ describe('productScoring', () => {
 			expect(result).toEqual({
 				product,
 				score: 12,
-				matchStatus: 'match',
-				scoreData: {
-					score: 12,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				}
+				matchStatus: 'good_match',
+				scoreData
 			});
 		});
 
 		it('uses empty attributes array when product.attributes is undefined', () => {
-			vi.mocked(calculateScore).mockReturnValue({
-				score: 0,
-				matchStatus: 'unknown',
-				matched: [],
-				unmatched: [],
-				doesNotMatch: []
-			});
+			vi.mocked(calculateScore).mockReturnValue(makeScoreData(0, 'unknown_match', 0, 0));
 
 			const product = {
 				product: { code: '456' }
-			} as ProductWithAttributes;
+			} as ProductWithAttributes<{ code: string }>;
 
-			scoreProduct(product, [] as any);
+			scoreProduct(product, []);
 
 			expect(calculateScore).toHaveBeenCalledWith([], []);
 		});
@@ -71,57 +83,24 @@ describe('productScoring', () => {
 
 	describe('byMatchScore', () => {
 		it('ranks products with better scores first', () => {
-			const high = {
-				product: { product: { code: 'high' } },
-				score: 10,
-				matchStatus: 'match',
-				scoreData: {} as any
-			};
-
-			const low = {
-				product: { product: { code: 'low' } },
-				score: 4,
-				matchStatus: 'match',
-				scoreData: {} as any
-			};
+			const high = makeScoredProduct('high', 10, 'good_match');
+			const low = makeScoredProduct('low', 4, 'good_match');
 
 			expect(byMatchScore(high, low)).toBeLessThan(0);
 			expect(byMatchScore(low, high)).toBeGreaterThan(0);
 		});
 
 		it('pushes does_not_match products lower', () => {
-			const match = {
-				product: { product: { code: 'match' } },
-				score: 1,
-				matchStatus: 'match',
-				scoreData: {} as any
-			};
+			const good = makeScoredProduct('good', 1, 'good_match');
+			const doesNotMatch = makeScoredProduct('dnm', 100, 'does_not_match');
 
-			const doesNotMatch = {
-				product: { product: { code: 'dnm' } },
-				score: 100,
-				matchStatus: 'does_not_match',
-				scoreData: {} as any
-			};
-
-			expect(byMatchScore(match, doesNotMatch)).toBeLessThan(0);
-			expect(byMatchScore(doesNotMatch, match)).toBeGreaterThan(0);
+			expect(byMatchScore(good, doesNotMatch)).toBeLessThan(0);
+			expect(byMatchScore(doesNotMatch, good)).toBeGreaterThan(0);
 		});
 
 		it('returns 0 for equal scores and same match status to preserve original order', () => {
-			const a = {
-				product: { product: { code: 'a' } },
-				score: 5,
-				matchStatus: 'match',
-				scoreData: {} as any
-			};
-
-			const b = {
-				product: { product: { code: 'b' } },
-				score: 5,
-				matchStatus: 'match',
-				scoreData: {} as any
-			};
+			const a = makeScoredProduct('a', 5, 'good_match');
+			const b = makeScoredProduct('b', 5, 'good_match');
 
 			expect(byMatchScore(a, b)).toBe(0);
 		});
@@ -130,114 +109,66 @@ describe('productScoring', () => {
 	describe('personalizeSearchResults', () => {
 		it('ranks products with better match scores first', () => {
 			vi.mocked(calculateScore)
-				.mockReturnValueOnce({
-					score: 2,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				})
-				.mockReturnValueOnce({
-					score: 9,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				});
+				.mockReturnValueOnce(makeScoreData(2, 'poor_match', 2, 4))
+				.mockReturnValueOnce(makeScoreData(9, 'very_good_match', 3, 27));
 
 			const products = [
 				{ product: { code: 'low' }, attributes: [] },
 				{ product: { code: 'high' }, attributes: [] }
 			];
 
-			const result = personalizeSearchResults(products, [] as any, true);
+			const result = personalizeSearchResults(products, [], true);
 
 			expect(result.map((p) => p.product.product.code)).toEqual(['high', 'low']);
 		});
 
 		it('pushes does_not_match products lower', () => {
 			vi.mocked(calculateScore)
-				.mockReturnValueOnce({
-					score: 10,
-					matchStatus: 'does_not_match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				})
-				.mockReturnValueOnce({
-					score: 1,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				});
+				.mockReturnValueOnce(makeScoreData(10, 'does_not_match', 1, 10))
+				.mockReturnValueOnce(makeScoreData(1, 'good_match', 1, 1));
 
 			const products = [
 				{ product: { code: 'bad' }, attributes: [] },
 				{ product: { code: 'good' }, attributes: [] }
 			];
 
-			const result = personalizeSearchResults(products, [] as any, true);
+			const result = personalizeSearchResults(products, [], true);
 
 			expect(result.map((p) => p.product.product.code)).toEqual(['good', 'bad']);
 		});
 
 		it('preserves original order when scores are equal', () => {
 			vi.mocked(calculateScore)
-				.mockReturnValueOnce({
-					score: 5,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				})
-				.mockReturnValueOnce({
-					score: 5,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				});
+				.mockReturnValueOnce(makeScoreData(5, 'good_match', 1, 5))
+				.mockReturnValueOnce(makeScoreData(5, 'good_match', 1, 5));
 
 			const products = [
 				{ product: { code: 'first' }, attributes: [] },
 				{ product: { code: 'second' }, attributes: [] }
 			];
 
-			const result = personalizeSearchResults(products, [] as any, true);
+			const result = personalizeSearchResults(products, [], true);
 
 			expect(result.map((p) => p.product.product.code)).toEqual(['first', 'second']);
 		});
 
 		it('does not reorder results when classifyEnabled is false', () => {
 			vi.mocked(calculateScore)
-				.mockReturnValueOnce({
-					score: 1,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				})
-				.mockReturnValueOnce({
-					score: 10,
-					matchStatus: 'match',
-					matched: [],
-					unmatched: [],
-					doesNotMatch: []
-				});
+				.mockReturnValueOnce(makeScoreData(1, 'poor_match', 1, 1))
+				.mockReturnValueOnce(makeScoreData(10, 'very_good_match', 1, 10));
 
 			const products = [
 				{ product: { code: 'first' }, attributes: [] },
 				{ product: { code: 'second' }, attributes: [] }
 			];
 
-			const result = personalizeSearchResults(products, [] as any, false);
+			const result = personalizeSearchResults(products, [], false);
 
 			expect(result.map((p) => p.product.product.code)).toEqual(['first', 'second']);
 		});
 
 		it('returns empty array for empty input', () => {
-			const result = personalizeSearchResults([], [] as any, true);
+			const result = personalizeSearchResults([], [], true);
 			expect(result).toEqual([]);
 		});
 	});
