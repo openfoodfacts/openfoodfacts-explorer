@@ -19,7 +19,7 @@ export const ERROR_CODES = {
 
 export function isNetworkError(err: unknown): boolean {
 	return (
-		err instanceof TypeError &&
+		err instanceof Error &&
 		(err.message === NETWORK_ERROR_MESSAGES.FETCH_FAILED ||
 			err.message.includes(NETWORK_ERROR_MESSAGES.ENOTFOUND) ||
 			err.message.includes(NETWORK_ERROR_MESSAGES.FAILED_TO_FETCH) ||
