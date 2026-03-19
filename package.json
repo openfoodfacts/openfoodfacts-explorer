@@ -126,6 +126,7 @@
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.15.1",
 		"@sentry/sveltekit": "^10.29.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"dayjs": "^1.11.19",
 		"husky": "^9.1.7"
 	}
 }

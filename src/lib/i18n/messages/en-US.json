@@ -214,7 +214,8 @@
 			"toDo": "To do",
 			"states": "States",
 			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"check_be_first": "Be the first to check this product",
+			"just_now": "just now"
 		},
 		"edit": {
 			"moderator_only": "Moderator only",

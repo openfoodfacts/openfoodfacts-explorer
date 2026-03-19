@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, getUILocale } from '$lib/i18n';
+	import { formatRelativeTime } from '$lib/utils/dayjs';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
@@ -14,57 +15,28 @@
 
 	let { product }: Props = $props();
 
-	function formatShortDate(unix: number | null | undefined): string {
+	function formatDate(
+		unix: number | null | undefined,
+		options: Intl.DateTimeFormatOptions
+	): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
 		}
 		const date = new Date(unix * 1000);
-		const options: Intl.DateTimeFormatOptions = {
-			dateStyle: 'medium'
-		};
+		return new Intl.DateTimeFormat(getUILocale(), options).format(date);
+	}
 
-		const userLanguage = navigator.language || 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+	function formatShortDate(unix: number | null | undefined): string {
+		return formatDate(unix, { dateStyle: 'medium' });
 	}
 
 	function formatFullDate(unix: number | null | undefined): string {
-		if (unix == null || unix === undefined || Number.isNaN(unix)) {
-			return $_('product.datasources.unknown');
-		}
-		const date = new Date(unix * 1000);
-		const options: Intl.DateTimeFormatOptions = {
-			dateStyle: 'medium',
-			timeStyle: 'short'
-		};
-
-		const userLanguage = navigator.language || 'en-GB';
-		return new Intl.DateTimeFormat(userLanguage, options).format(date);
+		return formatDate(unix, { dateStyle: 'medium', timeStyle: 'short' });
 	}
 
 	function formatTimeSince(unix: number | null | undefined): string {
-		if (unix == null || unix === undefined || Number.isNaN(unix)) {
-			return $_('product.datasources.unknown');
-		}
-
-		// TODO: on NodeJS 23, we can use Intl.DurationFormat
-		const seconds = Math.floor(Date.now() / 1000) - unix;
-
-		const intervals: { [key: string]: number } = {
-			year: 31536000,
-			month: 2592000,
-			day: 86400,
-			hour: 3600,
-			minute: 60,
-			second: 1
-		};
-
-		for (const i in intervals) {
-			const interval = Math.floor(seconds / intervals[i]);
-			if (interval >= 1) {
-				return interval + ' ' + i + (interval > 1 ? 's' : '') + ' ago';
-			}
-		}
-		return $_('product.datasources.just_now');
+		const relativeTime = formatRelativeTime(unix, getUILocale());
+		return relativeTime ?? $_('product.datasources.unknown');
 	}
 
 	function oldnessClass(unix: number | null | undefined): string {
