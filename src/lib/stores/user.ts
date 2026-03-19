@@ -21,7 +21,7 @@ export function setPermissionsCtx(ctx: () => UserPermissionsContext) {
 export function getPermissionsCtx(): UserPermissionsContext {
 	const lambda = getContext('permissions-ctx') as (() => UserPermissionsContext) | undefined;
 	if (!lambda) {
-		return { isAdmin: false, isModerator: false };
+		throw new Error('User permissions context not found');
 	}
 	return lambda();
 }
