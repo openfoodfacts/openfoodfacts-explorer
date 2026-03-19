@@ -1,13 +1,115 @@
 import type { Product } from '$lib/api';
 
-type AnalysisResult = {
+type Issue = {
 	severity: 'warning' | 'error';
 	field?: string; // e.g., 'energy', 'proteins', 'all', etc.
 	title: string;
 	desc?: string;
 };
 
-type AnalysisFunc = (product: Product) => AnalysisResult[];
+type ServingSizeValidationResult = 'valid' | 'missing-number' | 'missing-unit' | 'unknown-unit';
+
+type AnalysisFunc = (product: Product) => Issue[];
+
+// Match numeric tokens so we can inspect the surrounding text for units.
+const NUMBER_PATTERN = /\.\d+|\d+(?:(?:,|\.)\d+)?/g;
+// Match characters that are letters in any language.
+const LETTER_PATTERN = /\p{L}/u;
+
+function isLetter(character: string | undefined): boolean {
+	return character != null && LETTER_PATTERN.test(character);
+}
+
+function containsKnownUnit(token: string, units: readonly string[]): boolean {
+	// Return true when the token contains a known unit as a standalone token.
+	for (const unit of units) {
+		let currentIndex = token.indexOf(unit);
+
+		while (currentIndex !== -1) {
+			const previousChar = token[currentIndex - 1];
+			const nextChar = token[currentIndex + unit.length];
+			if (!isLetter(previousChar) && !isLetter(nextChar)) {
+				return true;
+			}
+
+			currentIndex = token.indexOf(unit, currentIndex + unit.length);
+		}
+	}
+
+	return false;
+}
+
+function validateServingSize(
+	servingSize: string | null | undefined,
+	units: readonly string[]
+): ServingSizeValidationResult {
+	const normalizedServingSize = (servingSize ?? '').toLowerCase().trim();
+
+	if (normalizedServingSize === '') {
+		return 'valid';
+	}
+
+	if (normalizedServingSize.match(NUMBER_PATTERN) == null) {
+		return 'missing-number';
+	}
+
+	const tokens = normalizedServingSize.split(NUMBER_PATTERN);
+	let containsUnknownUnit = false;
+
+	for (const token of tokens) {
+		if (token.trim() === '') {
+			continue;
+		}
+
+		if (containsKnownUnit(token, units)) {
+			return 'valid';
+		}
+
+		if (LETTER_PATTERN.test(token)) {
+			containsUnknownUnit = true;
+		}
+	}
+
+	if (containsUnknownUnit) {
+		return 'unknown-unit';
+	}
+
+	return 'missing-unit';
+}
+
+export function getServingSizeIssue(
+	servingSize: string | null | undefined,
+	units: readonly string[]
+): Issue | null {
+	const validationResult = validateServingSize(servingSize, units);
+	const servingSizeExamples = 'Examples: 40 g, 250 ml, or 1 serving (30 g).';
+
+	switch (validationResult) {
+		case 'valid':
+			return null;
+		case 'missing-number':
+			return {
+				severity: 'error',
+				field: 'serving_size',
+				title: 'Serving size is missing a number',
+				desc: `Serving size should include a numeric value. ${servingSizeExamples}`
+			};
+		case 'missing-unit':
+			return {
+				severity: 'error',
+				field: 'serving_size',
+				title: 'Serving size is missing a unit',
+				desc: `Serving size should include a unit. ${servingSizeExamples}`
+			};
+		case 'unknown-unit':
+			return {
+				severity: 'warning',
+				field: 'serving_size',
+				title: 'Serving size unit may be incorrect',
+				desc: `Serving size should include a common unit. ${servingSizeExamples}`
+			};
+	}
+}
 
 const energyMismatchAnalysis: AnalysisFunc = (product) => {
 	const kcalToKjFactor = 4.184;
@@ -106,7 +208,7 @@ const sumOfMacroLessThan100g: AnalysisFunc = (product) => {
 };
 
 const singleFieldLessThan100g: AnalysisFunc = (product) => {
-	const results: AnalysisResult[] = [];
+	const issues: Issue[] = [];
 	const fields = [
 		'proteins',
 		'carbohydrates',
@@ -119,7 +221,7 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 	for (const field of fields) {
 		const value = product.nutriments?.[field] ?? 0;
 		if (value > 100) {
-			results.push({
+			issues.push({
 				severity: 'error',
 				title: `The value of ${field} exceeds 100g`,
 				desc: `The amount of ${field} is ${value.toFixed(2)}g per 100g of product, which exceeds the maximum of 100g.`,
@@ -127,10 +229,10 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 			});
 		}
 	}
-	return results;
+	return issues;
 };
 
-function sugarsLessThanCarbs(product: Product): AnalysisResult[] {
+function sugarsLessThanCarbs(product: Product): Issue[] {
 	const sugars = product.nutriments?.['sugars'] ?? 0;
 	const carbs = product.nutriments?.['carbohydrates'] ?? 0;
 	if (sugars > carbs) {
@@ -159,10 +261,10 @@ const analysisFunctions: AnalysisFunc[] = [
 	sugarsLessThanCarbs
 ];
 
-export function analyzeNutrition(product: Product): AnalysisResult[] {
-	let results: AnalysisResult[] = [];
+export function getNutritionIssues(product: Product): Issue[] {
+	let issues: Issue[] = [];
 	for (const func of analysisFunctions) {
-		results = results.concat(func(product));
+		issues = issues.concat(func(product));
 	}
-	return results;
+	return issues;
 }

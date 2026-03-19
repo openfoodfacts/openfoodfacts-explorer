@@ -7,6 +7,7 @@
 		getOrDefault,
 		type SelectedImage,
 		type Taxonomy,
+		type Unit,
 		type Product,
 		type Nutriments,
 		type RawImage,
@@ -142,12 +143,35 @@
 			.filter((t): t is string => t !== undefined);
 	}
 
+	function getUnits(taxo: Taxonomy<Unit>) {
+		const units: string[] = [];
+		const seenUnits: Record<string, true> = {};
+
+		for (const taxoNode of Object.values(taxo)) {
+			const localizedUnits = [
+				...Object.values(taxoNode.name),
+				...Object.values(taxoNode.symbol ?? {})
+			];
+
+			for (const unit of localizedUnits) {
+				const normalizedUnit = unit.toLowerCase().trim();
+				if (normalizedUnit !== '' && seenUnits[normalizedUnit] !== true) {
+					seenUnits[normalizedUnit] = true;
+					units.push(normalizedUnit);
+				}
+			}
+		}
+
+		return units;
+	}
+
 	let categoryNames = $derived(getNames(data.categories));
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
+	let units = $derived(getUnits(data.units));
 
 	function createProductStore(data: PageData): Product {
 		return data.state.status === PRODUCT_STATUS.EMPTY ||
@@ -385,7 +409,7 @@
 
 {#if dev}
 	<div class="alert alert-warning my-8 text-lg" role="alert">
-		<IconMdiAlert class="mr-2" />
+		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
 		<div>
 			<p>
 				<strong> You are not logged in! </strong>
@@ -438,6 +462,7 @@
 			{originNames}
 			{submit}
 			{storeNames}
+			{units}
 			{handleNutrimentInput}
 		/>
 	{:else}
@@ -457,6 +482,7 @@
 			{labelNames}
 			{originNames}
 			{storeNames}
+			{units}
 			languages={filteredLanguages}
 		/>
 	{/if}
