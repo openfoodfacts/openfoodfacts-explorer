@@ -79,5 +79,6 @@ export async function idToName(fetch: typeof window.fetch, id: number): Promise<
 	if (name === undefined) {
 		name = tags['brand'];
 	}
+
 	return name || 'Unknown';
 }
