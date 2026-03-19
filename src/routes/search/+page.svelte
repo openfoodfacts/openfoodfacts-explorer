@@ -37,8 +37,6 @@
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
 
-	let showFacetsModal = $state(false);
-
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
 
@@ -300,43 +298,21 @@
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
 	onFilterClick={() => {
-		if (searchResult.facets && Object.keys(searchResult.facets).length > 0) {
-			showFacetsModal = true;
-		} else {
-			goto('/facets');
-		}
+		goto('/facets');
 	}}
-/>
-
-{#if showFacetsModal}
-	<div class="fixed inset-0 z-50 flex items-end lg:hidden" role="dialog" aria-modal="true">
-		<div
-			class="fixed inset-0 bg-black/50"
-			onclick={() => (showFacetsModal = false)}
-			aria-hidden="true"
-		></div>
-		<div class="bg-base-100 max-h-[80%] w-full overflow-auto rounded-t-lg p-4">
-			<div class="mb-2 flex items-center justify-between">
-				<h3 class="text-lg font-semibold">{$_('search.filters_title', { default: 'Filters' })}</h3>
-				<button
-					class="btn btn-ghost"
-					onclick={() => (showFacetsModal = false)}
-					aria-label="Close filters">✕</button
-				>
-			</div>
-			<div class="space-y-2">
-				<FacetBar
-					facets={searchResult.facets}
-					onAddFacet={(key, val) => {
-						selectedFacets = addIncludeFacet(selectedFacets, key, val);
-						refreshQuery();
-					}}
-					onRemoveFacet={(key, val) => {
-						selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-						refreshQuery();
-					}}
-				/>
-			</div>
-		</div>
-	</div>
-{/if}
+	{searchResult}
+>
+	{#snippet children({ facets })}
+		<FacetBar
+			{facets}
+			onAddFacet={(key, val) => {
+				selectedFacets = addIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+			onRemoveFacet={(key, val) => {
+				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+				refreshQuery();
+			}}
+		/>
+	{/snippet}
+</SearchOptionsFooter>
