@@ -29,6 +29,9 @@
 		"status": "Status",
 		"actions": "Actions"
 	},
+	"help": {
+		"button": "Aiuto e scorciatoie"
+	},
 	"general": {
 		"language": "Language",
 		"country": "Paese",
