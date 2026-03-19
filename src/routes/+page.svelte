@@ -89,13 +89,8 @@
 	class="relative flex min-h-[480px] flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 >
 	<!-- Decorative SVG assets -->
-	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
-	<img
-		src={heroIcons[1]}
-		alt=""
-		aria-hidden="true"
-		class="decorative-svg -right-10 -bottom-10 w-40"
-	/>
+	<img src={heroIcons[0]} alt="" aria-hidden="true" loading="lazy" class="decorative-svg ..." />
+  <img src={heroIcons[1]} alt="" aria-hidden="true" loading="lazy" class="decorative-svg ..." /> 
 
 	<div
 		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8"
