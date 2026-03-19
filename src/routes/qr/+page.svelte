@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { createProductsApi } from '$lib/api';
+	import { browser } from '$app/environment';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -12,6 +13,8 @@
 	let lastScannedCode = $state('');
 
 	function getQrBoxSize() {
+		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
+
 		const screenWidth = window.innerWidth;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}

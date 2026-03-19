@@ -10,6 +10,7 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { browser } from '$app/environment';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -25,6 +26,7 @@
 	let titleInput: HTMLInputElement | null = $state(null);
 
 	function generateShareUrl(): string {
+		if (!browser) throw new Error('generateShareUrl can only be called inside browser');
 		const barcodes = $compareStore.map((p) => p.code).join(',');
 		const params = new SvelteURLSearchParams();
 		params.set('barcodes', barcodes);
@@ -37,6 +39,7 @@
 	const toastCtx = getToastCtx();
 
 	async function shareComparison() {
+		if (!browser) return;
 		const url = generateShareUrl();
 
 		// If on chrome-based browser, use share API

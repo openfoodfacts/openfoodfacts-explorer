@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, getLocale } from '$lib/i18n';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
@@ -13,7 +13,6 @@
 	};
 
 	let { product }: Props = $props();
-
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -22,8 +21,7 @@
 		const options: Intl.DateTimeFormatOptions = {
 			dateStyle: 'medium'
 		};
-
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = getLocale();
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
@@ -36,8 +34,7 @@
 			dateStyle: 'medium',
 			timeStyle: 'short'
 		};
-
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = getLocale();
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 

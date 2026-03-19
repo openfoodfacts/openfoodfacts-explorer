@@ -1,5 +1,11 @@
+import { browser } from '$app/environment';
+
 export async function getLocation(): Promise<GeolocationPosition> {
 	return new Promise((resolve, reject) => {
+		if (!browser) {
+			reject(new Error('Geolocation only available in browser'));
+			return;
+		}
 		if (!navigator.geolocation) {
 			reject(new Error('Geolocation is not supported by your browser'));
 			return;
