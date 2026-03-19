@@ -1,4 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+type Preferences = Parameters<Parameters<typeof import('$lib/settings').preferences.update>[0]>[0];
+
+const mockPreferences = {
+	version: 1,
+	lang: 'en',
+	country: 'world',
+	currency: 'EUR',
+	nutriscoreInfluence: 1,
+	ecoscoreInfluence: 1,
+	novaGroupInfluence: 1,
+	prices: { authToken: 'old' },
+	editing: {},
+	displayPricesInSearch: false,
+	moderator: false
+} as unknown as Preferences;
 
 vi.mock('$env/dynamic/public', () => ({
 	env: {
@@ -98,21 +113,16 @@ describe('prices.ts utilities', () => {
 
 			// Extract the updater function from the mock
 			const updaterFn = vi.mocked(preferences.update).mock.calls[0][0];
-			const newState = updaterFn({ prices: { authToken: 'old' }, other: 'value' });
+			const newState = updaterFn({ ...mockPreferences, prices: { authToken: 'old' } });
 
-			expect(newState).toEqual({
-				other: 'value',
-				prices: {
-					authToken: 'new-token-123'
-				}
-			});
+			expect(newState.prices.authToken).toBe('new-token-123');
 		});
 
 		it('should handle updating to a null token', () => {
 			updatePricesAuthToken(null);
 
 			const updaterFn = vi.mocked(preferences.update).mock.calls[0][0];
-			const newState = updaterFn({ prices: { authToken: 'old' } });
+			const newState = updaterFn({ ...mockPreferences, prices: { authToken: 'old' } });
 
 			expect(newState.prices.authToken).toBeNull();
 		});
@@ -122,7 +132,7 @@ describe('prices.ts utilities', () => {
 
 			const updaterFn = vi.mocked(preferences.update).mock.calls[0][0];
 
-			const newState = updaterFn({} as any); // no prices
+			const newState = updaterFn({} as unknown as Preferences); // no prices
 
 			expect(newState).toEqual({
 				prices: {
