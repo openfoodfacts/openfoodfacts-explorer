@@ -158,6 +158,10 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"card": {
+			"aria_label": "Go to product {productName} with code {productCode}",
+			"aria_label_no_name": "Go to product with code {productCode}"
+		},
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
