@@ -10,7 +10,7 @@
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { Feature, Geometry } from 'geojson';
+	import type { Feature, Geometry, Position } from 'geojson';
 	import type * as Leaflet from 'leaflet';
 
 	type Props = { facet: FacetResponse };
@@ -59,15 +59,19 @@
 	 * This prevents Leaflet from drawing lines across the map for features that
 	 * cross the antimeridian (Russia, USA/Alaska, Fiji, etc.).
 	 */
-	function normalizeRing(ring: GeoJSON.Position[]): GeoJSON.Position[] {
-		const out: GeoJSON.Position[] = [ring[0].slice()];
+	function normalizeRing(ring: Position[]): Position[] {
+		const out: Position[] = [[ring[0][0], ring[0][1]]];
+
 		for (let i = 1; i < ring.length; i++) {
 			const prev = out[i - 1][0];
 			let lng = ring[i][0];
+
 			while (lng - prev > 180) lng -= 360;
 			while (prev - lng > 180) lng += 360;
+
 			out.push([lng, ring[i][1]]);
 		}
+
 		return out;
 	}
 
