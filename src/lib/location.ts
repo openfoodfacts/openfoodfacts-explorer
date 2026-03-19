@@ -71,7 +71,7 @@ export async function idToName(fetch: typeof window.fetch, id: number): Promise<
 		return 'Unknown';
 	}
 
-	const tags = res.elements[0].tags;
+	const tags = res.elements[0].tags || {};
 	let name = tags.name;
 	if (name === undefined) {
 		name = tags['brand:name'];
@@ -79,6 +79,5 @@ export async function idToName(fetch: typeof window.fetch, id: number): Promise<
 	if (name === undefined) {
 		name = tags['brand'];
 	}
-
-	return name;
+	return name || 'Unknown';
 }
