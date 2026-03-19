@@ -53,7 +53,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	}
 
 	if (productState.status === 'failure' && productState.result?.id !== 'product_not_found') {
-		error(404, {
+		error(500, {
 			message: 'Failure to load product',
 			errors: productState.errors
 		});
