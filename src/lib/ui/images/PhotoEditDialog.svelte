@@ -561,6 +561,8 @@
 								{action}
 								class="absolute z-10 h-[10px] w-[10px] rounded-sm border border-gray-300 bg-white"
 								onpointerdown={enableCropping}
+								role="button"
+								tabindex="0"
 								aria-label="Resize crop selection"
 							></cropper-handle>
 						{/each}
