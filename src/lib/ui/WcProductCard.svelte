@@ -4,9 +4,10 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { createProductsApi } from '$lib/api';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
-	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
@@ -76,21 +77,34 @@ Wraps the <product-card> web component and adds accessibility features.
 	async function addToComparison() {
 		closeContextMenu();
 
-		// @ts-expect-error - Product should not have { [key: string]: string },
-		// because that means it ONLY has string values
-		const fullProduct: Product = await new OpenFoodFacts(fetch).getProductV3(product.code);
+		try {
+			const productsApi = createProductsApi(fetch);
+			const { data, error } = await productsApi.getProductV3(product.code);
+			if (error != null || data?.status === 'failure' || data?.product == null) {
+				throw new Error('Could not load product details for comparison');
+			}
 
-		const ok = compareStore.addProduct(fullProduct);
-		if (ok) {
+			// @ts-expect-error - SDK response typing for getProductV3 product payload is incompatible here
+			const ok = compareStore.addProduct(data.product);
+			if (!ok) {
+				toastCtx.warning(
+					$_('product.menu.add_to_comparison_failed', {
+						default: 'Product is already in comparison or comparison list is full'
+					})
+				);
+				return;
+			}
+
 			toastCtx.success(
 				$_('product.menu.added_to_comparison', {
 					default: 'Product added to comparison'
 				})
 			);
-		} else {
-			toastCtx.warning(
-				$_('product.menu.add_to_comparison_failed', {
-					default: 'Product is already in comparison or comparison list is full'
+		} catch (error) {
+			console.error('Failed to load product for comparison:', error);
+			toastCtx.error(
+				$_('product.menu.load_for_comparison_failed', {
+					default: 'Could not load product details for comparison'
 				})
 			);
 		}
