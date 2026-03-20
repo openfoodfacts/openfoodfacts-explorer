@@ -161,7 +161,7 @@
 	>
 		<IconMdiLicense class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">
-			<CountUp value={100} />%
+			<CountUp value={100} suffix="%" />
 		</h2>
 		<p class="text-base-content/70">{$_('landing.open_data')}</p>
 	</a>

@@ -6,15 +6,17 @@
 	interface Props {
 		value: number;
 		duration?: number;
+		suffix?: string;
 	}
 
-	let { value, duration = 1500 }: Props = $props();
+	let { value, duration = 1500, suffix = '' }: Props = $props();
 
 	const count = new Tween(0, { easing: cubicOut });
 
 	let element: HTMLElement | undefined = $state();
 	let display = $derived(Math.floor(count.current));
 	let hasStarted = false;
+
 	const formatter = new Intl.NumberFormat();
 
 	onMount(() => {
@@ -33,8 +35,14 @@
 
 		return () => observer.disconnect();
 	});
+
+	$effect(() => {
+		if (hasStarted) {
+			count.set(value, { duration });
+		}
+	});
 </script>
 
 <span bind:this={element}>
-	{formatter.format(display)}
+	{formatter.format(display)}{suffix}
 </span>
