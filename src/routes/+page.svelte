@@ -193,12 +193,16 @@
 				{/each}
 			</div>
 		{:then [resolvedProducts, attributes]}
-			<ProductGrid
-				products={resolvedProducts.map((state) => state.product)}
-				{attributes}
-				sortByScore={$personalizedSearch.classifyProductsEnabled}
-			/>
-		{/await}
+	      <ProductGrid
+		      products={resolvedProducts.map((state) => state.product)}
+		      {attributes}
+		      sortByScore={$personalizedSearch.classifyProductsEnabled}
+	      />
+    {:catch error}
+	      <p class="text-center text-red-500">
+		      Failed to load products. Please try again later.
+	      </p>
+    {/await}
 	</div>
 </section>
 
