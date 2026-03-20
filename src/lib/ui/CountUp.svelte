@@ -15,6 +15,7 @@
 	let element: HTMLElement | undefined = $state();
 	let display = $derived(Math.floor(count.current));
 	let hasStarted = false;
+	const formatter = new Intl.NumberFormat();
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -35,5 +36,5 @@
 </script>
 
 <span bind:this={element}>
-	{Intl.NumberFormat().format(display)}
+	{formatter.format(display)}
 </span>
