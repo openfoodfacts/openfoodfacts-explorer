@@ -5,22 +5,24 @@
 	let { src }: Props = $props();
 
 	let frameHeight = $state('100vh'); // Default height, can be adjusted
-
 	onMount(() => {
 		const abortController = new AbortController();
-		window.addEventListener(
-			'message',
-			(event: { data: { frameHeight?: number } }) => {
-				if (!event.data.frameHeight) return;
 
-				console.debug('Received frameHeight:', event.data.frameHeight);
-				frameHeight = event.data.frameHeight + 'px';
-			},
-			{ signal: abortController.signal }
-		);
+		const handler = (event: MessageEvent) => {
+			if (!event.data?.frameHeight) return;
+
+			console.debug('Received frameHeight:', event.data.frameHeight);
+			frameHeight = event.data.frameHeight + 'px';
+		};
+
+		window.addEventListener('message', handler, {
+			signal: abortController.signal
+		});
 
 		return () => {
-			abortController.abort(); // Cleanup the event listener on component unmount
+			// Explicit cleanup (safer across environments)
+			window.removeEventListener('message', handler);
+			abortController.abort();
 		};
 	});
 </script>
