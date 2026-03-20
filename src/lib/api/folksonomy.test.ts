@@ -33,6 +33,7 @@ describe('folksonomy.ts utilities', () => {
 		vi.clearAllMocks();
 		mockGetValues.mockReset();
 		mockFetch = vi.fn();
+		mockedEnv.PUBLIC_FOLKSONOMY_API_URL = 'https://api.folksonomy.openfoodfacts.org';
 	});
 
 	describe('isConfigured', () => {
