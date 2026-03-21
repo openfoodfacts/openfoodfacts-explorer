@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { onDestroy } from 'svelte';
+
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -85,13 +87,10 @@
 		}, DEBOUNCE_DELAY_MS);
 	}
 
-	$effect(() => {
-  		return () => {
-   		  if (debounceTimeoutId !== undefined) {
-		      clearTimeout(debounceTimeoutId);
-		      debounceTimeoutId = undefined;
-	    }
-	  };
+	onDestroy(() => {
+	  if (debounceTimeoutId !== undefined) {
+	    clearTimeout(debounceTimeoutId);
+	  }
 	});
 
 	function handleEnter() {
