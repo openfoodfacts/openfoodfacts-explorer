@@ -173,6 +173,11 @@
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
 		},
+		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"toast": {
+			"copied_link": "Link copied to clipboard!",
+			"failed_copy": "Failed to copy link"
+		},
 		"header": {
 			"quantity": "Quantity",
 			"brands": "Brands",
