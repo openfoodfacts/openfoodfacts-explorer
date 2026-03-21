@@ -147,6 +147,7 @@
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
+			"changes_summary": "Changes summary",
 			"debug": "Debug"
 		}
 	},

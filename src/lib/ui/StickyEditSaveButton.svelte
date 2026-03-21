@@ -25,7 +25,8 @@
 	<input
 		type="text"
 		class="border-base-300 h-9 flex-1 basis-full rounded-none border bg-white p-2 text-sm text-gray-700 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-300/30 disabled:cursor-not-allowed disabled:opacity-60 sm:basis-0"
-		placeholder="Changes summary"
+		placeholder={$_('product.edit.changes_summary')}
+		aria-label={$_('product.edit.changes_summary')}
 		bind:value={comment}
 		disabled={isSubmitting}
 	/>
