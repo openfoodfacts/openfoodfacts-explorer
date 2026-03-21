@@ -32,6 +32,7 @@
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
+	import SearchFilters from '$lib/ui/SearchFilters.svelte';
 	import type { SearchResult } from '$lib/api/search';
 
 	let { data }: PageProps = $props();
@@ -161,6 +162,9 @@
 		</details>
 	</div>
 </div>
+
+<!-- Search Filters -->
+<SearchFilters />
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}

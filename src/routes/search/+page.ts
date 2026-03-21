@@ -56,6 +56,12 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
+	// Extract filter parameters from URL
+	const nutriscore = url.searchParams.get('nutriscore') || '';
+	const ecoscore = url.searchParams.get('ecoscore') || '';
+	const country = url.searchParams.get('country') || '';
+	const category = url.searchParams.get('category') || '';
+
 	const api = createSearchApi(fetch);
 
 	const params: SearchBody = {
@@ -72,6 +78,20 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		],
 		sort_by: sortBy
 	};
+
+	// Append filter parameters to the search body if provided
+	if (nutriscore) {
+		(params as Record<string, unknown>)['nutrition_grades_tags'] = nutriscore;
+	}
+	if (ecoscore) {
+		(params as Record<string, unknown>)['ecoscore_grade'] = ecoscore;
+	}
+	if (country) {
+		(params as Record<string, unknown>)['countries_tags'] = `en:${country}`;
+	}
+	if (category) {
+		(params as Record<string, unknown>)['categories_tags'] = `en:${category}`;
+	}
 
 	const { data: searchData, error: searchError } = await api.search(params);
 	if (searchError || !searchData) {

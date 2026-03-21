@@ -74,6 +74,10 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+## Deployment
+
+For production or self-hosted deployments, please refer to the [Deployment Guide](docs/deployment.md).
+
 ## Contributors
 
 The app was initially created by @VaiTon. Since then, many people have contributed to it:
