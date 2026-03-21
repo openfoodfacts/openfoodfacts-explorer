@@ -188,9 +188,9 @@
 			<div
 				class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 			>
-				{#each Array(SKELETON_COUNT) as _, index (index)}
-					<div class="skeleton h-36 w-full rounded-lg"></div>
-				{/each}
+				{#each Array.from({ length: SKELETON_COUNT }) as _, i (i)}
+	        <div class="skeleton h-36 w-full rounded-lg"></div>
+        {/each}
 			</div>
 		{:then [resolvedProducts, attributes]}
 			<ProductGrid
