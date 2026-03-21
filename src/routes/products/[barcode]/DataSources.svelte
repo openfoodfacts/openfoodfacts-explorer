@@ -8,6 +8,9 @@
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
 
+	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)
+	import '@formatjs/intl-durationformat/polyfill.js';
+
 	type Props = {
 		product: ProductDataSection;
 	};
@@ -43,24 +46,28 @@
 			return $_('product.datasources.unknown');
 		}
 
-		// TODO: on NodeJS 23, we can use Intl.DurationFormat
-		const seconds = Math.floor(Date.now() / 1000) - unix;
-
-		const intervals: { [key: string]: number } = {
-			year: 31536000,
-			month: 2592000,
-			day: 86400,
+		const seconds = Math.floor((Date.now() - unix * 1000) / 1000);
+		const durations: Record<string, number> = {
+			year: 365 * 24 * 3600,
+			month: 30 * 24 * 3600,
+			week: 7 * 24 * 3600,
+			day: 24 * 3600,
 			hour: 3600,
 			minute: 60,
 			second: 1
 		};
 
-		for (const i in intervals) {
-			const interval = Math.floor(seconds / intervals[i]);
-			if (interval >= 1) {
-				return interval + ' ' + i + (interval > 1 ? 's' : '') + ' ago';
+		const rtf = new Intl.RelativeTimeFormat(getLocale(), {
+			numeric: 'always'
+		});
+
+		for (const unit in durations) {
+			const value = Math.floor(seconds / durations[unit]);
+			if (value >= 1) {
+				return rtf.format(-value, unit as Intl.RelativeTimeFormatUnit);
 			}
 		}
+
 		return $_('product.datasources.just_now');
 	}
 
