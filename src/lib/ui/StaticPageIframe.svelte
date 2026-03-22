@@ -20,7 +20,6 @@
 		});
 
 		return () => {
-			// Explicit cleanup (safer across environments)
 			window.removeEventListener('message', handler);
 			abortController.abort();
 		};
