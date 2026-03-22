@@ -46,7 +46,8 @@
 		showInfo = !showInfo;
 	}
 
-	let permissions = $derived(getPermissionsCtx());
+	const permissionsCtx = getPermissionsCtx();
+	let permissions = $derived(permissionsCtx);
 
 	let additionalNutrients: NutrientKey[] = $state(
 		NUTRIENTS.filter(

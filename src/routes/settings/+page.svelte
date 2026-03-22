@@ -21,7 +21,8 @@
 	let { data }: PageProps = $props();
 	let { attributeGroups } = $derived(data);
 
-	let permissions = $derived(getPermissionsCtx());
+	const permissionsCtx = getPermissionsCtx();
+	let permissions = $derived(permissionsCtx);
 </script>
 
 <div class="mx-auto my-8">

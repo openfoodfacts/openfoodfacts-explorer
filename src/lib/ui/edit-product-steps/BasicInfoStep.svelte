@@ -35,7 +35,8 @@
 
 	let showInfo = $state(false);
 
-	let permissions = $derived(getPermissionsCtx());
+	const permissionsCtx = getPermissionsCtx();
+	let permissions = $derived(permissionsCtx);
 
 	function toggleInfo() {
 		showInfo = !showInfo;
