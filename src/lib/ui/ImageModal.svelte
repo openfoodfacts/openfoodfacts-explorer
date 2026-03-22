@@ -99,8 +99,10 @@
 			<button
 				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
 				onclick={resetZoom}
-				title="Reset Zoom"
-				aria-label="Reset Zoom"
+				title={$_('product.edit.images.reset', { default: 'Reset' })}
+				aria-label="{$_('product.edit.images.reset', { default: 'Reset' })}, {zoomLevel.toFixed(
+					1
+				)} x"
 			>
 				{zoomLevel.toFixed(1)} x
 			</button>
