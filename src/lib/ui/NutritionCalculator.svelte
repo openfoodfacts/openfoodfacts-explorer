@@ -126,7 +126,7 @@
 						default: 'Clear all items from calculator'
 					})}
 				>
-					Clear All
+					{$_('calculator.clear_all', { default: 'Clear All' })}
 				</button>
 			</div>
 		{/if}
