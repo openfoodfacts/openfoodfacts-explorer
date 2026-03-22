@@ -9,6 +9,7 @@
 		totalNutrition
 	} from '$lib/stores/calculatorStore';
 	import { onMount } from 'svelte';
+	import { _ } from 'svelte-i18n';
 
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
@@ -118,7 +119,15 @@
 			</div>
 
 			<div class="mt-4 flex justify-end">
-				<button class="btn btn-sm btn-error" onclick={clearCalculator}> Clear All </button>
+				<button
+					class="btn btn-sm btn-error"
+					onclick={clearCalculator}
+					aria-label={$_('calculator.clear_all_aria', {
+						default: 'Clear all items from calculator'
+					})}
+				>
+					Clear All
+				</button>
 			</div>
 		{/if}
 	</div>
