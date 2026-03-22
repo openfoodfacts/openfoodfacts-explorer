@@ -10,18 +10,42 @@
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { Feature, Geometry } from 'geojson';
-	import Leaflet from 'leaflet';
+	import type { Feature, Geometry, Position } from 'geojson';
+	import type * as Leaflet from 'leaflet';
 
 	type Props = { facet: FacetResponse };
 	let { facet }: Props = $props();
 
-	const fmt = new Intl.NumberFormat();
+	const numberFormat = new Intl.NumberFormat();
 
 	type RGB = [number, number, number];
 
-	// Interpolate between two colors in RGB space.
-	// Returns a CSS color string like "rgb(123,45,67)"
+	const rgbToCSS = (rgb: RGB) => `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+	const THEME = {
+		// Choropleth scale
+		gradient: {
+			start: [94, 163, 157] as RGB, // Teal-400 desaturated
+			end: [234, 88, 12] as RGB // Orange-600 saturated
+		},
+		// Fallback for countries with no data
+		noData: {
+			fill: '#9ca3af', // Gray-400
+			stroke: '#6b7280' // Gray-500
+		},
+		// Interactive states
+		borders: {
+			dark: 'rgba(255, 255, 255, 0.4)',
+			light: 'rgba(0, 0, 0, 0.35)',
+			hoverDark: '#f9fafb', // Gray-50
+			hoverLight: '#1f2937' // Gray-800
+		}
+	};
+
+	/**
+	 * Interpolate between two colors in RGB space.
+	 * @returns a CSS color string like "rgb(123,45,67)"
+	 */
 	function rgbInterpolate(startColor: RGB, endColor: RGB, intensity: number): string {
 		const interp = (start: number, end: number) => Math.round(start + (end - start) * intensity);
 		const r = interp(startColor[0], endColor[0]);
@@ -30,17 +54,13 @@
 		return `rgb(${r},${g},${b})`;
 	}
 
-	const choroplethColor = (intensity: number): string => {
-		const startColor: RGB = [217, 119, 6]; // light orange
-		const endColor: RGB = [13, 148, 136]; // teal
-		return rgbInterpolate(startColor, endColor, intensity);
-	};
-
-	// Normalize a polygon ring so no two consecutive longitudes jump by >180°.
-	// This prevents Leaflet from drawing lines across the map for features that
-	// cross the antimeridian (Russia, USA/Alaska, Fiji, etc.).
-	function normalizeRing(ring: number[][]): number[][] {
-		const out: number[][] = [ring[0].slice()];
+	/**
+	 * Normalize a polygon ring so no two consecutive longitudes jump by >180°.
+	 * This prevents Leaflet from drawing lines across the map for features that
+	 * cross the antimeridian (Russia, USA/Alaska, Fiji, etc.).
+	 */
+	function normalizeRing(ring: Position[]): Position[] {
+		const out: Position[] = [ring[0].slice()];
 		for (let i = 1; i < ring.length; i++) {
 			const prev = out[i - 1][0];
 			let lng = ring[i][0];
@@ -51,19 +71,24 @@
 		return out;
 	}
 
-	function normalizeCoords(geometry: Geometry): Geometry {
-		if (geometry.type === 'Polygon') {
-			return { ...geometry, coordinates: geometry.coordinates.map(normalizeRing) };
+	/**
+	 * Calls `normalizeRing` on all polygon coordinates in the geometry, if needed.
+	 * This is necessary because some countries have polygons that cross the antimeridian.
+	 */
+	function normalizeCoords(g: Geometry): Geometry {
+		if (g.type === 'Polygon') {
+			return { ...g, coordinates: g.coordinates.map(normalizeRing) };
 		}
-		if (geometry.type === 'MultiPolygon') {
+		if (g.type === 'MultiPolygon') {
 			return {
-				...geometry,
-				coordinates: geometry.coordinates.map((poly) => poly.map(normalizeRing))
+				...g,
+				coordinates: g.coordinates.map((poly) => poly.map(normalizeRing))
 			};
 		}
-		return geometry;
+		return g;
 	}
 
+	// Map configuration
 	const MIN_ZOOM = 1;
 	const INITIAL_ZOOM = 1;
 
@@ -73,6 +98,7 @@
 	// Type assertion to satisfy TypeScript
 	const topology = worldAtlas as unknown as Topology;
 
+	// World geometry, with filtering and coordinate normalization applied
 	const rawGeoJSON = topojson.feature(topology, topology.objects.countries as GeometryCollection);
 	const worldGeoJSON: typeof rawGeoJSON = {
 		...rawGeoJSON,
@@ -81,11 +107,17 @@
 			.map((f) => ({ ...f, geometry: normalizeCoords(f.geometry) }))
 	};
 
+	// Lazy loaded country taxonomy data
+	let countryTaxonomy: Taxonomy<Country> | null = $state(null);
+
+	// Lazy loaded Leaflet module
+	let L: typeof import('leaflet') | null = null;
+
+	// Map instance and legend control references
 	let mapContainer: HTMLElement;
 	let mapInstance: Leaflet.Map | null = $state(null);
-	let L: typeof import('leaflet') | null = $state(null);
-	let countryTaxonomy: Taxonomy<Country> | null = $state(null);
-	let legendControl: import('leaflet').Control | null = null;
+	let legendControl: Leaflet.Control | null = null;
+
 	let isDark: boolean = $state(false);
 
 	onMount(() => {
@@ -94,12 +126,13 @@
 		mq.addEventListener('change', (e) => (isDark = e.matches));
 
 		(async () => {
+			// Dynamically import Leaflet
 			L = await import('leaflet');
-			const map = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM }).setView(
+
+			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM }).setView(
 				[20, 0],
 				INITIAL_ZOOM
 			);
-			mapInstance = map;
 
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
@@ -129,8 +162,10 @@
 		updateMap(mapInstance, countryTaxonomy, isDark);
 	});
 
-	// Resolve a taxonomy entry to its ISO numeric code, trying both alpha-3 and alpha-2 codes.
-	function resolveNumericId(id: string, entry: Country): string | null {
+	/**
+	 * Resolve a taxonomy entry to its ISO numeric code, trying both alpha-3 and alpha-2 codes.
+	 */
+	function resolveNumericId(entry: Country): string | null {
 		// Try alpha-3 first, then fall back to alpha-2
 		const alpha3 = entry.country_code_3?.en;
 		if (alpha3) {
@@ -146,11 +181,14 @@
 	}
 
 	function updateMap(map: Leaflet.Map, taxo: Taxonomy<Country>, dark: boolean) {
-		if (L == null) return;
+		if (L == null) {
+			console.warn('`updateMap` called before Leaflet loaded');
+			return;
+		}
 
 		// Remove existing GeoJSON layers
 		map.eachLayer((layer) => {
-			if (layer instanceof Leaflet.GeoJSON) map.removeLayer(layer);
+			if (layer instanceof L!.GeoJSON) map.removeLayer(layer);
 		});
 
 		// Remove existing legend
@@ -168,7 +206,7 @@
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const countryData = new Map<string, { name: string; products: number }>();
 		for (const [id, entry] of Object.entries(taxo)) {
-			const numericId = resolveNumericId(id, entry as Country);
+			const numericId = resolveNumericId(entry);
 			if (!numericId) continue;
 			countryData.set(numericId, {
 				name: (entry as Country).name?.en ?? id,
@@ -178,8 +216,8 @@
 
 		const maxProducts = Math.max(...countryData.values().map((d) => d.products), 1);
 
-		const dataBorder = dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)';
-		const hoverBorder = dark ? '#f9fafb' : '#1f2937';
+		const dataBorder = dark ? THEME.borders.dark : THEME.borders.light;
+		const hoverBorder = dark ? THEME.borders.hoverDark : THEME.borders.hoverLight;
 
 		// Only render countries present in the taxonomy
 		const filteredGeoJSON = {
@@ -187,20 +225,30 @@
 			features: worldGeoJSON.features.filter((f) => countryData.has(String(f.id).padStart(3, '0')))
 		};
 
-		function getStyle(feature: Feature | undefined): import('leaflet').PathOptions {
+		const choroplethColor = (intensity: number) =>
+			rgbInterpolate(THEME.gradient.start, THEME.gradient.end, intensity);
+
+		const getStyle = (feature: Feature | undefined): Leaflet.PathOptions => {
 			const numericId = String(feature?.id).padStart(3, '0');
 			const data = countryData.get(numericId);
+
 			if (!data) {
-				return { fillOpacity: 1, fillColor: '#9ca3af', color: '#6b7280', weight: 1 };
+				return {
+					fillOpacity: 1,
+					weight: 1,
+					fillColor: THEME.noData.fill,
+					color: THEME.noData.stroke
+				};
 			}
+
 			const intensity = Math.log1p(data.products) / Math.log1p(maxProducts);
 			return {
 				fillColor: choroplethColor(intensity),
-				fillOpacity: 1,
 				color: dataBorder,
+				fillOpacity: 1,
 				weight: 1
 			};
-		}
+		};
 
 		const geoLayer = L.geoJSON(filteredGeoJSON, {
 			style: (feature) => getStyle(feature),
@@ -211,7 +259,7 @@
 
 				// Tooltip shown on hover for every country
 				const tooltipContent = data
-					? `<strong>${DOMPurify.sanitize(data.name)}</strong><br>${fmt.format(data.products)} products`
+					? `<strong>${DOMPurify.sanitize(data.name)}</strong><br>${numberFormat.format(data.products)} products`
 					: (feature.properties?.name ?? numericId);
 
 				pathLayer.bindTooltip(tooltipContent, { sticky: true });
@@ -219,12 +267,12 @@
 				// Hover highlight
 				pathLayer.on({
 					mouseover(e) {
-						const path = e.target as import('leaflet').Path;
+						const path = e.target as Leaflet.Path;
 						path.setStyle({ weight: 2, color: hoverBorder, fillOpacity: 0.75 });
 						path.bringToFront();
 					},
 					mouseout(e) {
-						const path = e.target as import('leaflet').Path;
+						const path = e.target as Leaflet.Path;
 						path.setStyle(getStyle(feature));
 					}
 				});
@@ -233,18 +281,20 @@
 				if (data) {
 					const safeName = DOMPurify.sanitize(data.name);
 					pathLayer.bindPopup(
-						`<strong>${safeName}</strong>: ${fmt.format(data.products)} products`
+						`<strong>${safeName}</strong>: ${numberFormat.format(data.products)} products`
 					);
 				}
 			}
-		}).addTo(map);
+		});
 
-		// Fit the map to the rendered countries (all have data now)
+		geoLayer.addTo(map);
+
+		// Fit the map to the bounds of the layers
 		if (geoLayer.getLayers().length > 0) {
 			map.fitBounds(geoLayer.getBounds(), { padding: [20, 20] });
 		}
 
-		// Add legend — CSS class is used so the style block below handles dark mode
+		// Add legend
 		const minVal = Math.min(...countryData.values().map((d) => d.products));
 		const LegendControl = L.Control.extend({
 			onAdd() {
@@ -257,8 +307,8 @@
 					<div class="countries-map-legend-scale">
 						<div class="countries-map-legend-gradient"></div>
 						<div class="countries-map-legend-labels">
-							<span>${fmt.format(maxProducts)}</span>
-							<span>${fmt.format(minVal)}</span>
+							<span>${numberFormat.format(maxProducts)}</span>
+							<span>${numberFormat.format(minVal)}</span>
 						</div>
 					</div>`;
 				return div;
@@ -276,6 +326,8 @@
 <div
 	bind:this={mapContainer}
 	class="countries-map h-96 w-full"
+	style:--gradient-start={rgbToCSS(THEME.gradient.start)}
+	style:--gradient-end={rgbToCSS(THEME.gradient.end)}
 	role="region"
 	aria-label="Country products map"
 	aria-describedby="countries-map-description"
@@ -292,27 +344,12 @@
 		border: 1px solid rgba(0, 0, 0, 0.2);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	}
-	:global(.countries-map-legend strong) {
-		display: block;
-		margin-bottom: 6px;
-	}
-	:global(.countries-map-legend-scale) {
-		display: flex;
-		align-items: stretch;
-		gap: 6px;
-		height: 60px;
-	}
+
 	:global(.countries-map-legend-gradient) {
 		width: 14px;
 		border-radius: 2px;
 		border: 1px solid rgba(0, 0, 0, 0.15);
-		background: linear-gradient(to bottom, rgb(217, 119, 6), rgb(13, 148, 136));
-	}
-	:global(.countries-map-legend-labels) {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		font-size: 11px;
+		background: linear-gradient(to top, var(--gradient-start), var(--gradient-end));
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -325,5 +362,23 @@
 		:global(.countries-map-legend-gradient) {
 			border-color: rgba(255, 255, 255, 0.1);
 		}
+	}
+
+	:global(.countries-map-legend strong) {
+		display: block;
+		margin-bottom: 6px;
+	}
+	:global(.countries-map-legend-scale) {
+		display: flex;
+		align-items: stretch;
+		gap: 6px;
+		height: 60px;
+	}
+
+	:global(.countries-map-legend-labels) {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		font-size: 11px;
 	}
 </style>

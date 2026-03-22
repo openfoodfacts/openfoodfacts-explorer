@@ -25,7 +25,10 @@
 				<button
 					class="hover:bg-base-200 flex w-full items-center gap-3 px-4 py-2 text-sm"
 					class:bg-base-200={sortBy === option.value}
-					onclick={() => onSortOptionSelect(option.value)}
+					onclick={() => {
+						onSortOptionSelect(option.value);
+						sortDropdownOpen = false;
+					}}
 				>
 					<span>{option.label}</span>
 					{#if sortBy === option.value}

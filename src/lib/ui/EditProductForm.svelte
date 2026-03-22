@@ -4,6 +4,7 @@
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
@@ -11,6 +12,7 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
@@ -24,6 +26,7 @@
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
+		getPackagingImage: (language: string) => string | null;
 
 		// Submission
 
@@ -55,6 +58,7 @@
 		addLanguage,
 		getIngredientsImage,
 		getNutritionImage,
+		getPackagingImage,
 		languages,
 		categoryNames,
 		labelNames,
@@ -135,6 +139,18 @@
 		</div>
 		<div class="collapse-content">
 			<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
+		</div>
+	</div>
+
+	<!-- Packaging Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md" id="packaging">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+			{$_('product.edit.sections.packaging')}
+		</div>
+		<div class="collapse-content">
+			<PackagingStep bind:product {getPackagingImage} />
 		</div>
 	</div>
 
