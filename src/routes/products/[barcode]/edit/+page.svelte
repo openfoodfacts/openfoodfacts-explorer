@@ -144,8 +144,7 @@
 	}
 
 	function getUnits(taxo: Taxonomy<Unit>) {
-		const units: string[] = [];
-		const seenUnits: Record<string, true> = {};
+		const units = new Set<string>();
 
 		for (const taxoNode of Object.values(taxo)) {
 			const localizedUnits = [
@@ -155,14 +154,13 @@
 
 			for (const unit of localizedUnits) {
 				const normalizedUnit = unit.toLowerCase().trim();
-				if (normalizedUnit !== '' && seenUnits[normalizedUnit] !== true) {
-					seenUnits[normalizedUnit] = true;
-					units.push(normalizedUnit);
+				if (normalizedUnit !== '') {
+					units.add(normalizedUnit);
 				}
 			}
 		}
 
-		return units;
+		return [...units];
 	}
 
 	let categoryNames = $derived(getNames(data.categories));
