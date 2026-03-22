@@ -201,7 +201,7 @@ We aim to make Open Food Facts accessible to everyone. Before submitting a PR, r
   - `<a>` for navigation (changing the URL, linking to external pages).
 - **Dynamic notifications** (Toasts) use `role="alert"` and `aria-live="polite"`.
 - **Interactive elements** are keyboard-accessible (focusable and operable via `Enter`/`Space`).
-- **External links** use `target="_blank"` with `rel="noopener"` for security.
+- **External links** use `target="_blank"` with `rel="noopener noreferrer"` for security.
 
 ### Good Examples from the Codebase
 
