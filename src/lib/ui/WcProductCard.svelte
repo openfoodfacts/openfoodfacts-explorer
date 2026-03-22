@@ -123,7 +123,13 @@ Wraps the <product-card> web component and adds accessibility features.
 	{product}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
-	aria-label={`Go to product ${product.product_name} with code ${product.code}`}
+	aria-label={product.product_name
+		? $_('product.card.aria_label', {
+				values: { productName: product.product_name, productCode: product.code }
+			})
+		: $_('product.card.aria_label_no_name', {
+				values: { productCode: product.code }
+			})}
 	showMatchTag={personalScore != undefined}
 	navigating={{
 		to: navigating ? { params: { barcode: product.code } } : null
