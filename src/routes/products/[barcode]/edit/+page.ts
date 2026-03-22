@@ -74,7 +74,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
 
-	if (productState.status === 'failure') {
+	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
 		return {
 			state: {
 				status: PRODUCT_STATUS.EMPTY,
