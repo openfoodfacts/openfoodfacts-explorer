@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 
 	import {
@@ -141,7 +142,7 @@
 	}
 
 	function getUnits(taxo: Taxonomy<Unit>) {
-		const units = new Set<string>();
+		const units = new SvelteSet<string>();
 
 		for (const taxoNode of Object.values(taxo)) {
 			const localizedUnits = [
