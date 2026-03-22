@@ -99,6 +99,8 @@
 			<button
 				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
 				onclick={resetZoom}
+				title="Reset Zoom"
+				aria-label="Reset Zoom"
 			>
 				{zoomLevel.toFixed(1)} x
 			</button>
