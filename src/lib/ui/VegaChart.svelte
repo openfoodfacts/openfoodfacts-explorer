@@ -60,11 +60,7 @@
 	// Vega does not support CSS variables natively. We patch the compiled
 	// spec marks to use the current theme colors from CSS variables,
 	// consistent with getDarkModeConfig().
-	function patchMarksForDarkMode(
-		marks: VegaMark[],
-		primaryColor: string,
-		textColor: string
-	): VegaMark[] {
+	function patchMarksForDarkMode(marks: VegaMark[], primaryColor: string): VegaMark[] {
 		return marks.map((mark) => {
 			const patched: VegaMark = {
 				...mark,
@@ -98,10 +94,9 @@
 			if (darkMode) {
 				const style = getComputedStyle(document.documentElement);
 				const primaryColor = style.getPropertyValue('--color-primary').trim();
-				const textColor = style.getPropertyValue('--color-base-content').trim();
 
 				const rawMarks = ((compiledSpec as Spec).marks || []) as unknown as VegaMark[];
-				const patchedMarks = patchMarksForDarkMode(rawMarks, primaryColor, textColor);
+				const patchedMarks = patchMarksForDarkMode(rawMarks, primaryColor);
 
 				compiledSpec = {
 					...compiledSpec,
