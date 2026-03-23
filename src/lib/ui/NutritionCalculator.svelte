@@ -10,6 +10,7 @@
 	} from '$lib/stores/calculatorStore';
 	import { _ as t } from '$lib/i18n';
 	import { onMount } from 'svelte';
+	import { _ } from 'svelte-i18n';
 
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiClose from '@iconify-svelte/mdi/close';

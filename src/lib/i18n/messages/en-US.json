@@ -58,6 +58,9 @@
 			"moderator": "Moderator"
 		}
 	},
+	"help": {
+		"button": "Help and Shortcuts"
+	},
 	"general": {
 		"language": "Language",
 		"country": "Country",
@@ -155,6 +158,10 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"card": {
+			"aria_label": "Go to product {productName} with code {productCode}",
+			"aria_label_no_name": "Go to product with code {productCode}"
+		},
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
@@ -169,6 +176,11 @@
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
+		},
+		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"toast": {
+			"copied_link": "Link copied to clipboard!",
+			"failed_copy": "Failed to copy link"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -221,7 +233,8 @@
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
-				"comment": "Optionally, add a comment to describe your changes or provide additional context."
+				"comment": "Optionally, add a comment to describe your changes or provide additional context.",
+				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
 			},
 			"tooltips": {
 				"serving_size": "This value helps to make a proportional calculation of each nutrient per serving size. For example, 60 g, 60g or 60 G (prefer the first one), 1000 ml or 1L",
@@ -251,6 +264,47 @@
 			"quantity": "Quantity",
 			"emb_code": "Traceability codes",
 			"packaging": "Packaging",
+			"packaging_component": {
+				"number_of_units": "Number of units",
+				"number_of_units_placeholder": "e.g. 1",
+				"shape": "Shape",
+				"shape_placeholder": "e.g. bottle, box, pouch...",
+				"material": "Material",
+				"material_placeholder": "e.g. plastic, glass, PET, cardboard...",
+				"recycling": "Recycling",
+				"recycling_placeholder": "e.g. recycle, discard, compost...",
+				"weight_measured": "Weight of one empty unit (g)",
+				"weight_measured_label": "Weight of one empty unit",
+				"weight_placeholder": "e.g. 10",
+				"quantity_per_unit": "Quantity per unit",
+				"quantity_per_unit_label": "Quantity of product contained per unit",
+				"quantity_per_unit_placeholder": "e.g. 1.5 L, 500g...",
+				"add_component": "Add packaging component",
+				"remove_component": "Remove",
+				"all_listed": "All packaging components have been listed",
+				"parts_title": "Packaging parts",
+				"instructions_title": "Guidance for packaging parts:",
+				"component_number": "Component {number}",
+				"number_of_units_desc": "Enter the number of packaging units of the same shape and material contained in the product.",
+				"shape_desc": "Enter the shape name listed in the recycling instructions if they are available, or select a shape.",
+				"material_desc": "Enter the specific material if it can be determined (a material code inside a triangle can often be found on packaging parts), or a generic material (for instance plastic or metal) if you are unsure.",
+				"recycling_desc": "Enter recycling instructions only if they are listed on the product.",
+				"weight_measured_desc": "Remove any remaining food and wash and dry the packaging part before weighting. If possible, use a scale with 0.1g or 0.01g precision.",
+				"quantity_per_unit_desc": "Enter the net weight or net volume and indicate the unit (for example g or ml).",
+				"recycling_instructions": "Recycling instructions and/or packaging information",
+				"recycling_instructions_desc": "Write here the packaging information and/or the recycling instructions that are present on the product.",
+				"recycling_instructions_placeholder": "e.g. 1 plastic bottle, 1 plastic cap",
+				"recycling_instructions_list": "List all packaging parts separated by a comma or line feed, with their amount (e.g. 1 or 6) type (e.g. bottle, box, can), material (e.g. plastic, metal, aluminium) and if available their size (e.g. 33cl) and recycling instructions.",
+				"recycling_instructions_specificity": "Try to be as specific as possible. For plastic, please indicate if it is opaque or transparent, colored, PET or PEHD.",
+				"recycling_instructions_combination": "Data from this field will be combined with any data provided for each packaging part. It is possible to provide one or the other, or both.",
+				"recycling_instructions_examples_label": "Examples:",
+				"recycling_instructions_examples": "1 plastic film to discard, 1 FSC carboard box to recycle, 6 1.5L transparent PET plastic bottles to recycle, 6 colored opaque plastic caps, 12 33cl aluminium cans",
+				"packaging_photo": "Packaging photo",
+				"packaging_photo_desc": "Photos of the packaging info and recycling instructions help to verify the data.",
+				"no_packaging_image": "No packaging photo available",
+				"upload_packaging_photo": "Upload packaging photo",
+				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
+			},
 			"manufacturing_places": "Manufacturing places",
 			"categories": "Categories:",
 			"labels": "Labels",
@@ -296,6 +350,10 @@
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
+			"toast": {
+				"save_success": "Product saved successfully!",
+				"save_error": "Failed to save product. Please try again."
+			},
 			"add_nutrient": "Add Nutrient",
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
@@ -309,6 +367,7 @@
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"packaging": "Packaging",
 				"comment": "Comment"
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
