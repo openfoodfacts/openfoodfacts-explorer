@@ -207,7 +207,7 @@ We aim to make Open Food Facts accessible to everyone. Before submitting a PR, r
 
 ```svelte
 <!-- Footer: social link with aria-label -->
-<a href="https://github.com/openfoodfacts" target="_blank" aria-label="GitHub">
+<a href="https://github.com/openfoodfacts" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
 	<IconMdiGithub class="h-6 w-6" />
 </a>
 
