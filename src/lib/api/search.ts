@@ -7,6 +7,11 @@ import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
+/**
+ * Returns the base URL for the search API from the PUBLIC_SEARCH_BASE_URL env variable.
+ * @throws {Error} If PUBLIC_SEARCH_BASE_URL is not set or empty.
+ * @returns The search API base URL string.
+ */
 export function getSearchBaseUrl() {
 	if (!env.PUBLIC_SEARCH_BASE_URL) {
 		throw new Error(
@@ -22,6 +27,12 @@ export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
 
+/**
+ * Fetches autocomplete suggestions for a given query from the search API.
+ * @param query - The autocomplete query parameters.
+ * @param fetch - The fetch function to use for the request.
+ * @returns An AutocompleteResponse with an `options` array, or `{ options: [] }` if the API returns no data.
+ */
 export const autocomplete = async (
 	query: AutocompleteQuery,
 	fetch: typeof window.fetch
