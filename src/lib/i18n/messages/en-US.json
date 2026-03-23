@@ -447,6 +447,10 @@
 		"learn_more": "Learn More",
 		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
 	},
+	"calculator": {
+		"clear_all": "Clear All",
+		"clear_all_aria": "Clear all items from calculator"
+	},
 	"compare": {
 		"page_title": "Compare Products",
 		"page_description": "Compare nutritional information of food products",
