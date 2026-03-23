@@ -8,7 +8,7 @@ import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
 export function getSearchBaseUrl() {
-	if (env.PUBLIC_SEARCH_BASE_URL == '') {
+	if (!env.PUBLIC_SEARCH_BASE_URL) {
 		throw new Error(
 			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
 		);
@@ -28,7 +28,7 @@ export const autocomplete = async (
 ): Promise<AutocompleteResponse> => {
 	const api = createSearchApi(fetch);
 	const response = await api.autocomplete(query);
-	return response.data as AutocompleteResponse;
+	return (response.data ?? { options: [] }) as AutocompleteResponse;
 };
 
 export type AutocompleteOption = {
