@@ -8,6 +8,7 @@
 		toggleCalculator,
 		totalNutrition
 	} from '$lib/stores/calculatorStore';
+	import { _ as t } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
@@ -122,11 +123,11 @@
 				<button
 					class="btn btn-sm btn-error"
 					onclick={clearCalculator}
-					aria-label={$_('calculator.clear_all_aria', {
+					aria-label={$t('calculator.clear_all_aria', {
 						default: 'Clear all items from calculator'
 					})}
 				>
-					{$_('calculator.clear_all', { default: 'Clear All' })}
+					{$t('calculator.clear_all', { default: 'Clear All' })}
 				</button>
 			</div>
 		{/if}
