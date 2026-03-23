@@ -29,7 +29,7 @@
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
-	let darkMode = $state(false);
+	let darkMode = $state<boolean | undefined>(undefined);
 
 	function getDarkModeConfig() {
 		const style = getComputedStyle(document.documentElement);
@@ -57,9 +57,9 @@
 			}
 		};
 	}
-	// Vega compiles specs with hardcoded color values and does not support
-	// CSS variables natively, so we manually patch those hardcoded colors
-	// in the compiled spec to make charts visible in dark mode.
+	// Vega does not support CSS variables natively. We patch the compiled
+	// spec marks to use the current theme colors from CSS variables,
+	// consistent with getDarkModeConfig().
 	function patchMarksForDarkMode(
 		marks: VegaMark[],
 		primaryColor: string,
@@ -75,7 +75,7 @@
 						fill: { value: primaryColor },
 						stroke: { value: primaryColor }
 					},
-					enter: { ...mark.encode?.enter, fill: { value: textColor } }
+					enter: { ...mark.encode?.enter, fill: { value: primaryColor } }
 				} as VegaMarkEncode
 			};
 			return patched;
