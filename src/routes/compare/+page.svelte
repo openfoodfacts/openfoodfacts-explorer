@@ -6,6 +6,7 @@
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '$lib/i18n';
+	import { shareContent } from '$lib/utils/webShare';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -41,34 +42,17 @@
 	async function shareComparison() {
 		if (!browser) return;
 		const url = generateShareUrl();
-
-		// If on chrome-based browser, use share API
-		const ua = navigator.userAgent;
-		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
-
-		const data = {
-			title: $_('compare.share_title'),
-			text: $_('compare.share_text'),
-			url
-		};
-
-		if (isChromeBrowser && navigator.share && navigator.canShare(data)) {
-			try {
-				await navigator.share(data);
-				return;
-			} catch (err) {
-				console.error('Share failed:', err);
-				toastCtx.error($_('compare.toast.share_failed'));
+		await shareContent(
+			{
+				title: $_('compare.share_title'),
+				text: $_('compare.share_text'),
+				url
+			},
+			{
+				onClipboard: () => toastCtx.success($_('compare.toast.link_copied')),
+				onError: () => toastCtx.error($_('compare.toast.copy_failed'))
 			}
-		}
-
-		try {
-			await navigator.clipboard.writeText(url);
-			toastCtx.success($_('compare.toast.link_copied'));
-		} catch (err) {
-			console.error('Failed to copy:', err);
-			toastCtx.error($_('compare.toast.copy_failed'));
-		}
+		);
 	}
 
 	function startEditingTitle() {

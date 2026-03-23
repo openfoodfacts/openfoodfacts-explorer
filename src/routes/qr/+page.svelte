@@ -25,7 +25,7 @@
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
-				console.log('QR code detected:', text);
+				console.debug('QR code detected:', text);
 				lastScannedCode = text;
 
 				// We must stop the scanner first to release the camera
