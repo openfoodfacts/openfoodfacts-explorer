@@ -227,11 +227,16 @@
 				{#if $userInfo != null}
 					<a
 						class="btn btn-outline link"
-						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+						>{$_('account_link', { default: 'Account' })}</a
 					>
-					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+					<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+						>{$_('logout_link', { default: 'Log out' })}</a
+					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+					<a class="btn btn-outline link" href={resolve('/oauth/login')}
+						>{$_('login_link', { default: 'Login' })}</a
+					>
 				{/if}
 				<!-- Settings button -->
 				<a
@@ -346,11 +351,16 @@
 		{#if $userInfo != null}
 			<a
 				class="btn btn-outline link"
-				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+				>{$_('account_link', { default: 'Account' })}</a
 			>
-			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+			<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+				>{$_('logout_link', { default: 'Log out' })}</a
+			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+			<a class="btn btn-outline link" href={resolve('/oauth/login')}
+				>{$_('login_link', { default: 'Login' })}</a
+			>
 		{/if}
 	</div>
 </div>
