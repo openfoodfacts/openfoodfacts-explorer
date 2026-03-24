@@ -35,7 +35,7 @@ export function runPreferencesMigrations() {
 	let maxVersion = currentVersion;
 	for (const migration of MIGRATIONS) {
 		if (migration.version > currentVersion) {
-			console.log(`Migrating preferences to version ${migration.version}`);
+			console.info(`Migrating preferences to version ${migration.version}`);
 			prefs = migration.upgrade(prefs);
 			prefs.version = migration.version;
 			maxVersion = Math.max(maxVersion, migration.version);
