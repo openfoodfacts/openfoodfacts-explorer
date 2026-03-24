@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -22,8 +23,10 @@
 	let highlightedIndex = $state<number | null>(null);
 
 	// debounce for autocomplete
-	let debounceTimeoutId: number | undefined;
-	const DEBOUNCE_DELAY = 300;
+
+	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
+	const DEBOUNCE_DELAY_MS = 100;
+
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
@@ -65,20 +68,32 @@
 	}
 
 	function debouncedFetchAutocomplete(query: string) {
-		if (debounceTimeoutId) {
+
+		if (debounceTimeoutId !== undefined) {
 			clearTimeout(debounceTimeoutId);
+			debounceTimeoutId = undefined;
 		}
-		debounceTimeoutId = window.setTimeout(() => {
+
+		if (query.trim().length < minQueryLength) {
+			if (autocompleteAbortController) {
+				autocompleteAbortController.abort();
+				autocompleteAbortController = null;
+			}
+			autocompleteLoading = false;
+			autocompleteList = null;
+			return;
+		}
+
+		debounceTimeoutId = setTimeout(() => {
 			fetchAutocomplete(query);
-		}, DEBOUNCE_DELAY);
+		}, DEBOUNCE_DELAY_MS);
 	}
 
-	$effect(() => {
-		return () => {
-			if (debounceTimeoutId) {
-				clearTimeout(debounceTimeoutId);
-			}
-		};
+	onDestroy(() => {
+		if (debounceTimeoutId !== undefined) {
+			clearTimeout(debounceTimeoutId);
+		}
+
 	});
 
 	function handleEnter() {

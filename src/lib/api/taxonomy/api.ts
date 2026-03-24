@@ -7,5 +7,8 @@ export async function getTaxo<T extends TaxoNode>(
 	fetch: (url: string, options?: RequestInit) => Promise<Response>
 ): Promise<Taxonomy<T>> {
 	const res = await wrapFetch(fetch)(TAXONOMY_URL(taxo));
+	if (!res.ok) {
+		throw new Error(`Failed to fetch taxonomy ${taxo}: ${res.status} ${res.statusText}`);
+	}
 	return await res.json();
 }
