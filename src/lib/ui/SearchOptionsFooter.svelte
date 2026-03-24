@@ -63,11 +63,13 @@
 			{/each}
 		</div>
 	{/if}
+
 	<div class="flex h-full w-full">
 		<button
 			class="border-base-200 flex h-full w-1/2 flex-col items-center justify-center border-r py-1 focus:outline-none"
 			onclick={() => {
 				sortDropdownOpen = !sortDropdownOpen;
+				showFacetsModal = false;
 			}}
 			aria-label="Sort"
 			aria-expanded={sortDropdownOpen}
@@ -76,12 +78,12 @@
 				Sort <IconMdiSort class="ml-2 text-lg" />
 			</span>
 		</button>
-		<!-- TODO: Add onFilterClick handler and logic for filter functionality -->
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
 			aria-label="Filter"
 			aria-controls="facets"
 			onclick={() => {
+				sortDropdownOpen = false;
 				if (searchResult?.facets && Object.keys(searchResult.facets).length > 0) {
 					showFacetsModal = true;
 				} else {
