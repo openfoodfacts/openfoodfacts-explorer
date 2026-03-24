@@ -23,6 +23,10 @@ function isLetter(character: string | undefined): boolean {
 function containsKnownUnit(token: string, units: readonly string[]): boolean {
 	// Return true when the token contains a known unit as a standalone token.
 	for (const unit of units) {
+		if (unit === '') {
+			continue;
+		}
+
 		let currentIndex = token.indexOf(unit);
 
 		while (currentIndex !== -1) {
