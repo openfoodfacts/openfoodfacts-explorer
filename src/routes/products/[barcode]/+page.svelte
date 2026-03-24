@@ -24,6 +24,7 @@
 
 	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { ProductV3Extended } from '$lib/api/sdk-types';
+	import type { ProductDataSection } from '$lib/api';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { getContext } from 'svelte';
@@ -143,7 +144,7 @@
 
 	<Gs1Country barcode={product.code} />
 
-	<DataSources product={product as any} />
+	<DataSources product={product as ProductDataSection} />
 
 	{#if isFolksonomyConfigured()}
 		<Card>
