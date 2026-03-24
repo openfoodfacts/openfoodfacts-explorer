@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
 
 	import Card from '$lib/ui/Card.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '$lib/i18n';
+	import { shareContent } from '$lib/utils/webShare';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { browser } from '$app/environment';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -24,6 +27,7 @@
 	let titleInput: HTMLInputElement | null = $state(null);
 
 	function generateShareUrl(): string {
+		if (!browser) throw new Error('generateShareUrl can only be called inside browser');
 		const barcodes = $compareStore.map((p) => p.code).join(',');
 		const params = new SvelteURLSearchParams();
 		params.set('barcodes', barcodes);
@@ -36,35 +40,19 @@
 	const toastCtx = getToastCtx();
 
 	async function shareComparison() {
+		if (!browser) return;
 		const url = generateShareUrl();
-
-		// If on chrome-based browser, use share API
-		const ua = navigator.userAgent;
-		const isChromeBrowser = ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR');
-
-		const data = {
-			title: $_('compare.share_title'),
-			text: $_('compare.share_text'),
-			url
-		};
-
-		if (isChromeBrowser && navigator.share && navigator.canShare(data)) {
-			try {
-				await navigator.share(data);
-				return;
-			} catch (err) {
-				console.error('Share failed:', err);
-				toastCtx.error($_('compare.toast.share_failed'));
+		await shareContent(
+			{
+				title: $_('compare.share_title'),
+				text: $_('compare.share_text'),
+				url
+			},
+			{
+				onClipboard: () => toastCtx.success($_('compare.toast.link_copied')),
+				onError: () => toastCtx.error($_('compare.toast.copy_failed'))
 			}
-		}
-
-		try {
-			await navigator.clipboard.writeText(url);
-			toastCtx.success($_('compare.toast.link_copied'));
-		} catch (err) {
-			console.error('Failed to copy:', err);
-			toastCtx.error($_('compare.toast.copy_failed'));
-		}
+		);
 	}
 
 	function startEditingTitle() {
@@ -169,7 +157,7 @@
 				<div class="py-8 text-center">
 					<p class="mb-4 text-lg">{$_('compare.no_products_selected')}</p>
 					<p class="mb-4 text-sm text-gray-600">{$_('compare.add_products_hint')}</p>
-					<a href="/products/search?q=chocolate" class="btn btn-primary">
+					<a href={resolve('/explore')} class="btn btn-primary">
 						{$_('compare.browse_products')}
 					</a>
 				</div>

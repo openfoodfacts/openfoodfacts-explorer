@@ -1,15 +1,30 @@
 import { derived } from 'svelte/store';
+import { getContext, setContext } from 'svelte';
 import { userAuthTokens } from './auth';
 import { decodeJwt } from 'jose';
-
-type SpecialRole = 'admin' | 'moderator';
-type SpecialRoleKeys = `is${Capitalize<SpecialRole>}`;
 
 export type UserInfo = {
 	preferred_username: string;
 	email: string;
 	roles?: string[];
-} & Record<SpecialRoleKeys, boolean>;
+};
+
+export type UserPermissionsContext = {
+	isAdmin: boolean;
+	isModerator: boolean;
+};
+
+export function setPermissionsCtx(ctx: () => UserPermissionsContext) {
+	setContext('permissions-ctx', ctx);
+}
+
+export function getPermissionsCtx(): UserPermissionsContext {
+	const lambda = getContext('permissions-ctx') as (() => UserPermissionsContext) | undefined;
+	if (!lambda) {
+		throw new Error('User permissions context not found');
+	}
+	return lambda();
+}
 
 export const userInfo = derived(userAuthTokens, ($tokens) => {
 	if (!$tokens || !$tokens.id_token) {
@@ -50,11 +65,9 @@ function parseIdToken(idToken: string): UserInfo {
 		return {
 			preferred_username: token.preferred_username,
 			email: token.email,
-			roles,
-			isAdmin: roles.includes('admin'),
-			isModerator: roles.includes('moderator')
+			roles
 		};
 	} catch (error) {
-		throw new Error(`Failed to parse ID token: ${error}`);
+		throw new Error(`Failed to parse ID token`, { cause: error });
 	}
 }

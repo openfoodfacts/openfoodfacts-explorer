@@ -4,7 +4,7 @@
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo } from '$lib/stores/user';
+	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
 
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
@@ -20,6 +20,8 @@
 
 	let { data }: PageProps = $props();
 	let { attributeGroups } = $derived(data);
+
+	const permissions = getPermissionsCtx();
 </script>
 
 <div class="mx-auto my-8">
@@ -33,13 +35,13 @@
 				<IconMdiAccount class="h-4 w-4" />
 				<span class="">{$_('auth.role.user')}</span>
 			</span>
-			{#if $userInfo.isAdmin}
+			{#if permissions.isAdmin}
 				<span class="badge badge-primary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.admin')}</span>
 				</span>
 			{/if}
-			{#if $userInfo.isModerator}
+			{#if permissions.isModerator}
 				<span class="badge badge-secondary badge-xl">
 					<IconMdiShieldAccount class="h-4 w-4" />
 					<span class="">{$_('auth.role.moderator')}</span>
@@ -70,7 +72,6 @@
 			bind:value={$preferences.lang}
 			onchange={() => locale.set($preferences.lang)}
 		>
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
 				{@const lang = data.languages[langKey]}
 				<option
@@ -95,7 +96,6 @@
 				{$_('world_option')}
 			</option>
 
-			<!--eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each Object.keys(data.countries).toSorted() as countryKey (countryKey)}
 				{@const country = data.countries[countryKey]}
 				{@const code2 = country.country_code_2.en}
@@ -164,6 +164,7 @@
 		class="btn btn-outline"
 		href={GITHUB_REPO_URL}
 		target="_blank"
+		rel="noopener noreferrer"
 		aria-label={$_('settings.github_link')}
 	>
 		<IconMdiGithub class="h-5 w-5" />
