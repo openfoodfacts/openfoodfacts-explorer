@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ProductV3Extended } from '$lib/api/sdk-types';
 	import { _ } from '$lib/i18n';
+	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
 	import {
@@ -26,7 +27,6 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
-
 	type Props = {
 		product: ProductV3Extended;
 		taxonomies: {
@@ -43,9 +43,6 @@
 	let { lang } = $derived($preferences);
 
 	let toastCtx = getToastCtx();
-
-	let isShareSupported = $derived(navigator?.share != null);
-
 	function addToCalculator() {
 		// Only add to calculator if nutriments data exists
 		if (!product.nutriments) {
@@ -63,13 +60,19 @@
 	}
 
 	async function sharePage() {
-		try {
-			await navigator.share({
-				url: window.location.href
-			});
-		} catch (error) {
-			console.error('Error sharing the page:', error);
-		}
+		await shareContent(
+			{
+				url: `${window.location.origin}${window.location.pathname}`,
+				title: product.product_name || product.code,
+				text: $_('product.share_text', {
+					values: { productName: product.product_name || product.code }
+				})
+			},
+			{
+				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
+				onError: () => toastCtx.error($_('product.toast.failed_copy'))
+			}
+		);
 	}
 
 	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
@@ -135,15 +138,13 @@
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 					</a>
 
-					{#if isShareSupported}
-						<button
-							class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-							onclick={sharePage}
-						>
-							<IconMdiShareVariant class="h-5 w-5" />
-							<span class="hidden md:block">{$_('product.buttons.share')}</span>
-						</button>
-					{/if}
+					<button
+						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						onclick={sharePage}
+					>
+						<IconMdiShareVariant class="h-5 w-5" />
+						<span class="hidden md:block">{$_('product.buttons.share')}</span>
+					</button>
 
 					<a
 						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
@@ -255,7 +256,12 @@
 					<div class="mb-2">
 						<div class="text-secondary mb-2 text-sm font-bold">
 							<span>{$_('product.header.traceability_codes')}</span>
-							<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
+							<a
+								href={TRACEABILITY_CODES_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link link-secondary text-xs"
+							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
 						</div>
