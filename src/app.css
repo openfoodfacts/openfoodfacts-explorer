@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+@plugin 'daisyui';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	--font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'light';
+	default: true;
+	--color-primary: #201a17;
+	--color-primary-content: #faf7f5;
+	--color-secondary: #52443d;
+	--color-secondary-content: #faf7f5;
+	--color-base-100: #faf7f5;
+	--color-base-200: #f3f0ee;
+	--color-base-300: #ebe8e6;
+
+	/* border radius */
+	--radius-selector: 1rem;
+	--radius-field: 1rem;
+	--radius-box: 0.5rem;
+}
+
+@plugin 'daisyui/theme' {
+	name: 'dark';
+	prefersdark: true;
+
+	--color-primary: #faf7f5;
+	--color-primary-content: #201a17;
+	--color-secondary: #ebc3a8;
+	--color-secondary-content: #201a17;
+	--color-base-100: #201a17;
+	--color-base-200: #2d2724;
+	--color-base-300: #3a332f;
+
+	/* border radius */
+	--radius-selector: 1rem;
+	--radius-field: 1rem;
+	--radius-box: 0.5rem;
+}

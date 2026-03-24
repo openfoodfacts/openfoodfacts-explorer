@@ -1,0 +1,10 @@
+{
+	"name": "OpenFoodFacts Explorer",
+	"customizations": {
+		"vscode": {
+			"extensions": ["svelte.svelte-vscode"]
+		}
+	},
+	"postCreateCommand": "npm install -g pnpm && cp .env.example .env && npm install",
+	"postStartCommand": "pnpm run dev"
+}
