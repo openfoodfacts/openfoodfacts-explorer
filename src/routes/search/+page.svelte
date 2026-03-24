@@ -297,4 +297,44 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
+	availableFilters={Object.entries(searchResult.facets).map(([key, facet]) => ({
+		key,
+		name: facet.name || key,
+		selected: facet.items.some((item) => item.selected)
+	}))}
+	onApplyFilters={(selected) => {
+		// Get currently selected facet keys
+		const currentSelected: string[] = [];
+		Object.entries(searchResult.facets).forEach(([key, facet]) => {
+			facet.items.filter((item) => item.selected).forEach((item) => currentSelected.push(key));
+		});
+
+		// Find items to remove (selected before but not in new selection)
+		const toRemove = currentSelected.filter((key) => !selected.includes(key));
+		toRemove.forEach((key) => {
+			const facet = Object.entries(searchResult.facets).find(([k, f]) => k === key);
+			if (facet) {
+				const [facetKey, f] = facet;
+				const itemKey = f.items.find((i) => i.selected)?.key;
+				if (itemKey) {
+					selectedFacets = removeIncludeFacet(selectedFacets, facetKey, itemKey);
+				}
+			}
+		});
+
+		// Find items to add (in new selection but not selected before)
+		const toAdd = selected.filter((key) => !currentSelected.includes(key));
+		toAdd.forEach((key) => {
+			const facet = Object.entries(searchResult.facets).find(([k, f]) => k === key);
+			if (facet) {
+				const [facetKey, f] = facet;
+				const itemKey = f.items[0]?.key;
+				if (itemKey) {
+					selectedFacets = addIncludeFacet(selectedFacets, facetKey, itemKey);
+				}
+			}
+		});
+
+		refreshQuery();
+	}}
 />
