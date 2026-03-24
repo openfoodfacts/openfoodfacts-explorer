@@ -302,39 +302,29 @@
 	availableFilters={Object.entries(searchResult.facets).map(([key, facet]) => ({
 		key,
 		name: facet.name || key,
-		selected: facet.items.some((item) => item.selected)
+		items: facet.items.map((item) => ({
+        key: item.key,
+        name: item.name,
+        selected: item.selected,
+        count: item.count
+    }))
 	}))}
 	onApplyFilters={(selected) => {
 		// Get currently selected facet keys
-		const currentSelected: string[] = [];
-		Object.entries(searchResult.facets).forEach(([key, facet]) => {
-			facet.items.filter((item) => item.selected).forEach((item) => currentSelected.push(key));
+		const currentSelected: { facetKey: string; itemKey: string }[] = [];
+		Object.entries(searchResult.facets).forEach(([facetKey, facet]) => {
+			facet.items.filter((item) => item.selected).forEach((item) => currentSelected.push({ facetKey, itemKey: item.key }));
 		});
 
 		// Find items to remove (selected before but not in new selection)
-		const toRemove = currentSelected.filter((key) => !selected.includes(key));
-		toRemove.forEach((key) => {
-			const facet = Object.entries(searchResult.facets).find(([k, f]) => k === key);
-			if (facet) {
-				const [facetKey, f] = facet;
-				const itemKey = f.items.find((i) => i.selected)?.key;
-				if (itemKey) {
-					selectedFacets = removeIncludeFacet(selectedFacets, facetKey, itemKey);
-				}
-			}
-		});
+		const toRemove = currentSelected.filter((cs) => !selectedItems.some((s) => s.facetKey === cs.facetKey && s.itemKey === cs.itemKey));
+		 toRemove.forEach(({ facetKey, itemKey }) => {selectedFacets = removeIncludeFacet(selectedFacets, facetKey, itemKey);});
 
 		// Find items to add (in new selection but not selected before)
-		const toAdd = selected.filter((key) => !currentSelected.includes(key));
-		toAdd.forEach((key) => {
-			const facet = Object.entries(searchResult.facets).find(([k, f]) => k === key);
-			if (facet) {
-				const [facetKey, f] = facet;
-				const itemKey = f.items[0]?.key;
-				if (itemKey) {
-					selectedFacets = addIncludeFacet(selectedFacets, facetKey, itemKey);
-				}
-			}
+		
+		const toAdd = selectedItems.filter((s) => !currentSelected.some((cs) => cs.facetKey === s.facetKey && cs.itemKey === s.itemKey));
+		toAdd.forEach(({ facetKey, itemKey }) => {
+			selectedFacets = addIncludeFacet(selectedFacets, facetKey, itemKey);
 		});
 
 		refreshQuery();
