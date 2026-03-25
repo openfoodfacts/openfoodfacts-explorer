@@ -18,7 +18,10 @@ export function getSearchBaseUrl() {
 }
 
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(getSearchBaseUrl()));
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(
+		fetch,
+		new URL(getSearchBaseUrl() ?? '')
+	);
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
 
