@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { Matomo } from '$lib/matomo-mock';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
