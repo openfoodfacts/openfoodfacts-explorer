@@ -110,8 +110,8 @@
 
 	let folksonomyEditor = $state<(HTMLElement & { authToken?: string }) | undefined>();
 	$effect(() => {
-		if (folksonomyEditor && $userAuthTokens?.access_token) {
-			folksonomyEditor.authToken = $userAuthTokens.access_token;
+		if (folksonomyEditor) {
+			folksonomyEditor.authToken = $userAuthTokens?.access_token ?? undefined;
 		}
 	});
 </script>

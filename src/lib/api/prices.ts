@@ -10,9 +10,12 @@ export function isConfigured() {
 }
 
 export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
+	if (!isConfigured()) {
+		throw new Error('Prices API is not configured. PUBLIC_PRICES_API_URL is missing.');
+	}
 	const authToken = get(preferences)?.prices?.authToken ?? undefined;
 	const pricesApi = new PricesApi(fetch, {
-		baseUrl: BASE_URL ?? '',
+		baseUrl: BASE_URL!,
 		authToken
 	});
 	return pricesApi;

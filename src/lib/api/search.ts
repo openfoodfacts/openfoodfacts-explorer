@@ -8,7 +8,7 @@ import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
 export function getSearchBaseUrl() {
-	if (env.PUBLIC_SEARCH_BASE_URL == '') {
+	if (!env.PUBLIC_SEARCH_BASE_URL) {
 		throw new Error(
 			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
 		);
@@ -18,10 +18,7 @@ export function getSearchBaseUrl() {
 }
 
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(
-		fetch,
-		new URL(getSearchBaseUrl() ?? '')
-	);
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(getSearchBaseUrl()));
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
 

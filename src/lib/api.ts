@@ -12,13 +12,20 @@ export * from './api/nutriments';
 export * from './api/knowledgepanels';
 
 export function createRobotoffApi(fetch: typeof window.fetch) {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(ROBOTOFF_URL ?? ''));
+	if (!ROBOTOFF_URL) {
+		throw new Error('Robotoff API is not configured. PUBLIC_ROBOTOFF_URL is missing.');
+	}
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(ROBOTOFF_URL));
 	return new Robotoff(wrappedFetch, { baseUrl: url.toString() });
 }
 
 export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
 	const keycloakUrl = KEYCLOAK_URL;
-	const clientId = OAUTH_CLIENT_ID ?? '';
+
+	if (!OAUTH_CLIENT_ID) {
+		throw new Error('OAuth is not configured. PUBLIC_AUTH_PKCE_ID is missing.');
+	}
+	const clientId = OAUTH_CLIENT_ID;
 
 	const cleanUrl = new URL(url.pathname, url.origin);
 	const redirectUri = OAUTH_REDIRECT_URI(cleanUrl);
