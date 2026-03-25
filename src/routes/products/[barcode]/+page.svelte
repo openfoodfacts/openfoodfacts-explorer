@@ -108,7 +108,7 @@
 
 	let productAttributes = $derived(getProductAttributes(product.code));
 
-	let folksonomyEditor: HTMLElement & { authToken?: string } = $state();
+	let folksonomyEditor = $state<(HTMLElement & { authToken?: string }) | undefined>();
 	$effect(() => {
 		if (folksonomyEditor && $userAuthTokens?.access_token) {
 			folksonomyEditor.authToken = $userAuthTokens.access_token;
@@ -174,10 +174,7 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
-				<folksonomy-editor
-					bind:this={folksonomyEditor}
-					page-type="edit"
-					product-code={product.code}
+				<folksonomy-editor bind:this={folksonomyEditor} page-type="edit" product-code={product.code}
 				></folksonomy-editor>
 			{:else}
 				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
