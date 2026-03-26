@@ -6,20 +6,24 @@
 
 	let { code }: { code: string } = $props();
 
-	let openPricesStatus: number | null = $state(null);
-	let proOffStatus: number | null = $state(null);
+	let openPricesPromise = $derived(
+		createPricesApi(fetch)
+			.getPrices({ product_code: code, size: 1 })
+			.then((r) => {
+				if (!(r.data && r.data.items && r.data.items.length > 0)) {
+					throw new Error('Not found');
+				}
+			})
+	);
+
+	let proOffPromise = $derived(
+		fetch(`https://pro.openfoodfacts.dev/products/${code}`).then((r) => {
+			if (!r.ok) throw new Error('Not found');
+		})
+	);
 
 	$effect(() => {
 		JsBarcode('#barcode', code, { format: 'ean13' });
-		createPricesApi(window.fetch)
-			.getPrices({ product_code: code, size: 1 })
-			.then((r) => {
-				openPricesStatus = r.data && r.data.items && r.data.items.length > 0 ? 200 : 404;
-			})
-			.catch(() => (openPricesStatus = 0));
-		fetch(`https://pro.openfoodfacts.dev/products/${code}`)
-			.then((r) => (proOffStatus = r.status))
-			.catch(() => (proOffStatus = 0));
 	});
 </script>
 
@@ -65,11 +69,8 @@
 						rel="noopener noreferrer"
 						title="Open Prices"
 					>
-						Open Prices {openPricesStatus === null
-							? '…'
-							: openPricesStatus === 200
-								? ''
-								: ' (Not found)'}
+						Open Prices{#await openPricesPromise}…{:catch e}
+							({e.message === 'Not found' ? 'Not found' : 'Error'}){/await}
 					</a>
 				</li>
 				<li>
@@ -80,7 +81,8 @@
 						rel="noopener noreferrer"
 						title="Pro OFF"
 					>
-						Pro OFF{proOffStatus === null ? '…' : proOffStatus === 200 ? '' : ' (Not found)'}
+						Pro OFF{#await proOffPromise}…{:catch e}
+							({e.message === 'Not found' ? 'Not found' : 'Error'}){/await}
 					</a>
 				</li>
 				{#if code && code.length >= 3}
