@@ -75,9 +75,9 @@
 	style="height: {frameHeight ? `${frameHeight}px` : '24rem'};"
 >
 	<div
-		class="pointer-events-none absolute inset-0 z-10 flex w-full flex-col items-center justify-center bg-gray-200 transition-opacity duration-300 {showContent
-			? 'opacity-0'
-			: 'opacity-100'}"
+		class="absolute inset-0 z-10 flex w-full flex-col items-center justify-center bg-gray-200 transition-opacity duration-300 {showContent
+			? 'pointer-events-none opacity-0'
+			: 'pointer-events-auto opacity-100'}"
 	>
 		{#if hasTimeoutError}
 			<span class="font-medium text-red-500">Failed to load content.</span>
@@ -93,10 +93,12 @@
 			onload={() => (isIframeLoaded = true)}
 			scrolling="no"
 			sandbox="allow-scripts allow-same-origin allow-popups"
+			tabindex={showContent && !hasTimeoutError ? 0 : -1}
+			aria-hidden={!(showContent && !hasTimeoutError)}
 			class="absolute top-0 left-0 w-full overflow-hidden border-0 transition-opacity duration-300 {showContent &&
 			!hasTimeoutError
-				? 'opacity-100'
-				: 'opacity-0'}"
+				? 'pointer-events-auto opacity-100'
+				: 'pointer-events-none opacity-0'}"
 			style="height: 100%;"
 		></iframe>
 	{/key}
