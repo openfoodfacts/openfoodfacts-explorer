@@ -42,7 +42,7 @@
 			await goto(resolve('/'));
 		} catch (error) {
 			console.error('Token exchange failed:', error);
-			throw new Error('Authentication failed: Token exchange error');
+			throw new Error('Authentication failed: Token exchange error', { cause: error });
 		}
 	}
 

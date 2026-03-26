@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
@@ -17,9 +18,15 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
+	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
+		$derived(data);
 
 	let listView = $state(false);
+
+	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
+	onMount(async () => {
+		MapComponent = (await import('../CountriesMap.svelte')).default;
+	});
 </script>
 
 <Metadata
@@ -39,6 +46,17 @@
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+
+{#if distributionData && MapComponent}
+	<div class="my-8 w-full">
+		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<MapComponent facet={distributionData} />
+		<p class="mt-2 text-sm text-gray-500">
+			Note: The geographic distribution shown on this map is based only on the products visible on
+			the current page.
+		</p>
+	</div>
+{/if}
 
 <div class="my-8 flex w-full flex-col gap-4">
 	{#if Object.entries(knowledgePanels).length > 0}
@@ -144,7 +162,7 @@
 	</div>
 	<Pagination
 		page={results.page}
-		totalPages={Math.ceil(results.count / results.page_size)}
+		totalPages={results.page_size > 0 ? Math.ceil(results.count / results.page_size) : 0}
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());

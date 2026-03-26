@@ -4,7 +4,7 @@
 	import { getLanguageName } from '$lib/languages';
 	import { NUTRIENTS, type NutrientKey, type Product, type Nutriments } from '$lib/api';
 	import { preferences } from '$lib/settings';
-	import { userInfo } from '$lib/stores/user';
+	import { getPermissionsCtx } from '$lib/stores/user';
 
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -45,6 +45,8 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const permissions = getPermissionsCtx();
 
 	let additionalNutrients: NutrientKey[] = $state(
 		NUTRIENTS.filter(
@@ -177,7 +179,7 @@
 				</span>
 			</div>
 
-			{#if $preferences.moderator && $userInfo?.isModerator}
+			{#if $preferences.moderator && permissions.isModerator}
 				<div class="mb-4 flex items-center gap-2">
 					<button type="button" class="btn btn-error btn-sm" onclick={wipeAllNutrientValues}>
 						<IconMdiDeleteSweep class="h-4 w-4" />

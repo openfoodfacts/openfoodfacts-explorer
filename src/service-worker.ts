@@ -42,7 +42,7 @@ self.addEventListener('fetch', (event) => {
 			const cached = await cache.match(event.request);
 
 			if (cached) {
-				console.log(`SW: cache hit for ${event.request.url}`);
+				console.debug(`SW: cache hit for ${event.request.url}`);
 				return cached;
 			}
 		}
