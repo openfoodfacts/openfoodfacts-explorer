@@ -40,7 +40,11 @@
 					source: 'web',
 					flavor: 'off'
 				});
-				window.open(`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`, '_blank');
+				window.open(
+					`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`,
+					'_blank',
+					'noopener,noreferrer'
+				);
 			}
 		},
 		{
@@ -53,6 +57,12 @@
 			type: 'add_packaging_components',
 			action: () => {
 				goto(`/products/${requireCode()}/edit#packaging`);
+			}
+		},
+		{
+			type: 'add_origins',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#origins`);
 			}
 		}
 	];

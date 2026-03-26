@@ -358,7 +358,7 @@
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
-						class="absolute top-2 right-2 z-10 cursor-pointer rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
+						class="btn btn-circle btn-sm btn-soft btn-error absolute top-2 right-2 z-10"
 						onclick={() => onRemoveProduct(product.code)}
 						aria-label="Remove product from comparison"
 					>
@@ -476,16 +476,17 @@
 								<div class="mb-2 flex flex-col items-center justify-center gap-1">
 									{#if onRemoveProduct}
 										<button
-											class="btn btn-soft btn-error flex items-center justify-center transition-all"
+											class="btn btn-soft btn-sm btn-square btn-error transition-all"
 											onclick={() => onRemoveProduct(product.code)}
 											aria-label="Remove product"
+											title="Remove product"
 										>
 											<IconMdiClose class="h-5 w-5" />
 										</button>
 									{/if}
 									{#if onReorderProduct}
 										<button
-											class="btn btn-soft btn-primary flex cursor-grab items-center justify-center active:cursor-grabbing"
+											class="btn btn-soft btn-sm btn-square btn-primary cursor-grab active:cursor-grabbing"
 											draggable="true"
 											ondragstart={() => {
 												dragSrcIndex = { code: product.code, idx: index };
@@ -494,6 +495,7 @@
 												dragSrcIndex = null;
 											}}
 											aria-label="Drag to reorder"
+											title="Drag to reorder"
 										>
 											<IconMdiDrag class="h-5 w-5" />
 										</button>
