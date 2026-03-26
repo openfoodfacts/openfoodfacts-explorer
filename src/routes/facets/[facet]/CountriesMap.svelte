@@ -260,7 +260,7 @@
 				// Tooltip shown on hover for every country
 				const tooltipContent = data
 					? `<strong>${DOMPurify.sanitize(data.name)}</strong><br>${numberFormat.format(data.products)} products`
-					: (feature.properties?.name ?? numericId);
+					: DOMPurify.sanitize(feature.properties?.name ?? numericId);
 
 				pathLayer.bindTooltip(tooltipContent, { sticky: true });
 
