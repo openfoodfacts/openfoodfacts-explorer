@@ -42,23 +42,46 @@ The Open Food Facts community uses Slack for communication. You can join the `#o
 
 ## Developing
 
-This project uses pnpm. If you have corepack enabled, you should be able to directly use `pnpm` commands. Otherwise, you can install pnpm with `npm install -g pnpm`.
+This project uses **pnpm**.
 
-First, install dependencies:
+### Prerequisites
+
+Make sure you have **Corepack enabled** so that `pnpm` is available in all environments (including dependency build steps):
+
+```bash
+corepack enable
+```
+
+> [!IMPORTANT]
+> Some dependencies are fetched directly from Git repositories and require `pnpm` during their build (`prepare`) phase.
+> If `pnpm` is not globally available, installation may fail.
+
+---
+
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-Before running the project, set up the environment variables:
+If you encounter issues during installation, ensure that:
+
+- `corepack enable` has been run
+- your Node.js version supports Corepack (>=16.10)
+
+---
+
+Set up environment variables:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit the `.env` file as needed to configure your development environment.
+Edit the `.env` file as needed.
 
-Then start the development server:
+---
+
+Start the development server:
 
 ```bash
 pnpm run dev
