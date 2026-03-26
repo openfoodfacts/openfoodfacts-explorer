@@ -228,14 +228,14 @@
 					<a
 						class="btn btn-outline link"
 						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-						>{$_('account_link', { default: 'Account' })}</a
+						>{$_('navbar.account', { default: 'Account' })}</a
 					>
 					<a class="btn btn-outline link" href={resolve('/oauth/logout')}
-						>{$_('logout_link', { default: 'Log out' })}</a
+						>{$_('navbar.logout', { default: 'Logout' })}</a
 					>
 				{:else}
 					<a class="btn btn-outline link" href={resolve('/oauth/login')}
-						>{$_('login_link', { default: 'Login' })}</a
+						>{$_('navbar.login', { default: 'Login' })}</a
 					>
 				{/if}
 				<!-- Settings button -->
@@ -352,14 +352,14 @@
 			<a
 				class="btn btn-outline link"
 				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-				>{$_('account_link', { default: 'Account' })}</a
+				>{$_('navbar.account', { default: 'Account' })}</a
 			>
 			<a class="btn btn-outline link" href={resolve('/oauth/logout')}
-				>{$_('logout_link', { default: 'Log out' })}</a
+				>{$_('navbar.logout', { default: 'Logout' })}</a
 			>
 		{:else}
 			<a class="btn btn-outline link" href={resolve('/oauth/login')}
-				>{$_('login_link', { default: 'Login' })}</a
+				>{$_('navbar.login', { default: 'Login' })}</a
 			>
 		{/if}
 	</div>

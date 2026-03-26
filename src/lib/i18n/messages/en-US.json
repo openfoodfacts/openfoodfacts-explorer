@@ -9,10 +9,13 @@
 	"contribute_link": "Contribute",
 	"producers_link": "Producers",
 	"prices_link": "Prices",
-	"login_link": "Login",
-	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
+	"navbar": {
+		"login": "Login",
+		"logout": "Logout",
+		"account": "Account"
+	},
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
