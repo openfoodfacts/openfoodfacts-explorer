@@ -20,8 +20,8 @@
 		}
 	});
 
-	let previousSrc = $state(src);
-	let timeoutId: ReturnType<typeof setTimeout>;
+	let previousSrc: string | undefined;
+	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
 	const resetTimeout = () => {
 		clearTimeout(timeoutId);
@@ -34,7 +34,7 @@
 		}, 8000);
 	};
 
-	$effect(() => {
+	$effect.pre(() => {
 		if (src !== previousSrc) {
 			untrack(() => {
 				frameHeight = null;
@@ -71,10 +71,12 @@
 </script>
 
 <div
-	class="relative w-full overflow-hidden transition-all duration-300"
-	style="height: {frameHeight ? `${frameHeight}px` : '24rem'};"
+	class="relative w-full overflow-hidden"
+	style:height={frameHeight ? `${frameHeight}px` : '24rem'}
 >
 	<div
+		aria-live="polite"
+		aria-hidden={showContent}
 		class="absolute inset-0 z-10 flex w-full flex-col items-center justify-center bg-gray-200 transition-opacity duration-300 {showContent
 			? 'pointer-events-none opacity-0'
 			: 'pointer-events-auto opacity-100'}"
@@ -93,8 +95,7 @@
 			onload={() => (isIframeLoaded = true)}
 			scrolling="no"
 			sandbox="allow-scripts allow-same-origin allow-popups"
-			tabindex={showContent && !hasTimeoutError ? 0 : -1}
-			aria-hidden={!(showContent && !hasTimeoutError)}
+			inert={!(showContent && !hasTimeoutError)}
 			class="absolute top-0 left-0 w-full overflow-hidden border-0 transition-opacity duration-300 {showContent &&
 			!hasTimeoutError
 				? 'pointer-events-auto opacity-100'
