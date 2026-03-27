@@ -74,23 +74,9 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
+	const pricesApi = createPricesApi(fetch);
 
-	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
-		product_type: 'all',
-		fields: ['all', 'knowledge_panels'],
-		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
-		knowledge_panels_client: 'web'
-	});
-
-	handleProductApiError(apiErrorWrapped);
-
-	if (!state) {
-		error(500, {
-			message: 'Unable to connect to Open Food Facts API',
-			errors: []
-		});
-	}
-
+	// Start parallel fetches immediately
 	const categories = getTaxo<Category>('categories', fetch);
 	const labels = getTaxo<Label>('labels', fetch);
 	const stores = getTaxo<Store>('stores', fetch);
@@ -106,7 +92,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		? folkApi.getKeys().then((it) => it.data)
 		: Promise.resolve([]);
 
-	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
 		? getPricesCoords(pricesApi, params.barcode)
 		: Promise.resolve(null);
@@ -117,6 +102,71 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		const attributeGroupsList = (attributeGroups ?? []) as AttributeGroup[];
 		return attributesToDefaultPreferences(attributeGroupsList);
 	})();
+
+	// Fetch main product data simultaneously
+	let state, apiErrorWrapped;
+	try {
+		const result = await productsApi.getProductV3(params.barcode, {
+			product_type: 'all',
+			fields: ['all', 'knowledge_panels'],
+			// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
+			knowledge_panels_client: 'web'
+		});
+		state = result.data;
+		apiErrorWrapped = result.error;
+	} catch (err) {
+		// Prevent unhandled promise rejections if the main fetch throws unexpectedly
+		await Promise.allSettled([
+			categories,
+			labels,
+			stores,
+			brands,
+			origins,
+			countries,
+			folksonomyTags,
+			folksonomyKeys,
+			pricesResponse,
+			defaultPreferences
+		]);
+		throw err;
+	}
+
+	if (apiErrorWrapped) {
+		// Settle parallel promises before throwing API errors (404/400)
+		await Promise.allSettled([
+			categories,
+			labels,
+			stores,
+			brands,
+			origins,
+			countries,
+			folksonomyTags,
+			folksonomyKeys,
+			pricesResponse,
+			defaultPreferences
+		]);
+	}
+	handleProductApiError(apiErrorWrapped);
+
+	if (!state) {
+		// Also settle promises if we are going to throw an error response
+		await Promise.allSettled([
+			categories,
+			labels,
+			stores,
+			brands,
+			origins,
+			countries,
+			folksonomyTags,
+			folksonomyKeys,
+			pricesResponse,
+			defaultPreferences
+		]);
+		throw error(500, {
+			message: 'Unable to connect to Open Food Facts API',
+			errors: []
+		});
+	}
 
 	return {
 		state,
