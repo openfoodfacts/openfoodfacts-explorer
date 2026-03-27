@@ -11,6 +11,8 @@
 	let isIframeLoaded = $state(false);
 	let hasTimeoutError = $state(false);
 
+	let iframeEl = $state<HTMLIFrameElement | null>(null);
+
 	let expectedOrigin = $derived.by(() => {
 		try {
 			return new URL(src).origin;
@@ -52,11 +54,19 @@
 		const abortController = new AbortController();
 
 		const handler = (event: MessageEvent) => {
-			if (!expectedOrigin || event.origin !== expectedOrigin || !event.data?.frameHeight) return;
+			if (
+				!expectedOrigin ||
+				event.origin !== expectedOrigin ||
+				event.source !== iframeEl?.contentWindow ||
+				!event.data?.frameHeight
+			) {
+				return;
+			}
 
 			const parsedHeight = parseInt(event.data.frameHeight, 10);
 			if (!isNaN(parsedHeight) && parsedHeight > 0) {
 				frameHeight = parsedHeight;
+				hasTimeoutError = false;
 				clearTimeout(timeoutId);
 			}
 		};
@@ -75,7 +85,8 @@
 	style:height={frameHeight ? `${frameHeight}px` : '24rem'}
 >
 	<div
-		aria-live="polite"
+		role="status"
+		aria-live={!showContent ? 'polite' : 'off'}
 		aria-hidden={showContent}
 		class="absolute inset-0 z-10 flex w-full flex-col items-center justify-center bg-gray-200 transition-opacity duration-300 {showContent
 			? 'pointer-events-none opacity-0'
@@ -90,6 +101,7 @@
 
 	{#key src}
 		<iframe
+			bind:this={iframeEl}
 			{src}
 			{title}
 			onload={() => (isIframeLoaded = true)}
