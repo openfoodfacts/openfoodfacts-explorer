@@ -31,9 +31,15 @@ async function getPricesCoords(api: PricesApi, code: string) {
 	const { items, pages } = data;
 
 	const prices = [...items.flat()];
+	const pagePromises = [];
 	for (let page = 2; page <= pages; page++) {
-		const res = await api.getPrices({ product_code: code, page: page });
-		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
+		pagePromises.push(api.getPrices({ product_code: code, page: page }));
+	}
+
+	const results = await Promise.all(pagePromises);
+	for (let i = 0; i < results.length; i++) {
+		const res = results[i];
+		if (res.error != null) throw new Error(`Error fetching page ${i + 2}.`);
 		prices.push(...res.data.items.flat());
 	}
 
@@ -128,11 +134,18 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		return attributesToDefaultPreferences(attributeGroupsList);
 	})();
 
+	const [tags, keys, prices, defaultProductPreferences] = await Promise.all([
+		folksonomyTags,
+		folksonomyKeys,
+		pricesResponse,
+		defaultPreferences
+	]);
+
 	return {
 		state,
-		defaultProductPreferences: await defaultPreferences,
-		tags: await folksonomyTags,
-		keys: await folksonomyKeys,
+		defaultProductPreferences,
+		tags,
+		keys,
 		taxo: {
 			categories,
 			labels,
@@ -141,6 +154,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			countries,
 			origins
 		},
-		prices: await pricesResponse
+		prices
 	};
 };
