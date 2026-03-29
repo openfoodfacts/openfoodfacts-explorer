@@ -9,6 +9,11 @@
 	"producers_link": "Produttori",
 	"prices_link": "Prezzi",
 	"world_option": "Mondo",
+	"navbar": {
+		"Login": "Accedi",
+		"Logout": "Esci",
+		"account": "Account"
+	},
 	"search": {
 		"placeholder": "Query or barcode",
 		"go": "Go",
