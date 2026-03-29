@@ -9,6 +9,7 @@ import {
 	type Brand,
 	type Store,
 	type Country,
+	type Unit,
 	createProductsApi
 } from '$lib/api';
 import { userInfo } from '$lib/stores/user';
@@ -63,13 +64,14 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	const productType =
 		productState.status !== 'failure' ? productState.product.product_type : undefined;
 
-	const [categories, labels, brands, stores, origins, countries] = await Promise.all([
+	const [categories, labels, brands, stores, origins, countries, units] = await Promise.all([
 		getTaxo<Category>('categories', fetch, productType),
 		getTaxo<Label>('labels', fetch, productType),
 		getTaxo<Brand>('brands', fetch, productType),
 		getTaxo<Store>('stores', fetch, productType),
 		getTaxo<Origin>('origins', fetch, productType),
-		getTaxo<Country>('countries', fetch, productType)
+		getTaxo<Country>('countries', fetch, productType),
+		getTaxo<Unit>('units', fetch, productType)
 	]);
 
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
@@ -86,7 +88,8 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			brands,
 			stores,
 			origins,
-			countries
+			countries,
+			units
 		};
 	}
 
@@ -97,6 +100,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		brands,
 		stores,
 		origins,
-		countries
+		countries,
+		units
 	};
 };

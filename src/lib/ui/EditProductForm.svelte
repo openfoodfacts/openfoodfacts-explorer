@@ -46,6 +46,7 @@
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
+		units: string[];
 	};
 
 	let {
@@ -63,6 +64,7 @@
 		storeNames,
 		originNames,
 		countriesNames,
+		units,
 		isSubmitting,
 		submit
 	}: Props = $props();
@@ -134,7 +136,7 @@
 			{$_('product.edit.sections.nutrition')}
 		</div>
 		<div class="collapse-content">
-			<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
+			<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 		</div>
 	</div>
 
