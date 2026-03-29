@@ -43,15 +43,42 @@ The Open Food Facts community uses Slack for communication. You can join the `#o
 
 ## Developing
 
-This project uses pnpm. If you have corepack enabled, you should be able to directly use `pnpm` commands. Otherwise, you can install pnpm with `npm install -g pnpm`.
+This project uses **pnpm** as the package manager.
 
-First, install dependencies:
+### Prerequisites
+
+Ensure `pnpm` is globally available before installing dependencies. You have two options to set this up:
+
+**Option 1: Corepack (Recommended)**
+
+```bash
+corepack enable
+```
+
+Corepack is currently bundled with Node.js ≥16.10. It automatically reads the `"packageManager"` field in `package.json` to download the exact version of `pnpm` required, preventing lockfile conflicts.
+
+**Option 2: Global installation**
+
+If you prefer not to use Corepack, you can install `pnpm` globally via npm:
+
+```bash
+npm install -g pnpm
+```
+
+_(Note: If using this method, please ensure your installed version matches the one specified in our `package.json`, i.e. 10.24.0, to avoid unintended modifications to `pnpm-lock.yaml`)_.
+
+> [!IMPORTANT]
+> **Why global availability matters:** We use dependencies fetched directly from Git repositories (e.g., `@sinnwerkstatt/sveltekit-matomo`). The package manager must compile them during their `prepare` phase. If `pnpm` is not globally accessible on your PATH, the installation will fail with `ERR_PNPM_PREPARE_PACKAGE`.
+
+---
+
+### Installation
 
 ```bash
 pnpm install
 ```
 
-Before running the project, set up the environment variables:
+### Environment Setup
 
 ```bash
 cp .env.example .env
@@ -59,7 +86,9 @@ cp .env.example .env
 
 Edit the `.env` file as needed to configure your development environment.
 
-Then start the development server:
+---
+
+### Development Server
 
 ```bash
 pnpm run dev
