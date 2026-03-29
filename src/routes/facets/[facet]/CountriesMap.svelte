@@ -12,6 +12,7 @@
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Feature, Geometry, Position } from 'geojson';
 	import type * as Leaflet from 'leaflet';
+	let isMounted = true;
 
 	type Props = { facet: FacetResponse };
 	let { facet }: Props = $props();
@@ -127,7 +128,11 @@
 
 		(async () => {
 			// Dynamically import Leaflet
-			L = await import('leaflet');
+			const leaflet = await import('leaflet');
+
+			// Prevent state updates after unmount
+			if (!isMounted) return;
+			L = leaflet;
 
 			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM }).setView(
 				[20, 0],
@@ -137,10 +142,16 @@
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
 
-			countryTaxonomy = await getTaxo<Country>('countries', fetch);
+			const taxonomy = await getTaxo<Country>('countries', fetch);
+
+			// Prevent state updates after unmount
+			if (!isMounted) return;
+			countryTaxonomy = taxonomy;
 		})();
 
 		return () => {
+			// Mark component as unmounted
+			isMounted = false;
 			if (mapInstance) {
 				mapInstance.off();
 				mapInstance.remove();
