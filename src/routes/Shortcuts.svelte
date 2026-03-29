@@ -28,6 +28,18 @@
 			if (event.key === 'Escape' && helpModal.open) {
 				helpModal.close();
 			}
+
+			// Ignore if user is typing in an input field
+			const target = event.target as HTMLElement;
+			if (
+				target instanceof HTMLInputElement ||
+				target instanceof HTMLTextAreaElement ||
+				target instanceof HTMLSelectElement ||
+				target.isContentEditable
+			) {
+				return;
+			}
+
 			const combo = getCombo(event);
 			shortcuts.forEach((shortcut, key) => {
 				if (combo === key.replace('?', '?')) {

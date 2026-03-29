@@ -26,10 +26,13 @@
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import type { Shortcut } from '../../Shortcuts.svelte';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { PRODUCT_URL } from '$lib/const';
+	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -66,6 +69,40 @@
 	shortcuts.set('Shift+B', {
 		description: $_('product.shortcuts.show_barcode'),
 		action: () => (showBarcode = !showBarcode)
+	});
+
+	shortcuts.set('A', {
+		description: $_('product.shortcuts.api_page'),
+		action: () => {
+			if (product.code) {
+				window.open(PRODUCT_URL(product.code), '_blank');
+			}
+		}
+	});
+
+	shortcuts.set('E', {
+		description: $_('product.shortcuts.edit_same_window'),
+		action: () => {
+			if (product.code) {
+				goto(resolve('/products/[barcode]/edit', { barcode: product.code }));
+			}
+		}
+	});
+
+	shortcuts.set('Shift+E', {
+		description: $_('product.shortcuts.edit_new_window'),
+		action: () => {
+			if (product.code) {
+				window.open(resolve('/products/[barcode]/edit', { barcode: product.code }), '_blank');
+			}
+		}
+	});
+
+	onDestroy(() => {
+		shortcuts.delete('A');
+		shortcuts.delete('E');
+		shortcuts.delete('Shift+E');
+		shortcuts.delete('Shift+B');
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {

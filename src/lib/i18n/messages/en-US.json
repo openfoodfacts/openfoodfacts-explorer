@@ -166,7 +166,11 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show product barcode"
+			"show_barcode": "Show/hide product barcode",
+			"api_page": "Open product API page",
+			"edit_same_window": "Edit product in current window",
+			"edit_new_window": "Edit product in new window",
+			"view_page": "Go back to product page"
 		},
 		"buttons": {
 			"classic_view": "Classic view",
