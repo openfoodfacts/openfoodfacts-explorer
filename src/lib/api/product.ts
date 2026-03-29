@@ -55,6 +55,35 @@ export async function getBulkProductAttributes(
 	return attributesByCode;
 }
 
+export async function getBulkProducts(
+	fetch: typeof window.fetch,
+	productCodes: string[],
+	fields: string[] = ['product_name', 'code']
+): Promise<ProductV3[]> {
+	if (productCodes.length === 0) return [];
+
+	const off = createProductsApi(fetch);
+
+	const params = new URLSearchParams({
+		code: productCodes.join(','),
+		fields: fields.join(',')
+	});
+
+	try {
+		const { data, error } = await off.apiv2.search(Object.fromEntries(params.entries()));
+
+		if (error || !data) {
+			console.warn(`Warning: bulk product fetch returned no data or error: ${error}`);
+			return [];
+		}
+
+		return (data.products as ProductV3[]) || [];
+	} catch (e) {
+		console.error('Failed to fetch bulk products:', e);
+		return [];
+	}
+}
+
 export async function addOrEditProductV2(
 	fetch: typeof window.fetch,
 	product: Product & { comment?: string }
