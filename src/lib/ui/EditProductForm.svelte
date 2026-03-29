@@ -6,6 +6,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
+	import StickyEditSaveButton from './StickyEditSaveButton.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -68,7 +69,8 @@
 	}: Props = $props();
 </script>
 
-<div class="space-y-4">
+<!-- pb-24 ensures the last section is not hidden behind the fixed floating bar -->
+<div class="space-y-4 pb-24">
 	<!-- Languages Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -161,16 +163,7 @@
 			<CommentStep bind:comment />
 		</div>
 	</div>
-
-	<div class="mt-8 flex justify-end">
-		<button
-			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			class:loading={isSubmitting}
-			onclick={submit}
-			disabled={isSubmitting}
-			type="button"
-		>
-			{$_('product.edit.save_btn')}
-		</button>
-	</div>
 </div>
+
+<!-- Floating comment + save bar — always visible at bottom of viewport -->
+<StickyEditSaveButton {isSubmitting} {submit} bind:comment />
