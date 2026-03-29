@@ -86,5 +86,5 @@ export async function idToName(fetch: typeof window.fetch, id: number): Promise<
 		name = tags['brand'];
 	}
 
-	return name;
+	return name ?? 'Unknown';
 }
