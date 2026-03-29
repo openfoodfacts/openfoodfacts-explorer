@@ -15,10 +15,12 @@
 			.then((r) => {
 				openPricesStatus = r.data && r.data.items && r.data.items.length > 0 ? 200 : 404;
 			})
-			.catch(() => (openPricesStatus = 0));
+			.catch(() => (openPricesStatus = -1));
 		fetch(`https://pro.openfoodfacts.dev/products/${code}`)
-			.then((r) => (proOffStatus = r.status))
-			.catch(() => (proOffStatus = 0));
+			.then((r) => {
+				proOffStatus = r.ok ? 200 : r.status;
+			})
+			.catch(() => (proOffStatus = -1));
 	});
 </script>
 
@@ -66,9 +68,11 @@
 					>
 						Open Prices {openPricesStatus === null
 							? '…'
-							: openPricesStatus === 200
-								? ''
-								: ' (Not found)'}
+							: openPricesStatus === -1
+								? ' (Error)'
+								: openPricesStatus === 200
+									? ''
+									: ' (Not found)'}
 					</a>
 				</li>
 				<li>
@@ -79,7 +83,13 @@
 						rel="noopener noreferrer"
 						title="Pro OFF"
 					>
-						Pro OFF{proOffStatus === null ? '…' : proOffStatus === 200 ? '' : ' (Not found)'}
+						Pro OFF{proOffStatus === null
+							? '…'
+							: proOffStatus === -1
+								? ' (Error)'
+								: proOffStatus === 200
+									? ''
+									: ' (Not found)'}
 					</a>
 				</li>
 				{#if code && code.length >= 3}
