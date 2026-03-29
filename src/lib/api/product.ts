@@ -65,6 +65,31 @@ export async function addOrEditProductV2(
 }
 
 /**
+ * Update the barcode of a product (moderator-only action).
+ * This sends a POST request to the OFF API with the current code and the new code.
+ * @param currentCode - The current barcode of the product
+ * @param newCode - The correct barcode to replace the current one
+ * @returns true if the barcode was updated successfully, false otherwise
+ */
+export async function updateBarcode(
+	fetch: typeof window.fetch,
+	currentCode: string,
+	newCode: string
+): Promise<boolean> {
+	const off = createProductsApi(fetch);
+
+	const body = new FormData();
+	body.append('code', currentCode);
+	body.append('new_code', newCode);
+
+	try {
+		// @ts-expect-error - new method added in upcoming SDK version
+		const success = await off.apiv2.changeBarcode(currentCode, newCode);
+		return success;
+	} catch (error) {
+		console.error('Error updating barcode:', error);
+		return false;
+	}
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
  * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function

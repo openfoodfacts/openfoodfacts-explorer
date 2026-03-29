@@ -11,8 +11,10 @@
 		type Nutriments,
 		type RawImage,
 		addOrEditProductV2,
+		updateBarcode
 		updatePackagingsV3
 	} from '$lib/api';
+	import { getToastCtx } from '$lib/stores/toasts';
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
@@ -187,6 +189,24 @@
 
 	let isSubmitting = $state(false);
 	let productNotFound = $derived(data.state.status === 'empty');
+
+	const toast = getToastCtx();
+
+	async function handleBarcodeCorrection(newCode: string) {
+		try {
+			const success = await updateBarcode(fetch, product.code, newCode);
+			if (success) {
+				toast.success($_('product.moderator.barcode_correction_success'));
+				setTimeout(() => {
+					goto(`/products/${newCode}`);
+				}, 1500);
+			} else {
+				toast.error($_('product.moderator.barcode_correction_error'));
+			}
+		} catch {
+			toast.error($_('product.moderator.barcode_correction_error'));
+		}
+	}
 
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
@@ -440,6 +460,7 @@
 			{originNames}
 			{storeNames}
 			languages={filteredLanguages}
+			onCorrectBarcode={handleBarcodeCorrection}
 		/>
 	{/if}
 </div>
