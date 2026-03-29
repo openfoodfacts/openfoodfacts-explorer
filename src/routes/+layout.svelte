@@ -296,7 +296,7 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
+<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">
