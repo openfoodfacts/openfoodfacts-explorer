@@ -2,7 +2,9 @@ import { wrapFetchWithCredentials } from '$lib/api/utils';
 import { API_HOST } from '$lib/const';
 import type { PageLoad } from './$types';
 
-async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> {
+async function getNumberOfProducts(
+	fetch: (input: string | URL | Request, init?: RequestInit) => Promise<Response>
+): Promise<number> {
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
 	const res = await wrappedFetch(`${url}.json`);
 	if (!res.ok) {
@@ -12,7 +14,9 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 	return data?.count || 0;
 }
 
-async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
+async function getNumberOfContributors(
+	fetch: (input: string | URL | Request, init?: RequestInit) => Promise<Response>
+): Promise<number> {
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
 	const res = await wrappedFetch(`${url}facets/contributors.json`);
 	if (!res.ok) {
@@ -23,10 +27,8 @@ async function getNumberOfContributors(fetch: typeof window.fetch): Promise<numb
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	const productCount = getNumberOfProducts(fetch);
-	const contributorCount = getNumberOfContributors(fetch);
 	return {
-		productCount: await productCount,
-		contributorCount: await contributorCount
+		productCount: getNumberOfProducts(fetch),
+		contributorCount: getNumberOfContributors(fetch)
 	};
 };

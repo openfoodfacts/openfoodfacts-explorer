@@ -141,7 +141,13 @@
 	>
 		<IconMdiDatabase class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">
-			<CountUp value={data.productCount} />
+			{#await data.productCount}
+				<div class="skeleton h-8 w-24"></div>
+			{:then count}
+				<CountUp value={count} />
+			{:catch}
+				<div>0</div>
+			{/await}
 		</h2>
 		<p class="text-base-content/70">{$_('landing.products_count')}</p>
 	</a>
@@ -151,7 +157,13 @@
 	>
 		<IconMdiAccountGroup class="text-primary mb-4 h-12 w-12" />
 		<h2 class="text-xl font-bold">
-			<CountUp value={data.contributorCount} />
+			{#await data.contributorCount}
+				<div class="skeleton h-8 w-24"></div>
+			{:then count}
+				<CountUp value={count} />
+			{:catch}
+				<div>0</div>
+			{/await}
 		</h2>
 		<p class="text-base-content/70">{$_('landing.contributors_count')}</p>
 	</a>
