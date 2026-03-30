@@ -9,10 +9,13 @@
 	"contribute_link": "Contribute",
 	"producers_link": "Producers",
 	"prices_link": "Prices",
-	"login_link": "Login",
-	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
+	"navbar": {
+		"login": "Login",
+		"logout": "Logout",
+		"account": "Account"
+	},
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -57,6 +60,9 @@
 			"admin": "Administrator",
 			"moderator": "Moderator"
 		}
+	},
+	"help": {
+		"button": "Help and Shortcuts"
 	},
 	"general": {
 		"language": "Language",
@@ -155,6 +161,10 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"card": {
+			"aria_label": "Go to product {productName} with code {productCode}",
+			"aria_label_no_name": "Go to product with code {productCode}"
+		},
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
@@ -169,6 +179,11 @@
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
+		},
+		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"toast": {
+			"copied_link": "Link copied to clipboard!",
+			"failed_copy": "Failed to copy link"
 		},
 		"header": {
 			"quantity": "Quantity",

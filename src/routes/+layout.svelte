@@ -22,7 +22,7 @@
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
-	import { _, getLocaleFromNavigator, locale } from '$lib/i18n';
+	import { _, getLocale, locale } from '$lib/i18n';
 	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
@@ -107,6 +107,42 @@
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
+	});
+
+	// == Global User Permissions Context ==
+
+	import { setPermissionsCtx, type UserPermissionsContext } from '$lib/stores/user';
+	import { fetchCurrentUserPermissions } from '$lib/api/permissions';
+	import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
+	import { wrapFetchWithAuth } from '$lib/stores/auth';
+
+	let permissionsCtx = $state<UserPermissionsContext>({
+		isAdmin: false,
+		isModerator: false
+	});
+
+	setPermissionsCtx(() => permissionsCtx);
+
+	$effect(() => {
+		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
+		if ($userInfo && $userInfo.preferred_username) {
+			const authFetch = wrapFetchWithAuth(globalThis.fetch);
+			fetchCurrentUserPermissions(authFetch, CURRENT_USER_PERMISSIONS_URL).then(
+				(permissionsData) => {
+					if (permissionsData && permissionsData.status === 'success' && permissionsData.user) {
+						permissionsCtx.isAdmin = permissionsData.user.admin === 1;
+						permissionsCtx.isModerator = permissionsData.user.moderator === 1;
+					} else {
+						permissionsCtx.isAdmin = false;
+						permissionsCtx.isModerator = false;
+					}
+				}
+			);
+		} else {
+			// Clear roles when logged out
+			permissionsCtx.isAdmin = false;
+			permissionsCtx.isModerator = false;
+		}
 	});
 
 	// == Layout logic ==
@@ -195,9 +231,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ??
-			getLocaleFromNavigator()?.split('-')[0]?.toLowerCase() ??
-			'en'}
+		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
@@ -227,11 +261,16 @@
 				{#if $userInfo != null}
 					<a
 						class="btn btn-outline link"
-						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+						>{$_('navbar.account', { default: 'Account' })}</a
 					>
-					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+					<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+						>{$_('navbar.logout', { default: 'Logout' })}</a
+					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+					<a class="btn btn-outline link" href={resolve('/oauth/login')}
+						>{$_('navbar.login', { default: 'Login' })}</a
+					>
 				{/if}
 				<!-- Settings button -->
 				<a
@@ -346,11 +385,16 @@
 		{#if $userInfo != null}
 			<a
 				class="btn btn-outline link"
-				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+				>{$_('navbar.account', { default: 'Account' })}</a
 			>
-			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+			<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+				>{$_('navbar.logout', { default: 'Logout' })}</a
+			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+			<a class="btn btn-outline link" href={resolve('/oauth/login')}
+				>{$_('navbar.login', { default: 'Login' })}</a
+			>
 		{/if}
 	</div>
 </div>
@@ -382,7 +426,12 @@
 					})}
 				</p>
 				<div class="modal-action">
-					<a href="https://status.openfoodfacts.org" target="_blank" class="btn btn-primary">
+					<a
+						href="https://status.openfoodfacts.org"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-primary"
+					>
 						{$_('slow_server.status_page', { default: 'View Status Page' })}
 					</a>
 				</div>

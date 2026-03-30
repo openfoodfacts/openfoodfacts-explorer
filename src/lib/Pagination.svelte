@@ -18,7 +18,7 @@
 		</a>
 	{/if}
 
-	<span class="btn join-item btn-active">{page}</span>
+	<span class="btn join-item btn-active" aria-current="page">{page}</span>
 
 	{#if totalPages > page + 1}
 		<a href={pageUrl(page + 1)} class="btn join-item"> {page + 1}</a>
