@@ -1,7 +1,8 @@
 import { getContext, setContext } from 'svelte';
+import type { WebsiteFlavor } from '$lib/flavor';
 
 type WebsiteContext = {
-	flavor: 'beauty' | 'food' | 'petfood' | 'product';
+	flavor: WebsiteFlavor;
 };
 
 export function setWebsiteCtx(ctx: () => WebsiteContext) {
