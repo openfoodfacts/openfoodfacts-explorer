@@ -5,7 +5,7 @@
 	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 
-	import type { SearchResult } from '$lib/api/search';
+	import type { SearchResult, FacetResult } from '$lib/api/search';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
@@ -13,7 +13,7 @@
 		sortBy?: string;
 		onFilterClick?: () => void;
 		searchResult?: SearchResult;
-		children?: Snippet<[{ facets: Record<string, any>; close: () => void }]>;
+		children?: Snippet<[{ facets: FacetResult; close: () => void }]>;
 	}
 
 	let {
@@ -26,7 +26,15 @@
 
 	let sortDropdownOpen = $state(false);
 	let showFacetsModal = $state(false);
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && showFacetsModal) {
+			showFacetsModal = false;
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <footer class="search-options-footer">
 	{#if sortDropdownOpen}
