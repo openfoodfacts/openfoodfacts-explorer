@@ -57,11 +57,13 @@
 					</a>
 				</li>
 				<li>
+					<!-- Open external Prices links in a new tab to preserve app context. -->
 					<a
 						class="text-xs text-green-600 hover:underline"
 						href={`https://prices.openfoodfacts.org/product/${code}`}
 						target="_blank"
 						rel="noopener noreferrer"
+						aria-label="Open Prices (opens in a new tab)"
 						title="Open Prices"
 					>
 						Open Prices {openPricesStatus === null
