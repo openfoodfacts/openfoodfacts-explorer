@@ -1,6 +1,6 @@
 import { resolve } from '$app/paths';
 import { env as publicEnv } from '$env/dynamic/public';
-import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA, type WebsiteFlavor } from '$lib/flavor';
+import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 
 const {
 	PUBLIC_ROBOTOFF_URL,
