@@ -5,15 +5,16 @@
 	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 
-	import type { SearchResult, FacetResult } from '$lib/api/search';
-	import type { Snippet } from 'svelte';
+	import FacetBar from '../../routes/search/FacetBar.svelte';
+	import type { SearchResult } from '$lib/api/search';
 
 	interface Props {
 		onSortOptionSelect?: (value: string) => void;
 		sortBy?: string;
 		onFilterClick?: () => void;
 		searchResult?: SearchResult;
-		children?: Snippet<[{ facets: FacetResult; close: () => void }]>;
+		onAddFacet?: (key: string, val: string) => void;
+		onRemoveFacet?: (key: string, val: string) => void;
 	}
 
 	let {
@@ -21,7 +22,8 @@
 		sortBy = '',
 		onFilterClick = () => {},
 		searchResult,
-		children
+		onAddFacet = () => {},
+		onRemoveFacet = () => {}
 	}: Props = $props();
 
 	let sortDropdownOpen = $state(false);
@@ -108,10 +110,7 @@
 				>
 			</div>
 			<div class="space-y-2">
-				{@render children?.({
-					facets: searchResult.facets,
-					close: () => (showFacetsModal = false)
-				})}
+				<FacetBar facets={searchResult.facets} {onAddFacet} {onRemoveFacet} />
 			</div>
 		</div>
 	</div>

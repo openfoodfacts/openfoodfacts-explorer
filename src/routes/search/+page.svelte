@@ -301,18 +301,12 @@
 		goto('/facets');
 	}}
 	{searchResult}
->
-	{#snippet children({ facets })}
-		<FacetBar
-			{facets}
-			onAddFacet={(key, val) => {
-				selectedFacets = addIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
-			}}
-			onRemoveFacet={(key, val) => {
-				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
-			}}
-		/>
-	{/snippet}
-</SearchOptionsFooter>
+	onAddFacet={(key, val) => {
+		selectedFacets = addIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
+	onRemoveFacet={(key, val) => {
+		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
+/>
