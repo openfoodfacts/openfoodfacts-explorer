@@ -44,7 +44,7 @@ The Open Food Facts community uses Slack for communication. You can join the `#o
 
 ## Getting started (for new contributors)
 
-Follow these steps to set up the project locally:
+This is a simplified setup guide for new contributors. For more detailed information, see the Developing section below.
 
 > **Note:** This project uses `pnpm`. Install it globally if not already available:
 > `npm install -g pnpm`
