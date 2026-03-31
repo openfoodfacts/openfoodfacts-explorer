@@ -37,9 +37,34 @@ By building a new frontend, we want to be able to iterate faster on the user exp
 - Support for Nutri-Patrol
 - [Feature parity list](https://docs.google.com/spreadsheets/d/1JE6prbafDeArI5GKzoxcEJRJDTFkakynBo-NltcPJx8/edit?usp=sharing)
 
+
 ## Get in touch
 
 The Open Food Facts community uses Slack for communication. You can join the `#off-explorer` channel on the [Open Food Facts Slack](https://slack.openfoodfacts.org).
+
+## Getting started (for new contributors)
+
+Follow these steps to set up the project locally:
+
+> **Note:** This project uses `pnpm`. Install it globally if not already available:
+> `npm install -g pnpm`
+
+1. Clone the repository.
+   
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Setup environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+4. Run development server:
+   ```bash
+   pnpm run dev
+   ```
+5. Open `http://localhost:5173` in your browser
+   
 
 ## Developing
 
