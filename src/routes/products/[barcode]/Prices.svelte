@@ -41,11 +41,11 @@
 	<div class="mt-4 text-end">
 		<!-- Open external Prices links in a new tab to preserve app context. -->
 		<a
-			href={`https://prices.openfoodfacts.org/products/${barcode}`}
+			href={`https://prices.openfoodfacts.org/product/${barcode}`}
 			class="text-secondary link text-sm italic"
 			target="_blank"
 			rel="noopener noreferrer"
-			aria-label={`${$_('product.prices.view_prices')} (opens in a new tab)`}
+			aria-label={$_('product.prices.view_prices_new_tab')}
 		>
 			{$_('product.prices.view_prices')}
 		</a>

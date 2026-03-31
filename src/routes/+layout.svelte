@@ -368,7 +368,7 @@
 			href="https://prices.openfoodfacts.org"
 			target="_blank"
 			rel="noopener noreferrer"
-			aria-label={`${$_('prices_link')} (opens in a new tab)`}
+			aria-label={$_('product.prices.view_prices_new_tab')}
 		>
 			{$_('prices_link')}
 		</a>

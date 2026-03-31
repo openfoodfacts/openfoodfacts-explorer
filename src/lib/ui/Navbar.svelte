@@ -27,7 +27,7 @@
 						href={item.href}
 						target={isPricesLink ? '_blank' : undefined}
 						rel={isPricesLink ? 'noopener noreferrer' : undefined}
-						aria-label={isPricesLink ? `${itemLabel} (opens in a new tab)` : undefined}
+						aria-label={isPricesLink ? $_('product.prices.view_prices_new_tab') : undefined}
 						class="text-secondary-content font-medium hover:underline"
 					>
 						{itemLabel}
