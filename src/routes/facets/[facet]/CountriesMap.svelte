@@ -12,7 +12,7 @@
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Feature, Geometry, Position } from 'geojson';
 	import type * as Leaflet from 'leaflet';
-	let isMounted = true;
+	let isMounted = false;
 
 	type Props = { facet: FacetResponse };
 	let { facet }: Props = $props();
@@ -122,6 +122,7 @@
 	let isDark: boolean = $state(false);
 
 	onMount(() => {
+		isMounted = true;
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
 		isDark = mq.matches;
 		mq.addEventListener('change', (e) => (isDark = e.matches));
