@@ -540,5 +540,9 @@
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
 		}
+	},
+	"calculator": {
+		"clear_all": "Clear All",
+		"clear_all_aria": "Clear all items from calculator"
 	}
 }

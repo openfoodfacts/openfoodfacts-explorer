@@ -209,5 +209,9 @@
 			"description": "Aggiungi prodotti dalle loro pagine per iniziare a confrontare i valori nutrizionali",
 			"cta": "Sfoglia prodotti"
 		}
+	},
+	"calculator": {
+		"clear_all": "Cancella tutto",
+		"clear_all_aria": "Rimuovi tutti gli elementi dal calcolatore nutrizionale"
 	}
 }
