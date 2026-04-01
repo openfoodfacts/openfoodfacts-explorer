@@ -113,6 +113,11 @@
 		}
 	},
 	"settings": {
+		"subtitle": "Manage your preferences and personalize your experience",
+		"section_user": "User",
+		"username": "Username",
+		"email": "Email",
+		"roles": "Roles",
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
@@ -120,7 +125,9 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
 		"display_prices_in_search": "Display prices in search results",
+		"display_prices_in_search_help": "Show price information in search results when available",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
