@@ -86,7 +86,14 @@
 		}
 	},
 	"settings": {
-		"general": "General",
+		"subtitle": "Gestisci le tue preferenze e personalizza la tua esperienza",
+		"username": "Nome utente",
+		"email": "Email",
+		"roles": "Ruoli",
+		"expand_all_sections": "Espandi tutte le sezioni",
+		"expand_all_sections_help": "Espandi automaticamente tutte le sezioni quando visualizzi i dettagli del prodotto",
+		"display_prices_in_search": "Visualizza i prezzi nei risultati della ricerca",
+		"display_prices_in_search_help": "Mostra le informazioni sui prezzi nei risultati della ricerca quando disponibili",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"github_link": "GitHub",

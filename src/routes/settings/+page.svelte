@@ -7,7 +7,6 @@
 	import { userInfo } from '$lib/stores/user';
 	import Metadata from '$lib/Metadata.svelte';
 
-	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
 	import IconMaterialPublic from '@iconify-svelte/material-symbols/public';
@@ -29,7 +28,6 @@
 	let activeTab = $state<'account' | 'general' | 'editing' | 'preferences' | 'developer'>(
 		'account'
 	);
-	let mobileMenuOpen = $state(false);
 
 	const tabs = [
 		{ id: 'account', label: 'Account' },
@@ -47,7 +45,7 @@
 		<div class="mb-8">
 			<h1 class="text-base-content text-4xl font-bold">{$_('settings_link')}</h1>
 			<p class="text-base-content/70 mt-2">
-				Manage your preferences and personalize your experience
+				{$_('settings.subtitle')}
 			</p>
 		</div>
 
@@ -140,7 +138,6 @@
 							<button
 								onclick={() => {
 									activeTab = tab.id as typeof activeTab;
-									mobileMenuOpen = false;
 								}}
 								class:active={activeTab === tab.id}
 							>
@@ -164,16 +161,16 @@
 						{#if $userInfo}
 							<div class="mt-4 space-y-4">
 								<div>
-									<p class="text-base-content/70 text-sm">Username</p>
+									<p class="text-base-content/70 text-sm">{$_('settings.username')}</p>
 									<p class="text-lg font-semibold">{$userInfo.preferred_username}</p>
 								</div>
 								<div>
-									<p class="text-base-content/70 mb-2 text-sm">Email</p>
+									<p class="text-base-content/70 mb-2 text-sm">{$_('settings.email')}</p>
 									<p class="text-lg font-semibold">{$userInfo.email}</p>
 								</div>
 								{#if $userInfo.roles && $userInfo.roles.length > 0}
 									<div>
-										<p class="text-base-content/70 mb-2 text-sm">Roles</p>
+										<p class="text-base-content/70 mb-2 text-sm">{$_('settings.roles')}</p>
 										<div class="flex flex-wrap gap-2">
 											{#each $userInfo.roles as role (role)}
 												<span class="badge badge-primary">
@@ -330,7 +327,7 @@
 								/>
 							</label>
 							<p class="text-base-content/70 mt-1 text-xs">
-								Automatically expand all sections when viewing product details
+								{$_('settings.expand_all_sections_help')}
 							</p>
 						</div>
 
@@ -347,7 +344,7 @@
 								/>
 							</label>
 							<p class="text-base-content/70 mt-1 text-xs">
-								Show price information in search results when available
+								{$_('settings.display_prices_in_search_help')}
 							</p>
 						</div>
 					</div>
