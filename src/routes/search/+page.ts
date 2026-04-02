@@ -22,18 +22,73 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
-	const prices: Record<string, number> = {};
-	const results = await Promise.all(
-		barcodes.map(async (code) => ({
-			code: code,
-			prices: await api.getPrices({ product_code: code })
-		}))
-	);
+ // Maximum number of simultaneous requests allowed to the Prices API.
+ // This helps prevent sending too many requests at the same time when the result contains many products.
+ // Rate limiting value: 5.
+ // Default concurrency chosen to balance performance and API safety.
+const PRICES_CONCURRENCY_LIMIT = 5;
 
-	for (const result of results) {
-		if (result.prices.data && result.prices.data.items) {
-			prices[result.code] = result.prices.data.total;
+async function withConcurrencyLimit<T>(tasks: (() => Promise<T>)[],limit: number): Promise<PromiseSettledResult<T>[]> {
+	
+	// Ensure limit is a safe positive integer; default to 1 if invalid.
+	const safeLimit = Number.isInteger(limit) && limit > 0 ? limit : 1;
+
+	const results: PromiseSettledResult<T>[] = new Array(tasks.length);
+	let nextIndex = 0;
+
+	async function worker(): Promise<void> {
+		while (nextIndex < tasks.length) {
+			const index = nextIndex++;
+			try {
+				results[index] = { status: 'fulfilled', value: await tasks[index]() };
+			} catch (reason) {
+				results[index] = { status: 'rejected', reason };
+			}
+		}
+	}
+
+	// Spawn workers up to safeLimit.
+	await Promise.all(Array.from({ length: Math.min(safeLimit, tasks.length) }, worker));
+
+	return results;
+}
+
+async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
+	if (barcodes.length === 0) return {};
+
+	// Each task preserves its barcode on both success and failure.
+	const tasks = barcodes.map((code) => async () => {
+		try {
+			const pricesResponse = await api.getPrices({ product_code: code });
+			return { code, pricesResponse };
+		} catch (error) {
+			throw { code, error };
+		}
+	});
+
+	// Execute tasks with concurrency control.
+	const settled = await withConcurrencyLimit(tasks, PRICES_CONCURRENCY_LIMIT);
+
+	// Final result map (distinct from pricesResponse above)
+	const prices: Record<string, number> = {};
+
+	for (const result of settled) {
+		if (result.status === 'rejected') {
+			// Extract barcode and error from rejected result for meaningful logging
+			const { code, error } = result.reason as { code?: string; error?: unknown };
+			if (code) {
+				console.warn(`[getPrices] Failed to fetch price for barcode "${code}":`, error);
+			} else {
+				console.warn('[getPrices] Failed to fetch price (unknown barcode):', result.reason);
+			}
+			continue;
+		}
+
+		const { code, pricesResponse } = result.value;
+
+		// Only store price if API returned data.
+		if (Array.isArray(pricesResponse.data?.items) &&pricesResponse.data.items.length > 0 &&typeof pricesResponse.data.total === 'number') {
+    		prices[code] = pricesResponse.data.total;
 		}
 	}
 
@@ -48,7 +103,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		error(400, 'Missing query parameter');
 	}
 
-	// If the code is an EAN13 code, we can directly fetch the product
+	// If the code is an EAN13 code, we can directly fetch the product.
 	if (isValidEAN13(query)) {
 		redirect(308, `/products/${query}`);
 	}
