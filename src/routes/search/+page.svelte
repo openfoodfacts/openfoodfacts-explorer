@@ -164,7 +164,7 @@
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4">
+	<div class="my-4 hidden md:block">
 		<FacetBar
 			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
@@ -299,4 +299,40 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
+	availableFilters={Object.entries(searchResult.facets).map(([key, facet]) => ({
+		key,
+		name: facet.name || key,
+		items: facet.items.map((item) => ({
+			key: item.key,
+			name: item.name,
+			selected: item.selected,
+			count: item.count
+		}))
+	}))}
+	onApplyFilters={(selectedItems) => {
+		const currentSelected: { facetKey: string; itemKey: string }[] = [];
+		Object.entries(searchResult.facets).forEach(([facetKey, facet]) => {
+			facet.items
+				.filter((item) => item.selected)
+				.forEach((item) => {
+					currentSelected.push({ facetKey, itemKey: item.key });
+				});
+		});
+
+		const toRemove = currentSelected.filter(
+			(cs) => !selectedItems.some((s) => s.facetKey === cs.facetKey && s.itemKey === cs.itemKey)
+		);
+		toRemove.forEach(({ facetKey, itemKey }) => {
+			selectedFacets = removeIncludeFacet(selectedFacets, facetKey, itemKey);
+		});
+
+		const toAdd = selectedItems.filter(
+			(s) => !currentSelected.some((cs) => cs.facetKey === s.facetKey && cs.itemKey === s.itemKey)
+		);
+		toAdd.forEach(({ facetKey, itemKey }) => {
+			selectedFacets = addIncludeFacet(selectedFacets, facetKey, itemKey);
+		});
+
+		refreshQuery();
+	}}
 />
