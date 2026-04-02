@@ -51,9 +51,13 @@
 
 		try {
 			autocompleteLoading = true;
-			const response = await autocomplete(autocompleteQuery, fetch);
-			if (response && Array.isArray(response.options)) {
-				autocompleteList = response.options;
+			const { data, error } = await autocomplete(autocompleteQuery, fetch);
+
+			if (error) {
+				console.error('Autocomplete API error:', error);
+				autocompleteList = [];
+			} else if (data && Array.isArray(data.options)) {
+				autocompleteList = data.options;
 			} else {
 				autocompleteList = [];
 			}
