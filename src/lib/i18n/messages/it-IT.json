@@ -86,7 +86,16 @@
 		}
 	},
 	"settings": {
+		"page_title": "Impostazioni",
+		"page_description": "Gestisci le tue preferenze e le impostazioni del tuo account",
 		"subtitle": "Gestisci le tue preferenze e personalizza la tua esperienza",
+		"tab": {
+			"account": "Account",
+			"general": "Generale",
+			"editing": "Modifica",
+			"preferences": "Preferenze",
+			"developer": "Sviluppatore"
+		},
 		"section_user": "Utente",
 		"username": "Nome utente",
 		"email": "Email",

@@ -4,7 +4,7 @@
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo } from '$lib/stores/user';
+	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
 	import Metadata from '$lib/Metadata.svelte';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
@@ -28,17 +28,18 @@
 	let activeTab = $state<'account' | 'general' | 'editing' | 'preferences' | 'developer'>(
 		'account'
 	);
+	let permissions = $derived(getPermissionsCtx());
 
 	const tabs = [
-		{ id: 'account', label: 'Account' },
-		{ id: 'general', label: 'General' },
-		{ id: 'editing', label: 'Editing' },
-		{ id: 'preferences', label: 'Preferences' },
-		{ id: 'developer', label: 'Developer' }
+		{ id: 'account' },
+		{ id: 'general' },
+		{ id: 'editing' },
+		{ id: 'preferences' },
+		{ id: 'developer' }
 	] as const;
 </script>
 
-<Metadata title="Settings" description="Manage your preferences and account settings" />
+<Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
 
 <div class="bg-base-100 min-h-screen">
 	<div class="mx-auto max-w-4xl px-4 py-8">
@@ -55,82 +56,53 @@
 				name="settings-tabs"
 				role="tab"
 				class="tab"
-				aria-label="Account"
+				aria-label={$_('settings.tab.account')}
 				bind:group={activeTab}
 				value="account"
 			/>
-			<div
-				role="tabpanel"
-				class="tab-content hidden p-0"
-				class:block={activeTab === 'account'}
-			></div>
-
 			<input
 				type="radio"
 				name="settings-tabs"
 				role="tab"
 				class="tab"
-				aria-label="General"
+				aria-label={$_('settings.tab.general')}
 				bind:group={activeTab}
 				value="general"
 			/>
-			<div
-				role="tabpanel"
-				class="tab-content hidden p-0"
-				class:block={activeTab === 'general'}
-			></div>
-
 			<input
 				type="radio"
 				name="settings-tabs"
 				role="tab"
 				class="tab"
-				aria-label="Editing"
+				aria-label={$_('settings.tab.editing')}
 				bind:group={activeTab}
 				value="editing"
 			/>
-			<div
-				role="tabpanel"
-				class="tab-content hidden p-0"
-				class:block={activeTab === 'editing'}
-			></div>
-
 			<input
 				type="radio"
 				name="settings-tabs"
 				role="tab"
 				class="tab"
-				aria-label="Preferences"
+				aria-label={$_('settings.tab.preferences')}
 				bind:group={activeTab}
 				value="preferences"
 			/>
-			<div
-				role="tabpanel"
-				class="tab-content hidden p-0"
-				class:block={activeTab === 'preferences'}
-			></div>
-
 			<input
 				type="radio"
 				name="settings-tabs"
 				role="tab"
 				class="tab"
-				aria-label="Developer"
+				aria-label={$_('settings.tab.developer')}
 				bind:group={activeTab}
 				value="developer"
 			/>
-			<div
-				role="tabpanel"
-				class="tab-content hidden p-0"
-				class:block={activeTab === 'developer'}
-			></div>
 		</div>
 
 		<div class="mb-8 md:hidden">
 			<div class="dropdown dropdown-bottom w-full">
 				<button class="btn btn-block btn-outline gap-2" tabindex="0">
 					<IconMdiMenu class="h-5 w-5" />
-					{tabs.find((t) => t.id === activeTab)?.label || 'Settings'}
+					{$_(`settings.tab.${activeTab}`)}
 				</button>
 				<ul class="dropdown-content menu bg-base-200 w-full p-2">
 					{#each tabs as tab (tab.id)}
@@ -141,7 +113,7 @@
 								}}
 								class:active={activeTab === tab.id}
 							>
-								{tab.label}
+								{$_(`settings.tab.${tab.id}`)}
 							</button>
 						</li>
 					{/each}
@@ -367,7 +339,7 @@
 			</div>
 		{/if}
 
-		{#if activeTab === 'developer' && $userInfo?.roles && ($userInfo.roles.includes('moderator') || $userInfo.roles.includes('developer'))}
+		{#if activeTab === 'developer' && permissions.isModerator}
 			<div class="card border-warning bg-warning/10 border-2 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">

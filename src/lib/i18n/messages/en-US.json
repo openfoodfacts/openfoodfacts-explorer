@@ -113,7 +113,16 @@
 		}
 	},
 	"settings": {
+		"page_title": "Settings",
+		"page_description": "Manage your preferences and account settings",
 		"subtitle": "Manage your preferences and personalize your experience",
+		"tab": {
+			"account": "Account",
+			"general": "General",
+			"editing": "Editing",
+			"preferences": "Preferences",
+			"developer": "Developer"
+		},
 		"username": "Username",
 		"email": "Email",
 		"roles": "Roles",
