@@ -164,7 +164,7 @@
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4">
+	<div class="my-4" id="facets">
 		<FacetBar
 			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
@@ -299,4 +299,16 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
+	onFilterClick={() => {
+		goto('/facets');
+	}}
+	{searchResult}
+	onAddFacet={(key, val) => {
+		selectedFacets = addIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
+	onRemoveFacet={(key, val) => {
+		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
 />
