@@ -134,8 +134,18 @@
 		const handler = (e: MediaQueryListEvent) => {
 			darkMode = e.matches;
 		};
-		mediaQuery.addEventListener('change', handler);
-		return () => mediaQuery.removeEventListener('change', handler);
+		if (mediaQuery.addEventListener) {
+			mediaQuery.addEventListener('change', handler);
+		} else {
+			mediaQuery.addListener(handler);
+		}
+		return () => {
+			if (mediaQuery.removeEventListener) {
+				mediaQuery.removeEventListener('change', handler);
+			} else {
+				mediaQuery.removeListener(handler);
+			}
+		};
 	});
 
 	$effect(() => {
