@@ -363,7 +363,14 @@
 		<a class="btn btn-outline link" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
+		<!-- Open external Prices links in a new tab to preserve app context. -->
+		<a
+			class="btn btn-outline link"
+			href="https://prices.openfoodfacts.org"
+			target="_blank"
+			rel="noopener noreferrer"
+			aria-label={$_('product.prices.view_prices_new_tab')}
+		>
 			{$_('prices_link')}
 		</a>
 		<a class="btn btn-outline link" href="/folksonomy">
