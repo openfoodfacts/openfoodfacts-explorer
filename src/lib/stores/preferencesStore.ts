@@ -53,6 +53,12 @@ export const personalizedSearch = persisted<PreferencesStoreData>('personalizedS
 	classifyProductsEnabled: false
 });
 
+/**
+ * Tracks whether the user has dismissed the legal copyright warning banner
+ * on the image upload step. Persisted in localStorage so it survives page refreshes.
+ */
+export const legalBannerDismissed = persisted<boolean>('legalBannerDismissed', false);
+
 function getDefaultValue(attribute: Attribute): string {
 	return attribute.default || 'not_important';
 }

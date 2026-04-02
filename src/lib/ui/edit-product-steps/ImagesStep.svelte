@@ -9,6 +9,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
+	import { legalBannerDismissed } from '$lib/stores/preferencesStore';
 
 	type Props = { product: Product };
 	let { product = $bindable() }: Props = $props();
@@ -50,14 +51,23 @@
 {/if}
 
 <!-- Legal warning about photo copyright -->
-<div class="alert alert-error mb-4" role="alert">
-	<IconMdiAlertCircle class="h-6 w-6" />
-	<div>
-		<h4 class="text-xl font-bold">{$_('product.edit.legal_warning_title')}</h4>
-		<p class="mt-1">{$_('product.edit.legal_warning_photos_1')}</p>
-		<p class="mt-1 font-bold">{$_('product.edit.legal_warning_photos_2')}</p>
+{#if !$legalBannerDismissed}
+	<div class="alert alert-error mb-4" role="alert">
+		<IconMdiAlertCircle class="h-6 w-6" />
+		<div>
+			<h4 class="text-xl font-bold">{$_('product.edit.legal_warning_title')}</h4>
+			<p class="mt-1">{$_('product.edit.legal_warning_photos_1')}</p>
+			<p class="mt-1 font-bold">{$_('product.edit.legal_warning_photos_2')}</p>
+		</div>
+		<button
+			type="button"
+			class="btn btn-ghost btn-sm ml-auto shrink-0"
+			onclick={() => ($legalBannerDismissed = true)}
+		>
+			{$_('product.edit.legal_warning_understood', { default: 'Understood' })}
+		</button>
 	</div>
-</div>
+{/if}
 
 {#key product.code}
 	<PhotoManager {product} />
