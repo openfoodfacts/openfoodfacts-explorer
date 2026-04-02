@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductV3Extended } from '$lib/api/sdk-types';
 	import { _ } from '$lib/i18n';
 	import { shareContent } from '$lib/utils/webShare';
 
@@ -28,7 +28,7 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	type Props = {
-		product: Product;
+		product: ProductV3Extended;
 		taxonomies: {
 			brands: Promise<Taxonomy<Brand>>;
 			categories: Promise<Taxonomy<Category>>;
@@ -44,15 +44,17 @@
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
-		// FIXME: product.code cannot be null
-		const code = product.code!;
+		// Only add to calculator if nutriments data exists
+		if (!product.nutriments) {
+			console.warn('No nutriments data available for product', product.code);
+			return;
+		}
 
 		addItemToCalculator({
-			id: code,
-			name: product.product_name || code,
+			id: product.code,
+			name: product.product_name || product.code,
 			quantity: 100,
 			imageUrl: product.image_front_small_url,
-			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
 			nutriments: extractNutriments(product.nutriments)
 		});
 	}
@@ -84,8 +86,8 @@
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
 
 	function addToComparison() {
-		// Convert Product to ProductReduced - using type assertion since the product exists
-		const added = compareStore.addProduct(product);
+		// Convert Product to ProductReduced - using type assertion since SDK has type conflicts
+		const added = compareStore.addProduct(product as any);
 		if (added) {
 			toastCtx.success('Product added to comparison');
 		} else {
