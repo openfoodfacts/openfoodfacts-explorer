@@ -348,7 +348,7 @@
 					</h2>
 
 					<p class="text-base-content/70 mt-4 text-sm">
-						Be careful! These settings are intended for moderators and developers only.
+						{$_('settings.dev_warning')}
 					</p>
 
 					<div class="mt-6">
@@ -363,7 +363,7 @@
 								/>
 							</label>
 							<p class="text-base-content/70 mt-1 text-xs">
-								Enable moderator tools and advanced features
+								{$_('settings.moderator_mode_help')}
 							</p>
 						</div>
 					</div>
