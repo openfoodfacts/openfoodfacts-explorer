@@ -37,7 +37,7 @@ self.addEventListener('fetch', (event) => {
 		const url = new URL(event.request.url);
 		const cache = await caches.open(CACHE);
 
-		// for static assets, we want to cache-first
+		// Static assets (static.openfoodfacts.org) — cache-first
 		if (url.origin === STATIC_HOST) {
 			const cached = await cache.match(event.request);
 
@@ -45,35 +45,41 @@ self.addEventListener('fetch', (event) => {
 				console.debug(`SW: cache hit for ${event.request.url}`);
 				return cached;
 			}
-		}
 
-		// for everything else, try the network first, but
-		// fall back to the cache if we're offline
-		try {
 			const response = await fetch(event.request);
-
-			// if we're offline, fetch can return a value that is not a Response
-			// instead of throwing - and we can't pass this non-Response to respondWith
-			if (!(response instanceof Response)) {
-				throw new Error('invalid response from fetch');
-			}
 
 			if (response.status === 200) {
 				cache.put(event.request, response.clone());
 			}
 
 			return response;
-		} catch (err) {
-			const response = await cache.match(event.request);
-
-			if (response) {
-				return response;
-			}
-
-			// if there's no cache, then just error out
-			// as there is nothing we can do to respond to this request
-			throw err;
 		}
+
+		// Same-origin app assets (JS, CSS, etc.) — network-first with offline fallback
+		if (url.origin === self.location.origin) {
+			try {
+				const response = await fetch(event.request);
+
+				if (response.status === 200) {
+					cache.put(event.request, response.clone());
+				}
+
+				return response;
+			} catch (err) {
+				const cached = await cache.match(event.request);
+
+				if (cached) {
+					return cached;
+				}
+
+				// if there's no cache, then just error out
+				// as there is nothing we can do to respond to this request
+				throw err;
+			}
+		}
+
+		// Everything else (API calls, etc.) — plain network passthrough, never cached
+		return fetch(event.request);
 	}
 
 	event.respondWith(respond());
