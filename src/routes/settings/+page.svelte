@@ -203,7 +203,7 @@
 
 				<div class="card bg-primary text-primary-content shadow-md">
 					<div class="card-body">
-						<p class="mb-4">Help us improve Open Food Facts Explorer!</p>
+						<p class="mb-4">{$_('settings.github_help_text')}</p>
 						<a
 							class="btn btn-primary-content btn-outline"
 							href={GITHUB_REPO_URL}
