@@ -83,7 +83,13 @@
 		{/each}
 		{#if searchQuery == ''}
 			<li>
-				<button type="button" class="btn btn-link w-full" onclick={() => toggleShowAll()}>
+				<button
+					type="button"
+					class="btn btn-link w-full"
+					onclick={() => toggleShowAll()}
+					aria-label={showAll ? "Show less facet options" : "Show all facet options"}
+					aria-expanded={showAll}
+					>
 					{showAll ? 'Show Less' : 'See All'}
 				</button>
 			</li>
