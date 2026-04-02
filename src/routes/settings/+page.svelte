@@ -367,7 +367,7 @@
 			</div>
 		{/if}
 
-		{#if activeTab === 'developer'}
+		{#if activeTab === 'developer' && $userInfo?.roles && ($userInfo.roles.includes('moderator') || $userInfo.roles.includes('developer'))}
 			<div class="card border-warning bg-warning/10 border-2 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
@@ -395,6 +395,13 @@
 							</p>
 						</div>
 					</div>
+				</div>
+			</div>
+		{:else if activeTab === 'developer'}
+			<div class="alert alert-warning">
+				<div>
+					<p class="font-semibold">{$_('settings.dev_access_denied')}</p>
+					<p class="mt-1 text-sm">{$_('settings.dev_access_message')}</p>
 				</div>
 			</div>
 		{/if}
