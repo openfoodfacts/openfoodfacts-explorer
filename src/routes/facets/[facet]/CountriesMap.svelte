@@ -151,8 +151,33 @@
 		})();
 
 		return () => {
-			// Mark component as unmounted
-			isMounted = false;
+onMount(() => {
+	const mq = window.matchMedia('(prefers-color-scheme: dark)');
+	isDark = mq.matches;
+	const handleSchemeChange = (e: MediaQueryListEvent) => {
+		if (!isMounted) return;
+		isDark = e.matches;
+	};
+	mq.addEventListener('change', handleSchemeChange);
+
+	(async () => {
+		// Dynamically import Leaflet
+		const leaflet = await import('leaflet');
+		// ... rest of async code ...
+	})();
+
+	return () => {
+		// Mark component as unmounted
+		isMounted = false;
+		mq.removeEventListener('change', handleSchemeChange);
+		if (mapInstance) {
+			mapInstance.off();
+			mapInstance.remove();
+			mapInstance = null;
+		}
+		// ... rest of cleanup code ...
+	};
+});
 			if (mapInstance) {
 				mapInstance.off();
 				mapInstance.remove();
