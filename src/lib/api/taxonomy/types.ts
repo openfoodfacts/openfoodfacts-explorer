@@ -48,6 +48,10 @@ export type Language = TaxoNode & {
 	};
 };
 
+export type Unit = TaxoNode & {
+	symbol?: LocalizedString;
+};
+
 export const TAXONOMIES_NAMES: Record<string, string> = {
 	labels: 'Label',
 	categories: 'Category',
