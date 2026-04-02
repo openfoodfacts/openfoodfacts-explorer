@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import { tracker } from '$lib/matomo';
 	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
 
 	import Debug from '$lib/ui/Debug.svelte';
