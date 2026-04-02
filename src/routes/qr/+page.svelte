@@ -12,6 +12,35 @@
 	let productNotFound = $state(false);
 	let lastScannedCode = $state('');
 
+	function extractBarcodeFromScan(text: string): string | null {
+		const trimmed = text.trim();
+
+		// Common case: scanner returns the raw barcode.
+		if (/^\d{8,14}$/.test(trimmed)) {
+			return trimmed;
+		}
+
+		// Some QR codes encode an URL instead of plain barcode text.
+		try {
+			const url = new URL(trimmed);
+
+			const pathBarcode = url.pathname.match(/\/(?:product|produit|products)\/(\d{8,14})/i)?.[1];
+			if (pathBarcode) return pathBarcode;
+
+			const queryBarcode =
+				url.searchParams.get('code') ?? url.searchParams.get('barcode') ?? url.searchParams.get('id');
+			if (queryBarcode && /^\d{8,14}$/.test(queryBarcode)) {
+				return queryBarcode;
+			}
+		} catch {
+			// Not a URL, continue to fallback parsing.
+		}
+
+		// Fallback: extract a plausible barcode sequence from mixed payloads.
+		const fallback = trimmed.match(/\b\d{8,14}\b/)?.[0];
+		return fallback ?? null;
+	}
+
 	function getQrBoxSize() {
 		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
 
@@ -25,8 +54,15 @@
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
+				const barcode = extractBarcodeFromScan(text);
+				if (!barcode) {
+					productNotFound = true;
+					lastScannedCode = text;
+					return;
+				}
+
 				console.debug('QR code detected:', text);
-				lastScannedCode = text;
+				lastScannedCode = barcode;
 
 				// We must stop the scanner first to release the camera
 				// This is important because:
@@ -37,7 +73,9 @@
 
 				const productsApi = createProductsApi(fetch);
 
-				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
+				const { data: productState, error } = await productsApi.getProductV3(barcode, {
+					fields: []
+				});
 				if (!productState || error) {
 					console.error('Error fetching product:', error);
 					productNotFound = true;
@@ -49,7 +87,7 @@
 				}
 
 				// If product is found, navigate to its page
-				await goto('/products/' + text);
+				await goto('/products/' + barcode);
 			},
 			() => {
 				/* ignored */
@@ -67,7 +105,13 @@
 
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,
-			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
+			formatsToSupport: [
+				Html5QrcodeSupportedFormats.QR_CODE,
+				Html5QrcodeSupportedFormats.EAN_13,
+				Html5QrcodeSupportedFormats.EAN_8,
+				Html5QrcodeSupportedFormats.UPC_A,
+				Html5QrcodeSupportedFormats.UPC_E
+			],
 			verbose: false
 		});
 
