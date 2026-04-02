@@ -1,34 +1,118 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 
-	type Props = { src: string };
-	let { src }: Props = $props();
+	type Props = {
+		src: string;
+		title?: string;
+	};
+	let { src, title = 'External Content' }: Props = $props();
 
-	let frameHeight = $state('100vh'); // Default height, can be adjusted
+	let frameHeight = $state<number | null>(null);
+	let isIframeLoaded = $state(false);
+	let hasTimeoutError = $state(false);
+
+	let iframeEl = $state<HTMLIFrameElement | null>(null);
+
+	let expectedOrigin = $derived.by(() => {
+		try {
+			return new URL(src).origin;
+		} catch {
+			console.warn(`[Iframe Component] Invalid URL provided: ${src}`);
+			return null;
+		}
+	});
+
+	let previousSrc: string | undefined;
+	let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+	const resetTimeout = () => {
+		clearTimeout(timeoutId);
+		hasTimeoutError = false;
+		timeoutId = setTimeout(() => {
+			if (frameHeight === null) {
+				hasTimeoutError = true;
+				console.error(`[Iframe Component] Timeout waiting for frameHeight from ${src}`);
+			}
+		}, 8000);
+	};
+
+	$effect.pre(() => {
+		if (src !== previousSrc) {
+			untrack(() => {
+				frameHeight = null;
+				isIframeLoaded = false;
+				previousSrc = src;
+				resetTimeout();
+			});
+		}
+	});
+
+	let showContent = $derived(frameHeight !== null && isIframeLoaded);
+
 	onMount(() => {
+		resetTimeout();
 		const abortController = new AbortController();
 
 		const handler = (event: MessageEvent) => {
-			if (!event.data?.frameHeight) return;
+			if (
+				!expectedOrigin ||
+				event.origin !== expectedOrigin ||
+				event.source !== iframeEl?.contentWindow ||
+				!event.data?.frameHeight
+			) {
+				return;
+			}
 
-			console.debug('Received frameHeight:', event.data.frameHeight);
-			frameHeight = event.data.frameHeight + 'px';
+			const parsedHeight = parseInt(event.data.frameHeight, 10);
+			if (!isNaN(parsedHeight) && parsedHeight > 0) {
+				frameHeight = parsedHeight;
+				hasTimeoutError = false;
+				clearTimeout(timeoutId);
+			}
 		};
 
-		window.addEventListener('message', handler, {
-			signal: abortController.signal
-		});
+		window.addEventListener('message', handler, { signal: abortController.signal });
 
 		return () => {
-			window.removeEventListener('message', handler);
 			abortController.abort();
+			clearTimeout(timeoutId);
 		};
 	});
 </script>
 
-<iframe
-	{src}
-	title="External Content"
-	class="w-full overflow-visible border-0"
-	style="height: {frameHeight};"
-></iframe>
+<div
+	class="relative w-full overflow-hidden"
+	style:height={frameHeight ? `${frameHeight}px` : '24rem'}
+>
+	<div
+		role="status"
+		aria-live={!showContent ? 'polite' : 'off'}
+		aria-hidden={showContent}
+		class="absolute inset-0 z-10 flex w-full flex-col items-center justify-center bg-gray-200 transition-opacity duration-300 {showContent
+			? 'pointer-events-none opacity-0'
+			: 'pointer-events-auto opacity-100'}"
+	>
+		{#if hasTimeoutError}
+			<span class="font-medium text-red-500">Failed to load content.</span>
+		{:else}
+			<span class="animate-pulse font-medium text-gray-500">Loading content...</span>
+		{/if}
+	</div>
+
+	{#key src}
+		<iframe
+			bind:this={iframeEl}
+			{src}
+			{title}
+			onload={() => (isIframeLoaded = true)}
+			scrolling="no"
+			sandbox="allow-scripts allow-same-origin allow-popups"
+			inert={!(showContent && !hasTimeoutError)}
+			class="absolute top-0 left-0 w-full overflow-hidden border-0 transition-opacity duration-300 {showContent &&
+			!hasTimeoutError
+				? 'pointer-events-auto opacity-100'
+				: 'pointer-events-none opacity-0'}"
+			style="height: 100%;"
+		></iframe>
+	{/key}
+</div>
