@@ -209,5 +209,19 @@
 			"description": "Aggiungi prodotti dalle loro pagine per iniziare a confrontare i valori nutrizionali",
 			"cta": "Sfoglia prodotti"
 		}
+	},
+	"dashboard": {
+		"products_created": "Prodotti creati",
+		"products_edited": "Prodotti modificati",
+		"html_title": "Profilo utente - {user} - Open Food Facts Explorer",
+		"title": "Profilo utente di {user}",
+		"has_created": "Ha creato",
+		"has_edited": "Ha modificato",
+		"view_all_contributions": "Vedi tutte le contribuzioni",
+		"view_all_edits": "Vedi tutte le modifiche",
+		"products_photographed": "Prodotti fotografati",
+		"has_photographed": "Ha fotografato",
+		"view_all_photographs": "Vedi tutte le fotografie",
+		"open_prices_dashboard": "Dashboard Open Prices"
 	}
 }

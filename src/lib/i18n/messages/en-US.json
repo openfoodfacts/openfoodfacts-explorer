@@ -491,7 +491,11 @@
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
 		"view_all_contributions": "View all contributions",
-		"view_all_edits": "View all edits"
+		"view_all_edits": "View all edits",
+		"products_photographed": "Products photographed",
+		"has_photographed": "Has Photographed",
+		"view_all_photographs": "View all photographs",
+		"open_prices_dashboard": "Open Prices dashboard"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",
