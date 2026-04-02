@@ -99,7 +99,9 @@
 		"github_link": "GitHub",
 		"github_cta": "Aiutaci a migliorare Explorer su GitHub",
 		"dev_settings_title": "Impostazioni di sviluppo",
-		"moderator_mode": "Modalita moderatore"
+		"moderator_mode": "Modalita moderatore",
+		"dev_access_denied": "Accesso Negato",
+		"dev_access_message": "Le impostazioni dello sviluppatore sono disponibili solo per moderatori e sviluppatori. Se ritieni di dover avere accesso, contatta l'amministratore."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
