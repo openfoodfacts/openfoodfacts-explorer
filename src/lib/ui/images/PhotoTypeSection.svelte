@@ -84,14 +84,14 @@
 				toast.error($_('product.edit.images.toast.upload_failed_generic'));
 				return;
 			}
+			type UploadedImages = Record<string, { imgid: number }>;
 
 			if (uploadResult.data?.status === 'success') {
 				if (onImageUploaded) {
-					// FIXME: The API response typing is incorrect, so we need to cast here
+					// Temporary cast until the API response type is correctly defined in the SDK
 					// to access the uploaded images
-					const uploadedImages = uploadResult.data.product?.images?.uploaded as null | {
-						[key: string]: { imgid: number };
-					};
+					const uploadedImages = uploadResult.data.product?.images
+						?.uploaded as UploadedImages | null;
 
 					const firstImageKey = uploadedImages ? Object.keys(uploadedImages)[0] : null;
 					const imgid =
