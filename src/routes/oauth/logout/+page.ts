@@ -14,7 +14,6 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const logoutUrl = createKeycloakApi(fetch, url).logoutUrl({
 		postLogoutRedirectUri: redirectUri,
-		refreshToken: tokens?.refresh_token,
 		idTokenHint: tokens?.id_token
 	});
 	throw redirect(302, logoutUrl);

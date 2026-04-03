@@ -67,7 +67,7 @@
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
 		// Track search queries that return no results
-		if (searchResult.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
+		if (searchResult.count == 0) $tracker?.trackEvent('Product Search', 'No Results', data.query);
 	});
 
 	let selectedSort = $derived.by(() => {

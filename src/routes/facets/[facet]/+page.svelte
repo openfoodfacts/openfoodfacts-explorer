@@ -19,7 +19,8 @@
 		return new Intl.NumberFormat().format(n);
 	}
 
-	let { facet, results, pages, page: currentPage, knowledgePanels, apiError } = $derived(data);
+	let { facet, results, pages, page: currentPage, knowledgePanels, apiError, apiErrorMessage } =
+		$derived(data);
 </script>
 
 <Metadata
@@ -48,9 +49,13 @@
 				d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 			></path>
 		</svg>
-		<span
-			>The external API is currently unavailable. This is a {$_('general.known_limitation', { default: 'known limitation in development environments' })}.</span
-		>
+		<div>
+			<div>{$_('errors.api_unavailable', { default: 'The requested data is temporarily unavailable.' })}</div>
+			<div class="text-sm opacity-80">
+				{apiErrorMessage ||
+					$_('errors.api_unavailable_detail', { default: 'Please try again later.' })}
+			</div>
+		</div>
 	</div>
 {/if}
 
@@ -106,7 +111,7 @@
 					d="M12 9v2m0 4v2m0 0a9 9 0 11-18 0 9 9 0 0118 0z"
 				></path>
 			</svg>
-			<span>No data available for this facet.</span>
+			<span>{$_('facets.no_data_available', { default: 'No data available for this facet.' })}</span>
 		</div>
 	{:else}
 		<table class="table-zebra my-4 table">

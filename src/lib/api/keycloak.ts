@@ -110,17 +110,12 @@ export class KeycloakApi {
 
 	logoutUrl(params: {
 		postLogoutRedirectUri: string;
-		refreshToken?: string;
 		idTokenHint?: string;
 	}) {
 		const url = new URL(`${this.keycloakUrl}/protocol/openid-connect/logout`);
 
 		url.searchParams.set('client_id', this.clientId);
 		url.searchParams.set('post_logout_redirect_uri', params.postLogoutRedirectUri);
-
-		if (params.refreshToken) {
-			url.searchParams.set('refresh_token', params.refreshToken);
-		}
 
 		if (params.idTokenHint) {
 			url.searchParams.set('id_token_hint', params.idTokenHint);

@@ -10,6 +10,7 @@
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
 	let productNotFound = $state(false);
+	let invalidScan = $state(false);
 	let lastScannedCode = $state('');
 
 	function extractBarcodeFromScan(text: string): string | null {
@@ -49,6 +50,8 @@
 	}
 
 	async function startScanning(scanner: Html5Qrcode) {
+		if (scanner.isScanning) return;
+
 		return scanner.start(
 			{ facingMode: 'environment' },
 			{ fps: 10, qrbox: getQrBoxSize() },
@@ -56,10 +59,13 @@
 				if (text == null) return;
 				const barcode = extractBarcodeFromScan(text);
 				if (!barcode) {
-					productNotFound = true;
-					lastScannedCode = text;
+					await scanner.stop();
+					invalidScan = true;
+					productNotFound = false;
+					lastScannedCode = '';
 					return;
 				}
+				invalidScan = false;
 
 				console.debug('QR code detected:', text);
 				lastScannedCode = barcode;
@@ -150,13 +156,14 @@
 	async function restartScanner() {
 		try {
 			productNotFound = false;
+			invalidScan = false;
 			error = null;
 			lastScannedCode = '';
 
 			// Ensure page is fully rendered before restarting the scan
 			await tick();
 
-			if (html5QrCode) {
+			if (html5QrCode && !html5QrCode.isScanning) {
 				await startScanning(html5QrCode);
 			}
 		} catch (err) {
@@ -179,6 +186,21 @@
 
 		<div class="flex gap-4">
 			<button class="btn btn-outline" onclick={addNewProduct}>{$_('qr.add_new_product')}</button>
+			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
+		</div>
+	</div>
+{:else if invalidScan}
+	<div class="flex flex-col items-center justify-center p-8 text-center">
+		<h2 class="mb-2 text-xl font-semibold">
+			{$_('qr.invalid_scan_title', { default: 'Unsupported scan content' })}
+		</h2>
+		<p class="mb-6 text-gray-400">
+			{$_('qr.invalid_scan_description', {
+				default: 'The scanned value is not a supported barcode. Please try again.'
+			})}
+		</p>
+
+		<div class="flex gap-4">
 			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
 		</div>
 	</div>

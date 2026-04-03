@@ -22,7 +22,15 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
 	const api = createProductsApi(fetch);
 	const data = await api.getFacet('contributors');
-	return data.count;
+	if (
+		typeof data !== 'object' ||
+		data === null ||
+		!('count' in data) ||
+		!Number.isFinite(Number(data.count))
+	) {
+		throw new Error('Invalid contributors facet response: expected a numeric "count" property');
+	}
+	return Number(data.count);
 }
 
 export const load: PageLoad = async ({ fetch }) => {
