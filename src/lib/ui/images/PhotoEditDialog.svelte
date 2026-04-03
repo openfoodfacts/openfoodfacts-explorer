@@ -569,7 +569,7 @@
 								}}
 								role="button"
 								tabindex="0"
-								aria-label="Resize crop selection"
+								aria-label={`Resize ${action} handle`}
 							></cropper-handle>
 						{/each}
 					</cropper-selection>
