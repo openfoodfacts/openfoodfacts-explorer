@@ -19,7 +19,7 @@
 		return new Intl.NumberFormat().format(n);
 	}
 
-	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
+	let { facet, results, pages, page: currentPage, knowledgePanels, apiError } = $derived(data);
 </script>
 
 <Metadata
@@ -32,6 +32,27 @@
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
+
+{#if apiError}
+	<div class="alert alert-info mb-4">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			class="h-6 w-6 shrink-0 stroke-current"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+			></path>
+		</svg>
+		<span
+			>The external API is currently unavailable. This is a {$_('general.known_limitation', { default: 'known limitation in development environments' })}.</span
+		>
+	</div>
+{/if}
 
 {#if facet === 'countries'}
 	<CountriesMap facet={data.results} />
@@ -70,36 +91,55 @@
 <div>
 	<h2 class="text-2xl font-bold">Products</h2>
 
-	<table class="table-zebra my-4 table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Known</th>
-				<th class="text-end">Products</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each results.tags as { known, name, products, id } (id)}
+	{#if !results.tags || results.tags.length === 0}
+		<div class="alert alert-warning my-4">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				class="h-6 w-6 shrink-0 stroke-current"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M12 9v2m0 4v2m0 0a9 9 0 11-18 0 9 9 0 0118 0z"
+				></path>
+			</svg>
+			<span>No data available for this facet.</span>
+		</div>
+	{:else}
+		<table class="table-zebra my-4 table">
+			<thead>
 				<tr>
-					<td>
-						<a href={`/facets/${facet}/${id}`} class="link">
-							{name}
-						</a>
-					</td>
-					<td>{known === 1 ? 'Yes' : 'No'}</td>
-					<td class="text-end">{formatNumber(products)}</td>
+					<th>Name</th>
+					<th>Known</th>
+					<th class="text-end">Products</th>
 				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{#each results.tags as { known, name, products, id } (id)}
+					<tr>
+						<td>
+							<a href={`/facets/${facet}/${id}`} class="link">
+								{name}
+							</a>
+						</td>
+						<td>{known === 1 ? 'Yes' : 'No'}</td>
+						<td class="text-end">{formatNumber(products)}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 
-	<Pagination
-		page={currentPage ?? 1}
-		totalPages={pages}
-		pageUrl={(n) => {
-			const params = new SvelteURLSearchParams(page.url.search);
-			params.set('page', n.toString());
-			return `?${params}`;
-		}}
-	/>
+		<Pagination
+			page={currentPage ?? 1}
+			totalPages={pages}
+			pageUrl={(n) => {
+				const params = new SvelteURLSearchParams(page.url.search);
+				params.set('page', n.toString());
+				return `?${params}`;
+			}}
+		/>
+	{/if}
 </div>
