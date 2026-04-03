@@ -561,7 +561,15 @@
 								{action}
 								class="absolute z-10 h-[10px] w-[10px] rounded-sm border border-gray-300 bg-white"
 								onpointerdown={enableCropping}
-								aria-label="Resize crop selection"
+								onkeydown={(e: KeyboardEvent) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault();
+										enableCropping();
+									}
+								}}
+								role="button"
+								tabindex="0"
+								aria-label={`Resize ${action} handle`}
 							></cropper-handle>
 						{/each}
 					</cropper-selection>
