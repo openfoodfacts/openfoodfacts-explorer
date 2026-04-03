@@ -353,6 +353,7 @@
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
+			"changes_summary": "Changes summary",
 			"toast": {
 				"save_success": "Product saved successfully!",
 				"save_error": "Failed to save product. Please try again."
