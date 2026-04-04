@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
+	import type { Shortcut } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;
-
-	// Define shortcuts: { combo, description, action }
-	export type Shortcut = {
-		description: string;
-		action: () => void;
-	};
 
 	let { shortcuts }: { shortcuts: Map<string, Shortcut> } = $props();
 
