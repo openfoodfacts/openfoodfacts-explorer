@@ -26,8 +26,8 @@
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import { getContext, onDestroy } from 'svelte';
-	import type { Shortcut } from '../../Shortcuts.svelte';
+	import { onDestroy } from 'svelte';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import { PRODUCT_URL } from '$lib/const';
@@ -65,13 +65,13 @@
 
 	let showBarcode = $state(false);
 
-	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
-	shortcuts.set('Shift+B', {
+	const shortcutCtx = getShortcutCtx();
+	shortcutCtx.set('Shift+B', {
 		description: $_('product.shortcuts.show_barcode'),
 		action: () => (showBarcode = !showBarcode)
 	});
 
-	shortcuts.set('A', {
+	shortcutCtx.set('A', {
 		description: $_('product.shortcuts.api_page'),
 		action: () => {
 			if (product.code) {
@@ -80,7 +80,7 @@
 		}
 	});
 
-	shortcuts.set('E', {
+	shortcutCtx.set('E', {
 		description: $_('product.shortcuts.edit_same_window'),
 		action: () => {
 			if (product.code) {
@@ -89,7 +89,7 @@
 		}
 	});
 
-	shortcuts.set('Shift+E', {
+	shortcutCtx.set('Shift+E', {
 		description: $_('product.shortcuts.edit_new_window'),
 		action: () => {
 			if (product.code) {
@@ -99,10 +99,10 @@
 	});
 
 	onDestroy(() => {
-		shortcuts.delete('A');
-		shortcuts.delete('E');
-		shortcuts.delete('Shift+E');
-		shortcuts.delete('Shift+B');
+		shortcutCtx.delete('A');
+		shortcutCtx.delete('E');
+		shortcutCtx.delete('Shift+E');
+		shortcutCtx.delete('Shift+B');
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {

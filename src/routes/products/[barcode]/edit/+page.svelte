@@ -17,6 +17,7 @@
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -24,8 +25,6 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
-	import type { Shortcut } from '../../../Shortcuts.svelte';
-	import { getContext } from 'svelte';
 	import { resolve } from '$app/paths';
 
 	interface Props {
@@ -35,6 +34,7 @@
 	let { data }: Props = $props();
 
 	const toastCtx = getToastCtx();
+	const shortcutCtx = getShortcutCtx();
 
 	function createEmptyImage(): SelectedImage | RawImage {
 		return {
@@ -367,10 +367,9 @@
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
 
-	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
 	$effect(() => {
 		if (!isAddMode) {
-			shortcuts.set('V', {
+			shortcutCtx.set('V', {
 				description: $_('product.shortcuts.view_page'),
 				action: () => {
 					if (page.params.barcode) {
@@ -379,7 +378,7 @@
 				}
 			});
 
-			return () => shortcuts.delete('V');
+			return () => shortcutCtx.delete('V');
 		}
 	});
 </script>
