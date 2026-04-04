@@ -43,7 +43,13 @@
 			const redirectUrl = localStorage.getItem('authRedirect');
 			localStorage.removeItem('authRedirect');
 
-			await goto(new URL(redirectUrl || '/', url.origin));
+			// Verify the destination is same-origin
+			let targetUrl = new URL(redirectUrl || '/', url.origin);
+			if (targetUrl.origin !== url.origin) {
+				targetUrl = new URL('/', url.origin);
+			}
+
+			await goto(targetUrl);
 		} catch (error) {
 			console.error('Token exchange failed:', error);
 			throw new Error('Authentication failed: Token exchange error', { cause: error });

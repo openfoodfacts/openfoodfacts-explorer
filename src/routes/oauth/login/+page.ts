@@ -38,9 +38,9 @@ export const load: PageLoad = async ({ url }) => {
 	localStorage.setItem('verifier', verifier);
 	localStorage.setItem('authState', state);
 
-	// Store the redirect URL if present
+	// Only store if it's a safe, same-origin relative path
 	const redirectUrl = url.searchParams.get('redirect');
-	if (redirectUrl) {
+	if (redirectUrl && redirectUrl.startsWith('/') && !redirectUrl.startsWith('//')) {
 		localStorage.setItem('authRedirect', redirectUrl);
 	}
 
