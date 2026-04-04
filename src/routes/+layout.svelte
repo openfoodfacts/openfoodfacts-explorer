@@ -269,7 +269,11 @@
 						>{$_('navbar.logout', { default: 'Logout' })}</a
 					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}
+					<a
+						class="btn btn-outline link"
+						href={resolve('/oauth/login') +
+							'?redirect=' +
+							encodeURIComponent(page.url.pathname + page.url.search)}
 						>{$_('navbar.login', { default: 'Login' })}</a
 					>
 				{/if}
@@ -393,7 +397,11 @@
 				>{$_('navbar.logout', { default: 'Logout' })}</a
 			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}
+			<a
+				class="btn btn-outline link"
+				href={resolve('/oauth/login') +
+					'?redirect=' +
+					encodeURIComponent(page.url.pathname + page.url.search)}
 				>{$_('navbar.login', { default: 'Login' })}</a
 			>
 		{/if}

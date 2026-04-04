@@ -38,6 +38,12 @@ export const load: PageLoad = async ({ url }) => {
 	localStorage.setItem('verifier', verifier);
 	localStorage.setItem('authState', state);
 
+	// Store the redirect URL if present
+	const redirectUrl = url.searchParams.get('redirect');
+	if (redirectUrl) {
+		localStorage.setItem('authRedirect', redirectUrl);
+	}
+
 	// 4. Create and redirect to the Keycloak login URL
 	const api = createKeycloakApi(fetch, url);
 

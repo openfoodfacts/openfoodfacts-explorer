@@ -39,7 +39,11 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
-			await goto(resolve('/'));
+
+			const redirectUrl = localStorage.getItem('authRedirect');
+			localStorage.removeItem('authRedirect');
+
+			await goto(new URL(redirectUrl || '/', url.origin));
 		} catch (error) {
 			console.error('Token exchange failed:', error);
 			throw new Error('Authentication failed: Token exchange error', { cause: error });
