@@ -177,7 +177,7 @@
 					<div class="card-body">
 						<p class="mb-4">{$_('settings.github_help_text')}</p>
 						<a
-							class="btn btn-primary-content btn-outline"
+							class="btn btn-primary"
 							href={GITHUB_REPO_URL}
 							target="_blank"
 							rel="noopener noreferrer"
