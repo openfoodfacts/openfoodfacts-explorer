@@ -38,8 +38,8 @@ async function getNumberOfContributors(fetch: typeof window.fetch): Promise<numb
 }
 
 export const load: PageLoad = async ({ fetch }) => {
-	const productCount = getNumberOfProducts(fetch);
-	const contributorCount = getNumberOfContributors(fetch);
+	const productCount = await getNumberOfProducts(fetch);
+	const contributorCount = await getNumberOfContributors(fetch);
 
 	return {
 		productCount,
