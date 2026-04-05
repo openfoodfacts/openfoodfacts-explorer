@@ -4,7 +4,7 @@
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import { tracker } from '$lib/matomo';
 
 	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
 

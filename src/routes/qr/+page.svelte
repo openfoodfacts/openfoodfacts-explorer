@@ -10,7 +10,37 @@
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
 	let productNotFound = $state(false);
+	let invalidScan = $state(false);
 	let lastScannedCode = $state('');
+
+	function extractBarcodeFromScan(text: string): string | null {
+		const trimmed = text.trim();
+
+		// Common case: scanner returns the raw barcode.
+		if (/^\d{8,14}$/.test(trimmed)) {
+			return trimmed;
+		}
+
+		// Some QR codes encode an URL instead of plain barcode text.
+		try {
+			const url = new URL(trimmed);
+
+			const pathBarcode = url.pathname.match(/\/(?:product|produit|products)\/(\d{8,14})/i)?.[1];
+			if (pathBarcode) return pathBarcode;
+
+			const queryBarcode =
+				url.searchParams.get('code') ?? url.searchParams.get('barcode') ?? url.searchParams.get('id');
+			if (queryBarcode && /^\d{8,14}$/.test(queryBarcode)) {
+				return queryBarcode;
+			}
+		} catch {
+			// Not a URL, continue to fallback parsing.
+		}
+
+		// Fallback: extract a plausible barcode sequence from mixed payloads.
+		const fallback = trimmed.match(/\b\d{8,14}\b/)?.[0];
+		return fallback ?? null;
+	}
 
 	function getQrBoxSize() {
 		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
@@ -20,13 +50,25 @@
 	}
 
 	async function startScanning(scanner: Html5Qrcode) {
+		if (scanner.isScanning) return;
+
 		return scanner.start(
 			{ facingMode: 'environment' },
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
+				const barcode = extractBarcodeFromScan(text);
+				if (!barcode) {
+					await scanner.stop();
+					invalidScan = true;
+					productNotFound = false;
+					lastScannedCode = '';
+					return;
+				}
+				invalidScan = false;
+
 				console.debug('QR code detected:', text);
-				lastScannedCode = text;
+				lastScannedCode = barcode;
 
 				// We must stop the scanner first to release the camera
 				// This is important because:
@@ -37,7 +79,9 @@
 
 				const productsApi = createProductsApi(fetch);
 
-				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
+				const { data: productState, error } = await productsApi.getProductV3(barcode, {
+					fields: []
+				});
 				if (!productState || error) {
 					console.error('Error fetching product:', error);
 					productNotFound = true;
@@ -49,7 +93,7 @@
 				}
 
 				// If product is found, navigate to its page
-				await goto('/products/' + text);
+				await goto('/products/' + barcode);
 			},
 			() => {
 				/* ignored */
@@ -67,7 +111,13 @@
 
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,
-			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
+			formatsToSupport: [
+				Html5QrcodeSupportedFormats.QR_CODE,
+				Html5QrcodeSupportedFormats.EAN_13,
+				Html5QrcodeSupportedFormats.EAN_8,
+				Html5QrcodeSupportedFormats.UPC_A,
+				Html5QrcodeSupportedFormats.UPC_E
+			],
 			verbose: false
 		});
 
@@ -106,13 +156,14 @@
 	async function restartScanner() {
 		try {
 			productNotFound = false;
+			invalidScan = false;
 			error = null;
 			lastScannedCode = '';
 
 			// Ensure page is fully rendered before restarting the scan
 			await tick();
 
-			if (html5QrCode) {
+			if (html5QrCode && !html5QrCode.isScanning) {
 				await startScanning(html5QrCode);
 			}
 		} catch (err) {
@@ -135,6 +186,21 @@
 
 		<div class="flex gap-4">
 			<button class="btn btn-outline" onclick={addNewProduct}>{$_('qr.add_new_product')}</button>
+			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
+		</div>
+	</div>
+{:else if invalidScan}
+	<div class="flex flex-col items-center justify-center p-8 text-center">
+		<h2 class="mb-2 text-xl font-semibold">
+			{$_('qr.invalid_scan_title', { default: 'Unsupported scan content' })}
+		</h2>
+		<p class="mb-6 text-gray-400">
+			{$_('qr.invalid_scan_description', {
+				default: 'The scanned value is not a supported barcode. Please try again.'
+			})}
+		</p>
+
+		<div class="flex gap-4">
 			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
 		</div>
 	</div>

@@ -1,7 +1,14 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { getFacet, getFacetKnowledgePanels } from '$lib/api/facets';
+import type { KnowledgePanel } from '$lib/api/knowledgepanels';
 import { requireInt } from '$lib/utils';
+
+// Default empty facet response structure
+const EMPTY_FACET_RESPONSE = {
+	tags: [],
+	count: 0
+};
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet } = params;
@@ -11,23 +18,36 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
 	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
 
-	const kp = getFacetKnowledgePanels(fetch, facet);
-	try {
-		const results = await getFacet(fetch, facet, { page, pageSize });
-		const pages = Math.ceil(results.count / (pageSize || 100));
+	const [resultsPromise, panelsPromise] = await Promise.allSettled([
+		getFacet(fetch, facet, { page, pageSize }),
+		getFacetKnowledgePanels(fetch, facet)
+	]);
 
-		return {
-			facet,
-			results,
-			pages,
-			pageSize,
-			page,
-			knowledgePanels: (await kp).knowledge_panels
-		};
-	} catch (e) {
-		throw error(500, {
-			message: 'An error occurred while fetching the facet data',
-			errors: [e instanceof Error ? e.message : 'Unknown error']
-		});
+	const apiError = resultsPromise.status === 'rejected';
+	const apiErrorMessage = apiError
+		? resultsPromise.reason instanceof Error
+			? resultsPromise.reason.message
+			: (resultsPromise.reason ?? 'Unable to fetch facet data.').toString()
+		: undefined;
+
+	const results =
+		resultsPromise.status === 'fulfilled' ? resultsPromise.value : EMPTY_FACET_RESPONSE;
+
+	let knowledgePanels: Record<string, KnowledgePanel> = {};
+	if (panelsPromise.status === 'fulfilled') {
+		knowledgePanels = panelsPromise.value.knowledge_panels;
 	}
+
+	const pages = results.count > 0 ? Math.ceil(results.count / (pageSize || 100)) : 0;
+
+	return {
+		facet,
+		results,
+		pages,
+		pageSize,
+		page,
+		knowledgePanels,
+		apiError,
+		apiErrorMessage
+	};
 };
