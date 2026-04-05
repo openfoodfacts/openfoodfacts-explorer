@@ -86,13 +86,37 @@
 		}
 	},
 	"settings": {
-		"general": "General",
-		"influences": "Influences",
-		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
+		"page_title": "Impostazioni",
+		"page_description": "Gestisci le tue preferenze e le impostazioni del tuo account",
+		"subtitle": "Gestisci le tue preferenze e personalizza la tua esperienza",
+		"tab": {
+			"account": "Account",
+			"general": "Generale",
+			"editing": "Modifica",
+			"preferences": "Preferenze",
+			"developer": "Sviluppatore"
+		},
+		"section_user": "Utente",
+		"username": "Nome utente",
+		"email": "Email",
+		"roles": "Ruoli",
+		"section_general": "Generale",
+		"section_editing": "Modifica",
+		"news": "Notizie",
+		"not_logged_in": "Non loggato",
+		"expand_all_sections": "Espandi tutte le sezioni",
+		"expand_all_sections_help": "Espandi automaticamente tutte le sezioni quando visualizzi i dettagli del prodotto",
+		"display_prices_in_search": "Visualizza i prezzi nei risultati della ricerca",
+		"display_prices_in_search_help": "Mostra le informazioni sui prezzi nei risultati della ricerca quando disponibili",
+		"influences": "Influenze",
+		"login": "Login (salvato in localStorage) [NON SICURO - SOLO DEBUG]",
 		"github_link": "GitHub",
 		"github_cta": "Aiutaci a migliorare Explorer su GitHub",
+		"github_help_text": "Aiutaci a migliorare Open Food Facts Explorer!",
 		"dev_settings_title": "Impostazioni di sviluppo",
-		"moderator_mode": "Modalita moderatore"
+		"moderator_mode": "Modalità moderatore",
+		"dev_access_denied": "Accesso Negato",
+		"dev_access_message": "Le impostazioni dello sviluppatore sono disponibili solo per moderatori e sviluppatori. Se ritieni di dover avere accesso, contatta l'amministratore."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",

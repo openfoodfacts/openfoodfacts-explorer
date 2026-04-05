@@ -113,6 +113,19 @@
 		}
 	},
 	"settings": {
+		"page_title": "Settings",
+		"page_description": "Manage your preferences and account settings",
+		"subtitle": "Manage your preferences and personalize your experience",
+		"tab": {
+			"account": "Account",
+			"general": "General",
+			"editing": "Editing",
+			"preferences": "Preferences",
+			"developer": "Developer"
+		},
+		"username": "Username",
+		"email": "Email",
+		"roles": "Roles",
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
@@ -120,13 +133,18 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
 		"display_prices_in_search": "Display prices in search results",
+		"display_prices_in_search_help": "Show price information in search results when available",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
+		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode"
+		"moderator_mode": "Moderator Mode",
+		"dev_access_denied": "Access Denied",
+		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
