@@ -68,6 +68,11 @@
 		isSubmitting,
 		submit
 	}: Props = $props();
+
+	function getOpenPricesUrl(code: string): string {
+		const params = new URLSearchParams({ code });
+		return `https://prices.openfoodfacts.org/prices/add/single?${params}`;
+	}
 </script>
 
 <div class="space-y-4">
@@ -151,15 +156,17 @@
 			<p class="text-base-content/70 mt-2 mb-4 text-sm">
 				{$_('product.edit.info.prices')}
 			</p>
-			<a
-				href={`https://prices.openfoodfacts.org/prices/add/single?code=${encodeURIComponent(product.code ?? '')}`}
-				class="btn btn-secondary btn-sm"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<IconMdiOpenInNew class="mr-1 h-4 w-4" />
-				{$_('product.edit.prices.add_price_btn')}
-			</a>
+			{#if product.code != null}
+				<a
+					href={getOpenPricesUrl(product.code)}
+					class="btn btn-secondary btn-sm"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<IconMdiOpenInNew class="mr-1 h-4 w-4" />
+					{$_('product.edit.prices.add_price_btn')}
+				</a>
+			{/if}
 		</div>
 	</div>
 
