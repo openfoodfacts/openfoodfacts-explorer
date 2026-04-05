@@ -1,3 +1,4 @@
+import { t } from '$lib/i18n';
 <script lang="ts">
 	import type { Facet, FacetItem } from '$lib/api/search';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
@@ -56,7 +57,7 @@
 		<li>
 			<input
 				type="text"
-				placeholder="Search..."
+				placeholder={t('facets.search_placeholder')}
 				class="input input-bordered mb-2 w-full"
 				bind:value={searchQuery}
 			/>
@@ -83,9 +84,19 @@
 		{/each}
 		{#if searchQuery == ''}
 			<li>
-				<button type="button" class="btn btn-link w-full" onclick={() => toggleShowAll()}>
-					{showAll ? 'Show Less' : 'See All'}
-				</button>
+<button
+	type="button"
+	class="btn btn-link w-full"
+	onclick={() => toggleShowAll()}
+	aria-label={showAll 
+		? t('facets.show_less_options') 
+		: t('facets.show_all_options')}
+	aria-expanded={showAll}
+>
+	{showAll 
+		? t('facets.show_less') 
+		: t('facets.show_all')}
+</button>
 			</li>
 		{/if}
 	</ul>

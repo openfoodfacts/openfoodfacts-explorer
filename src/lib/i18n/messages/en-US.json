@@ -461,13 +461,19 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
-		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
-		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
-		"facet_back_to_list": "Back to facets",
-		"facet_back_to_overview": "Back to {facet} overview"
-	},
+	"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
+	"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
+	"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
+	"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
+	"facet_back_to_list": "Back to facets",
+	"facet_back_to_overview": "Back to {facet} overview",
+
+	"show_all": "See All",
+	"show_less": "Show Less",
+	"show_all_options": "Show all facet options",
+	"show_less_options": "Show fewer facet options",
+	"search_placeholder": "Search..."
+},
 	"landing": {
 		"title": "Open Food Facts Explorer",
 		"subtitle": "A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.",
