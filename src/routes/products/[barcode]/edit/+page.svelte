@@ -377,9 +377,9 @@
 					}
 				}
 			});
-
-			return () => shortcutCtx.delete('V');
 		}
+
+		return () => shortcutCtx.delete('V');
 	});
 </script>
 
