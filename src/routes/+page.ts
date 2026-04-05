@@ -8,6 +8,7 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 	// so we fetch the first page of products and read the "count" property from the response.
 
 	const data = await fetchRequired(fetch, new URL('.json', API_HOST));
+
 	if (
 		typeof data !== 'object' ||
 		data === null ||
@@ -16,12 +17,14 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 	) {
 		throw new Error('Invalid response format: expected an object with a numeric "count" property');
 	}
+
 	return data.count;
 }
 
 async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
 	const api = createProductsApi(fetch);
 	const data = await api.getFacet('contributors');
+
 	if (
 		typeof data !== 'object' ||
 		data === null ||
@@ -30,12 +33,14 @@ async function getNumberOfContributors(fetch: typeof window.fetch): Promise<numb
 	) {
 		throw new Error('Invalid contributors facet response: expected a numeric "count" property');
 	}
+
 	return Number(data.count);
 }
 
 export const load: PageLoad = async ({ fetch }) => {
 	const productCount = getNumberOfProducts(fetch);
 	const contributorCount = getNumberOfContributors(fetch);
+
 	return {
 		productCount,
 		contributorCount
