@@ -42,6 +42,8 @@ export const load: PageLoad = async ({ url }) => {
 	const redirectUrl = url.searchParams.get('redirect');
 	if (redirectUrl && redirectUrl.startsWith('/') && !redirectUrl.startsWith('//')) {
 		localStorage.setItem('authRedirect', redirectUrl);
+	} else {
+		localStorage.removeItem('authRedirect');
 	}
 
 	// 4. Create and redirect to the Keycloak login URL
