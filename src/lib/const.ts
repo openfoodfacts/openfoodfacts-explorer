@@ -83,6 +83,12 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
 
+export const OPEN_PRICES_BASE_URL = 'https://prices.openfoodfacts.org';
+export const OPEN_PRICES_PRODUCT_URL = (barcode: string) =>
+	`${OPEN_PRICES_BASE_URL}/product/${barcode}`;
+export const OPEN_PRICES_PRODUCTS_URL = (barcode: string) =>
+	`${OPEN_PRICES_BASE_URL}/products/${barcode}`;
+
 export const MATOMO_SITE_ID = 17;
 export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
 
