@@ -55,3 +55,26 @@ export function requireInt(value: string | null, error: () => never) {
 	}
 	return intValue;
 }
+
+/**
+ * Validates and sanitizes a redirect URL to prevent Open Redirect vulnerabilities.
+ * @param redirectUrl - The URL string to validate
+ * @param origin - The application's current origin (e.g. url.origin)
+ * @returns A safe relative path if valid, or '/' as a fallback
+ */
+export function getSafeRedirectUrl(redirectUrl: string | null | undefined, origin: string): string {
+	if (!redirectUrl || !redirectUrl.startsWith('/') || redirectUrl.startsWith('//')) {
+		return '/';
+	}
+
+	try {
+		const targetUrl = new URL(redirectUrl, origin);
+		if (targetUrl.origin !== origin) {
+			return '/';
+		}
+		// Return only the relative portion to ensure safety
+		return targetUrl.pathname + targetUrl.search + targetUrl.hash;
+	} catch {
+		return '/';
+	}
+}

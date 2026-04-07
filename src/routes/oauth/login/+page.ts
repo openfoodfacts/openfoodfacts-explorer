@@ -5,6 +5,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 import { createKeycloakApi } from '$lib/api';
+import { getSafeRedirectUrl } from '$lib/utils';
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
@@ -40,8 +41,9 @@ export const load: PageLoad = async ({ url }) => {
 
 	// Only store if it's a safe, same-origin relative path
 	const redirectUrl = url.searchParams.get('redirect');
-	if (redirectUrl && redirectUrl.startsWith('/') && !redirectUrl.startsWith('//')) {
-		localStorage.setItem('authRedirect', redirectUrl);
+	const safeRedirect = getSafeRedirectUrl(redirectUrl, url.origin);
+	if (safeRedirect !== '/') {
+		localStorage.setItem('authRedirect', safeRedirect);
 	} else {
 		localStorage.removeItem('authRedirect');
 	}
