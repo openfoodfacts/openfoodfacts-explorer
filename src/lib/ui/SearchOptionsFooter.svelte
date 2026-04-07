@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SORT_OPTIONS } from '$lib/const';
 
+	import { _ } from '$lib/i18n';
 	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 
@@ -20,7 +21,9 @@
 		<div
 			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border py-2 shadow-xl"
 		>
-			<div class="my-2 px-4 pb-2 text-sm font-bold tracking-wide text-gray-500">SORT BY</div>
+			<div class="text-base-content/60 my-2 px-4 pb-2 text-sm font-bold tracking-wide">
+				{$_('search.sort_by_label')}
+			</div>
 			{#each SORT_OPTIONS as option (option.value)}
 				<button
 					class="hover:bg-base-200 flex w-full items-center gap-3 px-4 py-2 text-sm"
@@ -45,6 +48,7 @@
 				sortDropdownOpen = !sortDropdownOpen;
 			}}
 			aria-label="Sort"
+			aria-expanded={sortDropdownOpen}
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
 				Sort <IconMdiSort class="ml-2 text-lg" />

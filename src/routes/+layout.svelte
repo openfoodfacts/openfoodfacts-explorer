@@ -29,6 +29,7 @@
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
+	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
@@ -37,7 +38,7 @@
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+	let websiteCtx: { flavor: WebsiteFlavor } = $state({
 		flavor: 'food'
 	});
 	setWebsiteCtx(() => websiteCtx);
@@ -301,7 +302,7 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
+<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">
