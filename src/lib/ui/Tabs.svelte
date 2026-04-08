@@ -3,13 +3,20 @@
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 
 	interface Props {
-		tabs: readonly string[];
+		tabs: readonly [string, ...string[]];
 		activeTab?: string;
 		i18nPrefix?: string;
 		onTabChange?: (tab: string) => void;
+		groupName: string;
 	}
 
-	let { tabs, activeTab = tabs[0], i18nPrefix = 'settings.tab', onTabChange }: Props = $props();
+	let {
+		tabs,
+		activeTab = tabs[0],
+		i18nPrefix = 'settings.tab',
+		onTabChange,
+		groupName
+	}: Props = $props();
 
 	function handleTabChange(tab: string) {
 		if (onTabChange) {
@@ -23,7 +30,7 @@
 		<input
 			type="radio"
 			id={`tab-${tab}`}
-			name="ui-tabs"
+			name={groupName}
 			role="tab"
 			class="tab"
 			aria-label={$_(`${i18nPrefix}.${tab}`)}
@@ -38,14 +45,18 @@
 
 <div class="mb-8 md:hidden">
 	<div class="dropdown dropdown-bottom w-full">
-		<button class="btn btn-block btn-outline gap-2" tabindex="0">
+		<button type="button" class="btn btn-block btn-outline gap-2" tabindex="0">
 			<IconMdiMenu class="h-5 w-5" />
 			{$_(`${i18nPrefix}.${activeTab}`)}
 		</button>
 		<ul class="dropdown-content menu bg-base-200 w-full p-2">
 			{#each tabs as tab (tab)}
 				<li>
-					<button onclick={() => handleTabChange(tab)} class:active={activeTab === tab}>
+					<button
+						type="button"
+						onclick={() => handleTabChange(tab)}
+						class:active={activeTab === tab}
+					>
 						{$_(`${i18nPrefix}.${tab}`)}
 					</button>
 				</li>
