@@ -47,6 +47,7 @@
 		<Tabs
 			tabs={tabNames}
 			{activeTab}
+			groupName="settings-tabs"
 			i18nPrefix="settings.tab"
 			onTabChange={(tab) => {
 				activeTab = tab as typeof activeTab;
