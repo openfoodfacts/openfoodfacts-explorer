@@ -3,6 +3,7 @@
 	import { _ } from '$lib/i18n';
 	import { locale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
+	import Tabs from '$lib/ui/Tabs.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
 	import Metadata from '$lib/Metadata.svelte';
@@ -16,7 +17,6 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
-	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 
 	import type { PageProps } from './$types';
 
@@ -30,13 +30,7 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	const tabs = [
-		{ id: 'account' },
-		{ id: 'general' },
-		{ id: 'editing' },
-		{ id: 'preferences' },
-		{ id: 'developer' }
-	] as const;
+	const tabNames = ['account', 'general', 'editing', 'preferences', 'developer'] as const;
 </script>
 
 <Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
@@ -50,79 +44,17 @@
 			</p>
 		</div>
 
-		<div role="tablist" class="tabs tabs-bordered mb-8 hidden gap-0 md:flex">
-			<input
-				type="radio"
-				name="settings-tabs"
-				role="tab"
-				class="tab"
-				aria-label={$_('settings.tab.account')}
-				bind:group={activeTab}
-				value="account"
-			/>
-			<input
-				type="radio"
-				name="settings-tabs"
-				role="tab"
-				class="tab"
-				aria-label={$_('settings.tab.general')}
-				bind:group={activeTab}
-				value="general"
-			/>
-			<input
-				type="radio"
-				name="settings-tabs"
-				role="tab"
-				class="tab"
-				aria-label={$_('settings.tab.editing')}
-				bind:group={activeTab}
-				value="editing"
-			/>
-			<input
-				type="radio"
-				name="settings-tabs"
-				role="tab"
-				class="tab"
-				aria-label={$_('settings.tab.preferences')}
-				bind:group={activeTab}
-				value="preferences"
-			/>
-			<input
-				type="radio"
-				name="settings-tabs"
-				role="tab"
-				class="tab"
-				aria-label={$_('settings.tab.developer')}
-				bind:group={activeTab}
-				value="developer"
-			/>
-		</div>
-
-		<div class="mb-8 md:hidden">
-			<div class="dropdown dropdown-bottom w-full">
-				<button class="btn btn-block btn-outline gap-2" tabindex="0">
-					<IconMdiMenu class="h-5 w-5" />
-					{$_(`settings.tab.${activeTab}`)}
-				</button>
-				<ul class="dropdown-content menu bg-base-200 w-full p-2">
-					{#each tabs as tab (tab.id)}
-						<li>
-							<button
-								onclick={() => {
-									activeTab = tab.id as typeof activeTab;
-								}}
-								class:active={activeTab === tab.id}
-							>
-								{$_(`settings.tab.${tab.id}`)}
-							</button>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		</div>
+		<Tabs
+			tabs={tabNames}
+			{activeTab}
+			i18nPrefix="settings.tab"
+			onTabChange={(tab) => {
+				activeTab = tab as typeof activeTab;
+			}}
+		/>
 
 		{#if activeTab === 'account'}
-			<div class="space-y-6">
+			<div role="tabpanel" id="tabpanel-account" aria-labelledby="tab-account" class="space-y-6">
 				<div class="card bg-base-200 shadow-md">
 					<div class="card-body">
 						<h2 class="card-title flex items-center gap-2">
@@ -192,7 +124,12 @@
 		{/if}
 
 		{#if activeTab === 'general'}
-			<div class="card bg-base-200 shadow-md">
+			<div
+				role="tabpanel"
+				id="tabpanel-general"
+				aria-labelledby="tab-general"
+				class="card bg-base-200 shadow-md"
+			>
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
 						<IconMdiCog class="h-6 w-6" />
@@ -280,7 +217,12 @@
 		{/if}
 
 		{#if activeTab === 'editing'}
-			<div class="card bg-base-200 shadow-md">
+			<div
+				role="tabpanel"
+				id="tabpanel-editing"
+				aria-labelledby="tab-editing"
+				class="card bg-base-200 shadow-md"
+			>
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
 						<IconMdiPencil class="h-6 w-6" />
@@ -325,7 +267,12 @@
 		{/if}
 
 		{#if activeTab === 'preferences'}
-			<div class="card bg-base-200 shadow-md">
+			<div
+				role="tabpanel"
+				id="tabpanel-preferences"
+				aria-labelledby="tab-preferences"
+				class="card bg-base-200 shadow-md"
+			>
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
 						<IconMdiHeart class="h-6 w-6" />
@@ -340,7 +287,12 @@
 		{/if}
 
 		{#if activeTab === 'developer' && permissions.isModerator}
-			<div class="card border-warning bg-warning/10 border-2 shadow-md">
+			<div
+				role="tabpanel"
+				id="tabpanel-developer"
+				aria-labelledby="tab-developer"
+				class="card border-warning bg-warning/10 border-2 shadow-md"
+			>
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
 						<IconMdiTools class="h-6 w-6" />
@@ -370,7 +322,12 @@
 				</div>
 			</div>
 		{:else if activeTab === 'developer'}
-			<div class="alert alert-warning">
+			<div
+				role="tabpanel"
+				id="tabpanel-developer"
+				aria-labelledby="tab-developer"
+				class="alert alert-warning"
+			>
 				<div>
 					<p class="font-semibold">{$_('settings.dev_access_denied')}</p>
 					<p class="mt-1 text-sm">{$_('settings.dev_access_message')}</p>
