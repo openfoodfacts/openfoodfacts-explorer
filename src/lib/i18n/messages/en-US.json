@@ -417,6 +417,7 @@
 				"tool": "Tool",
 				"crop_drag_to_move": "Drag to move, corners to resize",
 				"crop_click_to_start": "Click and drag to start cropping",
+				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Report Image",
 				"save_changes": "Save Changes"
 			},

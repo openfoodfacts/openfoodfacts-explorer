@@ -569,7 +569,10 @@
 								}}
 								role="button"
 								tabindex="0"
-								aria-label={`Resize ${action} handle`}
+								aria-label={$_('product.edit.images.resize_handle_aria_label', {
+									values: { action },
+									default: 'Resize {action} handle'
+								})}
 							></cropper-handle>
 						{/each}
 					</cropper-selection>
