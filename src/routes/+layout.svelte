@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
@@ -31,7 +31,8 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
-	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
+	import Shortcuts from './Shortcuts.svelte';
+	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
@@ -102,7 +103,7 @@
 		// Add more shortcuts here
 	]);
 
-	setContext('shortcuts', () => shortcuts);
+	setShortcutCtx(() => shortcuts);
 
 	// Load OpenFoodFacts Web Components
 
@@ -302,7 +303,7 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
+<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">

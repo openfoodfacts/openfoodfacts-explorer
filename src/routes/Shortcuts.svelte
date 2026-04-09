@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
+	import type { Shortcut } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;
-
-	// Define shortcuts: { combo, description, action }
-	export type Shortcut = {
-		description: string;
-		action: () => void;
-	};
 
 	let { shortcuts }: { shortcuts: Map<string, Shortcut> } = $props();
 
@@ -28,6 +23,18 @@
 			if (event.key === 'Escape' && helpModal.open) {
 				helpModal.close();
 			}
+
+			// Ignore if user is typing in an input field
+			const target = event.target as HTMLElement;
+			if (
+				target instanceof HTMLInputElement ||
+				target instanceof HTMLTextAreaElement ||
+				target instanceof HTMLSelectElement ||
+				target.isContentEditable
+			) {
+				return;
+			}
+
 			const combo = getCombo(event);
 			shortcuts.forEach((shortcut, key) => {
 				if (combo === key.replace('?', '?')) {
