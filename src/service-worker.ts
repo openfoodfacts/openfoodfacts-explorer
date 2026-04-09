@@ -35,10 +35,10 @@ self.addEventListener('fetch', (event) => {
 
 	async function respond() {
 		const url = new URL(event.request.url);
-		const cache = await caches.open(CACHE);
 
 		// Static assets (static.openfoodfacts.org) — cache-first
 		if (url.origin === STATIC_HOST) {
+			const cache = await caches.open(CACHE);
 			const cached = await cache.match(event.request);
 
 			if (cached) {
@@ -48,8 +48,8 @@ self.addEventListener('fetch', (event) => {
 
 			const response = await fetch(event.request);
 
-			if (response.status === 200) {
-				cache.put(event.request, response.clone());
+			if (response.ok || response.type === 'opaque') {
+				event.waitUntil(cache.put(event.request, response.clone()));
 			}
 
 			return response;
@@ -57,11 +57,12 @@ self.addEventListener('fetch', (event) => {
 
 		// Same-origin app assets (JS, CSS, etc.) — network-first with offline fallback
 		if (url.origin === self.location.origin) {
+			const cache = await caches.open(CACHE);
 			try {
 				const response = await fetch(event.request);
 
 				if (response.status === 200) {
-					cache.put(event.request, response.clone());
+					event.waitUntil(cache.put(event.request, response.clone()));
 				}
 
 				return response;
