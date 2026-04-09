@@ -198,7 +198,7 @@
 		      {attributes}
 		      sortByScore={$personalizedSearch.classifyProductsEnabled}
 	      />
-    {:catch error}
+    {:catch}
 	      <p class="text-center text-red-500">
 		      {$_('errors.load_products')}
 	      </p>
