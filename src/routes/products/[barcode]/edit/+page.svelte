@@ -17,6 +17,7 @@
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -24,6 +25,7 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
+	import { resolve } from '$app/paths';
 
 	interface Props {
 		data: PageData;
@@ -32,6 +34,7 @@
 	let { data }: Props = $props();
 
 	const toastCtx = getToastCtx();
+	const shortcutCtx = getShortcutCtx();
 
 	function createEmptyImage(): SelectedImage | RawImage {
 		return {
@@ -363,6 +366,21 @@
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
+
+	$effect(() => {
+		if (!isAddMode) {
+			shortcutCtx.set('V', {
+				description: $_('product.shortcuts.view_page'),
+				action: () => {
+					if (page.params.barcode) {
+						goto(resolve('/products/[barcode]', { barcode: page.params.barcode }));
+					}
+				}
+			});
+		}
+
+		return () => shortcutCtx.delete('V');
+	});
 </script>
 
 {#if dev}
