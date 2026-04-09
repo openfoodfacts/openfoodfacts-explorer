@@ -55,8 +55,22 @@ self.addEventListener('fetch', (event) => {
 			return response;
 		}
 
-		// Same-origin app assets (JS, CSS, etc.) — network-first with offline fallback
-		if (url.origin === self.location.origin) {
+		// Same-origin SvelteKit build artifacts (JS/CSS) — network-first with offline fallback.
+		// We deliberately exclude same-origin API routes (+server.ts) from this branch so
+		// they are never cached and always go to the "plain fetch" passthrough below.
+		//
+		// request.destination identifies the resource type in modern browsers.
+		// The url.pathname.endsWith() fallbacks handle programmatic fetch() calls
+		// where destination can be an empty string '' — this is distinct from navigation
+		// requests (destination === 'document'), which are intentionally excluded here.
+		const isSameOriginAsset =
+			url.origin === self.location.origin &&
+			(event.request.destination === 'script' ||
+				event.request.destination === 'style' ||
+				url.pathname.endsWith('.js') ||
+				url.pathname.endsWith('.css'));
+
+		if (isSameOriginAsset) {
 			const cache = await caches.open(CACHE);
 			try {
 				const response = await fetch(event.request);
