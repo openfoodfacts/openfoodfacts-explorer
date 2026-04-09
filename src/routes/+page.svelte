@@ -200,7 +200,7 @@
 	      />
     {:catch error}
 	      <p class="text-center text-red-500">
-		      Failed to load products. Please try again later.
+		      {$_('errors.load_products')}
 	      </p>
     {/await}
 	</div>
