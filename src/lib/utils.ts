@@ -63,7 +63,14 @@ export function requireInt(value: string | null, error: () => never) {
  * @returns A safe relative path if valid, or '/' as a fallback
  */
 export function getSafeRedirectUrl(redirectUrl: string | null | undefined, origin: string): string {
-	if (!origin || !URL.canParse(origin)) {
+	if (!origin) {
+		throw new Error(`getSafeRedirectUrl: invalid origin "${origin}"`);
+	}
+
+	let normalizedOrigin: string;
+	try {
+		normalizedOrigin = new URL(origin).origin;
+	} catch {
 		throw new Error(`getSafeRedirectUrl: invalid origin "${origin}"`);
 	}
 
@@ -72,8 +79,8 @@ export function getSafeRedirectUrl(redirectUrl: string | null | undefined, origi
 	}
 
 	try {
-		const targetUrl = new URL(redirectUrl, origin);
-		if (targetUrl.origin !== origin) {
+		const targetUrl = new URL(redirectUrl, normalizedOrigin);
+		if (targetUrl.origin !== normalizedOrigin) {
 			return '/';
 		}
 		// Return only the relative portion to ensure safety
