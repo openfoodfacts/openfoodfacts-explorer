@@ -1,4 +1,4 @@
-import { createProductsApi } from '$lib/api';
+import { createProductsApi } from '$lib/api/product';
 import { API_HOST } from '$lib/const';
 import { fetchRequired } from '$lib/promises';
 import type { PageLoad } from './$types';
