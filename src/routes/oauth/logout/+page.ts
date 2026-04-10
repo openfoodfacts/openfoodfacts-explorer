@@ -4,11 +4,11 @@ export const ssr = false;
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { resolve } from '$app/paths';
+import { OAUTH_LOGOUT_REDIRECT_URI } from '$lib/const';
 import { createKeycloakApi } from '$lib/api';
 
 export const load: PageLoad = async ({ fetch }) => {
-	const redirectUri = window.location.origin + resolve('/oauth/logout/callback');
+	const redirectUri = OAUTH_LOGOUT_REDIRECT_URI(new URL(window.location.href));
 
 	const logoutUrl = createKeycloakApi(fetch, new URL(window.location.href)).logoutUrl({
 		// Keycloak requires the refresh token for logout, but since we are doing a front-channel logout, we can leave it empty
