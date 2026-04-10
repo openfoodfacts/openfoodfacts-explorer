@@ -15,10 +15,11 @@
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
 
+	import ContextualLinks from '$lib/components/ContextualLinks.svelte';
+
 	import type { PageProps } from './$types';
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
-	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
@@ -121,6 +122,9 @@
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />
+		<div class="mt-2">
+			<ContextualLinks barcode={product.code} />
+		</div>
 	{/if}
 
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
@@ -163,12 +167,7 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
-				<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
-				<folksonomy-editor
-					page-type="edit"
-					product-code={product.code}
-					auth-token={$userAuthTokens?.access_token ?? ''}
-				></folksonomy-editor>
+				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
 			{:else}
 				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
 
