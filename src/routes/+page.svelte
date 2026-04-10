@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 
 	import { _ } from '$lib/i18n';
-	import { createRobotoffApi, getProductReducedForCard, getBulkProductAttributes } from '$lib/api';
-	import { deduplicate } from '$lib/utils';
+
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
@@ -23,13 +20,6 @@
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
 
-	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
-	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
-
-	let attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $state(
-		Promise.resolve({})
-	);
-
 	import chocoBarIcon from '$lib/assets/chocolate-bar.svg';
 	import cheeseIcon from '$lib/assets/cheese.svg';
 	import butterIcon from '$lib/assets/butter.svg';
@@ -40,43 +30,7 @@
 
 	// random icons
 	heroIcons.sort(() => Math.random() - 0.5);
-
-	const INSIGHT_COUNT = 12;
 	const SKELETON_COUNT = 6;
-
-	async function getProducts() {
-		const roffApi = createRobotoffApi(fetch);
-		const { data: robotoffData } = await roffApi.insights({ count: INSIGHT_COUNT });
-
-		const insights = robotoffData?.insights ?? [];
-
-		const productsPromises = insights.map((question) =>
-			getProductReducedForCard(fetch, question.barcode.toString())
-		);
-		const productStates = await Promise.all(productsPromises);
-
-		// filter out products that failed to load
-		const products = productStates
-			.map((res) => res.data)
-			.filter((res) => res != null)
-			.filter((state) => state?.status !== 'failure');
-
-		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
-	}
-
-	async function getAttributes(products: ReducedState[]) {
-		const productCodes = products.map((state) => state.product.code);
-		const attrs = await getBulkProductAttributes(fetch, productCodes);
-		return attrs;
-	}
-
-	onMount(() => {
-		products = getProducts();
-		products.then((prod) => {
-			attributesByCode = getAttributes(prod);
-		});
-	});
 </script>
 
 <svelte:head>
@@ -203,7 +157,7 @@
 	</div>
 
 	<div class="flex w-full">
-		{#await Promise.all([products, attributesByCode])}
+		{#await Promise.all([data.products, data.attributesByCode])}
 			<div
 				class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 			>
@@ -211,10 +165,10 @@
 					<div class="skeleton h-36 w-full rounded-lg"></div>
 				{/each}
 			</div>
-		{:then [resolvedProducts, attributes]}
+		{:then [products, attributesByCode]}
 			<ProductGrid
-				products={resolvedProducts.map((state) => state.product)}
-				{attributes}
+				products={products.map((state) => state.product)}
+				attributes={attributesByCode}
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>
 		{/await}
