@@ -175,6 +175,10 @@
 		isSearching = false;
 	}
 
+	function getLoginUrl(url: URL) {
+		return resolve('/oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
+	}
+
 	let searchActive = $state(false);
 	let accordionOpen = $state(false);
 	const mobileMenuId = 'mobile-menu-panel';
@@ -270,7 +274,7 @@
 						>{$_('navbar.logout', { default: 'Logout' })}</a
 					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}
+					<a class="btn btn-outline link" href={getLoginUrl(page.url)}
 						>{$_('navbar.login', { default: 'Login' })}</a
 					>
 				{/if}
@@ -394,7 +398,7 @@
 				>{$_('navbar.logout', { default: 'Logout' })}</a
 			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}
+			<a class="btn btn-outline link" href={getLoginUrl(page.url)}
 				>{$_('navbar.login', { default: 'Login' })}</a
 			>
 		{/if}
