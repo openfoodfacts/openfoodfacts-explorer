@@ -63,6 +63,10 @@ export function requireInt(value: string | null, error: () => never) {
  * @returns A safe relative path if valid, or '/' as a fallback
  */
 export function getSafeRedirectUrl(redirectUrl: string | null | undefined, origin: string): string {
+	if (!origin || !URL.canParse(origin)) {
+		throw new Error(`getSafeRedirectUrl: invalid origin "${origin}"`);
+	}
+
 	if (!redirectUrl || !redirectUrl.startsWith('/') || redirectUrl.startsWith('//')) {
 		return '/';
 	}

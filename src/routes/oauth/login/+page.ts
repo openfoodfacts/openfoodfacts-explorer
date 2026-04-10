@@ -42,11 +42,7 @@ export const load: PageLoad = async ({ url }) => {
 	// Only store if it's a safe, same-origin relative path
 	const redirectUrl = url.searchParams.get('redirect');
 	const safeRedirect = getSafeRedirectUrl(redirectUrl, url.origin);
-	if (safeRedirect !== '/') {
-		localStorage.setItem('authRedirect', safeRedirect);
-	} else {
-		localStorage.removeItem('authRedirect');
-	}
+	localStorage.setItem('authRedirect', safeRedirect);
 
 	// 4. Create and redirect to the Keycloak login URL
 	const api = createKeycloakApi(fetch, url);
