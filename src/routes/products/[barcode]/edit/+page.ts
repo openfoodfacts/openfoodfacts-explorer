@@ -42,23 +42,35 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
 	const off = createProductsApi(fetch);
 
-	const [productReq, categories, labels, brands, stores, origins, countries] = await Promise.all([
-		off.getProductV3(params.barcode, {
-			lc: get(preferences).lang,
-			cc: get(preferences).country
-		}),
-		getTaxo<Category>('categories', fetch),
-		getTaxo<Label>('labels', fetch),
-		getTaxo<Brand>('brands', fetch),
-		getTaxo<Store>('stores', fetch),
-		getTaxo<Origin>('origins', fetch),
-		getTaxo<Country>('countries', fetch)
-	]);
+	const productReq = await off.getProductV3(params.barcode, {
+		lc: get(preferences).lang,
+		cc: get(preferences).country
+	});
 
 	const { data: productState, error: productError } = productReq;
 	if (productError || !productState) {
 		error(500, 'Error loading product');
 	}
+
+	if (productState.status === 'failure' && productState.result?.id !== 'product_not_found') {
+		error(500, {
+			message: 'Failure to load product',
+			errors: productState.errors
+		});
+	}
+
+	// TODO: switch to SDK
+	const productType =
+		productState.status !== 'failure' ? productState.product.product_type : undefined;
+
+	const [categories, labels, brands, stores, origins, countries] = await Promise.all([
+		getTaxo<Category>('categories', fetch, productType),
+		getTaxo<Label>('labels', fetch, productType),
+		getTaxo<Brand>('brands', fetch, productType),
+		getTaxo<Store>('stores', fetch, productType),
+		getTaxo<Origin>('origins', fetch, productType),
+		getTaxo<Country>('countries', fetch, productType)
+	]);
 
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
 
@@ -76,11 +88,6 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			origins,
 			countries
 		};
-	} else if (productState.status === 'failure') {
-		error(404, {
-			message: 'Failure to load product',
-			errors: productState.errors
-		});
 	}
 
 	return {
