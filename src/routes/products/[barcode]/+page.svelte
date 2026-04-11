@@ -29,7 +29,7 @@
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { getContext } from 'svelte';
-	import type { Shortcut } from '../../Shortcuts.svelte';
+	import { type Shortcut } from '$lib/stores/shortcuts';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 
