@@ -20,6 +20,7 @@
 	import type { PageProps } from './$types';
 	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
+	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
@@ -27,13 +28,10 @@
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import { onMount } from 'svelte';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getContext } from 'svelte';
+	import type { Shortcut } from '../../Shortcuts.svelte';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import { PRODUCT_URL } from '$lib/const';
-	import { resolve } from '$app/paths';
-	import { goto } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -66,47 +64,10 @@
 
 	let showBarcode = $state(false);
 
-	const shortcutCtx = getShortcutCtx();
-
-	onMount(() => {
-		shortcutCtx.set('Shift+B', {
-			description: $_('product.shortcuts.show_barcode'),
-			action: () => (showBarcode = !showBarcode)
-		});
-
-		shortcutCtx.set('A', {
-			description: $_('product.shortcuts.api_page'),
-			action: () => {
-				if (product.code) {
-					window.open(PRODUCT_URL(product.code), '_blank');
-				}
-			}
-		});
-
-		shortcutCtx.set('E', {
-			description: $_('product.shortcuts.edit_same_window'),
-			action: () => {
-				if (product.code) {
-					goto(resolve('/products/[barcode]/edit', { barcode: product.code }));
-				}
-			}
-		});
-
-		shortcutCtx.set('Shift+E', {
-			description: $_('product.shortcuts.edit_new_window'),
-			action: () => {
-				if (product.code) {
-					window.open(resolve('/products/[barcode]/edit', { barcode: product.code }), '_blank');
-				}
-			}
-		});
-
-		return () => {
-			shortcutCtx.delete('A');
-			shortcutCtx.delete('E');
-			shortcutCtx.delete('Shift+E');
-			shortcutCtx.delete('Shift+B');
-		};
+	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
+	shortcuts.set('Shift+B', {
+		description: $_('product.shortcuts.show_barcode'),
+		action: () => (showBarcode = !showBarcode)
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
@@ -207,6 +168,12 @@
 			</label>
 
 			{#if useWCFolksonomyEditor}
+				<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
+				<folksonomy-editor
+					page-type="edit"
+					product-code={product.code}
+					auth-token={$userAuthTokens?.access_token ?? ''}
+				></folksonomy-editor>
 				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
 			{:else}
 				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>

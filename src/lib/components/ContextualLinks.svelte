@@ -19,7 +19,7 @@
 
 <div class="relative inline-block text-left">
 	<button
-		on:click={() => (isOpen = !isOpen)}
+		onclick={() => (isOpen = !isOpen)}
 		class="rounded p-1 hover:bg-gray-100"
 		aria-label="Search on external sites"
 	>
