@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { KnowledgeElementText } from '$lib/api';
+	import type { KnowledgeTextElement } from '$lib/api';
 	import { _ } from '$lib/i18n';
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
-	let { element }: { element: KnowledgeElementText } = $props();
+	let { element }: { element: KnowledgeTextElement } = $props();
 
 	let { type, edit_field_type, html, source_url, source_text, source_language } = $derived(
 		element.text_element

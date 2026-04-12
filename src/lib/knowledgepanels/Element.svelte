@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
-	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
+	import type { KnowledgeElement, KnowledgePanels } from '$lib/api';
 
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -13,7 +13,7 @@
 	import Table from './Table.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
+		panels: KnowledgePanels;
 		element: KnowledgeElement;
 		productCode?: string;
 	};

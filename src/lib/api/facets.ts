@@ -1,4 +1,4 @@
-import type { KnowledgePanel } from './knowledgepanels';
+import type { KnowledgePanels } from './knowledgepanels';
 import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
 
@@ -37,7 +37,7 @@ export async function getFacetValue(
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';
 
 export type FacetKnowledgePanelResponse = {
-	knowledge_panels: Record<string, KnowledgePanel>;
+	knowledge_panels: KnowledgePanels;
 };
 
 export async function getFacetKnowledgePanels(

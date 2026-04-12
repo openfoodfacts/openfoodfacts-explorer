@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElementPanelGroup, KnowledgePanel } from '$lib/api';
+	import type { KnowledgePanelGroupElement, KnowledgePanels } from '$lib/api';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 	import Panel from './Panel.svelte';
 
@@ -8,8 +8,8 @@
 		panels: panels,
 		code: code
 	}: {
-		element: KnowledgeElementPanelGroup;
-		panels: Record<string, KnowledgePanel>;
+		element: KnowledgePanelGroupElement;
+		panels: KnowledgePanels;
 		/** Optional product code to enable product-specific features like product links */
 		code?: string;
 	} = $props();
@@ -31,7 +31,7 @@
 			<ImageButton
 				src={groupEl.image.sizes['full'].url}
 				alt={groupEl.image.alt}
-				rawImageId={groupEl.image.id}
+				rawImageId={Number(groupEl.image.id)}
 				productCode={code}
 			/>
 		</div>
