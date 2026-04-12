@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '$lib/i18n';
+	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
 	import {
@@ -13,7 +14,7 @@
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
-	import { PRODUCT_REPORT_URL, TRACEABILITY_CODES_URL } from '$lib/const';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
@@ -26,7 +27,6 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
-
 	type Props = {
 		product: Product;
 		taxonomies: {
@@ -43,9 +43,6 @@
 	let { lang } = $derived($preferences);
 
 	let toastCtx = getToastCtx();
-
-	let isShareSupported = $derived(navigator?.share != null);
-
 	function addToCalculator() {
 		// FIXME: product.code cannot be null
 		const code = product.code!;
@@ -61,13 +58,19 @@
 	}
 
 	async function sharePage() {
-		try {
-			await navigator.share({
-				url: window.location.href
-			});
-		} catch (error) {
-			console.error('Error sharing the page:', error);
-		}
+		await shareContent(
+			{
+				url: `${window.location.origin}${window.location.pathname}`,
+				title: product.product_name || product.code,
+				text: $_('product.share_text', {
+					values: { productName: product.product_name || product.code }
+				})
+			},
+			{
+				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
+				onError: () => toastCtx.error($_('product.toast.failed_copy'))
+			}
+		);
 	}
 
 	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
@@ -77,6 +80,8 @@
 	let frontImage = $derived(
 		'image_front_url' in product ? (product.image_front_url as string) : undefined
 	);
+
+	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
 
 	function addToComparison() {
 		// Convert Product to ProductReduced - using type assertion since the product exists
@@ -116,7 +121,7 @@
 				<!-- Action Toolbar -->
 				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
 					<a
-						href={'https://world.openfoodfacts.org/product/' + product.code}
+						href={productWebsiteUrl}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
@@ -133,19 +138,17 @@
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 					</a>
 
-					{#if isShareSupported}
-						<button
-							class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-							onclick={sharePage}
-						>
-							<IconMdiShareVariant class="h-5 w-5" />
-							<span class="hidden md:block">{$_('product.buttons.share')}</span>
-						</button>
-					{/if}
+					<button
+						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						onclick={sharePage}
+					>
+						<IconMdiShareVariant class="h-5 w-5" />
+						<span class="hidden md:block">{$_('product.buttons.share')}</span>
+					</button>
 
 					<a
 						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-						href={PRODUCT_REPORT_URL(product.code!)}
+						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
 						rel="noopener noreferrer"
 						title={$_('product.buttons.report')}
@@ -253,7 +256,12 @@
 					<div class="mb-2">
 						<div class="text-secondary mb-2 text-sm font-bold">
 							<span>{$_('product.header.traceability_codes')}</span>
-							<a href={TRACEABILITY_CODES_URL} target="_blank" class="link link-secondary text-xs">
+							<a
+								href={TRACEABILITY_CODES_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link link-secondary text-xs"
+							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
 						</div>

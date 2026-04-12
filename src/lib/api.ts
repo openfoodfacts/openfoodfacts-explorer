@@ -12,7 +12,13 @@ export * from './api/nutriments';
 export * from './api/knowledgepanels';
 
 export function createRobotoffApi(fetch: typeof window.fetch) {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(ROBOTOFF_URL));
+	// We hardcode this because it is not expected to change
+	// it via environment variables. We should in the long run
+	// move this to the SDK
+	const versionPostfix = '/api/v1';
+
+	const rawUrl = new URL(versionPostfix, ROBOTOFF_URL);
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, rawUrl);
 	return new Robotoff(wrappedFetch, { baseUrl: url.toString() });
 }
 
