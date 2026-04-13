@@ -30,7 +30,13 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	const tabNames = ['account', 'general', 'editing', 'preferences', 'developer'] as const;
+	const tabs = [
+		{ label: 'account', i18nKey: 'settings.tab.account' },
+		{ label: 'general', i18nKey: 'settings.tab.general' },
+		{ label: 'editing', i18nKey: 'settings.tab.editing' },
+		{ label: 'preferences', i18nKey: 'settings.tab.preferences' },
+		{ label: 'developer', i18nKey: 'settings.tab.developer' }
+	] as const;
 </script>
 
 <Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
@@ -45,10 +51,9 @@
 		</div>
 
 		<Tabs
-			tabs={tabNames}
+			{tabs}
 			{activeTab}
 			groupName="settings-tabs"
-			i18nPrefix="settings.tab"
 			onTabChange={(tab) => {
 				activeTab = tab as typeof activeTab;
 			}}
