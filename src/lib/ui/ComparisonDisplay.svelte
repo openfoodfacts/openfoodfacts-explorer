@@ -114,7 +114,7 @@
 		},
 		{
 			key: 'fruits-vegetables-nuts-estimate-from-ingredients_100g',
-			label: 'Fruits/Vegetables/Nuts',
+			label: $_('compare.fruits_vegetables_nuts'),
 			unit: '%'
 		}
 	];
@@ -290,7 +290,7 @@
 	<div class="flex flex-col items-center gap-1">
 		<img src={imageSrc} alt={altText} title={altText} class="h-12" />
 		{#if isBest}
-			<span class="badge badge-success badge-sm">Best</span>
+			<span class="badge badge-success badge-sm">{$_('compare.best')}</span>
 		{/if}
 	</div>
 {/snippet}
@@ -303,9 +303,9 @@
 				{unit}
 			</span>
 			{#if comparison.isBest}
-				<span class="badge badge-success badge-sm">Best</span>
+				<span class="badge badge-success badge-sm">{$_('compare.best')}</span>
 			{:else if comparison.isWorst}
-				<span class="badge badge-error badge-sm">Worst</span>
+				<span class="badge badge-error badge-sm">{$_('compare.worst')}</span>
 			{/if}
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
 				<span
@@ -329,9 +329,9 @@
 				{comparison.formatted}
 				{unit}
 				{#if comparison.isBest}
-					<span class="badge badge-success badge-sm ml-1">Best</span>
+					<span class="badge badge-success badge-sm ml-1">{$_('compare.best')}</span>
 				{:else if comparison.isWorst}
-					<span class="badge badge-error badge-sm ml-1">Worst</span>
+					<span class="badge badge-error badge-sm ml-1">{$_('compare.worst')}</span>
 				{/if}
 			</span>
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
@@ -388,7 +388,7 @@
 
 				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">Scores:</p>
+						<p class="mb-2 text-sm font-semibold">{$_('compare.scores')}</p>
 						<div class="flex items-center justify-around gap-2">
 							{#if product.nutriscore_grade}
 								{@const comparison = getScoreComparison(
@@ -428,7 +428,7 @@
 
 				{#if product.nutriments}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">Nutrients / 100g:</p>
+						<p class="mb-2 text-sm font-semibold">{$_('compare.nutrients_per_100g')}</p>
 						<div class="space-y-1 text-sm">
 							{#each availableNutrients as nutrient (nutrient.key)}
 								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
@@ -516,7 +516,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Name</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.product_name ?? '-'}
@@ -524,7 +524,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Code (Barcode)</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.code_barcode')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
 						{product.code}
@@ -532,7 +532,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.brand')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
@@ -540,7 +540,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.quantity')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
@@ -548,7 +548,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('nutriscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -565,7 +565,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.nova_group')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
@@ -582,7 +582,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('ecoscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -599,7 +599,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">N. of additives</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.num_additives')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
@@ -609,7 +609,7 @@
 			<tr class="bg-base-200">
 				<td></td>
 				<td colspan={products.length} class="sticky left-0 text-center font-bold">
-					Nutritional Values (per 100g)
+					{$_('compare.nutritional_values_per_100g')}
 				</td>
 			</tr>
 			{#each availableNutrients as nutrient (nutrient.key)}
@@ -632,10 +632,10 @@
 
 {#if comparisonMode === 'relative-first'}
 	<div class="text-base-content/70 mt-4 text-center text-sm">
-		💡 Percentages show difference compared to the first product
+		{$_('compare.hint_relative_first')}
 	</div>
 {:else if comparisonMode === 'relative-best'}
 	<div class="text-base-content/70 mt-4 text-center text-sm">
-		💡 Percentages show difference compared to the best value (lower is better for most nutrients)
+		{$_('compare.hint_relative_best')}
 	</div>
 {/if}
