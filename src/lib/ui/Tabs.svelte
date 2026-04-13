@@ -2,43 +2,39 @@
 	import { _ } from '$lib/i18n';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 
+	interface Tab {
+		label: string;
+		i18nKey: string;
+	}
+
 	interface Props {
-		tabs: readonly [string, ...string[]];
+		tabs: readonly [Tab, ...Tab[]];
 		activeTab?: string;
-		i18nPrefix?: string;
 		onTabChange?: (tab: string) => void;
 		groupName: string;
 	}
 
-	let {
-		tabs,
-		activeTab = tabs[0],
-		i18nPrefix = 'settings.tab',
-		onTabChange,
-		groupName
-	}: Props = $props();
+	let { tabs, activeTab = tabs[0].label, onTabChange, groupName }: Props = $props();
 
 	function handleTabChange(tab: string) {
-		if (onTabChange) {
-			onTabChange(tab);
-		}
+		onTabChange?.(tab);
 	}
 </script>
 
 <div role="tablist" class="tabs tabs-bordered mb-8 hidden gap-0 md:flex">
-	{#each tabs as tab (tab)}
+	{#each tabs as tab (tab.label)}
 		<input
 			type="radio"
-			id={`tab-${tab}`}
+			id={`tab-${tab.label}`}
 			name={groupName}
 			role="tab"
 			class="tab"
-			aria-label={$_(`${i18nPrefix}.${tab}`)}
-			aria-controls={`tabpanel-${tab}`}
-			aria-selected={activeTab === tab}
-			checked={activeTab === tab}
-			onchange={() => handleTabChange(tab)}
-			value={tab}
+			aria-label={$_(`${tab.i18nKey}`)}
+			aria-controls={`tabpanel-${tab.label}`}
+			aria-selected={activeTab === tab.label}
+			checked={activeTab === tab.label}
+			onchange={() => handleTabChange(tab.label)}
+			value={tab.label}
 		/>
 	{/each}
 </div>
@@ -47,17 +43,17 @@
 	<div class="dropdown dropdown-bottom w-full">
 		<button type="button" class="btn btn-block btn-outline gap-2" tabindex="0">
 			<IconMdiMenu class="h-5 w-5" />
-			{$_(`${i18nPrefix}.${activeTab}`)}
+			{$_(`${tabs.find((t) => t.label === activeTab)?.i18nKey || ''}`)}
 		</button>
 		<ul class="dropdown-content menu bg-base-200 w-full p-2">
-			{#each tabs as tab (tab)}
+			{#each tabs as tab (tab.label)}
 				<li>
 					<button
 						type="button"
-						onclick={() => handleTabChange(tab)}
-						class:active={activeTab === tab}
+						onclick={() => handleTabChange(tab.label)}
+						class:active={activeTab === tab.label}
 					>
-						{$_(`${i18nPrefix}.${tab}`)}
+						{$_(`${tab.i18nKey}`)}
 					</button>
 				</li>
 			{/each}
