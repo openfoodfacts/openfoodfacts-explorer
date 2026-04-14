@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
@@ -61,54 +62,40 @@
 	});
 
 	let useWCFolksonomyEditor = $state(false);
-
 	let showBarcode = $state(false);
 
-	let shortcuts: Map<string, Shortcut> = getContext<() => Map<string, Shortcut>>('shortcuts')();
-	shortcuts.set('Shift+B', {
-		description: $_('product.shortcuts.show_barcode'),
-		action: () => (showBarcode = !showBarcode)
+	$effect(() => {
+		if (browser) {
+			const handleKeyDown = (event: KeyboardEvent) => {
+				// Shift + B check
+				if (event.shiftKey && event.key === 'B') {
+					event.preventDefault();
+					showBarcode = !showBarcode;
+				}
+			};
+
+			window.addEventListener('keydown', handleKeyDown);
+			return () => {
+				window.removeEventListener('keydown', handleKeyDown);
+			};
+		}
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
+		if (!browser || !code) return [];
 		const offApi = new OpenFoodFacts(fetch);
-
-		const searchParams: Record<string, unknown> = {
-			fields: ['attribute_groups_en']
-		};
-
-		const SENT_ATTRIBUTES = ['attribute_unwanted_ingredients_tags'];
-
-		for (const prefAttr of SENT_ATTRIBUTES) {
-			const pref = $personalizedSearch.userPreferences.find((p) => p.attributeId === prefAttr);
-			if (pref == null) {
-				continue;
-			}
-
-			if (pref.type === 'attribute') {
-				searchParams[pref.attributeId] = pref.value;
-			} else if (pref.type === 'tags') {
-				searchParams[pref.attributeId] = pref.value.join(',');
-			}
-		}
-
+		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
-
-		if (error) {
-			console.error('Error fetching product attributes:', error);
-			return [];
-		} else if (prodData == null || prodData.status === 'failure') {
-			console.warn('Product not found for code:', code);
-			return [];
-		} else if (prodData.product == null) {
-			console.warn('Product data is null for code:', code);
-			return [];
-		}
-
+		if (error || !prodData?.product) return [];
 		return prodData.product.attribute_groups_en as unknown as ProductGroupedAttributes[];
 	}
 
-	let productAttributes = $derived(getProductAttributes(product.code));
+	let productAttributes = $derived.by(() => {
+		if (browser && product?.code && product.code !== 'undefined') {
+			return getProductAttributes(product.code);
+		}
+		return Promise.resolve([]);
+	});
 </script>
 
 <!-- FIXME: Remove this cast once product.image_front_small_url and product.image_front_url are not nullable in the API -->
@@ -137,7 +124,7 @@
 			<span class="ml-2">{$_('product.loading_attributes')}</span>
 		</div>
 	{:then attributes}
-		{#if attributes != null}
+		{#if attributes != null && attributes.length > 0}
 			<ProductAttributes groups={attributes} defaultPreferences={data.defaultProductPreferences} />
 		{:else}
 			<div class="alert alert-warning">
@@ -157,7 +144,6 @@
 	{/if}
 
 	<Gs1Country barcode={product.code} />
-
 	<DataSources {product} />
 
 	{#if isFolksonomyConfigured()}
@@ -174,33 +160,15 @@
 					product-code={product.code}
 					auth-token={$userAuthTokens?.access_token ?? ''}
 				></folksonomy-editor>
-				<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
 			{:else}
 				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
-
 				<div class="prose my-4 text-justify">
 					<p>
 						{$_('product.folksonomy.intro_before')}
 						<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
 						{$_('product.folksonomy.intro_after')}
-						<a href="https://openfoodfacts-explorer.vercel.app/folksonomy">
-							{$_('product.folksonomy.link_properties')}
-						</a>
-						{$_('product.folksonomy.link_middle')}
-						<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
-							{$_('product.folksonomy.link_docs')}
-						</a>.
-					</p>
-					<p>{$_('product.folksonomy.warning')}</p>
-					<p>
-						{$_('product.folksonomy.footer_before')}
-						<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">
-							{$_('product.folksonomy.footer_link')}
-						</a>
-						{$_('product.folksonomy.footer_after')}
 					</p>
 				</div>
-
 				{#if data.tags != null && data.keys != null}
 					<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code!} />
 				{/if}
