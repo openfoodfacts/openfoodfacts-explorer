@@ -19,7 +19,6 @@ export async function getFacet(
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacet(facet, opts);
 }
 
@@ -30,7 +29,6 @@ export async function getFacetValue(
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacetValue(facet, value, opts);
 }
 
