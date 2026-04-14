@@ -27,7 +27,7 @@
 	</div>
 
 	{#if groupEl.image != null}
-	{@const parsedImageId = Number(groupEl.image.id)}
+		{@const parsedImageId = Number(groupEl.image.id)}
 		<div class="md:max-w-64">
 			<ImageButton
 				src={groupEl.image.sizes['full'].url}

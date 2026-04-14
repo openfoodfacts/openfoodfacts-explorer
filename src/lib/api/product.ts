@@ -420,7 +420,7 @@ export type ProductDataSection = {
 };
 
 export type Product = ProductDataSection & {
-	knowledge_panels: KnowledgePanels ;
+	knowledge_panels: KnowledgePanels;
 	product_name: string;
 	_id: string;
 	code: string;
