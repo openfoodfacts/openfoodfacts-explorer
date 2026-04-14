@@ -28,6 +28,7 @@
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
+	let currentRequestId = 0;
 
 	async function fetchAutocomplete(query: string) {
 		if (query == null || query.trim().length < minQueryLength) {
@@ -51,7 +52,10 @@
 
 		try {
 			autocompleteLoading = true;
+			currentRequestId++;
+			const requestId = currentRequestId;
 			const response = await autocomplete(autocompleteQuery, fetch);
+			if (requestId !== currentRequestId) return;
 			if (response && Array.isArray(response.options)) {
 				autocompleteList = response.options;
 			} else {
