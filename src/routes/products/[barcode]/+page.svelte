@@ -83,7 +83,10 @@
 		const offApi = new OpenFoodFacts(fetch);
 		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
-		if (error || !prodData?.product) return [];
+		if (error || !prodData || prodData.status === 'failure' || !prodData.product) {
+			return [];
+		}
+
 		return prodData.product.attribute_groups_en as unknown as ProductGroupedAttributes[];
 	}
 
