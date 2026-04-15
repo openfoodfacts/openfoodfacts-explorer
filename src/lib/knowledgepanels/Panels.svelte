@@ -11,11 +11,11 @@ Props:
   If not provided, all panels are displayed.
 -->
 <script lang="ts">
-	import type { KnowledgeElementPanel, KnowledgePanel } from '$lib/api';
+	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api';
 	import Panel from './Panel.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
+		panels: KnowledgePanels;
 		code?: string;
 		summary?: boolean;
 		roots?: string[];
@@ -38,7 +38,7 @@ Props:
 			.map(([_, panel]) => panel.elements ?? [])
 			.flat()
 			.filter(
-				(it): it is KnowledgeElementPanel =>
+				(it): it is KnowledgePanelElement =>
 					it.element_type === 'panel' && it.panel_element?.panel_id in panels
 			)
 			.map((it) => it.panel_element?.panel_id);

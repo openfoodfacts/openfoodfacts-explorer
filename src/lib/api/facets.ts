@@ -1,4 +1,4 @@
-import type { KnowledgePanel } from './knowledgepanels';
+import type { KnowledgePanels } from './knowledgepanels';
 import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
 
@@ -19,7 +19,6 @@ export async function getFacet(
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacet(facet, opts);
 }
 
@@ -30,14 +29,13 @@ export async function getFacetValue(
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
-	// @ts-expect-error - TODO: sortBy does not contain all possible values
 	return client.getFacetValue(facet, value, opts);
 }
 
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';
 
 export type FacetKnowledgePanelResponse = {
-	knowledge_panels: Record<string, KnowledgePanel>;
+	knowledge_panels: KnowledgePanels;
 };
 
 export async function getFacetKnowledgePanels(
