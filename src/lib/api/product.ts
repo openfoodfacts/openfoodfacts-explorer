@@ -24,8 +24,7 @@ export type PackagingComponent = {
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
-	const urlToUse = new URL(API_HOST);
-	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
+	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
 export async function getBulkProductAttributes(
