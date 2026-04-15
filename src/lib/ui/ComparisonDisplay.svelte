@@ -118,6 +118,114 @@
 			unit: '%'
 		}
 	];
+	// Nutrients to compare
+	const nutrientRules: Record<string, 'min' | 'max'> = {
+		proteins_100g: 'max',
+		fibers_100g: 'max',
+		'fruits-vegetables-nuts-estimate-from-ingredients_100g': 'max',
+		sugars_100g: 'min',
+		salt_100g: 'min',
+		sodium_100g: 'min',
+		alcohol_100g: 'min',
+		carbohydrates_100g: 'min',
+		'energy-kcal_100g': 'min',
+		'energy-kj_100g': 'min',
+		fat_100g: 'min',
+		'saturated-fat_100g': 'min'
+	};
+	// Get the direction of the nutrient
+	function getDirection(nutrientKey: string): 'min' | 'max' {
+		return nutrientRules[nutrientKey] ?? 'min';
+	}
+	// Get the best value for a nutrient
+	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
+		const values = products
+			.map((p) => getNutrientValue(p, nutrientKey))
+			.filter((v): v is number => v !== null);
+		if (!values.length) return null;
+
+		const direction = getDirection(nutrientKey);
+		return direction === 'min' ? Math.min(...values) : Math.max(...values);
+	}
+
+	// Get the worst value for a nutrient
+	function getWorstValue(products: Product[], nutrientKey: NutrientKey): number | null {
+		const values = products
+			.map((p) => getNutrientValue(p, nutrientKey))
+			.filter((v): v is number => v !== null);
+		if (!values.length) return null;
+
+		const direction = getDirection(nutrientKey);
+		return direction === 'min' ? Math.max(...values) : Math.min(...values);
+	}
+
+	// Get nutrient value with comparison data
+	function getNutrientComparison(
+		product: Product,
+		nutrientKey: NutrientKey,
+		products: Product[],
+		index: number
+	): NutrientComparison {
+		const value = getNutrientValue(product, nutrientKey);
+		const formatted = formatNutrient(value, nutrientKey !== 'energy-kcal_100g');
+
+		if (value == null) {
+			return {
+				value,
+				formatted,
+				diff: null,
+				diffFormatted: '',
+				isBest: false,
+				isWorst: false
+			};
+		}
+
+		let referenceValue: number | null = null;
+		if (comparisonMode === 'relative-first' && index > 0) {
+			referenceValue = getNutrientValue(products[0], nutrientKey);
+		} else if (comparisonMode === 'relative-best') {
+			referenceValue = getBestValue(products, nutrientKey);
+		}
+
+		let diff: number | null = null;
+		let diffFormatted = '';
+		if (referenceValue != null && referenceValue !== value) {
+			diff = calculatePercentageDiff(value, referenceValue);
+			diffFormatted = `${percentageFormatter.format(diff)}%`;
+		}
+
+		const bestValue = getBestValue(products, nutrientKey);
+		const worstValue = getWorstValue(products, nutrientKey);
+
+		return {
+			value,
+			formatted,
+			diff,
+			diffFormatted,
+			isBest: bestValue === value,
+			isWorst: value === worstValue && products.length > 1
+		};
+	}
+
+	// Get color class for difference indicator
+	function getDiffColorClass(
+		diff: number | null,
+		isBest: boolean,
+		isWorst: boolean,
+		nutrientKey: string
+	): string {
+		if (isBest) return 'text-success font-semibold';
+		if (isWorst) return 'text-error';
+		if (diff == null) return '';
+
+		const direction = getDirection(nutrientKey);
+
+		if (direction === 'min') {
+			return diff < 0 ? 'text-success' : 'text-warning';
+		} else {
+			return diff > 0 ? 'text-success' : 'text-warning';
+		}
+	}
 
 	function getNutriScoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('nutriscore-' + (grade ?? 'unknown') + '-new-en.svg');
@@ -164,77 +272,6 @@
 		maximumFractionDigits: 0,
 		signDisplay: 'exceptZero'
 	});
-
-	// Get the best value for a nutrient (lower is better for most nutrients)
-	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
-		const values = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		if (values.length === 0) return null;
-
-		// For all nutrients shown, lower is generally better
-		return Math.min(...values);
-	}
-
-	// Get nutrient value with comparison data
-	function getNutrientComparison(
-		product: Product,
-		nutrientKey: NutrientKey,
-		products: Product[],
-		index: number
-	): NutrientComparison {
-		const value = getNutrientValue(product, nutrientKey);
-		const formatted = formatNutrient(value, nutrientKey !== 'energy-kcal_100g');
-
-		if (value == null) {
-			return {
-				value,
-				formatted,
-				diff: null,
-				diffFormatted: '',
-				isBest: false,
-				isWorst: false
-			};
-		}
-
-		let referenceValue: number | null = null;
-		if (comparisonMode === 'relative-first' && index > 0) {
-			referenceValue = getNutrientValue(products[0], nutrientKey);
-		} else if (comparisonMode === 'relative-best') {
-			referenceValue = getBestValue(products, nutrientKey);
-		}
-
-		let diff: number | null = null;
-		let diffFormatted = '';
-		if (referenceValue != null && referenceValue !== value) {
-			diff = calculatePercentageDiff(value, referenceValue);
-			diffFormatted = `${percentageFormatter.format(diff)}%`;
-		}
-
-		const bestValue = getBestValue(products, nutrientKey);
-		const allValues = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		const worstValue = allValues.length > 0 ? Math.max(...allValues) : null;
-
-		return {
-			value,
-			formatted,
-			diff,
-			diffFormatted,
-			isBest: bestValue === value,
-			isWorst: worstValue === value && allValues.length > 1
-		};
-	}
-
-	// Get color class for difference indicator
-	function getDiffColorClass(diff: number | null, isBest: boolean, isWorst: boolean): string {
-		if (isBest) return 'text-success font-semibold';
-		if (isWorst) return 'text-error';
-		if (diff == null) return '';
-		// For nutrients, lower is better, so negative diff is good
-		return diff < 0 ? 'text-success' : 'text-warning';
-	}
 
 	// Get score comparison
 	function getScoreComparison(
@@ -295,7 +332,11 @@
 	</div>
 {/snippet}
 
-{#snippet nutrientValue(comparison: NutrientComparison, unit: string | undefined)}
+{#snippet nutrientValue(
+	comparison: NutrientComparison,
+	unit: string | undefined,
+	nutrientKey: string
+)}
 	{#if comparison.value != null}
 		<div class="flex items-center gap-2">
 			<span class={comparison.isBest ? 'font-semibold' : ''}>
@@ -312,7 +353,8 @@
 					class="font-mono text-xs {getDiffColorClass(
 						comparison.diff,
 						comparison.isBest,
-						comparison.isWorst
+						comparison.isWorst,
+						nutrientKey
 					)}"
 				>
 					{comparison.diffFormatted}
@@ -322,7 +364,11 @@
 	{/if}
 {/snippet}
 
-{#snippet nutrientValueDesktop(comparison: NutrientComparison, unit: string | undefined)}
+{#snippet nutrientValueDesktop(
+	comparison: NutrientComparison,
+	unit: string | undefined,
+	nutrientKey: string
+)}
 	{#if comparison.value != null}
 		<div class="flex flex-col">
 			<span class={comparison.isBest ? 'font-semibold' : ''}>
@@ -339,7 +385,8 @@
 					class="font-mono text-xs {getDiffColorClass(
 						comparison.diff,
 						comparison.isBest,
-						comparison.isWorst
+						comparison.isWorst,
+						nutrientKey
 					)}"
 				>
 					{comparison.diffFormatted}
@@ -435,7 +482,7 @@
 								{#if comparison.value != null}
 									<div class="flex items-center justify-between">
 										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit)}
+										{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
 									</div>
 								{/if}
 							{/each}
@@ -621,7 +668,7 @@
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
 						<td animate:flip={{ duration: 300 }}>
-							{@render nutrientValueDesktop(comparison, nutrient.unit)}
+							{@render nutrientValueDesktop(comparison, nutrient.unit, nutrient.key)}
 						</td>
 					{/each}
 				</tr>
