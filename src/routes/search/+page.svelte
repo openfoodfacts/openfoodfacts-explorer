@@ -85,9 +85,9 @@
 	function handleSortChange(value: string) {
 		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
-		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('sort_by', selectedSort.value);
+		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
 	}
 
