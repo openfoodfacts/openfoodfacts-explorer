@@ -5,9 +5,7 @@
 
 	let { element }: { element: KnowledgeTextElement } = $props();
 
-	let { type, edit_field_type, html, source_url, source_text, source_language } = $derived(
-		element.text_element
-	);
+	let { type, html, source_url, source_text, source_language } = $derived(element.text_element);
 </script>
 
 <div class="mb-2 flex items-center space-x-2">
@@ -20,16 +18,9 @@
 	{/if}
 </div>
 
-<!-- Specialization for ingredients_text -->
-{#if edit_field_type == 'ingredients_text'}
-	<div class="prose w-full max-w-full dark:text-white">
-		<HtmlPurify dirty={html} />
-	</div>
-{:else}
-	<div class="prose w-full max-w-full dark:text-white">
-		<HtmlPurify dirty={html} />
-	</div>
-{/if}
+<div class="prose w-full max-w-full dark:text-white">
+	<HtmlPurify dirty={html} />
+</div>
 
 {#if source_url}
 	<a class="link" href={source_url}>
