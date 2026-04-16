@@ -22,6 +22,14 @@
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 
+	const TABS = [
+		{ label: 'account', i18nKey: 'settings.tab.account' },
+		{ label: 'general', i18nKey: 'settings.tab.general' },
+		{ label: 'editing', i18nKey: 'settings.tab.editing' },
+		{ label: 'preferences', i18nKey: 'settings.tab.preferences' },
+		{ label: 'developer', i18nKey: 'settings.tab.developer' }
+	] as const;
+
 	let { data }: PageProps = $props();
 	let { attributeGroups } = $derived(data);
 
@@ -29,14 +37,6 @@
 		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
-
-	const tabs = [
-		{ label: 'account', i18nKey: 'settings.tab.account' },
-		{ label: 'general', i18nKey: 'settings.tab.general' },
-		{ label: 'editing', i18nKey: 'settings.tab.editing' },
-		{ label: 'preferences', i18nKey: 'settings.tab.preferences' },
-		{ label: 'developer', i18nKey: 'settings.tab.developer' }
-	] as const;
 </script>
 
 <Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
@@ -51,7 +51,7 @@
 		</div>
 
 		<Tabs
-			{tabs}
+			tabs={TABS}
 			{activeTab}
 			groupName="settings-tabs"
 			onTabChange={(tab) => {
