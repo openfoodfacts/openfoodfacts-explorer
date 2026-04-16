@@ -17,6 +17,8 @@ const CACHE = `cache-${version}`;
 
 const STATIC_HOST = 'https://static.openfoodfacts.org';
 
+const NETWORK_TIMEOUT_MS = 3000;
+
 self.addEventListener('activate', (event) => {
 	// Remove previous cached data from disk
 	async function deleteOldCaches() {
@@ -28,74 +30,73 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(deleteOldCaches());
 });
 
+async function fetchWithTimeout(request: Request, ms = NETWORK_TIMEOUT_MS) {
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), ms);
+	try {
+		return await fetch(request, { signal: controller.signal });
+	} finally {
+		clearTimeout(timer);
+	}
+}
+
+function isBuildAsset(request: Request) {
+	const url = new URL(request.url);
+	if (url.origin !== self.location.origin) return false;
+	// Use destination when available; fall back to extension for programmatic fetches
+	if (request.destination === 'script' || request.destination === 'style') return true;
+	if (request.destination !== '') return false; // navigation, worker, etc.
+	return url.pathname.endsWith('.js') || url.pathname.endsWith('.css');
+}
+
+async function cacheFirst(request: Request) {
+	const cache = await caches.open(CACHE);
+	const cached = await cache.match(request);
+	if (cached) {
+		return cached;
+	}
+	const response = await fetch(request);
+	if (response.ok || response.type === 'opaque') {
+		cache.put(request, response.clone());
+	}
+	return response;
+}
+
+async function networkFirst(request: Request) {
+	try {
+		const response = await fetchWithTimeout(request);
+		if (response.ok || response.type === 'opaque') {
+			const cache = await caches.open(CACHE);
+			cache.put(request, response.clone());
+		}
+		return response;
+	} catch (error) {
+		const cache = await caches.open(CACHE);
+		const cached = await cache.match(request);
+		if (cached) return cached;
+		throw error;
+	}
+}
+
 self.addEventListener('fetch', (event) => {
-	// ignore POST requests etc
-	if (event.request.method !== 'GET') return;
-	if (event.request.url.startsWith('chrome-extension://')) return;
+	const { request } = event;
 
-	async function respond() {
-		const url = new URL(event.request.url);
+	// Only handle GET requests
+	if (request.method !== 'GET') return;
+	if (request.url.startsWith('chrome-extension://')) return;
 
-		// Static assets (static.openfoodfacts.org) — cache-first
-		if (url.origin === STATIC_HOST) {
-			const cache = await caches.open(CACHE);
-			const cached = await cache.match(event.request);
+	const url = new URL(request.url);
 
-			if (cached) {
-				console.debug(`SW: cache hit for ${event.request.url}`);
-				return cached;
-			}
-
-			const response = await fetch(event.request);
-
-			if (response.ok || response.type === 'opaque') {
-				event.waitUntil(cache.put(event.request, response.clone()));
-			}
-
-			return response;
-		}
-
-		// Same-origin SvelteKit build artifacts (JS/CSS) — network-first with offline fallback.
-		// We deliberately exclude same-origin API routes (+server.ts) from this branch so
-		// they are never cached and always go to the "plain fetch" passthrough below.
-		//
-		// request.destination identifies the resource type in modern browsers.
-		// The url.pathname.endsWith() fallbacks handle programmatic fetch() calls
-		// where destination can be an empty string '' — this is distinct from navigation
-		// requests (destination === 'document'), which are intentionally excluded here.
-		const isSameOriginAsset =
-			url.origin === self.location.origin &&
-			(event.request.destination === 'script' ||
-				event.request.destination === 'style' ||
-				url.pathname.endsWith('.js') ||
-				url.pathname.endsWith('.css'));
-
-		if (isSameOriginAsset) {
-			const cache = await caches.open(CACHE);
-			try {
-				const response = await fetch(event.request);
-
-				if (response.status === 200) {
-					event.waitUntil(cache.put(event.request, response.clone()));
-				}
-
-				return response;
-			} catch (err) {
-				const cached = await cache.match(event.request);
-
-				if (cached) {
-					return cached;
-				}
-
-				// if there's no cache, then just error out
-				// as there is nothing we can do to respond to this request
-				throw err;
-			}
-		}
-
-		// Everything else (API calls, etc.) — plain network passthrough, never cached
-		return fetch(event.request);
+	// Static assets: Cache-first
+	if (url.origin === STATIC_HOST) {
+		event.respondWith(cacheFirst(request));
+		return;
 	}
 
-	event.respondWith(respond());
+	// Build assets: Network-first with timeout
+	if (isBuildAsset(request)) {
+		// Build assets: Network-first with timeout
+		event.respondWith(networkFirst(request));
+		return;
+	}
 });
