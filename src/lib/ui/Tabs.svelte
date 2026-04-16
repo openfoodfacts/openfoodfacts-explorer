@@ -7,12 +7,12 @@
 		i18nKey: string;
 	}
 
-	interface Props {
+	type Props = {
 		tabs: readonly [Tab, ...Tab[]];
 		activeTab?: string;
 		onTabChange?: (tab: string) => void;
 		groupName: string;
-	}
+	};
 
 	let { tabs, activeTab = tabs[0].label, onTabChange, groupName }: Props = $props();
 
