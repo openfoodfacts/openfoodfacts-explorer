@@ -197,11 +197,15 @@
 	<div class="mt-8 flex justify-end">
 		<button
 			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			class:loading={isSubmitting}
 			onclick={submit}
 			disabled={isSubmitting}
+			aria-busy={isSubmitting}
 			type="button"
 		>
+			{#if isSubmitting}
+				<span class="loading loading-spinner loading-xs sm:loading-sm mr-2" aria-hidden="true"
+				></span>
+			{/if}
 			{$_('product.edit.save_btn')}
 		</button>
 	</div>
