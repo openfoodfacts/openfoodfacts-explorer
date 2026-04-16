@@ -199,6 +199,7 @@
 			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
 			onclick={submit}
 			disabled={isSubmitting}
+			aria-busy={isSubmitting}
 			type="button"
 		>
 			{#if isSubmitting}
