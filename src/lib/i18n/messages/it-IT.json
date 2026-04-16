@@ -9,6 +9,11 @@
 	"producers_link": "Produttori",
 	"prices_link": "Prezzi",
 	"world_option": "Mondo",
+	"navbar": {
+		"Login": "Accedi",
+		"Logout": "Esci",
+		"account": "Account"
+	},
 	"search": {
 		"placeholder": "Query or barcode",
 		"go": "Go",
@@ -28,6 +33,9 @@
 		"enter_password": "Enter password",
 		"status": "Status",
 		"actions": "Actions"
+	},
+	"help": {
+		"button": "Aiuto e scorciatoie"
 	},
 	"general": {
 		"language": "Language",
@@ -101,6 +109,10 @@
 		"intro_2": "Puoi inserire un codice prodotto nella barra di ricerca sopra per iniziare o fare clic su uno dei prodotti sottostanti."
 	},
 	"product": {
+		"card": {
+			"aria_label": "Vai al prodotto {productName} con codice {productCode}",
+			"aria_label_no_name": "Vai al prodotto con codice {productCode}"
+		},
 		"loading_attributes": "Caricamento attributi prodotto...",
 		"attributes_error_title": "Impossibile caricare gli attributi personalizzati",
 		"attributes_error_body": "Si e verificato un errore durante il caricamento degli attributi personalizzati. Riprova piu tardi.",

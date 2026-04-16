@@ -1,6 +1,6 @@
 import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
-import type { KnowledgePanel } from './knowledgepanels';
+import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -24,8 +24,7 @@ export type PackagingComponent = {
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
-	const urlToUse = new URL(API_HOST);
-	return new OpenFoodFacts(fetchToUse, { host: urlToUse.toString() });
+	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
 export async function getBulkProductAttributes(
@@ -420,7 +419,7 @@ export type ProductDataSection = {
 };
 
 export type Product = ProductDataSection & {
-	knowledge_panels: Record<string, KnowledgePanel>;
+	knowledge_panels: KnowledgePanels;
 	product_name: string;
 	_id: string;
 	code: string;

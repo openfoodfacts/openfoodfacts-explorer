@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -20,6 +21,10 @@
 	let autocompleteLoading = $state(false);
 	let autocompleteList = $state<AutocompleteOption[] | null>(null);
 	let highlightedIndex = $state<number | null>(null);
+
+	// debounce for autocomplete
+	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
+	const DEBOUNCE_DELAY_MS = 100;
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
@@ -59,6 +64,33 @@
 		}
 		autocompleteLoading = false;
 	}
+
+	function debouncedFetchAutocomplete(query: string) {
+		if (debounceTimeoutId !== undefined) {
+			clearTimeout(debounceTimeoutId);
+			debounceTimeoutId = undefined;
+		}
+
+		if (query.trim().length < minQueryLength) {
+			if (autocompleteAbortController) {
+				autocompleteAbortController.abort();
+				autocompleteAbortController = null;
+			}
+			autocompleteLoading = false;
+			autocompleteList = null;
+			return;
+		}
+
+		debounceTimeoutId = setTimeout(() => {
+			fetchAutocomplete(query);
+		}, DEBOUNCE_DELAY_MS);
+	}
+
+	onDestroy(() => {
+		if (debounceTimeoutId !== undefined) {
+			clearTimeout(debounceTimeoutId);
+		}
+	});
 
 	function handleEnter() {
 		if (searchQuery.trim() !== '') {
@@ -120,7 +152,7 @@
 				aria-label={$_('search.placeholder')}
 				onkeydown={handleKeyDown}
 				oninput={() => {
-					fetchAutocomplete(searchQuery);
+					debouncedFetchAutocomplete(searchQuery);
 					highlightedIndex = null;
 				}}
 				onfocus={() => {

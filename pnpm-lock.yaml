@@ -13,12 +13,15 @@ overrides:
   diff@<8.0.3: '>=8.0.3'
   dompurify@>=3.1.3 <=3.3.1: '>=3.3.2'
   esbuild@<0.25.0: '>=0.25.0'
+  flatted@<=3.4.1: '>=3.4.2'
+  glob@<12.0.0: '>=12.0.0'
   minimatch@<10.2.3: '>=10.2.3'
   rollup@>=4.0.0 <4.59.0: '>=4.59.0'
   svelte@<=5.53.4: '>=5.53.5'
   tar@<7.5.11: '>=7.5.11'
+  undici@>=7.0.0 <7.24.0: '>=7.24.0'
   vega-selections@>=6.0.0 <6.1.2: '>=6.1.2'
-  glob@<12.0.0: '>=12.0.0'
+  yauzl@=3.2.0: '>=3.2.1'
 
 importers:
 
@@ -33,9 +36,6 @@ importers:
       '@webcomponents/webcomponentsjs':
         specifier: ^2.8.0
         version: 2.8.0
-      husky:
-        specifier: ^9.1.7
-        version: 9.1.7
     devDependencies:
       '@crowdin/cli':
         specifier: ^4.12.0
@@ -49,6 +49,9 @@ importers:
       '@fontsource-variable/plus-jakarta-sans':
         specifier: ^5.2.8
         version: 5.2.8
+      '@formatjs/intl-durationformat':
+        specifier: ^0.10.3
+        version: 0.10.3
       '@iconify-svelte/material-symbols':
         specifier: ^1.0.12
         version: 1.0.12(svelte@5.53.5)
@@ -59,8 +62,8 @@ importers:
         specifier: ^1.0.13
         version: 1.0.13(svelte@5.53.5)
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.29
-        version: 2.0.0-alpha.29
+        specifier: 2.0.0-alpha.30
+        version: 2.0.0-alpha.30
       '@sinnwerkstatt/sveltekit-matomo':
         specifier: github:VaiTon/sveltekit-matomo
         version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/7dd2ec1a1ff89759e7051445a83ab933f666b2e5(@sveltejs/kit@2.54.0(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.53.5)(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.5)(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1)))(svelte@5.53.5)
@@ -136,6 +139,9 @@ importers:
       html5-qrcode:
         specifier: ^2.3.8
         version: 2.3.8
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
       iso-3166-1:
         specifier: ^2.1.1
         version: 2.1.1
@@ -765,11 +771,20 @@ packages:
   '@fontsource-variable/plus-jakarta-sans@5.2.8':
     resolution: {integrity: sha512-iQecBizIdZxezODNHzOn4SvvRMrZL/S8k4MEXGDynCmUrImVW0VmX+tIAMqnADwH4haXlHSXqMgU6+kcfBQJdw==}
 
+  '@formatjs/bigdecimal@0.2.0':
+    resolution: {integrity: sha512-GeaxHZbUoYvHL9tC5eltHLs+1zU70aPw0s7LwqgktIzF5oMhNY4o4deEtusJMsq7WFJF3Ye2zQEzdG8beVk73w==}
+
   '@formatjs/ecma402-abstract@2.3.4':
     resolution: {integrity: sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==}
 
+  '@formatjs/ecma402-abstract@3.2.0':
+    resolution: {integrity: sha512-dHnqHgBo6GXYGRsepaE1wmsC2etaivOWd5VaJstZd+HI2zR3DCUjbDVZRtoPGkkXZmyHvBwrdEUuqfvzhF/DtQ==}
+
   '@formatjs/fast-memoize@2.2.7':
     resolution: {integrity: sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==}
+
+  '@formatjs/fast-memoize@3.1.1':
+    resolution: {integrity: sha512-CbNbf+tlJn1baRnPkNePnBqTLxGliG6DDgNa/UtV66abwIjwsliPMOt0172tzxABYzSuxZBZfcp//qI8AvBWPg==}
 
   '@formatjs/icu-messageformat-parser@2.11.2':
     resolution: {integrity: sha512-AfiMi5NOSo2TQImsYAg8UYddsNJ/vUEv/HaNqiFjnI3ZFfWihUtD5QtuX6kHl8+H+d3qvnE/3HZrfzgdWpsLNA==}
@@ -777,8 +792,14 @@ packages:
   '@formatjs/icu-skeleton-parser@1.8.14':
     resolution: {integrity: sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==}
 
+  '@formatjs/intl-durationformat@0.10.3':
+    resolution: {integrity: sha512-xRS3GaOlsQLwz0n56SvaddwEnl2NLPKBvYg2M32ak/27dodmVxFJz3j7Nqj7EwKyHTu3f/e+BeoKPrIDUSXTuQ==}
+
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
+
+  '@formatjs/intl-localematcher@0.8.2':
+    resolution: {integrity: sha512-q05KMYGJLyqFNFtIb8NhWLF5X3aK/k0wYt7dnRFuy6aLQL+vUwQ1cg5cO4qawEiINybeCPXAWlprY2mSBjSXAQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -865,8 +886,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.29':
-    resolution: {integrity: sha512-063EZyqR7rc51X7LusdbkEIc0CK4KLE0uMKi5Ee7K72H9nAFlo3OGByreAK/7eryzCNVuAHSy2uLjNjhmbyJ4w==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.30':
+    resolution: {integrity: sha512-QJ0dcmHu/4zjpBRXVSN3BafelZ5QlDStCgnmBmVbihZ2nngcQbN3ucAH5l+qLcUuanE9q3bpGBLIACbJACVGsw==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.15.1':
     resolution: {integrity: sha512-9LPLxQMXxGdYXD7NYlI7U6F1Teq7dYbfIx2x7dYpe4jQl52/R8iuRe6YL0BvFplaZbZClHhf+ch+rBm48oKJxw==}
@@ -2238,8 +2259,8 @@ packages:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
 
-  flatted@3.4.1:
-    resolution: {integrity: sha512-IxfVbRFVlV8V/yRaGzk0UVIcsKKHMSfYw66T/u4nTwlWteQePsxe//LjudR1AMX4tZW3WFCh3Zqa/sjlqpbURQ==}
+  flatted@3.4.2:
+    resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
   forwarded-parse@2.1.2:
     resolution: {integrity: sha512-alTFZZQDKMporBH77856pXgzhEzaUVmLCDk+egLgIgHst3Tpndzz8MnKe+GzRJRfvVdn69HhpW7cmXzvtLvJAw==}
@@ -2718,8 +2739,14 @@ packages:
   openapi-fetch@0.15.0:
     resolution: {integrity: sha512-OjQUdi61WO4HYhr9+byCPMj0+bgste/LtSBEcV6FzDdONTs7x0fWn8/ndoYwzqCsKWIxEZwo4FN/TG1c1rI8IQ==}
 
+  openapi-fetch@0.17.0:
+    resolution: {integrity: sha512-PsbZR1wAPcG91eEthKhN+Zn92FMHxv+/faECIwjXdxfTODGSGegYv0sc1Olz+HYPvKOuoXfp+0pA2XVt2cI0Ig==}
+
   openapi-typescript-helpers@0.0.15:
     resolution: {integrity: sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==}
+
+  openapi-typescript-helpers@0.1.0:
+    resolution: {integrity: sha512-OKTGPthhivLw/fHz6c3OPtg72vi86qaMlqbJuVJ23qOvQ+53uw1n7HdmkJFibloF7QEjDrDkzJiOJuockM/ljw==}
 
   openapi-typescript@7.10.1:
     resolution: {integrity: sha512-rBcU8bjKGGZQT4K2ekSTY2Q5veOQbVG/lTKZ49DeCyT9z62hM2Vj/LLHjDHC9W7LJG8YMHcdXpRZDqC1ojB/lw==}
@@ -3237,8 +3264,8 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@7.22.0:
-    resolution: {integrity: sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==}
+  undici@7.24.4:
+    resolution: {integrity: sha512-BM/JzwwaRXxrLdElV2Uo6cTLEjhSb3WXboncJamZ15NgUURmvlXvxa6xkwIOILIjPNo9i8ku136ZvWV0Uly8+w==}
     engines: {node: '>=20.18.1'}
 
   unplugin@1.0.1:
@@ -3535,8 +3562,8 @@ packages:
     resolution: {integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
 
-  yauzl@3.2.0:
-    resolution: {integrity: sha512-Ow9nuGZE+qp1u4JIPvg+uCiUr7xGQWdff7JQSk5VGYTAZMDe2q8lxJ10ygv10qmSj031Ty/6FNJpLO4o1Sgc+w==}
+  yauzl@3.2.1:
+    resolution: {integrity: sha512-k1isifdbpNSFEHFJ1ZY4YDewv0IH9FR61lDetaRMD3j2ae3bIXGV+7c+LHCqtQGofSd8PIyV4X6+dHMAnSr60A==}
     engines: {node: '>=12'}
 
   yocto-queue@0.1.0:
@@ -3758,7 +3785,7 @@ snapshots:
       node-fetch: 2.7.0
       shelljs: 0.10.0
       tar: 7.5.11
-      yauzl: 3.2.0
+      yauzl: 3.2.1
     transitivePeerDependencies:
       - encoding
 
@@ -3992,6 +4019,8 @@ snapshots:
 
   '@fontsource-variable/plus-jakarta-sans@5.2.8': {}
 
+  '@formatjs/bigdecimal@0.2.0': {}
+
   '@formatjs/ecma402-abstract@2.3.4':
     dependencies:
       '@formatjs/fast-memoize': 2.2.7
@@ -3999,9 +4028,17 @@ snapshots:
       decimal.js: 10.6.0
       tslib: 2.8.1
 
+  '@formatjs/ecma402-abstract@3.2.0':
+    dependencies:
+      '@formatjs/bigdecimal': 0.2.0
+      '@formatjs/fast-memoize': 3.1.1
+      '@formatjs/intl-localematcher': 0.8.2
+
   '@formatjs/fast-memoize@2.2.7':
     dependencies:
       tslib: 2.8.1
+
+  '@formatjs/fast-memoize@3.1.1': {}
 
   '@formatjs/icu-messageformat-parser@2.11.2':
     dependencies:
@@ -4014,9 +4051,18 @@ snapshots:
       '@formatjs/ecma402-abstract': 2.3.4
       tslib: 2.8.1
 
+  '@formatjs/intl-durationformat@0.10.3':
+    dependencies:
+      '@formatjs/ecma402-abstract': 3.2.0
+      '@formatjs/intl-localematcher': 0.8.2
+
   '@formatjs/intl-localematcher@0.6.1':
     dependencies:
       tslib: 2.8.1
+
+  '@formatjs/intl-localematcher@0.8.2':
+    dependencies:
+      '@formatjs/fast-memoize': 3.1.1
 
   '@humanfs/core@0.19.1': {}
 
@@ -4121,9 +4167,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.29':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.30':
     dependencies:
-      openapi-fetch: 0.15.0
+      openapi-fetch: 0.17.0
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.15.1':
     dependencies:
@@ -5645,10 +5691,10 @@ snapshots:
 
   flat-cache@4.0.1:
     dependencies:
-      flatted: 3.4.1
+      flatted: 3.4.2
       keyv: 4.5.4
 
-  flatted@3.4.1: {}
+  flatted@3.4.2: {}
 
   forwarded-parse@2.1.2: {}
 
@@ -5841,7 +5887,7 @@ snapshots:
       saxes: 6.0.0
       symbol-tree: 3.2.4
       tough-cookie: 6.0.0
-      undici: 7.22.0
+      undici: 7.24.4
       w3c-xmlserializer: 5.0.0
       webidl-conversions: 8.0.1
       whatwg-mimetype: 5.0.0
@@ -6059,7 +6105,13 @@ snapshots:
     dependencies:
       openapi-typescript-helpers: 0.0.15
 
+  openapi-fetch@0.17.0:
+    dependencies:
+      openapi-typescript-helpers: 0.1.0
+
   openapi-typescript-helpers@0.0.15: {}
+
+  openapi-typescript-helpers@0.1.0: {}
 
   openapi-typescript@7.10.1(typescript@5.9.3):
     dependencies:
@@ -6521,7 +6573,7 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  undici@7.22.0: {}
+  undici@7.24.4: {}
 
   unplugin@1.0.1:
     dependencies:
@@ -6920,7 +6972,7 @@ snapshots:
       y18n: 5.0.8
       yargs-parser: 22.0.0
 
-  yauzl@3.2.0:
+  yauzl@3.2.1:
     dependencies:
       buffer-crc32: 0.2.13
       pend: 1.2.0

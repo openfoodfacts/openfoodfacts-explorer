@@ -85,9 +85,9 @@
 	function handleSortChange(value: string) {
 		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
-		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('sort_by', selectedSort.value);
+		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
 	}
 
@@ -164,7 +164,7 @@
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4">
+	<div class="my-4" id="facets">
 		<FacetBar
 			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
@@ -188,6 +188,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
@@ -196,6 +197,7 @@
 			<a
 				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
 				target="_blank"
+				rel="noopener noreferrer"
 				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
 			>
 				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
@@ -297,4 +299,16 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
+	onFilterClick={() => {
+		goto('/facets');
+	}}
+	{searchResult}
+	onAddFacet={(key, val) => {
+		selectedFacets = addIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
+	onRemoveFacet={(key, val) => {
+		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
 />

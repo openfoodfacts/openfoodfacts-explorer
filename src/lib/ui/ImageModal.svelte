@@ -175,7 +175,7 @@
 						class="btn btn-sm bg-base-100/80 hover:bg-base-100 gap-2"
 						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 					>
 						<IconMdiFlagOutline class="h-5 w-5" />
 						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
