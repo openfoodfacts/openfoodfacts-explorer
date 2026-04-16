@@ -1,20 +1,43 @@
 <script lang="ts">
 	import { SORT_OPTIONS } from '$lib/const';
+	import { _ } from '$lib/i18n';
 
 	import { _ } from '$lib/i18n';
 	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 
+	import FacetBar from '../../routes/search/FacetBar.svelte';
+	import type { SearchResult } from '$lib/api/search';
+
+	interface Props {
+		onSortOptionSelect?: (value: string) => void;
+		sortBy?: string;
+		onFilterClick?: () => void;
+		searchResult?: SearchResult;
+		onAddFacet?: (key: string, val: string) => void;
+		onRemoveFacet?: (key: string, val: string) => void;
+	}
+
 	let {
 		onSortOptionSelect = () => {},
-		sortBy = ''
-	}: {
-		onSortOptionSelect: (value: string) => void;
-		sortBy: string;
-	} = $props();
+		sortBy = '',
+		onFilterClick = () => {},
+		searchResult,
+		onAddFacet = () => {},
+		onRemoveFacet = () => {}
+	}: Props = $props();
 
 	let sortDropdownOpen = $state(false);
+	let showFacetsModal = $state(false);
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && showFacetsModal) {
+			showFacetsModal = false;
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <footer class="search-options-footer">
 	{#if sortDropdownOpen}
@@ -58,6 +81,14 @@
 		<button
 			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
 			aria-label="Filter"
+			aria-controls="facets"
+			onclick={() => {
+				if (searchResult?.facets && Object.keys(searchResult.facets).length > 0) {
+					showFacetsModal = true;
+				} else {
+					onFilterClick();
+				}
+			}}
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
 				Filter <IconMdiFilter class="ml-2 text-lg" />
@@ -65,6 +96,29 @@
 		</button>
 	</div>
 </footer>
+
+{#if showFacetsModal && searchResult?.facets}
+	<div class="fixed inset-0 z-50 flex items-end lg:hidden" role="dialog" aria-modal="true">
+		<div
+			class="fixed inset-0 bg-black/50"
+			onclick={() => (showFacetsModal = false)}
+			aria-hidden="true"
+		></div>
+		<div class="bg-base-100 max-h-[80%] w-full overflow-auto rounded-t-lg p-4">
+			<div class="mb-2 flex items-center justify-between">
+				<h3 class="text-lg font-semibold">{$_('search.filters_title', { default: 'Filters' })}</h3>
+				<button
+					class="btn btn-ghost"
+					onclick={() => (showFacetsModal = false)}
+					aria-label="Close filters">✕</button
+				>
+			</div>
+			<div class="space-y-2">
+				<FacetBar facets={searchResult.facets} {onAddFacet} {onRemoveFacet} />
+			</div>
+		</div>
+	</div>
+{/if}
 
 <style lang="postcss">
 	@reference './../../app.css';

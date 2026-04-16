@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
@@ -37,7 +37,8 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
-	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
+	import Shortcuts from './Shortcuts.svelte';
+	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
@@ -108,7 +109,7 @@
 		// Add more shortcuts here
 	]);
 
-	setContext('shortcuts', () => shortcuts);
+	setShortcutCtx(() => shortcuts);
 
 	// Load OpenFoodFacts Web Components
 
@@ -178,6 +179,10 @@
 		isSearching = true;
 		await goto('/search?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
+	}
+
+	function getLoginUrl(url: URL) {
+		return resolve('/oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
 	}
 
 	let searchActive = $state(false);
@@ -275,7 +280,7 @@
 						>{$_('navbar.logout', { default: 'Logout' })}</a
 					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}
+					<a class="btn btn-outline link" href={getLoginUrl(page.url)}
 						>{$_('navbar.login', { default: 'Login' })}</a
 					>
 				{/if}
@@ -399,7 +404,7 @@
 				>{$_('navbar.logout', { default: 'Logout' })}</a
 			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}
+			<a class="btn btn-outline link" href={getLoginUrl(page.url)}
 				>{$_('navbar.login', { default: 'Login' })}</a
 			>
 		{/if}
