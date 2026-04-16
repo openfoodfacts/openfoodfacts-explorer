@@ -197,13 +197,18 @@
 		const bestValue = getBestValue(products, nutrientKey);
 		const worstValue = getWorstValue(products, nutrientKey);
 
+		// Count how many products have this nutrient to avoid highlighting "best" when only one is compared
+		const comparableCount = products
+			.map((p) => getNutrientValue(p, nutrientKey))
+			.filter((v): v is number => v !== null).length;
+
 		return {
 			value,
 			formatted,
 			diff,
 			diffFormatted,
-			isBest: bestValue === value,
-			isWorst: value === worstValue && products.length > 1
+			isBest: comparableCount > 1 && bestValue === value,
+			isWorst: comparableCount > 1 && worstValue === value
 		};
 	}
 
