@@ -9,7 +9,7 @@ const {
 	PUBLIC_AUTH_BASE_URL,
 	PUBLIC_AUTH_PKCE_ID,
 	PUBLIC_KEYCLOAK_REALM,
-	PUBLIC_OPEN_PRICES_BASE_URL
+	PUBLIC_PRICES_API_URL
 } = publicEnv;
 
 export {
@@ -84,12 +84,11 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
 
-export const OPEN_PRICES_BASE_URL =
-	PUBLIC_OPEN_PRICES_BASE_URL || 'https://prices.openfoodfacts.org';
+export const OPEN_PRICES_BASE_URL = PUBLIC_PRICES_API_URL || 'https://prices.openfoodfacts.org';
 export const OPEN_PRICES_PRODUCT_URL = (barcode: string) =>
-	`${OPEN_PRICES_BASE_URL}/product/${encodeURIComponent(barcode)}`;
+	`${OPEN_PRICES_BASE_URL}/product/${barcode}`;
 export const OPEN_PRICES_PRODUCTS_URL = (barcode: string) =>
-	`${OPEN_PRICES_BASE_URL}/products/${encodeURIComponent(barcode)}`;
+	`${OPEN_PRICES_BASE_URL}/products/${barcode}`;
 
 export const MATOMO_SITE_ID = 17;
 export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
