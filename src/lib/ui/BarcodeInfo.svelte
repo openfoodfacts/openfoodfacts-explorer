@@ -1,5 +1,6 @@
 <script lang="ts">
 	import JsBarcode from 'jsbarcode';
+	import { _ } from '$lib/i18n';
 	import Card from './Card.svelte';
 	import { createPricesApi } from '$lib/api/prices';
 
@@ -57,11 +58,13 @@
 					</a>
 				</li>
 				<li>
+					<!-- Open external Prices links in a new tab to preserve app context. -->
 					<a
 						class="text-xs text-green-600 hover:underline"
 						href={`https://prices.openfoodfacts.org/product/${code}`}
 						target="_blank"
 						rel="noopener noreferrer"
+						aria-label={$_('product.prices.view_prices_new_tab')}
 						title="Open Prices"
 					>
 						Open Prices {openPricesStatus === null

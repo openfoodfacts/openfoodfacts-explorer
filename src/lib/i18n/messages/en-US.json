@@ -435,7 +435,8 @@
 		"prices": {
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
-			"view_prices": "View prices on Open Prices"
+			"view_prices": "View prices on Open Prices",
+			"view_prices_new_tab": "View prices (opens in a new tab)"
 		},
 		"knowledge_panels": {
 			"action": {

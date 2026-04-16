@@ -160,6 +160,9 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"prices": {
+			"view_prices_new_tab": "View prices (opens in a new tab)"
 		}
 	},
 	"errors": {
