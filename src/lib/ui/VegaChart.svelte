@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
 
@@ -8,10 +9,74 @@
 		title?: string;
 	};
 
+	type VegaMarkEncodeEntry = {
+		fill?: { value: string };
+		stroke?: { value: string };
+	};
+
+	type VegaMarkEncode = {
+		enter?: VegaMarkEncodeEntry;
+		update?: VegaMarkEncodeEntry;
+	};
+
+	type VegaMark = {
+		type: string;
+		encode?: VegaMarkEncode;
+		[key: string]: unknown;
+	};
+
 	let { spec, title }: Props = $props();
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
+	let darkMode = $state<boolean | undefined>(undefined);
+
+	function getDarkModeConfig() {
+		const style = getComputedStyle(document.documentElement);
+		const labelColor = style.getPropertyValue('--color-base-content').trim();
+		const gridColor = style.getPropertyValue('--color-base-300').trim();
+
+		return {
+			background: 'transparent',
+			axis: {
+				domainColor: labelColor,
+				gridColor: gridColor,
+				labelColor: labelColor,
+				tickColor: labelColor,
+				titleColor: labelColor
+			},
+			legend: {
+				labelColor: labelColor,
+				titleColor: labelColor
+			},
+			title: {
+				color: labelColor
+			},
+			view: {
+				stroke: 'transparent'
+			}
+		};
+	}
+	// Vega does not support CSS variables natively. We patch the compiled
+	// spec marks to use the current theme colors from CSS variables,
+	// consistent with getDarkModeConfig().
+	function patchMarksForDarkMode(marks: VegaMark[], primaryColor: string): VegaMark[] {
+		return marks.map((mark) => {
+			const patched: VegaMark = {
+				...mark,
+				encode: {
+					...mark.encode,
+					update: {
+						...mark.encode?.update,
+						fill: { value: primaryColor },
+						stroke: { value: primaryColor }
+					},
+					enter: { ...mark.encode?.enter, fill: { value: primaryColor } }
+				} as VegaMarkEncode
+			};
+			return patched;
+		});
+	}
 
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
@@ -24,8 +89,24 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
-
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
+
+			if (darkMode) {
+				const style = getComputedStyle(document.documentElement);
+				const primaryColor = style.getPropertyValue('--color-primary').trim();
+
+				const rawMarks = ((compiledSpec as Spec).marks || []) as unknown as VegaMark[];
+				const patchedMarks = patchMarksForDarkMode(rawMarks, primaryColor);
+
+				compiledSpec = {
+					...compiledSpec,
+					marks: patchedMarks as unknown as Spec['marks'],
+					config: {
+						...compiledSpec.config,
+						...getDarkModeConfig()
+					}
+				};
+			}
 
 			const runtime = vega.parse(compiledSpec);
 			if (!runtime) {
@@ -47,8 +128,20 @@
 		}
 	}
 
+	onMount(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		darkMode = mediaQuery.matches;
+		const handler = (e: MediaQueryListEvent) => {
+			darkMode = e.matches;
+		};
+		mediaQuery.addEventListener('change', handler);
+		return () => mediaQuery.removeEventListener('change', handler);
+	});
+
 	$effect(() => {
-		updateSpec(spec);
+		if (darkMode !== undefined) {
+			updateSpec(spec);
+		}
 	});
 </script>
 

@@ -9,10 +9,13 @@
 	"contribute_link": "Contribute",
 	"producers_link": "Producers",
 	"prices_link": "Prices",
-	"login_link": "Login",
-	"logout_link": "Logout",
 	"account_link": "Account",
 	"world_option": "World",
+	"navbar": {
+		"login": "Login",
+		"logout": "Logout",
+		"account": "Account"
+	},
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
 		"placeholder": "Query or barcode",
@@ -57,6 +60,9 @@
 			"admin": "Administrator",
 			"moderator": "Moderator"
 		}
+	},
+	"help": {
+		"button": "Help and Shortcuts"
 	},
 	"general": {
 		"language": "Language",
@@ -155,11 +161,19 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"card": {
+			"aria_label": "Go to product {productName} with code {productCode}",
+			"aria_label_no_name": "Go to product with code {productCode}"
+		},
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show product barcode"
+			"show_barcode": "Show/hide product barcode",
+			"api_page": "Open product API page",
+			"edit_same_window": "Edit product in current window",
+			"edit_new_window": "Edit product in new window",
+			"view_page": "Go back to product page"
 		},
 		"buttons": {
 			"classic_view": "Classic view",
@@ -169,6 +183,11 @@
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
+		},
+		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"toast": {
+			"copied_link": "Link copied to clipboard!",
+			"failed_copy": "Failed to copy link"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -221,6 +240,7 @@
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"prices": "Help track this product's price history on Open Prices.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context.",
 				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
 			},
@@ -356,6 +376,7 @@
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
 				"packaging": "Packaging",
+				"prices": "Prices",
 				"comment": "Comment"
 			},
 			"legal_warning_title": "Do not upload copyrighted images",
@@ -402,10 +423,14 @@
 				"tool": "Tool",
 				"crop_drag_to_move": "Drag to move, corners to resize",
 				"crop_click_to_start": "Click and drag to start cropping",
+				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Report Image",
 				"save_changes": "Save Changes"
 			},
-			"comment_description": "Add a comment about your changes (optional)"
+			"comment_description": "Add a comment about your changes (optional)",
+			"prices": {
+				"add_price_btn": "Add a price on Open Prices"
+			}
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -524,6 +549,20 @@
 		"import": "Import",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
+		"best": "Best",
+		"worst": "Worst",
+		"scores": "Scores:",
+		"nutrients_per_100g": "Nutrients / 100g:",
+		"name": "Name",
+		"code_barcode": "Code (Barcode)",
+		"brand": "Brand",
+		"quantity": "Quantity",
+		"nova_group": "Nova Group",
+		"num_additives": "N. of additives",
+		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
+		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
+		"hint_relative_first": "💡 Percentages show difference compared to the first product",
+		"hint_relative_best": "💡 Percentages show difference compared to the best value (lower is better for most nutrients)",
 		"toast": {
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
