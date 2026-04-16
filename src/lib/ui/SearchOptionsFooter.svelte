@@ -2,7 +2,6 @@
 	import { SORT_OPTIONS } from '$lib/const';
 	import { _ } from '$lib/i18n';
 
-	import { _ } from '$lib/i18n';
 	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 
