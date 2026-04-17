@@ -70,6 +70,8 @@ export async function getFacetKnowledgePanels(
 		return data as FacetKnowledgePanelResponse;
 	} catch (error) {
 		console.error('Network error fetching facet knowledge panels:', error);
-		throw error;
+		return {
+			knowledge_panels: {} as Record<string, KnowledgePanels>
+		};
 	}
 }
