@@ -50,11 +50,26 @@ export async function getFacetKnowledgePanels(
 		params.set('value_tag', value);
 	}
 
-	const response = await fetch(`${FACETS_KP_HOST}/knowledge_panel?${params}`);
-	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch facet knowledge panels: ${response.status} ${response.statusText}`
-		);
+	try {
+		const response = await fetch(`${FACETS_KP_HOST}/knowledge_panel?${params}`);
+
+		if (!response.ok) {
+			console.error(
+				`Failed to fetch facet knowledge panels: ${response.status} ${response.statusText}`
+			);
+			return { knowledge_panels: {} };
+		}
+
+		const data = await response.json();
+
+		if (!data || typeof data !== 'object' || !('knowledge_panels' in data)) {
+			console.error('Invalid facet knowledge panels response format');
+			return { knowledge_panels: {} };
+		}
+
+		return data as FacetKnowledgePanelResponse;
+	} catch (error) {
+		console.error('Network error fetching facet knowledge panels:', error);
+		throw error;
 	}
-	return (await response.json()) as FacetKnowledgePanelResponse;
 }
