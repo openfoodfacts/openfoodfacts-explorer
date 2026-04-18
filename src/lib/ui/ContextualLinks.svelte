@@ -23,7 +23,7 @@
 
 	<a
 		class="btn btn-outline"
-		href={`https://www.barcodelookup.com/${encodedBarcode}`}
+		href={`https://www.barcodelookup.com/?query=${encodedBarcode}`}
 		target="_blank"
 		rel="noopener noreferrer"
 		title={$_('product.external.barcode_lookup_title')}

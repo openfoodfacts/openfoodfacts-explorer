@@ -3,7 +3,6 @@
 
 	import ContextualLinks from '$lib/ui/ContextualLinks.svelte';
 	import JsBarcode from 'jsbarcode';
-	import { onMount } from 'svelte';
 
 	interface Props {
 		barcode: string;
@@ -177,9 +176,14 @@
 	}
 
 	let country = $derived(getCountry(barcode));
-	onMount(() => {
-		if (barcode) {
-			JsBarcode('#gs1-barcode', barcode, { format: 'ean13' });
+	let barcodeEl: SVGSVGElement | null = null;
+	$effect(() => {
+		if (barcodeEl && barcode) {
+			try {
+				JsBarcode(barcodeEl, barcode, { format: 'ean13' });
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	});
 </script>
@@ -217,9 +221,8 @@
 			</div>
 		</div>
 
-		<div class="flex flex-col items-center items-end md:items-end">
-			<svg id="gs1-barcode" class="h-auto w-44"></svg>
-
+		<div class="flex flex-col items-end">
+			<svg bind:this={barcodeEl} class="h-auto w-44"></svg>
 			<p class="text-secondary mt-4 text-end text-sm italic">
 				Source: <a
 					class="link"
