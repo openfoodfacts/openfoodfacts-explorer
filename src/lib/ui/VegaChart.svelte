@@ -4,6 +4,8 @@
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
 
+	import * as compat from '$lib/compat';
+
 	type Props = {
 		spec: Spec | TopLevelSpec;
 		title?: string;
@@ -131,20 +133,10 @@
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		darkMode = mediaQuery.matches;
-		const handler = (e: MediaQueryListEvent) => {
-			darkMode = e.matches;
-		};
-		if (mediaQuery.addEventListener) {
-			mediaQuery.addEventListener('change', handler);
-		} else {
-			mediaQuery.addListener(handler);
-		}
+		const handler = (e: MediaQueryListEvent) => (darkMode = e.matches);
+		compat.addMediaQueryListener(mediaQuery, handler);
 		return () => {
-			if (mediaQuery.removeEventListener) {
-				mediaQuery.removeEventListener('change', handler);
-			} else {
-				mediaQuery.removeListener(handler);
-			}
+			compat.removeMediaQueryListener(mediaQuery, handler);
 		};
 	});
 
