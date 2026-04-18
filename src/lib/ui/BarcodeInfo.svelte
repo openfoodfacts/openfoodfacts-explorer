@@ -2,6 +2,7 @@
 	import JsBarcode from 'jsbarcode';
 	import Card from './Card.svelte';
 	import { createPricesApi } from '$lib/api/prices';
+	import { OPEN_PRICES_PRODUCT_URL } from '$lib/const';
 
 	let { code }: { code: string } = $props();
 
@@ -59,7 +60,7 @@
 				<li>
 					<a
 						class="text-xs text-green-600 hover:underline"
-						href={`https://prices.openfoodfacts.org/product/${code}`}
+						href={OPEN_PRICES_PRODUCT_URL(code)}
 						target="_blank"
 						rel="noopener noreferrer"
 						title="Open Prices"
