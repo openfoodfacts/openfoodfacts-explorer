@@ -121,32 +121,37 @@
 	let isDark: boolean = $state(false);
 
 	onMount(() => {
-		let destroyed = false;
+		const abortController = new AbortController();
+
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
 		isDark = mq.matches;
 		const handleColorSchemeChange = (e: MediaQueryListEvent) => (isDark = e.matches);
 		mq.addEventListener('change', handleColorSchemeChange);
 
 		(async () => {
-			// Dynamically import Leaflet
-			L = await import('leaflet');
-			if (destroyed) return;
+			L = await import('leaflet'); // Dynamically import Leaflet
+			if (abortController.signal.aborted) return; // Component was unmounted
 
-			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM }).setView(
-				[20, 0],
-				INITIAL_ZOOM
-			);
+			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM });
+			mapInstance.setView([20, 0], INITIAL_ZOOM);
 
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
 
-			const taxonomy = await getTaxo<Country>('countries', fetch);
-			if (destroyed) return;
+			const abortingFetch = (input: RequestInfo, init?: RequestInit) => {
+				return fetch(input, { ...init, signal: abortController.signal });
+			};
+
+			const taxonomy = await getTaxo<Country>('countries', abortingFetch);
+			if (abortController.signal.aborted) return; // Component was unmounted while loading
 			countryTaxonomy = taxonomy;
-		})();
+		})().catch((err) => {
+			if (err.name === 'AbortError') return;
+			console.error('Error creating map:', err);
+		});
 
 		return () => {
-			destroyed = true;
+			abortController.abort();
 			mq.removeEventListener('change', handleColorSchemeChange);
 			if (mapInstance) {
 				mapInstance.off();
@@ -158,7 +163,6 @@
 				legendControl = null;
 			}
 
-			L = null;
 			countryTaxonomy = null;
 		};
 	});
