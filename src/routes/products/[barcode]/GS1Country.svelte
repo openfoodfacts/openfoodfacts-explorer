@@ -180,7 +180,17 @@
 	$effect(() => {
 		if (barcodeEl && barcode) {
 			try {
-				JsBarcode(barcodeEl, barcode, { format: 'ean13' });
+				if (!barcode || isNaN(Number(barcode))) return;
+
+				let format = 'ean13';
+
+				if (barcode.length === 12) {
+					format = 'upc';
+				} else if (barcode.length === 8) {
+					format = 'ean8';
+				}
+
+				JsBarcode(barcodeEl, barcode, { format });
 			} catch (e) {
 				console.error(e);
 			}
