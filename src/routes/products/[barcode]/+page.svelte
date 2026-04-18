@@ -159,10 +159,6 @@
 <div class="flex flex-col gap-4">
 	<ProductHeader {product} taxonomies={data.taxo} />
 
-	{#if showBarcode && product.code != null}
-		<BarcodeInfo code={product.code} />
-	{/if}
-
 	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
 	></robotoff-contribution-message>
 

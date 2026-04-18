@@ -160,6 +160,14 @@
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
 			"debug": "Debug"
+		},
+		"external": {
+			"openfoodfacts": "OpenFoodFacts",
+			"openfoodfacts_title": "View product on OpenFoodFacts",
+			"barcode_lookup": "Barcode Lookup",
+			"barcode_lookup_title": "Search barcode on Barcode Lookup",
+			"open_prices": "Open Prices",
+			"open_prices_title": "View product prices on Open Prices"
 		}
 	},
 	"errors": {

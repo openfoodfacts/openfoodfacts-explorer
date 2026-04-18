@@ -432,6 +432,14 @@
 				"add_price_btn": "Add a price on Open Prices"
 			}
 		},
+		"external": {
+			"openfoodfacts": "OpenFoodFacts",
+			"openfoodfacts_title": "View product on OpenFoodFacts",
+			"barcode_lookup": "Barcode Lookup",
+			"barcode_lookup_title": "Search barcode on Barcode Lookup",
+			"open_prices": "Open Prices",
+			"open_prices_title": "View product prices on Open Prices"
+		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",

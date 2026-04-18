@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
 
+	import ContextualLinks from '$lib/ui/ContextualLinks.svelte';
+	import JsBarcode from 'jsbarcode';
+	import { onMount } from 'svelte';
+
 	interface Props {
 		barcode: string;
 	}
@@ -173,37 +177,57 @@
 	}
 
 	let country = $derived(getCountry(barcode));
+	onMount(() => {
+		if (barcode) {
+			JsBarcode('#gs1-barcode', barcode, { format: 'ean13' });
+		}
+	});
 </script>
 
 <Card>
 	<h1 class="my-4 text-2xl font-bold sm:text-4xl">Barcode information</h1>
 
-	<div>
-		<div class="flex items-center gap-2">
-			<div class="text-xl sm:text-3xl">{getFlagEmoji(country.code)}</div>
-			<p class="sm:text-md text-xs">
-				<strong>GS1 Country:</strong>
-				{country.name}
-			</p>
+	<p class="text-sm text-gray-600">
+		<strong>Barcode:</strong>
+		{barcode}
+	</p>
+	<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+		<div class="w-full md:w-auto">
+			<div class="flex items-center gap-2">
+				<div class="text-xl sm:text-3xl">{getFlagEmoji(country.code)}</div>
+				<p class="sm:text-md text-xs">
+					<strong>GS1 Country:</strong>
+					{country.name}
+				</p>
+			</div>
+
+			<div class="my-4">
+				<a
+					class="btn btn-secondary"
+					href={`https://www.gs1.org/services/verified-by-gs1/results?gtin=${barcode}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Get more information from GS1
+				</a>
+			</div>
+
+			<div class="mt-3">
+				<ContextualLinks {barcode} />
+			</div>
 		</div>
 
-		<div class="my-4">
-			<a
-				class="btn btn-secondary"
-				href="https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				Get more information from GS1
-			</a>
+		<div class="flex flex-col items-center items-end md:items-end">
+			<svg id="gs1-barcode" class="h-auto w-44"></svg>
+
+			<p class="text-secondary mt-4 text-end text-sm italic">
+				Source: <a
+					class="link"
+					href="https://www.gs1.org/standards/id-keys/company-prefix"
+					target="_blank"
+					rel="noopener noreferrer">GS1</a
+				>
+			</p>
 		</div>
-		<p class="text-secondary mt-4 text-end text-sm italic">
-			Source: <a
-				class="link"
-				href="https://www.gs1.org/standards/id-keys/company-prefix"
-				target="_blank"
-				rel="noopener noreferrer">GS1</a
-			>
-		</p>
 	</div>
 </Card>
