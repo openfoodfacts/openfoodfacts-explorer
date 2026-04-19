@@ -6,6 +6,13 @@ import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfa
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
+import { withConcurrencyLimit } from '$lib/utils/promises';
+
+// Maximum number of Prices API requests allowed to run in parallel.
+// A full page of search results can contain ~24 products, and firing every
+// price lookup simultaneously risks rate-limiting and slows the page down.
+// 5 is a conservative value that balances throughput with backend safety.
+const PRICES_CONCURRENCY_LIMIT = 5;
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -23,17 +30,43 @@ function isValidEAN13(code: string): boolean {
 }
 
 async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
-	const prices: Record<string, number> = {};
-	const results = await Promise.all(
-		barcodes.map(async (code) => ({
-			code: code,
-			prices: await api.getPrices({ product_code: code })
-		}))
-	);
+	if (barcodes.length === 0) return {};
 
-	for (const result of results) {
-		if (result.prices.data && result.prices.data.items) {
-			prices[result.code] = result.prices.data.total;
+	// Each task preserves its barcode on failure so rejected results can be
+	// logged against the specific product that failed.
+	const tasks = barcodes.map((code) => async () => {
+		try {
+			const pricesResponse = await api.getPrices({ product_code: code });
+			return { code, pricesResponse };
+		} catch (err) {
+			throw { code, error: err };
+		}
+	});
+
+	const settled = await withConcurrencyLimit(tasks, PRICES_CONCURRENCY_LIMIT);
+
+	const prices: Record<string, number> = {};
+	for (const result of settled) {
+		if (result.status === 'rejected') {
+			const { code, error: fetchError } = (result.reason ?? {}) as {
+				code?: string;
+				error?: unknown;
+			};
+			if (code) {
+				console.warn(`[getPrices] Failed to fetch price for barcode ${code}:`, fetchError);
+			} else {
+				console.warn('[getPrices] Failed to fetch price for a barcode:', result.reason);
+			}
+			continue;
+		}
+
+		const { code, pricesResponse } = result.value;
+
+		// Store the total whenever the API returned a numeric value. Products
+		// with zero recorded prices are still valid data and must appear in the
+		// map, otherwise the UI renders "undefined prices" in the badge.
+		if (pricesResponse.data != null && typeof pricesResponse.data.total === 'number') {
+			prices[code] = pricesResponse.data.total;
 		}
 	}
 
