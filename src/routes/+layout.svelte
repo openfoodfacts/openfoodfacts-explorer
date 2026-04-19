@@ -9,6 +9,7 @@
 
 	import { goto } from '$app/navigation';
 	import { navigating, page } from '$app/state';
+	import { slide } from 'svelte/transition';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -354,7 +355,7 @@
 	</div>
 
 	{#if searchActive}
-		<div class="flex justify-center">
+		<div class="flex justify-center" transition:slide={{ duration: 200 }}>
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
