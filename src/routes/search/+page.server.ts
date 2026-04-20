@@ -32,14 +32,17 @@ function isValidEAN13(code: string): boolean {
 async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
 	if (barcodes.length === 0) return {};
 
-	// Each task preserves its barcode on failure so rejected results can be
-	// logged against the specific product that failed.
+	// Each task wraps a failure in a real Error so stack traces are preserved,
+	// and attaches the barcode as `code` so rejected results can be logged
+	// against the specific product that failed.
 	const tasks = barcodes.map((code) => async () => {
 		try {
 			const pricesResponse = await api.getPrices({ product_code: code });
 			return { code, pricesResponse };
 		} catch (err) {
-			throw { code, error: err };
+			throw Object.assign(new Error(`Failed to fetch price for barcode ${code}`, { cause: err }), {
+				code
+			});
 		}
 	});
 
@@ -48,12 +51,10 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 	const prices: Record<string, number> = {};
 	for (const result of settled) {
 		if (result.status === 'rejected') {
-			const { code, error: fetchError } = (result.reason ?? {}) as {
-				code?: string;
-				error?: unknown;
-			};
+			const reason = result.reason as (Error & { code?: string }) | undefined;
+			const code = reason?.code;
 			if (code) {
-				console.warn(`[getPrices] Failed to fetch price for barcode ${code}:`, fetchError);
+				console.warn(`[getPrices] Failed to fetch price for barcode ${code}:`, reason?.cause);
 				// Guarantee every attempted barcode has a numeric entry so the UI
 				// never renders "undefined prices" when a single lookup fails.
 				prices[code] = 0;
