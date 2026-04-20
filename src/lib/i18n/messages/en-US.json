@@ -517,7 +517,14 @@
 		"random_product": "Random Product",
 		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
 		"learn_more": "Learn More",
-		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
+		"learn_more_desc": "Find out how Open Food Facts works and how you can help.",
+		"placeholders": {
+			"search_product": "Search for a product...",
+			"try_nutella": "Try \"Nutella\"",
+			"search_brand": "Search by brand...",
+			"try_organic_pasta": "Try \"organic pasta\"",
+			"search_barcode": "Search by barcode..."
+		}
 	},
 	"compare": {
 		"page_title": "Compare Products",

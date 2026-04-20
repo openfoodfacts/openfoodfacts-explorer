@@ -12,11 +12,11 @@
 	let typingPlaceholder = $state(' ');
 
 	const placeholders = [
-		'Search for a product...',
-		'Try "Nutella"',
-		'Search by brand...',
-		'Try "organic pasta"',
-		'Search by barcode...'
+		$_('explore.placeholders.search_product'),
+		$_('explore.placeholders.try_nutella'),
+		$_('explore.placeholders.search_brand'),
+		$_('explore.placeholders.try_organic_pasta'),
+		$_('explore.placeholders.search_barcode')
 	];
 
 	onMount(() => {
