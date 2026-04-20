@@ -54,6 +54,9 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 			};
 			if (code) {
 				console.warn(`[getPrices] Failed to fetch price for barcode ${code}:`, fetchError);
+				// Guarantee every attempted barcode has a numeric entry so the UI
+				// never renders "undefined prices" when a single lookup fails.
+				prices[code] = 0;
 			} else {
 				console.warn('[getPrices] Failed to fetch price for a barcode:', result.reason);
 			}
@@ -62,12 +65,13 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 
 		const { code, pricesResponse } = result.value;
 
-		// Store the total whenever the API returned a numeric value. Products
-		// with zero recorded prices are still valid data and must appear in the
-		// map, otherwise the UI renders "undefined prices" in the badge.
-		if (pricesResponse.data != null && typeof pricesResponse.data.total === 'number') {
-			prices[code] = pricesResponse.data.total;
-		}
+		// Store the total whenever the API returned a numeric value (including 0).
+		// Products with zero recorded prices are still valid data and must appear
+		// in the map, otherwise the UI renders "undefined prices" in the badge.
+		prices[code] =
+			pricesResponse.data != null && typeof pricesResponse.data.total === 'number'
+				? pricesResponse.data.total
+				: 0;
 	}
 
 	return prices;
