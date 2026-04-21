@@ -16,7 +16,12 @@
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
-	import { getNutritionIssues, getServingSizeIssue } from './nutrition';
+	import {
+		getNutritionIssues,
+		getServingSizeIssue,
+		type Issue,
+		type IssueSeverity
+	} from './nutrition';
 
 	type Props = {
 		product: Product;
@@ -100,23 +105,29 @@
 		};
 	}
 
-	const bySeverity = (a: { severity: string }, b: { severity: string }) => {
+	const bySeverity = (a: Issue, b: Issue) => {
 		if (a.severity === b.severity) return 0;
 		if (a.severity === 'error') return -1;
 		return 1;
 	};
 
-	function inputClassForSeverity(severity: 'warning' | 'error' | undefined): string {
-		if (severity === 'error') return 'input-error';
-		if (severity === 'warning') return 'input-warning';
-		return '';
+	const INPUT_CLASS_BY_SEVERITY: Record<IssueSeverity, string> = {
+		error: 'input-error',
+		warning: 'input-warning'
+	};
+	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning'];
+
+	function inputClassForSeverity(severity: IssueSeverity | undefined): string {
+		return severity == null ? '' : INPUT_CLASS_BY_SEVERITY[severity];
 	}
 
-	function highestSeverity(
-		issues: Array<{ severity: 'warning' | 'error' }>
-	): 'warning' | 'error' | undefined {
-		if (issues.some((r) => r.severity === 'error')) return 'error';
-		if (issues.some((r) => r.severity === 'warning')) return 'warning';
+	function highestSeverity(issues: Issue[]): IssueSeverity | undefined {
+		for (const severity of SEVERITY_PRECEDENCE) {
+			if (issues.some((issue) => issue.severity === severity)) {
+				return severity;
+			}
+		}
+
 		return undefined;
 	}
 
@@ -144,7 +155,7 @@
 	}
 </script>
 
-{#snippet issueTooltip(issue: { severity: 'warning' | 'error'; title: string })}
+{#snippet issueTooltip(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
 	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
 	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
@@ -156,7 +167,7 @@
 	</div>
 {/snippet}
 
-{#snippet issueAlert(issue: { severity: 'warning' | 'error'; title: string; desc?: string })}
+{#snippet issueAlert(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
 	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
 	{@const alertColorClass = isError ? 'alert-error' : 'alert-warning'}

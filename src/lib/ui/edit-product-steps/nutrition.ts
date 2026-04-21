@@ -1,7 +1,9 @@
 import type { Product } from '$lib/api';
 
-type Issue = {
-	severity: 'warning' | 'error';
+export type IssueSeverity = 'warning' | 'error';
+
+export type Issue = {
+	severity: IssueSeverity;
 	field?: string; // e.g., 'energy', 'proteins', 'all', etc.
 	title: string;
 	desc?: string;
