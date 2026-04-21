@@ -183,8 +183,6 @@
 			<PackagingStep bind:product {getPackagingImage} />
 		</div>
 	</div>
-
-
 </div>
 
 <!-- Floating comment + save bar — always visible at bottom of viewport -->
