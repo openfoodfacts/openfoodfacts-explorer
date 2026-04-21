@@ -5,7 +5,7 @@
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
-	import CommentStep from './edit-product-steps/CommentStep.svelte';
+
 	import StickyEditSaveButton from './StickyEditSaveButton.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
@@ -14,7 +14,7 @@
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
-	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+
 	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 
@@ -76,8 +76,8 @@
 	}
 </script>
 
-<!-- pb-24 ensures the last section is not hidden behind the fixed floating bar -->
-<div class="space-y-4 pb-24">
+<!-- pb-28 on mobile accounts for the two-row floating bar; sm+ fits within pb-24 -->
+<div class="space-y-4 pb-28 sm:pb-24">
 	<!-- Languages Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -184,17 +184,7 @@
 		</div>
 	</div>
 
-	<!-- Comment Section -->
-	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
-		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-			{$_('product.edit.sections.comment')}
-		</div>
-		<div class="collapse-content">
-			<CommentStep bind:comment />
-		</div>
-	</div>
+
 </div>
 
 <!-- Floating comment + save bar — always visible at bottom of viewport -->
