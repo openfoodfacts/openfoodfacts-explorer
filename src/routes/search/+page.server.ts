@@ -1,11 +1,11 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
-import { PricesApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import type { PageServerLoad } from './$types';
+
+import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
-
-export const ssr = false;
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -40,7 +40,50 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 	return prices;
 }
 
-export const load: PageLoad = async ({ fetch, url }) => {
+// FIXME: We can drop this compatibility layer once the new API is deployed in production
+async function compatSearch(
+	api: SearchApi,
+	params: Omit<SearchBody, 'facets' | 'charts'>
+): ReturnType<SearchApi['search']> {
+	// Try the new API first
+	const newParams: SearchBody = {
+		...params,
+		facets: ['brands', 'categories', 'nutrition_grades', 'ecoscore_grade'],
+		charts: [
+			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChart', field: 'ecoscore_grade' },
+			{ chart_type: 'DistributionChart', field: 'nova_groups' },
+			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+		]
+	};
+
+	try {
+		const { data, error } = await api.search(newParams);
+		if (error || data == null) {
+			throw error || new Error('No data');
+		}
+		// @ts-expect-error - data is unknown
+		return { data };
+	} catch {
+		console.warn('search: new API failed, falling back to old API');
+	}
+
+	const oldParams = {
+		...params,
+		facets: ['nutrition_grades', 'ecoscore_grade'],
+		charts: [
+			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChartType', field: 'ecoscore_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_groups' },
+			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+		]
+	};
+
+	// @ts-expect-error - SDK only accepts the new params
+	return api.search(oldParams);
+}
+
+export const load: PageServerLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
@@ -58,22 +101,14 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const api = createSearchApi(fetch);
 
-	const params: SearchBody = {
+	const { data: searchData, error: searchError } = await compatSearch(api, {
 		q: query,
 		langs: ['en'],
-		page: page,
+		page,
 		page_size: pageSize,
-		facets: ['brands', 'categories', 'nutrition_grades', 'ecoscore_grade'],
-		charts: [
-			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'ecoscore_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_groups' },
-			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
-		],
 		sort_by: sortBy
-	};
+	});
 
-	const { data: searchData, error: searchError } = await api.search(params);
 	if (searchError || !searchData) {
 		console.error('Search API error:', searchError);
 		error(500, 'Failed to fetch search results');

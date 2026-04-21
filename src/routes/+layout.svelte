@@ -9,6 +9,7 @@
 
 	import { goto } from '$app/navigation';
 	import { navigating, page } from '$app/state';
+	import { slide } from 'svelte/transition';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -23,7 +24,13 @@
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
-	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
+	import {
+		IMAGE_HOST,
+		MATOMO_HOST,
+		MATOMO_SITE_ID,
+		OPEN_PRICES_BASE_URL,
+		ROBOTOFF_URL
+	} from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
@@ -348,7 +355,7 @@
 	</div>
 
 	{#if searchActive}
-		<div class="flex justify-center">
+		<div class="flex justify-center" transition:slide={{ duration: 200 }}>
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
@@ -368,7 +375,7 @@
 		<a class="btn btn-outline link" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
+		<a class="btn btn-outline link" href={OPEN_PRICES_BASE_URL}>
 			{$_('prices_link')}
 		</a>
 		<a class="btn btn-outline link" href="/folksonomy">
