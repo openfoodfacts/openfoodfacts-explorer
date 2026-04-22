@@ -10,6 +10,8 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiSearch from '@iconify-svelte/mdi/search';
+	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		product: Product;
@@ -40,6 +42,18 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	let shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+P', {
+			description: $_('product.shortcuts.edit_product_name'),
+			action: () => focusEditField(`#product-name-${product.lang}`)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+P');
+		};
+	});
 </script>
 
 <h2
