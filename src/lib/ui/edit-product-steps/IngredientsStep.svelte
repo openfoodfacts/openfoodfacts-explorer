@@ -11,6 +11,8 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
+	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
 
 	type OCRResult = {
 		status?: number;
@@ -74,6 +76,19 @@
 			ocrLoading = false;
 		}
 	}
+
+	const shortcutCtx = getShortcutCtx();
+
+	onMount(() => {
+		shortcutCtx.set('Shift+I', {
+			description: $_('product.shortcuts.edit_product_ingredients'),
+			action: () => focusEditField(`#ingredients-list-${product.lang}`)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+I');
+		};
+	});
 </script>
 
 <h2

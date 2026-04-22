@@ -173,7 +173,15 @@
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
-			"view_page": "Go back to product page"
+			"view_page": "Go back to product page",
+			"edit_product_name": "Jump to product name",
+			"edit_product_quantity": "Jump to product quantity",
+			"edit_product_brands": "Jump to product brands",
+			"edit_product_categories": "Jump to product categories",
+			"edit_product_labels": "Jump to product labels",
+			"edit_product_ingredients": "Jump to product ingredients",
+			"edit_product_energy": "Jump to product energy",
+			"edit_product_fibers": "Jump to product fibers"
 		},
 		"buttons": {
 			"classic_view": "Classic view",
