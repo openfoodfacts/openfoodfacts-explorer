@@ -153,7 +153,23 @@
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
 			"nutritional_information": "Nutritional Information",
-			"serving_size": "Serving Size",
+			"serving_size": "Porzione",
+			"serving_size_examples": "40 g, 250 ml, 1 porzione (30 g)",
+			"serving_size_placeholder": "es. {examples}",
+			"serving_size_issues": {
+				"missing_number": {
+					"title": "La porzione non contiene un numero",
+					"desc": "La porzione dovrebbe includere un valore numerico. Esempi: {examples}"
+				},
+				"missing_unit": {
+					"title": "La porzione non contiene un'unità di misura",
+					"desc": "La porzione dovrebbe includere un'unità di misura. Esempi: {examples}"
+				},
+				"unknown_unit": {
+					"title": "L'unità di misura della porzione potrebbe non essere corretta",
+					"desc": "La porzione dovrebbe includere un'unità di misura comune. Esempi: {examples}"
+				}
+			},
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",

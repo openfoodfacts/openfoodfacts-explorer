@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getServingSizeIssue } from './nutrition';
+import { getServingSizeValidationResult } from './nutrition';
 
 const units = [
 	'g',
@@ -16,66 +16,51 @@ const units = [
 	'%'
 ];
 
-describe('getServingSizeIssue', () => {
+describe('getServingSizeValidationResult', () => {
 	it('shows an error when the input has no number at all', () => {
-		const issue = getServingSizeIssue('large portion', units);
+		const issue = getServingSizeValidationResult('large portion', units);
 
-		expect(issue).toMatchObject({
-			field: 'serving_size',
-			severity: 'error'
-		});
+		expect(issue).toBe('missing-number');
 	});
 
 	it('shows an error when the input is only a number', () => {
-		const issue = getServingSizeIssue('100', units);
+		const issue = getServingSizeValidationResult('100', units);
 
-		expect(issue).toMatchObject({
-			field: 'serving_size',
-			severity: 'error'
-		});
+		expect(issue).toBe('missing-unit');
 	});
 
 	it('shows a warning when the number is there but the unit is unknown', () => {
-		const issue = getServingSizeIssue('1 pcs', units);
+		const issue = getServingSizeValidationResult('1 pcs', units);
 
-		expect(issue).toMatchObject({
-			field: 'serving_size',
-			severity: 'warning'
-		});
+		expect(issue).toBe('unknown-unit');
 	});
 
 	it('does not let punctuation contribute to identifying an unknown unit', () => {
-		const issue = getServingSizeIssue('100)', units);
+		const issue = getServingSizeValidationResult('100)', units);
 
-		expect(issue).toMatchObject({
-			field: 'serving_size',
-			severity: 'error'
-		});
+		expect(issue).toBe('missing-unit');
 	});
 
 	it('accepts units exposed by the taxonomy regardless of position', () => {
-		expect(getServingSizeIssue('1 serving (30 g)', units)).toBeNull();
-		expect(getServingSizeIssue('1 serving (30 克)', units)).toBeNull();
-		expect(getServingSizeIssue('50 µg', units)).toBeNull();
-		expect(getServingSizeIssue('250ml', units)).toBeNull();
-		expect(getServingSizeIssue('1.5 ml', units)).toBeNull();
-		expect(getServingSizeIssue('1,5 ml', units)).toBeNull();
-		expect(getServingSizeIssue('10 %', units)).toBeNull();
-		expect(getServingSizeIssue('ml 250', units)).toBeNull();
+		expect(getServingSizeValidationResult('1 serving (30 g)', units)).toBe('valid');
+		expect(getServingSizeValidationResult('1 serving (30 克)', units)).toBe('valid');
+		expect(getServingSizeValidationResult('50 µg', units)).toBe('valid');
+		expect(getServingSizeValidationResult('250ml', units)).toBe('valid');
+		expect(getServingSizeValidationResult('1.5 ml', units)).toBe('valid');
+		expect(getServingSizeValidationResult('1,5 ml', units)).toBe('valid');
+		expect(getServingSizeValidationResult('10 %', units)).toBe('valid');
+		expect(getServingSizeValidationResult('ml 250', units)).toBe('valid');
 	});
 
 	it('shows a warning when text does not contain a standalone unit token', () => {
-		const issue = getServingSizeIssue('1 ggg', units);
+		const issue = getServingSizeValidationResult('1 ggg', units);
 
-		expect(issue).toMatchObject({
-			field: 'serving_size',
-			severity: 'warning'
-		});
+		expect(issue).toBe('unknown-unit');
 	});
 
 	it('shows no issue for an empty serving size', () => {
-		const issue = getServingSizeIssue('', units);
+		const issue = getServingSizeValidationResult('', units);
 
-		expect(issue).toBeNull();
+		expect(issue).toBe('valid');
 	});
 });

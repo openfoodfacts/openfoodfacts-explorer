@@ -14,7 +14,7 @@ type ServingSizeValidationResult = 'valid' | 'missing-number' | 'missing-unit' |
 type AnalysisFunc = (product: Product) => Issue[];
 
 // Match numeric tokens so we can inspect the surrounding text for units.
-const NUMBER_PATTERN = /\.\d+|\d+(?:(?:,|\.)\d+)?/g;
+const NUMBER_PATTERN = /\.\d+|\d+(?:[,.]\d+)?/g;
 // Match characters that are letters in any language.
 const LETTER_PATTERN = /\p{L}/u;
 
@@ -45,7 +45,7 @@ function containsKnownUnit(token: string, units: readonly string[]): boolean {
 	return false;
 }
 
-function validateServingSize(
+export function getServingSizeValidationResult(
 	servingSize: string | null | undefined,
 	units: readonly string[]
 ): ServingSizeValidationResult {
@@ -81,40 +81,6 @@ function validateServingSize(
 	}
 
 	return 'missing-unit';
-}
-
-export function getServingSizeIssue(
-	servingSize: string | null | undefined,
-	units: readonly string[]
-): Issue | null {
-	const validationResult = validateServingSize(servingSize, units);
-	const servingSizeExamples = 'Examples: 40 g, 250 ml, or 1 serving (30 g).';
-
-	switch (validationResult) {
-		case 'valid':
-			return null;
-		case 'missing-number':
-			return {
-				severity: 'error',
-				field: 'serving_size',
-				title: 'Serving size is missing a number',
-				desc: `Serving size should include a numeric value. ${servingSizeExamples}`
-			};
-		case 'missing-unit':
-			return {
-				severity: 'error',
-				field: 'serving_size',
-				title: 'Serving size is missing a unit',
-				desc: `Serving size should include a unit. ${servingSizeExamples}`
-			};
-		case 'unknown-unit':
-			return {
-				severity: 'warning',
-				field: 'serving_size',
-				title: 'Serving size unit may be incorrect',
-				desc: `Serving size should include a common unit. ${servingSizeExamples}`
-			};
-	}
 }
 
 const energyMismatchAnalysis: AnalysisFunc = (product) => {

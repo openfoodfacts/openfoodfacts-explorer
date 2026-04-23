@@ -17,8 +17,8 @@
 
 	import ImageButton from '../ImageButton.svelte';
 	import {
+		getServingSizeValidationResult,
 		getNutritionIssues,
-		getServingSizeIssue,
 		type Issue,
 		type IssueSeverity
 	} from './nutrition';
@@ -116,6 +116,23 @@
 		warning: 'input-warning'
 	};
 	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning'];
+	const SERVING_SIZE_VALIDATION_ISSUES = {
+		'missing-number': {
+			severity: 'error',
+			title: 'product.edit.serving_size_issues.missing_number.title',
+			desc: 'product.edit.serving_size_issues.missing_number.desc'
+		},
+		'missing-unit': {
+			severity: 'error',
+			title: 'product.edit.serving_size_issues.missing_unit.title',
+			desc: 'product.edit.serving_size_issues.missing_unit.desc'
+		},
+		'unknown-unit': {
+			severity: 'warning',
+			title: 'product.edit.serving_size_issues.unknown_unit.title',
+			desc: 'product.edit.serving_size_issues.unknown_unit.desc'
+		}
+	} as const;
 
 	function inputClassForSeverity(severity: IssueSeverity | undefined): string {
 		return severity == null ? '' : INPUT_CLASS_BY_SEVERITY[severity];
@@ -131,7 +148,29 @@
 		return undefined;
 	}
 
-	let servingSizeIssue = $derived(getServingSizeIssue(product.serving_size, units));
+	let servingSizeExamples = $derived($_('product.edit.serving_size_examples'));
+	let servingSizeValidationResult = $derived(
+		getServingSizeValidationResult(product.serving_size, units)
+	);
+	let servingSizeIssue = $derived.by((): Issue | null => {
+		if (servingSizeValidationResult === 'valid') {
+			return null;
+		}
+
+		const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+
+		return {
+			severity: validationIssue.severity,
+			field: 'serving_size',
+			title: $_(validationIssue.title),
+			desc: $_(validationIssue.desc, { values: { examples: servingSizeExamples } })
+		};
+	});
+	let servingSizePlaceholder = $derived(
+		$_('product.edit.serving_size_placeholder', {
+			values: { examples: servingSizeExamples }
+		})
+	);
 	let nutritionIssues = $derived(getNutritionIssues(product));
 
 	let issuesByField = $derived((keys: string | string[]) => {
@@ -229,7 +268,7 @@
 						class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
 						value={product.serving_size ?? ''}
 						oninput={handleServingSize}
-						placeholder="e.g., 40 g, 250 ml, 1 serving (30 g)"
+						placeholder={servingSizePlaceholder}
 					/>
 				</label>
 				{#if servingSizeIssue}
