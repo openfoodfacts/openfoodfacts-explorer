@@ -1,4 +1,4 @@
-import type { TaxoNode } from '@openfoodfacts/openfoodfacts-nodejs';
+import type { LocalizedString, TaxoNode } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export type {
 	LocalizedString,
@@ -24,6 +24,9 @@ export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en
 
 export type Origin = TaxoNode & object;
 
+export type Unit = TaxoNode & {
+	symbol?: LocalizedString;
+};
 export const TAXONOMIES_NAMES: Record<string, string> = {
 	labels: 'Label',
 	categories: 'Category',

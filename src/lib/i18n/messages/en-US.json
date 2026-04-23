@@ -336,6 +336,22 @@
 			"nutritional_information": "Nutritional Information",
 			"no_nutrition_image": "No nutrition image for language {language}",
 			"serving_size": "Serving Size",
+			"serving_size_examples": "40 g, 250 ml, 1 serving (30 g)",
+			"serving_size_placeholder": "e.g., {examples}",
+			"serving_size_issues": {
+				"missing_number": {
+					"title": "Serving size is missing a number",
+					"desc": "Serving size should include a numeric value. Examples: {examples}"
+				},
+				"missing_unit": {
+					"title": "Serving size is missing a unit",
+					"desc": "Serving size should include a unit. Examples: {examples}"
+				},
+				"unknown_unit": {
+					"title": "Serving size unit may be incorrect",
+					"desc": "Serving size should include a common unit. Examples: {examples}"
+				}
+			},
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"remove_all_nutrient_values": "Remove all nutrient values",
