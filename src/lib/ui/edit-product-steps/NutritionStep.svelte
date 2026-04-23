@@ -369,8 +369,9 @@
 			</fieldset>
 			<fieldset class="fieldset">
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
-					{@const issue = issuesByField(nutrient)[0] ?? issuesByField('all')[0]}
-					<label class={['input w-full', fieldInputClasses([nutrient, 'all'])]}>
+					{@const issueKeys = [nutrient, 'all']}
+					{@const issue = issuesByField(issueKeys)[0]}
+					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
 						<span class="label w-60">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
