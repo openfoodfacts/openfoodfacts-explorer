@@ -599,7 +599,7 @@ export function fileToBase64(file: File): Promise<string> {
 				// Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
 				const parts = reader.result.split(',');
 
-				if (parts.length < 2 || !parts[1]) {
+				if (parts.length < 2 || parts[1].trim() === '') {
 					reject(new Error('Invalid file format for base64 conversion'));
 					return;
 				}
