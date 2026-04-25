@@ -75,12 +75,16 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
-		product_type: 'all',
-		fields: ['all', 'knowledge_panels'],
-		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
-		knowledge_panels_client: 'web'
-	});
+	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(
+		params.barcode,
+		{
+			product_type: 'all',
+			fields: ['all', 'knowledge_panels'],
+			// SDK doesn't officially support knowledge_panels_client parameter yet
+			// but the API accepts it. Using type assertion to pass it through.
+			...(({ knowledge_panels_client: 'web' } as unknown) as Record<string, unknown>)
+		}
+	);
 
 	handleProductApiError(apiErrorWrapped);
 

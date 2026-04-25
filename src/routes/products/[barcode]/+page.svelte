@@ -23,7 +23,9 @@
 
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
-	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { ProductV3Extended } from '$lib/api/sdk-types';
+	import type { ProductDataSection } from '$lib/api';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { onMount } from 'svelte';
@@ -37,20 +39,10 @@
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
 
-	type UiProduct = Product & {
-		code: string;
-		created_t: number;
-		creator: string;
-		last_modified_t: number;
-		last_editor: string;
-
+	type UiProduct = ProductV3Extended & {
 		knowledge_panels: KnowledgePanels;
-		image_front_small_url?: string;
-		image_front_url?: string;
-		taxonomies?: string[];
 	};
 
-	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
@@ -193,7 +185,7 @@
 
 	<Gs1Country barcode={product.code} />
 
-	<DataSources {product} />
+	<DataSources product={product as ProductDataSection} />
 
 	{#if isFolksonomyConfigured()}
 		<Card>
