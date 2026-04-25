@@ -12,6 +12,8 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		product: Product;
@@ -40,6 +42,38 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const shortcutCtx = getShortcutCtx();
+	const SHORTCUTS = {
+		'Shift+Q': {
+			description: $_('product.shortcuts.edit_product_quantity'),
+			action: () => focusEditField('#quantity')
+		},
+		'Shift+C': {
+			description: $_('product.shortcuts.edit_product_categories'),
+			action: () => focusEditField('categories-input', true)
+		},
+		'Shift+B': {
+			description: $_('product.shortcuts.edit_product_brands'),
+			action: () => focusEditField('brands-input', true)
+		},
+		'Shift+L': {
+			description: $_('product.shortcuts.edit_product_labels'),
+			action: () => focusEditField('labels-input', true)
+		}
+	};
+
+	onMount(() => {
+		for (const [key, value] of Object.entries(SHORTCUTS)) {
+			shortcutCtx.set(key, value);
+		}
+
+		return () => {
+			for (const key of Object.keys(SHORTCUTS)) {
+				shortcutCtx.delete(key);
+			}
+		};
+	});
 </script>
 
 <h2

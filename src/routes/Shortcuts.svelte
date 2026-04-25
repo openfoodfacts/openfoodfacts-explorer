@@ -20,8 +20,12 @@
 
 	onMount(() => {
 		const keyDownListener = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' && helpModal.open) {
-				helpModal.close();
+			if (event.key === 'Escape') {
+				if (helpModal.open) {
+					helpModal.close();
+				}
+
+				(document.activeElement as HTMLElement)?.blur();
 			}
 
 			// Ignore if user is typing in an input field
