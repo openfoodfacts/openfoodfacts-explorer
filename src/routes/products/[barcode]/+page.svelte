@@ -157,7 +157,7 @@
 />
 
 <div class="flex flex-col gap-4">
-	<ProductHeader {product} taxonomies={data.taxo} />
+	<ProductHeader {product} logoCount={data.logoCount} taxonomies={data.taxo} />
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />

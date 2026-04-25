@@ -21,6 +21,7 @@
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import LogoBanner from '$lib/ui/LogoBanner.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
@@ -29,6 +30,7 @@
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	type Props = {
 		product: Product;
+		logoCount?: number;
 		taxonomies: {
 			brands: Promise<Taxonomy<Brand>>;
 			categories: Promise<Taxonomy<Category>>;
@@ -38,7 +40,8 @@
 			origins: Promise<Taxonomy<Origin>>;
 		};
 	};
-	let { product, taxonomies }: Props = $props();
+	
+	let { product, logoCount = 0, taxonomies }: Props = $props();
 
 	let { lang } = $derived($preferences);
 
@@ -100,12 +103,16 @@
 
 <Card>
 	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
-		<!-- 1. Image Column (Visual Anchor) -->
 		<!-- Left on Desktop, Top on Mobile -->
 		<div
 			class="mx-auto flex w-full max-w-[200px] shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
 		>
-			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
+			<div class="flex flex-col gap-3 w-full">
+				<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
+				{#if logoCount > 0}
+					<LogoBanner {logoCount} barcode={product.code} />
+				{/if}
+			</div>
 		</div>
 
 		<!-- 2. Content Column -->
