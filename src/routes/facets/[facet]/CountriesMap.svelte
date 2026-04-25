@@ -167,9 +167,21 @@
 		};
 	});
 
-	// Re-render whenever the map, taxonomy, facet data, or color scheme changes
+	let prevKey: string | null = null;
 	$effect(() => {
 		if (mapInstance == null || countryTaxonomy == null) return;
+
+		// Prevent unnecessary map updates by checking if relevant inputs have changed.
+		// This avoids redundant re-renders and improves performance.
+		const currentKey = JSON.stringify({
+			facet: facet.tags?.join(',') ?? '',
+			dark: isDark
+		});
+
+		if (currentKey === prevKey) return;
+
+		prevKey = currentKey;
+
 		updateMap(mapInstance, countryTaxonomy, isDark);
 	});
 
