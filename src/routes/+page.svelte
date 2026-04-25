@@ -212,12 +212,16 @@
 				{/each}
 			</div>
 		{:then [resolvedProducts, attributes]}
-			<ProductGrid
-				products={resolvedProducts.map((state) => state.product)}
-				{attributes}
-				sortByScore={$personalizedSearch.classifyProductsEnabled}
-			/>
-		{/await}
+	      <ProductGrid
+		      products={resolvedProducts.map((state) => state.product)}
+		      {attributes}
+		      sortByScore={$personalizedSearch.classifyProductsEnabled}
+	      />
+    {:catch}
+	      <p class="text-center text-red-500">
+		      {$_('errors.load_products')}
+	      </p>
+    {/await}
 	</div>
 </section>
 
