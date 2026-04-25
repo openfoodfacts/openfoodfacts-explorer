@@ -9,11 +9,13 @@
 		searchQuery = $bindable(''),
 		minQueryLength = 3,
 		loading = false,
+		placeholder = null as string | null,
 		onSearch
 	}: {
 		searchQuery?: string;
 		minQueryLength?: number;
 		loading?: boolean;
+		placeholder?: string | null;
 		onSearch: (query: string) => void;
 	} = $props();
 
@@ -147,7 +149,7 @@
 				type="text"
 				bind:value={searchQuery}
 				class="input join-item input-bordered w-full"
-				placeholder={$_('search.placeholder')}
+				placeholder={placeholder ?? $_('search.placeholder')}
 				disabled={loading}
 				aria-label={$_('search.placeholder')}
 				onkeydown={handleKeyDown}
