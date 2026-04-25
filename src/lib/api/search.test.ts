@@ -27,6 +27,16 @@ describe('getSearchBaseUrl', () => {
 		);
 	});
 
+	it('should throw error if PUBLIC_SEARCH_BASE_URL is whitespace-only', async () => {
+		mockEnv.PUBLIC_SEARCH_BASE_URL = '   ';
+
+		const { getSearchBaseUrl } = await import('./search');
+
+		expect(() => getSearchBaseUrl()).toThrow(
+			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
+		);
+	});
+
 	it('should return base URL if PUBLIC_SEARCH_BASE_URL is set', async () => {
 		mockEnv.PUBLIC_SEARCH_BASE_URL = 'https://example.com';
 
