@@ -5,7 +5,8 @@
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
-	import CommentStep from './edit-product-steps/CommentStep.svelte';
+
+	import StickyEditSaveButton from './StickyEditSaveButton.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -13,7 +14,7 @@
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
-	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+
 	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 
@@ -77,7 +78,8 @@
 	}
 </script>
 
-<div class="space-y-4">
+<!-- pb-28 on mobile accounts for the two-row floating bar; sm+ fits within pb-24 -->
+<div class="space-y-4 pb-28 sm:pb-24">
 	<!-- Languages Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
@@ -183,32 +185,7 @@
 			<PackagingStep bind:product {getPackagingImage} />
 		</div>
 	</div>
-
-	<!-- Comment Section -->
-	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
-		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-			{$_('product.edit.sections.comment')}
-		</div>
-		<div class="collapse-content">
-			<CommentStep bind:comment />
-		</div>
-	</div>
-
-	<div class="mt-8 flex justify-end">
-		<button
-			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			onclick={submit}
-			disabled={isSubmitting}
-			aria-busy={isSubmitting}
-			type="button"
-		>
-			{#if isSubmitting}
-				<span class="loading loading-spinner loading-xs sm:loading-sm mr-2" aria-hidden="true"
-				></span>
-			{/if}
-			{$_('product.edit.save_btn')}
-		</button>
-	</div>
 </div>
+
+<!-- Floating comment + save bar — always visible at bottom of viewport -->
+<StickyEditSaveButton {isSubmitting} {submit} bind:comment />
