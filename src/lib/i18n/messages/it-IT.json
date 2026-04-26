@@ -225,5 +225,8 @@
 			"description": "Aggiungi prodotti dalle loro pagine per iniziare a confrontare i valori nutrizionali",
 			"cta": "Sfoglia prodotti"
 		}
+	},
+	"static_iframe": {
+		"load_failed": "Impossibile caricare il contenuto."
 	}
 }
