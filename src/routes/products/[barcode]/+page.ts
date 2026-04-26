@@ -118,6 +118,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		// Settle parallel promises before throwing API errors (404/400/etc.)
 		void Promise.allSettled([folksonomyTags, folksonomyKeys, pricesResponse, defaultPreferences]);
 	}
+
 	handleProductApiError(apiErrorWrapped);
 
 	if (!state) {
