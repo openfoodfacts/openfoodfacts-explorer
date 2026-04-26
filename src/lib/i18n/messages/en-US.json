@@ -580,5 +580,8 @@
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
 		}
+	},
+	"static_iframe": {
+		"load_failed": "Failed to load content."
 	}
 }
