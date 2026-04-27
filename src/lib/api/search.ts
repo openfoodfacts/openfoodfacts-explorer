@@ -28,7 +28,12 @@ export const autocomplete = async (
 ): Promise<AutocompleteResponse> => {
 	const api = createSearchApi(fetch);
 	const response = await api.autocomplete(query);
-	return response.data as AutocompleteResponse;
+
+	if (!response || !response.data || !Array.isArray(response.data.options)) {
+		throw new Error('Invalid autocomplete response');
+	}
+
+	return response.data;
 };
 
 export type AutocompleteOption = {
