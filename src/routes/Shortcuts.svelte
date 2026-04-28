@@ -48,6 +48,8 @@
 				if (isEditableTarget(document.activeElement as HTMLElement)) {
 					(document.activeElement as HTMLElement).blur();
 				}
+
+				return;
 			}
 
 			// Ignore if user is typing in an input field
