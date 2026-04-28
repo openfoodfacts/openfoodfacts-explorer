@@ -127,7 +127,7 @@
 			name="ingredients_tabs"
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguageName(code)}
-			checked={code === product.lang}
+			checked={code === activeLang}
 			onchange={() => (activeLang = code)}
 		/>
 		<div class="tab-content form-control p-6">
