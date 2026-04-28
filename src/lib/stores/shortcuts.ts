@@ -41,16 +41,18 @@ export async function focusEditField(selector: string, byLabel = false): Promise
 				await new Promise<void>((resolve) => {
 					const done = () => {
 						content.removeEventListener('transitionend', done);
+						clearTimeout(timer);
 						resolve();
 					};
 					content.addEventListener('transitionend', done, { once: true });
 					// Fallback in case the transition is skipped or never fires
-					setTimeout(done, 500);
+					const timer = setTimeout(done, 500);
 				});
 			}
 		}
 	}
 
+	// Defer to next frame so the shortcut key isn't typed into the focused input
 	requestAnimationFrame(() => {
 		el.focus({ preventScroll: true });
 		el.scrollIntoView({ behavior: 'smooth', block: 'center' });
