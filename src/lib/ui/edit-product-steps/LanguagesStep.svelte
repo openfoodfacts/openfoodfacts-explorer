@@ -43,11 +43,12 @@
 		showInfo = !showInfo;
 	}
 
+	let activeLang = $state(product.lang);
 	let shortcutCtx = getShortcutCtx();
 	onMount(() => {
 		shortcutCtx.set('Shift+P', {
 			description: $_('product.shortcuts.edit_product_name'),
-			action: () => focusEditField(`#product-name-${product.lang}`)
+			action: () => focusEditField(`#product-name-${activeLang}`)
 		});
 
 		return () => {
@@ -144,6 +145,7 @@
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguageName(code)}
 			checked={code === product.lang}
+			onchange={() => (activeLang = code)}
 		/>
 		<div class="tab-content form-control p-6">
 			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>

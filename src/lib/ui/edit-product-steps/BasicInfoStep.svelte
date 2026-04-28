@@ -44,34 +44,29 @@
 	}
 
 	const shortcutCtx = getShortcutCtx();
-	const SHORTCUTS = {
-		'Shift+Q': {
+	onMount(() => {
+		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
 			action: () => focusEditField('#quantity')
-		},
-		'Shift+C': {
+		});
+		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
 			action: () => focusEditField('categories-input', true)
-		},
-		'Shift+B': {
+		});
+		shortcutCtx.set('Shift+B', {
 			description: $_('product.shortcuts.edit_product_brands'),
 			action: () => focusEditField('brands-input', true)
-		},
-		'Shift+L': {
+		});
+		shortcutCtx.set('Shift+L', {
 			description: $_('product.shortcuts.edit_product_labels'),
 			action: () => focusEditField('labels-input', true)
-		}
-	};
-
-	onMount(() => {
-		for (const [key, value] of Object.entries(SHORTCUTS)) {
-			shortcutCtx.set(key, value);
-		}
+		});
 
 		return () => {
-			for (const key of Object.keys(SHORTCUTS)) {
-				shortcutCtx.delete(key);
-			}
+			shortcutCtx.delete('Shift+Q');
+			shortcutCtx.delete('Shift+C');
+			shortcutCtx.delete('Shift+B');
+			shortcutCtx.delete('Shift+L');
 		};
 	});
 </script>
