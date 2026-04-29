@@ -6,7 +6,6 @@
 	let { src }: Props = $props();
 
 	let frameHeight = $state<number | null>(null);
-	let isLoaded = $state(false);
 	let hasError = $state(false);
 	let iframeEl = $state<HTMLIFrameElement | null>(null);
 
@@ -18,8 +17,6 @@
 			return null;
 		}
 	})();
-
-	let showContent = $derived(frameHeight !== null && isLoaded && !hasError);
 
 	onMount(() => {
 		const ac = new AbortController();
@@ -64,22 +61,17 @@
 		bind:this={iframeEl}
 		{src}
 		title="External Content"
-		onload={() => (isLoaded = true)}
 		scrolling="no"
 		class="absolute inset-0 border-0"
 	></iframe>
 
-	{#if !showContent}
+	{#if hasError}
 		<div
 			role="status"
 			aria-live="polite"
 			class="absolute inset-0 flex items-center justify-center bg-gray-100"
 		>
-			{#if hasError}
-				<span class="font-medium text-red-500">{$_('static_iframe.load_failed')}</span>
-			{:else}
-				<span class="animate-pulse font-medium text-gray-500">{$_('general.loading')}</span>
-			{/if}
+			<span class="font-medium text-red-500">{$_('static_iframe.load_failed')}</span>
 		</div>
 	{/if}
 </div>
