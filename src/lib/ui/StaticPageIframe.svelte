@@ -30,27 +30,25 @@
 			if (frameHeight === null) hasError = true;
 		}, 8000);
 
-		window.addEventListener(
-			'message',
-			(e: MessageEvent) => {
-				// Validate: origin matches the iframe URL, the message came from
-				// our own iframe (not a sibling iframe on the page), and the
-				// payload has the expected shape.
-				if (
-					e.origin !== expectedOrigin ||
-					e.source !== iframeEl?.contentWindow ||
-					!e.data?.frameHeight
-				)
-					return;
+		const handler = (e: MessageEvent) => {
+			// Validate: origin matches the iframe URL, the message came from
+			// our own iframe (not a sibling iframe on the page), and the
+			// payload has the expected shape.
+			if (
+				e.origin !== expectedOrigin ||
+				e.source !== iframeEl?.contentWindow ||
+				!e.data?.frameHeight
+			)
+				return;
 
-				const h = parseInt(e.data.frameHeight, 10);
-				if (Number.isFinite(h) && h > 0) {
-					frameHeight = h;
-					clearTimeout(timeoutId);
-				}
-			},
-			{ signal: ac.signal }
-		);
+			const h = parseInt(e.data.frameHeight, 10);
+			if (Number.isFinite(h) && h > 0) {
+				frameHeight = h;
+				clearTimeout(timeoutId);
+			}
+		};
+
+		window.addEventListener('message', handler, { signal: ac.signal });
 
 		return () => {
 			ac.abort();
