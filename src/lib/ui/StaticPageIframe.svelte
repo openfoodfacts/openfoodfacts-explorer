@@ -10,13 +10,13 @@
 	let iframeEl = $state<HTMLIFrameElement | null>(null);
 
 	// URL constructor throws on malformed strings; guard against SSR/runtime crashes.
-	const expectedOrigin: string | null = (() => {
+	const expectedOrigin = $derived.by(() => {
 		try {
 			return new URL(src).origin;
 		} catch {
 			return null;
 		}
-	})();
+	});
 
 	onMount(() => {
 		const ac = new AbortController();
@@ -54,7 +54,15 @@
 	});
 </script>
 
-<div class="relative w-full" style:height={frameHeight !== null ? `${frameHeight}px` : '24rem'}>
+{#if hasError}
+	<div
+		role="status"
+		aria-live="polite"
+		class="flex h-96 w-full items-center justify-center bg-gray-100"
+	>
+		<span class="font-medium text-red-500">{$_('static_iframe.load_failed')}</span>
+	</div>
+{:else}
 	<!-- scrolling="no" prevents the iframe's internal scrollbar; height is
 	     driven by the postMessage payload from the embedded page. -->
 	<iframe
@@ -62,16 +70,7 @@
 		{src}
 		title="External Content"
 		scrolling="no"
-		class="absolute inset-0 border-0"
+		class="w-full border-0"
+		style:height={frameHeight !== null ? `${frameHeight}px` : '24rem'}
 	></iframe>
-
-	{#if hasError}
-		<div
-			role="status"
-			aria-live="polite"
-			class="absolute inset-0 flex items-center justify-center bg-gray-100"
-		>
-			<span class="font-medium text-red-500">{$_('static_iframe.load_failed')}</span>
-		</div>
-	{/if}
-</div>
+{/if}
