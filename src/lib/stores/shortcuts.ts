@@ -30,27 +30,7 @@ export function getShortcutCtx(): ShortcutContext {
 export async function focusEditField(selector: string, byLabel = false): Promise<void> {
 	const el = byLabel ? getFieldByLabel(selector) : document.querySelector<HTMLElement>(selector);
 	if (!el) return;
-
-	const collapse = el.closest('.collapse');
-	if (collapse) {
-		const checkbox = collapse.querySelector<HTMLInputElement>('input[type="checkbox"]');
-		if (checkbox && !checkbox.checked) {
-			checkbox.checked = true;
-			const content = collapse.querySelector<HTMLElement>('.collapse-content');
-			if (content) {
-				await new Promise<void>((resolve) => {
-					const done = () => {
-						content.removeEventListener('transitionend', done);
-						clearTimeout(timer);
-						resolve();
-					};
-					content.addEventListener('transitionend', done, { once: true });
-					// Fallback in case the transition is skipped or never fires
-					const timer = setTimeout(done, 500);
-				});
-			}
-		}
-	}
+	await expandCollapse(el);
 
 	// Defer to next frame so the shortcut key isn't typed into the focused input
 	requestAnimationFrame(() => {
@@ -72,4 +52,33 @@ function getFieldByLabel(labelFor: string): HTMLElement | null {
 	const formControl = label.closest('.form-control');
 	if (!formControl) return null;
 	return formControl.querySelector<HTMLElement>('input, textarea, select');
+}
+
+/**
+ * Expands a collapsible element if it is currently collapsed.
+ *
+ * @param {HTMLElement} el - The element that triggered the collapsible action.
+ * @return {Promise<void>} A promise that resolves when the collapsible element is expanded.
+ */
+async function expandCollapse(el: HTMLElement): Promise<void> {
+	const collapse = el.closest('.collapse');
+	if (!collapse) return;
+
+	const checkbox = collapse.querySelector<HTMLInputElement>('input[type="checkbox"]');
+	if (!checkbox || checkbox.checked) return;
+
+	checkbox.checked = true;
+
+	const content = collapse.querySelector<HTMLElement>('.collapse-content');
+	if (!content) return;
+
+	await new Promise<void>((resolve) => {
+		const done = () => {
+			content.removeEventListener('transitionend', done);
+			clearTimeout(timer);
+			resolve();
+		};
+		content.addEventListener('transitionend', done, { once: true });
+		const timer = setTimeout(done, 500);
+	});
 }

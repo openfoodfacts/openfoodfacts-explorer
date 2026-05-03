@@ -25,12 +25,12 @@
 	 * @return {boolean} Whether the element is editable.
 	 */
 	function isEditableTarget(el: HTMLElement | null): boolean {
-		if (!el) return false;
 		return (
-			el instanceof HTMLInputElement ||
-			el instanceof HTMLTextAreaElement ||
-			el instanceof HTMLSelectElement ||
-			el.isContentEditable
+			el !== null &&
+			(el instanceof HTMLInputElement ||
+				el instanceof HTMLTextAreaElement ||
+				el instanceof HTMLSelectElement ||
+				el.isContentEditable)
 		);
 	}
 
