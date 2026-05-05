@@ -70,9 +70,6 @@ importers:
       '@openfoodfacts/openfoodfacts-nodejs':
         specifier: 2.0.0-alpha.30
         version: 2.0.0-alpha.30
-      '@sinnwerkstatt/sveltekit-matomo':
-        specifier: github:VaiTon/sveltekit-matomo
-        version: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/7dd2ec1a1ff89759e7051445a83ab933f666b2e5(@sveltejs/kit@2.59.0(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.1))(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))(typescript@5.9.3)(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))
       '@sveltejs/adapter-node':
         specifier: ^5.5.4
         version: 5.5.4(@sveltejs/kit@2.59.0(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.1))(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))(typescript@5.9.3)(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))
@@ -1543,13 +1540,6 @@ packages:
   '@sentry/vite-plugin@4.6.1':
     resolution: {integrity: sha512-Qvys1y3o8/bfL3ikrHnJS9zxdjt0z3POshdBl3967UcflrTqBmnGNkcVk53SlmtJWIfh85fgmrLvGYwZ2YiqNg==}
     engines: {node: '>= 14'}
-
-  '@sinnwerkstatt/sveltekit-matomo@https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/7dd2ec1a1ff89759e7051445a83ab933f666b2e5':
-    resolution: {tarball: https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/7dd2ec1a1ff89759e7051445a83ab933f666b2e5}
-    version: 0.1.0
-    peerDependencies:
-      '@sveltejs/kit': '>=2.57.1'
-      svelte: '>=5.53.5'
 
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
@@ -4998,11 +4988,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
-
-  '@sinnwerkstatt/sveltekit-matomo@https://codeload.github.com/VaiTon/sveltekit-matomo/tar.gz/7dd2ec1a1ff89759e7051445a83ab933f666b2e5(@sveltejs/kit@2.59.0(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.1))(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))(typescript@5.9.3)(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))':
-    dependencies:
-      '@sveltejs/kit': 2.59.0(@opentelemetry/api@1.9.0)(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.5(@typescript-eslint/types@8.59.1))(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4)))(svelte@5.55.5(@typescript-eslint/types@8.59.1))(typescript@5.9.3)(vite@8.0.10(@types/node@24.10.1)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.4))
-      svelte: 5.55.5(@typescript-eslint/types@8.59.1)
 
   '@standard-schema/spec@1.0.0': {}
 

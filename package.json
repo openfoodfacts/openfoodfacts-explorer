@@ -38,7 +38,6 @@
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.28",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.30",
-		"@sinnwerkstatt/sveltekit-matomo": "github:VaiTon/sveltekit-matomo",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-vercel": "^6.3.3",
 		"@sveltejs/kit": "^2.49.1",
