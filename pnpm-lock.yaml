@@ -59,14 +59,14 @@ importers:
         specifier: ^0.10.3
         version: 0.10.3
       '@iconify-svelte/material-symbols':
-        specifier: ^1.0.12
-        version: 1.0.12(svelte@5.53.5)
+        specifier: ^1.0.29
+        version: 1.0.29(svelte@5.53.5)
       '@iconify-svelte/mdi':
-        specifier: ^1.0.0
-        version: 1.0.0(svelte@5.53.5)
+        specifier: ^1.0.2
+        version: 1.0.2(svelte@5.53.5)
       '@iconify-svelte/simple-icons':
-        specifier: ^1.0.13
-        version: 1.0.13(svelte@5.53.5)
+        specifier: ^1.0.28
+        version: 1.0.28(svelte@5.53.5)
       '@openfoodfacts/openfoodfacts-nodejs':
         specifier: 2.0.0-alpha.30
         version: 2.0.0-alpha.30
@@ -836,17 +836,17 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@iconify-svelte/material-symbols@1.0.12':
-    resolution: {integrity: sha512-LeO5CLlZPZ/mKEnuuooir6v55KnCUGyWuxb5moUfMBjRSq7L1Fzbggzc7BIysaimcaXt3WWlevPxvxO1pVGjyg==}
+  '@iconify-svelte/material-symbols@1.0.29':
+    resolution: {integrity: sha512-TRLVijxEXolTfTa2awjQRWmpS/KxRkRVQQ6p8spAELajKA2OnJaKgZZ5rox/YgFInJnhj0MG7BJAqFiD7a170A==}
 
-  '@iconify-svelte/mdi@1.0.0':
-    resolution: {integrity: sha512-P7vHI/9KRnflurdxQlH9l8heO3HFVxH4TmrLYnYZqhCp/CMec5UVELB7Z8OKysaFmZq5X1udDn9fb/SxWUU1Aw==}
+  '@iconify-svelte/mdi@1.0.2':
+    resolution: {integrity: sha512-rZ+nkXXR/KKvxwqaiBnXywoi6horZx4JYwMGLaMTUWKtIKy/fsUAkYXZIV6/e2Ks2rHI4us+bCm5+zEnFYds3w==}
 
-  '@iconify-svelte/simple-icons@1.0.13':
-    resolution: {integrity: sha512-D+fXXlGVo5YSmUnP0rQGvRDpo1wV/OYgwO4AWrQHrogA3lngXV6CD56xvkSnqWvp1wbtLaKQgYGqkeUf+/RfoA==}
+  '@iconify-svelte/simple-icons@1.0.28':
+    resolution: {integrity: sha512-YFZGWA/YqL0Z9djIwNv6BzJHrRluKzhxM/rBsaEVOzJ9/1Viq6VLAcSpN+NbtIN3HvGM4HzhGNBp/RPXNhRdIQ==}
 
-  '@iconify/css-svelte@1.0.0':
-    resolution: {integrity: sha512-S9kZ+U/hQ+QVHZVLKu06xiVi0rII4DJCh2Z6M1m7IOyECBD7A1emk5pRx4fWG9Zp7ZOHL8dWO90sxtsaOPZBJw==}
+  '@iconify/css-svelte@1.0.1':
+    resolution: {integrity: sha512-f9w1anXXBm48VjDEWDrGTybdiwnDTIChcUpBK/UtXR/AhNp/Co/VPp00t7dO93j+4Je0OwMKyc/HvI7Lpv3PKg==}
     peerDependencies:
       svelte: '>=5.53.5'
 
@@ -4258,25 +4258,25 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify-svelte/material-symbols@1.0.12(svelte@5.53.5)':
+  '@iconify-svelte/material-symbols@1.0.29(svelte@5.53.5)':
     dependencies:
-      '@iconify/css-svelte': 1.0.0(svelte@5.53.5)
+      '@iconify/css-svelte': 1.0.1(svelte@5.53.5)
     transitivePeerDependencies:
       - svelte
 
-  '@iconify-svelte/mdi@1.0.0(svelte@5.53.5)':
+  '@iconify-svelte/mdi@1.0.2(svelte@5.53.5)':
     dependencies:
-      '@iconify/css-svelte': 1.0.0(svelte@5.53.5)
+      '@iconify/css-svelte': 1.0.1(svelte@5.53.5)
     transitivePeerDependencies:
       - svelte
 
-  '@iconify-svelte/simple-icons@1.0.13(svelte@5.53.5)':
+  '@iconify-svelte/simple-icons@1.0.28(svelte@5.53.5)':
     dependencies:
-      '@iconify/css-svelte': 1.0.0(svelte@5.53.5)
+      '@iconify/css-svelte': 1.0.1(svelte@5.53.5)
     transitivePeerDependencies:
       - svelte
 
-  '@iconify/css-svelte@1.0.0(svelte@5.53.5)':
+  '@iconify/css-svelte@1.0.1(svelte@5.53.5)':
     dependencies:
       '@iconify/types': 2.0.0
       svelte: 5.53.5
