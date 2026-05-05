@@ -25,6 +25,9 @@ export function createRobotoffApi(fetch: typeof window.fetch) {
 export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
 	const keycloakUrl = KEYCLOAK_URL;
 	const clientId = OAUTH_CLIENT_ID;
+	if (!keycloakUrl || !clientId) {
+		throw new Error('Missing Keycloak configuration');
+	}
 
 	const cleanUrl = new URL(url.pathname, url.origin);
 	const redirectUri = OAUTH_REDIRECT_URI(cleanUrl);
