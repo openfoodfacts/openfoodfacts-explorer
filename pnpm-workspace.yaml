@@ -1,6 +1,5 @@
 allowBuilds:
   '@sentry/cli': true
-  '@sinnwerkstatt/sveltekit-matomo': true
   es5-ext: true
   esbuild: true
 
