@@ -17,4 +17,4 @@ jobs:
     name: 'Pull request assignment'
     runs-on: ubuntu-slim
     steps:
-      - uses: toshimaru/auto-author-assign@4d585cc37690897bd9015942ed6e766aa7cdb97f # ratchet:toshimaru/auto-author-assign@v3.0.1
+      - uses: toshimaru/auto-author-assign@bdd7688cbf9e6d5683f02f8c7d8ae4062a254b6d # ratchet:toshimaru/auto-author-assign@v3.0.2
