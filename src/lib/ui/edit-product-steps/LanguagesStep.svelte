@@ -10,8 +10,9 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiSearch from '@iconify-svelte/mdi/search';
-	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;

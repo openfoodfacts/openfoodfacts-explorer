@@ -11,8 +11,9 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
-	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type OCRResult = {
 		status?: number;

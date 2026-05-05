@@ -23,8 +23,9 @@
 		type IssueSeverity
 	} from './nutrition';
 
-	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;

@@ -12,8 +12,9 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
-	import { focusEditField, getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;
