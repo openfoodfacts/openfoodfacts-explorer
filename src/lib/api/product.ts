@@ -77,10 +77,6 @@ export async function updateBarcode(
 ): Promise<boolean> {
 	const off = createProductsApi(fetch);
 
-	const body = new FormData();
-	body.append('code', currentCode);
-	body.append('new_code', newCode);
-
 	try {
 		// @ts-expect-error - new method added in upcoming SDK version
 		const success = await off.apiv2.changeBarcode(currentCode, newCode);
@@ -89,6 +85,9 @@ export async function updateBarcode(
 		console.error('Error updating barcode:', error);
 		return false;
 	}
+}
+
+/**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
  * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function

@@ -13,7 +13,7 @@
 		type Nutriments,
 		type RawImage,
 		addOrEditProductV2,
-		updateBarcode
+		updateBarcode,
 		updatePackagingsV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
