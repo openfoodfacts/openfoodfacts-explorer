@@ -70,6 +70,7 @@
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
+		units: string[];
 	};
 
 	let {
@@ -87,6 +88,7 @@
 		storeNames,
 		originNames,
 		countriesNames,
+		units,
 		isSubmitting,
 		submit
 	}: Props = $props();
@@ -154,7 +156,7 @@
 {:else if currentStep === 3}
 	<IngredientsStep bind:product {getIngredientsImage} />
 {:else if currentStep === 4}
-	<NutritionStep bind:product {getNutritionImage} {handleNutrimentInput} />
+	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
 	<PackagingStep bind:product {getPackagingImage} />
 {:else if currentStep === 6}

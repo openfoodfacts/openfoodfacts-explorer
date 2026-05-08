@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import { tracker } from '$lib/matomo';
 
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -85,9 +85,9 @@
 	function handleSortChange(value: string) {
 		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
-		selectedSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('sort_by', selectedSort.value);
+		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
 	}
 
@@ -164,7 +164,7 @@
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4">
+	<div class="my-4" id="facets">
 		<FacetBar
 			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
@@ -299,4 +299,16 @@
 <SearchOptionsFooter
 	onSortOptionSelect={(value) => handleSortChange(value)}
 	sortBy={selectedSort.value}
+	onFilterClick={() => {
+		goto('/facets');
+	}}
+	{searchResult}
+	onAddFacet={(key, val) => {
+		selectedFacets = addIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
+	onRemoveFacet={(key, val) => {
+		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
+		refreshQuery();
+	}}
 />

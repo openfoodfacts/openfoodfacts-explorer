@@ -19,7 +19,7 @@
 	<h1 class="text-primary mb-2 text-center text-4xl font-bold drop-shadow-lg sm:text-5xl">
 		{$_('explore.title')}
 	</h1>
-	<p class="text-secondary-content mb-6 max-w-2xl text-center text-lg">
+	<p class="text-primary mb-6 max-w-2xl text-center text-lg">
 		{$_('explore.subtitle')}
 	</p>
 	<div class="mb-8 flex w-full max-w-xl justify-center">

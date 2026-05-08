@@ -35,6 +35,7 @@ By building a new frontend, we want to be able to iterate faster on the user exp
 - Using more openfoodfacts-webcomponents
 - Support for [Open Prices](https://prices.openfoodfacts.org/)
 - Support for Nutri-Patrol
+- [Feature parity list](https://docs.google.com/spreadsheets/d/1JE6prbafDeArI5GKzoxcEJRJDTFkakynBo-NltcPJx8/edit?usp=sharing)
 
 ## Get in touch
 

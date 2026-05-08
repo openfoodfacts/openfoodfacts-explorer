@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 
 	import {
 		getOrDefault,
 		type SelectedImage,
 		type Taxonomy,
+		type Unit,
 		type Product,
 		type Nutriments,
 		type RawImage,
@@ -19,6 +21,7 @@
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -26,6 +29,7 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/environment';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
+	import { resolve } from '$app/paths';
 
 	interface Props {
 		data: PageData;
@@ -34,6 +38,7 @@
 	let { data }: Props = $props();
 
 	const toastCtx = getToastCtx();
+	const shortcutCtx = getShortcutCtx();
 
 	function createEmptyImage(): SelectedImage | RawImage {
 		return {
@@ -141,15 +146,38 @@
 			.filter((t): t is string => t !== undefined);
 	}
 
+	function getUnits(taxo: Taxonomy<Unit>) {
+		const units = new SvelteSet<string>();
+
+		for (const taxoNode of Object.values(taxo)) {
+			const localizedUnits = [
+				...Object.values(taxoNode.name),
+				...Object.values(taxoNode.symbol ?? {})
+			];
+
+			for (const unit of localizedUnits) {
+				const normalizedUnit = unit.toLowerCase().trim();
+				if (normalizedUnit !== '') {
+					units.add(normalizedUnit);
+				}
+			}
+		}
+
+		return [...units];
+	}
+
 	let categoryNames = $derived(getNames(data.categories));
 	let labelNames = $derived(getNames(data.labels));
 	let brandNames = $derived(getNames(data.brands));
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
+	let units = $derived(getUnits(data.units));
 
 	function createProductStore(data: PageData): Product {
-		return data.state.status === PRODUCT_STATUS.EMPTY || !data.state.product
+		return data.state.status === PRODUCT_STATUS.EMPTY ||
+			!('product' in data.state) ||
+			!data.state.product
 			? emptyProduct
 			: {
 					...data.state.product,
@@ -381,11 +409,26 @@
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
+
+	$effect(() => {
+		if (!isAddMode) {
+			shortcutCtx.set('V', {
+				description: $_('product.shortcuts.view_page'),
+				action: () => {
+					if (page.params.barcode) {
+						goto(resolve('/products/[barcode]', { barcode: page.params.barcode }));
+					}
+				}
+			});
+		}
+
+		return () => shortcutCtx.delete('V');
+	});
 </script>
 
 {#if dev}
 	<div class="alert alert-warning my-8 text-lg" role="alert">
-		<IconMdiAlert class="mr-2" />
+		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
 		<div>
 			<p>
 				<strong> You are not logged in! </strong>
@@ -438,6 +481,7 @@
 			{originNames}
 			{submit}
 			{storeNames}
+			{units}
 			{handleNutrimentInput}
 		/>
 	{:else}
@@ -457,6 +501,7 @@
 			{labelNames}
 			{originNames}
 			{storeNames}
+			{units}
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
 		/>

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
+	import { Matomo } from '$lib/matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -9,6 +9,7 @@
 
 	import { goto } from '$app/navigation';
 	import { navigating, page } from '$app/state';
+	import { slide } from 'svelte/transition';
 
 	import Logo from '$lib/ui/Logo.svelte';
 	import Navbar from '$lib/ui/Navbar.svelte';
@@ -23,21 +24,29 @@
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
-	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
+	import {
+		IMAGE_HOST,
+		MATOMO_HOST,
+		MATOMO_SITE_ID,
+		OPEN_PRICES_BASE_URL,
+		ROBOTOFF_URL
+	} from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
+	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
-	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
+	import Shortcuts from './Shortcuts.svelte';
+	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
+	let websiteCtx: { flavor: WebsiteFlavor } = $state({
 		flavor: 'food'
 	});
 	setWebsiteCtx(() => websiteCtx);
@@ -101,7 +110,7 @@
 		// Add more shortcuts here
 	]);
 
-	setContext('shortcuts', () => shortcuts);
+	setShortcutCtx(() => shortcuts);
 
 	// Load OpenFoodFacts Web Components
 
@@ -171,6 +180,10 @@
 		isSearching = true;
 		await goto('/search?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
+	}
+
+	function getLoginUrl(url: URL) {
+		return resolve('/oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
 	}
 
 	let searchActive = $state(false);
@@ -261,11 +274,16 @@
 				{#if $userInfo != null}
 					<a
 						class="btn btn-outline link"
-						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+						>{$_('navbar.account', { default: 'Account' })}</a
 					>
-					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+					<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+						>{$_('navbar.logout', { default: 'Logout' })}</a
+					>
 				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+					<a class="btn btn-outline link" href={getLoginUrl(page.url)}
+						>{$_('navbar.login', { default: 'Login' })}</a
+					>
 				{/if}
 				<!-- Settings button -->
 				<a
@@ -296,7 +314,7 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
+<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
 	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
 		<div class="navbar-start">
 			<a href="/">
@@ -337,7 +355,7 @@
 	</div>
 
 	{#if searchActive}
-		<div class="flex justify-center">
+		<div class="flex justify-center" transition:slide={{ duration: 200 }}>
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
@@ -357,7 +375,7 @@
 		<a class="btn btn-outline link" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
+		<a class="btn btn-outline link" href={OPEN_PRICES_BASE_URL}>
 			{$_('prices_link')}
 		</a>
 		<a class="btn btn-outline link" href="/folksonomy">
@@ -380,11 +398,16 @@
 		{#if $userInfo != null}
 			<a
 				class="btn btn-outline link"
-				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
+				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+				>{$_('navbar.account', { default: 'Account' })}</a
 			>
-			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+			<a class="btn btn-outline link" href={resolve('/oauth/logout')}
+				>{$_('navbar.logout', { default: 'Logout' })}</a
+			>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+			<a class="btn btn-outline link" href={getLoginUrl(page.url)}
+				>{$_('navbar.login', { default: 'Login' })}</a
+			>
 		{/if}
 	</div>
 </div>

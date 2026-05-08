@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 
 	import { _ } from '$lib/i18n';
+	import { OPEN_PRICES_PRODUCTS_URL } from '$lib/const';
 
 	import Card from '$lib/ui/Card.svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -40,7 +41,7 @@
 
 	<div class="mt-4 text-end">
 		<a
-			href="https://prices.openfoodfacts.org/products/{barcode}"
+			href={OPEN_PRICES_PRODUCTS_URL(barcode)}
 			class="text-secondary link text-sm italic"
 			target="_blank"
 			rel="noopener noreferrer"

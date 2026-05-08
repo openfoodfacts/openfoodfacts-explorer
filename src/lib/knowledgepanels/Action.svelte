@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeElementAction } from '$lib/api';
+	import type { KnowledgeActionElement } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { NUTRIPATROL_URL } from '$lib/const';
@@ -7,7 +7,7 @@
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	type Props = {
-		element: KnowledgeElementAction;
+		element: KnowledgeActionElement;
 		code?: string;
 	};
 	let { element, code: code }: Props = $props();

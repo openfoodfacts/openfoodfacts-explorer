@@ -1,32 +1,35 @@
-import { wrapFetchWithCredentials } from '$lib/api/utils';
+import { createProductsApi } from '$lib/api';
 import { API_HOST } from '$lib/const';
+import { fetchRequired } from '$lib/promises';
 import type { PageLoad } from './$types';
 
 async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
-	const res = await wrappedFetch(`${url}.json`);
-	if (!res.ok) {
-		throw new Error(`Failed to fetch product count: ${res.status} ${res.statusText}`);
+	// The API doesn't provide a dedicated endpoint for getting the total number of products,
+	// so we fetch the first page of products and read the "count" property from the response.
+
+	const data = await fetchRequired(fetch, new URL('.json', API_HOST));
+	if (
+		typeof data !== 'object' ||
+		data === null ||
+		!('count' in data) ||
+		typeof data.count !== 'number'
+	) {
+		throw new Error('Invalid response format: expected an object with a numeric "count" property');
 	}
-	const data = await res.json();
-	return data?.count || 0;
+	return data.count;
 }
 
 async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
-	const res = await wrappedFetch(`${url}facets/contributors.json`);
-	if (!res.ok) {
-		throw new Error(`Failed to fetch contributor count: ${res.status} ${res.statusText}`);
-	}
-	const data = await res.json();
-	return data?.count || 0;
+	const api = createProductsApi(fetch);
+	const data = await api.getFacet('contributors');
+	return data.count;
 }
 
 export const load: PageLoad = async ({ fetch }) => {
 	const productCount = getNumberOfProducts(fetch);
 	const contributorCount = getNumberOfContributors(fetch);
 	return {
-		productCount: await productCount,
-		contributorCount: await contributorCount
+		productCount,
+		contributorCount
 	};
 };

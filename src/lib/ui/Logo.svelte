@@ -1,16 +1,10 @@
 <script lang="ts">
 	import { getWebsiteCtx } from '$lib/stores/website';
+	import { WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 
 	let websiteCtx = getWebsiteCtx();
 
-	const FLAVOR_MAP: Record<typeof websiteCtx.flavor, string> = {
-		beauty: 'obf',
-		food: 'off',
-		petfood: 'opff',
-		product: 'opf'
-	};
-
-	let logoSuffix = $derived(FLAVOR_MAP[websiteCtx.flavor] ?? 'off');
+	let logoSuffix = $derived(WEBSITE_FLAVOR_METADATA[websiteCtx.flavor]?.reportFlavor ?? 'off');
 	let {
 		class: className = '',
 		mono = false

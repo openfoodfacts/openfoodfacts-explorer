@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { KnowledgeElementTable } from '$lib/api';
+	import type { KnowledgeTableElement } from '$lib/api';
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
-	let { element }: { element: KnowledgeElementTable } = $props();
+	let { element }: { element: KnowledgeTableElement } = $props();
 </script>
 
 <div class="overflow-x-auto">
