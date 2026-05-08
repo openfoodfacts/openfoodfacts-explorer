@@ -149,7 +149,6 @@
 	let productAttributes = $derived(getProductAttributes(product.code));
 </script>
 
-<!-- FIXME: Remove this cast once product.image_front_small_url and product.image_front_url are not nullable in the API -->
 <Metadata
 	title={$_('product.title', { values: { productName: product.product_name } })}
 	description={$_('product.description', { values: { productName: product.product_name } })}

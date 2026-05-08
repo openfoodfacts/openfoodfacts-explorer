@@ -16,15 +16,21 @@
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
-	import { analyzeNutrition } from './nutrition';
+	import {
+		getServingSizeValidationResult,
+		getNutritionIssues,
+		type Issue,
+		type IssueSeverity
+	} from './nutrition';
 
 	type Props = {
 		product: Product;
+		units: string[];
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
 	};
 
-	let { product = $bindable(), getNutritionImage, handleNutrimentInput }: Props = $props();
+	let { product = $bindable(), units, getNutritionImage, handleNutrimentInput }: Props = $props();
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -81,29 +87,103 @@
 		};
 	}
 
-	let analysisResults = $derived(analyzeNutrition(product));
+	function handleServingSize(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
 
-	const bySeverity = (a: { severity: string }, b: { severity: string }) => {
+		product = {
+			...product,
+			serving_size: input.value
+		};
+	}
+
+	function handleNoNutritionData(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+
+		product = {
+			...product,
+			no_nutrition_data: input.checked
+		};
+	}
+
+	const bySeverity = (a: Issue, b: Issue) => {
 		if (a.severity === b.severity) return 0;
 		if (a.severity === 'error') return -1;
 		return 1;
 	};
 
+	const INPUT_CLASS_BY_SEVERITY: Record<IssueSeverity, string> = {
+		error: 'input-error',
+		warning: 'input-warning'
+	};
+	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning'];
+	const SERVING_SIZE_VALIDATION_ISSUES = {
+		'missing-number': {
+			severity: 'error',
+			title: 'product.edit.serving_size_issues.missing_number.title',
+			desc: 'product.edit.serving_size_issues.missing_number.desc'
+		},
+		'missing-unit': {
+			severity: 'error',
+			title: 'product.edit.serving_size_issues.missing_unit.title',
+			desc: 'product.edit.serving_size_issues.missing_unit.desc'
+		},
+		'unknown-unit': {
+			severity: 'warning',
+			title: 'product.edit.serving_size_issues.unknown_unit.title',
+			desc: 'product.edit.serving_size_issues.unknown_unit.desc'
+		}
+	} as const;
+
+	function inputClassForSeverity(severity: IssueSeverity | undefined): string {
+		return severity == null ? '' : INPUT_CLASS_BY_SEVERITY[severity];
+	}
+
+	function highestSeverity(issues: Issue[]): IssueSeverity | undefined {
+		for (const severity of SEVERITY_PRECEDENCE) {
+			if (issues.some((issue) => issue.severity === severity)) {
+				return severity;
+			}
+		}
+
+		return undefined;
+	}
+
+	let servingSizeExamples = $derived($_('product.edit.serving_size_examples'));
+	let servingSizeValidationResult = $derived(
+		getServingSizeValidationResult(product.serving_size, units)
+	);
+	let servingSizeIssue = $derived.by((): Issue | null => {
+		if (servingSizeValidationResult === 'valid') {
+			return null;
+		}
+
+		const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+
+		return {
+			severity: validationIssue.severity,
+			field: 'serving_size',
+			title: $_(validationIssue.title),
+			desc: $_(validationIssue.desc, { values: { examples: servingSizeExamples } })
+		};
+	});
+	let servingSizePlaceholder = $derived(
+		$_('product.edit.serving_size_placeholder', {
+			values: { examples: servingSizeExamples }
+		})
+	);
+	let nutritionIssues = $derived(getNutritionIssues(product));
+
 	let issuesByField = $derived((keys: string | string[]) => {
 		const keysArray = Array.isArray(keys) ? keys : [keys];
 
-		return analysisResults
+		return nutritionIssues
 			.filter((r) => r.field && keysArray.includes(r.field))
 			.toSorted(bySeverity);
 	});
-
-	let fieldInputClasses = $derived((field: string | string[]) => {
-		const results = issuesByField(field);
-		if (results.length === 0) return '';
-		if (results.some((r) => r.severity === 'error')) return 'input-error';
-		if (results.some((r) => r.severity === 'warning')) return 'input-warning';
-		return '';
-	});
+	let servingSizeInputClass = $derived(inputClassForSeverity(servingSizeIssue?.severity));
+	let fieldInputClasses = $derived((field: string | string[]) =>
+		inputClassForSeverity(highestSeverity(issuesByField(field)))
+	);
 
 	function wipeAllNutrientValues() {
 		product = {
@@ -113,6 +193,33 @@
 		additionalNutrients = [];
 	}
 </script>
+
+{#snippet issueTooltip(issue: Issue)}
+	{@const isError = issue.severity === 'error'}
+	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
+	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
+	<div
+		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning']}
+		data-tip={issue.title}
+	>
+		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
+	</div>
+{/snippet}
+
+{#snippet issueAlert(issue: Issue)}
+	{@const isError = issue.severity === 'error'}
+	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
+	{@const alertColorClass = isError ? 'alert-error' : 'alert-warning'}
+	<div class={[alertColorClass, 'alert mt-4']}>
+		<Icon class="h-5 w-5" />
+		<div>
+			<p class="text-sm font-bold sm:text-base">{issue.title}</p>
+			{#if issue.desc}
+				<p class="mt-2 text-sm sm:text-base">{issue.desc}</p>
+			{/if}
+		</div>
+	</div>
+{/snippet}
 
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
@@ -151,20 +258,32 @@
 					<span class="label mb-2 flex items-center gap-2 leading-0">
 						{$_('product.edit.serving_size')}
 						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-					</span>title
+						{#if servingSizeIssue}
+							{@render issueTooltip(servingSizeIssue)}
+						{/if}
+					</span>
 					<input
 						id="serving-size-input"
 						type="text"
-						class="input input-bordered w-full text-sm sm:text-base"
-						bind:value={product.serving_size}
-						placeholder="e.g., 100g, 1 serving (30g)"
+						class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
+						value={product.serving_size ?? ''}
+						oninput={handleServingSize}
+						placeholder={servingSizePlaceholder}
 					/>
 				</label>
+				{#if servingSizeIssue}
+					{@render issueAlert(servingSizeIssue)}
+				{/if}
 			</div>
 
 			<div>
 				<label class="label">
-					<input type="checkbox" class="checkbox" bind:checked={product.no_nutrition_data} />
+					<input
+						type="checkbox"
+						class="checkbox"
+						checked={product.no_nutrition_data ?? false}
+						onchange={handleNoNutritionData}
+					/>
 					<span>
 						{$_('product.edit.no_nutrition_data')}
 					</span>
@@ -213,23 +332,7 @@
 							{$_('product.edit.si_kilojoules')}
 						</span>
 						{#if issuesByField('energy').length > 0}
-							{@const issue = issuesByField('energy')[0]}
-							<div
-								class={[
-									'tooltip',
-									issue?.severity === 'error' && 'tooltip-error',
-									issue?.severity === 'warning' && 'tooltip-warning'
-								]}
-								data-tip={issue?.title}
-							>
-								<div class="ml-2 h-5 w-5">
-									{#if issue.severity === 'warning'}
-										<IconMdiAlert class="text-warning h-5 w-5" />
-									{:else if issue.severity === 'error'}
-										<IconMdiAlertCircle class="text-error h-5 w-5" />
-									{/if}
-								</div>
-							</div>
+							{@render issueTooltip(issuesByField('energy')[0])}
 						{/if}
 					</label>
 
@@ -259,21 +362,16 @@
 							{$_('product.edit.si_kilocalories')}
 						</span>
 						{#if issuesByField('energy').length > 0}
-							{@const issue = issuesByField('energy')[0]}
-							<div class="tooltip tooltip-warning" data-tip={issue?.title}>
-								{#if issue.severity === 'warning'}
-									<IconMdiAlert class="text-warning ml-2 h-5 w-5" />
-								{:else if issue.severity === 'error'}
-									<IconMdiAlertCircle class="text-error ml-2 h-5 w-5" />
-								{/if}
-							</div>
+							{@render issueTooltip(issuesByField('energy')[0])}
 						{/if}
 					</label>
 				</div>
 			</fieldset>
 			<fieldset class="fieldset">
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
-					<label class={['input w-full', fieldInputClasses([nutrient, 'all'])]}>
+					{@const issueKeys = [nutrient, 'all']}
+					{@const issue = issuesByField(issueKeys)[0]}
+					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
 						<span class="label w-60">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
@@ -282,22 +380,8 @@
 									<InfoTooltip text={$_(EMPTY_NUTRIENT_TOOLTIPS[nutrient])} />
 								{/if}
 							</span>
-							{#if issuesByField([nutrient, 'all']).length > 0}
-								{@const issue = issuesByField(nutrient)[0] ?? issuesByField('all')[0]}
-								<div
-									class={[
-										'tooltip cursor-default',
-										issue?.severity === 'error' && 'tooltip-error',
-										issue?.severity === 'warning' && 'tooltip-warning'
-									]}
-									data-tip={issue?.title}
-								>
-									{#if issue.severity === 'warning'}
-										<IconMdiAlert class="text-warning ml-2 h-5 w-5 text-lg" />
-									{:else if issue.severity === 'error'}
-										<IconMdiAlertCircle class="text-error ml-2 h-5 w-5 text-lg" />
-									{/if}
-								</div>
+							{#if issue}
+								{@render issueTooltip(issue)}
 							{/if}
 						</span>
 
@@ -393,34 +477,14 @@
 				{/if}
 			</fieldset>
 
-			{#if analysisResults.length > 0}
+			{#if nutritionIssues.length > 0}
 				<div class="divider"></div>
 				<h3 class="text-lg font-bold">{$_('product.edit.nutrition_issues')}</h3>
 				<p class="text-base-content/80 text-sm">
 					{$_('product.edit.nutrition_issues_description')}
 				</p>
-				{#each analysisResults.toSorted(bySeverity) as result (result.title)}
-					{#if result.severity === 'error'}
-						<div class="alert alert-error mt-4">
-							<IconMdiAlertCircle class="h-5 w-5" />
-							<div>
-								<p class="text-sm font-bold sm:text-base">{result.title}</p>
-								{#if result.desc}
-									<p class="mt-2 text-sm sm:text-base">{result.desc}</p>
-								{/if}
-							</div>
-						</div>
-					{:else if result.severity === 'warning'}
-						<div class="alert alert-warning mt-4">
-							<IconMdiAlertCircle class="h-5 w-5" />
-							<div>
-								<p class="text-sm font-bold sm:text-base">{result.title}</p>
-								{#if result.desc}
-									<p class="mt-2 text-sm sm:text-base">{result.desc}</p>
-								{/if}
-							</div>
-						</div>
-					{/if}
+				{#each nutritionIssues.toSorted(bySeverity) as result (result.title)}
+					{@render issueAlert(result)}
 				{/each}
 			{/if}
 		{:else}
