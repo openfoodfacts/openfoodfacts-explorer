@@ -78,7 +78,10 @@
 			{/each}
 		</div>
 
-		<a href={`/facets/contributors/${user}`} class="btn btn-outline mt-4 w-full">
+		<a
+			href={`/facets/contributors/${encodeURIComponent(user)}`}
+			class="btn btn-outline mt-4 w-full"
+		>
 			{$_('dashboard.view_all_contributions', { default: 'View all contributions' })}
 		</a>
 	</section>
@@ -93,7 +96,7 @@
 			{/each}
 		</div>
 
-		<a href={`/facets/editors/${user}`} class="btn btn-outline mt-4 w-full"
+		<a href={`/facets/editors/${encodeURIComponent(user)}`} class="btn btn-outline mt-4 w-full"
 			>{$_('dashboard.view_all_edits', { default: 'View all edits' })}</a
 		>
 	</section>
@@ -110,7 +113,9 @@
 			{/each}
 		</div>
 
-		<a href={`/facets/photographers/${user}`} class="btn btn-outline mt-4 w-full"
+		<a
+			href={`/facets/photographers/${encodeURIComponent(user)}`}
+			class="btn btn-outline mt-4 w-full"
 			>{$_('dashboard.view_all_photographs', { default: 'View all photographs' })}</a
 		>
 	</section>
