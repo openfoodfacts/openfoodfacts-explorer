@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
+	import { tracker } from '$lib/matomo';
 
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
