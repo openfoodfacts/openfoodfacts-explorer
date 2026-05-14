@@ -22,6 +22,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import CommandPalette from '$lib/ui/CommandPalette.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -239,6 +240,7 @@
 <Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
+<CommandPalette />
 
 <div class="hidden">
 	<!-- Global OpenFoodFacts Web Components Configuration -->
