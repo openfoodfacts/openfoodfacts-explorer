@@ -64,6 +64,24 @@
 		</div>
 	{/if}
 
+	{#if showFacetsModal && searchResult?.facets}
+		<div
+			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border shadow-xl"
+		>
+			<div class="bg-base-100 sticky top-0 z-10 flex items-center justify-between p-4 pb-2">
+				<h3 class="text-lg font-semibold">{$_('search.filters_title', { default: 'Filters' })}</h3>
+				<button
+					class="btn btn-ghost btn-sm"
+					onclick={() => (showFacetsModal = false)}
+					aria-label="Close filters">✕</button
+				>
+			</div>
+			<div class="space-y-2 p-4 pt-0">
+				<FacetBar facets={searchResult.facets} {onAddFacet} {onRemoveFacet} />
+			</div>
+		</div>
+	{/if}
+
 	<div class="flex h-full w-full">
 		<button
 			class="border-base-200 flex h-full w-1/2 flex-col items-center justify-center border-r py-1 focus:outline-none"
@@ -85,7 +103,7 @@
 			onclick={() => {
 				sortDropdownOpen = false;
 				if (searchResult?.facets && Object.keys(searchResult.facets).length > 0) {
-					showFacetsModal = true;
+					showFacetsModal = !showFacetsModal;
 				} else {
 					onFilterClick();
 				}
@@ -97,29 +115,6 @@
 		</button>
 	</div>
 </footer>
-
-{#if showFacetsModal && searchResult?.facets}
-	<div class="fixed inset-0 z-50 flex items-end lg:hidden" role="dialog" aria-modal="true">
-		<div
-			class="fixed inset-0 bg-black/50"
-			onclick={() => (showFacetsModal = false)}
-			aria-hidden="true"
-		></div>
-		<div class="bg-base-100 max-h-[80%] w-full overflow-auto rounded-t-lg p-4">
-			<div class="mb-2 flex items-center justify-between">
-				<h3 class="text-lg font-semibold">{$_('search.filters_title', { default: 'Filters' })}</h3>
-				<button
-					class="btn btn-ghost"
-					onclick={() => (showFacetsModal = false)}
-					aria-label="Close filters">✕</button
-				>
-			</div>
-			<div class="space-y-2">
-				<FacetBar facets={searchResult.facets} {onAddFacet} {onRemoveFacet} />
-			</div>
-		</div>
-	</div>
-{/if}
 
 <style lang="postcss">
 	@reference './../../app.css';
