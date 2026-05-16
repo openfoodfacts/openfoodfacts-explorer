@@ -23,6 +23,10 @@
 		type IssueSeverity
 	} from './nutrition';
 
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
+
 	type Props = {
 		product: Product;
 		units: string[];
@@ -192,6 +196,23 @@
 		};
 		additionalNutrients = [];
 	}
+
+	const shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+N', {
+			description: $_('product.shortcuts.edit_product_energy'),
+			action: () => focusEditField('#energy-kj-input')
+		});
+		shortcutCtx.set('Shift+F', {
+			description: $_('product.shortcuts.edit_product_fibers'),
+			action: () => focusEditField('#fibers-input')
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+N');
+			shortcutCtx.delete('Shift+F');
+		};
+	});
 </script>
 
 {#snippet issueTooltip(issue: Issue)}

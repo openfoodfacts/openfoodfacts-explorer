@@ -18,22 +18,42 @@
 		return combo;
 	}
 
+	/**
+	 * Checks if the given element is an editable target.
+	 *
+	 * @param {HTMLElement | null} el - The element to check.
+	 * @return {boolean} Whether the element is editable.
+	 */
+	function isEditableTarget(el: HTMLElement | null): boolean {
+		return (
+			el !== null &&
+			(el instanceof HTMLInputElement ||
+				el instanceof HTMLTextAreaElement ||
+				el instanceof HTMLSelectElement ||
+				el.isContentEditable)
+		);
+	}
+
 	onMount(() => {
 		const keyDownListener = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' && helpModal.open) {
-				helpModal.close();
+			if (event.key === 'Escape') {
+				if (helpModal.open) {
+					helpModal.close();
+					return;
+				}
+
+				if (event.defaultPrevented) return;
+
+				// Blur the active field so the user returns to shortcut mode
+				if (isEditableTarget(document.activeElement as HTMLElement)) {
+					(document.activeElement as HTMLElement).blur();
+				}
+
+				return;
 			}
 
 			// Ignore if user is typing in an input field
-			const target = event.target as HTMLElement;
-			if (
-				target instanceof HTMLInputElement ||
-				target instanceof HTMLTextAreaElement ||
-				target instanceof HTMLSelectElement ||
-				target.isContentEditable
-			) {
-				return;
-			}
+			if (isEditableTarget(event.target as HTMLElement)) return;
 
 			const combo = getCombo(event);
 			shortcuts.forEach((shortcut, key) => {
