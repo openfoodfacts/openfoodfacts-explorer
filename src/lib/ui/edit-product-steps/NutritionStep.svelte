@@ -99,10 +99,20 @@
 	function handleNoNutritionData(event: Event) {
 		const input = event.currentTarget as HTMLInputElement;
 
-		product = {
-			...product,
-			no_nutrition_data: input.checked
-		};
+		if (input.checked) {
+			product = {
+				...product,
+				no_nutrition_data: true,
+				nutriments: {} as Nutriments,
+				serving_size: ''
+			};
+			additionalNutrients = [];
+		} else {
+			product = {
+				...product,
+				no_nutrition_data: false
+			};
+		}
 	}
 
 	const bySeverity = (a: Issue, b: Issue) => {
@@ -254,29 +264,6 @@
 	<div>
 		<div class="space-y-4">
 			<div>
-				<label>
-					<span class="label mb-2 flex items-center gap-2 leading-0">
-						{$_('product.edit.serving_size')}
-						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-						{#if servingSizeIssue}
-							{@render issueTooltip(servingSizeIssue)}
-						{/if}
-					</span>
-					<input
-						id="serving-size-input"
-						type="text"
-						class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
-						value={product.serving_size ?? ''}
-						oninput={handleServingSize}
-						placeholder={servingSizePlaceholder}
-					/>
-				</label>
-				{#if servingSizeIssue}
-					{@render issueAlert(servingSizeIssue)}
-				{/if}
-			</div>
-
-			<div>
 				<label class="label">
 					<input
 						type="checkbox"
@@ -289,6 +276,31 @@
 					</span>
 				</label>
 			</div>
+
+			{#if !product.no_nutrition_data}
+				<div>
+					<label>
+						<span class="label mb-2 flex items-center gap-2 leading-0">
+							{$_('product.edit.serving_size')}
+							<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+							{#if servingSizeIssue}
+								{@render issueTooltip(servingSizeIssue)}
+							{/if}
+						</span>
+						<input
+							id="serving-size-input"
+							type="text"
+							class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
+							value={product.serving_size ?? ''}
+							oninput={handleServingSize}
+							placeholder={servingSizePlaceholder}
+						/>
+					</label>
+					{#if servingSizeIssue}
+						{@render issueAlert(servingSizeIssue)}
+					{/if}
+				</div>
+			{/if}
 		</div>
 
 		{#if !product.no_nutrition_data}
