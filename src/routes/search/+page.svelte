@@ -164,7 +164,7 @@
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4" id="facets">
+	<div class="my-4 hidden md:block" id="facets">
 		<FacetBar
 			facets={searchResult.facets}
 			onAddFacet={(key, val) => {
