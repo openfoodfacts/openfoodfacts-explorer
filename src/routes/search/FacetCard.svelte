@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Facet, FacetItem } from '$lib/api/search';
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 
 	let {
 		facet,
@@ -23,16 +24,10 @@
 
 	function handleSelect(item: FacetItem) {
 		onSelect(item);
-		if (dropdownElement) {
-			dropdownElement.open = false;
-		}
 	}
 
 	function handleUnselect(item: FacetItem) {
 		onUnselect(item);
-		if (dropdownElement) {
-			dropdownElement.open = false;
-		}
 	}
 
 	let searchQuery: string = $state('');
@@ -54,8 +49,8 @@
 <details class="dropdown dropdown-center" bind:this={dropdownElement}>
 	<summary class="btn flex w-58 items-center justify-start gap-2">
 		{facet.name} ({facet.items.length})
-		<span class="flex-grow"></span>
-		<i class="icon-[mdi--chevron-down] text-xl"></i>
+		<span class="grow"></span>
+		<IconMdiChevronDown class="h-5 w-5" />
 	</summary>
 	<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
 		<li>

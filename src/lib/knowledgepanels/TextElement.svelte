@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { KnowledgeElementText } from '$lib/api';
+	import type { KnowledgeTextElement } from '$lib/api';
 	import { _ } from '$lib/i18n';
+	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
-	let { element }: { element: KnowledgeElementText } = $props();
+	let { element }: { element: KnowledgeTextElement } = $props();
 
-	let { type, edit_field_type, html, source_url, source_text, source_language } = $derived(
-		element.text_element
-	);
+	let { type, html, source_url, source_text, source_language } = $derived(element.text_element);
 </script>
 
 <div class="mb-2 flex items-center space-x-2">
@@ -19,18 +18,9 @@
 	{/if}
 </div>
 
-<!-- Specialization for ingredients_text -->
-{#if edit_field_type == 'ingredients_text'}
-	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
-	</div>
-{:else}
-	<div class="prose w-full max-w-full dark:text-white">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		{@html html}
-	</div>
-{/if}
+<div class="prose w-full max-w-full dark:text-white">
+	<HtmlPurify dirty={html} />
+</div>
 
 {#if source_url}
 	<a class="link" href={source_url}>
@@ -82,5 +72,14 @@
 	:global(.ordered_ingredients_list) {
 		list-style-type: decimal;
 		padding-left: 1.5em;
+	}
+
+	:global([id^='data-error-']) {
+		font-weight: bold;
+	}
+
+	:global([id^='data-error-'] > .description) {
+		font-style: italic;
+		font-weight: normal;
 	}
 </style>

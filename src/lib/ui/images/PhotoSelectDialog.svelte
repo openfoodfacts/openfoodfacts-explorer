@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { ProductImage } from '$lib/api';
+	import { _ } from '$lib/i18n';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
 
 	type Props = {
 		images: ProductImage[];
@@ -29,14 +31,16 @@
 <dialog bind:this={modal} class="modal" aria-labelledby="select-image-title" aria-modal="true">
 	<div class="modal-box w-full max-w-3xl">
 		<div class="mb-4 flex items-center justify-between">
-			<h3 id="select-image-title" class="text-lg font-bold">Select an Image</h3>
+			<h3 id="select-image-title" class="text-lg font-bold">
+				{$_('product.edit.images.select_image', { default: 'Select an Image' })}
+			</h3>
 			<button
 				type="button"
 				class="btn btn-sm btn-circle btn-ghost"
 				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
-				<span class="icon-[mdi--close] h-5 w-5" aria-hidden="true"></span>
+				<IconMdiClose class="h-5 w-5" aria-hidden="true" />
 			</button>
 		</div>
 
@@ -67,7 +71,7 @@
 				onclick={handleDialogClose}
 				aria-label="Cancel and close"
 			>
-				Cancel
+				{$_('common.cancel', { default: 'Cancel' })}
 			</button>
 		</div>
 	</div>

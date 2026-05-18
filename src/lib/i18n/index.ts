@@ -16,8 +16,12 @@ locales.forEach((locale) => {
 
 init({
 	fallbackLocale: FALLBACK_LOCALE,
-	initialLocale: browser ? getBrowserLocale() : FALLBACK_LOCALE
+	initialLocale: getLocale()
 });
+
+export function getLocale() {
+	return browser ? getBrowserLocale() : FALLBACK_LOCALE;
+}
 
 export function getBrowserLocale() {
 	if (!browser) throw new Error('getBrowserLocale should only be called in the browser');

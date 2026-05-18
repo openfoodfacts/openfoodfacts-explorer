@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 
 	import { _ } from '$lib/i18n';
+	import { OPEN_PRICES_PRODUCTS_URL } from '$lib/const';
 
 	import Card from '$lib/ui/Card.svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -26,10 +27,10 @@
 <Card>
 	<h1 class="my-4 text-2xl font-bold sm:text-4xl">Prices Map</h1>
 
-	{#if PricesMap == null}
-		{$_('product.prices.loading')}
-	{:else if prices.length === 0}
+	{#if prices.length === 0}
 		{$_('product.prices.no_prices_found')}
+	{:else if PricesMap == null}
+		{$_('product.prices.loading')}
 	{:else}
 		{#await PricesMap}
 			{$_('product.prices.loading')}
@@ -40,7 +41,7 @@
 
 	<div class="mt-4 text-end">
 		<a
-			href="https://prices.openfoodfacts.org/products/{barcode}"
+			href={OPEN_PRICES_PRODUCTS_URL(barcode)}
 			class="text-secondary link text-sm italic"
 			target="_blank"
 			rel="noopener noreferrer"

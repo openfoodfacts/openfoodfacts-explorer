@@ -4,7 +4,10 @@
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
+	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
+	import IconMdiArrowRight from '@iconify-svelte/mdi/arrow-right';
 	import type { Product } from '$lib/api';
 
 	import { _ } from '$lib/i18n';
@@ -23,6 +26,7 @@
 		$_('product.edit.sections.languages'),
 		$_('product.edit.sections.ingredients'),
 		$_('product.edit.sections.nutrition'),
+		$_('product.edit.sections.packaging'),
 		$_('product.edit.sections.comment')
 	]);
 
@@ -44,6 +48,7 @@
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
+		getPackagingImage: (language: string) => string | null;
 
 		// Submission
 
@@ -55,8 +60,7 @@
 		// Language
 
 		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
-		filteredLanguages: string[];
+		languages: string[];
 
 		// Taxonomy entries
 
@@ -66,6 +70,7 @@
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
+		units: string[];
 	};
 
 	let {
@@ -73,16 +78,17 @@
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
-		getLanguage,
 		getIngredientsImage,
 		getNutritionImage,
-		filteredLanguages,
+		getPackagingImage,
+		languages,
 		categoryNames,
 		labelNames,
 		brandNames,
 		storeNames,
 		originNames,
 		countriesNames,
+		units,
 		isSubmitting,
 		submit
 	}: Props = $props();
@@ -107,7 +113,7 @@
 <!-- Mobile step header -->
 <div class="navigation mb-6 flex items-center justify-between md:hidden">
 	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
-		<span class="icon-[mdi--arrow-left] h-4 w-4"></span>
+		<IconMdiArrowLeft class="h-4 w-4" />
 		{$_('common.back')}
 	</button>
 
@@ -127,7 +133,8 @@
 		type="button"
 		title={$_('common.next')}
 	>
-		{$_('common.next')} <span class="icon-[mdi--arrow-right] h-4 w-4"></span>
+		{$_('common.next')}
+		<IconMdiArrowRight class="h-4 w-4" />
 	</button>
 </div>
 
@@ -145,12 +152,14 @@
 		{countriesNames}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep bind:product {filteredLanguages} {addLanguage} {getLanguage} />
+	<LanguagesStep bind:product codes={languages} {addLanguage} />
 {:else if currentStep === 3}
-	<IngredientsStep bind:product {getLanguage} {getIngredientsImage} />
+	<IngredientsStep bind:product {getIngredientsImage} />
 {:else if currentStep === 4}
-	<NutritionStep bind:product {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
+	<PackagingStep bind:product {getPackagingImage} />
+{:else if currentStep === 6}
 	<CommentStep bind:comment />
 {/if}
 
@@ -162,7 +171,7 @@
 			onclick={prevStep}
 			type="button"
 		>
-			<span class="icon-[mdi--arrow-left] mr-2"></span>{$_('common.back')}
+			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back')}
 		</button>
 	{/if}
 
@@ -172,7 +181,7 @@
 			onclick={nextStep}
 			type="button"
 		>
-			{$_('common.next')}<span class="icon-[mdi--arrow-right] ml-2"></span>
+			{$_('common.next')}<IconMdiArrowRight class="ml-2 h-4 w-4" />
 		</button>
 	{:else}
 		<button

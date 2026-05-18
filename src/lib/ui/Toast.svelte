@@ -2,6 +2,12 @@
 	import { getToastCtx, type Toast } from '$lib/stores/toasts';
 	import { fly } from 'svelte/transition';
 
+	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';
+	import IconMdiCloseCircle from '@iconify-svelte/mdi/close-circle';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+
 	const toastCtx = getToastCtx();
 
 	const toastTypeClass: Record<Toast['type'], string> = {
@@ -11,11 +17,11 @@
 		info: 'alert-info'
 	};
 
-	const toastTypeIcon: Record<Toast['type'], string> = {
-		success: 'icon-[mdi--check-circle]',
-		error: 'icon-[mdi--close-circle]',
-		warning: 'icon-[mdi--alert]',
-		info: 'icon-[mdi--information]'
+	const toastTypeIcon: Record<Toast['type'], typeof IconMdiCheckCircle> = {
+		success: IconMdiCheckCircle,
+		error: IconMdiCloseCircle,
+		warning: IconMdiAlert,
+		info: IconMdiInformation
 	};
 
 	function handleClose(toastId: string) {
@@ -32,8 +38,11 @@
 			aria-live="polite"
 		>
 			<div class="flex items-center gap-2">
-				<span class={`${toastTypeIcon[toastItem.type]} h-5 w-5 flex-shrink-0`} aria-hidden="true"
-				></span>
+				<svelte:component
+					this={toastTypeIcon[toastItem.type]}
+					class="h-5 w-5 flex-shrink-0"
+					aria-hidden="true"
+				/>
 				<span class="text-sm">{toastItem.message}</span>
 				<button
 					type="button"
@@ -41,7 +50,7 @@
 					onclick={() => handleClose(toastItem.id)}
 					aria-label="Close notification"
 				>
-					<span class="icon-[mdi--close] h-4 w-4" aria-hidden="true"></span>
+					<IconMdiClose class="h-4 w-4" aria-hidden="true" />
 				</button>
 			</div>
 		</div>

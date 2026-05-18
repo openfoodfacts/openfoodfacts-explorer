@@ -1,14 +1,13 @@
 @import 'tailwindcss';
 
 @plugin 'daisyui';
-@plugin "@tailwindcss/typography";
-@plugin "@iconify/tailwind4";
+@plugin '@tailwindcss/typography';
 
 @theme {
 	--font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
 }
 
-@plugin "daisyui/theme" {
+@plugin 'daisyui/theme' {
 	name: 'light';
 	default: true;
 	--color-primary: #201a17;
@@ -25,7 +24,7 @@
 	--radius-box: 0.5rem;
 }
 
-@plugin "daisyui/theme" {
+@plugin 'daisyui/theme' {
 	name: 'dark';
 	prefersdark: true;
 
@@ -39,6 +38,6 @@
 
 	/* border radius */
 	--radius-selector: 1rem;
-	--radius-field: 0.5rem;
+	--radius-field: 1rem;
 	--radius-box: 0.5rem;
 }

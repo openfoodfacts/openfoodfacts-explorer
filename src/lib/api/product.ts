@@ -1,145 +1,258 @@
 import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
-import type { KnowledgePanel } from './knowledgepanels';
+import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithCredentials } from './utils';
+import { wrapFetchWithAuth } from '$lib/stores/auth';
+
+// TODO: switch to SDK once it is updated
+export type PackagingTaxonomyTag = {
+	id?: string;
+	lc_name?: string;
+};
+
+// TODO: switch to SDK once it is updated
+export type PackagingComponent = {
+	number_of_units?: number;
+	shape?: PackagingTaxonomyTag;
+	material?: PackagingTaxonomyTag;
+	recycling?: PackagingTaxonomyTag;
+	quantity_per_unit?: string;
+	weight_measured?: number;
+};
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(API_HOST));
-	return new OpenFoodFacts(wrappedFetch, { host: url.toString() });
+	const fetchToUse = wrapFetchWithAuth(fetch);
+	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
-export class ProductsApi {
-	private readonly fetch: typeof window.fetch;
-	private readonly off: OpenFoodFacts;
+export async function getBulkProductAttributes(
+	fetch: typeof window.fetch,
+	productCodes: string[]
+): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	const off = createProductsApi(fetch);
 
-	constructor(fetch: typeof window.fetch) {
-		this.fetch = fetch;
-		this.off = createProductsApi(fetch);
+	const params = new URLSearchParams({
+		code: productCodes.join(','),
+		fields: 'product_name,code,attribute_groups'
+	});
+
+	const { data, error } = await off.apiv2.search(Object.fromEntries(params.entries()));
+
+	if (!data) {
+		throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
 	}
 
-	async getBulkProductAttributes(
-		productCodes: string[]
-	): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
-		const params = new URLSearchParams({
-			code: productCodes.join(','),
-			fields: 'product_name,code,attribute_groups'
-		});
-
-		const { data, error } = await this.off.apiv2.client.GET('/api/v2/search', {
-			params: { query: Object.fromEntries(params) }
-		});
-
-		if (!data) {
-			throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
-		}
-
-		// Create a map of product code to attribute groups
-		const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
-		for (const product of data.products || []) {
-			// @ts-expect-error - FIXME: deduplicate attribute groups definition
-			attributesByCode[product.code!] = product.attribute_groups || [];
-		}
-
-		return attributesByCode;
+	// Create a map of product code to attribute groups
+	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
+	for (const product of data.products || []) {
+		// @ts-expect-error - FIXME: deduplicate attribute groups definition
+		attributesByCode[product.code!] = product.attribute_groups || [];
 	}
 
-	async addOrEditProductV2(product: Product & { comment?: string }) {
-		const username = get(preferences).username;
-		const password = get(preferences).password;
+	return attributesByCode;
+}
 
-		if (!username || !password) throw new Error('No username or password set');
-
-		// @ts-expect-error - we should use v3
-		return this.off.addOrEditProductV2(product, { password, username });
-	}
-
-	// TODO: move this to the sdk
-	/**
-	 * Upload image using API v3.3 with base64 encoded data
-	 * @param barcode Product barcode
-	 * @param imageDataBase64 Base64 encoded image data
-	 * @param imagefield The type of image (optional, defaults to 'other')
-	 */
-	async uploadImageV3(barcode: string, imageDataBase64: string, imagefield?: string) {
-		const user_id = get(preferences).username ?? undefined;
-		const password = get(preferences).password ?? undefined;
-		const lc = get(preferences).lang;
-		const cc = get(preferences).country;
-
-		return this.off.apiv3.uploadProductImage(barcode, {
-			lc,
-			cc,
-			user_id: user_id,
-			password: password,
-			image_data_base64: imageDataBase64,
-			...(imagefield && {
-				selected: {
-					[imagefield.split('_')[0]]: {
-						[imagefield.split('_')[1] || 'en']: {}
-					}
-				}
-			})
-		});
-	}
-
-	/**
-	 * Select and crop images using API v3.3
-	 * @param barcode Product barcode
-	 * @param images Object containing image selections and crop parameters
-	 */
-	async selectAndCropImagesV3(
-		barcode: string,
-		images: ImageSelectionData
-	): Promise<{ data?: ImageOperationResponse; error?: string }> {
-		const { data, error } = await this.off.apiv3.client.PATCH('/api/v3/product/{barcode}', {
-			params: { path: { barcode } },
-			body: { fields: 'updated', product: { images } }
-		});
-
-		if (error) {
-			return { error: `Failed to select/crop images: ${error}` };
-		}
-
-		return { data: data as ImageOperationResponse };
-	}
-
-	/**
-	 * Unselect an image for a specific language and type
-	 * @param barcode Product barcode
-	 * @param imageType Image type (front, ingredients, nutrition, etc.)
-	 * @param language Language code (en, fr, es, etc.)
-	 */
-	async unselectImageV3(
-		barcode: string,
-		imageType: string,
-		language: string
-	): Promise<{ data?: ImageOperationResponse; error?: string }> {
-		const images = {
-			selected: {
-				[imageType]: {
-					[language]: null
-				}
-			}
-		};
-
-		return this.selectAndCropImagesV3(barcode, images);
-	}
-
-	async getProductReducedForCard(barcode: string) {
-		const fields = [...REDUCED_FIELDS] as Array<keyof ProductV3>;
-
-		return this.off.getProductV3(barcode, { fields });
-	}
+export async function addOrEditProductV2(
+	fetch: typeof window.fetch,
+	product: Product & { comment?: string }
+) {
+	const off = createProductsApi(fetch);
+	// @ts-expect-error - we should use v3
+	return off.addOrEditProductV2(product);
 }
 
 /**
- * @deprecated use ProductsApi instead
+ * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
+ * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
+ * @param fetch - The fetch function
+ * @param tagtype - The taxonomy type (e.g. 'packaging_shapes', 'labels')
+ * @param searchString - Optional search string for autocomplete filtering
+ * @param limit - Maximum number of suggestions (default 25, max 400)
+ * @returns Array of suggestion strings
  */
-export async function getProduct(barcode: string, fetch: typeof window.fetch) {
-	return createProductsApi(fetch).getProductV3(barcode);
+export async function getTaxonomySuggestions(
+	fetch: typeof window.fetch,
+	tagtype: string,
+	searchString?: string,
+	limit: number = 25
+) {
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+	const cc = get(preferences).country;
+
+	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
+		params: {
+			query: {
+				tagtype,
+				lc,
+				...(cc && { cc }),
+				...(searchString && { string: searchString }),
+				limit: String(limit)
+			}
+		}
+	});
+}
+
+/**
+ * Cleans a packaging component object before sending it to the API.
+ * This extracts localized strings from taxonomy fields and removes null/empty values.
+ * @param component The raw packaging component
+ * @returns A clean object ready for the V3 API
+ */
+export function cleanPackagingComponent(
+	component: PackagingComponent
+): Record<string, string | number> {
+	const cleaned: Record<string, string | number> = {};
+
+	if (component.number_of_units != null) {
+		cleaned.number_of_units = component.number_of_units;
+	}
+
+	// For taxonomy fields, send the lc_name (localized name) as a string
+	if (component.shape?.lc_name || component.shape?.id) {
+		cleaned.shape = component.shape.lc_name || component.shape.id || '';
+	}
+	if (component.material?.lc_name || component.material?.id) {
+		cleaned.material = component.material.lc_name || component.material.id || '';
+	}
+	if (component.recycling?.lc_name || component.recycling?.id) {
+		cleaned.recycling = component.recycling.lc_name || component.recycling.id || '';
+	}
+
+	if (component.quantity_per_unit) {
+		cleaned.quantity_per_unit = component.quantity_per_unit;
+	}
+	if (component.weight_measured != null) {
+		cleaned.weight_measured = component.weight_measured;
+	}
+
+	return cleaned;
+}
+
+/**
+ * Update packaging data for a product using the V3 PATCH API
+ * @param fetch - The fetch function
+ * @param code - Product barcode
+ * @param packagings - Array of packaging components
+ * @param packagingsComplete - Whether all packaging components have been listed (0 or 1)
+ * @param packagingText - Localized packaging text (string)
+ * @returns Object with data/error
+ */
+export async function updatePackagingsV3(
+	fetch: typeof window.fetch,
+	code: string,
+	packagings: PackagingComponent[],
+	packagingsComplete?: number,
+	packagingText?: string
+): Promise<{ data?: unknown; error?: string }> {
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+
+	const filteredPackagings = packagings
+		.map(cleanPackagingComponent)
+		.filter((component) => Object.keys(component).length > 0);
+
+	const productBody: Record<string, unknown> = {
+		packagings: filteredPackagings
+	};
+
+	if (packagingsComplete != null) {
+		productBody.packagings_complete = packagingsComplete;
+	}
+
+	if (packagingText != null) {
+		productBody[`packaging_text_${lc}`] = packagingText;
+	}
+
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
+		body: {
+			lc,
+			fields: 'updated',
+			product: productBody
+		}
+	});
+
+	if (error) {
+		return { error: `Failed to update packagings: ${JSON.stringify(error)}` };
+	}
+
+	return { data };
+}
+
+/**
+ * Upload image using API v3.3 with base64 encoded data
+ * @param barcode Product barcode
+ * @param imageDataBase64 Base64 encoded image data
+ * @param imagefield The type of image (optional, defaults to 'other')
+ */
+export async function uploadImageV3(
+	fetch: typeof window.fetch,
+	barcode: string,
+	imageDataBase64: string,
+	imagefield?: string
+) {
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang;
+	const cc = get(preferences).country;
+
+	return off.apiv3.uploadProductImage(barcode, {
+		lc,
+		cc,
+		image_data_base64: imageDataBase64,
+		...(imagefield && {
+			selected: {
+				[imagefield.split('_')[0]]: {
+					[imagefield.split('_')[1] || 'en']: {}
+				}
+			}
+		})
+	});
+}
+
+/**
+ * Select and crop images using API v3.3
+ * @param code Product barcode
+ * @param images Object containing image selections and crop parameters
+ */
+export async function selectAndCropImagesV3(
+	fetch: typeof window.fetch,
+	code: string,
+	images: ImageSelectionData
+): Promise<{ data?: ImageOperationResponse; error?: string }> {
+	const off = createProductsApi(fetch);
+	const { data, error } = await off.apiv3.selectAndCropImagesV3(code, images);
+
+	if (error) {
+		return { error: `Failed to select/crop images: ${error}` };
+	}
+
+	return { data: data as ImageOperationResponse };
+}
+
+/**
+ * Unselect an image for a specific language and type
+ * @param code Product barcode
+ * @param imageType Image type (front, ingredients, nutrition, etc.)
+ * @param language Language code (en, fr, es, etc.)
+ */
+export async function unselectImageV3(
+	fetch: typeof window.fetch,
+	code: string,
+	imageType: string,
+	language: string
+): Promise<{ data?: ImageOperationResponse; error?: string }> {
+	const images = {
+		selected: { [imageType]: { [language]: null } }
+	};
+	return selectAndCropImagesV3(fetch, code, images);
+}
+
+export async function getProductReducedForCard(fetch: typeof window.fetch, code: string) {
+	const off = createProductsApi(fetch);
+	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
 }
 
 export type ProductStateBase = {
@@ -169,31 +282,6 @@ export type ProductStateFound<T = Product> = ProductStateBase & { product: T } &
 
 export type ProductState<T = Product> = ProductStateBase &
 	(ProductStateFound<T> | ProductStateFailure);
-
-export type ProductSearch<T = Product> = {
-	count: number;
-	page: number;
-	page_count: number;
-	page_size: number;
-	products: T[];
-	skip: number;
-};
-
-export type ProductAttribute = {
-	id: string;
-	name: string;
-	grade: string;
-	title: string;
-	description_short?: string;
-	icon_url?: string;
-};
-
-export type ProductAttributeGroup = {
-	id: string;
-	name: string;
-	warning?: string;
-	attributes: ProductAttribute[];
-};
 
 export type ProductAttributeForScoring = {
 	id: string;
@@ -281,6 +369,7 @@ export type ImageOperationResponse = {
 
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
+type LangPackagingText = `packaging_text_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -314,7 +403,7 @@ export type RawImage = {
 		100: ImageSize;
 		400: ImageSize;
 	};
-	uploaded_t: string;
+	uploaded_t: number;
 	uploader: string;
 };
 
@@ -330,9 +419,8 @@ export type ProductDataSection = {
 };
 
 export type Product = ProductDataSection & {
-	knowledge_panels: Record<string, KnowledgePanel>;
+	knowledge_panels: KnowledgePanels;
 	product_name: string;
-	[lang: LangProduct]: string;
 	_id: string;
 	code: string;
 	_keywords: string[];
@@ -350,7 +438,6 @@ export type Product = ProductDataSection & {
 	additives_tags: string[];
 
 	ingredients_text: string;
-	[lang: LangIngredient]: string;
 
 	image_front_url: string;
 	image_front_small_url: string;
@@ -371,7 +458,10 @@ export type Product = ProductDataSection & {
 	ecoscore_grade: string;
 	nova_group: number;
 
-	packaging: string;
+	packaging?: string;
+	packaging_text?: string;
+	packagings?: PackagingComponent[];
+	packagings_complete?: number;
 	manufacturing_places: string;
 
 	brands: string;
@@ -419,7 +509,9 @@ export type Product = ProductDataSection & {
 		[lang: string]: number;
 	};
 	lang: string;
-};
+} & Partial<Record<LangProduct, string>> &
+	Partial<Record<LangIngredient, string>> &
+	Partial<Record<LangPackagingText, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',
@@ -430,10 +522,12 @@ const REDUCED_FIELDS = [
 	'nutriscore_grade',
 	'ecoscore_grade',
 	'nova_group',
-	'product_type'
+	'product_type',
+	'nutriments',
+	'additives_n'
 ] as const;
 
-export type ProductReduced = Pick<Product, (typeof REDUCED_FIELDS)[number]>;
+export type ProductReduced = Pick<ProductV3, (typeof REDUCED_FIELDS)[number]>;
 
 /**
  * Gets URL for a product image based on its barcode and image name
@@ -472,6 +566,8 @@ export type ProductImage = {
 	type: string;
 	imgid: number; // The numeric image ID for the API
 	typeId: string; // The type ID for the API (front, ingredients, nutrition, packaging, other)
+	uploaded_t: number; // Upload timestamp
+	uploader: string; // Uploader username
 };
 
 /**
@@ -501,8 +597,14 @@ export function fileToBase64(file: File): Promise<string> {
 		reader.onload = () => {
 			if (typeof reader.result === 'string') {
 				// Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
-				const base64 = reader.result.split(',')[1];
-				resolve(base64);
+				const parts = reader.result.split(',');
+
+				if (parts.length < 2 || parts[1].trim() === '') {
+					reject(new Error('Invalid file format for base64 conversion'));
+					return;
+				}
+
+				resolve(parts[1]);
 			} else {
 				reject(new Error('Failed to convert file to base64'));
 			}

@@ -2,6 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import Fuse from 'fuse.js';
 
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
@@ -139,7 +141,7 @@
 				onclick={() => removeTag(tag)}
 				aria-label={`Remove tag "${tag}"`}
 			>
-				<span class="icon icon-[mdi--close]"></span>
+				<IconMdiClose class="h-4 w-4" />
 			</button>
 		</div>
 	{/each}

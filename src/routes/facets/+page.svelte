@@ -8,10 +8,10 @@
 
 <div class="mt-8">
 	<ul class="menu w-full gap-2">
-		{#each data.facets as { taxo, icon, name } (taxo)}
+		{#each data.facets as { taxo, icon: IconComponent, name } (taxo)}
 			<li class="w-full">
 				<a href={`/facets/${taxo}`} class="flex items-center text-xl font-semibold">
-					<span class="me-4 {icon}"></span>
+					<IconComponent class="me-4 h-5 w-5"></IconComponent>
 					<span> {name} </span>
 				</a>
 			</li>

@@ -47,6 +47,10 @@ If you see an issue that you would like to work on, please follow these guidelin
 5. Open a Pull Request (PR) against the `main` branch of the original repository.
 6. In your PR description, reference the issue you are addressing (e.g., "Fixes #123") and provide a clear explanation of your changes, following the suggested template.
 
+## Design & UX Guidelines
+
+This project has a specific design system (Tailwind CSS v4 + DaisyUI v5). Before building any UI, please read our **[UX Contributing Guide](UX_GUIDE.md)** to ensure consistency.
+
 ## Collaborating on Issues
 
 Please feel free to comment on existing issues, suggest improvements, or ask questions. We encourage collaboration and discussion to ensure the best outcomes for the project.

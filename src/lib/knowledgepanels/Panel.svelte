@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 
-	import type { KnowledgeElement, KnowledgePanel, KnowledgeTitleElement } from '$lib/api';
+	import type {
+		KnowledgeElement,
+		KnowledgePanel,
+		KnowledgePanels,
+		KnowledgePanelTitle
+	} from '$lib/api';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
-
+		panels: KnowledgePanels;
 		panel: KnowledgePanel;
 		inline?: boolean;
 		id: string;
@@ -17,7 +21,7 @@
 	};
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
-	let expanded = $state(panel?.expanded ?? false);
+	let expanded = $derived(panel?.expanded ?? false);
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
@@ -26,10 +30,10 @@
 	{/each}
 {/snippet}
 
-{#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[] = [])}
+{#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
-			'border-base-300 collapse border-1',
+			'border-base-300 collapse border',
 			elements.length !== 0 ? 'collapse-arrow' : 'collapse-close',
 			panel.size && `kp-panel-size-${panel.size}`,
 			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
@@ -99,7 +103,7 @@
 </div>
 
 <style lang="postcss">
-	@reference '../../app.css';
+	@reference 'tailwindcss';
 
 	@media (prefers-color-scheme: dark) {
 		.kp-icon-from-eval {

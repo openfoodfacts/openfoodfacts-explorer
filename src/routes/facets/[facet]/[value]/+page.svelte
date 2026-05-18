@@ -1,19 +1,32 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import type { PageProps } from './$types';
+
 	import { _ } from '$lib/i18n';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import Metadata from '$lib/Metadata.svelte';
-	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 
+	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
+	import Pagination from '$lib/Pagination.svelte';
+	import Metadata from '$lib/Metadata.svelte';
+	import ProductGrid from '$lib/ui/ProductGrid.svelte';
+	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
+	import BackLink from '$lib/ui/facets/BackLink.svelte';
+
+	import type { PageProps } from './$types';
+
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes } = $derived(data);
+	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
+		$derived(data);
 
 	let listView = $state(false);
+
+	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
+	onMount(async () => {
+		MapComponent = (await import('../CountriesMap.svelte')).default;
+	});
 </script>
 
 <Metadata
@@ -26,15 +39,26 @@
 />
 
 <div class="mb-4">
-	<a href={`/facets/${facet.name}`} class="btn btn-ghost w-full">
-		<span class="icon icon-[mdi--arrow-left]"></span>
-		{$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
-	</a>
+	<BackLink
+		href={resolve('/facets/[facet]', { facet: facet.name })}
+		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
+	/>
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
 
-<div class="my-8 grid w-full gap-4 lg:grid-cols-2">
+{#if distributionData && MapComponent}
+	<div class="my-8 w-full">
+		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<MapComponent facet={distributionData} />
+		<p class="mt-2 text-sm text-gray-500">
+			Note: The geographic distribution shown on this map is based only on the products visible on
+			the current page.
+		</p>
+	</div>
+{/if}
+
+<div class="my-8 flex w-full flex-col gap-4">
 	{#if Object.entries(knowledgePanels).length > 0}
 		<div class="w-full">
 			<h2 class="mb-2 grow text-2xl font-bold">Knowledge Panels</h2>
@@ -43,54 +67,56 @@
 	{/if}
 
 	<div class="w-full space-y-2">
-		<h2 class="grow text-2xl font-bold">Search Options</h2>
-		<label class="select w-full">
-			<span class="label w-50">Page Size</span>
-			<select
-				value={`${results.page_size}`}
-				oninput={(e) => {
-					const params = new SvelteURLSearchParams(page.url.search);
-					params.set('page_size', e.currentTarget.value);
-					goto(`?${params}`);
-				}}
-			>
-				<option value="10">10</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-				<option value="200">200</option>
-			</select>
-		</label>
+		<h2 class="mb-2 grow text-2xl font-bold">Search Options</h2>
+		<div class="grid gap-4 md:grid-cols-3">
+			<label class="select w-full">
+				<span class="label w-50">{$_('search.page_size')}</span>
+				<select
+					value={`${results.page_size}`}
+					oninput={(e) => {
+						const params = new SvelteURLSearchParams(page.url.search);
+						params.set('page_size', e.currentTarget.value);
+						goto(`?${params}`);
+					}}
+				>
+					<option value="10">10</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="200">200</option>
+				</select>
+			</label>
 
-		<label class="select w-full">
-			<span class="label w-50">Sort By</span>
-			<select
-				value={searchOptions.sortBy || 'last_modified_t'}
-				oninput={(e) => {
-					const params = new SvelteURLSearchParams(page.url.search);
-					params.set('sort_by', e.currentTarget.value);
-					goto(`?${params}`);
-				}}
-			>
-				<option value="popularity">Popularity</option>
-				<option value="nutriscore_score">Nutriscore</option>
-				<option value="environmental_score_score">Environmental Score</option>
-				<option value="created_t">Created Time</option>
-				<option value="last_modified_t">Last Modified Time</option>
-			</select>
-		</label>
+			<label class="select w-full">
+				<span class="label w-50">{$_('search.sort_by_label')}</span>
+				<select
+					value={searchOptions.sortBy || 'last_modified_t'}
+					oninput={(e) => {
+						const params = new SvelteURLSearchParams(page.url.search);
+						params.set('sort_by', e.currentTarget.value);
+						goto(`?${params}`);
+					}}
+				>
+					<option value="popularity">Popularity</option>
+					<option value="nutriscore_score">{$_('nutriscore')}</option>
+					<option value="environmental_score_score">{$_('ecoscore')}</option>
+					<option value="created_t">{$_('search.creation_date')}</option>
+					<option value="last_modified_t">{$_('search.last_modified_date')}</option>
+				</select>
+			</label>
 
-		<label class="select mb-2 w-full">
-			<span class="label w-50">Advanced View</span>
-			<select
-				value={`${listView}`}
-				oninput={(e) => {
-					listView = e.currentTarget.value === 'true';
-				}}
-			>
-				<option value="false">Off</option>
-				<option value="true">On</option>
-			</select>
-		</label>
+			<label class="select w-full">
+				<span class="label w-50">{$_('search.advanced_view')}</span>
+				<select
+					value={`${listView}`}
+					oninput={(e) => {
+						listView = e.currentTarget.value === 'true';
+					}}
+				>
+					<option value="false">Off</option>
+					<option value="true">On</option>
+				</select>
+			</label>
+		</div>
 	</div>
 </div>
 
@@ -99,17 +125,8 @@
 	<div class="my-8">
 		{#if !listView}
 			<!-- Preferences Collapsible Section -->
-			<div class="mt-6 w-full">
-				<div class="form-control">
-					<label class="label cursor-pointer justify-start gap-3">
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={$personalizedSearch.classifyProductsEnabled}
-						/>
-						<span class="label-text text-sm text-wrap">{$_('preferences.classify_products')}</span>
-					</label>
-				</div>
+			<div class="mb-4">
+				<PersonalizedSearchToggle></PersonalizedSearchToggle>
 			</div>
 			<ProductGrid
 				products={results.products}
@@ -145,7 +162,7 @@
 	</div>
 	<Pagination
 		page={results.page}
-		totalPages={Math.ceil(results.count / results.page_size)}
+		totalPages={results.page_size > 0 ? Math.ceil(results.count / results.page_size) : 0}
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());

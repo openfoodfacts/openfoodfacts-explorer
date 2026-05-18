@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
-	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
+	import { tracker } from '$lib/matomo';
+	import type { KnowledgeElement, KnowledgePanels } from '$lib/api';
 
 	import Debug from '$lib/ui/Debug.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -13,7 +13,7 @@
 	import Table from './Table.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
+		panels: KnowledgePanels;
 		element: KnowledgeElement;
 		productCode?: string;
 	};
@@ -30,7 +30,7 @@
 	{/if}
 {/snippet}
 
-<div class="my-1">
+<div class="mt-4">
 	{#if element.element_type === 'panel'}
 		{@render panel(element.panel_element.panel_id)}
 	{:else if element.element_type === 'panel_group'}
@@ -40,7 +40,11 @@
 	{:else if element.element_type === 'text'}
 		<TextPanel {element} />
 	{:else if element.element_type === 'image'}
-		<ImageButton src={element.image_element.url} alt={element.image_element.alt_text} />
+		<ImageButton
+			src={element.image_element.url}
+			alt={element.image_element.alt_text}
+			{productCode}
+		/>
 	{:else if element.element_type === 'table'}
 		<Table {element} />
 	{:else if element.element_type === 'map'}

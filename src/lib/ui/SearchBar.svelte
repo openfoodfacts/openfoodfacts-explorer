@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { onDestroy } from 'svelte';
+
+	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
 	let {
 		searchQuery = $bindable(''),
@@ -18,6 +21,10 @@
 	let autocompleteLoading = $state(false);
 	let autocompleteList = $state<AutocompleteOption[] | null>(null);
 	let highlightedIndex = $state<number | null>(null);
+
+	// debounce for autocomplete
+	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
+	const DEBOUNCE_DELAY_MS = 100;
 
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
@@ -57,6 +64,33 @@
 		}
 		autocompleteLoading = false;
 	}
+
+	function debouncedFetchAutocomplete(query: string) {
+		if (debounceTimeoutId !== undefined) {
+			clearTimeout(debounceTimeoutId);
+			debounceTimeoutId = undefined;
+		}
+
+		if (query.trim().length < minQueryLength) {
+			if (autocompleteAbortController) {
+				autocompleteAbortController.abort();
+				autocompleteAbortController = null;
+			}
+			autocompleteLoading = false;
+			autocompleteList = null;
+			return;
+		}
+
+		debounceTimeoutId = setTimeout(() => {
+			fetchAutocomplete(query);
+		}, DEBOUNCE_DELAY_MS);
+	}
+
+	onDestroy(() => {
+		if (debounceTimeoutId !== undefined) {
+			clearTimeout(debounceTimeoutId);
+		}
+	});
 
 	function handleEnter() {
 		if (searchQuery.trim() !== '') {
@@ -101,23 +135,24 @@
 			}
 		} else if (e.key === 'Escape') {
 			highlightedIndex = null;
+			autocompleteList = null;
 		}
 	}
 </script>
 
 <div class="form-control">
-	<div>
-		<div class="join dropdown dropdown-bottom dropdown-center md:w-98">
+	<div class="flex w-full items-center gap-2">
+		<div class="join dropdown dropdown-bottom dropdown-center min-w-0 flex-1 md:w-98 md:flex-none">
 			<input
 				type="text"
 				bind:value={searchQuery}
-				class="input join-item input-bordered xl:w-full"
+				class="input join-item input-bordered w-full"
 				placeholder={$_('search.placeholder')}
 				disabled={loading}
 				aria-label={$_('search.placeholder')}
 				onkeydown={handleKeyDown}
 				oninput={() => {
-					fetchAutocomplete(searchQuery);
+					debouncedFetchAutocomplete(searchQuery);
 					highlightedIndex = null;
 				}}
 				onfocus={() => {
@@ -174,9 +209,9 @@
 			href="/qr"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
-			class="btn btn-secondary join-item ms-2 text-lg"
+			class="btn btn-secondary join-item text-lg"
 		>
-			<span class="icon-[mdi--barcode-scan] h-6 w-6"></span>
+			<IconMdiBarcodeScan class="h-6 w-6" />
 		</a>
 	</div>
 </div>

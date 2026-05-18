@@ -1,12 +1,21 @@
 <script lang="ts">
-	import ISO6391 from 'iso-639-1';
 	import { invalidateAll } from '$app/navigation';
 
 	import { getImageFieldName } from '$lib/utils';
-	import { ProductsApi, fileToBase64 } from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import type { Product } from '$lib/api';
+	import { fileToBase64, unselectImageV3, uploadImageV3 } from '$lib/api';
+	import type { Product, ProductImage } from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { getLanguageName } from '$lib/languages';
+	import { _, getDateFormatter } from 'svelte-i18n';
+	import { resolve } from '$app/paths';
+
+	import IconMdiUpload from '@iconify-svelte/mdi/upload';
+	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
+	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
+	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { userInfo } from '$lib/stores/user';
 
 	type PhotoType = { id: string; label: string };
 
@@ -15,7 +24,7 @@
 		isAdditional?: boolean;
 
 		activeLanguageCode: string;
-		currentImages: Array<{ url: string; alt: string; type: string }>;
+		currentImages: Array<ProductImage>;
 		expandedCategories: Set<string>;
 		product: Product;
 		photoTypes: Array<{ id: string; label: string }>;
@@ -44,10 +53,6 @@
 
 	const toast = getToastCtx();
 
-	function getLanguage(code: string) {
-		return ISO6391.getName(code);
-	}
-
 	function triggerFileInput(id: string) {
 		const input = document.getElementById(id) as HTMLInputElement;
 		if (input) input.click();
@@ -62,11 +67,9 @@
 		// Map type to OpenFoodFacts imagefield value using utility function
 		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
 		const barcode = product.code;
-		const user_id = $preferences.username;
-		const password = $preferences.password;
 
-		if (!user_id || !password) {
-			toast.warning('Please set your OpenFoodFacts username and password in settings.');
+		if ($userInfo == null) {
+			toast.warning($_('product.edit.images.toast.login_required'));
 			return;
 		}
 
@@ -74,14 +77,11 @@
 		isUploading = true;
 
 		try {
-			const api = new ProductsApi(fetch);
-
 			const base64Data = await fileToBase64(file);
-
-			const uploadResult = await api.uploadImageV3(barcode, base64Data, imagefield);
+			const uploadResult = await uploadImageV3(fetch, barcode, base64Data, imagefield);
 
 			if (!uploadResult || uploadResult.error || !uploadResult.data) {
-				toast.error(`Upload failed: ${uploadResult}`);
+				toast.error($_('product.edit.images.toast.upload_failed_generic'));
 				return;
 			}
 
@@ -98,7 +98,7 @@
 						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
 
 					if (imgid) {
-						toast.success('Image uploaded successfully!');
+						toast.success($_('product.edit.images.toast.upload_success'));
 						onImageUploaded(imgid);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
@@ -109,11 +109,13 @@
 					uploadResult.data?.errors && uploadResult.data.errors.length > 0
 						? uploadResult.data.errors.join(', ')
 						: 'Unknown error';
-				toast.error(`Upload failed: ${errorMessages}`);
+				toast.error(
+					$_('product.edit.images.toast.upload_failed', { values: { error: errorMessages } })
+				);
 			}
 		} catch (err) {
 			console.error('Image upload failed:', err);
-			toast.error('Image upload failed. Please try again.');
+			toast.error($_('product.edit.images.toast.upload_error'));
 		} finally {
 			// Clear loading state
 			isUploading = false;
@@ -132,19 +134,18 @@
 		isUnselecting = true;
 
 		try {
-			const api = new ProductsApi(fetch);
-			const result = await api.unselectImageV3(barcode, imageType, activeLanguageCode);
+			const result = await unselectImageV3(fetch, barcode, imageType, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
-				toast.success('Image unselected successfully');
+				toast.success($_('product.edit.images.toast.unselect_success'));
 				await invalidateAll();
 			} else {
 				console.warn('Image unselect failed:', result);
-				toast.error('Failed to unselect image. Please try again.');
+				toast.error($_('product.edit.images.toast.unselect_failed'));
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			toast.error('Error unselecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.unselect_error'));
 		} finally {
 			// Clear loading state
 			isUnselecting = false;
@@ -168,7 +169,7 @@
 <div class="mb-6">
 	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 		<h4 class="sm:text-md text-sm font-semibold">
-			{sectionType.label} picture ({getLanguage(activeLanguageCode)})
+			{sectionType.label} picture ({getLanguageName(activeLanguageCode)})
 		</h4>
 		<div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
 			<!-- Upload button for this category -->
@@ -189,10 +190,17 @@
 			>
 				{#if isUploading}
 					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Uploading...</span>
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+					>
 				{:else}
-					<span class="icon-[mdi--upload] h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm">Upload {sectionType.label}</span>
+					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.upload_type', {
+							values: { type: sectionType.label },
+							default: 'Upload ' + sectionType.label
+						})}</span
+					>
 				{/if}
 			</button>
 			{#if isStandardType && hasImagesOfType}
@@ -205,10 +213,17 @@
 				>
 					{#if isUnselecting}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Unselecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselecting', { default: 'Unselecting...' })}</span
+						>
 					{:else}
-						<span class="icon-[mdi--image-remove] h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Unselect {sectionType.label}</span>
+						<IconMdiImageRemove class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.unselect_type', {
+								values: { type: sectionType.label },
+								default: 'Unselect ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}
@@ -220,7 +235,12 @@
 					onclick={() => onToggleExpansion(sectionType.label)}
 				>
 					<span class="text-xs sm:text-sm"
-						>{isExpanded ? 'Show Less' : `See All (${imagesOfType.length})`}</span
+						>{isExpanded
+							? $_('product.edit.images.show_less', { default: 'Show Less' })
+							: $_('product.edit.images.see_all', {
+									values: { count: imagesOfType.length },
+									default: 'See All (' + imagesOfType.length + ')'
+								})}</span
 					>
 				</button>
 			{/if}
@@ -233,26 +253,55 @@
 				class:opacity-50={isUploading || isUnselecting}
 			>
 				{#each imagesToShow as image (image.url)}
-					<button
-						type="button"
-						class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
-						disabled={isUploading || isUnselecting}
-						onclick={() => onImageEdit?.(image.url, image.alt)}
-						title="Click to edit this image"
-					>
-						<img
-							src={image.url}
-							alt={image.alt}
-							class="h-full w-full object-cover transition-transform group-hover:scale-105"
-						/>
-						<div
-							class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
+					<div>
+						<button
+							type="button"
+							class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
+							disabled={isUploading || isUnselecting}
+							onclick={() => onImageEdit?.(image.url, image.alt)}
+							title="Click to edit this image"
 						>
-							<span
-								class="icon-[mdi--pencil] h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-							></span>
+							<img
+								src={image.url}
+								alt={image.alt}
+								class="h-full w-full object-cover transition-transform group-hover:scale-105"
+							/>
+							<div
+								class="absolute inset-0 flex items-center justify-center bg-transparent transition-colors duration-200 group-hover:bg-black/50"
+							>
+								<IconMdiPencil
+									class="h-6 w-6 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+								/>
+							</div>
+						</button>
+						<div
+							class="absolute top-1 right-1 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+						>
+							<a
+								class="btn btn-circle btn-xs bg-base-100/80 hover:bg-base-100 text-base-content border-none"
+								href={IMAGE_REPORT_URL(product.code, image.imgid)}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label="Report to NutriPatrol"
+								title="Report to NutriPatrol"
+								onclick={(e) => e.stopPropagation()}
+							>
+								<IconMdiFlagOutline class="h-3.5 w-3.5" />
+							</a>
 						</div>
-					</button>
+
+						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
+							<a href={resolve('/users/[user]', { user: image.uploader })} class="hover:underline">
+								{image.uploader}
+							</a>
+						</p>
+						<p class="text-base-content/50 mt-0.5 line-clamp-1 text-center text-xs">
+							{getDateFormatter({
+								dateStyle: 'medium',
+								timeStyle: 'medium'
+							}).format(new Date(image.uploaded_t * 1000))}
+						</p>
+					</div>
 				{/each}
 			</div>
 
@@ -264,34 +313,16 @@
 					<div class="text-center">
 						<div class="loading loading-spinner loading-lg text-primary"></div>
 						<p class="text-base-content/70 mt-2 text-sm">
-							{isUploading ? 'Processing upload...' : 'Unselecting image...'}
+							{isUploading
+								? $_('product.edit.images.processing_upload', { default: 'Processing upload...' })
+								: $_('product.edit.images.unselecting_image', { default: 'Unselecting image...' })}
 						</p>
 					</div>
 				</div>
-			{/if}
-		</div>
-	{:else}
-		<div
-			class="bg-base-200 relative flex w-full flex-col items-center justify-center gap-2 rounded p-3 sm:p-4"
-			class:opacity-50={isSelectingImage}
-		>
-			{#if isUploading}
-				<div class="text-center">
-					<div class="loading loading-spinner loading-lg text-primary"></div>
-					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
-						Uploading {sectionType.label.toLowerCase()} photo...
-					</p>
-				</div>
-			{:else if isSelectingImage}
-				<div class="text-center">
-					<div class="loading loading-spinner loading-lg text-primary"></div>
-					<p class="text-base-content/70 mt-2 text-center text-xs sm:text-sm">
-						Selecting {sectionType.label.toLowerCase()} photo...
-					</p>
-				</div>
 			{:else}
 				<p class="text-base-content/60 text-center text-xs sm:text-sm">
-					No {sectionType.label.toLowerCase()} photos available
+					No {sectionType.label.toLowerCase()}
+					{$_('product.edit.images.photos_available', { default: 'photos available' })}
 				</p>
 				<button
 					type="button"
@@ -302,10 +333,17 @@
 				>
 					{#if isSelectingImage}
 						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Selecting...</span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
+						>
 					{:else}
-						<span class="icon-[mdi--image-plus] h-3 w-3 sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm">Select {sectionType.label}</span>
+						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.select_type', {
+								values: { type: sectionType.label },
+								default: 'Select ' + sectionType.label
+							})}</span
+						>
 					{/if}
 				</button>
 			{/if}

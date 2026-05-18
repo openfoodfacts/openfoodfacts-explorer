@@ -15,6 +15,6 @@ permissions:
 jobs:
   assign-author:
     name: 'Pull request assignment'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
-      - uses: toshimaru/auto-author-assign@v2.1.1
+      - uses: toshimaru/auto-author-assign@bdd7688cbf9e6d5683f02f8c7d8ae4062a254b6d # ratchet:toshimaru/auto-author-assign@v3.0.2

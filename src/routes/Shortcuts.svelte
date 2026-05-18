@@ -1,26 +1,11 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
+	import type { Shortcut } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;
 
-	// Define shortcuts: { combo, description, action }
-	export type Shortcut = {
-		combo: string;
-		description: string;
-		action: () => void;
-	};
-
-	let { shortcuts: shortcutsProps }: { shortcuts: Shortcut[] } = $props();
-
-	let shortcuts = $derived([
-		...shortcutsProps,
-		{
-			combo: 'Ctrl+Shift+?',
-			description: 'Show this help modal',
-			action: () => helpModal.showModal()
-		}
-	]);
+	let { shortcuts }: { shortcuts: Map<string, Shortcut> } = $props();
 
 	// Parse event to combo string
 	function getCombo(event: KeyboardEvent): string {
@@ -33,14 +18,46 @@
 		return combo;
 	}
 
+	/**
+	 * Checks if the given element is an editable target.
+	 *
+	 * @param {HTMLElement | null} el - The element to check.
+	 * @return {boolean} Whether the element is editable.
+	 */
+	function isEditableTarget(el: HTMLElement | null): boolean {
+		return (
+			el !== null &&
+			(el instanceof HTMLInputElement ||
+				el instanceof HTMLTextAreaElement ||
+				el instanceof HTMLSelectElement ||
+				el.isContentEditable)
+		);
+	}
+
 	onMount(() => {
 		const keyDownListener = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' && helpModal.open) {
-				helpModal.close();
+			if (event.key === 'Escape') {
+				if (helpModal.open) {
+					helpModal.close();
+					return;
+				}
+
+				if (event.defaultPrevented) return;
+
+				// Blur the active field so the user returns to shortcut mode
+				if (isEditableTarget(document.activeElement as HTMLElement)) {
+					(document.activeElement as HTMLElement).blur();
+				}
+
+				return;
 			}
+
+			// Ignore if user is typing in an input field
+			if (isEditableTarget(event.target as HTMLElement)) return;
+
 			const combo = getCombo(event);
-			shortcuts.forEach((shortcut) => {
-				if (combo === shortcut.combo.replace('?', '?')) {
+			shortcuts.forEach((shortcut, key) => {
+				if (combo === key.replace('?', '?')) {
 					shortcut.action();
 				}
 			});
@@ -51,26 +68,29 @@
 			window.removeEventListener('keydown', keyDownListener);
 		};
 	});
+
+	export function show() {
+		helpModal.showModal();
+	}
 </script>
 
 <!-- Open the modal using ID.showModal() method -->
 <dialog id="my_modal_1" class="modal" bind:this={helpModal}>
 	<div class="modal-box">
-		<h3 class="text-lg font-bold">Keyboard Shortcuts</h3>
-		<ul class="py-4">
-			{#each shortcuts as shortcut (shortcut.combo)}
-				{@const keys = shortcut.combo.split('+')}
-				<li>
-					{#each keys as key, i (i)}
-						{#if i > 0}
-							+
-						{/if}
-						<kbd class="kbd">{key}</kbd>
+		<h3 class="mb-4 text-lg font-bold">Keyboard Shortcuts</h3>
+
+		<div class="grid grid-cols-2 gap-2">
+			{#each shortcuts as [combo, shortcut] (combo)}
+				<span class="font-mono">
+					{#each combo.split('+') as key, i (key)}
+						{#if i > 0}<span class="mx-1">+</span>{/if}<kbd class="kbd">{key}</kbd>
 					{/each}
-					: {shortcut.description}
-				</li>
+				</span>
+
+				<span class="ml-2">{shortcut.description}</span>
 			{/each}
-		</ul>
+		</div>
+
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">Close</button>

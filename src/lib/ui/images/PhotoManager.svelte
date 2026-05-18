@@ -1,17 +1,18 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	import { invalidateAll } from '$app/navigation';
 
 	import { _ } from '$lib/i18n';
-	import type { Product, ProductImage } from '$lib/api';
+	import type { Product, ProductImage, RawImage } from '$lib/api';
 	import {
 		getProductImageUrl,
-		ProductsApi,
 		createImageSelectionWithCrop,
-		createSimpleImageSelection
+		createSimpleImageSelection,
+		selectAndCropImagesV3,
+		unselectImageV3
 	} from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -19,6 +20,7 @@
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
+	import { IMAGE_REPORT_URL } from '$lib/const';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -46,22 +48,6 @@
 
 	const photoTypeIds = new Set(photoTypes.map((pt) => pt.id));
 
-	function createProductImage(
-		url: string,
-		imgid: number,
-		type: string,
-		typeId: string,
-		altSuffix: string = ''
-	): ProductImage {
-		return {
-			url,
-			alt: `${type} image${altSuffix}`,
-			type,
-			imgid,
-			typeId
-		};
-	}
-
 	function getStandardImages(code: string) {
 		const productImages = product.images;
 		const languageName = getLanguage(code);
@@ -86,9 +72,17 @@
 			const imgid = parseInt(imageData.imgid, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(
-				createProductImage(imageUrl, imgid, photoType.label, photoType.id, ` for ${languageName}`)
-			);
+			const originalImage = productImages[imgid] as RawImage;
+
+			images.push({
+				url: imageUrl,
+				alt: `${photoType.label} photo${languageName ? ` for ${languageName}` : ''}`,
+				type: photoType.label,
+				imgid,
+				typeId: photoType.id,
+				uploaded_t: originalImage?.uploaded_t || 0,
+				uploader: originalImage?.uploader || 'unknown'
+			});
 		}
 
 		return images;
@@ -116,13 +110,23 @@
 			const typePrefix = key.split('_')[0];
 			const typeId = photoTypeIds.has(typePrefix) ? typePrefix : 'other';
 
-			images.push(createProductImage(imageUrl, imgid, typePrefix, typeId, ` for ${languageName}`));
+			const rawImage = productImages[imgid] as RawImage;
+
+			images.push({
+				url: imageUrl,
+				alt: `Additional photo (${typePrefix})${languageName ? ` for ${languageName}` : ''}`,
+				type: typePrefix.charAt(0).toUpperCase() + typePrefix.slice(1),
+				imgid,
+				typeId,
+				uploaded_t: rawImage?.uploaded_t || 0,
+				uploader: rawImage?.uploader || 'unknown'
+			});
 		}
 
 		const numericKeys = Object.keys(productImages).filter((key) => /^\d+$/.test(key));
 
 		for (const key of numericKeys) {
-			const imgObj = productImages[key];
+			const imgObj = productImages[key] as RawImage;
 			if (!imgObj?.sizes?.['400']) continue;
 
 			const url = getProductImageUrl(product.code, key, productImages);
@@ -131,7 +135,15 @@
 			const imgid = parseInt(key, 10);
 			if (isNaN(imgid)) continue;
 
-			images.push(createProductImage(url, imgid, 'Additional', 'other'));
+			images.push({
+				url,
+				alt: `Additional photo${languageName ? ` for ${languageName}` : ''}`,
+				type: 'Other',
+				imgid,
+				typeId: 'other',
+				uploaded_t: imgObj?.uploaded_t || 0,
+				uploader: imgObj?.uploader || 'unknown'
+			});
 		}
 
 		return images;
@@ -141,7 +153,16 @@
 		return [...getStandardImages(code), ...getAdditionalImages(code)];
 	}
 
-	let activeLanguageCode = $state(product.lang || Object.keys(product.languages_codes)[0]);
+	function getDefaultLanguage(p: Product) {
+		if (p.lang) return p.lang;
+		if (p.languages_codes) {
+			const codes = Object.keys(p.languages_codes);
+			if (codes.length > 0) return codes[0];
+		}
+		return 'en';
+	}
+
+	let activeLanguageCode = $state(untrack(() => getDefaultLanguage(product)));
 
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
@@ -254,11 +275,13 @@
 			const { cropData, rotationAngle } = data;
 			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
 
-			toast.success('Image saved successfully!');
+			toast.success($_('product.edit.images.toast.save_success'));
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 			console.error('Error processing image:', error);
-			toast.error(`Error processing image: ${errorMessage}. Please try again.`);
+			toast.error(
+				$_('product.edit.images.toast.process_error', { values: { error: errorMessage } })
+			);
 		} finally {
 			await invalidateAll();
 			closeEditModal();
@@ -271,8 +294,6 @@
 		rotationAngle: number
 	) {
 		try {
-			const api = new ProductsApi(fetch);
-
 			// Always use the same API, but include crop parameters only if there's actual cropping
 			const hasCropData = cropData.width > 0 && cropData.height > 0;
 
@@ -295,7 +316,7 @@
 				params
 			);
 
-			await api.selectAndCropImagesV3(product.code, imageSelectionData);
+			await selectAndCropImagesV3(fetch, product.code, imageSelectionData);
 		} catch (error) {
 			console.error('Error processing image with selectAndCrop API:', error);
 			throw error;
@@ -317,31 +338,24 @@
 		}
 
 		try {
-			const api = new ProductsApi(fetch);
-			const result = await api.unselectImageV3(barcode, image.typeId, activeLanguageCode);
+			const result = await unselectImageV3(fetch, barcode, image.typeId, activeLanguageCode);
 
 			if (result.data?.status === 'success' || !result.error) {
-				toast.success('Image unselected successfully');
+				toast.success($_('product.edit.images.toast.unselect_success'));
 				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
-				toast.error('Failed to unselect image. Please try again.');
+				toast.error($_('product.edit.images.toast.unselect_failed'));
 			}
 		} catch (error) {
 			console.error('Error unselecting image:', error);
-			toast.error('Error unselecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.unselect_error'));
 		}
 	}
 
 	function getNutriPatrolReportUrl(image: ProductImage) {
-		const params = new URLSearchParams({
-			barcode: product.code,
-			image_id: String(image.imgid),
-			source: 'web',
-			flavor: 'off'
-		});
-		return `https://nutripatrol.openfoodfacts.org/flag/image/?${params.toString()}`;
+		return IMAGE_REPORT_URL(product.code, image.imgid);
 	}
 
 	let selectingImageModal: PhotoSelectDialog | undefined = $state();
@@ -364,19 +378,18 @@
 		isSelectingImage = true;
 
 		try {
-			const api = new ProductsApi(fetch);
 			const selectionData = createSimpleImageSelection(
 				selectingImageSection,
 				activeLanguageCode,
 				image.imgid
 			);
 
-			await api.selectAndCropImagesV3(product.code, selectionData);
+			await selectAndCropImagesV3(fetch, product.code, selectionData);
 			await invalidateAll();
-			toast.success('Image selected successfully');
+			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
-			toast.error('Error selecting image. Please try again.');
+			toast.error($_('product.edit.images.toast.select_error'));
 		} finally {
 			isSelectingImage = false;
 		}

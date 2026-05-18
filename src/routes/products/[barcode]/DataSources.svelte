@@ -1,15 +1,21 @@
 <script lang="ts">
 	import Card from '$lib/ui/Card.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, getLocale } from '$lib/i18n';
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
+	import IconMdiCheck from '@iconify-svelte/mdi/check';
+	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
 	import { page } from '$app/state';
+
+	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)
+	import '@formatjs/intl-durationformat/polyfill.js';
 
 	type Props = {
 		product: ProductDataSection;
 	};
 
 	let { product }: Props = $props();
-
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -18,8 +24,7 @@
 		const options: Intl.DateTimeFormatOptions = {
 			dateStyle: 'medium'
 		};
-
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = getLocale();
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
@@ -32,8 +37,7 @@
 			dateStyle: 'medium',
 			timeStyle: 'short'
 		};
-
-		const userLanguage = navigator.language || 'en-GB';
+		const userLanguage = getLocale();
 		return new Intl.DateTimeFormat(userLanguage, options).format(date);
 	}
 
@@ -42,24 +46,28 @@
 			return $_('product.datasources.unknown');
 		}
 
-		// TODO: on NodeJS 23, we can use Intl.DurationFormat
-		const seconds = Math.floor(Date.now() / 1000) - unix;
-
-		const intervals: { [key: string]: number } = {
-			year: 31536000,
-			month: 2592000,
-			day: 86400,
+		const seconds = Math.floor((Date.now() - unix * 1000) / 1000);
+		const durations: Record<string, number> = {
+			year: 365 * 24 * 3600,
+			month: 30 * 24 * 3600,
+			week: 7 * 24 * 3600,
+			day: 24 * 3600,
 			hour: 3600,
 			minute: 60,
 			second: 1
 		};
 
-		for (const i in intervals) {
-			const interval = Math.floor(seconds / intervals[i]);
-			if (interval >= 1) {
-				return interval + ' ' + i + (interval > 1 ? 's' : '') + ' ago';
+		const rtf = new Intl.RelativeTimeFormat(getLocale(), {
+			numeric: 'always'
+		});
+
+		for (const unit in durations) {
+			const value = Math.floor(seconds / durations[unit]);
+			if (value >= 1) {
+				return rtf.format(-value, unit as Intl.RelativeTimeFormatUnit);
 			}
 		}
+
 		return $_('product.datasources.just_now');
 	}
 
@@ -118,7 +126,7 @@
 		<div class={['stat', oldnessClass(product.last_modified_t)]}>
 			<div class="stat-title">{$_('product.datasources.last_edit_title')}</div>
 			<div class="stat-figure">
-				<span class="icon-[mdi--pencil] h-8 w-8"></span>
+				<IconMdiPencil class="h-8 w-8" />
 			</div>
 			<div class="stat-value" title={formatFullDate(product.last_modified_t)}>
 				{formatTimeSince(product.last_modified_t)}
@@ -145,9 +153,9 @@
 			<div class="stat-title">{$_('product.datasources.last_check_title')}</div>
 			<div class="stat-figure">
 				{#if product.last_checked_t === null || product.last_checked_t === undefined || Number.isNaN(product.last_checked_t)}
-					<span class="icon-[mdi--alert-circle] h-8 w-8"></span>
+					<IconMdiAlertCircle class="h-8 w-8" />
 				{:else}
-					<span class="icon-[mdi--check] h-8 w-8"></span>
+					<IconMdiCheck class="h-8 w-8" />
 				{/if}
 			</div>
 			<div class="stat-value" title={formatFullDate(product.last_checked_t)}>
@@ -174,7 +182,7 @@
 		<div class="stat">
 			<div class="stat-title">{$_('product.datasources.added_on_title')}</div>
 			<div class="stat-figure">
-				<span class="icon-[mdi--calendar-plus] h-8 w-8"></span>
+				<IconMdiCalendarPlus class="h-8 w-8" />
 			</div>
 			<div class="stat-value" title={formatFullDate(product.created_t)}>
 				{formatShortDate(product.created_t)}
@@ -203,7 +211,7 @@
 							title={editor ?? $_('product.datasources.unknown')}
 							class="bg-base-300 text-base-content flex h-10 items-center justify-center rounded p-2 text-center"
 						>
-							<span class="overflow-hidden align-middle overflow-ellipsis">
+							<span class="truncate align-middle">
 								{editor ?? $_('product.datasources.unknown')}
 							</span>
 						</a>

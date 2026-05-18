@@ -1,10 +1,20 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+	import { preferences } from '$lib/settings';
+	import { getPermissionsCtx } from '$lib/stores/user';
+	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;
@@ -27,20 +37,50 @@
 	}: Props = $props();
 
 	let showInfo = $state(false);
+
+	const permissions = getPermissionsCtx();
+
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+Q', {
+			description: $_('product.shortcuts.edit_product_quantity'),
+			action: () => focusEditField('#quantity')
+		});
+		shortcutCtx.set('Shift+C', {
+			description: $_('product.shortcuts.edit_product_categories'),
+			action: () => focusEditField('categories-input', true)
+		});
+		shortcutCtx.set('Shift+B', {
+			description: $_('product.shortcuts.edit_product_brands'),
+			action: () => focusEditField('brands-input', true)
+		});
+		shortcutCtx.set('Shift+L', {
+			description: $_('product.shortcuts.edit_product_labels'),
+			action: () => focusEditField('labels-input', true)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+Q');
+			shortcutCtx.delete('Shift+C');
+			shortcutCtx.delete('Shift+B');
+			shortcutCtx.delete('Shift+L');
+		};
+	});
 </script>
 
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
-	<span class="icon-[mdi--information] mr-1 h-6 w-6 align-middle"></span>
-	{$_('product.edit.sections.basic_info')}
+	<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
+	{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<span
-			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		/>
 	</button>
 </h2>
 {#if showInfo}
@@ -53,15 +93,39 @@
 			aria-label="Close"
 			onclick={toggleInfo}
 		>
-			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+			<IconMdiClose class="text-primary h-5 w-5" />
 		</button>
-		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
 		<span class="text-base-content/80 p-6 text-sm sm:text-base">
 			{$_('product.edit.info.basic_info')}
 		</span>
 	</div>
 {/if}
 <div class="space-y-6">
+	<!-- Product Type (Moderators Only) -->
+	{#if permissions.isModerator && $preferences.moderator}
+		<div class="form-control w-full sm:w-1/2">
+			<label class="label" for="product_type">
+				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+					{$_('product.edit.product_type')}
+					<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
+						{$_('product.edit.moderator_only')}
+					</span>
+					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+				</span>
+			</label>
+			<select
+				id="product_type"
+				class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				bind:value={product.product_type}
+			>
+				{#each PRODUCT_TYPES as type (type)}
+					<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
+				{/each}
+			</select>
+		</div>
+	{/if}
+
 	<!-- Primary Fields Grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 		<div class="form-control w-full">
@@ -109,7 +173,7 @@
 		/>
 	</div>
 	<!-- Tags Section -->
-	<div class="divider text-sm font-medium opacity-60">Product Tags</div>
+	<div class="divider text-sm font-medium opacity-60">{$_('product.edit.product_tags')}</div>
 	<div class="space-y-4">
 		<div class="form-control w-full">
 			<label class="label" for="categories-input">

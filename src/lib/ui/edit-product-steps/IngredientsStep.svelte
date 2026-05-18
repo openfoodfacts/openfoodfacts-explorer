@@ -1,9 +1,19 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import { createProductsApi, type Product } from '$lib/api';
+	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
+
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type OCRResult = {
 		status?: number;
@@ -16,11 +26,10 @@
 
 	type Props = {
 		product: Product;
-		getLanguage: (code: string) => string;
 		getIngredientsImage: (language: string) => string | null;
 	};
 
-	let { product = $bindable(), getLanguage, getIngredientsImage }: Props = $props();
+	let { product = $bindable(), getIngredientsImage }: Props = $props();
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
@@ -40,7 +49,7 @@
 			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
-			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
+			console.debug(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
 
 			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
@@ -68,17 +77,30 @@
 			ocrLoading = false;
 		}
 	}
+
+	let activeLang = $state(product.lang);
+	const shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+I', {
+			description: $_('product.shortcuts.edit_product_ingredients'),
+			action: () => focusEditField(`#ingredients-list-${activeLang}`)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+I');
+		};
+	});
 </script>
 
 <h2
 	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 >
-	<span class="icon-[mdi--format-list-bulleted] mr-1 h-6 w-6 align-middle"></span>
+	<IconMdiFormatListBulleted class="mr-1 h-6 w-6 align-middle" />
 	{$_('product.edit.sections.ingredients')}
 	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<span
-			class="icon-[mdi--help-circle-outline] hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		></span>
+		<IconMdiHelpCircleOutline
+			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+		/>
 	</button>
 </h2>
 {#if showInfo}
@@ -91,9 +113,9 @@
 			aria-label="Close"
 			onclick={toggleInfo}
 		>
-			<span class="icon-[mdi--close] text-primary h-5 w-5"></span>
+			<IconMdiClose class="text-primary h-5 w-5" />
 		</button>
-		<span class="icon-[mdi--information] text-primary mt-0.5 h-6 w-6 flex-shrink-0"></span>
+		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
 		<span class="text-base-content/80 p-6 text-sm sm:text-base">
 			{$_('product.edit.info.ingredients')}
 		</span>
@@ -105,14 +127,15 @@
 			type="radio"
 			name="ingredients_tabs"
 			class="tab text-xs sm:text-sm"
-			aria-label={getLanguage(code)}
-			checked={code === product.lang}
+			aria-label={getLanguageName(code)}
+			checked={code === activeLang}
+			onchange={() => (activeLang = code)}
 		/>
 		<div class="tab-content form-control p-6">
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
-						<ImageButton src={getIngredientsImage(code) ?? undefined} />
+						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
 
 						<!-- OCR Button -->
 						<button
@@ -126,7 +149,7 @@
 								<span class="loading loading-spinner h-4 w-4"></span>
 								<span>Extracting ingredients...</span>
 							{:else}
-								<span class="icon-[mdi--text-recognition] h-4 w-4"></span>
+								<IconMdiTextRecognition class="h-4 w-4" />
 								<span>Extract ingredients from image</span>
 							{/if}
 						</button>
@@ -140,7 +163,7 @@
 
 			<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
 				<span class="flex items-center gap-2">
-					{$_('product.edit.ingredients_list')} ({getLanguage(code)})
+					{$_('product.edit.ingredients_list')} ({getLanguageName(code)})
 					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
 				</span>
 			</label>

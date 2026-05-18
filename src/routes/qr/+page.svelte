@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+	import { onDestroy, onMount, tick } from 'svelte';
+	import type { Html5Qrcode } from 'html5-qrcode';
 
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { createProductsApi } from '$lib/api';
+	import { browser } from '$app/environment';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -12,6 +13,8 @@
 	let lastScannedCode = $state('');
 
 	function getQrBoxSize() {
+		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
+
 		const screenWidth = window.innerWidth;
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
@@ -22,7 +25,7 @@
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
-				console.log('QR code detected:', text);
+				console.debug('QR code detected:', text);
 				lastScannedCode = text;
 
 				// We must stop the scanner first to release the camera
@@ -54,11 +57,13 @@
 		);
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			error = 'Your browser does not support the camera API';
 			return;
 		}
+
+		const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
 
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,
@@ -103,6 +108,9 @@
 			productNotFound = false;
 			error = null;
 			lastScannedCode = '';
+
+			// Ensure page is fully rendered before restarting the scan
+			await tick();
 
 			if (html5QrCode) {
 				await startScanning(html5QrCode);

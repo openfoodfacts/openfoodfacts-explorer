@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
-	import type { FolksonomyKey } from '$lib/api/folksonomy';
+
+	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
+	import IconMdiInformationOutline from '@iconify-svelte/mdi/information-outline';
+	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
+
+	import type { FolksonomyKey } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '$lib/i18n';
 
 	import type { PageProps } from './$types';
@@ -115,16 +121,16 @@
 
 			<div class="search-section mb-6">
 				<div class="form-control">
-					<div class="input-group">
+					<div class="join w-full max-w-md">
 						<input
 							type="text"
 							placeholder={$_('folksonomy.search_placeholder')}
-							class="input input-bordered w-full max-w-md"
+							class="input input-bordered join-item w-full"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square" aria-label={$_('search.button')}>
-							<span class="icon-[mdi--magnify] h-6 w-6"></span>
+						<button class="btn btn-square join-item" aria-label={$_('search.button')}>
+							<IconMdiMagnify class="h-6 w-6" />
 						</button>
 					</div>
 				</div>
@@ -142,7 +148,7 @@
 
 	{#snippet emptyState(message: string)}
 		<div class="alert alert-info" transition:fade>
-			<span class="icon-[mdi--information-outline] h-6 w-6 shrink-0 stroke-current"></span>
+			<IconMdiInformationOutline class="h-6 w-6 shrink-0 stroke-current" />
 			<span>{message}</span>
 		</div>
 	{/snippet}
@@ -208,9 +214,9 @@
 			</div>
 			<button class="btn btn-sm btn-circle" aria-hidden="true">
 				{#if expandedGroups[group]}
-					<span class="icon-[mdi--chevron-up] h-6 w-6"></span>
+					<IconMdiChevronUp class="h-6 w-6" />
 				{:else}
-					<span class="icon-[mdi--chevron-down] h-6 w-6"></span>
+					<IconMdiChevronDown class="h-6 w-6" />
 				{/if}
 			</button>
 		</div>

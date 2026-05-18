@@ -1,26 +1,19 @@
-import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+import { getFacetValue } from '$lib/api/facets';
+import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-
-// TODO: remove this
-type FacetResponse = {
-	count: number;
-	products: Product[];
-};
 
 export const load: PageLoad = async ({ fetch, params }) => {
 	const { user } = params;
+	const encodedUser = encodeURIComponent(user);
 
-	const contributorResponse = fetch(
-		`https://world.openfoodfacts.org/facets/contributors/${user}.json`
-	).then((it) => it.json()) as Promise<FacetResponse>;
-
-	const editorResponse = fetch(`https://world.openfoodfacts.org/facets/editors/${user}.json`).then(
-		(it) => it.json()
-	) as Promise<FacetResponse>;
+	const contributorResponse = getFacetValue(fetch, 'contributors', encodedUser, {}).catch(() => {
+		error(500, `Unable to load "contributors" facet for user "${user}"`);
+	});
+	const editorResponse = getFacetValue(fetch, 'editors', encodedUser, {}).catch(() => {
+		error(500, `Unable to load "editors" facet for user "${user}"`);
+	});
 
 	const [contributorData, editorData] = await Promise.all([contributorResponse, editorResponse]);
-
-	console.debug('contributorData', contributorData);
 
 	return {
 		user,

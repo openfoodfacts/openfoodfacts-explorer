@@ -4,7 +4,18 @@
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
+	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
+
+	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
+	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
+	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
@@ -15,6 +26,7 @@
 
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
+		getPackagingImage: (language: string) => string | null;
 
 		// Submission
 
@@ -26,8 +38,7 @@
 		// Language
 
 		addLanguage: (code: string) => void;
-		getLanguage: (code: string) => string;
-		filteredLanguages: string[];
+		languages: string[];
 
 		// Taxonomy entries
 
@@ -37,6 +48,7 @@
 		storeNames: string[];
 		originNames: string[];
 		countriesNames: string[];
+		units: string[];
 	};
 
 	let {
@@ -44,27 +56,45 @@
 		comment = $bindable(),
 		handleNutrimentInput,
 		addLanguage,
-		getLanguage,
 		getIngredientsImage,
 		getNutritionImage,
-		filteredLanguages,
+		getPackagingImage,
+		languages,
 		categoryNames,
 		labelNames,
 		brandNames,
 		storeNames,
 		originNames,
 		countriesNames,
+		units,
 		isSubmitting,
 		submit
 	}: Props = $props();
+
+	function getOpenPricesUrl(code: string): string {
+		const params = new URLSearchParams({ code });
+		return `https://prices.openfoodfacts.org/prices/add/single?${params}`;
+	}
 </script>
 
 <div class="space-y-4">
+	<!-- Languages Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+			{$_('product.edit.sections.languages')}
+		</div>
+		<div class="collapse-content">
+			<LanguagesStep bind:product {addLanguage} codes={languages} />
+		</div>
+	</div>
+
 	<!-- Images Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--image-multiple] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.images')}
 		</div>
 		<div class="collapse-content">
@@ -76,7 +106,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--information] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.basic_info')}
 		</div>
 		<div class="collapse-content">
@@ -92,27 +122,15 @@
 		</div>
 	</div>
 
-	<!-- Languages Section -->
-	<div class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
-		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--translate] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
-			{$_('product.edit.sections.languages')}
-		</div>
-		<div class="collapse-content">
-			<LanguagesStep bind:product {addLanguage} {getLanguage} {filteredLanguages} />
-		</div>
-	</div>
-
 	<!-- Ingredients Section -->
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--format-list-bulleted] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
-			<IngredientsStep bind:product {getIngredientsImage} {getLanguage} />
+			<IngredientsStep bind:product {getIngredientsImage} />
 		</div>
 	</div>
 
@@ -121,11 +139,48 @@
 	<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--nutrition] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.nutrition')}
 		</div>
 		<div class="collapse-content">
-			<NutritionStep bind:product {getLanguage} {getNutritionImage} {handleNutrimentInput} />
+			<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
+		</div>
+	</div>
+
+	<!-- Prices Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+			{$_('product.edit.sections.prices')}
+		</div>
+		<div class="collapse-content">
+			<p class="text-base-content/70 mt-2 mb-4 text-sm">
+				{$_('product.edit.info.prices')}
+			</p>
+			{#if product.code != null}
+				<a
+					href={getOpenPricesUrl(product.code)}
+					class="btn btn-secondary btn-sm"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<IconMdiOpenInNew class="mr-1 h-4 w-4" />
+					{$_('product.edit.prices.add_price_btn')}
+				</a>
+			{/if}
+		</div>
+	</div>
+
+	<!-- Packaging Section -->
+	<div class="collapse-arrow bg-base-200 collapse shadow-md" id="packaging">
+		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
+		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+			<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+			{$_('product.edit.sections.packaging')}
+		</div>
+		<div class="collapse-content">
+			<PackagingStep bind:product {getPackagingImage} />
 		</div>
 	</div>
 
@@ -133,7 +188,7 @@
 	<div class="collapse-arrow bg-base-200 collapse shadow-md">
 		<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<span class="icon-[mdi--comment-text] mr-2 h-4 w-4 sm:h-5 sm:w-5"></span>
+			<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 			{$_('product.edit.sections.comment')}
 		</div>
 		<div class="collapse-content">
@@ -144,11 +199,15 @@
 	<div class="mt-8 flex justify-end">
 		<button
 			class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
-			class:loading={isSubmitting}
 			onclick={submit}
 			disabled={isSubmitting}
+			aria-busy={isSubmitting}
 			type="button"
 		>
+			{#if isSubmitting}
+				<span class="loading loading-spinner loading-xs sm:loading-sm mr-2" aria-hidden="true"
+				></span>
+			{/if}
 			{$_('product.edit.save_btn')}
 		</button>
 	</div>

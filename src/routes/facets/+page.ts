@@ -1,51 +1,73 @@
 import type { PageLoad } from './$types';
 
+import IconMdiEarth from '@iconify-svelte/mdi/earth';
+import IconMaterialTrafficOutline from '@iconify-svelte/material-symbols/traffic-outline';
+import IconMdiNumeric from '@iconify-svelte/mdi/numeric';
+import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
+import IconMdiTag from '@iconify-svelte/mdi/tag';
+import IconMdiShape from '@iconify-svelte/mdi/shape';
+import IconMdiLabel from '@iconify-svelte/mdi/label';
+import IconMdiPackage from '@iconify-svelte/mdi/package';
+import IconMaterialGlobeLocationPin from '@iconify-svelte/material-symbols/globe-location-pin';
+import IconMdiFactory from '@iconify-svelte/mdi/factory';
+import IconMdiBarcode from '@iconify-svelte/mdi/barcode';
+import IconMdiFoodVariant from '@iconify-svelte/mdi/food-variant';
+import IconMdiFlask from '@iconify-svelte/mdi/flask';
+import IconMdiPill from '@iconify-svelte/mdi/pill';
+import IconMdiDiamond from '@iconify-svelte/mdi/diamond';
+import IconMdiMolecule from '@iconify-svelte/mdi/molecule';
+import IconMdiDna from '@iconify-svelte/mdi/dna';
+import IconMdiPlusCircle from '@iconify-svelte/mdi/plus-circle';
+import IconMdiAlert from '@iconify-svelte/mdi/alert';
+import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
+import IconMdiDotsHorizontal from '@iconify-svelte/mdi/dots-horizontal';
+import IconMdiTranslate from '@iconify-svelte/mdi/translate';
+import IconMdiAccountGroup from '@iconify-svelte/mdi/account-group';
+import IconMdiCheckboxMarked from '@iconify-svelte/mdi/checkbox-marked';
+import IconMdiDatabase from '@iconify-svelte/mdi/database';
+import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
+import IconMdiCalendarEdit from '@iconify-svelte/mdi/calendar-edit';
+import IconMdiCalendarCheck from '@iconify-svelte/mdi/calendar-check';
+import IconMdiAccountMultiple from '@iconify-svelte/mdi/account-multiple';
+
 const FACETS = [
-	{ taxo: 'countries', name: 'Countries', icon: 'icon-[mdi--earth]' },
-	{
-		taxo: 'nutrition-grades',
-		name: 'Nutrition grades',
-		icon: 'icon-[material-symbols--traffic-outline]'
-	},
-	{ taxo: 'nova-groups', name: 'NOVA groups', icon: 'icon-[mdi--numeric]' },
-	{ taxo: 'environmental-score', name: 'Green-Score', icon: 'icon-[mdi--leaf]' },
-	{ taxo: 'brands', name: 'Brands', icon: 'icon-[mdi--tag]' },
-	{ taxo: 'categories', name: 'Categories', icon: 'icon-[mdi--shape]' },
-	{ taxo: 'labels', name: 'Labels', icon: 'icon-[mdi--label]' },
-	{ taxo: 'packaging', name: 'Packaging', icon: 'icon-[mdi--package]' },
-	{
-		taxo: 'origins',
-		name: 'Origins of ingredients',
-		icon: 'icon-[material-symbols--globe-location-pin]'
-	},
+	{ taxo: 'countries', name: 'Countries', icon: IconMdiEarth },
+	{ taxo: 'nutrition-grades', name: 'Nutrition grades', icon: IconMaterialTrafficOutline },
+	{ taxo: 'nova-groups', name: 'NOVA groups', icon: IconMdiNumeric },
+	{ taxo: 'environmental-score', name: 'Green-Score', icon: IconMdiLeaf },
+	{ taxo: 'brands', name: 'Brands', icon: IconMdiTag },
+	{ taxo: 'categories', name: 'Categories', icon: IconMdiShape },
+	{ taxo: 'labels', name: 'Labels', icon: IconMdiLabel },
+	{ taxo: 'packaging', name: 'Packaging', icon: IconMdiPackage },
+	{ taxo: 'origins', name: 'Origins of ingredients', icon: IconMaterialGlobeLocationPin },
 	{
 		taxo: 'manufacturing-places',
 		name: 'Manufacturing or processing places',
-		icon: 'icon-[mdi--factory]'
+		icon: IconMdiFactory
 	},
-	{ taxo: 'packager-codes', name: 'Traceability codes', icon: 'icon-[mdi--barcode]' },
-	{ taxo: 'ingredients', name: 'Ingredients', icon: 'icon-[mdi--food-variant]' },
-	{ taxo: 'additives', name: 'Additives', icon: 'icon-[mdi--flask]' },
-	{ taxo: 'vitamins', name: 'Added vitamins', icon: 'icon-[mdi--pill]' },
-	{ taxo: 'minerals', name: 'Added minerals', icon: 'icon-[mdi--diamond]' },
-	{ taxo: 'amino-acids', name: 'Added amino acids', icon: 'icon-[mdi--molecule]' },
-	{ taxo: 'nucleotides', name: 'Added nucleotides', icon: 'icon-[mdi--dna]' },
+	{ taxo: 'packager-codes', name: 'Traceability codes', icon: IconMdiBarcode },
+	{ taxo: 'ingredients', name: 'Ingredients', icon: IconMdiFoodVariant },
+	{ taxo: 'additives', name: 'Additives', icon: IconMdiFlask },
+	{ taxo: 'vitamins', name: 'Added vitamins', icon: IconMdiPill },
+	{ taxo: 'minerals', name: 'Added minerals', icon: IconMdiDiamond },
+	{ taxo: 'amino-acids', name: 'Added amino acids', icon: IconMdiMolecule },
+	{ taxo: 'nucleotides', name: 'Added nucleotides', icon: IconMdiDna },
 	{
 		taxo: 'other-nutritional-substances',
 		name: 'Other nutritional substances added',
-		icon: 'icon-[mdi--plus-circle]'
+		icon: IconMdiPlusCircle
 	},
-	{ taxo: 'allergens', name: 'Allergens', icon: 'icon-[mdi--alert]' },
-	{ taxo: 'traces', name: 'Traces', icon: 'icon-[mdi--magnify]' },
-	{ taxo: 'misc', name: 'Miscellaneous', icon: 'icon-[mdi--dots-horizontal]' },
-	{ taxo: 'languages', name: 'Languages', icon: 'icon-[mdi--translate]' },
-	{ taxo: 'contributors', name: 'Contributors', icon: 'icon-[mdi--account-group]' },
-	{ taxo: 'states', name: 'States', icon: 'icon-[mdi--checkbox-marked]' },
-	{ taxo: 'data-sources', name: 'Data sources', icon: 'icon-[mdi--database]' },
-	{ taxo: 'entry-dates', name: 'Entry dates', icon: 'icon-[mdi--calendar-plus]' },
-	{ taxo: 'last-edit-dates', name: 'Last edit dates', icon: 'icon-[mdi--calendar-edit]' },
-	{ taxo: 'last-check-dates', name: 'Last check dates', icon: 'icon-[mdi--calendar-check]' },
-	{ taxo: 'teams', name: 'Teams', icon: 'icon-[mdi--account-multiple]' }
+	{ taxo: 'allergens', name: 'Allergens', icon: IconMdiAlert },
+	{ taxo: 'traces', name: 'Traces', icon: IconMdiMagnify },
+	{ taxo: 'misc', name: 'Miscellaneous', icon: IconMdiDotsHorizontal },
+	{ taxo: 'languages', name: 'Languages', icon: IconMdiTranslate },
+	{ taxo: 'contributors', name: 'Contributors', icon: IconMdiAccountGroup },
+	{ taxo: 'states', name: 'States', icon: IconMdiCheckboxMarked },
+	{ taxo: 'data-sources', name: 'Data sources', icon: IconMdiDatabase },
+	{ taxo: 'entry-dates', name: 'Entry dates', icon: IconMdiCalendarPlus },
+	{ taxo: 'last-edit-dates', name: 'Last edit dates', icon: IconMdiCalendarEdit },
+	{ taxo: 'last-check-dates', name: 'Last check dates', icon: IconMdiCalendarCheck },
+	{ taxo: 'teams', name: 'Teams', icon: IconMdiAccountMultiple }
 ];
 
 export const load: PageLoad = async () => {

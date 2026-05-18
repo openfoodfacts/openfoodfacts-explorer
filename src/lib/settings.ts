@@ -2,25 +2,25 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 1,
+	version: 4,
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
 	nutriscoreInfluence: 50,
 	ecoscoreInfluence: 50,
 	novaGroupInfluence: 50,
-	folksonomy: {
-		authToken: null as string | null
-	},
+
 	prices: {
 		authToken: null as string | null
 	},
-	username: null as string | null,
-	password: null as string | null,
 
 	editing: {
 		expandAllSections: false
-	}
+	},
+
+	displayPricesInSearch: true,
+
+	moderator: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -35,7 +35,7 @@ export function runPreferencesMigrations() {
 	let maxVersion = currentVersion;
 	for (const migration of MIGRATIONS) {
 		if (migration.version > currentVersion) {
-			console.log(`Migrating preferences to version ${migration.version}`);
+			console.info(`Migrating preferences to version ${migration.version}`);
 			prefs = migration.upgrade(prefs);
 			prefs.version = migration.version;
 			maxVersion = Math.max(maxVersion, migration.version);
@@ -59,6 +59,42 @@ const MIGRATIONS: {
 			preferences.editing = {
 				expandAllSections: false
 			};
+			return preferences;
+		}
+	},
+	{
+		version: 2,
+		upgrade: (preferences) => {
+			if (!('moderator' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.moderator = false;
+			}
+			return preferences;
+		}
+	},
+	{
+		// 2026-02-06: Migrating to full OAuth tokens, removing username/password
+		version: 3,
+		upgrade: (preferences) => {
+			if ('username' in preferences) {
+				delete preferences.username;
+			}
+			if ('password' in preferences) {
+				delete preferences.password;
+			}
+			if ('folksonomy' in preferences) {
+				delete preferences.folksonomy;
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 4,
+		upgrade: (preferences) => {
+			if (!('displayPricesInSearch' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.displayPricesInSearch = true;
+			}
 			return preferences;
 		}
 	}
