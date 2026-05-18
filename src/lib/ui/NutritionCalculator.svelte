@@ -119,13 +119,7 @@
 			</div>
 
 			<div class="mt-4 flex justify-end">
-				<button
-					class="btn btn-sm btn-error"
-					onclick={clearCalculator}
-					aria-label={$_('calculator.clear_all_aria', {
-						default: 'Clear all items from calculator'
-					})}
-				>
+				<button class="btn btn-sm btn-error" onclick={clearCalculator} aria-label="Clear All">
 					{$_('calculator.clear_all', { default: 'Clear All' })}
 				</button>
 			</div>
