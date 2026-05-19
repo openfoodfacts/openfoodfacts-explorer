@@ -102,11 +102,8 @@
 		if (input.checked) {
 			product = {
 				...product,
-				no_nutrition_data: true,
-				nutriments: {} as Nutriments,
-				serving_size: ''
+				no_nutrition_data: true
 			};
-			additionalNutrients = [];
 		} else {
 			product = {
 				...product,
