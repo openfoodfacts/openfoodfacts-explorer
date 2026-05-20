@@ -98,7 +98,7 @@
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
-		"@openfoodfacts/openfoodfacts-webcomponents": "^1.15.1",
+		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
 		"@sentry/sveltekit": "^10.29.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0"
 	},
