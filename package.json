@@ -29,9 +29,9 @@
 		"test": "vitest run --passWithNoTests"
 	},
 	"devDependencies": {
-		"@crowdin/cli": "latest",
-		"@eslint/eslintrc": "latest",
-		"@eslint/js": "latest",
+		"@crowdin/cli": "^4.12.0",
+		"@eslint/eslintrc": "^3.3.5",
+		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
 		"@formatjs/intl-durationformat": "^0.10.3",
 		"@iconify-svelte/material-symbols": "^1.0.29",
@@ -100,12 +100,7 @@
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.15.1",
 		"@sentry/sveltekit": "^10.29.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
-		"build": "^0.1.4",
-		"check": "^1.0.0",
-		"dev": "^0.1.3",
-		"fuse.js": "^7.1.0",
-		"lint": "^1.2.2",
-		"pnpm": "^11.1.3"
+		"fuse.js": "^7.1.0"
 	},
 	"packageManager": "pnpm@11.0.5+sha512.94fa09e72016402aefce788e46994e18eb1922998b16b6fd5aa6bafd8ae4dea05d0852f60247fdb7d5ab8199a7b0beda830398f3f80cb9f822398522a1535481"
 }

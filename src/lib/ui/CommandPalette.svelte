@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { commandPaletteOpen } from '$lib/stores/commandPalette';
 	import {
@@ -155,6 +156,7 @@
 	}
 
 	function handlePanelKeydown(e: KeyboardEvent) {
+		if (!browser) return;
 		if (e.key !== 'Tab' || !panelEl) return;
 		const focusable = Array.from(
 			panelEl.querySelectorAll<HTMLElement>('input, button, [tabindex]:not([tabindex="-1"])')
@@ -219,6 +221,7 @@
 		initKeyboardListeners();
 
 		const handler = (e: KeyboardEvent) => {
+			if (e.repeat) return;
 			const isCtrlK = matchesShortcut(e, ['ctrl', 'k']);
 			const isCmdK = matchesShortcut(e, ['meta', 'k']);
 			if (isCtrlK || isCmdK) {
@@ -237,20 +240,19 @@
 </script>
 
 {#if $commandPaletteOpen}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
 	<div
 		class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity"
 		aria-hidden="true"
 		onclick={() => commandPaletteOpen.set(false)}
 	></div>
 
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<div
 		bind:this={panelEl}
 		class="border-base-300 bg-base-100 fixed top-[10vh] left-1/2 z-50 w-[calc(100%-1rem)] max-w-lg -translate-x-1/2 rounded-2xl border shadow-xl outline-none"
 		role="dialog"
 		aria-modal="true"
-		aria-label="Command palette"
+		tabindex="-1"
+		aria-label={$_('command_palette', { default: 'Command palette' })}
 		onclick={(e) => e.stopPropagation()}
 		onkeydown={handlePanelKeydown}
 	>
@@ -281,7 +283,7 @@
 					: undefined}
 				autocomplete="off"
 				spellcheck={false}
-				placeholder="Type a command"
+				placeholder={$_('command_palette.placeholder', { default: 'Type a command' })}
 			/>
 			<span
 				class="border-base-300 bg-base-200 text-base-content/70 rounded border px-2 py-0.5 text-xs"
@@ -297,14 +299,14 @@
 						No commands match "{query}".
 					</div>
 				{:else}
-					{#each Array.from(groupedCommands) as [category, commands]}
+					{#each Array.from(groupedCommands) as [category, commands] (category)}
 						<div
 							class="text-base-content/50 px-4 pt-3 pb-1 text-xs tracking-wider uppercase"
 							aria-hidden="true"
 						>
 							{category}
 						</div>
-						{#each commands as command}
+						{#each commands as command (command.id)}
 							{@const flatIndex = commandIndexMap.get(command.id) ?? 0}
 							<div
 								id={`cmd-item-${flatIndex}`}
@@ -342,7 +344,7 @@
 									</span>
 								{:else if command.shortcut?.length}
 									<div class="ml-4 flex gap-1">
-										{#each command.shortcut as key}
+										{#each command.shortcut as key (key)}
 											<kbd
 												class="border-base-300 bg-base-200 text-base-content/70 rounded border px-1.5 py-0.5 text-[10px] font-semibold"
 											>

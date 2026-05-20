@@ -26,7 +26,7 @@ export async function clearAppCache(): Promise<void> {
 			const keys = await caches.keys();
 			await Promise.all(keys.map((k) => caches.delete(k)));
 		}
-	} catch (err) {
+	} catch {
 		// swallow errors
 	}
 }

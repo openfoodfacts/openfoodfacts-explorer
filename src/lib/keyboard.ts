@@ -24,9 +24,8 @@ export function initKeyboardListeners(): void {
 		for (const h of listeners) {
 			try {
 				h(e);
-			} catch (err) {
+			} catch {
 				// swallow to avoid breaking other handlers
-				// console.error('keyboard handler error', err);
 			}
 		}
 	};
