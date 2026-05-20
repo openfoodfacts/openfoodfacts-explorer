@@ -99,17 +99,10 @@
 	function handleNoNutritionData(event: Event) {
 		const input = event.currentTarget as HTMLInputElement;
 
-		if (input.checked) {
-			product = {
-				...product,
-				no_nutrition_data: true
-			};
-		} else {
-			product = {
-				...product,
-				no_nutrition_data: false
-			};
-		}
+		product = {
+			...product,
+			no_nutrition_data: input.checked
+		};
 	}
 
 	const bySeverity = (a: Issue, b: Issue) => {
