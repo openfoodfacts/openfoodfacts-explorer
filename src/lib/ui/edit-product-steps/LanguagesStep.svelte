@@ -10,6 +10,9 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiSearch from '@iconify-svelte/mdi/search';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;
@@ -40,6 +43,19 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	let activeLang = $state(product.lang);
+	let shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+P', {
+			description: $_('product.shortcuts.edit_product_name'),
+			action: () => focusEditField(`#product-name-${activeLang}`)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+P');
+		};
+	});
 </script>
 
 <h2
@@ -129,7 +145,8 @@
 			name="name_tabs"
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguageName(code)}
-			checked={code === product.lang}
+			checked={code === activeLang}
+			onchange={() => (activeLang = code)}
 		/>
 		<div class="tab-content form-control p-6">
 			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>

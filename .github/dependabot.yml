@@ -1,30 +1,119 @@
 version: 2
 
 updates:
+  # Maintain NPM (pnpm) dependencies
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Etc/UTC'
+    open-pull-requests-limit: 10
+    labels:
+      - 'dependencies'
+      - 'javascript'
     groups:
-      minor:
-        patterns: ['*']
-        update-types: ['minor', 'patch']
+      openfoodfacts:
+        patterns:
+          - '@openfoodfacts/*'
+
+      svelte-vite:
+        patterns:
+          - 'svelte'
+          - '@sveltejs/*'
+          - 'vite'
+          - '@tailwindcss/vite'
+          - 'vite-plugin-static-copy'
+          - 'svelte-check'
+
+      testing:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+
+      styling:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'postcss'
+          - 'daisyui'
+          - 'tailwindcss-opentype'
+          - 'prettier-plugin-tailwindcss'
+
+      tooling:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'eslint-*'
+          - 'prettier'
+          - 'prettier-*'
+          - 'typescript'
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+          - 'husky'
+          - 'pretty-quick'
+          - 'tslib'
+          - '@types/*'
+          - 'svelte-eslint-parser'
+          - 'eslint-plugin-svelte'
+          - 'prettier-plugin-svelte'
+
+      data-geo:
+        patterns:
+          - 'leaflet'
+          - '@types/leaflet'
+          - 'leaflet.markercluster'
+          - '@types/leaflet.markercluster'
+          - 'geojson'
+          - '@types/geojson'
+          - 'topojson-client'
+          - '@types/topojson-client'
+          - 'topojson-specification'
+          - '@types/topojson-specification'
+          - 'world-atlas'
+          - 'vega'
+          - 'vega-lite'
+
+      i18n:
+        patterns:
+          - 'svelte-i18n'
+          - 'sveltekit-i18n'
+          - '@formatjs/*'
+          - '@crowdin/cli'
+
+      minor-patch-catchall:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'weekly'
-    groups:
-      minor:
-        patterns: ['*']
-        update-types: ['minor', 'patch']
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'docker'
 
   - package-ecosystem: 'devcontainers'
     directory: '/'
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 5
     allow:
       - dependency-type: 'all'
-    groups:
-      devcontainers:
-        patterns:
-          - '*'
+    labels:
+      - 'dependencies'
+      - 'devcontainers'

@@ -12,6 +12,9 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type Props = {
 		product: Product;
@@ -40,6 +43,33 @@
 	function toggleInfo() {
 		showInfo = !showInfo;
 	}
+
+	const shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+Q', {
+			description: $_('product.shortcuts.edit_product_quantity'),
+			action: () => focusEditField('#quantity')
+		});
+		shortcutCtx.set('Shift+C', {
+			description: $_('product.shortcuts.edit_product_categories'),
+			action: () => focusEditField('categories-input', true)
+		});
+		shortcutCtx.set('Shift+B', {
+			description: $_('product.shortcuts.edit_product_brands'),
+			action: () => focusEditField('brands-input', true)
+		});
+		shortcutCtx.set('Shift+L', {
+			description: $_('product.shortcuts.edit_product_labels'),
+			action: () => focusEditField('labels-input', true)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+Q');
+			shortcutCtx.delete('Shift+C');
+			shortcutCtx.delete('Shift+B');
+			shortcutCtx.delete('Shift+L');
+		};
+	});
 </script>
 
 <h2

@@ -57,7 +57,7 @@ export type Facet = {
 
 export type FacetResult = Record<string, Facet>;
 
-// TODO: This should be not necessary.
+// TODO: This should not be necessary.
 // We should use the SDK types.
 export type SearchResult = {
 	aggregations: null;
