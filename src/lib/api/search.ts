@@ -29,7 +29,7 @@ export const autocomplete = async (
 ): Promise<AutocompleteResponse> => {
 	const api = createSearchApi(fetch);
 	const response = await api.autocomplete(query);
-	return response.data as AutocompleteResponse;
+	return (response.data ?? { options: [] }) as AutocompleteResponse;
 };
 
 export type AutocompleteOption = {
