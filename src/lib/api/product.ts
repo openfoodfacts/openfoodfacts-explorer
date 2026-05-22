@@ -58,9 +58,63 @@ export async function addOrEditProductV2(
 	fetch: typeof window.fetch,
 	product: Product & { comment?: string }
 ) {
-	const off = createProductsApi(fetch);
-	// @ts-expect-error - we should use v3
-	return off.addOrEditProductV2(product);
+	const fetchToUse = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_jqm2.pl`;
+
+	const body = new FormData();
+	body.append('code', product.code);
+	body.append('categories', product.categories || '');
+	body.append('labels', product.labels || '');
+	body.append('brands', product.brands || '');
+	body.append('quantity', product.quantity || '');
+	body.append('serving_size', product.serving_size || '');
+	body.append('stores', product.stores || '');
+	body.append('origins', product.origins || '');
+	body.append('countries', product.countries || '');
+	body.append('emb_codes', product.emb_codes || '');
+	body.append('packaging', product.packaging || '');
+	body.append('manufacturing_places', product.manufacturing_places || '');
+	body.append('comment', product.comment ?? '');
+	body.append('product_name', product.product_name || '');
+	body.append('ingredients_text', product.ingredients_text || '');
+
+	const languageCodes = Object.keys(product.languages_codes || {});
+	for (const lang of languageCodes) {
+		const nameKey = `product_name_${lang}` as keyof Product;
+		const ingredientsKey = `ingredients_text_${lang}` as keyof Product;
+
+		const productName = (product[nameKey] as string) || product.product_name;
+		if (productName) {
+			body.append(`product_name_${lang}`, productName);
+		}
+
+		const ingredientsText = (product[ingredientsKey] as string) || product.ingredients_text;
+		if (ingredientsText) {
+			body.append(`ingredients_text_${lang}`, ingredientsText);
+		}
+	}
+
+	if (product.no_nutrition_data) {
+		body.append('no_nutrition_data', 'on');
+	}
+
+	if (product.nutriments) {
+		for (const [key, value] of Object.entries(product.nutriments)) {
+			if (value !== null && value !== undefined && value !== '') {
+				body.append(`nutriment_${key}`, String(value));
+			}
+		}
+	}
+
+	const res = await fetchToUse(url, {
+		method: 'POST',
+		body,
+		headers: {
+			'User-Agent': 'OpenFoodFacts - Explorer'
+		}
+	});
+
+	return res.status === 200;
 }
 
 /**
