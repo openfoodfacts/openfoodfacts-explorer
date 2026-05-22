@@ -34,14 +34,14 @@
 	let autocompleteAbortController: AbortController | null = null;
 
 	async function fetchAutocomplete(query: string) {
-		if (query == null || query.trim().length < minQueryLength) {
+		autocompleteAbortController?.abort();
+
+		if (query.trim().length < minQueryLength) {
 			autocompleteLoading = false;
 			autocompleteList = null;
 			return;
 		}
-		if (autocompleteAbortController) {
-			autocompleteAbortController.abort();
-		}
+
 		autocompleteAbortController = new AbortController();
 
 		const autocompleteQuery = {
@@ -53,8 +53,8 @@
 			index_id: null
 		};
 
+		autocompleteLoading = true;
 		try {
-			autocompleteLoading = true;
 			const api = createSearchApi(fetch);
 			const { data, error } = await api.autocomplete(autocompleteQuery);
 			if (error) {
@@ -68,35 +68,19 @@
 			if (e instanceof Error && e.name !== 'AbortError') {
 				console.error('Autocomplete error', e);
 			}
+		} finally {
+			autocompleteLoading = false;
 		}
-		autocompleteLoading = false;
 	}
 
 	function debouncedFetchAutocomplete(query: string) {
-		if (debounceTimeoutId !== undefined) {
-			clearTimeout(debounceTimeoutId);
-			debounceTimeoutId = undefined;
-		}
-
-		if (query.trim().length < minQueryLength) {
-			if (autocompleteAbortController) {
-				autocompleteAbortController.abort();
-				autocompleteAbortController = null;
-			}
-			autocompleteLoading = false;
-			autocompleteList = null;
-			return;
-		}
-
-		debounceTimeoutId = setTimeout(() => {
-			fetchAutocomplete(query);
-		}, DEBOUNCE_DELAY_MS);
+		clearTimeout(debounceTimeoutId);
+		debounceTimeoutId = setTimeout(() => fetchAutocomplete(query), DEBOUNCE_DELAY_MS);
 	}
 
 	onDestroy(() => {
-		if (debounceTimeoutId !== undefined) {
-			clearTimeout(debounceTimeoutId);
-		}
+		clearTimeout(debounceTimeoutId);
+		autocompleteAbortController?.abort();
 	});
 
 	function handleEnter() {
