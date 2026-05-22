@@ -114,7 +114,17 @@ export async function addOrEditProductV2(
 		}
 	});
 
-	return res.status === 200;
+	if (res.status !== 200) {
+		return false;
+	}
+
+	try {
+		const data = await res.json();
+		return Number(data.status) === 1;
+	} catch {
+		// If response is not JSON, treat 200 as success
+		return true;
+	}
 }
 
 /**
