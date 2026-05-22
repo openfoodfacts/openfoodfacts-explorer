@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
+	import {
+		createSearchApi,
+		type AutocompleteOption,
+		type AutocompleteResponse
+	} from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
 	import { onDestroy } from 'svelte';
 
@@ -51,11 +55,14 @@
 
 		try {
 			autocompleteLoading = true;
-			const response = await autocomplete(autocompleteQuery, fetch);
-			if (response && Array.isArray(response.options)) {
-				autocompleteList = response.options;
-			} else {
+			const api = createSearchApi(fetch);
+			const { data, error } = await api.autocomplete(autocompleteQuery);
+			if (error) {
+				console.error('Autocomplete error', error);
 				autocompleteList = [];
+			} else {
+				const result = data as AutocompleteResponse | undefined;
+				autocompleteList = Array.isArray(result?.options) ? result.options : [];
 			}
 		} catch (e) {
 			if (e instanceof Error && e.name !== 'AbortError') {
