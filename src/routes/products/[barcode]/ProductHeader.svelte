@@ -94,7 +94,7 @@
 	}
 </script>
 
-v{#snippet loadingTaxonomy()}
+{#snippet loadingTaxonomy()}
 	<div class="skeleton h-6 w-full"></div>
 {/snippet}
 
