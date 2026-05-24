@@ -94,7 +94,7 @@
 	}
 </script>
 
-{#snippet loadingTaxonomy()}
+v{#snippet loadingTaxonomy()}
 	<div class="skeleton h-6 w-full"></div>
 {/snippet}
 
@@ -192,9 +192,13 @@
 							{@render loadingTaxonomy()}
 						{:then brands}
 							{#each product.brands_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/brands/{tag}">
-									{localizedTaxoName(brands, tag)}
-								</a>
+								{@const name = localizedTaxoName(brands, tag)}
+								<!-- Skip tags that failed taxonomy lookup (shown as "? brand") -->
+								{#if name && !name.startsWith('?')}
+									<a class="badge wrap-break-word" href="/facets/brands/{tag}">
+										{name}
+									</a>
+								{/if}
 							{/each}
 						{/await}
 					</div>
