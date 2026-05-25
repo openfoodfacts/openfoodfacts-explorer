@@ -32,7 +32,7 @@ import IconMdiAccountMultiple from '@iconify-svelte/mdi/account-multiple';
 
 const FACETS = [
 	{ taxo: 'countries', name: 'Countries', icon: IconMdiEarth },
-	{ taxo: 'nutrition-grades', name: 'Nutrition grades', icon: IconMaterialTrafficOutline },
+	{ taxo: 'nutrition-grades', name: 'Nutri-Score', icon: IconMaterialTrafficOutline },
 	{ taxo: 'nova-groups', name: 'NOVA groups', icon: IconMdiNumeric },
 	{ taxo: 'environmental-score', name: 'Green-Score', icon: IconMdiLeaf },
 	{ taxo: 'brands', name: 'Brands', icon: IconMdiTag },
