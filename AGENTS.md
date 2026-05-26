@@ -50,6 +50,7 @@ Before opening any pull request, run all of the following and fix every error:
 pnpm format
 pnpm lint
 pnpm check
+pnpm test
 pnpm build
 ```
 
@@ -132,5 +133,4 @@ src/
 
 ## What This Project Does Not Have
 
-- **No automated tests.** Validate manually by running the dev server and checking that navigation, search UI, and settings page work without console errors.
-- **No test runner.** Do not attempt to run `pnpm test`.
+- **Limited test coverage.** The project has a test runner (Vitest) but few tests currently exist. Always run `pnpm test` before opening a PR to ensure consistency with CI. Supplement automated tests with manual validation: run the dev server and verify that navigation, search UI, and settings page work without console errors.
