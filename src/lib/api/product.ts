@@ -78,7 +78,6 @@ export async function updateBarcode(
 	const off = createProductsApi(fetch);
 
 	try {
-		// @ts-expect-error - new method added in upcoming SDK version
 		const success = await off.apiv2.changeBarcode(currentCode, newCode);
 		return success;
 	} catch (error) {
