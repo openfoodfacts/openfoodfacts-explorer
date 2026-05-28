@@ -51,7 +51,7 @@
 				class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100"
 				href={IMAGE_REPORT_URL(productCode, imageId)}
 				target="_blank"
-				rel="noopener"
+				rel="noopener noreferrer"
 				aria-label="Report to NutriPatrol"
 				title="Report to NutriPatrol"
 				onclick={(e) => e.stopPropagation()}

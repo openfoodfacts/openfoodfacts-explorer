@@ -99,6 +99,10 @@
 			<button
 				class="btn bg-base-100/80 hover:bg-base-100 text-md text-base-content px-2 py-2 font-medium"
 				onclick={resetZoom}
+				title={$_('product.edit.images.reset', { default: 'Reset' })}
+				aria-label="{$_('product.edit.images.reset', { default: 'Reset' })}, {zoomLevel.toFixed(
+					1
+				)} x"
 			>
 				{zoomLevel.toFixed(1)} x
 			</button>
@@ -175,7 +179,7 @@
 						class="btn btn-sm bg-base-100/80 hover:bg-base-100 gap-2"
 						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
 						target="_blank"
-						rel="noopener"
+						rel="noopener noreferrer"
 					>
 						<IconMdiFlagOutline class="h-5 w-5" />
 						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>

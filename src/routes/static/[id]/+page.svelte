@@ -5,4 +5,6 @@
 	let iframeUrl = $derived(`https://world.openfoodfacts.org/${page.params.id}?content_only=1`);
 </script>
 
-<StaticPageIframe src={iframeUrl} />
+{#key iframeUrl}
+	<StaticPageIframe src={iframeUrl} />
+{/key}

@@ -17,6 +17,8 @@ const CACHE = `cache-${version}`;
 
 const STATIC_HOST = 'https://static.openfoodfacts.org';
 
+const NETWORK_TIMEOUT_MS = 3000;
+
 self.addEventListener('activate', (event) => {
 	// Remove previous cached data from disk
 	async function deleteOldCaches() {
@@ -28,53 +30,73 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(deleteOldCaches());
 });
 
-self.addEventListener('fetch', (event) => {
-	// ignore POST requests etc
-	if (event.request.method !== 'GET') return;
-	if (event.request.url.startsWith('chrome-extension://')) return;
+async function fetchWithTimeout(request: Request, ms = NETWORK_TIMEOUT_MS) {
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), ms);
+	try {
+		return await fetch(request, { signal: controller.signal });
+	} finally {
+		clearTimeout(timer);
+	}
+}
 
-	async function respond() {
-		const url = new URL(event.request.url);
+function isBuildAsset(request: Request) {
+	const url = new URL(request.url);
+	if (url.origin !== self.location.origin) return false;
+	// Use destination when available; fall back to extension for programmatic fetches
+	if (request.destination === 'script' || request.destination === 'style') return true;
+	if (request.destination !== '') return false; // navigation, worker, etc.
+	return url.pathname.endsWith('.js') || url.pathname.endsWith('.css');
+}
+
+async function cacheFirst(request: Request) {
+	const cache = await caches.open(CACHE);
+	const cached = await cache.match(request);
+	if (cached) {
+		return cached;
+	}
+	const response = await fetch(request);
+	if (response.ok || response.type === 'opaque') {
+		cache.put(request, response.clone());
+	}
+	return response;
+}
+
+async function networkFirst(request: Request) {
+	try {
+		const response = await fetchWithTimeout(request);
+		if (response.ok || response.type === 'opaque') {
+			const cache = await caches.open(CACHE);
+			cache.put(request, response.clone());
+		}
+		return response;
+	} catch (error) {
 		const cache = await caches.open(CACHE);
+		const cached = await cache.match(request);
+		if (cached) return cached;
+		throw error;
+	}
+}
 
-		// for static assets, we want to cache-first
-		if (url.origin === STATIC_HOST) {
-			const cached = await cache.match(event.request);
+self.addEventListener('fetch', (event) => {
+	const { request } = event;
 
-			if (cached) {
-				console.log(`SW: cache hit for ${event.request.url}`);
-				return cached;
-			}
-		}
+	// Only handle GET requests
+	if (request.method !== 'GET') return;
+	if (request.url.startsWith('chrome-extension://')) return;
 
-		// for everything else, try the network first, but
-		// fall back to the cache if we're offline
-		try {
-			const response = await fetch(event.request);
+	const url = new URL(request.url);
 
-			// if we're offline, fetch can return a value that is not a Response
-			// instead of throwing - and we can't pass this non-Response to respondWith
-			if (!(response instanceof Response)) {
-				throw new Error('invalid response from fetch');
-			}
-
-			if (response.status === 200) {
-				cache.put(event.request, response.clone());
-			}
-
-			return response;
-		} catch (err) {
-			const response = await cache.match(event.request);
-
-			if (response) {
-				return response;
-			}
-
-			// if there's no cache, then just error out
-			// as there is nothing we can do to respond to this request
-			throw err;
-		}
+	// Static assets: Cache-first
+	if (url.origin === STATIC_HOST) {
+		event.respondWith(cacheFirst(request));
+		return;
 	}
 
-	event.respondWith(respond());
+	// Build assets: Network-first with timeout
+	if (isBuildAsset(request)) {
+		// Build assets: Network-first with timeout
+		event.respondWith(networkFirst(request));
+		return;
+	}
 });

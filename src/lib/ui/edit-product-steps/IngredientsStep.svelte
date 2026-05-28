@@ -11,6 +11,9 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
+	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { onMount } from 'svelte';
+	import { focusEditField } from '$lib/utils/fieldFocus';
 
 	type OCRResult = {
 		status?: number;
@@ -46,7 +49,7 @@
 			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
-			console.log(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
+			console.debug(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
 
 			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
@@ -74,6 +77,19 @@
 			ocrLoading = false;
 		}
 	}
+
+	let activeLang = $state(product.lang);
+	const shortcutCtx = getShortcutCtx();
+	onMount(() => {
+		shortcutCtx.set('Shift+I', {
+			description: $_('product.shortcuts.edit_product_ingredients'),
+			action: () => focusEditField(`#ingredients-list-${activeLang}`)
+		});
+
+		return () => {
+			shortcutCtx.delete('Shift+I');
+		};
+	});
 </script>
 
 <h2
@@ -112,7 +128,8 @@
 			name="ingredients_tabs"
 			class="tab text-xs sm:text-sm"
 			aria-label={getLanguageName(code)}
-			checked={code === product.lang}
+			checked={code === activeLang}
+			onchange={() => (activeLang = code)}
 		/>
 		<div class="tab-content form-control p-6">
 			<div class="mb-4">

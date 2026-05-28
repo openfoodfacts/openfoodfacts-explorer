@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 
-	import type { KnowledgeElement, KnowledgePanel, KnowledgeTitleElement } from '$lib/api';
+	import type {
+		KnowledgeElement,
+		KnowledgePanel,
+		KnowledgePanels,
+		KnowledgePanelTitle
+	} from '$lib/api';
 
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
-
+		panels: KnowledgePanels;
 		panel: KnowledgePanel;
 		inline?: boolean;
 		id: string;
@@ -26,7 +30,7 @@
 	{/each}
 {/snippet}
 
-{#snippet detailsElement(title: KnowledgeTitleElement, elements: KnowledgeElement[] = [])}
+{#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
 			'border-base-300 collapse border',

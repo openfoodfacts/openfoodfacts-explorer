@@ -9,6 +9,11 @@
 	"producers_link": "Produttori",
 	"prices_link": "Prezzi",
 	"world_option": "Mondo",
+	"navbar": {
+		"Login": "Accedi",
+		"Logout": "Esci",
+		"account": "Account"
+	},
 	"search": {
 		"placeholder": "Query or barcode",
 		"go": "Go",
@@ -28,6 +33,9 @@
 		"enter_password": "Enter password",
 		"status": "Status",
 		"actions": "Actions"
+	},
+	"help": {
+		"button": "Aiuto e scorciatoie"
 	},
 	"general": {
 		"language": "Language",
@@ -101,6 +109,10 @@
 		"intro_2": "Puoi inserire un codice prodotto nella barra di ricerca sopra per iniziare o fare clic su uno dei prodotti sottostanti."
 	},
 	"product": {
+		"card": {
+			"aria_label": "Vai al prodotto {productName} con codice {productCode}",
+			"aria_label_no_name": "Vai al prodotto con codice {productCode}"
+		},
 		"loading_attributes": "Caricamento attributi prodotto...",
 		"attributes_error_title": "Impossibile caricare gli attributi personalizzati",
 		"attributes_error_body": "Si e verificato un errore durante il caricamento degli attributi personalizzati. Riprova piu tardi.",
@@ -141,7 +153,23 @@
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
 			"nutritional_information": "Nutritional Information",
-			"serving_size": "Serving Size",
+			"serving_size": "Porzione",
+			"serving_size_examples": "40 g, 250 ml, 1 porzione (30 g)",
+			"serving_size_placeholder": "es. {examples}",
+			"serving_size_issues": {
+				"missing_number": {
+					"title": "La porzione non contiene un numero",
+					"desc": "La porzione dovrebbe includere un valore numerico. Esempi: {examples}"
+				},
+				"missing_unit": {
+					"title": "La porzione non contiene un'unità di misura",
+					"desc": "La porzione dovrebbe includere un'unità di misura. Esempi: {examples}"
+				},
+				"unknown_unit": {
+					"title": "L'unità di misura della porzione potrebbe non essere corretta",
+					"desc": "La porzione dovrebbe includere un'unità di misura comune. Esempi: {examples}"
+				}
+			},
 			"no_nutrition_data": "No nutrition information on the product",
 			"no_nutrition_specified": "No nutrition data specified",
 			"comment": "Comment",

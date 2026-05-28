@@ -1,35 +1,23 @@
-import {
-	SearchApi,
-	type AutocompleteQuery,
-	type Product
-} from '@openfoodfacts/openfoodfacts-nodejs';
+import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
 export function getSearchBaseUrl() {
-	if (env.PUBLIC_SEARCH_BASE_URL == '') {
+	const searchBaseUrl = env.PUBLIC_SEARCH_BASE_URL;
+	if (searchBaseUrl == null || searchBaseUrl === '') {
 		throw new Error(
 			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
 		);
 	}
-
-	return env.PUBLIC_SEARCH_BASE_URL;
+	return searchBaseUrl;
 }
 
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(getSearchBaseUrl()));
+	const searchBaseUrl = getSearchBaseUrl();
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(searchBaseUrl));
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
-
-export const autocomplete = async (
-	query: AutocompleteQuery,
-	fetch: typeof window.fetch
-): Promise<AutocompleteResponse> => {
-	const api = createSearchApi(fetch);
-	const response = await api.autocomplete(query);
-	return response.data as AutocompleteResponse;
-};
 
 export type AutocompleteOption = {
 	id: string;
@@ -56,7 +44,7 @@ export type Facet = {
 
 export type FacetResult = Record<string, Facet>;
 
-// TODO: This should be not necessary.
+// TODO: This should not be necessary.
 // We should use the SDK types.
 export type SearchResult = {
 	aggregations: null;

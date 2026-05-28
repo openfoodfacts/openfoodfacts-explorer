@@ -8,6 +8,8 @@ function runningOnVercel() {
 
 const adapter = runningOnVercel() ? vercelAdapter() : nodejsAdapter();
 
+const vercelScripts = runningOnVercel() ? ['https://va.vercel-scripts.com/'] : [];
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -24,7 +26,7 @@ const config = {
 				'script-src': [
 					'self',
 					'unsafe-eval', // Required for Vega charts
-					'https://va.vercel-scripts.com/',
+					...vercelScripts,
 					'https://analytics.openfoodfacts.org/matomo.js'
 				],
 				'img-src': [

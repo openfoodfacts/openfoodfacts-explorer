@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
+	import { getSafeRedirectUrl } from '$lib/utils';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -39,10 +40,17 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
-			await goto(resolve('/'));
+
+			const redirectUrl = localStorage.getItem('authRedirect');
+			localStorage.removeItem('authRedirect');
+
+			// Verify the destination is same-origin
+			const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
+
+			await goto(targetPath);
 		} catch (error) {
 			console.error('Token exchange failed:', error);
-			throw new Error('Authentication failed: Token exchange error');
+			throw new Error('Authentication failed: Token exchange error', { cause: error });
 		}
 	}
 
@@ -62,7 +70,7 @@
 				<p class="text-lg text-gray-600">You will be redirected shortly.</p>
 			{:then _}
 				<div class="mb-4 text-4xl font-bold text-green-600">Login Successful</div>
-				<p class="text-lg text-gray-600">Redirecting to the homepage...</p>
+				<p class="text-lg text-gray-600">Redirecting...</p>
 			{:catch error}
 				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
 				<p class="text-base-content text-lg">{error.message}</p>

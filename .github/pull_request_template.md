@@ -3,30 +3,37 @@ Thank you for contributing to Open Food Facts Explorer!
 Please provide a description of your changes below.
 -->
 
-## Description
+### Description
 
-_Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context._
+<!-- Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context.-->
 
-Fixes # (issue)
+### Screenshot or video
+
+<!-- Insert a screenshot or a video to provide visual record of your changes (if visible) -->
+
+### Related issue(s) and discussion
+
+<!-- Please use a linking keyword like `Fixes:` or `Closes:` followed by the issue number - doc: https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword -->
+
+- Fixes: <!-- #1 -->
 
 ---
 
-## Checklist:
+### Checklist: Author Self-Review
 
-**Author Self-Review:**
+<!-- replace [ ] by [x] for each item you have completed -->
 
-- [ ] I have performed a self-review of my own code.
+- [ ] I have performed a self-review of my own code (including running it).
 - [ ] I understand the changes I'm proposing and why they are needed.
 - [ ] My changes generate no new warnings or errors (linting, console).
 - [ ] I have made corresponding changes to the documentation (if applicable).
 
-**LLM Usage Disclosure:**
-_Please be transparent about the use of AI assistance._
+## Large Language Models usage disclosure
 
-- [ ] If I **did** use an AI Large Language Model, I have reviewed the generated code/text to ensure its accuracy, security, and relevance to the project's context and licensing.
+<!-- Open-Source is a community and human process. Let's keep it that way, so that it is enjoyable for contributors AND reviewers :-) -->
 
-**Triggering Code Review:**
-
-- You can request an AI-powered code review by commenting `/gemini review` on this PR after it's been created.
-
-<!-- You can erase any parts of this template not applicable to your Pull Request. -->
+- [ ] I did **not** use an LLM or AI tool to write this PR.
+- [ ] I used an LLM / AI agent — details below:
+  - **Agent / tool name and version:** <!-- e.g. GitHub Copilot (GPT-4o), Claude Sonnet 4.5, Cursor -->
+  - **How it was used:** <!-- e.g. agentic (fully automated), autocomplete (suggestions accepted), review (checked my code) -->
+  - **I have reviewed and take full responsibility for all AI-generated code in this PR.**

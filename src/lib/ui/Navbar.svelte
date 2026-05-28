@@ -2,12 +2,13 @@
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { shouldBeContainer } from '$lib/layout';
+	import { OPEN_PRICES_BASE_URL } from '$lib/const';
 
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },
 		{ name: 'contribute_link', href: '/static/contribute' },
 		{ name: 'producers_link', href: '/static/producers' },
-		{ name: 'prices_link', href: 'https://prices.openfoodfacts.org' },
+		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL },
 		{ name: 'folksonomy_link', href: '/folksonomy' },
 		{ name: 'facets_link', href: '/facets' }
 	];

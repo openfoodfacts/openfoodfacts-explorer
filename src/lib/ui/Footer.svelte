@@ -74,12 +74,13 @@
 		<h2 class="text-3xl font-extrabold">{$_('footer.stay_updated')}</h2>
 		<div class="flex flex-col gap-0">
 			{#each stayUpdatedLinks as stayUpdatedLink (stayUpdatedLink.url)}
-				<a href={stayUpdatedLink.url} class="underline">{$_(stayUpdatedLink.key)}</a>
+				<a href={stayUpdatedLink.url} class="link link-hover">{$_(stayUpdatedLink.key)}</a>
 			{/each}
 			<div class="mt-1 flex gap-3">
 				<a
 					href="https://twitter.com/OpenFoodFacts"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.x')}
 				>
 					<IconSimpleIconsX class="h-6 w-5" />
@@ -87,6 +88,7 @@
 				<a
 					href="https://www.instagram.com/open.food.facts/"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.instagram')}
 				>
 					<IconMdiInstagram class="h-6 w-6" />
@@ -94,6 +96,7 @@
 				<a
 					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.github')}
 				>
 					<IconMdiGithub class="h-6 w-6" />
@@ -101,6 +104,7 @@
 				<a
 					href="https://www.facebook.com/OpenFoodFacts"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.facebook')}
 				>
 					<IconMdiFacebook class="h-6 w-6" />
@@ -108,6 +112,7 @@
 				<a
 					href="https://slack.openfoodfacts.org/"
 					target="_blank"
+					rel="noopener noreferrer"
 					aria-label={$_('footer.social.slack')}
 				>
 					<IconMdiSlack class="h-6 w-6" />
@@ -118,7 +123,7 @@
 		<h2 class="mt-3 text-3xl font-extrabold">{$_('footer.contribute')}</h2>
 		<div class="flex flex-wrap gap-3">
 			{#each contributeLinks as contributeLink (contributeLink.url)}
-				<a href={contributeLink.url} class="underline">{$_(contributeLink.key)}</a>
+				<a href={contributeLink.url} class="link link-hover">{$_(contributeLink.key)}</a>
 			{/each}
 		</div>
 	</div>
@@ -164,7 +169,7 @@
 
 	<div class="text-primary relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
 		{#each footerLinks as footerLink (footerLink.url)}
-			<a href={footerLink.url} class="underline">{$_(footerLink.key)}</a>
+			<a href={footerLink.url} class="link link-hover">{$_(footerLink.key)}</a>
 		{/each}
 	</div>
 </div>

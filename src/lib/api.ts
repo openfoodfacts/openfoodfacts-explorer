@@ -13,13 +13,22 @@ export * from './api/nutriments';
 export * from './api/knowledgepanels';
 
 export function createRobotoffApi(fetch: typeof window.fetch) {
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(ROBOTOFF_URL));
+	// We hardcode this because it is not expected to change
+	// it via environment variables. We should in the long run
+	// move this to the SDK
+	const versionPostfix = '/api/v1';
+
+	const rawUrl = new URL(versionPostfix, ROBOTOFF_URL);
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, rawUrl);
 	return new Robotoff(wrappedFetch, { baseUrl: url.toString() });
 }
 
 export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {
 	const keycloakUrl = KEYCLOAK_URL;
 	const clientId = OAUTH_CLIENT_ID;
+	if (!keycloakUrl || !clientId) {
+		throw new Error('Missing Keycloak configuration');
+	}
 
 	const cleanUrl = new URL(url.pathname, url.origin);
 	const redirectUri = OAUTH_REDIRECT_URI(cleanUrl);

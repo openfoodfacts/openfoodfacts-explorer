@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+
 	import Card from '$lib/ui/Card.svelte';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
@@ -98,9 +100,7 @@
 				<p class="mb-4 text-sm text-gray-600">
 					{$_('compare.invalid_link_hint')}
 				</p>
-				<a href="/products/search?q=chocolate" class="btn btn-primary"
-					>{$_('compare.browse_products')}</a
-				>
+				<a href={resolve('/explore')} class="btn btn-primary">{$_('compare.browse_products')}</a>
 			</div>
 		{:else}
 			<ComparisonDisplay products={data.products} {comparisonMode} readonly />

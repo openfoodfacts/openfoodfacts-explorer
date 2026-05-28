@@ -24,16 +24,10 @@
 
 	function handleSelect(item: FacetItem) {
 		onSelect(item);
-		if (dropdownElement) {
-			dropdownElement.open = false;
-		}
 	}
 
 	function handleUnselect(item: FacetItem) {
 		onUnselect(item);
-		if (dropdownElement) {
-			dropdownElement.open = false;
-		}
 	}
 
 	let searchQuery: string = $state('');
