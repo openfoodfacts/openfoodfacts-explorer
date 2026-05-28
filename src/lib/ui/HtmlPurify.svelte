@@ -5,7 +5,8 @@
 		dirty: string;
 		config?: Parameters<typeof sanitize>[1];
 	};
-	let { dirty, config = { USE_PROFILES: { html: true } } }: Props = $props();
+	let { dirty, config = { USE_PROFILES: { html: true }, RETURN_TRUSTED_TYPE: true } }: Props =
+		$props();
 
 	let sanitizedHtml = $derived(sanitize(dirty, config));
 </script>
