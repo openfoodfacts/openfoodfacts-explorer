@@ -20,7 +20,6 @@
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
-	import { getToastCtx } from '$lib/stores/toasts';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 
 	import type { PageData } from './$types';

@@ -21,7 +21,7 @@
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
-	import { userInfo } from '$lib/stores/user';
+	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
 	type Props = {
 		product: Product;
@@ -79,6 +79,8 @@
 		const params = new URLSearchParams({ code });
 		return `https://prices.openfoodfacts.org/prices/add/single?${params}`;
 	}
+
+	const permissions = getPermissionsCtx();
 </script>
 
 <div class="space-y-4">
@@ -201,7 +203,7 @@
 	</div>
 
 	<!-- Moderator Tools Section -->
-	{#if $userInfo?.isModerator || $preferences.moderator}
+	{#if permissions.isModerator || $preferences.moderator}
 		<div class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 			<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">
