@@ -7,7 +7,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	import { createProductsApi } from '$lib/api';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
-	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { stripTaxonomyPrefix } from '$lib/api';
 	import { _ } from 'svelte-i18n';
 
