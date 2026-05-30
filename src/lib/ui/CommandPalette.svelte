@@ -4,6 +4,7 @@
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { commandPaletteOpen } from '$lib/stores/commandPalette';
+	import { SvelteMap } from 'svelte/reactivity';
 	import {
 		addKeyboardListener,
 		initKeyboardListeners,
@@ -27,7 +28,7 @@
 	let allCommands = $derived.by(() => createCommandRegistry({ pathname: page.url.pathname }));
 	let filteredCommands = $derived.by(() => searchCommands(allCommands, query));
 	let groupedCommands = $derived.by(() => {
-		const groups = new Map<CommandCategory, Command[]>();
+		const groups = new SvelteMap<CommandCategory, Command[]>();
 		for (const command of filteredCommands) {
 			const bucket = groups.get(command.category);
 			if (bucket) {
@@ -40,7 +41,7 @@
 	});
 
 	let commandIndexMap = $derived.by(() => {
-		const map = new Map<string, number>();
+		const map = new SvelteMap<string, number>();
 		filteredCommands.forEach((command, index) => map.set(command.id, index));
 		return map;
 	});
