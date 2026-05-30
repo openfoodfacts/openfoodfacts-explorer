@@ -32,8 +32,9 @@
 </script>
 
 <svelte:head>
-	<title>{$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}</title
-	>
+	<title>
+		{$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}
+	</title>
 </svelte:head>
 
 <div
@@ -53,9 +54,9 @@
 	</a>
 </div>
 
-<div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+<div class="mb-8 max-md:mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
 	{#each cards as card (card.title)}
-		<div class="card bg-base-100 border-secondary border-1">
+		<div class="card bg-base-100 border-secondary border">
 			<div class="card-body flex-row items-center gap-4 text-center">
 				<img src={card.icon} alt={card.title} class="w-10" />
 				<div class="flex-1">
