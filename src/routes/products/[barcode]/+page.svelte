@@ -186,6 +186,12 @@
 
 	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
 
+	{#if !product.nutriments || Object.keys(product.nutriments).length === 0}
+		<div class="my-4">
+			<robotoff-nutrient-extraction product-code={product.code}></robotoff-nutrient-extraction>
+		</div>
+	{/if}
+
 	{#if isPriceConfigured() && data?.prices != null}
 		<Prices prices={data.prices} barcode={product.code} />
 	{/if}
