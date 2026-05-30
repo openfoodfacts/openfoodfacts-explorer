@@ -221,15 +221,27 @@
 		try {
 			const { data, error } = await updateBarcode(fetch, product.code, newCode);
 			if (error) {
-				toast.error(error);
+				console.error(error);
+				toast.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
 			} else if (data) {
-				toast.success($_('product.moderator.barcode_correction_success'));
+				toast.success(
+					$_('product.moderator.barcode_correction_success', {
+						default: 'Barcode updated successfully'
+					})
+				);
 				goto(`/products/${newCode}`);
 			} else {
-				toast.error($_('product.moderator.barcode_correction_error'));
+				toast.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
 			}
-		} catch {
-			toast.error($_('product.moderator.barcode_correction_error'));
+		} catch (err) {
+			console.error(err);
+			toast.error(
+				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+			);
 		}
 	}
 
