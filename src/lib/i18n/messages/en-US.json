@@ -88,7 +88,9 @@
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack"
+			"slack": "Slack",
+			"mastodon": "Mastodon",
+			"bluesky": "Bluesky"
 		},
 		"links": {
 			"newsletter": "Newsletter",
