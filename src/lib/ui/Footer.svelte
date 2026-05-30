@@ -7,6 +7,8 @@
 	import { shouldBeContainer } from '$lib/layout';
 
 	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
+	import IconSimpleIconsMastodon from '@iconify-svelte/simple-icons/mastodon';
+	import IconSimpleIconsBluesky from '@iconify-svelte/simple-icons/bluesky';
 	import IconMdiInstagram from '@iconify-svelte/mdi/instagram';
 	import IconMdiGithub from '@iconify-svelte/mdi/github';
 	import IconMdiFacebook from '@iconify-svelte/mdi/facebook';
@@ -84,6 +86,22 @@
 					aria-label={$_('footer.social.x')}
 				>
 					<IconSimpleIconsX class="h-6 w-5" />
+				</a>
+				<a
+					href="https://mastodon.social/@openfoodfacts"
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={$_('footer.social.mastodon')}
+				>
+					<IconSimpleIconsMastodon class="h-6 w-6" />
+				</a>
+				<a
+					href="https://bsky.app/profile/openfoodfacts.bsky.social"
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={$_('footer.social.bluesky')}
+				>
+					<IconSimpleIconsBluesky class="h-6 w-6" />
 				</a>
 				<a
 					href="https://www.instagram.com/open.food.facts/"
