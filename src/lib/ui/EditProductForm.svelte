@@ -203,7 +203,7 @@
 	</div>
 
 	<!-- Moderator Tools Section -->
-	{#if permissions.isModerator || $preferences.moderator}
+	{#if permissions.isModerator && $preferences.moderator}
 		<div class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input type="checkbox" checked={$preferences.editing.expandAllSections} />
 			<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">

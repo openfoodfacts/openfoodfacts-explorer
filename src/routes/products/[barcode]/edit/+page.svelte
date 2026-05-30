@@ -219,12 +219,12 @@
 
 	async function handleBarcodeCorrection(newCode: string) {
 		try {
-			const success = await updateBarcode(fetch, product.code, newCode);
-			if (success) {
+			const { data, error } = await updateBarcode(fetch, product.code, newCode);
+			if (error) {
+				toast.error(error);
+			} else if (data) {
 				toast.success($_('product.moderator.barcode_correction_success'));
-				setTimeout(() => {
-					goto(`/products/${newCode}`);
-				}, 1500);
+				goto(`/products/${newCode}`);
 			} else {
 				toast.error($_('product.moderator.barcode_correction_error'));
 			}

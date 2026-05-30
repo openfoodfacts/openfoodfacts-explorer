@@ -74,15 +74,15 @@ export async function updateBarcode(
 	fetch: typeof window.fetch,
 	currentCode: string,
 	newCode: string
-): Promise<boolean> {
+): Promise<{ data?: unknown; error?: string }> {
 	const off = createProductsApi(fetch);
 
 	try {
 		const success = await off.apiv2.changeBarcode(currentCode, newCode);
-		return success;
+		return { data: success };
 	} catch (error) {
 		console.error('Error updating barcode:', error);
-		return false;
+		return { error: error instanceof Error ? error.message : String(error) };
 	}
 }
 

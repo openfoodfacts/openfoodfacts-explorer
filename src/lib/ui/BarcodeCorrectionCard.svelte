@@ -41,7 +41,7 @@
 
 	<div class="flex flex-col gap-2 sm:flex-row sm:items-end">
 		<label class="input w-full">
-			<span class="label">{$_('product.moderator.barcode_correction_title')}</span>
+			<span class="label">{$_('product.moderator.barcode_correction_new_code_label')}</span>
 			<input
 				type="text"
 				bind:value={newCode}
