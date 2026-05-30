@@ -215,31 +215,29 @@
 	let isSubmitting = $state(false);
 	let productNotFound = $derived(data.state.status === 'empty');
 
-	const toast = getToastCtx();
-
 	async function handleBarcodeCorrection(newCode: string) {
 		try {
 			const { data, error } = await updateBarcode(fetch, product.code, newCode);
 			if (error) {
 				console.error(error);
-				toast.error(
+				toastCtx.error(
 					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
 				);
 			} else if (data) {
-				toast.success(
+				toastCtx.success(
 					$_('product.moderator.barcode_correction_success', {
 						default: 'Barcode updated successfully'
 					})
 				);
 				goto(`/products/${newCode}`);
 			} else {
-				toast.error(
+				toastCtx.error(
 					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
 				);
 			}
 		} catch (err) {
 			console.error(err);
-			toast.error(
+			toastCtx.error(
 				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
 			);
 		}

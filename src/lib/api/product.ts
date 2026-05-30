@@ -66,9 +66,10 @@ export async function addOrEditProductV2(
 /**
  * Update the barcode of a product (moderator-only action).
  * This sends a POST request to the OFF API with the current code and the new code.
+ * @param fetch - The fetch function
  * @param currentCode - The current barcode of the product
  * @param newCode - The correct barcode to replace the current one
- * @returns true if the barcode was updated successfully, false otherwise
+ * @returns An object with `data` on success or `error` with a message on failure
  */
 export async function updateBarcode(
 	fetch: typeof window.fetch,
