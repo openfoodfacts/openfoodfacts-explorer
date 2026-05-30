@@ -22,6 +22,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import CommandPalette from '$lib/ui/CommandPalette.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -424,6 +425,7 @@
 <CompareFloatingButton />
 <Footer />
 <Toast />
+<CommandPalette />
 
 {#if navigationTooSlow != null}
 	{#await navigationTooSlow then}
