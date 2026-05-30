@@ -4,7 +4,10 @@
  */
 export function getProductContextFromRoute(pathname: string): { barcode: string } | null {
 	if (!pathname) return null;
-	const m = pathname.match(/^\/products\/(?:([^/]+))(?:\/|$)/);
+	// Anchor the product route to the end to avoid matching nested paths
+	// e.g. `/products/123/extra` should NOT be treated as a product page.
+	// This keeps command registry and product-specific logic scoped correctly.
+	const m = pathname.match(/^\/products\/([^/]+)\/?$/);
 	if (!m) return null;
 	try {
 		const barcode = decodeURIComponent(m[1]);
