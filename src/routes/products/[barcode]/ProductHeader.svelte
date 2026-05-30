@@ -192,9 +192,13 @@
 							{@render loadingTaxonomy()}
 						{:then brands}
 							{#each product.brands_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/brands/{tag}">
-									{localizedTaxoName(brands, tag)}
-								</a>
+								{@const name = localizedTaxoName(brands, tag)}
+								<!-- Skip tags that failed taxonomy lookup (shown as "? brand") -->
+								{#if name && !name.startsWith('?')}
+									<a class="badge wrap-break-word" href="/facets/brands/{tag}">
+										{name}
+									</a>
+								{/if}
 							{/each}
 						{/await}
 					</div>
@@ -252,6 +256,17 @@
 				{/if}
 
 				<!-- Traceability Codes -->
+				<!-- Manufacturing Places -->
+				{#if product.manufacturing_places}
+					<div class="mb-2">
+						<div class="text-secondary mb-2 text-sm font-bold">Manufacturing Places</div>
+						<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+							{#each product.manufacturing_places.split(',').filter((p) => p.trim()) as place}
+								<span class="badge wrap-break-word">{place.trim()}</span>
+							{/each}
+						</div>
+					</div>
+				{/if}
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
 						<div class="text-secondary mb-2 text-sm font-bold">
