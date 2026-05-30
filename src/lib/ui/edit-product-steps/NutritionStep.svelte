@@ -190,9 +190,13 @@
 	);
 
 	function wipeAllNutrientValues() {
+		if (!product.nutriments) return;
+
 		product = {
 			...product,
-			nutriments: {} as Nutriments
+			nutriments: Object.fromEntries(
+				Object.keys(product.nutriments).map((key) => [key, '' as string | number])
+			) as Nutriments
 		};
 		additionalNutrients = [];
 	}
@@ -462,7 +466,7 @@
 							type="button"
 							class="btn btn-error join-item"
 							aria-label="Remove nutrient"
-							disabled={product.nutriments?.[nutrient] != null}
+							disabled={typeof product.nutriments?.[nutrient] === 'number'}
 							onclick={() => {
 								// Remove the nutrient from additional nutrients
 								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
