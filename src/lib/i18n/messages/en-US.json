@@ -155,7 +155,20 @@
 		"search_placeholder": "Search keys…",
 		"keys_found": "keys found",
 		"key_found": "key found",
-		"for": "for"
+		"for": "for",
+		"badge_products": "Used in {count} products ({percent}% relative usage)",
+		"badge_values": "Has {values} different possible values",
+		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"key_visualization_guide": {
+			"title": "Key Visualization Guide:",
+			"badge_products_start": "The first badge ",
+			"badge_products_end": " shows the number of products using this key",
+			"badge_values_start": "The second badge ",
+			"badge_values_end": " shows the number of unique values for this key",
+			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+		},
+		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
+		"no_keys_found": "No keys found with the current search query."
 	},
 	"home": {
 		"welcome": "Welcome to",
