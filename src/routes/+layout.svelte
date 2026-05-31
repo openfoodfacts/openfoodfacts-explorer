@@ -124,8 +124,9 @@
 	}
 
 	function unregisterCommands(sourceId: string) {
-		const { [sourceId]: _omit, ...rest } = _commandsMap;
-		_commandsMap = rest;
+		const next = { ..._commandsMap };
+		delete next[sourceId];
+		_commandsMap = next;
 	}
 
 	const commandCtx = {

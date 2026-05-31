@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { _ } from '$lib/i18n';
-	import { page } from '$app/state';
 	import { commandPaletteOpen } from '$lib/stores/commandPalette';
 	import { SvelteMap } from 'svelte/reactivity';
 	import {
