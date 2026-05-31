@@ -7,17 +7,54 @@
 	import { shouldBeContainer } from '$lib/layout';
 
 	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
+	import IconSimpleIconsMastodon from '@iconify-svelte/simple-icons/mastodon';
+	import IconSimpleIconsBluesky from '@iconify-svelte/simple-icons/bluesky';
 	import IconMdiInstagram from '@iconify-svelte/mdi/instagram';
 	import IconMdiGithub from '@iconify-svelte/mdi/github';
 	import IconMdiFacebook from '@iconify-svelte/mdi/facebook';
 	import IconMdiSlack from '@iconify-svelte/mdi/slack';
 
-	const stayUpdatedLinks = [
+	const LINKS_STAY_UPDATED = [
 		{ url: 'https://link.openfoodfacts.org/newsletter-en', key: 'footer.links.newsletter' },
 		{ url: 'https://forum.openfoodfacts.org/', key: 'footer.links.forum' }
 	];
 
-	const contributeLinks = [
+	const LINKS_SOCIAL = [
+		{
+			url: 'https://twitter.com/OpenFoodFacts',
+			key: 'footer.social.x',
+			icon: IconSimpleIconsX,
+			iconClass: 'h-6 w-5'
+		},
+		{
+			url: 'https://mastodon.social/@openfoodfacts',
+			key: 'footer.social.mastodon',
+			icon: IconSimpleIconsMastodon
+		},
+		{
+			url: 'https://bsky.app/profile/openfoodfacts.bsky.social',
+			key: 'footer.social.bluesky',
+			icon: IconSimpleIconsBluesky
+		},
+		{
+			url: 'https://www.instagram.com/open.food.facts/',
+			key: 'footer.social.instagram',
+			icon: IconMdiInstagram
+		},
+		{
+			url: 'https://github.com/openfoodfacts/openfoodfacts-explorer',
+			key: 'footer.social.github',
+			icon: IconMdiGithub
+		},
+		{
+			url: 'https://www.facebook.com/OpenFoodFacts',
+			key: 'footer.social.facebook',
+			icon: IconMdiFacebook
+		},
+		{ url: 'https://slack.openfoodfacts.org/', key: 'footer.social.slack', icon: IconMdiSlack }
+	];
+
+	const LINKS_CONTRIBUTE = [
 		{ url: 'https://world.pro.openfoodfacts.org/', key: 'footer.links.producers' },
 		{
 			url: 'https://world.openfoodfacts.org/cgi/top_translators.pl',
@@ -28,7 +65,7 @@
 		{ url: 'https://wiki.openfoodfacts.org/', key: 'footer.links.wiki' }
 	];
 
-	const discoverProjectLinks = [
+	const LINKS_DISCOVER_PROJECTS = [
 		{
 			url: '/static/who-we-are',
 			key: 'footer.discover.who_we_are'
@@ -59,7 +96,7 @@
 		}
 	];
 
-	const footerLinks = [
+	const LINKS_FOOTER = [
 		{ url: '/static/legal', key: 'footer.links.legal' },
 		{ url: '/static/privacy', key: 'footer.links.privacy' },
 		{ url: '/static/terms-of-use', key: 'footer.links.terms_of_use' }
@@ -73,56 +110,26 @@
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">{$_('footer.stay_updated')}</h2>
 		<div class="flex flex-col gap-0">
-			{#each stayUpdatedLinks as stayUpdatedLink (stayUpdatedLink.url)}
+			{#each LINKS_STAY_UPDATED as stayUpdatedLink (stayUpdatedLink.url)}
 				<a href={stayUpdatedLink.url} class="link link-hover">{$_(stayUpdatedLink.key)}</a>
 			{/each}
 			<div class="mt-1 flex gap-3">
-				<a
-					href="https://twitter.com/OpenFoodFacts"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('footer.social.x')}
-				>
-					<IconSimpleIconsX class="h-6 w-5" />
-				</a>
-				<a
-					href="https://www.instagram.com/open.food.facts/"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('footer.social.instagram')}
-				>
-					<IconMdiInstagram class="h-6 w-6" />
-				</a>
-				<a
-					href="https://github.com/openfoodfacts/openfoodfacts-explorer"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('footer.social.github')}
-				>
-					<IconMdiGithub class="h-6 w-6" />
-				</a>
-				<a
-					href="https://www.facebook.com/OpenFoodFacts"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('footer.social.facebook')}
-				>
-					<IconMdiFacebook class="h-6 w-6" />
-				</a>
-				<a
-					href="https://slack.openfoodfacts.org/"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('footer.social.slack')}
-				>
-					<IconMdiSlack class="h-6 w-6" />
-				</a>
+				{#each LINKS_SOCIAL as social (social.url)}
+					<a
+						href={social.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={$_(social.key)}
+					>
+						<svelte:component this={social.icon} class={social.iconClass ?? 'h-6 w-6'} />
+					</a>
+				{/each}
 			</div>
 		</div>
 
 		<h2 class="mt-3 text-3xl font-extrabold">{$_('footer.contribute')}</h2>
 		<div class="flex flex-wrap gap-3">
-			{#each contributeLinks as contributeLink (contributeLink.url)}
+			{#each LINKS_CONTRIBUTE as contributeLink (contributeLink.url)}
 				<a href={contributeLink.url} class="link link-hover">{$_(contributeLink.key)}</a>
 			{/each}
 		</div>
@@ -130,7 +137,7 @@
 	<div class="relative z-20 order-2 mt-8 flex w-full flex-col gap-2 md:mt-0 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">{$_('footer.discover_title')}</h2>
 		<div class="mt-2 flex flex-wrap gap-2">
-			{#each discoverProjectLinks as link (link.url)}
+			{#each LINKS_DISCOVER_PROJECTS as link (link.url)}
 				<a
 					href={link.url}
 					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
@@ -168,7 +175,7 @@
 	</div>
 
 	<div class="text-primary relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
-		{#each footerLinks as footerLink (footerLink.url)}
+		{#each LINKS_FOOTER as footerLink (footerLink.url)}
 			<a href={footerLink.url} class="link link-hover">{$_(footerLink.key)}</a>
 		{/each}
 	</div>
