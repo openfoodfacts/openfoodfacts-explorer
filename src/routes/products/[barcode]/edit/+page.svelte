@@ -222,25 +222,18 @@
 	}
 
 	// Handle nutriment value changes
-	function updateNutriment(key: string, value: number | string | null) {
+	function updateNutriment(key: string, value: number | string) {
 		ensureNutriments();
 
-		if (value === null || value === '') {
-			product = {
-				...product,
-				nutriments: { ...product.nutriments, [key]: '' }
-			};
-		} else {
-			product = {
-				...product,
-				nutriments: { ...product.nutriments, [key]: value }
-			};
-		}
+		product = {
+			...product,
+			nutriments: { ...product.nutriments, [key]: value }
+		};
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
-		updateNutriment(key, target.value !== '' ? Number(target.value) : null);
+		updateNutriment(key, target.value !== '' ? Number(target.value) : '');
 	}
 
 	async function submit() {

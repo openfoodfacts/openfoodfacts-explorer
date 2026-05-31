@@ -466,7 +466,8 @@
 							type="button"
 							class="btn btn-error join-item"
 							aria-label="Remove nutrient"
-							disabled={typeof product.nutriments?.[nutrient] === 'number'}
+							disabled={product.nutriments?.[nutrient] !== undefined &&
+								(product.nutriments?.[nutrient] as string | number) !== ''}
 							onclick={() => {
 								// Remove the nutrient from additional nutrients
 								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
