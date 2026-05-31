@@ -11,7 +11,8 @@
 		matchesShortcut,
 		removeKeyboardListener
 	} from '$lib/keyboard';
-	import { createCommandRegistry, searchCommands } from '$lib/commands';
+	import { searchCommands } from '$lib/commands';
+	import { getCommandCtx } from '$lib/stores/commandPalette';
 	import type { Command, CommandCategory } from '$lib/commands/types';
 
 	let query = $state('');
@@ -25,7 +26,8 @@
 	let panelEl: HTMLDivElement | null = $state(null);
 	let previousFocusedElement: HTMLElement | null = $state(null);
 
-	let allCommands = $derived.by(() => createCommandRegistry({ pathname: page.url.pathname }));
+	const commandCtx = getCommandCtx();
+	let allCommands = $derived.by(() => commandCtx.getCommands());
 	let filteredCommands = $derived.by(() => searchCommands(allCommands, query));
 	let groupedCommands = $derived.by(() => {
 		const groups = new SvelteMap<CommandCategory, Command[]>();

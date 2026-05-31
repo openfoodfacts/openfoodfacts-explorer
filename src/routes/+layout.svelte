@@ -39,6 +39,9 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
+	import { setCommandCtx } from '$lib/stores/commandPalette';
+	import { getNavigationCommands } from '$lib/commands/navigation';
+	import type { Command } from '$lib/commands/types';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
@@ -112,6 +115,33 @@
 	]);
 
 	setShortcutCtx(() => shortcuts);
+
+	// == Global command palette context ==
+	let _commandsMap: Record<string, Command[]> = $state({});
+
+	function registerCommands(sourceId: string, commands: Command[]) {
+		_commandsMap = { ..._commandsMap, [sourceId]: commands };
+	}
+
+	function unregisterCommands(sourceId: string) {
+		const { [sourceId]: _omit, ...rest } = _commandsMap;
+		_commandsMap = rest;
+	}
+
+	const commandCtx = {
+		getCommands() {
+			return Object.values(_commandsMap).flat();
+		},
+		register: registerCommands,
+		unregister: unregisterCommands
+	};
+
+	setCommandCtx(() => commandCtx);
+
+	onMount(() => {
+		// register global navigation commands under a stable source id
+		registerCommands('global-navigation', getNavigationCommands());
+	});
 
 	// Load OpenFoodFacts Web Components
 
