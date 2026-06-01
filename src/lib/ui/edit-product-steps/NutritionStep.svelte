@@ -465,7 +465,7 @@
 						<button
 							type="button"
 							class="btn btn-error join-item"
-							aria-label="Remove nutrient"
+							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
 							disabled={product.nutriments?.[nutrient] !== undefined &&
 								(product.nutriments?.[nutrient] as string | number) !== ''}
 							onclick={() => {
