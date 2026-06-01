@@ -157,9 +157,12 @@
 		<div
 			class="key-card bg-base-100 border-base-300 rounded-lg border p-3 transition-all duration-300 hover:shadow-lg"
 		>
-			<a href="/folksonomy/{key.k}" class="hover:text-primary block font-mono transition-colors">
-				<div class="mb-2 flex items-center justify-between">
-					<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
+			<a
+				href="/folksonomy/{key.k}"
+				class="hover:text-primary flex h-full flex-col font-mono transition-colors"
+			>
+				<div class="mb-2 flex items-start justify-between gap-2">
+					<span class="break-all text-sm md:text-base" title={key.k}>{key.k}</span>
 					<div class="flex gap-1">
 						{#if key.count != null && key.count > 0}
 							{@const usagePercent = getUsagePercent(key.count)}
