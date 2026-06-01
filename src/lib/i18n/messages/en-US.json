@@ -88,7 +88,9 @@
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack"
+			"slack": "Slack",
+			"mastodon": "Mastodon",
+			"bluesky": "Bluesky"
 		},
 		"links": {
 			"newsletter": "Newsletter",
@@ -113,6 +115,19 @@
 		}
 	},
 	"settings": {
+		"page_title": "Settings",
+		"page_description": "Manage your preferences and account settings",
+		"subtitle": "Manage your preferences and personalize your experience",
+		"tab": {
+			"account": "Account",
+			"general": "General",
+			"editing": "Editing",
+			"preferences": "Preferences",
+			"developer": "Developer"
+		},
+		"username": "Username",
+		"email": "Email",
+		"roles": "Roles",
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
@@ -120,13 +135,18 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
 		"display_prices_in_search": "Display prices in search results",
+		"display_prices_in_search_help": "Show price information in search results when available",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
+		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode"
+		"moderator_mode": "Moderator Mode",
+		"dev_access_denied": "Access Denied",
+		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -135,7 +155,20 @@
 		"search_placeholder": "Search keys…",
 		"keys_found": "keys found",
 		"key_found": "key found",
-		"for": "for"
+		"for": "for",
+		"badge_products": "Used in {count} products ({percent}% relative usage)",
+		"badge_values": "Has {values} different possible values",
+		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"key_visualization_guide": {
+			"title": "Key Visualization Guide:",
+			"badge_products_start": "The first badge ",
+			"badge_products_end": " shows the number of products using this key",
+			"badge_values_start": "The second badge ",
+			"badge_values_end": " shows the number of unique values for this key",
+			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+		},
+		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
+		"no_keys_found": "No keys found with the current search query."
 	},
 	"home": {
 		"welcome": "Welcome to",
@@ -248,6 +281,7 @@
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
 				"prices": "Help track this product's price history on Open Prices.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context.",
 				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
@@ -399,6 +433,7 @@
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"moderator_tools": "Moderator Tools",
 				"packaging": "Packaging",
 				"prices": "Prices",
 				"comment": "Comment"
@@ -467,6 +502,15 @@
 				"add_origins": "Add origins",
 				"add_ingredients_text": "Add ingredients text"
 			}
+		},
+		"moderator": {
+			"barcode_correction_title": "Correct Barcode",
+			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_description": "If the barcode is not correct, please correct it here:",
+			"barcode_correction_placeholder": "Enter the correct barcode",
+			"barcode_correction_submit": "Correct Barcode",
+			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
+			"barcode_correction_error": "Failed to correct barcode. Please try again."
 		}
 	},
 	"qr": {
@@ -525,7 +569,11 @@
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
 		"view_all_contributions": "View all contributions",
-		"view_all_edits": "View all edits"
+		"view_all_edits": "View all edits",
+		"products_photographed": "Products photographed",
+		"has_photographed": "Has Photographed",
+		"view_all_photographs": "View all photographs",
+		"open_prices_dashboard": "Open Prices dashboard"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",
