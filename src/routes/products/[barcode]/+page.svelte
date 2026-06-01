@@ -27,14 +27,12 @@
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { onMount } from 'svelte';
-	import { getCommandCtx } from '$lib/stores/commandPalette';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import { PRODUCT_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { copyTextToClipboard } from '$lib/utils/clipboard';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -102,61 +100,11 @@
 			}
 		});
 
-		const commandCtx = getCommandCtx();
-		const sourceId = `product-${product.code}`;
-		// Register product-scoped commands using closures that capture `product.code`.
-		commandCtx.register(sourceId, [
-			{
-				id: 'product-edit',
-				title: 'Edit product',
-				description: 'Open the product editor',
-				category: 'Product',
-				contextual: true,
-				priority: 100,
-				action: () => {
-					if (!product.code) return;
-					return goto(resolve('/products/[barcode]/edit', { barcode: product.code }));
-				}
-			},
-			{
-				id: 'product-copy-barcode',
-				title: 'Copy barcode',
-				description: 'Copy the product barcode to clipboard',
-				category: 'Product',
-				contextual: true,
-				action: async () => {
-					if (!product.code) return;
-					await copyTextToClipboard(product.code);
-				}
-			},
-			{
-				id: 'product-share',
-				title: 'Share product',
-				description: 'Share product link or copy URL',
-				category: 'Product',
-				contextual: true,
-				action: async () => {
-					if (!product.code) return;
-					if (navigator.share) {
-						try {
-							await navigator.share({ title: document.title, url: window.location.href });
-							return;
-						} catch (error) {
-							if (error instanceof Error && error.name === 'AbortError') return;
-						}
-					}
-
-					await copyTextToClipboard(window.location.href);
-				}
-			}
-		]);
-
 		return () => {
 			shortcutCtx.delete('A');
 			shortcutCtx.delete('E');
 			shortcutCtx.delete('Shift+E');
 			shortcutCtx.delete('Shift+B');
-			commandCtx.unregister(sourceId);
 		};
 	});
 

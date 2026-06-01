@@ -1,9 +1,6 @@
 import type { Command } from './types';
 import { getNavigationCommands } from './navigation';
-import { getProductCommands } from './product';
 import { getUtilityCommands } from './utility';
-import { fuzzySearch } from '$lib/utils/fuzzySearch';
-import { getProductContextFromRoute } from '$lib/utils/routes';
 
 /**
  * Create the merged command registry for a given pathname.
@@ -11,11 +8,10 @@ import { getProductContextFromRoute } from '$lib/utils/routes';
  */
 export function createCommandRegistry({ pathname }: { pathname: string }): Command[] {
 	const nav = getNavigationCommands();
-	const productContext = getProductContextFromRoute(pathname);
-	const product = getProductCommands(productContext ? productContext.barcode : null);
 	const util = getUtilityCommands();
 
-	return [...nav, ...product, ...util];
+	void pathname;
+	return [...nav, ...util];
 }
 
 /**
@@ -45,10 +41,14 @@ export function sortCommands(commands: Command[]): Command[] {
 /**
  * Search commands with optional fuzzy search.
  * When query is empty or whitespace, returns sortCommands(commands).
- * When query has content, returns fuzzySearch(commands, query) directly (preserves relevance ordering).
+ * When query has content, performs a simple text match over title, description, and keywords.
  */
 export function searchCommands(commands: Command[], query: string): Command[] {
 	const q = query.trim();
 	if (!q) return sortCommands(commands);
-	return fuzzySearch(commands, q);
+	const needle = q.toLowerCase();
+	return commands.filter((command) => {
+		const haystacks = [command.title, command.description, ...(command.keywords ?? [])];
+		return haystacks.some((value) => value.toLowerCase().includes(needle));
+	});
 }

@@ -4,15 +4,11 @@
 	import { _ } from '$lib/i18n';
 	import { commandPaletteOpen } from '$lib/stores/commandPalette';
 	import { SvelteMap } from 'svelte/reactivity';
-	import {
-		addKeyboardListener,
-		initKeyboardListeners,
-		matchesShortcut,
-		removeKeyboardListener
-	} from '$lib/keyboard';
-	import { searchCommands } from '$lib/commands';
+	import { matchesShortcut, isEditableTarget } from '$lib/keyboard';
+	import { sortCommands } from '$lib/commands';
 	import { getCommandCtx } from '$lib/stores/commandPalette';
 	import type { Command, CommandCategory } from '$lib/commands/types';
+	import Fuse from 'fuse.js';
 
 	let query = $state('');
 	let selectedIndex = $state(0);
@@ -27,7 +23,22 @@
 
 	const commandCtx = getCommandCtx();
 	let allCommands = $derived.by(() => commandCtx.getCommands());
-	let filteredCommands = $derived.by(() => searchCommands(allCommands, query));
+	let fuse = $derived(
+		new Fuse(allCommands, {
+			keys: [
+				{ name: 'title', weight: 0.6 },
+				{ name: 'keywords', weight: 0.3 },
+				{ name: 'description', weight: 0.1 }
+			],
+			threshold: 0.4,
+			ignoreLocation: true,
+			includeScore: true
+		})
+	);
+	let filteredCommands = $derived.by(() => {
+		const q = query.trim();
+		return q ? fuse.search(q).map((result) => result.item) : sortCommands(allCommands);
+	});
 	let groupedCommands = $derived.by(() => {
 		const groups = new SvelteMap<CommandCategory, Command[]>();
 		for (const command of filteredCommands) {
@@ -220,10 +231,9 @@
 	});
 
 	onMount(() => {
-		initKeyboardListeners();
-
 		const handler = (e: KeyboardEvent) => {
 			if (e.repeat) return;
+			if (isEditableTarget(e.target)) return;
 			const isCtrlK = matchesShortcut(e, ['ctrl', 'k']);
 			const isCmdK = matchesShortcut(e, ['meta', 'k']);
 			if (isCtrlK || isCmdK) {
@@ -233,10 +243,10 @@
 			}
 		};
 
-		addKeyboardListener(handler);
+		window.addEventListener('keydown', handler);
 
 		return () => {
-			removeKeyboardListener(handler);
+			window.removeEventListener('keydown', handler);
 		};
 	});
 </script>

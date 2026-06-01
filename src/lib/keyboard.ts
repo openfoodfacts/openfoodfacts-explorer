@@ -1,64 +1,4 @@
-import { browser } from '$app/environment';
-
-type KeyHandler = (e: KeyboardEvent) => void;
-
-const listeners = new Set<KeyHandler>();
-let initialized = false;
-let globalListener: ((e: KeyboardEvent) => void) | null = null;
-
-function isInputElement(target: EventTarget | null): target is HTMLElement {
-	if (!(target instanceof HTMLElement)) return false;
-	const tag = target.tagName.toLowerCase();
-	return tag === 'input' || tag === 'textarea' || tag === 'select' || target.isContentEditable;
-}
-
-/**
- * Initialize a single global keydown listener that dispatches to subscribed handlers.
- */
-export function initKeyboardListeners(): void {
-	if (initialized || !browser) return;
-	initialized = true;
-
-	globalListener = (e: KeyboardEvent) => {
-		if (isInputElement(e.target)) return;
-		for (const h of listeners) {
-			try {
-				h(e);
-			} catch {
-				// swallow to avoid breaking other handlers
-			}
-		}
-	};
-
-	document.addEventListener('keydown', globalListener);
-}
-
-/**
- * Fully tears down the global keyboard listener system.
- * Call this only when the entire application is shutting down, not on component unmount.
- */
-export function destroyKeyboardManager(): void {
-	if (browser && globalListener) {
-		document.removeEventListener('keydown', globalListener);
-		globalListener = null;
-	}
-	listeners.clear();
-	initialized = false;
-}
-
-/**
- * Subscribe a handler to global keyboard events.
- */
-export function addKeyboardListener(handler: KeyHandler): void {
-	listeners.add(handler);
-}
-
-/**
- * Remove a previously added keyboard handler.
- */
-export function removeKeyboardListener(handler: KeyHandler): void {
-	listeners.delete(handler);
-}
+import { isEditableTarget } from '$lib/utils/dom';
 
 /**
  * Returns true if the keyboard event matches the given shortcut spec.
@@ -82,3 +22,5 @@ export function matchesShortcut(e: KeyboardEvent, parts: string[]): boolean {
 
 	return key === keyPart.toLowerCase();
 }
+
+export { isEditableTarget };
