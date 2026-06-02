@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Tambah Nutrien",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Nyahpepijat",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
