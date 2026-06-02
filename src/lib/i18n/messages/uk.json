@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Додати поживні речовини",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Налагодження",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
