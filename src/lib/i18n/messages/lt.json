@@ -38,9 +38,9 @@
 		"advanced_search_classic": "Išplėstinė {term} paieška (klasikinė versija)",
 		"prices_badge": "{count} prices",
 		"creation_date": "Sukūrimo data",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Paskutinio modifikavimo data",
+		"page_size": "Puslapio dydis",
+		"advanced_view": "Išplėstinė peržiūra"
 	},
 	"auth": {
 		"username": "Vartotojo vardas",
@@ -57,12 +57,12 @@
 		"actions": "Actions",
 		"role": {
 			"user": "Vartotojas",
-			"admin": "Administrator",
+			"admin": "Administratorius",
 			"moderator": "Moderatorius"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Pagalba ir spartieji klavišai"
 	},
 	"general": {
 		"language": "Kalba",
