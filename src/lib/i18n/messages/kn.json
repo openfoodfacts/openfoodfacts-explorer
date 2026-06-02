@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "ಪೋಷಕಾಂಶವನ್ನು ಸೇರಿಸಿ",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "ಡೀಬಗ್",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
