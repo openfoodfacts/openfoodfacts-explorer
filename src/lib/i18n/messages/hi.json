@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "पोषक तत्व जोड़ें",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "डिबग",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
