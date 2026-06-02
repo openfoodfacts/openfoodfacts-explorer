@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Tilsæt næringsstof",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Fejlfinding",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
