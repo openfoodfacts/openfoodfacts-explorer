@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "បន្ថែមសារធាតុចិញ្ចឹម",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "បំបាត់កំហុស",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
