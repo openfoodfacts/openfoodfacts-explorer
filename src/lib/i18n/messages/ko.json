@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "영양소 추가",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "디버그",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
