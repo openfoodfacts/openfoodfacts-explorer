@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Ku dar Nafaqo",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Ciribtirka",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
