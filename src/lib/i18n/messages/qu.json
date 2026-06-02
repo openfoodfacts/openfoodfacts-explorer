@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Nutriente nisqatapas yapay",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Pantasqa allichay",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
