@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Afegir nutrient",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Depuració",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
