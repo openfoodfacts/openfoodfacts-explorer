@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Přidejte živiny",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Ladit",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
