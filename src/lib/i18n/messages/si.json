@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "පෝෂ්‍ය පදාර්ථ එකතු කරන්න",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "නිදොස්කරණය",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
