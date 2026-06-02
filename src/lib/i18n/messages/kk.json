@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Қоректік зат қосыңыз",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Түзету",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
