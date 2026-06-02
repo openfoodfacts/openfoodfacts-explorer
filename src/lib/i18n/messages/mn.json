@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Шим тэжээл нэмнэ",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Дибаг хийх",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
