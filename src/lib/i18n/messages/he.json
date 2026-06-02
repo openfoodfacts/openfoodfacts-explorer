@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "הוסף חומר מזין",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "לְנַפּוֹת",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
