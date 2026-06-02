@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Προσθήκη Θρεπτικού συστατικού",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Αποσφαλμάτωση",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
