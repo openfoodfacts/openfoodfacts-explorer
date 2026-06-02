@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Ongeza Virutubisho",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Tatua",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
