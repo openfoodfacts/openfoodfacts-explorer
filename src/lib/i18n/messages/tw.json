@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Fa Aduannuru ka ho",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Debug a wɔde hyɛ mu",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
