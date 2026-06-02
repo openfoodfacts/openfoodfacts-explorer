@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "ஊட்டச்சத்து சேர்க்கவும்",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "பிழைத்திருத்தம்",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
