@@ -251,23 +251,18 @@
 	}
 
 	// Handle nutriment value changes
-	function updateNutriment(key: string, value: number | null) {
+	function updateNutriment(key: string, value: number | string) {
 		ensureNutriments();
 
-		if (value === null) {
-			delete product.nutriments[key];
-			product = { ...product, nutriments: { ...product.nutriments } }; // Trigger reactivity
-		} else {
-			product = {
-				...product,
-				nutriments: { ...product.nutriments, [key]: value }
-			};
-		}
+		product = {
+			...product,
+			nutriments: { ...product.nutriments, [key]: value }
+		};
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
-		updateNutriment(key, target.value ? Number(target.value) : null);
+		updateNutriment(key, target.value !== '' ? Number(target.value) : '');
 	}
 
 	async function submit() {
