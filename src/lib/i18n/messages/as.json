@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "পুষ্টিকৰ উপাদান যোগ কৰক",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "ডিবাগ কৰক",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
