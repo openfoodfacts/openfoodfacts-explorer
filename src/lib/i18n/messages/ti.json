@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "መኣዛ ምውሳኽ",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "ዲባግ ምግባር",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
