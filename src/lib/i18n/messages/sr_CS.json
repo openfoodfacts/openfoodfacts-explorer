@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Додајте хранљиве материје",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Отклањање грешака",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
