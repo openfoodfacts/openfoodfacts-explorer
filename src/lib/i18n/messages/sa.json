@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "पोषकं योजयन्तु",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "त्रुटिनिवारणम्",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
