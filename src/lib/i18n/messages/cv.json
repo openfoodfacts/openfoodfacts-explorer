@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Апат-ҫимӗҫ хушӑр",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Отладка",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
