@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "အာဟာရထည့်ပါ။",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "အမှားရှာပါ။",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
