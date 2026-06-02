@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "পুষ্টি যোগ করুন",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "ডিবাগ",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
