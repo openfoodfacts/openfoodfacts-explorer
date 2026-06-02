@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "مواد مغذی اضافه کنید",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "اشکال‌زدایی",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
