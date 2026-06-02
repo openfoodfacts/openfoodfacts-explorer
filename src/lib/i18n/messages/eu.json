@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Gehitu mantenugaia",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Araztu",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
