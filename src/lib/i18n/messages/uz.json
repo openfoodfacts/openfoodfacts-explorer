@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Oziqlantiruvchi qo'shing",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Nosozliklarni tuzatish",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
