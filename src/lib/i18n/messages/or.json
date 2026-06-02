@@ -421,6 +421,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "ପୁଷ୍ଟିକର ଯୋଗ କରନ୍ତୁ",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "ଡିବଗ୍",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
