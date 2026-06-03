@@ -25,7 +25,15 @@
 		activeSearchValue.length < 3 ? [] : autoCompleteFuse.search(activeSearchValue).slice(0, 10)
 	);
 
+	$effect(() => {
+		if (autoCompleteIndex >= filteredAutocomplete.length) {
+			autoCompleteIndex = -1;
+		}
+	});
+
 	function handleNavigationKeys(event: KeyboardEvent): boolean {
+		if (filteredAutocomplete.length === 0) return false;
+
 		if (event.key === 'ArrowDown') {
 			event.preventDefault();
 			if (autoCompleteIndex === -1) {
@@ -48,7 +56,7 @@
 
 	function inputHandler(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ',') {
-			if (autoCompleteIndex !== -1) {
+			if (autoCompleteIndex !== -1 && filteredAutocomplete[autoCompleteIndex]) {
 				newValue = filteredAutocomplete[autoCompleteIndex].item;
 			}
 
@@ -106,7 +114,7 @@
 
 	function handleEditKeydown(event: KeyboardEvent, index: number) {
 		if (event.key === 'Enter') {
-			if (autoCompleteIndex !== -1) {
+			if (autoCompleteIndex !== -1 && filteredAutocomplete[autoCompleteIndex]) {
 				editingValue = filteredAutocomplete[autoCompleteIndex].item;
 				autoCompleteIndex = -1;
 				event.preventDefault();
