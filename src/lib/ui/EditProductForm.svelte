@@ -52,6 +52,7 @@
 		originNames: string[];
 		countriesNames: string[];
 		units: string[];
+		allergenNames: string[];
 	};
 
 	let {
@@ -70,6 +71,7 @@
 		originNames,
 		countriesNames,
 		units,
+		allergenNames,
 		isSubmitting,
 		submit,
 		onCorrectBarcode
@@ -136,7 +138,7 @@
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
-			<IngredientsStep bind:product {getIngredientsImage} />
+			<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
 		</div>
 	</div>
 

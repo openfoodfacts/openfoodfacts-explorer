@@ -14,6 +14,7 @@
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 
 	type OCRResult = {
 		status?: number;
@@ -27,9 +28,10 @@
 	type Props = {
 		product: Product;
 		getIngredientsImage: (language: string) => string | null;
+		allergenNames?: string[];
 	};
 
-	let { product = $bindable(), getIngredientsImage }: Props = $props();
+	let { product = $bindable(), getIngredientsImage, allergenNames = [] }: Props = $props();
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
@@ -182,4 +184,34 @@
 			{$_('product.edit.no_languages_found')}
 		</div>
 	{/if}
+</div>
+
+<div class="mt-8 space-y-6 border-t border-base-300 pt-6">
+	<div class="form-control w-full">
+		<label class="label">
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+				{$_('product.edit.allergens', { default: 'Allergens' })}
+				<InfoTooltip
+					text={$_('product.edit.tooltips.allergens', {
+						default: 'Allergens present in the product'
+					})}
+				/>
+			</span>
+		</label>
+		<TagsString bind:tagsString={product.allergens} autocomplete={allergenNames} />
+	</div>
+
+	<div class="form-control w-full">
+		<label class="label">
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+				{$_('product.edit.traces', { default: 'Traces' })}
+				<InfoTooltip
+					text={$_('product.edit.tooltips.traces', {
+						default: 'Traces of allergens that may be present'
+					})}
+				/>
+			</span>
+		</label>
+		<TagsString bind:tagsString={product.traces} autocomplete={allergenNames} />
+	</div>
 </div>

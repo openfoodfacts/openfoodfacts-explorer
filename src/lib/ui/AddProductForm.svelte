@@ -71,6 +71,7 @@
 		originNames: string[];
 		countriesNames: string[];
 		units: string[];
+		allergenNames: string[];
 	};
 
 	let {
@@ -89,6 +90,7 @@
 		originNames,
 		countriesNames,
 		units,
+		allergenNames,
 		isSubmitting,
 		submit
 	}: Props = $props();
@@ -154,7 +156,7 @@
 {:else if currentStep === 2}
 	<LanguagesStep bind:product codes={languages} {addLanguage} />
 {:else if currentStep === 3}
-	<IngredientsStep bind:product {getIngredientsImage} />
+	<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
 {:else if currentStep === 4}
 	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 5}
