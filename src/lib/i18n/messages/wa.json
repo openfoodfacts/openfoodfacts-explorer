@@ -356,7 +356,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"categories": "Categories :",
 			"labels": "Labels",
 			"brands": "Brands",
 			"stores": "Stores",
@@ -404,7 +404,7 @@
 			"nutrient": {
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
-				"carbohydrates": "Carbohydrates",
+				"carbohydrates": "Carbohydrate",
 				"sugars": "Sugars",
 				"proteins": "Proteins",
 				"salt": "Salt",

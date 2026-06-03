@@ -499,7 +499,7 @@
 		},
 		"knowledge_panels": {
 			"action": {
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins",
 				"add_ingredients_text": "Add ingredients text"
 			}

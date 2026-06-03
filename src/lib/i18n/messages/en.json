@@ -65,7 +65,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Language",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Currency",
 		"loading": "Loading…",
@@ -398,14 +398,14 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
-			"energy": "Energy",
+			"energy": "Calories",
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
-				"sugars": "Sugars",
+				"sugars": "Sugar",
 				"proteins": "Proteins",
 				"salt": "Salt",
 				"fibers": "Fibers",
@@ -499,7 +499,7 @@
 		},
 		"knowledge_panels": {
 			"action": {
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins",
 				"add_ingredients_text": "Add ingredients text"
 			}
