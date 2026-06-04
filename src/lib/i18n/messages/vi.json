@@ -299,8 +299,12 @@
 				"traceability_code": "Trong phần này, bạn có thể nhập mã liên quan đến nhãn hiệu bao bì, nhãn hiệu nhận dạng hoặc nhãn hiệu sức khỏe.",
 				"countries": "Các quốc gia nơi sản phẩm được phổ biến rộng rãi (không bao gồm các cửa hàng chuyên kinh doanh sản phẩm nước ngoài).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Chất gây dị ứng",
+			"traces": "Truy gốc",
 			"main_language": "Ngôn ngữ chính",
 			"add_product": "Thêm sản phẩm",
 			"nutrition_issues": "Nutrition issues",
