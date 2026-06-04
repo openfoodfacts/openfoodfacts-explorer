@@ -299,8 +299,12 @@
 				"traceability_code": "இந்தப் பிரிவில், பேக்கேஜிங் குறிகள், அடையாளக் குறிகள் அல்லது சுகாதாரக் குறிகள் தொடர்பான குறியீடுகளை நீங்கள் உள்ளிடலாம்.",
 				"countries": "இந்தத் தயாரிப்பு பரவலாகக் கிடைக்கும் நாடுகள் (வெளிநாட்டு தயாரிப்புகளில் நிபுணத்துவம் பெற்ற கடைகள் சேர்க்கப்படவில்லை).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
