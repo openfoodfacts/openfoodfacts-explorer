@@ -3,8 +3,6 @@
 	import type { Product } from '$lib/api';
 	import { getLanguageName } from '$lib/languages';
 
-	import InfoTooltip from '../InfoTooltip.svelte';
-
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
