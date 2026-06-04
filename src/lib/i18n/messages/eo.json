@@ -299,8 +299,12 @@
 				"traceability_code": "En ĉi tiu sekcio, vi povas enigi kodojn rilatajn al pakmarkoj, identigmarkoj aŭ sanmarkoj.",
 				"countries": "Landoj kie la produkto estas vaste havebla (ne inkluzivante vendejojn specialiĝantajn pri fremdaj produktoj).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alergenoj",
+			"traces": "Traces",
 			"main_language": "Ĉefa lingvo",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
