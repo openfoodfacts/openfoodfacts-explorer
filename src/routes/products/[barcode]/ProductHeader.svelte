@@ -14,11 +14,13 @@
 		type Store,
 		type Taxonomy
 	} from '$lib/api';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
+	import { PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { openNutriPatrolFlag } from '$lib/stores/nutripatrol';
+	import { userInfo } from '$lib/stores/user';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
 
@@ -146,16 +148,28 @@
 						<span class="hidden md:block">{$_('product.buttons.share')}</span>
 					</button>
 
-					<a
+					<button
+						type="button"
 						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
-						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
-						target="_blank"
-						rel="noopener noreferrer"
+						onclick={() => {
+							if ($userInfo == null) {
+								toastCtx.warning(
+									$_('product.toast.report_login_required', {
+										default: 'Please log in to report a product.'
+									})
+								);
+								return;
+							}
+							openNutriPatrolFlag({
+								barcode: product.code!,
+								type: 'product'
+							});
+						}}
 						title={$_('product.buttons.report')}
 						aria-label={$_('product.buttons.report')}
 					>
 						<IconMdiFlag class="h-5 w-5" />
-					</a>
+					</button>
 
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"

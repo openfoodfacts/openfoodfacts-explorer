@@ -228,7 +228,8 @@
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"failed_copy": "Failed to copy link",
+			"report_login_required": "Please log in to report a product."
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -444,6 +445,7 @@
 			"images": {
 				"toast": {
 					"login_required": "Please log in to upload images.",
+					"report_login_required": "Please log in to report an image.",
 					"upload_success": "Image uploaded successfully!",
 					"upload_failed": "Upload failed: {error}",
 					"upload_failed_generic": "Upload failed. Please try again.",
@@ -484,6 +486,7 @@
 				"crop_click_to_start": "Click and drag to start cropping",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Report Image",
+				"report_to_moderators": "Report image to our moderators",
 				"save_changes": "Save Changes"
 			},
 			"comment_description": "Add a comment about your changes (optional)",
