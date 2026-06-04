@@ -105,7 +105,9 @@
 		</legend>
 
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}
-			<div class="alert alert-warning text-sm sm:text-base"></div>
+			<div class="alert alert-warning text-sm sm:text-base">
+				{$_('product.edit.no_languages_found')}
+			</div>
 		{/if}
 
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
