@@ -45,7 +45,7 @@ Wraps the <product-card> web component and adds accessibility features.
 		const p = product as Product;
 		const taxo = brandsTaxonomy;
 		let brandsTags = p.brands_tags;
-		let brandsStr = p.brands;
+		let brandsStr: string | undefined;
 
 		if (taxo && brandsTags && Array.isArray(brandsTags)) {
 			const localizedTags = brandsTags.map((tag) => {
