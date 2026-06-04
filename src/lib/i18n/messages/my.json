@@ -299,8 +299,12 @@
 				"traceability_code": "ဤကဏ္ဍတွင်၊ ထုပ်ပိုးမှုအမှတ်အသားများ၊ သက်သေခံအမှတ်အသားများ သို့မဟုတ် ကျန်းမာရေးအမှတ်အသားများနှင့် ဆက်စပ်သောကုဒ်များကို ထည့်သွင်းနိုင်သည်။",
 				"countries": "ထုတ်ကုန်ကို တွင်ကျယ်စွာရရှိနိုင်သည့်နိုင်ငံများ (နိုင်ငံခြားထုတ်ကုန်များကို အထူးပြုစတိုးဆိုင်များ မပါဝင်ပါ)။",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
