@@ -19,18 +19,21 @@
 	let editingIndex = $state(-1);
 	let editingValue = $state('');
 
+	// Track active search value (newValue for additions, editingValue for inline edits)
 	let activeSearchValue = $derived(editingIndex === -1 ? newValue : editingValue);
 
 	let filteredAutocomplete = $derived(
 		activeSearchValue.length < 3 ? [] : autoCompleteFuse.search(activeSearchValue).slice(0, 10)
 	);
 
+	// Reactive bounds check: reset suggestion index to -1 if list shrinks under it
 	$effect(() => {
 		if (autoCompleteIndex >= filteredAutocomplete.length) {
 			autoCompleteIndex = -1;
 		}
 	});
 
+	// Handle arrow key navigation within the autocomplete suggestions
 	function handleNavigationKeys(event: KeyboardEvent): boolean {
 		if (filteredAutocomplete.length === 0) return false;
 
@@ -130,6 +133,7 @@
 		}
 	}
 
+	// Handle selection of a suggestion from the autocomplete dropdown list
 	function selectSuggestion(key: string) {
 		if (editingIndex !== -1) {
 			editingValue = key;
@@ -164,6 +168,7 @@
 							class:bg-primary={autoCompleteIndex === index}
 							class:text-primary-content={autoCompleteIndex === index}
 							onmousedown={(e) => {
+								// Use mousedown instead of click to fire selectSuggestion before the input's blur event
 								e.preventDefault();
 								selectSuggestion(key);
 							}}
