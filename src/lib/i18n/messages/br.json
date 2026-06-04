@@ -299,8 +299,12 @@
 				"traceability_code": "Er rann-mañ e c'hallit lakaat kodoù liammet ouzh ar merkoù pakañ, ar merkoù anavezout pe ar merkoù yec'hed.",
 				"countries": "Broioù ma vez kavet ar produ dre vras (hep kontañ ar stalioù arbennikaet war ar produioù estren).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Roudennoù",
 			"main_language": "Yezh pennañ",
 			"add_product": "Ouzhpennañ ur produ",
 			"nutrition_issues": "Nutrition issues",
