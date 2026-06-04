@@ -10,6 +10,7 @@ import {
 	type Store,
 	type Country,
 	type Unit,
+	type Allergen,
 	createProductsApi
 } from '$lib/api';
 import { userInfo } from '$lib/stores/user';
@@ -64,15 +65,17 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	const productType =
 		productState.status !== 'failure' ? productState.product.product_type : undefined;
 
-	const [categories, labels, brands, stores, origins, countries, units] = await Promise.all([
-		getTaxo<Category>('categories', fetch, productType),
-		getTaxo<Label>('labels', fetch, productType),
-		getTaxo<Brand>('brands', fetch, productType),
-		getTaxo<Store>('stores', fetch, productType),
-		getTaxo<Origin>('origins', fetch, productType),
-		getTaxo<Country>('countries', fetch, productType),
-		getTaxo<Unit>('units', fetch, productType)
-	]);
+	const [categories, labels, brands, stores, origins, countries, units, allergens] =
+		await Promise.all([
+			getTaxo<Category>('categories', fetch, productType),
+			getTaxo<Label>('labels', fetch, productType),
+			getTaxo<Brand>('brands', fetch, productType),
+			getTaxo<Store>('stores', fetch, productType),
+			getTaxo<Origin>('origins', fetch, productType),
+			getTaxo<Country>('countries', fetch, productType),
+			getTaxo<Unit>('units', fetch, productType),
+			getTaxo<Allergen>('allergens', fetch, productType)
+		]);
 
 	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
 
@@ -89,7 +92,8 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			stores,
 			origins,
 			countries,
-			units
+			units,
+			allergens
 		};
 	}
 
@@ -101,6 +105,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		stores,
 		origins,
 		countries,
-		units
+		units,
+		allergens
 	};
 };

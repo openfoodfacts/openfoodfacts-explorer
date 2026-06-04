@@ -511,6 +511,11 @@ export type Product = ProductDataSection & {
 	emb_codes: string;
 	emb_codes_tags: string[];
 
+	allergens: string;
+	allergens_tags: string[];
+	traces: string;
+	traces_tags: string[];
+
 	nutriments: Nutriments;
 
 	no_nutrition_data?: boolean;
