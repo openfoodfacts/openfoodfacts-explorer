@@ -186,10 +186,10 @@
 	{/if}
 </div>
 
-<div class="mt-8 space-y-6 border-t border-base-300 pt-6">
-	<div class="form-control w-full">
+<div class="mt-6 space-y-6">
+	<div class="flex flex-col gap-1.5 w-full">
 		<label class="label">
-			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+			<span class="flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.allergens', { default: 'Allergens' })}
 				<InfoTooltip
 					text={$_('product.edit.tooltips.allergens', {
@@ -201,9 +201,9 @@
 		<TagsString bind:tagsString={product.allergens} autocomplete={allergenNames} />
 	</div>
 
-	<div class="form-control w-full">
+	<div class="flex flex-col gap-1.5 w-full">
 		<label class="label">
-			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+			<span class="flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.traces', { default: 'Traces' })}
 				<InfoTooltip
 					text={$_('product.edit.tooltips.traces', {
