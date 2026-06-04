@@ -299,8 +299,12 @@
 				"traceability_code": "在此部分，您可以输入与包装标记、识别标记或健康标记相关的代码。",
 				"countries": "产品广泛销售的国家（不包括专营外国产品的商店）。",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "过敏原",
+			"traces": "跟踪",
 			"main_language": "主要语言",
 			"add_product": "添加产品",
 			"nutrition_issues": "Nutrition issues",
