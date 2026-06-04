@@ -13,12 +13,13 @@
 		type Nutriments,
 		type RawImage,
 		addOrEditProductV2,
+		updateBarcode,
 		updatePackagingsV3
 	} from '$lib/api';
+	import { getToastCtx } from '$lib/stores/toasts';
 	import { preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
-	import { getToastCtx } from '$lib/stores/toasts';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 
 	import type { PageData } from './$types';
@@ -214,6 +215,34 @@
 	let isSubmitting = $state(false);
 	let productNotFound = $derived(data.state.status === 'empty');
 
+	async function handleBarcodeCorrection(newCode: string) {
+		try {
+			const { data, error } = await updateBarcode(fetch, product.code, newCode);
+			if (error) {
+				console.error(error);
+				toastCtx.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
+			} else if (data) {
+				toastCtx.success(
+					$_('product.moderator.barcode_correction_success', {
+						default: 'Barcode updated successfully'
+					})
+				);
+				goto(`/products/${newCode}`);
+			} else {
+				toastCtx.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
+			}
+		} catch (err) {
+			console.error(err);
+			toastCtx.error(
+				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+			);
+		}
+	}
+
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
 		if (!product.nutriments) {
@@ -222,23 +251,18 @@
 	}
 
 	// Handle nutriment value changes
-	function updateNutriment(key: string, value: number | null) {
+	function updateNutriment(key: string, value: number | string) {
 		ensureNutriments();
 
-		if (value === null) {
-			delete product.nutriments[key];
-			product = { ...product, nutriments: { ...product.nutriments } }; // Trigger reactivity
-		} else {
-			product = {
-				...product,
-				nutriments: { ...product.nutriments, [key]: value }
-			};
-		}
+		product = {
+			...product,
+			nutriments: { ...product.nutriments, [key]: value }
+		};
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
-		updateNutriment(key, target.value ? Number(target.value) : null);
+		updateNutriment(key, target.value !== '' ? Number(target.value) : '');
 	}
 
 	async function submit() {
@@ -483,6 +507,7 @@
 			{storeNames}
 			{units}
 			languages={filteredLanguages}
+			onCorrectBarcode={handleBarcodeCorrection}
 		/>
 	{/if}
 </div>
