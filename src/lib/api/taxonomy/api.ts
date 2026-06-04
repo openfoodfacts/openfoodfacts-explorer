@@ -3,7 +3,7 @@ import { wrapFetch } from '$lib/utils';
 import type { TaxoNode, Taxonomy } from './types';
 
 // Cache taxonomy promises to prevent redundant fetches across components
-const taxoCache = new Map<string, Promise<any>>();
+const taxoCache = new Map<string, Promise<unknown>>();
 
 export async function getTaxo<T extends TaxoNode>(
 	taxo: string,
