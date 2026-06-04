@@ -299,8 +299,12 @@
 				"traceability_code": "În această secțiune, puteți introduce coduri legate de marcajele de ambalare, marcajele de identificare sau marcajele sanitare.",
 				"countries": "Țări în care produsul este disponibil pe scară largă (cu excepția magazinelor specializate în produse străine).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alergeni",
+			"traces": "Urme",
 			"main_language": "Limba principală",
 			"add_product": "Adaugă produs",
 			"nutrition_issues": "Nutrition issues",
