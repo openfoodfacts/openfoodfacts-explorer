@@ -101,7 +101,6 @@
 	<fieldset class="fieldset">
 		<legend class="fieldset-legend">
 			{$_('product.edit.product_names')}
-			<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
 		</legend>
 
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}
