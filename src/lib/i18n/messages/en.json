@@ -370,6 +370,7 @@
 				"product": "Other"
 			},
 			"product_page_url": "Link to the product page on the official site of the producer",
+			"product_names": "Product names",
 			"photos": "Product Photos",
 			"no_photo_available": "No photo available",
 			"ingredients": "Ingredients",
