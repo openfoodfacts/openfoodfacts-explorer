@@ -20,3 +20,21 @@ jobs:
           dirtyLabel: '💥 Merge Conflicts'
           removeOnDirtyLabel: 'PR: ready to ship'
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          commentOnDirty: |
+            **This PR has merge conflicts with `main`.**
+
+            Please rebase your branch:
+            ```bash
+            # Add upstream remote (one-time setup)
+            git remote add upstream https://github.com/openfoodfacts/openfoodfacts-explorer.git
+
+            # Fetch latest main and rebase
+            git fetch upstream
+            git rebase upstream/main
+
+            # Resolve any conflicts, then:
+            git push --force-with-lease origin YOUR_BRANCH
+            ```
+
+            > **Tip:** Enable "Allow edits from maintainers" on this PR so we can auto-rebase for you next time. This only grants access to your PR branch. Your fork's other branches are not affected.
+          commentOnClean: ''
