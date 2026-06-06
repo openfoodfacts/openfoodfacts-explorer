@@ -171,23 +171,23 @@
 			</div>
 		</div>
 
-	<!-- Ingredients Section -->
-	<div id="ingredients" class="collapse-arrow bg-base-200 collapse shadow-md">
-		<input
-			type="checkbox"
-			checked={isMobile ? false : $preferences.editing.expandAllSections}
-			onchange={(e) => {
-				if (e.isTrusted) handleCollapseToggle('ingredients');
-			}}
-		/>
-		<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
-			<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-			{$_('product.edit.sections.ingredients')}
+		<!-- Ingredients Section -->
+		<div id="ingredients" class="collapse-arrow bg-base-200 collapse shadow-md">
+			<input
+				type="checkbox"
+				checked={isMobile ? false : $preferences.editing.expandAllSections}
+				onchange={(e) => {
+					if (e.isTrusted) handleCollapseToggle('ingredients');
+				}}
+			/>
+			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+				<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+				{$_('product.edit.sections.ingredients')}
+			</div>
+			<div class="collapse-content">
+				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
+			</div>
 		</div>
-		<div class="collapse-content">
-			<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
-		</div>
-	</div>
 
 		<!-- Nutrition Section -->
 		<!-- overflow-visible is needed for the sticky image -->
