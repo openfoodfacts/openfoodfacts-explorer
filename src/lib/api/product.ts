@@ -440,6 +440,9 @@ export type ProductDataSection = {
 	last_checked_t?: number;
 	checkers_tags?: string[];
 	states_hierarchy?: string[];
+	data_quality_errors_tags?: string[];
+	data_quality_warnings_tags?: string[];
+	data_quality_info_tags?: string[];
 };
 
 export type Product = ProductDataSection & {

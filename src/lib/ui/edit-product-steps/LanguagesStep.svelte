@@ -8,6 +8,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiSearch from '@iconify-svelte/mdi/search';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -116,13 +117,25 @@
 				>
 					{code}
 				</div>
-				<input
-					id={`product-name-${code}`}
-					type="text"
-					class="input input-bordered w-full text-sm sm:text-base"
-					bind:value={product[`product_name_${code}`]}
-					aria-label={`${$_('product.edit.name')} (${langName})`}
-				/>
+				<div class="w-full">
+					<input
+						id={`product-name-${code}`}
+						type="text"
+						class="input input-bordered w-full text-sm sm:text-base transition-all {!product[
+							`product_name_${code}`
+						]
+							? 'border-dashed border-warning/50 bg-warning/5'
+							: ''}"
+						bind:value={product[`product_name_${code}`]}
+						aria-label={`${$_('product.edit.name')} (${langName})`}
+					/>
+					{#if !product[`product_name_${code}`]}
+						<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
+							<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+							Missing info
+						</span>
+					{/if}
+				</div>
 			</div>
 		{/each}
 
