@@ -14,6 +14,7 @@
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import InputAutocomplete from '../InputAutocomplete.svelte';
 
 	type Props = {
 		product: Product;
@@ -29,71 +30,6 @@
 			return { code: code, en: getLanguageName(code, 'en'), locale: getLanguageName(code) };
 		})
 	);
-
-	// Local state for language search input
-	let languageSearch = $state('');
-	let autoCompleteIndex = $state(-1);
-	let showAddInput = $state(false);
-
-	let filteredLanguages = $derived(
-		languageSearch.length === 0
-			? []
-			: languageNames
-					.filter((code) =>
-						[code.code, code.en, code.locale].some((name) =>
-							name.toLowerCase().includes(languageSearch.toLowerCase())
-						)
-					)
-					.slice(0, 10)
-	);
-
-	$effect(() => {
-		// Reset autocomplete index whenever search term changes
-		const _ = languageSearch;
-		autoCompleteIndex = -1;
-	});
-
-	function focusInput(element: HTMLInputElement) {
-		element.focus();
-	}
-
-	function inputHandler(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			let selected = null;
-			if (autoCompleteIndex !== -1 && filteredLanguages[autoCompleteIndex]) {
-				selected = filteredLanguages[autoCompleteIndex];
-			} else if (filteredLanguages.length > 0) {
-				selected = filteredLanguages[0];
-			}
-
-			if (selected) {
-				addLanguage(selected.code);
-				activeLang = selected.code;
-				languageSearch = '';
-				autoCompleteIndex = -1;
-				showAddInput = false;
-			}
-		} else if (event.key === 'ArrowDown') {
-			event.preventDefault();
-			if (autoCompleteIndex === -1) {
-				autoCompleteIndex = 0;
-			} else if (autoCompleteIndex < filteredLanguages.length - 1) {
-				autoCompleteIndex += 1;
-			}
-		} else if (event.key === 'ArrowUp') {
-			event.preventDefault();
-			if (autoCompleteIndex === -1) {
-				autoCompleteIndex = filteredLanguages.length - 1;
-			} else if (autoCompleteIndex > 0) {
-				autoCompleteIndex -= 1;
-			}
-		} else if (event.key === 'Escape') {
-			languageSearch = '';
-			autoCompleteIndex = -1;
-			showAddInput = false;
-		}
-	}
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -237,67 +173,17 @@
 		{/each}
 	{/if}
 
-	{#if !showAddInput}
-		<button
-			type="button"
-			class="btn btn-primary btn-sm btn-circle ml-2"
-			onclick={() => (showAddInput = true)}
-			title={$_('product.edit.add_language', { default: 'Add a language' })}
-			aria-label={$_('product.edit.add_language', { default: 'Add a language' })}
-		>
-			<IconMdiPlus class="h-5 w-5" />
-		</button>
-	{:else}
-		<!-- Inline Autocomplete Input for Adding Language -->
-		<div class="dropdown relative ml-2 grow max-w-xs">
-			<label class="input input-sm flex items-center gap-2 w-full">
-				<IconMdiPlus class="h-4 w-4 opacity-70" />
-				<input
-					type="text"
-					placeholder={$_('product.edit.add_language', { default: 'Add a language...' })}
-					bind:value={languageSearch}
-					onkeydown={inputHandler}
-					onblur={() => {
-						// Delay to allow dropdown selection clicks to process
-						setTimeout(() => {
-							showAddInput = false;
-							languageSearch = '';
-						}, 200);
-					}}
-					use:focusInput
-					class="grow text-xs sm:text-sm"
-				/>
-			</label>
-			{#if languageSearch.length > 0 && filteredLanguages.length > 0}
-				<div
-					class="dropdown-content bg-base-200 z-10 mt-1 w-full rounded-md shadow-lg border border-base-300 focus:outline-none"
-				>
-					<ul class="divide-base-100 divide-y max-h-60 overflow-y-auto">
-						{#each filteredLanguages as lang, idx (lang.code)}
-							<li>
-								<button
-									type="button"
-									class="bg-base-100 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full px-4 py-2 text-left text-xs sm:text-sm transition-colors duration-150"
-									class:bg-primary={autoCompleteIndex === idx}
-									class:text-primary-content={autoCompleteIndex === idx}
-									onclick={(e) => {
-										e.preventDefault();
-										addLanguage(lang.code);
-										activeLang = lang.code;
-										languageSearch = '';
-										autoCompleteIndex = -1;
-										showAddInput = false;
-									}}
-								>
-									<span>{lang.locale} ({lang.en})</span>
-								</button>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-		</div>
-	{/if}
+	<InputAutocomplete
+		items={languageNames}
+		searchKeys={['code', 'en', 'locale']}
+		placeholder={$_('product.edit.add_language', { default: 'Add a language...' })}
+		buttonTitle={$_('product.edit.add_language', { default: 'Add a language' })}
+		buttonAriaLabel={$_('product.edit.add_language', { default: 'Add a language' })}
+		onselect={(lang) => {
+			addLanguage(lang.code);
+			activeLang = lang.code;
+		}}
+	/>
 
 	<!-- Tab Panel Content -->
 	{#if Object.keys(product.languages_codes ?? {}).length > 0}
