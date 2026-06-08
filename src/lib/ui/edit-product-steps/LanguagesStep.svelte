@@ -10,7 +10,6 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
-	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';

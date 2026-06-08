@@ -21,7 +21,7 @@
 		buttonTitle = 'Add',
 		buttonAriaLabel = 'Add',
 		Icon = IconMdiPlus
-	} = $props<Props>();
+	}: Props = $props();
 
 	let searchQuery = $state('');
 	let autoCompleteIndex = $state(-1);
@@ -31,8 +31,8 @@
 		searchQuery.length === 0
 			? []
 			: items
-					.filter((item) =>
-						searchKeys.some((key) => {
+					.filter((item: T) =>
+						searchKeys.some((key: keyof T) => {
 							const val = item[key];
 							return (
 								typeof val === 'string' && val.toLowerCase().includes(searchQuery.toLowerCase())
