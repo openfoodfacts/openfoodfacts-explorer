@@ -11,8 +11,11 @@ Wraps the <product-card> web component and adds accessibility features.
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
+	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
+
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		product: ProductReduced | Product;
@@ -49,6 +52,14 @@ Wraps the <product-card> web component and adds accessibility features.
 	}
 
 	const contextItems = [
+		{
+			id: 'edit',
+			label: $_('product.menu.edit', { default: 'Edit product' }),
+			icon: IconMdiEdit,
+			action: () => {
+				goto(resolve('/products/[barcode]/edit', { barcode: product.code }));
+			}
+		},
 		{
 			id: 'add-to-comparison',
 			label: $_('product.menu.add_to_comparison', { default: 'Add to comparison' }),
