@@ -44,8 +44,8 @@ importers:
         version: 2.8.0
     devDependencies:
       '@crowdin/cli':
-        specifier: ^4.12.0
-        version: 4.12.0
+        specifier: ^4.14.2
+        version: 4.14.2
       '@eslint/eslintrc':
         specifier: ^3.3.5
         version: 3.3.5
@@ -56,8 +56,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@formatjs/intl-durationformat':
-        specifier: ^0.10.3
-        version: 0.10.3
+        specifier: ^0.10.14
+        version: 0.10.14
       '@iconify-svelte/material-symbols':
         specifier: ^1.0.36
         version: 1.0.36(svelte@5.56.3(@typescript-eslint/types@8.60.1))
@@ -374,8 +374,8 @@ packages:
   '@cropper/utils@2.1.1':
     resolution: {integrity: sha512-0eQs08WyQUNFMfU3ieE091dEQkrW0YdgZ3n6Thnk1EUQv45ypfiL+MevHwr7UzNnUlqUYR2FNSCgE6qBxK0sFw==}
 
-  '@crowdin/cli@4.12.0':
-    resolution: {integrity: sha512-NwqkH1v8Cpg6e0a2ONGdJIZXNuUJi9+SKfDIkONZy0J7lE9nk2ZPFaVmbvOpC7VhArpqo1zAsnQlm7dqEkp3VQ==}
+  '@crowdin/cli@4.14.2':
+    resolution: {integrity: sha512-JRrHvitc0w+r/h6XXSOq917HxsjRoxPEtyNYSmylKirjiPNrRx84VKtqFlOIWIFCOZI5BoXg6hNpE0Zq7CwVBA==}
     hasBin: true
 
   '@csstools/color-helpers@6.0.2':
@@ -790,20 +790,17 @@ packages:
   '@fontsource-variable/plus-jakarta-sans@5.2.8':
     resolution: {integrity: sha512-iQecBizIdZxezODNHzOn4SvvRMrZL/S8k4MEXGDynCmUrImVW0VmX+tIAMqnADwH4haXlHSXqMgU6+kcfBQJdw==}
 
-  '@formatjs/bigdecimal@0.2.0':
-    resolution: {integrity: sha512-GeaxHZbUoYvHL9tC5eltHLs+1zU70aPw0s7LwqgktIzF5oMhNY4o4deEtusJMsq7WFJF3Ye2zQEzdG8beVk73w==}
+  '@formatjs/bigdecimal@0.2.6':
+    resolution: {integrity: sha512-aPzKsGQOkQRHUEbyO/ZtYfr4EqaBQnSs6U4tzTla1xBnIdEHgY2GqEqso28UMwWRkzKqqTj5+/6BmuOsRkfn2A==}
 
   '@formatjs/ecma402-abstract@2.3.4':
     resolution: {integrity: sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==}
 
-  '@formatjs/ecma402-abstract@3.2.0':
-    resolution: {integrity: sha512-dHnqHgBo6GXYGRsepaE1wmsC2etaivOWd5VaJstZd+HI2zR3DCUjbDVZRtoPGkkXZmyHvBwrdEUuqfvzhF/DtQ==}
-
   '@formatjs/fast-memoize@2.2.7':
     resolution: {integrity: sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==}
 
-  '@formatjs/fast-memoize@3.1.1':
-    resolution: {integrity: sha512-CbNbf+tlJn1baRnPkNePnBqTLxGliG6DDgNa/UtV66abwIjwsliPMOt0172tzxABYzSuxZBZfcp//qI8AvBWPg==}
+  '@formatjs/fast-memoize@3.1.6':
+    resolution: {integrity: sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==}
 
   '@formatjs/icu-messageformat-parser@2.11.2':
     resolution: {integrity: sha512-AfiMi5NOSo2TQImsYAg8UYddsNJ/vUEv/HaNqiFjnI3ZFfWihUtD5QtuX6kHl8+H+d3qvnE/3HZrfzgdWpsLNA==}
@@ -811,14 +808,14 @@ packages:
   '@formatjs/icu-skeleton-parser@1.8.14':
     resolution: {integrity: sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==}
 
-  '@formatjs/intl-durationformat@0.10.3':
-    resolution: {integrity: sha512-xRS3GaOlsQLwz0n56SvaddwEnl2NLPKBvYg2M32ak/27dodmVxFJz3j7Nqj7EwKyHTu3f/e+BeoKPrIDUSXTuQ==}
+  '@formatjs/intl-durationformat@0.10.14':
+    resolution: {integrity: sha512-qVrbKGJZwoGFLmQyMBn4Pk44WCpBKINwLf+isrEd4RpvKs5nChRofHanWJqSu8TjuKJjk1qJjDIFkA/hJX/a9Q==}
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
 
-  '@formatjs/intl-localematcher@0.8.2':
-    resolution: {integrity: sha512-q05KMYGJLyqFNFtIb8NhWLF5X3aK/k0wYt7dnRFuy6aLQL+vUwQ1cg5cO4qawEiINybeCPXAWlprY2mSBjSXAQ==}
+  '@formatjs/intl-localematcher@0.8.10':
+    resolution: {integrity: sha512-P/IC3qws3jH+1fEs+o0RIFgXKRaQlFehjS5W0FPAqdo6hgzawLl+eD0q0JjheQ3XtoOe5n8WSYfX06KQZI/QJA==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -1831,9 +1828,6 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  buffer-crc32@0.2.13:
-    resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
-
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
@@ -2225,8 +2219,8 @@ packages:
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
 
-  fastq@1.19.1:
-    resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
+  fastq@1.20.1:
+    resolution: {integrity: sha512-GGToxJ/w1x32s/D2EKND7kTil4n8OVk/9mycTc4VDza13lOvpUZTGX3mFSCtV9ksdGBVzvsyAVLM6mHFThxXxw==}
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -3125,8 +3119,8 @@ packages:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
 
-  tar@7.5.11:
-    resolution: {integrity: sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==}
+  tar@7.5.16:
+    resolution: {integrity: sha512-56adEpPMouktRlBLXiaYFFzZ/3+JXa8P9n7WbR+ibIjtviN55mEaOkiysCnPnWm+7kkui1Dn8J9l+g6zV8731w==}
     engines: {node: '>=18'}
 
   timers-ext@0.1.8:
@@ -3521,8 +3515,8 @@ packages:
     resolution: {integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
 
-  yauzl@3.2.1:
-    resolution: {integrity: sha512-k1isifdbpNSFEHFJ1ZY4YDewv0IH9FR61lDetaRMD3j2ae3bIXGV+7c+LHCqtQGofSd8PIyV4X6+dHMAnSr60A==}
+  yauzl@3.4.0:
+    resolution: {integrity: sha512-jIH9yLR9wqr0wOS0TpBvo/g/2UgZH5qePVbjgRliiF0BYvOZyaBknKsF+x9Iht0O6sqgnB93rCICdOZFecJuDw==}
     engines: {node: '>=12'}
 
   yocto-queue@0.1.0:
@@ -3732,13 +3726,13 @@ snapshots:
 
   '@cropper/utils@2.1.1': {}
 
-  '@crowdin/cli@4.12.0':
+  '@crowdin/cli@4.14.2':
     dependencies:
       command-exists-promise: 2.0.2
       node-fetch: 2.7.0
       shelljs: 0.10.0
-      tar: 7.5.11
-      yauzl: 3.2.1
+      tar: 7.5.16
+      yauzl: 3.4.0
     transitivePeerDependencies:
       - encoding
 
@@ -3990,7 +3984,7 @@ snapshots:
 
   '@fontsource-variable/plus-jakarta-sans@5.2.8': {}
 
-  '@formatjs/bigdecimal@0.2.0': {}
+  '@formatjs/bigdecimal@0.2.6': {}
 
   '@formatjs/ecma402-abstract@2.3.4':
     dependencies:
@@ -3999,17 +3993,11 @@ snapshots:
       decimal.js: 10.6.0
       tslib: 2.8.1
 
-  '@formatjs/ecma402-abstract@3.2.0':
-    dependencies:
-      '@formatjs/bigdecimal': 0.2.0
-      '@formatjs/fast-memoize': 3.1.1
-      '@formatjs/intl-localematcher': 0.8.2
-
   '@formatjs/fast-memoize@2.2.7':
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/fast-memoize@3.1.1': {}
+  '@formatjs/fast-memoize@3.1.6': {}
 
   '@formatjs/icu-messageformat-parser@2.11.2':
     dependencies:
@@ -4022,18 +4010,18 @@ snapshots:
       '@formatjs/ecma402-abstract': 2.3.4
       tslib: 2.8.1
 
-  '@formatjs/intl-durationformat@0.10.3':
+  '@formatjs/intl-durationformat@0.10.14':
     dependencies:
-      '@formatjs/ecma402-abstract': 3.2.0
-      '@formatjs/intl-localematcher': 0.8.2
+      '@formatjs/bigdecimal': 0.2.6
+      '@formatjs/intl-localematcher': 0.8.10
 
   '@formatjs/intl-localematcher@0.6.1':
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/intl-localematcher@0.8.2':
+  '@formatjs/intl-localematcher@0.8.10':
     dependencies:
-      '@formatjs/fast-memoize': 3.1.1
+      '@formatjs/fast-memoize': 3.1.6
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -4126,7 +4114,7 @@ snapshots:
       node-fetch: 2.7.0
       nopt: 8.1.0
       semver: 7.8.2
-      tar: 7.5.11
+      tar: 7.5.16
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -4148,7 +4136,7 @@ snapshots:
   '@nodelib/fs.walk@1.2.8':
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
-      fastq: 1.19.1
+      fastq: 1.20.1
 
   '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.30':
     dependencies:
@@ -4993,8 +4981,6 @@ snapshots:
       node-releases: 2.0.47
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
-  buffer-crc32@0.2.13: {}
-
   callsites@3.1.0: {}
 
   caniuse-lite@1.0.30001793: {}
@@ -5455,7 +5441,7 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
-  fastq@1.19.1:
+  fastq@1.20.1:
     dependencies:
       reusify: 1.1.0
 
@@ -6243,7 +6229,7 @@ snapshots:
 
   tapable@2.3.3: {}
 
-  tar@7.5.11:
+  tar@7.5.16:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
@@ -6712,9 +6698,8 @@ snapshots:
       y18n: 5.0.8
       yargs-parser: 22.0.0
 
-  yauzl@3.2.1:
+  yauzl@3.4.0:
     dependencies:
-      buffer-crc32: 0.2.13
       pend: 1.2.0
 
   yocto-queue@0.1.0: {}
