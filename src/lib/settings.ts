@@ -102,7 +102,9 @@ const MIGRATIONS: {
 		version: 5,
 		upgrade: (preferences) => {
 			if (preferences.editing) {
-				preferences.editing.expandAllSections = true;
+				if (preferences.editing.expandAllSections === undefined) {
+					preferences.editing.expandAllSections = true;
+				}
 			} else {
 				preferences.editing = {
 					expandAllSections: true

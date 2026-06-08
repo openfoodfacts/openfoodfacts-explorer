@@ -1,8 +1,30 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
+
+	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
+	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
+	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
+	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
+
+	const icons = {
+		languages: IconMdiTranslate,
+		images: IconMdiImageMultiple,
+		'basic-info': IconMdiInformation,
+		ingredients: IconMdiFormatListBulleted,
+		nutrition: IconMdiNutrition,
+		prices: IconMdiTagMultiple,
+		packaging: IconMdiPackageVariant,
+		comment: IconMdiCommentText,
+		'moderator-tools': IconMdiShieldAccount
+	} as const;
 
 	const permissions = getPermissionsCtx();
 
@@ -23,8 +45,20 @@
 		}
 	});
 
-	const sidebarSections = $derived.by(() => {
-		const list = [
+	interface SidebarSection {
+		id: string;
+		label: string;
+		icon?: Component;
+	}
+
+	interface Props {
+		sections?: SidebarSection[];
+	}
+
+	let { sections }: Props = $props();
+
+	const defaultSections = $derived.by(() => {
+		const list: SidebarSection[] = [
 			{ id: 'languages', label: $_('product.edit.sections.languages', { default: 'Languages' }) },
 			{ id: 'images', label: $_('product.edit.sections.images', { default: 'Images' }) },
 			{
@@ -49,6 +83,14 @@
 		}
 
 		return list;
+	});
+
+	const sidebarSections = $derived.by(() => {
+		const baseList: SidebarSection[] = sections || defaultSections;
+		return baseList.map((item) => ({
+			...item,
+			icon: item.icon || icons[item.id as keyof typeof icons]
+		}));
 	});
 
 	let ignoreObserver = false;
@@ -102,9 +144,13 @@
 		}, 1000);
 
 		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
-		const checkboxes = document.querySelectorAll(
-			'.collapse-arrow > input[type="checkbox"]'
-		) as NodeListOf<HTMLInputElement>;
+		const checkboxes = sidebarSections
+			.map((section) => {
+				const el = document.getElementById(section.id);
+				return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
+			})
+			.filter(Boolean) as HTMLInputElement[];
+
 		checkboxes.forEach((cb) => {
 			cb.checked = $preferences.editing.expandAllSections;
 			cb.dispatchEvent(new Event('change'));
@@ -201,25 +247,35 @@
 		</div>
 		<nav
 			bind:this={navElement}
+			aria-label={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
 			class="relative border-l-2 border-base-300 flex flex-col gap-1 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
 			{#if indicatorHeight > 0}
 				<div
+					aria-hidden="true"
 					class="absolute -left-0.5 w-0.5 bg-primary rounded-full transition-all duration-300 ease-in-out"
 					style="top: {indicatorTop}px; height: {indicatorHeight}px;"
 				></div>
 			{/if}
 			{#each sidebarSections as section (section.id)}
+				{@const IconComponent = section.icon}
 				<button
 					type="button"
 					data-section={section.id}
+					aria-controls={section.id}
+					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => scrollToSection(section.id)}
 					class="group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none hover:text-primary cursor-pointer {activeSection ===
 					section.id
 						? 'text-primary font-semibold'
 						: 'text-base-content/60'}"
 				>
+					{#if IconComponent}
+						<IconComponent
+							class="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110"
+						/>
+					{/if}
 					<span>{section.label}</span>
 				</button>
 			{/each}
