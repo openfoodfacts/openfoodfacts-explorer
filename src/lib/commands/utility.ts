@@ -1,9 +1,8 @@
 import type { Command } from './types';
 import { browser } from '$app/environment';
-import { clearAppCache } from '$lib/utils/cache';
 
 /**
- * Returns utility commands (reload, clear cache).
+ * Returns utility commands.
  */
 export function getUtilityCommands(): Command[] {
 	const cmds: Command[] = [
@@ -14,17 +13,6 @@ export function getUtilityCommands(): Command[] {
 			category: 'Utility',
 			action: () => {
 				if (!browser) return;
-				window.location.reload();
-			}
-		},
-		{
-			id: 'util-clear-cache',
-			title: 'Clear app cache',
-			description: 'Clear localStorage and service worker caches and reload',
-			category: 'Utility',
-			action: async () => {
-				if (!browser) return;
-				await clearAppCache();
 				window.location.reload();
 			}
 		}
