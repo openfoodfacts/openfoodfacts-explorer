@@ -8,7 +8,7 @@ Thank you for your interest in contributing to the OpenFoodFacts Explorer projec
 
 ### Contributing as an AI agent
 
-If you are an AI agent (Claude, Copilot, Codex, or similar), read [`AGENTS.md`](AGENTS.md) before doing anything else. It contains all rules, commands, quality gates, and UI conventions you must follow.
+If you are an AI agent (Claude, Copilot, Codex, or similar), read [`AGENTS.md`](../AGENTS.md) before doing anything else. It contains all rules, commands, quality gates, and UI conventions you must follow.
 
 In addition:
 
