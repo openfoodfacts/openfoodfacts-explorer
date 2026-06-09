@@ -18,8 +18,8 @@
 		searchKeys,
 		placeholder,
 		onselect,
-		buttonTitle = 'Add',
-		buttonAriaLabel = 'Add',
+		buttonTitle = $_('product.edit.add_language', { default: 'Add a language' }),
+		buttonAriaLabel = $_('product.edit.add_language', { default: 'Add a language' }),
 		Icon = IconMdiPlus
 	}: Props = $props();
 
