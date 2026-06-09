@@ -28,7 +28,7 @@ Our UI is built on a modern stack:
 
 ### Themes & Colors
 
-We define custom **Light** and **Dark** themes in [`src/app.css`](src/app.css). The palette uses warm, natural tones to reflect our food-focused mission.
+We define custom **Light** and **Dark** themes in [`src/app.css`](../src/app.css). The palette uses warm, natural tones to reflect our food-focused mission.
 
 | Token               | Semantic Role                  | Light Mode               | Dark Mode              |
 | ------------------- | ------------------------------ | ------------------------ | ---------------------- |
