@@ -27,11 +27,11 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
+	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
-	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
 	import type { SearchResult } from '$lib/api/search';
 
 	let { data }: PageProps = $props();
@@ -63,6 +63,9 @@
 
 	// State for showing/hiding preferences
 	let showPreferences = $state(false);
+
+	// State for showing/hiding advanced options panel
+	let showAdvancedOptions = $state(false);
 
 	// Update facets when search results change or facetBarComponent changes
 	$effect(() => {
@@ -122,37 +125,60 @@
 	description={$_('search.description', { values: { query: data.query } })}
 />
 
-<div class="mb-4 flex w-full flex-wrap items-end justify-center gap-4 max-md:flex-col">
-	<!-- Raw Search Query -->
-	<div class="min-w-[220px] flex-1 max-md:w-full">
-		<label class="form-control w-full">
-			<span class="label-text mb-1 block text-sm font-semibold">
-				{$_('search.raw_query_label')}
-			</span>
-			<input
-				type="text"
-				placeholder={$_('search.placeholder')}
-				class="input input-bordered w-full font-mono wrap-break-word"
-				value={data.query}
-				disabled
-				readonly
-			/>
-		</label>
+<!-- Superset SQL Promo Banner -->
+<div
+	class="alert alert-outline bg-linear-to-r from-orange-500/10 via-amber-500/10 to-yellow-500/10 dark:from-orange-500/5 dark:via-amber-500/5 dark:to-yellow-500/5 border-amber-500/20 my-4 max-md:hidden"
+>
+	<div class="bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded-lg p-2 shrink-0">
+		<IconMdiDatabase class="h-6 w-6" />
 	</div>
+	<div class="flex items-center gap-3">
+		<div class="text-sm">
+			<div class="text-amber-800 dark:text-amber-300 font-bold">sql.openfoodfacts.org:</div>
+			<span class="text-base-content/90">
+				{$_('search.superset_promo_desc', {
+					default:
+						'Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.'
+				})}
+			</span>
+		</div>
+	</div>
+	<div class="flex flex-wrap gap-2">
+		<a
+			href="https://sql.openfoodfacts.org/sqllab/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-secondary btn-sm w-full"
+		>
+			<IconMdiOpenInNew class="h-4 w-4 " />
+			<span>{$_('search.superset_query', { default: 'Start a query' })}</span>
+		</a>
+		<a
+			href="https://sql.openfoodfacts.org/superset/dashboard/p/njB1mRrxve2/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-outline btn-sm w-full"
+		>
+			<IconMdiOpenInNew class="h-4 w-4" />
+			<span>{$_('search.superset_discover', { default: 'Documentation' })}</span>
+		</a>
+	</div>
+</div>
 
-	<!-- Sort By Dropdown -->
-	<div class="flex-0 max-lg:hidden">
-		{$_('search.sort_by_label')}
-		<details class="dropdown dropdown-center md:w-50 lg:w-60" bind:this={sortDropdown}>
-			<summary
-				class="btn btn-outline btn-sm m-1 flex w-full items-center justify-start gap-2 text-xs lg:text-sm"
-			>
-				<span class="inline-block flex-1 truncate align-middle font-semibold">
-					{getSelectedSortLabel()}
-				</span>
-				<IconMdiChevronDown class="h-5 w-5" />
+<div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
+	<h2 class="text-xl font-bold text-base-content">
+		Search results for "{mainSearchTerm}"
+	</h2>
+	<div class="flex items-center gap-2">
+		<!-- Sort By Dropdown -->
+		<details class="dropdown dropdown-end" bind:this={sortDropdown}>
+			<summary class="btn btn-outline btn-sm gap-2">
+				<span>{getSelectedSortLabel()}</span>
+				<IconMdiChevronDown class="h-4 w-4" />
 			</summary>
-			<ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-full p-2 shadow">
+			<ul
+				class="dropdown-content menu bg-base-100 rounded-box z-1 w-56 p-2 shadow-md border border-base-300"
+			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
 						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
@@ -162,8 +188,131 @@
 				{/each}
 			</ul>
 		</details>
+
+		<!-- Advanced Options Toggle -->
+		<button
+			class="btn btn-sm gap-2"
+			class:btn-primary={showAdvancedOptions}
+			class:btn-outline={!showAdvancedOptions}
+			onclick={() => (showAdvancedOptions = !showAdvancedOptions)}
+		>
+			<IconMdiCog class="h-4 w-4" />
+			<span>{$_('search.advanced_view', { default: 'Advanced Options' })}</span>
+		</button>
 	</div>
 </div>
+
+<!-- Advanced Options Panel (Collapsible) -->
+{#if showAdvancedOptions}
+	<div
+		class="card bg-base-200/50 border-base-300 mb-6 border p-6 shadow-xs"
+		transition:slide={{ duration: 300 }}
+	>
+		<!-- Content Column: Query info & Classic tools -->
+		<div class="flex flex-col gap-5">
+			<label class="form-control w-full">
+				<span class="label-text mb-1 block text-sm font-semibold text-base-content/80">
+					{$_('search.raw_query_label')}
+				</span>
+				<input
+					type="text"
+					class="input input-bordered w-full font-mono text-sm"
+					value={data.query}
+					disabled
+					readonly
+				/>
+			</label>
+
+			<div class="flex flex-col gap-2">
+				<span class="text-sm font-semibold text-base-content/80">Classic Tools:</span>
+				<div class="flex flex-wrap gap-2">
+					<a
+						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-soft btn-sm w-full md:w-fit"
+					>
+						{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
+						<IconMdiOpenInNew class="h-4 w-4" />
+					</a>
+					<a
+						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-soft btn-sm w-full md:w-fit"
+					>
+						{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
+						<IconMdiOpenInNew class="h-4 w-4" />
+					</a>
+				</div>
+			</div>
+
+			{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
+				<div class="flex flex-col gap-2">
+					<span class="text-sm font-semibold text-base-content/80">Search Analytics:</span>
+					<button
+						class="btn btn-secondary btn-sm gap-2 w-full md:w-fit"
+						onclick={() => (showGraphs = !showGraphs)}
+					>
+						<IconMdiChartBar class="h-4 w-4" />
+						{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
+					</button>
+					{#if showGraphs}
+						<div class="grid grid-cols-1 gap-4 mt-2" transition:slide={{ duration: 300 }}>
+							{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
+								<div class="bg-base-100 rounded-lg p-4 shadow-sm border border-base-200">
+									<VegaChart
+										spec={chartSpec}
+										title={$_('search.chart_title', {
+											values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') }
+										})}
+									/>
+								</div>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{/if}
+		</div>
+
+		<!-- Bottom Row: Edit Preferences & Personalization -->
+		<div class="mt-6 border-t border-base-300/60 pt-6 flex flex-col gap-4">
+			<label class="label cursor-pointer justify-start gap-4 p-0">
+				<input
+					type="checkbox"
+					class="toggle toggle-primary"
+					bind:checked={$personalizedSearch.classifyProductsEnabled}
+				/>
+				<div class="flex min-w-0 flex-1 flex-col">
+					<span class="label-text text-sm font-semibold whitespace-normal">
+						{$_('preferences.classify_products', {
+							default: 'Enable Personalized Product Classification'
+						})}
+					</span>
+					<span class="text-base-content/60 text-xs whitespace-normal">
+						{$_('preferences.classify_products_desc', {
+							default: 'Enable personalized product classification based on your preferences.'
+						})}
+					</span>
+				</div>
+			</label>
+
+			<div class="collapse-arrow border-base-300 bg-base-100 collapse border">
+				<input type="checkbox" bind:checked={showPreferences} />
+				<div class="collapse-title text-sm flex items-center gap-2 font-medium">
+					<IconMdiCog class="h-4 w-4" />
+					{$_('preferences.edit_preferences')}
+				</div>
+				<div class="collapse-content">
+					<PreferencesForm
+						onClose={() => (showPreferences = false)}
+						groups={data.attributeGroups as AttributeGroup[]}
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
 
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
@@ -179,78 +328,6 @@
 				refreshQuery();
 			}}
 		/>
-	</div>
-{/if}
-
-<div class="divider"></div>
-
-<!-- Charts Section -->
-{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
-	<div class="my-8">
-		<div class="mb-4 flex flex-wrap justify-end gap-2 max-sm:justify-center">
-			<a
-				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
-			>
-				{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
-				<IconMdiOpenInNew class="h-5 w-5" />
-			</a>
-			<a
-				href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-soft btn-sm gap-2 max-sm:w-full"
-			>
-				{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
-				<IconMdiOpenInNew class="h-5 w-5" />
-			</a>
-
-			<button
-				class="btn btn-primary btn-sm gap-2 max-sm:w-full"
-				onclick={() => (showGraphs = !showGraphs)}
-			>
-				<IconMdiChartBar class="h-5 w-5" />
-				{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
-			</button>
-		</div>
-
-		<!-- Preferences Collapsible Section -->
-		<div class="mb-4">
-			<PersonalizedSearchToggle></PersonalizedSearchToggle>
-		</div>
-		<div class="mb-4 w-full">
-			<div class="collapse-arrow border-base-300 bg-base-200 collapse border">
-				<input type="checkbox" bind:checked={showPreferences} />
-				<div class="collapse-title text-md flex items-center gap-2 font-medium">
-					<IconMdiCog class="h-5 w-5" />
-					{$_('preferences.edit_preferences')}
-				</div>
-				<div class="collapse-content">
-					<!-- FIXME: Remove cast when SDK fixes ids type being string | undefined -->
-					<PreferencesForm
-						onClose={() => (showPreferences = false)}
-						groups={data.attributeGroups as AttributeGroup[]}
-					/>
-				</div>
-			</div>
-		</div>
-
-		{#if showGraphs}
-			<div class="grid grid-cols-1 gap-6 md:grid-cols-2" transition:slide={{ duration: 300 }}>
-				{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
-					<div class="bg-base-100 rounded-lg p-4 shadow-md">
-						<VegaChart
-							spec={chartSpec}
-							title={$_('search.chart_title', {
-								values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') }
-							})}
-						/>
-					</div>
-				{/each}
-			</div>
-		{/if}
 	</div>
 {/if}
 
