@@ -299,8 +299,12 @@
 				"traceability_code": "Nesta sección, pode introducir códigos relacionados con marcas de envasado, marcas de identificación ou marcas sanitarias.",
 				"countries": "Países onde o produto está amplamente dispoñible (sen incluír tendas especializadas en produtos estranxeiros).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Trazas",
 			"main_language": "Idioma principal",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",

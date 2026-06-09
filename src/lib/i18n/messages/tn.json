@@ -299,8 +299,12 @@
 				"traceability_code": "Mo karolong e, o ka tsenya dikhoutu tse di amanang le matshwao a go phuthela, matshwao a boitshupo kgotsa matshwao a boitekanelo.",
 				"countries": "Dinaga tse setlhagiswa se leng teng thata mo go tsona (go sa akarediwe mabenkele a a kgethegileng mo ditlhagisweng tsa kwa ntle).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",

@@ -299,8 +299,12 @@
 				"traceability_code": "이 섹션에서는 포장 표시, 식별 표시 또는 건강 표시와 관련된 코드를 입력할 수 있습니다.",
 				"countries": "해당 제품을 널리 구입할 수 있는 국가(외국 제품을 전문으로 취급하는 매장 제외).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "알레르기 정보",
+			"traces": "흔적",
 			"main_language": "주 언어",
 			"add_product": "제품 추가",
 			"nutrition_issues": "Nutrition issues",

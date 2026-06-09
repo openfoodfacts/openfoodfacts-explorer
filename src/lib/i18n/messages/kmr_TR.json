@@ -299,8 +299,12 @@
 				"traceability_code": "Di vê beşê de, hûn dikarin kodên têkildarî nîşanên pakkirinê, nîşanên nasnameyê an nîşanên tenduristiyê binivîsin.",
 				"countries": "Welatên ku berhem bi berfirehî tê de peyda dibe (dikanên ku pisporê berhemên biyanî ne tê de ne).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",

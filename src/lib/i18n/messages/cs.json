@@ -38,9 +38,9 @@
 		"advanced_search_classic": "Rozšířené vyhledávání pro {term} (klasická verze)",
 		"prices_badge": "{count} cen",
 		"creation_date": "Datum vytvoření",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Datum poslední úpravy",
+		"page_size": "Velikost stránky",
+		"advanced_view": "Rozšířené zobrazení"
 	},
 	"auth": {
 		"username": "Uživatelské jméno",
@@ -57,12 +57,12 @@
 		"actions": "Akce",
 		"role": {
 			"user": "Uživatel",
-			"admin": "Administrator",
+			"admin": "Administrátor",
 			"moderator": "Moderátor"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Nápověda a zkratky"
 	},
 	"general": {
 		"language": "Jazyk",
@@ -77,9 +77,9 @@
 		"errors_occurred": "došlo k chybám:"
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Zůstaňte v obraze",
 		"contribute": "Přispět",
-		"discover_title": "Discover our Project",
+		"discover_title": "Objevte náš projekt",
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -161,9 +161,9 @@
 		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
 		"key_visualization_guide": {
 			"title": "Key Visualization Guide:",
-			"badge_products_start": "The first badge ",
+			"badge_products_start": "První odznak ",
 			"badge_products_end": " shows the number of products using this key",
-			"badge_values_start": "The second badge ",
+			"badge_values_start": "Druhý odznak ",
 			"badge_values_end": " shows the number of unique values for this key",
 			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
 		},
@@ -198,37 +198,37 @@
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
 		},
-		"loading_attributes": "Loading product attributes...",
-		"attributes_error_title": "Unable to load personalized attributes",
-		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"loading_attributes": "Načítání atributů produktu...",
+		"attributes_error_title": "Nelze načíst personalizované atributy",
+		"attributes_error_body": "Při načítání personalizovaných atributů došlo k chybě. Zkuste to prosím znovu později.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
-			"api_page": "Open product API page",
-			"edit_same_window": "Edit product in current window",
-			"edit_new_window": "Edit product in new window",
-			"view_page": "Go back to product page",
-			"edit_product_name": "Jump to product name",
-			"edit_product_quantity": "Jump to product quantity",
-			"edit_product_brands": "Jump to product brands",
-			"edit_product_categories": "Jump to product categories",
-			"edit_product_labels": "Jump to product labels",
-			"edit_product_ingredients": "Jump to product ingredients",
-			"edit_product_energy": "Jump to product energy",
-			"edit_product_fibers": "Jump to product fibers"
+			"show_barcode": "Zobrazit/skrýt čárový kód produktu",
+			"api_page": "Otevřít stránku API produktu",
+			"edit_same_window": "Upravit produkt v aktuálním okně",
+			"edit_new_window": "Upravit produkt v novém okně",
+			"view_page": "Zpět na stránku produktu",
+			"edit_product_name": "Přejít na název produktu",
+			"edit_product_quantity": "Přejít na množství produktu",
+			"edit_product_brands": "Přejít na značky produktů",
+			"edit_product_categories": "Přejít na kategorie produktů",
+			"edit_product_labels": "Přejít na štítky produktů",
+			"edit_product_ingredients": "Přejít na složení produktu",
+			"edit_product_energy": "Přejít na energii produktu",
+			"edit_product_fibers": "Přejít na vlákna produktu"
 		},
 		"buttons": {
-			"classic_view": "Classic view",
+			"classic_view": "Klasické zobrazení",
 			"edit": "Upravit",
 			"share": "Sdílet",
-			"report": "Report an issue with this product",
-			"add_to_calculator": "Add product to nutritional calculator",
-			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"report": "Nahlásit problém s tímto produktem",
+			"add_to_calculator": "Přidat produkt do nutriční kalkulačky",
+			"compare": "Přidat k porovnání",
+			"view_on_off": "Zobrazit produkt na Open Food Facts"
 		},
-		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"share_text": "Podívejte se na tento produkt na Open Food Facts: {productName}",
 		"toast": {
-			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"copied_link": "Odkaz zkopírován do schránky",
+			"failed_copy": "Kopírování odkazu se nezdařilo"
 		},
 		"header": {
 			"quantity": "Množství",
@@ -236,25 +236,25 @@
 			"categories": "Kategorie",
 			"labels": "Štítky",
 			"origins": "Původ",
-			"traceability_codes": "Traceability Codes",
+			"traceability_codes": "Kódy sledovatelnosti",
 			"traceability_codes_learn_more": "Zjistit více",
-			"producer_link": "Producer link",
+			"producer_link": "Odkaz na výrobce",
 			"stores": "Prodejny",
 			"countries": "Země"
 		},
 		"folksonomy": {
-			"use_wc_editor": "Use the Web Component Editor",
-			"title_beta": "Personalized properties (beta)",
-			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
-			"intro_emphasis": "must be factual",
-			"intro_after": ". You can dive into ",
-			"link_properties": "the list of properties already used by the community",
-			"link_middle": " or explore the ",
-			"link_docs": "properties' documentation and its search engine",
+			"use_wc_editor": "Použijte editor webových komponent",
+			"title_beta": "Personalizované vlastnosti (beta)",
+			"intro_before": "Tyto vlastnosti vytvářejí a vyplňují uživatelé pro různé účely. Můžete přidat vlastní. Vlastnosti a hodnoty, které vytvoříte, ",
+			"intro_emphasis": "musí být věcné",
+			"intro_after": ". Můžete se ponořit do ",
+			"link_properties": "seznamu vlastností již používaných komunitou",
+			"link_middle": " nebo prozkoumat ",
+			"link_docs": "dokumentaci vlastností a jejich vyhledávač",
 			"warning": "Upozorňujeme, že datový model může být upraven. Používejte na vlastní nebezpečí.",
-			"footer_before": "This is brought by the ",
-			"footer_link": "Folksonomy Engine project",
-			"footer_after": ". Don't hesitate to participate or give feedback."
+			"footer_before": "Toto přináší ",
+			"footer_link": "Projekt Folksonomy Engine",
+			"footer_after": "Neváhejte se zapojit nebo poskytnout zpětnou vazbu."
 		},
 		"datasources": {
 			"title": "Zdroje dat",
@@ -299,8 +299,12 @@
 				"traceability_code": "V této části můžete zadat kódy týkající se značek obalů, identifikačních značek nebo značek zdravotní nezávadnosti.",
 				"countries": "Země, kde je produkt široce dostupný (bez započítání obchodů specializujících se na zahraniční produkty).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alergeny",
+			"traces": "Stopy",
 			"main_language": "Hlavní jazyk",
 			"add_product": "Přidat produkt",
 			"nutrition_issues": "Nutrition issues",
@@ -386,12 +390,12 @@
 					"desc": "Serving size should include a numeric value. Examples: {examples}"
 				},
 				"missing_unit": {
-					"title": "Serving size is missing a unit",
-					"desc": "Serving size should include a unit. Examples: {examples}"
+					"title": "Velikost porce chybí jednotka",
+					"desc": "Velikost porce by měla zahrnovat jednotku. Příklad: {examples}"
 				},
 				"unknown_unit": {
-					"title": "Serving size unit may be incorrect",
-					"desc": "Serving size should include a common unit. Examples: {examples}"
+					"title": "Jednotka velikosti porce může být nesprávná",
+					"desc": "Velikost porce by měla zahrnovat běžnou jednotku. Příklady: {examples}"
 				}
 			},
 			"no_nutrition_data": "Žádné nutriční informace o produktu",
@@ -417,11 +421,11 @@
 			"comment_placeholder": "Přidat komentář k této úpravě",
 			"save_btn": "Uložit",
 			"toast": {
-				"save_success": "Product saved successfully!",
-				"save_error": "Failed to save product. Please try again."
+				"save_success": "Produkt byl úspěšně uložen!",
+				"save_error": "Nepodařilo se uložit produkt. Zkuste to prosím znovu."
 			},
 			"add_nutrient": "Přidejte živiny",
-			"remove_nutrient": "Remove nutrient",
+			"remove_nutrient": "Odstranit živinu",
 			"debug": "Ladit",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
@@ -434,7 +438,7 @@
 				"languages": "Jazyky a názvy produktů",
 				"ingredients": "Složení",
 				"nutrition": "Nutriční informace",
-				"moderator_tools": "Moderator Tools",
+				"moderator_tools": "Nástroje moderátora",
 				"packaging": "Obal",
 				"prices": "Ceny",
 				"comment": "Komentář"
@@ -444,52 +448,52 @@
 			"legal_warning_photos_2": "Nahrávejte pouze své vlastní fotografie nebo ty, k jejichž použití máte výslovné svolení.",
 			"images": {
 				"toast": {
-					"login_required": "Please log in to upload images.",
-					"upload_success": "Image uploaded successfully!",
-					"upload_failed": "Upload failed: {error}",
-					"upload_failed_generic": "Upload failed. Please try again.",
-					"upload_error": "Image upload failed. Please try again.",
+					"login_required": "Pro nahrání obrázků se přihlaste.",
+					"upload_success": "Obrázek byl úspěšně nahrán.",
+					"upload_failed": "Nahrání selhalo: {error}",
+					"upload_failed_generic": "Nahrání se nezdařilo. Zkuste to prosím znovu.",
+					"upload_error": "Nahrání obrázku se nezdařilo. Zkuste to prosím znovu.",
 					"unselect_success": "Image unselected successfully.",
 					"unselect_failed": "Failed to unselect image. Please try again.",
 					"unselect_error": "Error unselecting image. Please try again.",
-					"save_success": "Image saved successfully!",
+					"save_success": "Obrázek úspěšně uložen",
 					"process_error": "Error processing image: {error}. Please try again.",
 					"select_success": "Image selected successfully!",
 					"select_error": "Error selecting image. Please try again.",
 					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
+					"invalid_crop": "Vyberte platnou plochu oříznutí."
 				},
-				"select_image": "Select an Image",
-				"uploading": "Uploading...",
-				"upload_type": "Upload {type}",
-				"unselecting": "Unselecting...",
+				"select_image": "Vyberte obrázek",
+				"uploading": "Nahrávání...",
+				"upload_type": "Nahrát {type}",
+				"unselecting": "Zrušení výběru...",
 				"unselect_type": "Unselect {type}",
 				"unselect_image": "Zrušit výběr obrázku",
-				"selecting": "Selecting...",
+				"selecting": "Vybírání...",
 				"select_type": "Select {type}",
 				"show_less": "Show Less",
 				"see_all": "See All ({count})",
 				"processing_upload": "Processing upload...",
 				"unselecting_image": "Unselecting image...",
-				"photos_available": "Photos available",
+				"photos_available": "Fotografie k dispozici",
 				"edit_photo": "Upravit obrázek",
-				"loading_editor": "Loading image editor...",
-				"rotate_left": "Rotate Left",
-				"rotate_right": "Rotate Right",
-				"zoom_in": "Zoom In",
-				"zoom_out": "Zoom Out",
+				"loading_editor": "Načítání editoru obrázku...",
+				"rotate_left": "Otočit vlevo",
+				"rotate_right": "Otočit vpravo",
+				"zoom_in": "Přiblížit",
+				"zoom_out": "Oddálit",
 				"reset": "Obnovit",
-				"rotation": "Rotation",
-				"tool": "Tool",
+				"rotation": "Otočení",
+				"tool": "Nástroj",
 				"crop_drag_to_move": "Drag to move, corners to resize",
 				"crop_click_to_start": "Click and drag to start cropping",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Nahlásit obrázek",
-				"save_changes": "Save Changes"
+				"save_changes": "Uložit Změny"
 			},
 			"comment_description": "Add a comment about your changes (optional)",
 			"prices": {
-				"add_price_btn": "Add a price on Open Prices"
+				"add_price_btn": "Přidejte cenu na Open Prices"
 			}
 		},
 		"prices": {
@@ -500,16 +504,16 @@
 		"knowledge_panels": {
 			"action": {
 				"add_packaging_components": "Přidat součásti obalu",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Přidat původ",
+				"add_ingredients_text": "Přidat text ingrediencí"
 			}
 		},
 		"moderator": {
-			"barcode_correction_title": "Correct Barcode",
+			"barcode_correction_title": "Správný čárový kód",
 			"barcode_correction_new_code_label": "New barcode",
 			"barcode_correction_description": "Pokud není čárový kód správný, opravte jej zde:",
 			"barcode_correction_placeholder": "Enter the correct barcode",
-			"barcode_correction_submit": "Correct Barcode",
+			"barcode_correction_submit": "Správný čárový kód",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
 			"barcode_correction_error": "Failed to correct barcode. Please try again."
 		}
@@ -603,42 +607,42 @@
 		"share": "Sdílet",
 		"share_title": "Product Comparison",
 		"share_text": "Check out this product comparison I made!",
-		"clear_all": "Clear All",
-		"no_products_selected": "No products selected for comparison",
-		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
+		"clear_all": "Vymazat vše",
+		"no_products_selected": "Nebyly vybrány žádné produkty pro porovnání",
+		"add_products_hint": "Přidejte produkty z jejich stránek s podrobnostmi a začněte porovnávat nutriční hodnoty",
 		"browse_products": "Procházet výrobky",
-		"shared_comparison": "Shared Comparison",
-		"shared_description": "Shared product comparison",
-		"shared_product_comparison": "Shared Product Comparison",
-		"read_only": "Read-only comparison",
-		"import_to_my": "Import to My Comparison",
-		"import_dialog_title": "Import Comparison",
-		"continue_question": "Continue?",
-		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
+		"shared_comparison": "Sdílené srovnání",
+		"shared_description": "Sdílené porovnání produktů",
+		"shared_product_comparison": "Sdílené porovnání produktů",
+		"read_only": "Porovnání pouze pro čtení",
+		"import_to_my": "Importovat do mého srovnání",
+		"import_dialog_title": "Importovat srovnání",
+		"continue_question": "Pokračovat?",
+		"replace_comparison": "Toto nahradí vaše aktuální porovnání s {count, plural, one {} few {# produktů} many {# produktů}=1 {1 produkt} other {# produktů}}. Pokračovat?",
 		"import": "Import",
-		"no_products_to_compare": "No products to compare",
-		"invalid_link_hint": "This link doesn't contain any valid products to compare",
-		"best": "Best",
-		"worst": "Worst",
-		"scores": "Scores:",
-		"nutrients_per_100g": "Nutrients / 100g:",
+		"no_products_to_compare": "Žádné produkty k porovnání",
+		"invalid_link_hint": "Tento odkaz neobsahuje žádné platné produkty k porovnání.",
+		"best": "Nejlepší",
+		"worst": "Nejhorší",
+		"scores": "Hodnocení:",
+		"nutrients_per_100g": "Živiny / 100 g:",
 		"name": "Jméno",
-		"code_barcode": "Code (Barcode)",
+		"code_barcode": "Kód (čárový kód)",
 		"brand": "Značka",
 		"quantity": "Množství",
-		"nova_group": "Nova Group",
-		"num_additives": "N. of additives",
-		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
-		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
-		"hint_relative_first": "💡 Percentages show difference compared to the first product",
-		"hint_relative_best": "💡 Percentages show difference compared to the best value (lower is better for most nutrients)",
+		"nova_group": "Skupina Nova",
+		"num_additives": "Počet přísad",
+		"nutritional_values_per_100g": "Nutriční hodnoty (na 100 g)",
+		"fruits_vegetables_nuts": "Ovoce / zelenina / ořechy",
+		"hint_relative_first": "💡 Procenta ukazují rozdíl oproti prvnímu produktu",
+		"hint_relative_best": "💡 Procenta ukazují rozdíl oproti nejlepší hodnotě (nižší je lepší pro většinu živin)",
 		"toast": {
-			"share_failed": "Sharing failed.",
-			"link_copied": "Comparison link copied to clipboard!",
-			"copy_failed": "Failed to copy link to clipboard."
+			"share_failed": "Sdílení se nezdařilo.",
+			"link_copied": "Odkaz na porovnání zkopírován do schránky!",
+			"copy_failed": "Kopírování odkazu do schránky se nezdařilo."
 		}
 	},
 	"static_iframe": {
-		"load_failed": "Failed to load content."
+		"load_failed": "Nepodařilo se načíst obsah."
 	}
 }
