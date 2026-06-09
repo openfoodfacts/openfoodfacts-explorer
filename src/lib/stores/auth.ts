@@ -141,7 +141,10 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 
 			// Add the valid access token to the Authorization header
 			headers.set('Authorization', 'Bearer ' + validTokens.access_token);
-			const response = await fetch(input, { ...init, headers });
+
+			// Clone request input to allow retry if body exists
+			const requestInit = { ...init, headers };
+			const response = await fetch(input, requestInit);
 
 			// If still getting 401 (e.g., token was revoked), try one more refresh
 			if (response.status === 401) {
