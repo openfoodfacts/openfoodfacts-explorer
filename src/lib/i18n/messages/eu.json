@@ -299,8 +299,12 @@
 				"traceability_code": "Atal honetan, ontziratze-markekin, identifikazio-markekin edo osasun-markekin lotutako kodeak sar ditzakezu.",
 				"countries": "Produktua oso eskuragarri dagoen herrialdeak (atzerriko produktuetan espezializatutako dendak izan ezik).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Aztarnak",
 			"main_language": "Main language",
 			"add_product": "Gehitu produktua",
 			"nutrition_issues": "Nutrition issues",

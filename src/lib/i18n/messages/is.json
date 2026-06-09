@@ -299,8 +299,12 @@
 				"traceability_code": "Í þessum hluta er hægt að slá inn kóða sem tengjast umbúðamerkjum, auðkennismerkjum eða heilbrigðismerkjum.",
 				"countries": "Lönd þar sem varan er víða fáanleg (að undanskildum verslunum sem sérhæfa sig í erlendum vörum).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Leifar",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",

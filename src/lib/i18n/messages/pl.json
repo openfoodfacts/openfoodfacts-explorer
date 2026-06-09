@@ -299,8 +299,12 @@
 				"traceability_code": "W tej sekcji możesz wprowadzić kody dotyczące znaków na opakowaniach, znaków identyfikacyjnych i znaków zdrowotnych.",
 				"countries": "Kraje, w których produkt jest powszechnie dostępny (nie wliczając sklepów specjalizujących się w produktach zagranicznych).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alergeny",
+			"traces": "Ślady",
 			"main_language": "Główny język",
 			"add_product": "Dodaj produkt",
 			"nutrition_issues": "Nutrition issues",

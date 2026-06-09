@@ -299,8 +299,12 @@
 				"traceability_code": "このセクションでは、包装マーク、識別マーク、衛生マークに関連するコードを入力できます。",
 				"countries": "製品が広く入手可能な国（外国製品専門店は除く）。",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "アレルゲン",
+			"traces": "形跡",
 			"main_language": "主な言語",
 			"add_product": "商品を追加",
 			"nutrition_issues": "Nutrition issues",

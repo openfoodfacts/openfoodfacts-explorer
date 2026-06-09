@@ -299,8 +299,12 @@
 				"traceability_code": "Sa seksyong ito, maaari kang magpasok ng mga code na nauugnay sa mga marka ng packaging, mga marka ng pagkakakilanlan o mga marka ng kalusugan.",
 				"countries": "Mga bansa kung saan ang produkto ay malawak na magagamit (hindi kasama ang mga tindahan na nag-specialize sa mga dayuhang produkto).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Mga bakas",
 			"main_language": "Pangunahing wika",
 			"add_product": "Magdagdag ng produkto",
 			"nutrition_issues": "Nutrition issues",

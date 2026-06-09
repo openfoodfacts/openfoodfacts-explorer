@@ -299,8 +299,12 @@
 				"traceability_code": "В този раздел можете да въведете кодове, свързани с маркировки за опаковки, идентификационни маркировки или здравни маркировки.",
 				"countries": "Държави, в които продуктът е широко достъпен (без магазини, специализирани в чуждестранни продукти).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Алергени",
+			"traces": "Следи",
 			"main_language": "Основен език",
 			"add_product": "Добави продукт",
 			"nutrition_issues": "Nutrition issues",

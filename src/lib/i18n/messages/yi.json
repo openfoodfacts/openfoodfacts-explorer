@@ -299,8 +299,12 @@
 				"traceability_code": "אין דעם אָפּטייל קענט איר אַרײַנגעבן קאָדן פֿאַרבונדן מיט פּאַקאַדזשינג מאַרקס, אידענטיפֿיקאַציע מאַרקס אָדער געזונטהייט מאַרקס.",
 				"countries": "לענדער וואו דער פּראָדוקט איז ברייט בנימצא (נישט אַרייַנגערעכנט געשעפטן וואָס ספּעציאַליזירן זיך אין פרעמדע פּראָדוקטן).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
