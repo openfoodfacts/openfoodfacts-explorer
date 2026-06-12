@@ -217,6 +217,7 @@ export async function updateObsoleteStatusV3(
 	code: string,
 	obsolete: 'on' | ''
 ): Promise<{ data?: unknown; error?: string }> {
+	// TODO: switch to `updateObsoleteStatus` from SDK
 	const off = createProductsApi(fetch);
 	const lc = get(preferences).lang || 'en';
 
