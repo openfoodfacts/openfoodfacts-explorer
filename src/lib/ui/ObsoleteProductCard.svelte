@@ -25,23 +25,25 @@
 		</h2>
 	</div>
 
-	<p class="text-base-content/75 text-sm leading-relaxed">
-		<strong class="font-bold"
-			>{$_('product.moderator.obsolete_important_note_prefix', {
-				default: 'Important note:'
-			})}</strong
-		>{$_('product.moderator.obsolete_important_note_body', {
-			default:
-				' This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.'
-		})}
-	</p>
+	<div class="alert alert-warning text-sm leading-relaxed">
+		<span>
+			<strong class="font-bold"
+				>{$_('product.moderator.obsolete_important_note_prefix', {
+					default: 'Important note:'
+				})}</strong
+			>{$_('product.moderator.obsolete_important_note_body', {
+				default:
+					' This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.'
+			})}
+		</span>
+	</div>
 
-	<div class="flex flex-col gap-4">
+	<div class="flex flex-col gap-4 mt-1">
 		<div class="form-control">
 			<label class="label cursor-pointer justify-start gap-3">
 				<input
 					type="checkbox"
-					class="checkbox checkbox-warning"
+					class="checkbox checkbox-warning checkbox-sm"
 					checked={isObsolete}
 					onchange={handleToggle}
 				/>

@@ -327,6 +327,12 @@
 				);
 				if (obsResult.error) {
 					console.error('Obsolete status update failed:', obsResult.error);
+					toastCtx.error(
+						$_('product.moderator.obsolete_save_error', {
+							default: 'Failed to update obsolete status. Please try again.'
+						})
+					);
+					return;
 				} else {
 					console.debug('Obsolete status updated successfully');
 				}
