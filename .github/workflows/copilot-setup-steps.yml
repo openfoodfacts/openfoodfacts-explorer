@@ -21,6 +21,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # ratchet:actions/checkout@v6
       - name: Install gh-aw extension
-        uses: github/gh-aw/actions/setup-cli@715906e4f79a93439c11cd8248e75f91b1c8fc61 # v0.79.0
+        uses: github/gh-aw/actions/setup-cli@07acf6ca70509c76b7bdff5f9906846f37e12640 # v0.79.0
         with:
           version: v0.57.2
