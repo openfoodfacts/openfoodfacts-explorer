@@ -32,7 +32,9 @@
 <div class="flex flex-col gap-3 p-2 border-t border-base-300 pt-4 mt-4">
 	<div class="flex items-center gap-2">
 		<IconMdiDelete class="text-error h-5 w-5" />
-		<h2 class="text-lg font-bold">{$_('product.moderator.delete_product_title')}</h2>
+		<h2 class="text-lg font-bold">
+			{$_('product.moderator.delete_product_title', { default: 'Delete the product page' })}
+		</h2>
 	</div>
 
 	<div class="form-control">
@@ -44,7 +46,11 @@
 				disabled={isSubmitting}
 			/>
 			<span class="label-text text-sm">
-				<strong>{$_('product.moderator.delete_product_confirm')}</strong>
+				<strong
+					>{$_('product.moderator.delete_product_confirm', {
+						default: 'Are you sure that you want to delete the page for this product?'
+					})}</strong
+				>
 				<br />
 				{$_('product.edit.product_name', { default: 'Product name' })} : {productName}
 				<br />
@@ -55,7 +61,11 @@
 
 	<div class="flex flex-col gap-2 sm:flex-row sm:items-end">
 		<label class="input w-full">
-			<span class="label">{$_('product.moderator.delete_product_comment_label')}</span>
+			<span class="label"
+				>{$_('product.moderator.delete_product_comment_label', {
+					default: 'Reason for removal'
+				})}</span
+			>
 			<input
 				type="text"
 				bind:value={comment}
@@ -75,7 +85,7 @@
 			{#if isSubmitting}
 				<span class="loading loading-spinner loading-sm"></span>
 			{/if}
-			{$_('product.moderator.delete_product_submit')}
+			{$_('product.moderator.delete_product_submit', { default: 'Delete the product page' })}
 		</button>
 	</div>
 </div>

@@ -254,6 +254,10 @@
 	}
 
 	async function handleDeleteProduct(comment: string) {
+		if (isSubmitting) {
+			return;
+		}
+		isSubmitting = true;
 		try {
 			const { data, error } = await deleteProduct(fetch, product.code, comment);
 			if (error) {
@@ -284,6 +288,8 @@
 					default: 'Failed to delete product. Please try again.'
 				})
 			);
+		} finally {
+			isSubmitting = false;
 		}
 	}
 
