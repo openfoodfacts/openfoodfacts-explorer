@@ -13,9 +13,9 @@
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
-	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
-	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { openNutriPatrolFlag } from '$lib/stores/nutripatrol';
 	import { userInfo } from '$lib/stores/user';
+	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
 	type PhotoType = { id: string; label: string };
 
@@ -253,10 +253,10 @@
 				class:opacity-50={isUploading || isUnselecting}
 			>
 				{#each imagesToShow as image (image.url)}
-					<div>
+					<div class="group relative">
 						<button
 							type="button"
-							class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
+							class="relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg w-full"
 							disabled={isUploading || isUnselecting}
 							onclick={() => onImageEdit?.(image.url, image.alt)}
 							title="Click to edit this image"
@@ -277,17 +277,36 @@
 						<div
 							class="absolute top-1 right-1 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
 						>
-							<a
+							<button
+								type="button"
 								class="btn btn-circle btn-xs bg-base-100/80 hover:bg-base-100 text-base-content border-none"
-								href={IMAGE_REPORT_URL(product.code, image.imgid)}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label="Report to NutriPatrol"
-								title="Report to NutriPatrol"
-								onclick={(e) => e.stopPropagation()}
+								aria-label={$_('product.edit.images.report_to_moderators', {
+									default: 'Report image to our moderators'
+								})}
+								title={$_('product.edit.images.report_to_moderators', {
+									default: 'Report image to our moderators'
+								})}
+								onclick={(e) => {
+									e.stopPropagation();
+									if ($userInfo == null) {
+										toast.warning(
+											$_('product.edit.images.toast.report_login_required', {
+												default: 'Please log in to report images.'
+											})
+										);
+										return;
+									}
+									if (product.code && image.imgid) {
+										openNutriPatrolFlag({
+											barcode: product.code,
+											imageId: image.imgid.toString(),
+											url: image.url
+										});
+									}
+								}}
 							>
 								<IconMdiFlagOutline class="h-3.5 w-3.5" />
-							</a>
+							</button>
 						</div>
 
 						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
