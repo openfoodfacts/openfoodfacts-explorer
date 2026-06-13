@@ -516,7 +516,13 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Delete the product page",
+			"delete_product_confirm": "Are you sure that you want to delete the page for this product?",
+			"delete_product_comment_label": "Reason for removal",
+			"delete_product_submit": "Delete the product page",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again."
 		}
 	},
 	"qr": {
