@@ -304,7 +304,7 @@
 				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "Allergens",
-			"traces": "ಕುರುಹುಗಳು",
+			"traces": "ಕುರುಹುಗಳು:",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
