@@ -14,7 +14,8 @@
 		type RawImage,
 		addOrEditProductV2,
 		updateBarcode,
-		updatePackagingsV3
+		updatePackagingsV3,
+		deleteProduct
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { preferences } from '$lib/settings';
@@ -249,6 +250,46 @@
 			toastCtx.error(
 				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
 			);
+		}
+	}
+
+	async function handleDeleteProduct(comment: string) {
+		if (isSubmitting) {
+			return;
+		}
+		isSubmitting = true;
+		try {
+			const { data, error } = await deleteProduct(fetch, product.code, comment);
+			if (error) {
+				console.error(error);
+				toastCtx.error(
+					$_('product.moderator.delete_product_error', {
+						default: 'Failed to delete product. Please try again.'
+					})
+				);
+			} else if (data) {
+				toastCtx.success(
+					$_('product.moderator.delete_product_success', {
+						default: 'Product deleted successfully.'
+					})
+				);
+				goto('/');
+			} else {
+				toastCtx.error(
+					$_('product.moderator.delete_product_error', {
+						default: 'Failed to delete product. Please try again.'
+					})
+				);
+			}
+		} catch (err) {
+			console.error(err);
+			toastCtx.error(
+				$_('product.moderator.delete_product_error', {
+					default: 'Failed to delete product. Please try again.'
+				})
+			);
+		} finally {
+			isSubmitting = false;
 		}
 	}
 
@@ -519,6 +560,7 @@
 			{allergenNames}
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
+			onDeleteProduct={handleDeleteProduct}
 		/>
 	{/if}
 </div>

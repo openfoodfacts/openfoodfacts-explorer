@@ -88,6 +88,49 @@ export async function updateBarcode(
 }
 
 /**
+ * Delete a product page (moderator-only action).
+ * This sends a POST request to /cgi/product.pl with the required parameters.
+ * @param fetch - The fetch function
+ * @param code - The barcode of the product to delete
+ * @param comment - The reason/comment for deletion
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function deleteProduct(
+	fetch: typeof window.fetch,
+	code: string,
+	comment: string
+): Promise<{ data?: boolean; error?: string }> {
+	// TODO: switch to `deleteProduct` from SDK
+	try {
+		const formData = new FormData();
+		formData.append('type', 'delete');
+		formData.append('action', 'process');
+		formData.append('code', code);
+		formData.append('comment', comment);
+
+		const fetchToUse = wrapFetchWithAuth(fetch);
+		const url = `${API_HOST}/cgi/product.pl`;
+		const response = await fetchToUse(url, {
+			method: 'POST',
+			body: formData
+		});
+
+		if (!response.ok) {
+			return {
+				error: `HTTP error: ${response.status} ${response.statusText}`
+			};
+		}
+
+		return { data: true };
+	} catch (error) {
+		console.error('Error deleting product:', error);
+		return {
+			error: error instanceof Error ? error.message : String(error)
+		};
+	}
+}
+
+/**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
  * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function
