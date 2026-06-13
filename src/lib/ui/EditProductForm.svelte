@@ -23,6 +23,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	type Props = {
 		product: Product;
 
@@ -217,6 +218,8 @@
 					{$_('product.edit.info.moderator_tools')}
 				</p>
 				<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
+				<div class="divider"></div>
+				<ObsoleteProductCard bind:product />
 			</div>
 		</div>
 	{/if}

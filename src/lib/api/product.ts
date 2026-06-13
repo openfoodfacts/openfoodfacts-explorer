@@ -207,6 +207,39 @@ export async function updatePackagingsV3(
 }
 
 /**
+ * Update the obsolete status of a product (moderator-only action).
+ * @param fetch - The fetch function
+ * @param code - Product barcode
+ * @param obsolete - Whether the product is obsolete ('on' or '')
+ */
+export async function updateObsoleteStatusV3(
+	fetch: typeof window.fetch,
+	code: string,
+	obsolete: 'on' | ''
+): Promise<{ data?: unknown; error?: string }> {
+	// TODO: switch to `updateObsoleteStatus` from SDK
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
+		body: {
+			lc,
+			fields: 'obsolete',
+			product: {
+				obsolete
+			}
+		}
+	});
+
+	if (error) {
+		return { error: `Failed to update obsolete status: ${JSON.stringify(error)}` };
+	}
+
+	return { data };
+}
+
+/**
  * Upload image using API v3.3 with base64 encoded data
  * @param barcode Product barcode
  * @param imageDataBase64 Base64 encoded image data
@@ -519,6 +552,8 @@ export type Product = ProductDataSection & {
 	nutriments: Nutriments;
 
 	no_nutrition_data?: boolean;
+	obsolete?: string;
+	obsolete_since_date?: string;
 
 	source: {
 		fields: string[];
