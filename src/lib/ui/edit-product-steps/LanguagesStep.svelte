@@ -3,8 +3,6 @@
 	import type { Product } from '$lib/api';
 	import { getLanguageName } from '$lib/languages';
 
-	import InfoTooltip from '../InfoTooltip.svelte';
-
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
@@ -44,12 +42,11 @@
 		showInfo = !showInfo;
 	}
 
-	let activeLang = $state(product.lang);
 	let shortcutCtx = getShortcutCtx();
 	onMount(() => {
 		shortcutCtx.set('Shift+P', {
 			description: $_('product.shortcuts.edit_product_name'),
-			action: () => focusEditField(`#product-name-${activeLang}`)
+			action: () => focusEditField(`#product-name-${product.lang}`)
 		});
 
 		return () => {
@@ -90,15 +87,52 @@
 
 <fieldset class="fieldset">
 	<legend class="fieldset-legend">{$_('product.edit.main_language')}</legend>
-	<select class="select w-full">
-		{#each Object.keys(product.languages_codes) ?? [] as lang (lang)}
-			<option value={lang} selected={product.lang === lang}>{getLanguageName(lang)}</option>
+	<select class="select w-full" bind:value={product.lang}>
+		{#each Object.keys(product.languages_codes ?? {}) as lang (lang)}
+			<option value={lang}>{getLanguageName(lang)}</option>
 		{/each}
 	</select>
 	<span class="label">The main language of the product</span>
 </fieldset>
 
-<div class="collapse-arrow bg-base-300 dark:bg-base-200 collapse">
+<div class="mt-4 space-y-4">
+	<fieldset class="fieldset">
+		<legend class="fieldset-legend">
+			{$_('product.edit.product_names')}
+		</legend>
+
+		{#if Object.keys(product.languages_codes ?? {}).length === 0}
+			<div class="alert alert-warning text-sm sm:text-base">
+				{$_('product.edit.no_languages_found')}
+			</div>
+		{/if}
+
+		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+			{@const langName = getLanguageName(code)}
+			<div class="flex items-center gap-2">
+				<div
+					class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+					title={langName}
+				>
+					{code}
+				</div>
+				<input
+					id={`product-name-${code}`}
+					type="text"
+					class="input input-bordered w-full text-sm sm:text-base"
+					bind:value={product[`product_name_${code}`]}
+					aria-label={`${$_('product.edit.name')} (${langName})`}
+				/>
+			</div>
+		{/each}
+
+		<div class="label block whitespace-normal">{$_('product.edit.tooltips.product_name')}</div>
+	</fieldset>
+</div>
+
+<div
+	class="collapse-arrow bg-base-300 dark:bg-base-200 collapse mt-4 border-2 rounded-lg border-base-300"
+>
 	<input type="checkbox" />
 	<div class="collapse-title text-sm font-semibold sm:text-base">
 		{$_('product.edit.add_language')}
@@ -129,38 +163,4 @@
 			</div>
 		{/if}
 	</div>
-</div>
-
-<div class="divider"></div>
-
-<div class="tabs tabs-box mt-4">
-	{#if Object.keys(product.languages_codes ?? {}).length === 0}
-		<div class="alert alert-warning text-sm sm:text-base">
-			{$_('product.edit.no_languages_found')}
-		</div>
-	{/if}
-	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-		<input
-			type="radio"
-			name="name_tabs"
-			class="tab text-xs sm:text-sm"
-			aria-label={getLanguageName(code)}
-			checked={code === activeLang}
-			onchange={() => (activeLang = code)}
-		/>
-		<div class="tab-content form-control p-6">
-			<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
-				<span class="flex items-center gap-2">
-					{$_('product.edit.name')} ({getLanguageName(code)})
-					<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
-				</span>
-			</label>
-			<input
-				id={`product-name-${code}`}
-				type="text"
-				class="input input-bordered w-full text-sm sm:text-base"
-				bind:value={product[`product_name_${code}`]}
-			/>
-		</div>
-	{/each}
 </div>

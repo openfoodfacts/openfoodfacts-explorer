@@ -299,8 +299,12 @@
 				"traceability_code": "Dalam bahagian ini, anda boleh memasukkan kod yang berkaitan dengan tanda pembungkusan, tanda pengenalan atau tanda kesihatan.",
 				"countries": "Negara di mana produk itu tersedia secara meluas (tidak termasuk kedai yang mengkhusus dalam produk asing).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Kesan-kesan",
 			"main_language": "Bahasa utama",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",

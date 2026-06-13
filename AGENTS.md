@@ -3,7 +3,7 @@
 This is the canonical guide for AI agents working on this repository.
 **Read this file before doing anything else.**
 
-> Humans contributing code should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
+> Humans contributing code should read [CONTRIBUTING.md](docs/CONTRIBUTING.md) instead.
 > This file is intentionally structured for machine consumption.
 
 ---
@@ -108,7 +108,7 @@ src/
 
 ### UI & Design
 
-- **Read [DESIGN.md](DESIGN.md) before writing any UI code.** It defines the component patterns, colour tokens, button hierarchy, and responsive conventions.
+- **Read [DESIGN.md](docs/DESIGN.md) before writing any UI code.** It defines the component patterns, colour tokens, button hierarchy, and responsive conventions.
 - Always use DaisyUI semantic tokens (`bg-primary`, `text-base-content`) — never hardcode hex values.
 - Follow the button priority hierarchy defined in DESIGN.md.
 

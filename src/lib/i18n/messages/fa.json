@@ -299,8 +299,12 @@
 				"traceability_code": "در این بخش، می‌توانید کدهای مربوط به علائم بسته‌بندی، علائم شناسایی یا علائم بهداشتی را وارد کنید.",
 				"countries": "کشورهایی که محصول در آنها به طور گسترده در دسترس است (شامل فروشگاه‌های متخصص در محصولات خارجی نمی‌شود).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "آلرژن‌ها",
+			"traces": "Traces",
 			"main_language": "زبان اصلی",
 			"add_product": "افزودن کالا",
 			"nutrition_issues": "Nutrition issues",

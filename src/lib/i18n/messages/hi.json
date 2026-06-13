@@ -299,8 +299,12 @@
 				"traceability_code": "इस अनुभाग में, आप पैकेजिंग चिह्न, पहचान चिह्न या स्वास्थ्य चिह्न से संबंधित कोड इनपुट कर सकते हैं।",
 				"countries": "वे देश जहां उत्पाद व्यापक रूप से उपलब्ध है (विदेशी उत्पादों में विशेषज्ञता रखने वाले स्टोर इसमें शामिल नहीं हैं)।",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "अवशेष",
 			"main_language": "Main language",
 			"add_product": "उत्पाद जोड़ें",
 			"nutrition_issues": "Nutrition issues",

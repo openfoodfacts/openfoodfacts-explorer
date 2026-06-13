@@ -116,10 +116,21 @@ export function isTokenExpired(tokens: KeycloakTokens, bufferSeconds = 60): bool
 }
 
 export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fetch {
+	const appHeaderValue = `Explorer (v. ${import.meta.env.PACKAGE_VERSION})`;
+
 	return async (input, init) => {
+		const headers = new Headers(input instanceof Request ? input.headers : undefined);
+		// Add any headers from the init object
+		if (init?.headers) {
+			const initHeaders = new Headers(init.headers);
+			initHeaders.forEach((value, key) => headers.set(key, value));
+		}
+		// Add the application identification header
+		headers.set('X-OpenFoodFacts-App', appHeaderValue);
+
 		const tokens = get(userAuthTokens);
 		if (!tokens) {
-			return fetch(input, init);
+			return fetch(input, { ...init, headers });
 		}
 
 		// Proactively ensure token is valid before making the request
@@ -128,14 +139,12 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 			const url = new URL(window.location.href);
 			const validTokens = await ensureValidToken(url);
 
-			const headers = new Headers(input instanceof Request ? input.headers : undefined);
-			if (init?.headers) {
-				const initHeaders = new Headers(init.headers);
-				initHeaders.forEach((value, key) => headers.set(key, value));
-			}
+			// Add the valid access token to the Authorization header
 			headers.set('Authorization', 'Bearer ' + validTokens.access_token);
 
-			const response = await fetch(input, { ...init, headers });
+			// Clone request input to allow retry if body exists
+			const requestInit = { ...init, headers };
+			const response = await fetch(input, requestInit);
 
 			// If still getting 401 (e.g., token was revoked), try one more refresh
 			if (response.status === 401) {

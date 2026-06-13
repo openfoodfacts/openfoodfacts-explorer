@@ -14,7 +14,8 @@
 		type RawImage,
 		addOrEditProductV2,
 		updateBarcode,
-		updatePackagingsV3
+		updatePackagingsV3,
+		updateObsoleteStatusV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { preferences } from '$lib/settings';
@@ -75,6 +76,8 @@
 			stores: '',
 			origins: '',
 			countries: '',
+			allergens: '',
+			traces: '',
 			link: '',
 			ingredients_text: '',
 			ingredients_text_en: '',
@@ -113,6 +116,8 @@
 			labels_tags: [],
 			origins_tags: [],
 			countries_tags: [],
+			allergens_tags: [],
+			traces_tags: [],
 
 			nutriments: {} as Nutriments,
 
@@ -171,6 +176,7 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
+	let allergenNames = $derived(getNames(data.allergens));
 	let units = $derived(getUnits(data.units));
 
 	function createProductStore(data: PageData): Product {
@@ -187,6 +193,10 @@
 					stores: data.state.product.stores ?? '',
 					origins: data.state.product.origins ?? '',
 					countries: data.state.product.countries ?? '',
+					allergens: data.state.product.allergens ?? '',
+					traces: data.state.product.traces ?? '',
+					allergens_tags: (data.state.product.allergens_tags as string[]) ?? [],
+					traces_tags: (data.state.product.traces_tags as string[]) ?? [],
 					languages_codes: data.state.product.languages_codes ?? {},
 					// @ts-expect-error - FIXME: to be fixed in the SDK
 					images: data.state.product.images ?? {},
@@ -301,6 +311,30 @@
 					console.error('Packaging update failed:', packResult.error);
 				} else {
 					console.debug('Packaging updated successfully');
+				}
+				console.groupEnd();
+			}
+
+			// Submit obsolete status via V3 API if it changed
+			const originalObsolete = 'product' in data.state ? data.state.product?.obsolete : undefined;
+			if (product.obsolete !== originalObsolete) {
+				console.group('Obsolete update (V3)');
+				console.debug('Submitting obsolete status');
+				const obsResult = await updateObsoleteStatusV3(
+					fetch,
+					product.code,
+					product.obsolete === 'on' ? 'on' : ''
+				);
+				if (obsResult.error) {
+					console.error('Obsolete status update failed:', obsResult.error);
+					toastCtx.error(
+						$_('product.moderator.obsolete_save_error', {
+							default: 'Failed to update obsolete status. Please try again.'
+						})
+					);
+					return;
+				} else {
+					console.debug('Obsolete status updated successfully');
 				}
 				console.groupEnd();
 			}
@@ -487,6 +521,7 @@
 			{storeNames}
 			{units}
 			{handleNutrimentInput}
+			{allergenNames}
 		/>
 	{:else}
 		<EditProductForm
@@ -506,6 +541,7 @@
 			{originNames}
 			{storeNames}
 			{units}
+			{allergenNames}
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
 		/>

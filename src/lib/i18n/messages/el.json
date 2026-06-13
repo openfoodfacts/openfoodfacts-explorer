@@ -299,8 +299,12 @@
 				"traceability_code": "Σε αυτήν την ενότητα, μπορείτε να εισαγάγετε κωδικούς που σχετίζονται με σήματα συσκευασίας, σήματα αναγνώρισης ή σήματα υγείας.",
 				"countries": "Χώρες όπου το προϊόν είναι ευρέως διαθέσιμο (δεν περιλαμβάνονται καταστήματα που ειδικεύονται σε ξένα προϊόντα).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Αλλεργιογόνα",
+			"traces": "Ίχνη",
 			"main_language": "Κύρια γλώσσα",
 			"add_product": "Προσθήκη προϊόντος",
 			"nutrition_issues": "Nutrition issues",

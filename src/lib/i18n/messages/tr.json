@@ -299,8 +299,12 @@
 				"traceability_code": "Bu bölümde ambalaj işaretleri, tanımlama işaretleri veya sağlık işaretleri ile ilgili kodları girebilirsiniz.",
 				"countries": "Ürünün yaygın olarak bulunduğu ülkeler (yabancı ürünlerde uzmanlaşmış mağazalar hariç).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alerjenler",
+			"traces": "İz",
 			"main_language": "Ana dil",
 			"add_product": "Ürün ekle",
 			"nutrition_issues": "Nutrition issues",

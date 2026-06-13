@@ -23,6 +23,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	type Props = {
 		product: Product;
 
@@ -52,6 +53,7 @@
 		originNames: string[];
 		countriesNames: string[];
 		units: string[];
+		allergenNames: string[];
 	};
 
 	let {
@@ -70,6 +72,7 @@
 		originNames,
 		countriesNames,
 		units,
+		allergenNames,
 		isSubmitting,
 		submit,
 		onCorrectBarcode
@@ -136,7 +139,7 @@
 			{$_('product.edit.sections.ingredients')}
 		</div>
 		<div class="collapse-content">
-			<IngredientsStep bind:product {getIngredientsImage} />
+			<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
 		</div>
 	</div>
 
@@ -215,6 +218,8 @@
 					{$_('product.edit.info.moderator_tools')}
 				</p>
 				<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
+				<div class="divider"></div>
+				<ObsoleteProductCard bind:product />
 			</div>
 		</div>
 	{/if}
