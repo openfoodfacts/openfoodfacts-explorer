@@ -102,17 +102,23 @@
 <div class="flex flex-col gap-4 p-2">
 	<div class="flex items-center gap-2">
 		<IconMdiImageMove class="text-warning h-5 w-5" />
-		<h2 class="text-lg font-bold">{$_('product.moderator.image_manager_title')}</h2>
+		<h2 class="text-lg font-bold">
+			{$_('product.moderator.image_manager_title', { default: 'Move Images' })}
+		</h2>
 	</div>
 
 	<p class="text-base-content/70 text-sm">
-		{$_('product.moderator.image_manager_description')}
+		{$_('product.moderator.image_manager_description', {
+			default: 'You can select one or more images and then:'
+		})}
 	</p>
 
 	{#if rawImages.length === 0}
 		<div class="bg-base-300 flex items-center justify-center rounded-lg p-6 text-center">
 			<p class="text-base-content/50 text-sm">
-				{$_('product.moderator.image_manager_no_images')}
+				{$_('product.moderator.image_manager_no_images', {
+					default: 'No uploaded images found for this product.'
+				})}
 			</p>
 		</div>
 	{:else}
@@ -175,15 +181,17 @@
 					{/if}
 
 					<div
-						class="absolute bottom-0 inset-x-0 bg-black/70 p-1.5 text-left text-[10px] text-white opacity-0 transition-opacity hover:opacity-100 flex flex-col gap-0.5"
+						class="absolute bottom-0 inset-x-0 bg-neutral/70 p-1.5 text-left text-[10px] text-neutral-content opacity-0 transition-opacity hover:opacity-100 flex flex-col gap-0.5"
 					>
 						<span class="truncate">
 							{$_('product.moderator.image_manager_uploaded_by', {
+								default: 'Uploaded by {uploader}',
 								values: { uploader: img.uploader }
 							})}
 						</span>
 						<span>
 							{$_('product.moderator.image_manager_uploaded_at', {
+								default: 'Uploaded on {date}',
 								values: { date: formatDate(img.uploaded_t) }
 							})}
 						</span>
@@ -194,11 +202,17 @@
 
 		<div class="flex flex-col gap-2 sm:flex-row sm:items-end mt-4">
 			<label class="input w-full">
-				<span class="label">{$_('product.moderator.image_manager_move_target_label')}</span>
+				<span class="label"
+					>{$_('product.moderator.image_manager_move_target_label', {
+						default: 'Destination Barcode'
+					})}</span
+				>
 				<input
 					type="text"
 					bind:value={targetBarcode}
-					placeholder={$_('product.moderator.image_manager_move_target_placeholder')}
+					placeholder={$_('product.moderator.image_manager_move_target_placeholder', {
+						default: 'Enter barcode (e.g. 3017620422003)'
+					})}
 					disabled={isSubmitting}
 				/>
 			</label>
@@ -212,7 +226,9 @@
 				{#if isSubmitting}
 					<span class="loading loading-spinner loading-sm"></span>
 				{/if}
-				{$_('product.moderator.image_manager_move_btn')}
+				{$_('product.moderator.image_manager_move_btn', {
+					default: 'Move the images to another product'
+				})}
 			</button>
 		</div>
 
@@ -225,7 +241,9 @@
 					disabled={isSubmitting}
 				/>
 				<span class="label-text text-sm text-base-content/80">
-					{$_('product.moderator.image_manager_copy_data_label')}
+					{$_('product.moderator.image_manager_copy_data_label', {
+						default: 'Copy data from current product to new product'
+					})}
 				</span>
 			</label>
 		</div>
