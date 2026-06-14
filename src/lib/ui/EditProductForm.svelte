@@ -24,6 +24,7 @@
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
+	import ImageManagerCard from './ImageManagerCard.svelte';
 	type Props = {
 		product: Product;
 
@@ -220,6 +221,8 @@
 				<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
 				<div class="divider"></div>
 				<ObsoleteProductCard bind:product />
+				<div class="divider"></div>
+				<ImageManagerCard {product} />
 			</div>
 		</div>
 	{/if}
