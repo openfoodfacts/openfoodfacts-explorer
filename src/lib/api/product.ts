@@ -137,6 +137,48 @@ export async function moveImages(
 }
 
 /**
+ * Delete product images by moving them to trash (moderator-only action).
+ * // TODO: switch to `deleteImages` from the SDK
+ * @param fetch - The fetch function
+ * @param code - product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ */
+export async function deleteImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string
+): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', 'trash');
+	body.append('copy_data_override', 'false');
+
+	try {
+		const res = await wrapFetch(url, {
+			method: 'POST',
+			body
+		});
+		if (res.status === 200) {
+			return { data: true };
+		}
+		return { error: `Failed to delete images (status: ${res.status})` };
+	} catch (error) {
+		console.error('Error deleting images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
  * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function

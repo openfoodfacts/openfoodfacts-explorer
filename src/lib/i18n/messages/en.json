@@ -525,7 +525,7 @@
 			"obsolete_save_btn": "Save Obsolete Status",
 			"obsolete_save_success": "Product obsolete status updated successfully.",
 			"obsolete_save_error": "Failed to update obsolete status. Please try again.",
-			"image_manager_title": "Move Images",
+			"image_manager_title": "Manage images",
 			"image_manager_description": "You can select one or more images and then:",
 			"image_manager_no_images": "No uploaded images found for this product.",
 			"image_manager_uploaded_by": "Uploaded by {uploader}",
@@ -537,7 +537,14 @@
 			"image_manager_moving": "Moving...",
 			"image_manager_move_success": "Images moved to product {code}.",
 			"image_manager_move_error": "Failed to move images. Please try again.",
-			"image_manager_select_first": "Please select at least one image first."
+			"image_manager_select_first": "Please select at least one image first.",
+			"image_manager_tab_move": "Move",
+			"image_manager_tab_delete": "Delete",
+			"image_manager_delete_btn": "Delete the images",
+			"image_manager_delete_confirm_label": "Yes, I confirm I want to permanently delete these images.",
+			"image_manager_delete_warning": "Warning: Deleting raw images is permanent and cannot be undone.",
+			"image_manager_delete_success": "Images deleted successfully.",
+			"image_manager_delete_error": "Failed to delete images. Please try again."
 		}
 	},
 	"qr": {
