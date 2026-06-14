@@ -523,7 +523,20 @@
 			"obsolete_badge": "Product taken off the market",
 			"obsolete_save_btn": "Save Obsolete Status",
 			"obsolete_save_success": "Product obsolete status updated successfully.",
-			"obsolete_save_error": "Failed to update obsolete status. Please try again."
+			"obsolete_save_error": "Failed to update obsolete status. Please try again.",
+			"image_manager_title": "Move Images",
+			"image_manager_description": "You can select one or more images and then:",
+			"image_manager_no_images": "No uploaded images found for this product.",
+			"image_manager_uploaded_by": "Uploaded by {uploader}",
+			"image_manager_uploaded_at": "Uploaded on {date}",
+			"image_manager_move_btn": "Move the images to another product",
+			"image_manager_move_target_label": "Destination Barcode",
+			"image_manager_move_target_placeholder": "Enter barcode (e.g. 3017620422003)",
+			"image_manager_copy_data_label": "Copy data from current product to new product",
+			"image_manager_moving": "Moving...",
+			"image_manager_move_success": "Images moved to product {code}.",
+			"image_manager_move_error": "Failed to move images. Please try again.",
+			"image_manager_select_first": "Please select at least one image first."
 		}
 	},
 	"qr": {
