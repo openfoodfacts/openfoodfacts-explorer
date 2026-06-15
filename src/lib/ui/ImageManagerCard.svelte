@@ -425,7 +425,7 @@
 						<span class="loading loading-spinner loading-sm"></span>
 					{/if}
 					{$_('product.moderator.image_manager_delete_btn', {
-						default: 'Delete the selected images'
+						default: 'Delete the selected image(s)'
 					})}
 				</button>
 			</div>
