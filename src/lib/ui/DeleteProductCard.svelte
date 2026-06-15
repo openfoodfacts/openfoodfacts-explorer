@@ -238,6 +238,6 @@
 		</div>
 	</div>
 	<form method="dialog" class="modal-backdrop">
-		<button onclick={closeConfirmModal}>close</button>
+		<button onclick={closeConfirmModal}>{$_('common.close', { default: 'close' })}</button>
 	</form>
 </dialog>

@@ -566,7 +566,8 @@
 		"skip": "Skip",
 		"step": "Step",
 		"of": "of",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",
