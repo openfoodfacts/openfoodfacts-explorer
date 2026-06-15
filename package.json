@@ -29,7 +29,7 @@
 		"test": "vitest run --passWithNoTests"
 	},
 	"devDependencies": {
-		"@crowdin/cli": "^4.14.2",
+		"@crowdin/cli": "^4.14.3",
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
