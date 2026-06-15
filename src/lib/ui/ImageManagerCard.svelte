@@ -35,12 +35,15 @@
 	}) {
 		if (!img.url) return;
 		const fullUrl = getFullSizeImageUrl(img.url, img.imgid);
-		modal.displayImage(
-			fullUrl,
-			`Uploaded by ${img.uploader} on ${formatDate(img.uploaded_t)}`,
-			img.imgid,
-			product.code
-		);
+		const uploaderText = $_('product.moderator.image_manager_uploaded_by', {
+			default: 'Uploaded by {uploader}',
+			values: { uploader: img.uploader }
+		});
+		const dateText = $_('product.moderator.image_manager_uploaded_at', {
+			default: 'Uploaded on {date}',
+			values: { date: formatDate(img.uploaded_t) }
+		});
+		modal.displayImage(fullUrl, `${uploaderText} ${dateText}`, img.imgid, product.code);
 	}
 
 	// Extract numeric raw images from product.images
@@ -158,7 +161,7 @@
 	<div class="flex items-center gap-2">
 		<IconMdiImageMultiple class="text-warning h-5 w-5" />
 		<h2 class="text-lg font-bold">
-			{$_('product.moderator.image_manager_title', { default: 'Image Manager' })}
+			{$_('product.moderator.image_manager_title', { default: 'Manage Images' })}
 		</h2>
 	</div>
 
