@@ -523,7 +523,15 @@
 			"delete_product_comment_placeholder": "Enter reason for removal",
 			"delete_product_submit": "Delete the product page",
 			"delete_product_success": "Product deleted successfully.",
-			"delete_product_error": "Failed to delete product. Please try again."
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"obsolete_title": "Product taken off the market",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Product taken off the market",
+			"obsolete_badge": "Product taken off the market",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {

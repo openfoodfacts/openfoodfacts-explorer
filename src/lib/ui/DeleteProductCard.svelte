@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-3 p-2 border-t border-base-300 pt-4 mt-4">
+<div class="flex flex-col gap-3 p-2">
 	<div class="flex items-center gap-2">
 		<IconMdiDelete class="text-error h-5 w-5" />
 		<h2 class="text-lg font-bold">

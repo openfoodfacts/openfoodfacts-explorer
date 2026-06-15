@@ -15,7 +15,8 @@
 		addOrEditProductV2,
 		updateBarcode,
 		updatePackagingsV3,
-		deleteProduct
+		deleteProduct,
+		updateObsoleteStatusV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { preferences } from '$lib/settings';
@@ -351,6 +352,30 @@
 					console.error('Packaging update failed:', packResult.error);
 				} else {
 					console.debug('Packaging updated successfully');
+				}
+				console.groupEnd();
+			}
+
+			// Submit obsolete status via V3 API if it changed
+			const originalObsolete = 'product' in data.state ? data.state.product?.obsolete : undefined;
+			if (product.obsolete !== originalObsolete) {
+				console.group('Obsolete update (V3)');
+				console.debug('Submitting obsolete status');
+				const obsResult = await updateObsoleteStatusV3(
+					fetch,
+					product.code,
+					product.obsolete === 'on' ? 'on' : ''
+				);
+				if (obsResult.error) {
+					console.error('Obsolete status update failed:', obsResult.error);
+					toastCtx.error(
+						$_('product.moderator.obsolete_save_error', {
+							default: 'Failed to update obsolete status. Please try again.'
+						})
+					);
+					return;
+				} else {
+					console.debug('Obsolete status updated successfully');
 				}
 				console.groupEnd();
 			}
