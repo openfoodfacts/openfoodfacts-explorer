@@ -259,38 +259,25 @@
 			return;
 		}
 		isSubmitting = true;
-		try {
-			const { data, error } = await deleteProduct(fetch, product.code, comment);
+		const { data, error } = await deleteProduct(fetch, product.code, comment);
+		isSubmitting = false;
+
+		if (data && !error) {
+			toastCtx.success(
+				$_('product.moderator.delete_product_success', {
+					default: 'Product deleted successfully.'
+				})
+			);
+			goto('/');
+		} else {
 			if (error) {
 				console.error(error);
-				toastCtx.error(
-					$_('product.moderator.delete_product_error', {
-						default: 'Failed to delete product. Please try again.'
-					})
-				);
-			} else if (data) {
-				toastCtx.success(
-					$_('product.moderator.delete_product_success', {
-						default: 'Product deleted successfully.'
-					})
-				);
-				goto('/');
-			} else {
-				toastCtx.error(
-					$_('product.moderator.delete_product_error', {
-						default: 'Failed to delete product. Please try again.'
-					})
-				);
 			}
-		} catch (err) {
-			console.error(err);
 			toastCtx.error(
 				$_('product.moderator.delete_product_error', {
 					default: 'Failed to delete product. Please try again.'
 				})
 			);
-		} finally {
-			isSubmitting = false;
 		}
 	}
 
