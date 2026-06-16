@@ -197,9 +197,14 @@
 		<div class="form-control">
 			<label class="label p-0 pb-1.5" for="confirm-barcode-input">
 				<span class="label-text text-sm font-medium">
-					{$_('product.moderator.delete_product_modal_prompt', {
-						default: 'To confirm, type the barcode {code} below:',
-						values: { code: barcode }
+					{$_('product.moderator.delete_product_modal_prompt_prefix', {
+						default: 'To confirm, type the barcode '
+					})}
+					<kbd class="kbd kbd-md font-mono font-bold text-base-content bg-base-300 mx-1 rounded-md"
+						>{barcode}</kbd
+					>
+					{$_('product.moderator.delete_product_modal_prompt_suffix', {
+						default: ' below:'
 					})}
 				</span>
 			</label>
