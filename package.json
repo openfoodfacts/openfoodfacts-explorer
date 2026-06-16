@@ -102,5 +102,5 @@
 		"@sentry/sveltekit": "^10.56.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0"
 	},
-	"packageManager": "pnpm@11.0.5+sha512.94fa09e72016402aefce788e46994e18eb1922998b16b6fd5aa6bafd8ae4dea05d0852f60247fdb7d5ab8199a7b0beda830398f3f80cb9f822398522a1535481"
+	"packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
 }
