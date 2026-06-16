@@ -174,7 +174,13 @@
 				id={`ingredients-list-${code}`}
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
 				class:opacity-50={ocrLoading}
-				bind:value={product[`ingredients_text_${code}`]}
+				value={product[`ingredients_text_${code}`] ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						[`ingredients_text_${code}`]: (e.currentTarget as HTMLTextAreaElement).value
+					};
+				}}
 				disabled={ocrLoading}
 			></textarea>
 		</div>
@@ -198,7 +204,13 @@
 				/>
 			</span>
 		</label>
-		<TagsString bind:tagsString={product.allergens} autocomplete={allergenNames} />
+		<TagsString
+			tagsString={product.allergens ?? ''}
+			autocomplete={allergenNames}
+			onChange={(v) => {
+				product = { ...product, allergens: v };
+			}}
+		/>
 	</div>
 
 	<div class="flex flex-col gap-1.5 w-full">
@@ -212,6 +224,12 @@
 				/>
 			</span>
 		</label>
-		<TagsString bind:tagsString={product.traces} autocomplete={allergenNames} />
+		<TagsString
+			tagsString={product.traces ?? ''}
+			autocomplete={allergenNames}
+			onChange={(v) => {
+				product = { ...product, traces: v };
+			}}
+		/>
 	</div>
 </div>

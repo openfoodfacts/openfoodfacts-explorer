@@ -10,7 +10,7 @@
 		onChange?: (event: { traceabilityCodes: string }) => void;
 	}
 
-	let { traceabilityCodes = $bindable(''), autocomplete = [], onChange }: Props = $props();
+	let { traceabilityCodes = '', autocomplete = [], onChange }: Props = $props();
 
 	// Create an array of codes from the comma-separated string
 	let traceabilityCodesArray = $derived.by(() => {
