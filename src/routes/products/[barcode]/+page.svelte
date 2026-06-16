@@ -33,6 +33,7 @@
 	import { PRODUCT_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { trackOffEvent } from '$lib/analytics';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -59,6 +60,20 @@
 	$effect(() => {
 		// Update website context based on product type
 		if (product.product_type) websiteCtx.flavor = product.product_type;
+	});
+
+	// Track product score presence (fire once per product page view)
+	$effect(() => {
+		const p = product;
+		if (p.nutriscore_grade) {
+			trackOffEvent('product', 'has_nutriscore', p.nutriscore_grade);
+		}
+		if (p.ecoscore_grade) {
+			trackOffEvent('product', 'has_greenscore', p.ecoscore_grade);
+		}
+		if (p.nova_group) {
+			trackOffEvent('product', 'has_nova', String(p.nova_group));
+		}
 	});
 
 	let useWCFolksonomyEditor = $state(false);
@@ -162,7 +177,10 @@
 		<BarcodeInfo code={product.code} />
 	{/if}
 
-	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
+	<robotoff-contribution-message
+		product-code={product.code}
+		is-logged-in={$userInfo != null}
+		onclick={() => trackOffEvent('product', 'open_nutrisight')}
 	></robotoff-contribution-message>
 
 	{#await productAttributes}
