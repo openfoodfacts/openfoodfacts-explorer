@@ -172,41 +172,73 @@
 <div class="space-y-4">
 	<div class="bg-base-200/50 mb-4 rounded-md p-3 text-xs sm:text-sm">
 		<p class="label-text mb-2 font-semibold">
-			{$_('product.edit.packaging_component.instructions_title')}
+			{$_('product.edit.packaging_component.instructions_title', {
+				default: 'Guidance for packaging parts:'
+			})}
 		</p>
 		<ul class="text-base-content/70 list-disc space-y-1 pl-5">
 			<li>
-				<span class="font-medium">{$_('product.edit.packaging_component.number_of_units')}:</span>
-				{$_('product.edit.packaging_component.number_of_units_desc')}
-			</li>
-			<li>
-				<span class="font-medium">{$_('product.edit.packaging_component.shape')}:</span>
-				{$_('product.edit.packaging_component.shape_desc')}
-			</li>
-			<li>
-				<span class="font-medium">{$_('product.edit.packaging_component.material')}:</span>
-				{$_('product.edit.packaging_component.material_desc')}
-			</li>
-			<li>
-				<span class="font-medium">{$_('product.edit.packaging_component.recycling')}:</span>
-				{$_('product.edit.packaging_component.recycling_desc')}
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.number_of_units', {
+						default: 'Number of units'
+					})}:</span
+				>
+				{$_('product.edit.packaging_component.number_of_units_desc', {
+					default:
+						'Enter the number of packaging units of the same shape and material contained in the product.'
+				})}
 			</li>
 			<li>
 				<span class="font-medium"
-					>{$_('product.edit.packaging_component.weight_measured_label')}:</span
+					>{$_('product.edit.packaging_component.shape', { default: 'Shape' })}:</span
 				>
-				{$_('product.edit.packaging_component.weight_measured_desc')}
+				{$_('product.edit.packaging_component.shape_desc', {
+					default:
+						'Enter the shape name listed in the recycling instructions if they are available, or select a shape.'
+				})}
 			</li>
 			<li>
 				<span class="font-medium"
-					>{$_('product.edit.packaging_component.quantity_per_unit_label')}:</span
+					>{$_('product.edit.packaging_component.material', { default: 'Material' })}:</span
 				>
-				{$_('product.edit.packaging_component.quantity_per_unit_desc')}
+				{$_('product.edit.packaging_component.material_desc', {
+					default:
+						'Enter the specific material if it can be determined (a material code inside a triangle can often be found on packaging parts), or a generic material (for instance plastic or metal) if you are unsure.'
+				})}
+			</li>
+			<li>
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.recycling', { default: 'Recycling' })}:</span
+				>
+				{$_('product.edit.packaging_component.recycling_desc', {
+					default: 'Enter recycling instructions only if they are listed on the product.'
+				})}
+			</li>
+			<li>
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.weight_measured_label', {
+						default: 'Weight of one empty unit'
+					})}:</span
+				>
+				{$_('product.edit.packaging_component.weight_measured_desc', {
+					default:
+						'Remove any remaining food and wash and dry the packaging part before weighting. If possible, use a scale with 0.1g or 0.01g precision.'
+				})}
+			</li>
+			<li>
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.quantity_per_unit_label', {
+						default: 'Quantity of product contained per unit'
+					})}:</span
+				>
+				{$_('product.edit.packaging_component.quantity_per_unit_desc', {
+					default: 'Enter the net weight or net volume and indicate the unit (for example g or ml).'
+				})}
 			</li>
 		</ul>
 	</div>
 
-	{#each product.packagings ?? [] as component, index (component)}
+	{#each product.packagings ?? [] as component, index (index)}
 		<div class="bg-base-100 border-base-300 rounded-lg border p-4 shadow-sm">
 			<div class="mb-3 flex items-center justify-between">
 				<h3 class="label-text text-sm font-semibold sm:text-base">
