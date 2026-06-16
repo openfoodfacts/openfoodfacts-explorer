@@ -23,6 +23,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	type Props = {
 		product: Product;
@@ -36,6 +37,7 @@
 		isSubmitting: boolean;
 		submit: () => Promise<void>;
 		onCorrectBarcode: (newCode: string) => Promise<void>;
+		onDeleteProduct?: (comment: string) => Promise<void>;
 		comment: string;
 		handleNutrimentInput: (e: Event, key: string) => void;
 
@@ -75,7 +77,8 @@
 		allergenNames,
 		isSubmitting,
 		submit,
-		onCorrectBarcode
+		onCorrectBarcode,
+		onDeleteProduct
 	}: Props = $props();
 
 	function getOpenPricesUrl(code: string): string {
@@ -220,6 +223,14 @@
 				<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
 				<div class="divider"></div>
 				<ObsoleteProductCard bind:product />
+				{#if onDeleteProduct}
+					<div class="divider"></div>
+					<DeleteProductCard
+						barcode={product.code}
+						productName={product.product_name || product.product_name_en || ''}
+						onDelete={onDeleteProduct}
+					/>
+				{/if}
 			</div>
 		</div>
 	{/if}

@@ -15,6 +15,7 @@
 		addOrEditProductV2,
 		updateBarcode,
 		updatePackagingsV3,
+		deleteProduct,
 		updateObsoleteStatusV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -249,6 +250,33 @@
 			console.error(err);
 			toastCtx.error(
 				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+			);
+		}
+	}
+
+	async function handleDeleteProduct(comment: string) {
+		if (isSubmitting) {
+			return;
+		}
+		isSubmitting = true;
+		const { data, error } = await deleteProduct(fetch, product.code, comment);
+		isSubmitting = false;
+
+		if (data && !error) {
+			toastCtx.success(
+				$_('product.moderator.delete_product_success', {
+					default: 'Product deleted successfully.'
+				})
+			);
+			goto('/');
+		} else {
+			if (error) {
+				console.error(error);
+			}
+			toastCtx.error(
+				$_('product.moderator.delete_product_error', {
+					default: 'Failed to delete product. Please try again.'
+				})
 			);
 		}
 	}
@@ -544,6 +572,7 @@
 			{allergenNames}
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
+			onDeleteProduct={handleDeleteProduct}
 		/>
 	{/if}
 </div>

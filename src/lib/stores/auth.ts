@@ -126,7 +126,7 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 			initHeaders.forEach((value, key) => headers.set(key, value));
 		}
 		// Add the application identification header
-		headers.set('X-User-Agent', appHeaderValue);
+		headers.set('X-OpenFoodFacts-App', appHeaderValue);
 
 		const tokens = get(userAuthTokens);
 		if (!tokens) {
