@@ -1,21 +1,20 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	// TODO: switch to SDK
-	import type { PackagingComponent } from '$lib/api';
+	import type { Product, PackagingComponent } from '$lib/api';
 	import { getTaxonomySuggestions } from '$lib/api';
 
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 
 	type Props = {
-		packagings?: PackagingComponent[];
-		packagingsComplete?: number;
+		product: Product;
 	};
 
-	let { packagings = $bindable([]), packagingsComplete = $bindable(0) }: Props = $props();
+	let { product = $bindable() }: Props = $props();
 
-	if (!packagings || packagings.length === 0) {
-		packagings = [createEmptyComponent()];
+	if (!product.packagings || product.packagings.length === 0) {
+		product = { ...product, packagings: [createEmptyComponent()] };
 	}
 
 	function createEmptyComponent(): PackagingComponent {
@@ -30,21 +29,21 @@
 	}
 
 	function addComponent() {
-		packagings = [...(packagings || []), createEmptyComponent()];
+		product = { ...product, packagings: [...(product.packagings || []), createEmptyComponent()] };
 	}
 
 	function removeComponent(index: number) {
-		if (!packagings || packagings.length <= 1) return;
-		const updated = [...packagings];
+		if (!product.packagings || product.packagings.length <= 1) return;
+		const updated = [...product.packagings];
 		updated.splice(index, 1);
-		packagings = updated;
+		product = { ...product, packagings: updated };
 	}
 
 	function updateComponent(index: number, field: keyof PackagingComponent, value: unknown) {
-		if (!packagings) return;
-		const updated = [...packagings];
+		if (!product.packagings) return;
+		const updated = [...product.packagings];
 		updated[index] = { ...updated[index], [field]: value };
-		packagings = updated;
+		product = { ...product, packagings: updated };
 	}
 
 	function updateTaxonomyField(
@@ -52,13 +51,13 @@
 		field: 'shape' | 'material' | 'recycling',
 		value: string
 	) {
-		if (!packagings) return;
-		const updated = [...packagings];
+		if (!product.packagings) return;
+		const updated = [...product.packagings];
 		updated[index] = {
 			...updated[index],
 			[field]: { id: value, lc_name: value }
 		};
-		packagings = updated;
+		product = { ...product, packagings: updated };
 	}
 
 	// Taxonomy Autocomplete State
@@ -133,7 +132,9 @@
 
 		// Fetch initial suggestions (no filter)
 		const currentValue =
-			packagings?.[index]?.[field]?.lc_name || packagings?.[index]?.[field]?.id || '';
+			product.packagings?.[index]?.[field]?.lc_name ||
+			product.packagings?.[index]?.[field]?.id ||
+			'';
 		fetchSuggestions(field, currentValue, index);
 	}
 
@@ -169,7 +170,43 @@
 </script>
 
 <div class="space-y-4">
-	{#each packagings ?? [] as component, index (index)}
+	<div class="bg-base-200/50 mb-4 rounded-md p-3 text-xs sm:text-sm">
+		<p class="label-text mb-2 font-semibold">
+			{$_('product.edit.packaging_component.instructions_title')}
+		</p>
+		<ul class="text-base-content/70 list-disc space-y-1 pl-5">
+			<li>
+				<span class="font-medium">{$_('product.edit.packaging_component.number_of_units')}:</span>
+				{$_('product.edit.packaging_component.number_of_units_desc')}
+			</li>
+			<li>
+				<span class="font-medium">{$_('product.edit.packaging_component.shape')}:</span>
+				{$_('product.edit.packaging_component.shape_desc')}
+			</li>
+			<li>
+				<span class="font-medium">{$_('product.edit.packaging_component.material')}:</span>
+				{$_('product.edit.packaging_component.material_desc')}
+			</li>
+			<li>
+				<span class="font-medium">{$_('product.edit.packaging_component.recycling')}:</span>
+				{$_('product.edit.packaging_component.recycling_desc')}
+			</li>
+			<li>
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.weight_measured_label')}:</span
+				>
+				{$_('product.edit.packaging_component.weight_measured_desc')}
+			</li>
+			<li>
+				<span class="font-medium"
+					>{$_('product.edit.packaging_component.quantity_per_unit_label')}:</span
+				>
+				{$_('product.edit.packaging_component.quantity_per_unit_desc')}
+			</li>
+		</ul>
+	</div>
+
+	{#each product.packagings ?? [] as component, index (component)}
 		<div class="bg-base-100 border-base-300 rounded-lg border p-4 shadow-sm">
 			<div class="mb-3 flex items-center justify-between">
 				<h3 class="label-text text-sm font-semibold sm:text-base">
@@ -179,7 +216,7 @@
 								values: { number: index + 1 }
 							})}
 				</h3>
-				{#if (packagings?.length ?? 0) > 1}
+				{#if (product.packagings?.length ?? 0) > 1}
 					<button
 						type="button"
 						class="btn btn-ghost btn-sm text-error"
@@ -193,46 +230,6 @@
 					</button>
 				{/if}
 			</div>
-
-			{#if index === 0}
-				<div class="bg-base-200/50 mb-4 rounded-md p-3 text-xs sm:text-sm">
-					<p class="label-text mb-2 font-semibold">
-						{$_('product.edit.packaging_component.instructions_title')}
-					</p>
-					<ul class="text-base-content/70 list-disc space-y-1 pl-5">
-						<li>
-							<span class="font-medium"
-								>{$_('product.edit.packaging_component.number_of_units')}:</span
-							>
-							{$_('product.edit.packaging_component.number_of_units_desc')}
-						</li>
-						<li>
-							<span class="font-medium">{$_('product.edit.packaging_component.shape')}:</span>
-							{$_('product.edit.packaging_component.shape_desc')}
-						</li>
-						<li>
-							<span class="font-medium">{$_('product.edit.packaging_component.material')}:</span>
-							{$_('product.edit.packaging_component.material_desc')}
-						</li>
-						<li>
-							<span class="font-medium">{$_('product.edit.packaging_component.recycling')}:</span>
-							{$_('product.edit.packaging_component.recycling_desc')}
-						</li>
-						<li>
-							<span class="font-medium"
-								>{$_('product.edit.packaging_component.weight_measured_label')}:</span
-							>
-							{$_('product.edit.packaging_component.weight_measured_desc')}
-						</li>
-						<li>
-							<span class="font-medium"
-								>{$_('product.edit.packaging_component.quantity_per_unit_label')}:</span
-							>
-							{$_('product.edit.packaging_component.quantity_per_unit_desc')}
-						</li>
-					</ul>
-				</div>
-			{/if}
 
 			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
 				<div class="form-control w-full">
@@ -434,9 +431,9 @@
 			<input
 				type="checkbox"
 				class="checkbox checkbox-primary checkbox-sm"
-				checked={packagingsComplete === 1}
+				checked={product.packagings_complete === 1}
 				onchange={(e) => {
-					packagingsComplete = e.currentTarget.checked ? 1 : 0;
+					product = { ...product, packagings_complete: e.currentTarget.checked ? 1 : 0 };
 				}}
 			/>
 			<span class="label-text text-sm">
