@@ -254,7 +254,10 @@
 			{#if indicatorHeight > 0}
 				<div
 					aria-hidden="true"
-					class="absolute -left-0.5 w-0.5 bg-primary rounded-full transition-all duration-300 ease-in-out"
+					class="absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out {activeSection ===
+					'moderator-tools'
+						? 'bg-warning'
+						: 'bg-primary'}"
 					style="top: {indicatorTop}px; height: {indicatorHeight}px;"
 				></div>
 			{/if}
@@ -266,10 +269,14 @@
 					aria-controls={section.id}
 					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => scrollToSection(section.id)}
-					class="group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none hover:text-primary cursor-pointer {activeSection ===
-					section.id
-						? 'text-primary font-semibold'
-						: 'text-base-content/60'}"
+					class="group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none cursor-pointer {section.id ===
+					'moderator-tools'
+						? activeSection === section.id
+							? 'text-warning font-semibold'
+							: 'text-warning/70 hover:text-warning'
+						: activeSection === section.id
+							? 'text-primary font-semibold'
+							: 'text-base-content/60 hover:text-primary'}"
 				>
 					{#if IconComponent}
 						<IconComponent
