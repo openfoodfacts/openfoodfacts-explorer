@@ -204,31 +204,31 @@
 		"shortcuts": {
 			"show_barcode": "Show/hide product barcode",
 			"api_page": "Open product API page",
-			"edit_same_window": "Edit product in current window",
-			"edit_new_window": "Edit product in new window",
-			"view_page": "Go back to product page",
+			"edit_same_window": "Product bewerken in het huidige venster",
+			"edit_new_window": "Product bewerken in een nieuw venster",
+			"view_page": "Ga terug naar de productpagina",
 			"edit_product_name": "Jump to product name",
 			"edit_product_quantity": "Jump to product quantity",
 			"edit_product_brands": "Jump to product brands",
 			"edit_product_categories": "Jump to product categories",
-			"edit_product_labels": "Jump to product labels",
-			"edit_product_ingredients": "Jump to product ingredients",
-			"edit_product_energy": "Jump to product energy",
-			"edit_product_fibers": "Jump to product fibers"
+			"edit_product_labels": "Ga naar productlabels",
+			"edit_product_ingredients": "Ga naar productingrediënten",
+			"edit_product_energy": "Ga naar productenergie",
+			"edit_product_fibers": "Ga naar productvezels"
 		},
 		"buttons": {
-			"classic_view": "Classic view",
+			"classic_view": "Klassieke weergave",
 			"edit": "Bewerken",
 			"share": "Delen",
-			"report": "Report an issue with this product",
-			"add_to_calculator": "Add product to nutritional calculator",
-			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"report": "Meld een probleem met dit product.",
+			"add_to_calculator": "Voeg dit product toe aan de voedingswaardecalculator",
+			"compare": "Toevoegen om te vergelijken",
+			"view_on_off": "Bekijk product op Open Food Facts"
 		},
-		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"share_text": "Bekijk dit product op Open Food Facts: {productName}",
 		"toast": {
-			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"copied_link": "Link gekopieerd naar klembord!",
+			"failed_copy": "Kopiëren van link mislukt"
 		},
 		"header": {
 			"quantity": "Hoeveelheid",
@@ -236,32 +236,32 @@
 			"categories": "Categorieën",
 			"labels": "Keurmerken",
 			"origins": "Oorsprong",
-			"traceability_codes": "Traceability Codes",
+			"traceability_codes": "Traceerbaarheidscodes",
 			"traceability_codes_learn_more": "Meer informatie",
-			"producer_link": "Producer link",
+			"producer_link": "Producentlink",
 			"stores": "Winkels",
 			"countries": "Landen"
 		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
-			"title_beta": "Personalized properties (beta)",
+			"title_beta": "Gepersonaliseerde eigenschappen (bèta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
 			"intro_emphasis": "must be factual",
 			"intro_after": ". You can dive into ",
 			"link_properties": "the list of properties already used by the community",
-			"link_middle": " or explore the ",
+			"link_middle": " of ontdek de ",
 			"link_docs": "properties' documentation and its search engine",
 			"warning": "Houd er rekening mee dat het datamodel kan worden gewijzigd. Gebruik op eigen risico.",
 			"footer_before": "This is brought by the ",
 			"footer_link": "Folksonomy Engine project",
-			"footer_after": ". Don't hesitate to participate or give feedback."
+			"footer_after": "Aarzel niet om deel te nemen of feedback te geven."
 		},
 		"datasources": {
 			"title": "Gegevensbronnen",
-			"user": "User: ",
-			"added_on_title": "Product added",
-			"last_edit_title": "Last edit",
-			"last_check_title": "Last check",
+			"user": "Gebruiker: ",
+			"added_on_title": "Product toegevoegd",
+			"last_edit_title": "Laatst bewerkt",
+			"last_check_title": "Laatst gecontroleerd",
 			"also_edited_by": "Productpagina ook bewerkt door ",
 			"also_checked_by": "Productpagina ook gecontroleerd door ",
 			"last_modified_t": "Laatste bewerking van de productpagina op {date} door ",
@@ -270,18 +270,18 @@
 			"done": "Voltooid",
 			"toDo": "Nog te doen",
 			"states": "Staten",
-			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"never_checked": "Nooit gecontroleerd",
+			"check_be_first": "Wees de eerste die dit product controleert"
 		},
 		"edit": {
-			"moderator_only": "Moderator only",
+			"moderator_only": "Alleen moderators",
 			"info": {
 				"images": "Upload duidelijke afbeeldingen van het product, de ingrediënten en de voedingswaarden, zodat anderen het product kunnen herkennen.",
 				"basic_info": "Geef de belangrijkste gegevens over het product, zoals de hoeveelheid, de verpakking en de fabrikant in.",
 				"languages": "Voeg productnamen en beschrijvingen in verschillende talen toe om het product voor meer gebruikers toegankelijk te maken.",
 				"ingredients": "Vermeld alle ingrediënten die in het product aanwezig zijn. Dit helpt gebruikers met allergieën of dieetwensen.",
 				"nutrition": "Voer de voedingswaarden per 100 g/ml in zoals aangegeven op de verpakking. Dit helpt gebruikers producten te vergelijken.",
-				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
+				"moderator_tools": "Deze tools zijn alleen beschikbaar voor moderators. Ze maken administratieve handelingen mogelijk, zoals het corrigeren van de productbarcode.",
 				"prices": "Help mee de prijsgeschiedenis van dit product bij te houden op Open Prices.",
 				"comment": "Voeg desgewenst een opmerking toe waarin u uw wijzigingen beschrijft of aanvullende context geeft.",
 				"packaging": "Beschrijf elk verpakkingsonderdeel (fles, dop, doos, enz.) met de vorm, het materiaal en de recyclinginstructies. Je kunt meerdere onderdelen toevoegen."
@@ -395,7 +395,7 @@
 				},
 				"unknown_unit": {
 					"title": "De aangegeven portiegrootte kan onjuist zijn.",
-					"desc": "Serving size should include a common unit. Examples: {examples}"
+					"desc": "De portiegrootte moet een gangbare eenheid bevatten. Voorbeelden: {examples}"
 				}
 			},
 			"no_nutrition_data": "Geen voedingswaarden op het product",
@@ -438,7 +438,7 @@
 				"languages": "Talen en productnamen",
 				"ingredients": "Ingrediënten",
 				"nutrition": "Voedingswaarde-informatie",
-				"moderator_tools": "Moderator Tools",
+				"moderator_tools": "Moderatortools",
 				"packaging": "Verpakking",
 				"prices": "Prijzen",
 				"comment": "Reactie"
@@ -459,41 +459,41 @@
 					"save_success": "Afbeelding succesvol opgeslagen!",
 					"process_error": "Fout bij het verwerken van de afbeelding: {error}. Probeer het opnieuw.",
 					"select_success": "Afbeelding succesvol geselecteerd!",
-					"select_error": "Error selecting image. Please try again.",
-					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
+					"select_error": "Fout bij het selecteren van afbeelding. Probeer het opnieuw.",
+					"not_loaded": "Afbeelding niet volledig geladen. Wacht even en probeer het later opnieuw.",
+					"invalid_crop": "Selecteer een geldig bijsnijdgebied."
 				},
-				"select_image": "Select an Image",
-				"uploading": "Uploading...",
+				"select_image": "Kies een afbeelding",
+				"uploading": "Uploaden...",
 				"upload_type": "Upload {type}",
-				"unselecting": "Unselecting...",
-				"unselect_type": "Unselect {type}",
+				"unselecting": "Deselecteren...",
+				"unselect_type": "Deselecteer {type}",
 				"unselect_image": "Foto deselecteren",
-				"selecting": "Selecting...",
-				"select_type": "Select {type}",
-				"show_less": "Show Less",
-				"see_all": "See All ({count})",
-				"processing_upload": "Processing upload...",
-				"unselecting_image": "Unselecting image...",
-				"photos_available": "Photos available",
+				"selecting": "Selecteren...",
+				"select_type": "Selecteer {type}",
+				"show_less": "Minder weergeven",
+				"see_all": "Alles bekijken ({count})",
+				"processing_upload": "Upload wordt verwerkt...",
+				"unselecting_image": "Afbeelding deselecteren...",
+				"photos_available": "Foto's beschikbaar",
 				"edit_photo": "Foto bewerken",
-				"loading_editor": "Loading image editor...",
-				"rotate_left": "Rotate Left",
-				"rotate_right": "Rotate Right",
-				"zoom_in": "Zoom In",
-				"zoom_out": "Zoom Out",
+				"loading_editor": "De afbeeldingseditor wordt geladen...",
+				"rotate_left": "Linksom draaien",
+				"rotate_right": "Rechtsom draaien",
+				"zoom_in": "Inzoomen",
+				"zoom_out": "Uitzoomen",
 				"reset": "Herstellen",
-				"rotation": "Rotation",
-				"tool": "Tool",
-				"crop_drag_to_move": "Drag to move, corners to resize",
-				"crop_click_to_start": "Click and drag to start cropping",
+				"rotation": "Draaien",
+				"tool": "Hulpmiddel",
+				"crop_drag_to_move": "Sleep om te verplaatsen, gebruik de hoeken om het formaat aan te passen.",
+				"crop_click_to_start": "Klik en sleep om te beginnen met bijsnijden.",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Rapporteer afbeelding",
-				"save_changes": "Save Changes"
+				"save_changes": "Wijzigingen opslaan"
 			},
-			"comment_description": "Add a comment about your changes (optional)",
+			"comment_description": "Voeg een opmerking toe over je wijzigingen (optioneel)",
 			"prices": {
-				"add_price_btn": "Add a price on Open Prices"
+				"add_price_btn": "Voeg een prijs toe aan Open Prijzen"
 			}
 		},
 		"prices": {
@@ -504,18 +504,48 @@
 		"knowledge_panels": {
 			"action": {
 				"add_packaging_components": "Voeg verpakkingsonderdelen toe",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Oorsprong toevoegen",
+				"add_ingredients_text": "Ingrediëntentekst toevoegen"
 			}
 		},
 		"moderator": {
-			"barcode_correction_title": "Correct Barcode",
-			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_title": "Correcte barcode",
+			"barcode_correction_new_code_label": "Nieuwe barcode",
 			"barcode_correction_description": "Een foutieve barcode? Type hier de correcte code:",
-			"barcode_correction_placeholder": "Enter the correct barcode",
-			"barcode_correction_submit": "Correct Barcode",
-			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_placeholder": "Voer de juiste barcode in",
+			"barcode_correction_submit": "Correcte barcode",
+			"barcode_correction_success": "Barcode succesvol gecorrigeerd. Doorverwijzen...",
+			"barcode_correction_error": "Het corrigeren van de barcode is mislukt. Probeer het opnieuw.",
+			"delete_product_title": "Verwijder de productpagina",
+			"delete_product_confirm": "Weet u zeker dat u de pagina van dit product wilt verwijderen?",
+			"delete_product_comment_label": "Reden voor verwijdering",
+			"delete_product_comment_placeholder": "Voer de reden voor verwijdering in",
+			"delete_product_submit": "Verwijder de productpagina",
+			"delete_product_success": "Product succesvol verwijderd.",
+			"delete_product_error": "Het verwijderen van het product is mislukt. Probeer het opnieuw.",
+			"delete_product_confirm_barcode_label": "Voer de barcode in om te bevestigen",
+			"delete_product_modal_title": "Verwijdering bevestigen",
+			"delete_product_modal_desc": "U staat op het punt deze productpagina te verwijderen. Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+			"delete_product_modal_prompt_prefix": "Voer de barcode in ter bevestiging. ",
+			"delete_product_modal_prompt_suffix": " hieronder:",
+			"delete_product_modal_btn": "Permanent Verwijderen",
+			"delete_product_prefill_reasons_label": "Veelvoorkomende redenen:",
+			"delete_reason_personal": "Persoonsgegevens",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Product van de markt gehaald",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Product van de markt gehaald",
+			"obsolete_badge": "Product van de markt gehaald",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +567,8 @@
 		"skip": "Overslaan",
 		"step": "Stap",
 		"of": "van",
-		"cancel": "Annuleer"
+		"cancel": "Annuleer",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",
@@ -608,7 +639,7 @@
 		"share_title": "Productvergelijking",
 		"share_text": "Bekijk deze productvergelijking die ik heb gemaakt!",
 		"clear_all": "Alles wissen",
-		"no_products_selected": "No products selected for comparison",
+		"no_products_selected": "Geen producten geselecteerd voor vergelijking",
 		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
 		"browse_products": "Blader door producten",
 		"shared_comparison": "Shared Comparison",
