@@ -27,29 +27,25 @@
 	let autoCompleteIndex = $state(-1);
 	let showInput = $state(false);
 
+	function matchesSearchQuery(item: T, query: string, keys: (keyof T)[]): boolean {
+		const lowerQuery = query.toLowerCase();
+		return keys.some((key) => {
+			const val = item[key];
+			return typeof val === 'string' && val.toLowerCase().includes(lowerQuery);
+		});
+	}
+
 	let filteredItems = $derived(
 		searchQuery.length === 0
 			? []
-			: items
-					.filter((item: T) =>
-						searchKeys.some((key: keyof T) => {
-							const val = item[key];
-							return (
-								typeof val === 'string' && val.toLowerCase().includes(searchQuery.toLowerCase())
-							);
-						})
-					)
-					.slice(0, 10)
+			: items.filter((item: T) => matchesSearchQuery(item, searchQuery, searchKeys)).slice(0, 10)
 	);
 
 	$effect(() => {
+		// Reset highlighted index when search query changes
 		const _ = searchQuery;
 		autoCompleteIndex = -1;
 	});
-
-	function focusInput(element: HTMLInputElement) {
-		element.focus();
-	}
 
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
@@ -100,9 +96,30 @@
 		<Icon class="h-5 w-5" />
 	</button>
 {:else}
+	{#snippet listItem(item: T, idx: number)}
+		<li>
+			<button
+				type="button"
+				class="bg-base-100 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full px-4 py-2 text-left text-xs sm:text-sm transition-colors duration-150 cursor-pointer"
+				class:bg-primary={autoCompleteIndex === idx}
+				class:text-primary-content={autoCompleteIndex === idx}
+				onclick={(e) => {
+					e.preventDefault();
+					onselect(item);
+					searchQuery = '';
+					autoCompleteIndex = -1;
+					showInput = false;
+				}}
+			>
+				<span>{item.locale || item.name} ({item.en})</span>
+			</button>
+		</li>
+	{/snippet}
+
 	<div class="dropdown relative ml-2 grow max-w-xs">
 		<label class="input input-sm flex items-center gap-2 w-full">
 			<Icon class="h-4 w-4 opacity-70" />
+			<!-- svelte-ignore a11y_autofocus -->
 			<input
 				type="text"
 				{placeholder}
@@ -114,7 +131,7 @@
 						searchQuery = '';
 					}, 200);
 				}}
-				use:focusInput
+				autofocus
 				class="grow text-xs sm:text-sm"
 			/>
 		</label>
@@ -124,23 +141,7 @@
 			>
 				<ul class="divide-base-100 divide-y max-h-60 overflow-y-auto">
 					{#each filteredItems as item, idx (item.code || idx)}
-						<li>
-							<button
-								type="button"
-								class="bg-base-100 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full px-4 py-2 text-left text-xs sm:text-sm transition-colors duration-150 cursor-pointer"
-								class:bg-primary={autoCompleteIndex === idx}
-								class:text-primary-content={autoCompleteIndex === idx}
-								onclick={(e) => {
-									e.preventDefault();
-									onselect(item);
-									searchQuery = '';
-									autoCompleteIndex = -1;
-									showInput = false;
-								}}
-							>
-								<span>{item.locale || item.name} ({item.en})</span>
-							</button>
-						</li>
+						{@render listItem(item, idx)}
 					{/each}
 				</ul>
 			</div>

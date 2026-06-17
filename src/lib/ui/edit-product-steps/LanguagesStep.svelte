@@ -56,10 +56,13 @@
 		);
 		if (!confirmed) return;
 
+		// Copy the product object at the start of the editing phase
+		const newProd = { ...product };
+
 		// Remove the language from product.languages_codes
-		const codes = { ...product.languages_codes };
+		const codes = { ...newProd.languages_codes };
 		delete codes[code];
-		product.languages_codes = codes;
+		newProd.languages_codes = codes;
 
 		// Remove all fields of the language from product object
 		const fieldsToDelete = [
@@ -68,12 +71,13 @@
 			`packaging_text_${code}`
 		];
 		for (const field of fieldsToDelete) {
-			if (field in product) {
-				delete product[field as keyof Product];
+			if (field in newProd) {
+				delete newProd[field as keyof Product];
 			}
 		}
-		// Trigger Svelte reactivity on product
-		product = { ...product };
+
+		// Reassign back to trigger Svelte reactivity once
+		product = newProd;
 
 		// Switch to main language if the active language was the deleted one
 		if (activeLang === code) {
@@ -185,24 +189,22 @@
 	/>
 
 	<!-- Tab Panel Content -->
-	{#if Object.keys(product.languages_codes ?? {}).length > 0}
-		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-			{#if code === activeLang}
-				<div class="form-control p-6 w-full">
-					<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
-						<span class="flex items-center gap-2">
-							{$_('product.edit.name')} ({getLanguageName(code)})
-							<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
-						</span>
-					</label>
-					<input
-						id={`product-name-${code}`}
-						type="text"
-						class="input input-bordered w-full text-sm sm:text-base"
-						bind:value={product[`product_name_${code}`]}
-					/>
-				</div>
-			{/if}
-		{/each}
-	{/if}
+	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+		{#if code === activeLang}
+			<div class="form-control p-6 w-full">
+				<label class="label text-sm sm:text-base" for={`product-name-${code}`}>
+					<span class="flex items-center gap-2">
+						{$_('product.edit.name')} ({getLanguageName(code)})
+						<InfoTooltip text={$_('product.edit.tooltips.product_name')} />
+					</span>
+				</label>
+				<input
+					id={`product-name-${code}`}
+					type="text"
+					class="input input-bordered w-full text-sm sm:text-base"
+					bind:value={product[`product_name_${code}`]}
+				/>
+			</div>
+		{/if}
+	{/each}
 </div>
