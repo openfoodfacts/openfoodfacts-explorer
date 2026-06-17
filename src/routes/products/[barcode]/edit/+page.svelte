@@ -3,6 +3,7 @@
 	import ISO6391 from 'iso-639-1';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
+	import { trackOffEvent } from '$lib/analytics';
 
 	import {
 		getOrDefault,
@@ -363,6 +364,7 @@
 					return;
 				} else {
 					console.debug('Obsolete status updated successfully');
+					trackOffEvent('product', 'delete_submitted');
 				}
 				console.groupEnd();
 			}

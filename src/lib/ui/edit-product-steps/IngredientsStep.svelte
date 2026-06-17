@@ -14,6 +14,7 @@
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { trackOffEvent } from '$lib/analytics';
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 
 	type OCRResult = {
@@ -46,6 +47,7 @@
 		}
 
 		ocrLoading = true;
+		trackOffEvent('product', 'launch_ocr', 'ingredients');
 
 		try {
 			const openfoodfacts = createProductsApi(fetch);

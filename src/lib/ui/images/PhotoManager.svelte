@@ -16,6 +16,7 @@
 	} from '$lib/api/product';
 	import type { ImageEditData } from '$lib/utils/imageEdit';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { trackOffEvent } from '$lib/analytics';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
@@ -276,6 +277,7 @@
 			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
 
 			toast.success($_('product.edit.images.toast.save_success'));
+			trackOffEvent('product', 'crop_save_image', editingImageData.typeId);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 			console.error('Error processing image:', error);
@@ -342,6 +344,7 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
+				trackOffEvent('product', 'unselect_image', image.typeId);
 				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
