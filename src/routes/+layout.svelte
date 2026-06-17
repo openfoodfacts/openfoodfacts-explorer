@@ -36,7 +36,7 @@
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { setWebsiteCtx } from '$lib/stores/website';
-	import type { WebsiteFlavor } from '$lib/flavor';
+	import { WEBSITE_FLAVOR_METADATA, type WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
@@ -44,6 +44,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
+	import { nutripatrolFlagStore, closeNutriPatrolFlag } from '$lib/stores/nutripatrol';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: WebsiteFlavor } = $state({
@@ -424,6 +425,21 @@
 <CompareFloatingButton />
 <Footer />
 <Toast />
+
+{#if $nutripatrolFlagStore}
+	<nutripatrol-flag-form
+		type={$nutripatrolFlagStore.type ?? 'image'}
+		barcode={$nutripatrolFlagStore.barcode}
+		image-id={$nutripatrolFlagStore.imageId ?? ''}
+		url={$nutripatrolFlagStore.url ?? ''}
+		flavor={$nutripatrolFlagStore.flavor ??
+			WEBSITE_FLAVOR_METADATA[websiteCtx.flavor]?.reportFlavor ??
+			'off'}
+		user-id={$userInfo?.preferred_username ?? ''}
+		open={true}
+		onclose={closeNutriPatrolFlag}
+	></nutripatrol-flag-form>
+{/if}
 
 {#if navigationTooSlow != null}
 	{#await navigationTooSlow then}

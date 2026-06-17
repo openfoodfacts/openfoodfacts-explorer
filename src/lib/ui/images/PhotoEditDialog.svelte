@@ -2,8 +2,10 @@
 	import { untrack } from 'svelte';
 	import 'cropperjs';
 	import type { ProductImage } from '$lib/api';
-	import { getToastCtx } from '$lib/stores/toasts';
 	import { _ } from '$lib/i18n';
+	import { openNutriPatrolFlag } from '$lib/stores/nutripatrol';
+	import { userInfo } from '$lib/stores/user';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
@@ -57,13 +59,13 @@
 
 	type Props = {
 		image: ProductImage;
-		reportImageUrl: string;
+		barcode?: string;
 		onSave: (data: EditData) => void;
 		onImageUnselected: () => void;
 		onClose?: () => void;
 	};
 
-	let { image, reportImageUrl, onClose, onSave, onImageUnselected }: Props = $props();
+	let { image, barcode, onClose, onSave, onImageUnselected }: Props = $props();
 
 	const toast = getToastCtx();
 
@@ -703,17 +705,32 @@
 					{$_('product.edit.images.unselect_image', { default: 'Unselect Image' })}
 				</button>
 
-				{#if reportImageUrl}
-					<a
-						href={reportImageUrl}
-						target="_blank"
-						rel="noopener noreferrer"
+				{#if barcode}
+					<button
+						type="button"
 						class="btn btn-outline hover:btn-outline hover:btn-warning"
 						aria-label="Report this image"
+						onclick={() => {
+							if ($userInfo == null) {
+								toast.warning(
+									$_('product.edit.images.toast.report_login_required', {
+										default: 'Please log in to report an image.'
+									})
+								);
+								return;
+							}
+							if (image.imgid && image.url) {
+								openNutriPatrolFlag({
+									barcode,
+									imageId: image.imgid.toString(),
+									url: image.url
+								});
+							}
+						}}
 					>
 						<IconMdiFlag class="h-4 w-4" aria-hidden="true" />
 						{$_('product.edit.images.report_image', { default: 'Report Image' })}
-					</a>
+					</button>
 				{/if}
 			</div>
 

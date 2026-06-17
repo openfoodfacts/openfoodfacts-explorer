@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { IMAGE_REPORT_URL } from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
+	import { openNutriPatrolFlag } from '$lib/stores/nutripatrol';
+	import { getToastCtx } from '$lib/stores/toasts';
 	import { resolve } from '$app/paths';
 	import { _ } from 'svelte-i18n';
 	import ResizableImage from './ResizableImage.svelte';
@@ -20,6 +21,7 @@
 	let zoomLevel = $state(1);
 	let translation = $state({ x: 0, y: 0 });
 	const MAX_ZOOM = 3;
+	const toast = getToastCtx();
 
 	let rotation = $state(0);
 
@@ -175,15 +177,30 @@
 
 				<!-- Flag/Report button -->
 				{#if image?.imageid}
-					<a
+					<button
+						type="button"
 						class="btn btn-sm bg-base-100/80 hover:bg-base-100 gap-2"
-						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
-						target="_blank"
-						rel="noopener noreferrer"
+						onclick={() => {
+							if ($userInfo == null) {
+								toast.warning(
+									$_('product.edit.images.toast.report_login_required', {
+										default: 'Please log in to report an image.'
+									})
+								);
+								return;
+							}
+							if (image?.productCode && image?.imageid && image?.url) {
+								openNutriPatrolFlag({
+									barcode: image.productCode,
+									imageId: image.imageid.toString(),
+									url: image.url
+								});
+							}
+						}}
 					>
 						<IconMdiFlagOutline class="h-5 w-5" />
 						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
-					</a>
+					</button>
 				{/if}
 			{/if}
 		</div>

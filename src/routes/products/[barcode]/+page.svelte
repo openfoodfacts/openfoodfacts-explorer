@@ -26,7 +26,7 @@
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
@@ -54,6 +54,9 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+
+	// Provide product images context to child components for resolving numeric image IDs
+	setContext('product-images', () => product.images);
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {

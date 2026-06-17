@@ -2,15 +2,18 @@
 	import type { KnowledgeActionElement } from '$lib/api';
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
-	import { NUTRIPATROL_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
+	import { openNutriPatrolFlag } from '$lib/stores/nutripatrol';
+	import { userInfo } from '$lib/stores/user';
+	import { getToastCtx } from '$lib/stores/toasts';
 
 	type Props = {
 		element: KnowledgeActionElement;
 		code?: string;
 	};
 	let { element, code: code }: Props = $props();
+	const toastCtx = getToastCtx();
 
 	function requireCode() {
 		if (code == null) {
@@ -35,16 +38,18 @@
 		{
 			type: 'report_product_to_nutripatrol',
 			action: () => {
-				const params = new URLSearchParams({
+				if ($userInfo == null) {
+					toastCtx.warning(
+						$_('product.toast.report_login_required', {
+							default: 'Please log in to report a product.'
+						})
+					);
+					return;
+				}
+				openNutriPatrolFlag({
 					barcode: requireCode(),
-					source: 'web',
-					flavor: 'off'
+					type: 'product'
 				});
-				window.open(
-					`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`,
-					'_blank',
-					'noopener,noreferrer'
-				);
 			}
 		},
 		{

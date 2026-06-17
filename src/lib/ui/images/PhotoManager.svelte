@@ -20,7 +20,6 @@
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
-	import { IMAGE_REPORT_URL } from '$lib/const';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -354,10 +353,6 @@
 		}
 	}
 
-	function getNutriPatrolReportUrl(image: ProductImage) {
-		return IMAGE_REPORT_URL(product.code, image.imgid);
-	}
-
 	let selectingImageModal: PhotoSelectDialog | undefined = $state();
 	let selectingImageSection: string | undefined = $state();
 	let isSelectingImage = $state(false);
@@ -458,7 +453,7 @@
 {#if editingImageData}
 	<PhotoEditDialog
 		bind:this={editingImageModal}
-		reportImageUrl={getNutriPatrolReportUrl(editingImageData)}
+		barcode={product.code}
 		image={editingImageData}
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
