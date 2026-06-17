@@ -212,7 +212,7 @@
 			"edit_product_brands": "Jump to product brands",
 			"edit_product_categories": "Jump to product categories",
 			"edit_product_labels": "Ga naar productlabels",
-			"edit_product_ingredients": "Jump to product ingredients",
+			"edit_product_ingredients": "Ga naar productingrediënten",
 			"edit_product_energy": "Ga naar productenergie",
 			"edit_product_fibers": "Ga naar productvezels"
 		},
@@ -238,7 +238,7 @@
 			"origins": "Oorsprong",
 			"traceability_codes": "Traceerbaarheidscodes",
 			"traceability_codes_learn_more": "Meer informatie",
-			"producer_link": "Producer link",
+			"producer_link": "Producentlink",
 			"stores": "Winkels",
 			"countries": "Landen"
 		},
@@ -249,12 +249,12 @@
 			"intro_emphasis": "must be factual",
 			"intro_after": ". You can dive into ",
 			"link_properties": "the list of properties already used by the community",
-			"link_middle": " or explore the ",
+			"link_middle": " of ontdek de ",
 			"link_docs": "properties' documentation and its search engine",
 			"warning": "Houd er rekening mee dat het datamodel kan worden gewijzigd. Gebruik op eigen risico.",
 			"footer_before": "This is brought by the ",
 			"footer_link": "Folksonomy Engine project",
-			"footer_after": ". Don't hesitate to participate or give feedback."
+			"footer_after": "Aarzel niet om deel te nemen of feedback te geven."
 		},
 		"datasources": {
 			"title": "Gegevensbronnen",
@@ -271,7 +271,7 @@
 			"toDo": "Nog te doen",
 			"states": "Staten",
 			"never_checked": "Nooit gecontroleerd",
-			"check_be_first": "Be the first to check this product"
+			"check_be_first": "Wees de eerste die dit product controleert"
 		},
 		"edit": {
 			"moderator_only": "Alleen moderators",
@@ -281,7 +281,7 @@
 				"languages": "Voeg productnamen en beschrijvingen in verschillende talen toe om het product voor meer gebruikers toegankelijk te maken.",
 				"ingredients": "Vermeld alle ingrediënten die in het product aanwezig zijn. Dit helpt gebruikers met allergieën of dieetwensen.",
 				"nutrition": "Voer de voedingswaarden per 100 g/ml in zoals aangegeven op de verpakking. Dit helpt gebruikers producten te vergelijken.",
-				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
+				"moderator_tools": "Deze tools zijn alleen beschikbaar voor moderators. Ze maken administratieve handelingen mogelijk, zoals het corrigeren van de productbarcode.",
 				"prices": "Help mee de prijsgeschiedenis van dit product bij te houden op Open Prices.",
 				"comment": "Voeg desgewenst een opmerking toe waarin u uw wijzigingen beschrijft of aanvullende context geeft.",
 				"packaging": "Beschrijf elk verpakkingsonderdeel (fles, dop, doos, enz.) met de vorm, het materiaal en de recyclinginstructies. Je kunt meerdere onderdelen toevoegen."
@@ -395,7 +395,7 @@
 				},
 				"unknown_unit": {
 					"title": "De aangegeven portiegrootte kan onjuist zijn.",
-					"desc": "Serving size should include a common unit. Examples: {examples}"
+					"desc": "De portiegrootte moet een gangbare eenheid bevatten. Voorbeelden: {examples}"
 				}
 			},
 			"no_nutrition_data": "Geen voedingswaarden vermeld op het product",
@@ -461,7 +461,7 @@
 					"select_success": "Afbeelding succesvol geselecteerd!",
 					"select_error": "Fout bij het selecteren van afbeelding. Probeer het opnieuw.",
 					"not_loaded": "Afbeelding niet volledig geladen. Wacht even en probeer het later opnieuw.",
-					"invalid_crop": "Please select a valid crop area."
+					"invalid_crop": "Selecteer een geldig bijsnijdgebied."
 				},
 				"select_image": "Kies een afbeelding",
 				"uploading": "Uploaden...",
@@ -475,25 +475,25 @@
 				"see_all": "Alles bekijken ({count})",
 				"processing_upload": "Upload wordt verwerkt...",
 				"unselecting_image": "Afbeelding deselecteren...",
-				"photos_available": "Photos available",
+				"photos_available": "Foto's beschikbaar",
 				"edit_photo": "Foto Bewerken",
-				"loading_editor": "Loading image editor...",
-				"rotate_left": "Rotate Left",
-				"rotate_right": "Rotate Right",
-				"zoom_in": "Zoom In",
-				"zoom_out": "Zoom Out",
+				"loading_editor": "De afbeeldingseditor wordt geladen...",
+				"rotate_left": "Linksom draaien",
+				"rotate_right": "Rechtsom draaien",
+				"zoom_in": "Inzoomen",
+				"zoom_out": "Uitzoomen",
 				"reset": "Herstellen",
-				"rotation": "Rotation",
-				"tool": "Tool",
-				"crop_drag_to_move": "Drag to move, corners to resize",
-				"crop_click_to_start": "Click and drag to start cropping",
+				"rotation": "Draaien",
+				"tool": "Hulpmiddel",
+				"crop_drag_to_move": "Sleep om te verplaatsen, gebruik de hoeken om het formaat aan te passen.",
+				"crop_click_to_start": "Klik en sleep om te beginnen met bijsnijden.",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Rapporteer afbeelding",
-				"save_changes": "Save Changes"
+				"save_changes": "Wijzigingen opslaan"
 			},
-			"comment_description": "Add a comment about your changes (optional)",
+			"comment_description": "Voeg een opmerking toe over je wijzigingen (optioneel)",
 			"prices": {
-				"add_price_btn": "Add a price on Open Prices"
+				"add_price_btn": "Voeg een prijs toe aan Open Prijzen"
 			}
 		},
 		"prices": {
@@ -504,33 +504,33 @@
 		"knowledge_panels": {
 			"action": {
 				"add_packaging_components": "Voeg verpakkingsonderdelen toe",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Oorsprong toevoegen",
+				"add_ingredients_text": "Ingrediëntentekst toevoegen"
 			}
 		},
 		"moderator": {
-			"barcode_correction_title": "Correct Barcode",
-			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_title": "Correcte barcode",
+			"barcode_correction_new_code_label": "Nieuwe barcode",
 			"barcode_correction_description": "Als de streepjescode niet correct is, corrigeer deze dan hier:",
-			"barcode_correction_placeholder": "Enter the correct barcode",
-			"barcode_correction_submit": "Correct Barcode",
-			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"barcode_correction_placeholder": "Voer de juiste barcode in",
+			"barcode_correction_submit": "Correcte barcode",
+			"barcode_correction_success": "Barcode succesvol gecorrigeerd. Doorverwijzen...",
+			"barcode_correction_error": "Het corrigeren van de barcode is mislukt. Probeer het opnieuw.",
 			"delete_product_title": "Verwijder de productpagina",
 			"delete_product_confirm": "Weet u zeker dat u de pagina van dit product wilt verwijderen?",
 			"delete_product_comment_label": "Reden voor verwijdering",
-			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_comment_placeholder": "Voer de reden voor verwijdering in",
 			"delete_product_submit": "Verwijder de productpagina",
-			"delete_product_success": "Product deleted successfully.",
-			"delete_product_error": "Failed to delete product. Please try again.",
-			"delete_product_confirm_barcode_label": "Type barcode to confirm",
-			"delete_product_modal_title": "Confirm Deletion",
-			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
-			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
-			"delete_product_modal_prompt_suffix": " below:",
-			"delete_product_modal_btn": "Permanently Delete",
-			"delete_product_prefill_reasons_label": "Common reasons:",
-			"delete_reason_personal": "Personal data",
+			"delete_product_success": "Product succesvol verwijderd.",
+			"delete_product_error": "Het verwijderen van het product is mislukt. Probeer het opnieuw.",
+			"delete_product_confirm_barcode_label": "Voer de barcode in om te bevestigen",
+			"delete_product_modal_title": "Verwijdering bevestigen",
+			"delete_product_modal_desc": "U staat op het punt deze productpagina te verwijderen. Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+			"delete_product_modal_prompt_prefix": "Voer de barcode in ter bevestiging. ",
+			"delete_product_modal_prompt_suffix": " hieronder:",
+			"delete_product_modal_btn": "Permanent Verwijderen",
+			"delete_product_prefill_reasons_label": "Veelvoorkomende redenen:",
+			"delete_reason_personal": "Persoonsgegevens",
 			"delete_reason_nsfw": "NSFW",
 			"delete_reason_copyright": "Copyrighted data and images",
 			"delete_reason_app_test": "Test by an app",
