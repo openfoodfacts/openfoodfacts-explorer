@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "மற்றவர்கள் தயாரிப்பை அடையாளம் காண உதவும் வகையில், தயாரிப்பு, அதில் உள்ள பொருட்கள் மற்றும் ஊட்டச்சத்து உண்மைகளின் தெளிவான படங்களை பதிவேற்றவும்.",
