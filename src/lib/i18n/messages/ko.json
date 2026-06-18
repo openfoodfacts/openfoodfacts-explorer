@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "다른 사람들이 제품을 식별할 수 있도록 제품, 성분, 영양 정보를 명확하게 담은 이미지를 업로드하세요.",

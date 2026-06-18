@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "ອັບໂຫຼດຮູບພາບທີ່ຊັດເຈນຂອງຜະລິດຕະພັນ, ສ່ວນປະກອບ, ແລະຂໍ້ເທັດຈິງດ້ານໂພຊະນາການເພື່ອຊ່ວຍຄົນອື່ນລະບຸຜະລິດຕະພັນ.",

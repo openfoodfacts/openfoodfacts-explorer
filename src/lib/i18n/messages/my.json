@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "ထုတ်ကုန်၊ ပါဝင်ပစ္စည်းများနှင့် အာဟာရဆိုင်ရာ အချက်အလက်များကို အခြားသူများသိရှိနိုင်စေရန်အတွက် ရှင်းလင်းသောပုံများကို အပ်လုဒ်လုပ်ပါ။",

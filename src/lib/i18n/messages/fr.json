@@ -274,6 +274,10 @@
 			"check_be_first": "Soyez le premier à vérifier ce produit"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Modérateurs uniquement",
 			"info": {
 				"images": "Téléchargez des images claires du produit, des ingrédients et des informations nutritionnelles pour aider les autres à identifier le produit.",

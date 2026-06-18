@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Luet kloer Biller vum Produkt, den Zutaten an den Ernärungsinformatiounen erop, fir datt aneren de Produit besser identifizéiere kënnen.",

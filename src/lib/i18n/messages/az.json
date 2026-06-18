@@ -1,6 +1,6 @@
 {
 	"nutriscore": "Nutri-Score",
-	"ecoscore": "Green-Score",
+	"ecoscore": "Yaşıl Hesab",
 	"nova": "Nova - Ultra emal səviyyələri",
 	"settings_link": "Tənzimləmələr",
 	"folksonomy_link": "Folksonomiya",
@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Başqalarının məhsulu tanımasına kömək etmək üçün məhsulun, inqrediyentlərin və qidalanma faktlarının aydın şəkillərini yükləyin.",

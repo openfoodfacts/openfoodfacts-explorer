@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Uaslódáil íomhánna soiléire den táirge, na comhábhair agus na fíricí cothaithe chun cabhrú le daoine eile an táirge a aithint.",
