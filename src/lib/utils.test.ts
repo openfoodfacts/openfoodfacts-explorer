@@ -31,5 +31,6 @@ describe('requirePositiveInt', () => {
 		expect(() => requirePositiveInt('0', throwInvalid)).toThrow('invalid');
 		expect(() => requirePositiveInt('-1', throwInvalid)).toThrow('invalid');
 		expect(() => requirePositiveInt('abc', throwInvalid)).toThrow('invalid');
+		expect(() => requirePositiveInt('', throwInvalid)).toThrow('invalid');
 	});
 });

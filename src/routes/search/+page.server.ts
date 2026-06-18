@@ -97,10 +97,10 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		redirect(308, `/products/${query}`);
 	}
 
-	const page = requirePositiveInt(url.searchParams.get('page') || '1', () =>
+	const page = requirePositiveInt(url.searchParams.get('page') ?? '1', () =>
 		error(400, 'Invalid page number')
 	);
-	const pageSize = requirePositiveInt(url.searchParams.get('page_size') || '24', () =>
+	const pageSize = requirePositiveInt(url.searchParams.get('page_size') ?? '24', () =>
 		error(400, 'Invalid page size')
 	);
 
