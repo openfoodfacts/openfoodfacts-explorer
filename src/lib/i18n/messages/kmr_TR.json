@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Wêneyên zelal ên berhem, pêkhate û agahdariyên xurekî bar bikin da ku alîkariya kesên din bikin ku berhemê nas bikin.",
