@@ -466,6 +466,15 @@
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
 		onImageUnselected={unselectCurrentImage}
+		onImageReplace={() => {
+			if (editingImageData) {
+				const inputId = `${editingImageData.typeId}-${activeLanguageCode}-upload`;
+				const fileInput = document.getElementById(inputId);
+				if (fileInput instanceof HTMLInputElement) {
+					fileInput.click();
+				}
+			}
+		}}
 	/>
 {/if}
 

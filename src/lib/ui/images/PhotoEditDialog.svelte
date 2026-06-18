@@ -14,6 +14,7 @@
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
+	import IconMdiUpload from '@iconify-svelte/mdi/upload';
 
 	type CropData = {
 		x: number;
@@ -60,10 +61,12 @@
 		reportImageUrl: string;
 		onSave: (data: EditData) => void;
 		onImageUnselected: () => void;
+		onImageReplace?: () => void;
 		onClose?: () => void;
 	};
 
-	let { image, reportImageUrl, onClose, onSave, onImageUnselected }: Props = $props();
+	let { image, reportImageUrl, onClose, onSave, onImageUnselected, onImageReplace }: Props =
+		$props();
 
 	const toast = getToastCtx();
 
@@ -702,6 +705,22 @@
 					<IconMdiImageRemove class="h-4 w-4" aria-hidden="true" />
 					{$_('product.edit.images.unselect_image', { default: 'Unselect Image' })}
 				</button>
+
+				{#if onImageReplace}
+					<button
+						type="button"
+						class="btn btn-outline hover:btn-outline hover:btn-info"
+						onclick={() => {
+							closeModal();
+							onImageReplace?.();
+						}}
+						disabled={!canPerformActions}
+						aria-label="Replace this image"
+					>
+						<IconMdiUpload class="h-4 w-4" aria-hidden="true" />
+						{$_('product.edit.images.replace_image', { default: 'Replace Image' })}
+					</button>
+				{/if}
 
 				{#if reportImageUrl}
 					<a
