@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "उत्पाद की पहचान करने में दूसरों की मदद करने के लिए उत्पाद, सामग्री और पोषण संबंधी तथ्यों की स्पष्ट छवियां अपलोड करें।",
