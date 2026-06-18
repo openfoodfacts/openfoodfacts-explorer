@@ -6,6 +6,7 @@ import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfa
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
+import { requirePositiveInt } from '$lib/utils';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -96,8 +97,12 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		redirect(308, `/products/${query}`);
 	}
 
-	const page = parseInt(url.searchParams.get('page') || '1', 10);
-	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
+	const page = requirePositiveInt(url.searchParams.get('page') || '1', () =>
+		error(400, 'Invalid page number')
+	);
+	const pageSize = requirePositiveInt(url.searchParams.get('page_size') || '24', () =>
+		error(400, 'Invalid page size')
+	);
 
 	const api = createSearchApi(fetch);
 

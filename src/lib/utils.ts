@@ -49,10 +49,26 @@ export function requireInt(value: string | null, error: () => never) {
 	if (value == null) {
 		error();
 	}
-	const intValue = parseInt(value, 10);
-	if (isNaN(intValue)) {
+
+	const normalizedValue = value.trim();
+	if (!/^-?\d+$/.test(normalizedValue)) {
 		error();
 	}
+
+	const intValue = Number(normalizedValue);
+	if (!Number.isSafeInteger(intValue)) {
+		error();
+	}
+
+	return intValue;
+}
+
+export function requirePositiveInt(value: string | null, error: () => never) {
+	const intValue = requireInt(value, error);
+	if (intValue < 1) {
+		error();
+	}
+
 	return intValue;
 }
 
