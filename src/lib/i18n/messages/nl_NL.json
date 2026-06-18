@@ -532,18 +532,18 @@
 			"delete_product_prefill_reasons_label": "Veelvoorkomende redenen:",
 			"delete_reason_personal": "Persoonsgegevens",
 			"delete_reason_nsfw": "NSFW",
-			"delete_reason_copyright": "Copyrighted data and images",
-			"delete_reason_app_test": "Test by an app",
-			"delete_reason_user_test": "Test by a user",
-			"delete_reason_duplicate": "Duplicate product",
-			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_copyright": "Auteursrechtelijk beschermde gegevens en afbeeldingen",
+			"delete_reason_app_test": "Test door een app",
+			"delete_reason_user_test": "Test door een gebruiker",
+			"delete_reason_duplicate": "Dubbel product",
+			"delete_reason_spam": "Spam of vandalisme",
 			"delete_reason_invalid_barcode": "Incorrect barcode",
 			"obsolete_title": "Product van de markt gehaald",
-			"obsolete_important_note_prefix": "Important note:",
-			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_important_note_prefix": "Belangrijke opmerking:",
+			"obsolete_important_note_body": " Dit product wordt niet meer verkocht. De gegevens worden alleen ter referentie bewaard. Dit product verschijnt niet in reguliere zoekresultaten en wordt niet meegenomen in statistieken.",
 			"obsolete_checkbox_label": "Product van de markt gehaald",
 			"obsolete_badge": "Product van de markt gehaald",
-			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_btn": "Verouderde status opslaan",
 			"obsolete_save_success": "Product obsolete status updated successfully.",
 			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
@@ -568,7 +568,7 @@
 		"step": "Stap",
 		"of": "van",
 		"cancel": "Annuleer",
-		"close": "close"
+		"close": "sluiten"
 	},
 	"menu": {
 		"button": "Menu",
