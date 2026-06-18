@@ -111,7 +111,11 @@
 								})
 							);
 						} else {
-							toast.success($_('product.edit.images.toast.upload_success'));
+							toast.success(
+								$_('product.edit.images.toast.upload_success', {
+									default: 'Image uploaded successfully.'
+								})
+							);
 						}
 
 						trackOffEvent('product', 'upload_image', sectionType.id);

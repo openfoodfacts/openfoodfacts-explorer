@@ -714,8 +714,9 @@
 							closeModal();
 							onImageReplace?.();
 						}}
-						disabled={!canPerformActions}
-						aria-label="Replace this image"
+						aria-label={$_('product.edit.images.replace_image_aria', {
+							default: 'Replace this image'
+						})}
 					>
 						<IconMdiUpload class="h-4 w-4" aria-hidden="true" />
 						{$_('product.edit.images.replace_image', { default: 'Replace Image' })}
