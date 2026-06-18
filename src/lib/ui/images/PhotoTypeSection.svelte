@@ -249,6 +249,14 @@
 			{/if}
 		</div>
 	</div>
+
+	{#if imagesOfType.length === 0}
+		<div class="alert alert-dash justify-center">
+			{$_('product.edit.images.section_no_photos', {
+				default: 'No photo selected for this section yet.'
+			})}
+		</div>
+	{/if}
 	{#if imagesOfType.length > 0}
 		<div class="relative">
 			<div

@@ -43,7 +43,7 @@
 			>
 				<IconMdiClose class="text-primary h-5 w-5" />
 			</button>
-			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
+			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 shrink-0" />
 			<span class="text-base-content/80 p-6 text-sm sm:text-base">
 				{$_('product.edit.info.images')}
 			</span>

@@ -5,6 +5,8 @@
 
 	import { invalidateAll } from '$app/navigation';
 
+	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+
 	import { _ } from '$lib/i18n';
 	import type { Product, ProductImage, RawImage } from '$lib/api';
 	import {
@@ -22,6 +24,7 @@
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
 	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { getLanguageName } from '$lib/languages';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -400,17 +403,23 @@
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<div class="tabs tabs-box">
+	<div class="tabs tabs-lift">
+		<div class="tab tab-disabled cursor-default">
+			<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
+		</div>
 		{#each Object.keys(product.languages_codes) as code (code)}
 			<input
 				type="radio"
 				name="photo_tabs"
 				class="tab"
-				aria-label={getLanguage(code)}
+				aria-label={getLanguageName(code)}
 				checked={code === activeLanguageCode}
 				onchange={() => handleLanguageChange(code)}
 			/>
-			<div class="tab-content p-3 sm:p-6" class:hidden={code !== activeLanguageCode}>
+			<div
+				class="tab-content bg-base-100 border-base-300 p-3 sm:p-6"
+				class:hidden={code !== activeLanguageCode}
+			>
 				<!-- Show standard photo types first -->
 				{#each photoTypes as photoType (photoType.id)}
 					<PhotoTypeSection

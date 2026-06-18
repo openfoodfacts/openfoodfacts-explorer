@@ -11,6 +11,8 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
+	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -126,14 +128,17 @@
 			>
 				<IconMdiClose class="text-primary h-5 w-5" />
 			</button>
-			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
+			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 shrink-0" />
 			<span class="text-base-content/80 p-6 text-sm sm:text-base">
 				{$_('product.edit.info.ingredients')}
 			</span>
 		</div>
 	{/if}
 {/if}
-<div class="tabs tabs-box">
+<div class="tabs tabs-lift">
+	<div class="tab tab-disabled cursor-default">
+		<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
+	</div>
 	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 		<input
 			type="radio"
@@ -143,7 +148,7 @@
 			checked={code === activeLang}
 			onchange={() => (activeLang = code)}
 		/>
-		<div class="tab-content form-control p-6">
+		<div class="tab-content bg-base-100 border-base-300 form-control p-6">
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
