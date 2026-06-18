@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, type Component } from 'svelte';
+	import { onMount } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
@@ -13,18 +13,6 @@
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
-
-	const icons = {
-		languages: IconMdiTranslate,
-		images: IconMdiImageMultiple,
-		'basic-info': IconMdiInformation,
-		ingredients: IconMdiFormatListBulleted,
-		nutrition: IconMdiNutrition,
-		prices: IconMdiTagMultiple,
-		packaging: IconMdiPackageVariant,
-		comment: IconMdiCommentText,
-		'moderator-tools': IconMdiShieldAccount
-	} as const;
 
 	const permissions = getPermissionsCtx();
 
@@ -48,50 +36,71 @@
 	interface SidebarSection {
 		id: string;
 		label: string;
-		icon?: Component;
+		icon?: typeof IconMdiTranslate;
+		style?: 'warning' | 'primary';
 	}
 
-	interface Props {
+	type Props = {
 		sections?: SidebarSection[];
-	}
+	};
 
-	let { sections }: Props = $props();
-
-	const defaultSections = $derived.by(() => {
+	const DEFAULT_SECTIONS = $derived.by(() => {
 		const list: SidebarSection[] = [
-			{ id: 'languages', label: $_('product.edit.sections.languages', { default: 'Languages' }) },
-			{ id: 'images', label: $_('product.edit.sections.images', { default: 'Images' }) },
+			{
+				id: 'languages',
+				label: $_('product.edit.sections.languages', { default: 'Languages' }),
+				icon: IconMdiTranslate
+			},
+			{
+				id: 'images',
+				label: $_('product.edit.sections.images', { default: 'Images' }),
+				icon: IconMdiImageMultiple
+			},
 			{
 				id: 'basic-info',
-				label: $_('product.edit.sections.basic_info', { default: 'Basic Info' })
+				label: $_('product.edit.sections.basic_info', { default: 'Basic Info' }),
+				icon: IconMdiInformation
 			},
 			{
 				id: 'ingredients',
-				label: $_('product.edit.sections.ingredients', { default: 'Ingredients' })
+				label: $_('product.edit.sections.ingredients', { default: 'Ingredients' }),
+				icon: IconMdiFormatListBulleted
 			},
-			{ id: 'nutrition', label: $_('product.edit.sections.nutrition', { default: 'Nutrition' }) },
-			{ id: 'prices', label: $_('product.edit.sections.prices', { default: 'Prices' }) },
-			{ id: 'packaging', label: $_('product.edit.sections.packaging', { default: 'Packaging' }) },
-			{ id: 'comment', label: $_('product.edit.sections.comment', { default: 'Comment' }) }
+			{
+				id: 'nutrition',
+				label: $_('product.edit.sections.nutrition', { default: 'Nutrition' }),
+				icon: IconMdiNutrition
+			},
+			{
+				id: 'prices',
+				label: $_('product.edit.sections.prices', { default: 'Prices' }),
+				icon: IconMdiTagMultiple
+			},
+			{
+				id: 'packaging',
+				label: $_('product.edit.sections.packaging', { default: 'Packaging' }),
+				icon: IconMdiPackageVariant
+			},
+			{
+				id: 'comment',
+				label: $_('product.edit.sections.comment', { default: 'Comment' }),
+				icon: IconMdiCommentText
+			}
 		];
 
 		if (permissions.isModerator && $preferences.moderator) {
 			list.push({
 				id: 'moderator-tools',
-				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' })
+				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
+				icon: IconMdiShieldAccount,
+				style: 'warning'
 			});
 		}
 
 		return list;
 	});
 
-	const sidebarSections = $derived.by(() => {
-		const baseList: SidebarSection[] = sections || defaultSections;
-		return baseList.map((item) => ({
-			...item,
-			icon: item.icon || icons[item.id as keyof typeof icons]
-		}));
-	});
+	let { sections = DEFAULT_SECTIONS }: Props = $props();
 
 	let ignoreObserver = false;
 	let observerTimeout: ReturnType<typeof setTimeout>;
@@ -144,9 +153,9 @@
 		}, 1000);
 
 		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
-		const checkboxes = sidebarSections
-			.map((section) => {
-				const el = document.getElementById(section.id);
+		const checkboxes = sections
+			.map((sec) => {
+				const el = document.getElementById(sec.id);
 				return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
 			})
 			.filter(Boolean) as HTMLInputElement[];
@@ -171,7 +180,7 @@
 	function updateActiveSection() {
 		if (ignoreObserver) return;
 
-		let currentSection = sidebarSections[0]?.id || '';
+		let currentSection = sections[0]?.id || '';
 		let isPreviousCollapsed = false;
 
 		const isAtBottom =
@@ -179,10 +188,10 @@
 			window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50;
 
 		if (isAtBottom) {
-			currentSection = sidebarSections[sidebarSections.length - 1]?.id || '';
+			currentSection = sections[sections.length - 1]?.id || '';
 		} else {
-			for (let i = 0; i < sidebarSections.length; i++) {
-				const section = sidebarSections[i];
+			for (let i = 0; i < sections.length; i++) {
+				const section = sections[i];
 				const el = document.getElementById(section.id);
 				if (el) {
 					const rect = el.getBoundingClientRect();
@@ -232,8 +241,8 @@
 	});
 </script>
 
-<div class="hidden lg:block 2xl:absolute 2xl:right-full 2xl:mr-8 2xl:top-0 2xl:h-full">
-	<aside class="sticky top-24 w-60 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
+<div class="hidden lg:block">
+	<aside class="sticky top-24 w-50 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
 		<div class="flex items-center justify-end mb-4 px-1">
 			<button
 				type="button"
@@ -254,14 +263,17 @@
 			{#if indicatorHeight > 0}
 				<div
 					aria-hidden="true"
-					class="absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out {activeSection ===
-					'moderator-tools'
-						? 'bg-warning'
-						: 'bg-primary'}"
+					class={[
+						'absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out',
+						sections.find((s) => s.id === activeSection)?.style === 'warning'
+							? 'bg-warning'
+							: 'bg-primary'
+					]}
 					style="top: {indicatorTop}px; height: {indicatorHeight}px;"
 				></div>
 			{/if}
-			{#each sidebarSections as section (section.id)}
+
+			{#each sections as section (section.id)}
 				{@const IconComponent = section.icon}
 				<button
 					type="button"
@@ -269,14 +281,16 @@
 					aria-controls={section.id}
 					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => scrollToSection(section.id)}
-					class="group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none cursor-pointer {section.id ===
-					'moderator-tools'
-						? activeSection === section.id
-							? 'text-warning font-semibold'
-							: 'text-warning/70 hover:text-warning'
-						: activeSection === section.id
-							? 'text-primary font-semibold'
-							: 'text-base-content/60 hover:text-primary'}"
+					class={[
+						'group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none cursor-pointer',
+						activeSection === section.id
+							? section.style === 'warning'
+								? 'text-warning font-semibold'
+								: 'text-primary font-semibold'
+							: section.style === 'warning'
+								? 'text-warning/70 hover:text-warning'
+								: 'text-base-content/60 hover:text-primary'
+					]}
 				>
 					{#if IconComponent}
 						<IconComponent

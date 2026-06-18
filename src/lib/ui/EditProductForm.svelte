@@ -107,9 +107,7 @@
 	}
 </script>
 
-<div
-	class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8 2xl:grid-cols-1 2xl:gap-0 my-4"
->
+<div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
 	<EditProductSidebar bind:this={sidebar} />
 
 	<div class="space-y-4 min-w-0 w-full">
