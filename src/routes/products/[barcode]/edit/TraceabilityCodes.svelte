@@ -4,11 +4,11 @@
 	const TRACEABILITY_CODES_URL =
 		'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
-	interface Props {
+	type Props = {
 		traceabilityCodes?: string;
 		autocomplete?: readonly string[];
 		onChange?: (event: { traceabilityCodes: string }) => void;
-	}
+	};
 
 	let { traceabilityCodes = $bindable(''), autocomplete = [], onChange }: Props = $props();
 

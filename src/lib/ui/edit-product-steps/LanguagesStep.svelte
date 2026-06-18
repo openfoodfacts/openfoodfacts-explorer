@@ -87,7 +87,13 @@
 
 <fieldset class="fieldset">
 	<legend class="fieldset-legend">{$_('product.edit.main_language')}</legend>
-	<select class="select w-full" bind:value={product.lang}>
+	<select
+		class="select w-full"
+		value={product.lang}
+		onchange={(e) => {
+			product = { ...product, lang: (e.currentTarget as HTMLSelectElement).value };
+		}}
+	>
 		{#each Object.keys(product.languages_codes ?? {}) as lang (lang)}
 			<option value={lang}>{getLanguageName(lang)}</option>
 		{/each}
@@ -120,7 +126,13 @@
 					id={`product-name-${code}`}
 					type="text"
 					class="input input-bordered w-full text-sm sm:text-base"
-					bind:value={product[`product_name_${code}`]}
+					value={product[`product_name_${code}`] ?? ''}
+					oninput={(e) => {
+						product = {
+							...product,
+							[`product_name_${code}`]: (e.currentTarget as HTMLInputElement).value
+						};
+					}}
 					aria-label={`${$_('product.edit.name')} (${langName})`}
 				/>
 			</div>

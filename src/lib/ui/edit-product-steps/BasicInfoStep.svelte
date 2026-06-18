@@ -117,7 +117,10 @@
 			<select
 				id="product_type"
 				class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.product_type}
+				value={product.product_type}
+				onchange={(e) => {
+					product = { ...product, product_type: (e.currentTarget as HTMLSelectElement).value };
+				}}
 			>
 				{#each PRODUCT_TYPES as type (type)}
 					<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
@@ -139,7 +142,10 @@
 				id="quantity"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.quantity}
+				value={product.quantity ?? ''}
+				oninput={(e) => {
+					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
+				}}
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 		</div>
@@ -153,7 +159,13 @@
 				id="manufacturing_places"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.manufacturing_places}
+				value={product.manufacturing_places ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						manufacturing_places: (e.currentTarget as HTMLInputElement).value
+					};
+				}}
 				placeholder="e.g., France, Italy"
 			/>
 		</div>
@@ -168,7 +180,10 @@
 			id="website_url"
 			type="url"
 			class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
-			bind:value={product.link}
+			value={product.link ?? ''}
+			oninput={(e) => {
+				product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
+			}}
 			placeholder="https://example.com/products/pasta-n8"
 		/>
 	</div>
@@ -182,7 +197,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.categories')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.categories} autocomplete={categoryNames} />
+			<TagsString
+				tagsString={product.categories ?? ''}
+				autocomplete={categoryNames}
+				onChange={(v) => {
+					product = { ...product, categories: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="labels-input">
@@ -191,7 +212,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.labels')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.labels} autocomplete={labelNames} />
+			<TagsString
+				tagsString={product.labels ?? ''}
+				autocomplete={labelNames}
+				onChange={(v) => {
+					product = { ...product, labels: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="brands-input">
@@ -200,7 +227,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.brands} autocomplete={brandNames} />
+			<TagsString
+				tagsString={product.brands ?? ''}
+				autocomplete={brandNames}
+				onChange={(v) => {
+					product = { ...product, brands: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="stores-input">
@@ -209,7 +242,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.stores')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.stores} autocomplete={storeNames} />
+			<TagsString
+				tagsString={product.stores ?? ''}
+				autocomplete={storeNames}
+				onChange={(v) => {
+					product = { ...product, stores: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="origins-input">
@@ -218,7 +257,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.origins} autocomplete={originNames} />
+			<TagsString
+				tagsString={product.origins ?? ''}
+				autocomplete={originNames}
+				onChange={(v) => {
+					product = { ...product, origins: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
@@ -227,7 +272,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.countries')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.countries} autocomplete={countriesNames} />
+			<TagsString
+				tagsString={product.countries ?? ''}
+				autocomplete={countriesNames}
+				onChange={(v) => {
+					product = { ...product, countries: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="traceability-codes-input">
@@ -236,7 +287,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 				</span>
 			</label>
-			<TraceabilityCodes bind:traceabilityCodes={product.emb_codes} autocomplete={[]} />
+			<TraceabilityCodes
+				traceabilityCodes={product.emb_codes ?? ''}
+				autocomplete={[]}
+				onChange={(e) => {
+					product = { ...product, emb_codes: e.traceabilityCodes };
+				}}
+			/>
 		</div>
 	</div>
 </div>

@@ -61,7 +61,4 @@
 	alt={`Packaging photo (${product.lang || 'en'})`}
 />
 <PackagingRecyclingInstructions bind:product />
-<PackagingComponentsEditor
-	bind:packagings={product.packagings}
-	bind:packagingsComplete={product.packagings_complete}
-/>
+<PackagingComponentsEditor bind:product />

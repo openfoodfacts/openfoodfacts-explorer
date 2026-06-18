@@ -43,7 +43,13 @@
 						id={`packaging-text-${code}`}
 						class="textarea textarea-bordered h-24 w-full"
 						placeholder={$_('product.edit.packaging_component.recycling_instructions_placeholder')}
-						bind:value={product[`packaging_text_${code}`]}
+						value={product[`packaging_text_${code}`] ?? ''}
+						oninput={(e) => {
+							product = {
+								...product,
+								[`packaging_text_${code}`]: (e.currentTarget as HTMLTextAreaElement).value
+							};
+						}}
 					></textarea>
 				</div>
 			{/each}
