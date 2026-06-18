@@ -274,6 +274,10 @@
 			"check_be_first": "Wees de eerste die dit product controleert"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Alleen moderators",
 			"info": {
 				"images": "Upload duidelijke afbeeldingen van het product, de ingrediënten en de voedingswaarden, zodat anderen het product kunnen herkennen.",
