@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "ଅନ୍ୟମାନଙ୍କୁ ଉତ୍ପାଦ ଚିହ୍ନଟ କରିବାରେ ସାହାଯ୍ୟ କରିବା ପାଇଁ ଉତ୍ପାଦ, ଉପାଦାନ ଏବଂ ପୁଷ୍ଟିସାର ତଥ୍ୟର ସ୍ପଷ୍ଟ ଚିତ୍ର ଅପଲୋଡ୍ କରନ୍ତୁ।",
