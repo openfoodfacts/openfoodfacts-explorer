@@ -355,6 +355,17 @@ export async function getProductReducedForCard(fetch: typeof window.fetch, code:
 	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
 }
 
+export async function getBulkProductCards(fetch: typeof window.fetch, codes: string[]) {
+	const off = createProductsApi(fetch);
+
+	const params = new URLSearchParams({
+		code: codes.join(','),
+		fields: REDUCED_FIELDS.join(',')
+	});
+
+	return off.apiv2.search(Object.fromEntries(params.entries()));
+}
+
 export type ProductStateBase = {
 	result: {
 		id: string;
