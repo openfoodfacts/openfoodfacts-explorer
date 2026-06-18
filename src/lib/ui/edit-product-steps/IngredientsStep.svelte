@@ -10,6 +10,7 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
@@ -83,6 +84,19 @@
 	}
 
 	let activeLang = $state(product.lang);
+
+	import { getQualityErrors } from '$lib/utils/dataQuality';
+
+	let apiQualityErrors = $derived(
+		getQualityErrors(
+			product.data_quality_errors_tags,
+			product.data_quality_warnings_tags,
+			product.data_quality_info_tags
+		)
+	);
+
+	let ingredientsError = $derived(apiQualityErrors.find((e) => e.field === 'ingredients_text'));
+
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
 		shortcutCtx.set('Shift+I', {
@@ -174,11 +188,32 @@
 
 			<textarea
 				id={`ingredients-list-${code}`}
-				class="textarea textarea-bordered w-full text-sm sm:text-base"
+				class="textarea textarea-bordered w-full text-sm sm:text-base transition-all {!product[
+					`ingredients_text_${code}`
+				]
+					? 'border-dashed border-warning/50 bg-warning/5'
+					: ''} {ingredientsError
+					? ingredientsError.severity === 'error'
+						? 'textarea-error'
+						: 'textarea-warning'
+					: ''}"
 				class:opacity-50={ocrLoading}
 				bind:value={product[`ingredients_text_${code}`]}
 				disabled={ocrLoading}
 			></textarea>
+			{#if ingredientsError}
+				<span class="text-xs text-error mt-1 font-medium flex items-center gap-1">
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					{ingredientsError.severity === 'error' ? 'Error' : 'Warning'}: {$_(
+						ingredientsError.message
+					)}
+				</span>
+			{:else if !product[`ingredients_text_${code}`]}
+				<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					Missing info
+				</span>
+			{/if}
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}

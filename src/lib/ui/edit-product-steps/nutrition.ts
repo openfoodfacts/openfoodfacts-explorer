@@ -1,6 +1,6 @@
 import type { Product } from '$lib/api';
 
-export type IssueSeverity = 'warning' | 'error';
+export type IssueSeverity = 'warning' | 'error' | 'info';
 
 export type Issue = {
 	severity: IssueSeverity;

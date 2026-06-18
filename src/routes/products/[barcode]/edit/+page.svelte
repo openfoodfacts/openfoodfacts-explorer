@@ -207,7 +207,11 @@
 				};
 	}
 
-	let product = $derived(createProductStore(data));
+	// eslint-disable-next-line svelte/prefer-writable-derived
+	let product = $state<Product>({} as Product);
+	$effect.pre(() => {
+		product = createProductStore(data);
+	});
 
 	let comment = $state('');
 

@@ -12,6 +12,7 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -37,6 +38,19 @@
 	}: Props = $props();
 
 	let showInfo = $state(false);
+
+	import { getQualityErrors } from '$lib/utils/dataQuality';
+
+	let apiQualityErrors = $derived(
+		getQualityErrors(
+			product.data_quality_errors_tags,
+			product.data_quality_warnings_tags,
+			product.data_quality_info_tags
+		)
+	);
+
+	let quantityError = $derived(apiQualityErrors.find((e) => e.field === 'quantity'));
+	let labelsError = $derived(apiQualityErrors.find((e) => e.field === 'labels'));
 
 	const permissions = getPermissionsCtx();
 
@@ -138,10 +152,27 @@
 			<input
 				id="quantity"
 				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base transition-all {!product.quantity
+					? 'border-dashed border-warning/50 bg-warning/5'
+					: ''} {quantityError
+					? quantityError.severity === 'error'
+						? 'input-error'
+						: 'input-warning'
+					: ''}"
 				bind:value={product.quantity}
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
+			{#if quantityError}
+				<span class="text-xs text-error mt-1 font-medium flex items-center gap-1">
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					{quantityError.severity === 'error' ? 'Error' : 'Warning'}: {$_(quantityError.message)}
+				</span>
+			{:else if !product.quantity}
+				<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					Missing info
+				</span>
+			{/if}
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="manufacturing_places">
@@ -182,7 +213,11 @@
 					<InfoTooltip text={$_('product.edit.tooltips.categories')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.categories} autocomplete={categoryNames} />
+			<TagsString
+				bind:tagsString={product.categories}
+				autocomplete={categoryNames}
+				highlightEmpty={true}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="labels-input">
@@ -191,7 +226,12 @@
 					<InfoTooltip text={$_('product.edit.tooltips.labels')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.labels} autocomplete={labelNames} />
+			<TagsString
+				bind:tagsString={product.labels}
+				autocomplete={labelNames}
+				highlightSeverity={labelsError ? labelsError.severity : ''}
+				highlightMessage={labelsError ? $_(labelsError.message) : ''}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="brands-input">
@@ -200,7 +240,11 @@
 					<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.brands} autocomplete={brandNames} />
+			<TagsString
+				bind:tagsString={product.brands}
+				autocomplete={brandNames}
+				highlightEmpty={true}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="stores-input">
