@@ -127,7 +127,7 @@
 				{$_('product.edit.sections.languages')}
 			</div>
 			<div class="collapse-content">
-				<LanguagesStep bind:product {addLanguage} codes={languages} />
+				<LanguagesStep bind:product {addLanguage} codes={languages} editMode />
 			</div>
 		</div>
 
@@ -145,7 +145,7 @@
 				{$_('product.edit.sections.images')}
 			</div>
 			<div class="collapse-content">
-				<ImagesStep bind:product />
+				<ImagesStep bind:product editMode />
 			</div>
 		</div>
 
@@ -171,6 +171,7 @@
 					{labelNames}
 					{originNames}
 					{storeNames}
+					editMode
 				/>
 			</div>
 		</div>
@@ -189,7 +190,7 @@
 				{$_('product.edit.sections.ingredients')}
 			</div>
 			<div class="collapse-content">
-				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
+				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} editMode />
 			</div>
 		</div>
 
@@ -208,7 +209,7 @@
 				{$_('product.edit.sections.nutrition')}
 			</div>
 			<div class="collapse-content">
-				<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
+				<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} editMode />
 			</div>
 		</div>
 
@@ -257,7 +258,7 @@
 				{$_('product.edit.sections.packaging')}
 			</div>
 			<div class="collapse-content">
-				<PackagingStep bind:product {getPackagingImage} />
+				<PackagingStep bind:product {getPackagingImage} editMode />
 			</div>
 		</div>
 
@@ -275,7 +276,7 @@
 				{$_('product.edit.sections.comment')}
 			</div>
 			<div class="collapse-content">
-				<CommentStep bind:comment />
+				<CommentStep bind:comment editMode />
 			</div>
 		</div>
 
