@@ -136,9 +136,11 @@ In Svelte 5 runes mode, `bind:` on a child component cannot target a sub-propert
 
 **Fix patterns (pick the simplest that fits):**
 
-1. **Pass the whole object:** Change the child component to accept `product` as a `$bindable()` prop and access sub-properties internally. Mutate via `product = { ...product, subprop: newValue }`. This is the preferred approach when the child needs multiple sub-properties.
+1. **Pass the whole object:**
+   Change the child component to accept `product` as a `$bindable()` prop and access sub-properties internally. Mutate via `product = { ...product, subprop: newValue }`. This is the preferred approach when the child needs multiple sub-properties.
 
-2. **One-way value + oninput:** For native elements (e.g. `<textarea>`), replace `bind:value={product[`key\_${dynamic}`]}` with a controlled input:
+2. **One-way value + oninput:**
+   For native elements (e.g. `<textarea>`), replace ``bind:value={product[`key_${dynamic}`]}`` with a controlled input:
    ```svelte
    <textarea
    	value={product[`key_${dynamic}`] ?? ''}
