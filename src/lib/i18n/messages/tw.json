@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Fa aduru no, nneɛma a wɔde yɛ, ne aduannuru ho nokwasɛm ahorow a emu da hɔ gu so na aboa afoforo ma wɔahu aduru no.",
