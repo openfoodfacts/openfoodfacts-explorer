@@ -6,7 +6,6 @@
 	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
-	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -192,7 +191,9 @@
 		/>
 	</div>
 	<!-- Tags Section -->
-	<div class="divider text-sm font-medium opacity-60">{$_('product.edit.product_tags')}</div>
+	<div class="divider text-sm font-medium opacity-60">
+		{$_('product.edit.product_tags', { default: 'Product Tags' })}
+	</div>
 	<div class="space-y-4">
 		<div class="form-control w-full">
 			<label class="label" for="categories-input">
@@ -285,19 +286,33 @@
 			/>
 		</div>
 		<div class="form-control w-full">
-			<label class="label" for="traceability-codes-input">
+			<label class="label" for="traceability-codes">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					Traceability Codes
+					{$_('product.edit.emb_code')}
 					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 				</span>
 			</label>
-			<TraceabilityCodes
-				traceabilityCodes={product.emb_codes ?? ''}
+			<TagsString
+				tagsString={product.emb_codes ?? ''}
 				autocomplete={[]}
-				onChange={(e) => {
-					product = { ...product, emb_codes: e.traceabilityCodes };
+				onChange={(v) => {
+					product = { ...product, emb_codes: v };
 				}}
 			/>
+			<div class="mt-1 text-xs text-base-content/60">
+				<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
+				<p>
+					More info:
+					<a
+						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link"
+					>
+						Food Traceability Codes Wiki
+					</a>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>
