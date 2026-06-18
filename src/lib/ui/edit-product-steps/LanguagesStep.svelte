@@ -15,11 +15,12 @@
 	type Props = {
 		product: Product;
 		codes: string[];
+		editMode?: boolean;
 
 		addLanguage: (code: string) => void;
 	};
 
-	let { product = $bindable(), codes, addLanguage }: Props = $props();
+	let { product = $bindable(), codes, addLanguage, editMode = false }: Props = $props();
 
 	let languageNames = $derived(
 		codes.map((code) => {
@@ -55,34 +56,36 @@
 	});
 </script>
 
-<h2
-	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
->
-	<IconMdiTranslate class="mr-1 h-6 w-6 align-middle" />
-	{$_('product.edit.sections.languages')}
-	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<IconMdiHelpCircleOutline
-			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		/>
-	</button>
-</h2>
-{#if showInfo}
-	<div
-		class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+{#if !editMode}
+	<h2
+		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<button
-			type="button"
-			class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
-			aria-label="Close"
-			onclick={toggleInfo}
-		>
-			<IconMdiClose class="text-primary h-5 w-5" />
+		<IconMdiTranslate class="mr-1 h-6 w-6 align-middle" />
+		{$_('product.edit.sections.languages')}
+		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+			<IconMdiHelpCircleOutline
+				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+			/>
 		</button>
-		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-		<span class="text-base-content/80 p-6 text-sm sm:text-base">
-			{$_('product.edit.info.languages')}
-		</span>
-	</div>
+	</h2>
+	{#if showInfo}
+		<div
+			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+		>
+			<button
+				type="button"
+				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				aria-label="Close"
+				onclick={toggleInfo}
+			>
+				<IconMdiClose class="text-primary h-5 w-5" />
+			</button>
+			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
+			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+				{$_('product.edit.info.languages')}
+			</span>
+		</div>
+	{/if}
 {/if}
 
 <fieldset class="fieldset">
