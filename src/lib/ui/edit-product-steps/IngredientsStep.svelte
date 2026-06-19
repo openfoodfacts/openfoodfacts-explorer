@@ -196,8 +196,7 @@
 						[`ingredients_text_${code}`]: (e.currentTarget as HTMLTextAreaElement).value
 					};
 				}}
-				disabled={ocrLoading}
-			></textarea>
+				disabled={ocrLoading}></textarea>
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}

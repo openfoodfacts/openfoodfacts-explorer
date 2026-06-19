@@ -210,8 +210,7 @@
 						class="textarea grow break-words whitespace-pre-wrap max-sm:w-20"
 						readonly={!loggedIn || isLoading}
 						value={tag.v}
-						onchange={(e) => updateTag(e.currentTarget.value, i)}
-					></textarea>
+						onchange={(e) => updateTag(e.currentTarget.value, i)}></textarea>
 				</td>
 				{#if loggedIn}
 					<td>
