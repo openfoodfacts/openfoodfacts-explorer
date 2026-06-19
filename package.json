@@ -47,7 +47,7 @@
 		"@types/geojson": "^7946.0.16",
 		"@types/leaflet": "^1.9.21",
 		"@types/leaflet.markercluster": "^1.5.6",
-		"@types/node": "^25.9.2",
+		"@types/node": "^26.0.0",
 		"@types/topojson-client": "^3.1.5",
 		"@types/topojson-specification": "^1.0.5",
 		"@typescript-eslint/eslint-plugin": "^8.60.1",
