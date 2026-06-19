@@ -146,7 +146,8 @@ In Svelte 5 runes mode, `bind:` on a child component cannot target a sub-propert
    	value={product[`key_${dynamic}`] ?? ''}
    	oninput={(e) => {
    		product = { ...product, [`key_${dynamic}`]: e.currentTarget.value };
-   	}}></textarea>
+   	}}
+   ></textarea>
    ```
 
 **Note:** This limitation applies only to `$bindable()` props. Properties of a component-local `$state({...})` object are reactive and can be used as `bind:` targets directly.

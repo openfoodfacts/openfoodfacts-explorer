@@ -58,6 +58,7 @@
 			class="textarea textarea-bordered w-full text-sm sm:text-base"
 			placeholder={$_('product.edit.comment_placeholder')}
 			bind:value={comment}
-			rows="3"></textarea>
+			rows="3"
+		></textarea>
 	</div>
 </div>

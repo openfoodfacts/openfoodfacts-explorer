@@ -56,7 +56,8 @@
 								...product,
 								[`packaging_text_${code}`]: (e.currentTarget as HTMLTextAreaElement).value
 							};
-						}}></textarea>
+						}}
+					></textarea>
 				</div>
 			{/each}
 		</div>
