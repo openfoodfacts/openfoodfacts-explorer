@@ -119,7 +119,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	}
 
 	return {
-		state: productState,
+		state: productState!,
 		categories,
 		labels,
 		brands,
