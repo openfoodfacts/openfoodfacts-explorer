@@ -17,7 +17,7 @@
 		"account": "Profilo"
 	},
 	"search": {
-		"title": "Cerca - {query} - Open Food Facts Explorer",
+		"title": "Ricerca - {query} - Open Food Facts Explorer",
 		"placeholder": "Query o codice a barre",
 		"go": "Vai",
 		"scan": "Scansiona un codice a barre",
@@ -38,9 +38,9 @@
 		"advanced_search_classic": "Ricerca avanzata per {term} (versione classica)",
 		"prices_badge": "{count} prezzi",
 		"creation_date": "Data di creazione",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Data ultima modifica",
+		"page_size": "Dimensioni della pagina",
+		"advanced_view": "Vista avanzata"
 	},
 	"auth": {
 		"username": "Nome utente",
@@ -57,12 +57,12 @@
 		"actions": "Actions",
 		"role": {
 			"user": "Utente",
-			"admin": "Administrator",
+			"admin": "Amministratore",
 			"moderator": "Moderatore"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Guida e scorciatoie"
 	},
 	"general": {
 		"language": "Lingua",
@@ -77,14 +77,14 @@
 		"errors_occurred": "si sono verificati degli errori:"
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Rimani aggiornato",
 		"contribute": "Contribuire",
-		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
-		"tagline_break": "from around the world.",
-		"decorative_alt": "A decorative graphic",
+		"discover_title": "Scopri il nostro progetto",
+		"tagline": "Un database collaborativo, gratuito e aperto di prodotti alimentari",
+		"tagline_break": "da tutto il mondo.",
+		"decorative_alt": "Una grafica decorativa",
 		"social": {
-			"x": "X (formerly Twitter)",
+			"x": "X (ex Twitter)",
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
@@ -95,10 +95,10 @@
 		"links": {
 			"newsletter": "Newsletter",
 			"forum": "Forum",
-			"producers": "Producers Platform",
+			"producers": "Piattaforma dei produttori",
 			"translators": "Traduttori",
 			"github": "GitHub",
-			"data_api_sdks": "Data, API, SDKs",
+			"data_api_sdks": "Dati, API, SDK",
 			"wiki": "Wiki",
 			"legal": "Menzioni legali",
 			"privacy": "Privacy",
@@ -116,18 +116,18 @@
 	},
 	"settings": {
 		"page_title": "Impostazioni",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Gestisci le tue preferenze e impostazioni dell'account",
+		"subtitle": "Gestisci le tue preferenze e personalizza la tua esperienza",
 		"tab": {
 			"account": "Profilo",
 			"general": "Generale",
 			"editing": "Modifica",
 			"preferences": "Impostazioni",
-			"developer": "Developer"
+			"developer": "Sviluppo"
 		},
 		"username": "Nome utente",
 		"email": "Email",
-		"roles": "Roles",
+		"roles": "Ruoli",
 		"section_general": "Generale",
 		"section_editing": "Modifica",
 		"section_user": "Utente",
@@ -135,18 +135,18 @@
 		"login": "Accesso (salvato in localStorage) [NON SICURO - SOLO DEBUG]",
 		"news": "Attualità",
 		"expand_all_sections": "Espandi tutte le sezioni",
-		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
-		"display_prices_in_search": "Display prices in search results",
-		"display_prices_in_search_help": "Show price information in search results when available",
-		"logged_in_as": "Logged in as: {username}",
+		"expand_all_sections_help": "Espandi automaticamente tutte le sezioni quando visualizzi i dettagli del prodotto",
+		"display_prices_in_search": "Mostra i prezzi nei risultati della ricerca",
+		"display_prices_in_search_help": "Mostra informazioni sui prezzi nei risultati di ricerca, se disponibile",
+		"logged_in_as": "Accesso effettuato come: {username}",
 		"not_logged_in": "Non hai effettuato l'accesso",
 		"github_link": "GitHub",
-		"github_cta": "Help us improve Explorer on GitHub",
-		"github_help_text": "Help us improve Open Food Facts Explorer!",
-		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"github_cta": "Aiutaci a migliorare Explorer su GitHub",
+		"github_help_text": "Aiutaci a migliorare Open Food Facts Explorer!",
+		"dev_settings_title": "Impostazioni di sviluppo",
+		"moderator_mode": "Modalità moderatore",
+		"dev_access_denied": "Accesso negato",
+		"dev_access_message": "Le impostazioni per sviluppatori sono disponibili solo per moderatori e sviluppatori. Se ritieni di dover avere accesso, contatta l'amministratore."
 	},
 	"folksonomy": {
 		"title": "Motore di folksonomia",
@@ -156,19 +156,19 @@
 		"keys_found": "chiavi trovate",
 		"key_found": "chiave trovata",
 		"for": "per",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Utilizzato in {count} prodotti ({percent}% di utilizzo relativo)",
+		"badge_values": "Ha {values} diversi valori possibili",
+		"progress_bar": "Indicatore di frequenza d'uso: {percent}% rispetto ad altri tasti",
 		"key_visualization_guide": {
-			"title": "Key Visualization Guide:",
-			"badge_products_start": "The first badge ",
-			"badge_products_end": " shows the number of products using this key",
-			"badge_values_start": "The second badge ",
-			"badge_values_end": " shows the number of unique values for this key",
-			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+			"title": "Guida alla lettura delle chiavi:",
+			"badge_products_start": "Il primo distintivo ",
+			"badge_products_end": " mostra il numero di prodotti che utilizzano questa chiave",
+			"badge_values_start": "Il secondo distintivo ",
+			"badge_values_end": " mostra il numero di valori univoci per questa chiave",
+			"progress_bar": "La barra di avanzamento indica la frequenza di utilizzo della chiave rispetto alle altre"
 		},
-		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
-		"no_keys_found": "No keys found with the current search query."
+		"no_keys_available": "Nessuna chiave Folksonomy disponibile. Le chiavi appariranno qui una volta create.",
+		"no_keys_found": "Nessuna chiave trovata con la query di ricerca attuale."
 	},
 	"home": {
 		"welcome": "Benvenuti a",
@@ -192,7 +192,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Apri Esplora i Fatti Alimentari",
+		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Pagina del prodotto per {productName} su Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -223,9 +223,9 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "Visualizza il prodotto su Open Food Facts"
 		},
-		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"share_text": "Scopri questo prodotto su Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Carica immagini chiare del prodotto, degli ingredienti e dei valori nutrizionali per aiutare gli altri a identificare il prodotto.",
@@ -299,8 +303,12 @@
 				"traceability_code": "In questa sezione è possibile inserire codici relativi ai marchi di imballaggio, ai marchi di identificazione o ai marchi sanitari.",
 				"countries": "Paesi in cui il prodotto è ampiamente disponibile (esclusi i negozi specializzati in prodotti esteri).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergeni",
+			"traces": "Tracce",
 			"main_language": "Lingua principale",
 			"add_product": "Aggiungi prodotto",
 			"nutrition_issues": "Nutrition issues",
@@ -355,6 +363,7 @@
 				"upload_packaging_photo": "Upload packaging photo",
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
+			"product_tags": "Tag del prodotto",
 			"manufacturing_places": "Luoghi di produzione",
 			"categories": "Categorie:",
 			"labels": "Etichette",
@@ -511,7 +520,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Elimina la pagina del prodotto",
+			"delete_product_confirm": "Sei sicuro di voler cancellare la pagina di questo prodotto?",
+			"delete_product_comment_label": "Motivo per la rimozione",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Elimina la pagina del prodotto",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Prodotto ritirato dal mercato",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Prodotto ritirato dal mercato",
+			"obsolete_badge": "Prodotto ritirato dal mercato",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -533,14 +572,15 @@
 		"skip": "Salta",
 		"step": "Fare un passo",
 		"of": "Di",
-		"cancel": "Annulla"
+		"cancel": "Annulla",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Esplorando {facet} - Apri Esplora Fatti Alimentari",
+		"facet_website_title": "Esplorando {facet} - Open Food Facts Explorer",
 		"facet_website_description": "Scopri la categoria {facet} su Open Food Facts Explorer.",
 		"facet_value_website_title": "Esplorando {facet}: {value} - Apri Esplora i Fatti Alimentari",
 		"facet_value_website_description": "Scopri la categoria {value} su Open Food Facts Explorer.",
@@ -559,8 +599,8 @@
 		"products_count": "Prodotti",
 		"contributors_count": "Contributori",
 		"open_data": "Dati aperti",
-		"help_improve_title": "Help Improve Open Food Facts",
-		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
+		"help_improve_title": "Aiutaci a migliorare Open Food Facts",
+		"help_improve_desc": "Aiutaci a migliorare Open Food Facts modificando o rispondendo alle domande relative a questi prodotti."
 	},
 	"dashboard": {
 		"products_created": "Prodotti creati",
@@ -577,7 +617,7 @@
 		"open_prices_dashboard": "Open Prices dashboard"
 	},
 	"explore": {
-		"title": "Esplora i fatti sugli alimenti aperti",
+		"title": "Esplora Open Food Facts",
 		"subtitle": "Scopri i prodotti di tendenza, le categorie più gettonate e contribuisci alla trasparenza alimentare!",
 		"trending_products": "Prodotti di tendenza",
 		"trending_products_desc": "Scopri quali prodotti vengono visualizzati e modificati di più in questo momento.",

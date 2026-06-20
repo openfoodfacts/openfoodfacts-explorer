@@ -38,9 +38,9 @@
 		"advanced_search_classic": "Geavanceerd zoeken naar {term} (klassieke versie)",
 		"prices_badge": "{count} prijzen",
 		"creation_date": "Aanmaakdatum",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Datum laatst gewijzigd",
+		"page_size": "Paginaformaat",
+		"advanced_view": "Geavanceerde weergave"
 	},
 	"auth": {
 		"username": "Gebruikersnaam",
@@ -57,12 +57,12 @@
 		"actions": "Acties",
 		"role": {
 			"user": "Gebruiker",
-			"admin": "Administrator",
+			"admin": "Beheerder",
 			"moderator": "Moderator"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Hulp en sneltoetsen"
 	},
 	"general": {
 		"language": "Taal",
@@ -77,14 +77,14 @@
 		"errors_occurred": "Er zijn fouten opgetreden:"
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Blijf op de hoogte",
 		"contribute": "Bijdragen",
-		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
-		"tagline_break": "from around the world.",
-		"decorative_alt": "A decorative graphic",
+		"discover_title": "Ontdek ons project",
+		"tagline": "Een gezamenlijke, gratis en open database met voedingsproducten.",
+		"tagline_break": "van over de hele wereld.",
+		"decorative_alt": "Een decoratieve grafiek",
 		"social": {
-			"x": "X (formerly Twitter)",
+			"x": "X (voorheen Twitter)",
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
@@ -93,12 +93,12 @@
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Nieuwsbrief",
 			"forum": "Forum",
-			"producers": "Producers Platform",
+			"producers": "Producentenplatform",
 			"translators": "Vertalers",
 			"github": "GitHub",
-			"data_api_sdks": "Data, API, SDKs",
+			"data_api_sdks": "Gegevens, API's, SDK's",
 			"wiki": "Wiki",
 			"legal": "Wettelijke vermeldingen",
 			"privacy": "Privacy",
@@ -116,18 +116,18 @@
 	},
 	"settings": {
 		"page_title": "Instellingen",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Beheer je voorkeuren en accountinstellingen.",
+		"subtitle": "Beheer je voorkeuren en personaliseer je ervaring.",
 		"tab": {
 			"account": "Account",
 			"general": "Algemeen",
 			"editing": "Bewerken",
 			"preferences": "Voorkeuren",
-			"developer": "Developer"
+			"developer": "Ontwikkelaar"
 		},
 		"username": "Gebruikersnaam",
 		"email": "E-mail",
-		"roles": "Roles",
+		"roles": "Rollen",
 		"section_general": "Algemeen",
 		"section_editing": "Bewerken",
 		"section_user": "Gebruiker",
@@ -135,18 +135,18 @@
 		"login": "Inloggen (opgeslagen in localStorage) [ONVEILIG - ALLEEN DEBUGGEN]",
 		"news": "Nieuws",
 		"expand_all_sections": "Alle secties uitvouwen",
-		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
-		"display_prices_in_search": "Display prices in search results",
-		"display_prices_in_search_help": "Show price information in search results when available",
-		"logged_in_as": "Logged in as: {username}",
+		"expand_all_sections_help": "Alle secties automatisch uitvouwen bij het bekijken van productdetails.",
+		"display_prices_in_search": "Prijzen weergeven in zoekresultaten",
+		"display_prices_in_search_help": "Toon prijsinformatie in zoekresultaten indien beschikbaar.",
+		"logged_in_as": "Ingelogd als: {username}",
 		"not_logged_in": "Niet ingelogd",
 		"github_link": "GitHub",
-		"github_cta": "Help us improve Explorer on GitHub",
-		"github_help_text": "Help us improve Open Food Facts Explorer!",
-		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"github_cta": "Help ons Explorer op GitHub te verbeteren.",
+		"github_help_text": "Help ons Open Food Facts Explorer te verbeteren!",
+		"dev_settings_title": "Ontwikkelingsinstellingen",
+		"moderator_mode": "Moderatormodus",
+		"dev_access_denied": "Toegang geweigerd",
+		"dev_access_message": "De ontwikkelaarsinstellingen zijn alleen beschikbaar voor moderators en ontwikkelaars. Als u van mening bent dat u toegang zou moeten hebben, neem dan contact op met de beheerder."
 	},
 	"folksonomy": {
 		"title": "Folksonomy-engine",
@@ -156,19 +156,19 @@
 		"keys_found": "sleutels gevonden",
 		"key_found": "sleutel gevonden",
 		"for": "voor",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Gebruikt in {count} producten ({percent}% relatief gebruik)",
+		"badge_values": "Heeft {values} verschillende mogelijke waarden",
+		"progress_bar": "Indicator voor gebruiksfrequentie: {percent}% ten opzichte van andere sleutels",
 		"key_visualization_guide": {
 			"title": "Key Visualization Guide:",
-			"badge_products_start": "The first badge ",
-			"badge_products_end": " shows the number of products using this key",
-			"badge_values_start": "The second badge ",
-			"badge_values_end": " shows the number of unique values for this key",
-			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+			"badge_products_start": "De eerste badge ",
+			"badge_products_end": " Toont het aantal producten dat deze sleutel gebruikt.",
+			"badge_values_start": "De tweede badge ",
+			"badge_values_end": " Toont het aantal unieke waarden voor deze sleutel.",
+			"progress_bar": "De voortgangsbalk geeft aan hoe vaak de sleutel wordt gebruikt ten opzichte van andere sleutels"
 		},
 		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
-		"no_keys_found": "No keys found with the current search query."
+		"no_keys_found": "Er zijn geen sleutels gevonden met de huidige zoekopdracht."
 	},
 	"home": {
 		"welcome": "Welkom bij",
@@ -195,7 +195,7 @@
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Productpagina voor {productName} op Open Food Facts Explorer",
 		"card": {
-			"aria_label": "Go to product {productName} with code {productCode}",
+			"aria_label": "Ga naar product {productName} met code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
 		},
 		"loading_attributes": "Loading product attributes...",
@@ -204,31 +204,31 @@
 		"shortcuts": {
 			"show_barcode": "Show/hide product barcode",
 			"api_page": "Open product API page",
-			"edit_same_window": "Edit product in current window",
-			"edit_new_window": "Edit product in new window",
-			"view_page": "Go back to product page",
+			"edit_same_window": "Product bewerken in het huidige venster",
+			"edit_new_window": "Product bewerken in een nieuw venster",
+			"view_page": "Ga terug naar de productpagina",
 			"edit_product_name": "Jump to product name",
 			"edit_product_quantity": "Jump to product quantity",
 			"edit_product_brands": "Jump to product brands",
 			"edit_product_categories": "Jump to product categories",
-			"edit_product_labels": "Jump to product labels",
-			"edit_product_ingredients": "Jump to product ingredients",
-			"edit_product_energy": "Jump to product energy",
-			"edit_product_fibers": "Jump to product fibers"
+			"edit_product_labels": "Ga naar productlabels",
+			"edit_product_ingredients": "Ga naar productingrediënten",
+			"edit_product_energy": "Ga naar productenergie",
+			"edit_product_fibers": "Ga naar productvezels"
 		},
 		"buttons": {
-			"classic_view": "Classic view",
+			"classic_view": "Klassieke weergave",
 			"edit": "Bewerken",
 			"share": "Delen",
-			"report": "Report an issue with this product",
-			"add_to_calculator": "Add product to nutritional calculator",
-			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"report": "Meld een probleem met dit product.",
+			"add_to_calculator": "Voeg dit product toe aan de voedingswaardecalculator",
+			"compare": "Toevoegen om te vergelijken",
+			"view_on_off": "Bekijk product op Open Food Facts"
 		},
-		"share_text": "Check out this product on Open Food Facts: {productName}",
+		"share_text": "Bekijk dit product op Open Food Facts: {productName}",
 		"toast": {
-			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"copied_link": "Link gekopieerd naar klembord!",
+			"failed_copy": "Kopiëren van link mislukt"
 		},
 		"header": {
 			"quantity": "Hoeveelheid",
@@ -236,32 +236,32 @@
 			"categories": "Categorieën",
 			"labels": "Keurmerken",
 			"origins": "Oorsprong",
-			"traceability_codes": "Traceability Codes",
+			"traceability_codes": "Traceerbaarheidscodes",
 			"traceability_codes_learn_more": "Meer informatie",
-			"producer_link": "Producer link",
+			"producer_link": "Producentlink",
 			"stores": "Winkels",
 			"countries": "Landen"
 		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
-			"title_beta": "Personalized properties (beta)",
+			"title_beta": "Gepersonaliseerde eigenschappen (bèta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
 			"intro_emphasis": "must be factual",
 			"intro_after": ". You can dive into ",
 			"link_properties": "the list of properties already used by the community",
-			"link_middle": " or explore the ",
+			"link_middle": " of ontdek de ",
 			"link_docs": "properties' documentation and its search engine",
 			"warning": "Houd er rekening mee dat het datamodel kan worden gewijzigd. Gebruik op eigen risico.",
 			"footer_before": "This is brought by the ",
 			"footer_link": "Folksonomy Engine project",
-			"footer_after": ". Don't hesitate to participate or give feedback."
+			"footer_after": "Aarzel niet om deel te nemen of feedback te geven."
 		},
 		"datasources": {
 			"title": "Gegevensbronnen",
-			"user": "User: ",
-			"added_on_title": "Product added",
-			"last_edit_title": "Last edit",
-			"last_check_title": "Last check",
+			"user": "Gebruiker: ",
+			"added_on_title": "Product toegevoegd",
+			"last_edit_title": "Laatst bewerkt",
+			"last_check_title": "Laatst gecontroleerd",
 			"also_edited_by": "Productpagina ook bewerkt door ",
 			"also_checked_by": "Productpagina ook gecontroleerd door ",
 			"last_modified_t": "Laatste bewerking van de productpagina op {date} door ",
@@ -270,21 +270,25 @@
 			"done": "Voltooid",
 			"toDo": "Nog te doen",
 			"states": "Staten",
-			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"never_checked": "Nooit gecontroleerd",
+			"check_be_first": "Wees de eerste die dit product controleert"
 		},
 		"edit": {
-			"moderator_only": "Moderator only",
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
+			"moderator_only": "Alleen moderators",
 			"info": {
 				"images": "Upload duidelijke afbeeldingen van het product, de ingrediënten en de voedingswaarden, zodat anderen het product kunnen herkennen.",
 				"basic_info": "Geef de belangrijkste gegevens over het product, zoals de hoeveelheid, de verpakking en de fabrikant in.",
 				"languages": "Voeg productnamen en beschrijvingen in verschillende talen toe om het product voor meer gebruikers toegankelijk te maken.",
 				"ingredients": "Vermeld alle ingrediënten die in het product aanwezig zijn. Dit helpt gebruikers met allergieën of dieetwensen.",
 				"nutrition": "Voer de voedingswaarden per 100 g/ml in zoals aangegeven op de verpakking. Dit helpt gebruikers producten te vergelijken.",
-				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
-				"prices": "Help track this product's price history on Open Prices.",
+				"moderator_tools": "Deze tools zijn alleen beschikbaar voor moderators. Ze maken administratieve handelingen mogelijk, zoals het corrigeren van de productbarcode.",
+				"prices": "Help mee de prijsgeschiedenis van dit product bij te houden op Open Prices.",
 				"comment": "Voeg desgewenst een opmerking toe waarin u uw wijzigingen beschrijft of aanvullende context geeft.",
-				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
+				"packaging": "Beschrijf elk verpakkingsonderdeel (fles, dop, doos, enz.) met de vorm, het materiaal en de recyclinginstructies. Je kunt meerdere onderdelen toevoegen."
 			},
 			"tooltips": {
 				"serving_size": "Deze waarde helpt bij het berekenen van de verhouding van elke voedingsstof per portiegrootte. Bijvoorbeeld: 60 g, 60g of 60 G (geef de voorkeur aan de eerste), 1000 ml of 1 l",
@@ -298,13 +302,17 @@
 				"origins": "Voeg alle herkomstaanduidingen toe die u op de verpakking kunt vinden. U hoeft zich geen zorgen te maken over de herkomst die direct in de ingrediëntenlijst staat. Bijvoorbeeld: 'Rundvlees uit Argentinië', 'De soja komt niet uit de Europese Unie'.",
 				"traceability_code": "In dit gedeelte kunt u codes invoeren die betrekking hebben op verpakkingskenmerken, identificatiekenmerken of gezondheidskenmerken.",
 				"countries": "Landen waar het product algemeen verkrijgbaar is (met uitzondering van winkels die gespecialiseerd zijn in buitenlandse producten).",
-				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"product_type": "Selecteer het type product: Voeding, Schoonheidsproducten, Dierenvoeding of Anders.",
+				"empty_fiber": "Voer een koppelteken (-) in als de waarde niet op de verpakking staat.",
+				"allergens": "Vermeld de allergenen die in het product aanwezig zijn (bijv. melk, gluten, eieren).",
+				"traces": "Vermeld alle sporen van allergenen die mogelijk aanwezig zijn als gevolg van kruisbesmetting (bijv. noten, soja)."
 			},
+			"allergens": "Allergenen",
+			"traces": "Sporen",
 			"main_language": "Hoofdtaal",
 			"add_product": "Artikel toevoegen",
 			"nutrition_issues": "Nutrition issues",
-			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
+			"nutrition_issues_description": "We hebben enkele potentiële problemen ontdekt met de voedingsinformatie die u heeft verstrekt. Bekijk de volgende waarschuwingen en breng indien nodig correcties aan voordat u uw wijzigingen opslaat.",
 			"add_product_title": "Voeg een nieuw product toe",
 			"edit_product_title": "Bewerk product",
 			"add_language": "Een taal toevoegen",
@@ -316,24 +324,24 @@
 			"packaging": "Verpakking",
 			"packaging_component": {
 				"number_of_units": "Aantal eenheden",
-				"number_of_units_placeholder": "e.g. 1",
+				"number_of_units_placeholder": "bijv. 1",
 				"shape": "Vorm",
-				"shape_placeholder": "e.g. bottle, box, pouch...",
+				"shape_placeholder": "bijv. fles, doosje, zakje...",
 				"material": "Materiaal",
-				"material_placeholder": "e.g. plastic, glass, PET, cardboard...",
+				"material_placeholder": "bijv. plastic, glas, PET, karton...",
 				"recycling": "Recyclen",
-				"recycling_placeholder": "e.g. recycle, discard, compost...",
+				"recycling_placeholder": "bijv. recycling, weggooien, compost...",
 				"weight_measured": "Gewicht van één lege eenheid (g)",
 				"weight_measured_label": "Gewicht van één lege eenheid",
-				"weight_placeholder": "e.g. 10",
-				"quantity_per_unit": "Quantity per unit",
+				"weight_placeholder": "bijv. 10",
+				"quantity_per_unit": "Aantal per eenheid",
 				"quantity_per_unit_label": "Hoeveelheid product per eenheid",
-				"quantity_per_unit_placeholder": "e.g. 1.5 L, 500g...",
-				"add_component": "Add packaging component",
+				"quantity_per_unit_placeholder": "bijv. 1,5l, 500 g...",
+				"add_component": "Voeg een verpakkingscomponent toe",
 				"remove_component": "Verwijderen",
-				"all_listed": "All packaging components have been listed",
+				"all_listed": "Alle verpakkingscomponenten zijn opgenomen",
 				"parts_title": "Verpakkingsonderdelen",
-				"instructions_title": "Guidance for packaging parts:",
+				"instructions_title": "Begeleiding voor verpakkingsonderdelen:",
 				"component_number": "Component {number}",
 				"number_of_units_desc": "Voer het aantal verpakkingseenheden van dezelfde vorm en hetzelfde materiaal in het product in.",
 				"shape_desc": "Voer de vormnaam in die wordt vermeld in de recyclinginstructies als deze beschikbaar zijn, of selecteer een vorm.",
@@ -342,19 +350,20 @@
 				"weight_measured_desc": "Verwijder eventueel achtergebleven voedsel en was en droog het verpakkingsgedeelte voordat u het gaat wegen. Gebruik indien mogelijk een weegschaal met een nauwkeurigheid van 0,1 g of 0,01 g.",
 				"quantity_per_unit_desc": "Vul het nettogewicht of het nettovolume in en geef de eenheid aan (bijvoorbeeld g of ml).",
 				"recycling_instructions": "Recyclinginstructies en / of verpakkingsinformatie",
-				"recycling_instructions_desc": "Write here the packaging information and/or the recycling instructions that are present on the product.",
-				"recycling_instructions_placeholder": "e.g. 1 plastic bottle, 1 plastic cap",
+				"recycling_instructions_desc": "Noteer hier de verpakkingsinformatie en/of de recyclinginstructies die op het product staan vermeld.",
+				"recycling_instructions_placeholder": "bijv. 1 plastic fles, 1 kunststof dop",
 				"recycling_instructions_list": "Voer in alle verpakkingsonderdelen gescheiden door een komma of een nieuwe regel, met een aantal onderdelen (bijvoorbeeld 1 of 6) (bijv. 1 of 6) fles, doos, kanaal), materiaal (bijv. kunststof, metaal, aluminium) en indien beschikbaar hun formaat (bijv. 33c) en recyclinginstructies.",
 				"recycling_instructions_specificity": "Probeer zo specifiek mogelijk te zijn. Geef voor plastic aan of het ondoorzichtig of transparant, gekleurd, PET of PEHD is.",
 				"recycling_instructions_combination": "Gegevens uit dit veld worden gecombineerd met de gegevens die voor elk verpakkingsonderdeel zijn opgegeven. Het is mogelijk om het een of het ander te bieden, of beide.",
 				"recycling_instructions_examples_label": "Voorbeelden:",
 				"recycling_instructions_examples": "1 plastic film om weg te gooien, 1 FSC-kartonnen doos om te recyclen, 6 1.5 L-transparante PET kunststof flessen om te recyclen, 6 ondoorzichtige kunststofdoppen en 12 33cl aluminium blikjes",
 				"packaging_photo": "Verpakkingsfoto",
-				"packaging_photo_desc": "Photos of the packaging info and recycling instructions help to verify the data.",
-				"no_packaging_image": "No packaging photo available",
-				"upload_packaging_photo": "Upload packaging photo",
-				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
+				"packaging_photo_desc": "Foto's van de verpakkingsinformatie en recyclinginstructies helpen om de gegevens te verifiëren.",
+				"no_packaging_image": "Geen foto van de verpakking beschikbaar",
+				"upload_packaging_photo": "Upload een foto van de verpakking",
+				"multiple_uploads_guidance": "Met Chrome, Firefox en Safari kun je meerdere afbeeldingen (product, ingrediënten, voedingswaarden, enz.) selecteren door erop te klikken terwijl je de Ctrl-toets ingedrukt houdt om ze allemaal in één keer toe te voegen."
 			},
+			"product_tags": "Producttags",
 			"manufacturing_places": "Productielocaties",
 			"categories": "Categorieën:",
 			"labels": "Keurmerken",
@@ -366,7 +375,7 @@
 			"product_types": {
 				"food": "Voedsel",
 				"beauty": "Schoonheidsindustrie",
-				"petfood": "Pet Food",
+				"petfood": "Dierenvoeding",
 				"product": "Andere"
 			},
 			"product_page_url": "Link naar de pagina van het product op de officiële site van de producent",
@@ -376,22 +385,22 @@
 			"ingredients_list": "Ingrediëntenlijst",
 			"no_ingredients_image": "Geen ingrediëntenafbeelding",
 			"nutritional_information": "Voedingswaarde-informatie",
-			"no_nutrition_image": "No nutrition image for language {language}",
+			"no_nutrition_image": "Geen voedingswaarde-afbeelding voor taal {language}",
 			"serving_size": "Portiegrootte",
-			"serving_size_examples": "40 g, 250 ml, 1 serving (30 g)",
-			"serving_size_placeholder": "e.g., {examples}",
+			"serving_size_examples": "40 g, 250 ml, 1 portie (30 g)",
+			"serving_size_placeholder": "bijv. {examples}",
 			"serving_size_issues": {
 				"missing_number": {
-					"title": "Serving size is missing a number",
-					"desc": "Serving size should include a numeric value. Examples: {examples}"
+					"title": "Bij de portiegrootte ontbreekt een getal.",
+					"desc": "De portiegrootte moet een numerieke waarde bevatten. Voorbeelden: {examples}"
 				},
 				"missing_unit": {
-					"title": "Serving size is missing a unit",
-					"desc": "Serving size should include a unit. Examples: {examples}"
+					"title": "Bij de portiegrootte ontbreekt een eenheid.",
+					"desc": "De portiegrootte moet een eenheid bevatten. Voorbeelden: {examples}"
 				},
 				"unknown_unit": {
-					"title": "Serving size unit may be incorrect",
-					"desc": "Serving size should include a common unit. Examples: {examples}"
+					"title": "De aangegeven portiegrootte kan onjuist zijn.",
+					"desc": "De portiegrootte moet een gangbare eenheid bevatten. Voorbeelden: {examples}"
 				}
 			},
 			"no_nutrition_data": "Geen voedingswaarden op het product",
@@ -417,11 +426,11 @@
 			"comment_placeholder": "Voeg een opmerking toe aan deze bewerking",
 			"save_btn": "Opslaan",
 			"toast": {
-				"save_success": "Product saved successfully!",
-				"save_error": "Failed to save product. Please try again."
+				"save_success": "Product succesvol opgeslagen!",
+				"save_error": "Het opslaan van het product is mislukt. Probeer het opnieuw."
 			},
 			"add_nutrient": "Voedingsstof toevoegen",
-			"remove_nutrient": "Remove nutrient",
+			"remove_nutrient": "Voedingsstof verwijderen",
 			"debug": "Foutopsporing",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
@@ -434,7 +443,7 @@
 				"languages": "Talen en productnamen",
 				"ingredients": "Ingrediënten",
 				"nutrition": "Voedingswaarde-informatie",
-				"moderator_tools": "Moderator Tools",
+				"moderator_tools": "Moderatortools",
 				"packaging": "Verpakking",
 				"prices": "Prijzen",
 				"comment": "Reactie"
@@ -444,52 +453,52 @@
 			"legal_warning_photos_2": "Upload alleen foto's die u zelf heeft gemaakt of waarvoor u expliciet toestemming heeft gekregen om ze te gebruiken.",
 			"images": {
 				"toast": {
-					"login_required": "Please log in to upload images.",
-					"upload_success": "Image uploaded successfully!",
-					"upload_failed": "Upload failed: {error}",
-					"upload_failed_generic": "Upload failed. Please try again.",
-					"upload_error": "Image upload failed. Please try again.",
-					"unselect_success": "Image unselected successfully.",
-					"unselect_failed": "Failed to unselect image. Please try again.",
-					"unselect_error": "Error unselecting image. Please try again.",
-					"save_success": "Image saved successfully!",
-					"process_error": "Error processing image: {error}. Please try again.",
-					"select_success": "Image selected successfully!",
-					"select_error": "Error selecting image. Please try again.",
-					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
+					"login_required": "Log in om afbeeldingen te uploaden.",
+					"upload_success": "Afbeelding succesvol geüpload!",
+					"upload_failed": "Upload mislukt: {error}",
+					"upload_failed_generic": "Uploaden mislukt. Probeer het opnieuw.",
+					"upload_error": "Het uploaden van de afbeelding is mislukt. Probeer het opnieuw.",
+					"unselect_success": "Afbeelding succesvol gedeselecteerd.",
+					"unselect_failed": "Het is niet gelukt om de selectie van de afbeelding ongedaan te maken. Probeer het opnieuw.",
+					"unselect_error": "Fout bij het deselecteren van de afbeelding. Probeer het opnieuw.",
+					"save_success": "Afbeelding succesvol opgeslagen!",
+					"process_error": "Fout bij het verwerken van de afbeelding: {error}. Probeer het opnieuw.",
+					"select_success": "Afbeelding succesvol geselecteerd!",
+					"select_error": "Fout bij het selecteren van afbeelding. Probeer het opnieuw.",
+					"not_loaded": "Afbeelding niet volledig geladen. Wacht even en probeer het later opnieuw.",
+					"invalid_crop": "Selecteer een geldig bijsnijdgebied."
 				},
-				"select_image": "Select an Image",
-				"uploading": "Uploading...",
+				"select_image": "Kies een afbeelding",
+				"uploading": "Uploaden...",
 				"upload_type": "Upload {type}",
-				"unselecting": "Unselecting...",
-				"unselect_type": "Unselect {type}",
+				"unselecting": "Deselecteren...",
+				"unselect_type": "Deselecteer {type}",
 				"unselect_image": "Foto deselecteren",
-				"selecting": "Selecting...",
-				"select_type": "Select {type}",
-				"show_less": "Show Less",
-				"see_all": "See All ({count})",
-				"processing_upload": "Processing upload...",
-				"unselecting_image": "Unselecting image...",
-				"photos_available": "Photos available",
+				"selecting": "Selecteren...",
+				"select_type": "Selecteer {type}",
+				"show_less": "Minder weergeven",
+				"see_all": "Alles bekijken ({count})",
+				"processing_upload": "Upload wordt verwerkt...",
+				"unselecting_image": "Afbeelding deselecteren...",
+				"photos_available": "Foto's beschikbaar",
 				"edit_photo": "Foto bewerken",
-				"loading_editor": "Loading image editor...",
-				"rotate_left": "Rotate Left",
-				"rotate_right": "Rotate Right",
-				"zoom_in": "Zoom In",
-				"zoom_out": "Zoom Out",
+				"loading_editor": "De afbeeldingseditor wordt geladen...",
+				"rotate_left": "Linksom draaien",
+				"rotate_right": "Rechtsom draaien",
+				"zoom_in": "Inzoomen",
+				"zoom_out": "Uitzoomen",
 				"reset": "Herstellen",
-				"rotation": "Rotation",
-				"tool": "Tool",
-				"crop_drag_to_move": "Drag to move, corners to resize",
-				"crop_click_to_start": "Click and drag to start cropping",
+				"rotation": "Draaien",
+				"tool": "Hulpmiddel",
+				"crop_drag_to_move": "Sleep om te verplaatsen, gebruik de hoeken om het formaat aan te passen.",
+				"crop_click_to_start": "Klik en sleep om te beginnen met bijsnijden.",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Rapporteer afbeelding",
-				"save_changes": "Save Changes"
+				"save_changes": "Wijzigingen opslaan"
 			},
-			"comment_description": "Add a comment about your changes (optional)",
+			"comment_description": "Voeg een opmerking toe over je wijzigingen (optioneel)",
 			"prices": {
-				"add_price_btn": "Add a price on Open Prices"
+				"add_price_btn": "Voeg een prijs toe aan Open Prijzen"
 			}
 		},
 		"prices": {
@@ -500,18 +509,48 @@
 		"knowledge_panels": {
 			"action": {
 				"add_packaging_components": "Voeg verpakkingsonderdelen toe",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Oorsprong toevoegen",
+				"add_ingredients_text": "Ingrediëntentekst toevoegen"
 			}
 		},
 		"moderator": {
-			"barcode_correction_title": "Correct Barcode",
-			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_title": "Correcte barcode",
+			"barcode_correction_new_code_label": "Nieuwe barcode",
 			"barcode_correction_description": "Een foutieve barcode? Type hier de correcte code:",
-			"barcode_correction_placeholder": "Enter the correct barcode",
-			"barcode_correction_submit": "Correct Barcode",
-			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_placeholder": "Voer de juiste barcode in",
+			"barcode_correction_submit": "Correcte barcode",
+			"barcode_correction_success": "Barcode succesvol gecorrigeerd. Doorverwijzen...",
+			"barcode_correction_error": "Het corrigeren van de barcode is mislukt. Probeer het opnieuw.",
+			"delete_product_title": "Verwijder de productpagina",
+			"delete_product_confirm": "Weet u zeker dat u de pagina van dit product wilt verwijderen?",
+			"delete_product_comment_label": "Reden voor verwijdering",
+			"delete_product_comment_placeholder": "Voer de reden voor verwijdering in",
+			"delete_product_submit": "Verwijder de productpagina",
+			"delete_product_success": "Product succesvol verwijderd.",
+			"delete_product_error": "Het verwijderen van het product is mislukt. Probeer het opnieuw.",
+			"delete_product_confirm_barcode_label": "Voer de barcode in om te bevestigen",
+			"delete_product_modal_title": "Verwijdering bevestigen",
+			"delete_product_modal_desc": "U staat op het punt deze productpagina te verwijderen. Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+			"delete_product_modal_prompt_prefix": "Voer de barcode in ter bevestiging. ",
+			"delete_product_modal_prompt_suffix": " hieronder:",
+			"delete_product_modal_btn": "Permanent Verwijderen",
+			"delete_product_prefill_reasons_label": "Veelvoorkomende redenen:",
+			"delete_reason_personal": "Persoonsgegevens",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Auteursrechtelijk beschermde gegevens en afbeeldingen",
+			"delete_reason_app_test": "Test door een app",
+			"delete_reason_user_test": "Test door een gebruiker",
+			"delete_reason_duplicate": "Dubbel product",
+			"delete_reason_spam": "Spam of vandalisme",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Product van de markt gehaald",
+			"obsolete_important_note_prefix": "Belangrijke opmerking:",
+			"obsolete_important_note_body": " Dit product wordt niet meer verkocht. De gegevens worden alleen ter referentie bewaard. Dit product verschijnt niet in reguliere zoekresultaten en wordt niet meegenomen in statistieken.",
+			"obsolete_checkbox_label": "Product van de markt gehaald",
+			"obsolete_badge": "Product van de markt gehaald",
+			"obsolete_save_btn": "Verouderde status opslaan",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -533,7 +572,8 @@
 		"skip": "Overslaan",
 		"step": "Stap",
 		"of": "van",
-		"cancel": "Annuleer"
+		"cancel": "Annuleer",
+		"close": "sluiten"
 	},
 	"menu": {
 		"button": "Menu",
@@ -596,15 +636,15 @@
 		"page_title": "Compare Products",
 		"page_description": "Compare nutritional information of food products",
 		"title_placeholder": "Enter comparison title...",
-		"click_to_edit": "Click to edit title",
-		"mode_absolute": "Absolute",
-		"mode_vs_first": "vs First",
-		"mode_vs_best": "vs Best",
+		"click_to_edit": "Klik om de titel te bewerken",
+		"mode_absolute": "Absoluut",
+		"mode_vs_first": "vs Eerste",
+		"mode_vs_best": "vs Beste",
 		"share": "Delen",
-		"share_title": "Product Comparison",
-		"share_text": "Check out this product comparison I made!",
-		"clear_all": "Clear All",
-		"no_products_selected": "No products selected for comparison",
+		"share_title": "Productvergelijking",
+		"share_text": "Bekijk deze productvergelijking die ik heb gemaakt!",
+		"clear_all": "Alles wissen",
+		"no_products_selected": "Geen producten geselecteerd voor vergelijking",
 		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
 		"browse_products": "Blader door producten",
 		"shared_comparison": "Shared Comparison",
@@ -613,32 +653,32 @@
 		"read_only": "Read-only comparison",
 		"import_to_my": "Import to My Comparison",
 		"import_dialog_title": "Import Comparison",
-		"continue_question": "Continue?",
+		"continue_question": "Doorgaan?",
 		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
 		"import": "Importeren",
-		"no_products_to_compare": "No products to compare",
+		"no_products_to_compare": "Geen producten om te vergelijken",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
-		"best": "Best",
-		"worst": "Worst",
+		"best": "Beste",
+		"worst": "Slechtste",
 		"scores": "Scores:",
-		"nutrients_per_100g": "Nutrients / 100g:",
+		"nutrients_per_100g": "Voedingswaarden / 100 g:",
 		"name": "Naam",
 		"code_barcode": "Code (Barcode)",
 		"brand": "Merk",
 		"quantity": "Hoeveelheid",
-		"nova_group": "Nova Group",
+		"nova_group": "Nova-groep",
 		"num_additives": "N. of additives",
-		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
-		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
-		"hint_relative_first": "💡 Percentages show difference compared to the first product",
+		"nutritional_values_per_100g": "Voedingswaarden (per 100 g)",
+		"fruits_vegetables_nuts": "Fruit/Groenten/Noten",
+		"hint_relative_first": "💡 De percentages tonen het verschil ten opzichte van het eerste product.",
 		"hint_relative_best": "💡 Percentages show difference compared to the best value (lower is better for most nutrients)",
 		"toast": {
-			"share_failed": "Sharing failed.",
-			"link_copied": "Comparison link copied to clipboard!",
-			"copy_failed": "Failed to copy link to clipboard."
+			"share_failed": "Delen mislukt.",
+			"link_copied": "Vergelijkingslink gekopieerd naar klembord!",
+			"copy_failed": "Koppeling kopiëren naar klembord mislukt."
 		}
 	},
 	"static_iframe": {
-		"load_failed": "Failed to load content."
+		"load_failed": "Inhoud laden mislukt."
 	}
 }

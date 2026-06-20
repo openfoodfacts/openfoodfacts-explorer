@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Încarcă imagini clare ale produsului, ingredientelor și informațiilor nutriționale pentru a ajuta alte persoane să identifice produsul.",
@@ -299,8 +303,12 @@
 				"traceability_code": "În această secțiune, puteți introduce coduri legate de marcajele de ambalare, marcajele de identificare sau marcajele sanitare.",
 				"countries": "Țări în care produsul este disponibil pe scară largă (cu excepția magazinelor specializate în produse străine).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Alergeni",
+			"traces": "Urme",
 			"main_language": "Limba principală",
 			"add_product": "Adaugă produs",
 			"nutrition_issues": "Nutrition issues",
@@ -511,7 +519,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Ștergeți pagina produsului",
+			"delete_product_confirm": "Sunteți sigur că doriți să ștergeți pagina pentru acest produs?",
+			"delete_product_comment_label": "Motivul ștergerii",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Ștergeți pagina produsului",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Produs scos de pe piață",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Produs scos de pe piață",
+			"obsolete_badge": "Produs scos de pe piață",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -533,7 +571,8 @@
 		"skip": "Omitere",
 		"step": "Pas",
 		"of": "de",
-		"cancel": "Anulare"
+		"cancel": "Anulare",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Meniu",

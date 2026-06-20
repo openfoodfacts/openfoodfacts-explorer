@@ -6,7 +6,6 @@
 	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
-	import TraceabilityCodes from '../../../routes/products/[barcode]/edit/TraceabilityCodes.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -24,6 +23,7 @@
 		storeNames?: string[];
 		originNames?: string[];
 		countriesNames?: string[];
+		editMode?: boolean;
 	};
 
 	let {
@@ -33,7 +33,8 @@
 		brandNames,
 		storeNames,
 		originNames,
-		countriesNames
+		countriesNames,
+		editMode = false
 	}: Props = $props();
 
 	let showInfo = $state(false);
@@ -72,34 +73,36 @@
 	});
 </script>
 
-<h2
-	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
->
-	<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
-	{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
-	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<IconMdiHelpCircleOutline
-			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		/>
-	</button>
-</h2>
-{#if showInfo}
-	<div
-		class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+{#if !editMode}
+	<h2
+		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<button
-			type="button"
-			class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
-			aria-label="Close"
-			onclick={toggleInfo}
-		>
-			<IconMdiClose class="text-primary h-5 w-5" />
+		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
+		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
+		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+			<IconMdiHelpCircleOutline
+				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+			/>
 		</button>
-		<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-		<span class="text-base-content/80 p-6 text-sm sm:text-base">
-			{$_('product.edit.info.basic_info')}
-		</span>
-	</div>
+	</h2>
+	{#if showInfo}
+		<div
+			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+		>
+			<button
+				type="button"
+				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				aria-label="Close"
+				onclick={toggleInfo}
+			>
+				<IconMdiClose class="text-primary h-5 w-5" />
+			</button>
+			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
+			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+				{$_('product.edit.info.basic_info')}
+			</span>
+		</div>
+	{/if}
 {/if}
 <div class="space-y-6">
 	<!-- Product Type (Moderators Only) -->
@@ -117,7 +120,10 @@
 			<select
 				id="product_type"
 				class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.product_type}
+				value={product.product_type}
+				onchange={(e) => {
+					product = { ...product, product_type: (e.currentTarget as HTMLSelectElement).value };
+				}}
 			>
 				{#each PRODUCT_TYPES as type (type)}
 					<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
@@ -139,7 +145,10 @@
 				id="quantity"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.quantity}
+				value={product.quantity ?? ''}
+				oninput={(e) => {
+					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
+				}}
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 		</div>
@@ -153,7 +162,13 @@
 				id="manufacturing_places"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				bind:value={product.manufacturing_places}
+				value={product.manufacturing_places ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						manufacturing_places: (e.currentTarget as HTMLInputElement).value
+					};
+				}}
 				placeholder="e.g., France, Italy"
 			/>
 		</div>
@@ -168,12 +183,17 @@
 			id="website_url"
 			type="url"
 			class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
-			bind:value={product.link}
+			value={product.link ?? ''}
+			oninput={(e) => {
+				product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
+			}}
 			placeholder="https://example.com/products/pasta-n8"
 		/>
 	</div>
 	<!-- Tags Section -->
-	<div class="divider text-sm font-medium opacity-60">{$_('product.edit.product_tags')}</div>
+	<div class="divider text-sm font-medium opacity-60">
+		{$_('product.edit.product_tags', { default: 'Product Tags' })}
+	</div>
 	<div class="space-y-4">
 		<div class="form-control w-full">
 			<label class="label" for="categories-input">
@@ -182,7 +202,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.categories')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.categories} autocomplete={categoryNames} />
+			<TagsString
+				tagsString={product.categories ?? ''}
+				autocomplete={categoryNames}
+				onChange={(v) => {
+					product = { ...product, categories: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="labels-input">
@@ -191,7 +217,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.labels')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.labels} autocomplete={labelNames} />
+			<TagsString
+				tagsString={product.labels ?? ''}
+				autocomplete={labelNames}
+				onChange={(v) => {
+					product = { ...product, labels: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="brands-input">
@@ -200,7 +232,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.brands} autocomplete={brandNames} />
+			<TagsString
+				tagsString={product.brands ?? ''}
+				autocomplete={brandNames}
+				onChange={(v) => {
+					product = { ...product, brands: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="stores-input">
@@ -209,7 +247,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.stores')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.stores} autocomplete={storeNames} />
+			<TagsString
+				tagsString={product.stores ?? ''}
+				autocomplete={storeNames}
+				onChange={(v) => {
+					product = { ...product, stores: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="origins-input">
@@ -218,7 +262,13 @@
 					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.origins} autocomplete={originNames} />
+			<TagsString
+				tagsString={product.origins ?? ''}
+				autocomplete={originNames}
+				onChange={(v) => {
+					product = { ...product, origins: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
@@ -227,16 +277,42 @@
 					<InfoTooltip text={$_('product.edit.tooltips.countries')} />
 				</span>
 			</label>
-			<TagsString bind:tagsString={product.countries} autocomplete={countriesNames} />
+			<TagsString
+				tagsString={product.countries ?? ''}
+				autocomplete={countriesNames}
+				onChange={(v) => {
+					product = { ...product, countries: v };
+				}}
+			/>
 		</div>
 		<div class="form-control w-full">
-			<label class="label" for="traceability-codes-input">
+			<label class="label" for="traceability-codes">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					Traceability Codes
+					{$_('product.edit.emb_code')}
 					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
 				</span>
 			</label>
-			<TraceabilityCodes bind:traceabilityCodes={product.emb_codes} autocomplete={[]} />
+			<TagsString
+				tagsString={product.emb_codes ?? ''}
+				autocomplete={[]}
+				onChange={(v) => {
+					product = { ...product, emb_codes: v };
+				}}
+			/>
+			<div class="mt-1 text-xs text-base-content/60">
+				<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
+				<p>
+					More info:
+					<a
+						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="link"
+					>
+						Food Traceability Codes Wiki
+					</a>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

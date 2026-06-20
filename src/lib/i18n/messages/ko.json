@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "다른 사람들이 제품을 식별할 수 있도록 제품, 성분, 영양 정보를 명확하게 담은 이미지를 업로드하세요.",
@@ -299,8 +303,12 @@
 				"traceability_code": "이 섹션에서는 포장 표시, 식별 표시 또는 건강 표시와 관련된 코드를 입력할 수 있습니다.",
 				"countries": "해당 제품을 널리 구입할 수 있는 국가(외국 제품을 전문으로 취급하는 매장 제외).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "알레르기 정보",
+			"traces": "흔적",
 			"main_language": "주 언어",
 			"add_product": "제품 추가",
 			"nutrition_issues": "Nutrition issues",
@@ -511,7 +519,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "제품 삭제",
+			"delete_product_confirm": "이 제품의 페이지를 삭제하시겠습니까?",
+			"delete_product_comment_label": "삭제하려는 이유",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "제품 삭제",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "상품이 단종되었습니다",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "상품이 단종되었습니다",
+			"obsolete_badge": "상품이 단종되었습니다",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -533,7 +571,8 @@
 		"skip": "건너뛰기",
 		"step": "단계",
 		"of": "~의",
-		"cancel": "취소"
+		"cancel": "취소",
+		"close": "close"
 	},
 	"menu": {
 		"button": "메뉴",

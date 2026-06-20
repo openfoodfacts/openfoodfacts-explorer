@@ -274,6 +274,10 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Laden Sie klare Bilder des Produkts, der Zutaten und der Nährwertangaben hoch, damit andere das Produkt leichter identifizieren können.",
@@ -299,8 +303,12 @@
 				"traceability_code": "In diesem Abschnitt können Sie Codes für Verpackungskennzeichnungen, Identifikationskennzeichnungen oder Gesundheitskennzeichnungen eingeben.",
 				"countries": "Länder, in denen das Produkt weit verbreitet ist (ausgenommen Fachgeschäfte für ausländische Produkte).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergene",
+			"traces": "Spuren",
 			"main_language": "Hauptsprache",
 			"add_product": "Produkt hinzufügen",
 			"nutrition_issues": "Nutrition issues",
@@ -355,6 +363,7 @@
 				"upload_packaging_photo": "Upload packaging photo",
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
+			"product_tags": "Produkt-Tags",
 			"manufacturing_places": "Produktionsstätten",
 			"categories": "Kategorien:",
 			"labels": "Labels",
@@ -511,7 +520,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Produktseite löschen",
+			"delete_product_confirm": "Sind Sie sicher, dass Sie die Seite für dieses Produkt löschen möchten?",
+			"delete_product_comment_label": "Löschung begründen",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Produktseite löschen",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Produkt vom Markt genommen",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Produkt vom Markt genommen",
+			"obsolete_badge": "Produkt vom Markt genommen",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -533,7 +572,8 @@
 		"skip": "Überspringen",
 		"step": "Schritt",
 		"of": "von",
-		"cancel": "Abbrechen"
+		"cancel": "Abbrechen",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menü",

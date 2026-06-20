@@ -11,9 +11,12 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
+	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { trackOffEvent } from '$lib/analytics';
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 
 	type OCRResult = {
@@ -29,9 +32,15 @@
 		product: Product;
 		getIngredientsImage: (language: string) => string | null;
 		allergenNames?: string[];
+		editMode?: boolean;
 	};
 
-	let { product = $bindable(), getIngredientsImage, allergenNames = [] }: Props = $props();
+	let {
+		product = $bindable(),
+		getIngredientsImage,
+		allergenNames = [],
+		editMode = false
+	}: Props = $props();
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
@@ -46,6 +55,7 @@
 		}
 
 		ocrLoading = true;
+		trackOffEvent('product', 'launch_ocr', 'ingredients');
 
 		try {
 			const openfoodfacts = createProductsApi(fetch);
@@ -94,36 +104,41 @@
 	});
 </script>
 
-<h2
-	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
->
-	<IconMdiFormatListBulleted class="mr-1 h-6 w-6 align-middle" />
-	{$_('product.edit.sections.ingredients')}
-	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<IconMdiHelpCircleOutline
-			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		/>
-	</button>
-</h2>
-{#if showInfo}
-	<div
-		class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+{#if !editMode}
+	<h2
+		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<button
-			type="button"
-			class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
-			aria-label="Close"
-			onclick={toggleInfo}
-		>
-			<IconMdiClose class="text-primary h-5 w-5" />
+		<IconMdiFormatListBulleted class="mr-1 h-6 w-6 align-middle" />
+		{$_('product.edit.sections.ingredients')}
+		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+			<IconMdiHelpCircleOutline
+				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+			/>
 		</button>
-		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-		<span class="text-base-content/80 p-6 text-sm sm:text-base">
-			{$_('product.edit.info.ingredients')}
-		</span>
-	</div>
+	</h2>
+	{#if showInfo}
+		<div
+			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+		>
+			<button
+				type="button"
+				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				aria-label="Close"
+				onclick={toggleInfo}
+			>
+				<IconMdiClose class="text-primary h-5 w-5" />
+			</button>
+			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 shrink-0" />
+			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+				{$_('product.edit.info.ingredients')}
+			</span>
+		</div>
+	{/if}
 {/if}
-<div class="tabs tabs-box">
+<div class="tabs tabs-lift">
+	<div class="tab tab-disabled cursor-default">
+		<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
+	</div>
 	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 		<input
 			type="radio"
@@ -133,7 +148,7 @@
 			checked={code === activeLang}
 			onchange={() => (activeLang = code)}
 		/>
-		<div class="tab-content form-control p-6">
+		<div class="tab-content bg-base-100 border-base-300 form-control p-6">
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
@@ -174,7 +189,13 @@
 				id={`ingredients-list-${code}`}
 				class="textarea textarea-bordered w-full text-sm sm:text-base"
 				class:opacity-50={ocrLoading}
-				bind:value={product[`ingredients_text_${code}`]}
+				value={product[`ingredients_text_${code}`] ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						[`ingredients_text_${code}`]: (e.currentTarget as HTMLTextAreaElement).value
+					};
+				}}
 				disabled={ocrLoading}
 			></textarea>
 		</div>
@@ -198,7 +219,13 @@
 				/>
 			</span>
 		</label>
-		<TagsString bind:tagsString={product.allergens} autocomplete={allergenNames} />
+		<TagsString
+			tagsString={product.allergens ?? ''}
+			autocomplete={allergenNames}
+			onChange={(v) => {
+				product = { ...product, allergens: v };
+			}}
+		/>
 	</div>
 
 	<div class="flex flex-col gap-1.5 w-full">
@@ -212,6 +239,12 @@
 				/>
 			</span>
 		</label>
-		<TagsString bind:tagsString={product.traces} autocomplete={allergenNames} />
+		<TagsString
+			tagsString={product.traces ?? ''}
+			autocomplete={allergenNames}
+			onChange={(v) => {
+				product = { ...product, traces: v };
+			}}
+		/>
 	</div>
 </div>

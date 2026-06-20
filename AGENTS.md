@@ -3,7 +3,7 @@
 This is the canonical guide for AI agents working on this repository.
 **Read this file before doing anything else.**
 
-> Humans contributing code should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
+> Humans contributing code should read [CONTRIBUTING.md](docs/CONTRIBUTING.md) instead.
 > This file is intentionally structured for machine consumption.
 
 ---
@@ -108,7 +108,7 @@ src/
 
 ### UI & Design
 
-- **Read [DESIGN.md](DESIGN.md) before writing any UI code.** It defines the component patterns, colour tokens, button hierarchy, and responsive conventions.
+- **Read [DESIGN.md](docs/DESIGN.md) before writing any UI code.** It defines the component patterns, colour tokens, button hierarchy, and responsive conventions.
 - Always use DaisyUI semantic tokens (`bg-primary`, `text-base-content`) — never hardcode hex values.
 - Follow the button priority hierarchy defined in DESIGN.md.
 
@@ -122,12 +122,35 @@ src/
 
 ## Common Issues
 
-| Problem                             | Cause                            | Fix                                                  |
-| ----------------------------------- | -------------------------------- | ---------------------------------------------------- |
-| `Internal Error` or fetch failures  | External APIs blocked in sandbox | Expected — ignore for UI work                        |
-| Build fails after dependency change | Stale lockfile                   | `rm -rf node_modules pnpm-lock.yaml && pnpm install` |
-| App won't start                     | Missing `.env`                   | `cp .env.example .env`                               |
-| CI fails on lint/format             | Unformatted code                 | `pnpm format && pnpm lint`                           |
+| Problem                             | Cause                                             | Fix                                                                          |
+| ----------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Internal Error` or fetch failures  | External APIs blocked in sandbox                  | Expected — ignore for UI work                                                |
+| Build fails after dependency change | Stale lockfile                                    | `rm -rf node_modules pnpm-lock.yaml && pnpm install`                         |
+| App won't start                     | Missing `.env`                                    | `cp .env.example .env`                                                       |
+| CI fails on lint/format             | Unformatted code                                  | `pnpm format && pnpm lint`                                                   |
+| `binding_property_non_reactive`     | `bind:prop={obj.subprop}` on a `$bindable()` prop | Use one-way `value` + `oninput` that reassigns the parent object (see below) |
+
+### Svelte 5: `binding_property_non_reactive`
+
+In Svelte 5 runes mode, `bind:` on a child component cannot target a sub-property of a `$bindable()` prop. For example, `bind:packagings={product.packagings}` warns because `product` is a `$bindable()` proxy — its sub-properties are not individually reactive binding targets.
+
+**Fix patterns (pick the simplest that fits):**
+
+1. **Pass the whole object:**
+   Change the child component to accept `product` as a `$bindable()` prop and access sub-properties internally. Mutate via `product = { ...product, subprop: newValue }`. This is the preferred approach when the child needs multiple sub-properties.
+
+2. **One-way value + oninput:**
+   For native elements (e.g. `<textarea>`), replace ``bind:value={product[`key_${dynamic}`]}`` with a controlled input:
+   ```svelte
+   <textarea
+   	value={product[`key_${dynamic}`] ?? ''}
+   	oninput={(e) => {
+   		product = { ...product, [`key_${dynamic}`]: e.currentTarget.value };
+   	}}
+   ></textarea>
+   ```
+
+**Note:** This limitation applies only to `$bindable()` props. Properties of a component-local `$state({...})` object are reactive and can be used as `bind:` targets directly.
 
 ---
 
