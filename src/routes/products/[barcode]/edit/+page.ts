@@ -96,16 +96,16 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	console.debug(`Product state for barcode ${params.barcode}:`, productState?.status || 'failure');
 
 	if (isNotFound) {
+		const stateErrors =
+			productState && 'errors' in productState
+				? (productState as ProductStateFailure).errors
+				: undefined;
+
 		return {
 			state: {
 				status: PRODUCT_STATUS.EMPTY,
 				product: null,
-				errors:
-					(productState && 'errors' in productState
-						? (productState as ProductStateFailure).errors
-						: []) ||
-					parsedError?.errors ||
-					[]
+				errors: stateErrors ?? parsedError?.errors ?? []
 			},
 			categories,
 			labels,

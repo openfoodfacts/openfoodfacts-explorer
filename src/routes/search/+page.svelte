@@ -329,34 +329,33 @@
 					</p>
 					<div class="card-actions mt-4 flex w-full flex-col gap-3">
 						<p class="text-xs text-base-content/60">
-							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: Enter the
-							barcode below.
+							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
+								'search.enter_barcode_below',
+								{ default: 'Enter the barcode below.' }
+							)}
 						</p>
 						<form
 							onsubmit={(e) => {
 								e.preventDefault();
-								if (barcodeInput.trim()) {
-									goto(`/products/${barcodeInput.trim()}/edit`);
+								const barcode = barcodeInput.trim();
+								if (/^\d+$/.test(barcode)) {
+									goto(`/products/${barcode}/edit`);
 								}
 							}}
 							class="join w-full shadow-sm"
 						>
 							<input
 								type="text"
-								placeholder="Barcode (e.g. 1234567890123)"
+								placeholder={$_('search.barcode_placeholder', {
+									default: 'Barcode (e.g. 1234567890123)'
+								})}
 								bind:value={barcodeInput}
 								class="input join-item input-bordered w-full focus:outline-none"
 								required
 								pattern="\d+"
-								title="Barcode must contain digits only"
-								onkeydown={(e) => {
-									if (e.key === 'Enter') {
-										e.preventDefault();
-										if (barcodeInput.trim()) {
-											goto(`/products/${barcodeInput.trim()}/edit`);
-										}
-									}
-								}}
+								title={$_('search.barcode_validation_title', {
+									default: 'Barcode must contain digits only'
+								})}
 							/>
 							<button type="submit" class="btn btn-primary join-item font-bold">
 								{$_('search.go', { default: 'Go' })}
