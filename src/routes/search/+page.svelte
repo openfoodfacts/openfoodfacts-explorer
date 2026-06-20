@@ -112,6 +112,9 @@
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));
+	let cleanedQuery = $derived(mainSearchTerm.replace(/[\s-]/g, ''));
+	let queryIsBarcode = $derived(/^\d{5,18}$/.test(cleanedQuery));
+	let barcodeInput = $state('');
 </script>
 
 <Metadata
@@ -287,11 +290,82 @@
 		/>
 	</div>
 {:else}
-	<div
-		class="flex w-full grid-cols-1 flex-col items-center gap-4 py-50 md:h-auto md:pt-20 md:pb-30 lg:gap-2"
-	>
-		<p class="mb-4 text-3xl font-bold">{$_('search.product_not_found')}</p>
-		<p>{$_('search.product_not_found_desc')}</p>
+	<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
+		{#if queryIsBarcode}
+			<div class="card bg-base-100 w-full max-w-lg shadow-xl">
+				<div class="card-body items-center p-8 text-center">
+					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+					<h1 class="text-3xl font-bold">
+						{$_('search.product_not_found', { default: 'No products found' })}
+					</h1>
+					<p class="text-base-content/80 py-4 text-sm sm:text-base">
+						{$_('qr.barcode_scanned_not_found', {
+							values: { barcode: cleanedQuery },
+							default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
+						})}
+					</p>
+					<div class="card-actions mt-4 flex w-full flex-col gap-3">
+						<a
+							href="/products/{cleanedQuery}/edit"
+							class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
+						>
+							<span class="text-xl">➕</span>
+							{$_('product.add_product', { default: 'Add This Product' })}
+						</a>
+					</div>
+				</div>
+			</div>
+		{:else}
+			<div class="card bg-base-100 w-full max-w-lg shadow-xl">
+				<div class="card-body items-center p-8 text-center">
+					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+					<h1 class="text-3xl font-bold">
+						{$_('search.product_not_found', { default: 'No products found' })}
+					</h1>
+					<p class="text-base-content/80 py-4 text-sm sm:text-base">
+						{$_('search.product_not_found_desc', {
+							default: "We couldn't find any products matching your search."
+						})}
+					</p>
+					<div class="card-actions mt-4 flex w-full flex-col gap-3">
+						<p class="text-xs text-base-content/60">
+							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: Enter the
+							barcode below.
+						</p>
+						<form
+							onsubmit={(e) => {
+								e.preventDefault();
+								if (barcodeInput.trim()) {
+									goto(`/products/${barcodeInput.trim()}/edit`);
+								}
+							}}
+							class="join w-full shadow-sm"
+						>
+							<input
+								type="text"
+								placeholder="Barcode (e.g. 1234567890123)"
+								bind:value={barcodeInput}
+								class="input join-item input-bordered w-full focus:outline-none"
+								required
+								pattern="\d+"
+								title="Barcode must contain digits only"
+								onkeydown={(e) => {
+									if (e.key === 'Enter') {
+										e.preventDefault();
+										if (barcodeInput.trim()) {
+											goto(`/products/${barcodeInput.trim()}/edit`);
+										}
+									}
+								}}
+							/>
+							<button type="submit" class="btn btn-primary join-item font-bold">
+								{$_('search.go', { default: 'Go' })}
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 {/if}
 

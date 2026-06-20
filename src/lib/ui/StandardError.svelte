@@ -29,7 +29,7 @@
 				</p>
 				<div class="card-actions mt-4 flex w-full flex-col gap-3">
 					<a
-						href="https://world.openfoodfacts.org/cgi/product.pl"
+						href="/products/{page.params.barcode}/edit"
 						class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
 					>
 						<span class="text-xl">➕</span>
