@@ -116,7 +116,9 @@
 				{/if}
 
 				<div class="card-actions mt-4 justify-end">
-					<a href={resolve('/')} class="btn btn-outline btn-sm">Return to Home</a>
+					<a href={resolve('/')} class="btn btn-outline btn-sm">
+						{$_('navigation.return_to_home', { default: 'Return to Home' })}
+					</a>
 				</div>
 			</div>
 		</div>
