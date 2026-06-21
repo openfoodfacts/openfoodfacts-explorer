@@ -104,7 +104,12 @@
 	>
 		<IconMdiTranslate class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.languages')}
-		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+		<button
+			type="button"
+			class="ml-2 align-middle"
+			aria-label={$_('common.info', { default: 'Info' })}
+			onclick={toggleInfo}
+		>
 			<IconMdiHelpCircleOutline
 				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
 			/>
@@ -117,7 +122,7 @@
 			<button
 				type="button"
 				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
-				aria-label="Close"
+				aria-label={$_('common.close', { default: 'Close' })}
 				onclick={toggleInfo}
 			>
 				<IconMdiClose class="text-primary h-5 w-5" />
@@ -143,7 +148,11 @@
 			<option value={lang}>{getLanguageName(lang)}</option>
 		{/each}
 	</select>
-	<span class="label">The main language of the product</span>
+	<span class="label"
+		>{$_('product.edit.main_language_description', {
+			default: 'The main language of the product'
+		})}</span
+	>
 </fieldset>
 
 <div class="divider"></div>
