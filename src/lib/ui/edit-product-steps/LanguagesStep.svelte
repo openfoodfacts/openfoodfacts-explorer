@@ -166,9 +166,10 @@
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 			<div
 				role="tab"
-				class="tab flex items-center gap-2 text-xs sm:text-sm {code === activeLang
-					? 'tab-active'
-					: ''}"
+				class={[
+					'tab flex items-center gap-2 text-xs sm:text-sm',
+					code === activeLang && 'tab-active'
+				]}
 				onclick={() => (activeLang = code)}
 				onkeydown={(e) => {
 					if (e.key === 'Enter' || e.key === ' ') activeLang = code;
