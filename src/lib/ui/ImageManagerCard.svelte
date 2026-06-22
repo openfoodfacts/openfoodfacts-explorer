@@ -174,10 +174,12 @@
 	<div class="tabs tabs-boxed gap-1 bg-base-300 p-0.5 rounded-lg flex w-full">
 		<button
 			type="button"
-			class="tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5 {activeTab ===
-			'move'
-				? 'tab-active bg-warning text-warning-content font-bold'
-				: 'text-base-content/70 hover:text-base-content'}"
+			class={[
+				'tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5',
+				activeTab === 'move'
+					? 'tab-active bg-warning text-warning-content font-bold'
+					: 'text-base-content/70 hover:text-base-content'
+			]}
 			onclick={() => {
 				activeTab = 'move';
 			}}
@@ -190,10 +192,12 @@
 		</button>
 		<button
 			type="button"
-			class="tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5 {activeTab ===
-			'delete'
-				? 'tab-active bg-error text-error-content font-bold'
-				: 'text-base-content/70 hover:text-base-content'}"
+			class={[
+				'tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5',
+				activeTab === 'delete'
+					? 'tab-active bg-error text-error-content font-bold'
+					: 'text-base-content/70 hover:text-base-content'
+			]}
 			onclick={() => {
 				activeTab = 'delete';
 			}}
@@ -252,14 +256,15 @@
 							default: 'Select image {imgid}',
 							values: { imgid: img.imgid }
 						})}
-						class="h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:outline-none focus:ring-2 cursor-pointer {selectedImgIds.has(
-							img.imgid
-						)
-							? activeTab === 'move'
-								? 'border-warning focus:ring-warning'
-								: 'border-error focus:ring-error'
-							: 'border-base-content/10 ' +
-								(activeTab === 'move' ? 'focus:ring-warning' : 'focus:ring-error')}"
+						class={[
+							'h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:outline-none focus:ring-2 cursor-pointer',
+							selectedImgIds.has(img.imgid)
+								? activeTab === 'move'
+									? 'border-warning focus:ring-warning'
+									: 'border-error focus:ring-error'
+								: 'border-base-content/10 ' +
+									(activeTab === 'move' ? 'focus:ring-warning' : 'focus:ring-error')
+						]}
 						onclick={() => toggleSelect(img.imgid)}
 						disabled={isSubmitting}
 					>
@@ -267,14 +272,18 @@
 
 						{#if selectedImgIds.has(img.imgid)}
 							<div
-								class="absolute inset-0 flex items-center justify-center {activeTab === 'move'
-									? 'bg-warning/20'
-									: 'bg-error/20'}"
+								class={[
+									'absolute inset-0 flex items-center justify-center',
+									activeTab === 'move' ? 'bg-warning/20' : 'bg-error/20'
+								]}
 							>
 								<div
-									class="rounded-full p-1 shadow-md {activeTab === 'move'
-										? 'bg-warning text-warning-content'
-										: 'bg-error text-error-content'}"
+									class={[
+										'rounded-full p-1 shadow-md',
+										activeTab === 'move'
+											? 'bg-warning text-warning-content'
+											: 'bg-error text-error-content'
+									]}
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
