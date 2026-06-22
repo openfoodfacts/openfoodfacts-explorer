@@ -2,6 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import IconMdiStoreOff from '@iconify-svelte/mdi/store-off';
 	import type { Product } from '$lib/api';
+	import { trackOffEvent } from '$lib/analytics';
 
 	type Props = {
 		product: Product;
@@ -14,6 +15,7 @@
 	function handleToggle(e: Event) {
 		const target = e.target as HTMLInputElement;
 		product.obsolete = target.checked ? 'on' : '';
+		trackOffEvent('product', 'delete_toggle', target.checked ? 'on' : 'off');
 	}
 </script>
 

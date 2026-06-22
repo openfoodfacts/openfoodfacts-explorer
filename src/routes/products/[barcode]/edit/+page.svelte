@@ -3,6 +3,7 @@
 	import ISO6391 from 'iso-639-1';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
+	import { trackOffEvent } from '$lib/analytics';
 
 	import {
 		getOrDefault,
@@ -15,6 +16,7 @@
 		addOrEditProductV2,
 		updateBarcode,
 		updatePackagingsV3,
+		deleteProduct,
 		updateObsoleteStatusV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -253,6 +255,33 @@
 		}
 	}
 
+	async function handleDeleteProduct(comment: string) {
+		if (isSubmitting) {
+			return;
+		}
+		isSubmitting = true;
+		const { data, error } = await deleteProduct(fetch, product.code, comment);
+		isSubmitting = false;
+
+		if (data && !error) {
+			toastCtx.success(
+				$_('product.moderator.delete_product_success', {
+					default: 'Product deleted successfully.'
+				})
+			);
+			goto('/');
+		} else {
+			if (error) {
+				console.error(error);
+			}
+			toastCtx.error(
+				$_('product.moderator.delete_product_error', {
+					default: 'Failed to delete product. Please try again.'
+				})
+			);
+		}
+	}
+
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
 		if (!product.nutriments) {
@@ -335,6 +364,7 @@
 					return;
 				} else {
 					console.debug('Obsolete status updated successfully');
+					trackOffEvent('product', 'delete_submitted');
 				}
 				console.groupEnd();
 			}
@@ -544,6 +574,7 @@
 			{allergenNames}
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
+			onDeleteProduct={handleDeleteProduct}
 		/>
 	{/if}
 </div>
