@@ -37,7 +37,7 @@
 		"@iconify-svelte/material-symbols": "^1.0.36",
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.34",
-		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.30",
+		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.32",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-vercel": "^6.3.3",
 		"@sveltejs/kit": "^2.65.1",
