@@ -315,6 +315,8 @@
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
 			"add_product_title": "Add a new product",
 			"edit_product_title": "Edit product",
+			"login_required_title": "Login Required",
+			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
