@@ -518,7 +518,9 @@
 					>
 						{$_('navbar.login', { default: 'Login' })}
 					</a>
-					<a href="/" class="btn btn-ghost btn-sm"> Return to Home </a>
+					<a href="/" class="btn btn-ghost btn-sm">
+						{$_('product.edit.return_to_home', { default: 'Return to Home' })}
+					</a>
 				</div>
 			</div>
 		</div>

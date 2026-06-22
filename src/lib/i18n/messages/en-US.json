@@ -317,6 +317,7 @@
 			"edit_product_title": "Edit product",
 			"login_required_title": "Login Required",
 			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
+			"return_to_home": "Return to Home",
 			"add_language": "Add a language",
 			"search_languages": "Search languages to add",
 			"no_languages_found": "No languages found",
