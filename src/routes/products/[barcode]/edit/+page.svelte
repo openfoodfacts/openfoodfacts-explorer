@@ -495,121 +495,89 @@
 	});
 </script>
 
-{#if !$userInfo && !dev}
-	<div class="flex min-h-[50vh] w-full flex-col items-center justify-center px-4 py-16 sm:py-24">
-		<div class="card bg-base-100 w-full max-w-lg shadow-xl">
-			<div class="card-body items-center p-8 text-center">
-				<div class="mb-4 text-8xl grayscale-[20%]">🔐</div>
-				<h1 class="text-3xl font-bold">
-					{$_('product.edit.login_required_title', { default: 'Login Required' })}
-				</h1>
-				<p class="text-base-content/80 py-4 text-lg">
-					{$_('product.edit.login_required_body', {
-						default:
-							'You must be logged in to contribute to the database. Sign in to add or edit food product information.'
-					})}
-				</p>
-				<div class="card-actions mt-4 flex w-full flex-col gap-3">
-					<a
-						href="{resolve('/oauth/login')}?redirect={encodeURIComponent(
-							page.url.pathname + page.url.search
-						)}"
-						class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
-					>
-						{$_('navbar.login', { default: 'Login' })}
-					</a>
-					<a href="/" class="btn btn-ghost btn-sm">
-						{$_('product.edit.return_to_home', { default: 'Return to Home' })}
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-{:else}
-	{#if dev && !$userInfo}
-		<div class="alert alert-warning my-8 text-lg" role="alert">
-			<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
-			<div>
-				<p>
-					<strong> You are not logged in! </strong>
-					This means that the product will not be saved to the database.
-				</p>
-				<p class="text-sm">
-					We allow opening this page because you're in development mode, but the submit button will
-					not work.
-				</p>
-			</div>
-		</div>
-	{/if}
-
-	<div class="space-y-8">
-		<!-- Super Title -->
-		<div class="mb-8 space-y-2 text-center">
-			<h1 class="text-primary text-2xl font-semibold tracking-wide sm:text-3xl">
-				{#if isAddMode}
-					{$_('product.edit.add_product_title')}
-				{:else}
-					{$_('product.edit.edit_product_title')}
-				{/if}
-			</h1>
-			<div class="bg-primary/20 mx-auto h-px w-16"></div>
-			<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
-				{#if product.product_name}
-					{product.product_name}
-				{:else if product.product_name_en}
-					{product.product_name_en}
-				{:else}
-					{page.params.barcode}
-				{/if}
+{#if dev && !$userInfo}
+	<div class="alert alert-warning my-8 text-lg" role="alert">
+		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
+		<div>
+			<p>
+				<strong> You are not logged in! </strong>
+				This means that the product will not be saved to the database.
+			</p>
+			<p class="text-sm">
+				We allow opening this page because you're in development mode, but the submit button will
+				not work.
 			</p>
 		</div>
-
-		{#if isAddMode}
-			<AddProductForm
-				bind:product
-				bind:comment
-				{addLanguage}
-				{brandNames}
-				{categoryNames}
-				{countriesNames}
-				languages={filteredLanguages}
-				{getIngredientsImage}
-				{getNutritionImage}
-				{getPackagingImage}
-				{isSubmitting}
-				{labelNames}
-				{originNames}
-				{submit}
-				{storeNames}
-				{units}
-				{handleNutrimentInput}
-				{allergenNames}
-				disableSubmit={dev && !$userInfo}
-			/>
-		{:else}
-			<EditProductForm
-				bind:comment
-				bind:product
-				{handleNutrimentInput}
-				{isSubmitting}
-				{getIngredientsImage}
-				{getNutritionImage}
-				{getPackagingImage}
-				{submit}
-				{addLanguage}
-				{brandNames}
-				{categoryNames}
-				{countriesNames}
-				{labelNames}
-				{originNames}
-				{storeNames}
-				{units}
-				{allergenNames}
-				languages={filteredLanguages}
-				onCorrectBarcode={handleBarcodeCorrection}
-				onDeleteProduct={handleDeleteProduct}
-				disableSubmit={dev && !$userInfo}
-			/>
-		{/if}
 	</div>
 {/if}
+
+<div class="space-y-8">
+	<!-- Super Title -->
+	<div class="mb-8 space-y-2 text-center">
+		<h1 class="text-primary text-2xl font-semibold tracking-wide sm:text-3xl">
+			{#if isAddMode}
+				{$_('product.edit.add_product_title')}
+			{:else}
+				{$_('product.edit.edit_product_title')}
+			{/if}
+		</h1>
+		<div class="bg-primary/20 mx-auto h-px w-16"></div>
+		<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
+			{#if product.product_name}
+				{product.product_name}
+			{:else if product.product_name_en}
+				{product.product_name_en}
+			{:else}
+				{page.params.barcode}
+			{/if}
+		</p>
+	</div>
+
+	{#if isAddMode}
+		<AddProductForm
+			bind:product
+			bind:comment
+			{addLanguage}
+			{brandNames}
+			{categoryNames}
+			{countriesNames}
+			languages={filteredLanguages}
+			{getIngredientsImage}
+			{getNutritionImage}
+			{getPackagingImage}
+			{isSubmitting}
+			{labelNames}
+			{originNames}
+			{submit}
+			{storeNames}
+			{units}
+			{handleNutrimentInput}
+			{allergenNames}
+			disableSubmit={dev && !$userInfo}
+		/>
+	{:else}
+		<EditProductForm
+			bind:comment
+			bind:product
+			{handleNutrimentInput}
+			{isSubmitting}
+			{getIngredientsImage}
+			{getNutritionImage}
+			{getPackagingImage}
+			{submit}
+			{addLanguage}
+			{brandNames}
+			{categoryNames}
+			{countriesNames}
+			{labelNames}
+			{originNames}
+			{storeNames}
+			{units}
+			{allergenNames}
+			languages={filteredLanguages}
+			onCorrectBarcode={handleBarcodeCorrection}
+			onDeleteProduct={handleDeleteProduct}
+			disableSubmit={dev && !$userInfo}
+		/>
+	{/if}
+</div>

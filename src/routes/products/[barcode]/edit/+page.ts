@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
@@ -14,15 +14,25 @@ import {
 	createProductsApi
 } from '$lib/api';
 import { PRODUCT_STATUS } from '$lib/const';
+import { userInfo } from '$lib/stores/user';
 
 import type { PageLoad } from './$types';
+import { dev } from '$app/environment';
 import { preferences } from '$lib/settings';
+import { resolve } from '$app/paths';
 
 export const ssr = false;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
+	}
+
+	if (get(userInfo) == null && !dev) {
+		redirect(
+			302,
+			resolve('/loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+		);
 	}
 
 	const off = createProductsApi(fetch);

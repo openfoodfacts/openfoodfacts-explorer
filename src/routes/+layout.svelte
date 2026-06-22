@@ -281,7 +281,7 @@
 						>{$_('navbar.logout', { default: 'Logout' })}</a
 					>
 				{:else}
-					<a class="btn btn-outline link" href={getLoginUrl(page.url)}
+					<a rel="external" class="btn btn-outline link" href={getLoginUrl(page.url)}
 						>{$_('navbar.login', { default: 'Login' })}</a
 					>
 				{/if}
@@ -405,7 +405,7 @@
 				>{$_('navbar.logout', { default: 'Logout' })}</a
 			>
 		{:else}
-			<a class="btn btn-outline link" href={getLoginUrl(page.url)}
+			<a rel="external" class="btn btn-outline link" href={getLoginUrl(page.url)}
 				>{$_('navbar.login', { default: 'Login' })}</a
 			>
 		{/if}
