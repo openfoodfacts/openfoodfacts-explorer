@@ -202,28 +202,30 @@
 				disabled={isUploading}
 				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
-			<button
-				type="button"
-				class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
-				class:loading={isUploading}
-				disabled={isUploading}
-				onclick={() => triggerFileInput(inputId)}
-			>
-				{#if isUploading}
-					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
-					>
-				{:else}
-					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
-					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.upload_type', {
-							values: { type: sectionType.label },
-							default: 'Upload ' + sectionType.label
-						})}</span
-					>
-				{/if}
-			</button>
+			{#if !(isStandardType && hasImagesOfType)}
+				<button
+					type="button"
+					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					class:loading={isUploading}
+					disabled={isUploading}
+					onclick={() => triggerFileInput(inputId)}
+				>
+					{#if isUploading}
+						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+						>
+					{:else}
+						<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.upload_type', {
+								values: { type: sectionType.label },
+								default: 'Upload ' + sectionType.label
+							})}</span
+						>
+					{/if}
+				</button>
+			{/if}
 			{#if isStandardType && hasImagesOfType}
 				<button
 					type="button"
