@@ -176,12 +176,34 @@
 </script>
 
 <Metadata
-	title={$_('product.title', { values: { productName: product.product_name } })}
-	description={$_('product.description', { values: { productName: product.product_name } })}
+	title={$_('product.title', {
+		default: '{productName} - Open Food Facts Explorer',
+		values: { productName: product.product_name }
+	})}
+	description={$_('product.description', {
+		default: 'Product page for {productName} on Open Food Facts Explorer',
+		values: { productName: product.product_name }
+	})}
 	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4" itemscope itemtype="https://schema.org/Product">
+	<meta itemprop="name" content={product.product_name || ''} />
+	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
+	<meta
+		itemprop="description"
+		content={$_('product.description', {
+			default: 'Product page for {productName} on Open Food Facts Explorer',
+			values: { productName: product.product_name }
+		})}
+	/>
+	<meta itemprop="gtin" content={product.code || ''} />
+	{#if product.brands}
+		<div itemprop="brand" itemscope itemtype="https://schema.org/Brand">
+			<meta itemprop="name" content={product.brands} />
+		</div>
+	{/if}
+
 	<ProductHeader {product} taxonomies={data.taxo} />
 
 	{#if showBarcode && product.code != null}
@@ -245,7 +267,7 @@
 						{$_('product.folksonomy.intro_before')}
 						<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
 						{$_('product.folksonomy.intro_after')}
-						<a href="https://openfoodfacts-explorer.vercel.app/folksonomy">
+						<a href={resolve('/folksonomy')}>
 							{$_('product.folksonomy.link_properties')}
 						</a>
 						{$_('product.folksonomy.link_middle')}
