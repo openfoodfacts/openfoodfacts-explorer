@@ -21,7 +21,6 @@
 		labelNames?: string[];
 		brandNames?: string[];
 		storeNames?: string[];
-		originNames?: string[];
 		countriesNames?: string[];
 		editMode?: boolean;
 	};
@@ -32,7 +31,6 @@
 		labelNames,
 		brandNames,
 		storeNames,
-		originNames,
 		countriesNames,
 		editMode = false
 	}: Props = $props();
@@ -132,46 +130,24 @@
 		</div>
 	{/if}
 
-	<!-- Primary Fields Grid -->
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-		<div class="form-control w-full">
-			<label class="label" for="quantity">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.quantity')}
-					<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
-				</span>
-			</label>
-			<input
-				id="quantity"
-				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				value={product.quantity ?? ''}
-				oninput={(e) => {
-					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
-				}}
-				placeholder="e.g., 250g, 1L, 500ml"
-			/>
-		</div>
-		<div class="form-control w-full">
-			<label class="label" for="manufacturing_places">
-				<span class="label-text text-sm font-medium sm:text-base"
-					>{$_('product.edit.manufacturing_places')}</span
-				>
-			</label>
-			<input
-				id="manufacturing_places"
-				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				value={product.manufacturing_places ?? ''}
-				oninput={(e) => {
-					product = {
-						...product,
-						manufacturing_places: (e.currentTarget as HTMLInputElement).value
-					};
-				}}
-				placeholder="e.g., France, Italy"
-			/>
-		</div>
+	<!-- Quantity -->
+	<div class="form-control w-full">
+		<label class="label" for="quantity">
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+				{$_('product.edit.quantity')}
+				<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
+			</span>
+		</label>
+		<input
+			id="quantity"
+			type="text"
+			class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+			value={product.quantity ?? ''}
+			oninput={(e) => {
+				product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
+			}}
+			placeholder="e.g., 250g, 1L, 500ml"
+		/>
 	</div>
 	<div class="form-control w-full">
 		<label class="label" for="website_url">
@@ -255,21 +231,7 @@
 				}}
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="origins-input">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.origins')}
-					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.origins ?? ''}
-				autocomplete={originNames}
-				onChange={(v) => {
-					product = { ...product, origins: v };
-				}}
-			/>
-		</div>
+
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
@@ -284,35 +246,6 @@
 					product = { ...product, countries: v };
 				}}
 			/>
-		</div>
-		<div class="form-control w-full">
-			<label class="label" for="traceability-codes">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.emb_code')}
-					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.emb_codes ?? ''}
-				autocomplete={[]}
-				onChange={(v) => {
-					product = { ...product, emb_codes: v };
-				}}
-			/>
-			<div class="mt-1 text-xs text-base-content/60">
-				<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
-				<p>
-					More info:
-					<a
-						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link"
-					>
-						Food Traceability Codes Wiki
-					</a>
-				</p>
-			</div>
 		</div>
 	</div>
 </div>

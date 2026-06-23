@@ -13,6 +13,7 @@
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
+	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
 	const permissions = getPermissionsCtx();
 
@@ -60,6 +61,13 @@
 				id: 'basic-info',
 				label: $_('product.edit.sections.basic_info', { default: 'Basic Info' }),
 				icon: IconMdiInformation
+			},
+			{
+				id: 'origin-traceability',
+				label: $_('product.edit.sections.origin_traceability', {
+					default: 'Traceability & Origins'
+				}),
+				icon: IconMdiEarth
 			},
 			{
 				id: 'ingredients',

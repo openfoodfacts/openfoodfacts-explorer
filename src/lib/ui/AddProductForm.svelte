@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
+	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
@@ -24,6 +25,7 @@
 	const STEPS = $derived([
 		$_('product.edit.sections.images'),
 		$_('product.edit.sections.basic_info'),
+		$_('product.edit.sections.origin_traceability'),
 		$_('product.edit.sections.languages'),
 		$_('product.edit.sections.ingredients'),
 		$_('product.edit.sections.nutrition'),
@@ -151,18 +153,19 @@
 		{labelNames}
 		{brandNames}
 		{storeNames}
-		{originNames}
 		{countriesNames}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep bind:product codes={languages} {addLanguage} />
+	<OriginTraceabilityStep bind:product {originNames} />
 {:else if currentStep === 3}
-	<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
+	<LanguagesStep bind:product codes={languages} {addLanguage} />
 {:else if currentStep === 4}
-	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
+	<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
 {:else if currentStep === 5}
-	<PackagingStep bind:product {getPackagingImage} />
+	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 6}
+	<PackagingStep bind:product {getPackagingImage} />
+{:else if currentStep === 7}
 	<CommentStep bind:comment />
 {/if}
 
