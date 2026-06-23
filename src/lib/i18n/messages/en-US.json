@@ -27,6 +27,8 @@
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Search Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Query",
@@ -185,6 +187,7 @@
 		"edit_preferences": "Edit Preferences",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
