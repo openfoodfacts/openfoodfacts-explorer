@@ -118,6 +118,7 @@
 	let cleanedQuery = $derived(mainSearchTerm.replace(/[\s-]/g, ''));
 	let queryIsBarcode = $derived(/^\d{5,18}$/.test(cleanedQuery));
 	let barcodeInput = $state('');
+	let encodedMainSearchTerm = $derived(encodeURIComponent(mainSearchTerm));
 </script>
 
 <Metadata
@@ -127,14 +128,14 @@
 
 <!-- Superset SQL Promo Banner -->
 <div
-	class="alert alert-outline bg-linear-to-r from-orange-500/10 via-amber-500/10 to-yellow-500/10 dark:from-orange-500/5 dark:via-amber-500/5 dark:to-yellow-500/5 border-amber-500/20 my-4 max-md:hidden"
+	class="alert alert-outline bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 dark:from-primary/5 dark:via-secondary/5 dark:to-accent/5 border-base-300 my-4 max-md:hidden"
 >
-	<div class="bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded-lg p-2 shrink-0">
+	<div class="bg-primary/15 text-primary rounded-lg p-2 shrink-0">
 		<IconMdiDatabase class="h-6 w-6" />
 	</div>
 	<div class="flex items-center gap-3">
 		<div class="text-sm">
-			<div class="text-amber-800 dark:text-amber-300 font-bold">sql.openfoodfacts.org:</div>
+			<div class="text-primary font-bold">sql.openfoodfacts.org:</div>
 			<span class="text-base-content/90">
 				{$_('search.superset_promo_desc', {
 					default:
@@ -167,7 +168,10 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		Search results for "{mainSearchTerm}"
+		{$_('search.results_for', {
+			values: { term: mainSearchTerm },
+			default: 'Search results for "{term}"'
+		})}
 	</h2>
 	<div class="flex items-center gap-2">
 		<!-- Sort By Dropdown -->
@@ -212,7 +216,7 @@
 		<div class="flex flex-col gap-5">
 			<label class="form-control w-full">
 				<span class="label-text mb-1 block text-sm font-semibold text-base-content/80">
-					{$_('search.raw_query_label')}
+					{$_('search.raw_query_label', { default: 'Raw Query' })}
 				</span>
 				<input
 					type="text"
@@ -224,24 +228,32 @@
 			</label>
 
 			<div class="flex flex-col gap-2">
-				<span class="text-sm font-semibold text-base-content/80">Classic Tools:</span>
+				<span class="text-sm font-semibold text-base-content/80">
+					{$_('search.classic_tools', { default: 'Classic Tools:' })}
+				</span>
 				<div class="flex flex-wrap gap-2">
 					<a
-						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={mainSearchTerm}"
+						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-soft btn-sm w-full md:w-fit"
 					>
-						{$_('search.generate_graphs_classic', { values: { term: mainSearchTerm } })}
+						{$_('search.generate_graphs_classic', {
+							values: { term: mainSearchTerm },
+							default: 'Generate graphs for {term} (classic version)'
+						})}
 						<IconMdiOpenInNew class="h-4 w-4" />
 					</a>
 					<a
-						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={mainSearchTerm}"
+						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-soft btn-sm w-full md:w-fit"
 					>
-						{$_('search.advanced_search_classic', { values: { term: mainSearchTerm } })}
+						{$_('search.advanced_search_classic', {
+							values: { term: mainSearchTerm },
+							default: 'Advanced Search for {term} (classic version)'
+						})}
 						<IconMdiOpenInNew class="h-4 w-4" />
 					</a>
 				</div>
@@ -249,13 +261,17 @@
 
 			{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
 				<div class="flex flex-col gap-2">
-					<span class="text-sm font-semibold text-base-content/80">Search Analytics:</span>
+					<span class="text-sm font-semibold text-base-content/80">
+						{$_('search.charts_title', { default: 'Search Analytics' })}:
+					</span>
 					<button
 						class="btn btn-secondary btn-sm gap-2 w-full md:w-fit"
 						onclick={() => (showGraphs = !showGraphs)}
 					>
 						<IconMdiChartBar class="h-4 w-4" />
-						{showGraphs ? $_('search.hide_graphs') : $_('search.show_graphs')}
+						{showGraphs
+							? $_('search.hide_graphs', { default: 'Hide Graphs' })
+							: $_('search.show_graphs', { default: 'Show Graphs' })}
 					</button>
 					{#if showGraphs}
 						<div class="grid grid-cols-1 gap-4 mt-2" transition:slide={{ duration: 300 }}>
@@ -264,7 +280,8 @@
 									<VegaChart
 										spec={chartSpec}
 										title={$_('search.chart_title', {
-											values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') }
+											values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') },
+											default: '{chartKey}'
 										})}
 									/>
 								</div>
