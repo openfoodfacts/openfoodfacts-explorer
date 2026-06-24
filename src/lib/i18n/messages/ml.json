@@ -27,6 +27,8 @@
 		"add_product": "പുതിയ ഉൽപ്പന്നം ചേർക്കുക",
 		"description": "{query}എന്നതിനായി ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ തിരയുക.",
 		"charts_title": "തിരയൽ അനലിറ്റിക്സ്",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "വിലകൾ കാണിക്കുക",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "റോ അന്വേഷണം",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ക്ലാസിക് പതിപ്പ്) എന്നതിനായുള്ള ഗ്രാഫുകൾ സൃഷ്ടിക്കുക.",
 		"advanced_search_classic": "{term} (ക്ലാസിക് പതിപ്പ്) എന്നതിനായുള്ള വിപുലമായ തിരയൽ",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "മുൻഗണനകൾ എഡിറ്റ് ചെയ്യുക",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "ഉൽപ്പന്നം തിരിച്ചറിയാൻ മറ്റുള്ളവരെ സഹായിക്കുന്നതിന് ഉൽപ്പന്നത്തിന്റെ വ്യക്തമായ ചിത്രങ്ങൾ, ചേരുവകൾ, പോഷകാഹാര വസ്തുതകൾ എന്നിവ അപ്‌ലോഡ് ചെയ്യുക.",
 				"basic_info": "അളവ്, പാക്കേജിംഗ്, നിർമ്മാതാവ് തുടങ്ങിയ ഉൽപ്പന്നത്തെക്കുറിച്ചുള്ള പ്രധാന വിശദാംശങ്ങൾ നൽകുക.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "കൂടുതൽ ഉപയോക്താക്കൾക്ക് ഉൽപ്പന്നം ലഭ്യമാക്കുന്നതിന് വ്യത്യസ്ത ഭാഷകളിൽ ഉൽപ്പന്ന നാമങ്ങളും വിവരണങ്ങളും ചേർക്കുക.",
 				"ingredients": "ഉൽപ്പന്നത്തിൽ അടങ്ങിയിരിക്കുന്ന എല്ലാ ചേരുവകളും പട്ടികപ്പെടുത്തുക. അലർജികളോ ഭക്ഷണ മുൻഗണനകളോ ഉള്ള ഉപയോക്താക്കളെ ഇത് സഹായിക്കുന്നു.",
 				"nutrition": "പാക്കേജിംഗിൽ കാണിച്ചിരിക്കുന്നതുപോലെ 100 ഗ്രാം/മില്ലി എന്ന നിരക്കിൽ പോഷക മൂല്യങ്ങൾ നൽകുക. ഇത് ഉപയോക്താക്കളെ ഉൽപ്പന്നങ്ങൾ താരതമ്യം ചെയ്യാൻ സഹായിക്കുന്നു.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "അടിസ്ഥാന വിവരങ്ങൾ",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ഭാഷകളും ഉൽപ്പന്ന നാമങ്ങളും",
 				"ingredients": "Ingredients",
 				"nutrition": "പോഷകാഹാര വിവരങ്ങൾ",
