@@ -27,6 +27,8 @@
 		"add_product": "Маҳсулоти нав илова кунед",
 		"description": "Ҷустуҷӯ дар Explorer Facts Food Open {query}",
 		"charts_title": "Ҷустуҷӯи Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Нархҳоро нишон диҳед",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Дархости хом",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Эҷоди графикҳо барои {term} (версияи классикӣ)",
 		"advanced_search_classic": "Ҷустуҷӯи пешрафта барои {term} (версияи классикӣ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Таҳрири афзалиятҳо",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Тасвирҳои равшани маҳсулот, компонентҳо ва далелҳои ғизоро бор кунед, то ба дигарон дар муайян кардани маҳсулот кӯмак расонанд.",
 				"basic_info": "Маълумоти асосӣ дар бораи маҳсулот, ба монанди миқдор, бастабандӣ ва истеҳсолкунандаро пешниҳод кунед.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Номҳо ва тавсифи маҳсулотро бо забонҳои гуногун илова кунед, то маҳсулотро ба корбарони бештар дастрас созед.",
 				"ingredients": "Ҳамаи компонентҳои дар маҳсулот мавҷудбударо номбар кунед. Ин ба корбарон бо аллергия ё афзалиятҳои парҳезӣ кӯмак мекунад.",
 				"nutrition": "Тавре ки дар баста нишон дода шудааст, арзишҳои ғизоиро барои 100 г/мл ворид кунед. Ин ба корбарон кӯмак мекунад, ки маҳсулотро муқоиса кунанд.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Маълумоти асосӣ",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Забонҳо ва номҳои маҳсулот",
 				"ingredients": "Ingredients",
 				"nutrition": "Маълумот дар бораи ғизо",
