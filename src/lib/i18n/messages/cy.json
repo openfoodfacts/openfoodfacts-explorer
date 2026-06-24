@@ -27,6 +27,8 @@
 		"add_product": "Ychwanegu Cynnyrch newydd",
 		"description": "Chwiliwch ar Open Food Facts Explorer am {query}",
 		"charts_title": "Dadansoddeg Chwilio",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Dangos Prisiau",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Ymholiad Crai",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Cynhyrchu graffiau ar gyfer {term} (fersiwn glasurol)",
 		"advanced_search_classic": "Chwilio Uwch am {term} (fersiwn glasurol)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Golygu Dewisiadau",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Llwythwch i fyny ddelweddau clir o'r cynnyrch, y cynhwysion, a'r ffeithiau maeth i helpu eraill i adnabod y cynnyrch.",
 				"basic_info": "Rhowch y prif fanylion am y cynnyrch, megis maint, pecynnu a gwneuthurwr.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Ychwanegwch enwau a disgrifiadau cynnyrch mewn gwahanol ieithoedd i wneud y cynnyrch yn hygyrch i fwy o ddefnyddwyr.",
 				"ingredients": "Rhestrwch yr holl gynhwysion sydd yn y cynnyrch. Mae hyn yn helpu defnyddwyr sydd ag alergeddau neu ddewisiadau dietegol.",
 				"nutrition": "Nodwch werthoedd maethol fesul 100g/ml fel y dangosir ar y pecynnu. Mae hyn yn helpu defnyddwyr i gymharu cynhyrchion.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Lluniau",
 				"basic_info": "Gwybodaeth Sylfaenol",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Ieithoedd ac Enwau Cynnyrch",
 				"ingredients": "Cynhwysion",
 				"nutrition": "Gwybodaeth Maethol",
