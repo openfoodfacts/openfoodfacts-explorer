@@ -27,6 +27,8 @@
 		"add_product": "కొత్త ఉత్పత్తిని జోడించండి",
 		"description": "{query}కోసం ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో శోధించండి",
 		"charts_title": "శోధన విశ్లేషణలు",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "ధరలను చూపించు",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "ముడి ప్రశ్న",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (క్లాసిక్ వెర్షన్) కోసం గ్రాఫ్‌లను రూపొందించండి",
 		"advanced_search_classic": "{term} (క్లాసిక్ వెర్షన్) కోసం అధునాతన శోధన",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "ప్రాధాన్యతలను సవరించు",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "ఇతరులు ఉత్పత్తిని గుర్తించడంలో సహాయపడటానికి ఉత్పత్తి యొక్క స్పష్టమైన చిత్రాలు, పదార్థాలు మరియు పోషకాహార వాస్తవాలను అప్‌లోడ్ చేయండి.",
 				"basic_info": "ఉత్పత్తి గురించి ప్రధాన వివరాలను అందించండి, అంటే పరిమాణం, ప్యాకేజింగ్ మరియు తయారీదారు.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "ఉత్పత్తిని మరింత మంది వినియోగదారులకు అందుబాటులో ఉంచడానికి వివిధ భాషలలో ఉత్పత్తి పేర్లు మరియు వివరణలను జోడించండి.",
 				"ingredients": "ఉత్పత్తిలో ఉన్న అన్ని పదార్థాలను జాబితా చేయండి. ఇది అలెర్జీలు లేదా ఆహార ప్రాధాన్యతలు ఉన్న వినియోగదారులకు సహాయపడుతుంది.",
 				"nutrition": "ప్యాకేజింగ్‌లో చూపిన విధంగా 100g/mlకి పోషక విలువలను నమోదు చేయండి. ఇది వినియోగదారులకు ఉత్పత్తులను పోల్చడానికి సహాయపడుతుంది.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "ఫోటోలు",
 				"basic_info": "ప్రాథమిక సమాచారం",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "భాషలు & ఉత్పత్తి పేర్లు",
 				"ingredients": "Ingredients",
 				"nutrition": "పోషకాహార సమాచారం",
