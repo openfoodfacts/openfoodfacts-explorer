@@ -27,6 +27,8 @@
 		"add_product": "Яңа продукт өстәргә",
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Аналитика эзләү",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Бәяләрне күрсәтү",
 		"sort_by_label": "Тәртипләү",
 		"raw_query_label": "Чимал соравы",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
 		"advanced_search_classic": "Advanced Search for {term} (classic version)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Сайлауларны үзгәртү",
 		"close": "Ябу",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Башкаларга продуктны ачыкларга булышу өчен продуктның, ингредиентларның, туклану фактларының ачык рәсемнәрен йөкләгез.",
 				"basic_info": "Продукция турында төп детальләрне күрсәтегез, мәсәлән, сан, төрү, җитештерүче.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Продукцияне күбрәк кулланучыларга куллану өчен төрле телләрдә продукт исемнәрен һәм тасвирламаларын өстәгез.",
 				"ingredients": "Продукциядә булган барлык ингредиентларны санап чыгыгыз. Бу аллергия яки диета өстенлекләре булган кулланучыларга булыша.",
 				"nutrition": "Пакетта күрсәтелгәнчә 100г / млга туклану кыйммәтләрен кертегез. Бу кулланучыларга продуктларны чагыштырырга ярдәм итә.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Фотолар",
 				"basic_info": "Төп мәгълүмат",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Телләр һәм продукт исемнәре",
 				"ingredients": "Ingredients",
 				"nutrition": "Туклану турында мәгълүмат",
