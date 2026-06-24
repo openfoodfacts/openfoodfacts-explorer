@@ -27,6 +27,8 @@
 		"add_product": "ಹೊಸ ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ",
 		"description": "{query}ಗಾಗಿ ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ ಹುಡುಕಿ",
 		"charts_title": "ಹುಡುಕಾಟ ವಿಶ್ಲೇಷಣೆ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "ಬೆಲೆಗಳನ್ನು ತೋರಿಸಿ",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "ಕಚ್ಚಾ ಪ್ರಶ್ನೆ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ಕ್ಲಾಸಿಕ್ ಆವೃತ್ತಿ) ಗಾಗಿ ಗ್ರಾಫ್‌ಗಳನ್ನು ರಚಿಸಿ",
 		"advanced_search_classic": "{term} ಗಾಗಿ ಸುಧಾರಿತ ಹುಡುಕಾಟ (ಕ್ಲಾಸಿಕ್ ಆವೃತ್ತಿ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "ಆದ್ಯತೆಗಳನ್ನು ಸಂಪಾದಿಸಿ",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "ಇತರರು ಉತ್ಪನ್ನವನ್ನು ಗುರುತಿಸಲು ಸಹಾಯ ಮಾಡಲು ಉತ್ಪನ್ನದ ಸ್ಪಷ್ಟ ಚಿತ್ರಗಳು, ಪದಾರ್ಥಗಳು ಮತ್ತು ಪೌಷ್ಟಿಕಾಂಶದ ಸಂಗತಿಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
 				"basic_info": "ಉತ್ಪನ್ನದ ಬಗ್ಗೆ ಮುಖ್ಯ ವಿವರಗಳನ್ನು ಒದಗಿಸಿ, ಉದಾಹರಣೆಗೆ ಪ್ರಮಾಣ, ಪ್ಯಾಕೇಜಿಂಗ್ ಮತ್ತು ತಯಾರಕರು.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "ಹೆಚ್ಚಿನ ಬಳಕೆದಾರರಿಗೆ ಉತ್ಪನ್ನವನ್ನು ಪ್ರವೇಶಿಸಲು ವಿವಿಧ ಭಾಷೆಗಳಲ್ಲಿ ಉತ್ಪನ್ನದ ಹೆಸರುಗಳು ಮತ್ತು ವಿವರಣೆಗಳನ್ನು ಸೇರಿಸಿ.",
 				"ingredients": "ಉತ್ಪನ್ನದಲ್ಲಿರುವ ಎಲ್ಲಾ ಪದಾರ್ಥಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ. ಇದು ಅಲರ್ಜಿಗಳು ಅಥವಾ ಆಹಾರ ಪದ್ಧತಿಯ ಆದ್ಯತೆಗಳನ್ನು ಹೊಂದಿರುವ ಬಳಕೆದಾರರಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
 				"nutrition": "ಪ್ಯಾಕೇಜಿಂಗ್‌ನಲ್ಲಿ ತೋರಿಸಿರುವಂತೆ ಪ್ರತಿ 100 ಗ್ರಾಂ/ಮಿಲಿ ಪೌಷ್ಟಿಕಾಂಶದ ಮೌಲ್ಯಗಳನ್ನು ನಮೂದಿಸಿ. ಇದು ಬಳಕೆದಾರರಿಗೆ ಉತ್ಪನ್ನಗಳನ್ನು ಹೋಲಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "ಫೋಟೋಗಳು",
 				"basic_info": "ಮೂಲ ಮಾಹಿತಿ",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ಭಾಷೆಗಳು ಮತ್ತು ಉತ್ಪನ್ನದ ಹೆಸರುಗಳು",
 				"ingredients": "ಪದಾರ್ಥಗಳು",
 				"nutrition": "ಪೌಷ್ಟಿಕಾಂಶದ ಮಾಹಿತಿ",
