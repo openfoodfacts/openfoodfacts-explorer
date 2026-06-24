@@ -27,6 +27,8 @@
 		"add_product": "Fa Product foforo ka ho",
 		"description": "Hwehwɛ wɔ Open Food Facts Explorer so ma {query}",
 		"charts_title": "Hwehwɛ Nhwehwɛmu",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Kyerɛ Nneɛma Bo",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Asɛmmisa",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Yɛ graphs ma {term} (classic version) .",
 		"advanced_search_classic": "Nhwehwɛmu a ɛkɔ akyiri ma {term} (classic version) .",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Sesa Nneɛma a Wopɛ",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Fa aduru no, nneɛma a wɔde yɛ, ne aduannuru ho nokwasɛm ahorow a emu da hɔ gu so na aboa afoforo ma wɔahu aduru no.",
 				"basic_info": "Fa ade no ho nsɛm atitiriw te sɛ dodow, nea wɔde kyekyere, ne nea ɔyɛe no ma.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Fa nneɛma din ne nkyerɛkyerɛmu a ɛwɔ kasa ahorow mu ka ho na ama nnipa pii a wɔde di dwuma no betumi anya afiri no.",
 				"ingredients": "Kyerɛw nneɛma a ɛwɔ aduru no mu nyinaa. Eyi boa wɔn a wɔde di dwuma a wɔn ho yɛ wɔn hyew anaasɛ wɔn aduan a wɔpɛ.",
 				"nutrition": "Hyehyɛ aduannuru a ɛwɔ 100g/ml biara mu sɛnea wɔakyerɛ wɔ nneɛma a wɔde ahyɛ mu no so. Eyi boa wɔn a wɔde di dwuma no ma wɔde nneɛma toto ho.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Nsɛm a Ɛho Hia",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Kasa & Nneɛma a Wɔde Yɛ Nneɛma Din",
 				"ingredients": "Ingredients",
 				"nutrition": "Aduandi Ho Nsɛm",
