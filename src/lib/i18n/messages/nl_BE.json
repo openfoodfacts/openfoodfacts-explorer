@@ -27,6 +27,8 @@
 		"add_product": "Nieuw product toevoegen",
 		"description": "Zoek op Open Food Facts Explorer naar {query}",
 		"charts_title": "Zoekanalyse",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Prijzen weergeven",
 		"sort_by_label": "Sorteren op",
 		"raw_query_label": "Ruwe zoekopdracht",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Grafieken genereren voor {term} (klassieke versie)",
 		"advanced_search_classic": "Geavanceerd zoeken naar {term} (klassieke versie)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prijzen",
 		"creation_date": "Aanmaakdatum",
 		"last_modified_date": "Datum laatst gewijzigd",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Voorkeuren bewerken",
 		"close": "Sluit",
 		"classify_products": "Classificeer producten volgens jouw voorkeuren",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Gebruik standaard voorkeuren",
 		"default_description": "Nutri-Score, Green-Score en voedselverwerkingsniveau (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Upload duidelijke afbeeldingen van het product, de ingrediënten en de voedingswaarden, zodat anderen het product kunnen herkennen.",
 				"basic_info": "Geef de belangrijkste gegevens over het product, zoals de hoeveelheid, de verpakking en de fabrikant in.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Voeg productnamen en beschrijvingen in verschillende talen toe om het product voor meer gebruikers toegankelijk te maken.",
 				"ingredients": "Vermeld alle ingrediënten die in het product aanwezig zijn. Dit helpt gebruikers met allergieën of dieetwensen.",
 				"nutrition": "Voer de voedingswaarden per 100 g/ml in zoals aangegeven op de verpakking. Dit helpt gebruikers producten te vergelijken.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Foto's",
 				"basic_info": "Basisgegevens",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Talen en productnamen",
 				"ingredients": "Ingrediënten",
 				"nutrition": "Voedingsinformatie",
