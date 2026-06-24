@@ -27,6 +27,8 @@
 		"add_product": "Manampia vokatra vaovao",
 		"description": "Mikaroka ao amin'ny Open Food Facts Explorer momba ny {query}",
 		"charts_title": "Fikarohana Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Asehoy ny vidiny",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Fanontaniana manta",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Mamorona sary ho an'ny {term} (dikan-teny mahazatra)",
 		"advanced_search_classic": "Fikarohana mandroso momba ny {term} (dikan-teny mahazatra)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Ahitsio Safidy",
 		"close": "Akaiky",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Ampidiro sary mazava momba ny vokatra, ny akora ary ny zava-misy momba ny sakafo mba hanampiana ny hafa hamantatra ilay vokatra.",
 				"basic_info": "Omeo ny antsipiriany lehibe momba ny vokatra, toy ny habetsahana, ny fonosana ary ny mpanamboatra.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Manampia anarana vokatra sy famaritana amin'ny fiteny samihafa mba hahatonga ny vokatra ho azon'ny mpampiasa maro kokoa.",
 				"ingredients": "Tanisao ireo akora rehetra ao anatin'ilay vokatra. Manampy ireo mpampiasa manana allergie na tsy fahazakana izany.",
 				"nutrition": "Ampidiro ny sanda ara-tsakafo isaky ny 100g/ml araka ny aseho eo amin'ny fonosana. Manampy ireo mpampiasa mampitaha ny vokatra izany.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Fampahalalana fototra",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Fiteny & Anaran'ny vokatra",
 				"ingredients": "Kanonkanona",
 				"nutrition": "Fampahalalana momba ny sakafo",
