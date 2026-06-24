@@ -27,6 +27,8 @@
 		"add_product": "নতুন Product যোগ কৰক",
 		"description": "{query}ৰ বাবে মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত সন্ধান কৰক",
 		"charts_title": "সন্ধান বিশ্লেষণ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "মূল্য দেখুৱাওক",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "কেঁচা প্ৰশ্ন",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ক্লাছিক সংস্কৰণ) ৰ বাবে গ্ৰাফ সৃষ্টি কৰক",
 		"advanced_search_classic": "{term} (ক্লাছিক সংস্কৰণ) ৰ বাবে উন্নত সন্ধান",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "পছন্দসমূহ সম্পাদনা কৰক",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "আনক পণ্যটো চিনাক্ত কৰাত সহায় কৰিবলৈ পণ্য, উপাদান, আৰু পুষ্টিৰ তথ্যৰ স্পষ্ট ছবি আপলোড কৰক।",
 				"basic_info": "পণ্যৰ বিষয়ে মূল বিৱৰণ, যেনে পৰিমাণ, পেকেজিং, আৰু নিৰ্মাতা প্ৰদান কৰক।",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "পণ্যটো অধিক ব্যৱহাৰকাৰীৰ বাবে অভিগম্য কৰিবলৈ বিভিন্ন ভাষাত পণ্যৰ নাম আৰু বিৱৰণ যোগ কৰক।",
 				"ingredients": "প্ৰডাক্টটোত উপস্থিত সকলো উপাদানৰ তালিকা প্ৰস্তুত কৰা। ইয়াৰ ফলত এলাৰ্জী বা খাদ্যৰ পছন্দৰ ক্ষেত্ৰত ব্যৱহাৰকাৰীয়ে সহায় কৰে।",
 				"nutrition": "পেকেজিঙত দেখুওৱাৰ দৰে প্ৰতি ১০০গ্ৰাম/মিলিলিটাৰত পুষ্টিকৰ মান প্ৰৱেশ কৰক। ইয়াৰ দ্বাৰা ব্যৱহাৰকাৰীয়ে সামগ্ৰী তুলনা কৰাত সহায় কৰে।",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "মৌলিক তথ্য",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ভাষা আৰু পণ্যৰ নাম",
 				"ingredients": "Ingredients",
 				"nutrition": "পুষ্টিৰ তথ্য",
