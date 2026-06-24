@@ -27,6 +27,8 @@
 		"add_product": "اضافه کردن محصول جدید",
 		"description": "در Open Food Facts Explorer عبارت {query}را جستجو کنید.",
 		"charts_title": "تجزیه و تحلیل جستجو",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "نمایش قیمت‌ها",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "پرس و جوی خام",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "تولید نمودار برای {term} (نسخه کلاسیک)",
 		"advanced_search_classic": "جستجوی پیشرفته برای {term} (نسخه کلاسیک)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "تاریخ ایجاد",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "ویرایش تنظیمات برگزیده",
 		"close": "Close",
 		"classify_products": "محصولات را بر اساس سلیقه خود دسته‌بندی کنید",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "استفاده از تنظیمات پیش‌فرض",
 		"default_description": "امتیاز تغذیه‌ای، امتیاز سبز و سطح فرآوری مواد غذایی (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "تصاویر واضحی از محصول، مواد تشکیل‌دهنده و اطلاعات تغذیه‌ای آن آپلود کنید تا به دیگران در شناسایی محصول کمک کنید.",
 				"basic_info": "جزئیات اصلی در مورد محصول، مانند مقدار، بسته‌بندی و تولیدکننده را ارائه دهید.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "نام و توضیحات محصول را به زبان‌های مختلف اضافه کنید تا محصول برای کاربران بیشتری قابل دسترسی باشد.",
 				"ingredients": "تمام مواد تشکیل دهنده موجود در محصول را فهرست کنید. این به کاربرانی که آلرژی یا ترجیحات غذایی دارند کمک می‌کند.",
 				"nutrition": "مقادیر تغذیه‌ای را در هر ۱۰۰ گرم/میلی‌لیتر، همانطور که روی بسته‌بندی نشان داده شده است، وارد کنید. این به کاربران کمک می‌کند تا محصولات را با هم مقایسه کنند.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "اطلاعات پایه",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "زبان‌ها و نام محصولات",
 				"ingredients": "مواد تشکیل دهنده",
 				"nutrition": "اطلاعات تغذیه‌ای",
