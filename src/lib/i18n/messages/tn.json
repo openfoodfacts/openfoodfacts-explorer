@@ -27,6 +27,8 @@
 		"add_product": "Tsenya Sedirwa se sešwa",
 		"description": "Batla mo Motlhotlhomisi wa Dintlha tsa Dijo tse di Buletsweng {query}",
 		"charts_title": "Ditshekatsheko tsa Patlo",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Bontsha Ditlhwatlhwa",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Patlisiso e e tala",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Tlhama dikerafo tsa {term} (mofuta wa bogologolo)",
 		"advanced_search_classic": "Patlo e e Gatetseng Pele ya {term} (mofuta wa bogologolo)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Tseleganya Ditlhopho",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Laisa ditshwantsho tse di bonalang sentle tsa sedirisiwa, metswako, le dintlha tsa phepo go thusa ba bangwe go lemoga sedirisiwa.",
 				"basic_info": "Fana ka dintlha tsa mantlha ka sehlahiswa, tse kang bongata, phuthelo, le moetsi.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Tsenya maina a dikumo le ditlhaloso ka dipuo tse di farologaneng go dira gore badirisi ba le bantsi ba kgone go bona dikumo.",
 				"ingredients": "Kwala metswako yotlhe e e leng teng mo setlhagisweng. Sena se thusa basebedisi ba nang le dialeji kapa dijo tseo ba di ratang.",
 				"nutrition": "Tsenya boleng jwa phepo ka 100g/ml jaaka go bontshitswe mo sephuthelwaneng. Seno se thusa badirisi go bapisa dikumo.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Tshedimosetso ya Motheo",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Dipuo le Maina a Dikumo",
 				"ingredients": "Ingredients",
 				"nutrition": "Tshedimosetso ya Kotlo",
