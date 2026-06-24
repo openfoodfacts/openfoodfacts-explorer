@@ -27,6 +27,8 @@
 		"add_product": "Aghjunghje un novu pruduttu",
 		"description": "Cerca nantu à Open Food Facts Explorer per {query}",
 		"charts_title": "Analitica di ricerca",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Mostra i prezzi",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Query cruda",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generà grafichi per {term} (versione classica)",
 		"advanced_search_classic": "Ricerca avanzata per {term} (versione classica)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Mudificà e Preferenze",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Caricate imagine chjare di u pruduttu, ingredienti è informazioni nutrizionali per aiutà l'altri à identificà u pruduttu.",
 				"basic_info": "Fornite i principali dettagli nantu à u pruduttu, cum'è a quantità, l'imballu è u fabricatore.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Aghjunghjite nomi di prudutti è descrizzioni in diverse lingue per rende u pruduttu accessibile à più utilizatori.",
 				"ingredients": "Elencate tutti l'ingredienti prisenti in u pruduttu. Questu aiuta l'utilizatori cun allergie o preferenze dietetiche.",
 				"nutrition": "Inserite i valori nutrizionali per 100 g/ml cum'è indicati nantu à l'imballu. Questu aiuta l'utilizatori à paragunà i prudutti.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Infurmazioni basiche",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Lingue è nomi di prudutti",
 				"ingredients": "Ingredients",
 				"nutrition": "Infurmazioni Nutriziunali",
