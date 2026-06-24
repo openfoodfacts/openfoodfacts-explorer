@@ -27,6 +27,8 @@
 		"add_product": "Új termék hozzáadása",
 		"description": "Keresés az Open Food Facts Explorerben a következőre: {query}",
 		"charts_title": "Keresési elemzések",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Árak megjelenítése",
 		"sort_by_label": "Rendezés",
 		"raw_query_label": "Nyers lekérdezés",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Grafikonok generálása {term} -hoz (klasszikus verzió)",
 		"advanced_search_classic": "Speciális keresés a következőre: {term} (klasszikus verzió)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Létrehozás dátuma",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Beállítások szerkesztése",
 		"close": "Bezárás",
 		"classify_products": "Osztályozza a termékeket az Ön igényei szerint",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Alapértelmezett beállítások használata",
 		"default_description": "Nutri-Score, Green-Score és élelmiszer-feldolgozási szint (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Töltsön fel jól látható képeket a termékről, az összetevőkről és a tápértéktáblázatról, hogy mások könnyebben azonosíthassák a terméket.",
 				"basic_info": "Adja meg a termék főbb adatait, például a mennyiséget, a csomagolást és a gyártót.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Adj hozzá termékneveket és leírásokat különböző nyelveken, hogy a termék több felhasználó számára is elérhető legyen.",
 				"ingredients": "Sorolja fel a termékben található összes összetevőt. Ez segít az allergiás vagy étkezési szokásokkal küzdő felhasználóknak.",
 				"nutrition": "Add meg a tápértéket 100 g/ml-enként, a csomagoláson feltüntetett módon. Ez segít a felhasználóknak a termékek összehasonlításában.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Fényképek",
 				"basic_info": "Alapvető információk",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Nyelvek és terméknevek",
 				"ingredients": "Összetevők",
 				"nutrition": "Tápanyagtartalom",
