@@ -27,6 +27,8 @@
 		"add_product": "نئين پراڊڪٽ شامل ڪريو",
 		"description": "اوپن فوڊ فيڪٽس ايڪسپلورر تي {query}لاءِ ڳولا ڪريو",
 		"charts_title": "ڳولا جا تجزيا",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "قيمتون ڏيکاريو",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "خام سوال",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} لاءِ گراف ٺاهيو (ڪلاسڪ ورزن)",
 		"advanced_search_classic": "{term} لاءِ اعليٰ ڳولا (ڪلاسڪ ورزن)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "ترجيحات ۾ تبديلي آڻيو",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "پراڊڪٽ، اجزاء، ۽ غذائيت جي حقيقتن جون واضح تصويرون اپلوڊ ڪريو ته جيئن ٻين کي پراڊڪٽ جي سڃاڻپ ۾ مدد ملي سگهي.",
 				"basic_info": "پراڊڪٽ بابت مکيه تفصيل مهيا ڪريو، جهڙوڪ مقدار، پيڪنگنگ، ۽ ٺاهيندڙ.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "وڌيڪ استعمال ڪندڙن تائين پراڊڪٽ جي رسائي لاءِ مختلف ٻولين ۾ پراڊڪٽ جا نالا ۽ وضاحتون شامل ڪريو.",
 				"ingredients": "پراڊڪٽ ۾ موجود سڀني اجزاء جي فهرست ڏيو. هي استعمال ڪندڙن کي الرجي يا غذائي ترجيحن سان مدد ڪري ٿو.",
 				"nutrition": "پيڪنگ تي ڏيکاريل 100 گرام/ايم ايل جي غذائي قيمتون داخل ڪريو. هي صارفين کي شين جو مقابلو ڪرڻ ۾ مدد ڪري ٿو.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "بنيادي معلومات",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ٻوليون ۽ پراڊڪٽ جا نالا",
 				"ingredients": "Ingredients",
 				"nutrition": "غذائي معلومات",
