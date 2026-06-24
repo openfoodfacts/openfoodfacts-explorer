@@ -27,6 +27,8 @@
 		"add_product": "Dodaj nowy produkt",
 		"description": "Wyszukaj w Open Food Facts Explorer {query}",
 		"charts_title": "Analityka wyszukiwania",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Pokaż ceny",
 		"sort_by_label": "Sortuj wg",
 		"raw_query_label": "Surowe zapytanie",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generuj wykresy dla {term} (wersja klasyczna)",
 		"advanced_search_classic": "Zaawansowane wyszukiwanie dla {term} (wersja klasyczna)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} cen",
 		"creation_date": "Data utworzenia",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Edytuj preferencje",
 		"close": "Zamknij",
 		"classify_products": "Klasyfikuj produkty zgodnie ze swoimi preferencjami",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Użyj domyślnych ustawień",
 		"default_description": "Nutri-Score, Green-Score i poziom przetwarzania żywności (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Prześlij wyraźne zdjęcia produktu, jego składników i informacji o wartościach odżywczych, aby ułatwić innym osobom identyfikację produktu.",
 				"basic_info": "Podaj podstawowe informacje o produkcie, takie jak ilość, opakowanie i producent.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Dodaj nazwy i opisy produktów w różnych językach, aby udostępnić produkt większej liczbie użytkowników.",
 				"ingredients": "Wypisz wszystkie składniki zawarte w produkcie. To pomoże użytkownikom z alergiami lub preferencjami dietetycznymi.",
 				"nutrition": "Wprowadź wartości odżywcze na 100 g/ml, jak podano na opakowaniu. Ułatwi to użytkownikom porównywanie produktów.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Zdjęcia",
 				"basic_info": "Informacje podstawowe",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Języki i nazwy produktów",
 				"ingredients": "Składniki",
 				"nutrition": "Informacje żywieniowe",
