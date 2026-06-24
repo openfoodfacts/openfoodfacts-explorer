@@ -27,6 +27,8 @@
 		"add_product": "नयाँ उत्पादन थप्नुहोस्",
 		"description": "ओपन फूड फ्याक्ट्स एक्सप्लोररमा {query}खोज्नुहोस्।",
 		"charts_title": "खोज एनालिटिक्स",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "मूल्यहरू देखाउनुहोस्",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "कच्चा प्रश्न",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (क्लासिक संस्करण) को लागि ग्राफहरू उत्पन्न गर्नुहोस्",
 		"advanced_search_classic": "{term} को लागि उन्नत खोज (क्लासिक संस्करण)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "प्राथमिकताहरू सम्पादन गर्नुहोस्",
 		"close": "बन्द गर्नुहोस्",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "अरूलाई उत्पादन पहिचान गर्न मद्दत गर्न उत्पादन, सामग्री र पोषण तथ्यहरूको स्पष्ट छविहरू अपलोड गर्नुहोस्।",
 				"basic_info": "उत्पादनको बारेमा मुख्य विवरणहरू प्रदान गर्नुहोस्, जस्तै मात्रा, प्याकेजिङ, र निर्माता।",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "उत्पादनलाई धेरै प्रयोगकर्ताहरूको लागि पहुँचयोग्य बनाउन विभिन्न भाषाहरूमा उत्पादनको नाम र विवरणहरू थप्नुहोस्।",
 				"ingredients": "उत्पादनमा रहेका सबै सामग्रीहरूको सूची बनाउनुहोस्। यसले एलर्जी वा आहार प्राथमिकता भएका प्रयोगकर्ताहरूलाई मद्दत गर्दछ।",
 				"nutrition": "प्याकेजिङमा देखाइए अनुसार प्रति १०० ग्राम/मिली पोषण मानहरू प्रविष्ट गर्नुहोस्। यसले प्रयोगकर्ताहरूलाई उत्पादनहरू तुलना गर्न मद्दत गर्दछ।",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "आधारभूत जानकारी",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "भाषाहरू र उत्पादन नामहरू",
 				"ingredients": "आवश्यक सामग्रीहरू",
 				"nutrition": "पोषण सम्बन्धी जानकारी",
