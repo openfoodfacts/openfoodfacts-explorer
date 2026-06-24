@@ -27,6 +27,8 @@
 		"add_product": "Tambah Produk anyar",
 		"description": "Telusuri ing Open Food Facts Explorer kanggo {query}",
 		"charts_title": "Nggoleki Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Tampilake Prices",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Pitakon Mentah",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Gawe grafik kanggo {term} (versi klasik)",
 		"advanced_search_classic": "Panelusuran Lanjut kanggo {term} (versi klasik)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Sunting Preferensi",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Unggah gambar sing jelas babagan produk, bahan, lan fakta nutrisi kanggo mbantu wong liya ngenali produk kasebut.",
 				"basic_info": "Nyedhiyakake rincian utama babagan produk, kayata jumlah, kemasan, lan pabrikan.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Tambah jeneng produk lan deskripsi ing basa sing beda-beda supaya produk bisa diakses luwih akeh pangguna.",
 				"ingredients": "Dhaptar kabeh bahan sing ana ing produk kasebut. Iki mbantu pangguna sing duwe alergi utawa pilihan diet.",
 				"nutrition": "Ketik nilai nutrisi saben 100g / ml kaya sing ditampilake ing kemasan. Iki mbantu pangguna mbandhingake produk.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Informasi dhasar",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Basa & Jeneng Produk",
 				"ingredients": "Ingredients",
 				"nutrition": "Informasi Gizi",
