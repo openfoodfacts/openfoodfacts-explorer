@@ -27,6 +27,8 @@
 		"add_product": "Magdagdag ng bagong Produkto",
 		"description": "Maghanap sa Open Food Facts Explorer para sa {query}",
 		"charts_title": "Search Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Ipakita ang mga Presyo",
 		"sort_by_label": "Ayusin ayon sa",
 		"raw_query_label": "Raw Query",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Bumuo ng mga graph para sa {term} (classic na bersyon)",
 		"advanced_search_classic": "Masusing Paghahanap para sa {term} (klasikong bersyon)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "I-edit ang Mga Kagustuhan",
 		"close": "I-close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Mag-upload ng malilinaw na larawan ng produkto, sangkap, at nutrition facts para matulungan ang iba na matukoy ang produkto.",
 				"basic_info": "Ibigay ang mga pangunahing detalye tungkol sa produkto, tulad ng dami, packaging, at tagagawa.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Magdagdag ng mga pangalan at paglalarawan ng produkto sa iba't ibang wika upang gawing naa-access ang produkto sa mas maraming user.",
 				"ingredients": "Ilista ang lahat ng mga sangkap na naroroon sa produkto. Nakakatulong ito sa mga user na may mga allergy o mga kagustuhan sa pagkain.",
 				"nutrition": "Maglagay ng mga nutritional value bawat 100g/ml gaya ng ipinapakita sa packaging. Nakakatulong ito sa mga user na ihambing ang mga produkto.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Pangunahing Impormasyon",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Mga Wika at Pangalan ng Produkto",
 				"ingredients": "Mga Sangkap",
 				"nutrition": "Impormasyon sa Nutrisyon",
