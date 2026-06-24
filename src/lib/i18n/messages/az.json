@@ -27,6 +27,8 @@
 		"add_product": "Yeni Məhsul əlavə edin",
 		"description": "{query}üçün Open Food Facts Explorer-də axtarın",
 		"charts_title": "Axtarış Analitikası",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Qiymətləri Göstər",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Sorğu",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} üçün qrafiklər yaradın (klassik versiya)",
 		"advanced_search_classic": "{term} üçün Qabaqcıl Axtarış (klassik versiya)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Yaradılma tarixi",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Üstünlükləri redaktə edin",
 		"close": "Bağla",
 		"classify_products": "Məhsulları seçimlərinizə görə təsnif edin",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Varsayılan seçimlərdən istifadə edin",
 		"default_description": "Nutri-Score, Green-Score və qida emalı səviyyəsi (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Başqalarının məhsulu tanımasına kömək etmək üçün məhsulun, inqrediyentlərin və qidalanma faktlarının aydın şəkillərini yükləyin.",
 				"basic_info": "Məhsulun miqdarı, qablaşdırılması və istehsalçısı kimi əsas təfərrüatları təqdim edin.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Məhsulu daha çox istifadəçi üçün əlçatan etmək üçün müxtəlif dillərdə məhsul adları və təsvirləri əlavə edin.",
 				"ingredients": "Məhsulda mövcud olan bütün maddələri sadalayın. Bu, allergiya və ya pəhriz üstünlükləri olan istifadəçilərə kömək edir.",
 				"nutrition": "Qablaşdırmada göstərildiyi kimi 100 q/ml üçün qida dəyərini daxil edin. Bu, istifadəçilərə məhsulları müqayisə etməyə kömək edir.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Şəkillər",
 				"basic_info": "Əsas məlumat",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Dillər və Məhsul Adları",
 				"ingredients": "Tərkibi",
 				"nutrition": "Qidalanma Məlumatı",
