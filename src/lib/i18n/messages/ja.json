@@ -27,6 +27,8 @@
 		"add_product": "新しい商品を追加",
 		"description": "Open Food Facts Explorerで {query}を検索",
 		"charts_title": "検索分析",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "価格を表示",
 		"sort_by_label": "並び替え",
 		"raw_query_label": "生のクエリ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} のグラフを生成する (クラシックバージョン)",
 		"advanced_search_classic": "{term} の詳細検索 (クラシックバージョン)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "商品 {count} 個",
 		"creation_date": "作成日",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "設定を編集する",
 		"close": "閉じる",
 		"classify_products": "あなたの好みに応じて製品を分類する",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "デフォルトの好みを使う",
 		"default_description": "Nutri-Score、Green-Score、食品加工レベル（NOVA）",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "他のユーザーが商品を識別できるように、商品、原材料、栄養成分の鮮明な画像をアップロードします。",
 				"basic_info": "数量、パッケージ、製造元など、製品に関する主な詳細を提供します。",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "より多くのユーザーが製品にアクセスできるように、さまざまな言語で製品名と説明を追加します。",
 				"ingredients": "製品に含まれるすべての成分を記載します。これは、アレルギーや食事の好みを持つユーザーに役立ちます。",
 				"nutrition": "パッケージに記載されている100g/mlあたりの栄養成分値を入力します。これにより、ユーザーは製品を比較しやすくなります。",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "写真",
 				"basic_info": "基本情報",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "言語と製品名",
 				"ingredients": "原材料",
 				"nutrition": "栄養情報",
