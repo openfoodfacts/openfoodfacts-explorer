@@ -27,6 +27,8 @@
 		"add_product": "Ouzhpennañ ur produ nevez",
 		"description": "Klask war Open Food Facts Explorer evit {query}",
 		"charts_title": "Dielfennadur ar c'hlask",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Diskouez ar prizioù",
 		"sort_by_label": "Dispartiañ dre",
 		"raw_query_label": "Goulenn c'hrouet",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Sevel grafikoù evit {term} (stumm klasel)",
 		"advanced_search_classic": "Klask araokaet evit {term} (stumm klasel)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Kemmañ ar penndibaboù",
 		"close": "Serriñ",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Kargañ skeudennoù sklaer eus ar produ, eus ar c'hementadoù hag eus an titouroù diwar-benn ar boued evit sikour an dud all da anavezout ar produ.",
 				"basic_info": "Kinnig ar munudoù pennañ diwar-benn ar produ, evel ar c'hementad, an endalc'had hag ar c'henderc'her.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Ouzhpennit anvioù ha deskrivadurioù produioù e yezhoù disheñvel evit ma vo aes da gaout ar produ gant muioc'h a implijerien.",
 				"ingredients": "Roll an holl elfennoù a gaver er produ. Sikour a ra an implijerien gant alerjioù pe gant dibaboù boued.",
 				"nutrition": "Lakait ar gwerzhioù boued dre 100g/ml evel m'eo diskouezet war ar pakad. Sikour a ra an implijerien da geñveriañ ar produioù.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Skeudennoù",
 				"basic_info": "Titouroù diazez",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Yezhoù ha anvioù produioù",
 				"ingredients": "Aozennoù",
 				"nutrition": "Titouroù diwar-benn ar boued",
