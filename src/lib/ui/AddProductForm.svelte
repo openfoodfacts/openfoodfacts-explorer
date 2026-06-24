@@ -13,6 +13,7 @@
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let currentStep = $derived.by(() => {
 		const params = page.url.searchParams;
@@ -35,7 +36,7 @@
 			return;
 		}
 
-		const params = page.url.searchParams;
+		const params = new SvelteURLSearchParams(page.url.search);
 		params.set('step', (step + 1).toString());
 		goto(`?${params.toString()}`, { replaceState: true, noScroll: true });
 	}
