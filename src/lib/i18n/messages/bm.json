@@ -27,6 +27,8 @@
 		"add_product": "Aw bɛ Product kura fara a kan",
 		"description": "Aw ye ɲinini kɛ Open Food Facts Explorer kan walasa ka {query}sɔrɔ",
 		"charts_title": "Ɲini Analitikiw",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "A jira sɔngɔw la",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Ɲininkali raw",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}ye",
 		"generate_graphs_classic": "Jaw dilan {term} (klasiki version) kama .",
 		"advanced_search_classic": "Ɲini caman kɛ {term} (classic version)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Edit Preferences (Fɛɛrɛw ladilan).",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Aw bɛ fura in ja jɛlenw bila a kan, a kɔnɔfɛnw ani a balocogo tiɲɛnenw walasa ka mɔgɔ wɛrɛw dɛmɛ u ka fura in dɔn.",
 				"basic_info": "Aw bɛ kunnafoni kunbabaw di fura in kan, i n’a fɔ a hakɛ, a foroko, ani a dilabaga.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Aw bɛ fɛn dilannenw tɔgɔw ni u ɲɛfɔliw fara kan wɛrɛw la walasa ka fɛn dilannen in sɔrɔ baarakɛla caman fɛ.",
 				"ingredients": "Fɛn minnu bɛ fura in kɔnɔ, olu bɛɛ sɛbɛn. O bɛ baarakɛlaw dɛmɛ ni faritanabana bɛ u la walima dumuni minnu ka di u ye.",
 				"nutrition": "Aw bɛ balo hakɛw sɛbɛn garamu 100/ml kelen na i n’a fɔ a jiralen bɛ cogo min na a foroko kan. O bɛ baarakɛlaw dɛmɛ u ka fɛnw suma ɲɔgɔn na.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Kunnafoni jɔnjɔnw",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Kanw & Fɛnw tɔgɔw",
 				"ingredients": "Ingredients",
 				"nutrition": "Balocogo kunnafoniw",
