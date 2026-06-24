@@ -27,6 +27,8 @@
 		"add_product": "નવું ઉત્પાદન ઉમેરો",
 		"description": "ઓપન ફૂડ ફેક્ટ્સ એક્સપ્લોરર પર {query}શોધો.",
 		"charts_title": "શોધ વિશ્લેષણ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "કિંમતો બતાવો",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "કાચી ક્વેરી",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ક્લાસિક વર્ઝન) માટે ગ્રાફ જનરેટ કરો",
 		"advanced_search_classic": "{term} માટે અદ્યતન શોધ (ક્લાસિક સંસ્કરણ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "પસંદગીઓ સંપાદિત કરો",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "ઉત્પાદન, ઘટકો અને પોષણ તથ્યોની સ્પષ્ટ છબીઓ અપલોડ કરો જેથી અન્ય લોકોને ઉત્પાદન ઓળખવામાં મદદ મળે.",
 				"basic_info": "ઉત્પાદન વિશે મુખ્ય વિગતો આપો, જેમ કે જથ્થો, પેકેજિંગ અને ઉત્પાદક.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "વધુ વપરાશકર્તાઓ માટે ઉત્પાદન સુલભ બનાવવા માટે વિવિધ ભાષાઓમાં ઉત્પાદનના નામ અને વર્ણનો ઉમેરો.",
 				"ingredients": "ઉત્પાદનમાં હાજર બધા ઘટકોની યાદી બનાવો. આ એલર્જી અથવા આહાર પસંદગીઓ ધરાવતા વપરાશકર્તાઓને મદદ કરે છે.",
 				"nutrition": "પેકેજિંગ પર બતાવ્યા પ્રમાણે 100 ગ્રામ/મિલી દીઠ પોષક મૂલ્યો દાખલ કરો. આ વપરાશકર્તાઓને ઉત્પાદનોની તુલના કરવામાં મદદ કરે છે.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "ફોટા",
 				"basic_info": "મૂળભૂત માહિતી",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ભાષાઓ અને ઉત્પાદન નામો",
 				"ingredients": "Ingredients",
 				"nutrition": "પોષણ માહિતી",
