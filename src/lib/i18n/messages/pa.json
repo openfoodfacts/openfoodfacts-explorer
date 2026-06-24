@@ -27,6 +27,8 @@
 		"add_product": "ਨਵਾਂ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ",
 		"description": "ਓਪਨ ਫੂਡ ਫੈਕਟਸ ਐਕਸਪਲੋਰਰ 'ਤੇ {query}ਲਈ ਖੋਜ ਕਰੋ।",
 		"charts_title": "ਖੋਜ ਵਿਸ਼ਲੇਸ਼ਣ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "ਕੀਮਤਾਂ ਦਿਖਾਓ",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "ਕੱਚੀ ਪੁੱਛਗਿੱਛ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ਕਲਾਸਿਕ ਵਰਜਨ) ਲਈ ਗ੍ਰਾਫ਼ ਤਿਆਰ ਕਰੋ",
 		"advanced_search_classic": "{term} ਲਈ ਉੱਨਤ ਖੋਜ (ਕਲਾਸਿਕ ਸੰਸਕਰਣ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "ਪਸੰਦਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "ਦੂਜਿਆਂ ਨੂੰ ਉਤਪਾਦ ਦੀ ਪਛਾਣ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਉਤਪਾਦ, ਸਮੱਗਰੀਆਂ ਅਤੇ ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਤੱਥਾਂ ਦੀਆਂ ਸਪਸ਼ਟ ਤਸਵੀਰਾਂ ਅੱਪਲੋਡ ਕਰੋ।",
 				"basic_info": "ਉਤਪਾਦ ਬਾਰੇ ਮੁੱਖ ਵੇਰਵੇ ਪ੍ਰਦਾਨ ਕਰੋ, ਜਿਵੇਂ ਕਿ ਮਾਤਰਾ, ਪੈਕੇਜਿੰਗ, ਅਤੇ ਨਿਰਮਾਤਾ।",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "ਉਤਪਾਦ ਨੂੰ ਹੋਰ ਉਪਭੋਗਤਾਵਾਂ ਤੱਕ ਪਹੁੰਚਯੋਗ ਬਣਾਉਣ ਲਈ ਵੱਖ-ਵੱਖ ਭਾਸ਼ਾਵਾਂ ਵਿੱਚ ਉਤਪਾਦ ਦੇ ਨਾਮ ਅਤੇ ਵਰਣਨ ਸ਼ਾਮਲ ਕਰੋ।",
 				"ingredients": "ਉਤਪਾਦ ਵਿੱਚ ਮੌਜੂਦ ਸਾਰੇ ਤੱਤਾਂ ਦੀ ਸੂਚੀ ਬਣਾਓ। ਇਹ ਐਲਰਜੀ ਜਾਂ ਖੁਰਾਕ ਸੰਬੰਧੀ ਪਸੰਦਾਂ ਵਾਲੇ ਉਪਭੋਗਤਾਵਾਂ ਦੀ ਮਦਦ ਕਰਦਾ ਹੈ।",
 				"nutrition": "ਪੈਕੇਜਿੰਗ 'ਤੇ ਦਰਸਾਏ ਅਨੁਸਾਰ ਪ੍ਰਤੀ 100 ਗ੍ਰਾਮ/ਮਿ.ਲੀ. ਪੌਸ਼ਟਿਕ ਮੁੱਲ ਦਰਜ ਕਰੋ। ਇਹ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਉਤਪਾਦਾਂ ਦੀ ਤੁਲਨਾ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਦਾ ਹੈ।",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "ਫੋਟੋਆਂ",
 				"basic_info": "ਮੁੱਢਲੀ ਜਾਣਕਾਰੀ",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ਭਾਸ਼ਾਵਾਂ ਅਤੇ ਉਤਪਾਦ ਨਾਮ",
 				"ingredients": "Ingredients",
 				"nutrition": "ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ",
