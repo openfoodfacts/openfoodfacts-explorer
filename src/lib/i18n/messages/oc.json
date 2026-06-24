@@ -27,6 +27,8 @@
 		"add_product": "Apondre un produch novèl",
 		"description": "Cercar sus Open Food Facts Explorer per {query}",
 		"charts_title": "Analisi de recèrca",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Mostrar los prètzs",
 		"sort_by_label": "Triar per",
 		"raw_query_label": "Requèsta bruta",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generar de grafics per {term} (version classica)",
 		"advanced_search_classic": "Recèrca avançada per {term} (version classica)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Modificar las preferéncias",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Enviatz d'imatges clars del produch, dels ingredients e dels faches nutricionals per ajudar los autres a identificar lo produch.",
 				"basic_info": "Fornir los detalhs principals sul produch, coma la quantitat, l'embalatge e lo fabricant.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Apondètz de noms de produch e de descripcions dins de lengas diferentas per rendre lo produch accessible a mai d'utilizaires.",
 				"ingredients": "Listar totes los ingredients presents dins lo produch. Aquò ajuda los utilizaires amb d'allergias o de preferéncias alimentàrias.",
 				"nutrition": "Picatz de valors nutricionalas per 100g/ml coma mostrat sus l'embalatge. Aquò ajuda los utilizaires a comparar los produches.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Informacion de basa",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Lengas e noms de produchs",
 				"ingredients": "Ingredients",
 				"nutrition": "Informacion nutricionala",
