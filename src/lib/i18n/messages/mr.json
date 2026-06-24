@@ -27,6 +27,8 @@
 		"add_product": "नवीन उत्पादन जोडा",
 		"description": "ओपन फूड फॅक्ट्स एक्सप्लोरर वर {query}शोधा.",
 		"charts_title": "शोध विश्लेषणे",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "किंमती दाखवा",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "रॉ क्वेरी",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} साठी आलेख तयार करा (क्लासिक आवृत्ती)",
 		"advanced_search_classic": "{term} साठी प्रगत शोध (क्लासिक आवृत्ती)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "प्राधान्ये संपादित करा",
 		"close": "बंद करा",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "इतरांना उत्पादन ओळखण्यास मदत करण्यासाठी उत्पादन, घटक आणि पोषण तथ्यांच्या स्पष्ट प्रतिमा अपलोड करा.",
 				"basic_info": "उत्पादनाबद्दल मुख्य तपशील द्या, जसे की प्रमाण, पॅकेजिंग आणि निर्माता.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "अधिक वापरकर्त्यांसाठी उत्पादन सुलभ करण्यासाठी वेगवेगळ्या भाषांमध्ये उत्पादनांची नावे आणि वर्णने जोडा.",
 				"ingredients": "उत्पादनात असलेल्या सर्व घटकांची यादी करा. हे ऍलर्जी किंवा आहाराच्या आवडी असलेल्या वापरकर्त्यांना मदत करते.",
 				"nutrition": "पॅकेजिंगवर दाखवल्याप्रमाणे प्रति १०० ग्रॅम/मिली पौष्टिक मूल्ये प्रविष्ट करा. हे वापरकर्त्यांना उत्पादनांची तुलना करण्यास मदत करते.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "मूलभूत माहिती",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "भाषा आणि उत्पादनांची नावे",
 				"ingredients": "साहित्य",
 				"nutrition": "पौष्टिक माहिती",
