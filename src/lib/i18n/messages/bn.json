@@ -27,6 +27,8 @@
 		"add_product": "নতুন পণ্য যোগ করুন",
 		"description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {query}অনুসন্ধান করুন",
 		"charts_title": "অনুসন্ধান বিশ্লেষণ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "দাম দেখান",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "কাঁচা কোয়েরি",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ক্লাসিক সংস্করণ) এর জন্য গ্রাফ তৈরি করুন",
 		"advanced_search_classic": "{term} এর জন্য উন্নত অনুসন্ধান (ক্লাসিক সংস্করণ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "পছন্দগুলি সম্পাদনা করুন",
 		"close": "বন্ধ করুন",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "অন্যদের পণ্যটি শনাক্ত করতে সাহায্য করার জন্য পণ্য, উপাদান এবং পুষ্টির তথ্যের স্পষ্ট ছবি আপলোড করুন।",
 				"basic_info": "পণ্য সম্পর্কে মূল বিবরণ প্রদান করুন, যেমন পরিমাণ, প্যাকেজিং এবং প্রস্তুতকারক।",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "পণ্যটি আরও বেশি ব্যবহারকারীর কাছে অ্যাক্সেসযোগ্য করে তুলতে বিভিন্ন ভাষায় পণ্যের নাম এবং বিবরণ যোগ করুন।",
 				"ingredients": "পণ্যটিতে উপস্থিত সমস্ত উপাদানের তালিকা তৈরি করুন। এটি অ্যালার্জি বা খাদ্যাভ্যাসের পছন্দের ব্যবহারকারীদের সাহায্য করে।",
 				"nutrition": "প্যাকেজিং-এ দেখানো ১০০ গ্রাম/মিলি প্রতি পুষ্টির মান লিখুন। এটি ব্যবহারকারীদের পণ্যের তুলনা করতে সাহায্য করে।",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "ছবি",
 				"basic_info": "মৌলিক তথ্য",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ভাষা এবং পণ্যের নাম",
 				"ingredients": "উপকরণসমূহ",
 				"nutrition": "পুষ্টি সংক্রান্ত তথ্য",
