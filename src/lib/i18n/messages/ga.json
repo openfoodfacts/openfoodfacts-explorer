@@ -27,6 +27,8 @@
 		"add_product": "Cuir Táirge Nua leis",
 		"description": "Cuardaigh ar Open Food Facts Explorer le haghaidh {query}",
 		"charts_title": "Anailísíocht Cuardaigh",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Taispeáin Praghsanna",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Iarratas Amh",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Gin graif le haghaidh {term} (leagan clasaiceach)",
 		"advanced_search_classic": "Cuardach Casta le haghaidh {term} (leagan clasaiceach)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Cuir Roghanna in Eagar",
 		"close": "Dún",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Uaslódáil íomhánna soiléire den táirge, na comhábhair agus na fíricí cothaithe chun cabhrú le daoine eile an táirge a aithint.",
 				"basic_info": "Cuir na príomhshonraí faoin táirge ar fáil, amhail cainníocht, pacáistiú agus monaróir.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Cuir ainmneacha agus tuairiscí táirgí i dteangacha éagsúla leis chun an táirge a dhéanamh inrochtana ag níos mó úsáideoirí.",
 				"ingredients": "Liostaigh na comhábhair uile atá sa táirge. Cuidíonn sé seo le húsáideoirí a bhfuil ailléirgí nó roghanna aiste bia acu.",
 				"nutrition": "Cuir isteach luachanna cothaitheacha in aghaidh an 100g/ml mar a thaispeántar ar an bpacáistiú. Cuidíonn sé seo le húsáideoirí táirgí a chur i gcomparáid.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Grianghraif",
 				"basic_info": "Faisnéis Bhunúsach",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Teangacha & Ainmneacha Táirgí",
 				"ingredients": "Comhábhair",
 				"nutrition": "Faisnéis Chothaitheach",
