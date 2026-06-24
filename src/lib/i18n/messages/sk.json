@@ -27,6 +27,8 @@
 		"add_product": "Pridať nový produkt",
 		"description": "Vyhľadať na Open Food Facts Explorer výraz {query}",
 		"charts_title": "Analýza vyhľadávania",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Zobraziť ceny",
 		"sort_by_label": "Zoradiť podľa",
 		"raw_query_label": "Nespracovaný dopyt",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generovanie grafov pre {term} (klasická verzia)",
 		"advanced_search_classic": "Rozšírené vyhľadávanie pre {term} (klasická verzia)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Upraviť nastavenia",
 		"close": "Zatvoriť",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Nahrajte jasné obrázky produktu, zložiek a nutričných hodnôt, aby ste ostatným pomohli identifikovať produkt.",
 				"basic_info": "Uveďte hlavné podrobnosti o produkte, ako je množstvo, balenie a výrobca.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Pridajte názvy a popisy produktov v rôznych jazykoch, aby bol produkt prístupný väčšiemu počtu používateľov.",
 				"ingredients": "Uveďte všetky zložky prítomné v produkte. To pomôže používateľom s alergiami alebo diétnymi preferenciami.",
 				"nutrition": "Zadajte nutričné hodnoty na 100 g/ml, ako sú uvedené na obale. To pomáha používateľom porovnávať produkty.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Fotografie",
 				"basic_info": "Základné informácie",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Jazyky a názvy produktov",
 				"ingredients": "Ingrediencie",
 				"nutrition": "Nutričné informácie",
