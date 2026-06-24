@@ -27,6 +27,8 @@
 		"add_product": "Adicionar novo produto",
 		"description": "Pesquise no Open Food Facts Explorer por {query}",
 		"charts_title": "Análise de pesquisa",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Mostrar preços",
 		"sort_by_label": "Ordenar por",
 		"raw_query_label": "Consulta bruta",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Gerar gráficos para {term} (versão clássica)",
 		"advanced_search_classic": "Busca avançada para {term} (versão clássica)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} valores",
 		"creation_date": "Data de criação",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Editar preferências",
 		"close": "Fechar",
 		"classify_products": "Classifique os produtos de acordo com as sua preferências",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use as preferências padrão",
 		"default_description": "Score nutricional. score ecológico e nível de processamento de alimento (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Carregue imagens nítidas do produto, ingredientes e informações nutricionais para ajudar outras pessoas a identificá-lo.",
 				"basic_info": "Forneça os principais detalhes sobre o produto, como quantidade, embalagem e fabricante.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Adicione nomes e descrições de produtos em diferentes idiomas para tornar o produto acessível a mais usuários.",
 				"ingredients": "Liste todos os ingredientes presentes no produto. Isso ajuda usuários com alergias ou preferências alimentares.",
 				"nutrition": "Insira os valores nutricionais por 100 g/ml conforme indicado na embalagem. Isso ajuda os usuários a comparar produtos.",
@@ -363,7 +370,6 @@
 				"upload_packaging_photo": "Upload packaging photo",
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
-			"product_tags": "Etiquetas do produto",
 			"manufacturing_places": "Locais de fabricação",
 			"categories": "Categorias:",
 			"labels": "Rótulos",
@@ -440,6 +446,7 @@
 			"sections": {
 				"images": "Fotografias",
 				"basic_info": "Informações básicas",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Idiomas e nomes de produtos",
 				"ingredients": "Ingredientes",
 				"nutrition": "Informação nutricional",
