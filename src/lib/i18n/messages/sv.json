@@ -27,6 +27,8 @@
 		"add_product": "Lägg till ny produkt",
 		"description": "Sök på Open Food Facts Explorer efter {query}",
 		"charts_title": "Sökanalys",
+		"results_for": "Sökresultat för \"{term}\"",
+		"classic_tools": "Klassiska verktyg:",
 		"show_prices_label": "Visa priser",
 		"sort_by_label": "Sortera efter",
 		"raw_query_label": "Rå fråga",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generera grafer för {term} (klassisk version)",
 		"advanced_search_classic": "Avancerad sökning efter {term} (klassisk version)",
+		"superset_query": "Starta en sökning",
+		"superset_discover": "Upptäck kontrollpaneler",
+		"superset_promo_desc": "Frigör kraften i öppen data! Utforska hela Open Food Facts-databasen med hjälp av SQL-sökningar, anpassade diagram och delade kontrollpaneler.",
 		"prices_badge": "{count} priser",
 		"creation_date": "Skapandedatum",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Redigera inställningar",
 		"close": "Stäng",
 		"classify_products": "Klassificera produkter efter dina preferenser",
+		"classify_products_desc": "Aktivera personlig produktklassificering baserat på dina preferenser.",
 		"use_default": "Använd standardinställningar",
 		"default_description": "Nutri-Score, Green-Score och livsmedelsförädlingsnivå (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Ladda upp tydliga bilder av produkten, ingredienserna och näringsfakta för att hjälpa andra att identifiera produkten.",
 				"basic_info": "Ange de viktigaste detaljerna om produkten, såsom kvantitet, förpackning och tillverkare.",
+				"origin_traceability": "Ange information om ursprung och spårbarhet, såsom tillverkningsplatser, ingrediensernas ursprung och spårbarhetskoder.",
 				"languages": "Lägg till produktnamn och beskrivningar på olika språk för att göra produkten tillgänglig för fler användare.",
 				"ingredients": "Lista alla ingredienser som finns i produkten. Detta hjälper användare med allergier eller kostpreferenser.",
 				"nutrition": "Ange näringsvärden per 100 g/ml enligt förpackningens innehåll. Detta hjälper användare att jämföra produkter.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Foton",
 				"basic_info": "Grundläggande information",
+				"origin_traceability": "Spårbarhet och ursprung",
 				"languages": "Språk och produktnamn",
 				"ingredients": "Ingredienser",
 				"nutrition": "Näringsinformation",
