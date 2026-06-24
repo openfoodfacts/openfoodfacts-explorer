@@ -27,6 +27,8 @@
 		"add_product": "Dodaj nov izdelek",
 		"description": "Išči na Open Food Facts Explorer za {query}",
 		"charts_title": "Analitika iskanja",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Prikaži cene",
 		"sort_by_label": "Razvrsti po",
 		"raw_query_label": "Surova poizvedba",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Ustvari grafe za {term} (klasična različica)",
 		"advanced_search_classic": "Napredno iskanje za {term} (klasična različica)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Urejanje nastavitev",
 		"close": "Zapri",
 		"classify_products": "Razvrstite izdelke glede na vaše želje",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Uporabi privzete nastavitve",
 		"default_description": "Nutri-Score, Green-Score in stopnja predelave hrane (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Naložite jasne slike izdelka, sestavin in hranilnih vrednosti, da bodo drugi lažje prepoznali izdelek.",
 				"basic_info": "Navedite glavne podrobnosti o izdelku, kot so količina, embalaža in proizvajalec.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Dodajte imena in opise izdelkov v različnih jezikih, da bo izdelek dostopen več uporabnikom.",
 				"ingredients": "Navedite vse sestavine, ki so prisotne v izdelku. To pomaga uporabnikom z alergijami ali prehranskimi preferencami.",
 				"nutrition": "Vnesite hranilne vrednosti na 100 g/ml, kot so prikazane na embalaži. To uporabnikom pomaga primerjati izdelke.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Fotografije",
 				"basic_info": "Osnovne informacije",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Jeziki in imena izdelkov",
 				"ingredients": "Sestavine",
 				"nutrition": "Hranilne informacije",
