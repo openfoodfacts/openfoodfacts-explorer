@@ -27,6 +27,8 @@
 		"add_product": "Shto Produkt të Ri",
 		"description": "Kërko në Open Food Facts Explorer për {query}",
 		"charts_title": "Analitika e Kërkimit",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Shfaq Çmimet",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Pyetje e papërpunuar",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Gjeneroni grafikë për {term} (versioni klasik)",
 		"advanced_search_classic": "Kërkim i Avancuar për {term} (versioni klasik)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Modifiko Preferencat",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Ngarko imazhe të qarta të produktit, përbërësve dhe fakteve ushqyese për të ndihmuar të tjerët ta identifikojnë produktin.",
 				"basic_info": "Jepni detajet kryesore rreth produktit, siç janë sasia, paketimi dhe prodhuesi.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Shtoni emra dhe përshkrime produktesh në gjuhë të ndryshme për ta bërë produktin të arritshëm për më shumë përdorues.",
 				"ingredients": "Renditni të gjithë përbërësit e pranishëm në produkt. Kjo i ndihmon përdoruesit me alergji ose preferenca dietike.",
 				"nutrition": "Vendosni vlerat ushqyese për 100g/ml siç tregohet në paketim. Kjo i ndihmon përdoruesit të krahasojnë produktet.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Foto",
 				"basic_info": "Informacion Bazë",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Gjuhët dhe Emrat e Produkteve",
 				"ingredients": "Përbërësit",
 				"nutrition": "Informacion ushqyes",
