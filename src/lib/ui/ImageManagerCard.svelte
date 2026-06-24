@@ -7,6 +7,8 @@
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
 	import IconMdiEye from '@iconify-svelte/mdi/eye';
+	import IconMdiLock from '@iconify-svelte/mdi/lock';
+	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import ImageModal from './ImageModal.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
@@ -65,7 +67,39 @@
 			.sort((a, b) => b.uploaded_t - a.uploaded_t); // show newest first
 	});
 
+	// Find raw image IDs that are currently active/selected (e.g. front_en, ingredients_fr)
+	let activeImageIds = $derived.by(() => {
+		const activeIds = new SvelteSet<number>();
+		const imagesObj = product.images || {};
+		for (const key of Object.keys(imagesObj)) {
+			if (!/^\d+$/.test(key)) {
+				const val = imagesObj[key];
+				if (val && typeof val === 'object' && 'imgid' in val) {
+					const id = parseInt(String(val.imgid), 10);
+					if (!isNaN(id)) {
+						activeIds.add(id);
+					}
+				}
+			}
+		}
+		return activeIds;
+	});
+
+	// If switching to delete tab, automatically deselect any images that are active/selected
+	$effect(() => {
+		if (activeTab === 'delete') {
+			for (const id of selectedImgIds) {
+				if (activeImageIds.has(id)) {
+					selectedImgIds.delete(id);
+				}
+			}
+		}
+	});
+
 	function toggleSelect(imgid: number) {
+		if (activeTab === 'delete' && activeImageIds.has(imgid)) {
+			return; // Can't select active image for deletion
+		}
 		if (selectedImgIds.has(imgid)) {
 			selectedImgIds.delete(imgid);
 		} else {
@@ -229,7 +263,11 @@
 					class="btn btn-xs btn-outline"
 					onclick={() => {
 						selectedImgIds.clear();
-						rawImages.forEach((img) => selectedImgIds.add(img.imgid));
+						rawImages.forEach((img) => {
+							if (!(activeTab === 'delete' && activeImageIds.has(img.imgid))) {
+								selectedImgIds.add(img.imgid);
+							}
+						});
 					}}
 					disabled={isSubmitting}
 				>
@@ -256,8 +294,17 @@
 							default: 'Select image {imgid}',
 							values: { imgid: img.imgid }
 						})}
+						title={activeTab === 'delete' && activeImageIds.has(img.imgid)
+							? $_('product.moderator.image_manager_in_use_tooltip', {
+									default:
+										'This image is currently active. Unselect it from the Image Manager first to delete it.'
+								})
+							: undefined}
 						class={[
-							'h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:outline-none focus:ring-2 cursor-pointer',
+							'h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:outline-none focus:ring-2',
+							activeTab === 'delete' && activeImageIds.has(img.imgid)
+								? 'border-base-content/5 opacity-60 cursor-not-allowed'
+								: 'cursor-pointer',
 							selectedImgIds.has(img.imgid)
 								? activeTab === 'move'
 									? 'border-warning focus:ring-warning'
@@ -266,37 +313,39 @@
 									(activeTab === 'move' ? 'focus:ring-warning' : 'focus:ring-error')
 						]}
 						onclick={() => toggleSelect(img.imgid)}
-						disabled={isSubmitting}
+						disabled={isSubmitting || (activeTab === 'delete' && activeImageIds.has(img.imgid))}
 					>
 						<img src={img.url} alt="Uploaded img {img.imgid}" class="h-full w-full object-cover" />
 
-						{#if selectedImgIds.has(img.imgid)}
+						{#if activeTab === 'delete' && activeImageIds.has(img.imgid)}
 							<div
-								class={[
-									'absolute inset-0 flex items-center justify-center',
-									activeTab === 'move' ? 'bg-warning/20' : 'bg-error/20'
-								]}
+								class="absolute inset-0 bg-neutral/40 flex flex-col items-center justify-center gap-1 p-2"
 							>
+								<IconMdiLock class="h-6 w-6 text-white" />
+								<span class="badge badge-error badge-xs font-semibold text-[10px] text-white">
+									{$_('product.moderator.image_manager_in_use', { default: 'Active' })}
+								</span>
+							</div>
+						{:else}
+							{#if selectedImgIds.has(img.imgid)}
 								<div
 									class={[
-										'rounded-full p-1 shadow-md',
-										activeTab === 'move'
-											? 'bg-warning text-warning-content'
-											: 'bg-error text-error-content'
+										'absolute inset-0 flex items-center justify-center',
+										activeTab === 'move' ? 'bg-warning/20' : 'bg-error/20'
 									]}
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-4 w-4"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="3"
+									<div
+										class={[
+											'rounded-full p-1 shadow-md',
+											activeTab === 'move'
+												? 'bg-warning text-warning-content'
+												: 'bg-error text-error-content'
+										]}
 									>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-									</svg>
+										<IconMdiCheck class="h-4 w-4" />
+									</div>
 								</div>
-							</div>
+							{/if}
 						{/if}
 
 						<div

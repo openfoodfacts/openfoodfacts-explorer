@@ -575,7 +575,9 @@
 			"image_manager_delete_warning_prefix": "Warning:",
 			"image_manager_delete_warning_body": " Deleting raw images is permanent and cannot be undone.",
 			"image_manager_delete_success": "Images deleted successfully.",
-			"image_manager_delete_error": "Failed to delete images. Please try again."
+			"image_manager_delete_error": "Failed to delete images. Please try again.",
+			"image_manager_in_use": "Active / In Use",
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it."
 		}
 	},
 	"qr": {
