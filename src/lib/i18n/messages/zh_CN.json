@@ -27,6 +27,8 @@
 		"add_product": "添加新产品",
 		"description": "在 Open Food Facts Explorer 上搜索 {query}",
 		"charts_title": "搜索分析",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "显示价格",
 		"sort_by_label": "排序方式",
 		"raw_query_label": "原始查询",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "为 {term} 生成图表（经典版本）",
 		"advanced_search_classic": "{term} 的高级搜索（经典版本）",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} 价格",
 		"creation_date": "创建日期",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "编辑首选项",
 		"close": "關閉",
 		"classify_products": "根据您的喜好对产品进行分类",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "使用默认首选项",
 		"default_description": "营养评分（Nutri-Score）、生态评分（Green-Score）和食品加工水平 （NOVA）",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "上传清晰的产品、成分和营养成分图片，以帮助其他人识别产品。",
 				"basic_info": "提供有关产品的主要详细信息，例如数量、包装和制造商。",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "添加不同语言的产品名称和描述，让更多用户能够访问该产品。",
 				"ingredients": "列出产品中所有成分。这有助于了解过敏或饮食偏好的用户。",
 				"nutrition": "输入包装上每 100 克/毫升的营养成分表。这有助于用户比较产品。",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "照片",
 				"basic_info": "基本信息",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "语言和产品名称",
 				"ingredients": "成分",
 				"nutrition": "营养信息",
