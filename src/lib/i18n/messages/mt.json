@@ -27,6 +27,8 @@
 		"add_product": "Żid Prodott Ġdid",
 		"description": "Fittex fuq Open Food Facts Explorer għal {query}",
 		"charts_title": "Analitika tat-Tiftix",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Uri l-Prezzijiet",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Mistoqsija mhux ipproċessata",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Iġġenera graffs għal {term} (verżjoni klassika)",
 		"advanced_search_classic": "Tiftix Avvanzat għal {term} (verżjoni klassika)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Editja l-Preferenzi",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Tella' immaġni ċari tal-prodott, l-ingredjenti, u l-fatti nutrizzjonali biex tgħin lil oħrajn jidentifikaw il-prodott.",
 				"basic_info": "Ipprovdi d-dettalji ewlenin dwar il-prodott, bħall-kwantità, l-imballaġġ, u l-manifattur.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Żid ismijiet u deskrizzjonijiet tal-prodotti f'lingwi differenti biex il-prodott ikun aċċessibbli għal aktar utenti.",
 				"ingredients": "Elenka l-ingredjenti kollha preżenti fil-prodott. Dan jgħin lill-utenti b'allerġiji jew preferenzi tad-dieta.",
 				"nutrition": "Daħħal il-valuri nutrizzjonali għal kull 100g/ml kif muri fuq l-imballaġġ. Dan jgħin lill-utenti jqabblu l-prodotti.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Informazzjoni Bażika",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Lingwi u Ismijiet tal-Prodotti",
 				"ingredients": "Ingredients",
 				"nutrition": "Informazzjoni Nutrizzjonali",
