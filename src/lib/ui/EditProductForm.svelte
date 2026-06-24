@@ -148,7 +148,7 @@
 		</div>
 
 		<!-- Basic Info Section -->
-		<div id="basic-info" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="basic-info" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -175,7 +175,7 @@
 		</div>
 
 		<!-- Ingredients Section -->
-		<div id="ingredients" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="ingredients" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -243,7 +243,7 @@
 		</div>
 
 		<!-- Packaging Section -->
-		<div class="collapse-arrow bg-base-200 collapse shadow-md" id="packaging">
+		<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md" id="packaging">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -280,7 +280,10 @@
 
 		<!-- Moderator Tools Section -->
 		{#if permissions.isModerator && $preferences.moderator}
-			<div id="moderator-tools" class="collapse-arrow bg-base-200 collapse shadow-md">
+			<div
+				id="moderator-tools"
+				class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md"
+			>
 				<input
 					type="checkbox"
 					checked={isMobile ? false : $preferences.editing.expandAllSections}

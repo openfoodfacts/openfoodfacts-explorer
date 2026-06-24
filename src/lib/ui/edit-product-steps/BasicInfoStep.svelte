@@ -6,6 +6,7 @@
 	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -135,6 +136,28 @@
 	<!-- Primary Fields Grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 		<div class="form-control w-full">
+			<label class="label" for="generic_name">
+				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+					{$_('product.edit.generic_name', { default: 'Common name' })} ({getLanguageName(
+						product.lang
+					)})
+				</span>
+			</label>
+			<input
+				id="generic_name"
+				type="text"
+				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				value={product[`generic_name_${product.lang}`] ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						[`generic_name_${product.lang}`]: (e.currentTarget as HTMLInputElement).value
+					};
+				}}
+				placeholder="e.g., Chocolate chip cookies, Orange juice"
+			/>
+		</div>
+		<div class="form-control w-full">
 			<label class="label" for="quantity">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 					{$_('product.edit.quantity')}
@@ -172,23 +195,34 @@
 				placeholder="e.g., France, Italy"
 			/>
 		</div>
-	</div>
-	<div class="form-control w-full">
-		<label class="label" for="website_url">
-			<span class="label-text text-sm font-medium text-wrap sm:text-base">
-				{$_('product.edit.product_page_url')}
-			</span>
-		</label>
-		<input
-			id="website_url"
-			type="url"
-			class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
-			value={product.link ?? ''}
-			oninput={(e) => {
-				product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
-			}}
-			placeholder="https://example.com/products/pasta-n8"
-		/>
+		<div class="form-control w-full">
+			<label class="label" for="website_url">
+				<span class="label-text flex items-center gap-2 text-sm font-medium text-wrap sm:text-base">
+					{#if editMode}
+						{$_('product.edit.product_page_url', { default: 'Official product page' })}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.product_page_url', {
+								default: 'Link to the product page on the official site of the producer'
+							})}
+						/>
+					{:else}
+						{$_('product.edit.product_page_url_add', {
+							default: 'Link to the product page on the official site of the producer'
+						})}
+					{/if}
+				</span>
+			</label>
+			<input
+				id="website_url"
+				type="url"
+				class="input focus:border-primary w-full text-sm break-all focus:outline-none sm:text-base"
+				value={product.link ?? ''}
+				oninput={(e) => {
+					product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
+				}}
+				placeholder="https://example.com/products/pasta-n8"
+			/>
+		</div>
 	</div>
 	<!-- Tags Section -->
 	<div class="divider text-sm font-medium opacity-60">

@@ -305,7 +305,8 @@
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
 				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
-				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy).",
+				"product_page_url": "Link to the product page on the official site of the producer"
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
@@ -377,7 +378,9 @@
 				"petfood": "Pet Food",
 				"product": "Other"
 			},
-			"product_page_url": "Link to the product page on the official site of the producer",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link to the product page on the official site of the producer",
+			"generic_name": "Common name",
 			"photos": "Product Photos",
 			"no_photo_available": "No photo available",
 			"ingredients": "Ingredients",
