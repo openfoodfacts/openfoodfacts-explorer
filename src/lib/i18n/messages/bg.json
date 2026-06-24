@@ -27,6 +27,8 @@
 		"add_product": "Добавяне на нов продукт",
 		"description": "Търсене в Open Food Facts Explorer за {query}",
 		"charts_title": "Анализ на търсенето",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Покажи цени",
 		"sort_by_label": "Сортирай по",
 		"raw_query_label": "Сурова заявка",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Генериране на графики за {term} (класическа версия)",
 		"advanced_search_classic": "Разширено търсене за {term} (класическа версия)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Дата на създаване",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Редактиране на предпочитания",
 		"close": "Затвори",
 		"classify_products": "Класирай продуктите според твоите предпочитания",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Използвай настройките по подразбиране",
 		"default_description": "Nutri-Score, Green-Score и ниво на обработка на храни (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Качете ясни изображения на продукта, съставките и хранителната стойност, за да помогнете на другите да го разпознаят.",
 				"basic_info": "Предоставете основните подробности за продукта, като количество, опаковка и производител.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Добавете имена на продукти и описания на различни езици, за да направите продукта достъпен за повече потребители.",
 				"ingredients": "Избройте всички съставки, присъстващи в продукта. Това помага на потребителите с алергии или диетични предпочитания.",
 				"nutrition": "Въведете хранителните стойности на 100 г/мл, както е показано на опаковката. Това помага на потребителите да сравняват продукти.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Снимки",
 				"basic_info": "Основна информация",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Езици и имена на продукти",
 				"ingredients": "Съставки",
 				"nutrition": "Хранителна информация",
