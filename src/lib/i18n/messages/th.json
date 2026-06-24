@@ -27,6 +27,8 @@
 		"add_product": "เพิ่มผลิตภัณฑ์ใหม่",
 		"description": "ค้นหา {query}บน Open Food Facts Explorer",
 		"charts_title": "การวิเคราะห์การค้นหา",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "แสดงราคา",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "แบบสอบถามดิบ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "สร้างกราฟสำหรับ {term} (เวอร์ชันคลาสสิก)",
 		"advanced_search_classic": "การค้นหาขั้นสูงสำหรับ {term} (เวอร์ชันคลาสสิก)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "วันที่สร้าง",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "แก้ไขการตั้งค่า",
 		"close": "ปิด",
 		"classify_products": "จำแนกผลิตภัณฑ์ตามความต้องการ (preferences) ของคุณ",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "ใช้การตั้งค่าเริ่มต้น",
 		"default_description": "Nutri-Score, Green-Score และระดับการแปรรูปอาหาร (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "อัปโหลดรูปภาพที่ชัดเจนของผลิตภัณฑ์ ส่วนผสม และข้อมูลโภชนาการเพื่อช่วยให้ผู้อื่นระบุผลิตภัณฑ์ได้",
 				"basic_info": "ให้รายละเอียดหลักเกี่ยวกับผลิตภัณฑ์ เช่น จำนวน บรรจุภัณฑ์ และผู้ผลิต",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "เพิ่มชื่อผลิตภัณฑ์และคำอธิบายในภาษาต่างๆ เพื่อให้ผู้ใช้เข้าถึงผลิตภัณฑ์ได้มากขึ้น",
 				"ingredients": "ระบุส่วนผสมทั้งหมดที่มีอยู่ในผลิตภัณฑ์ เพื่อช่วยผู้ใช้ที่มีอาการแพ้หรือต้องการปรับอาหาร",
 				"nutrition": "ระบุคุณค่าทางโภชนาการต่อ 100 กรัม/มิลลิลิตร ตามที่ระบุบนบรรจุภัณฑ์ เพื่อช่วยให้ผู้ใช้เปรียบเทียบผลิตภัณฑ์ได้",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "รูปภาพ",
 				"basic_info": "ข้อมูลพื้นฐาน",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ภาษาและชื่อผลิตภัณฑ์",
 				"ingredients": "ส่วนผสม",
 				"nutrition": "ข้อมูลโภชนาการ",
