@@ -27,6 +27,8 @@
 		"add_product": "Ҫӗнӗ продукт хушӑр",
 		"description": "Open Food Facts Explorer ҫинче {query}шырӑр",
 		"charts_title": "Шырав аналитики",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Хаксене кӑтарт",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Чӗрӗ ыйту",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} валли графиксем тӑвӑр (классика версийӗ)",
 		"advanced_search_classic": "{term} (классика версийӗ) валли анлӑ шырав",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Кӑмӑл-туйӑмсене тӳрлет",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Ыттисем продукта палӑртма пулӑшас тесе продуктӑн, унӑн ингредиенчӗсен тата апатлану ҫинчен калакан фактсен уҫӑмлӑ сӑнӳкерчӗкӗсене ярса парӑр.",
 				"basic_info": "Продукци ҫинчен тӗп информацие, сӑмахран, унӑн хисепне, упаковкине тата ӑна туса кӑлараканне пӗлтерӗр.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Тавар ячӗсене тата тӗрлӗ чӗлхепе ҫырнӑ описанисене хушӑр, ҫапла вара продукт ытларах ҫынна ҫитме пултарать.",
 				"ingredients": "Продуктра мӗнпур ингредиентсене ҫырса хурӑр. Ку аллергипе е апат-ҫимӗҫе юратакан ҫынсене пулӑшать.",
 				"nutrition": "Упаковкӑра кӑтартнӑ пек 100 г/мл пуҫне апатлану хакне кӗртӗр. Ку усӑ куракансене продукцие танлаштарма пулӑшать.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Тӗп информаци",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Чӗлхесем тата продукт ячӗсем",
 				"ingredients": "Ingredients",
 				"nutrition": "Апатлану ҫинчен калакан информаци",
