@@ -7,9 +7,11 @@
 </script>
 
 <div class="flex min-h-[50vh] w-full flex-col items-center justify-center px-4 py-16 sm:py-24">
-	<div class="card bg-base-100 w-full max-w-lg shadow-xl">
+	<div class="card bg-base-100 w-full max-w-lg">
 		<div class="card-body items-center p-8 text-center">
-			<div class="mb-4 text-8xl grayscale-[20%]">🔐</div>
+			<div class="mb-6 flex justify-center">
+				<img src="/login.svg" alt="Login required" class="h-24 w-24" />
+			</div>
 			<h1 class="text-3xl font-bold">
 				{$_('product.edit.login_required_title', { default: 'Login Required' })}
 			</h1>
