@@ -27,6 +27,8 @@
 		"add_product": "Додај нови производ",
 		"description": "Претражите на Open Food Facts Explorer-у {query}",
 		"charts_title": "Аналитика претраге",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Прикажи цене",
 		"sort_by_label": "Sortiraj prema",
 		"raw_query_label": "Необрађени упит",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Генериши графиконе за {term} (класична верзија)",
 		"advanced_search_classic": "Напредна претрага за {term} (класична верзија)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Измени подешавања",
 		"close": "Zatvori",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Отпремите јасне слике производа, састојака и нутритивних вредности како бисте помогли другима да идентификују производ.",
 				"basic_info": "Наведите главне детаље о производу, као што су количина, паковање и произвођач.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Додајте називе производа и описе на различитим језицима како бисте производ учинили приступачнијим већем броју корисника.",
 				"ingredients": "Наведите све састојке присутне у производу. Ово помаже корисницима са алергијама или дијететским преференцијама.",
 				"nutrition": "Унесите нутритивне вредности на 100 г/мл као што је приказано на паковању. Ово помаже корисницима да упореде производе.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Фотографије",
 				"basic_info": "Основне информације",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Језици и називи производа",
 				"ingredients": "Sastojci",
 				"nutrition": "Нутритивне информације",
