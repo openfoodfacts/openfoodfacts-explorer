@@ -27,6 +27,8 @@
 		"add_product": "Yeni Ürün Ekle",
 		"description": "Açık Gıda Bilgileri Gezgini'nde {query}için arama yapın",
 		"charts_title": "Arama Analitiği",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Fiyatları Göster",
 		"sort_by_label": "Sırala",
 		"raw_query_label": "Ham Sorgu",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} için grafikler oluşturun (klasik sürüm)",
 		"advanced_search_classic": "{term} için Gelişmiş Arama (klasik sürüm)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} fiyat",
 		"creation_date": "Oluşturma tarihi",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Tercihleri Düzenle",
 		"close": "Kapat",
 		"classify_products": "Ürünleri tercihlerinize göre sınıflandırın",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Varsayılan tercihleri kullan",
 		"default_description": "Nutri-Score, Green-Score ve gıda işleme seviyesi (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Başkalarının ürünü tanımasına yardımcı olmak için ürünün net resimlerini, içeriklerini ve besin değerlerini yükleyin.",
 				"basic_info": "Ürün hakkında miktar, ambalaj ve üretici gibi temel bilgileri verin.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Ürünü daha fazla kullanıcıya ulaştırmak için ürün adlarını ve açıklamalarını farklı dillerde ekleyin.",
 				"ingredients": "Üründe bulunan tüm içerikleri listeleyin. Bu, alerjisi veya diyet tercihi olan kullanıcılara yardımcı olur.",
 				"nutrition": "Besin değerlerini ambalaj üzerinde gösterildiği gibi 100 g/ml başına girin. Bu, kullanıcıların ürünleri karşılaştırmasına yardımcı olur.",
@@ -439,6 +446,7 @@
 			"sections": {
 				"images": "Fotoğraflar",
 				"basic_info": "Temel Bilgiler",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Diller ve Ürün Adları",
 				"ingredients": "Malzemeler",
 				"nutrition": "Beslenme bilgileri",
