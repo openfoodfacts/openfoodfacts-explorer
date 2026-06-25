@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Друго"
 			},
-			"product_page_url": "Линк към страницата на продукта на официалния сайт на производителя",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Линк към страницата на продукта на официалния сайт на производителя",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Общо име",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Снимки на продукта",
 			"no_photo_available": "Няма налична снимка",
 			"ingredients": "Съставки",
