@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Drugo"
 			},
-			"product_page_url": "Povezava na stran izdelka na uradni strani proizvajalca",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Povezava na stran izdelka na uradni strani proizvajalca",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Pogosto ime",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Fotografije izdelka",
 			"no_photo_available": "Ni na voljo fotografije",
 			"ingredients": "Sestavine",
