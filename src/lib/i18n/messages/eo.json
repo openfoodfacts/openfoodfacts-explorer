@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Aliaj"
 			},
-			"product_page_url": "Ligilo al la produkta paĝo sur la oficiala retejo de la produktanto",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Ligilo al la produkta paĝo sur la oficiala retejo de la produktanto",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Ĝenerala nomo",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "Neniu foto havebla",
 			"ingredients": "Ingrediencoj",
