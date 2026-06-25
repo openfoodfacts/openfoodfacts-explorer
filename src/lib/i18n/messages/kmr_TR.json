@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Other"
 			},
-			"product_page_url": "Link to the product page on the official site of the producer",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link to the product page on the official site of the producer",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Common name",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "Wêneyek berdest nîne",
 			"ingredients": "Materyalên",
