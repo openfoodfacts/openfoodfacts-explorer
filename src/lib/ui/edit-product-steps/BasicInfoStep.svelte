@@ -152,7 +152,9 @@
 						[`generic_name_${product.lang}`]: (e.currentTarget as HTMLInputElement).value
 					};
 				}}
-				placeholder="e.g., Chocolate chip cookies, Orange juice"
+				placeholder={$_('product.edit.generic_name_placeholder', {
+					default: 'e.g., Chocolate chip cookies, Orange juice'
+				})}
 			/>
 		</div>
 		<div class="form-control w-full">
@@ -190,7 +192,9 @@
 				oninput={(e) => {
 					product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
 				}}
-				placeholder="https://example.com/products/pasta-n8"
+				placeholder={$_('product.edit.product_page_url_placeholder', {
+					default: 'https://example.com/products/pasta-n8'
+				})}
 			/>
 		</div>
 	</div>
