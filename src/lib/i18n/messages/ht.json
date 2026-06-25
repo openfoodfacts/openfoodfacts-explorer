@@ -328,7 +328,7 @@
 			"name": "Name",
 			"quantity": "Kantite",
 			"emb_code": "Traceability codes",
-			"packaging": "Packaging",
+			"packaging": "Anbalaj",
 			"packaging_component": {
 				"number_of_units": "Number of units",
 				"number_of_units_placeholder": "e.g. 1",
@@ -455,7 +455,7 @@
 				"ingredients": "Engredyan",
 				"nutrition": "Enfòmasyon sou Nitrisyon",
 				"moderator_tools": "Moderator Tools",
-				"packaging": "Packaging",
+				"packaging": "Anbalaj",
 				"prices": "Pri",
 				"comment": "Comment"
 			},
