@@ -384,7 +384,11 @@
 				"petfood": "Dierenvoeding",
 				"product": "Andere"
 			},
-			"product_page_url": "Link naar de pagina van het product op de officiële site van de producent",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link naar de pagina van het product op de officiële site van de producent",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Algemene benaming",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Productfoto's",
 			"no_photo_available": "Geen foto beschikbaar",
 			"ingredients": "Ingrediënten",
