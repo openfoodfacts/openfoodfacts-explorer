@@ -21,8 +21,8 @@
 		<button
 			class="btn btn-circle btn-primary shadow-xl hover:scale-105 active:scale-95 transition-transform duration-200"
 			onclick={scrollToTop}
-			aria-label={$_('common.scroll_to_top')}
-			title={$_('common.scroll_to_top')}
+			aria-label={$_('common.scroll_to_top', { default: 'Scroll to top' })}
+			title={$_('common.scroll_to_top', { default: 'Scroll to top' })}
 		>
 			<IconMdiChevronUp class="h-6 w-6" />
 		</button>
