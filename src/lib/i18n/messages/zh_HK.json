@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Other"
 			},
-			"product_page_url": "連結至產品的官方網頁",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "連結至產品的官方網頁",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "一般名稱",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "產品照片",
 			"no_photo_available": "No photo available",
 			"ingredients": "成分",
