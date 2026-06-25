@@ -481,6 +481,7 @@ export type ImageOperationResponse = {
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
+type LangGenericName = `generic_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -629,7 +630,8 @@ export type Product = ProductDataSection & {
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
 	Partial<Record<LangIngredient, string>> &
-	Partial<Record<LangPackagingText, string>>;
+	Partial<Record<LangPackagingText, string>> &
+	Partial<Record<LangGenericName, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',
