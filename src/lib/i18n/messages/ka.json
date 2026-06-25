@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "სხვა"
 			},
-			"product_page_url": "ბმული პროდუქტის გვერდზე მწარმოებლის ოფიციალურ ვებსაიტზე",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "ბმული პროდუქტის გვერდზე მწარმოებლის ოფიციალურ ვებსაიტზე",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "საერთო სახელი",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "ფოტო არ არის ხელმისაწვდომი",
 			"ingredients": "Ingredients",
