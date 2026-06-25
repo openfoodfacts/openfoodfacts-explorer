@@ -384,11 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Övrigt"
 			},
-			"product_page_url": "Official product page",
+			"product_page_url": "Officiell produktsida",
 			"product_page_url_add": "Länk till produktsidan på producentens officiella webbplats",
 			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
 			"generic_name": "Vanligt namn",
-			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
+			"generic_name_placeholder": "t.ex. chokladkakor, apelsinjuice",
 			"photos": "Produktbilder",
 			"no_photo_available": "Inget foto tillgängligt",
 			"ingredients": "Ingredienser",
