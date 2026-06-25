@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Inne"
 			},
-			"product_page_url": "Link do strony produktu na oficjalnej stronie producenta",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link do strony produktu na oficjalnej stronie producenta",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Nazwa zwyczajowa",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Zdjęcia produktów",
 			"no_photo_available": "Brak zdjęcia",
 			"ingredients": "Składniki",
