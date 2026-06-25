@@ -11,7 +11,6 @@
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
-	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
@@ -21,23 +20,6 @@
 		calculatorItems.update((items) => [...items]);
 	});
 </script>
-
-<div class="fixed right-6 bottom-6 z-50">
-	<button
-		class="btn btn-circle btn-primary shadow-lg"
-		onclick={toggleCalculator}
-		aria-label="Nutrition Calculator"
-	>
-		<IconMdiCalculator class="h-6 w-6" />
-		{#if $calculatorItems.length > 0}
-			<span
-				class="bg-secondary absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white"
-			>
-				{$calculatorItems.length}
-			</span>
-		{/if}
-	</button>
-</div>
 
 {#if $isCalculatorOpen}
 	<div

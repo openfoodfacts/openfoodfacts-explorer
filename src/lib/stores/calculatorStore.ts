@@ -36,6 +36,7 @@ export function addItemToCalculator(item: CalculatorItem) {
 			return [...items, item];
 		}
 	});
+	isCalculatorOpen.set(true);
 }
 
 export function updateItemQuantity(id: string, amount: number) {
