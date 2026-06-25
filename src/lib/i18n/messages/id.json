@@ -384,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Lainnya"
 			},
-			"product_page_url": "Tautkan ke halaman produk di situs resmi produsen",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Tautkan ke halaman produk di situs resmi produsen",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Nama yang umum",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Foto - foto produk",
 			"no_photo_available": "Foto tidak tersedia",
 			"ingredients": "bahan",
