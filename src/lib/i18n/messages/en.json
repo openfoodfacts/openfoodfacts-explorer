@@ -282,6 +282,7 @@
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
@@ -305,8 +306,7 @@
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
 				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
-				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy).",
-				"product_page_url": "Link to the product page on the official site of the producer"
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
@@ -443,6 +443,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Basic Information",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",

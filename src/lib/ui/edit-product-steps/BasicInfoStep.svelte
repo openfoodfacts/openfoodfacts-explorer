@@ -22,7 +22,6 @@
 		labelNames?: string[];
 		brandNames?: string[];
 		storeNames?: string[];
-		originNames?: string[];
 		countriesNames?: string[];
 		editMode?: boolean;
 	};
@@ -33,7 +32,6 @@
 		labelNames,
 		brandNames,
 		storeNames,
-		originNames,
 		countriesNames,
 		editMode = false
 	}: Props = $props();
@@ -175,41 +173,13 @@
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="manufacturing_places">
-				<span class="label-text text-sm font-medium sm:text-base"
-					>{$_('product.edit.manufacturing_places')}</span
-				>
-			</label>
-			<input
-				id="manufacturing_places"
-				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				value={product.manufacturing_places ?? ''}
-				oninput={(e) => {
-					product = {
-						...product,
-						manufacturing_places: (e.currentTarget as HTMLInputElement).value
-					};
-				}}
-				placeholder="e.g., France, Italy"
-			/>
-		</div>
-		<div class="form-control w-full">
+
+		<div class="form-control w-full sm:col-span-2">
 			<label class="label" for="website_url">
-				<span class="label-text flex items-center gap-2 text-sm font-medium text-wrap sm:text-base">
-					{#if editMode}
-						{$_('product.edit.product_page_url', { default: 'Official product page' })}
-						<InfoTooltip
-							text={$_('product.edit.tooltips.product_page_url', {
-								default: 'Link to the product page on the official site of the producer'
-							})}
-						/>
-					{:else}
-						{$_('product.edit.product_page_url_add', {
-							default: 'Link to the product page on the official site of the producer'
-						})}
-					{/if}
+				<span class="label-text text-sm font-medium text-wrap sm:text-base">
+					{$_('product.edit.product_page_url_add', {
+						default: 'Link to the product page on the official site of the producer'
+					})}
 				</span>
 			</label>
 			<input
@@ -224,6 +194,7 @@
 			/>
 		</div>
 	</div>
+
 	<!-- Tags Section -->
 	<div class="divider text-sm font-medium opacity-60">
 		{$_('product.edit.product_tags', { default: 'Product Tags' })}
@@ -289,21 +260,7 @@
 				}}
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="origins-input">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.origins')}
-					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.origins ?? ''}
-				autocomplete={originNames}
-				onChange={(v) => {
-					product = { ...product, origins: v };
-				}}
-			/>
-		</div>
+
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
@@ -318,35 +275,6 @@
 					product = { ...product, countries: v };
 				}}
 			/>
-		</div>
-		<div class="form-control w-full">
-			<label class="label" for="traceability-codes">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.emb_code')}
-					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.emb_codes ?? ''}
-				autocomplete={[]}
-				onChange={(v) => {
-					product = { ...product, emb_codes: v };
-				}}
-			/>
-			<div class="mt-1 text-xs text-base-content/60">
-				<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
-				<p>
-					More info:
-					<a
-						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link"
-					>
-						Food Traceability Codes Wiki
-					</a>
-				</p>
-			</div>
 		</div>
 	</div>
 </div>

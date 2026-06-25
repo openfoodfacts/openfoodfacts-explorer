@@ -37,6 +37,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { trackOffEvent } from '$lib/analytics';
+	import { browser } from '$app/environment';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -172,7 +173,12 @@
 		return prodData.product.attribute_groups_en as unknown as ProductGroupedAttributes[];
 	}
 
-	let productAttributes = $derived(getProductAttributes(product.code));
+	let productAttributes = $derived.by(() => {
+		if (product.code && browser) {
+			return getProductAttributes(product.code);
+		}
+		return new Promise<ProductGroupedAttributes[]>(() => {});
+	});
 </script>
 
 <Metadata

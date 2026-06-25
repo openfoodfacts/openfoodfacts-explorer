@@ -27,6 +27,8 @@
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Search Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Query",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
 		"advanced_search_classic": "Advanced Search for {term} (classic version)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Edit Preferences",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -282,6 +288,7 @@
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
@@ -305,8 +312,7 @@
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
 				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
-				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy).",
-				"product_page_url": "Link to the product page on the official site of the producer"
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
@@ -442,6 +448,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Basic Information",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",

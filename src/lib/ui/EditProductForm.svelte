@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
+	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
@@ -19,6 +20,7 @@
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
 	import type { Product } from '$lib/api';
 	import { _ } from '$lib/i18n';
@@ -167,10 +169,27 @@
 					{categoryNames}
 					{countriesNames}
 					{labelNames}
-					{originNames}
 					{storeNames}
 					editMode
 				/>
+			</div>
+		</div>
+
+		<!-- Traceability & Origins Section -->
+		<div id="origin-traceability" class="collapse-arrow bg-base-200 collapse shadow-md">
+			<input
+				type="checkbox"
+				checked={isMobile ? false : $preferences.editing.expandAllSections}
+				onchange={(e) => {
+					if (e.isTrusted) handleCollapseToggle('origin-traceability');
+				}}
+			/>
+			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
+				<IconMdiEarth class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+				{$_('product.edit.sections.origin_traceability')}
+			</div>
+			<div class="collapse-content">
+				<OriginTraceabilityStep bind:product {originNames} editMode />
 			</div>
 		</div>
 
