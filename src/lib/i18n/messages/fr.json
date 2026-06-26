@@ -27,6 +27,8 @@
 		"add_product": "Ajouter un nouveau produit",
 		"description": "Rechercher sur Open Food Facts Explorer pour {query}",
 		"charts_title": "Analyse de la recherche",
+		"results_for": "Résultats de recherche pour \"{term}\"",
+		"classic_tools": "Outils classiques :",
 		"show_prices_label": "Afficher les prix",
 		"sort_by_label": "Trier par",
 		"raw_query_label": "Requête brute",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Générer des graphiques pour {term} (version classique)",
 		"advanced_search_classic": "Recherche avancée pour {term} (version classique)",
+		"superset_query": "Lancer une requête",
+		"superset_discover": "Découvrir les tableaux de bord",
+		"superset_promo_desc": "Libérez la puissance des données ouvertes ! Explorez la base de données complète d'Open Food Facts en utilisant des requêtes SQL, des graphiques personnalisés et des tableaux de bord partagés.",
 		"prices_badge": "{count} prix",
 		"creation_date": "Date de création",
 		"last_modified_date": "Date de dernière modification",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Modifier les préférences",
 		"close": "Fermer",
 		"classify_products": "Classer les produits suivant vos préférences",
+		"classify_products_desc": "Activez la classification personnalisée des produits selon vos préférences.",
 		"use_default": "Utiliser les préférences par défaut",
 		"default_description": "Nutri-Score, Green-Score et niveau de transformation alimentaire (NOVA)",
 		"options": {
@@ -275,13 +281,14 @@
 		},
 		"edit": {
 			"sidebar": {
-				"collapse_all": "Collapse All",
-				"expand_all": "Expand All"
+				"collapse_all": "Tout réduire",
+				"expand_all": "Tout développer"
 			},
 			"moderator_only": "Modérateurs uniquement",
 			"info": {
 				"images": "Téléchargez des images claires du produit, des ingrédients et des informations nutritionnelles pour aider les autres à identifier le produit.",
 				"basic_info": "Fournissez les principaux détails sur le produit, tels que la quantité, l’emballage et le fabricant.",
+				"origin_traceability": "Fournir des informations sur l'origine et la traçabilité, telles que les lieux de fabrication, les origines des ingrédients et les codes de traçabilité.",
 				"languages": "Ajoutez des noms et des descriptions de produits dans différentes langues pour rendre le produit accessible à davantage d'utilisateurs.",
 				"ingredients": "Listez tous les ingrédients présents dans le produit. Cela aide les utilisateurs souffrant d'allergies ou de régimes alimentaires particuliers.",
 				"nutrition": "Saisissez les valeurs nutritionnelles pour 100 g/ml telles qu'indiquées sur l'emballage. Cela permet aux utilisateurs de comparer les produits.",
@@ -363,7 +370,6 @@
 				"upload_packaging_photo": "Télécharger une photo de l'emballage",
 				"multiple_uploads_guidance": "Avec Chrome, Firefox et Safari, vous pouvez sélectionner plusieurs images (produit, ingrédients, tableau nutritionnel, etc.) en cliquant dessus tout en maintenant la touche Ctrl enfoncée pour les ajouter toutes en une seule fois."
 			},
-			"product_tags": "Tags du produit",
 			"manufacturing_places": "Lieux de fabrication",
 			"categories": "Catégories:",
 			"labels": "Labels",
@@ -378,7 +384,11 @@
 				"petfood": "Aliments pour animaux",
 				"product": "Autre"
 			},
-			"product_page_url": "Lien vers la page du produit sur le site officiel du fabricant",
+			"product_page_url": "Page officielle du produit",
+			"product_page_url_add": "Lien vers la page du produit sur le site officiel du fabricant",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Dénomination générique",
+			"generic_name_placeholder": "ex. : Cookies aux pépites de chocolat, Jus d'orange",
 			"photos": "Photos des produits",
 			"no_photo_available": "Aucune photo disponible",
 			"ingredients": "Ingrédients",
@@ -440,6 +450,7 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Informations de base",
+				"origin_traceability": "Traçabilité & Origines",
 				"languages": "Langues et noms de produits",
 				"ingredients": "Ingrédients",
 				"nutrition": "Informations nutritionnelles",
