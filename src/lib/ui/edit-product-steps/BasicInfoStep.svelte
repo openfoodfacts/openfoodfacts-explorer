@@ -6,6 +6,7 @@
 	import { PRODUCT_TYPES } from '$lib/const';
 
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -21,7 +22,6 @@
 		labelNames?: string[];
 		brandNames?: string[];
 		storeNames?: string[];
-		originNames?: string[];
 		countriesNames?: string[];
 		editMode?: boolean;
 	};
@@ -32,7 +32,6 @@
 		labelNames,
 		brandNames,
 		storeNames,
-		originNames,
 		countriesNames,
 		editMode = false
 	}: Props = $props();
@@ -135,6 +134,30 @@
 	<!-- Primary Fields Grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 		<div class="form-control w-full">
+			<label class="label" for="generic_name">
+				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+					{$_('product.edit.generic_name', { default: 'Common name' })} ({getLanguageName(
+						product.lang
+					)})
+				</span>
+			</label>
+			<input
+				id="generic_name"
+				type="text"
+				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				value={product[`generic_name_${product.lang}`] ?? ''}
+				oninput={(e) => {
+					product = {
+						...product,
+						[`generic_name_${product.lang}`]: (e.currentTarget as HTMLInputElement).value
+					};
+				}}
+				placeholder={$_('product.edit.generic_name_placeholder', {
+					default: 'e.g., Chocolate chip cookies, Orange juice'
+				})}
+			/>
+		</div>
+		<div class="form-control w-full">
 			<label class="label" for="quantity">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 					{$_('product.edit.quantity')}
@@ -152,44 +175,30 @@
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="manufacturing_places">
-				<span class="label-text text-sm font-medium sm:text-base"
-					>{$_('product.edit.manufacturing_places')}</span
-				>
+
+		<div class="form-control w-full sm:col-span-2">
+			<label class="label" for="website_url">
+				<span class="label-text text-sm font-medium text-wrap sm:text-base">
+					{$_('product.edit.product_page_url_add', {
+						default: 'Link to the product page on the official site of the producer'
+					})}
+				</span>
 			</label>
 			<input
-				id="manufacturing_places"
-				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-				value={product.manufacturing_places ?? ''}
+				id="website_url"
+				type="url"
+				class="input focus:border-primary w-full text-sm break-all focus:outline-none sm:text-base"
+				value={product.link ?? ''}
 				oninput={(e) => {
-					product = {
-						...product,
-						manufacturing_places: (e.currentTarget as HTMLInputElement).value
-					};
+					product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
 				}}
-				placeholder="e.g., France, Italy"
+				placeholder={$_('product.edit.product_page_url_placeholder', {
+					default: 'https://example.com/products/pasta-n8'
+				})}
 			/>
 		</div>
 	</div>
-	<div class="form-control w-full">
-		<label class="label" for="website_url">
-			<span class="label-text text-sm font-medium text-wrap sm:text-base">
-				{$_('product.edit.product_page_url')}
-			</span>
-		</label>
-		<input
-			id="website_url"
-			type="url"
-			class="input focus:border-primary w-full text-sm text-wrap focus:outline-none sm:text-base"
-			value={product.link ?? ''}
-			oninput={(e) => {
-				product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
-			}}
-			placeholder="https://example.com/products/pasta-n8"
-		/>
-	</div>
+
 	<!-- Tags Section -->
 	<div class="divider text-sm font-medium opacity-60">
 		{$_('product.edit.product_tags', { default: 'Product Tags' })}
@@ -255,21 +264,7 @@
 				}}
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="origins-input">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.origins')}
-					<InfoTooltip text={$_('product.edit.tooltips.origins')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.origins ?? ''}
-				autocomplete={originNames}
-				onChange={(v) => {
-					product = { ...product, origins: v };
-				}}
-			/>
-		</div>
+
 		<div class="form-control w-full">
 			<label class="label" for="countries-input">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
@@ -284,35 +279,6 @@
 					product = { ...product, countries: v };
 				}}
 			/>
-		</div>
-		<div class="form-control w-full">
-			<label class="label" for="traceability-codes">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.emb_code')}
-					<InfoTooltip text={$_('product.edit.tooltips.traceability_code')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.emb_codes ?? ''}
-				autocomplete={[]}
-				onChange={(v) => {
-					product = { ...product, emb_codes: v };
-				}}
-			/>
-			<div class="mt-1 text-xs text-base-content/60">
-				<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
-				<p>
-					More info:
-					<a
-						href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link"
-					>
-						Food Traceability Codes Wiki
-					</a>
-				</p>
-			</div>
 		</div>
 	</div>
 </div>

@@ -21,6 +21,9 @@
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
+	import IconMdiLogin from '@iconify-svelte/mdi/login';
+	import IconMdiLogout from '@iconify-svelte/mdi/logout';
+	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
@@ -271,29 +274,6 @@
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 			<div class="navbar-end gap-2">
-				{#if $userInfo != null}
-					<a
-						class="btn btn-outline link"
-						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-						>{$_('navbar.account', { default: 'Account' })}</a
-					>
-					<a class="btn btn-outline link" href={resolve('/oauth/logout')}
-						>{$_('navbar.logout', { default: 'Logout' })}</a
-					>
-				{:else}
-					<a rel="external" class="btn btn-outline link" href={getLoginUrl(page.url)}
-						>{$_('navbar.login', { default: 'Login' })}</a
-					>
-				{/if}
-				<!-- Settings button -->
-				<a
-					class="btn btn-ghost link"
-					href={resolve('/settings')}
-					aria-label={$_('settings_link')}
-					title={$_('settings_link')}
-				>
-					<IconMdiCog class="w-6" />
-				</a>
 				<!-- Shortcuts button -->
 				<button
 					class="btn btn-ghost"
@@ -303,6 +283,59 @@
 				>
 					<IconMdiHelpCircleOutline class="w-6" />
 				</button>
+				<!-- Settings button -->
+				<a
+					class="btn btn-ghost link"
+					href={resolve('/settings')}
+					aria-label={$_('settings_link')}
+					title={$_('settings_link')}
+				>
+					<IconMdiCog class="w-6" />
+				</a>
+				{#if $userInfo != null}
+					<div class="dropdown dropdown-end">
+						<div tabindex="0" role="button" class="btn btn-ghost">
+							<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
+						</div>
+						<ul
+							class="dropdown-content menu bg-base-100 rounded-box z-50 mt-1 w-52 p-2 shadow-xl border border-base-300"
+						>
+							<li
+								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"
+							>
+								{$_('navbar.welcome', { default: 'User Menu' })}
+							</li>
+							<li>
+								<a
+									href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+									class="flex gap-2 py-2 px-4 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiAccountCircle class="h-5 w-5" />
+									<span>{$_('navbar.account', { default: 'Account' })}</span>
+								</a>
+							</li>
+							<div class="divider my-1"></div>
+							<li>
+								<a
+									href={resolve('/oauth/logout')}
+									class="flex gap-2 py-2 px-4 text-error hover:bg-error/10 active:bg-error active:text-error-content"
+								>
+									<IconMdiLogout class="h-5 w-5" />
+									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				{:else}
+					<a
+						rel="external"
+						class="btn btn-outline gap-2 rounded-full px-4 border-base-300 hover:border-primary hover:bg-primary hover:text-primary-content transition-all duration-300"
+						href={getLoginUrl(page.url)}
+					>
+						<IconMdiLogin class="h-5 w-5" />
+						<span>{$_('navbar.login', { default: 'Login' })}</span>
+					</a>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -396,18 +429,40 @@
 		</a>
 
 		{#if $userInfo != null}
-			<a
-				class="btn btn-outline link"
-				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-				>{$_('navbar.account', { default: 'Account' })}</a
-			>
-			<a class="btn btn-outline link" href={resolve('/oauth/logout')}
-				>{$_('navbar.logout', { default: 'Logout' })}</a
-			>
+			<div class="w-full flex justify-center mt-2 md:mt-0">
+				<div
+					class="flex flex-col gap-2 w-full md:w-auto p-2 bg-base-200 rounded-box border border-base-300"
+				>
+					<div class="px-2 py-1.5 flex items-center gap-3">
+						<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
+						<span class="font-semibold truncate text-base-content text-sm"
+							>{$userInfo.preferred_username}</span
+						>
+					</div>
+					<div class="grid grid-cols-2 gap-2">
+						<a
+							class="btn btn-sm btn-outline gap-2"
+							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+						>
+							<IconMdiAccountCircle class="h-4 w-4" />
+							<span>{$_('navbar.account', { default: 'Account' })}</span>
+						</a>
+						<a class="btn btn-sm btn-outline btn-error gap-2" href={resolve('/oauth/logout')}>
+							<IconMdiLogout class="h-4 w-4" />
+							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		{:else}
-			<a rel="external" class="btn btn-outline link" href={getLoginUrl(page.url)}
-				>{$_('navbar.login', { default: 'Login' })}</a
+			<a
+				rel="external"
+				class="btn btn-outline gap-2 rounded-full px-5 hover:bg-primary hover:text-primary-content transition-all duration-300"
+				href={getLoginUrl(page.url)}
 			>
+				<IconMdiLogin class="h-5 w-5" />
+				<span>{$_('navbar.login', { default: 'Login' })}</span>
+			</a>
 		{/if}
 	</div>
 </div>
