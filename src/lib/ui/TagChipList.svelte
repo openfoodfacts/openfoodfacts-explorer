@@ -37,6 +37,18 @@
 						</span>
 					{/if}
 				{/each}
+			{:catch}
+				{#each tags as tag (tag)}
+					{#if facetType}
+						<a class="badge wrap-break-word {badgeClass}" href="/facets/{facetType}/{tag}">
+							{tag}
+						</a>
+					{:else}
+						<span class="badge wrap-break-word {badgeClass}">
+							{tag}
+						</span>
+					{/if}
+				{/each}
 			{/await}
 		</div>
 	</div>

@@ -202,7 +202,7 @@
 					title={$_('product.header.origins')}
 					tags={product.origins_tags as unknown as string[]}
 					taxonomyPromise={taxonomies.origins}
-					facetType="origin"
+					facetType="origins"
 				/>
 
 				<!-- Traceability Codes -->
