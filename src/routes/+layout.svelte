@@ -218,7 +218,9 @@
 			});
 		}
 
-		void initializeWebcomponents();
+		void initializeWebcomponents().catch(() => {
+			// Keep the default "en" configuration if webcomponents fail to load.
+		});
 
 		return () => {
 			mounted = false;
