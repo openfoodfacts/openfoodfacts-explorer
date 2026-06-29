@@ -15,3 +15,6 @@ yarn.lock
 
 # Managed by Release Please
 CHANGELOG.md
+
+# Managed by Crowdin
+/src/lib/i18n/messages/

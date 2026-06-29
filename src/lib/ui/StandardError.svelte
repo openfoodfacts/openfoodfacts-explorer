@@ -3,6 +3,7 @@
 	import { _ } from '$lib/i18n';
 	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
+	import { resolve } from '$app/paths';
 
 	type Props = { error: globalThis.App.Error };
 	let { error }: Props = $props();
@@ -29,13 +30,13 @@
 				</p>
 				<div class="card-actions mt-4 flex w-full flex-col gap-3">
 					<a
-						href="https://world.openfoodfacts.org/cgi/product.pl"
+						href={resolve(`/products/${page.params.barcode}/edit`)}
 						class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
 					>
 						<span class="text-xl">➕</span>
 						{$_('product.add_product', { default: 'Add This Product' })}
 					</a>
-					<a href="/" class="btn btn-ghost btn-sm">
+					<a href={resolve('/')} class="btn btn-ghost btn-sm">
 						{$_('general.search_again', { default: 'Search for something else' })}
 					</a>
 				</div>
@@ -55,7 +56,10 @@
 					})}
 				</p>
 				<div class="card-actions mt-4 flex w-full flex-col gap-3">
-					<a href="/" class="btn btn-outline btn-lg hover:btn-primary w-full border-2 font-bold">
+					<a
+						href={resolve('/')}
+						class="btn btn-outline btn-lg hover:btn-primary w-full border-2 font-bold"
+					>
 						🔍 {$_('general.try_search_again', { default: 'Try Search Again' })}
 					</a>
 				</div>
@@ -112,7 +116,9 @@
 				{/if}
 
 				<div class="card-actions mt-4 justify-end">
-					<a href="/" class="btn btn-outline btn-sm">Return to Home</a>
+					<a href={resolve('/')} class="btn btn-outline btn-sm">
+						{$_('navigation.return_to_home', { default: 'Return to Home' })}
+					</a>
 				</div>
 			</div>
 		</div>

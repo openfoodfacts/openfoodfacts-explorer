@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
@@ -33,6 +35,9 @@
 	import { PRODUCT_URL } from '$lib/const';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { trackOffEvent } from '$lib/analytics';
+	import { browser } from '$app/environment';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -59,6 +64,28 @@
 	$effect(() => {
 		// Update website context based on product type
 		if (product.product_type) websiteCtx.flavor = product.product_type;
+	});
+
+	// Track product score presence (fire once per product page view)
+	const trackedScores = new SvelteSet<string>();
+	$effect(() => {
+		// Depend only on pathname (navigation), not product data (invalidateAll)
+		const path = page.url.pathname;
+		untrack(() => {
+			const p = product;
+			if (p.code && !trackedScores.has(path)) {
+				trackedScores.add(path);
+				if (p.nutriscore_grade) {
+					trackOffEvent('product', 'has_nutriscore', p.nutriscore_grade);
+				}
+				if (p.ecoscore_grade) {
+					trackOffEvent('product', 'has_greenscore', p.ecoscore_grade);
+				}
+				if (p.nova_group) {
+					trackOffEvent('product', 'has_nova', String(p.nova_group));
+				}
+			}
+		});
 	});
 
 	let useWCFolksonomyEditor = $state(false);
@@ -146,23 +173,53 @@
 		return prodData.product.attribute_groups_en as unknown as ProductGroupedAttributes[];
 	}
 
-	let productAttributes = $derived(getProductAttributes(product.code));
+	let productAttributes = $derived.by(() => {
+		if (product.code && browser) {
+			return getProductAttributes(product.code);
+		}
+		return new Promise<ProductGroupedAttributes[]>(() => {});
+	});
 </script>
 
 <Metadata
-	title={$_('product.title', { values: { productName: product.product_name } })}
-	description={$_('product.description', { values: { productName: product.product_name } })}
+	title={$_('product.title', {
+		default: '{productName} - Open Food Facts Explorer',
+		values: { productName: product.product_name }
+	})}
+	description={$_('product.description', {
+		default: 'Product page for {productName} on Open Food Facts Explorer',
+		values: { productName: product.product_name }
+	})}
 	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4" itemscope itemtype="https://schema.org/Product">
+	<meta itemprop="name" content={product.product_name || ''} />
+	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
+	<meta
+		itemprop="description"
+		content={$_('product.description', {
+			default: 'Product page for {productName} on Open Food Facts Explorer',
+			values: { productName: product.product_name }
+		})}
+	/>
+	<meta itemprop="gtin" content={product.code || ''} />
+	{#if product.brands}
+		<div itemprop="brand" itemscope itemtype="https://schema.org/Brand">
+			<meta itemprop="name" content={product.brands} />
+		</div>
+	{/if}
+
 	<ProductHeader {product} taxonomies={data.taxo} />
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />
 	{/if}
 
-	<robotoff-contribution-message product-code={product.code} is-logged-in={$userInfo != null}
+	<robotoff-contribution-message
+		product-code={product.code}
+		is-logged-in={$userInfo != null}
+		onclick={() => trackOffEvent('product', 'open_nutrisight')}
 	></robotoff-contribution-message>
 
 	{#await productAttributes}
@@ -216,7 +273,7 @@
 						{$_('product.folksonomy.intro_before')}
 						<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
 						{$_('product.folksonomy.intro_after')}
-						<a href="https://openfoodfacts-explorer.vercel.app/folksonomy">
+						<a href={resolve('/folksonomy')}>
 							{$_('product.folksonomy.link_properties')}
 						</a>
 						{$_('product.folksonomy.link_middle')}

@@ -28,7 +28,7 @@ Our UI is built on a modern stack:
 
 ### Themes & Colors
 
-We define custom **Light** and **Dark** themes in [`src/app.css`](src/app.css). The palette uses warm, natural tones to reflect our food-focused mission.
+We define custom **Light** and **Dark** themes in [`src/app.css`](../src/app.css). The palette uses warm, natural tones to reflect our food-focused mission.
 
 | Token               | Semantic Role                  | Light Mode               | Dark Mode              |
 | ------------------- | ------------------------------ | ------------------------ | ---------------------- |
@@ -261,6 +261,7 @@ DaisyUI / Tailwind CSS breakpoints used in this project:
 ### External
 
 - **[Open Food Facts Design Repo](https://github.com/openfoodfacts/openfoodfacts-design)** — Brand guidelines, logos, illustrations, and high-level design plan.
+- **[Design Documentation](https://github.com/openfoodfacts/openfoodfacts-design/blob/main/DESIGN.md)** — In-depth design principles and guidelines.
 - **Figma:**
   - [Explorer Mockups (WIP)](<https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?node-id=1-53>) — Homepage, Search, Product page, Edit mode, Facets.
   - [Current Website Design](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6) — Reference designs for the legacy website.

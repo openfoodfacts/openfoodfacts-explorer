@@ -64,6 +64,73 @@ export async function addOrEditProductV2(
 }
 
 /**
+ * Update the barcode of a product (moderator-only action).
+ * This sends a POST request to the OFF API with the current code and the new code.
+ * @param fetch - The fetch function
+ * @param currentCode - The current barcode of the product
+ * @param newCode - The correct barcode to replace the current one
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function updateBarcode(
+	fetch: typeof window.fetch,
+	currentCode: string,
+	newCode: string
+): Promise<{ data?: unknown; error?: string }> {
+	const off = createProductsApi(fetch);
+
+	try {
+		const success = await off.apiv2.changeBarcode(currentCode, newCode);
+		return { data: success };
+	} catch (error) {
+		console.error('Error updating barcode:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete a product page (moderator-only action).
+ * This sends a POST request to /cgi/product.pl with the required parameters.
+ * @param fetch - The fetch function
+ * @param code - The barcode of the product to delete
+ * @param comment - The reason/comment for deletion
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function deleteProduct(
+	fetch: typeof window.fetch,
+	code: string,
+	comment: string
+): Promise<{ data?: boolean; error?: string }> {
+	// TODO: switch to `deleteProduct` from SDK
+	try {
+		const formData = new FormData();
+		formData.append('type', 'delete');
+		formData.append('action', 'process');
+		formData.append('code', code);
+		formData.append('comment', comment);
+
+		const fetchToUse = wrapFetchWithAuth(fetch);
+		const url = `${API_HOST}/cgi/product.pl`;
+		const response = await fetchToUse(url, {
+			method: 'POST',
+			body: formData
+		});
+
+		if (!response.ok) {
+			return {
+				error: `HTTP error: ${response.status} ${response.statusText}`
+			};
+		}
+
+		return { data: true };
+	} catch (error) {
+		console.error('Error deleting product:', error);
+		return {
+			error: error instanceof Error ? error.message : String(error)
+		};
+	}
+}
+
+/**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
  * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function
@@ -183,6 +250,39 @@ export async function updatePackagingsV3(
 }
 
 /**
+ * Update the obsolete status of a product (moderator-only action).
+ * @param fetch - The fetch function
+ * @param code - Product barcode
+ * @param obsolete - Whether the product is obsolete ('on' or '')
+ */
+export async function updateObsoleteStatusV3(
+	fetch: typeof window.fetch,
+	code: string,
+	obsolete: 'on' | ''
+): Promise<{ data?: unknown; error?: string }> {
+	// TODO: switch to `updateObsoleteStatus` from SDK
+	const off = createProductsApi(fetch);
+	const lc = get(preferences).lang || 'en';
+
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
+		body: {
+			lc,
+			fields: 'obsolete',
+			product: {
+				obsolete
+			}
+		}
+	});
+
+	if (error) {
+		return { error: `Failed to update obsolete status: ${JSON.stringify(error)}` };
+	}
+
+	return { data };
+}
+
+/**
  * Upload image using API v3.3 with base64 encoded data
  * @param barcode Product barcode
  * @param imageDataBase64 Base64 encoded image data
@@ -253,6 +353,17 @@ export async function unselectImageV3(
 export async function getProductReducedForCard(fetch: typeof window.fetch, code: string) {
 	const off = createProductsApi(fetch);
 	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
+}
+
+export async function getBulkProductCards(fetch: typeof window.fetch, codes: string[]) {
+	const off = createProductsApi(fetch);
+
+	const params = new URLSearchParams({
+		code: codes.join(','),
+		fields: REDUCED_FIELDS.join(',')
+	});
+
+	return off.apiv2.search(Object.fromEntries(params.entries()));
 }
 
 export type ProductStateBase = {
@@ -370,6 +481,7 @@ export type ImageOperationResponse = {
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
+type LangGenericName = `generic_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -487,9 +599,16 @@ export type Product = ProductDataSection & {
 	emb_codes: string;
 	emb_codes_tags: string[];
 
+	allergens: string;
+	allergens_tags: string[];
+	traces: string;
+	traces_tags: string[];
+
 	nutriments: Nutriments;
 
 	no_nutrition_data?: boolean;
+	obsolete?: string;
+	obsolete_since_date?: string;
 
 	source: {
 		fields: string[];
@@ -511,7 +630,8 @@ export type Product = ProductDataSection & {
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
 	Partial<Record<LangIngredient, string>> &
-	Partial<Record<LangPackagingText, string>>;
+	Partial<Record<LangPackagingText, string>> &
+	Partial<Record<LangGenericName, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',

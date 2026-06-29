@@ -18,11 +18,19 @@ By building a new frontend, we want to be able to iterate faster on the user exp
 >
 > Remember that most people here are volunteers, and the free time they spend on this project is time they could have spent with their family, friends, or on other hobbies. Please respect that by making sure your contributions are of high quality and don't create extra work for the maintainers.
 >
-> For more information, see the [Contribution Guidelines](CONTRIBUTING.md).
+> For more information, see the [Contribution Guidelines](docs/CONTRIBUTING.md).
+
+## Contributing
+
+| Guide                                   | Audience                                 |
+| --------------------------------------- | ---------------------------------------- |
+| [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Humans contributing code                 |
+| [AGENTS.md](AGENTS.md)                  | AI agents (Claude, Copilot, Codex, etc.) |
+| [DESIGN.md](docs/DESIGN.md)             | Anyone building or reviewing UI          |
 
 ## Design
 
-> **New to the project?** Check out our **[UX Contributing Guide](UX_GUIDE.md)** for patterns, colors, and best practices.
+> **New to the project?** Check out our **[Design Guide](docs/DESIGN.md)** for patterns, colors, and best practices.
 
 - We currently don’t have any real visual mockup of it, nor “artistic direction” so for the time being, we're copying key features from the current frontend, improving them whenever we can.
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mockups on the current website](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6)
@@ -45,19 +53,17 @@ The Open Food Facts community uses Slack for communication. You can join the `#o
 
 This project uses pnpm. If you have corepack enabled, you should be able to directly use `pnpm` commands. Otherwise, you can install pnpm with `npm install -g pnpm`.
 
-First, install dependencies:
-
-```bash
-pnpm install
-```
-
-Before running the project, set up the environment variables:
+First, set up the environment variables:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit the `.env` file as needed to configure your development environment.
+Then install dependencies:
+
+```bash
+pnpm install
+```
 
 Then start the development server:
 

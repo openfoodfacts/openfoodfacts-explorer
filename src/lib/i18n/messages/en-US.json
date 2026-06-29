@@ -27,6 +27,8 @@
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Search Analytics",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "Raw Query",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
 		"advanced_search_classic": "Advanced Search for {term} (classic version)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -88,7 +93,9 @@
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack"
+			"slack": "Slack",
+			"mastodon": "Mastodon",
+			"bluesky": "Bluesky"
 		},
 		"links": {
 			"newsletter": "Newsletter",
@@ -113,6 +120,19 @@
 		}
 	},
 	"settings": {
+		"page_title": "Settings",
+		"page_description": "Manage your preferences and account settings",
+		"subtitle": "Manage your preferences and personalize your experience",
+		"tab": {
+			"account": "Account",
+			"general": "General",
+			"editing": "Editing",
+			"preferences": "Preferences",
+			"developer": "Developer"
+		},
+		"username": "Username",
+		"email": "Email",
+		"roles": "Roles",
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
@@ -120,13 +140,18 @@
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
+		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
 		"display_prices_in_search": "Display prices in search results",
+		"display_prices_in_search_help": "Show price information in search results when available",
 		"logged_in_as": "Logged in as: {username}",
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
+		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode"
+		"moderator_mode": "Moderator Mode",
+		"dev_access_denied": "Access Denied",
+		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -135,7 +160,20 @@
 		"search_placeholder": "Search keys…",
 		"keys_found": "keys found",
 		"key_found": "key found",
-		"for": "for"
+		"for": "for",
+		"badge_products": "Used in {count} products ({percent}% relative usage)",
+		"badge_values": "Has {values} different possible values",
+		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"key_visualization_guide": {
+			"title": "Key Visualization Guide:",
+			"badge_products_start": "The first badge ",
+			"badge_products_end": " shows the number of products using this key",
+			"badge_values_start": "The second badge ",
+			"badge_values_end": " shows the number of unique values for this key",
+			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+		},
+		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
+		"no_keys_found": "No keys found with the current search query."
 	},
 	"home": {
 		"welcome": "Welcome to",
@@ -149,6 +187,7 @@
 		"edit_preferences": "Edit Preferences",
 		"close": "Close",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -241,13 +280,19 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Add product names and descriptions in different languages to make the product accessible to more users.",
 				"ingredients": "List all the ingredients present in the product. This helps users with allergies or dietary preferences.",
 				"nutrition": "Enter nutritional values per 100g/ml as shown on the packaging. This helps users compare products.",
+				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
 				"prices": "Help track this product's price history on Open Prices.",
 				"comment": "Optionally, add a comment to describe your changes or provide additional context.",
 				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
@@ -265,8 +310,12 @@
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
 				"countries": "Countries where the product is widely available (not including stores specialising in foreign products).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
-				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging."
+				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
+				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
+				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
+			"allergens": "Allergens",
+			"traces": "Traces",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -335,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Other"
 			},
-			"product_page_url": "Link to the product page on the official site of the producer",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link to the product page on the official site of the producer",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Common name",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "No photo available",
 			"ingredients": "Ingredients",
@@ -387,6 +440,7 @@
 				"save_error": "Failed to save product. Please try again."
 			},
 			"add_nutrient": "Add Nutrient",
+			"remove_nutrient": "Remove nutrient",
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
@@ -396,9 +450,11 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Basic Information",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
 				"nutrition": "Nutritional Information",
+				"moderator_tools": "Moderator Tools",
 				"packaging": "Packaging",
 				"prices": "Prices",
 				"comment": "Comment"
@@ -467,6 +523,45 @@
 				"add_origins": "Add origins",
 				"add_ingredients_text": "Add ingredients text"
 			}
+		},
+		"moderator": {
+			"barcode_correction_title": "Correct Barcode",
+			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_description": "If the barcode is not correct, please correct it here:",
+			"barcode_correction_placeholder": "Enter the correct barcode",
+			"barcode_correction_submit": "Correct Barcode",
+			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Delete the product page",
+			"delete_product_confirm": "Are you sure that you want to delete the page for this product?",
+			"delete_product_comment_label": "Reason for removal",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Delete the product page",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Product taken off the market",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Product taken off the market",
+			"obsolete_badge": "Product taken off the market",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -488,7 +583,8 @@
 		"skip": "Skip",
 		"step": "Step",
 		"of": "of",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",
@@ -525,7 +621,11 @@
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
 		"view_all_contributions": "View all contributions",
-		"view_all_edits": "View all edits"
+		"view_all_edits": "View all edits",
+		"products_photographed": "Products photographed",
+		"has_photographed": "Has Photographed",
+		"view_all_photographs": "View all photographs",
+		"open_prices_dashboard": "Open Prices dashboard"
 	},
 	"explore": {
 		"title": "Explore Open Food Facts",

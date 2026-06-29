@@ -32,9 +32,16 @@
 		units: string[];
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
+		editMode?: boolean;
 	};
 
-	let { product = $bindable(), units, getNutritionImage, handleNutrimentInput }: Props = $props();
+	let {
+		product = $bindable(),
+		units,
+		getNutritionImage,
+		handleNutrimentInput,
+		editMode = false
+	}: Props = $props();
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -190,9 +197,13 @@
 	);
 
 	function wipeAllNutrientValues() {
+		if (!product.nutriments) return;
+
 		product = {
 			...product,
-			nutriments: {} as Nutriments
+			nutriments: Object.fromEntries(
+				Object.keys(product.nutriments).map((key) => [key, '' as string | number])
+			) as Nutriments
 		};
 		additionalNutrients = [];
 	}
@@ -242,61 +253,40 @@
 	</div>
 {/snippet}
 
-<h2
-	class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
->
-	<IconMdiNutrition class="mr-1 h-6 w-6 align-middle" />
-	{$_('product.edit.sections.nutrition')}
-	<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-		<IconMdiHelpCircleOutline
-			class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
-		/>
-	</button>
-</h2>
-{#if showInfo}
-	<div
-		class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+{#if !editMode}
+	<h2
+		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<button
-			type="button"
-			class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
-			aria-label="Close"
-			onclick={toggleInfo}
-		>
-			<IconMdiClose class="text-primary h-5 w-5" />
+		<IconMdiNutrition class="mr-1 h-6 w-6 align-middle" />
+		{$_('product.edit.sections.nutrition')}
+		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
+			<IconMdiHelpCircleOutline
+				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+			/>
 		</button>
-		<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-		<span class="text-base-content/80 p-6 text-sm sm:text-base"
-			>{$_('product.edit.info.nutrition')}</span
+	</h2>
+	{#if showInfo}
+		<div
+			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
 		>
-	</div>
+			<button
+				type="button"
+				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				aria-label="Close"
+				onclick={toggleInfo}
+			>
+				<IconMdiClose class="text-primary h-5 w-5" />
+			</button>
+			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
+			<span class="text-base-content/80 p-6 text-sm sm:text-base"
+				>{$_('product.edit.info.nutrition')}</span
+			>
+		</div>
+	{/if}
 {/if}
 <div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
 	<div>
 		<div class="space-y-4">
-			<div>
-				<label>
-					<span class="label mb-2 flex items-center gap-2 leading-0">
-						{$_('product.edit.serving_size')}
-						<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
-						{#if servingSizeIssue}
-							{@render issueTooltip(servingSizeIssue)}
-						{/if}
-					</span>
-					<input
-						id="serving-size-input"
-						type="text"
-						class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
-						value={product.serving_size ?? ''}
-						oninput={handleServingSize}
-						placeholder={servingSizePlaceholder}
-					/>
-				</label>
-				{#if servingSizeIssue}
-					{@render issueAlert(servingSizeIssue)}
-				{/if}
-			</div>
-
 			<div>
 				<label class="label">
 					<input
@@ -310,6 +300,31 @@
 					</span>
 				</label>
 			</div>
+
+			{#if !product.no_nutrition_data}
+				<div>
+					<label>
+						<span class="label mb-2 flex items-center gap-2 leading-0">
+							{$_('product.edit.serving_size')}
+							<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
+							{#if servingSizeIssue}
+								{@render issueTooltip(servingSizeIssue)}
+							{/if}
+						</span>
+						<input
+							id="serving-size-input"
+							type="text"
+							class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
+							value={product.serving_size ?? ''}
+							oninput={handleServingSize}
+							placeholder={servingSizePlaceholder}
+						/>
+					</label>
+					{#if servingSizeIssue}
+						{@render issueAlert(servingSizeIssue)}
+					{/if}
+				</div>
+			{/if}
 		</div>
 
 		{#if !product.no_nutrition_data}
@@ -459,8 +474,9 @@
 						<button
 							type="button"
 							class="btn btn-error join-item"
-							aria-label="Remove nutrient"
-							disabled={product.nutriments?.[nutrient] != null}
+							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
+							disabled={product.nutriments?.[nutrient] !== undefined &&
+								(product.nutriments?.[nutrient] as string | number) !== ''}
 							onclick={() => {
 								// Remove the nutrient from additional nutrients
 								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);

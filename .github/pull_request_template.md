@@ -21,7 +21,7 @@ Please provide a description of your changes below.
 
 ### Checklist: Author Self-Review
 
-<!-- replace [ ] by [x] if you (a human) has done this. If this is done by LLM, please disclose it in the next session -->
+<!-- replace [ ] by [x] for each item you have completed -->
 
 - [ ] I have performed a self-review of my own code (including running it).
 - [ ] I understand the changes I'm proposing and why they are needed.
@@ -32,4 +32,8 @@ Please provide a description of your changes below.
 
 <!-- Open-Source is a community and human process. Let's keep it that way, so that it is enjoyable for contributors AND reviewers :-) -->
 
-- [ ] <!-- ⚠️ If you used an LLM, please replace [ ] by [x], and add which LLM you used (name, version) and how (agentic, autocomplete…) --> Generic LLM v0.0.0
+- [ ] I did **not** use an LLM or AI tool to write this PR.
+- [ ] I used an LLM / AI agent — details below:
+  - **Agent / tool name and version:** <!-- e.g. GitHub Copilot (GPT-4o), Claude Sonnet 4.5, Cursor -->
+  - **How it was used:** <!-- e.g. agentic (fully automated), autocomplete (suggestions accepted), review (checked my code) -->
+  - **I have reviewed and take full responsibility for all AI-generated code in this PR.**
