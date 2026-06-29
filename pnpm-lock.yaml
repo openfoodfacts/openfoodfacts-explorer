@@ -60,8 +60,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@formatjs/intl-durationformat':
-        specifier: ^0.10.14
-        version: 0.10.14
+        specifier: ^0.10.15
+        version: 0.10.15
       '@iconify-svelte/material-symbols':
         specifier: ^1.0.36
         version: 1.0.36(svelte@5.56.3(@typescript-eslint/types@8.62.0))
@@ -648,8 +648,8 @@ packages:
   '@formatjs/icu-skeleton-parser@1.8.14':
     resolution: {integrity: sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==}
 
-  '@formatjs/intl-durationformat@0.10.14':
-    resolution: {integrity: sha512-qVrbKGJZwoGFLmQyMBn4Pk44WCpBKINwLf+isrEd4RpvKs5nChRofHanWJqSu8TjuKJjk1qJjDIFkA/hJX/a9Q==}
+  '@formatjs/intl-durationformat@0.10.15':
+    resolution: {integrity: sha512-3W636wOl2pOVKR2+aFC+2BMOHA/FYsHZfKTr/cT1OG0YIXI2hhGrBH2+EFmqEzzClRi5BlPvwE6LlLN2dikdDQ==}
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
@@ -3759,7 +3759,7 @@ snapshots:
       '@formatjs/ecma402-abstract': 2.3.4
       tslib: 2.8.1
 
-  '@formatjs/intl-durationformat@0.10.14':
+  '@formatjs/intl-durationformat@0.10.15':
     dependencies:
       '@formatjs/bigdecimal': 0.2.6
       '@formatjs/intl-localematcher': 0.8.10

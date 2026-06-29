@@ -33,7 +33,7 @@
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
-		"@formatjs/intl-durationformat": "^0.10.14",
+		"@formatjs/intl-durationformat": "^0.10.15",
 		"@iconify-svelte/material-symbols": "^1.0.36",
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.34",
