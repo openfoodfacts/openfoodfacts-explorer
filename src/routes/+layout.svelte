@@ -116,11 +116,7 @@
 
 	setShortcutCtx(() => shortcuts);
 
-	// Load OpenFoodFacts Web Components
-
-	onMount(async () => {
-		await import('@openfoodfacts/openfoodfacts-webcomponents');
-	});
+	const WEBCOMPONENTS_CONFIGURATION_ELEMENT = 'off-webcomponents-configuration';
 
 	// == Global User Permissions Context ==
 
@@ -205,11 +201,28 @@
 
 	onMount(() => {
 		runPreferencesMigrations();
-		const unsubscribe = locale.subscribe((locale) => {
-			setWebcomponentsLanguageCode(config, locale);
-		});
+
+		let mounted = true;
+		let unsubscribe: (() => void) | undefined;
+
+		async function initializeWebcomponents() {
+			await import('@openfoodfacts/openfoodfacts-webcomponents');
+			await customElements.whenDefined(WEBCOMPONENTS_CONFIGURATION_ELEMENT);
+
+			if (!mounted) {
+				return;
+			}
+
+			unsubscribe = locale.subscribe((locale) => {
+				setWebcomponentsLanguageCode(config, locale);
+			});
+		}
+
+		void initializeWebcomponents();
+
 		return () => {
-			unsubscribe();
+			mounted = false;
+			unsubscribe?.();
 		};
 	});
 
