@@ -27,6 +27,8 @@
 		"add_product": "Dodaj nowy produkt",
 		"description": "Wyszukaj w Open Food Facts Explorer {query}",
 		"charts_title": "Analityka wyszukiwania",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Pokaż ceny",
 		"sort_by_label": "Sortuj wg",
 		"raw_query_label": "Surowe zapytanie",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generuj wykresy dla {term} (wersja klasyczna)",
 		"advanced_search_classic": "Zaawansowane wyszukiwanie dla {term} (wersja klasyczna)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} cen",
 		"creation_date": "Data utworzenia",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Edytuj preferencje",
 		"close": "Zamknij",
 		"classify_products": "Klasyfikuj produkty zgodnie ze swoimi preferencjami",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Użyj domyślnych ustawień",
 		"default_description": "Nutri-Score, Green-Score i poziom przetwarzania żywności (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Prześlij wyraźne zdjęcia produktu, jego składników i informacji o wartościach odżywczych, aby ułatwić innym osobom identyfikację produktu.",
 				"basic_info": "Podaj podstawowe informacje o produkcie, takie jak ilość, opakowanie i producent.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Dodaj nazwy i opisy produktów w różnych językach, aby udostępnić produkt większej liczbie użytkowników.",
 				"ingredients": "Wypisz wszystkie składniki zawarte w produkcie. To pomoże użytkownikom z alergiami lub preferencjami dietetycznymi.",
 				"nutrition": "Wprowadź wartości odżywcze na 100 g/ml, jak podano na opakowaniu. Ułatwi to użytkownikom porównywanie produktów.",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Inne"
 			},
-			"product_page_url": "Link do strony produktu na oficjalnej stronie producenta",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link do strony produktu na oficjalnej stronie producenta",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Nazwa zwyczajowa",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Zdjęcia produktów",
 			"no_photo_available": "Brak zdjęcia",
 			"ingredients": "Składniki",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "Zdjęcia",
 				"basic_info": "Informacje podstawowe",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Języki i nazwy produktów",
 				"ingredients": "Składniki",
 				"nutrition": "Informacje żywieniowe",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Usuń stronę o produkcie",
+			"delete_product_confirm": "Czy jesteś pewien że chcesz usunąć stronę dla tego produktu?",
+			"delete_product_comment_label": "Powód usunięcia",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Usuń stronę o produkcie",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Produkt wycofany z rynku",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Produkt wycofany z rynku",
+			"obsolete_badge": "Produkt wycofany z rynku",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Pomiń",
 		"step": "Krok",
 		"of": "z",
-		"cancel": "Anuluj"
+		"cancel": "Anuluj",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",

@@ -27,6 +27,8 @@
 		"add_product": "নতুন পণ্য যোগ করুন",
 		"description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {query}অনুসন্ধান করুন",
 		"charts_title": "অনুসন্ধান বিশ্লেষণ",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "দাম দেখান",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "কাঁচা কোয়েরি",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} (ক্লাসিক সংস্করণ) এর জন্য গ্রাফ তৈরি করুন",
 		"advanced_search_classic": "{term} এর জন্য উন্নত অনুসন্ধান (ক্লাসিক সংস্করণ)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "পছন্দগুলি সম্পাদনা করুন",
 		"close": "বন্ধ করুন",
 		"classify_products": "Classify products according to your preferences",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "অন্যদের পণ্যটি শনাক্ত করতে সাহায্য করার জন্য পণ্য, উপাদান এবং পুষ্টির তথ্যের স্পষ্ট ছবি আপলোড করুন।",
 				"basic_info": "পণ্য সম্পর্কে মূল বিবরণ প্রদান করুন, যেমন পরিমাণ, প্যাকেজিং এবং প্রস্তুতকারক।",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "পণ্যটি আরও বেশি ব্যবহারকারীর কাছে অ্যাক্সেসযোগ্য করে তুলতে বিভিন্ন ভাষায় পণ্যের নাম এবং বিবরণ যোগ করুন।",
 				"ingredients": "পণ্যটিতে উপস্থিত সমস্ত উপাদানের তালিকা তৈরি করুন। এটি অ্যালার্জি বা খাদ্যাভ্যাসের পছন্দের ব্যবহারকারীদের সাহায্য করে।",
 				"nutrition": "প্যাকেজিং-এ দেখানো ১০০ গ্রাম/মিলি প্রতি পুষ্টির মান লিখুন। এটি ব্যবহারকারীদের পণ্যের তুলনা করতে সাহায্য করে।",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Other"
 			},
-			"product_page_url": "Link to the product page on the official site of the producer",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Link to the product page on the official site of the producer",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "প্রচলিত নাম",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "কোনও ছবি নেই",
 			"ingredients": "উপকরণসমূহ",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "ছবি",
 				"basic_info": "মৌলিক তথ্য",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ভাষা এবং পণ্যের নাম",
 				"ingredients": "উপকরণসমূহ",
 				"nutrition": "পুষ্টি সংক্রান্ত তথ্য",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Delete the product page",
+			"delete_product_confirm": "Are you sure that you want to delete the page for this product?",
+			"delete_product_comment_label": "অপসারণের কারণ",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Delete the product page",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Product taken off the market",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Product taken off the market",
+			"obsolete_badge": "Product taken off the market",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Skip",
 		"step": "ধাপ",
 		"of": "এর",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"close": "close"
 	},
 	"menu": {
 		"button": "তালিকা",

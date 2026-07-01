@@ -7,6 +7,7 @@
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
 	import { getSafeRedirectUrl } from '$lib/utils';
+	import { trackOffEvent } from '$lib/analytics';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -40,6 +41,7 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
+			trackOffEvent('account', 'login_success');
 
 			const redirectUrl = localStorage.getItem('authRedirect');
 			localStorage.removeItem('authRedirect');

@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 
 	import { _ } from '$lib/i18n';
-	import { createRobotoffApi, getProductReducedForCard, getBulkProductAttributes } from '$lib/api';
+	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '$lib/api';
 	import { deduplicate } from '$lib/utils';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
@@ -26,8 +26,8 @@
 	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
 	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
 
-	let attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $state(
-		Promise.resolve({})
+	const attributesByCode: Promise<Record<string, ProductAttributeForScoringGroup[]>> = $derived.by(
+		async () => getAttributes(await products)
 	);
 
 	import chocoBarIcon from '$lib/assets/chocolate-bar.svg';
@@ -49,33 +49,27 @@
 		const { data: robotoffData } = await roffApi.insights({ count: INSIGHT_COUNT });
 
 		const insights = robotoffData?.insights ?? [];
+		const insightBarcodes = insights.map((insight) => insight.barcode.toString());
+		console.debug(`Fetched ${insightBarcodes.length} insights`);
 
-		const productsPromises = insights.map((question) =>
-			getProductReducedForCard(fetch, question.barcode.toString())
-		);
-		const productStates = await Promise.all(productsPromises);
+		const { data: productsData, error } = await getBulkProductCards(fetch, insightBarcodes);
+		if (error) {
+			console.error('Error fetching products for insights:', error);
+			return [];
+		}
 
-		// filter out products that failed to load
-		const products = productStates
-			.map((res) => res.data)
-			.filter((res) => res != null)
-			.filter((state) => state?.status !== 'failure');
-
-		// remove duplicate products
-		return deduplicate(products, (it) => it.product.code);
+		const products = productsData?.products ?? [];
+		return deduplicate(products, (it) => it.code);
 	}
 
 	async function getAttributes(products: ReducedState[]) {
-		const productCodes = products.map((state) => state.product.code);
+		const productCodes = products.map((p) => p.code);
 		const attrs = await getBulkProductAttributes(fetch, productCodes);
 		return attrs;
 	}
 
 	onMount(() => {
 		products = getProducts();
-		products.then((prod) => {
-			attributesByCode = getAttributes(prod);
-		});
 	});
 </script>
 
@@ -87,7 +81,7 @@
 </svelte:head>
 
 <section
-	class="relative flex min-h-[480px] flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
+	class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 >
 	<!-- Decorative SVG assets -->
 	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
@@ -213,7 +207,7 @@
 			</div>
 		{:then [resolvedProducts, attributes]}
 			<ProductGrid
-				products={resolvedProducts.map((state) => state.product)}
+				products={resolvedProducts}
 				{attributes}
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>

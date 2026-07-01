@@ -1,5 +1,5 @@
 {
-	"nutriscore": "Nutri-Score",
+	"nutriscore": "คะแนนโภชนาการ",
 	"ecoscore": "คะแนนสีเขียว",
 	"nova": "Nova - ระดับการประมวลผลขั้นสูง",
 	"settings_link": "ตั้งค่า",
@@ -27,6 +27,8 @@
 		"add_product": "เพิ่มผลิตภัณฑ์ใหม่",
 		"description": "ค้นหา {query}บน Open Food Facts Explorer",
 		"charts_title": "การวิเคราะห์การค้นหา",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "แสดงราคา",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "แบบสอบถามดิบ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "สร้างกราฟสำหรับ {term} (เวอร์ชันคลาสสิก)",
 		"advanced_search_classic": "การค้นหาขั้นสูงสำหรับ {term} (เวอร์ชันคลาสสิก)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "วันที่สร้าง",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "แก้ไขการตั้งค่า",
 		"close": "ปิด",
 		"classify_products": "จำแนกผลิตภัณฑ์ตามความต้องการ (preferences) ของคุณ",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "ใช้การตั้งค่าเริ่มต้น",
 		"default_description": "Nutri-Score, Green-Score และระดับการแปรรูปอาหาร (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "อัปโหลดรูปภาพที่ชัดเจนของผลิตภัณฑ์ ส่วนผสม และข้อมูลโภชนาการเพื่อช่วยให้ผู้อื่นระบุผลิตภัณฑ์ได้",
 				"basic_info": "ให้รายละเอียดหลักเกี่ยวกับผลิตภัณฑ์ เช่น จำนวน บรรจุภัณฑ์ และผู้ผลิต",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "เพิ่มชื่อผลิตภัณฑ์และคำอธิบายในภาษาต่างๆ เพื่อให้ผู้ใช้เข้าถึงผลิตภัณฑ์ได้มากขึ้น",
 				"ingredients": "ระบุส่วนผสมทั้งหมดที่มีอยู่ในผลิตภัณฑ์ เพื่อช่วยผู้ใช้ที่มีอาการแพ้หรือต้องการปรับอาหาร",
 				"nutrition": "ระบุคุณค่าทางโภชนาการต่อ 100 กรัม/มิลลิลิตร ตามที่ระบุบนบรรจุภัณฑ์ เพื่อช่วยให้ผู้ใช้เปรียบเทียบผลิตภัณฑ์ได้",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "อื่น"
 			},
-			"product_page_url": "ลิงค์ไปยังหน้าผลิตภัณฑ์บนเว็บไซต์อย่างเป็นทางการของผู้ผลิต",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "ลิงค์ไปยังหน้าผลิตภัณฑ์บนเว็บไซต์อย่างเป็นทางการของผู้ผลิต",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "ชื่อสามัญ",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "รูปถ่ายผลิตภัณฑ์",
 			"no_photo_available": "ไม่มีรูปภาพ",
 			"ingredients": "ส่วนผสม",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "รูปภาพ",
 				"basic_info": "ข้อมูลพื้นฐาน",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ภาษาและชื่อผลิตภัณฑ์",
 				"ingredients": "ส่วนผสม",
 				"nutrition": "ข้อมูลโภชนาการ",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "ลบหน้าสินค้า",
+			"delete_product_confirm": "คุณแน่ใจหรือไม่ว่าต้องการลบหน้าสำหรับผลิตภัณฑ์นี้?",
+			"delete_product_comment_label": "เหตุผลในการลบ",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "ลบหน้าสินค้า",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "สินค้าถูกถอนออกจากตลาดแล้ว",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "สินค้าถูกถอนออกจากตลาดแล้ว",
+			"obsolete_badge": "สินค้าถูกถอนออกจากตลาดแล้ว",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Skip",
 		"step": "ขั้นตอน",
 		"of": "ของ",
-		"cancel": "ยกเลิก"
+		"cancel": "ยกเลิก",
+		"close": "close"
 	},
 	"menu": {
 		"button": "เมนู",

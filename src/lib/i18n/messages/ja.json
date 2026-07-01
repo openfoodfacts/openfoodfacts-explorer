@@ -27,6 +27,8 @@
 		"add_product": "新しい商品を追加",
 		"description": "Open Food Facts Explorerで {query}を検索",
 		"charts_title": "検索分析",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "価格を表示",
 		"sort_by_label": "並び替え",
 		"raw_query_label": "生のクエリ",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} のグラフを生成する (クラシックバージョン)",
 		"advanced_search_classic": "{term} の詳細検索 (クラシックバージョン)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "商品 {count} 個",
 		"creation_date": "作成日",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "設定を編集する",
 		"close": "閉じる",
 		"classify_products": "あなたの好みに応じて製品を分類する",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "デフォルトの好みを使う",
 		"default_description": "Nutri-Score、Green-Score、食品加工レベル（NOVA）",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "他のユーザーが商品を識別できるように、商品、原材料、栄養成分の鮮明な画像をアップロードします。",
 				"basic_info": "数量、パッケージ、製造元など、製品に関する主な詳細を提供します。",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "より多くのユーザーが製品にアクセスできるように、さまざまな言語で製品名と説明を追加します。",
 				"ingredients": "製品に含まれるすべての成分を記載します。これは、アレルギーや食事の好みを持つユーザーに役立ちます。",
 				"nutrition": "パッケージに記載されている100g/mlあたりの栄養成分値を入力します。これにより、ユーザーは製品を比較しやすくなります。",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "その他"
 			},
-			"product_page_url": "生産者の公式サイト上の製品ページへのリンク",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "生産者の公式サイト上の製品ページへのリンク",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "一般名",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "製品の写真",
 			"no_photo_available": "写真はありません",
 			"ingredients": "原材料",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "写真",
 				"basic_info": "基本情報",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "言語と製品名",
 				"ingredients": "原材料",
 				"nutrition": "栄養情報",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "製品ページを削除",
+			"delete_product_confirm": "この製品のページを削除してもよろしいですか?",
+			"delete_product_comment_label": "削除の理由",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "製品ページを削除",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "商品が市場に出回っています",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "商品が市場に出回っています",
+			"obsolete_badge": "商品が市場に出回っています",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "スキップ",
 		"step": "ステップ",
 		"of": "の",
-		"cancel": "取消"
+		"cancel": "取消",
+		"close": "close"
 	},
 	"menu": {
 		"button": "メニュー",

@@ -27,6 +27,8 @@
 		"add_product": "添加新产品",
 		"description": "在 Open Food Facts Explorer 上搜索 {query}",
 		"charts_title": "搜索分析",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "显示价格",
 		"sort_by_label": "排序方式",
 		"raw_query_label": "原始查询",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "为 {term} 生成图表（经典版本）",
 		"advanced_search_classic": "{term} 的高级搜索（经典版本）",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} 价格",
 		"creation_date": "创建日期",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "编辑首选项",
 		"close": "關閉",
 		"classify_products": "根据您的喜好对产品进行分类",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "使用默认首选项",
 		"default_description": "营养评分（Nutri-Score）、生态评分（Green-Score）和食品加工水平 （NOVA）",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "上传清晰的产品、成分和营养成分图片，以帮助其他人识别产品。",
 				"basic_info": "提供有关产品的主要详细信息，例如数量、包装和制造商。",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "添加不同语言的产品名称和描述，让更多用户能够访问该产品。",
 				"ingredients": "列出产品中所有成分。这有助于了解过敏或饮食偏好的用户。",
 				"nutrition": "输入包装上每 100 克/毫升的营养成分表。这有助于用户比较产品。",
@@ -304,7 +315,7 @@
 				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "过敏原",
-			"traces": "痕量",
+			"traces": "跟踪",
 			"main_language": "主要语言",
 			"add_product": "添加产品",
 			"nutrition_issues": "Nutrition issues",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "其他"
 			},
-			"product_page_url": "链接到制作人的官方网站上的产品页面",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "链接到制作人的官方网站上的产品页面",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "通用名",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "产品照片",
 			"no_photo_available": "没有照片",
 			"ingredients": "成分",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "照片",
 				"basic_info": "基本信息",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "语言和产品名称",
 				"ingredients": "成分",
 				"nutrition": "营养信息",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "删除产品页面",
+			"delete_product_confirm": "您确定要想要删除这个产品的页面吗？",
+			"delete_product_comment_label": "移除原因",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "删除产品页面",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "产品撤出市场",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "产品撤出市场",
+			"obsolete_badge": "产品撤出市场",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "跳过",
 		"step": "步",
 		"of": "的",
-		"cancel": "取消"
+		"cancel": "取消",
+		"close": "close"
 	},
 	"menu": {
 		"button": "菜单",

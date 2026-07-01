@@ -27,6 +27,8 @@
 		"add_product": "Lägg till ny produkt",
 		"description": "Sök på Open Food Facts Explorer efter {query}",
 		"charts_title": "Sökanalys",
+		"results_for": "Sökresultat för \"{term}\"",
+		"classic_tools": "Klassiska verktyg:",
 		"show_prices_label": "Visa priser",
 		"sort_by_label": "Sortera efter",
 		"raw_query_label": "Rå fråga",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generera grafer för {term} (klassisk version)",
 		"advanced_search_classic": "Avancerad sökning efter {term} (klassisk version)",
+		"superset_query": "Starta en sökning",
+		"superset_discover": "Upptäck kontrollpaneler",
+		"superset_promo_desc": "Frigör kraften i öppen data! Utforska hela Open Food Facts-databasen med hjälp av SQL-sökningar, anpassade diagram och delade kontrollpaneler.",
 		"prices_badge": "{count} priser",
 		"creation_date": "Skapandedatum",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Redigera inställningar",
 		"close": "Stäng",
 		"classify_products": "Klassificera produkter efter dina preferenser",
+		"classify_products_desc": "Aktivera personlig produktklassificering baserat på dina preferenser.",
 		"use_default": "Använd standardinställningar",
 		"default_description": "Nutri-Score, Green-Score och livsmedelsförädlingsnivå (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Minimera alla",
+				"expand_all": "Expandera alla"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Ladda upp tydliga bilder av produkten, ingredienserna och näringsfakta för att hjälpa andra att identifiera produkten.",
 				"basic_info": "Ange de viktigaste detaljerna om produkten, såsom kvantitet, förpackning och tillverkare.",
+				"origin_traceability": "Ange information om ursprung och spårbarhet, såsom tillverkningsplatser, ingrediensernas ursprung och spårbarhetskoder.",
 				"languages": "Lägg till produktnamn och beskrivningar på olika språk för att göra produkten tillgänglig för fler användare.",
 				"ingredients": "Lista alla ingredienser som finns i produkten. Detta hjälper användare med allergier eller kostpreferenser.",
 				"nutrition": "Ange näringsvärden per 100 g/ml enligt förpackningens innehåll. Detta hjälper användare att jämföra produkter.",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Övrigt"
 			},
-			"product_page_url": "Länk till produktsidan på producentens officiella webbplats",
+			"product_page_url": "Officiell produktsida",
+			"product_page_url_add": "Länk till produktsidan på producentens officiella webbplats",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Vanligt namn",
+			"generic_name_placeholder": "t.ex. chokladkakor, apelsinjuice",
 			"photos": "Produktbilder",
 			"no_photo_available": "Inget foto tillgängligt",
 			"ingredients": "Ingredienser",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "Foton",
 				"basic_info": "Grundläggande information",
+				"origin_traceability": "Spårbarhet och ursprung",
 				"languages": "Språk och produktnamn",
 				"ingredients": "Ingredienser",
 				"nutrition": "Näringsinformation",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Radera produktsidan",
+			"delete_product_confirm": "Är du säker på att du vill radera sidan för denna produkt?",
+			"delete_product_comment_label": "Orsak till borttagning",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Radera produktsidan",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Återkallad produkt",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Återkallad produkt",
+			"obsolete_badge": "Återkallad produkt",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Hoppa over",
 		"step": "Steg",
 		"of": "av",
-		"cancel": "Annulera"
+		"cancel": "Annulera",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Meny",

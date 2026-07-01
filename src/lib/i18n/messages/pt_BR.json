@@ -27,6 +27,8 @@
 		"add_product": "Adicionar novo produto",
 		"description": "Pesquise no Open Food Facts Explorer por {query}",
 		"charts_title": "Análise de pesquisa",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Mostrar preços",
 		"sort_by_label": "Ordenar por",
 		"raw_query_label": "Consulta bruta",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Gerar gráficos para {term} (versão clássica)",
 		"advanced_search_classic": "Busca avançada para {term} (versão clássica)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} valores",
 		"creation_date": "Data de criação",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Editar preferências",
 		"close": "Fechar",
 		"classify_products": "Classifique os produtos de acordo com as sua preferências",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use as preferências padrão",
 		"default_description": "Score nutricional. score ecológico e nível de processamento de alimento (NOVA)",
 		"options": {
@@ -251,7 +257,7 @@
 			"link_properties": "the list of properties already used by the community",
 			"link_middle": " or explore the ",
 			"link_docs": "properties' documentation and its search engine",
-			"warning": "Esteja ciente de que o modelo de dados pode ser modificado. Use por sua conta e risco.",
+			"warning": "Esteja ciente de que o modelo de dados pode ser modificado. Utilize por sua conta e risco.",
 			"footer_before": "This is brought by the ",
 			"footer_link": "Folksonomy Engine project",
 			"footer_after": ". Don't hesitate to participate or give feedback."
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Carregue imagens nítidas do produto, ingredientes e informações nutricionais para ajudar outras pessoas a identificá-lo.",
 				"basic_info": "Forneça os principais detalhes sobre o produto, como quantidade, embalagem e fabricante.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Adicione nomes e descrições de produtos em diferentes idiomas para tornar o produto acessível a mais usuários.",
 				"ingredients": "Liste todos os ingredientes presentes no produto. Isso ajuda usuários com alergias ou preferências alimentares.",
 				"nutrition": "Insira os valores nutricionais por 100 g/ml conforme indicado na embalagem. Isso ajuda os usuários a comparar produtos.",
@@ -303,7 +314,7 @@
 				"allergens": "List the allergens present in the product (e.g. Milk, Gluten, Eggs).",
 				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
-			"allergens": "Alergênios",
+			"allergens": "Alergénios",
 			"traces": "Vestígios",
 			"main_language": "Idioma principal",
 			"add_product": "Adicionar produto",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Outros"
 			},
-			"product_page_url": "Hiperligação da página do produto no site oficial do fabricante",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Hiperligação da página do produto no site oficial do fabricante",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Nome comum",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Fotos do produto",
 			"no_photo_available": "Nenhuma foto disponível",
 			"ingredients": "Ingredientes",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "Fotografias",
 				"basic_info": "Informações básicas",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Idiomas e nomes de produtos",
 				"ingredients": "Ingredientes",
 				"nutrition": "Informação nutricional",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Eliminar a página do produto",
+			"delete_product_confirm": "Tem a certeza que quer eliminar a página deste produto?",
+			"delete_product_comment_label": "Motivo da eliminação",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Eliminar a página do produto",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Produto retirado do mercado",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Produto retirado do mercado",
+			"obsolete_badge": "Produto retirado do mercado",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Pular",
 		"step": "Etapa",
 		"of": "de",
-		"cancel": "Cancelar"
+		"cancel": "Cancelar",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Menu",

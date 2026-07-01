@@ -27,6 +27,8 @@
 		"add_product": "새로운 제품 추가",
 		"description": "Open Food Facts Explorer에서 {query}를 검색하세요.",
 		"charts_title": "검색 분석",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "가격 보기",
 		"sort_by_label": "정렬 기준",
 		"raw_query_label": "원시 쿼리",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} 에 대한 그래프 생성(클래식 버전)",
 		"advanced_search_classic": "{term} 에 대한 고급 검색(클래식 버전)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "생성일",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "기본 설정 편집",
 		"close": "닫기",
 		"classify_products": "선호도에 따라 제품 분류",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "기본 환경 설정 사용",
 		"default_description": "Nutri-Score, Green-Score 및 식품 가공 수준(NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "다른 사람들이 제품을 식별할 수 있도록 제품, 성분, 영양 정보를 명확하게 담은 이미지를 업로드하세요.",
 				"basic_info": "수량, 포장, 제조사 등 제품에 대한 주요 세부 정보를 제공하세요.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "다양한 언어로 제품 이름과 설명을 추가하여 더 많은 사용자가 제품에 접근할 수 있도록 하세요.",
 				"ingredients": "제품에 함유된 모든 성분을 나열하세요. 알레르기나 식단 선호도가 있는 사용자에게 도움이 됩니다.",
 				"nutrition": "포장에 표시된 100g/ml당 영양성분을 입력하세요. 이는 사용자가 제품을 비교하는 데 도움이 됩니다.",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "기타"
 			},
-			"product_page_url": "생산자의 공식 사이트의 제품 페이지에 링크하기",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "생산자의 공식 사이트의 제품 페이지에 링크하기",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "일반 이름",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "제품 사진",
 			"no_photo_available": "사진이 없습니다",
 			"ingredients": "성분",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "사진",
 				"basic_info": "기본 정보",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "언어 및 제품 이름",
 				"ingredients": "성분",
 				"nutrition": "영양 정보",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "제품 삭제",
+			"delete_product_confirm": "이 제품의 페이지를 삭제하시겠습니까?",
+			"delete_product_comment_label": "삭제하려는 이유",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "제품 삭제",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "상품이 단종되었습니다",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "상품이 단종되었습니다",
+			"obsolete_badge": "상품이 단종되었습니다",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "건너뛰기",
 		"step": "단계",
 		"of": "~의",
-		"cancel": "취소"
+		"cancel": "취소",
+		"close": "close"
 	},
 	"menu": {
 		"button": "메뉴",

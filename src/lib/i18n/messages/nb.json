@@ -27,6 +27,8 @@
 		"add_product": "Legg til nytt produkt",
 		"description": "Søk på Open Food Facts utforsker for {query}",
 		"charts_title": "Søk analyser",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Vis priser",
 		"sort_by_label": "Sorter etter",
 		"raw_query_label": "Rå spørring",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generer grafer for {term} (klassisk versjon)",
 		"advanced_search_classic": "Avansert søk etter {term} (klassisk versjon)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "Endre innstillingene",
 		"close": "Lukk",
 		"classify_products": "Klassifiser produkter i henhold til dine preferanser",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Bruk standardinnstillinger",
 		"default_description": "Nutri-Score, Green-Score og matbearbeidingsnivå (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Last opp klare bilder av produktet, ingrediensene og næringslisten for å hjelpe andre med å identifisere produktet.",
 				"basic_info": "Gi de viktigste detaljene om produktet, slik som mengde, emballering og tilvirker.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Legg til produktnavn og -beskrivelser på forskjellige språk for å gjøre produktet tilgjengelig for flere brukere.",
 				"ingredients": "List opp alle ingrediensene i produktet. Dette hjelper brukere med allergier eller kostpreferanser.",
 				"nutrition": "Oppgi ernæringsverdier per 100 g/ml som vist på emballasjen. Dette hjelper brukere sammenligne produkter.",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "Andre"
 			},
-			"product_page_url": "Lenke til produktsiden på den offisielle nettsiden til produsenten",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Lenke til produktsiden på den offisielle nettsiden til produsenten",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Vanlig navn",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Produktbilder",
 			"no_photo_available": "Ingen bilder tilgjengelig",
 			"ingredients": "Ingredienser",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "Bilder",
 				"basic_info": "Grunnleggende informasjon",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Språk og produktnavn",
 				"ingredients": "Ingredienser",
 				"nutrition": "Ernæringsinformasjon",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Slett produktsiden",
+			"delete_product_confirm": "Er du sikker på at du vil slette siden for dette produktet?",
+			"delete_product_comment_label": "Fjernet fordi",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Slett produktsiden",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Produkter trukket fra markedet",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Produkter trukket fra markedet",
+			"obsolete_badge": "Produkter trukket fra markedet",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Hopp over",
 		"step": "Trinn",
 		"of": "av",
-		"cancel": "Avbryt"
+		"cancel": "Avbryt",
+		"close": "close"
 	},
 	"menu": {
 		"button": "Meny",

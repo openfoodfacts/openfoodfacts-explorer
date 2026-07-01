@@ -27,6 +27,8 @@
 		"add_product": "ახალი პროდუქტის დამატება",
 		"description": "Open Food Facts Explorer-ში მოძებნეთ {query}",
 		"charts_title": "ძიების ანალიტიკა",
+		"results_for": "Search results for \"{term}\"",
+		"classic_tools": "Classic Tools:",
 		"show_prices_label": "ფასების ჩვენება",
 		"sort_by_label": "Sort by",
 		"raw_query_label": "ნედლი მოთხოვნა",
@@ -36,6 +38,9 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "{term} -ის გრაფიკების გენერირება (კლასიკური ვერსია)",
 		"advanced_search_classic": "გაფართოებული ძიება {term} -ისთვის (კლასიკური ვერსია)",
+		"superset_query": "Start a query",
+		"superset_discover": "Discover dashboards",
+		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "შექმნის თარიღი",
 		"last_modified_date": "Last modified date",
@@ -182,6 +187,7 @@
 		"edit_preferences": "პარამეტრების რედაქტირება",
 		"close": "Close",
 		"classify_products": "პროდუქტების კლასიფიკაცია თქვენი პრეფერენციების მიხედვით",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "ნაგულისხმევი პარამეტრების გამოყენება",
 		"default_description": "Nutri-Score, Green-Score და საკვების გადამუშავების დონე (NOVA)",
 		"options": {
@@ -274,10 +280,15 @@
 			"check_be_first": "Be the first to check this product"
 		},
 		"edit": {
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "ატვირთეთ პროდუქტის, ინგრედიენტებისა და კვებითი ღირებულების შესახებ მკაფიო სურათები, რათა სხვებმა პროდუქტის იდენტიფიცირება შეძლონ.",
 				"basic_info": "მიუთითეთ პროდუქტის შესახებ ძირითადი ინფორმაცია, როგორიცაა რაოდენობა, შეფუთვა და მწარმოებელი.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "დაამატეთ პროდუქტის სახელები და აღწერილობები სხვადასხვა ენაზე, რათა პროდუქტი უფრო მეტი მომხმარებლისთვის ხელმისაწვდომი გახდეს.",
 				"ingredients": "ჩამოთვალეთ პროდუქტში არსებული ყველა ინგრედიენტი. ეს ეხმარება მომხმარებლებს ალერგიის ან დიეტური პრეფერენციების შემთხვევაში.",
 				"nutrition": "შეიყვანეთ კვებითი ღირებულება 100 გ/მლ-ზე, როგორც ეს შეფუთვაზეა მითითებული. ეს მომხმარებლებს პროდუქტების შედარებაში დაეხმარება.",
@@ -373,7 +384,11 @@
 				"petfood": "Pet Food",
 				"product": "სხვა"
 			},
-			"product_page_url": "ბმული პროდუქტის გვერდზე მწარმოებლის ოფიციალურ ვებსაიტზე",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "ბმული პროდუქტის გვერდზე მწარმოებლის ოფიციალურ ვებსაიტზე",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "საერთო სახელი",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Product Photos",
 			"no_photo_available": "ფოტო არ არის ხელმისაწვდომი",
 			"ingredients": "Ingredients",
@@ -435,6 +450,7 @@
 			"sections": {
 				"images": "ფოტოები",
 				"basic_info": "ძირითადი ინფორმაცია",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "ენები და პროდუქტის დასახელებები",
 				"ingredients": "Ingredients",
 				"nutrition": "კვებითი ინფორმაცია",
@@ -515,7 +531,37 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "პროდუქტის გვერდის წაშლა",
+			"delete_product_confirm": "დარწმუნებული ხართ, რომ გსურთ ამ პროდუქტის გვერდის წაშლა?",
+			"delete_product_comment_label": "წაშლის მიზეზი",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "პროდუქტის გვერდის წაშლა",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "პროდუქტი ამოღებულია ბაზრიდან",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "პროდუქტი ამოღებულია ბაზრიდან",
+			"obsolete_badge": "პროდუქტი ამოღებულია ბაზრიდან",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again."
 		}
 	},
 	"qr": {
@@ -537,7 +583,8 @@
 		"skip": "Skip",
 		"step": "ნაბიჯი",
 		"of": "-ის",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"close": "close"
 	},
 	"menu": {
 		"button": "მენიუ",
