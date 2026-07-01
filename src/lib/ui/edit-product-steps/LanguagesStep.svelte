@@ -52,19 +52,14 @@
 		delete newCodes[code];
 		product.languages_codes = newCodes;
 
-		// Remove all fields of the language from product object
+		// Set all fields of the language to empty string
 		const fieldsToDelete = [
 			`product_name_${code}`,
 			`ingredients_text_${code}`,
 			`packaging_text_${code}`
 		];
-		for (const field of fieldsToDelete) {
-			if (field in product) {
-				delete product[field as keyof Product];
-			}
-		}
-		// Trigger Svelte reactivity on product
-		product = { ...product };
+		const clearedFields = Object.fromEntries(fieldsToDelete.map((field) => [field, '']));
+		product = { ...product, ...clearedFields };
 	}
 
 	let showInfo = $state(false);
