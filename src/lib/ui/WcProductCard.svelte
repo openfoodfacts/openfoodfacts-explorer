@@ -4,11 +4,19 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createProductsApi } from '$lib/api';
+	import {
+		createProductsApi,
+		getTaxo,
+		getOrDefault,
+		type Brand,
+		type Taxonomy,
+		stripTaxonomyPrefix
+	} from '$lib/api';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
+	import { preferences } from '$lib/settings';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
@@ -22,6 +30,49 @@ Wraps the <product-card> web component and adds accessibility features.
 		personalScore?: ScoreData;
 	};
 	let { product, personalScore }: Props = $props();
+
+	let { lang } = $derived($preferences);
+
+	let brandsTaxonomy = $state<Taxonomy<Brand> | null>(null);
+
+	$effect(() => {
+		const p = product as Product;
+		if (p.brands_tags && p.brands_tags.length > 0) {
+			getTaxo<Brand>('brands', fetch)
+				.then((t) => (brandsTaxonomy = t))
+				.catch(console.error);
+		}
+	});
+
+	let sanitizedProduct = $derived.by(() => {
+		const p = product as Product;
+		const taxo = brandsTaxonomy;
+		let brandsTags = p.brands_tags;
+		let brandsStr: string | undefined;
+
+		if (taxo && brandsTags && Array.isArray(brandsTags)) {
+			const localizedTags = brandsTags.map((tag) => {
+				const localized = taxo[tag] ? getOrDefault(taxo[tag].name, lang) : null;
+				return localized ?? stripTaxonomyPrefix(tag);
+			});
+			brandsStr = localizedTags.join(', ');
+			brandsTags = localizedTags;
+		} else {
+			brandsStr = p.brands
+				?.split(',')
+				.map((b: string) => stripTaxonomyPrefix(b.trim()))
+				.join(', ');
+			if (brandsTags && Array.isArray(brandsTags)) {
+				brandsTags = brandsTags.map(stripTaxonomyPrefix);
+			}
+		}
+
+		return {
+			...product,
+			...(brandsStr ? { brands: brandsStr } : {}),
+			...(brandsTags ? { brands_tags: brandsTags } : {})
+		};
+	});
 
 	let navigating = $state(false);
 	async function navigateToProduct() {
@@ -131,7 +182,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 <product-card
 	class="h-44 w-full cursor-pointer"
-	{product}
+	product={sanitizedProduct}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
 	aria-label={product.product_name
