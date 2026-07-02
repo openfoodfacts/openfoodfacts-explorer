@@ -26,7 +26,7 @@
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 
-	import { _, getLocale, locale } from '$lib/i18n';
+	import { _, locale } from '$lib/i18n';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -43,10 +43,11 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
+	import { setWebcomponentsLanguageCode } from '$lib/webcomponents';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: WebsiteFlavor } = $state({
@@ -115,11 +116,7 @@
 
 	setShortcutCtx(() => shortcuts);
 
-	// Load OpenFoodFacts Web Components
-
-	onMount(async () => {
-		await import('@openfoodfacts/openfoodfacts-webcomponents');
-	});
+	const WEBCOMPONENTS_CONFIGURATION_ELEMENT = 'off-webcomponents-configuration';
 
 	// == Global User Permissions Context ==
 
@@ -204,13 +201,30 @@
 
 	onMount(() => {
 		runPreferencesMigrations();
-		const unsubscribe = locale.subscribe((locale) => {
-			const lang = locale?.split('-')[0]?.toLowerCase();
 
-			config.setAttribute('language-code', lang ?? 'en');
+		let mounted = true;
+		let unsubscribe: (() => void) | undefined;
+
+		async function initializeWebcomponents() {
+			await import('@openfoodfacts/openfoodfacts-webcomponents');
+			await customElements.whenDefined(WEBCOMPONENTS_CONFIGURATION_ELEMENT);
+
+			if (!mounted) {
+				return;
+			}
+
+			unsubscribe = locale.subscribe((locale) => {
+				setWebcomponentsLanguageCode(config, locale);
+			});
+		}
+
+		void initializeWebcomponents().catch(() => {
+			// Keep the default "en" configuration if webcomponents fail to load.
 		});
+
 		return () => {
-			unsubscribe();
+			mounted = false;
+			unsubscribe?.();
 		};
 	});
 
@@ -247,7 +261,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
+		language-code="en"
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
