@@ -1,9 +1,9 @@
 import { createSearchApi } from '$lib/api/search';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	const api = createSearchApi(fetch);
 
 	// Example: fetch some popular categories (replace with real API call as needed)
