@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
+	import { isEditableTarget } from '$lib/utils/dom';
 	import type { Shortcut } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 
@@ -16,22 +17,6 @@
 		if (event.metaKey) combo += 'Meta+';
 		combo += event.key.length === 1 ? event.key.toUpperCase() : event.key;
 		return combo;
-	}
-
-	/**
-	 * Checks if the given element is an editable target.
-	 *
-	 * @param {HTMLElement | null} el - The element to check.
-	 * @return {boolean} Whether the element is editable.
-	 */
-	function isEditableTarget(el: HTMLElement | null): boolean {
-		return (
-			el !== null &&
-			(el instanceof HTMLInputElement ||
-				el instanceof HTMLTextAreaElement ||
-				el instanceof HTMLSelectElement ||
-				el.isContentEditable)
-		);
 	}
 
 	onMount(() => {
