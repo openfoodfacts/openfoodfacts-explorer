@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
 	import { createProductsApi } from '$lib/api';
+	import { Gs1Barcode } from '$lib/barcodes/gs1';
 	import { browser } from '$app/environment';
 
 	let error: string | null = $state(null);
@@ -28,18 +29,22 @@
 				console.debug('QR code detected:', text);
 				lastScannedCode = text;
 
-				// We must stop the scanner first to release the camera
-				// This is important because:
-				// 1. It frees up camera resources
-				// 2. Prevents memory leaks
-				// 3. Ensures the camera is available for other applications
-				await scanner.stop();
+				const barcode = Gs1Barcode.parse(text);
+				if (barcode == null) {
+					await scanner.stop();
+					error = $_('qr.invalid_barcode');
+					return;
+				}
 
+				await scanner.stop();
 				const productsApi = createProductsApi(fetch);
 
-				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
-				if (!productState || error) {
-					console.error('Error fetching product:', error);
+				const { data: productState, error: apiError } = await productsApi.getProductV3(
+					barcode.code,
+					{ fields: [] }
+				);
+				if (!productState || apiError) {
+					console.error('Error fetching product:', apiError);
 					productNotFound = true;
 					return;
 				}
@@ -48,8 +53,7 @@
 					return;
 				}
 
-				// If product is found, navigate to its page
-				await goto('/products/' + text);
+				await goto('/products/' + barcode.code);
 			},
 			() => {
 				/* ignored */
@@ -67,7 +71,7 @@
 
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,
-			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
+			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13, Html5QrcodeSupportedFormats.QR_CODE],
 			verbose: false
 		});
 
@@ -97,10 +101,9 @@
 	});
 
 	function addNewProduct() {
-		// Navigate to the product edit page with the scanned barcode
-		if (lastScannedCode) {
-			goto(`/products/${lastScannedCode}/edit`);
-		}
+		const barcode = Gs1Barcode.parse(lastScannedCode);
+		const code = barcode?.code ?? lastScannedCode;
+		goto(`/products/${code}/edit`);
 	}
 
 	async function restartScanner() {
