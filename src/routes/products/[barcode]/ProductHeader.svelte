@@ -5,7 +5,6 @@
 
 	import { navigating } from '$app/state';
 	import {
-		getOrDefault,
 		type Brand,
 		type Category,
 		type Country,
@@ -15,7 +14,7 @@
 		type Taxonomy
 	} from '$lib/api';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import { preferences } from '$lib/settings';
+	import TagChipList from '$lib/ui/TagChipList.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -39,8 +38,6 @@
 		};
 	};
 	let { product, taxonomies }: Props = $props();
-
-	let { lang } = $derived($preferences);
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -73,10 +70,6 @@
 		);
 	}
 
-	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
-		return taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag;
-	}
-
 	let frontImage = $derived(
 		'image_front_url' in product ? (product.image_front_url as string) : undefined
 	);
@@ -93,10 +86,6 @@
 		}
 	}
 </script>
-
-{#snippet loadingTaxonomy()}
-	<div class="skeleton h-6 w-full"></div>
-{/snippet}
 
 <Card>
 	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
@@ -185,71 +174,36 @@
 				</div>
 
 				<!-- Brands -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.brands')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.brands}
-							{@render loadingTaxonomy()}
-						{:then brands}
-							{#each product.brands_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/brands/{tag}">
-									{localizedTaxoName(brands, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<TagChipList
+					title={$_('product.header.brands')}
+					tags={product.brands_tags}
+					taxonomyPromise={taxonomies.brands}
+					facetType="brands"
+				/>
 
 				<!-- Categories -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.categories')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.categories}
-							{@render loadingTaxonomy()}
-						{:then categories}
-							{#each product.categories_tags ?? [] as tag (tag)}
-								<a class="badge badge-secondary wrap-break-word" href="/facets/categories/{tag}">
-									{localizedTaxoName(categories, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<TagChipList
+					title={$_('product.header.categories')}
+					tags={product.categories_tags}
+					taxonomyPromise={taxonomies.categories}
+					facetType="categories"
+				/>
 
 				<!-- Labels -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.labels')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.labels}
-							{@render loadingTaxonomy()}
-						{:then labels}
-							{#each product.labels_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/labels/{tag}">
-									{localizedTaxoName(labels, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<TagChipList
+					title={$_('product.header.labels')}
+					tags={product.labels_tags}
+					taxonomyPromise={taxonomies.labels}
+					facetType="labels"
+				/>
 
 				<!-- Origins -->
-				{#if product.origins_tags != null && product.origins_tags.length > 0}
-					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.origins')}</div>
-						<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-							{#await taxonomies.origins}
-								{@render loadingTaxonomy()}
-							{:then origins}
-								<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
-								{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-									<a class="badge wrap-break-word" href="/facets/origin/{tag}">
-										{localizedTaxoName(origins, tag)}
-									</a>
-								{/each}
-							{/await}
-						</div>
-					</div>
-				{/if}
+				<TagChipList
+					title={$_('product.header.origins')}
+					tags={product.origins_tags as unknown as string[]}
+					taxonomyPromise={taxonomies.origins}
+					facetType="origins"
+				/>
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
@@ -294,35 +248,20 @@
 					</div>
 				{/if}
 
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.stores')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.stores}
-							{@render loadingTaxonomy()}
-						{:then stores}
-							{#each product.stores_tags ?? [] as tag, i (i)}
-								<span class="badge wrap-break-word">
-									{localizedTaxoName(stores, tag)}
-								</span>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<!-- Stores -->
+				<TagChipList
+					title={$_('product.header.stores')}
+					tags={product.stores_tags}
+					taxonomyPromise={taxonomies.stores}
+				/>
 
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.countries')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.countries}
-							{@render loadingTaxonomy()}
-						{:then countries}
-							{#each product.countries_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/countries/{tag}">
-									{localizedTaxoName(countries, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<!-- Countries -->
+				<TagChipList
+					title={$_('product.header.countries')}
+					tags={product.countries_tags}
+					taxonomyPromise={taxonomies.countries}
+					facetType="countries"
+				/>
 			</div>
 		</div>
 	</div>
