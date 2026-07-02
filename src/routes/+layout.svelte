@@ -328,6 +328,7 @@
 					</div>
 				{:else}
 					<a
+						rel="external"
 						class="btn btn-outline gap-2 rounded-full px-4 border-base-300 hover:border-primary hover:bg-primary hover:text-primary-content transition-all duration-300"
 						href={getLoginUrl(page.url)}
 					>
@@ -455,6 +456,7 @@
 			</div>
 		{:else}
 			<a
+				rel="external"
 				class="btn btn-outline gap-2 rounded-full px-5 hover:bg-primary hover:text-primary-content transition-all duration-300"
 				href={getLoginUrl(page.url)}
 			>
