@@ -290,9 +290,9 @@
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
-		class="fixed bottom-6 left-6 z-50 btn btn-circle btn-primary shadow-xl hover:scale-110 transition-transform duration-300 flex items-center justify-center"
+		class="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 h-24 w-5 items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md hover:w-7 hover:bg-primary hover:text-primary-content hover:border-primary transition-all duration-300 group cursor-pointer outline-none"
 		title={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 	>
-		<IconMdiChevronRight class="w-6 h-6" />
+		<IconMdiChevronRight class="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
 	</button>
 {/if}

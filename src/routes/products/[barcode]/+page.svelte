@@ -4,6 +4,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
+	import { preferences } from '$lib/settings';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
 	import Card from '$lib/ui/Card.svelte';
@@ -96,6 +97,8 @@
 	const shortcutCtx = getShortcutCtx();
 
 	onMount(() => {
+		sidebarHidden = !($preferences.productSidebarVisible ?? true);
+
 		shortcutCtx.set('Shift+B', {
 			description: $_('product.shortcuts.show_barcode'),
 			action: () => (showBarcode = !showBarcode)
@@ -182,6 +185,13 @@
 	});
 
 	let sidebarHidden = $state(false);
+
+	$effect(() => {
+		const expectedValue = !sidebarHidden;
+		if ($preferences.productSidebarVisible !== expectedValue) {
+			$preferences.productSidebarVisible = expectedValue;
+		}
+	});
 </script>
 
 <Metadata
