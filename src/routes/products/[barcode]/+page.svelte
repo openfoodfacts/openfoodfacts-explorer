@@ -269,7 +269,7 @@
 				{/await}
 			</div>
 
-			<div id="knowledge-panels">
+			<div id="knowledge-panels-container">
 				<KnowledgePanelsComp
 					panels={product.knowledge_panels}
 					code={product.code}
