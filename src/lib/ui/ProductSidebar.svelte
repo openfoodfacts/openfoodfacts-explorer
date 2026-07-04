@@ -124,12 +124,14 @@
 
 	let activeSections = $derived(sections ?? defaultSections);
 
+	const SCROLL_HEADER_OFFSET = 120;
+
 	let activeSection = $state('overview');
 	let navElement = $state<HTMLElement>();
 	let indicatorTop = $state(0);
 	let indicatorHeight = $state(0);
 
-	$effect(() => {
+	function updateIndicator() {
 		if (activeSection && navElement) {
 			const activeBtn = navElement.querySelector(
 				`[data-section="${activeSection}"]`
@@ -138,6 +140,12 @@
 				indicatorTop = activeBtn.offsetTop;
 				indicatorHeight = activeBtn.offsetHeight;
 			}
+		}
+	}
+
+	$effect(() => {
+		if (activeSection && navElement) {
+			updateIndicator();
 		}
 	});
 
@@ -155,9 +163,8 @@
 			}, 1000);
 
 			// Scroll and ensure active
-			const headerOffset = 100;
 			const elementPosition = el.getBoundingClientRect().top + window.scrollY;
-			const offsetPosition = elementPosition - headerOffset;
+			const offsetPosition = elementPosition - SCROLL_HEADER_OFFSET;
 
 			window.scrollTo({
 				top: offsetPosition,
@@ -185,7 +192,7 @@
 				const el = document.getElementById(section.id);
 				if (el) {
 					const rect = el.getBoundingClientRect();
-					if (rect.top <= 120) {
+					if (rect.top <= SCROLL_HEADER_OFFSET) {
 						currentSection = section.id;
 					} else {
 						break;
@@ -213,6 +220,7 @@
 		}
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', updateIndicator, { passive: true });
 
 		const timer = setTimeout(() => {
 			updateActiveSection();
@@ -221,6 +229,7 @@
 		return () => {
 			clearTimeout(timer);
 			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', updateIndicator);
 		};
 	});
 </script>
