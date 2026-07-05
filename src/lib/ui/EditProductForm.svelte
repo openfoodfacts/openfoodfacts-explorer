@@ -39,6 +39,7 @@
 		// Submission
 
 		isSubmitting: boolean;
+		disableSubmit?: boolean;
 		submit: () => Promise<void>;
 		onCorrectBarcode: (newCode: string) => Promise<void>;
 		onDeleteProduct?: (comment: string) => Promise<void>;
@@ -80,6 +81,7 @@
 		units,
 		allergenNames,
 		isSubmitting,
+		disableSubmit = false,
 		submit,
 		onCorrectBarcode,
 		onDeleteProduct
@@ -339,7 +341,7 @@
 	<button
 		class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
 		onclick={submit}
-		disabled={isSubmitting}
+		disabled={isSubmitting || disableSubmit}
 		aria-busy={isSubmitting}
 		type="button"
 	>

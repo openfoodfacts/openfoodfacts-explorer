@@ -56,6 +56,7 @@
 		// Submission
 
 		isSubmitting: boolean;
+		disableSubmit?: boolean;
 		submit: () => Promise<void>;
 		comment: string;
 		handleNutrimentInput: (e: Event, key: string) => void;
@@ -95,6 +96,7 @@
 		units,
 		allergenNames,
 		isSubmitting,
+		disableSubmit = false,
 		submit
 	}: Props = $props();
 </script>
@@ -193,7 +195,7 @@
 		<button
 			class="btn btn-success min-w-50 text-sm max-md:grow sm:text-base"
 			onclick={submit}
-			disabled={isSubmitting}
+			disabled={isSubmitting || disableSubmit}
 			type="button"
 		>
 			{#if isSubmitting}

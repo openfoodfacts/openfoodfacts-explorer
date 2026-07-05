@@ -24,6 +24,7 @@
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { userInfo } from '$lib/stores/user';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -494,17 +495,23 @@
 	});
 </script>
 
-{#if dev}
+{#if dev && !$userInfo}
 	<div class="alert alert-warning my-8 text-lg" role="alert">
 		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
 		<div>
 			<p>
-				<strong> You are not logged in! </strong>
-				This means that the product will not be saved to the database.
+				<strong>
+					{$_('product.edit.dev_not_logged_in_title', { default: 'You are not logged in!' })}
+				</strong>
+				{$_('product.edit.dev_not_logged_in_body', {
+					default: 'This means that the product will not be saved to the database.'
+				})}
 			</p>
 			<p class="text-sm">
-				We allow opening this page because you're in development mode, but the submit button will
-				not work.
+				{$_('product.edit.dev_not_logged_in_hint', {
+					default:
+						"We allow opening this page because you're in development mode, but the submit button will not work."
+				})}
 			</p>
 		</div>
 	</div>
@@ -552,6 +559,7 @@
 			{units}
 			{handleNutrimentInput}
 			{allergenNames}
+			disableSubmit={dev && !$userInfo}
 		/>
 	{:else}
 		<EditProductForm
@@ -575,6 +583,7 @@
 			languages={filteredLanguages}
 			onCorrectBarcode={handleBarcodeCorrection}
 			onDeleteProduct={handleDeleteProduct}
+			disableSubmit={dev && !$userInfo}
 		/>
 	{/if}
 </div>
