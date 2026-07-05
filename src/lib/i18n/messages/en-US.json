@@ -576,7 +576,8 @@
 			"image_manager_delete_success": "Images deleted successfully.",
 			"image_manager_delete_error": "Failed to delete images. Please try again.",
 			"image_manager_in_use": "Active / In Use",
-			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it."
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_image_alt": "Uploaded image {imgid}"
 		}
 	},
 	"qr": {

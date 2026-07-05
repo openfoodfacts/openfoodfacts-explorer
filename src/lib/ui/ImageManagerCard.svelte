@@ -127,30 +127,33 @@
 		}
 
 		isSubmitting = true;
-		const imgidsStr = Array.from(selectedImgIds).join(',');
+		try {
+			const imgidsStr = Array.from(selectedImgIds).join(',');
 
-		const { data, error } = await moveImages(fetch, product.code, imgidsStr, barcode, copyData);
-		if (error) {
-			toast.error(
-				$_('product.moderator.image_manager_move_error', {
-					default: 'Failed to move images: {error}',
-					values: { error }
-				})
-			);
-		} else if (data) {
-			toast.success(
-				$_('product.moderator.image_manager_move_success', {
-					default: 'Images moved successfully to {code}.',
-					values: { code: barcode }
-				})
-			);
-			selectedImgIds.clear();
-			targetBarcode = '';
-			copyData = false;
-			const { invalidateAll } = await import('$app/navigation');
-			await invalidateAll();
+			const { data, error } = await moveImages(fetch, product.code, imgidsStr, barcode, copyData);
+			if (error) {
+				toast.error(
+					$_('product.moderator.image_manager_move_error', {
+						default: 'Failed to move images: {error}',
+						values: { error }
+					})
+				);
+			} else if (data) {
+				toast.success(
+					$_('product.moderator.image_manager_move_success', {
+						default: 'Images moved successfully to {code}.',
+						values: { code: barcode }
+					})
+				);
+				selectedImgIds.clear();
+				targetBarcode = '';
+				copyData = false;
+				const { invalidateAll } = await import('$app/navigation');
+				await invalidateAll();
+			}
+		} finally {
+			isSubmitting = false;
 		}
-		isSubmitting = false;
 	}
 
 	async function handleDelete() {
@@ -165,29 +168,32 @@
 		if (!deleteConfirm) return;
 
 		isSubmitting = true;
-		const imgidsStr = Array.from(selectedImgIds).join(',');
+		try {
+			const imgidsStr = Array.from(selectedImgIds).join(',');
 
-		const { data, error } = await deleteImages(fetch, product.code, imgidsStr);
+			const { data, error } = await deleteImages(fetch, product.code, imgidsStr);
 
-		if (error) {
-			toast.error(
-				$_('product.moderator.image_manager_delete_error', {
-					default: 'Failed to delete images: {error}',
-					values: { error }
-				})
-			);
-		} else if (data) {
-			toast.success(
-				$_('product.moderator.image_manager_delete_success', {
-					default: 'Images deleted successfully.'
-				})
-			);
-			selectedImgIds.clear();
-			deleteConfirm = false;
-			const { invalidateAll } = await import('$app/navigation');
-			await invalidateAll();
+			if (error) {
+				toast.error(
+					$_('product.moderator.image_manager_delete_error', {
+						default: 'Failed to delete images: {error}',
+						values: { error }
+					})
+				);
+			} else if (data) {
+				toast.success(
+					$_('product.moderator.image_manager_delete_success', {
+						default: 'Images deleted successfully.'
+					})
+				);
+				selectedImgIds.clear();
+				deleteConfirm = false;
+				const { invalidateAll } = await import('$app/navigation');
+				await invalidateAll();
+			}
+		} finally {
+			isSubmitting = false;
 		}
-		isSubmitting = false;
 	}
 </script>
 
@@ -315,7 +321,14 @@
 						onclick={() => toggleSelect(img.imgid)}
 						disabled={isSubmitting || (activeTab === 'delete' && activeImageIds.has(img.imgid))}
 					>
-						<img src={img.url} alt="Uploaded img {img.imgid}" class="h-full w-full object-cover" />
+						<img
+							src={img.url}
+							alt={$_('product.moderator.image_manager_image_alt', {
+								default: 'Uploaded image {imgid}',
+								values: { imgid: img.imgid }
+							})}
+							class="h-full w-full object-cover"
+						/>
 
 						{#if activeTab === 'delete' && activeImageIds.has(img.imgid)}
 							<div
