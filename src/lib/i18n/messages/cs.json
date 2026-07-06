@@ -165,15 +165,15 @@
 		"badge_values": "Has {values} different possible values",
 		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
 		"key_visualization_guide": {
-			"title": "Key Visualization Guide:",
+			"title": "Průvodce vizualizací klíčů:",
 			"badge_products_start": "První odznak ",
-			"badge_products_end": " shows the number of products using this key",
+			"badge_products_end": " zobrazuje počet produktů používajících tento klíč",
 			"badge_values_start": "Druhý odznak ",
-			"badge_values_end": " shows the number of unique values for this key",
-			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+			"badge_values_end": " zobrazuje počet jedinečných hodnot pro tento klíč",
+			"progress_bar": "Ukazatel průběhu zobrazuje, jak je klíč běžně používán vzhledem k jiným klíčům"
 		},
-		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
-		"no_keys_found": "No keys found with the current search query."
+		"no_keys_available": "Žádné klíče folksonomie nejsou k dispozici. Klíče se zde zobrazí po vytvoření.",
+		"no_keys_found": "Pro aktuální vyhledávací dotaz nebyly nalezeny žádné klíče."
 	},
 	"home": {
 		"welcome": "Vítejte v",
@@ -187,7 +187,7 @@
 		"edit_preferences": "Upravit předvolby",
 		"close": "Zavřít",
 		"classify_products": "Klasifikujte produkty podle svých preferencí",
-		"classify_products_desc": "Enable personalized product classification based on your preferences.",
+		"classify_products_desc": "Povolte personalizovanou klasifikaci produktů na základě vašich preferencí.",
 		"use_default": "Použít výchozí předvolby",
 		"default_description": "Nutri-Score, Green-Score a úroveň zpracování potravin (NOVA)",
 		"options": {
@@ -201,8 +201,8 @@
 		"title": "{productName} - Otevřít Průzkumník faktů o jídle",
 		"description": "Stránka produktu {productName} na Open Food Facts Explorer",
 		"card": {
-			"aria_label": "Go to product {productName} with code {productCode}",
-			"aria_label_no_name": "Go to product with code {productCode}"
+			"aria_label": "Přejděte k produktu {productName} s kódem {productCode}",
+			"aria_label_no_name": "Přejděte k produktu s kódem {productCode}"
 		},
 		"loading_attributes": "Načítání atributů produktu...",
 		"attributes_error_title": "Nelze načíst personalizované atributy",
@@ -264,10 +264,10 @@
 		},
 		"datasources": {
 			"title": "Zdroje dat",
-			"user": "User: ",
-			"added_on_title": "Product added",
-			"last_edit_title": "Last edit",
-			"last_check_title": "Last check",
+			"user": "Uživatel: ",
+			"added_on_title": "Produkt přidán",
+			"last_edit_title": "Poslední úprava",
+			"last_check_title": "Poslední kontrola",
 			"also_edited_by": "Stránka produktu také editoval(a) ",
 			"also_checked_by": "Stránka produktu byla také zkontrolována uživatelem ",
 			"last_modified_t": "Poslední úprava stránky produktu dne {date} uživatelem ",
@@ -276,23 +276,23 @@
 			"done": "Hotovo",
 			"toDo": "K vyřízení",
 			"states": "Státy",
-			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"never_checked": "Nikdy nekontrolováno",
+			"check_be_first": "Buďte první, kdo zkontroluje tento produkt"
 		},
 		"edit": {
 			"sidebar": {
-				"collapse_all": "Collapse All",
-				"expand_all": "Expand All"
+				"collapse_all": "Sbalit vše",
+				"expand_all": "Rozbalit vše"
 			},
-			"moderator_only": "Moderator only",
+			"moderator_only": "Pouze moderátor",
 			"info": {
 				"images": "Nahrajte jasné obrázky produktu, složení a nutričních hodnot, aby ostatní mohli produkt identifikovat.",
 				"basic_info": "Uveďte hlavní podrobnosti o produktu, jako je množství, balení a výrobce.",
-				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
+				"origin_traceability": "Uveďte informace o původu a sledovatelnosti, jako jsou místa výroby, původ složek a kódy sledovatelnosti.",
 				"languages": "Přidejte názvy a popisy produktů v různých jazycích, aby byl produkt přístupný více uživatelům.",
 				"ingredients": "Uveďte všechny složky obsažené v produktu. To pomůže uživatelům s alergiemi nebo dietními preferencemi.",
 				"nutrition": "Zadejte nutriční hodnoty na 100 g/ml, jak jsou uvedeny na obalu. To uživatelům pomůže porovnat produkty.",
-				"moderator_tools": "These tools are only available to moderators. They allow for administrative actions like correcting the product barcode.",
+				"moderator_tools": "Tyto nástroje jsou dostupné pouze moderátorům. Umožňují administrativní akce, jako je oprava čárového kódu produktu.",
 				"prices": "Pomozte sledovat historii cen tohoto produktu na Open Prices.",
 				"comment": "Volitelně můžete přidat komentář popisující změny nebo poskytující další kontext.",
 				"packaging": "Popište každou součást obalu (láhev, víčko, krabici atd.) s uvedením jejího tvaru, materiálu a pokynů k recyklaci. Můžete přidat více součástí."
@@ -322,6 +322,12 @@
 			"nutrition_issues_description": "Zjistili jsme některé potenciální problémy s informacemi o výživě, které jste poskytli. Před uložením změn si prosím přečtěte následující upozornění a proveďte potřebné opravy.",
 			"add_product_title": "Přidat nový výrobek",
 			"edit_product_title": "Upravit produkt",
+			"login_required_title": "Vyžadováno přihlášení",
+			"login_required_body": "Pro přispívání do databáze se musíte přihlásit. Přihlaste se pro přidání nebo úpravu informací o potravinách.",
+			"return_to_home": "Zpět na hlavní stránku",
+			"dev_not_logged_in_title": "Nejste přihlášen!",
+			"dev_not_logged_in_body": "To znamená, že produkt nebude uložen do databáze.",
+			"dev_not_logged_in_hint": "Povolujeme otevření této stránky, protože jste ve vývojářském režimu, ale tlačítko pro odeslání nebude fungovat.",
 			"add_language": "Přidat jazyk",
 			"search_languages": "Vyhledat jazyky, které chcete přidat",
 			"no_languages_found": "Nenalezeny žádné jazyky",
@@ -507,7 +513,7 @@
 				"report_image": "Nahlásit obrázek",
 				"save_changes": "Uložit Změny"
 			},
-			"comment_description": "Add a comment about your changes (optional)",
+			"comment_description": "Přidejte komentář k vašim změnám (volitelné)",
 			"prices": {
 				"add_price_btn": "Přidejte cenu na Open Prices"
 			}
@@ -526,42 +532,42 @@
 		},
 		"moderator": {
 			"barcode_correction_title": "Správný čárový kód",
-			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_new_code_label": "Nový čárový kód",
 			"barcode_correction_description": "Pokud není čárový kód správný, opravte jej zde:",
-			"barcode_correction_placeholder": "Enter the correct barcode",
+			"barcode_correction_placeholder": "Zadejte správný čárový kód",
 			"barcode_correction_submit": "Správný čárový kód",
-			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"barcode_correction_success": "Čárový kód byl úspěšně opraven. Přesměrování...",
+			"barcode_correction_error": "Nepodařilo se opravit čárový kód. Zkuste to prosím znovu.",
 			"delete_product_title": "Smazat stránku produktu",
 			"delete_product_confirm": "Opravdu chcete smazat stránku tohoto produktu?",
 			"delete_product_comment_label": "Důvod odstranění",
-			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_comment_placeholder": "Zadejte důvod odstranění",
 			"delete_product_submit": "Smazat stránku produktu",
-			"delete_product_success": "Product deleted successfully.",
-			"delete_product_error": "Failed to delete product. Please try again.",
-			"delete_product_confirm_barcode_label": "Type barcode to confirm",
-			"delete_product_modal_title": "Confirm Deletion",
-			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
-			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
-			"delete_product_modal_prompt_suffix": " below:",
-			"delete_product_modal_btn": "Permanently Delete",
-			"delete_product_prefill_reasons_label": "Common reasons:",
-			"delete_reason_personal": "Personal data",
+			"delete_product_success": "Produkt byl úspěšně odstraněn.",
+			"delete_product_error": "Nepodařilo se odstranit produkt. Zkuste to prosím znovu.",
+			"delete_product_confirm_barcode_label": "Pro potvrzení zadejte čárový kód",
+			"delete_product_modal_title": "Potvrdit odstranění",
+			"delete_product_modal_desc": "Chystáte se odstranit tuto stránku produktu. Tato akce je trvalá a nelze ji vrátit zpět.",
+			"delete_product_modal_prompt_prefix": "Pro potvrzení zadejte čárový kód ",
+			"delete_product_modal_prompt_suffix": " níže:",
+			"delete_product_modal_btn": "Trvale smazat",
+			"delete_product_prefill_reasons_label": "Časté důvody:",
+			"delete_reason_personal": "Osobní údaje",
 			"delete_reason_nsfw": "NSFW",
-			"delete_reason_copyright": "Copyrighted data and images",
-			"delete_reason_app_test": "Test by an app",
-			"delete_reason_user_test": "Test by a user",
-			"delete_reason_duplicate": "Duplicate product",
-			"delete_reason_spam": "Spam or vandalism",
-			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"delete_reason_copyright": "Data a obrázky chráněné autorským právem",
+			"delete_reason_app_test": "Testování aplikací",
+			"delete_reason_user_test": "Test uživatelem",
+			"delete_reason_duplicate": "Duplicitní produkt",
+			"delete_reason_spam": "Spam nebo vandalismus",
+			"delete_reason_invalid_barcode": "Nesprávný čárový kód",
 			"obsolete_title": "Produkt stažen z trhu",
-			"obsolete_important_note_prefix": "Important note:",
-			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_important_note_prefix": "Důležitá poznámka:",
+			"obsolete_important_note_body": " Tento produkt se již neprodává. Data slouží pouze pro informativní účely. Tento produkt se nezobrazuje v běžném vyhledávání a není brán v úvahu ve statistikách.",
 			"obsolete_checkbox_label": "Produkt stažen z trhu",
 			"obsolete_badge": "Produkt stažen z trhu",
-			"obsolete_save_btn": "Save Obsolete Status",
-			"obsolete_save_success": "Product obsolete status updated successfully.",
-			"obsolete_save_error": "Failed to update obsolete status. Please try again."
+			"obsolete_save_btn": "Uložit zastaralý stav",
+			"obsolete_save_success": "Stav zastaralého produktu byl úspěšně aktualizován.",
+			"obsolete_save_error": "Aktualizace zastaralého stavu se nezdařila. Zkuste to prosím znovu."
 		}
 	},
 	"qr": {
@@ -584,11 +590,11 @@
 		"step": "Krok",
 		"of": "z",
 		"cancel": "Zrušit",
-		"close": "close"
+		"close": "zavřít"
 	},
 	"menu": {
 		"button": "Menu",
-		"mobile_nav": "Mobile navigation menu"
+		"mobile_nav": "Menu navigace v mobilu"
 	},
 	"facets": {
 		"facet_website_title": "Objevování {facet} - Open Food Facts Explorer",
@@ -610,22 +616,22 @@
 		"products_count": "Produkty",
 		"contributors_count": "Přispěvatelé",
 		"open_data": "Otevřená data",
-		"help_improve_title": "Help Improve Open Food Facts",
-		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
+		"help_improve_title": "Pomozte vylepšit Open Food Facts",
+		"help_improve_desc": "Pomozte nám vylepšit Open Food Facts úpravou nebo zodpovězením otázek týkajících se těchto produktů."
 	},
 	"dashboard": {
 		"products_created": "Vytvořené produkty",
 		"products_edited": "Produkty upraveny",
 		"html_title": "Profil uživatele - {user} - Open Food Facts Explorer",
 		"title": "Uživatelský profil {user}",
-		"has_created": "Has Created",
-		"has_edited": "Has Edited",
-		"view_all_contributions": "View all contributions",
-		"view_all_edits": "View all edits",
+		"has_created": "Vytvořeno",
+		"has_edited": "Upraveno",
+		"view_all_contributions": "Zobrazit všechny příspěvky",
+		"view_all_edits": "Zobrazit všechny úpravy",
 		"products_photographed": "Produkty nafoceny",
-		"has_photographed": "Has Photographed",
-		"view_all_photographs": "View all photographs",
-		"open_prices_dashboard": "Open Prices dashboard"
+		"has_photographed": "Vyfoceno",
+		"view_all_photographs": "Zobrazit všechny fotografie",
+		"open_prices_dashboard": "Ovládací panel Open Prices"
 	},
 	"explore": {
 		"title": "Prozkoumejte fakta o jídle na Open Food",
@@ -644,16 +650,16 @@
 		"learn_more_desc": "Zjistěte, jak funguje Open Food Facts a jak můžete pomoci."
 	},
 	"compare": {
-		"page_title": "Compare Products",
-		"page_description": "Compare nutritional information of food products",
-		"title_placeholder": "Enter comparison title...",
-		"click_to_edit": "Click to edit title",
-		"mode_absolute": "Absolute",
-		"mode_vs_first": "vs First",
-		"mode_vs_best": "vs Best",
+		"page_title": "Porovnat produkty",
+		"page_description": "Porovnejte nutriční informace potravinářských výrobků",
+		"title_placeholder": "Zadejte název porovnání...",
+		"click_to_edit": "Kliknutím upravíte název",
+		"mode_absolute": "Absolutní",
+		"mode_vs_first": "vs. První",
+		"mode_vs_best": "vs. Nejlepší",
 		"share": "Sdílet",
-		"share_title": "Product Comparison",
-		"share_text": "Check out this product comparison I made!",
+		"share_title": "Porovnání produktů",
+		"share_text": "Podívejte se na toto srovnání produktů, které jsem udělal!",
 		"clear_all": "Vymazat vše",
 		"no_products_selected": "Nebyly vybrány žádné produkty pro porovnání",
 		"add_products_hint": "Přidejte produkty z jejich stránek s podrobnostmi a začněte porovnávat nutriční hodnoty",
