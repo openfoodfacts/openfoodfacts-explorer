@@ -285,6 +285,7 @@
 				"expand_all": "Expand All"
 			},
 			"moderator_only": "Moderator only",
+			"main_language": "The main language of the product",
 			"info": {
 				"images": "Upload clear images of the product, ingredients, and nutrition facts to help others identify the product.",
 				"basic_info": "Provide the main details about the product, such as quantity, packaging, and manufacturer.",
