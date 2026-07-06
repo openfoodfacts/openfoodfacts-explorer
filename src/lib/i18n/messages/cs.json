@@ -557,17 +557,17 @@
 			"delete_reason_copyright": "Data a obrázky chráněné autorským právem",
 			"delete_reason_app_test": "Testování aplikací",
 			"delete_reason_user_test": "Test uživatelem",
-			"delete_reason_duplicate": "Duplicate product",
-			"delete_reason_spam": "Spam or vandalism",
-			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"delete_reason_duplicate": "Duplicitní produkt",
+			"delete_reason_spam": "Spam nebo vandalismus",
+			"delete_reason_invalid_barcode": "Nesprávný čárový kód",
 			"obsolete_title": "Produkt stažen z trhu",
-			"obsolete_important_note_prefix": "Important note:",
-			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_important_note_prefix": "Důležitá poznámka:",
+			"obsolete_important_note_body": " Tento produkt se již neprodává. Data slouží pouze pro informativní účely. Tento produkt se nezobrazuje v běžném vyhledávání a není brán v úvahu ve statistikách.",
 			"obsolete_checkbox_label": "Produkt stažen z trhu",
 			"obsolete_badge": "Produkt stažen z trhu",
-			"obsolete_save_btn": "Save Obsolete Status",
-			"obsolete_save_success": "Product obsolete status updated successfully.",
-			"obsolete_save_error": "Failed to update obsolete status. Please try again."
+			"obsolete_save_btn": "Uložit zastaralý stav",
+			"obsolete_save_success": "Stav zastaralého produktu byl úspěšně aktualizován.",
+			"obsolete_save_error": "Aktualizace zastaralého stavu se nezdařila. Zkuste to prosím znovu."
 		}
 	},
 	"qr": {
@@ -590,11 +590,11 @@
 		"step": "Krok",
 		"of": "z",
 		"cancel": "Zrušit",
-		"close": "close"
+		"close": "zavřít"
 	},
 	"menu": {
 		"button": "Menu",
-		"mobile_nav": "Mobile navigation menu"
+		"mobile_nav": "Menu navigace v mobilu"
 	},
 	"facets": {
 		"facet_website_title": "Objevování {facet} - Open Food Facts Explorer",
@@ -616,22 +616,22 @@
 		"products_count": "Produkty",
 		"contributors_count": "Přispěvatelé",
 		"open_data": "Otevřená data",
-		"help_improve_title": "Help Improve Open Food Facts",
-		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
+		"help_improve_title": "Pomozte vylepšit Open Food Facts",
+		"help_improve_desc": "Pomozte nám vylepšit Open Food Facts úpravou nebo zodpovězením otázek týkajících se těchto produktů."
 	},
 	"dashboard": {
 		"products_created": "Vytvořené produkty",
 		"products_edited": "Produkty upraveny",
 		"html_title": "Profil uživatele - {user} - Open Food Facts Explorer",
 		"title": "Uživatelský profil {user}",
-		"has_created": "Has Created",
-		"has_edited": "Has Edited",
-		"view_all_contributions": "View all contributions",
-		"view_all_edits": "View all edits",
+		"has_created": "Vytvořeno",
+		"has_edited": "Upraveno",
+		"view_all_contributions": "Zobrazit všechny příspěvky",
+		"view_all_edits": "Zobrazit všechny úpravy",
 		"products_photographed": "Produkty nafoceny",
-		"has_photographed": "Has Photographed",
-		"view_all_photographs": "View all photographs",
-		"open_prices_dashboard": "Open Prices dashboard"
+		"has_photographed": "Vyfoceno",
+		"view_all_photographs": "Zobrazit všechny fotografie",
+		"open_prices_dashboard": "Ovládací panel Open Prices"
 	},
 	"explore": {
 		"title": "Prozkoumejte fakta o jídle na Open Food",
@@ -650,16 +650,16 @@
 		"learn_more_desc": "Zjistěte, jak funguje Open Food Facts a jak můžete pomoci."
 	},
 	"compare": {
-		"page_title": "Compare Products",
-		"page_description": "Compare nutritional information of food products",
-		"title_placeholder": "Enter comparison title...",
-		"click_to_edit": "Click to edit title",
-		"mode_absolute": "Absolute",
-		"mode_vs_first": "vs First",
-		"mode_vs_best": "vs Best",
+		"page_title": "Porovnat produkty",
+		"page_description": "Porovnejte nutriční informace potravinářských výrobků",
+		"title_placeholder": "Zadejte název porovnání...",
+		"click_to_edit": "Kliknutím upravíte název",
+		"mode_absolute": "Absolutní",
+		"mode_vs_first": "vs. První",
+		"mode_vs_best": "vs. Nejlepší",
 		"share": "Sdílet",
-		"share_title": "Product Comparison",
-		"share_text": "Check out this product comparison I made!",
+		"share_title": "Porovnání produktů",
+		"share_text": "Podívejte se na toto srovnání produktů, které jsem udělal!",
 		"clear_all": "Vymazat vše",
 		"no_products_selected": "Nebyly vybrány žádné produkty pro porovnání",
 		"add_products_hint": "Přidejte produkty z jejich stránek s podrobnostmi a začněte porovnávat nutriční hodnoty",
