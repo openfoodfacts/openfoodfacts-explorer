@@ -165,15 +165,15 @@
 		"badge_values": "Has {values} different possible values",
 		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
 		"key_visualization_guide": {
-			"title": "Key Visualization Guide:",
+			"title": "Průvodce vizualizací klíčů:",
 			"badge_products_start": "První odznak ",
-			"badge_products_end": " shows the number of products using this key",
+			"badge_products_end": " zobrazuje počet produktů používajících tento klíč",
 			"badge_values_start": "Druhý odznak ",
-			"badge_values_end": " shows the number of unique values for this key",
-			"progress_bar": "The progress bar represents how commonly the key is used relative to other keys"
+			"badge_values_end": " zobrazuje počet jedinečných hodnot pro tento klíč",
+			"progress_bar": "Ukazatel průběhu zobrazuje, jak je klíč běžně používán vzhledem k jiným klíčům"
 		},
-		"no_keys_available": "No Folksonomy keys available. Keys will appear here once they are created.",
-		"no_keys_found": "No keys found with the current search query."
+		"no_keys_available": "Žádné klíče folksonomie nejsou k dispozici. Klíče se zde zobrazí po vytvoření.",
+		"no_keys_found": "Pro aktuální vyhledávací dotaz nebyly nalezeny žádné klíče."
 	},
 	"home": {
 		"welcome": "Vítejte v",
@@ -187,7 +187,7 @@
 		"edit_preferences": "Upravit předvolby",
 		"close": "Zavřít",
 		"classify_products": "Klasifikujte produkty podle svých preferencí",
-		"classify_products_desc": "Enable personalized product classification based on your preferences.",
+		"classify_products_desc": "Povolte personalizovanou klasifikaci produktů na základě vašich preferencí.",
 		"use_default": "Použít výchozí předvolby",
 		"default_description": "Nutri-Score, Green-Score a úroveň zpracování potravin (NOVA)",
 		"options": {
@@ -201,8 +201,8 @@
 		"title": "{productName} - Otevřít Průzkumník faktů o jídle",
 		"description": "Stránka produktu {productName} na Open Food Facts Explorer",
 		"card": {
-			"aria_label": "Go to product {productName} with code {productCode}",
-			"aria_label_no_name": "Go to product with code {productCode}"
+			"aria_label": "Přejděte k produktu {productName} s kódem {productCode}",
+			"aria_label_no_name": "Přejděte k produktu s kódem {productCode}"
 		},
 		"loading_attributes": "Načítání atributů produktu...",
 		"attributes_error_title": "Nelze načíst personalizované atributy",
@@ -322,12 +322,12 @@
 			"nutrition_issues_description": "Zjistili jsme některé potenciální problémy s informacemi o výživě, které jste poskytli. Před uložením změn si prosím přečtěte následující upozornění a proveďte potřebné opravy.",
 			"add_product_title": "Přidat nový výrobek",
 			"edit_product_title": "Upravit produkt",
-			"login_required_title": "Login Required",
-			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
-			"return_to_home": "Return to Home",
-			"dev_not_logged_in_title": "You are not logged in!",
-			"dev_not_logged_in_body": "This means that the product will not be saved to the database.",
-			"dev_not_logged_in_hint": "We allow opening this page because you're in development mode, but the submit button will not work.",
+			"login_required_title": "Vyžadováno přihlášení",
+			"login_required_body": "Pro přispívání do databáze se musíte přihlásit. Přihlaste se pro přidání nebo úpravu informací o potravinách.",
+			"return_to_home": "Zpět na hlavní stránku",
+			"dev_not_logged_in_title": "Nejste přihlášen!",
+			"dev_not_logged_in_body": "To znamená, že produkt nebude uložen do databáze.",
+			"dev_not_logged_in_hint": "Povolujeme otevření této stránky, protože jste ve vývojářském režimu, ale tlačítko pro odeslání nebude fungovat.",
 			"add_language": "Přidat jazyk",
 			"search_languages": "Vyhledat jazyky, které chcete přidat",
 			"no_languages_found": "Nenalezeny žádné jazyky",
@@ -513,7 +513,7 @@
 				"report_image": "Nahlásit obrázek",
 				"save_changes": "Uložit Změny"
 			},
-			"comment_description": "Add a comment about your changes (optional)",
+			"comment_description": "Přidejte komentář k vašim změnám (volitelné)",
 			"prices": {
 				"add_price_btn": "Přidejte cenu na Open Prices"
 			}
@@ -532,11 +532,11 @@
 		},
 		"moderator": {
 			"barcode_correction_title": "Správný čárový kód",
-			"barcode_correction_new_code_label": "New barcode",
+			"barcode_correction_new_code_label": "Nový čárový kód",
 			"barcode_correction_description": "Pokud není čárový kód správný, opravte jej zde:",
-			"barcode_correction_placeholder": "Enter the correct barcode",
+			"barcode_correction_placeholder": "Zadejte správný čárový kód",
 			"barcode_correction_submit": "Správný čárový kód",
-			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
+			"barcode_correction_success": "Čárový kód byl úspěšně opraven. Přesměrování...",
 			"barcode_correction_error": "Nepodařilo se opravit čárový kód. Zkuste to prosím znovu.",
 			"delete_product_title": "Smazat stránku produktu",
 			"delete_product_confirm": "Opravdu chcete smazat stránku tohoto produktu?",
