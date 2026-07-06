@@ -125,7 +125,7 @@
 			<option value={lang}>{getLanguageName(lang)}</option>
 		{/each}
 	</select>
-	<span class="label">The main language of the product</span>
+	<span class="label">{$_('product.edit.main_language')}</span>
 </fieldset>
 
 <div class="mt-4 space-y-4">
