@@ -1,7 +1,7 @@
 const FALLBACK_WEBCOMPONENTS_LANGUAGE_CODE = 'en';
 
 // Keep in sync with @openfoodfacts/openfoodfacts-webcomponents targetLocales.
-const SUPPORTED_WEBCOMPONENTS_LANGUAGE_CODES: ReadonlySet<string> = new Set([
+export const SUPPORTED_WEBCOMPONENTS_LANGUAGE_CODES: ReadonlySet<string> = new Set([
 	'af',
 	'am',
 	'ar',

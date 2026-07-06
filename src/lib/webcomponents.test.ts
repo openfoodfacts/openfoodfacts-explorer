@@ -1,9 +1,36 @@
+import { readdirSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
 	getPrimaryLanguageCode,
 	getSupportedWebcomponentsLanguageCode,
+	SUPPORTED_WEBCOMPONENTS_LANGUAGE_CODES,
 	setWebcomponentsLanguageCode
 } from './webcomponents';
+
+const require = createRequire(import.meta.url);
+
+function getPackagedWebcomponentsLanguageCodes(): string[] {
+	const webcomponentsBundlePath = require.resolve('@openfoodfacts/openfoodfacts-webcomponents');
+	const webcomponentsLangDirectory = join(dirname(webcomponentsBundlePath), 'lang');
+
+	return [
+		...new Set(
+			readdirSync(webcomponentsLangDirectory)
+				.map((fileName) => fileName.match(/^([a-z]+)-/)?.[1])
+				.filter((languageCode): languageCode is string => languageCode != null)
+		)
+	].sort();
+}
+
+describe('SUPPORTED_WEBCOMPONENTS_LANGUAGE_CODES', () => {
+	it('matches the packaged webcomponents locales', () => {
+		expect([...SUPPORTED_WEBCOMPONENTS_LANGUAGE_CODES].sort()).toEqual(
+			getPackagedWebcomponentsLanguageCodes()
+		);
+	});
+});
 
 describe('getPrimaryLanguageCode', () => {
 	it('normalizes locale identifiers to primary language codes', () => {
