@@ -151,7 +151,7 @@
 		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
 		"dev_access_denied": "Přístup odepřen",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Nastavení pro vývojáře jsou dostupná pouze moderátorům a vývojářům. Pokud se domníváte, že byste měli mít přístup, kontaktujte prosím administrátora."
 	},
 	"folksonomy": {
 		"title": "Folksonomický motor",
@@ -161,9 +161,9 @@
 		"keys_found": "nalezené klíče",
 		"key_found": "nalezen klíč",
 		"for": "pro",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Používá se v {count} produktech ({percent}% relativního využití)",
+		"badge_values": "Má {values} různých možných hodnot",
+		"progress_bar": "Ukazatel frekvence použití: {percent}% vzhledem k ostatním klíčům",
 		"key_visualization_guide": {
 			"title": "Průvodce vizualizací klíčů:",
 			"badge_products_start": "První odznak ",
