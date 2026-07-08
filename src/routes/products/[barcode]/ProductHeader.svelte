@@ -11,8 +11,11 @@
 		type Label,
 		type Origin,
 		type Store,
-		type Taxonomy
+		type Taxonomy,
+		type TaxoNode,
+		getOrDefault
 	} from '$lib/api';
+	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import TagChipList from '$lib/ui/TagChipList.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
@@ -38,6 +41,20 @@
 		};
 	};
 	let { product, taxonomies }: Props = $props();
+
+	let { lang } = $derived($preferences);
+
+	function localizeTags(
+		taxonomy: Taxonomy<TaxoNode> | null | undefined,
+		tags: string[] | undefined
+	): { id: string; name: string }[] {
+		if (!tags) return [];
+		return tags.map((tag) => ({
+			id: tag,
+			name:
+				(taxonomy && taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag) ?? tag
+		}));
+	}
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -174,36 +191,96 @@
 				</div>
 
 				<!-- Brands -->
-				<TagChipList
-					title={$_('product.header.brands')}
-					tags={product.brands_tags}
-					taxonomyPromise={taxonomies.brands}
-					facetType="brands"
-				/>
+				{#if product.brands_tags && product.brands_tags.length > 0}
+					{#await taxonomies.brands}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.brands')}</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.brands')}
+							tags={localizeTags(taxonomy, product.brands_tags)}
+							facetType="brands"
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.brands')}
+							tags={localizeTags(null, product.brands_tags)}
+							facetType="brands"
+						/>
+					{/await}
+				{/if}
 
 				<!-- Categories -->
-				<TagChipList
-					title={$_('product.header.categories')}
-					tags={product.categories_tags}
-					taxonomyPromise={taxonomies.categories}
-					facetType="categories"
-				/>
+				{#if product.categories_tags && product.categories_tags.length > 0}
+					{#await taxonomies.categories}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">
+								{$_('product.header.categories')}
+							</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.categories')}
+							tags={localizeTags(taxonomy, product.categories_tags)}
+							facetType="categories"
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.categories')}
+							tags={localizeTags(null, product.categories_tags)}
+							facetType="categories"
+						/>
+					{/await}
+				{/if}
 
 				<!-- Labels -->
-				<TagChipList
-					title={$_('product.header.labels')}
-					tags={product.labels_tags}
-					taxonomyPromise={taxonomies.labels}
-					facetType="labels"
-				/>
+				{#if product.labels_tags && product.labels_tags.length > 0}
+					{#await taxonomies.labels}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.labels')}</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.labels')}
+							tags={localizeTags(taxonomy, product.labels_tags)}
+							facetType="labels"
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.labels')}
+							tags={localizeTags(null, product.labels_tags)}
+							facetType="labels"
+						/>
+					{/await}
+				{/if}
 
 				<!-- Origins -->
-				<TagChipList
-					title={$_('product.header.origins')}
-					tags={product.origins_tags as unknown as string[]}
-					taxonomyPromise={taxonomies.origins}
-					facetType="origins"
-				/>
+				{#if product.origins_tags && product.origins_tags.length > 0}
+					{#await taxonomies.origins}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">
+								{$_('product.header.origins')}
+							</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.origins')}
+							tags={localizeTags(taxonomy, product.origins_tags as unknown as string[])}
+							facetType="origins"
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.origins')}
+							tags={localizeTags(null, product.origins_tags as unknown as string[])}
+							facetType="origins"
+						/>
+					{/await}
+				{/if}
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
@@ -249,19 +326,48 @@
 				{/if}
 
 				<!-- Stores -->
-				<TagChipList
-					title={$_('product.header.stores')}
-					tags={product.stores_tags}
-					taxonomyPromise={taxonomies.stores}
-				/>
+				{#if product.stores_tags && product.stores_tags.length > 0}
+					{#await taxonomies.stores}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.stores')}</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.stores')}
+							tags={localizeTags(taxonomy, product.stores_tags)}
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.stores')}
+							tags={localizeTags(null, product.stores_tags)}
+						/>
+					{/await}
+				{/if}
 
 				<!-- Countries -->
-				<TagChipList
-					title={$_('product.header.countries')}
-					tags={product.countries_tags}
-					taxonomyPromise={taxonomies.countries}
-					facetType="countries"
-				/>
+				{#if product.countries_tags && product.countries_tags.length > 0}
+					{#await taxonomies.countries}
+						<div class="mb-2">
+							<div class="text-secondary mb-2 text-sm font-bold">
+								{$_('product.header.countries')}
+							</div>
+							<div class="skeleton h-6 w-full"></div>
+						</div>
+					{:then taxonomy}
+						<TagChipList
+							title={$_('product.header.countries')}
+							tags={localizeTags(taxonomy, product.countries_tags)}
+							facetType="countries"
+						/>
+					{:catch}
+						<TagChipList
+							title={$_('product.header.countries')}
+							tags={localizeTags(null, product.countries_tags)}
+							facetType="countries"
+						/>
+					{/await}
+				{/if}
 			</div>
 		</div>
 	</div>
