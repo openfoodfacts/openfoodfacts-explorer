@@ -50,12 +50,13 @@
 
 	// Extract numeric raw images from product.images
 	let rawImages = $derived.by(() => {
+		const code = product.code;
 		const imagesObj = product.images || {};
 		const numericKeys = Object.keys(imagesObj).filter((key) => /^\d+$/.test(key));
 		return numericKeys
 			.map((key) => {
 				const imgObj = imagesObj[key] as RawImage;
-				const url = getProductImageUrl(product.code, key, imagesObj);
+				const url = getProductImageUrl(code, key, imagesObj);
 				return {
 					imgid: parseInt(key, 10),
 					url,
@@ -64,7 +65,7 @@
 				};
 			})
 			.filter((img) => img.url !== null)
-			.sort((a, b) => b.uploaded_t - a.uploaded_t); // show newest first
+			.toSorted((a, b) => b.uploaded_t - a.uploaded_t); // show newest first
 	});
 
 	// Find raw image IDs that are currently active/selected (e.g. front_en, ingredients_fr)
@@ -72,15 +73,15 @@
 		const activeIds = new SvelteSet<number>();
 		const imagesObj = product.images || {};
 		for (const key of Object.keys(imagesObj)) {
-			if (!/^\d+$/.test(key)) {
-				const val = imagesObj[key];
-				if (val && typeof val === 'object' && 'imgid' in val) {
-					const id = parseInt(String(val.imgid), 10);
-					if (!isNaN(id)) {
-						activeIds.add(id);
-					}
-				}
-			}
+			if (/^\d+$/.test(key)) continue;
+
+			const val = imagesObj[key];
+			if (!val || typeof val !== 'object' || !('imgid' in val)) continue;
+
+			const id = parseInt(String(val.imgid), 10);
+			if (isNaN(id)) continue;
+
+			activeIds.add(id);
 		}
 		return activeIds;
 	});
