@@ -29,6 +29,7 @@
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
+	import ImageManagerCard from './ImageManagerCard.svelte';
 	type Props = {
 		product: Product;
 
@@ -331,6 +332,8 @@
 							onDelete={onDeleteProduct}
 						/>
 					{/if}
+					<div class="divider"></div>
+					<ImageManagerCard {product} />
 				</div>
 			</div>
 		{/if}
