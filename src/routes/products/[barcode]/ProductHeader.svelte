@@ -17,7 +17,7 @@
 	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import TagChipList from '$lib/ui/TagChipList.svelte';
+	import TagChipList from '$lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -29,6 +29,7 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		taxonomies: {
@@ -43,18 +44,6 @@
 	let { product, taxonomies }: Props = $props();
 
 	let { lang } = $derived($preferences);
-
-	function localizeTags(
-		taxonomy: Taxonomy<TaxoNode> | null | undefined,
-		tags: string[] | undefined
-	): { id: string; name: string }[] {
-		if (!tags) return [];
-		return tags.map((tag) => ({
-			id: tag,
-			name:
-				(taxonomy && taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag) ?? tag
-		}));
-	}
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -109,7 +98,7 @@
 		<!-- 1. Image Column (Visual Anchor) -->
 		<!-- Left on Desktop, Top on Mobile -->
 		<div
-			class="mx-auto flex w-full max-w-[200px] shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
+			class="mx-auto flex w-full max-w-50 shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
 		>
 			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
 		</div>
@@ -191,39 +180,39 @@
 				</div>
 
 				<!-- Brands -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.brands',
 					'Brands',
 					product.brands_tags,
-					taxonomies.brands,
-					'brands'
+					'brands',
+					taxonomies.brands
 				)}
 
 				<!-- Categories -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.categories',
 					'Categories',
 					product.categories_tags,
-					taxonomies.categories,
-					'categories'
+					'categories',
+					taxonomies.categories
 				)}
 
 				<!-- Labels -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.labels',
 					'Labels',
 					product.labels_tags,
-					taxonomies.labels,
-					'labels'
+					'labels',
+					taxonomies.labels
 				)}
 
 				<!-- Origins -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.origins',
 					'Origins',
 					product.origins_tags as unknown as string[],
-					taxonomies.origins,
-					'origins'
+					'origins',
+					taxonomies.origins
 				)}
 
 				<!-- Traceability Codes -->
@@ -270,44 +259,57 @@
 				{/if}
 
 				<!-- Stores -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.stores',
 					'Stores',
 					product.stores_tags,
+					'stores',
 					taxonomies.stores
 				)}
 
 				<!-- Countries -->
-				{@render taxonomySection(
+				{@render taxonomyTags(
 					'product.header.countries',
 					'Countries',
 					product.countries_tags,
-					taxonomies.countries,
-					'countries'
+					'countries',
+					taxonomies.countries
 				)}
 			</div>
 		</div>
 	</div>
 </Card>
 
-{#snippet taxonomySection(
+{#snippet taxonomyTags(
 	titleKey: string,
 	defaultTitle: string,
 	tags: string[] | undefined,
-	taxonomyPromise: Promise<Taxonomy<TaxoNode>>,
-	facetType?: string
+	facet: string,
+	taxoPromise: Promise<Taxonomy<TaxoNode>>
 )}
 	{#if tags && tags.length > 0}
 		<div class="mb-2">
 			<div class="text-secondary mb-2 text-sm font-bold">
 				{$_(titleKey, { default: defaultTitle })}
 			</div>
-			{#await taxonomyPromise}
+			{#await taxoPromise}
 				<div class="skeleton h-6 w-full"></div>
 			{:then taxonomy}
-				<TagChipList tags={localizeTags(taxonomy, tags)} {facetType} />
+				<TagChipList
+					tags={tags.map((tag) => ({
+						id: tag,
+						name: getOrDefault(taxonomy[tag].name, lang) ?? tag,
+						href: resolve('/facets/[facet]/[value]', { facet: facet, value: tag })
+					}))}
+				/>
 			{:catch}
-				<TagChipList tags={localizeTags(null, tags)} {facetType} />
+				<TagChipList
+					tags={tags.map((tag) => ({
+						id: tag,
+						name: tag,
+						href: resolve('/facets/[facet]/[value]', { facet: facet, value: tag })
+					}))}
+				/>
 			{/await}
 		</div>
 	{/if}
