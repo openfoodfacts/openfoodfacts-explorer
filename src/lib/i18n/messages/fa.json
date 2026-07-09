@@ -586,7 +586,7 @@
 			"image_manager_move_error": "Failed to move images. Please try again.",
 			"image_manager_select_first": "Please select at least one image first.",
 			"image_manager_tab_move": "Move",
-			"image_manager_tab_delete": "Delet",
+			"image_manager_tab_delete": "حذف",
 			"image_manager_delete_btn": "Delete the selected image(s)",
 			"image_manager_delete_confirm_label": "Yes, I confirm I want to permanently delete these images.",
 			"image_manager_delete_warning_prefix": "Warning:",
