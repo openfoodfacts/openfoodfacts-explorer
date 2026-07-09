@@ -151,7 +151,7 @@
 		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
 		"dev_access_denied": "Přístup odepřen",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Nastavení pro vývojáře jsou dostupná pouze moderátorům a vývojářům. Pokud se domníváte, že byste měli mít přístup, kontaktujte prosím administrátora."
 	},
 	"folksonomy": {
 		"title": "Folksonomický motor",
@@ -161,9 +161,9 @@
 		"keys_found": "nalezené klíče",
 		"key_found": "nalezen klíč",
 		"for": "pro",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Používá se v {count} produktech ({percent}% relativního využití)",
+		"badge_values": "Má {values} různých možných hodnot",
+		"progress_bar": "Ukazatel frekvence použití: {percent}% vzhledem k ostatním klíčům",
 		"key_visualization_guide": {
 			"title": "Průvodce vizualizací klíčů:",
 			"badge_products_start": "První odznak ",
@@ -567,7 +567,35 @@
 			"obsolete_badge": "Produkt stažen z trhu",
 			"obsolete_save_btn": "Uložit zastaralý stav",
 			"obsolete_save_success": "Stav zastaralého produktu byl úspěšně aktualizován.",
-			"obsolete_save_error": "Aktualizace zastaralého stavu se nezdařila. Zkuste to prosím znovu."
+			"obsolete_save_error": "Aktualizace zastaralého stavu se nezdařila. Zkuste to prosím znovu.",
+			"image_manager_title": "Správa obrázků",
+			"image_manager_description": "Můžete vybrat jeden nebo více obrázků a pak:",
+			"image_manager_no_images": "Pro tento produkt nebyly nalezeny žádné nahrané obrázky.",
+			"image_manager_select_all": "Vybrat vše",
+			"image_manager_clear": "Vymazat",
+			"image_manager_select_image": "Vybrat obrázek {imgid}",
+			"image_manager_uploaded_by": "Nahráno uživatelem {uploader}",
+			"image_manager_uploaded_at": "Nahráno dne {date}",
+			"image_manager_preview_label": "Náhled obrázku",
+			"image_manager_move_btn": "Přesunout obrázky k jinému výrobku",
+			"image_manager_move_target_label": "Cílový čárový kód",
+			"image_manager_move_target_placeholder": "Zadejte čárový kód (např. 3017620422003)",
+			"image_manager_copy_data_label": "Kopírovat data z aktuálního produktu do nového produktu",
+			"image_manager_moving": "Přesouvání...",
+			"image_manager_move_success": "Obrázky přesunuty do produktu {code}.",
+			"image_manager_move_error": "Přesunutí obrázků se nezdařilo. Zkuste to znovu.",
+			"image_manager_select_first": "Nejprve vyberte alespoň jeden obrázek.",
+			"image_manager_tab_move": "Přesunout",
+			"image_manager_tab_delete": "Odstranit",
+			"image_manager_delete_btn": "Odstranit vybrané obrázky",
+			"image_manager_delete_confirm_label": "Ano, potvrzuji, že chci trvale odstranit tyto obrázky.",
+			"image_manager_delete_warning_prefix": "Upozornění:",
+			"image_manager_delete_warning_body": " Odstranění raw obrázků je trvalé a nelze vrátit zpět.",
+			"image_manager_delete_success": "Obrázky byly úspěšně smazány.",
+			"image_manager_delete_error": "Obrázky se nepodařilo smazat. Zkuste to prosím znovu.",
+			"image_manager_in_use": "Aktivní / Používané",
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_image_alt": "Nahraný obrázek {imgid}"
 		}
 	},
 	"qr": {
