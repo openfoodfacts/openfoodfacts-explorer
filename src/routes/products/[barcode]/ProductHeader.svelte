@@ -11,10 +11,13 @@
 		type Label,
 		type Origin,
 		type Store,
-		type Taxonomy
+		type Taxonomy,
+		type TaxoNode,
+		getOrDefault
 	} from '$lib/api';
+	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import TaxonomyTagSection from '$lib/ui/TaxonomyTagSection.svelte';
+	import TagChipList from '$lib/ui/TagChipList.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -38,6 +41,20 @@
 		};
 	};
 	let { product, taxonomies }: Props = $props();
+
+	let { lang } = $derived($preferences);
+
+	function localizeTags(
+		taxonomy: Taxonomy<TaxoNode> | null | undefined,
+		tags: string[] | undefined
+	): { id: string; name: string }[] {
+		if (!tags) return [];
+		return tags.map((tag) => ({
+			id: tag,
+			name:
+				(taxonomy && taxonomy[tag] != null ? getOrDefault(taxonomy[tag].name, lang) : tag) ?? tag
+		}));
+	}
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -174,40 +191,40 @@
 				</div>
 
 				<!-- Brands -->
-				<TaxonomyTagSection
-					titleKey="product.header.brands"
-					defaultTitle="Brands"
-					tags={product.brands_tags}
-					taxonomyPromise={taxonomies.brands}
-					facetType="brands"
-				/>
+				{@render taxonomySection(
+					'product.header.brands',
+					'Brands',
+					product.brands_tags,
+					taxonomies.brands,
+					'brands'
+				)}
 
 				<!-- Categories -->
-				<TaxonomyTagSection
-					titleKey="product.header.categories"
-					defaultTitle="Categories"
-					tags={product.categories_tags}
-					taxonomyPromise={taxonomies.categories}
-					facetType="categories"
-				/>
+				{@render taxonomySection(
+					'product.header.categories',
+					'Categories',
+					product.categories_tags,
+					taxonomies.categories,
+					'categories'
+				)}
 
 				<!-- Labels -->
-				<TaxonomyTagSection
-					titleKey="product.header.labels"
-					defaultTitle="Labels"
-					tags={product.labels_tags}
-					taxonomyPromise={taxonomies.labels}
-					facetType="labels"
-				/>
+				{@render taxonomySection(
+					'product.header.labels',
+					'Labels',
+					product.labels_tags,
+					taxonomies.labels,
+					'labels'
+				)}
 
 				<!-- Origins -->
-				<TaxonomyTagSection
-					titleKey="product.header.origins"
-					defaultTitle="Origins"
-					tags={product.origins_tags as unknown as string[]}
-					taxonomyPromise={taxonomies.origins}
-					facetType="origins"
-				/>
+				{@render taxonomySection(
+					'product.header.origins',
+					'Origins',
+					product.origins_tags as unknown as string[],
+					taxonomies.origins,
+					'origins'
+				)}
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
@@ -253,22 +270,45 @@
 				{/if}
 
 				<!-- Stores -->
-				<TaxonomyTagSection
-					titleKey="product.header.stores"
-					defaultTitle="Stores"
-					tags={product.stores_tags}
-					taxonomyPromise={taxonomies.stores}
-				/>
+				{@render taxonomySection(
+					'product.header.stores',
+					'Stores',
+					product.stores_tags,
+					taxonomies.stores
+				)}
 
 				<!-- Countries -->
-				<TaxonomyTagSection
-					titleKey="product.header.countries"
-					defaultTitle="Countries"
-					tags={product.countries_tags}
-					taxonomyPromise={taxonomies.countries}
-					facetType="countries"
-				/>
+				{@render taxonomySection(
+					'product.header.countries',
+					'Countries',
+					product.countries_tags,
+					taxonomies.countries,
+					'countries'
+				)}
 			</div>
 		</div>
 	</div>
 </Card>
+
+{#snippet taxonomySection(
+	titleKey: string,
+	defaultTitle: string,
+	tags: string[] | undefined,
+	taxonomyPromise: Promise<Taxonomy<TaxoNode>>,
+	facetType?: string
+)}
+	{#if tags && tags.length > 0}
+		<div class="mb-2">
+			<div class="text-secondary mb-2 text-sm font-bold">
+				{$_(titleKey, { default: defaultTitle })}
+			</div>
+			{#await taxonomyPromise}
+				<div class="skeleton h-6 w-full"></div>
+			{:then taxonomy}
+				<TagChipList tags={localizeTags(taxonomy, tags)} {facetType} />
+			{:catch}
+				<TagChipList tags={localizeTags(null, tags)} {facetType} />
+			{/await}
+		</div>
+	{/if}
+{/snippet}
