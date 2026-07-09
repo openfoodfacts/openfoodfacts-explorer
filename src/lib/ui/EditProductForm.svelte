@@ -8,7 +8,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
-	import EditProductSidebar from './EditProductSidebar.svelte';
+	import Sidebar from './Sidebar.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -95,7 +95,8 @@
 
 	const permissions = getPermissionsCtx();
 
-	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
+	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let activeSection = $state('languages');
 	let isMobile = $state(false);
 
 	onMount(() => {
@@ -113,7 +114,7 @@
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
-	<EditProductSidebar bind:this={sidebar} />
+	<Sidebar bind:this={sidebar} bind:activeSection type="edit" />
 
 	<div class="space-y-4 min-w-0 w-full">
 		<!-- Languages Section -->

@@ -24,7 +24,7 @@
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
-	import ProductSidebar from '$lib/ui/ProductSidebar.svelte';
+	import Sidebar from '$lib/ui/Sidebar.svelte';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -228,7 +228,8 @@
 			? 'lg:grid-cols-1'
 			: 'lg:grid-cols-[auto_1fr]'}"
 	>
-		<ProductSidebar
+		<Sidebar
+			type="product"
 			{product}
 			{showBarcode}
 			hasPrices={data.prices != null}
