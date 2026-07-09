@@ -577,7 +577,7 @@
 			"image_manager_uploaded_by": "Uploaded by {uploader}",
 			"image_manager_uploaded_at": "Uploaded on {date}",
 			"image_manager_preview_label": "Preview image",
-			"image_manager_move_btn": "89006306",
+			"image_manager_move_btn": "छवियों को दूसरे उत्पाद में ले जाएं",
 			"image_manager_move_target_label": "Destination Barcode",
 			"image_manager_move_target_placeholder": "Enter barcode (e.g. 3017620422003)",
 			"image_manager_copy_data_label": "वर्तमान उत्पाद से नए उत्पाद पर डेटा कॉपी करें",
