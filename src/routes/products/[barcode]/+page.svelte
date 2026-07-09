@@ -24,7 +24,18 @@
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
-	import Sidebar from '$lib/ui/Sidebar.svelte';
+	import Sidebar, { type SidebarSection } from '$lib/ui/Sidebar.svelte';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
+	import IconMdiHeartPulse from '@iconify-svelte/mdi/heart-pulse';
+	import IconMdiFlag from '@iconify-svelte/mdi/flag';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
+	import IconMdiBarcode from '@iconify-svelte/mdi/barcode';
+	import IconMdiDatabase from '@iconify-svelte/mdi/database';
+	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -93,6 +104,69 @@
 	let useWCFolksonomyEditor = $state(false);
 
 	let showBarcode = $state(false);
+
+	const activeSections = $derived.by(() => {
+		const rawList: (SidebarSection | false | undefined | null)[] = [
+			{
+				id: 'overview',
+				label: $_('product.sections.product', { default: 'Product' }),
+				icon: IconMdiInformation
+			},
+			{
+				id: 'attributes',
+				label: $_('product.sections.attributes', { default: 'Attributes' }),
+				icon: IconMdiNutrition
+			},
+			product.knowledge_panels?.health_card && {
+				id: 'health_card',
+				label: $_('product.sections.health', { default: 'Health' }),
+				icon: IconMdiHeartPulse
+			},
+			product.knowledge_panels?.environment_card && {
+				id: 'environment_card',
+				label: $_('product.sections.environment', { default: 'Environment' }),
+				icon: IconMdiLeaf
+			},
+			product.knowledge_panels?.report_problem_card && {
+				id: 'report_problem_card',
+				label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
+				icon: IconMdiFlag
+			},
+			product.knowledge_panels?.contribution_card && {
+				id: 'contribution_card',
+				label: $_('product.sections.contribution', { default: 'Contribution' }),
+				icon: IconMdiHelpCircleOutline
+			},
+			product.knowledge_panels?.product_card && {
+				id: 'product_card',
+				label: $_('product.sections.product_information', { default: 'Product information' }),
+				icon: IconMdiFormatListBulleted
+			},
+			isPriceConfigured() &&
+				data.prices != null && {
+					id: 'prices',
+					label: $_('product.sections.prices', { default: 'Prices' }),
+					icon: IconMdiTagMultiple
+				},
+			showBarcode &&
+				product.code != null && {
+					id: 'barcode-info',
+					label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
+					icon: IconMdiBarcode
+				},
+			{
+				id: 'data-sources',
+				label: $_('product.sections.data_sources', { default: 'Data Sources' }),
+				icon: IconMdiDatabase
+			},
+			isFolksonomyConfigured() && {
+				id: 'folksonomy',
+				label: $_('product.sections.folksonomy', { default: 'Folksonomy' }),
+				icon: IconMdiLabel
+			}
+		];
+		return rawList.filter((item): item is SidebarSection => !!item);
+	});
 
 	const shortcutCtx = getShortcutCtx();
 
@@ -228,12 +302,21 @@
 			? 'lg:grid-cols-1'
 			: 'lg:grid-cols-[auto_1fr]'}"
 	>
+		{#snippet sidebarHeaderAction()}
+			<button
+				type="button"
+				onclick={() => (sidebarHidden = true)}
+				class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium flex items-center gap-1"
+			>
+				{$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
+			</button>
+		{/snippet}
+
 		<Sidebar
 			type="product"
-			{product}
-			{showBarcode}
-			hasPrices={data.prices != null}
+			sections={activeSections}
 			bind:hidden={sidebarHidden}
+			headerAction={sidebarHeaderAction}
 		/>
 
 		<div class="space-y-4 min-w-0 w-full flex flex-col gap-4">

@@ -1,31 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Component, ComponentType } from 'svelte';
+	import type { Component, ComponentType, Snippet } from 'svelte';
 	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
-	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
-	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-
-	import IconMdiInformation from '@iconify-svelte/mdi/information';
-	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
-	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
-	import IconMdiHeartPulse from '@iconify-svelte/mdi/heart-pulse';
-	import IconMdiFlag from '@iconify-svelte/mdi/flag';
-	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
-	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
-	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
-	import IconMdiBarcode from '@iconify-svelte/mdi/barcode';
-	import IconMdiDatabase from '@iconify-svelte/mdi/database';
-	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
-	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
-	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
-	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
-	import IconMdiCommentText from '@iconify-svelte/mdi/comment-text';
-	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
-	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
 	export interface SidebarSection {
 		id: string;
@@ -35,153 +12,24 @@
 	}
 
 	type Props = {
-		type: 'product' | 'edit';
-		product?: Product;
-		showBarcode?: boolean;
-		hasPrices?: boolean;
+		sections: SidebarSection[];
 		activeSection?: string;
+		scrollHeaderOffset?: number;
 		hidden?: boolean;
+		headerAction?: Snippet;
 		onSectionClick?: (id: string) => void;
+		type?: 'product' | 'edit';
 	};
 
 	let {
-		type,
-		product,
-		showBarcode = false,
-		hasPrices = false,
+		sections,
 		activeSection = $bindable(''),
+		scrollHeaderOffset = 120,
 		hidden = $bindable(false),
-		onSectionClick
+		headerAction,
+		onSectionClick,
+		type = 'product'
 	}: Props = $props();
-
-	const permissions = getPermissionsCtx();
-
-	const sections = $derived.by(() => {
-		if (type === 'product' && product) {
-			const rawList: (SidebarSection | false | undefined | null)[] = [
-				{
-					id: 'overview',
-					label: $_('product.sections.product', { default: 'Product' }),
-					icon: IconMdiInformation
-				},
-				{
-					id: 'attributes',
-					label: $_('product.sections.attributes', { default: 'Attributes' }),
-					icon: IconMdiNutrition
-				},
-				product.knowledge_panels?.health_card && {
-					id: 'health_card',
-					label: $_('product.sections.health', { default: 'Health' }),
-					icon: IconMdiHeartPulse
-				},
-				product.knowledge_panels?.environment_card && {
-					id: 'environment_card',
-					label: $_('product.sections.environment', { default: 'Environment' }),
-					icon: IconMdiLeaf
-				},
-				product.knowledge_panels?.report_problem_card && {
-					id: 'report_problem_card',
-					label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
-					icon: IconMdiFlag
-				},
-				product.knowledge_panels?.contribution_card && {
-					id: 'contribution_card',
-					label: $_('product.sections.contribution', { default: 'Contribution' }),
-					icon: IconMdiHelpCircleOutline
-				},
-				product.knowledge_panels?.product_card && {
-					id: 'product_card',
-					label: $_('product.sections.product_information', { default: 'Product information' }),
-					icon: IconMdiFormatListBulleted
-				},
-				isPriceConfigured() &&
-					hasPrices && {
-						id: 'prices',
-						label: $_('product.sections.prices', { default: 'Prices' }),
-						icon: IconMdiTagMultiple
-					},
-				showBarcode &&
-					product.code != null && {
-						id: 'barcode-info',
-						label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
-						icon: IconMdiBarcode
-					},
-				{
-					id: 'data-sources',
-					label: $_('product.sections.data_sources', { default: 'Data Sources' }),
-					icon: IconMdiDatabase
-				},
-				isFolksonomyConfigured() && {
-					id: 'folksonomy',
-					label: $_('product.sections.folksonomy', { default: 'Folksonomy' }),
-					icon: IconMdiLabel
-				}
-			];
-			return rawList.filter((item): item is SidebarSection => !!item);
-		}
-
-		if (type === 'edit') {
-			const rawList: (SidebarSection | false | undefined | null)[] = [
-				{
-					id: 'languages',
-					label: $_('product.edit.sections.languages', { default: 'Languages' }),
-					icon: IconMdiTranslate
-				},
-				{
-					id: 'images',
-					label: $_('product.edit.sections.images', { default: 'Images' }),
-					icon: IconMdiImageMultiple
-				},
-				{
-					id: 'basic-info',
-					label: $_('product.edit.sections.basic_info', { default: 'Basic Info' }),
-					icon: IconMdiInformation
-				},
-				{
-					id: 'origin-traceability',
-					label: $_('product.edit.sections.origin_traceability', {
-						default: 'Traceability & Origins'
-					}),
-					icon: IconMdiEarth
-				},
-				{
-					id: 'ingredients',
-					label: $_('product.edit.sections.ingredients', { default: 'Ingredients' }),
-					icon: IconMdiFormatListBulleted
-				},
-				{
-					id: 'nutrition',
-					label: $_('product.edit.sections.nutrition', { default: 'Nutrition' }),
-					icon: IconMdiNutrition
-				},
-				{
-					id: 'prices',
-					label: $_('product.edit.sections.prices', { default: 'Prices' }),
-					icon: IconMdiTagMultiple
-				},
-				{
-					id: 'packaging',
-					label: $_('product.edit.sections.packaging', { default: 'Packaging' }),
-					icon: IconMdiPackageVariant
-				},
-				{
-					id: 'comment',
-					label: $_('product.edit.sections.comment', { default: 'Comment' }),
-					icon: IconMdiCommentText
-				},
-				permissions.isModerator &&
-					$preferences.moderator && {
-						id: 'moderator-tools',
-						label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
-						icon: IconMdiShieldAccount,
-						style: 'warning' as const
-					}
-			];
-			return rawList.filter((item): item is SidebarSection => !!item);
-		}
-
-		return [];
-	});
 
 	let navElement = $state<HTMLElement>();
 	let indicatorTop = $state(0);
@@ -231,7 +79,6 @@
 				onBeforeScroll();
 			}
 
-			const scrollHeaderOffset = type === 'edit' ? 100 : 120;
 			const elementPosition = el.getBoundingClientRect().top + window.scrollY;
 			const offsetPosition = elementPosition - scrollHeaderOffset;
 
@@ -247,24 +94,6 @@
 	function handleSectionClick(id: string) {
 		if (onSectionClick) {
 			onSectionClick(id);
-		} else if (type === 'edit') {
-			scrollToSection(id, () => {
-				const el = document.getElementById(id);
-				if (el) {
-					const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
-					if (activeSection === id) {
-						if (checkbox) {
-							checkbox.checked = !checkbox.checked;
-							checkbox.dispatchEvent(new Event('change'));
-						}
-					} else {
-						if (checkbox && !checkbox.checked) {
-							checkbox.checked = true;
-							checkbox.dispatchEvent(new Event('change'));
-						}
-					}
-				}
-			});
 		} else {
 			scrollToSection(id);
 		}
@@ -283,7 +112,6 @@
 		if (isAtBottom) {
 			currentSection = sections[sections.length - 1]?.id || '';
 		} else {
-			const scrollHeaderOffset = type === 'edit' ? 100 : 120;
 			for (let i = 0; i < sections.length; i++) {
 				const section = sections[i];
 				const el = document.getElementById(section.id);
@@ -349,41 +177,11 @@
 	]}
 >
 	<aside class="sticky top-24 w-50 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
-		<div class="flex items-center justify-end mb-4 px-1">
-			{#if type === 'product'}
-				<button
-					type="button"
-					onclick={() => (hidden = true)}
-					class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium flex items-center gap-1"
-				>
-					{$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
-				</button>
-			{:else if type === 'edit'}
-				<button
-					type="button"
-					onclick={() => {
-						handleCollapseToggle(sections[0]?.id || '');
-						$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
-						const checkboxes = sections
-							.map((sec) => {
-								const el = document.getElementById(sec.id);
-								return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
-							})
-							.filter(Boolean) as HTMLInputElement[];
-
-						checkboxes.forEach((cb) => {
-							cb.checked = $preferences.editing.expandAllSections;
-							cb.dispatchEvent(new Event('change'));
-						});
-					}}
-					class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
-				>
-					{$preferences.editing.expandAllSections
-						? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
-						: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
-				</button>
-			{/if}
-		</div>
+		{#if headerAction}
+			<div class="flex items-center justify-end mb-4 px-1">
+				{@render headerAction()}
+			</div>
+		{/if}
 		<nav
 			bind:this={navElement}
 			aria-label={$_('product.sidebar_navigation', { default: 'Product sections' })}

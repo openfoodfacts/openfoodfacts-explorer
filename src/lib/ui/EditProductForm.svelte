@@ -8,7 +8,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
-	import Sidebar from './Sidebar.svelte';
+	import Sidebar, { type SidebarSection } from './Sidebar.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -99,6 +99,66 @@
 	let activeSection = $state('languages');
 	let isMobile = $state(false);
 
+	const editSections = $derived.by(() => {
+		const rawList: (SidebarSection | false | undefined | null)[] = [
+			{
+				id: 'languages',
+				label: $_('product.edit.sections.languages', { default: 'Languages' }),
+				icon: IconMdiTranslate
+			},
+			{
+				id: 'images',
+				label: $_('product.edit.sections.images', { default: 'Images' }),
+				icon: IconMdiImageMultiple
+			},
+			{
+				id: 'basic-info',
+				label: $_('product.edit.sections.basic_info', { default: 'Basic Info' }),
+				icon: IconMdiInformation
+			},
+			{
+				id: 'origin-traceability',
+				label: $_('product.edit.sections.origin_traceability', {
+					default: 'Traceability & Origins'
+				}),
+				icon: IconMdiEarth
+			},
+			{
+				id: 'ingredients',
+				label: $_('product.edit.sections.ingredients', { default: 'Ingredients' }),
+				icon: IconMdiFormatListBulleted
+			},
+			{
+				id: 'nutrition',
+				label: $_('product.edit.sections.nutrition', { default: 'Nutrition' }),
+				icon: IconMdiNutrition
+			},
+			{
+				id: 'prices',
+				label: $_('product.edit.sections.prices', { default: 'Prices' }),
+				icon: IconMdiTagMultiple
+			},
+			{
+				id: 'packaging',
+				label: $_('product.edit.sections.packaging', { default: 'Packaging' }),
+				icon: IconMdiPackageVariant
+			},
+			{
+				id: 'comment',
+				label: $_('product.edit.sections.comment', { default: 'Comment' }),
+				icon: IconMdiCommentText
+			},
+			permissions.isModerator &&
+				$preferences.moderator && {
+					id: 'moderator-tools',
+					label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
+					icon: IconMdiShieldAccount,
+					style: 'warning' as const
+				}
+		];
+		return rawList.filter((item): item is SidebarSection => !!item);
+	});
+
 	onMount(() => {
 		const updateMobileState = () => {
 			isMobile = window.innerWidth < 1024;
@@ -114,7 +174,39 @@
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
-	<Sidebar bind:this={sidebar} bind:activeSection type="edit" />
+	{#snippet sidebarHeaderAction()}
+		<button
+			type="button"
+			onclick={() => {
+				handleCollapseToggle(editSections[0]?.id || '');
+				$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
+				const checkboxes = editSections
+					.map((sec) => {
+						const el = document.getElementById(sec.id);
+						return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
+					})
+					.filter(Boolean) as HTMLInputElement[];
+
+				checkboxes.forEach((cb) => {
+					cb.checked = $preferences.editing.expandAllSections;
+					cb.dispatchEvent(new Event('change'));
+				});
+			}}
+			class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
+		>
+			{$preferences.editing.expandAllSections
+				? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+				: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+		</button>
+	{/snippet}
+
+	<Sidebar
+		bind:this={sidebar}
+		bind:activeSection
+		type="edit"
+		sections={editSections}
+		headerAction={sidebarHeaderAction}
+	/>
 
 	<div class="space-y-4 min-w-0 w-full">
 		<!-- Languages Section -->
