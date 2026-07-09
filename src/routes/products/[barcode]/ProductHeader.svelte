@@ -287,7 +287,8 @@
 	facet: string,
 	taxoPromise: Promise<Taxonomy<TaxoNode>>
 )}
-	{#if tags && tags.length > 0}
+	{#if tags != null && tags.length > 0}
+		{const href = resolve('/facets/[facet]/[value]', { facet: facet, value: tags[0] })}
 		<div class="mb-2">
 			<div class="text-secondary mb-2 text-sm font-bold">
 				{$_(titleKey, { default: defaultTitle })}
@@ -296,20 +297,13 @@
 				<div class="skeleton h-6 w-full"></div>
 			{:then taxonomy}
 				<TagChipList
-					tags={tags.map((tag) => ({
-						id: tag,
-						name: getOrDefault(taxonomy[tag].name, lang) ?? tag,
-						href: resolve('/facets/[facet]/[value]', { facet: facet, value: tag })
-					}))}
+					tags={tags.map((tag) => {
+						const name = (taxonomy[tag] ? getOrDefault(taxonomy[tag].name, lang) : tag) ?? tag;
+						return { id: tag, name, href };
+					})}
 				/>
 			{:catch}
-				<TagChipList
-					tags={tags.map((tag) => ({
-						id: tag,
-						name: tag,
-						href: resolve('/facets/[facet]/[value]', { facet: facet, value: tag })
-					}))}
-				/>
+				<TagChipList tags={tags.map((tag) => ({ id: tag, name: tag, href }))} />
 			{/await}
 		</div>
 	{/if}
