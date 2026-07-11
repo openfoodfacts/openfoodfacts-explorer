@@ -56,24 +56,23 @@
 	let ignoreObserver = false;
 	let observerTimeout: ReturnType<typeof setTimeout>;
 
-	export function handleCollapseToggle(id: string) {
+	function suppressObserver(duration = 1000) {
 		ignoreObserver = true;
 		clearTimeout(observerTimeout);
 		observerTimeout = setTimeout(() => {
 			ignoreObserver = false;
-		}, 1000);
+		}, duration);
+	}
 
+	export function handleCollapseToggle(id: string) {
+		suppressObserver();
 		activeSection = id;
 	}
 
 	export function scrollToSection(id: string, onBeforeScroll?: () => void) {
 		const el = document.getElementById(id);
 		if (el) {
-			ignoreObserver = true;
-			clearTimeout(observerTimeout);
-			observerTimeout = setTimeout(() => {
-				ignoreObserver = false;
-			}, 1000);
+			suppressObserver();
 
 			if (onBeforeScroll) {
 				onBeforeScroll();

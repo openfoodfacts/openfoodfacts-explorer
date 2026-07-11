@@ -104,6 +104,7 @@
 	let useWCFolksonomyEditor = $state(false);
 
 	let showBarcode = $state(false);
+	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
 
 	const activeSections = $derived.by(() => {
 		const rawList: (SidebarSection | false | undefined | null)[] = [
@@ -171,8 +172,6 @@
 	const shortcutCtx = getShortcutCtx();
 
 	onMount(() => {
-		sidebarHidden = !($preferences.productSidebarVisible ?? true);
-
 		shortcutCtx.set('Shift+B', {
 			description: $_('product.shortcuts.show_barcode'),
 			action: () => (showBarcode = !showBarcode)
@@ -257,8 +256,6 @@
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
-
-	let sidebarHidden = $state(false);
 
 	$effect(() => {
 		const expectedValue = !sidebarHidden;
