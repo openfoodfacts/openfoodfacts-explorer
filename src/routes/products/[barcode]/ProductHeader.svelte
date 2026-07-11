@@ -16,7 +16,6 @@
 	} from '$lib/api';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import { preferences } from '$lib/settings';
-	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
@@ -25,7 +24,6 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
-	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	type Props = {
 		product: Product;
@@ -43,19 +41,6 @@
 	let { lang } = $derived($preferences);
 
 	let toastCtx = getToastCtx();
-	function addToCalculator() {
-		// FIXME: product.code cannot be null
-		const code = product.code!;
-
-		addItemToCalculator({
-			id: code,
-			name: product.product_name || code,
-			quantity: 100,
-			imageUrl: product.image_front_small_url,
-			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
-			nutriments: extractNutriments(product.nutriments)
-		});
-	}
 
 	async function sharePage() {
 		await shareContent(
@@ -156,15 +141,6 @@
 					>
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
-
-					<button
-						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToCalculator}
-						title={$_('product.buttons.add_to_calculator')}
-						aria-label={$_('product.buttons.add_to_calculator')}
-					>
-						<IconMdiCalculator class="h-5 w-5" />
-					</button>
 
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
