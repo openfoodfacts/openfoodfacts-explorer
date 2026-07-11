@@ -113,6 +113,12 @@
 				label: $_('product.sections.product', { default: 'Product' }),
 				icon: IconMdiInformation
 			},
+			showBarcode &&
+				product.code != null && {
+					id: 'barcode-info',
+					label: $_('product.sections.barcode_info_debug', { default: 'Barcode debug' }),
+					icon: IconMdiBarcode
+				},
 			{
 				id: 'attributes',
 				label: $_('product.sections.attributes', { default: 'Attributes' }),
@@ -149,12 +155,11 @@
 					label: $_('product.sections.prices', { default: 'Prices' }),
 					icon: IconMdiTagMultiple
 				},
-			showBarcode &&
-				product.code != null && {
-					id: 'barcode-info',
-					label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
-					icon: IconMdiBarcode
-				},
+			product.code != null && {
+				id: 'barcode-gs1',
+				label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
+				icon: IconMdiBarcode
+			},
 			{
 				id: 'data-sources',
 				label: $_('product.sections.data_sources', { default: 'Data Sources' }),
@@ -375,8 +380,13 @@
 				</div>
 			{/if}
 
-			<div id="data-sources" class="flex flex-col gap-4">
-				<Gs1Country barcode={product.code} />
+			{#if product.code}
+				<div id="barcode-gs1">
+					<Gs1Country barcode={product.code} />
+				</div>
+			{/if}
+
+			<div id="data-sources">
 				<DataSources {product} />
 			</div>
 

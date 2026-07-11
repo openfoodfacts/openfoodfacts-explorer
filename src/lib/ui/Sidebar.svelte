@@ -201,7 +201,6 @@
 			{/if}
 
 			{#each sections as section (section.id)}
-				{@const IconComponent = section.icon}
 				<button
 					type="button"
 					data-section={section.id}
@@ -219,10 +218,9 @@
 								: 'text-base-content/60 hover:text-primary'
 					]}
 				>
-					{#if IconComponent}
-						<IconComponent
-							class="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110"
-						/>
+					{#if section.icon}
+						{@const Icon = section.icon}
+						<Icon class="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
 					{/if}
 					<span>{section.label}</span>
 				</button>
