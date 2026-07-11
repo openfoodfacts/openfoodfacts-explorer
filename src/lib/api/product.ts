@@ -88,6 +88,97 @@ export async function updateBarcode(
 }
 
 /**
+ * Move images from one product to another (moderator-only action).
+ * // TODO: switch to `moveImages` from the SDK
+ * @param fetch - The fetch function
+ * @param code - source product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ * @param moveToBarcode - destination product barcode
+ * @param copyData - whether to copy product data to destination
+ */
+export async function moveImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string,
+	moveToBarcode: string,
+	copyData: boolean = false
+): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty source product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+	if (!moveToBarcode || moveToBarcode.trim().length === 0) {
+		return { error: 'A non-empty destination product barcode is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', moveToBarcode);
+	body.append('copy_data_override', copyData ? 'true' : 'false');
+
+	try {
+		const res = await wrapFetch(url, {
+			method: 'POST',
+			body
+		});
+		if (res.status === 200) {
+			return { data: true };
+		}
+		return { error: `Failed to move images (status: ${res.status})` };
+	} catch (error) {
+		console.error('Error moving images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete product images by moving them to trash (moderator-only action).
+ * // TODO: switch to `deleteImages` from the SDK
+ * @param fetch - The fetch function
+ * @param code - product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ */
+export async function deleteImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string
+): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', 'trash');
+	body.append('copy_data_override', 'false');
+
+	try {
+		const res = await wrapFetch(url, {
+			method: 'POST',
+			body
+		});
+		if (res.status === 200) {
+			return { data: true };
+		}
+		return { error: `Failed to delete images (status: ${res.status})` };
+	} catch (error) {
+		console.error('Error deleting images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
  * Delete a product page (moderator-only action).
  * This sends a POST request to /cgi/product.pl with the required parameters.
  * @param fetch - The fetch function
@@ -481,6 +572,7 @@ export type ImageOperationResponse = {
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
+type LangGenericName = `generic_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -629,7 +721,8 @@ export type Product = ProductDataSection & {
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
 	Partial<Record<LangIngredient, string>> &
-	Partial<Record<LangPackagingText, string>>;
+	Partial<Record<LangPackagingText, string>> &
+	Partial<Record<LangGenericName, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',

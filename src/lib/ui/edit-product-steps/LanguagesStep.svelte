@@ -7,10 +7,11 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
-	import IconMdiSearch from '@iconify-svelte/mdi/search';
+	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import InputAutocomplete from '$lib/ui/InputAutocomplete.svelte';
 
 	type Props = {
 		product: Product;
@@ -28,15 +29,38 @@
 		})
 	);
 
-	// Local state for language search input
-	let languageSearch = $state('');
-	let filteredLanguages = $derived(
-		languageNames.filter((code) =>
-			[code.code, code.en, code.locale].some((name) =>
-				name.toLowerCase().includes(languageSearch.toLowerCase())
-			)
-		)
-	);
+	function deleteLanguage(code: string) {
+		if (code === product.lang) {
+			alert(
+				$_('product.edit.cannot_delete_main_language', {
+					default: 'Cannot delete the main language'
+				})
+			);
+			return;
+		}
+
+		const confirmed = confirm(
+			$_('product.edit.confirm_delete_language', {
+				default: 'Are you sure you want to delete all fields for {language}?',
+				values: { language: getLanguageName(code) }
+			})
+		);
+		if (!confirmed) return;
+
+		// Remove the language from product.languages_codes
+		const newCodes = { ...product.languages_codes };
+		delete newCodes[code];
+		product.languages_codes = newCodes;
+
+		// Set all fields of the language to empty string
+		const fieldsToDelete = [
+			`product_name_${code}`,
+			`ingredients_text_${code}`,
+			`packaging_text_${code}`
+		];
+		const clearedFields = Object.fromEntries(fieldsToDelete.map((field) => [field, '']));
+		product = { ...product, ...clearedFields };
+	}
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -107,7 +131,7 @@
 <div class="mt-4 space-y-4">
 	<fieldset class="fieldset">
 		<legend class="fieldset-legend">
-			{$_('product.edit.product_names')}
+			{$_('product.edit.product_names', { default: 'Product names' })}
 		</legend>
 
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}
@@ -138,6 +162,35 @@
 					}}
 					aria-label={`${$_('product.edit.name')} (${langName})`}
 				/>
+				{#if code !== product.lang}
+					<button
+						type="button"
+						class="btn btn-ghost btn-xs text-error h-auto min-h-0 p-1 hover:bg-base-300 shrink-0"
+						onclick={() => deleteLanguage(code)}
+						title={$_('product.edit.delete_language', { default: 'Delete language' })}
+						aria-label={$_('product.edit.delete_language', { default: 'Delete language' })}
+					>
+						<IconMdiDelete class="h-5 w-5" />
+					</button>
+				{:else}
+					<div
+						title={$_('product.edit.cannot_delete_main_language', {
+							default: 'Cannot delete the main language'
+						})}
+						class="shrink-0 flex items-center justify-center"
+					>
+						<button
+							type="button"
+							class="btn btn-ghost btn-xs text-base-content/30 btn-disabled h-auto min-h-0 p-1 pointer-events-none"
+							disabled
+							aria-label={$_('product.edit.cannot_delete_main_language', {
+								default: 'Cannot delete the main language'
+							})}
+						>
+							<IconMdiDelete class="h-5 w-5" />
+						</button>
+					</div>
+				{/if}
 			</div>
 		{/each}
 
@@ -153,29 +206,14 @@
 		{$_('product.edit.add_language')}
 	</div>
 	<div class="collapse-content">
-		<label class="input w-full text-sm sm:text-base">
-			<IconMdiSearch class="h-5 w-5" />
-			<input
-				type="search"
-				placeholder={$_('product.edit.search_languages')}
-				bind:value={languageSearch}
-				class="text-sm sm:text-base"
-			/>
-		</label>
-		{#if filteredLanguages.length === 0}
-			<p class="mt-4 text-center text-sm opacity-70 sm:text-base">
-				{$_('product.edit.no_languages_found')}
-			</p>
-		{:else}
-			<div
-				class="mt-2 grid max-h-96 grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 overflow-auto sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
-			>
-				{#each filteredLanguages as lang (lang)}
-					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(lang.code)}>
-						{lang.locale} ({lang.en}) - {lang.code}
-					</button>
-				{/each}
-			</div>
-		{/if}
+		<InputAutocomplete
+			items={languageNames}
+			searchKeys={['code', 'en', 'locale']}
+			placeholder={$_('product.edit.search_languages')}
+			inline
+			onselect={(lang) => {
+				addLanguage(lang.code);
+			}}
+		/>
 	</div>
 </div>

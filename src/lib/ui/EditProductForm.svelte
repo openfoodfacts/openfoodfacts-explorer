@@ -29,6 +29,7 @@
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
+	import ImageManagerCard from './ImageManagerCard.svelte';
 	type Props = {
 		product: Product;
 
@@ -39,6 +40,7 @@
 		// Submission
 
 		isSubmitting: boolean;
+		disableSubmit?: boolean;
 		submit: () => Promise<void>;
 		onCorrectBarcode: (newCode: string) => Promise<void>;
 		onDeleteProduct?: (comment: string) => Promise<void>;
@@ -80,6 +82,7 @@
 		units,
 		allergenNames,
 		isSubmitting,
+		disableSubmit = false,
 		submit,
 		onCorrectBarcode,
 		onDeleteProduct
@@ -150,7 +153,7 @@
 		</div>
 
 		<!-- Basic Info Section -->
-		<div id="basic-info" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="basic-info" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -194,7 +197,7 @@
 		</div>
 
 		<!-- Ingredients Section -->
-		<div id="ingredients" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="ingredients" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -262,7 +265,7 @@
 		</div>
 
 		<!-- Packaging Section -->
-		<div class="collapse-arrow bg-base-200 collapse shadow-md" id="packaging">
+		<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md" id="packaging">
 			<input
 				type="checkbox"
 				checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -299,7 +302,10 @@
 
 		<!-- Moderator Tools Section -->
 		{#if permissions.isModerator && $preferences.moderator}
-			<div id="moderator-tools" class="collapse-arrow bg-base-200 collapse shadow-md">
+			<div
+				id="moderator-tools"
+				class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md"
+			>
 				<input
 					type="checkbox"
 					checked={isMobile ? false : $preferences.editing.expandAllSections}
@@ -326,6 +332,8 @@
 							onDelete={onDeleteProduct}
 						/>
 					{/if}
+					<div class="divider"></div>
+					<ImageManagerCard {product} />
 				</div>
 			</div>
 		{/if}
@@ -336,7 +344,7 @@
 	<button
 		class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
 		onclick={submit}
-		disabled={isSubmitting}
+		disabled={isSubmitting || disableSubmit}
 		aria-busy={isSubmitting}
 		type="button"
 	>

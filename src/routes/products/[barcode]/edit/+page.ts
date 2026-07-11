@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
@@ -25,23 +25,16 @@ import { resolve } from '$app/paths';
 
 export const ssr = false;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
 
 	if (get(userInfo) == null && !dev) {
-		// If the user is not logged in, redirect to the login page
-		// We allow an exception for development mode
-		error(401, {
-			message: 'You must be logged in to view this page',
-			actions: [
-				{
-					label: 'Login',
-					url: resolve('/oauth/login')
-				}
-			]
-		});
+		redirect(
+			302,
+			resolve('/loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+		);
 	}
 
 	const off = createProductsApi(fetch);

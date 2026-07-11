@@ -86,7 +86,8 @@
 				return;
 			}
 
-			if (uploadResult.data?.status === 'success') {
+			const status = uploadResult.data?.status;
+			if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here
 					// to access the uploaded images
@@ -99,7 +100,24 @@
 						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
 
 					if (imgid) {
-						toast.success($_('product.edit.images.toast.upload_success'));
+						const isDuplicate =
+							uploadResult.data.warnings?.[0]?.message?.id === 'image_already_uploaded';
+
+						if (isDuplicate) {
+							toast.warning(
+								$_('product.edit.images.toast.already_uploaded', {
+									default:
+										'This image was already uploaded; reusing the existing photo to replace the active one.'
+								})
+							);
+						} else {
+							toast.success(
+								$_('product.edit.images.toast.upload_success', {
+									default: 'Image uploaded successfully.'
+								})
+							);
+						}
+
 						trackOffEvent('product', 'upload_image', sectionType.id);
 						onImageUploaded(imgid);
 					} else {
@@ -184,29 +202,42 @@
 				disabled={isUploading}
 				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
-			<button
-				type="button"
-				class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
-				class:loading={isUploading}
-				disabled={isUploading}
-				onclick={() => triggerFileInput(inputId)}
-			>
-				{#if isUploading}
-					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
-					>
-				{:else}
+			{#if !(isStandardType && hasImagesOfType)}
+				<button
+					type="button"
+					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					class:loading={isUploading}
+					disabled={isUploading}
+					onclick={() => triggerFileInput(inputId)}
+				>
+					{#if isUploading}
+						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+						>
+					{:else}
+						<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.upload_type', {
+								values: { type: sectionType.label },
+								default: 'Upload ' + sectionType.label
+							})}</span
+						>
+					{/if}
+				</button>
+			{/if}
+			{#if isStandardType && hasImagesOfType}
+				<button
+					type="button"
+					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					disabled={isUploading || isUnselecting}
+					onclick={() => triggerFileInput(inputId)}
+				>
 					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
 					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.upload_type', {
-							values: { type: sectionType.label },
-							default: 'Upload ' + sectionType.label
-						})}</span
+						>{$_('product.edit.images.replace', { default: 'Replace' })}</span
 					>
-				{/if}
-			</button>
-			{#if isStandardType && hasImagesOfType}
+				</button>
 				<button
 					type="button"
 					class="btn btn-xs sm:btn-sm btn-outline btn-error w-full sm:w-auto"
