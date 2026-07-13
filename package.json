@@ -34,9 +34,9 @@
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
 		"@formatjs/intl-durationformat": "^0.10.15",
-		"@iconify-svelte/material-symbols": "^1.0.42",
+		"@iconify-svelte/material-symbols": "^1.0.44",
 		"@iconify-svelte/mdi": "^1.0.2",
-		"@iconify-svelte/simple-icons": "^1.0.37",
+		"@iconify-svelte/simple-icons": "^1.0.38",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.30",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-vercel": "^6.3.4",
@@ -99,7 +99,7 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
-		"@sentry/sveltekit": "^10.63.0",
+		"@sentry/sveltekit": "^10.65.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0"
 	},
 	"packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
