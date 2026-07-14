@@ -116,10 +116,16 @@
 		};
 	}
 
+	const SEVERITY_PRIORITY: Record<IssueSeverity, number> = {
+		error: 3,
+		warning: 2,
+		info: 1
+	};
+
 	const bySeverity = (a: Issue, b: Issue) => {
-		if (a.severity === b.severity) return 0;
-		if (a.severity === 'error') return -1;
-		return 1;
+		const priorityA = SEVERITY_PRIORITY[a.severity] ?? 0;
+		const priorityB = SEVERITY_PRIORITY[b.severity] ?? 0;
+		return priorityB - priorityA;
 	};
 
 	const INPUT_CLASS_BY_SEVERITY: Record<IssueSeverity, string> = {
@@ -170,8 +176,11 @@
 			return {
 				severity: validationIssue.severity,
 				field: 'serving_size',
-				title: $_(validationIssue.title),
-				desc: $_(validationIssue.desc, { values: { examples: servingSizeExamples } })
+				title: $_(validationIssue.title, { default: validationIssue.title }),
+				desc: $_(validationIssue.desc, {
+					default: validationIssue.desc,
+					values: { examples: servingSizeExamples }
+				})
 			};
 		}
 
@@ -180,7 +189,7 @@
 			return {
 				severity: apiError.severity,
 				field: 'serving_size',
-				title: $_(apiError.message),
+				title: $_(apiError.message, { default: 'Serving size issue' }),
 				desc: ''
 			};
 		}
@@ -207,8 +216,8 @@
 			.filter((e) => e.section === 'nutrition')
 			.map((e) => ({
 				severity: e.severity,
-				field: e.field.replace('_100g', ''),
-				title: $_(e.message),
+				field: e.field.replace('_100g', '').replace(/_/g, '-'),
+				title: $_(e.message, { default: 'Nutrition issue' }),
 				desc: ''
 			}))
 	]);

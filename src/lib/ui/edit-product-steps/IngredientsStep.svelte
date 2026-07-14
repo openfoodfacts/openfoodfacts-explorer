@@ -103,7 +103,13 @@
 		)
 	);
 
-	let ingredientsError = $derived(apiQualityErrors.find((e) => e.field === 'ingredients_text'));
+	let ingredientsErrors = $derived(apiQualityErrors.filter((e) => e.field === 'ingredients_text'));
+	function getIngredientsErrors(code: string) {
+		return ingredientsErrors.filter((e) => {
+			const prefix = e.tag.split(':')[0];
+			return prefix === code;
+		});
+	}
 
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
@@ -154,6 +160,9 @@
 		<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
 	</div>
 	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+		{@const langErrors = getIngredientsErrors(code)}
+		{@const hasError = langErrors.some((e) => e.severity === 'error')}
+		{@const hasWarning = langErrors.some((e) => e.severity === 'warning')}
 		<input
 			type="radio"
 			name="ingredients_tabs"
@@ -205,11 +214,7 @@
 					`ingredients_text_${code}`
 				]
 					? 'border-dashed border-warning/50 bg-warning/5'
-					: ''} {ingredientsError
-					? ingredientsError.severity === 'error'
-						? 'textarea-error'
-						: 'textarea-warning'
-					: ''}"
+					: ''} {hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''}"
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
@@ -219,19 +224,25 @@
 					};
 				}}
 				disabled={ocrLoading}></textarea>
-			{#if ingredientsError}
-				<span class="text-xs text-error mt-1 font-medium flex items-center gap-1">
+			{#each langErrors as error (error.tag)}
+				<span
+					class="text-xs mt-1 font-medium flex items-center gap-1 {error.severity === 'error'
+						? 'text-error'
+						: 'text-warning/70'}"
+				>
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
-					{ingredientsError.severity === 'error' ? 'Error' : 'Warning'}: {$_(
-						ingredientsError.message
-					)}
+					{$_(`product.edit.quality.${error.severity}_label`, {
+						default: error.severity === 'error' ? 'Error' : 'Warning'
+					})}: {$_(error.message)}
 				</span>
-			{:else if !product[`ingredients_text_${code}`]}
-				<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
-					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
-					Missing info
-				</span>
-			{/if}
+			{:else}
+				{#if !product[`ingredients_text_${code}`]}
+					<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_('product.edit.quality.missing_info', { default: 'Missing info' })}
+					</span>
+				{/if}
+			{/each}
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}

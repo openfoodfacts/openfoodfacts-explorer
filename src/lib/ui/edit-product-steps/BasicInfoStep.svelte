@@ -186,7 +186,9 @@
 					: ''} {quantityError
 					? quantityError.severity === 'error'
 						? 'input-error'
-						: 'input-warning'
+						: quantityError.severity === 'warning'
+							? 'input-warning'
+							: 'input-info'
 					: ''}"
 				value={product.quantity ?? ''}
 				oninput={(e) => {
@@ -195,14 +197,28 @@
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
 			{#if quantityError}
-				<span class="text-xs text-error mt-1 font-medium flex items-center gap-1">
+				<span
+					class="text-xs mt-1 font-medium flex items-center gap-1 {quantityError.severity ===
+					'error'
+						? 'text-error'
+						: quantityError.severity === 'warning'
+							? 'text-warning/70'
+							: 'text-info/70'}"
+				>
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
-					{quantityError.severity === 'error' ? 'Error' : 'Warning'}: {$_(quantityError.message)}
+					{$_(`product.edit.quality.${quantityError.severity}_label`, {
+						default:
+							quantityError.severity === 'error'
+								? 'Error'
+								: quantityError.severity === 'warning'
+									? 'Warning'
+									: 'Info'
+					})}: {$_(quantityError.message)}
 				</span>
 			{:else if !product.quantity}
 				<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
-					Missing info
+					{$_('product.edit.missing_info', { default: 'Missing info' })}
 				</span>
 			{/if}
 		</div>
