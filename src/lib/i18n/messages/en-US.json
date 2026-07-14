@@ -527,7 +527,9 @@
 			"action": {
 				"add_packaging_components": "Add packaging components",
 				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_ingredients_text": "Add ingredients text",
+				"edit_product":"Edit product",
+  			    "report_product_to_nutripatrol": "Report product to Nutripatrol"
 			}
 		},
 		"moderator": {
