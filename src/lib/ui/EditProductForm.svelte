@@ -170,45 +170,57 @@
 		window.addEventListener('resize', updateMobileState);
 		return () => window.removeEventListener('resize', updateMobileState);
 	});
-
 	function handleCollapseToggle(id: string) {
 		sidebar?.handleCollapseToggle(id);
+	}
+
+	function toggleExpandAll() {
+		handleCollapseToggle(editSections[0]?.id || '');
+		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
+		const checkboxes = editSections
+			.map((sec) => {
+				const el = document.getElementById(sec.id);
+				return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
+			})
+			.filter(Boolean) as HTMLInputElement[];
+		checkboxes.forEach((cb) => {
+			cb.checked = $preferences.editing.expandAllSections;
+			cb.dispatchEvent(new Event('change'));
+		});
+	}
+
+	function handleSidebarSectionClick(id: string) {
+		sidebar?.scrollToSection(id, () => {
+			const el = document.getElementById(id);
+			if (el) {
+				const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
+				if (activeSection === id) {
+					if (checkbox) {
+						checkbox.checked = !checkbox.checked;
+						checkbox.dispatchEvent(new Event('change'));
+					}
+				} else {
+					if (checkbox && !checkbox.checked) {
+						checkbox.checked = true;
+						checkbox.dispatchEvent(new Event('change'));
+					}
+				}
+			}
+		});
 	}
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
-	{#snippet sidebarHeaderAction()}
-		<button
-			type="button"
-			onclick={() => {
-				handleCollapseToggle(editSections[0]?.id || '');
-				$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
-				const checkboxes = editSections
-					.map((sec) => {
-						const el = document.getElementById(sec.id);
-						return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
-					})
-					.filter(Boolean) as HTMLInputElement[];
-
-				checkboxes.forEach((cb) => {
-					cb.checked = $preferences.editing.expandAllSections;
-					cb.dispatchEvent(new Event('change'));
-				});
-			}}
-			class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
-		>
-			{$preferences.editing.expandAllSections
-				? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
-				: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
-		</button>
-	{/snippet}
-
 	<Sidebar
 		bind:this={sidebar}
 		bind:activeSection
 		type="edit"
 		sections={editSections}
-		headerAction={sidebarHeaderAction}
+		headerActionLabel={$preferences.editing.expandAllSections
+			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+			: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+		onHeaderAction={toggleExpandAll}
+		onSectionClick={handleSidebarSectionClick}
 	/>
 
 	<div class="space-y-4 min-w-0 w-full">

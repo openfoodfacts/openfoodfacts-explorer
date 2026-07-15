@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Component, ComponentType, Snippet } from 'svelte';
+	import type { Component, ComponentType } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
@@ -16,7 +16,8 @@
 		activeSection?: string;
 		scrollHeaderOffset?: number;
 		hidden?: boolean;
-		headerAction?: Snippet;
+		headerActionLabel?: string;
+		onHeaderAction?: () => void;
 		onSectionClick?: (id: string) => void;
 		type?: 'product' | 'edit';
 	};
@@ -26,7 +27,8 @@
 		activeSection = $bindable(''),
 		scrollHeaderOffset = 120,
 		hidden = $bindable(false),
-		headerAction,
+		headerActionLabel,
+		onHeaderAction,
 		onSectionClick,
 		type = 'product'
 	}: Props = $props();
@@ -176,9 +178,15 @@
 	]}
 >
 	<aside class="sticky top-24 w-50 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
-		{#if headerAction}
+		{#if headerActionLabel && onHeaderAction}
 			<div class="flex items-center justify-end mb-4 px-1">
-				{@render headerAction()}
+				<button
+					type="button"
+					onclick={onHeaderAction}
+					class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
+				>
+					{headerActionLabel}
+				</button>
 			</div>
 		{/if}
 		<nav

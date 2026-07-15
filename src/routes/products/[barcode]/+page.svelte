@@ -304,21 +304,12 @@
 			? 'lg:grid-cols-1'
 			: 'lg:grid-cols-[auto_1fr]'}"
 	>
-		{#snippet sidebarHeaderAction()}
-			<button
-				type="button"
-				onclick={() => (sidebarHidden = true)}
-				class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium flex items-center gap-1"
-			>
-				{$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
-			</button>
-		{/snippet}
-
 		<Sidebar
 			type="product"
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
-			headerAction={sidebarHeaderAction}
+			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
+			onHeaderAction={() => (sidebarHidden = true)}
 		/>
 
 		<div class="space-y-4 min-w-0 w-full flex flex-col gap-4">
