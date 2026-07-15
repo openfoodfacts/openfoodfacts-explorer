@@ -100,7 +100,7 @@
 	let isMobile = $state(false);
 
 	const editSections = $derived.by(() => {
-		const rawList: (SidebarSection | false | undefined | null)[] = [
+		const sections: SidebarSection[] = [
 			{
 				id: 'languages',
 				label: $_('product.edit.sections.languages', { default: 'Languages' }),
@@ -147,16 +147,19 @@
 				id: 'comment',
 				label: $_('product.edit.sections.comment', { default: 'Comment' }),
 				icon: IconMdiCommentText
-			},
-			permissions.isModerator &&
-				$preferences.moderator && {
-					id: 'moderator-tools',
-					label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
-					icon: IconMdiShieldAccount,
-					style: 'warning' as const
-				}
+			}
 		];
-		return rawList.filter((item): item is SidebarSection => !!item);
+
+		if (permissions.isModerator && $preferences.moderator) {
+			sections.push({
+				id: 'moderator-tools',
+				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
+				icon: IconMdiShieldAccount,
+				style: 'warning'
+			});
+		}
+
+		return sections;
 	});
 
 	onMount(() => {
