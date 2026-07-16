@@ -603,7 +603,8 @@
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again",
-		"manual_barcode": "Enter the barcode manually"
+		"manual_barcode": "Enter the barcode manually",
+		"scanner_restart_failed": "Failed to restart the scanner. Please refresh the page."
 	},
 	"errors": {
 		"network": {
