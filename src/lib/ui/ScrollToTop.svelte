@@ -17,7 +17,10 @@
 <svelte:window bind:scrollY={y} />
 
 {#if visible}
-	<div class="fixed right-6 bottom-6 z-40" transition:fly={{ y: 20, duration: 300 }}>
+	<div
+		class="fixed right-6 bottom-6 z-40 hidden md:block"
+		transition:fly={{ y: 20, duration: 300 }}
+	>
 		<button
 			class="btn btn-circle btn-primary shadow-xl hover:scale-105 active:scale-95 transition-transform duration-200"
 			onclick={scrollToTop}

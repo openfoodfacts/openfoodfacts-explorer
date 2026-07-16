@@ -431,6 +431,18 @@
 		</a>
 
 		<div class="divider md:divider-horizontal"></div>
+		<button
+			type="button"
+			class="btn btn-outline link"
+			onclick={() => {
+				toggleCalculator();
+				accordionOpen = false;
+			}}
+			title={$_('calculator', { default: 'Calculator' })}
+			aria-label={$_('calculator', { default: 'Calculator' })}
+		>
+			<span>{$_('calculator', { default: 'Calculator' })}</span>
+		</button>
 		<a
 			class="btn btn-outline link"
 			href="/settings"
@@ -439,16 +451,6 @@
 		>
 			{$_('settings_link')}
 		</a>
-		<button
-			type="button"
-			class="btn btn-outline link gap-2"
-			onclick={toggleCalculator}
-			title={$_('calculator', { default: 'Calculator' })}
-			aria-label={$_('calculator', { default: 'Calculator' })}
-		>
-			<IconMdiCalculator class="h-4 w-4" />
-			<span>{$_('calculator', { default: 'Calculator' })}</span>
-		</button>
 
 		{#if $userInfo != null}
 			<div class="w-full flex justify-center mt-2 md:mt-0">
