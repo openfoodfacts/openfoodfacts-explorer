@@ -100,13 +100,12 @@
 			verbose: false
 		});
 
+		html5QrCode = scanner;
 		startScanner(scanner).catch(async (err) => {
 			error = 'Camera access is required. Please enable it in your browser settings.';
 			console.error('QR Code Scanner Error:', err);
 			await cleanupScanner();
 		});
-
-		html5QrCode = scanner;
 	});
 
 	async function stopScanner() {
