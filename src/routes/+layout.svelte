@@ -24,7 +24,10 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -266,7 +269,7 @@
 <!-- Desktop Header -->
 <div class="hidden xl:block">
 	<div class="flex justify-center">
-		<div class="bg-base-100 navbar flex max-w-7xl px-10">
+		<div class="bg-base-100 navbar flex max-w-6xl px-4">
 			<div class="navbar-start">
 				<a href="/"> <Logo /> </a>
 			</div>
@@ -274,6 +277,15 @@
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 			<div class="navbar-end gap-2">
+				<!-- Calculator button -->
+				<button
+					class="btn btn-ghost"
+					title={$_('calculator', { default: 'Calculator' })}
+					aria-label={$_('calculator', { default: 'Calculator' })}
+					onclick={toggleCalculator}
+				>
+					<IconMdiCalculator class="w-6" />
+				</button>
 				<!-- Shortcuts button -->
 				<button
 					class="btn btn-ghost"
@@ -427,6 +439,16 @@
 		>
 			{$_('settings_link')}
 		</a>
+		<button
+			type="button"
+			class="btn btn-outline link gap-2"
+			onclick={toggleCalculator}
+			title={$_('calculator', { default: 'Calculator' })}
+			aria-label={$_('calculator', { default: 'Calculator' })}
+		>
+			<IconMdiCalculator class="h-4 w-4" />
+			<span>{$_('calculator', { default: 'Calculator' })}</span>
+		</button>
 
 		{#if $userInfo != null}
 			<div class="w-full flex justify-center mt-2 md:mt-0">
@@ -477,6 +499,7 @@
 	</div>
 {/if}
 <CompareFloatingButton />
+<NutritionCalculator />
 <Footer />
 <Toast />
 
