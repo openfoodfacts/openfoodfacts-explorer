@@ -83,7 +83,7 @@
 	</div>
 
 	<!-- Origins -->
-	<div class="form-control w-full">
+	<div id="origins" class="form-control w-full">
 		<label class="label" for="origins-input">
 			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.origins')}
