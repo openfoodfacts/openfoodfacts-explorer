@@ -72,13 +72,13 @@
 		clearScannerTimeout();
 		scannerTimeout = setTimeout(() => {
 			stopScanner()
-				.then(() => {
-					scannerTimedOut = true;
-				})
 				.catch((err) => {
 					console.error('Failed to stop scanner after timeout:', err);
+				})
+				.finally(() => {
+					scannerTimedOut = true;
 				});
-		}, 20_000);
+		}, 20000);
 	}
 
 	async function startScanner(scanner: Html5Qrcode) {
@@ -155,7 +155,9 @@
 			}
 		} catch (err) {
 			console.error('Failed to restart scanner:', err);
-			error = 'Failed to restart the scanner. Please refresh the page.';
+			error = $_('qr.scanner_restart_failed', {
+				default: 'Failed to restart the scanner. Please refresh the page.'
+			});
 		}
 	}
 
@@ -177,7 +179,7 @@
 		<h2 class="mb-2 text-xl font-semibold">
 			{$_('qr.product_not_found', { default: 'Product Not Found' })}
 		</h2>
-		<p class="mb-6 text-gray-400">
+		<p class="mb-6 text-base-content/70">
 			{$_('qr.barcode_scanned_not_found', {
 				values: { barcode: lastScannedCode },
 				default: `Barcode ${lastScannedCode} was scanned successfully, but no product was found.`
