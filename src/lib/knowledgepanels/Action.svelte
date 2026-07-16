@@ -64,6 +64,12 @@
 			action: () => {
 				goto(`/products/${requireCode()}/edit#origins`);
 			}
+		},
+		{
+			type: 'add_recycling_instructions',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#recycling`);
+			}
 		}
 	];
 
