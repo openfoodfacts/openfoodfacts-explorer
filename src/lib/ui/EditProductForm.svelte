@@ -103,35 +103,42 @@
 			const targetEl = document.getElementById(targetId);
 			if (targetEl) {
 				const collapseEl = targetEl.closest('.collapse');
-				const collapseId = collapseEl ? collapseEl.id : null;
-
-				if (collapseEl && collapseId) {
+				if (collapseEl) {
 					// Expand the accordion ONLY if it is currently collapsed
 					const checkbox = collapseEl.querySelector('input[type="checkbox"]') as HTMLInputElement;
 					if (checkbox && !checkbox.checked) {
 						checkbox.checked = true;
 						checkbox.dispatchEvent(new Event('change'));
 					}
-
-					setTimeout(() => {
-						const headerOffset = 100;
-						const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
-						const offsetPosition = elementPosition - headerOffset;
-
-						window.scrollTo({
-							top: offsetPosition,
-							behavior: 'smooth'
-						});
-
-						targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
-						setTimeout(() => {
-							targetEl.classList.remove('bg-warning/15');
-							setTimeout(() => {
-								targetEl.classList.remove('transition-colors', 'duration-1000');
-							}, 1000);
-						}, 600);
-					}, 150);
 				}
+
+				const t1 = setTimeout(() => {
+					const headerOffset = 100;
+					const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
+					const offsetPosition = elementPosition - headerOffset;
+
+					window.scrollTo({
+						top: offsetPosition,
+						behavior: 'smooth'
+					});
+
+					targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
+				}, 150);
+
+				const t2 = setTimeout(() => {
+					targetEl.classList.remove('bg-warning/15');
+				}, 750);
+
+				const t3 = setTimeout(() => {
+					targetEl.classList.remove('transition-colors', 'duration-1000');
+				}, 1750);
+
+				return () => {
+					clearTimeout(t1);
+					clearTimeout(t2);
+					clearTimeout(t3);
+					targetEl.classList.remove('bg-warning/15', 'transition-colors', 'duration-1000');
+				};
 			}
 		}
 	});
