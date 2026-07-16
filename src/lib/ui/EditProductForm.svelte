@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
 	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
@@ -94,6 +95,46 @@
 	}
 
 	const permissions = getPermissionsCtx();
+
+	$effect(() => {
+		const hash = page.url.hash;
+		if (hash) {
+			const targetId = hash.slice(1);
+			const targetEl = document.getElementById(targetId);
+			if (targetEl) {
+				const collapseEl = targetEl.closest('.collapse');
+				const collapseId = collapseEl ? collapseEl.id : null;
+
+				if (collapseEl && collapseId) {
+					// Expand the accordion ONLY if it is currently collapsed
+					const checkbox = collapseEl.querySelector('input[type="checkbox"]') as HTMLInputElement;
+					if (checkbox && !checkbox.checked) {
+						checkbox.checked = true;
+						checkbox.dispatchEvent(new Event('change'));
+					}
+
+					setTimeout(() => {
+						const headerOffset = 100;
+						const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
+						const offsetPosition = elementPosition - headerOffset;
+
+						window.scrollTo({
+							top: offsetPosition,
+							behavior: 'smooth'
+						});
+
+						targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
+						setTimeout(() => {
+							targetEl.classList.remove('bg-warning/15');
+							setTimeout(() => {
+								targetEl.classList.remove('transition-colors', 'duration-1000');
+							}, 1000);
+						}, 600);
+					}, 150);
+				}
+			}
+		}
+	});
 
 	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
 	let isMobile = $state(false);
