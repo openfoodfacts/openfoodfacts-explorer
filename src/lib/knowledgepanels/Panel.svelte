@@ -8,8 +8,10 @@
 		KnowledgePanelTitle
 	} from '$lib/api';
 
+	import { page } from '$app/state';
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
+	import PricesComp from '../../routes/products/[barcode]/Prices.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -79,6 +81,8 @@
 		{#if dev}
 			<div class="alert alert-warning">Panel is null</div>
 		{/if}
+	{:else if id === 'prices' && page.data.prices}
+		<PricesComp prices={page.data.prices} barcode={productCode ?? ''} />
 	{:else if panel.type === 'inline' || inline}
 		{#if panel.elements != null}
 			<div>{@render elementList(panel.elements)}</div>

@@ -521,13 +521,21 @@
 		"prices": {
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
-			"view_prices": "View prices on Open Prices"
+			"view_prices": "View prices on Open Prices",
+			"kp_subtitle_found": "{count} prices found in {storeCount} stores",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Edit product",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Add packaging components",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "View prices on Open Prices"
 			}
 		},
 		"moderator": {

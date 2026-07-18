@@ -18,7 +18,6 @@
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
 
 	import type { PageProps } from './$types';
-	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
@@ -26,7 +25,12 @@
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
+	import type {
+		KnowledgePanels,
+		KnowledgePanel,
+		KnowledgePanelElement,
+		KnowledgeElement
+	} from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { onMount } from 'svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
@@ -59,6 +63,37 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+
+	let panels = $derived.by(() => {
+		const basePanels = { ...product.knowledge_panels } as Record<string, KnowledgePanel>;
+		if (isPriceConfigured() && data.prices != null && product.code) {
+			const rootPanel = basePanels['root'];
+			if (rootPanel && rootPanel.elements) {
+				const hasPrices = rootPanel.elements.some(
+					(el: KnowledgeElement) =>
+						el.element_type === 'panel' &&
+						(el as KnowledgePanelElement).panel_element?.panel_id === 'prices'
+				);
+				if (!hasPrices) {
+					basePanels['root'] = {
+						...rootPanel,
+						elements: [
+							...rootPanel.elements,
+							{
+								element_type: 'panel',
+								panel_element: { panel_id: 'prices' }
+							}
+						]
+					};
+				}
+			}
+
+			basePanels['prices'] = {
+				elements: []
+			} as unknown as KnowledgePanel;
+		}
+		return basePanels as KnowledgePanels;
+	});
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
@@ -241,11 +276,7 @@
 		{/if}
 	{/await}
 
-	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
-
-	{#if isPriceConfigured() && data?.prices != null}
-		<Prices prices={data.prices} barcode={product.code} />
-	{/if}
+	<KnowledgePanelsComp {panels} code={product.code} roots={['root']} />
 
 	<Gs1Country barcode={product.code} />
 
