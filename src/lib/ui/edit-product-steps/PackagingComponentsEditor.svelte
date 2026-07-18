@@ -170,7 +170,7 @@
 </script>
 
 <div class="space-y-4">
-	<div class="bg-base-200/50 mb-4 rounded-md p-3 text-xs sm:text-sm">
+	<div class="bg-base-100 mb-4 rounded-md p-3 text-xs sm:text-sm">
 		<p class="label-text mb-2 font-semibold">
 			{$_('product.edit.packaging_component.instructions_title', {
 				default: 'Guidance for packaging parts:'

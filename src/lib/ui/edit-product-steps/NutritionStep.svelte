@@ -531,7 +531,7 @@
 			</div>
 		{/if}
 	</div>
-	<div class="tabs tabs-box mb-4">
+	<div class="tabs tabs-box bg-base-100 mb-4">
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 			{@const nutritionImage = getNutritionImage(code)}
 			<input

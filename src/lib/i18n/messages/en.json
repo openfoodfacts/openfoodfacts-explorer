@@ -456,6 +456,8 @@
 			"sections": {
 				"images": "Photos",
 				"basic_info": "Basic Information",
+				"take_photos": "Take Some Photos",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Languages & Product Names",
 				"ingredients": "Ingredients",
@@ -465,6 +467,19 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, NOVA, and Eco-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
 			"legal_warning_title": "Do not upload copyrighted images",
 			"legal_warning_photos_1": "Do not upload photos you do not own or do not have the rights to. Uploading copyrighted images without permission is illegal and may result in your account being suspended.",
 			"legal_warning_photos_2": "Only upload your own photos or those you have explicit permission to use.",
