@@ -83,7 +83,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			{$_('knowledge_panels.action.add_price', { default: 'Add a price' })}
+			{$_('product.knowledge_panels.action.add_price', { default: 'Add a price' })}
 		</a>
 		<a
 			href={OPEN_PRICES_PRODUCTS_URL(barcode)}
