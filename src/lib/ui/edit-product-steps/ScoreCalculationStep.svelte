@@ -40,7 +40,11 @@
 	<div class="space-y-4">
 		<!-- Ingredients (Open by default) -->
 		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
-			<input type="checkbox" checked />
+			<input
+				type="checkbox"
+				checked
+				aria-label={$_('product.edit.sections.ingredients', { default: 'Ingredients' })}
+			/>
 			<div class="collapse-title text-sm font-bold sm:text-base">
 				{$_('product.edit.sections.ingredients')}
 			</div>
@@ -53,7 +57,10 @@
 
 		<!-- Nutrition Facts -->
 		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
-			<input type="checkbox" />
+			<input
+				type="checkbox"
+				aria-label={$_('product.edit.sections.nutrition', { default: 'Nutrition Facts' })}
+			/>
 			<div class="collapse-title text-sm font-bold sm:text-base">
 				{$_('product.edit.sections.nutrition')}
 			</div>
@@ -72,7 +79,10 @@
 
 		<!-- Packaging -->
 		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
-			<input type="checkbox" />
+			<input
+				type="checkbox"
+				aria-label={$_('product.edit.sections.packaging', { default: 'Packaging' })}
+			/>
 			<div class="collapse-title text-sm font-bold sm:text-base">
 				{$_('product.edit.sections.packaging')}
 			</div>
