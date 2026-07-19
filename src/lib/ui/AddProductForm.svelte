@@ -11,20 +11,25 @@
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
-	let currentStep = $derived.by(() => {
-		const params = page.url.searchParams;
-		const step = params.get('step') || '1';
-		return parseInt(step, 10) - 1; // Convert to zero-based index
-	});
-
 	const STEPS = $derived([
-		{ title: $_('product.edit.sections.basic_info') },
-		{ title: $_('product.edit.sections.take_photos') },
+		{ title: $_('product.edit.sections.basic_info', { default: 'Basic Information' }) },
+		{ title: $_('product.edit.sections.take_photos', { default: 'Take Some Photos' }) },
 		{
-			title: $_('product.edit.sections.score_calculation'),
+			title: $_('product.edit.sections.score_calculation', { default: 'Score Calculation' }),
 			suffix: $_('product.edit.optional_suffix', { default: '(optional)' })
 		}
 	]);
+
+	let currentStep = $derived.by(() => {
+		const params = page.url.searchParams;
+		const stepStr = params.get('step');
+		if (!stepStr) return 0;
+		const parsed = parseInt(stepStr, 10);
+		if (isNaN(parsed) || parsed < 1 || parsed > STEPS.length) {
+			return 0;
+		}
+		return parsed - 1; // Convert to zero-based index
+	});
 
 	function gotoStep(step: number) {
 		if (step < 0 || step >= STEPS.length) {
@@ -173,29 +178,31 @@
 {/if}
 
 <!-- Navigation Buttons for Add Mode -->
-<div class="mt-8 mb-12 flex justify-between gap-3 items-center">
+<div
+	class="mt-8 mb-12 flex flex-col md:flex-row justify-between gap-3 items-stretch md:items-center"
+>
 	{#if currentStep > 0}
 		<button
-			class="btn btn-outline min-w-40 text-sm max-md:grow sm:text-base shrink-0"
+			class="btn btn-outline w-full md:w-auto md:min-w-40 text-sm sm:text-base shrink-0"
 			onclick={prevStep}
 			type="button"
 		>
-			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back')}
+			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back', { default: 'Back' })}
 		</button>
 	{/if}
 
-	<div class="flex gap-3 justify-end w-full max-md:grow">
+	<div class="flex flex-col md:flex-row gap-3 justify-end w-full">
 		{#if currentStep === 0}
 			<button
-				class="btn btn-secondary min-w-40 text-sm max-md:grow sm:text-base ml-auto"
+				class="btn btn-secondary w-full md:w-auto md:min-w-40 text-sm sm:text-base md:ml-auto"
 				onclick={nextStep}
 				type="button"
 			>
-				{$_('common.next')}<IconMdiArrowRight class="ml-2 h-4 w-4" />
+				{$_('common.next', { default: 'Next' })}<IconMdiArrowRight class="ml-2 h-4 w-4" />
 			</button>
 		{:else if currentStep === 1}
 			<button
-				class="btn btn-success min-w-40 text-sm max-md:grow sm:text-base"
+				class="btn btn-success w-full md:w-auto md:min-w-40 text-sm sm:text-base"
 				onclick={submit}
 				disabled={isSubmitting || disableSubmit}
 				type="button"
@@ -206,7 +213,7 @@
 				{$_('product.edit.submit_product', { default: 'Submit' })}
 			</button>
 			<button
-				class="btn btn-secondary min-w-40 text-sm max-md:grow sm:text-base"
+				class="btn btn-secondary w-full md:w-auto md:min-w-40 text-sm sm:text-base"
 				onclick={nextStep}
 				type="button"
 			>
@@ -215,7 +222,7 @@
 			</button>
 		{:else if currentStep === 2}
 			<button
-				class="btn btn-success min-w-40 text-sm max-md:grow sm:text-base ml-auto"
+				class="btn btn-success w-full md:w-auto md:min-w-40 text-sm sm:text-base md:ml-auto"
 				onclick={submit}
 				disabled={isSubmitting || disableSubmit}
 				type="button"
