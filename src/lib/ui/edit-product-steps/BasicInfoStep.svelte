@@ -80,6 +80,7 @@
 
 		const fieldsToDelete = [
 			`product_name_${code}`,
+			`generic_name_${code}`,
 			`ingredients_text_${code}`,
 			`packaging_text_${code}`
 		];
@@ -446,7 +447,7 @@
 								};
 							}}
 							placeholder={`${$_('product.edit.name', { default: 'Product name' })} (${langName})`}
-							aria-label={`${$_('product.edit.name')} (${langName})`}
+							aria-label={`${$_('product.edit.name', { default: 'Product name' })} (${langName})`}
 						/>
 						{#if code !== product.lang}
 							<button
@@ -482,7 +483,11 @@
 			</div>
 			<!-- Collapsible "Add a Language" under product names -->
 			<div class="collapse collapse-arrow bg-base-100 mt-3 border border-base-300 rounded-lg">
-				<input type="checkbox" id="add_language_toggle" />
+				<input
+					type="checkbox"
+					id="add_language_toggle"
+					aria-label={$_('product.edit.add_language', { default: 'Add a language' })}
+				/>
 				<div class="collapse-title text-sm font-semibold sm:text-base py-3 min-h-0">
 					{$_('product.edit.add_language')}
 				</div>
@@ -519,7 +524,11 @@
 
 		<!-- Collapsible "More details" section -->
 		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
-			<input type="checkbox" id="more_details_toggle" />
+			<input
+				type="checkbox"
+				id="more_details_toggle"
+				aria-label={$_('product.edit.more_details', { default: 'More details' })}
+			/>
 			<div class="collapse-title text-sm font-bold sm:text-base">
 				{$_('product.edit.more_details', { default: 'More details' })}
 			</div>
