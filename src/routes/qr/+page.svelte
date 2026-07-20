@@ -166,7 +166,7 @@
 	</div>
 {:else}
 	<div class="flex flex-col items-center p-8">
-		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
+		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-base-300"></div>
 
 		{#if scannerTimedOut}
 			<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
