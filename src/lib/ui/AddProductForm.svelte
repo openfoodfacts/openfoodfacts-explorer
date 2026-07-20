@@ -12,8 +12,10 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const STEPS = $derived([
+		{
+			title: $_('product.edit.sections.take_photos', { default: 'Take key photos of the product' })
+		},
 		{ title: $_('product.edit.sections.basic_info', { default: 'Basic Information' }) },
-		{ title: $_('product.edit.sections.take_photos', { default: 'Take Some Photos' }) },
 		{
 			title: $_('product.edit.sections.score_calculation', { default: 'Score Calculation' }),
 			suffix: $_('product.edit.optional_suffix', { default: '(optional)' })
@@ -150,6 +152,8 @@
 
 <!-- Step Components -->
 {#if currentStep === 0}
+	<ImagesStep bind:product editMode={true} />
+{:else if currentStep === 1}
 	<BasicInfoStep
 		bind:product
 		bind:comment
@@ -163,8 +167,6 @@
 		{addLanguage}
 		editMode={false}
 	/>
-{:else if currentStep === 1}
-	<ImagesStep bind:product editMode={true} />
 {:else if currentStep === 2}
 	<ScoreCalculationStep
 		bind:product
