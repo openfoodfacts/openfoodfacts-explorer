@@ -71,13 +71,7 @@
 	function startScannerTimeout() {
 		clearScannerTimeout();
 		scannerTimeout = setTimeout(() => {
-			stopScanner()
-				.catch((err) => {
-					console.error('Failed to stop scanner after timeout:', err);
-				})
-				.finally(() => {
-					scannerTimedOut = true;
-				});
+			scannerTimedOut = true;
 		}, 20000);
 	}
 
@@ -139,28 +133,6 @@
 		}
 	}
 
-	async function restartScanner() {
-		try {
-			productNotFound = false;
-			scannerTimedOut = false;
-			error = null;
-			lastScannedCode = '';
-			manualBarcode = '';
-
-			// Ensure page is fully rendered before restarting the scan
-			await tick();
-
-			if (html5QrCode) {
-				await startScanner(html5QrCode);
-			}
-		} catch (err) {
-			console.error('Failed to restart scanner:', err);
-			error = $_('qr.scanner_restart_failed', {
-				default: 'Failed to restart the scanner. Please refresh the page.'
-			});
-		}
-	}
-
 	function submitManualBarcode(event: SubmitEvent) {
 		event.preventDefault();
 		const barcode = manualBarcode.trim();
@@ -190,41 +162,36 @@
 			<button class="btn btn-outline" onclick={addNewProduct}
 				>{$_('qr.add_new_product', { default: 'Add new product' })}</button
 			>
-			<button class="btn btn-outline" onclick={restartScanner}
-				>{$_('qr.scan_again', { default: 'Scan again' })}</button
-			>
 		</div>
 	</div>
-{:else if scannerTimedOut}
-	<div class="flex flex-col items-center justify-center p-8 text-center">
-		<form class="w-full max-w-md" onsubmit={submitManualBarcode}>
-			<label class="mb-2 block text-left" for="manual-barcode">
-				{$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-			</label>
-			<div class="join w-full">
-				<input
-					id="manual-barcode"
-					type="text"
-					inputmode="numeric"
-					placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-					aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-					bind:value={manualBarcode}
-					class="input join-item input-bordered w-full"
-					required
-					pattern="\d+"
-				/>
-				<button class="btn btn-primary join-item" type="submit">
-					{$_('search.button', { default: 'Search' })}
-				</button>
-			</div>
-		</form>
-
-		<button class="btn btn-outline mt-4" onclick={restartScanner}
-			>{$_('qr.scan_again', { default: 'Scan again' })}</button
-		>
-	</div>
 {:else}
-	<div class="my-44 flex flex-1 items-center justify-center">
+	<div class="flex flex-col items-center p-8">
 		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
+
+		{#if scannerTimedOut}
+			<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
+				<label class="mb-2 block text-left" for="manual-barcode">
+					{$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+				</label>
+
+				<div class="join w-full">
+					<input
+						id="manual-barcode"
+						type="text"
+						inputmode="numeric"
+						placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+						aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+						bind:value={manualBarcode}
+						class="input input-bordered join-item w-full"
+						required
+						pattern="\d+"
+					/>
+
+					<button class="btn btn-primary join-item" type="submit">
+						{$_('search.button', { default: 'Search' })}
+					</button>
+				</div>
+			</form>
+		{/if}
 	</div>
 {/if}
