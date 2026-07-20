@@ -96,51 +96,57 @@
 
 	const permissions = getPermissionsCtx();
 
-	$effect(() => {
-		const hash = page.url.hash;
-		if (hash) {
-			const targetId = hash.slice(1);
-			const targetEl = document.getElementById(targetId);
-			if (targetEl) {
-				const collapseEl = targetEl.closest('.collapse');
-				if (collapseEl) {
-					// Expand the accordion ONLY if it is currently collapsed
-					const checkbox = collapseEl.querySelector('input[type="checkbox"]') as HTMLInputElement;
-					if (checkbox && !checkbox.checked) {
-						checkbox.checked = true;
-						checkbox.dispatchEvent(new Event('change'));
-					}
-				}
-
-				const t1 = setTimeout(() => {
-					const headerOffset = 100;
-					const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
-					const offsetPosition = elementPosition - headerOffset;
-
-					window.scrollTo({
-						top: offsetPosition,
-						behavior: 'smooth'
-					});
-
-					targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
-				}, 150);
-
-				const t2 = setTimeout(() => {
-					targetEl.classList.remove('bg-warning/15');
-				}, 750);
-
-				const t3 = setTimeout(() => {
-					targetEl.classList.remove('transition-colors', 'duration-1000');
-				}, 1750);
-
-				return () => {
-					clearTimeout(t1);
-					clearTimeout(t2);
-					clearTimeout(t3);
-					targetEl.classList.remove('bg-warning/15', 'transition-colors', 'duration-1000');
-				};
+	function scrollToAndHighlight(targetEl: HTMLElement) {
+		// Expand parent collapse/accordion if closed
+		const collapseEl = targetEl.closest('.collapse');
+		if (collapseEl) {
+			const checkbox = collapseEl.querySelector('input[type="checkbox"]') as HTMLInputElement;
+			if (checkbox && !checkbox.checked) {
+				checkbox.checked = true;
+				checkbox.dispatchEvent(new Event('change'));
 			}
 		}
+
+		// Scroll to element with sticky-header offset after transition delay
+		const scrollTimeout = setTimeout(() => {
+			const headerOffset = 100;
+			const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
+
+			window.scrollTo({
+				top: elementPosition - headerOffset,
+				behavior: 'smooth'
+			});
+
+			targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
+		}, 150);
+
+		// Fade out highlight background color
+		const fadeTimeout = setTimeout(() => {
+			targetEl.classList.remove('bg-warning/15');
+		}, 750);
+
+		// Remove transition classes after animation completes
+		const cleanupTimeout = setTimeout(() => {
+			targetEl.classList.remove('transition-colors', 'duration-1000');
+		}, 1750);
+
+		// Cleanup timers and styles on destroy
+		return () => {
+			clearTimeout(scrollTimeout);
+			clearTimeout(fadeTimeout);
+			clearTimeout(cleanupTimeout);
+			targetEl.classList.remove('bg-warning/15', 'transition-colors', 'duration-1000');
+		};
+	}
+
+	$effect(() => {
+		const hash = page.url.hash;
+		if (!hash) return;
+
+		const targetEl = document.getElementById(hash.slice(1));
+		if (!targetEl) return;
+
+		return scrollToAndHighlight(targetEl);
 	});
 
 	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
