@@ -155,10 +155,10 @@
 	{/if}
 
 	<div class="space-y-6">
-		<!-- Product Type (Moderators Only) -->
+		<!-- Product Type (Moderators Only in edit mode) -->
 		{#if permissions.isModerator && $preferences.moderator}
 			<div class="form-control w-full">
-				<label class="label" for="product_type">
+				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.product_type')}
 						<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
@@ -167,18 +167,22 @@
 						<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
 					</span>
 				</label>
-				<select
-					id="product_type"
-					class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-					value={product.product_type}
-					onchange={(e) => {
-						product = { ...product, product_type: (e.currentTarget as HTMLSelectElement).value };
-					}}
-				>
+				<div class="flex flex-wrap gap-2">
 					{#each PRODUCT_TYPES as type (type)}
-						<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
+						<button
+							type="button"
+							class="btn btn-sm sm:btn-md flex-1 min-w-[120px] rounded-lg border border-base-300 font-normal transition-all {(product.product_type ??
+								'food') === type
+								? 'btn-primary border-primary font-semibold shadow-sm'
+								: 'bg-base-100 text-base-content/80 hover:bg-base-200 border-base-300'}"
+							onclick={() => {
+								product = { ...product, product_type: type };
+							}}
+						>
+							{$_(`product.edit.product_types.${type}`)}
+						</button>
 					{/each}
-				</select>
+				</div>
 			</div>
 		{/if}
 
@@ -365,32 +369,31 @@
 	{/if}
 
 	<div class="space-y-6">
-		<!-- Product Type (Moderators Only) -->
-		{#if permissions.isModerator && $preferences.moderator}
-			<div class="form-control w-full">
-				<label class="label" for="product_type">
-					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.product_type')}
-						<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
-							{$_('product.edit.moderator_only')}
-						</span>
-						<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
-					</span>
-				</label>
-				<select
-					id="product_type"
-					class="select select-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-					value={product.product_type}
-					onchange={(e) => {
-						product = { ...product, product_type: (e.currentTarget as HTMLSelectElement).value };
-					}}
-				>
-					{#each PRODUCT_TYPES as type (type)}
-						<option value={type}>{$_(`product.edit.product_types.${type}`)}</option>
-					{/each}
-				</select>
+		<!-- Product Type (Available for everyone during product addition) -->
+		<div class="form-control w-full">
+			<label class="label">
+				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+					{$_('product.edit.product_type')}
+					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+				</span>
+			</label>
+			<div class="flex flex-wrap gap-2">
+				{#each PRODUCT_TYPES as type (type)}
+					<button
+						type="button"
+						class="btn btn-sm sm:btn-md flex-1 min-w-[120px] rounded-lg border border-base-300 font-normal transition-all {(product.product_type ??
+							'food') === type
+							? 'btn-primary border-primary font-semibold shadow-sm'
+							: 'bg-base-100 text-base-content/80 hover:bg-base-200 border-base-300'}"
+						onclick={() => {
+							product = { ...product, product_type: type };
+						}}
+					>
+						{$_(`product.edit.product_types.${type}`)}
+					</button>
+				{/each}
 			</div>
-		{/if}
+		</div>
 
 		<!-- Main Language selector -->
 		<div class="form-control w-full">
