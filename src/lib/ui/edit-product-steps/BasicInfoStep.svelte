@@ -234,7 +234,7 @@
 				<input
 					id="quantity"
 					type="text"
-					class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+					class="input input-bordered focus:border-primary mt-2 w-full text-sm focus:outline-none sm:text-base"
 					value={product.quantity ?? ''}
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
@@ -520,21 +520,44 @@
 			</div>
 		</div>
 
-		<!-- Brands -->
-		<div class="form-control w-full">
-			<label class="label" for="brands-input">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.brands')}
-					<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
-				</span>
-			</label>
-			<TagsString
-				tagsString={product.brands ?? ''}
-				autocomplete={brandNames}
-				onChange={(v) => {
-					product = { ...product, brands: v };
-				}}
-			/>
+		<!-- Brands & Quantity Grid -->
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+			<!-- Brands -->
+			<div class="form-control w-full">
+				<label class="label" for="brands-input">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+						{$_('product.edit.brands')}
+						<InfoTooltip text={$_('product.edit.tooltips.brand_name')} />
+					</span>
+				</label>
+				<TagsString
+					tagsString={product.brands ?? ''}
+					autocomplete={brandNames}
+					onChange={(v) => {
+						product = { ...product, brands: v };
+					}}
+				/>
+			</div>
+
+			<!-- Quantity -->
+			<div class="form-control w-full">
+				<label class="label" for="quantity">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+						{$_('product.edit.quantity')}
+						<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
+					</span>
+				</label>
+				<input
+					id="quantity"
+					type="text"
+					class="input input-bordered focus:border-primary mt-2 w-full text-sm focus:outline-none sm:text-base"
+					value={product.quantity ?? ''}
+					oninput={(e) => {
+						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
+					}}
+					placeholder="e.g., 250g, 1L, 500ml"
+				/>
+			</div>
 		</div>
 
 		<!-- Collapsible "More details" section -->
@@ -591,24 +614,6 @@
 									</div>
 								{/each}
 							</div>
-						</div>
-						<div class="form-control w-full sm:col-span-2">
-							<label class="label" for="quantity">
-								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-									{$_('product.edit.quantity')}
-									<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
-								</span>
-							</label>
-							<input
-								id="quantity"
-								type="text"
-								class="input input-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-								value={product.quantity ?? ''}
-								oninput={(e) => {
-									product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
-								}}
-								placeholder="e.g., 250g, 1L, 500ml"
-							/>
 						</div>
 						<div class="form-control w-full sm:col-span-2">
 							<label class="label" for="website_url">
