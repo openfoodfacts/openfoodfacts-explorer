@@ -188,31 +188,43 @@
 
 		<!-- Primary Fields Grid -->
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-			<div class="form-control w-full">
-				<label class="label" for="generic_name">
-					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.generic_name', { default: 'Common name' })} ({getLanguageName(
-							product.lang
-						)})
+			<div class="form-control w-full sm:col-span-2">
+				<div class="label">
+					<span class="label-text text-sm font-medium sm:text-base">
+						{$_('product.edit.generic_name', { default: 'Common name' })}
 					</span>
-				</label>
-				<input
-					id="generic_name"
-					type="text"
-					class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-					value={product[`generic_name_${product.lang}`] ?? ''}
-					oninput={(e) => {
-						product = {
-							...product,
-							[`generic_name_${product.lang}`]: (e.currentTarget as HTMLInputElement).value
-						};
-					}}
-					placeholder={$_('product.edit.generic_name_placeholder', {
-						default: 'e.g., Chocolate chip cookies, Orange juice'
-					})}
-				/>
+				</div>
+				<div class="space-y-3">
+					{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+						{@const langName = getLanguageName(code)}
+						<div class="flex items-center gap-2">
+							<div
+								class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+								title={langName}
+							>
+								{code}
+							</div>
+							<input
+								id={`generic-name-${code}`}
+								type="text"
+								class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+								value={product[`generic_name_${code}`] ?? ''}
+								oninput={(e) => {
+									product = {
+										...product,
+										[`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
+									};
+								}}
+								placeholder={$_('product.edit.generic_name_placeholder', {
+									default: 'e.g., Chocolate chip cookies, Orange juice'
+								})}
+								aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
+							/>
+						</div>
+					{/each}
+				</div>
 			</div>
-			<div class="form-control w-full">
+			<div class="form-control w-full sm:col-span-2">
 				<label class="label" for="quantity">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.quantity')}
@@ -544,31 +556,43 @@
 						})}
 					</div>
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-						<div class="form-control w-full">
-							<label class="label" for="generic_name">
-								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-									{$_('product.edit.generic_name', { default: 'Common name' })} ({getLanguageName(
-										product.lang
-									)})
+						<div class="form-control w-full sm:col-span-2">
+							<div class="label">
+								<span class="label-text text-sm font-medium sm:text-base">
+									{$_('product.edit.generic_name', { default: 'Common name' })}
 								</span>
-							</label>
-							<input
-								id="generic_name"
-								type="text"
-								class="input input-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
-								value={product[`generic_name_${product.lang}`] ?? ''}
-								oninput={(e) => {
-									product = {
-										...product,
-										[`generic_name_${product.lang}`]: (e.currentTarget as HTMLInputElement).value
-									};
-								}}
-								placeholder={$_('product.edit.generic_name_placeholder', {
-									default: 'e.g., Chocolate chip cookies, Orange juice'
-								})}
-							/>
+							</div>
+							<div class="space-y-3">
+								{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+									{@const langName = getLanguageName(code)}
+									<div class="flex items-center gap-2">
+										<div
+											class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+											title={langName}
+										>
+											{code}
+										</div>
+										<input
+											id={`generic-name-${code}`}
+											type="text"
+											class="input input-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+											value={product[`generic_name_${code}`] ?? ''}
+											oninput={(e) => {
+												product = {
+													...product,
+													[`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
+												};
+											}}
+											placeholder={$_('product.edit.generic_name_placeholder', {
+												default: 'e.g., Chocolate chip cookies, Orange juice'
+											})}
+											aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
+										/>
+									</div>
+								{/each}
+							</div>
 						</div>
-						<div class="form-control w-full">
+						<div class="form-control w-full sm:col-span-2">
 							<label class="label" for="quantity">
 								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.quantity')}
