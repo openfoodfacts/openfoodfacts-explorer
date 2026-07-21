@@ -21,7 +21,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm run build
 # Prune dev dependencies after build to save space
-RUN pnpm prune --prod
+RUN HUSKY=0 pnpm prune --prod
 
 # 4. Production Stage (Final)
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS production
