@@ -101,7 +101,7 @@ jobs:
             git checkout -qf ${{ github.sha }}
 
       - name: Set environment variables
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USERNAME }}
@@ -137,7 +137,7 @@ jobs:
             echo "PUBLIC_NUTRIPATROL_URL=${{ env.PUBLIC_NUTRIPATROL_URL }}" >> $GITHUB_ENV
 
       - name: Re-start services
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USERNAME }}
@@ -152,7 +152,7 @@ jobs:
             docker compose up -d --wait
 
       - name: Check services are up
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         if: ${{ always() }}
         with:
           host: ${{ env.SSH_HOST }}
@@ -167,7 +167,7 @@ jobs:
             [[ -z $(docker compose  ps -q --status exited --status dead --status removing --status paused) ]] || exit 1
 
       - name: Cleanup obsolete Docker objects
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         if: ${{ always() }}
         with:
           host: ${{ env.SSH_HOST }}
