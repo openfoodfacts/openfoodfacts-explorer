@@ -215,9 +215,7 @@
 										[`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
 									};
 								}}
-								placeholder={$_('product.edit.generic_name_placeholder', {
-									default: 'e.g., Chocolate chip cookies, Orange juice'
-								})}
+								placeholder={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
 								aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
 							/>
 						</div>
@@ -606,9 +604,7 @@
 													[`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
 												};
 											}}
-											placeholder={$_('product.edit.generic_name_placeholder', {
-												default: 'e.g., Chocolate chip cookies, Orange juice'
-											})}
+											placeholder={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
 											aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
 										/>
 									</div>
