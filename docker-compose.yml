@@ -1,5 +1,5 @@
 # This is the docker compose file for deployment of the project
-# It is not necessurily fitted for devlopment purpose (at least yet)
+# It is not necessarily fitted for devlopment purpose (at least yet)
 
 services:
   explorer:

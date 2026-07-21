@@ -13,7 +13,7 @@ WORKDIR /app
 # Only copy files needed for install to leverage layer caching
 FROM base AS deps
 COPY pnpm-lock.yaml package.json  pnpm-workspace.yaml .npmrc ./
-RUN pnpm install --frozen-lockfile
+RUN HUSKY=0 pnpm install --frozen-lockfile
 
 # 3. Build Stage
 FROM base AS build
