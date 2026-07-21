@@ -4,6 +4,7 @@
 services:
   explorer:
     image: ghcr.io/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    restart: ${RESTART_POLICY:-always}
     ports:
       - '${DOCKER_EXPLORER_EXPOSE:-127.0.0.1:3000}:3000'
     env_file:

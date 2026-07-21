@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'rc/*'
+      - deploy/*
     tags:
       - 'v*.*.*'
 
@@ -14,6 +15,7 @@ concurrency:
 
 jobs:
   build-and-push:
+    name: Build and push Explorer Docker image
     runs-on: ubuntu-latest
 
     permissions:
