@@ -95,10 +95,8 @@ jobs:
             cd ${{ matrix.env }}
 
             # Fetch newest commits (in case it wasn't freshly cloned)
-            git fetch --depth 1
-
-            # Checkout current commit SHA
-            git checkout -qf ${{ github.sha }}
+            git fetch --depth=1 origin "${{ github.sha }}"
+            git checkout -qf FETCH_HEAD
 
       - name: Set environment variables
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
@@ -121,7 +119,7 @@ jobs:
             DOCKER_EXPLORER_EXPOSE=:3000
             COMPOSE_PATH_SEPARATOR=;
             COMPOSE_FILE=docker-compose.yml
-            RESTART_POLICY=no
+            RESTART_POLICY=unless-stopped
             EOF=====
             # Set App variables
             echo "PUBLIC_FOLKSONOMY_API_URL=${{ env.PUBLIC_FOLKSONOMY_API_URL }}" >> .env
