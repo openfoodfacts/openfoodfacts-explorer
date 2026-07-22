@@ -528,12 +528,9 @@
 		},
 		"knowledge_panels": {
 			"action": {
-				"edit_product": "Edit product",
-				"add_categories": "Add categories",
-				"report_product_to_nutripatrol": "Report an issue with this product",
-				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Add packaging components",
-				"add_origins": "Add origins of ingredients",
+				"add_origins": "Add origins",
+				"add_ingredients_text": "Add ingredients text",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "View prices on Open Prices"
 			}
