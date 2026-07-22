@@ -521,13 +521,18 @@
 		"prices": {
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
-			"view_prices": "View prices on Open Prices"
+			"view_prices": "View prices on Open Prices",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
 				"add_packaging_components": "Add packaging components",
 				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_ingredients_text": "Add ingredients text",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "View prices on Open Prices"
 			}
 		},
 		"moderator": {

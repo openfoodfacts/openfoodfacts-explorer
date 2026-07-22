@@ -16,9 +16,9 @@
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
-	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
