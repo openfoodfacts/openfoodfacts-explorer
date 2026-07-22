@@ -3,17 +3,10 @@ import type { PageLoad } from './$types';
 
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import {
-	type Brand,
-	type Label,
-	getTaxo,
-	type Store,
-	type Category,
-	type Origin,
-	type Country,
-	createProductsApi
-} from '$lib/api';
+import { createProductsApi } from '$lib/api';
 
+import { get } from 'svelte/store';
+import { preferences } from '$lib/settings';
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
@@ -75,11 +68,24 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
+	const userLang = get(preferences).lang;
+	const lc = userLang || 'en';
+
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
-		fields: ['all', 'knowledge_panels'],
+		fields: [
+			'all',
+			'knowledge_panels',
+			`categories_tags_${lc}`,
+			`brands_tags_${lc}`,
+			`labels_tags_${lc}`,
+			`origins_tags_${lc}`,
+			`stores_tags_${lc}`,
+			`countries_tags_${lc}`
+		],
 		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
-		knowledge_panels_client: 'web'
+		knowledge_panels_client: 'web',
+		lc
 	});
 
 	handleProductApiError(apiErrorWrapped);
@@ -97,16 +103,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			errors: state.errors
 		});
 	}
-
-	// TODO: switch to SDK
-	const productType = state.product.product_type;
-
-	const categories = getTaxo<Category>('categories', fetch, productType);
-	const labels = getTaxo<Label>('labels', fetch, productType);
-	const stores = getTaxo<Store>('stores', fetch, productType);
-	const brands = getTaxo<Brand>('brands', fetch, productType);
-	const origins = getTaxo<Origin>('origins', fetch, productType);
-	const countries = getTaxo<Country>('countries', fetch, productType);
 
 	const folksonomyTags = isFolksonomyConfigured()
 		? folkApi.getProductTags(params.barcode).then((it) => it.data ?? [])
@@ -133,14 +129,6 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		defaultProductPreferences: await defaultPreferences,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
-		taxo: {
-			categories,
-			labels,
-			stores,
-			brands,
-			countries,
-			origins
-		},
 		prices: await pricesResponse
 	};
 };

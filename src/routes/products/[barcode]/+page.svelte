@@ -210,7 +210,7 @@
 		</div>
 	{/if}
 
-	<ProductHeader {product} taxonomies={data.taxo} />
+	<ProductHeader {product} />
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />
