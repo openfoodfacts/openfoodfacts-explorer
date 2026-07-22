@@ -522,7 +522,7 @@
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
 			"view_prices": "View prices on Open Prices",
-			"kp_subtitle_found": "{count} prices found in {storeCount} stores",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
 			"loading_map": "Loading prices map…"
 		},

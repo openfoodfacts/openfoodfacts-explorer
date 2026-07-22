@@ -37,7 +37,8 @@
 	<p class="text-secondary text-sm italic mb-4">
 		{#if count > 0}
 			{$_('product.prices.kp_subtitle_found', {
-				default: '{count} prices found in {storeCount} stores',
+				default:
+					'{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}',
 				values: { count, storeCount: uniqueStores }
 			})}
 		{:else}
