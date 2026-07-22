@@ -28,6 +28,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
@@ -95,49 +96,6 @@
 	}
 
 	const permissions = getPermissionsCtx();
-
-	function scrollToAndHighlight(targetEl: HTMLElement) {
-		// Expand parent collapse/accordion if closed
-		const collapseEl = targetEl.closest('.collapse');
-		if (collapseEl) {
-			const checkbox = collapseEl.querySelector('input[type="checkbox"]') as HTMLInputElement;
-			if (checkbox && !checkbox.checked) {
-				checkbox.checked = true;
-				checkbox.dispatchEvent(new Event('change'));
-			}
-		}
-
-		// Scroll to element with sticky-header offset after transition delay
-		const scrollTimeout = setTimeout(() => {
-			const headerOffset = 100;
-			const elementPosition = targetEl.getBoundingClientRect().top + window.scrollY;
-
-			window.scrollTo({
-				top: elementPosition - headerOffset,
-				behavior: 'smooth'
-			});
-
-			targetEl.classList.add('bg-warning/15', 'transition-colors', 'duration-1000');
-		}, 150);
-
-		// Fade out highlight background color
-		const fadeTimeout = setTimeout(() => {
-			targetEl.classList.remove('bg-warning/15');
-		}, 750);
-
-		// Remove transition classes after animation completes
-		const cleanupTimeout = setTimeout(() => {
-			targetEl.classList.remove('transition-colors', 'duration-1000');
-		}, 1750);
-
-		// Cleanup timers and styles on destroy
-		return () => {
-			clearTimeout(scrollTimeout);
-			clearTimeout(fadeTimeout);
-			clearTimeout(cleanupTimeout);
-			targetEl.classList.remove('bg-warning/15', 'transition-colors', 'duration-1000');
-		};
-	}
 
 	$effect(() => {
 		const hash = page.url.hash;
