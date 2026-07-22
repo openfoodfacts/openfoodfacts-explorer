@@ -126,6 +126,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
 	return {
 		state,
+		lc,
 		defaultProductPreferences: await defaultPreferences,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,

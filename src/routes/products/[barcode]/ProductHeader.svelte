@@ -22,16 +22,18 @@
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
+		lc?: string;
 	};
-	let { product }: Props = $props();
+	let { product, lc }: Props = $props();
 
 	let { lang } = $derived($preferences);
 
 	function getLocalizedTags(facet: string): string[] | undefined {
 		const rawProduct = product as unknown as Record<string, unknown>;
+		const activeLang = lc || lang;
 		// Prioritize specific language suffix fields (e.g. categories_tags_fr, brands_tags_fr)
-		if (lang) {
-			const langKey = `${facet}_tags_${lang.toLowerCase()}`;
+		if (activeLang) {
+			const langKey = `${facet}_tags_${activeLang.toLowerCase()}`;
 			const langTags = rawProduct[langKey];
 			if (Array.isArray(langTags) && langTags.length > 0) return langTags as string[];
 		}

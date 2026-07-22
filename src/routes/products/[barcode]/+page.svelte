@@ -210,7 +210,7 @@
 		</div>
 	{/if}
 
-	<ProductHeader {product} />
+	<ProductHeader {product} lc={data.lc} />
 
 	{#if showBarcode && product.code != null}
 		<BarcodeInfo code={product.code} />
