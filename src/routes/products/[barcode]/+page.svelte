@@ -16,6 +16,7 @@
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
 	import { userInfo } from '$lib/stores/user';
@@ -25,7 +26,7 @@
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { KnowledgePanels, KnowledgePanel } from '$lib/api/knowledgepanels';
+	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import { onMount } from 'svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
@@ -58,34 +59,6 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
-
-	let panels = $derived.by(() => {
-		const basePanels = { ...product.knowledge_panels } as Record<string, KnowledgePanel>;
-
-		// Early exit if the prices tracking feature is disabled, prices data is empty, or the root panel has no elements
-		if (!isPriceConfigured() || !data.prices || !product.code || !basePanels['root']?.elements) {
-			return basePanels as KnowledgePanels;
-		}
-
-		// Inject the prices sub-panel element
-		basePanels['root'] = {
-			...basePanels['root'],
-			elements: [
-				...basePanels['root'].elements,
-				{
-					element_type: 'panel',
-					panel_element: { panel_id: 'prices' }
-				}
-			]
-		};
-
-		// Initialize prices as an empty panel placeholder, so the client-side Prices component can be mounted
-		basePanels['prices'] = {
-			elements: []
-		} as unknown as KnowledgePanel;
-
-		return basePanels as KnowledgePanels;
-	});
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
@@ -268,7 +241,11 @@
 		{/if}
 	{/await}
 
-	<KnowledgePanelsComp {panels} code={product.code} roots={['root']} />
+	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
+
+	{#if isPriceConfigured() && data?.prices != null}
+		<Prices prices={data.prices} barcode={product.code} />
+	{/if}
 
 	<Gs1Country barcode={product.code} />
 
