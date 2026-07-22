@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
 	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
@@ -27,6 +28,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
@@ -94,6 +96,16 @@
 	}
 
 	const permissions = getPermissionsCtx();
+
+	$effect(() => {
+		const hash = page.url.hash;
+		if (!hash) return;
+
+		const targetEl = document.getElementById(hash.slice(1));
+		if (!targetEl) return;
+
+		return scrollToAndHighlight(targetEl);
+	});
 
 	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
 	let isMobile = $state(false);
