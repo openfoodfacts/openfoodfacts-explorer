@@ -250,12 +250,12 @@
 </script>
 
 <div class="hidden lg:block">
-	<aside class="sticky top-24 w-50 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
-		<div class="flex items-center justify-end mb-4 px-1">
+	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
+		<div class="mb-4 flex items-center justify-end px-1">
 			<button
 				type="button"
 				onclick={toggleAllSections}
-				class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
+				class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
 			>
 				{$preferences.editing.expandAllSections
 					? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
@@ -265,7 +265,7 @@
 		<nav
 			bind:this={navElement}
 			aria-label={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
-			class="relative border-l-2 border-base-300 flex flex-col gap-1 pl-4 text-sm"
+			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
 			{#if indicatorHeight > 0}
@@ -290,11 +290,11 @@
 					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => scrollToSection(section.id)}
 					class={[
-						'group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none cursor-pointer',
+						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none',
 						activeSection === section.id
 							? section.style === 'warning'
-								? 'text-warning font-semibold'
-								: 'text-primary font-semibold'
+								? 'font-semibold text-warning'
+								: 'font-semibold text-primary'
 							: section.style === 'warning'
 								? 'text-warning/70 hover:text-warning'
 								: 'text-base-content/60 hover:text-primary'
@@ -302,7 +302,7 @@
 				>
 					{#if IconComponent}
 						<IconComponent
-							class="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110"
+							class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
 						/>
 					{/if}
 					<span>{section.label}</span>

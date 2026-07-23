@@ -200,25 +200,25 @@
 
 <div class="flex flex-col gap-4 p-2">
 	<div class="flex items-center gap-2">
-		<IconMdiImageMultiple class="text-warning h-5 w-5" />
+		<IconMdiImageMultiple class="h-5 w-5 text-warning" />
 		<h2 class="text-lg font-bold">
 			{$_('product.moderator.image_manager_title', { default: 'Manage Images' })}
 		</h2>
 	</div>
 
-	<p class="text-base-content/70 text-sm">
+	<p class="text-sm text-base-content/70">
 		{$_('product.moderator.image_manager_description', {
 			default: 'You can select one or more images and then:'
 		})}
 	</p>
 
-	<div class="tabs tabs-boxed gap-1 bg-base-300 p-0.5 rounded-lg flex w-full">
+	<div class="tabs-boxed tabs flex w-full gap-1 rounded-lg bg-base-300 p-0.5">
 		<button
 			type="button"
 			class={[
-				'tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5',
+				'tab-xs sm:tab-sm tab flex-1 gap-1.5 rounded-md px-2 py-1.5 transition-all sm:px-4',
 				activeTab === 'move'
-					? 'tab-active bg-warning text-warning-content font-bold'
+					? 'tab-active bg-warning font-bold text-warning-content'
 					: 'text-base-content/70 hover:text-base-content'
 			]}
 			onclick={() => {
@@ -227,16 +227,16 @@
 			disabled={isSubmitting}
 		>
 			<IconMdiImageMove class="h-4 w-4 shrink-0" />
-			<span class="text-xs text-left truncate sm:overflow-visible sm:whitespace-normal">
+			<span class="truncate text-left text-xs sm:overflow-visible sm:whitespace-normal">
 				{$_('product.moderator.image_manager_tab_move', { default: 'Move' })}
 			</span>
 		</button>
 		<button
 			type="button"
 			class={[
-				'tab tab-xs sm:tab-sm transition-all rounded-md flex-1 px-2 py-1.5 sm:px-4 gap-1.5',
+				'tab-xs sm:tab-sm tab flex-1 gap-1.5 rounded-md px-2 py-1.5 transition-all sm:px-4',
 				activeTab === 'delete'
-					? 'tab-active bg-error text-error-content font-bold'
+					? 'tab-active bg-error font-bold text-error-content'
 					: 'text-base-content/70 hover:text-base-content'
 			]}
 			onclick={() => {
@@ -245,15 +245,15 @@
 			disabled={isSubmitting}
 		>
 			<IconMdiImageRemove class="h-4 w-4 shrink-0" />
-			<span class="text-xs text-left truncate sm:overflow-visible sm:whitespace-normal">
+			<span class="truncate text-left text-xs sm:overflow-visible sm:whitespace-normal">
 				{$_('product.moderator.image_manager_tab_delete', { default: 'Delete' })}
 			</span>
 		</button>
 	</div>
 
 	{#if rawImages.length === 0}
-		<div class="bg-base-300 flex items-center justify-center rounded-lg p-6 text-center">
-			<p class="text-base-content/50 text-sm">
+		<div class="flex items-center justify-center rounded-lg bg-base-300 p-6 text-center">
+			<p class="text-sm text-base-content/50">
 				{$_('product.moderator.image_manager_no_images', {
 					default: 'No uploaded images found for this product.'
 				})}
@@ -261,13 +261,13 @@
 		</div>
 	{:else}
 		<div class="flex items-center justify-between">
-			<span class="text-base-content/60 text-xs font-medium">
+			<span class="text-xs font-medium text-base-content/60">
 				{selectedImgIds.size} / {rawImages.length} selected
 			</span>
 			<div class="flex gap-2">
 				<button
 					type="button"
-					class="btn btn-xs btn-outline"
+					class="btn btn-outline btn-xs"
 					onclick={() => {
 						selectedImgIds.clear();
 						rawImages.forEach((img) => {
@@ -282,7 +282,7 @@
 				</button>
 				<button
 					type="button"
-					class="btn btn-xs btn-outline"
+					class="btn btn-outline btn-xs"
 					onclick={() => selectedImgIds.clear()}
 					disabled={isSubmitting || selectedImgIds.size === 0}
 				>
@@ -308,9 +308,9 @@
 								})
 							: undefined}
 						class={[
-							'h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:outline-none focus:ring-2',
+							'h-full w-full overflow-hidden rounded-lg border-2 bg-base-300 transition-all focus:ring-2 focus:outline-none',
 							activeTab === 'delete' && activeImageIds.has(img.imgid)
-								? 'border-base-content/5 opacity-60 cursor-not-allowed'
+								? 'cursor-not-allowed border-base-content/5 opacity-60'
 								: 'cursor-pointer',
 							selectedImgIds.has(img.imgid)
 								? activeTab === 'move'
@@ -333,10 +333,10 @@
 
 						{#if activeTab === 'delete' && activeImageIds.has(img.imgid)}
 							<div
-								class="absolute inset-0 bg-neutral/40 flex flex-col items-center justify-center gap-1 p-2"
+								class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-neutral/40 p-2"
 							>
 								<IconMdiLock class="h-6 w-6 text-white" />
-								<span class="badge badge-error badge-xs font-semibold text-[10px] text-white">
+								<span class="badge badge-xs text-[10px] font-semibold text-white badge-error">
 									{$_('product.moderator.image_manager_in_use', { default: 'Active' })}
 								</span>
 							</div>
@@ -363,7 +363,7 @@
 						{/if}
 
 						<div
-							class="absolute bottom-0 inset-x-0 bg-neutral/70 p-1.5 text-left text-xs text-neutral-content opacity-0 transition-opacity hover:opacity-100 flex flex-col gap-0.5"
+							class="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 bg-neutral/70 p-1.5 text-left text-xs text-neutral-content opacity-0 transition-opacity hover:opacity-100"
 						>
 							<span class="truncate">
 								{$_('product.moderator.image_manager_uploaded_by', {
@@ -383,7 +383,7 @@
 					<!-- Hover Preview Eye Icon -->
 					<button
 						type="button"
-						class="absolute top-2 left-2 z-25 btn btn-circle btn-xs bg-base-100/80 hover:bg-base-100 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center shadow-sm"
+						class="btn absolute top-2 left-2 z-25 flex btn-circle items-center justify-center bg-base-100/80 opacity-0 shadow-sm transition-opacity btn-xs group-hover:opacity-100 hover:bg-base-100"
 						onclick={() => openPreview(img)}
 						aria-label={$_('product.moderator.image_manager_preview_label', {
 							default: 'Preview image'
@@ -400,7 +400,7 @@
 		</div>
 
 		{#if activeTab === 'move'}
-			<div class="flex flex-col gap-2 sm:flex-row sm:items-end mt-4">
+			<div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-end">
 				<label class="input w-full">
 					<span class="label"
 						>{$_('product.moderator.image_manager_move_target_label', {
@@ -418,13 +418,13 @@
 				</label>
 
 				<button
-					class="btn btn-warning btn-sm sm:btn-md w-full sm:w-auto shrink-0"
+					class="btn w-full shrink-0 btn-sm btn-warning sm:w-auto sm:btn-md"
 					onclick={handleMove}
 					disabled={isSubmitting || selectedImgIds.size === 0 || !targetBarcode.trim()}
 					type="button"
 				>
 					{#if isSubmitting}
-						<span class="loading loading-spinner loading-sm"></span>
+						<span class="loading loading-sm loading-spinner"></span>
 					{/if}
 					{$_('product.moderator.image_manager_move_btn', {
 						default: 'Move the images to another product'
@@ -436,7 +436,7 @@
 				<label class="label cursor-pointer justify-start gap-3">
 					<input
 						type="checkbox"
-						class="checkbox checkbox-warning checkbox-sm"
+						class="checkbox checkbox-sm checkbox-warning"
 						bind:checked={copyData}
 						disabled={isSubmitting}
 					/>
@@ -448,7 +448,7 @@
 				</label>
 			</div>
 		{:else}
-			<div class="alert alert-error text-sm mt-4 flex items-start gap-2 shadow-sm">
+			<div class="mt-4 alert flex items-start gap-2 text-sm alert-error shadow-sm">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-5 w-5 shrink-0 text-error-content"
@@ -463,7 +463,7 @@
 						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
 					/>
 				</svg>
-				<span class="text-error-content font-medium">
+				<span class="font-medium text-error-content">
 					<strong class="font-bold">
 						{$_('product.moderator.image_manager_delete_warning_prefix', { default: 'Warning:' })}
 					</strong>
@@ -473,12 +473,12 @@
 				</span>
 			</div>
 
-			<div class="flex flex-col gap-4 mt-2">
+			<div class="mt-2 flex flex-col gap-4">
 				<div class="form-control">
 					<label class="label cursor-pointer justify-start gap-3">
 						<input
 							type="checkbox"
-							class="checkbox checkbox-error checkbox-sm"
+							class="checkbox checkbox-sm checkbox-error"
 							bind:checked={deleteConfirm}
 							disabled={isSubmitting}
 						/>
@@ -491,13 +491,13 @@
 				</div>
 
 				<button
-					class="btn btn-error btn-sm sm:btn-md w-full sm:w-auto self-start"
+					class="btn w-full self-start btn-error btn-sm sm:w-auto sm:btn-md"
 					onclick={handleDelete}
 					disabled={isSubmitting || selectedImgIds.size === 0 || !deleteConfirm}
 					type="button"
 				>
 					{#if isSubmitting}
-						<span class="loading loading-spinner loading-sm"></span>
+						<span class="loading loading-sm loading-spinner"></span>
 					{/if}
 					{$_('product.moderator.image_manager_delete_btn', {
 						default: 'Delete the selected image(s)'

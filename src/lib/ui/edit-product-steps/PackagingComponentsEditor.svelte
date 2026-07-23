@@ -170,13 +170,13 @@
 </script>
 
 <div class="space-y-4">
-	<div class="bg-base-200/50 mb-4 rounded-md p-3 text-xs sm:text-sm">
+	<div class="mb-4 rounded-md bg-base-200/50 p-3 text-xs sm:text-sm">
 		<p class="label-text mb-2 font-semibold">
 			{$_('product.edit.packaging_component.instructions_title', {
 				default: 'Guidance for packaging parts:'
 			})}
 		</p>
-		<ul class="text-base-content/70 list-disc space-y-1 pl-5">
+		<ul class="list-disc space-y-1 pl-5 text-base-content/70">
 			<li>
 				<span class="font-medium"
 					>{$_('product.edit.packaging_component.number_of_units', {
@@ -239,7 +239,7 @@
 	</div>
 
 	{#each product.packagings ?? [] as component, index (index)}
-		<div class="bg-base-100 border-base-300 rounded-lg border p-4 shadow-sm">
+		<div class="rounded-lg border border-base-300 bg-base-100 p-4 shadow-sm">
 			<div class="mb-3 flex items-center justify-between">
 				<h3 class="label-text text-sm font-semibold sm:text-base">
 					{index === 0
@@ -251,7 +251,7 @@
 				{#if (product.packagings?.length ?? 0) > 1}
 					<button
 						type="button"
-						class="btn btn-ghost btn-sm text-error"
+						class="btn btn-ghost text-error btn-sm"
 						onclick={() => removeComponent(index)}
 						aria-label={$_('product.edit.packaging_component.remove_component')}
 					>
@@ -274,7 +274,7 @@
 						id="packaging_{index}_units"
 						type="number"
 						min="1"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={component.number_of_units ?? ''}
 						oninput={(e) => {
 							const val = (e.currentTarget as HTMLInputElement).value;
@@ -293,7 +293,7 @@
 					<input
 						id="packaging_{index}_shape"
 						type="text"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={getTaxonomyDisplayValue(component, 'shape')}
 						oninput={(e) =>
 							handleTaxonomyInput(index, 'shape', (e.currentTarget as HTMLInputElement).value)}
@@ -304,13 +304,13 @@
 					/>
 					{#if activeField === `${index}_shape` && (activeSuggestions[`${index}_shape`]?.length ?? 0) > 0}
 						<ul
-							class="bg-base-100 border-base-300 absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border shadow-lg"
+							class="absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-base-300 bg-base-100 shadow-lg"
 						>
 							{#each activeSuggestions[`${index}_shape`] ?? [] as suggestion (suggestion)}
 								<li>
 									<button
 										type="button"
-										class="hover:bg-primary/10 w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors"
+										class="w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors hover:bg-primary/10"
 										onmousedown={(e) => {
 											e.preventDefault();
 											selectSuggestion(index, 'shape', suggestion);
@@ -333,7 +333,7 @@
 					<input
 						id="packaging_{index}_material"
 						type="text"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={getTaxonomyDisplayValue(component, 'material')}
 						oninput={(e) =>
 							handleTaxonomyInput(index, 'material', (e.currentTarget as HTMLInputElement).value)}
@@ -344,13 +344,13 @@
 					/>
 					{#if activeField === `${index}_material` && (activeSuggestions[`${index}_material`]?.length ?? 0) > 0}
 						<ul
-							class="bg-base-100 border-base-300 absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border shadow-lg"
+							class="absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-base-300 bg-base-100 shadow-lg"
 						>
 							{#each activeSuggestions[`${index}_material`] ?? [] as suggestion (suggestion)}
 								<li>
 									<button
 										type="button"
-										class="hover:bg-primary/10 w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors"
+										class="w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors hover:bg-primary/10"
 										onmousedown={(e) => {
 											e.preventDefault();
 											selectSuggestion(index, 'material', suggestion);
@@ -373,7 +373,7 @@
 					<input
 						id="packaging_{index}_recycling"
 						type="text"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={getTaxonomyDisplayValue(component, 'recycling')}
 						oninput={(e) =>
 							handleTaxonomyInput(index, 'recycling', (e.currentTarget as HTMLInputElement).value)}
@@ -384,13 +384,13 @@
 					/>
 					{#if activeField === `${index}_recycling` && (activeSuggestions[`${index}_recycling`]?.length ?? 0) > 0}
 						<ul
-							class="bg-base-100 border-base-300 absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border shadow-lg"
+							class="absolute top-full z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-base-300 bg-base-100 shadow-lg"
 						>
 							{#each activeSuggestions[`${index}_recycling`] ?? [] as suggestion (suggestion)}
 								<li>
 									<button
 										type="button"
-										class="hover:bg-primary/10 w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors"
+										class="w-full cursor-pointer px-3 py-2 text-left text-sm transition-colors hover:bg-primary/10"
 										onmousedown={(e) => {
 											e.preventDefault();
 											selectSuggestion(index, 'recycling', suggestion);
@@ -415,7 +415,7 @@
 						type="number"
 						min="0"
 						step="0.1"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={component.weight_measured ?? ''}
 						oninput={(e) => {
 							const val = (e.currentTarget as HTMLInputElement).value;
@@ -434,7 +434,7 @@
 					<input
 						id="packaging_{index}_qty"
 						type="text"
-						class="input input-bordered focus:border-primary w-full text-sm focus:outline-none"
+						class="input-bordered input w-full text-sm focus:border-primary focus:outline-none"
 						value={component.quantity_per_unit ?? ''}
 						oninput={(e) =>
 							updateComponent(
@@ -451,7 +451,7 @@
 
 	<button
 		type="button"
-		class="btn btn-outline btn-primary btn-sm w-full sm:w-auto"
+		class="btn w-full btn-outline btn-primary btn-sm sm:w-auto"
 		onclick={addComponent}
 	>
 		<IconMdiPlus class="h-4 w-4" />
@@ -462,7 +462,7 @@
 		<label class="label cursor-pointer justify-start gap-3">
 			<input
 				type="checkbox"
-				class="checkbox checkbox-primary checkbox-sm"
+				class="checkbox checkbox-sm checkbox-primary"
 				checked={product.packagings_complete === 1}
 				onchange={(e) => {
 					product = { ...product, packagings_complete: e.currentTarget.checked ? 1 : 0 };

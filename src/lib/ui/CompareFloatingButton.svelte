@@ -12,7 +12,7 @@
 {#if $count > 0 && !isOnComparePage}
 	<a
 		href="/compare"
-		class="btn btn-primary fixed bottom-4 left-4 z-50 flex items-center rounded-full px-3 shadow-lg md:px-4"
+		class="btn fixed bottom-4 left-4 z-50 flex items-center rounded-full px-3 shadow-lg btn-primary md:px-4"
 		title="Compare Products ({$count})"
 		aria-label="Compare Products ({$count})"
 	>

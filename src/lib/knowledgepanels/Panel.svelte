@@ -33,7 +33,7 @@
 {#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
-			'border-base-300 collapse border',
+			'collapse border border-base-300',
 			elements.length !== 0 ? 'collapse-arrow' : 'collapse-close',
 			panel.size && `kp-panel-size-${panel.size}`,
 			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
@@ -45,7 +45,7 @@
 
 		<div
 			class={[
-				'hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none'
+				'collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none hover:bg-base-200 dark:hover:bg-base-100'
 			]}
 		>
 			{#if title.icon_url != null}
@@ -62,7 +62,7 @@
 			<div class="grow">
 				<div class="kp-title">{title.title}</div>
 				{#if title.subtitle != null}
-					<h3 class="kp-subtitle text-secondary text-sm italic">{title.subtitle}</h3>
+					<h3 class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</h3>
 				{/if}
 			</div>
 		</div>

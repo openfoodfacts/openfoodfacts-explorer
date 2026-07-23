@@ -12,18 +12,18 @@
 	let { product = $bindable() }: Props = $props();
 </script>
 
-<div class="bg-base-300 border-base-200 mb-6 rounded-lg border p-4 shadow-sm">
+<div class="mb-6 rounded-lg border border-base-200 bg-base-300 p-4 shadow-sm">
 	<div class="form-control w-full">
 		<span class="label-text text-sm font-semibold sm:text-base">
 			{$_('product.edit.packaging_component.recycling_instructions')}
 		</span>
-		<p class="text-base-content/60 mb-2 text-xs">
+		<p class="mb-2 text-xs text-base-content/60">
 			{$_('product.edit.packaging_component.recycling_instructions_desc')}
 		</p>
 
-		<div class="tabs tabs-lift">
+		<div class="tabs-lift tabs">
 			{#if Object.keys(product.languages_codes ?? {}).length === 0}
-				<div class="alert alert-warning text-sm sm:text-base">
+				<div class="alert text-sm alert-warning sm:text-base">
 					{$_('product.edit.no_languages_found')}
 				</div>
 			{:else}
@@ -40,7 +40,7 @@
 					aria-label={getLanguageName(code)}
 					checked={code === product.lang}
 				/>
-				<div class="tab-content bg-base-100 border-base-300 form-control p-6">
+				<div class="form-control tab-content border-base-300 bg-base-100 p-6">
 					<label class="label text-sm sm:text-base" for={`packaging-text-${code}`}>
 						{$_('product.edit.packaging_component.recycling_instructions')} ({getLanguageName(
 							code
@@ -48,7 +48,7 @@
 					</label>
 					<textarea
 						id={`packaging-text-${code}`}
-						class="textarea textarea-bordered h-24 w-full"
+						class="textarea-bordered textarea h-24 w-full"
 						placeholder={$_('product.edit.packaging_component.recycling_instructions_placeholder')}
 						value={product[`packaging_text_${code}`] ?? ''}
 						oninput={(e) => {
@@ -62,17 +62,17 @@
 		</div>
 
 		<div class="mt-2 space-y-1">
-			<p class="text-base-content/70 text-xs">
+			<p class="text-xs text-base-content/70">
 				&rarr; {$_('product.edit.packaging_component.recycling_instructions_list')}
 			</p>
-			<p class="text-base-content/70 text-xs">
+			<p class="text-xs text-base-content/70">
 				&rarr; {$_('product.edit.packaging_component.recycling_instructions_specificity')}
 			</p>
-			<p class="text-base-content/70 text-xs">
+			<p class="text-xs text-base-content/70">
 				&rarr; {$_('product.edit.packaging_component.recycling_instructions_combination')}
 			</p>
 			<p class="text-xs">
-				<span class="text-success font-semibold"
+				<span class="font-semibold text-success"
 					>{$_('product.edit.packaging_component.recycling_instructions_examples_label')}</span
 				>
 				<span class="text-success"

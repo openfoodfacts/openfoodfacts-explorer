@@ -106,36 +106,36 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiFormatListBulleted class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.ingredients')}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformation class="mt-0.5 h-6 w-6 shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.ingredients')}
 			</span>
 		</div>
 	{/if}
 {/if}
-<div class="tabs tabs-lift">
+<div class="tabs-lift tabs">
 	<div class="tab tab-disabled cursor-default">
 		<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
 	</div>
@@ -148,7 +148,7 @@
 			checked={code === activeLang}
 			onchange={() => (activeLang = code)}
 		/>
-		<div class="tab-content bg-base-100 border-base-300 form-control p-6">
+		<div class="form-control tab-content border-base-300 bg-base-100 p-6">
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
@@ -157,13 +157,13 @@
 						<!-- OCR Button -->
 						<button
 							type="button"
-							class="btn btn-outline btn-sm self-start"
+							class="btn self-start btn-outline btn-sm"
 							class:loading={ocrLoading}
 							disabled={ocrLoading}
 							onclick={() => performOCR(code)}
 						>
 							{#if ocrLoading}
-								<span class="loading loading-spinner h-4 w-4"></span>
+								<span class="loading h-4 w-4 loading-spinner"></span>
 								<span>Extracting ingredients...</span>
 							{:else}
 								<IconMdiTextRecognition class="h-4 w-4" />
@@ -172,7 +172,7 @@
 						</button>
 					</div>
 				{:else}
-					<p class="alert alert-warning mb-4 text-sm sm:text-base">
+					<p class="mb-4 alert text-sm alert-warning sm:text-base">
 						{$_('product.edit.no_ingredients_image')}
 					</p>
 				{/if}
@@ -187,7 +187,7 @@
 
 			<textarea
 				id={`ingredients-list-${code}`}
-				class="textarea textarea-bordered w-full text-sm sm:text-base"
+				class="textarea-bordered textarea w-full text-sm sm:text-base"
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
@@ -200,14 +200,14 @@
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}
-		<div class="alert alert-warning text-sm sm:text-base">
+		<div class="alert text-sm alert-warning sm:text-base">
 			{$_('product.edit.no_languages_found')}
 		</div>
 	{/if}
 </div>
 
 <div class="mt-6 space-y-6">
-	<div class="flex flex-col gap-1.5 w-full">
+	<div class="flex w-full flex-col gap-1.5">
 		<label class="label">
 			<span class="flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.allergens', { default: 'Allergens' })}
@@ -227,7 +227,7 @@
 		/>
 	</div>
 
-	<div class="flex flex-col gap-1.5 w-full">
+	<div class="flex w-full flex-col gap-1.5">
 		<label class="label">
 			<span class="flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.traces', { default: 'Traces' })}

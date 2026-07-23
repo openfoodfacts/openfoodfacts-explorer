@@ -54,9 +54,9 @@
 	</a>
 </div>
 
-<div class="mb-8 max-md:mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+<div class="mb-8 grid grid-cols-1 gap-4 max-md:mt-4 md:grid-cols-3">
 	{#each cards as card (card.title)}
-		<div class="card bg-base-100 border-secondary border">
+		<div class="card border border-secondary bg-base-100">
 			<div class="card-body flex-row items-center gap-4 text-center">
 				<img src={card.icon} alt={card.title} class="w-10" />
 				<div class="flex-1">
@@ -81,7 +81,7 @@
 
 		<a
 			href={`/facets/contributors/${encodeURIComponent(user)}`}
-			class="btn btn-outline mt-4 w-full"
+			class="btn mt-4 w-full btn-outline"
 		>
 			{$_('dashboard.view_all_contributions', { default: 'View all contributions' })}
 		</a>
@@ -97,7 +97,7 @@
 			{/each}
 		</div>
 
-		<a href={`/facets/editors/${encodeURIComponent(user)}`} class="btn btn-outline mt-4 w-full"
+		<a href={`/facets/editors/${encodeURIComponent(user)}`} class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_edits', { default: 'View all edits' })}</a
 		>
 	</section>
@@ -116,7 +116,7 @@
 
 		<a
 			href={`/facets/photographers/${encodeURIComponent(user)}`}
-			class="btn btn-outline mt-4 w-full"
+			class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_photographs', { default: 'View all photographs' })}</a
 		>
 	</section>

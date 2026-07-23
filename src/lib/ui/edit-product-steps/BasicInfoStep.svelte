@@ -74,30 +74,30 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.basic_info')}
 			</span>
 		</div>
@@ -110,7 +110,7 @@
 			<label class="label" for="product_type">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 					{$_('product.edit.product_type')}
-					<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
+					<span class="badge badge-outline badge-xs badge-info sm:badge-sm">
 						{$_('product.edit.moderator_only')}
 					</span>
 					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
@@ -118,7 +118,7 @@
 			</label>
 			<select
 				id="product_type"
-				class="select focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="select w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 				value={product.product_type}
 				onchange={(e) => {
 					product = { ...product, product_type: (e.currentTarget as HTMLSelectElement).value };
@@ -144,7 +144,7 @@
 			<input
 				id="generic_name"
 				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 				value={product[`generic_name_${product.lang}`] ?? ''}
 				oninput={(e) => {
 					product = {
@@ -167,7 +167,7 @@
 			<input
 				id="quantity"
 				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 				value={product.quantity ?? ''}
 				oninput={(e) => {
 					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
@@ -187,7 +187,7 @@
 			<input
 				id="website_url"
 				type="url"
-				class="input focus:border-primary w-full text-sm break-all focus:outline-none sm:text-base"
+				class="input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
 				value={product.link ?? ''}
 				oninput={(e) => {
 					product = { ...product, link: (e.currentTarget as HTMLInputElement).value };

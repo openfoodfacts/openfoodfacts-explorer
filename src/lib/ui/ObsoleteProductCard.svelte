@@ -21,13 +21,13 @@
 
 <div class="flex flex-col gap-3 p-2">
 	<div class="flex items-center gap-2">
-		<IconMdiStoreOff class="text-warning h-5 w-5" />
+		<IconMdiStoreOff class="h-5 w-5 text-warning" />
 		<h2 class="text-lg font-bold">
 			{$_('product.moderator.obsolete_title', { default: 'Product taken off the market' })}
 		</h2>
 	</div>
 
-	<div class="alert alert-warning text-sm leading-relaxed">
+	<div class="alert text-sm leading-relaxed alert-warning">
 		<span>
 			<strong class="font-bold"
 				>{$_('product.moderator.obsolete_important_note_prefix', {
@@ -40,12 +40,12 @@
 		</span>
 	</div>
 
-	<div class="flex flex-col gap-4 mt-1">
+	<div class="mt-1 flex flex-col gap-4">
 		<div class="form-control">
 			<label class="label cursor-pointer justify-start gap-3">
 				<input
 					type="checkbox"
-					class="checkbox checkbox-warning checkbox-sm"
+					class="checkbox checkbox-sm checkbox-warning"
 					checked={isObsolete}
 					onchange={handleToggle}
 				/>
@@ -58,7 +58,7 @@
 		</div>
 
 		{#if product.obsolete === 'on'}
-			<div class="alert alert-warning py-2 text-sm">
+			<div class="alert py-2 text-sm alert-warning">
 				<span
 					>{$_('product.moderator.obsolete_badge', {
 						default: 'Product taken off the market'

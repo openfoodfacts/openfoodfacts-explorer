@@ -36,7 +36,7 @@
 			</h3>
 			<button
 				type="button"
-				class="btn btn-sm btn-circle btn-ghost"
+				class="btn btn-circle btn-ghost btn-sm"
 				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
@@ -48,7 +48,7 @@
 			{#each images as image (image.typeId + '-' + image.imgid)}
 				<button
 					type="button"
-					class="group focus:ring-primary relative overflow-hidden rounded border focus:ring-2 focus:outline-none"
+					class="group relative overflow-hidden rounded border focus:ring-2 focus:ring-primary focus:outline-none"
 					onclick={() => handleImageSelect(image)}
 					aria-label={image.alt || 'Select image'}
 				>

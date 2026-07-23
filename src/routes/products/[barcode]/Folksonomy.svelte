@@ -200,7 +200,7 @@
 			<tr transition:slide>
 				<td aria-label="Key">
 					<div class="flex w-full">
-						<a href="/folksonomy/{tag.k}" class="link grow pl-2 font-mono max-sm:w-20" type="text">
+						<a href="/folksonomy/{tag.k}" class="grow link pl-2 font-mono max-sm:w-20" type="text">
 							{tag.k}
 						</a>
 					</div>
@@ -231,7 +231,7 @@
 		{#if loggedIn}
 			<tr>
 				<td>
-					<div class="dropdown dropdown-bottom dropdown-start flex w-full">
+					<div class="dropdown dropdown-start dropdown-bottom flex w-full">
 						<input
 							type="text"
 							class="input grow max-sm:w-20"
@@ -265,7 +265,7 @@
 					</div>
 				</td>
 				<td class="flex gap-2">
-					<div class="dropdown dropdown-bottom dropdown-start flex w-full">
+					<div class="dropdown dropdown-start dropdown-bottom flex w-full">
 						<input
 							type="text"
 							class="input grow max-sm:w-20"
@@ -317,7 +317,7 @@
 			<tr>
 				<td colspan="3" class="text-center">
 					<p class="mb-4">You must be logged in to create a new tag</p>
-					<a href="/settings" class="btn btn-primary w-1/4">Login</a>
+					<a href="/settings" class="btn w-1/4 btn-primary">Login</a>
 				</td>
 			</tr>
 		{/if}

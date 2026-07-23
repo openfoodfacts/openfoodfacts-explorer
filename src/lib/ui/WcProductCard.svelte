@@ -155,7 +155,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	<div
 		role="menu"
 		tabindex="-1"
-		class="bg-base-100 border-base-300 animate-in fade-in slide-in-from-top-1 fixed z-50 min-w-48 rounded-xl border shadow-2xl backdrop-blur-sm duration-200"
+		class="animate-in fade-in slide-in-from-top-1 fixed z-50 min-w-48 rounded-xl border border-base-300 bg-base-100 shadow-2xl backdrop-blur-sm duration-200"
 		style="top: {pos.y}px; left: {pos.x}px;"
 		onmousedown={(e) => e.stopPropagation()}
 		onkeydown={handleKeyDown}
@@ -164,7 +164,7 @@ Wraps the <product-card> web component and adds accessibility features.
 			{#each contextItems as item (item.id)}
 				<button
 					role="menuitem"
-					class="hover:bg-base-200 active:bg-base-300 focus:bg-base-200 focus:ring-primary flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out focus:ring-2 focus:ring-offset-1 focus:outline-none"
+					class="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:outline-none active:bg-base-300"
 					onclick={item.action}
 				>
 					<item.icon class="h-5 w-5 opacity-70" />

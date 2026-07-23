@@ -80,13 +80,13 @@
 
 			<div class="mt-4 space-y-3">
 				<div>
-					<p class="text-base-content/50 mb-1.5 text-xs font-semibold tracking-wide uppercase">
+					<p class="mb-1.5 text-xs font-semibold tracking-wide text-base-content/50 uppercase">
 						Search
 					</p>
 					<div class="flex flex-wrap gap-2">
 						{#each SEARCH_ENTRIES as entry (entry.name)}
 							<a
-								class="btn btn-sm btn-outline"
+								class="btn btn-outline btn-sm"
 								href={entry.url(code)}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -98,13 +98,13 @@
 				</div>
 
 				<div>
-					<p class="text-base-content/50 mb-1.5 text-xs font-semibold tracking-wide uppercase">
+					<p class="mb-1.5 text-xs font-semibold tracking-wide text-base-content/50 uppercase">
 						Product availability
 					</p>
 					<div class="flex flex-wrap gap-2">
 						{#each OFF_ENTRIES as entry (entry.name)}
 							<a
-								class="btn btn-sm btn-outline"
+								class="btn btn-outline btn-sm"
 								href={entry.url(code)}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -113,7 +113,7 @@
 								{#await entry.fetchData(code)}
 									<span class="loading loading-xs loading-spinner opacity-50"></span>
 								{:then}
-									<span class="bg-success size-2 rounded-full" title="Found"></span>
+									<span class="size-2 rounded-full bg-success" title="Found"></span>
 								{:catch e}
 									<span
 										class="size-2 rounded-full {e.message === 'Not found'
@@ -127,7 +127,7 @@
 
 						{#if code && code.length >= 3}
 							<a
-								class="btn btn-sm btn-outline btn-secondary"
+								class="btn btn-outline btn-secondary btn-sm"
 								href={`/search?barcode_prefix=${code.slice(0, 3)}`}
 								title="Find similar products"
 							>

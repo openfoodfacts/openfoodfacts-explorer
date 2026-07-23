@@ -58,31 +58,31 @@
 					{:else}
 						<h1 class="text-2xl font-bold">{$_('compare.shared_product_comparison')}</h1>
 					{/if}
-					<p class="text-base-content/70 text-sm">{$_('compare.read_only')}</p>
+					<p class="text-sm text-base-content/70">{$_('compare.read_only')}</p>
 				</div>
 				<div class="flex flex-wrap items-center gap-2">
 					{#if data.products.length > 0}
-						<button class="btn btn-sm btn-primary" onclick={showImportDialog}>
+						<button class="btn btn-primary btn-sm" onclick={showImportDialog}>
 							<IconMdiDownload class="h-4 w-4" />
 							{$_('compare.import_to_my')}
 						</button>
 						<div class="join">
 							<button
-								class="join-item btn btn-sm"
+								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'absolute'}
 								onclick={() => (comparisonMode = 'absolute')}
 							>
 								{$_('compare.mode_absolute')}
 							</button>
 							<button
-								class="join-item btn btn-sm"
+								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'relative-first'}
 								onclick={() => (comparisonMode = 'relative-first')}
 							>
 								{$_('compare.mode_vs_first')}
 							</button>
 							<button
-								class="join-item btn btn-sm"
+								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'relative-best'}
 								onclick={() => (comparisonMode = 'relative-best')}
 							>
@@ -121,7 +121,7 @@
 			</h3>
 			<button
 				type="button"
-				class="btn btn-sm btn-circle btn-ghost"
+				class="btn btn-circle btn-ghost btn-sm"
 				onclick={closeDialog}
 				aria-label="Close dialog"
 			>

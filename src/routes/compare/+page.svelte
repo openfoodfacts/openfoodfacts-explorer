@@ -81,7 +81,7 @@
 						bind:value={comparisonTitle}
 						type="text"
 						placeholder={$_('compare.title_placeholder')}
-						class="input input-bordered input-lg w-full max-w-md text-2xl font-bold"
+						class="input-bordered input w-full max-w-md text-2xl font-bold input-lg"
 						onblur={finishEditingTitle}
 						onkeydown={(e) => {
 							if (e.key === 'Enter') finishEditingTitle();
@@ -93,7 +93,7 @@
 					/>
 				{:else}
 					<button
-						class="group hover:text-primary text-left transition-colors"
+						class="group text-left transition-colors hover:text-primary"
 						onclick={startEditingTitle}
 					>
 						<h1 class="text-2xl font-bold">
@@ -102,7 +102,7 @@
 								>✏️</span
 							>
 						</h1>
-						<p class="text-base-content/50 text-xs">{$_('compare.click_to_edit')}</p>
+						<p class="text-xs text-base-content/50">{$_('compare.click_to_edit')}</p>
 					</button>
 				{/if}
 			</div>
@@ -135,13 +135,13 @@
 						</button>
 					</div>
 					<button
-						class="btn btn-sm bg-white text-black hover:bg-gray-200"
+						class="btn bg-white text-black btn-sm hover:bg-gray-200"
 						onclick={shareComparison}
 					>
 						<IconMdiShareVariant class="h-4 w-4" />
 						{$_('compare.share')}
 					</button>
-					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
+					<button class="btn btn-outline btn-sm" onclick={() => compareStore.clear()}>
 						{$_('compare.clear_all')}
 					</button>
 				{/if}
@@ -151,7 +151,7 @@
 		{#if $compareStore.length === 0}
 			{#if !mounted}
 				<div class="py-8 text-center">
-					<span class="loading loading-spinner loading-lg text-primary"></span>
+					<span class="loading loading-lg loading-spinner text-primary"></span>
 				</div>
 			{:else}
 				<div class="py-8 text-center">

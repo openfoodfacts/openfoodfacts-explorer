@@ -41,14 +41,14 @@
 <footer class="search-options-footer">
 	{#if sortDropdownOpen}
 		<div
-			class="bg-base-100 border-base-200 animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border py-2 shadow-xl"
+			class="animate-fade-in-up absolute right-0 bottom-14 left-0 z-50 max-h-80 w-full overflow-y-auto rounded-t-lg border border-base-200 bg-base-100 py-2 shadow-xl"
 		>
-			<div class="text-base-content/60 my-2 px-4 pb-2 text-sm font-bold tracking-wide">
+			<div class="my-2 px-4 pb-2 text-sm font-bold tracking-wide text-base-content/60">
 				{$_('search.sort_by_label')}
 			</div>
 			{#each SORT_OPTIONS as option (option.value)}
 				<button
-					class="hover:bg-base-200 flex w-full items-center gap-3 px-4 py-2 text-sm"
+					class="flex w-full items-center gap-3 px-4 py-2 text-sm hover:bg-base-200"
 					class:bg-base-200={sortBy === option.value}
 					onclick={() => {
 						onSortOptionSelect(option.value);
@@ -65,7 +65,7 @@
 	{/if}
 	<div class="flex h-full w-full">
 		<button
-			class="border-base-200 flex h-full w-1/2 flex-col items-center justify-center border-r py-1 focus:outline-none"
+			class="flex h-full w-1/2 flex-col items-center justify-center border-r border-base-200 py-1 focus:outline-none"
 			onclick={() => {
 				sortDropdownOpen = !sortDropdownOpen;
 			}}
@@ -103,7 +103,7 @@
 			onclick={() => (showFacetsModal = false)}
 			aria-hidden="true"
 		></div>
-		<div class="bg-base-100 max-h-[80%] w-full overflow-auto rounded-t-lg p-4">
+		<div class="max-h-[80%] w-full overflow-auto rounded-t-lg bg-base-100 p-4">
 			<div class="mb-2 flex items-center justify-between">
 				<h3 class="text-lg font-semibold">{$_('search.filters_title', { default: 'Filters' })}</h3>
 				<button
