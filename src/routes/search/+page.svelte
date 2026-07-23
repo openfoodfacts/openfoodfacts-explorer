@@ -135,7 +135,9 @@
 	</div>
 	<div class="flex items-center gap-3">
 		<div class="text-sm">
-			<div class="text-primary font-bold">sql.openfoodfacts.org:</div>
+			<div class="text-primary font-bold">
+				{$_('search.superset_promo_title', { default: 'Query OFF with SQL' })}
+			</div>
 			<span class="text-base-content/90">
 				{$_('search.superset_promo_desc', {
 					default:
