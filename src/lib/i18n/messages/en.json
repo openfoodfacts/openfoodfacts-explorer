@@ -150,6 +150,8 @@
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
+		"dev_warning": "Warning: These settings are for development purposes only. Use with caution.",
+		"moderator_mode_help": "Enable advanced moderator tools for managing products and content.",
 		"dev_access_denied": "Access Denied",
 		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
