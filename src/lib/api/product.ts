@@ -31,6 +31,10 @@ export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
 ): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	if (productCodes.length === 0) {
+		return {};
+	}
+
 	const off = createProductsApi(fetch);
 
 	const params = new URLSearchParams({
