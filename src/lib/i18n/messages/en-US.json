@@ -620,7 +620,8 @@
 		"step": "Step",
 		"of": "of",
 		"cancel": "Cancel",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",
