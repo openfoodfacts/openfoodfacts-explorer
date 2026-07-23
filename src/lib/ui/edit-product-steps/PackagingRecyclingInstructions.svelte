@@ -12,7 +12,7 @@
 	let { product = $bindable() }: Props = $props();
 </script>
 
-<div class="bg-base-300 border-base-200 mb-6 rounded-lg border p-4 shadow-sm">
+<div class="bg-base-100 border-base-200 mb-6 rounded-lg border p-4 shadow-sm">
 	<div class="form-control w-full">
 		<span class="label-text text-sm font-semibold sm:text-base">
 			{$_('product.edit.packaging_component.recycling_instructions')}
