@@ -12,6 +12,8 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+	import IconMdiAutoFix from '@iconify-svelte/mdi/auto-fix';
+	import IconMdiSpellcheck from '@iconify-svelte/mdi/spellcheck';
 
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
@@ -44,6 +46,8 @@
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
+	let activeDetectionCode = $state<string | null>(null);
+	let activeSpellcheckCode = $state<string | null>(null);
 
 	function toggleInfo() {
 		showInfo = !showInfo;
@@ -87,6 +91,21 @@
 			console.error('Error performing OCR:', error);
 		} finally {
 			ocrLoading = false;
+		}
+	}
+
+	async function refreshIngredientsText(code: string) {
+		try {
+			const api = createProductsApi(fetch);
+			const { data: response } = await api.getProductV3(product.code);
+			if (response && 'product' in response && response.product) {
+				const newText = (response.product as Record<string, unknown>)[`ingredients_text_${code}`];
+				if (typeof newText === 'string') {
+					product = { ...product, [`ingredients_text_${code}`]: newText };
+				}
+			}
+		} catch (err) {
+			console.error('Failed to refresh ingredients text:', err);
 		}
 	}
 
@@ -154,22 +173,34 @@
 					<div class="flex flex-col gap-3">
 						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
 
-						<!-- OCR Button -->
-						<button
-							type="button"
-							class="btn btn-outline btn-sm self-start"
-							class:loading={ocrLoading}
-							disabled={ocrLoading}
-							onclick={() => performOCR(code)}
-						>
-							{#if ocrLoading}
-								<span class="loading loading-spinner h-4 w-4"></span>
-								<span>Extracting ingredients...</span>
-							{:else}
-								<IconMdiTextRecognition class="h-4 w-4" />
-								<span>Extract ingredients from image</span>
-							{/if}
-						</button>
+						<div class="flex flex-wrap gap-2 self-start">
+							<!-- OCR Button -->
+							<button
+								type="button"
+								class="btn btn-outline btn-sm"
+								class:loading={ocrLoading}
+								disabled={ocrLoading}
+								onclick={() => performOCR(code)}
+							>
+								{#if ocrLoading}
+									<span class="loading loading-spinner h-4 w-4"></span>
+									<span>Extracting ingredients...</span>
+								{:else}
+									<IconMdiTextRecognition class="h-4 w-4" />
+									<span>Extract ingredients from image</span>
+								{/if}
+							</button>
+
+							<!-- Scan with AI Button (Robotoff Detection) -->
+							<button
+								type="button"
+								class="btn btn-outline btn-primary btn-sm"
+								onclick={() => (activeDetectionCode = code)}
+							>
+								<IconMdiAutoFix class="h-4 w-4" />
+								<span>{$_('product.edit.scan_with_ai', { default: 'Scan with AI' })}</span>
+							</button>
+						</div>
 					</div>
 				{:else}
 					<p class="alert alert-warning mb-4 text-sm sm:text-base">
@@ -197,6 +228,22 @@
 					};
 				}}
 				disabled={ocrLoading}></textarea>
+
+			<!-- Spellcheck Button -->
+			<div class="mt-2 flex justify-end">
+				<button
+					type="button"
+					class="btn btn-ghost btn-xs text-primary gap-1.5"
+					onclick={() => (activeSpellcheckCode = code)}
+				>
+					<IconMdiSpellcheck class="h-4 w-4" />
+					<span
+						>{$_('product.edit.spellcheck_ingredients', {
+							default: 'Spellcheck ingredients'
+						})}</span
+					>
+				</button>
+			</div>
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}
@@ -247,3 +294,59 @@
 		/>
 	</div>
 </div>
+
+<!-- Robotoff Ingredient Detection Modal -->
+{#if activeDetectionCode != null}
+	<dialog class="modal modal-open">
+		<div class="modal-box relative max-w-4xl">
+			<button
+				type="button"
+				class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10"
+				onclick={() => (activeDetectionCode = null)}
+			>
+				✕
+			</button>
+			<h3 class="mb-4 text-lg font-bold">
+				{$_('product.edit.scan_with_ai', { default: 'Scan with AI' })}
+			</h3>
+			<robotoff-ingredient-detection
+				product-code={product.code}
+				oningredient-detection-state={(e: CustomEvent) => {
+					if (e.detail?.state === 'annotated' || e.detail?.state === 'FINISHED') {
+						if (activeDetectionCode) refreshIngredientsText(activeDetectionCode);
+					}
+				}}
+			></robotoff-ingredient-detection>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button type="button" onclick={() => (activeDetectionCode = null)}>close</button>
+		</form>
+	</dialog>
+{/if}
+
+<!-- Robotoff Ingredient Spellcheck Modal -->
+{#if activeSpellcheckCode != null}
+	<dialog class="modal modal-open">
+		<div class="modal-box relative max-w-4xl">
+			<button
+				type="button"
+				class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10"
+				onclick={() => (activeSpellcheckCode = null)}
+			>
+				✕
+			</button>
+			<robotoff-ingredient-spellcheck
+				product-code={product.code}
+				title-level="h3"
+				oningredient-spellcheck-state={(e: CustomEvent) => {
+					if (e.detail?.state === 'annotated' || e.detail?.state === 'FINISHED') {
+						if (activeSpellcheckCode) refreshIngredientsText(activeSpellcheckCode);
+					}
+				}}
+			></robotoff-ingredient-spellcheck>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button type="button" onclick={() => (activeSpellcheckCode = null)}>close</button>
+		</form>
+	</dialog>
+{/if}

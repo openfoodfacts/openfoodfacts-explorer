@@ -14,6 +14,7 @@
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
+	import IconMdiAutoFix from '@iconify-svelte/mdi/auto-fix';
 
 	import ImageButton from '../ImageButton.svelte';
 	import {
@@ -23,6 +24,7 @@
 		type IssueSeverity
 	} from './nutrition';
 
+	import { createProductsApi } from '$lib/api';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -42,6 +44,25 @@
 		handleNutrimentInput,
 		editMode = false
 	}: Props = $props();
+
+	let showNutrientExtractionModal = $state(false);
+
+	async function refreshNutriments() {
+		try {
+			const api = createProductsApi(fetch);
+			const { data: response } = await api.getProductV3(product.code);
+			if (response && 'product' in response && response.product) {
+				if (response.product.nutriments) {
+					product = {
+						...product,
+						nutriments: response.product.nutriments as unknown as Nutriments
+					};
+				}
+			}
+		} catch (err) {
+			console.error('Failed to refresh nutriments:', err);
+		}
+	}
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -549,12 +570,22 @@
 						})}
 					</p>
 				{:else}
-					<div class="sticky top-4">
+					<div class="sticky top-4 flex flex-col gap-3">
 						<ImageButton
 							src={nutritionImage ?? undefined}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
 							productCode={product.code}
 						/>
+
+						<button
+							type="button"
+							class="btn btn-outline btn-primary btn-sm self-start"
+							onclick={() => (showNutrientExtractionModal = true)}
+						>
+							<IconMdiAutoFix class="h-4 w-4" />
+							<span>{$_('product.edit.prefill_nutrition', { default: 'Pre-fill from photo' })}</span
+							>
+						</button>
 					</div>
 				{/if}
 			</div>
@@ -566,3 +597,32 @@
 		{/if}
 	</div>
 </div>
+
+<!-- Robotoff Nutrient Extraction Modal -->
+{#if showNutrientExtractionModal}
+	<dialog class="modal modal-open">
+		<div class="modal-box relative max-w-5xl">
+			<button
+				type="button"
+				class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10"
+				onclick={() => (showNutrientExtractionModal = false)}
+			>
+				✕
+			</button>
+			<h3 class="mb-4 text-lg font-bold">
+				{$_('product.edit.prefill_nutrition', { default: 'Pre-fill from photo' })}
+			</h3>
+			<robotoff-nutrient-extraction
+				product-code={product.code}
+				onnutrient-state={(e: CustomEvent) => {
+					if (e.detail?.state === 'FINISHED' || e.detail?.state === 'annotated') {
+						refreshNutriments();
+					}
+				}}
+			></robotoff-nutrient-extraction>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button type="button" onclick={() => (showNutrientExtractionModal = false)}>close</button>
+		</form>
+	</dialog>
+{/if}
