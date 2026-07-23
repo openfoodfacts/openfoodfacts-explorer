@@ -155,6 +155,7 @@
 	let sidebar = $state<ReturnType<typeof Sidebar>>();
 	let activeSection = $state('languages');
 	let isMobile = $state(false);
+	let openSections = $state<Record<string, boolean>>({});
 
 	const editSections = $derived.by(() => {
 		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({
@@ -181,6 +182,13 @@
 		};
 		updateMobileState();
 		window.addEventListener('resize', updateMobileState);
+
+		// Initialize sections open state based on preferences and mobile view
+		const isDefaultOpen = !isMobile && $preferences.editing.expandAllSections;
+		editSections.forEach((sec) => {
+			openSections[sec.id] = isDefaultOpen;
+		});
+
 		return () => window.removeEventListener('resize', updateMobileState);
 	});
 	function handleCollapseToggle(id: string) {
@@ -188,37 +196,21 @@
 	}
 
 	function toggleExpandAll() {
-		handleCollapseToggle(editSections[0]?.id || '');
 		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
-		const checkboxes = editSections
-			.map((sec) => {
-				const el = document.getElementById(sec.id);
-				return el ? el.querySelector('.collapse-arrow > input[type="checkbox"]') : null;
-			})
-			.filter(Boolean) as HTMLInputElement[];
-		checkboxes.forEach((cb) => {
-			cb.checked = $preferences.editing.expandAllSections;
-			cb.dispatchEvent(new Event('change'));
+		editSections.forEach((sec) => {
+			openSections[sec.id] = $preferences.editing.expandAllSections;
 		});
+		handleCollapseToggle(editSections[0]?.id || '');
 	}
 
 	function handleSidebarSectionClick(id: string) {
 		sidebar?.scrollToSection(id, () => {
-			const el = document.getElementById(id);
-			if (el) {
-				const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
-				if (activeSection === id) {
-					if (checkbox) {
-						checkbox.checked = !checkbox.checked;
-						checkbox.dispatchEvent(new Event('change'));
-					}
-				} else {
-					if (checkbox && !checkbox.checked) {
-						checkbox.checked = true;
-						checkbox.dispatchEvent(new Event('change'));
-					}
-				}
+			if (activeSection === id) {
+				openSections[id] = !openSections[id];
+			} else {
+				openSections[id] = true;
 			}
+			handleCollapseToggle(id);
 		});
 	}
 </script>
@@ -241,10 +233,8 @@
 		<div id="languages" class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('languages');
-				}}
+				bind:checked={openSections['languages']}
+				onchange={() => handleCollapseToggle('languages')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -259,10 +249,8 @@
 		<div id="images" class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('images');
-				}}
+				bind:checked={openSections['images']}
+				onchange={() => handleCollapseToggle('images')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -277,10 +265,8 @@
 		<div id="basic-info" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('basic-info');
-				}}
+				bind:checked={openSections['basic-info']}
+				onchange={() => handleCollapseToggle('basic-info')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -303,10 +289,8 @@
 		<div id="origin-traceability" class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('origin-traceability');
-				}}
+				bind:checked={openSections['origin-traceability']}
+				onchange={() => handleCollapseToggle('origin-traceability')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiEarth class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -321,10 +305,8 @@
 		<div id="ingredients" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('ingredients');
-				}}
+				bind:checked={openSections['ingredients']}
+				onchange={() => handleCollapseToggle('ingredients')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -340,10 +322,8 @@
 		<div id="nutrition" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('nutrition');
-				}}
+				bind:checked={openSections['nutrition']}
+				onchange={() => handleCollapseToggle('nutrition')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -358,10 +338,8 @@
 		<div id="prices" class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('prices');
-				}}
+				bind:checked={openSections['prices']}
+				onchange={() => handleCollapseToggle('prices')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -389,10 +367,8 @@
 		<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md" id="packaging">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('packaging');
-				}}
+				bind:checked={openSections['packaging']}
+				onchange={() => handleCollapseToggle('packaging')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -407,10 +383,8 @@
 		<div id="comment" class="collapse-arrow bg-base-200 collapse shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('comment');
-				}}
+				bind:checked={openSections['comment']}
+				onchange={() => handleCollapseToggle('comment')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -429,10 +403,8 @@
 			>
 				<input
 					type="checkbox"
-					checked={isMobile ? false : $preferences.editing.expandAllSections}
-					onchange={(e) => {
-						if (e.isTrusted) handleCollapseToggle('moderator-tools');
-					}}
+					bind:checked={openSections['moderator-tools']}
+					onchange={() => handleCollapseToggle('moderator-tools')}
 				/>
 				<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">
 					<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
