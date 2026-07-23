@@ -4,6 +4,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
+	import { preferences } from '$lib/settings';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
 	import Card from '$lib/ui/Card.svelte';
@@ -23,6 +24,18 @@
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
+	import Sidebar, { type SidebarSection } from '$lib/ui/Sidebar.svelte';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
+	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
+	import IconMdiHeartPulse from '@iconify-svelte/mdi/heart-pulse';
+	import IconMdiFlag from '@iconify-svelte/mdi/flag';
+	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
+	import IconMdiTagMultiple from '@iconify-svelte/mdi/tag-multiple';
+	import IconMdiBarcode from '@iconify-svelte/mdi/barcode';
+	import IconMdiDatabase from '@iconify-svelte/mdi/database';
+	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -91,6 +104,75 @@
 	let useWCFolksonomyEditor = $state(false);
 
 	let showBarcode = $state(false);
+	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
+
+	const activeSections = $derived.by(() => {
+		const rawList: (SidebarSection | false | undefined | null)[] = [
+			{
+				id: 'overview',
+				label: $_('product.sections.product', { default: 'Product' }),
+				icon: IconMdiInformation
+			},
+			showBarcode &&
+				product.code != null && {
+					id: 'barcode-info',
+					label: $_('product.sections.barcode_info_debug', { default: 'Barcode debug' }),
+					icon: IconMdiBarcode
+				},
+			{
+				id: 'attributes',
+				label: $_('product.sections.attributes', { default: 'Attributes' }),
+				icon: IconMdiNutrition
+			},
+			product.knowledge_panels?.health_card && {
+				id: 'health_card',
+				label: $_('product.sections.health', { default: 'Health' }),
+				icon: IconMdiHeartPulse
+			},
+			product.knowledge_panels?.environment_card && {
+				id: 'environment_card',
+				label: $_('product.sections.environment', { default: 'Environment' }),
+				icon: IconMdiLeaf
+			},
+			product.knowledge_panels?.report_problem_card && {
+				id: 'report_problem_card',
+				label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
+				icon: IconMdiFlag
+			},
+			product.knowledge_panels?.contribution_card && {
+				id: 'contribution_card',
+				label: $_('product.sections.contribution', { default: 'Contribution' }),
+				icon: IconMdiHelpCircleOutline
+			},
+			product.knowledge_panels?.product_card && {
+				id: 'product_card',
+				label: $_('product.sections.product_information', { default: 'Product information' }),
+				icon: IconMdiFormatListBulleted
+			},
+			isPriceConfigured() &&
+				data.prices != null && {
+					id: 'prices',
+					label: $_('product.sections.prices', { default: 'Prices' }),
+					icon: IconMdiTagMultiple
+				},
+			product.code != null && {
+				id: 'barcode-gs1',
+				label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
+				icon: IconMdiBarcode
+			},
+			{
+				id: 'data-sources',
+				label: $_('product.sections.data_sources', { default: 'Data Sources' }),
+				icon: IconMdiDatabase
+			},
+			isFolksonomyConfigured() && {
+				id: 'folksonomy',
+				label: $_('product.sections.folksonomy', { default: 'Folksonomy' }),
+				icon: IconMdiLabel
+			}
+		];
+		return rawList.filter((item): item is SidebarSection => !!item);
+	});
 
 	const shortcutCtx = getShortcutCtx();
 
@@ -179,6 +261,13 @@
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
+
+	$effect(() => {
+		const expectedValue = !sidebarHidden;
+		if ($preferences.productSidebarVisible !== expectedValue) {
+			$preferences.productSidebarVisible = expectedValue;
+		}
+	});
 </script>
 
 <Metadata
@@ -193,7 +282,7 @@
 	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
-<div class="flex flex-col gap-4" itemscope itemtype="https://schema.org/Product">
+<div itemscope itemtype="https://schema.org/Product">
 	<meta itemprop="name" content={product.product_name || ''} />
 	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
 	<meta
@@ -210,93 +299,138 @@
 		</div>
 	{/if}
 
-	<ProductHeader {product} lc={data.lc} />
+	<div
+		class="relative w-full lg:grid lg:gap-8 pb-18 transition-all duration-300 {sidebarHidden
+			? 'lg:grid-cols-1'
+			: 'lg:grid-cols-[auto_1fr]'}"
+	>
+		<Sidebar
+			type="product"
+			sections={activeSections}
+			bind:hidden={sidebarHidden}
+			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
+			onHeaderAction={() => (sidebarHidden = true)}
+		/>
 
-	{#if showBarcode && product.code != null}
-		<BarcodeInfo code={product.code} />
-	{/if}
-
-	<robotoff-contribution-message
-		product-code={product.code}
-		is-logged-in={$userInfo != null}
-		onclick={() => trackOffEvent('product', 'open_nutrisight')}
-	></robotoff-contribution-message>
-
-	{#await productAttributes}
-		<div class="flex items-center justify-center py-8">
-			<span class="loading loading-spinner loading-lg"></span>
-			<span class="ml-2">{$_('product.loading_attributes')}</span>
-		</div>
-	{:then attributes}
-		{#if attributes != null}
-			<ProductAttributes groups={attributes} defaultPreferences={data.defaultProductPreferences} />
-		{:else}
-			<div class="alert alert-warning">
-				<IconMdiWarning class="h-6 w-6 shrink-0" />
-				<div>
-					<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
-					<p>{$_('product.attributes_error_body')}</p>
-				</div>
+		<div class="space-y-4 min-w-0 w-full flex flex-col gap-4">
+			<div id="overview" class="flex flex-col gap-4">
+				<ProductHeader {product} lc={data.lc} />
 			</div>
-		{/if}
-	{/await}
 
-	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
-
-	{#if isPriceConfigured() && data?.prices != null}
-		<Prices prices={data.prices} barcode={product.code} />
-	{/if}
-
-	<Gs1Country barcode={product.code} />
-
-	<DataSources {product} />
-
-	{#if isFolksonomyConfigured()}
-		<Card>
-			<label class="label">
-				<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
-				{$_('product.folksonomy.use_wc_editor')}
-			</label>
-
-			{#if useWCFolksonomyEditor}
-				<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
-				<folksonomy-editor
-					page-type="edit"
-					product-code={product.code}
-					auth-token={$userAuthTokens?.access_token ?? ''}
-				></folksonomy-editor>
-			{:else}
-				<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
-
-				<div class="prose my-4 text-justify">
-					<p>
-						{$_('product.folksonomy.intro_before')}
-						<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
-						{$_('product.folksonomy.intro_after')}
-						<a href={resolve('/folksonomy')}>
-							{$_('product.folksonomy.link_properties')}
-						</a>
-						{$_('product.folksonomy.link_middle')}
-						<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
-							{$_('product.folksonomy.link_docs')}
-						</a>.
-					</p>
-					<p>{$_('product.folksonomy.warning')}</p>
-					<p>
-						{$_('product.folksonomy.footer_before')}
-						<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">
-							{$_('product.folksonomy.footer_link')}
-						</a>
-						{$_('product.folksonomy.footer_after')}
-					</p>
+			{#if showBarcode && product.code != null}
+				<div id="barcode-info">
+					<BarcodeInfo code={product.code} />
 				</div>
-
-				{#if data.tags != null && data.keys != null}
-					<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code!} />
-				{/if}
 			{/if}
-		</Card>
-	{/if}
+
+			<div>
+				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+				<robotoff-contribution-message
+					product-code={product.code}
+					is-logged-in={$userInfo != null}
+					onclick={() => trackOffEvent('product', 'open_nutrisight')}
+				></robotoff-contribution-message>
+			</div>
+
+			<div id="attributes">
+				{#await productAttributes}
+					<div class="flex items-center justify-center py-8">
+						<span class="loading loading-spinner loading-lg"></span>
+						<span class="ml-2">{$_('product.loading_attributes')}</span>
+					</div>
+				{:then attributes}
+					{#if attributes != null}
+						<ProductAttributes
+							groups={attributes}
+							defaultPreferences={data.defaultProductPreferences}
+						/>
+					{:else}
+						<div class="alert alert-warning">
+							<IconMdiWarning class="h-6 w-6 shrink-0" />
+							<div>
+								<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
+								<p>{$_('product.attributes_error_body')}</p>
+							</div>
+						</div>
+					{/if}
+				{/await}
+			</div>
+
+			<div id="knowledge-panels-container">
+				<KnowledgePanelsComp
+					panels={product.knowledge_panels}
+					code={product.code}
+					roots={['root']}
+					summary={sidebarHidden}
+				/>
+			</div>
+
+			{#if isPriceConfigured() && data?.prices != null}
+				<div id="prices">
+					<Prices prices={data.prices} barcode={product.code} />
+				</div>
+			{/if}
+
+			{#if product.code}
+				<div id="barcode-gs1">
+					<Gs1Country barcode={product.code} />
+				</div>
+			{/if}
+
+			<div id="data-sources">
+				<DataSources {product} />
+			</div>
+
+			{#if isFolksonomyConfigured()}
+				<div id="folksonomy">
+					<Card>
+						<label class="label">
+							<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
+							{$_('product.folksonomy.use_wc_editor')}
+						</label>
+
+						{#if useWCFolksonomyEditor}
+							<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
+							<folksonomy-editor
+								page-type="edit"
+								product-code={product.code}
+								auth-token={$userAuthTokens?.access_token ?? ''}
+							></folksonomy-editor>
+						{:else}
+							<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
+
+							<div class="prose my-4 text-justify">
+								<p>
+									{$_('product.folksonomy.intro_before')}
+									<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
+									{$_('product.folksonomy.intro_after')}
+									<a href={resolve('/folksonomy')}>
+										{$_('product.folksonomy.link_properties')}
+									</a>
+									{$_('product.folksonomy.link_middle')}
+									<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
+										{$_('product.folksonomy.link_docs')}
+									</a>.
+								</p>
+								<p>{$_('product.folksonomy.warning')}</p>
+								<p>
+									{$_('product.folksonomy.footer_before')}
+									<a href="https://wiki.openfoodfacts.org/Folksonomy_Engine">
+										{$_('product.folksonomy.footer_link')}
+									</a>
+									{$_('product.folksonomy.footer_after')}
+								</p>
+							</div>
+
+							{#if data.tags != null && data.keys != null}
+								<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code!} />
+							{/if}
+						{/if}
+					</Card>
+				</div>
+			{/if}
+		</div>
+	</div>
 </div>
 
 <NutritionCalculator />
