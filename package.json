@@ -29,11 +29,11 @@
 		"test": "vitest run --passWithNoTests"
 	},
 	"devDependencies": {
-		"@crowdin/cli": "^4.14.3",
+		"@crowdin/cli": "^4.14.4",
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
-		"@formatjs/intl-durationformat": "^0.10.15",
+		"@formatjs/intl-durationformat": "^0.10.18",
 		"@iconify-svelte/material-symbols": "^1.0.42",
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.37",
