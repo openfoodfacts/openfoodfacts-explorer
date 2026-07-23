@@ -51,7 +51,7 @@
 			{#if title.icon_url != null}
 				<img
 					class={[
-						'kp-icon mr-4 h-12',
+						'kp-icon ml-2 mr-4 h-12 w-12 object-contain',
 						title.icon_size && `kp-icon-${title.icon_size}`,
 						title.icon_color_from_evaluation && 'kp-icon-from-eval'
 					]}
@@ -111,9 +111,9 @@
 		}
 	}
 
-	.kp-icon-small {
+	/*.kp-icon-small {
 		@apply h-6 w-6;
-	}
+	}*/
 
 	.kp-panel-size-small .kp-title {
 		@apply text-sm;
