@@ -116,17 +116,24 @@
 		};
 	}
 
+	const SEVERITY_PRIORITY: Record<IssueSeverity, number> = {
+		error: 3,
+		warning: 2,
+		info: 1
+	};
+
 	const bySeverity = (a: Issue, b: Issue) => {
-		if (a.severity === b.severity) return 0;
-		if (a.severity === 'error') return -1;
-		return 1;
+		const priorityA = SEVERITY_PRIORITY[a.severity] ?? 0;
+		const priorityB = SEVERITY_PRIORITY[b.severity] ?? 0;
+		return priorityB - priorityA;
 	};
 
 	const INPUT_CLASS_BY_SEVERITY: Record<IssueSeverity, string> = {
 		error: 'input-error',
-		warning: 'input-warning'
+		warning: 'input-warning',
+		info: 'input-info'
 	};
-	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning'];
+	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning', 'info'];
 	const SERVING_SIZE_VALIDATION_ISSUES = {
 		'missing-number': {
 			severity: 'error',
@@ -164,25 +171,56 @@
 		getServingSizeValidationResult(product.serving_size, units)
 	);
 	let servingSizeIssue = $derived.by((): Issue | null => {
-		if (servingSizeValidationResult === 'valid') {
-			return null;
+		if (servingSizeValidationResult !== 'valid') {
+			const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+			return {
+				severity: validationIssue.severity,
+				field: 'serving_size',
+				title: $_(validationIssue.title, { default: validationIssue.title }),
+				desc: $_(validationIssue.desc, {
+					default: validationIssue.desc,
+					values: { examples: servingSizeExamples }
+				})
+			};
 		}
 
-		const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+		const apiError = apiQualityErrors.find((e) => e.field === 'serving_size');
+		if (apiError) {
+			return {
+				severity: apiError.severity,
+				field: 'serving_size',
+				title: $_(apiError.message, { default: 'Serving size issue' }),
+				desc: ''
+			};
+		}
 
-		return {
-			severity: validationIssue.severity,
-			field: 'serving_size',
-			title: $_(validationIssue.title),
-			desc: $_(validationIssue.desc, { values: { examples: servingSizeExamples } })
-		};
+		return null;
 	});
 	let servingSizePlaceholder = $derived(
 		$_('product.edit.serving_size_placeholder', {
 			values: { examples: servingSizeExamples }
 		})
 	);
-	let nutritionIssues = $derived(getNutritionIssues(product));
+	import { getQualityErrors } from '$lib/utils/dataQuality';
+
+	let apiQualityErrors = $derived(
+		getQualityErrors(
+			product.data_quality_errors_tags,
+			product.data_quality_warnings_tags,
+			product.data_quality_info_tags
+		)
+	);
+	let nutritionIssues = $derived([
+		...getNutritionIssues(product),
+		...apiQualityErrors
+			.filter((e) => e.section === 'nutrition')
+			.map((e) => ({
+				severity: e.severity,
+				field: e.field.replace('_100g', '').replace(/_/g, '-'),
+				title: $_(e.message, { default: 'Nutrition issue' }),
+				desc: ''
+			}))
+	]);
 
 	let issuesByField = $derived((keys: string | string[]) => {
 		const keysArray = Array.isArray(keys) ? keys : [keys];
@@ -228,21 +266,27 @@
 
 {#snippet issueTooltip(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
-	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
-	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
+	{@const isWarning = issue.severity === 'warning'}
+	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
+	{@const iconColorClass = isError ? 'text-error' : isWarning ? 'text-warning' : 'text-info'}
 	<div
-		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning']}
+		class="tooltip cursor-default {isError
+			? 'tooltip-error'
+			: isWarning
+				? 'tooltip-warning'
+				: 'tooltip-info'}"
 		data-tip={issue.title}
 	>
-		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
+		<Icon class="{iconColorClass} ml-2 h-5 w-5 text-lg" />
 	</div>
 {/snippet}
 
 {#snippet issueAlert(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
-	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
-	{@const alertColorClass = isError ? 'alert-error' : 'alert-warning'}
-	<div class={[alertColorClass, 'alert mt-4']}>
+	{@const isWarning = issue.severity === 'warning'}
+	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
+	{@const alertColorClass = isError ? 'alert-error' : isWarning ? 'alert-warning' : 'alert-info'}
+	<div class="{alertColorClass} alert mt-4">
 		<Icon class="h-5 w-5" />
 		<div>
 			<p class="text-sm font-bold sm:text-base">{issue.title}</p>
@@ -314,7 +358,7 @@
 						<input
 							id="serving-size-input"
 							type="text"
-							class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
+							class="input input-bordered w-full text-sm sm:text-base {servingSizeInputClass}"
 							value={product.serving_size ?? ''}
 							oninput={handleServingSize}
 							placeholder={servingSizePlaceholder}
@@ -349,7 +393,7 @@
 			<!-- Energy -->
 			<fieldset class="fieldset">
 				<div class="flex gap-2">
-					<label class={['input grow', fieldInputClasses('energy')]}>
+					<label class="input grow {fieldInputClasses('energy')}">
 						<span class="label">
 							{$_('product.edit.energy')}
 						</span>
@@ -381,7 +425,7 @@
 						<IconMdiSwapHorizontal class="h-5 w-5" />
 					</button>
 
-					<label class={['input grow', fieldInputClasses('energy')]}>
+					<label class="input grow {fieldInputClasses('energy')}">
 						<span class="label">
 							{$_('product.edit.energy')}
 						</span>
@@ -407,7 +451,7 @@
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					{@const issueKeys = [nutrient, 'all']}
 					{@const issue = issuesByField(issueKeys)[0]}
-					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
+					<label class="input w-full {fieldInputClasses(issueKeys)}">
 						<span class="label w-60">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}

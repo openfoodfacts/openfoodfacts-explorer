@@ -1,16 +1,28 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import Fuse from 'fuse.js';
+	import { _ } from '$lib/i18n';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
 		onChange?: (tags: string[]) => void;
+		highlightEmpty?: boolean;
+		highlightSeverity?: 'error' | 'warning' | 'info' | '';
+		highlightMessage?: string;
 	};
 
-	let { tags = $bindable([]), autocomplete = [], onChange }: Props = $props();
+	let {
+		tags = $bindable([]),
+		autocomplete = [],
+		onChange,
+		highlightEmpty = false,
+		highlightSeverity = '',
+		highlightMessage = ''
+	}: Props = $props();
 
 	let autoCompleteFuse = $derived(new Fuse(autocomplete, { threshold: 0.2 }));
 	let autoCompleteIndex = $state(-1);
@@ -183,7 +195,16 @@
 {/snippet}
 
 <div
-	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2"
+	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2 transition-all {highlightEmpty &&
+	tags.length === 0
+		? 'border-dashed border-warning/50 bg-warning/5'
+		: ''} {highlightSeverity === 'error'
+		? 'border-error'
+		: highlightSeverity === 'warning'
+			? 'border-warning'
+			: highlightSeverity === 'info'
+				? 'border-info'
+				: ''}"
 >
 	{#each tags as tag, index (tag)}
 		<div class="badge badge-ghost flex h-min items-center py-2" transition:fade={{ duration: 100 }}>
@@ -240,3 +261,20 @@
 		{@render autocompleteDropdown()}
 	</div>
 </div>
+{#if highlightSeverity}
+	{@const colorClass =
+		highlightSeverity === 'error'
+			? 'text-error'
+			: highlightSeverity === 'warning'
+				? 'text-warning'
+				: 'text-info'}
+	<span class="text-xs {colorClass} mt-1 font-medium flex items-center gap-1 w-full">
+		<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+		{highlightMessage || $_('product.edit.quality.issue_fallback', { default: 'Quality issue' })}
+	</span>
+{:else if highlightEmpty && tags.length === 0}
+	<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1 w-full">
+		<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+		{$_('product.edit.missing_info', { default: 'Missing info' })}
+	</span>
+{/if}

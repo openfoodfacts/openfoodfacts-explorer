@@ -12,6 +12,7 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -37,6 +38,19 @@
 	}: Props = $props();
 
 	let showInfo = $state(false);
+
+	import { getQualityErrors } from '$lib/utils/dataQuality';
+
+	let apiQualityErrors = $derived(
+		getQualityErrors(
+			product.data_quality_errors_tags,
+			product.data_quality_warnings_tags,
+			product.data_quality_info_tags
+		)
+	);
+
+	let quantityError = $derived(apiQualityErrors.find((e) => e.field === 'quantity'));
+	let labelsError = $derived(apiQualityErrors.find((e) => e.field === 'labels'));
 
 	const permissions = getPermissionsCtx();
 
@@ -167,13 +181,46 @@
 			<input
 				id="quantity"
 				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base transition-all {!product.quantity
+					? 'border-dashed border-warning/50 bg-warning/5'
+					: ''} {quantityError
+					? quantityError.severity === 'error'
+						? 'input-error'
+						: quantityError.severity === 'warning'
+							? 'input-warning'
+							: 'input-info'
+					: ''}"
 				value={product.quantity ?? ''}
 				oninput={(e) => {
 					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
 				}}
 				placeholder="e.g., 250g, 1L, 500ml"
 			/>
+			{#if quantityError}
+				<span
+					class="text-xs mt-1 font-medium flex items-center gap-1 {quantityError.severity ===
+					'error'
+						? 'text-error'
+						: quantityError.severity === 'warning'
+							? 'text-warning/70'
+							: 'text-info/70'}"
+				>
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					{$_(`product.edit.quality.${quantityError.severity}_label`, {
+						default:
+							quantityError.severity === 'error'
+								? 'Error'
+								: quantityError.severity === 'warning'
+									? 'Warning'
+									: 'Info'
+					})}: {$_(quantityError.message)}
+				</span>
+			{:else if !product.quantity}
+				<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1">
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					{$_('product.edit.missing_info', { default: 'Missing info' })}
+				</span>
+			{/if}
 		</div>
 
 		<div class="form-control w-full sm:col-span-2">
@@ -217,6 +264,7 @@
 				onChange={(v) => {
 					product = { ...product, categories: v };
 				}}
+				highlightEmpty={true}
 			/>
 		</div>
 		<div class="form-control w-full">
@@ -232,6 +280,8 @@
 				onChange={(v) => {
 					product = { ...product, labels: v };
 				}}
+				highlightSeverity={labelsError ? labelsError.severity : ''}
+				highlightMessage={labelsError ? $_(labelsError.message) : ''}
 			/>
 		</div>
 		<div class="form-control w-full">
@@ -247,6 +297,7 @@
 				onChange={(v) => {
 					product = { ...product, brands: v };
 				}}
+				highlightEmpty={true}
 			/>
 		</div>
 		<div class="form-control w-full">
