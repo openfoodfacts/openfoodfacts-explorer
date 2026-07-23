@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'rc/*'
+      - deploy/*
     tags:
       - 'v*.*.*'
 
@@ -14,6 +15,7 @@ concurrency:
 
 jobs:
   build-and-push:
+    name: Build and push Explorer Docker image
     runs-on: ubuntu-latest
 
     permissions:
@@ -33,6 +35,12 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+          # tag (by order of precedence)
+          tags: |
+            # release tags
+            type=semver,pattern={{version}}
+            # otherwise sha based tag
+            type=raw,value=sha-${{ github.sha }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
