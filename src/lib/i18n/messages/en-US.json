@@ -40,6 +40,7 @@
 		"advanced_search_classic": "Advanced Search for {term} (classic version)",
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
+		"superset_promo_title": "Query OFF with SQL",
 		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
@@ -527,7 +528,9 @@
 			"action": {
 				"add_packaging_components": "Add packaging components",
 				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_ingredients_text": "Add ingredients text",
+				"edit_product":"Edit product",
+  			    "report_product_to_nutripatrol": "Report product to Nutripatrol"
 			}
 		},
 		"moderator": {
