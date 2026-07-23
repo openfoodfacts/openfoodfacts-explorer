@@ -4,17 +4,7 @@
 	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
-	import {
-		type Brand,
-		type Category,
-		type Country,
-		type Label,
-		type Origin,
-		type Store,
-		type Taxonomy,
-		type TaxoNode,
-		getOrDefault
-	} from '$lib/api';
+
 	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import TagChipList from '$lib/ui/TagChips.svelte';
@@ -32,18 +22,29 @@
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
-		taxonomies: {
-			brands: Promise<Taxonomy<Brand>>;
-			categories: Promise<Taxonomy<Category>>;
-			stores: Promise<Taxonomy<Store>>;
-			labels: Promise<Taxonomy<Label>>;
-			countries: Promise<Taxonomy<Country>>;
-			origins: Promise<Taxonomy<Origin>>;
-		};
+		lc?: string;
 	};
-	let { product, taxonomies }: Props = $props();
+	let { product, lc }: Props = $props();
 
 	let { lang } = $derived($preferences);
+
+	function getLocalizedTags(facet: string): string[] | undefined {
+		const rawProduct = product as unknown as Record<string, unknown>;
+		const activeLang = lc || lang;
+		// Prioritize specific language suffix fields (e.g. categories_tags_fr, brands_tags_fr)
+		if (activeLang) {
+			const langKey = `${facet}_tags_${activeLang.toLowerCase()}`;
+			const langTags = rawProduct[langKey];
+			if (Array.isArray(langTags) && langTags.length > 0) return langTags as string[];
+		}
+
+		// Fallback to English language suffix if available
+		const enKey = `${facet}_tags_en`;
+		const enTags = rawProduct[enKey];
+		if (Array.isArray(enTags) && enTags.length > 0) return enTags as string[];
+
+		return undefined;
+	}
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -184,8 +185,8 @@
 					'product.header.brands',
 					'Brands',
 					product.brands_tags,
-					'brands',
-					taxonomies.brands
+					getLocalizedTags('brands'),
+					'brands'
 				)}
 
 				<!-- Categories -->
@@ -193,8 +194,8 @@
 					'product.header.categories',
 					'Categories',
 					product.categories_tags,
-					'categories',
-					taxonomies.categories
+					getLocalizedTags('categories'),
+					'categories'
 				)}
 
 				<!-- Labels -->
@@ -202,8 +203,8 @@
 					'product.header.labels',
 					'Labels',
 					product.labels_tags,
-					'labels',
-					taxonomies.labels
+					getLocalizedTags('labels'),
+					'labels'
 				)}
 
 				<!-- Origins -->
@@ -211,8 +212,8 @@
 					'product.header.origins',
 					'Origins',
 					product.origins_tags as unknown as string[],
-					'origins',
-					taxonomies.origins
+					getLocalizedTags('origins'),
+					'origins'
 				)}
 
 				<!-- Traceability Codes -->
@@ -263,8 +264,8 @@
 					'product.header.stores',
 					'Stores',
 					product.stores_tags,
-					'stores',
-					taxonomies.stores
+					getLocalizedTags('stores'),
+					'stores'
 				)}
 
 				<!-- Countries -->
@@ -272,8 +273,8 @@
 					'product.header.countries',
 					'Countries',
 					product.countries_tags,
-					'countries',
-					taxonomies.countries
+					getLocalizedTags('countries'),
+					'countries'
 				)}
 			</div>
 		</div>
@@ -284,8 +285,8 @@
 	titleKey: string,
 	defaultTitle: string,
 	tags: string[] | undefined,
-	facet: string,
-	taxoPromise: Promise<Taxonomy<TaxoNode>>
+	localizedTags: string[] | undefined,
+	facet: string
 )}
 	{#if tags != null && tags.length > 0}
 		{const href = resolve('/facets/[facet]/[value]', { facet: facet, value: tags[0] })}
@@ -293,18 +294,13 @@
 			<div class="text-secondary mb-2 text-sm font-bold">
 				{$_(titleKey, { default: defaultTitle })}
 			</div>
-			{#await taxoPromise}
-				<div class="skeleton h-6 w-full"></div>
-			{:then taxonomy}
-				<TagChipList
-					tags={tags.map((tag) => {
-						const name = (taxonomy[tag] ? getOrDefault(taxonomy[tag].name, lang) : tag) ?? tag;
-						return { id: tag, name, href };
-					})}
-				/>
-			{:catch}
-				<TagChipList tags={tags.map((tag) => ({ id: tag, name: tag, href }))} />
-			{/await}
+			<TagChipList
+				tags={tags.map((tag, idx) => ({
+					id: tag,
+					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
+					href
+				}))}
+			/>
 		</div>
 	{/if}
 {/snippet}
