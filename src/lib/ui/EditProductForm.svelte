@@ -30,6 +30,63 @@
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
+	const DEFAULT_SECTIONS = [
+		{
+			id: 'languages',
+			labelKey: 'product.edit.sections.languages',
+			defaultLabel: 'Languages',
+			icon: IconMdiTranslate
+		},
+		{
+			id: 'images',
+			labelKey: 'product.edit.sections.images',
+			defaultLabel: 'Images',
+			icon: IconMdiImageMultiple
+		},
+		{
+			id: 'basic-info',
+			labelKey: 'product.edit.sections.basic_info',
+			defaultLabel: 'Basic Info',
+			icon: IconMdiInformation
+		},
+		{
+			id: 'origin-traceability',
+			labelKey: 'product.edit.sections.origin_traceability',
+			defaultLabel: 'Traceability & Origins',
+			icon: IconMdiEarth
+		},
+		{
+			id: 'ingredients',
+			labelKey: 'product.edit.sections.ingredients',
+			defaultLabel: 'Ingredients',
+			icon: IconMdiFormatListBulleted
+		},
+		{
+			id: 'nutrition',
+			labelKey: 'product.edit.sections.nutrition',
+			defaultLabel: 'Nutrition',
+			icon: IconMdiNutrition
+		},
+		{
+			id: 'prices',
+			labelKey: 'product.edit.sections.prices',
+			defaultLabel: 'Prices',
+			icon: IconMdiTagMultiple
+		},
+		{
+			id: 'packaging',
+			labelKey: 'product.edit.sections.packaging',
+			defaultLabel: 'Packaging',
+			icon: IconMdiPackageVariant
+		},
+		{
+			id: 'comment',
+			labelKey: 'product.edit.sections.comment',
+			defaultLabel: 'Comment',
+			icon: IconMdiCommentText
+		}
+	];
+
 	type Props = {
 		product: Product;
 
@@ -100,55 +157,11 @@
 	let isMobile = $state(false);
 
 	const editSections = $derived.by(() => {
-		const sections: SidebarSection[] = [
-			{
-				id: 'languages',
-				label: $_('product.edit.sections.languages', { default: 'Languages' }),
-				icon: IconMdiTranslate
-			},
-			{
-				id: 'images',
-				label: $_('product.edit.sections.images', { default: 'Images' }),
-				icon: IconMdiImageMultiple
-			},
-			{
-				id: 'basic-info',
-				label: $_('product.edit.sections.basic_info', { default: 'Basic Info' }),
-				icon: IconMdiInformation
-			},
-			{
-				id: 'origin-traceability',
-				label: $_('product.edit.sections.origin_traceability', {
-					default: 'Traceability & Origins'
-				}),
-				icon: IconMdiEarth
-			},
-			{
-				id: 'ingredients',
-				label: $_('product.edit.sections.ingredients', { default: 'Ingredients' }),
-				icon: IconMdiFormatListBulleted
-			},
-			{
-				id: 'nutrition',
-				label: $_('product.edit.sections.nutrition', { default: 'Nutrition' }),
-				icon: IconMdiNutrition
-			},
-			{
-				id: 'prices',
-				label: $_('product.edit.sections.prices', { default: 'Prices' }),
-				icon: IconMdiTagMultiple
-			},
-			{
-				id: 'packaging',
-				label: $_('product.edit.sections.packaging', { default: 'Packaging' }),
-				icon: IconMdiPackageVariant
-			},
-			{
-				id: 'comment',
-				label: $_('product.edit.sections.comment', { default: 'Comment' }),
-				icon: IconMdiCommentText
-			}
-		];
+		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({
+			id: sec.id,
+			label: $_(sec.labelKey, { default: sec.defaultLabel }),
+			icon: sec.icon
+		}));
 
 		if (permissions.isModerator && $preferences.moderator) {
 			sections.push({
