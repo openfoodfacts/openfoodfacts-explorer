@@ -12,7 +12,7 @@
 			<li class="flex">
 				<a
 					href={`/facets/${taxo}`}
-					class="flex min-h-24 w-full items-center rounded-lg border p-4 text-xl font-semibold transition hover:bg-base-200"
+					class="flex min-h-20 w-full items-center rounded-lg border p-4 text-xl font-semibold transition hover:bg-base-200"
 				>
 					<IconComponent class="me-4 h-5 w-5 shrink-0"></IconComponent>
 					<span class="line-clamp-2 leading-tight" title={name}>{name}</span>
