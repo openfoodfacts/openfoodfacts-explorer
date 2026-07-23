@@ -58,7 +58,7 @@
 	{/if}
 {/snippet}
 
-<div class="bg-base-200 rounded-box collapse-arrow collapse">
+<div class="collapse-arrow collapse rounded-box bg-base-200">
 	<input type="checkbox" checked />
 	<div class="collapse-title text-lg font-medium">
 		{groupName || groupId || 'Unnamed Group'}
@@ -89,7 +89,7 @@
 
 				<!-- Label and Options -->
 				<div class="flex-1">
-					<h4 class="text-base-content mb-2 text-sm font-medium">
+					<h4 class="mb-2 text-sm font-medium text-base-content">
 						{attribute.setting_name || attribute.name || attribute.id || 'Unknown'}
 					</h4>
 					<div class="flex flex-wrap gap-4">
@@ -117,7 +117,7 @@
 												value
 											})}
 									/>
-									<span class="text-base-content/80 text-sm">
+									<span class="text-sm text-base-content/80">
 										{$_(`preferences.options.${value}`) || value}
 									</span>
 								</label>
@@ -125,7 +125,7 @@
 						{/if}
 					</div>
 					{#if attribute.description}
-						<p class="text-base-content/60 mt-1 text-xs">{attribute.description}</p>
+						<p class="mt-1 text-xs text-base-content/60">{attribute.description}</p>
 					{/if}
 				</div>
 			</div>

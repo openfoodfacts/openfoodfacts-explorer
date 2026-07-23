@@ -78,7 +78,7 @@
 </script>
 
 <div
-	class={[element.action_element.html != '' && 'border-accent bg-accent/10 rounded border-s p-4']}
+	class={[element.action_element.html != '' && 'rounded border-s border-accent bg-accent/10 p-4']}
 >
 	{#if element.action_element.html != ''}
 		<div class="mb-4 text-sm">

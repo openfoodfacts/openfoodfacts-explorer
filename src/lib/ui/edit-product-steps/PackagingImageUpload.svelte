@@ -22,7 +22,7 @@
 			alt={`Packaging photo for ${getLanguageName(currentLang)}`}
 		/>
 	{:else}
-		<p class="alert alert-warning mb-4 text-sm sm:text-base">
+		<p class="mb-4 alert text-sm alert-warning sm:text-base">
 			{$_('product.edit.packaging_component.no_packaging_image', {
 				default: 'No packaging photo available. Upload one in the Images section above.'
 			})}

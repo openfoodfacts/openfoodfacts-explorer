@@ -496,7 +496,7 @@
 </script>
 
 {#if dev && !$userInfo}
-	<div class="alert alert-warning my-8 text-lg" role="alert">
+	<div class="my-8 alert text-lg alert-warning" role="alert">
 		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
 		<div>
 			<p>
@@ -520,15 +520,15 @@
 <div class="space-y-8">
 	<!-- Super Title -->
 	<div class="mb-8 space-y-2 text-center">
-		<h1 class="text-primary text-2xl font-semibold tracking-wide sm:text-3xl">
+		<h1 class="text-2xl font-semibold tracking-wide text-primary sm:text-3xl">
 			{#if isAddMode}
 				{$_('product.edit.add_product_title')}
 			{:else}
 				{$_('product.edit.edit_product_title')}
 			{/if}
 		</h1>
-		<div class="bg-primary/20 mx-auto h-px w-16"></div>
-		<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
+		<div class="mx-auto h-px w-16 bg-primary/20"></div>
+		<p class="font-mono text-base tracking-wider text-base-content/60 sm:text-lg">
 			{#if product.product_name}
 				{product.product_name}
 			{:else if product.product_name_en}

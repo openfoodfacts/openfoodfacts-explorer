@@ -48,7 +48,7 @@
 	{#if imageId && productCode}
 		<div class="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100">
 			<a
-				class="btn btn-circle btn-sm bg-base-100/80 hover:bg-base-100"
+				class="btn btn-circle bg-base-100/80 btn-sm hover:bg-base-100"
 				href={IMAGE_REPORT_URL(productCode, imageId)}
 				target="_blank"
 				rel="noopener noreferrer"

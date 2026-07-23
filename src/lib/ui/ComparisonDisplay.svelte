@@ -332,7 +332,7 @@
 	<div class="flex flex-col items-center gap-1">
 		<img src={imageSrc} alt={altText} title={altText} class="h-12" />
 		{#if isBest}
-			<span class="badge badge-success badge-sm">{$_('compare.best')}</span>
+			<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
 		{/if}
 	</div>
 {/snippet}
@@ -349,9 +349,9 @@
 				{unit}
 			</span>
 			{#if comparison.isBest}
-				<span class="badge badge-success badge-sm">{$_('compare.best')}</span>
+				<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
 			{:else if comparison.isWorst}
-				<span class="badge badge-error badge-sm">{$_('compare.worst')}</span>
+				<span class="badge badge-sm badge-error">{$_('compare.worst')}</span>
 			{/if}
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
 				<span
@@ -380,9 +380,9 @@
 				{comparison.formatted}
 				{unit}
 				{#if comparison.isBest}
-					<span class="badge badge-success badge-sm ml-1">{$_('compare.best')}</span>
+					<span class="ml-1 badge badge-sm badge-success">{$_('compare.best')}</span>
 				{:else if comparison.isWorst}
-					<span class="badge badge-error badge-sm ml-1">{$_('compare.worst')}</span>
+					<span class="ml-1 badge badge-sm badge-error">{$_('compare.worst')}</span>
 				{/if}
 			</span>
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
@@ -410,7 +410,7 @@
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
-						class="btn btn-circle btn-sm btn-soft btn-error absolute top-2 right-2 z-10"
+						class="btn absolute top-2 right-2 z-10 btn-circle btn-soft btn-error btn-sm"
 						onclick={() => onRemoveProduct(product.code)}
 						aria-label="Remove product from comparison"
 					>
@@ -431,7 +431,7 @@
 							{product.product_name ?? product.code}
 						</a>
 					</h3>
-					<p class="text-base-content/70 mt-1 text-center text-sm">
+					<p class="mt-1 text-center text-sm text-base-content/70">
 						{product.brands ?? ''}
 						{#if product.brands && product.quantity},{/if}
 						{product.quantity ?? ''}
@@ -501,10 +501,10 @@
 
 <!-- Desktop: Table View -->
 <div class="hidden overflow-x-auto lg:block">
-	<table class="table-zebra table w-full table-fixed">
+	<table class="table w-full table-fixed table-zebra">
 		<thead>
 			<tr>
-				<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
@@ -528,7 +528,7 @@
 								<div class="mb-2 flex flex-col items-center justify-center gap-1">
 									{#if onRemoveProduct}
 										<button
-											class="btn btn-soft btn-sm btn-square btn-error transition-all"
+											class="btn btn-square btn-soft transition-all btn-error btn-sm"
 											onclick={() => onRemoveProduct(product.code)}
 											aria-label="Remove product"
 											title="Remove product"
@@ -538,7 +538,7 @@
 									{/if}
 									{#if onReorderProduct}
 										<button
-											class="btn btn-soft btn-sm btn-square btn-primary cursor-grab active:cursor-grabbing"
+											class="btn btn-square cursor-grab btn-soft btn-primary btn-sm active:cursor-grabbing"
 											draggable="true"
 											ondragstart={() => {
 												dragSrcIndex = { code: product.code, idx: index };
@@ -568,7 +568,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.name')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.product_name ?? '-'}
@@ -576,7 +576,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.code_barcode')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
 						{product.code}
@@ -584,7 +584,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.brand')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.brand')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
@@ -592,7 +592,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.quantity')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.quantity')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
@@ -600,7 +600,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('nutriscore')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -617,7 +617,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.nova_group')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.nova_group')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
@@ -634,7 +634,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('ecoscore')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td animate:flip={{ duration: 300 }}>
@@ -651,7 +651,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.num_additives')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.num_additives')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
@@ -667,7 +667,7 @@
 			{#each availableNutrients as nutrient (nutrient.key)}
 				<tr>
 					<td
-						class="bg-base-100 sticky left-0 w-40 overflow-hidden leading-tight font-semibold break-words whitespace-normal"
+						class="sticky left-0 w-40 overflow-hidden bg-base-100 leading-tight font-semibold break-words whitespace-normal"
 						>{nutrient.label}</td
 					>
 					{#each products as product, index (product.code)}
@@ -683,11 +683,11 @@
 </div>
 
 {#if comparisonMode === 'relative-first'}
-	<div class="text-base-content/70 mt-4 text-center text-sm">
+	<div class="mt-4 text-center text-sm text-base-content/70">
 		{$_('compare.hint_relative_first')}
 	</div>
 {:else if comparisonMode === 'relative-best'}
-	<div class="text-base-content/70 mt-4 text-center text-sm">
+	<div class="mt-4 text-center text-sm text-base-content/70">
 		{$_('compare.hint_relative_best')}
 	</div>
 {/if}

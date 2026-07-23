@@ -46,13 +46,13 @@
 
 <div class="loading-container flex min-h-[60vh] flex-col items-center justify-center gap-10 px-4">
 	<!-- Bouncing food icons row -->
-	<div class="flex items-end gap-4 mb-4">
+	<div class="mb-4 flex items-end gap-4">
 		{#each foodIcons as icon, i (icon)}
 			<img
 				src={icon}
 				alt=""
 				aria-hidden="true"
-				class={['h-14 w-14 sm:h-18 sm:w-18 icon-bounce-img', i > 2 && 'hidden md:block']}
+				class={['icon-bounce-img h-14 w-14 sm:h-18 sm:w-18', i > 2 && 'hidden md:block']}
 				style="animation-delay: {i * 0.15}s;"
 			/>
 		{/each}
@@ -72,7 +72,7 @@
 	</div>
 
 	<!-- DaisyUI indeterminate progress -->
-	<progress class="progress progress-secondary mt-4 w-64"></progress>
+	<progress class="progress mt-4 w-64 progress-secondary"></progress>
 </div>
 
 <style>

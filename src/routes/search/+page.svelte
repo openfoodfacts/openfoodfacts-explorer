@@ -128,14 +128,14 @@
 
 <!-- Superset SQL Promo Banner -->
 <div
-	class="alert alert-outline bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 dark:from-primary/5 dark:via-secondary/5 dark:to-accent/5 border-base-300 my-4 max-md:hidden"
+	class="my-4 alert border-base-300 alert-outline bg-linear-to-r from-primary/10 via-secondary/10 to-accent/10 max-md:hidden dark:from-primary/5 dark:via-secondary/5 dark:to-accent/5"
 >
-	<div class="bg-primary/15 text-primary rounded-lg p-2 shrink-0">
+	<div class="shrink-0 rounded-lg bg-primary/15 p-2 text-primary">
 		<IconMdiDatabase class="h-6 w-6" />
 	</div>
 	<div class="flex items-center gap-3">
 		<div class="text-sm">
-			<div class="text-primary font-bold">
+			<div class="font-bold text-primary">
 				{$_('search.superset_promo_title', { default: 'Query OFF with SQL' })}
 			</div>
 			<span class="text-base-content/90">
@@ -151,7 +151,7 @@
 			href="https://sql.openfoodfacts.org/sqllab/"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="btn btn-secondary btn-sm w-full"
+			class="btn w-full btn-secondary btn-sm"
 		>
 			<IconMdiOpenInNew class="h-4 w-4 " />
 			<span>{$_('search.superset_query', { default: 'Start a query' })}</span>
@@ -160,7 +160,7 @@
 			href="https://sql.openfoodfacts.org/superset/dashboard/p/njB1mRrxve2/"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="btn btn-outline btn-sm w-full"
+			class="btn w-full btn-outline btn-sm"
 		>
 			<IconMdiOpenInNew class="h-4 w-4" />
 			<span>{$_('search.superset_discover', { default: 'Documentation' })}</span>
@@ -178,12 +178,12 @@
 	<div class="flex items-center gap-2">
 		<!-- Sort By Dropdown -->
 		<details class="dropdown dropdown-end" bind:this={sortDropdown}>
-			<summary class="btn btn-outline btn-sm gap-2">
+			<summary class="btn gap-2 btn-outline btn-sm">
 				<span>{getSelectedSortLabel()}</span>
 				<IconMdiChevronDown class="h-4 w-4" />
 			</summary>
 			<ul
-				class="dropdown-content menu bg-base-100 rounded-box z-1 w-56 p-2 shadow-md border border-base-300"
+				class="dropdown-content menu z-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-md"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
@@ -197,7 +197,7 @@
 
 		<!-- Advanced Options Toggle -->
 		<button
-			class="btn btn-sm gap-2"
+			class="btn gap-2 btn-sm"
 			class:btn-primary={showAdvancedOptions}
 			class:btn-outline={!showAdvancedOptions}
 			onclick={() => (showAdvancedOptions = !showAdvancedOptions)}
@@ -211,7 +211,7 @@
 <!-- Advanced Options Panel (Collapsible) -->
 {#if showAdvancedOptions}
 	<div
-		class="card bg-base-200/50 border-base-300 mb-6 border p-6 shadow-xs"
+		class="card mb-6 border border-base-300 bg-base-200/50 p-6 shadow-xs"
 		transition:slide={{ duration: 300 }}
 	>
 		<!-- Content Column: Query info & Classic tools -->
@@ -222,7 +222,7 @@
 				</span>
 				<input
 					type="text"
-					class="input input-bordered w-full font-mono text-sm"
+					class="input-bordered input w-full font-mono text-sm"
 					value={data.query}
 					disabled
 					readonly
@@ -238,7 +238,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn btn-soft btn-sm w-full md:w-fit"
+						class="btn w-full btn-soft btn-sm md:w-fit"
 					>
 						{$_('search.generate_graphs_classic', {
 							values: { term: mainSearchTerm },
@@ -250,7 +250,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn btn-soft btn-sm w-full md:w-fit"
+						class="btn w-full btn-soft btn-sm md:w-fit"
 					>
 						{$_('search.advanced_search_classic', {
 							values: { term: mainSearchTerm },
@@ -267,7 +267,7 @@
 						{$_('search.charts_title', { default: 'Search Analytics' })}:
 					</span>
 					<button
-						class="btn btn-secondary btn-sm gap-2 w-full md:w-fit"
+						class="btn w-full gap-2 btn-secondary btn-sm md:w-fit"
 						onclick={() => (showGraphs = !showGraphs)}
 					>
 						<IconMdiChartBar class="h-4 w-4" />
@@ -276,9 +276,9 @@
 							: $_('search.show_graphs', { default: 'Show Graphs' })}
 					</button>
 					{#if showGraphs}
-						<div class="grid grid-cols-1 gap-4 mt-2" transition:slide={{ duration: 300 }}>
+						<div class="mt-2 grid grid-cols-1 gap-4" transition:slide={{ duration: 300 }}>
 							{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
-								<div class="bg-base-100 rounded-lg p-4 shadow-sm border border-base-200">
+								<div class="rounded-lg border border-base-200 bg-base-100 p-4 shadow-sm">
 									<VegaChart
 										spec={chartSpec}
 										title={$_('search.chart_title', {
@@ -295,7 +295,7 @@
 		</div>
 
 		<!-- Bottom Row: Edit Preferences & Personalization -->
-		<div class="mt-6 border-t border-base-300/60 pt-6 flex flex-col gap-4">
+		<div class="mt-6 flex flex-col gap-4 border-t border-base-300/60 pt-6">
 			<label class="label cursor-pointer justify-start gap-4 p-0">
 				<input
 					type="checkbox"
@@ -308,7 +308,7 @@
 							default: 'Enable Personalized Product Classification'
 						})}
 					</span>
-					<span class="text-base-content/60 text-xs whitespace-normal">
+					<span class="text-xs whitespace-normal text-base-content/60">
 						{$_('preferences.classify_products_desc', {
 							default: 'Enable personalized product classification based on your preferences.'
 						})}
@@ -316,9 +316,9 @@
 				</div>
 			</label>
 
-			<div class="collapse-arrow border-base-300 bg-base-100 collapse border">
+			<div class="collapse-arrow collapse border border-base-300 bg-base-100">
 				<input type="checkbox" bind:checked={showPreferences} />
-				<div class="collapse-title text-sm flex items-center gap-2 font-medium">
+				<div class="collapse-title flex items-center gap-2 text-sm font-medium">
 					<IconMdiCog class="h-4 w-4" />
 					{$_('preferences.edit_preferences')}
 				</div>
@@ -358,7 +358,7 @@
 			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
 				<div class="indicator block w-full">
 					{#if $preferences.displayPricesInSearch}
-						<span class="indicator-item badge badge-secondary badge-sm right-4 z-20">
+						<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
 							{$_('search.prices_badge', {
 								values: { count: data.prices[product.code] }
 							})}
@@ -388,22 +388,22 @@
 {:else}
 	<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
 		{#if queryIsBarcode}
-			<div class="card bg-base-100 w-full max-w-lg shadow-xl">
+			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
 				<div class="card-body items-center p-8 text-center">
 					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
 					<h1 class="text-3xl font-bold">
 						{$_('search.product_not_found', { default: 'No products found' })}
 					</h1>
-					<p class="text-base-content/80 py-4 text-sm sm:text-base">
+					<p class="py-4 text-sm text-base-content/80 sm:text-base">
 						{$_('qr.barcode_scanned_not_found', {
 							values: { barcode: cleanedQuery },
 							default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
 						})}
 					</p>
-					<div class="card-actions mt-4 flex w-full flex-col gap-3">
+					<div class="mt-4 card-actions flex w-full flex-col gap-3">
 						<a
 							href="/products/{cleanedQuery}/edit"
-							class="btn btn-primary btn-lg text-primary-content w-full font-bold shadow-md"
+							class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
 						>
 							<span class="text-xl">➕</span>
 							{$_('product.add_product', { default: 'Add This Product' })}
@@ -412,18 +412,18 @@
 				</div>
 			</div>
 		{:else}
-			<div class="card bg-base-100 w-full max-w-lg shadow-xl">
+			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
 				<div class="card-body items-center p-8 text-center">
 					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
 					<h1 class="text-3xl font-bold">
 						{$_('search.product_not_found', { default: 'No products found' })}
 					</h1>
-					<p class="text-base-content/80 py-4 text-sm sm:text-base">
+					<p class="py-4 text-sm text-base-content/80 sm:text-base">
 						{$_('search.product_not_found_desc', {
 							default: "We couldn't find any products matching your search."
 						})}
 					</p>
-					<div class="card-actions mt-4 flex w-full flex-col gap-3">
+					<div class="mt-4 card-actions flex w-full flex-col gap-3">
 						<p class="text-xs text-base-content/60">
 							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
 								'search.enter_barcode_below',
@@ -446,14 +446,14 @@
 									default: 'Barcode (e.g. 1234567890123)'
 								})}
 								bind:value={barcodeInput}
-								class="input join-item input-bordered w-full focus:outline-none"
+								class="input-bordered input join-item w-full focus:outline-none"
 								required
 								pattern="\d+"
 								title={$_('search.barcode_validation_title', {
 									default: 'Barcode must contain digits only'
 								})}
 							/>
-							<button type="submit" class="btn btn-primary join-item font-bold">
+							<button type="submit" class="btn join-item font-bold btn-primary">
 								{$_('search.go', { default: 'Go' })}
 							</button>
 						</form>

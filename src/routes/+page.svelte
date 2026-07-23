@@ -93,33 +93,33 @@
 	/>
 
 	<div
-		class="dark:bg-base-300/90 border-base-200/40 flex w-full max-w-2xl flex-col items-center rounded-3xl border bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8"
+		class="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-base-200/40 bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8 dark:bg-base-300/90"
 	>
 		<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
 			<Logo class="h-full w-full" />
 		</div>
 
-		<p class="text-base-content/80 mb-6 max-w-xl text-center text-lg font-medium md:text-xl">
+		<p class="mb-6 max-w-xl text-center text-lg font-medium text-base-content/80 md:text-xl">
 			{$_('landing.subtitle')}
 		</p>
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
 				href={resolve('/explore')}
-				class="btn btn-primary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
+				class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-primary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
 			>
 				<IconMdiCompassOutline class="h-5 w-5" />
 				{$_('landing.explore_products')}
 			</a>
 			<a
 				href={resolve('/static/[id]', { id: 'discover' })}
-				class="btn btn-secondary btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
+				class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-secondary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
 			>
 				<IconMdiLightbulbOnOutline class="h-5 w-5" />
 				{$_('landing.discover_project')}
 			</a>
 			<a
 				href={resolve('/static/[id]', { id: 'contribute' })}
-				class="btn btn-outline btn-md lg:btn-lg flex w-full items-center gap-2 px-4 shadow-md transition-transform hover:scale-105 sm:w-auto lg:px-6"
+				class="btn flex w-full items-center gap-2 btn-outline px-4 shadow-md transition-transform btn-md hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
 			>
 				<IconMdiAccountHeartOutline class="h-5 w-5" />
 				{$_('landing.contribute')}
@@ -131,12 +131,12 @@
 <div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
 	<a
 		href={resolve('/explore')}
-		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
 	>
-		<IconMdiDatabase class="text-primary mb-4 h-12 w-12" />
+		<IconMdiDatabase class="mb-4 h-12 w-12 text-primary" />
 		<h2 class="text-xl font-bold">
 			{#await data.productCount}
-				<span class="skeleton h-6 w-16 rounded"></span>
+				<span class="h-6 w-16 skeleton rounded"></span>
 			{:then productCount}
 				<CountUp value={productCount} />
 			{:catch}
@@ -147,12 +147,12 @@
 	</a>
 	<a
 		href={resolve('/facets/[facet]', { facet: 'contributors' })}
-		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
 	>
-		<IconMdiAccountGroup class="text-primary mb-4 h-12 w-12" />
+		<IconMdiAccountGroup class="mb-4 h-12 w-12 text-primary" />
 		<h2 class="text-xl font-bold">
 			{#await data.contributorCount}
-				<span class="skeleton h-6 w-16 rounded"></span>
+				<span class="h-6 w-16 skeleton rounded"></span>
 			{:then contributorCount}
 				<CountUp value={contributorCount} />
 			{:catch}
@@ -163,9 +163,9 @@
 	</a>
 	<a
 		href={resolve('/static/[id]', { id: 'data' })}
-		class="border-secondary hover:bg-base-200 focus:bg-base-200 focus:ring-primary flex flex-col items-center rounded-lg border p-6 text-center transition outline-none focus:ring-2"
+		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
 	>
-		<IconMdiLicense class="text-primary mb-4 h-12 w-12" />
+		<IconMdiLicense class="mb-4 h-12 w-12 text-primary" />
 		<h2 class="text-xl font-bold">
 			<CountUp value={100} suffix="%" />
 		</h2>
@@ -182,13 +182,13 @@
 
 <section class="container mx-auto mt-16 w-full max-w-7xl px-4">
 	<div class="mb-6 text-center">
-		<h2 class="text-primary mb-2 text-2xl font-bold">
+		<h2 class="mb-2 text-2xl font-bold text-primary">
 			{$_('landing.help_improve_title')}
 		</h2>
-		<p class="text-base-content/70 mx-auto max-w-2xl text-base">
+		<p class="mx-auto max-w-2xl text-base text-base-content/70">
 			{$_('landing.help_improve_desc')}
 		</p>
-		<div class="bg-primary/30 mx-auto mt-4 mb-2 h-1 w-16 rounded"></div>
+		<div class="mx-auto mt-4 mb-2 h-1 w-16 rounded bg-primary/30"></div>
 	</div>
 
 	<!-- Preferences Collapsible Section -->
@@ -202,7 +202,7 @@
 				class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
 			>
 				{#each Array(SKELETON_COUNT) as _, index (index)}
-					<div class="skeleton h-36 w-full rounded-lg"></div>
+					<div class="h-36 w-full skeleton rounded-lg"></div>
 				{/each}
 			</div>
 		{:then [resolvedProducts, attributes]}

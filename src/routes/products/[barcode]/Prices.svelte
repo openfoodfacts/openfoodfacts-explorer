@@ -42,7 +42,7 @@
 	<div class="mt-4 text-end">
 		<a
 			href={OPEN_PRICES_PRODUCTS_URL(barcode)}
-			class="text-secondary link text-sm italic"
+			class="link text-sm text-secondary italic"
 			target="_blank"
 			rel="noopener noreferrer"
 		>

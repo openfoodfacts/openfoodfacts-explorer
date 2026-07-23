@@ -52,12 +52,12 @@
 		<span class="grow"></span>
 		<IconMdiChevronDown class="h-5 w-5" />
 	</summary>
-	<ul class="dropdown-content menu bg-base-100 rounded-box w-full p-2 shadow">
+	<ul class="dropdown-content menu w-full rounded-box bg-base-100 p-2 shadow">
 		<li>
 			<input
 				type="text"
 				placeholder="Search..."
-				class="input input-bordered mb-2 w-full"
+				class="input-bordered input mb-2 w-full"
 				bind:value={searchQuery}
 			/>
 		</li>
@@ -83,7 +83,7 @@
 		{/each}
 		{#if searchQuery == ''}
 			<li>
-				<button type="button" class="btn btn-link w-full" onclick={() => toggleShowAll()}>
+				<button type="button" class="btn w-full btn-link" onclick={() => toggleShowAll()}>
 					{showAll ? 'Show Less' : 'See All'}
 				</button>
 			</li>

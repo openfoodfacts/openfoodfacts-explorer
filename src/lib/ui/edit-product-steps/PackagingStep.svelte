@@ -28,30 +28,30 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiPackageVariant class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.packaging', { default: 'Packaging' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.packaging')}
 			</span>
 		</div>
