@@ -173,6 +173,7 @@
 
 	let editingImageData: ProductImage | undefined = $state();
 	let editingImageModal: PhotoEditDialog | undefined = $state();
+	let isSavingImage = $state(false);
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -270,24 +271,37 @@
 	}
 
 	async function saveCurrentImage(data: ImageEditData) {
-		if (!editingImageData) {
+		if (isSavingImage) return;
+
+		const imageData = editingImageData;
+
+		if (!imageData) {
 			console.error('No image data available for editing');
 			return;
 		}
 
+		isSavingImage = true;
+
 		try {
 			const { cropData, rotationAngle } = data;
-			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
+
+			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
 
 			toast.success($_('product.edit.images.toast.save_success'));
-			trackOffEvent('product', 'crop_save_image', editingImageData.typeId);
+			trackOffEvent('product', 'crop_save_image', imageData.typeId);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
 			console.error('Error processing image:', error);
+
 			toast.error(
-				$_('product.edit.images.toast.process_error', { values: { error: errorMessage } })
+				$_('product.edit.images.toast.process_error', {
+					values: { error: errorMessage }
+				})
 			);
 		} finally {
+			isSavingImage = false;
+
 			await invalidateAll();
 			closeEditModal();
 		}
@@ -474,6 +488,7 @@
 		image={editingImageData}
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
+		isSaving={isSavingImage}
 		onImageUnselected={unselectCurrentImage}
 		onImageReplace={() => {
 			if (editingImageData) {
