@@ -25,6 +25,7 @@
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import CommandPalette from '$lib/ui/CommandPalette.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -41,6 +42,9 @@
 	import { setWebsiteCtx } from '$lib/stores/website';
 	import type { WebsiteFlavor } from '$lib/flavor';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
+	import { setCommandCtx } from '$lib/stores/commandPalette';
+	import { getNavigationCommands } from '$lib/commands/navigation';
+	import type { Command } from '$lib/commands/types';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
 	import { preferences, runPreferencesMigrations } from '$lib/settings';
@@ -114,6 +118,34 @@
 	]);
 
 	setShortcutCtx(() => shortcuts);
+
+	// == Global command palette context ==
+	let _commandsMap: Record<string, Command[]> = $state({});
+
+	function registerCommands(sourceId: string, commands: Command[]) {
+		_commandsMap = { ..._commandsMap, [sourceId]: commands };
+	}
+
+	function unregisterCommands(sourceId: string) {
+		const next = { ..._commandsMap };
+		delete next[sourceId];
+		_commandsMap = next;
+	}
+
+	const commandCtx = {
+		getCommands() {
+			return Object.values(_commandsMap).flat();
+		},
+		register: registerCommands,
+		unregister: unregisterCommands
+	};
+
+	setCommandCtx(() => commandCtx);
+
+	onMount(() => {
+		// register global navigation commands under a stable source id
+		registerCommands('global-navigation', getNavigationCommands());
+	});
 
 	// Load OpenFoodFacts Web Components
 
@@ -479,6 +511,7 @@
 <CompareFloatingButton />
 <Footer />
 <Toast />
+<CommandPalette />
 
 {#if navigationTooSlow != null}
 	{#await navigationTooSlow then}
