@@ -488,6 +488,7 @@
 		image={editingImageData}
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
+		isSaving={isSavingImage}
 		onImageUnselected={unselectCurrentImage}
 		onImageReplace={() => {
 			if (editingImageData) {
