@@ -1,7 +1,7 @@
 {
 	"name": "openfoodfacts-explorer",
 	"description": "Modern JavaScript frontend for Open Food Facts",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"private": true,
 	"type": "module",
 	"license": "AGPL-3.0",
