@@ -25,8 +25,10 @@ Props:
 
 	let { panels, code, summary = true, roots }: Props = $props();
 
-	const expandState = $state({
-		expanded: false
+	const expandState = $state<{
+		expanded: boolean | undefined;
+	}>({
+		expanded: undefined
 	});
 
 	setContext('knowledge-panels-expand', expandState);
