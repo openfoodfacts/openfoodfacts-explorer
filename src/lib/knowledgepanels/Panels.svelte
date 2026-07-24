@@ -72,11 +72,11 @@ Props:
 			Summary
 		</div>
 		<div class="mt-2 flex justify-end gap-2">
-			<button class="btn btn-outline btn-sm" onclick={expandAll}>
+			<button type="button" class="btn btn-outline btn-sm" onclick={expandAll}>
 				{$t('knowledgePanels.expandAll', { default: 'Expand all' })}
 			</button>
 
-			<button class="btn btn-outline btn-sm" onclick={collapseAll}>
+			<button type="button" class="btn btn-outline btn-sm" onclick={collapseAll}>
 				{$t('knowledgePanels.collapseAll', { default: 'Collapse all' })}
 			</button>
 		</div>
