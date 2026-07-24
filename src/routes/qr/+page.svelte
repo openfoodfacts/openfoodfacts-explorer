@@ -11,6 +11,10 @@
 	let html5QrCode: Html5Qrcode | null = null;
 	let productNotFound = $state(false);
 	let lastScannedCode = $state('');
+	let scannerTimedOut = $state(false);
+	let manualBarcode = $state('');
+	let scannerTimeout: ReturnType<typeof setTimeout> | null = null;
+	let isSubmittingBarcode = $state(false);
 
 	function getQrBoxSize() {
 		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
@@ -19,42 +23,63 @@
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
 
+	async function handleBarcodeSubmit(barcode: string) {
+		const code = barcode.trim();
+
+		if (!/^\d+$/.test(code) || isSubmittingBarcode) return;
+
+		isSubmittingBarcode = true;
+
+		lastScannedCode = code;
+
+		await goto(`/search?q=${encodeURIComponent(code)}`);
+	}
+
 	async function startScanning(scanner: Html5Qrcode) {
 		return scanner.start(
 			{ facingMode: 'environment' },
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
 				if (text == null) return;
+				clearScannerTimeout();
 				console.debug('QR code detected:', text);
-				lastScannedCode = text;
 
 				// We must stop the scanner first to release the camera
 				// This is important because:
 				// 1. It frees up camera resources
 				// 2. Prevents memory leaks
 				// 3. Ensures the camera is available for other applications
-				await scanner.stop();
-
-				const productsApi = createProductsApi(fetch);
-
-				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
-				if (!productState || error) {
-					console.error('Error fetching product:', error);
-					productNotFound = true;
-					return;
-				}
-				if (productState.status !== 'success') {
-					productNotFound = true;
-					return;
+				try {
+					await scanner.stop();
+				} catch (error) {
+					console.error('Error stopping scanner:', error);
 				}
 
-				// If product is found, navigate to its page
-				await goto('/products/' + text);
+				await handleBarcodeSubmit(text);
 			},
 			() => {
 				/* ignored */
 			}
 		);
+	}
+
+	function clearScannerTimeout() {
+		if (scannerTimeout != null) {
+			clearTimeout(scannerTimeout);
+			scannerTimeout = null;
+		}
+	}
+
+	function startScannerTimeout() {
+		clearScannerTimeout();
+		scannerTimeout = setTimeout(() => {
+			scannerTimedOut = true;
+		}, 20000);
+	}
+
+	async function startScanner(scanner: Html5Qrcode) {
+		await startScanning(scanner);
+		startScannerTimeout();
 	}
 
 	onMount(async () => {
@@ -71,19 +96,25 @@
 			verbose: false
 		});
 
-		startScanning(scanner).catch(async (err) => {
+		html5QrCode = scanner;
+		startScanner(scanner).catch(async (err) => {
 			error = 'Camera access is required. Please enable it in your browser settings.';
 			console.error('QR Code Scanner Error:', err);
 			await cleanupScanner();
 		});
-
-		html5QrCode = scanner;
 	});
+
+	async function stopScanner() {
+		clearScannerTimeout();
+		if (html5QrCode != null) {
+			await html5QrCode.stop();
+		}
+	}
 
 	async function cleanupScanner() {
 		if (html5QrCode != null) {
 			try {
-				await html5QrCode.stop();
+				await stopScanner();
 				html5QrCode.clear();
 			} catch (e) {
 				console.error('Error cleaning up scanner:', e);
@@ -93,6 +124,7 @@
 	}
 
 	onDestroy(() => {
+		clearScannerTimeout();
 		cleanupScanner();
 	});
 
@@ -103,22 +135,10 @@
 		}
 	}
 
-	async function restartScanner() {
-		try {
-			productNotFound = false;
-			error = null;
-			lastScannedCode = '';
+	async function submitManualBarcode(event: SubmitEvent) {
+		event.preventDefault();
 
-			// Ensure page is fully rendered before restarting the scan
-			await tick();
-
-			if (html5QrCode) {
-				await startScanning(html5QrCode);
-			}
-		} catch (err) {
-			console.error('Failed to restart scanner:', err);
-			error = 'Failed to restart the scanner. Please refresh the page.';
-		}
+		await handleBarcodeSubmit(manualBarcode);
 	}
 </script>
 
@@ -128,18 +148,50 @@
 	</div>
 {:else if productNotFound}
 	<div class="flex flex-col items-center justify-center p-8 text-center">
-		<h2 class="mb-2 text-xl font-semibold">{$_('qr.product_not_found')}</h2>
-		<p class="mb-6 text-gray-400">
-			{$_('qr.barcode_scanned_not_found', { values: { barcode: lastScannedCode } })}
+		<h2 class="mb-2 text-xl font-semibold">
+			{$_('qr.product_not_found', { default: 'Product Not Found' })}
+		</h2>
+		<p class="mb-6 text-base-content/70">
+			{$_('qr.barcode_scanned_not_found', {
+				values: { barcode: lastScannedCode },
+				default: `Barcode ${lastScannedCode} was scanned successfully, but no product was found.`
+			})}
 		</p>
 
 		<div class="flex gap-4">
-			<button class="btn btn-outline" onclick={addNewProduct}>{$_('qr.add_new_product')}</button>
-			<button class="btn btn-outline" onclick={restartScanner}>{$_('qr.scan_again')}</button>
+			<button class="btn btn-outline" onclick={addNewProduct}
+				>{$_('qr.add_new_product', { default: 'Add new product' })}</button
+			>
 		</div>
 	</div>
 {:else}
-	<div class="my-44 flex flex-1 items-center justify-center">
-		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-gray-300"></div>
+	<div class="flex flex-col items-center p-8">
+		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-base-300"></div>
+
+		{#if scannerTimedOut}
+			<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
+				<label class="mb-2 block text-left" for="manual-barcode">
+					{$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+				</label>
+
+				<div class="join w-full">
+					<input
+						id="manual-barcode"
+						type="text"
+						inputmode="numeric"
+						placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+						aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+						bind:value={manualBarcode}
+						class="input input-bordered join-item w-full"
+						required
+						pattern="\d+"
+					/>
+
+					<button class="btn btn-primary join-item" type="submit">
+						{$_('search.button', { default: 'Search' })}
+					</button>
+				</div>
+			</form>
+		{/if}
 	</div>
 {/if}
