@@ -14,6 +14,7 @@
 	let scannerTimedOut = $state(false);
 	let manualBarcode = $state('');
 	let scannerTimeout: ReturnType<typeof setTimeout> | null = null;
+	let isSubmittingBarcode = $state(false);
 
 	function getQrBoxSize() {
 		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
@@ -25,7 +26,9 @@
 	async function handleBarcodeSubmit(barcode: string) {
 		const code = barcode.trim();
 
-		if (!/^\d+$/.test(code)) return;
+		if (!/^\d+$/.test(code) || isSubmittingBarcode) return;
+
+		isSubmittingBarcode = true;
 
 		lastScannedCode = code;
 
