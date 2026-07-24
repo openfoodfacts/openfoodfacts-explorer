@@ -10,6 +10,7 @@
 
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
+	import { getContext } from 'svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -20,8 +21,9 @@
 		productCode?: string;
 	};
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
+	const expandState = getContext<{ expanded: boolean }>('knowledge-panels-expand');
 
-	let expanded = $derived(panel?.expanded ?? false);
+	let expanded = $derived(expandState?.expanded || (panel?.expanded ?? false));
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
