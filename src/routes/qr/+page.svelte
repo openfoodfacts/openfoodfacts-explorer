@@ -22,6 +22,16 @@
 		return screenWidth < 640 ? { width: 250, height: 250 } : { width: 400, height: 250 };
 	}
 
+	async function handleBarcodeSubmit(barcode: string) {
+		const code = barcode.trim();
+
+		if (!/^\d+$/.test(code)) return;
+
+		lastScannedCode = code;
+
+		await goto(`/search?q=${encodeURIComponent(code)}`);
+	}
+
 	async function startScanning(scanner: Html5Qrcode) {
 		return scanner.start(
 			{ facingMode: 'environment' },
@@ -30,30 +40,19 @@
 				if (text == null) return;
 				clearScannerTimeout();
 				console.debug('QR code detected:', text);
-				lastScannedCode = text;
 
 				// We must stop the scanner first to release the camera
 				// This is important because:
 				// 1. It frees up camera resources
 				// 2. Prevents memory leaks
 				// 3. Ensures the camera is available for other applications
-				await scanner.stop();
-
-				const productsApi = createProductsApi(fetch);
-
-				const { data: productState, error } = await productsApi.getProductV3(text, { fields: [] });
-				if (!productState || error) {
-					console.error('Error fetching product:', error);
-					productNotFound = true;
-					return;
-				}
-				if (productState.status !== 'success') {
-					productNotFound = true;
-					return;
+				try {
+					await scanner.stop();
+				} catch (error) {
+					console.error('Error stopping scanner:', error);
 				}
 
-				// If product is found, navigate to its page
-				await goto('/products/' + text);
+				await handleBarcodeSubmit(text);
 			},
 			() => {
 				/* ignored */
@@ -133,12 +132,10 @@
 		}
 	}
 
-	function submitManualBarcode(event: SubmitEvent) {
+	async function submitManualBarcode(event: SubmitEvent) {
 		event.preventDefault();
-		const barcode = manualBarcode.trim();
-		if (/^\d+$/.test(barcode)) {
-			goto(`/products/${barcode}`);
-		}
+
+		await handleBarcodeSubmit(manualBarcode);
 	}
 </script>
 
