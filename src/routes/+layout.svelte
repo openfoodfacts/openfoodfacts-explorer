@@ -125,7 +125,6 @@
 
 	import { setPermissionsCtx, type UserPermissionsContext } from '$lib/stores/user';
 	import { fetchCurrentUserPermissions } from '$lib/api/permissions';
-	import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
 	import { wrapFetchWithAuth } from '$lib/stores/auth';
 
 	let permissionsCtx = $state<UserPermissionsContext>({
@@ -139,17 +138,15 @@
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
-			fetchCurrentUserPermissions(authFetch, CURRENT_USER_PERMISSIONS_URL).then(
-				(permissionsData) => {
-					if (permissionsData && permissionsData.status === 'success' && permissionsData.user) {
-						permissionsCtx.isAdmin = permissionsData.user.admin === 1;
-						permissionsCtx.isModerator = permissionsData.user.moderator === 1;
-					} else {
-						permissionsCtx.isAdmin = false;
-						permissionsCtx.isModerator = false;
-					}
+			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (data && data.status === 'success' && data.user) {
+					permissionsCtx.isAdmin = data.user.admin === 1;
+					permissionsCtx.isModerator = data.user.moderator === 1;
+				} else {
+					permissionsCtx.isAdmin = false;
+					permissionsCtx.isModerator = false;
 				}
-			);
+			});
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
