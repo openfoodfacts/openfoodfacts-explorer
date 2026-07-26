@@ -555,11 +555,17 @@
 								</div>
 							{/if}
 							{#if product.image_front_small_url}
-								<BlurredImageDisplay
-									src={product.image_front_small_url}
-									alt={product.product_name ?? product.code}
-									class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
-								/>
+								<a
+									href={`/products/${product.code}`}
+									class="contents"
+									aria-label={product.product_name ?? product.code}
+								>
+									<BlurredImageDisplay
+										src={product.image_front_small_url}
+										alt={product.product_name ?? product.code}
+										class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
+									/>
+								</a>
 							{/if}
 						</div>
 					</th>
@@ -571,7 +577,9 @@
 				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
-						{product.product_name ?? '-'}
+						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
+							{product.product_name ?? '-'}
+						</a>
 					</td>
 				{/each}
 			</tr>
