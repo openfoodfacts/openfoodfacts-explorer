@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 
 	import Card from '$lib/ui/Card.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import IconMdiDownload from '@iconify-svelte/mdi/download';
@@ -43,10 +44,10 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{data.title ? `${data.title} - ` : ''}{$_('compare.shared_comparison')}</title>
-	<meta name="description" content={$_('compare.shared_description')} />
-</svelte:head>
+<Metadata
+	title={`${data.title ? `${data.title} - ` : ''}${$_('compare.shared_comparison', { default: 'Shared Comparison' })}`}
+	description={$_('compare.shared_description', { default: 'Shared product comparison' })}
+/>
 
 <div class="mx-4">
 	<Card>

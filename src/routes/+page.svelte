@@ -9,6 +9,7 @@
 	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
 
 	import Logo from '$lib/ui/Logo.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
 	import CountUp from '$lib/ui/CountUp.svelte';
@@ -76,9 +77,15 @@
 <svelte:head>
 	<!-- Preconnect to static assets -->
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
-
-	<title>{$_('landing.title')}</title>
 </svelte:head>
+
+<Metadata
+	title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
+	description={$_('landing.subtitle', {
+		default:
+			'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'
+	})}
+/>
 
 <section
 	class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"

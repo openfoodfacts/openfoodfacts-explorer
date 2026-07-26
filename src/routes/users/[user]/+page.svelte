@@ -1,5 +1,6 @@
 <script lang="ts">
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import { _, getNumberFormatter } from 'svelte-i18n';
 	import type { PageProps } from './$types';
 
@@ -31,11 +32,11 @@
 	const formatNumber = (n: number) => getNumberFormatter().format(n);
 </script>
 
-<svelte:head>
-	<title>
-		{$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}
-	</title>
-</svelte:head>
+<Metadata
+	title={$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}
+	description={$_('dashboard.html_title', { values: { user }, default: 'Dashboard for ' + user })}
+	type="profile"
+/>
 
 <div
 	class="flex items-center justify-between gap-4 max-md:flex-col max-md:items-start max-md:gap-2"
