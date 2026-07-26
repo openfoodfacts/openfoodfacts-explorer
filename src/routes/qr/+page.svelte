@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { onDestroy, onMount, tick } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { Html5Qrcode } from 'html5-qrcode';
 
 	import { goto } from '$app/navigation';
 	import { _ } from '$lib/i18n';
-	import { createProductsApi } from '$lib/api';
 	import { browser } from '$app/environment';
 
 	let error: string | null = $state(null);
