@@ -145,6 +145,9 @@ jobs:
           script: |
             set -e
             cd ${{ matrix.env }}
+            # Pull new image while old container still serves traffic
+            docker compose pull
+            # Stop old, start new
             docker compose down || true
             docker compose up -d --wait
 
