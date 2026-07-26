@@ -45,8 +45,8 @@
 </script>
 
 <Metadata
-	title={`${data.title ? `${data.title} - ` : ''}${$_('compare.shared_comparison')}`}
-	description={$_('compare.shared_description')}
+	title={`${data.title ? `${data.title} - ` : ''}${$_('compare.shared_comparison', { default: 'Shared Comparison' })}`}
+	description={$_('compare.shared_description', { default: 'Shared product comparison' })}
 />
 
 <div class="mx-4">

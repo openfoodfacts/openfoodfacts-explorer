@@ -15,7 +15,12 @@
 	}
 </script>
 
-<Metadata title={$_('explore.title')} description={$_('explore.subtitle')} />
+<Metadata
+	title={$_('explore.title', { default: 'Explore Open Food Facts' })}
+	description={$_('explore.subtitle', {
+		default: 'Discover trending products, popular categories, and contribute to food transparency!'
+	})}
+/>
 
 <section class="bg-base-100 flex flex-col items-center justify-center px-4 py-12">
 	<Logo />

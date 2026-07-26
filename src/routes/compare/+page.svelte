@@ -67,7 +67,12 @@
 	}
 </script>
 
-<Metadata title={$_('compare.page_title')} description={$_('compare.page_description')} />
+<Metadata
+	title={$_('compare.page_title', { default: 'Compare Products' })}
+	description={$_('compare.page_description', {
+		default: 'Compare nutritional information of food products'
+	})}
+/>
 
 <div class="mx-4">
 	<Card>
