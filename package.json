@@ -72,7 +72,7 @@
 		"leaflet.markercluster": "^1.5.3",
 		"openapi-fetch": "^0.17.0",
 		"openapi-typescript": "^7.13.0",
-		"postcss": "^8.5.16",
+		"postcss": "^8.5.18",
 		"prettier": "^3.9.4",
 		"prettier-plugin-svelte": "^4.1.1",
 		"prettier-plugin-tailwindcss": "^0.8.0",
