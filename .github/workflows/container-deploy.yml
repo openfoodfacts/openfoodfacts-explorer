@@ -133,6 +133,20 @@ jobs:
             echo "PUBLIC_IMAGES_URL=${{ env.PUBLIC_IMAGES_URL }}" >> .env
             echo "PUBLIC_NUTRIPATROL_URL=${{ env.PUBLIC_NUTRIPATROL_URL }}" >> .env
 
+      - name: Pull Docker image
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ env.SSH_PROXY_HOST }}
+          proxy_username: ${{ env.SSH_USERNAME }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd ${{ matrix.env }}
+            docker compose pull
+
       - name: Re-start services
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
@@ -145,6 +159,7 @@ jobs:
           script: |
             set -e
             cd ${{ matrix.env }}
+            # Stop old, start new
             docker compose down || true
             docker compose up -d --wait
 
