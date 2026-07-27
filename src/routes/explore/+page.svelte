@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Logo from '$lib/ui/Logo.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import { _ } from '$lib/i18n';
 	import type { PageProps } from './$types';
@@ -13,6 +14,13 @@
 		goto(`/search?q=${encodeURIComponent(query)}`);
 	}
 </script>
+
+<Metadata
+	title={$_('explore.title', { default: 'Explore Open Food Facts' })}
+	description={$_('explore.subtitle', {
+		default: 'Discover trending products, popular categories, and contribute to food transparency!'
+	})}
+/>
 
 <section class="bg-base-100 flex flex-col items-center justify-center px-4 py-12">
 	<Logo />

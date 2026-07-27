@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 
 	import Card from '$lib/ui/Card.svelte';
+	import Metadata from '$lib/Metadata.svelte';
 	import { compareStore } from '$lib/stores/compareStore';
 	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '$lib/i18n';
@@ -66,10 +67,12 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{$_('compare.page_title')}</title>
-	<meta name="description" content={$_('compare.page_description')} />
-</svelte:head>
+<Metadata
+	title={$_('compare.page_title', { default: 'Compare Products' })}
+	description={$_('compare.page_description', {
+		default: 'Compare nutritional information of food products'
+	})}
+/>
 
 <div class="mx-4">
 	<Card>
