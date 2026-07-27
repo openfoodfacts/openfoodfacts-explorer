@@ -56,7 +56,7 @@
 		{
 			type: 'add_packaging_components',
 			action: () => {
-				goto(`/products/${requireCode()}/edit#packaging`);
+				goto(`/products/${requireCode()}/edit#add-packaging-component`);
 			}
 		},
 		{
@@ -69,6 +69,30 @@
 			type: 'add_recycling_instructions',
 			action: () => {
 				goto(`/products/${requireCode()}/edit#recycling`);
+			}
+		},
+		{
+			type: 'add_quantity',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#quantity`);
+			}
+		},
+		{
+			type: 'add_packaging_image',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#images`);
+			}
+		},
+		{
+			type: 'add_ingredients_image',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#images`);
+			}
+		},
+		{
+			type: 'add_nutrition_facts',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#nutrition`);
 			}
 		}
 	];

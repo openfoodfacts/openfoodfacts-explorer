@@ -48,7 +48,7 @@
 	onMount(() => {
 		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
-			action: () => focusEditField('#quantity')
+			action: () => focusEditField('#quantity-input')
 		});
 		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
@@ -157,15 +157,15 @@
 				})}
 			/>
 		</div>
-		<div class="form-control w-full">
-			<label class="label" for="quantity">
+		<div class="form-control w-full rounded-lg" id="quantity">
+			<label class="label" for="quantity-input">
 				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 					{$_('product.edit.quantity')}
 					<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
 				</span>
 			</label>
 			<input
-				id="quantity"
+				id="quantity-input"
 				type="text"
 				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
 				value={product.quantity ?? ''}

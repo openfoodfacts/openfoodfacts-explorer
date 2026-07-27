@@ -450,6 +450,7 @@
 	{/each}
 
 	<button
+		id="add-packaging-component"
 		type="button"
 		class="btn btn-outline btn-primary btn-sm w-full sm:w-auto"
 		onclick={addComponent}
