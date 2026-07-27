@@ -19,6 +19,7 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -122,7 +123,8 @@
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
 					>
-						{$_('product.buttons.classic_view')}
+						<IconMdiOpenInNew class="h-5 w-5" />
+						<span class="hidden md:block">{$_('product.buttons.classic_view')}</span>
 					</a>
 
 					<a
