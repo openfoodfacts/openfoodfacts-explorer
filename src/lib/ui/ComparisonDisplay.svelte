@@ -242,6 +242,10 @@
 			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
 	}
 
+	function getNovaAltText(group: string | number): string {
+		return `${$_('compare.nova_group', { default: 'Ultra-processed level' })} ${group}`;
+	}
+
 	function getGreenScoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
 	}
@@ -458,7 +462,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									getNovaAltText(product.nova_group),
 									comparison.isBest
 								)}
 							{/if}
@@ -617,14 +621,16 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">{$_('compare.nova_group')}</td>
+				<td class="bg-base-100 sticky left-0 w-40 font-semibold"
+					>{$_('compare.nova_group', { default: 'Ultra-processed level' })}</td
+				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
-								`Nova Group ${product.nova_group}`,
+								getNovaAltText(product.nova_group),
 								comparison.isBest
 							)}
 						{:else}
