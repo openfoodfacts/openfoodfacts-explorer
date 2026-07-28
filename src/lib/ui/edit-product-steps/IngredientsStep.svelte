@@ -210,11 +210,11 @@
 
 			<textarea
 				id={`ingredients-list-${code}`}
-				class="textarea textarea-bordered w-full text-sm sm:text-base transition-all {!product[
-					`ingredients_text_${code}`
-				]
-					? 'border-dashed border-warning/50 bg-warning/5'
-					: ''} {hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''}"
+				class={[
+					'textarea textarea-bordered w-full text-sm sm:text-base transition-all',
+					!product[`ingredients_text_${code}`] && 'border-dashed border-warning/50 bg-warning/5',
+					hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''
+				]}
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
@@ -226,9 +226,10 @@
 				disabled={ocrLoading}></textarea>
 			{#each langErrors as error (error.tag)}
 				<span
-					class="text-xs mt-1 font-medium flex items-center gap-1 {error.severity === 'error'
-						? 'text-error'
-						: 'text-warning/70'}"
+					class={[
+						'text-xs mt-1 font-medium flex items-center gap-1',
+						error.severity === 'error' ? 'text-error' : 'text-warning/70'
+					]}
 				>
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 					{$_(`product.edit.quality.${error.severity}_label`, {

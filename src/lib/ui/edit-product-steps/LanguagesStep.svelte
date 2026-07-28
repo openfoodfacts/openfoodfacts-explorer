@@ -154,11 +154,10 @@
 					<input
 						id={`product-name-${code}`}
 						type="text"
-						class="input input-bordered w-full text-sm sm:text-base transition-all {!product[
-							`product_name_${code}`
-						]
-							? 'border-dashed border-warning/50 bg-warning/5'
-							: ''}"
+						class={[
+							'input input-bordered w-full text-sm sm:text-base transition-all',
+							!product[`product_name_${code}`] && 'border-dashed border-warning/50 bg-warning/5'
+						]}
 						value={product[`product_name_${code}`] ?? ''}
 						oninput={(e) => {
 							product = {

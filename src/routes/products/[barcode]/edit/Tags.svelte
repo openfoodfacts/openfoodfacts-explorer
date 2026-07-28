@@ -195,16 +195,13 @@
 {/snippet}
 
 <div
-	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2 transition-all {highlightEmpty &&
-	tags.length === 0
-		? 'border-dashed border-warning/50 bg-warning/5'
-		: ''} {highlightSeverity === 'error'
-		? 'border-error'
-		: highlightSeverity === 'warning'
-			? 'border-warning'
-			: highlightSeverity === 'info'
-				? 'border-info'
-				: ''}"
+	class={[
+		'bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2 transition-all',
+		highlightEmpty && tags.length === 0 && 'border-dashed border-warning/50 bg-warning/5',
+		highlightSeverity === 'error' && 'border-error',
+		highlightSeverity === 'warning' && 'border-warning',
+		highlightSeverity === 'info' && 'border-info'
+	]}
 >
 	{#each tags as tag, index (tag)}
 		<div class="badge badge-ghost flex h-min items-center py-2" transition:fade={{ duration: 100 }}>
@@ -268,7 +265,7 @@
 			: highlightSeverity === 'warning'
 				? 'text-warning'
 				: 'text-info'}
-	<span class="text-xs {colorClass} mt-1 font-medium flex items-center gap-1 w-full">
+	<span class={['text-xs mt-1 font-medium flex items-center gap-1 w-full', colorClass]}>
 		<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 		{highlightMessage || $_('product.edit.quality.issue_fallback', { default: 'Quality issue' })}
 	</span>

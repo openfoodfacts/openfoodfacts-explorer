@@ -181,15 +181,16 @@
 			<input
 				id="quantity"
 				type="text"
-				class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base transition-all {!product.quantity
-					? 'border-dashed border-warning/50 bg-warning/5'
-					: ''} {quantityError
-					? quantityError.severity === 'error'
-						? 'input-error'
-						: quantityError.severity === 'warning'
-							? 'input-warning'
-							: 'input-info'
-					: ''}"
+				class={[
+					'input focus:border-primary w-full text-sm focus:outline-none sm:text-base transition-all',
+					!product.quantity && 'border-dashed border-warning/50 bg-warning/5',
+					quantityError &&
+						(quantityError.severity === 'error'
+							? 'input-error'
+							: quantityError.severity === 'warning'
+								? 'input-warning'
+								: 'input-info')
+				]}
 				value={product.quantity ?? ''}
 				oninput={(e) => {
 					product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
@@ -198,12 +199,14 @@
 			/>
 			{#if quantityError}
 				<span
-					class="text-xs mt-1 font-medium flex items-center gap-1 {quantityError.severity ===
-					'error'
-						? 'text-error'
-						: quantityError.severity === 'warning'
-							? 'text-warning/70'
-							: 'text-info/70'}"
+					class={[
+						'text-xs mt-1 font-medium flex items-center gap-1',
+						quantityError.severity === 'error'
+							? 'text-error'
+							: quantityError.severity === 'warning'
+								? 'text-warning/70'
+								: 'text-info/70'
+					]}
 				>
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 					{$_(`product.edit.quality.${quantityError.severity}_label`, {

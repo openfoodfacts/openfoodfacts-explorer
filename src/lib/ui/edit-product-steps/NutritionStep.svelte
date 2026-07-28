@@ -270,14 +270,13 @@
 	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
 	{@const iconColorClass = isError ? 'text-error' : isWarning ? 'text-warning' : 'text-info'}
 	<div
-		class="tooltip cursor-default {isError
-			? 'tooltip-error'
-			: isWarning
-				? 'tooltip-warning'
-				: 'tooltip-info'}"
+		class={[
+			'tooltip cursor-default',
+			isError ? 'tooltip-error' : isWarning ? 'tooltip-warning' : 'tooltip-info'
+		]}
 		data-tip={issue.title}
 	>
-		<Icon class="{iconColorClass} ml-2 h-5 w-5 text-lg" />
+		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
 	</div>
 {/snippet}
 
@@ -286,7 +285,7 @@
 	{@const isWarning = issue.severity === 'warning'}
 	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
 	{@const alertColorClass = isError ? 'alert-error' : isWarning ? 'alert-warning' : 'alert-info'}
-	<div class="{alertColorClass} alert mt-4">
+	<div class={[alertColorClass, 'alert mt-4']}>
 		<Icon class="h-5 w-5" />
 		<div>
 			<p class="text-sm font-bold sm:text-base">{issue.title}</p>
@@ -358,7 +357,7 @@
 						<input
 							id="serving-size-input"
 							type="text"
-							class="input input-bordered w-full text-sm sm:text-base {servingSizeInputClass}"
+							class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
 							value={product.serving_size ?? ''}
 							oninput={handleServingSize}
 							placeholder={servingSizePlaceholder}
@@ -393,7 +392,7 @@
 			<!-- Energy -->
 			<fieldset class="fieldset">
 				<div class="flex gap-2">
-					<label class="input grow {fieldInputClasses('energy')}">
+					<label class={['input grow', fieldInputClasses('energy')]}>
 						<span class="label">
 							{$_('product.edit.energy')}
 						</span>
@@ -425,7 +424,7 @@
 						<IconMdiSwapHorizontal class="h-5 w-5" />
 					</button>
 
-					<label class="input grow {fieldInputClasses('energy')}">
+					<label class={['input grow', fieldInputClasses('energy')]}>
 						<span class="label">
 							{$_('product.edit.energy')}
 						</span>
@@ -451,7 +450,7 @@
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					{@const issueKeys = [nutrient, 'all']}
 					{@const issue = issuesByField(issueKeys)[0]}
-					<label class="input w-full {fieldInputClasses(issueKeys)}">
+					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
 						<span class="label w-60">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
