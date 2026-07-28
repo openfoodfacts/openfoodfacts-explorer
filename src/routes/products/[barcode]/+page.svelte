@@ -300,9 +300,10 @@
 	{/if}
 
 	<div
-		class="relative w-full lg:grid lg:gap-8 pb-18 transition-all duration-300 {sidebarHidden
-			? 'lg:grid-cols-1'
-			: 'lg:grid-cols-[auto_1fr]'}"
+		class={[
+			'relative w-full lg:grid lg:gap-8 pb-18 transition-all duration-300',
+			sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
+		]}
 	>
 		<Sidebar
 			type="product"
