@@ -9,6 +9,8 @@
 		label: string;
 		icon?: Component | ComponentType;
 		style?: 'warning' | 'primary';
+		isCollapsed?: () => boolean;
+		onToggle?: (open?: boolean) => void;
 	}
 
 	type Props = {
@@ -116,20 +118,20 @@
 			for (let i = 0; i < sections.length; i++) {
 				const section = sections[i];
 				const el = document.getElementById(section.id);
-				if (el) {
-					const rect = el.getBoundingClientRect();
-
-					const threshold = i > 0 && isPreviousCollapsed ? 60 : scrollHeaderOffset;
-
-					if (rect.top <= threshold) {
-						currentSection = section.id;
-					} else {
-						break;
-					}
-
-					const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
-					isPreviousCollapsed = checkbox ? !checkbox.checked : false;
+				if (!el) {
+					continue;
 				}
+
+				const rect = el.getBoundingClientRect();
+				const threshold = i > 0 && isPreviousCollapsed ? 60 : scrollHeaderOffset;
+
+				if (rect.top <= threshold) {
+					currentSection = section.id;
+				} else {
+					break;
+				}
+
+				isPreviousCollapsed = section.isCollapsed ? section.isCollapsed() : false;
 			}
 		}
 

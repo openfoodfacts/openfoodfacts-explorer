@@ -161,7 +161,11 @@
 		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({
 			id: sec.id,
 			label: $_(sec.labelKey, { default: sec.defaultLabel }),
-			icon: sec.icon
+			icon: sec.icon,
+			isCollapsed: () => !openSections[sec.id],
+			onToggle: (open?: boolean) => {
+				openSections[sec.id] = open !== undefined ? open : !openSections[sec.id];
+			}
 		}));
 
 		if (permissions.isModerator && $preferences.moderator) {
@@ -169,7 +173,12 @@
 				id: 'moderator-tools',
 				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
 				icon: IconMdiShieldAccount,
-				style: 'warning'
+				style: 'warning',
+				isCollapsed: () => !openSections['moderator-tools'],
+				onToggle: (open?: boolean) => {
+					openSections['moderator-tools'] =
+						open !== undefined ? open : !openSections['moderator-tools'];
+				}
 			});
 		}
 
@@ -198,17 +207,18 @@
 	function toggleExpandAll() {
 		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
 		editSections.forEach((sec) => {
-			openSections[sec.id] = $preferences.editing.expandAllSections;
+			sec.onToggle?.($preferences.editing.expandAllSections);
 		});
 		handleCollapseToggle(editSections[0]?.id || '');
 	}
 
 	function handleSidebarSectionClick(id: string) {
+		const section = editSections.find((s) => s.id === id);
 		sidebar?.scrollToSection(id, () => {
 			if (activeSection === id) {
-				openSections[id] = !openSections[id];
+				section?.onToggle?.();
 			} else {
-				openSections[id] = true;
+				section?.onToggle?.(true);
 			}
 			handleCollapseToggle(id);
 		});
