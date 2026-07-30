@@ -243,7 +243,7 @@
 	}
 
 	function getGreenScoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
+		return KP_ATTRIBUTE_IMG('green-score-' + (grade ?? 'unknown') + '.svg');
 	}
 
 	// Number formatters
