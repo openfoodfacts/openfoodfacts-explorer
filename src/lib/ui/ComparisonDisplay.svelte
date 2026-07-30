@@ -641,7 +641,7 @@
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
-								`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+								`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
 								comparison.isBest
 							)}
 						{:else}
