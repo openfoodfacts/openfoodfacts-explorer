@@ -534,10 +534,15 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Take a photo of the recycling information",
-				"add_origins": "Add origins",
+				"add_packaging_components": "Add packaging components",
+				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
-				"view_prices": "View prices on Open Prices"
+				"view_prices": "View prices on Open Prices",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
 		"moderator": {

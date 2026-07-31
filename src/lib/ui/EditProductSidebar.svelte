@@ -113,7 +113,7 @@
 	let ignoreObserver = false;
 	let observerTimeout: ReturnType<typeof setTimeout>;
 
-	function scrollToSection(id: string) {
+	export function scrollToSection(id: string) {
 		const el = document.getElementById(id);
 		if (el) {
 			const checkbox = el.querySelector('input[type="checkbox"]') as HTMLInputElement;
