@@ -40,6 +40,7 @@
 		"advanced_search_classic": "{term} 에 대한 고급 검색(클래식 버전)",
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
+		"superset_promo_title": "Query OFF with SQL",
 		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "생성일",
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "이 제품에 대한 가격을 찾을 수 없습니다.",
 			"loading": "가격 로딩 중…",
-			"view_prices": "Open Prices에서 가격 보기"
+			"view_prices": "Open Prices에서 가격 보기",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "제품 정보 편집",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "포장 구성 요소를 추가합니다.",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Open Prices에서 가격 보기",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "영양 성분 추가"
 			}
 		},
 		"moderator": {
