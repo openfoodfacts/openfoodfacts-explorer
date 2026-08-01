@@ -324,6 +324,34 @@
 			isWorst: novaGroup === worstGroup
 		};
 	}
+	function getIngredientText(product: Product): string | null {
+		return product.ingredients_text?.trim() || null;
+	}
+
+	function getIngredientItems(product: Product): string[] {
+		const ingredientItems: string[] = [];
+		const ingredients = [...(product.ingredients ?? [])].reverse();
+
+		while (ingredients.length > 0) {
+			const ingredient = ingredients.pop();
+			if (!ingredient) continue;
+
+			const ingredientText = ingredient.text?.trim();
+			if (ingredientText) ingredientItems.push(ingredientText);
+
+			if (ingredient.ingredients) {
+				ingredients.push(...[...ingredient.ingredients].reverse());
+			}
+		}
+
+		const fallbackIngredientText = getIngredientText(product);
+
+		return ingredientItems.length > 0
+			? ingredientItems
+			: fallbackIngredientText
+				? [fallbackIngredientText]
+				: [];
+	}
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
 </script>
@@ -403,6 +431,35 @@
 	{/if}
 {/snippet}
 
+{#snippet ingredientSection(product: Product)}
+	<details class="rounded-box bg-base-200">
+		<summary class="cursor-pointer px-3 py-2 text-sm font-semibold">
+			{$_('compare.ingredients', { default: 'Ingredients' })}
+		</summary>
+
+		<div class="border-t border-base-300 px-3 py-2 text-sm">
+			{#if product.product_type === 'beauty'}
+				{@const ingredientItems = getIngredientItems(product)}
+
+				{#if ingredientItems.length > 0}
+					<ul class="list-disc space-y-1 pl-5">
+						{#each ingredientItems as ingredient, ingredientIndex (`${ingredient}-${ingredientIndex}`)}
+							<li>{ingredient}</li>
+						{/each}
+					</ul>
+				{:else}
+					<p>{$_('compare.no_ingredients', { default: 'No ingredients available' })}</p>
+				{/if}
+			{:else}
+				<p class="break-words whitespace-pre-wrap">
+					{getIngredientText(product) ??
+						$_('compare.no_ingredients', { default: 'No ingredients available' })}
+				</p>
+			{/if}
+		</div>
+	</details>
+{/snippet}
+
 <!-- Mobile: Card View -->
 <div class="block lg:hidden">
 	<div class="flex flex-col gap-4">
@@ -437,7 +494,9 @@
 						{product.quantity ?? ''}
 					</p>
 				</div>
-
+				<div class="mt-4 border-t pt-4">
+					{@render ingredientSection(product)}
+				</div>
 				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
 					<div class="mt-4 border-t pt-4">
 						<p class="mb-2 text-sm font-semibold">{$_('compare.scores')}</p>
@@ -584,6 +643,20 @@
 				{/each}
 			</tr>
 			<tr>
+<<<<<<< HEAD
+=======
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
+					{$_('compare.ingredients', { default: 'Ingredients' })}
+				</td>
+
+				{#each products as product (product.code)}
+					<td animate:flip={{ duration: 300 }}>
+						{@render ingredientSection(product)}
+					</td>
+				{/each}
+			</tr>
+			<tr>
+>>>>>>> 356cc8a (feat: add collapsible ingredient section)
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
