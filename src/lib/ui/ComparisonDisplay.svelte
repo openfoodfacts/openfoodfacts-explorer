@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 
-	import { _ } from '$lib/i18n';
+	import { _, getLocale } from '$lib/i18n';
 	import { KP_ATTRIBUTE_IMG } from '$lib/const';
 	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
 
@@ -325,6 +325,13 @@
 		};
 	}
 	function getIngredientText(product: Product): string | null {
+		const languageCode = getLocale().split('-')[0].toLowerCase();
+
+		const localized = product[`ingredients_text_${languageCode}` as keyof Product];
+
+		if (typeof localized === 'string' && localized.trim()) {
+			return localized.trim();
+		}
 		return product.ingredients_text?.trim() || null;
 	}
 
@@ -635,8 +642,6 @@
 				{/each}
 			</tr>
 			<tr>
-<<<<<<< HEAD
-=======
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
 					{$_('compare.ingredients', { default: 'Ingredients' })}
 				</td>
@@ -648,7 +653,6 @@
 				{/each}
 			</tr>
 			<tr>
->>>>>>> 356cc8a (feat: add collapsible ingredient section)
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
