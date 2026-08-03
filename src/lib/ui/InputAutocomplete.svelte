@@ -105,7 +105,7 @@
 {#if !inline && !showInput}
 	<button
 		type="button"
-		class="btn btn-primary btn-sm btn-circle ml-2"
+		class="btn ml-2 btn-circle btn-primary btn-sm"
 		onclick={() => (showInput = true)}
 		title={buttonTitle}
 		aria-label={buttonAriaLabel}
@@ -117,7 +117,7 @@
 		<li>
 			<button
 				type="button"
-				class="bg-base-100 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full px-4 py-2 text-left text-xs sm:text-sm transition-colors duration-150 cursor-pointer"
+				class="w-full cursor-pointer bg-base-100 px-4 py-2 text-left text-xs text-base-content transition-colors duration-150 hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content sm:text-sm"
 				class:bg-primary={autoCompleteIndex === idx}
 				class:text-primary-content={autoCompleteIndex === idx}
 				onclick={(e) => {
@@ -136,11 +136,11 @@
 		</li>
 	{/snippet}
 
-	<div class={inline ? 'w-full' : 'dropdown relative ml-2 grow max-w-xs'}>
+	<div class={inline ? 'w-full' : 'dropdown relative ml-2 max-w-xs grow'}>
 		<label
 			class={inline
-				? 'input w-full text-sm sm:text-base mt-2'
-				: 'input input-sm flex items-center gap-2 w-full'}
+				? 'input mt-2 w-full text-sm sm:text-base'
+				: 'input flex w-full items-center gap-2 input-sm'}
 		>
 			{#if inline}
 				<IconMdiSearch class="h-5 w-5 opacity-70" />
@@ -173,12 +173,12 @@
 			{:else}
 				<div
 					bind:this={resultsContainer}
-					class="mt-2 max-h-60 overflow-y-auto divide-y divide-base-100/10"
+					class="mt-2 max-h-60 divide-y divide-base-100/10 overflow-y-auto"
 				>
 					{#each filteredItems as item, idx (item.code || idx)}
 						<button
 							type="button"
-							class="btn btn-ghost btn-sm w-full justify-start text-left text-xs sm:text-sm font-normal normal-case py-2 h-auto"
+							class="btn h-auto w-full justify-start btn-ghost py-2 text-left text-xs font-normal normal-case btn-sm sm:text-sm"
 							class:bg-primary={autoCompleteIndex === idx}
 							class:text-primary-content={autoCompleteIndex === idx}
 							onclick={() => {
@@ -194,9 +194,9 @@
 			{/if}
 		{:else if searchQuery.length > 0 && filteredItems.length > 0}
 			<div
-				class="dropdown-content bg-base-200 z-10 mt-1 w-full rounded-md shadow-lg border border-base-300 focus:outline-none"
+				class="dropdown-content z-10 mt-1 w-full rounded-md border border-base-300 bg-base-200 shadow-lg focus:outline-none"
 			>
-				<ul bind:this={resultsContainer} class="divide-base-100 divide-y max-h-60 overflow-y-auto">
+				<ul bind:this={resultsContainer} class="max-h-60 divide-y divide-base-100 overflow-y-auto">
 					{#each filteredItems as item, idx (item.code || idx)}
 						{@render listItem(item, idx)}
 					{/each}
