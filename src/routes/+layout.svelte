@@ -259,14 +259,14 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	<progress class="progress fixed top-0 left-0 z-50 h-1 w-full rounded-none progress-secondary"
 	></progress>
 {/if}
 
 <!-- Desktop Header -->
 <div class="hidden xl:block">
 	<div class="flex justify-center">
-		<div class="bg-base-100 navbar flex max-w-7xl px-10">
+		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
 				<a href="/"> <Logo /> </a>
 			</div>
@@ -285,7 +285,7 @@
 				</button>
 				<!-- Settings button -->
 				<a
-					class="btn btn-ghost link"
+					class="btn link btn-ghost"
 					href={resolve('/settings')}
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
@@ -298,7 +298,7 @@
 							<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
 						</div>
 						<ul
-							class="dropdown-content menu bg-base-100 rounded-box z-50 mt-1 w-52 p-2 shadow-xl border border-base-300"
+							class="dropdown-content menu z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
 						>
 							<li
 								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"
@@ -308,7 +308,7 @@
 							<li>
 								<a
 									href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-									class="flex gap-2 py-2 px-4 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
 								>
 									<IconMdiAccountCircle class="h-5 w-5" />
 									<span>{$_('navbar.account', { default: 'Account' })}</span>
@@ -318,7 +318,7 @@
 							<li>
 								<a
 									href={resolve('/oauth/logout')}
-									class="flex gap-2 py-2 px-4 text-error hover:bg-error/10 active:bg-error active:text-error-content"
+									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
 									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
@@ -329,7 +329,7 @@
 				{:else}
 					<a
 						rel="external"
-						class="btn btn-outline gap-2 rounded-full px-4 border-base-300 hover:border-primary hover:bg-primary hover:text-primary-content transition-all duration-300"
+						class="btn gap-2 rounded-full border-base-300 btn-outline px-4 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content"
 						href={getLoginUrl(page.url)}
 					>
 						<IconMdiLogin class="h-5 w-5" />
@@ -347,8 +347,8 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
-	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
+<div class="top-0 right-0 left-0 z-50 mx-4 mb-2 bg-base-100 xl:hidden">
+	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
@@ -357,7 +357,7 @@
 		<div class="navbar-end flex gap-1 sm:gap-2">
 			<button
 				aria-label={$_('search.button')}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					searchActive = !searchActive;
 				}}
@@ -370,7 +370,7 @@
 				aria-label={$_('menu.button')}
 				aria-expanded={accordionOpen}
 				aria-controls={mobileMenuId}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
 				}}
@@ -399,28 +399,28 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn btn-outline link" href="/static/discover">
+		<a class="btn link btn-outline" href="/static/discover">
 			{$_('discover_link')}
 		</a>
-		<a class="btn btn-outline link" href="/static/contribute">
+		<a class="btn link btn-outline" href="/static/contribute">
 			{$_('contribute_link')}
 		</a>
-		<a class="btn btn-outline link" href="/static/producers">
+		<a class="btn link btn-outline" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn btn-outline link" href={OPEN_PRICES_BASE_URL}>
+		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
 			{$_('prices_link')}
 		</a>
-		<a class="btn btn-outline link" href="/folksonomy">
+		<a class="btn link btn-outline" href="/folksonomy">
 			{$_('folksonomy_link')}
 		</a>
-		<a class="btn btn-outline link" href="/facets">
+		<a class="btn link btn-outline" href="/facets">
 			{$_('facets_link')}
 		</a>
 
 		<div class="divider md:divider-horizontal"></div>
 		<a
-			class="btn btn-outline link"
+			class="btn link btn-outline"
 			href="/settings"
 			title={$_('settings_link')}
 			aria-label={$_('settings_link')}
@@ -429,25 +429,25 @@
 		</a>
 
 		{#if $userInfo != null}
-			<div class="w-full flex justify-center mt-2 md:mt-0">
+			<div class="mt-2 flex w-full justify-center md:mt-0">
 				<div
-					class="flex flex-col gap-2 w-full md:w-auto p-2 bg-base-200 rounded-box border border-base-300"
+					class="flex w-full flex-col gap-2 rounded-box border border-base-300 bg-base-200 p-2 md:w-auto"
 				>
-					<div class="px-2 py-1.5 flex items-center gap-3">
+					<div class="flex items-center gap-3 px-2 py-1.5">
 						<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
-						<span class="font-semibold truncate text-base-content text-sm"
+						<span class="truncate text-sm font-semibold text-base-content"
 							>{$userInfo.preferred_username}</span
 						>
 					</div>
 					<div class="grid grid-cols-2 gap-2">
 						<a
-							class="btn btn-sm btn-outline gap-2"
+							class="btn gap-2 btn-outline btn-sm"
 							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
 						>
 							<IconMdiAccountCircle class="h-4 w-4" />
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
-						<a class="btn btn-sm btn-outline btn-error gap-2" href={resolve('/oauth/logout')}>
+						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('/oauth/logout')}>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
 						</a>
@@ -457,7 +457,7 @@
 		{:else}
 			<a
 				rel="external"
-				class="btn btn-outline gap-2 rounded-full px-5 hover:bg-primary hover:text-primary-content transition-all duration-300"
+				class="btn gap-2 rounded-full btn-outline px-5 transition-all duration-300 hover:bg-primary hover:text-primary-content"
 				href={getLoginUrl(page.url)}
 			>
 				<IconMdiLogin class="h-5 w-5" />

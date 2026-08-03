@@ -31,11 +31,11 @@
 
 <div class="flex flex-col gap-3 p-2">
 	<div class="flex items-center gap-2">
-		<IconMdiBarcode class="text-warning h-5 w-5" />
+		<IconMdiBarcode class="h-5 w-5 text-warning" />
 		<h2 class="text-lg font-bold">{$_('product.moderator.barcode_correction_title')}</h2>
 	</div>
 
-	<p class="text-base-content/70 text-sm">
+	<p class="text-sm text-base-content/70">
 		{$_('product.moderator.barcode_correction_description')}
 	</p>
 
@@ -51,13 +51,13 @@
 		</label>
 
 		<button
-			class="btn btn-warning btn-sm sm:btn-md"
+			class="btn btn-sm btn-warning sm:btn-md"
 			onclick={handleSubmit}
 			disabled={isSubmitting || !newCode.trim() || newCode.trim() === currentCode}
 			type="button"
 		>
 			{#if isSubmitting}
-				<span class="loading loading-spinner loading-sm"></span>
+				<span class="loading loading-sm loading-spinner"></span>
 			{/if}
 			{$_('product.moderator.barcode_correction_submit')}
 		</button>

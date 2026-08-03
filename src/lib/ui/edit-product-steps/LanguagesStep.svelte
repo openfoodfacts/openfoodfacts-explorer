@@ -82,30 +82,30 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiTranslate class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.languages')}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformation class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.languages')}
 			</span>
 		</div>
@@ -135,7 +135,7 @@
 		</legend>
 
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}
-			<div class="alert alert-warning text-sm sm:text-base">
+			<div class="alert text-sm alert-warning sm:text-base">
 				{$_('product.edit.no_languages_found')}
 			</div>
 		{/if}
@@ -144,7 +144,7 @@
 			{@const langName = getLanguageName(code)}
 			<div class="flex items-center gap-2">
 				<div
-					class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+					class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
 					title={langName}
 				>
 					{code}
@@ -152,7 +152,7 @@
 				<input
 					id={`product-name-${code}`}
 					type="text"
-					class="input input-bordered w-full text-sm sm:text-base"
+					class="input-bordered input w-full text-sm sm:text-base"
 					value={product[`product_name_${code}`] ?? ''}
 					oninput={(e) => {
 						product = {
@@ -165,7 +165,7 @@
 				{#if code !== product.lang}
 					<button
 						type="button"
-						class="btn btn-ghost btn-xs text-error h-auto min-h-0 p-1 hover:bg-base-300 shrink-0"
+						class="btn h-auto min-h-0 shrink-0 btn-ghost p-1 text-error btn-xs hover:bg-base-300"
 						onclick={() => deleteLanguage(code)}
 						title={$_('product.edit.delete_language', { default: 'Delete language' })}
 						aria-label={$_('product.edit.delete_language', { default: 'Delete language' })}
@@ -177,11 +177,11 @@
 						title={$_('product.edit.cannot_delete_main_language', {
 							default: 'Cannot delete the main language'
 						})}
-						class="shrink-0 flex items-center justify-center"
+						class="flex shrink-0 items-center justify-center"
 					>
 						<button
 							type="button"
-							class="btn btn-ghost btn-xs text-base-content/30 btn-disabled h-auto min-h-0 p-1 pointer-events-none"
+							class="btn btn-disabled pointer-events-none h-auto min-h-0 btn-ghost p-1 text-base-content/30 btn-xs"
 							disabled
 							aria-label={$_('product.edit.cannot_delete_main_language', {
 								default: 'Cannot delete the main language'
@@ -199,7 +199,7 @@
 </div>
 
 <div
-	class="collapse-arrow bg-base-300 dark:bg-base-200 collapse mt-4 border-2 rounded-lg border-base-300"
+	class="collapse-arrow collapse mt-4 rounded-lg border-2 border-base-300 bg-base-300 dark:bg-base-200"
 >
 	<input type="checkbox" />
 	<div class="collapse-title text-sm font-semibold sm:text-base">

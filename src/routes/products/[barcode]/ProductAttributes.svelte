@@ -71,7 +71,7 @@
 {#snippet attributeCard(attribute: ProductAttributeV2)}
 	{@const colors = getColorStyle(attribute.grade ?? 'unknown')}
 	<div class="indicator mt-4 h-20 w-full">
-		<div class="indicator-item indicator-top indicator-center badge badge-soft badge-primary">
+		<div class="indicator-item badge badge-soft indicator-center indicator-top badge-primary">
 			<div>{attribute.name}</div>
 		</div>
 

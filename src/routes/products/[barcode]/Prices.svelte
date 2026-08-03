@@ -34,7 +34,7 @@
 		{$_('product.prices.title', { default: 'Prices' })}
 	</h1>
 
-	<p class="text-secondary text-sm italic mb-4">
+	<p class="mb-4 text-sm text-secondary italic">
 		{#if count > 0}
 			{$_('product.prices.kp_subtitle_found', {
 				default:
@@ -49,7 +49,7 @@
 	</p>
 
 	{#if count === 0}
-		<div class="bg-base-200 border-base-300 rounded-lg p-6 text-center border my-4">
+		<div class="my-4 rounded-lg border border-base-300 bg-base-200 p-6 text-center">
 			<p class="text-base-content/70">
 				{$_('product.prices.no_prices_explanation', {
 					default:
@@ -59,17 +59,17 @@
 		</div>
 	{:else if PricesMap == null}
 		<div
-			class="skeleton h-80 w-full rounded-lg flex items-center justify-center text-base-content/50"
+			class="flex h-80 w-full skeleton items-center justify-center rounded-lg text-base-content/50"
 		>
-			<span class="loading loading-spinner loading-md mr-2"></span>
+			<span class="loading mr-2 loading-md loading-spinner"></span>
 			{$_('product.prices.loading_map', { default: 'Loading prices map…' })}
 		</div>
 	{:else}
 		{#await PricesMap}
 			<div
-				class="skeleton h-80 w-full rounded-lg flex items-center justify-center text-base-content/50"
+				class="flex h-80 w-full skeleton items-center justify-center rounded-lg text-base-content/50"
 			>
-				<span class="loading loading-spinner loading-md mr-2"></span>
+				<span class="loading mr-2 loading-md loading-spinner"></span>
 				{$_('product.prices.loading_map', { default: 'Loading prices map…' })}
 			</div>
 		{:then PricesMap}
@@ -88,7 +88,7 @@
 		</a>
 		<a
 			href={OPEN_PRICES_PRODUCTS_URL(barcode)}
-			class="text-secondary link text-sm italic"
+			class="link text-sm text-secondary italic"
 			target="_blank"
 			rel="noopener noreferrer"
 		>

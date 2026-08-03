@@ -41,11 +41,11 @@
 
 <Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
 
-<div class="bg-base-100 min-h-screen">
+<div class="min-h-screen bg-base-100">
 	<div class="mx-auto max-w-4xl px-4 py-8">
 		<div class="mb-8">
-			<h1 class="text-base-content text-4xl font-bold">{$_('settings_link')}</h1>
-			<p class="text-base-content/70 mt-2">
+			<h1 class="text-4xl font-bold text-base-content">{$_('settings_link')}</h1>
+			<p class="mt-2 text-base-content/70">
 				{$_('settings.subtitle')}
 			</p>
 		</div>
@@ -76,16 +76,16 @@
 					{#if $userInfo}
 						<div class="mt-4 space-y-4">
 							<div>
-								<p class="text-base-content/70 text-sm">{$_('settings.username')}</p>
+								<p class="text-sm text-base-content/70">{$_('settings.username')}</p>
 								<p class="text-lg font-semibold">{$userInfo.preferred_username}</p>
 							</div>
 							<div>
-								<p class="text-base-content/70 mb-2 text-sm">{$_('settings.email')}</p>
+								<p class="mb-2 text-sm text-base-content/70">{$_('settings.email')}</p>
 								<p class="text-lg font-semibold">{$userInfo.email}</p>
 							</div>
 							{#if $userInfo.roles && $userInfo.roles.length > 0}
 								<div>
-									<p class="text-base-content/70 mb-2 text-sm">{$_('settings.roles')}</p>
+									<p class="mb-2 text-sm text-base-content/70">{$_('settings.roles')}</p>
 									<div class="flex flex-wrap gap-2">
 										{#each $userInfo.roles as role (role)}
 											<span class="badge badge-primary">
@@ -155,7 +155,7 @@
 							</span>
 						</label>
 						<select
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							name="lang-select"
 							bind:value={$preferences.lang}
 							onchange={() => locale.set($preferences.lang)}
@@ -181,7 +181,7 @@
 						</label>
 						<select
 							name="country-select"
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							bind:value={$preferences.country}
 						>
 							<option value="world" selected={$preferences.country === 'world'}>
@@ -211,7 +211,7 @@
 						</label>
 						<select
 							name="currency-select"
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							bind:value={$preferences.currency}
 						>
 							{#each data.currencies as currency (currency)}
@@ -249,7 +249,7 @@
 								bind:checked={$preferences.editing.expandAllSections}
 							/>
 						</label>
-						<p class="text-base-content/70 mt-1 text-xs">
+						<p class="mt-1 text-xs text-base-content/70">
 							{$_('settings.expand_all_sections_help')}
 						</p>
 					</div>
@@ -265,7 +265,7 @@
 								bind:checked={$preferences.displayPricesInSearch}
 							/>
 						</label>
-						<p class="text-base-content/70 mt-1 text-xs">
+						<p class="mt-1 text-xs text-base-content/70">
 							{$_('settings.display_prices_in_search_help')}
 						</p>
 					</div>
@@ -299,14 +299,14 @@
 			class:hidden={activeTab !== 'developer'}
 		>
 			{#if permissions.isModerator}
-				<div class="card border-warning bg-warning/10 border-2 shadow-md">
+				<div class="card border-2 border-warning bg-warning/10 shadow-md">
 					<div class="card-body">
 						<h2 class="card-title flex items-center gap-2">
 							<IconMdiTools class="h-6 w-6" />
 							{$_('settings.dev_settings_title')}
 						</h2>
 
-						<p class="text-base-content/70 mt-4 text-sm">
+						<p class="mt-4 text-sm text-base-content/70">
 							{$_('settings.dev_warning')}
 						</p>
 
@@ -321,7 +321,7 @@
 										bind:checked={$preferences.moderator}
 									/>
 								</label>
-								<p class="text-base-content/70 mt-1 text-xs">
+								<p class="mt-1 text-xs text-base-content/70">
 									{$_('settings.moderator_mode_help')}
 								</p>
 							</div>
