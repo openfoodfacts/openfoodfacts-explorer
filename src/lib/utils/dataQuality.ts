@@ -6,6 +6,11 @@ export interface QualityError {
 	severity: 'warning' | 'error' | 'info';
 }
 
+/**
+ * Static lookup map of known quality error tags to field, section, and translation metadata.
+ * Note: `severity` defines the static default for each tag, while runtime severity is dynamically
+ * assigned by `getQualityErrors` based on the API response list (`errors`, `warnings`, `infos`).
+ */
 export const QUALITY_ERRORS_MAP: Record<string, Omit<QualityError, 'tag'>> = {
 	'en:nutrition-sugars-plus-starch-greater-than-carbohydrates': {
 		field: 'sugars_100g',
@@ -367,6 +372,12 @@ export function getQualityErrors(
 	return result;
 }
 
+const DYNAMIC_NUTRIENT_PATTERNS = [
+	{ regex: /value-negative-([a-zA-Z0-9-]+)$/, message: 'product.edit.quality.value_negative' },
+	{ regex: /value-over-105-([a-zA-Z0-9-]+)$/, message: 'product.edit.quality.value_over_105' },
+	{ regex: /value-over-1000-([a-zA-Z0-9-]+)$/, message: 'product.edit.quality.value_over_1000' }
+];
+
 function processList(
 	tags: string[] | undefined,
 	defaultSeverity: 'error' | 'warning' | 'info',
@@ -386,46 +397,23 @@ function processList(
 			continue;
 		}
 
-		// Fallback to dynamic negative nutrient value matches
-		const negativeMatch = tag.match(/value-negative-([a-zA-Z0-9-]+)$/);
-		if (negativeMatch) {
-			const nutrient = negativeMatch[1];
-			result.push({
-				tag,
-				field: nutrient.replace(/-/g, '_') + '_100g',
-				section: 'nutrition',
-				message: 'product.edit.quality.value_negative',
-				severity: defaultSeverity
-			});
-			continue;
+		// Fallback to dynamic nutrient pattern matches
+		let matchedDynamic = false;
+		for (const { regex, message } of DYNAMIC_NUTRIENT_PATTERNS) {
+			const match = tag.match(regex);
+			if (match) {
+				const nutrient = match[1];
+				result.push({
+					tag,
+					field: nutrient.replace(/-/g, '_') + '_100g',
+					section: 'nutrition',
+					message,
+					severity: defaultSeverity
+				});
+				matchedDynamic = true;
+				break;
+			}
 		}
-
-		// Fallback to dynamic nutrient over-limit (105g/ml) matches
-		const over105Match = tag.match(/value-over-105-([a-zA-Z0-9-]+)$/);
-		if (over105Match) {
-			const nutrient = over105Match[1];
-			result.push({
-				tag,
-				field: nutrient.replace(/-/g, '_') + '_100g',
-				section: 'nutrition',
-				message: 'product.edit.quality.value_over_105',
-				severity: defaultSeverity
-			});
-			continue;
-		}
-
-		// Fallback to dynamic nutrient extreme value (1000) matches
-		const over1000Match = tag.match(/value-over-1000-([a-zA-Z0-9-]+)$/);
-		if (over1000Match) {
-			const nutrient = over1000Match[1];
-			result.push({
-				tag,
-				field: nutrient.replace(/-/g, '_') + '_100g',
-				section: 'nutrition',
-				message: 'product.edit.quality.value_over_1000',
-				severity: defaultSeverity
-			});
-			continue;
-		}
+		if (matchedDynamic) continue;
 	}
 }
