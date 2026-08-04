@@ -1,18 +1,5 @@
-// TODO: switch to SDK
-export type CurrentUserPermissions = {
-	status: 'success' | 'failure';
-	result?: { id: string };
-	user?: {
-		userid: string;
-		name: string;
-		moderator: 0 | 1;
-		admin: 0 | 1;
-	};
-	errors?: Array<{
-		message?: { id: string };
-		impact?: { id: string };
-	}>;
-};
+import type { CurrentUserPermissions } from '$lib/types/sdk-overrides';
+export type { CurrentUserPermissions };
 
 export async function fetchCurrentUserPermissions(
 	fetch: typeof globalThis.fetch,

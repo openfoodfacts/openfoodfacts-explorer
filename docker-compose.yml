@@ -1,0 +1,11 @@
+# This is the docker compose file for deployment of the project
+# It is not necessarily fitted for devlopment purpose (at least yet)
+
+services:
+  explorer:
+    image: ghcr.io/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    restart: ${RESTART_POLICY:-always}
+    ports:
+      - '${DOCKER_EXPLORER_EXPOSE:-127.0.0.1:3000}:3000'
+    env_file:
+      - .env

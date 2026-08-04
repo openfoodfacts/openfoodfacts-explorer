@@ -40,6 +40,7 @@
 		"advanced_search_classic": "Rozšířené vyhledávání pro {term} (klasická verze)",
 		"superset_query": "Začít dotaz",
 		"superset_discover": "Objevte dashboardy",
+		"superset_promo_title": "Query OFF with SQL",
 		"superset_promo_desc": "Odemkněte sílu otevřených dat! Prozkoumejte celou databázi Open Food Facts pomocí SQL dotazů, vlastních grafů a sdílených dashboardů.",
 		"prices_badge": "{count} cen",
 		"creation_date": "Datum vytvoření",
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "Pro tento produkt nebyly nalezeny žádné ceny",
 			"loading": "Načítání cen…",
-			"view_prices": "Zobrazit ceny na Open Prices"
+			"view_prices": "Zobrazit ceny na Open Prices",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Upravit produkt",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Nahlásit problém s tímto produktem",
+				"add_ingredients_text": "Přidat text ingrediencí",
 				"add_packaging_components": "Přidat součásti obalu",
-				"add_origins": "Přidat původ",
-				"add_ingredients_text": "Přidat text ingrediencí"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Přidejte cenu na Open Prices",
+				"view_prices": "Zobrazit ceny na Open Prices",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Přidat výživová fakta"
 			}
 		},
 		"moderator": {
@@ -594,7 +608,7 @@
 			"image_manager_delete_success": "Obrázky byly úspěšně smazány.",
 			"image_manager_delete_error": "Obrázky se nepodařilo smazat. Zkuste to prosím znovu.",
 			"image_manager_in_use": "Aktivní / Používané",
-			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_in_use_tooltip": "Tento obrázek je aktuálně aktivní. Nejprve zrušte jeho výběr ve Správci obrázků, abyste jej mohli smazat.",
 			"image_manager_image_alt": "Nahraný obrázek {imgid}"
 		}
 	},

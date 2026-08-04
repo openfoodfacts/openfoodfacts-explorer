@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'rc/*'
+      - deploy/*
     tags:
       - 'v*.*.*'
 
@@ -14,6 +15,7 @@ concurrency:
 
 jobs:
   build-and-push:
+    name: Build and push Explorer Docker image
     runs-on: ubuntu-latest
 
     permissions:
@@ -25,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 
       - name: Docker meta
         id: meta
@@ -33,9 +35,15 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+          # tag (by order of precedence)
+          tags: |
+            # release tags
+            type=semver,pattern={{version}}
+            # otherwise sha based tag
+            type=raw,value=sha-${{ github.sha }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c # v4.5.2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

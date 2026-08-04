@@ -167,16 +167,16 @@
 {#snippet autocompleteDropdown()}
 	{#if filteredAutocomplete.length > 0}
 		<div
-			class="dropdown-content bg-base-100 z-100 mt-1 w-full rounded-md shadow-lg focus:outline-none"
+			class="dropdown-content z-100 mt-1 w-full rounded-md bg-base-100 shadow-lg focus:outline-none"
 		>
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<ul tabindex="0" class="divide-base-200 divide-y">
+			<ul tabindex="0" class="divide-y divide-base-200">
 				{#each filteredAutocomplete as suggestion, index (suggestion.item)}
 					{@const key = suggestion.item}
 					<li>
 						<button
 							type="button"
-							class="bg-base-200 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full rounded-md px-4 py-2 text-left transition-colors duration-150"
+							class="w-full rounded-md bg-base-200 px-4 py-2 text-left text-base-content transition-colors duration-150 hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content"
 							class:bg-primary={autoCompleteIndex === index}
 							class:text-primary-content={autoCompleteIndex === index}
 							onmousedown={(e) => {
@@ -196,7 +196,7 @@
 
 <div
 	class={[
-		'bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2 transition-all',
+		'flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 bg-base-100 p-2 transition-all focus-within:border-primary focus-within:outline-primary',
 		highlightEmpty && tags.length === 0 && 'border-dashed border-warning/50 bg-warning/5',
 		highlightSeverity === 'error' && 'border-error',
 		highlightSeverity === 'warning' && 'border-warning',
@@ -204,7 +204,7 @@
 	]}
 >
 	{#each tags as tag, index (tag)}
-		<div class="badge badge-ghost flex h-min items-center py-2" transition:fade={{ duration: 100 }}>
+		<div class="badge flex h-min items-center badge-ghost py-2" transition:fade={{ duration: 100 }}>
 			{#if editingIndex === index}
 				<div class="dropdown">
 					<input
@@ -239,7 +239,7 @@
 				</span>
 			{/if}
 			<button
-				class="hover:bg-base-300 ml-1 cursor-pointer p-1 leading-0"
+				class="ml-1 cursor-pointer p-1 leading-0 hover:bg-base-300"
 				onclick={() => removeTag(tag)}
 				aria-label={`Remove tag "${tag}"`}
 			>
@@ -251,7 +251,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="input input-bordered w-full bg-transparent outline-hidden"
+			class="input-bordered input w-full bg-transparent outline-hidden"
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
@@ -265,12 +265,12 @@
 			: highlightSeverity === 'warning'
 				? 'text-warning'
 				: 'text-info'}
-	<span class={['text-xs mt-1 font-medium flex items-center gap-1 w-full', colorClass]}>
+	<span class={['mt-1 flex w-full items-center gap-1 text-xs font-medium', colorClass]}>
 		<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 		{highlightMessage || $_('product.edit.quality.issue_fallback', { default: 'Quality issue' })}
 	</span>
 {:else if highlightEmpty && tags.length === 0}
-	<span class="text-xs text-warning/70 mt-1 font-medium flex items-center gap-1 w-full">
+	<span class="mt-1 flex w-full items-center gap-1 text-xs font-medium text-warning/70">
 		<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 		{$_('product.edit.missing_info', { default: 'Missing info' })}
 	</span>

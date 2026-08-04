@@ -11,6 +11,8 @@
 
 By building a new frontend, we want to be able to iterate faster on the user experience, provide a more modern and responsive design, and make it easier for contributors to contribute to the frontend.
 
+You can test it in the staging environment at [https://beta.openfoodfacts.net](https://beta.openfoodfacts.net).
+
 ## Warning on the usage of AI tools
 
 > [!WARNING]

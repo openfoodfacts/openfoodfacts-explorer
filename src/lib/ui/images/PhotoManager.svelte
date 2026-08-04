@@ -403,7 +403,7 @@
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<div class="tabs tabs-lift">
+	<div class="tabs-lift tabs">
 		<div class="tab tab-disabled cursor-default">
 			<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
 		</div>
@@ -417,7 +417,7 @@
 				onchange={() => handleLanguageChange(code)}
 			/>
 			<div
-				class="tab-content bg-base-100 border-base-300 p-3 sm:p-6"
+				class="tab-content border-base-300 bg-base-100 p-3 sm:p-6"
 				class:hidden={code !== activeLanguageCode}
 			>
 				<!-- Show standard photo types first -->
@@ -455,8 +455,8 @@
 
 				<!-- Show message if no images at all -->
 				{#if currentImages.length === 0}
-					<div class="bg-base-200 flex w-full items-center justify-center rounded p-4 sm:p-6">
-						<p class="text-base-content/60 text-center text-sm sm:text-base">
+					<div class="flex w-full items-center justify-center rounded bg-base-200 p-4 sm:p-6">
+						<p class="text-center text-sm text-base-content/60 sm:text-base">
 							{$_('product.edit.no_photo_available')}
 						</p>
 					</div>
