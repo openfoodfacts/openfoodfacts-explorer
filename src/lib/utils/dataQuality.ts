@@ -351,7 +351,7 @@ export const QUALITY_ERRORS_MAP: Record<string, Omit<QualityError, 'tag'>> = {
  * borders.
  *
  * Supports exact matches from QUALITY_ERRORS_MAP, regex match patterns for dynamic tags
- * (such as negative or over-limit values), and suffix matching to handle language prefixes.
+ * (such as negative or over-limit values), and language-prefix normalization.
  *
  * @param errors - Raw error tags (high-severity, e.g. data_quality_errors_tags)
  * @param warnings - Raw warning tags (medium-severity, e.g. data_quality_warnings_tags)
