@@ -59,14 +59,22 @@
 	type Props = {
 		image: ProductImage;
 		reportImageUrl: string;
+		isSaving: boolean;
 		onSave: (data: EditData) => void;
 		onImageUnselected: () => void;
 		onImageReplace?: () => void;
 		onClose?: () => void;
 	};
 
-	let { image, reportImageUrl, onClose, onSave, onImageUnselected, onImageReplace }: Props =
-		$props();
+	let {
+		image,
+		reportImageUrl,
+		isSaving,
+		onClose,
+		onSave,
+		onImageUnselected,
+		onImageReplace
+	}: Props = $props();
 
 	const toast = getToastCtx();
 
@@ -749,6 +757,7 @@
 				<button
 					type="button"
 					class="btn btn-primary"
+					class:loading={isSaving}
 					onclick={handleSave}
 					disabled={!canPerformActions}
 					aria-label="Save changes and close modal"

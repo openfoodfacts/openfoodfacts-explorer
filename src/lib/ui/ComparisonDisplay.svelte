@@ -243,7 +243,7 @@
 	}
 
 	function getGreenScoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
+		return KP_ATTRIBUTE_IMG('green-score-' + (grade ?? 'unknown') + '.svg');
 	}
 
 	// Number formatters
@@ -645,7 +645,7 @@
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
-								`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+								`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
 								comparison.isBest
 							)}
 						{:else}
