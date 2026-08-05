@@ -121,6 +121,8 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
+						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
+						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
 					>
 						{$_('product.buttons.classic_view')}
 					</a>
@@ -129,6 +131,8 @@
 						href={`/products/${product.code}/edit`}
 						class="btn btn-secondary btn-sm md:btn-md"
 						class:pointer-events-none={navigating.to}
+						title={$_('product.buttons.edit', { default: 'Edit' })}
+						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
 					>
 						<IconMdiPencil class="h-5 w-5" />
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
@@ -137,6 +141,8 @@
 					<button
 						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						onclick={sharePage}
+						title={$_('product.buttons.share', { default: 'Share' })}
+						aria-label={$_('product.buttons.share', { default: 'Share' })}
 					>
 						<IconMdiShareVariant class="h-5 w-5" />
 						<span class="hidden md:block">{$_('product.buttons.share')}</span>
