@@ -46,7 +46,7 @@
 			// Whether accepted or dismissed, clear the stored prompt
 			// — the browser won't fire `beforeinstallprompt` again.
 			pwaInstallStore.clear();
-		} catch (err) {
+		} catch {
 			toastCtx.error($_('pwa.install_error'));
 		} finally {
 			installing = false;
