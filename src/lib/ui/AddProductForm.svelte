@@ -181,7 +181,7 @@
 
 <!-- Navigation Buttons for Add Mode -->
 <div
-	class="mt-8 mb-12 flex flex-col items-stretch justify-between gap-3 md:flex-row md:items-center"
+	class="mt-8 mb-24 flex flex-col items-stretch justify-between gap-3 pb-8 md:mb-28 md:flex-row md:items-center"
 >
 	{#if currentStep > 0}
 		<button
