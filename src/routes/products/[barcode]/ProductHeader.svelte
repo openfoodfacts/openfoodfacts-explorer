@@ -19,6 +19,7 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -124,7 +125,8 @@
 						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
 						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
 					>
-						{$_('product.buttons.classic_view')}
+						<IconMdiOpenInNew class="h-5 w-5" />
+						<span>{$_('product.buttons.classic_view')}</span>
 					</a>
 
 					<a
