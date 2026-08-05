@@ -124,7 +124,7 @@
 						class="btn btn-secondary btn-sm md:btn-md"
 					>
 						<IconMdiOpenInNew class="h-5 w-5" />
-						<span class="hidden md:block">{$_('product.buttons.classic_view')}</span>
+						<span>{$_('product.buttons.classic_view')}</span>
 					</a>
 
 					<a
