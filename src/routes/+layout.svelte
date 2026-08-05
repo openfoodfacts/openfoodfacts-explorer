@@ -277,15 +277,6 @@
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 			<div class="navbar-end gap-2">
-				<!-- Calculator button -->
-				<button
-					class="btn btn-ghost"
-					title={$_('calculator', { default: 'Calculator' })}
-					aria-label={$_('calculator', { default: 'Calculator' })}
-					onclick={toggleCalculator}
-				>
-					<IconMdiCalculator class="w-6" />
-				</button>
 				<!-- Shortcuts button -->
 				<button
 					class="btn btn-ghost"
@@ -325,6 +316,15 @@
 									<IconMdiAccountCircle class="h-5 w-5" />
 									<span>{$_('navbar.account', { default: 'Account' })}</span>
 								</a>
+							</li>
+							<li>
+								<button
+									onclick={toggleCalculator}
+									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+									<span>{$_('calculator', { default: 'Calculator' })}</span>
+								</button>
 							</li>
 							<div class="divider my-1"></div>
 							<li>
