@@ -22,7 +22,7 @@
 		transition:fly={{ y: 20, duration: 300 }}
 	>
 		<button
-			class="btn btn-circle btn-primary shadow-xl hover:scale-105 active:scale-95 transition-transform duration-200"
+			class="btn btn-circle shadow-xl transition-transform duration-200 btn-primary hover:scale-105 active:scale-95"
 			onclick={scrollToTop}
 			aria-label={$_('common.scroll_to_top', { default: 'Scroll to top' })}
 			title={$_('common.scroll_to_top', { default: 'Scroll to top' })}
