@@ -134,7 +134,7 @@
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>
 		{:else}
-			<table class="my-4 table">
+			<table class="table my-4">
 				<thead>
 					<tr>
 						<th>Code</th>
@@ -143,7 +143,7 @@
 				</thead>
 				<tbody>
 					{#each results.products as { product_name, code } (code)}
-						<tr class="hover:bg-base-200 cursor-pointer" onclick={() => goto(`/products/${code}`)}>
+						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
 								<a href={`/products/${code}`} class="link">
 									{code}

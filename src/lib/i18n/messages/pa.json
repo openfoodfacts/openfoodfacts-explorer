@@ -40,6 +40,7 @@
 		"advanced_search_classic": "{term} ਲਈ ਉੱਨਤ ਖੋਜ (ਕਲਾਸਿਕ ਸੰਸਕਰਣ)",
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
+		"superset_promo_title": "Query OFF with SQL",
 		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} prices",
 		"creation_date": "Creation date",
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "ਇਸ ਉਤਪਾਦ ਲਈ ਕੋਈ ਕੀਮਤ ਨਹੀਂ ਮਿਲੀ।",
 			"loading": "ਕੀਮਤਾਂ ਲੋਡ ਹੋ ਰਹੀਆਂ ਹਨ…",
-			"view_prices": "ਓਪਨ ਕੀਮਤਾਂ 'ਤੇ ਕੀਮਤਾਂ ਵੇਖੋ"
+			"view_prices": "ਓਪਨ ਕੀਮਤਾਂ 'ਤੇ ਕੀਮਤਾਂ ਵੇਖੋ",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "ਉਤਪਾਦ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Add packaging components",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "ਓਪਨ ਕੀਮਤਾਂ 'ਤੇ ਕੀਮਤਾਂ ਵੇਖੋ",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
 		"moderator": {

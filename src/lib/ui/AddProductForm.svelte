@@ -114,7 +114,7 @@
 				<span class="flex flex-col items-center">
 					<span>{step.title}</span>
 					{#if step.suffix}
-						<span class="text-xs opacity-70 font-normal mt-0.5">{step.suffix}</span>
+						<span class="mt-0.5 text-xs font-normal opacity-70">{step.suffix}</span>
 					{/if}
 				</span>
 			</button>
@@ -124,21 +124,21 @@
 
 <!-- Mobile step header -->
 <div class="navigation mb-6 flex items-center justify-between md:hidden">
-	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
+	<button class="btn btn-outline btn-sm" onclick={prevStep} type="button" title={$_('common.back')}>
 		<IconMdiArrowLeft class="h-4 w-4" />
 		{$_('common.back')}
 	</button>
 
-	<div class="bg-primary/10 my-2 rounded-full px-3 py-2 text-sm">
-		<span class="text-primary/80 font-medium">
+	<div class="my-2 rounded-full bg-primary/10 px-3 py-2 text-sm">
+		<span class="font-medium text-primary/80">
 			{$_('common.step')}
 			{`${currentStep + 1}`}
 		</span>
-		<span class="text-primary/60 font-medium">{$_('common.of')}{` ${STEPS.length}`}</span>
+		<span class="font-medium text-primary/60">{$_('common.of')}{` ${STEPS.length}`}</span>
 	</div>
 
 	<button
-		class="btn btn-sm btn-secondary"
+		class="btn btn-secondary btn-sm"
 		class:opacity-0={currentStep === STEPS.length - 1}
 		disabled={currentStep === STEPS.length - 1}
 		onclick={nextStep}
@@ -181,11 +181,11 @@
 
 <!-- Navigation Buttons for Add Mode -->
 <div
-	class="mt-8 mb-12 flex flex-col md:flex-row justify-between gap-3 items-stretch md:items-center"
+	class="mt-8 mb-12 flex flex-col items-stretch justify-between gap-3 md:flex-row md:items-center"
 >
 	{#if currentStep > 0}
 		<button
-			class="btn btn-outline w-full md:w-auto md:min-w-40 text-sm sm:text-base shrink-0"
+			class="btn w-full shrink-0 btn-outline text-sm sm:text-base md:w-auto md:min-w-40"
 			onclick={prevStep}
 			type="button"
 		>
@@ -193,10 +193,10 @@
 		</button>
 	{/if}
 
-	<div class="flex flex-col md:flex-row gap-3 justify-end w-full">
+	<div class="flex w-full flex-col justify-end gap-3 md:flex-row">
 		{#if currentStep === 0}
 			<button
-				class="btn btn-secondary w-full md:w-auto md:min-w-40 text-sm sm:text-base md:ml-auto"
+				class="btn w-full text-sm btn-secondary sm:text-base md:ml-auto md:w-auto md:min-w-40"
 				onclick={nextStep}
 				type="button"
 			>
@@ -204,18 +204,18 @@
 			</button>
 		{:else if currentStep === 1}
 			<button
-				class="btn btn-success w-full md:w-auto md:min-w-40 text-sm sm:text-base"
+				class="btn w-full text-sm btn-success sm:text-base md:w-auto md:min-w-40"
 				onclick={submit}
 				disabled={isSubmitting || disableSubmit}
 				type="button"
 			>
 				{#if isSubmitting}
-					<span class="loading loading-spinner loading-sm mr-2"></span>
+					<span class="loading mr-2 loading-sm loading-spinner"></span>
 				{/if}
 				{$_('product.edit.submit_product', { default: 'Submit' })}
 			</button>
 			<button
-				class="btn btn-secondary w-full md:w-auto md:min-w-40 text-sm sm:text-base"
+				class="btn w-full text-sm btn-secondary sm:text-base md:w-auto md:min-w-40"
 				onclick={nextStep}
 				type="button"
 			>
@@ -224,13 +224,13 @@
 			</button>
 		{:else if currentStep === 2}
 			<button
-				class="btn btn-success w-full md:w-auto md:min-w-40 text-sm sm:text-base md:ml-auto"
+				class="btn w-full text-sm btn-success sm:text-base md:ml-auto md:w-auto md:min-w-40"
 				onclick={submit}
 				disabled={isSubmitting || disableSubmit}
 				type="button"
 			>
 				{#if isSubmitting}
-					<span class="loading loading-spinner loading-sm mr-2"></span>
+					<span class="loading mr-2 loading-sm loading-spinner"></span>
 				{/if}
 				{$_('product.edit.submit_product', { default: 'Submit' })}
 			</button>

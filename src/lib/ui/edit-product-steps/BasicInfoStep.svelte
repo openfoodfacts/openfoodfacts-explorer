@@ -99,7 +99,7 @@
 	onMount(() => {
 		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
-			action: () => focusEditField('#quantity')
+			action: () => focusEditField('#quantity-input')
 		});
 		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
@@ -125,30 +125,30 @@
 
 {#if editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.basic_info')}
 			</span>
 		</div>
@@ -161,7 +161,7 @@
 				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.product_type')}
-						<span class="badge badge-info badge-outline badge-xs sm:badge-sm">
+						<span class="badge badge-outline badge-xs badge-info sm:badge-sm">
 							{$_('product.edit.moderator_only')}
 						</span>
 						<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
@@ -171,10 +171,10 @@
 					{#each PRODUCT_TYPES as type (type)}
 						<button
 							type="button"
-							class="btn btn-sm sm:btn-md flex-1 min-w-[120px] rounded-lg border border-base-300 font-normal transition-all {(product.product_type ??
+							class="btn min-w-[120px] flex-1 rounded-lg border border-base-300 font-normal transition-all btn-sm sm:btn-md {(product.product_type ??
 								'food') === type
-								? 'btn-primary border-primary font-semibold shadow-sm'
-								: 'bg-base-100 text-base-content/80 hover:bg-base-200 border-base-300'}"
+								? 'border-primary font-semibold shadow-sm btn-primary'
+								: 'border-base-300 bg-base-100 text-base-content/80 hover:bg-base-200'}"
 							onclick={() => {
 								product = { ...product, product_type: type };
 							}}
@@ -199,7 +199,7 @@
 						{@const langName = getLanguageName(code)}
 						<div class="flex items-center gap-2">
 							<div
-								class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+								class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
 								title={langName}
 							>
 								{code}
@@ -207,7 +207,7 @@
 							<input
 								id={`generic-name-${code}`}
 								type="text"
-								class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+								class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 								value={product[`generic_name_${code}`] ?? ''}
 								oninput={(e) => {
 									product = {
@@ -232,7 +232,7 @@
 				<input
 					id="quantity"
 					type="text"
-					class="input input-bordered focus:border-primary mt-2 w-full text-sm focus:outline-none sm:text-base"
+					class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 					value={product.quantity ?? ''}
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
@@ -252,7 +252,7 @@
 				<input
 					id="website_url"
 					type="url"
-					class="input focus:border-primary w-full text-sm break-all focus:outline-none sm:text-base"
+					class="input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
 					value={product.link ?? ''}
 					oninput={(e) => {
 						product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
@@ -349,30 +349,30 @@
 	</div>
 {:else}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.basic_info')}
 			</span>
 		</div>
@@ -391,10 +391,10 @@
 				{#each PRODUCT_TYPES as type (type)}
 					<button
 						type="button"
-						class="btn btn-sm sm:btn-md flex-1 min-w-[120px] rounded-lg border border-base-300 font-normal transition-all {(product.product_type ??
+						class="btn min-w-[120px] flex-1 rounded-lg border border-base-300 font-normal transition-all btn-sm sm:btn-md {(product.product_type ??
 							'food') === type
-							? 'btn-primary border-primary font-semibold shadow-sm'
-							: 'bg-base-100 text-base-content/80 hover:bg-base-200 border-base-300'}"
+							? 'border-primary font-semibold shadow-sm btn-primary'
+							: 'border-base-300 bg-base-100 text-base-content/80 hover:bg-base-200'}"
 						onclick={() => {
 							product = { ...product, product_type: type };
 						}}
@@ -414,7 +414,7 @@
 			</label>
 			<select
 				id="main_language_select"
-				class="select select-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+				class="select-bordered select w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 				value={product.lang}
 				onchange={(e) => {
 					product = { ...product, lang: (e.currentTarget as HTMLSelectElement).value };
@@ -434,7 +434,7 @@
 				</span>
 			</div>
 			{#if Object.keys(product.languages_codes ?? {}).length === 0}
-				<div class="alert alert-warning text-sm sm:text-base">
+				<div class="alert text-sm alert-warning sm:text-base">
 					{$_('product.edit.no_languages_found')}
 				</div>
 			{/if}
@@ -443,7 +443,7 @@
 					{@const langName = getLanguageName(code)}
 					<div class="flex items-center gap-2">
 						<div
-							class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
 							title={langName}
 						>
 							{code}
@@ -451,7 +451,7 @@
 						<input
 							id={`product-name-${code}`}
 							type="text"
-							class="input input-bordered w-full text-sm sm:text-base"
+							class="input-bordered input w-full text-sm sm:text-base"
 							value={product[`product_name_${code}`] ?? ''}
 							oninput={(e) => {
 								product = {
@@ -465,7 +465,7 @@
 						{#if code !== product.lang}
 							<button
 								type="button"
-								class="btn btn-ghost btn-xs text-error h-auto min-h-0 p-1 hover:bg-base-300 shrink-0"
+								class="btn h-auto min-h-0 shrink-0 btn-ghost p-1 text-error btn-xs hover:bg-base-300"
 								onclick={() => deleteLanguage(code)}
 								title={$_('product.edit.delete_language', { default: 'Delete language' })}
 								aria-label={$_('product.edit.delete_language', { default: 'Delete language' })}
@@ -477,11 +477,11 @@
 								title={$_('product.edit.cannot_delete_main_language', {
 									default: 'Cannot delete the main language'
 								})}
-								class="shrink-0 flex items-center justify-center"
+								class="flex shrink-0 items-center justify-center"
 							>
 								<button
 									type="button"
-									class="btn btn-ghost btn-xs text-base-content/30 btn-disabled h-auto min-h-0 p-1 pointer-events-none"
+									class="btn btn-disabled pointer-events-none h-auto min-h-0 btn-ghost p-1 text-base-content/30 btn-xs"
 									disabled
 									aria-label={$_('product.edit.cannot_delete_main_language', {
 										default: 'Cannot delete the main language'
@@ -495,13 +495,13 @@
 				{/each}
 			</div>
 			<!-- Collapsible "Add a Language" under product names -->
-			<div class="collapse collapse-arrow bg-base-100 mt-3 border border-base-300 rounded-lg">
+			<div class="collapse-arrow collapse mt-3 rounded-lg border border-base-300 bg-base-100">
 				<input
 					type="checkbox"
 					id="add_language_toggle"
 					aria-label={$_('product.edit.add_language', { default: 'Add a language' })}
 				/>
-				<div class="collapse-title text-sm font-semibold sm:text-base py-3 min-h-0">
+				<div class="collapse-title min-h-0 py-3 text-sm font-semibold sm:text-base">
 					{$_('product.edit.add_language')}
 				</div>
 				<div class="collapse-content">
@@ -548,7 +548,7 @@
 				<input
 					id="quantity"
 					type="text"
-					class="input input-bordered focus:border-primary mt-2 w-full text-sm focus:outline-none sm:text-base"
+					class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 					value={product.quantity ?? ''}
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
@@ -559,7 +559,7 @@
 		</div>
 
 		<!-- Collapsible "More details" section -->
-		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
+		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
 			<input
 				type="checkbox"
 				id="more_details_toggle"
@@ -569,7 +569,7 @@
 				{$_('product.edit.more_details', { default: 'More details' })}
 			</div>
 			<div class="collapse-content bg-base-100">
-				<div class="pt-5 space-y-6">
+				<div class="space-y-6 pt-5">
 					<!-- A. Product Details -->
 					<div class="divider divider-start text-base font-bold opacity-80 sm:text-lg">
 						{$_('product.edit.more_details_subsections.product_details', {
@@ -588,7 +588,7 @@
 									{@const langName = getLanguageName(code)}
 									<div class="flex items-center gap-2">
 										<div
-											class="bg-primary/10 text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase"
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
 											title={langName}
 										>
 											{code}
@@ -596,7 +596,7 @@
 										<input
 											id={`generic-name-${code}`}
 											type="text"
-											class="input input-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+											class="input-bordered input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 											value={product[`generic_name_${code}`] ?? ''}
 											oninput={(e) => {
 												product = {
@@ -622,7 +622,7 @@
 							<input
 								id="website_url"
 								type="url"
-								class="input input-bordered focus:border-primary w-full text-sm break-all focus:outline-none sm:text-base"
+								class="input-bordered input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
 								value={product.link ?? ''}
 								oninput={(e) => {
 									product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
@@ -719,7 +719,7 @@
 							<input
 								id="manufacturing_places"
 								type="text"
-								class="input input-bordered focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+								class="input-bordered input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 								value={product.manufacturing_places ?? ''}
 								oninput={(e) => {
 									product = {
@@ -772,7 +772,7 @@
 					<div class="form-control w-full">
 						<textarea
 							id="comment"
-							class="textarea textarea-bordered w-full text-sm sm:text-base"
+							class="textarea-bordered textarea w-full text-sm sm:text-base"
 							placeholder={$_('product.edit.comment_placeholder')}
 							bind:value={comment}
 							rows="3"></textarea>
