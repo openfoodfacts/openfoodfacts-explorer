@@ -298,7 +298,7 @@
 							<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
 						</div>
 						<ul
-							class="dropdown-content menu z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+							class="menu dropdown-content z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
 						>
 							<li
 								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"

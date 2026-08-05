@@ -183,7 +183,7 @@
 				<IconMdiChevronDown class="h-4 w-4" />
 			</summary>
 			<ul
-				class="dropdown-content menu z-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-md"
+				class="menu dropdown-content z-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-md"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>

@@ -417,7 +417,7 @@
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<div class="tabs-lift tabs">
+	<div class="tabs tabs-lift">
 		<div class="tab tab-disabled cursor-default">
 			<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
 		</div>

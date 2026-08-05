@@ -52,7 +52,7 @@
 		<span class="grow"></span>
 		<IconMdiChevronDown class="h-5 w-5" />
 	</summary>
-	<ul class="dropdown-content menu w-full rounded-box bg-base-100 p-2 shadow">
+	<ul class="menu dropdown-content w-full rounded-box bg-base-100 p-2 shadow">
 		<li>
 			<input
 				type="text"

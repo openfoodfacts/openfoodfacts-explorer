@@ -21,7 +21,7 @@
 			{$_('product.edit.packaging_component.recycling_instructions_desc')}
 		</p>
 
-		<div class="tabs-lift tabs">
+		<div class="tabs tabs-lift">
 			{#if Object.keys(product.languages_codes ?? {}).length === 0}
 				<div class="alert text-sm alert-warning sm:text-base">
 					{$_('product.edit.no_languages_found')}
