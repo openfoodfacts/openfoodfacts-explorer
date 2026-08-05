@@ -174,18 +174,18 @@
 
 <div
 	class={[
-		'hidden lg:block h-full',
+		'hidden h-full lg:block',
 		hidden ? 'lg:hidden' : '',
 		type === 'product' ? 'lg:pt-28' : ''
 	]}
 >
-	<aside class="sticky top-24 w-50 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
+	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
 		{#if headerActionLabel && onHeaderAction}
-			<div class="flex items-center justify-end mb-4 px-1">
+			<div class="mb-4 flex items-center justify-end px-1">
 				<button
 					type="button"
 					onclick={onHeaderAction}
-					class="text-xs text-primary/70 hover:text-primary transition-colors cursor-pointer select-none underline font-medium"
+					class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
 				>
 					{headerActionLabel}
 				</button>
@@ -194,7 +194,7 @@
 		<nav
 			bind:this={navElement}
 			aria-label={$_('product.sidebar_navigation', { default: 'Product sections' })}
-			class="relative border-l-2 border-base-300 flex flex-col gap-1 pl-4 text-sm"
+			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
 			{#if indicatorHeight > 0}
@@ -218,11 +218,11 @@
 					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => handleSectionClick(section.id)}
 					class={[
-						'group flex items-center py-2 text-left relative transition-all duration-200 outline-none select-none cursor-pointer',
+						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none',
 						activeSection === section.id
 							? section.style === 'warning'
-								? 'text-warning font-semibold'
-								: 'text-primary font-semibold'
+								? 'font-semibold text-warning'
+								: 'font-semibold text-primary'
 							: section.style === 'warning'
 								? 'text-warning/70 hover:text-warning'
 								: 'text-base-content/60 hover:text-primary'
@@ -230,7 +230,7 @@
 				>
 					{#if section.icon}
 						{@const Icon = section.icon}
-						<Icon class="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+						<Icon class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
 					{/if}
 					<span>{section.label}</span>
 				</button>
@@ -243,9 +243,9 @@
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
-		class="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 h-24 w-5 items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md hover:w-7 hover:bg-primary hover:text-primary-content hover:border-primary transition-all duration-300 group cursor-pointer outline-none"
+		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content lg:flex"
 		title={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 	>
-		<IconMdiChevronRight class="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
+		<IconMdiChevronRight class="h-4 w-4 transition-transform duration-200 group-hover:scale-125" />
 	</button>
 {/if}
