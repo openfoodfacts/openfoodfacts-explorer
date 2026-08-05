@@ -121,6 +121,8 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
+						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
+						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
 					>
 						{$_('product.buttons.classic_view')}
 					</a>
@@ -129,14 +131,18 @@
 						href={`/products/${product.code}/edit`}
 						class="btn btn-secondary btn-sm md:btn-md"
 						class:pointer-events-none={navigating.to}
+						title={$_('product.buttons.edit', { default: 'Edit' })}
+						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
 					>
 						<IconMdiPencil class="h-5 w-5" />
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 					</a>
 
 					<button
-						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						onclick={sharePage}
+						title={$_('product.buttons.share', { default: 'Share' })}
+						aria-label={$_('product.buttons.share', { default: 'Share' })}
 					>
 						<IconMdiShareVariant class="h-5 w-5" />
 						<span class="hidden md:block">{$_('product.buttons.share')}</span>
@@ -144,7 +150,7 @@
 
 					<a
 						id="report-problem"
-						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -177,7 +183,7 @@
 			<!-- Metadata Body -->
 			<div class="flex flex-col gap-3 text-center md:text-left">
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.quantity')}</div>
+					<div class="mb-2 text-sm font-bold text-secondary">{$_('product.header.quantity')}</div>
 					<div>{product.quantity}</div>
 				</div>
 
@@ -220,13 +226,13 @@
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">
+						<div class="mb-2 text-sm font-bold text-secondary">
 							<span>{$_('product.header.traceability_codes')}</span>
 							<a
 								href={TRACEABILITY_CODES_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="link link-secondary text-xs"
+								class="link text-xs link-secondary"
 							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
@@ -244,7 +250,7 @@
 
 				{#if product.link != null}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">
+						<div class="mb-2 text-sm font-bold text-secondary">
 							{$_('product.header.producer_link')}
 						</div>
 						<a
@@ -292,7 +298,7 @@
 	{#if tags != null && tags.length > 0}
 		{const href = resolve('/facets/[facet]/[value]', { facet: facet, value: tags[0] })}
 		<div class="mb-2">
-			<div class="text-secondary mb-2 text-sm font-bold">
+			<div class="mb-2 text-sm font-bold text-secondary">
 				{$_(titleKey, { default: defaultTitle })}
 			</div>
 			<TagChipList

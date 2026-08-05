@@ -19,7 +19,7 @@
 	"search": {
 		"title": "Αναζήτηση - {query} - Άνοιγμα Εξερεύνησης Open Food Facts",
 		"placeholder": "Ερώτημα ή γραμμωτός κώδικας",
-		"go": "Πάω",
+		"go": "Go",
 		"scan": "Σάρωση ενός γραμμωτού κώδικα",
 		"button": "Αναζήτηση",
 		"product_not_found": "Δεν βρέθηκαν προϊόντα",
@@ -27,8 +27,8 @@
 		"add_product": "Προσθήκη νέου Προϊόντος",
 		"description": "Αναζήτηση στο Open Food Facts Explorer για {query}",
 		"charts_title": "Αναλυτικά Αναζήτησης",
-		"results_for": "Search results for \"{term}\"",
-		"classic_tools": "Classic Tools:",
+		"results_for": "Αποτελέσματα αναζήτησης για \"{term}\"",
+		"classic_tools": "Κλασικά εργαλεία:",
 		"show_prices_label": "Εμφάνιση Τιμών",
 		"sort_by_label": "Ταξινομήστε ανά",
 		"raw_query_label": "Ακατέργαστο Ερώτημα",
@@ -38,14 +38,15 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Δημιουργία γραφημάτων για {term} (κλασική έκδοση)",
 		"advanced_search_classic": "Σύνθετη Αναζήτηση για {term} (κλασική έκδοση)",
-		"superset_query": "Start a query",
-		"superset_discover": "Discover dashboards",
-		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
+		"superset_query": "Ξεκινήστε ένα ερώτημα",
+		"superset_discover": "Ανακαλύψτε τους πίνακες εργαλείων",
+		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_desc": "Ξεκλειδώστε τη δύναμη των ανοιχτών δεδομένων! Εξερευνήστε την πλήρη βάση δεδομένων Open Food Facts χρησιμοποιώντας ερωτήματα SQL, προσαρμοσμένα γραφήματα και κοινόχρηστους πίνακες ελέγχου.",
 		"prices_badge": "{count} τιμές",
 		"creation_date": "Ημερομηνία δημιουργίας",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Τελευταία ημερομηνία τροποποίησης",
+		"page_size": "Μέγεθος σελίδας",
+		"advanced_view": "Προηγμένη προβολή"
 	},
 	"auth": {
 		"username": "Όνομα χρήστη",
@@ -62,12 +63,12 @@
 		"actions": "Δράσεις",
 		"role": {
 			"user": "Χρήστης",
-			"admin": "Administrator",
+			"admin": "Διαχειριστής",
 			"moderator": "Συντονιστής"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Βοήθεια και Συντομεύσεις"
 	},
 	"general": {
 		"language": "Γλώσσα",
@@ -82,25 +83,25 @@
 		"errors_occurred": "Παρουσιάστηκαν σφάλματα:"
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Μείνετε ενημερωμένοι",
 		"contribute": "Συμβάλλετε",
-		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
-		"tagline_break": "from around the world.",
-		"decorative_alt": "A decorative graphic",
+		"discover_title": "Ανακαλύψτε το Έργο μας",
+		"tagline": "Μια συνεργατική, ελεύθερη και ανοικτή βάση δεδομένων των προϊόντων διατροφής",
+		"tagline_break": "από όλο τον κόσμο.",
+		"decorative_alt": "Ένα διακοσμητικό γραφικό",
 		"social": {
-			"x": "X (formerly Twitter)",
+			"x": "X (πρώην Twitter)",
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack",
+			"slack": "Slack app",
 			"mastodon": "Mastodon",
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Ενημερωτικό δελτίο",
 			"forum": "Φόρουμ",
-			"producers": "Producers Platform",
+			"producers": "Πλατφόρμα Παραγωγών",
 			"translators": "Μεταφραστές",
 			"github": "GitHub",
 			"data_api_sdks": "Data, API, SDKs",
@@ -121,18 +122,18 @@
 	},
 	"settings": {
 		"page_title": "Ρυθμίσεις",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Διαχειριστείτε τις προτιμήσεις και τις ρυθμίσεις του λογαριασμού σας",
+		"subtitle": "Διαχειριστείτε τις προτιμήσεις σας και εξατομικεύστε την εμπειρία σας",
 		"tab": {
 			"account": "Λογαριασμός",
 			"general": "Γενικά",
 			"editing": "Επεξεργασία",
 			"preferences": "Προτιμήσεις",
-			"developer": "Developer"
+			"developer": "Προγραμματιστής"
 		},
 		"username": "Όνομα χρήστη",
 		"email": "E-mail",
-		"roles": "Roles",
+		"roles": "Ρόλοι",
 		"section_general": "Γενικά",
 		"section_editing": "Επεξεργασία",
 		"section_user": "Χρήστης",
@@ -140,18 +141,18 @@
 		"login": "Σύνδεση (αποθηκεύτηκε στο localStorage) [ΜΗ ΑΣΦΑΛΕΣ - ΜΟΝΟ ΓΙΑ ΕΝΤΟΠΙΣΜΟ ΣΦΑΛΜΑΤΩΝ]",
 		"news": "Νέα",
 		"expand_all_sections": "Ανάπτυξη όλων των ενοτήτων",
-		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
-		"display_prices_in_search": "Display prices in search results",
-		"display_prices_in_search_help": "Show price information in search results when available",
-		"logged_in_as": "Logged in as: {username}",
+		"expand_all_sections_help": "Αυτόματη ανάπτυξη όλων των ενοτήτων κατά την προβολή λεπτομερειών προϊόντος",
+		"display_prices_in_search": "Εμφάνιση τιμών στα αποτελέσματα αναζήτησης",
+		"display_prices_in_search_help": "Εμφάνιση πληροφοριών τιμών στα αποτελέσματα αναζήτησης όταν είναι διαθέσιμα",
+		"logged_in_as": "Έχετε συνδεθεί ως {{userName}}",
 		"not_logged_in": "Δεν έχετε συνδεθεί",
 		"github_link": "GitHub",
-		"github_cta": "Help us improve Explorer on GitHub",
-		"github_help_text": "Help us improve Open Food Facts Explorer!",
-		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"github_cta": "Βοηθήστε μας να βελτιώσουμε τον Εξερευνητή στο GitHub",
+		"github_help_text": "Βοηθήστε μας να βελτιώσουμε το Open Food Facts Explorer!",
+		"dev_settings_title": "Ρυθμίσεις ανάπτυξης",
+		"moderator_mode": "Λειτουργία Επόπτη",
+		"dev_access_denied": "Δεν επιτρέπεται η πρόσβαση",
+		"dev_access_message": "Οι ρυθμίσεις για προγραμματιστές είναι διαθέσιμες μόνο σε συντονιστές και προγραμματιστές. Αν πιστεύετε ότι θα πρέπει να έχετε πρόσβαση, επικοινωνήστε με το διαχειριστή."
 	},
 	"folksonomy": {
 		"title": "Μηχανή Folksonomy",
@@ -161,9 +162,9 @@
 		"keys_found": "βρέθηκαν κλειδιά",
 		"key_found": "βρέθηκε κλειδί",
 		"for": "για",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Χρησιμοποιείται σε {count} προϊόντα ({percent}% σχετικής χρήσης)",
+		"badge_values": "Έχει {values} διαφορετικές πιθανές τιμές",
+		"progress_bar": "Δείκτης συχνότητας χρήσης: {percent}% σε σχέση με άλλα πλήκτρα",
 		"key_visualization_guide": {
 			"title": "Key Visualization Guide:",
 			"badge_products_start": "The first badge ",
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "Δεν βρέθηκαν τιμές για αυτό το προϊόν",
 			"loading": "Φόρτωση τιμών…",
-			"view_prices": "Δείτε τις τιμές στο Open Prices"
+			"view_prices": "Δείτε τις τιμές στο Open Prices",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Επεξεργασία προϊόντος",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Προσθέστε μέρη της συσκευασίας",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Δείτε τις τιμές στο Open Prices",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Προσθέστε διατροφικά στοιχεία"
 			}
 		},
 		"moderator": {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
 	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
@@ -27,6 +28,7 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
@@ -152,6 +154,16 @@
 
 	const permissions = getPermissionsCtx();
 
+	$effect(() => {
+		const hash = page.url.hash;
+		if (!hash) return;
+
+		const targetEl = document.getElementById(hash.slice(1));
+		if (!targetEl) return;
+
+		return scrollToAndHighlight(targetEl);
+	});
+
 	let sidebar = $state<ReturnType<typeof Sidebar>>();
 	let activeSection = $state('languages');
 	let isMobile = $state(false);
@@ -238,9 +250,9 @@
 		onSectionClick={handleSidebarSectionClick}
 	/>
 
-	<div class="space-y-4 min-w-0 w-full">
+	<div class="w-full min-w-0 space-y-4">
 		<!-- Languages Section -->
-		<div id="languages" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="languages" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['languages']}
@@ -256,7 +268,7 @@
 		</div>
 
 		<!-- Images Section -->
-		<div id="images" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="images" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['images']}
@@ -272,7 +284,7 @@
 		</div>
 
 		<!-- Basic Info Section -->
-		<div id="basic-info" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="basic-info" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['basic-info']}
@@ -296,7 +308,7 @@
 		</div>
 
 		<!-- Traceability & Origins Section -->
-		<div id="origin-traceability" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="origin-traceability" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['origin-traceability']}
@@ -312,7 +324,7 @@
 		</div>
 
 		<!-- Ingredients Section -->
-		<div id="ingredients" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="ingredients" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['ingredients']}
@@ -329,7 +341,7 @@
 
 		<!-- Nutrition Section -->
 		<!-- overflow-visible is needed for the sticky image -->
-		<div id="nutrition" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="nutrition" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['nutrition']}
@@ -345,7 +357,7 @@
 		</div>
 
 		<!-- Prices Section -->
-		<div id="prices" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="prices" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['prices']}
@@ -356,7 +368,7 @@
 				{$_('product.edit.sections.prices')}
 			</div>
 			<div class="collapse-content">
-				<p class="text-base-content/70 mt-2 mb-4 text-sm">
+				<p class="mt-2 mb-4 text-sm text-base-content/70">
 					{$_('product.edit.info.prices')}
 				</p>
 				{#if product.code != null}
@@ -374,7 +386,7 @@
 		</div>
 
 		<!-- Packaging Section -->
-		<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md" id="packaging">
+		<div class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md" id="packaging">
 			<input
 				type="checkbox"
 				bind:checked={openSections['packaging']}
@@ -390,7 +402,7 @@
 		</div>
 
 		<!-- Comment Section -->
-		<div id="comment" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="comment" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
 				bind:checked={openSections['comment']}
@@ -409,19 +421,19 @@
 		{#if permissions.isModerator && $preferences.moderator}
 			<div
 				id="moderator-tools"
-				class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md"
+				class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md"
 			>
 				<input
 					type="checkbox"
 					bind:checked={openSections['moderator-tools']}
 					onchange={() => handleCollapseToggle('moderator-tools')}
 				/>
-				<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">
+				<div class="collapse-title flex items-center text-sm font-bold text-warning sm:text-base">
 					<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 					{$_('product.edit.sections.moderator_tools')}
 				</div>
 				<div class="collapse-content">
-					<p class="text-base-content/70 mb-4 text-sm">
+					<p class="mb-4 text-sm text-base-content/70">
 						{$_('product.edit.info.moderator_tools')}
 					</p>
 					<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
@@ -445,14 +457,14 @@
 
 <div class="mt-8 flex justify-end">
 	<button
-		class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
+		class="btn w-full text-sm btn-primary sm:w-auto sm:text-base"
 		onclick={submit}
 		disabled={isSubmitting || disableSubmit}
 		aria-busy={isSubmitting}
 		type="button"
 	>
 		{#if isSubmitting}
-			<span class="loading loading-spinner loading-xs sm:loading-sm mr-2" aria-hidden="true"></span>
+			<span class="loading mr-2 loading-xs loading-spinner sm:loading-sm" aria-hidden="true"></span>
 		{/if}
 		{$_('product.edit.save_btn')}
 	</button>

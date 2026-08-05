@@ -10,17 +10,17 @@
 		class?: string;
 	};
 
-	let { tags = [], class: clazz = '' }: Props = $props();
+	let { tags = [], class: className = '' }: Props = $props();
 </script>
 
 <div class="flex flex-wrap justify-center gap-1 md:justify-start">
 	{#each tags as tag (tag.id)}
 		{#if tag.href}
-			<a class="badge wrap-break-word {clazz}" href={tag.href}>
+			<a class="badge wrap-break-word {className}" href={tag.href}>
 				{tag.name}
 			</a>
 		{:else}
-			<span class="badge wrap-break-word {clazz}">
+			<span class="badge wrap-break-word {className}">
 				{tag.name}
 			</span>
 		{/if}

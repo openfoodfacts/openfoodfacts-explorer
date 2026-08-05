@@ -6,21 +6,8 @@ import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 
-// TODO: switch to SDK once it is updated
-export type PackagingTaxonomyTag = {
-	id?: string;
-	lc_name?: string;
-};
-
-// TODO: switch to SDK once it is updated
-export type PackagingComponent = {
-	number_of_units?: number;
-	shape?: PackagingTaxonomyTag;
-	material?: PackagingTaxonomyTag;
-	recycling?: PackagingTaxonomyTag;
-	quantity_per_unit?: string;
-	weight_measured?: number;
-};
+import type { PackagingTaxonomyTag, PackagingComponent } from '$lib/types/sdk-overrides';
+export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -31,6 +18,10 @@ export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
 ): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	if (productCodes.length === 0) {
+		return {};
+	}
+
 	const off = createProductsApi(fetch);
 
 	const params = new URLSearchParams({

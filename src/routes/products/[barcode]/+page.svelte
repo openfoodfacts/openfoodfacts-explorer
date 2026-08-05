@@ -17,9 +17,9 @@
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
-	import Prices from './Prices.svelte';
 	import { userInfo } from '$lib/stores/user';
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
@@ -301,7 +301,7 @@
 
 	<div
 		class={[
-			'relative w-full lg:grid lg:gap-8 pb-18 transition-all duration-300',
+			'relative w-full pb-18 transition-all duration-300 lg:grid lg:gap-8',
 			sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
 		]}
 	>
@@ -313,7 +313,7 @@
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
 
-		<div class="space-y-4 min-w-0 w-full flex flex-col gap-4">
+		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
 				<ProductHeader {product} lc={data.lc} />
 			</div>
@@ -336,7 +336,7 @@
 			<div id="attributes">
 				{#await productAttributes}
 					<div class="flex items-center justify-center py-8">
-						<span class="loading loading-spinner loading-lg"></span>
+						<span class="loading loading-lg loading-spinner"></span>
 						<span class="ml-2">{$_('product.loading_attributes')}</span>
 					</div>
 				{:then attributes}
@@ -400,7 +400,7 @@
 						{:else}
 							<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
 
-							<div class="prose my-4 text-justify">
+							<div class="my-4 prose text-justify">
 								<p>
 									{$_('product.folksonomy.intro_before')}
 									<strong>{$_('product.folksonomy.intro_emphasis')}</strong>

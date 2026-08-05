@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="toast toast-top toast-end z-50">
+<div class="toast toast-end toast-top z-50">
 	{#each toastCtx.toasts as toastItem (toastItem.id)}
 		<div
 			class={`alert max-w-sm shadow-lg ${toastTypeClass[toastItem.type]}`}
@@ -46,7 +46,7 @@
 				<span class="text-sm">{toastItem.message}</span>
 				<button
 					type="button"
-					class="btn btn-ghost btn-xs btn-circle ml-2"
+					class="btn ml-2 btn-circle btn-ghost btn-xs"
 					onclick={() => handleClose(toastItem.id)}
 					aria-label="Close notification"
 				>

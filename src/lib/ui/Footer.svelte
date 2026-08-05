@@ -104,7 +104,7 @@
 </script>
 
 <div
-	class="bg-secondary text-secondary-content relative mt-2 flex flex-col justify-between gap-0 overflow-hidden px-10 py-8 md:flex-row md:px-20 lg:px-36"
+	class="relative mt-2 flex flex-col justify-between gap-0 overflow-hidden bg-secondary px-10 py-8 text-secondary-content md:flex-row md:px-20 lg:px-36"
 	class:mt-10={shouldBeContainer(page.url.pathname)}
 >
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
@@ -140,7 +140,7 @@
 			{#each LINKS_DISCOVER_PROJECTS as link (link.url)}
 				<a
 					href={link.url}
-					class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 				>
 					{$_(link.key)}
 				</a>
@@ -150,7 +150,7 @@
 </div>
 
 <div
-	class="bg-primary-content relative flex flex-col items-center justify-center gap-3 overflow-hidden px-10 py-8"
+	class="relative flex flex-col items-center justify-center gap-3 overflow-hidden bg-primary-content px-10 py-8"
 >
 	<div class="absolute top-0 left-0 z-0 hidden md:block">
 		<img
@@ -169,12 +169,12 @@
 	<div class="relative z-10 flex flex-col items-center gap-4">
 		<Logo mono />
 
-		<div class="text-primary text-center md:bg-transparent md:text-inherit">
+		<div class="text-center text-primary md:bg-transparent md:text-inherit">
 			{$_('footer.tagline')}<br />{$_('footer.tagline_break')}
 		</div>
 	</div>
 
-	<div class="text-primary relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm">
+	<div class="relative z-10 mt-5 flex w-full flex-wrap justify-center gap-3 text-sm text-primary">
 		{#each LINKS_FOOTER as footerLink (footerLink.url)}
 			<a href={footerLink.url} class="link link-hover">{$_(footerLink.key)}</a>
 		{/each}
