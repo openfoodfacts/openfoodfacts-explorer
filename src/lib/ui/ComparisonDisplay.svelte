@@ -337,38 +337,6 @@
 	</div>
 {/snippet}
 
-{#snippet nutrientValue(
-	comparison: NutrientComparison,
-	unit: string | undefined,
-	nutrientKey: string
-)}
-	{#if comparison.value != null}
-		<div class="flex items-center gap-2">
-			<span class={comparison.isBest ? 'font-semibold' : ''}>
-				{comparison.formatted}
-				{unit}
-			</span>
-			{#if comparison.isBest}
-				<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
-			{:else if comparison.isWorst}
-				<span class="badge badge-sm badge-error">{$_('compare.worst')}</span>
-			{/if}
-			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
-				<span
-					class="font-mono text-xs {getDiffColorClass(
-						comparison.diff,
-						comparison.isBest,
-						comparison.isWorst,
-						nutrientKey
-					)}"
-				>
-					{comparison.diffFormatted}
-				</span>
-			{/if}
-		</div>
-	{/if}
-{/snippet}
-
 {#snippet nutrientValueDesktop(
 	comparison: NutrientComparison,
 	unit: string | undefined,
@@ -403,104 +371,8 @@
 	{/if}
 {/snippet}
 
-<!-- Mobile: Card View -->
-<div class="block lg:hidden">
-	<div class="flex flex-col gap-4">
-		{#each products as product, index (product.code)}
-			<div class="relative rounded-lg border-2 p-4 shadow-md">
-				{#if !readonly && onRemoveProduct}
-					<button
-						class="btn absolute top-2 right-2 z-10 btn-circle btn-soft btn-error btn-sm"
-						onclick={() => onRemoveProduct(product.code)}
-						aria-label="Remove product from comparison"
-					>
-						<IconMdiClose class="block h-4 w-4" />
-					</button>
-				{/if}
-
-				<div class="flex flex-col items-center pt-4">
-					{#if product.image_front_small_url}
-						<img
-							src={product.image_front_small_url}
-							alt={product.product_name ?? product.code}
-							class="mb-2 h-24 object-contain"
-						/>
-					{/if}
-					<h3 class="mt-2 text-center font-semibold">
-						<a href={`/products/${product.code}`} class="link">
-							{product.product_name ?? product.code}
-						</a>
-					</h3>
-					<p class="mt-1 text-center text-sm text-base-content/70">
-						{product.brands ?? ''}
-						{#if product.brands && product.quantity},{/if}
-						{product.quantity ?? ''}
-					</p>
-				</div>
-
-				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
-					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">{$_('compare.scores')}</p>
-						<div class="flex items-center justify-around gap-2">
-							{#if product.nutriscore_grade}
-								{@const comparison = getScoreComparison(
-									product.nutriscore_grade,
-									products,
-									'nutriscore'
-								)}
-								{@render scoreImage(
-									getNutriScoreImage(product.nutriscore_grade),
-									`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
-									comparison.isBest
-								)}
-							{/if}
-							{#if product.nova_group}
-								{@const comparison = getNovaComparison(product.nova_group, products)}
-								{@render scoreImage(
-									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
-									comparison.isBest
-								)}
-							{/if}
-							{#if product.ecoscore_grade}
-								{@const comparison = getScoreComparison(
-									product.ecoscore_grade,
-									products,
-									'ecoscore'
-								)}
-								{@render scoreImage(
-									getGreenScoreImage(product.ecoscore_grade),
-									`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
-									comparison.isBest
-								)}
-							{/if}
-						</div>
-					</div>
-				{/if}
-
-				{#if product.nutriments}
-					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">{$_('compare.nutrients_per_100g')}</p>
-						<div class="space-y-1 text-sm">
-							{#each availableNutrients as nutrient (nutrient.key)}
-								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-								{#if comparison.value != null}
-									<div class="flex items-center justify-between">
-										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
-									</div>
-								{/if}
-							{/each}
-						</div>
-					</div>
-				{/if}
-			</div>
-		{/each}
-	</div>
-</div>
-
-<!-- Desktop: Table View -->
-<div class="hidden overflow-x-auto lg:block">
+<!-- Comparison Table: horizontally scrollable on mobile, full-width on desktop -->
+<div class="overflow-x-auto">
 	<table class="table w-full table-fixed table-zebra">
 		<thead>
 			<tr>
