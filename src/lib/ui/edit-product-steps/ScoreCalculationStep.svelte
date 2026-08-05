@@ -28,18 +28,18 @@
 </script>
 
 <div class="space-y-6">
-	<div class="alert alert-info text-sm sm:text-base">
+	<div class="alert text-sm alert-info sm:text-base">
 		<div>
 			<p class="font-semibold">{$_('product.edit.sections.score_calculation')}</p>
-			<p class="text-xs sm:text-sm mt-1">{$_('product.edit.score_calculation_description')}</p>
-			<p class="text-xs opacity-70 mt-1">{$_('product.edit.skip_score_info')}</p>
+			<p class="mt-1 text-xs sm:text-sm">{$_('product.edit.score_calculation_description')}</p>
+			<p class="mt-1 text-xs opacity-70">{$_('product.edit.skip_score_info')}</p>
 		</div>
 	</div>
 
 	<!-- Accordion container for ingredients, nutrition, and packaging -->
 	<div class="space-y-4">
 		<!-- Ingredients (Open by default) -->
-		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
+		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
 			<input
 				type="checkbox"
 				checked
@@ -56,7 +56,7 @@
 		</div>
 
 		<!-- Nutrition Facts -->
-		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
+		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
 			<input
 				type="checkbox"
 				aria-label={$_('product.edit.sections.nutrition', { default: 'Nutrition Facts' })}
@@ -78,7 +78,7 @@
 		</div>
 
 		<!-- Packaging -->
-		<div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg">
+		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
 			<input
 				type="checkbox"
 				aria-label={$_('product.edit.sections.packaging', { default: 'Packaging' })}
