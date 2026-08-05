@@ -119,21 +119,21 @@
 
 <!-- Mobile step header -->
 <div class="navigation mb-6 flex items-center justify-between md:hidden">
-	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
+	<button class="btn btn-outline btn-sm" onclick={prevStep} type="button" title={$_('common.back')}>
 		<IconMdiArrowLeft class="h-4 w-4" />
 		{$_('common.back')}
 	</button>
 
-	<div class="bg-primary/10 my-2 rounded-full px-3 py-2 text-sm">
-		<span class="text-primary/80 font-medium">
+	<div class="my-2 rounded-full bg-primary/10 px-3 py-2 text-sm">
+		<span class="font-medium text-primary/80">
 			{$_('common.step')}
 			{`${currentStep + 1}`}
 		</span>
-		<span class="text-primary/60 font-medium">{$_('common.of')}{` ${STEPS.length}`}</span>
+		<span class="font-medium text-primary/60">{$_('common.of')}{` ${STEPS.length}`}</span>
 	</div>
 
 	<button
-		class="btn btn-sm btn-secondary"
+		class="btn btn-secondary btn-sm"
 		class:opacity-0={currentStep === STEPS.length - 1}
 		disabled={currentStep === STEPS.length - 1}
 		onclick={nextStep}
@@ -175,7 +175,7 @@
 <div class="mt-8 flex justify-between gap-3">
 	{#if currentStep > 0}
 		<button
-			class="btn btn-outline min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 btn-outline text-sm max-md:grow sm:text-base"
 			onclick={prevStep}
 			type="button"
 		>
@@ -185,7 +185,7 @@
 
 	{#if currentStep < STEPS.length - 1}
 		<button
-			class="btn btn-secondary min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 text-sm btn-secondary max-md:grow sm:text-base"
 			onclick={nextStep}
 			type="button"
 		>
@@ -193,13 +193,13 @@
 		</button>
 	{:else}
 		<button
-			class="btn btn-success min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 text-sm btn-success max-md:grow sm:text-base"
 			onclick={submit}
 			disabled={isSubmitting || disableSubmit}
 			type="button"
 		>
 			{#if isSubmitting}
-				<span class="loading loading-spinner loading-sm mr-2"></span>
+				<span class="loading mr-2 loading-sm loading-spinner"></span>
 			{/if}
 			{$_('product.edit.add_product')}
 		</button>

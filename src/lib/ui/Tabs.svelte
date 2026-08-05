@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div role="tablist" class="tabs tabs-lift mb-8 hidden gap-0 md:flex">
+<div role="tablist" class="tabs-lift mb-8 tabs hidden gap-0 md:flex">
 	{#each tabs as tab (tab.label)}
 		<label
 			class="tab min-w-max gap-2 px-6"
@@ -55,14 +55,14 @@
 
 <div class="mb-8 md:hidden">
 	<div class="dropdown dropdown-bottom w-full">
-		<button type="button" class="btn btn-block btn-outline gap-2" tabindex="0">
+		<button type="button" class="btn btn-block gap-2 btn-outline" tabindex="0">
 			{#if currentTab?.icon}
 				<currentTab.icon class="h-5 w-5" />
 			{/if}
 			<IconMdiMenu class="h-5 w-5" />
 			{$_(`${currentTab?.i18nKey || ''}`)}
 		</button>
-		<ul class="dropdown-content menu bg-base-200 z-1 w-full p-2 shadow-lg">
+		<ul class="dropdown-content menu z-1 w-full bg-base-200 p-2 shadow-lg">
 			{#each tabs as tab (tab.label)}
 				<li>
 					<button

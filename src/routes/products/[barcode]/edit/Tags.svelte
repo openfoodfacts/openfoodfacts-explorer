@@ -155,16 +155,16 @@
 {#snippet autocompleteDropdown()}
 	{#if filteredAutocomplete.length > 0}
 		<div
-			class="dropdown-content bg-base-100 z-100 mt-1 w-full rounded-md shadow-lg focus:outline-none"
+			class="dropdown-content z-100 mt-1 w-full rounded-md bg-base-100 shadow-lg focus:outline-none"
 		>
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<ul tabindex="0" class="divide-base-200 divide-y">
+			<ul tabindex="0" class="divide-y divide-base-200">
 				{#each filteredAutocomplete as suggestion, index (suggestion.item)}
 					{@const key = suggestion.item}
 					<li>
 						<button
 							type="button"
-							class="bg-base-200 text-base-content hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content w-full rounded-md px-4 py-2 text-left transition-colors duration-150"
+							class="w-full rounded-md bg-base-200 px-4 py-2 text-left text-base-content transition-colors duration-150 hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content"
 							class:bg-primary={autoCompleteIndex === index}
 							class:text-primary-content={autoCompleteIndex === index}
 							onmousedown={(e) => {
@@ -183,10 +183,10 @@
 {/snippet}
 
 <div
-	class="bg-base-100 border-base-200 focus-within:border-primary focus-within:outline-primary flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md p-2"
+	class="flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 bg-base-100 p-2 focus-within:border-primary focus-within:outline-primary"
 >
 	{#each tags as tag, index (tag)}
-		<div class="badge badge-ghost flex h-min items-center py-2" transition:fade={{ duration: 100 }}>
+		<div class="badge flex h-min items-center badge-ghost py-2" transition:fade={{ duration: 100 }}>
 			{#if editingIndex === index}
 				<div class="dropdown">
 					<input
@@ -221,7 +221,7 @@
 				</span>
 			{/if}
 			<button
-				class="hover:bg-base-300 ml-1 cursor-pointer p-1 leading-0"
+				class="ml-1 cursor-pointer p-1 leading-0 hover:bg-base-300"
 				onclick={() => removeTag(tag)}
 				aria-label={`Remove tag "${tag}"`}
 			>
@@ -233,7 +233,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="input input-bordered w-full bg-transparent outline-hidden"
+			class="input-bordered input w-full bg-transparent outline-hidden"
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>

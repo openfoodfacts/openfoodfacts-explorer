@@ -59,14 +59,22 @@
 	type Props = {
 		image: ProductImage;
 		reportImageUrl: string;
+		isSaving: boolean;
 		onSave: (data: EditData) => void;
 		onImageUnselected: () => void;
 		onImageReplace?: () => void;
 		onClose?: () => void;
 	};
 
-	let { image, reportImageUrl, onClose, onSave, onImageUnselected, onImageReplace }: Props =
-		$props();
+	let {
+		image,
+		reportImageUrl,
+		isSaving,
+		onClose,
+		onSave,
+		onImageUnselected,
+		onImageReplace
+	}: Props = $props();
 
 	const toast = getToastCtx();
 
@@ -503,7 +511,7 @@
 			</h3>
 			<button
 				type="button"
-				class="btn btn-sm btn-circle btn-ghost"
+				class="btn btn-circle btn-ghost btn-sm"
 				onclick={handleDialogClose}
 				aria-label="Close modal"
 			>
@@ -512,7 +520,7 @@
 		</div>
 
 		<div
-			class="bg-base-200 mb-4 max-h-96 overflow-hidden rounded border"
+			class="mb-4 max-h-96 overflow-hidden rounded border bg-base-200"
 			aria-label="Image editing area"
 		>
 			{#if isMounted}
@@ -583,12 +591,12 @@
 			{:else}
 				<!-- Loading fallback -->
 				<div
-					class="text-base-content/50 flex h-96 items-center justify-center"
+					class="flex h-96 items-center justify-center text-base-content/50"
 					role="status"
 					aria-live="polite"
 				>
 					<div class="text-center">
-						<div class="loading loading-spinner loading-lg mb-2" aria-hidden="true"></div>
+						<div class="loading mb-2 loading-lg loading-spinner" aria-hidden="true"></div>
 						<p>
 							{$_('product.edit.images.loading_editor', { default: 'Loading image editor...' })}
 						</p>
@@ -619,7 +627,7 @@
 					<div class="join" role="group" aria-label="Zoom controls">
 						<button
 							type="button"
-							class="btn btn-sm join-item"
+							class="btn join-item btn-sm"
 							onclick={handleZoomOut}
 							disabled={!canPerformActions}
 							title="Zoom out"
@@ -632,7 +640,7 @@
 						</button>
 						<button
 							type="button"
-							class="btn btn-sm join-item"
+							class="btn join-item btn-sm"
 							onclick={handleZoomIn}
 							disabled={!canPerformActions}
 							title="Zoom in"
@@ -648,7 +656,7 @@
 					<!-- Reset control -->
 					<button
 						type="button"
-						class="btn btn-sm btn-outline"
+						class="btn btn-outline btn-sm"
 						onclick={handleReset}
 						disabled={!canPerformActions}
 						title="Reset to original"
@@ -679,7 +687,7 @@
 		</div>
 
 		{#if canPerformActions}
-			<div class="bg-base-200 mb-4 rounded p-3 text-sm" aria-label="Current editing status">
+			<div class="mb-4 rounded bg-base-200 p-3 text-sm" aria-label="Current editing status">
 				<div class="grid grid-cols-2 gap-2 text-xs">
 					<div>
 						<strong>{$_('product.edit.images.rotation', { default: 'Rotation' })}:</strong>
@@ -749,6 +757,7 @@
 				<button
 					type="button"
 					class="btn btn-primary"
+					class:loading={isSaving}
 					onclick={handleSave}
 					disabled={!canPerformActions}
 					aria-label="Save changes and close modal"

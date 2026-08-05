@@ -40,6 +40,7 @@
 		"advanced_search_classic": "Avancerad sökning efter {term} (klassisk version)",
 		"superset_query": "Starta en sökning",
 		"superset_discover": "Upptäck kontrollpaneler",
+		"superset_promo_title": "Förfrågan AV med SQL",
 		"superset_promo_desc": "Frigör kraften i öppen data! Utforska hela Open Food Facts-databasen med hjälp av SQL-sökningar, anpassade diagram och delade kontrollpaneler.",
 		"prices_badge": "{count} priser",
 		"creation_date": "Skapandedatum",
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "Inga priser hittades för den här produkten",
 			"loading": "Laddar priser…",
-			"view_prices": "Se priser på Öppna priser"
+			"view_prices": "Se priser på Öppna priser",
+			"kp_subtitle_found": "{count, plural, one {{count} pris} other {{count} priser}} finns i {storeCount, plural, one {{storeCount} butik} other {{storeCount} butiker}}",
+			"no_prices_explanation": "Hjälp oss att bygga den största Open Prices-databasen genom att lägga till prisinformation för den här produkten.",
+			"loading_map": "Laddar priskarta…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Redigera produkt",
+				"add_categories": "Lägg till kategorier",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Lägg till förpackningskomponenter",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Lägg till ingrediensernas ursprung",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Se priser på Öppna priser",
+				"add_recycling_instructions": "Lägg till återvinningsinstruktioner",
+				"add_quantity": "Lägg till kvantitet",
+				"add_packaging_image": "Lägg till ett foto på förpackningen",
+				"add_ingredients_image": "Lägg till ett foto på ingredienserna",
+				"add_nutrition_facts": "Lägg till näringsfakta"
 			}
 		},
 		"moderator": {
@@ -614,7 +628,7 @@
 	"common": {
 		"next": "Nästa",
 		"back": "Tillbaka",
-		"skip": "Hoppa over",
+		"skip": "Hoppa över",
 		"step": "Steg",
 		"of": "av",
 		"cancel": "Annulera",

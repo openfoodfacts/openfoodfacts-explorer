@@ -121,7 +121,7 @@
 <Card>
 	<h1 class="text-4xl font-bold">{$_('product.datasources.title')}</h1>
 
-	<div class="stats max-lg:stats-vertical mt-4 w-full">
+	<div class="stats mt-4 w-full max-lg:stats-vertical">
 		<!-- Last edit -->
 		<div class={['stat', oldnessClass(product.last_modified_t)]}>
 			<div class="stat-title">{$_('product.datasources.last_edit_title')}</div>
@@ -198,7 +198,7 @@
 
 	<!-- Editors -->
 	{#if product.editors_tags && product.editors_tags.length > 1}
-		<div class="collapse-arrow border-base-300 collapse mt-2 rounded border-1 text-sm">
+		<div class="collapse-arrow collapse mt-2 rounded border-1 border-base-300 text-sm">
 			<input type="checkbox" />
 			<span class="collapse-title text-gray-600 dark:text-gray-300">
 				{$_('product.datasources.also_edited_by')}
@@ -209,7 +209,7 @@
 						<a
 							href="/users/{editor}"
 							title={editor ?? $_('product.datasources.unknown')}
-							class="bg-base-300 text-base-content flex h-10 items-center justify-center rounded p-2 text-center"
+							class="flex h-10 items-center justify-center rounded bg-base-300 p-2 text-center text-base-content"
 						>
 							<span class="truncate align-middle">
 								{editor ?? $_('product.datasources.unknown')}
@@ -236,7 +236,7 @@
 	{/if}
 
 	<a
-		class="text-warning-content bg-warning mt-4 block rounded p-3 text-center font-bold hover:shadow"
+		class="mt-4 block rounded bg-warning p-3 text-center font-bold text-warning-content hover:shadow"
 		href="{page.url.pathname}/edit"
 	>
 		{$_('product.datasources.incomplete_or_incorrect')}
