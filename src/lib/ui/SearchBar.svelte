@@ -154,7 +154,7 @@
 			/>
 			{#if autocompleteLoading || autocompleteList != null}
 				<div
-					class="dropdown-content menu z-1 mt-1 w-full min-w-0 rounded-box bg-base-100 p-2 shadow-sm"
+					class="menu dropdown-content z-1 mt-1 w-full min-w-0 rounded-box bg-base-100 p-2 shadow-sm"
 				>
 					{#if autocompleteList == null && autocompleteLoading}
 						<div class="flex justify-center">
