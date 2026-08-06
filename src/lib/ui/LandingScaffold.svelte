@@ -3,6 +3,7 @@
 	import { WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 	import { _ } from '$lib/i18n';
 	import Metadata from '$lib/Metadata.svelte';
+	import Logo from '$lib/ui/Logo.svelte';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 
 	let { flavor }: { flavor: WebsiteFlavor } = $props();
@@ -19,7 +20,9 @@
 	<div
 		class="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-base-200/40 bg-white/90 p-8 shadow-xl backdrop-blur-md dark:bg-base-300/90"
 	>
-		<h1 class="text-3xl font-bold md:text-4xl">{$_('landing.xfacts_title', name)}</h1>
+		<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
+			<Logo {flavor} class="h-full w-full" />
+		</div>
 
 		<p class="mt-4 max-w-lg text-center text-lg text-base-content/70">
 			{$_('landing.xfacts_coming_soon', name)}
