@@ -41,7 +41,7 @@
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
 		"superset_promo_title": "Query OFF with SQL",
-		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
+		"superset_promo_desc": "Manfaatkan kekuatan data terbuka! Jelajahi seluruh basis data Open Food Facts menggunakan kueri SQL, grafik kustom, dan dasbor bersama.",
 		"prices_badge": "{count} harga",
 		"creation_date": "Tanggal pembuatan",
 		"last_modified_date": "Last modified date",
@@ -86,7 +86,7 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Berkontribusi",
 		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
+		"tagline": "Basis data produk pangan yang kolaboratif, gratis, dan terbuka",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
 		"social": {
@@ -152,7 +152,7 @@
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Pengaturan pengembang hanya tersedia untuk moderator dan developer. Jika Anda merasa seharusnya memiliki akses, silakan hubungi administrator."
 	},
 	"folksonomy": {
 		"title": "Mesin Folksonomy",
@@ -252,7 +252,7 @@
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
-			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
+			"intro_before": "Properti ini dibuat dan diisi oleh pengguna untuk berbagai keperluan. Silakan tambahkan properti Anda sendiri. Properti dan nilai yang Anda buat ",
 			"intro_emphasis": "must be factual",
 			"intro_after": ". You can dive into ",
 			"link_properties": "the list of properties already used by the community",
