@@ -9,7 +9,7 @@
 	let { href, label }: Props = $props();
 </script>
 
-<a {href} class="btn btn-secondary btn-outline w-full">
+<a {href} class="btn w-full btn-outline btn-secondary">
 	<IconMdiArrowLeft class="h-4 w-4 shrink-0" />
 	{label}
 </a>

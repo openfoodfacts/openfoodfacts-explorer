@@ -1,26 +1,7 @@
-import type { AttributeGroupV2 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { persisted } from 'svelte-local-storage-store';
 
-export type AttributeParameters = { type: 'tags'; id: string; name: string; tagtype: string };
-
-// FIXME: Remove this type when we fix all type errors in SDK
-// - `parameters` field missing
-// - `values` field missing
-// - `id` field should not be optional
-export type Attribute = Omit<NonNullable<AttributeGroupV2[number]['attributes']>[number], 'id'> & {
-	id: string;
-	parameters: AttributeParameters[];
-	values: string[];
-	description?: string;
-};
-
-// FIXME: Remove this type when we fix all type errors in SDK
-// - [number] should not be necessary. The API should return a single object, not an array.
-export type AttributeGroup = Omit<AttributeGroupV2[number], 'attributes' | 'id'> & {
-	id: string;
-	warning?: string;
-	attributes?: Attribute[];
-};
+import type { AttributeParameters, Attribute, AttributeGroup } from '$lib/types/sdk-overrides';
+export type { AttributeParameters, Attribute, AttributeGroup };
 
 type BaseUserPreference = {
 	groupId: string;

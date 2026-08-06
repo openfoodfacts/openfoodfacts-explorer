@@ -2,7 +2,7 @@
 	"nutriscore": "Nutri-Score",
 	"ecoscore": "Green-Score",
 	"nova": "Nova - Níveis de ultraprocessamento",
-	"settings_link": "Definições",
+	"settings_link": "Configurações",
 	"folksonomy_link": "Folksonomia",
 	"facets_link": "Facetas",
 	"discover_link": "Descobrir",
@@ -12,7 +12,7 @@
 	"account_link": "Conta",
 	"world_option": "Mundo",
 	"navbar": {
-		"login": "Login",
+		"login": "Entrar",
 		"logout": "Terminar sessão",
 		"account": "Conta"
 	},
@@ -40,6 +40,7 @@
 		"advanced_search_classic": "Busca avançada para {term} (versão clássica)",
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
+		"superset_promo_title": "Query OFF with SQL",
 		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
 		"prices_badge": "{count} valores",
 		"creation_date": "Data de criação",
@@ -120,7 +121,7 @@
 		}
 	},
 	"settings": {
-		"page_title": "Definições",
+		"page_title": "Configurações",
 		"page_description": "Manage your preferences and account settings",
 		"subtitle": "Manage your preferences and personalize your experience",
 		"tab": {
@@ -440,7 +441,7 @@
 			"additional_nutrients": "Nutrientes adicionais",
 			"comment": "Comentar",
 			"comment_placeholder": "Adicione um comentário a esta edição",
-			"save_btn": "Guardar",
+			"save_btn": "Salvar",
 			"toast": {
 				"save_success": "Product saved successfully!",
 				"save_error": "Failed to save product. Please try again."
@@ -521,13 +522,26 @@
 		"prices": {
 			"no_prices_found": "Nenhum preço encontrado para este produto",
 			"loading": "Carregando preços…",
-			"view_prices": "Ver preços em Preços Abertos"
+			"view_prices": "Ver preços em Preços Abertos",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Editar produto",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Adicionar um componente de embalagem",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Ver preços em Preços Abertos",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Adicione a informação nutricional"
 			}
 		},
 		"moderator": {
