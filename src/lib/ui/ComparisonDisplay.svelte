@@ -371,7 +371,125 @@
 	{/if}
 {/snippet}
 
-<div class="overflow-x-auto">
+<!-- Mobile: horizontally scrollable product cards -->
+<div class="block lg:hidden">
+	<div class="flex snap-x snap-mandatory flex-row gap-4 overflow-x-auto pt-1 pr-2 pb-2">
+		{#each products as product, index (product.code)}
+			<div class="relative min-w-64 shrink-0 snap-start rounded-lg border-2 p-4 shadow-md">
+				{#if !readonly && (onRemoveProduct || onReorderProduct)}
+					<div class="absolute top-2 right-2 z-10 flex flex-col items-center gap-1">
+						{#if onRemoveProduct}
+							<button
+								class="btn btn-circle btn-soft transition-all btn-error btn-sm"
+								onclick={() => onRemoveProduct(product.code)}
+								aria-label="Remove product from comparison"
+							>
+								<IconMdiClose class="block h-4 w-4" />
+							</button>
+						{/if}
+						{#if onReorderProduct}
+							<button
+								class="btn btn-circle cursor-grab btn-soft btn-primary btn-sm active:cursor-grabbing"
+								draggable="true"
+								ondragstart={() => {
+									dragSrcIndex = { code: product.code, idx: index };
+								}}
+								ondragend={() => {
+									dragSrcIndex = null;
+								}}
+								aria-label="Drag to reorder"
+							>
+								<IconMdiDrag class="block h-4 w-4" />
+							</button>
+						{/if}
+					</div>
+				{/if}
+
+				<div class="flex flex-col items-center pt-8">
+					{#if product.image_front_small_url}
+						<BlurredImageDisplay
+							src={product.image_front_small_url}
+							alt={product.product_name ?? product.code}
+							class="mb-2 aspect-square w-28 rounded-xl object-contain"
+						/>
+					{/if}
+					<h3 class="mt-2 text-center text-sm font-semibold">
+						<a href={`/products/${product.code}`} class="link">
+							{product.product_name ?? '-'}
+						</a>
+					</h3>
+					<p class="mt-1 text-center text-xs text-base-content/70">
+						{product.brands ?? ''}{#if product.brands && product.quantity},{/if}
+						{product.quantity ?? ''}
+					</p>
+				</div>
+
+				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
+					<div class="mt-4 border-t pt-4">
+						<p class="mb-2 text-sm font-semibold">{$_('compare.scores')}</p>
+						<div class="flex items-center justify-around gap-2">
+							{#if product.nutriscore_grade}
+								{@const comparison = getScoreComparison(
+									product.nutriscore_grade,
+									products,
+									'nutriscore'
+								)}
+								{@render scoreImage(
+									getNutriScoreImage(product.nutriscore_grade),
+									`Nutri-Score ${product.nutriscore_grade.toUpperCase()}`,
+									comparison.isBest
+								)}
+							{/if}
+							{#if product.nova_group}
+								{@const comparison = getNovaComparison(product.nova_group, products)}
+								{@render scoreImage(
+									getNovaImage(product.nova_group),
+									`Nova Group ${product.nova_group}`,
+									comparison.isBest
+								)}
+							{/if}
+							{#if product.ecoscore_grade}
+								{@const comparison = getScoreComparison(
+									product.ecoscore_grade,
+									products,
+									'ecoscore'
+								)}
+								{@render scoreImage(
+									getGreenScoreImage(product.ecoscore_grade),
+									`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
+									comparison.isBest
+								)}
+							{/if}
+						</div>
+					</div>
+				{/if}
+
+				{#if product.nutriments}
+					<div class="mt-4 border-t pt-4">
+						<p class="mb-2 text-sm font-semibold">{$_('compare.nutrients_per_100g')}</p>
+						<div class="space-y-1 text-sm">
+							{#each availableNutrients as nutrient (nutrient.key)}
+								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
+								{#if comparison.value != null}
+									<div class="flex items-baseline justify-between gap-2">
+										<span class="text-xs font-medium">{nutrient.label}:</span>
+										<span class="text-right text-xs">
+											{comparison.formatted}
+											{nutrient.unit}
+										</span>
+									</div>
+								{/if}
+							{/each}
+						</div>
+					</div>
+				{/if}
+			</div>
+		{/each}
+	</div>
+</div>
+
+<!-- Desktop: comparison table -->
+<div class="hidden overflow-x-auto lg:block">
 	<table
 		class="table w-full table-fixed table-zebra"
 		style={`min-width: ${10 + products.length * 12}rem`}
