@@ -37,3 +37,17 @@ export function toWebsiteFlavor(productType: string): WebsiteFlavor {
 
 	return 'food';
 }
+
+// Maps the `?landing=` query parameter (used for temporary landing pages) to
+// the corresponding website flavor. e.g. `?landing=obf` -> 'beauty'.
+const LANDING_PARAM_TO_FLAVOR: Record<string, WebsiteFlavor> = {
+	off: 'food',
+	obf: 'beauty',
+	opff: 'petfood',
+	opf: 'product'
+};
+
+export function flavorFromLandingParam(param: string | null | undefined): WebsiteFlavor | null {
+	if (param == null) return null;
+	return LANDING_PARAM_TO_FLAVOR[param] ?? null;
+}

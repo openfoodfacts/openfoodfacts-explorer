@@ -96,6 +96,12 @@
 		}
 	];
 
+	const LINKS_OPEN_XFACTS = [
+		{ url: '/?landing=obf', key: 'footer.open_xfacts.open_beauty_facts' },
+		{ url: '/?landing=opff', key: 'footer.open_xfacts.open_pet_food_facts' },
+		{ url: '/?landing=opf', key: 'footer.open_xfacts.open_products_facts' }
+	];
+
 	const LINKS_FOOTER = [
 		{ url: '/static/legal', key: 'footer.links.legal' },
 		{ url: '/static/privacy', key: 'footer.links.privacy' },
@@ -138,6 +144,18 @@
 		<h2 class="text-3xl font-extrabold">{$_('footer.discover_title')}</h2>
 		<div class="mt-2 flex flex-wrap gap-2">
 			{#each LINKS_DISCOVER_PROJECTS as link (link.url)}
+				<a
+					href={link.url}
+					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
+				>
+					{$_(link.key)}
+				</a>
+			{/each}
+		</div>
+
+		<h2 class="mt-3 text-3xl font-extrabold">{$_('footer.open_xfacts.title')}</h2>
+		<div class="mt-2 flex flex-wrap gap-2">
+			{#each LINKS_OPEN_XFACTS as link (link.url)}
 				<a
 					href={link.url}
 					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"

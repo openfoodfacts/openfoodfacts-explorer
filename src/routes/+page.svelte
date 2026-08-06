@@ -11,6 +11,7 @@
 	import Logo from '$lib/ui/Logo.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 	import ProductGrid from '$lib/ui/ProductGrid.svelte';
+	import LandingScaffold from '$lib/ui/LandingScaffold.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
 	import CountUp from '$lib/ui/CountUp.svelte';
 
@@ -79,148 +80,157 @@
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
 </svelte:head>
 
-<Metadata
-	title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
-	description={$_('landing.subtitle', {
-		default:
-			'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'
-	})}
-/>
-
-<section
-	class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
->
-	<!-- Decorative SVG assets -->
-	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
-	<img
-		src={heroIcons[1]}
-		alt=""
-		aria-hidden="true"
-		class="decorative-svg -right-10 -bottom-10 w-40"
+{#if data.landingFlavor}
+	<LandingScaffold flavor={data.landingFlavor} />
+{:else}
+	<Metadata
+		title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
+		description={$_('landing.subtitle', {
+			default:
+				'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'
+		})}
 	/>
 
-	<div
-		class="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-base-200/40 bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8 dark:bg-base-300/90"
+	<section
+		class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 	>
-		<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
-			<Logo class="h-full w-full" />
-		</div>
+		<!-- Decorative SVG assets -->
+		<img
+			src={heroIcons[0]}
+			alt=""
+			aria-hidden="true"
+			class="decorative-svg -top-10 -left-10 w-40"
+		/>
+		<img
+			src={heroIcons[1]}
+			alt=""
+			aria-hidden="true"
+			class="decorative-svg -right-10 -bottom-10 w-40"
+		/>
 
-		<p class="mb-6 max-w-xl text-center text-lg font-medium text-base-content/80 md:text-xl">
-			{$_('landing.subtitle')}
-		</p>
-		<div class="flex w-full flex-wrap justify-center gap-4">
-			<a
-				href={resolve('/explore')}
-				class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-primary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
-			>
-				<IconMdiCompassOutline class="h-5 w-5" />
-				{$_('landing.explore_products')}
-			</a>
-			<a
-				href={resolve('/static/[id]', { id: 'discover' })}
-				class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-secondary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
-			>
-				<IconMdiLightbulbOnOutline class="h-5 w-5" />
-				{$_('landing.discover_project')}
-			</a>
-			<a
-				href={resolve('/static/[id]', { id: 'contribute' })}
-				class="btn flex w-full items-center gap-2 btn-outline px-4 shadow-md transition-transform btn-md hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
-			>
-				<IconMdiAccountHeartOutline class="h-5 w-5" />
-				{$_('landing.contribute')}
-			</a>
-		</div>
-	</div>
-</section>
-
-<div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
-	<a
-		href={resolve('/explore')}
-		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
-	>
-		<IconMdiDatabase class="mb-4 h-12 w-12 text-primary" />
-		<h2 class="text-xl font-bold">
-			{#await data.productCount}
-				<span class="h-6 w-16 skeleton rounded"></span>
-			{:then productCount}
-				<CountUp value={productCount} />
-			{:catch}
-				<span class="text-base-content/70">--</span>
-			{/await}
-		</h2>
-		<p class="text-base-content/70">{$_('landing.products_count')}</p>
-	</a>
-	<a
-		href={resolve('/facets/[facet]', { facet: 'contributors' })}
-		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
-	>
-		<IconMdiAccountGroup class="mb-4 h-12 w-12 text-primary" />
-		<h2 class="text-xl font-bold">
-			{#await data.contributorCount}
-				<span class="h-6 w-16 skeleton rounded"></span>
-			{:then contributorCount}
-				<CountUp value={contributorCount} />
-			{:catch}
-				<span class="text-base-content/70">--</span>
-			{/await}
-		</h2>
-		<p class="text-base-content/70">{$_('landing.contributors_count')}</p>
-	</a>
-	<a
-		href={resolve('/static/[id]', { id: 'data' })}
-		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
-	>
-		<IconMdiLicense class="mb-4 h-12 w-12 text-primary" />
-		<h2 class="text-xl font-bold">
-			<CountUp value={100} suffix="%" />
-		</h2>
-		<p class="text-base-content/70">{$_('landing.open_data')}</p>
-	</a>
-</div>
-
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-	<donation-banner></donation-banner>
-</div>
-<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-	<mobile-badges></mobile-badges>
-</div>
-
-<section class="container mx-auto mt-16 w-full max-w-7xl px-4">
-	<div class="mb-6 text-center">
-		<h2 class="mb-2 text-2xl font-bold text-primary">
-			{$_('landing.help_improve_title')}
-		</h2>
-		<p class="mx-auto max-w-2xl text-base text-base-content/70">
-			{$_('landing.help_improve_desc')}
-		</p>
-		<div class="mx-auto mt-4 mb-2 h-1 w-16 rounded bg-primary/30"></div>
-	</div>
-
-	<!-- Preferences Collapsible Section -->
-	<div class="mx-auto mb-4 w-full max-w-2xl">
-		<PersonalizedSearchToggle></PersonalizedSearchToggle>
-	</div>
-
-	<div class="flex w-full">
-		{#await Promise.all([products, attributesByCode])}
-			<div
-				class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
-			>
-				{#each Array(SKELETON_COUNT) as _, index (index)}
-					<div class="h-36 w-full skeleton rounded-lg"></div>
-				{/each}
+		<div
+			class="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-base-200/40 bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8 dark:bg-base-300/90"
+		>
+			<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
+				<Logo class="h-full w-full" />
 			</div>
-		{:then [resolvedProducts, attributes]}
-			<ProductGrid
-				products={resolvedProducts}
-				{attributes}
-				sortByScore={$personalizedSearch.classifyProductsEnabled}
-			/>
-		{/await}
+
+			<p class="mb-6 max-w-xl text-center text-lg font-medium text-base-content/80 md:text-xl">
+				{$_('landing.subtitle')}
+			</p>
+			<div class="flex w-full flex-wrap justify-center gap-4">
+				<a
+					href={resolve('/explore')}
+					class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-primary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
+				>
+					<IconMdiCompassOutline class="h-5 w-5" />
+					{$_('landing.explore_products')}
+				</a>
+				<a
+					href={resolve('/static/[id]', { id: 'discover' })}
+					class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-secondary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
+				>
+					<IconMdiLightbulbOnOutline class="h-5 w-5" />
+					{$_('landing.discover_project')}
+				</a>
+				<a
+					href={resolve('/static/[id]', { id: 'contribute' })}
+					class="btn flex w-full items-center gap-2 btn-outline px-4 shadow-md transition-transform btn-md hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
+				>
+					<IconMdiAccountHeartOutline class="h-5 w-5" />
+					{$_('landing.contribute')}
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
+		<a
+			href={resolve('/explore')}
+			class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
+		>
+			<IconMdiDatabase class="mb-4 h-12 w-12 text-primary" />
+			<h2 class="text-xl font-bold">
+				{#await data.productCount}
+					<span class="h-6 w-16 skeleton rounded"></span>
+				{:then productCount}
+					<CountUp value={productCount} />
+				{:catch}
+					<span class="text-base-content/70">--</span>
+				{/await}
+			</h2>
+			<p class="text-base-content/70">{$_('landing.products_count')}</p>
+		</a>
+		<a
+			href={resolve('/facets/[facet]', { facet: 'contributors' })}
+			class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
+		>
+			<IconMdiAccountGroup class="mb-4 h-12 w-12 text-primary" />
+			<h2 class="text-xl font-bold">
+				{#await data.contributorCount}
+					<span class="h-6 w-16 skeleton rounded"></span>
+				{:then contributorCount}
+					<CountUp value={contributorCount} />
+				{:catch}
+					<span class="text-base-content/70">--</span>
+				{/await}
+			</h2>
+			<p class="text-base-content/70">{$_('landing.contributors_count')}</p>
+		</a>
+		<a
+			href={resolve('/static/[id]', { id: 'data' })}
+			class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
+		>
+			<IconMdiLicense class="mb-4 h-12 w-12 text-primary" />
+			<h2 class="text-xl font-bold">
+				<CountUp value={100} suffix="%" />
+			</h2>
+			<p class="text-base-content/70">{$_('landing.open_data')}</p>
+		</a>
 	</div>
-</section>
+
+	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
+		<donation-banner></donation-banner>
+	</div>
+	<div class="xl:max-w-8xl container mx-auto mt-16 px-4">
+		<mobile-badges></mobile-badges>
+	</div>
+
+	<section class="container mx-auto mt-16 w-full max-w-7xl px-4">
+		<div class="mb-6 text-center">
+			<h2 class="mb-2 text-2xl font-bold text-primary">
+				{$_('landing.help_improve_title')}
+			</h2>
+			<p class="mx-auto max-w-2xl text-base text-base-content/70">
+				{$_('landing.help_improve_desc')}
+			</p>
+			<div class="mx-auto mt-4 mb-2 h-1 w-16 rounded bg-primary/30"></div>
+		</div>
+
+		<!-- Preferences Collapsible Section -->
+		<div class="mx-auto mb-4 w-full max-w-2xl">
+			<PersonalizedSearchToggle></PersonalizedSearchToggle>
+		</div>
+
+		<div class="flex w-full">
+			{#await Promise.all([products, attributesByCode])}
+				<div
+					class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-2 xl:grid-cols-3"
+				>
+					{#each Array(SKELETON_COUNT) as _, index (index)}
+						<div class="h-36 w-full skeleton rounded-lg"></div>
+					{/each}
+				</div>
+			{:then [resolvedProducts, attributes]}
+				<ProductGrid
+					products={resolvedProducts}
+					{attributes}
+					sortByScore={$personalizedSearch.classifyProductsEnabled}
+				/>
+			{/await}
+		</div>
+	</section>
+{/if}
 
 <style>
 	@keyframes gentleFloat {

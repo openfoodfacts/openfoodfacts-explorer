@@ -1,6 +1,7 @@
 import { createProductsApi } from '$lib/api';
 import { API_HOST } from '$lib/const';
 import { fetchRequired } from '$lib/promises';
+import { flavorFromLandingParam, type WebsiteFlavor } from '$lib/flavor';
 import type { PageLoad } from './$types';
 
 async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> {
@@ -25,11 +26,15 @@ async function getNumberOfContributors(fetch: typeof window.fetch): Promise<numb
 	return data.count;
 }
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
+	const landingFlavor: WebsiteFlavor | null = flavorFromLandingParam(
+		url.searchParams.get('landing')
+	);
 	const productCount = getNumberOfProducts(fetch);
 	const contributorCount = getNumberOfContributors(fetch);
 	return {
 		productCount,
-		contributorCount
+		contributorCount,
+		landingFlavor
 	};
 };

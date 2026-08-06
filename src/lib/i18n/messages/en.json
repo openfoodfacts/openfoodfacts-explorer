@@ -118,6 +118,12 @@
 			"partners": "Partners",
 			"faq": "FAQ",
 			"press": "Press"
+		},
+		"open_xfacts": {
+			"title": "Open X Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
 		}
 	},
 	"settings": {
@@ -661,7 +667,11 @@
 		"contributors_count": "Contributors",
 		"open_data": "Open Data",
 		"help_improve_title": "Help Improve Open Food Facts",
-		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
+		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products.",
+		"xfacts_title": "{name} Explorer",
+		"xfacts_coming_soon": "The dedicated Explorer for {name} is coming soon.",
+		"xfacts_visit": "Visit {name}",
+		"xfacts_description": "A free and open database for {name} from around the world."
 	},
 	"dashboard": {
 		"products_created": "Products created",
