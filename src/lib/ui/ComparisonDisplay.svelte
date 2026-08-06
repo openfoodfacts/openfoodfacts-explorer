@@ -372,14 +372,17 @@
 {/snippet}
 
 <div class="overflow-x-auto">
-	<table class="table w-full table-fixed table-zebra">
+	<table
+		class="table w-full table-fixed table-zebra"
+		style={`min-width: ${10 + products.length * 12}rem`}
+	>
 		<thead>
 			<tr>
 				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
-						class="relative min-w-40"
+						class="relative w-48"
 						ondragover={(e) => {
 							if (
 								!readonly &&
