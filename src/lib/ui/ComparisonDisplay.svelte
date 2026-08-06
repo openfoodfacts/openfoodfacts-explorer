@@ -371,7 +371,6 @@
 	{/if}
 {/snippet}
 
-<!-- Comparison Table: horizontally scrollable on mobile, full-width on desktop -->
 <div class="overflow-x-auto">
 	<table class="table w-full table-fixed table-zebra">
 		<thead>
