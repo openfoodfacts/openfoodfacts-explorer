@@ -22,8 +22,17 @@
 	import IconMdiAccountGroup from '@iconify-svelte/mdi/account-group';
 	import IconMdiLicense from '@iconify-svelte/mdi/license';
 
+	import { getWebsiteCtx } from '$lib/stores/website';
+
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
+
+	// Propagate the landing flavor to the global website context so the header
+	// logo switches to the matching brand (e.g. "open BEAUTY facts" for obf).
+	const websiteCtx = getWebsiteCtx();
+	$effect(() => {
+		websiteCtx.flavor = data.landingFlavor ?? 'food';
+	});
 
 	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
 	let products: Promise<ReducedState[]> = $state(Promise.resolve([]));
