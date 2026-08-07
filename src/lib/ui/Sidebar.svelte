@@ -118,7 +118,9 @@
 			for (let i = 0; i < sections.length; i++) {
 				const section = sections[i];
 				const el = document.getElementById(section.id);
+				const isCollapsed = section.isCollapsed ? section.isCollapsed() : false;
 				if (!el) {
+					isPreviousCollapsed = isCollapsed;
 					continue;
 				}
 
@@ -131,7 +133,7 @@
 					break;
 				}
 
-				isPreviousCollapsed = section.isCollapsed ? section.isCollapsed() : false;
+				isPreviousCollapsed = isCollapsed;
 			}
 		}
 
