@@ -27,7 +27,7 @@
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
-	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import ScrollToTop from '$lib/ui/ScrollToTop.svelte';
 	import { onMount } from 'svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import type { ProductGroupedAttributes } from './types';
@@ -299,4 +299,4 @@
 	{/if}
 </div>
 
-<NutritionCalculator />
+<ScrollToTop />
