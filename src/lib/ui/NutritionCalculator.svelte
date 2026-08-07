@@ -122,9 +122,7 @@
 				<button
 					class="btn btn-error btn-sm"
 					onclick={clearCalculator}
-					aria-label={$_('calculator.clear_all_aria', {
-						default: 'Clear all items from calculator'
-					})}
+					aria-label={$_('calculator.clear_all', { default: 'Clear All' })}
 				>
 					{$_('calculator.clear_all', { default: 'Clear All' })}
 				</button>
