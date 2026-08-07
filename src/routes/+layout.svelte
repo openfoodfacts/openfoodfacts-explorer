@@ -47,6 +47,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
+	import { pwaInstallStore, type BeforeInstallPromptEvent } from '$lib/stores/pwa';
 
 	// == Global website context setup ==
 	let websiteCtx: { flavor: WebsiteFlavor } = $state({
@@ -119,6 +120,24 @@
 
 	onMount(async () => {
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
+	});
+
+	// == PWA install prompt ==
+	// The browser fires `beforeinstallprompt` once, early, when the site is
+	// considered installable (manifest + service worker present). We must
+	// intercept it here (root layout) rather than inside the Settings page,
+	// because the user may not visit Settings until much later.
+	onMount(() => {
+		function handleBeforeInstallPrompt(e: Event) {
+			e.preventDefault(); // prevent the browser's default mini-infobar
+			pwaInstallStore.capture(e as BeforeInstallPromptEvent);
+		}
+
+		window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+		return () => {
+			window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+		};
 	});
 
 	// == Global User Permissions Context ==
