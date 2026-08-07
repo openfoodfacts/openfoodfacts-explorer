@@ -1,12 +1,7 @@
 <script lang="ts">
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
-	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
-	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
-	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
-	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
-	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
-	import CommentStep from './edit-product-steps/CommentStep.svelte';
+	import ScoreCalculationStep from './edit-product-steps/ScoreCalculationStep.svelte';
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 	import IconMdiArrowRight from '@iconify-svelte/mdi/arrow-right';
 	import type { Product } from '$lib/api';
@@ -16,22 +11,27 @@
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
+	const STEPS = $derived([
+		{
+			title: $_('product.edit.sections.take_photos', { default: 'Take key photos of the product' })
+		},
+		{ title: $_('product.edit.sections.basic_info', { default: 'Basic Information' }) },
+		{
+			title: $_('product.edit.sections.score_calculation', { default: 'Score Calculation' }),
+			suffix: $_('product.edit.optional_suffix', { default: '(optional)' })
+		}
+	]);
+
 	let currentStep = $derived.by(() => {
 		const params = page.url.searchParams;
-		const step = params.get('step') || '1';
-		return parseInt(step, 10) - 1; // Convert to zero-based index
+		const stepStr = params.get('step');
+		if (!stepStr) return 0;
+		const parsed = parseInt(stepStr, 10);
+		if (isNaN(parsed) || parsed < 1 || parsed > STEPS.length) {
+			return 0;
+		}
+		return parsed - 1; // Convert to zero-based index
 	});
-
-	const STEPS = $derived([
-		$_('product.edit.sections.images'),
-		$_('product.edit.sections.basic_info'),
-		$_('product.edit.sections.origin_traceability'),
-		$_('product.edit.sections.languages'),
-		$_('product.edit.sections.ingredients'),
-		$_('product.edit.sections.nutrition'),
-		$_('product.edit.sections.packaging'),
-		$_('product.edit.sections.comment')
-	]);
 
 	function gotoStep(step: number) {
 		if (step < 0 || step >= STEPS.length) {
@@ -104,14 +104,19 @@
 <!-- Desktop step navigation -->
 <div class="mb-6 hidden md:block">
 	<ul class="steps w-full text-xs sm:text-sm">
-		{#each STEPS as step, i (step)}
+		{#each STEPS as step, i (step.title)}
 			<button
 				type="button"
 				class="step {i <= currentStep ? 'step-secondary' : ''} cursor-pointer transition-colors"
 				onclick={() => gotoStep(i)}
-				aria-label={`Go to step ${i + 1}: ${step}`}
+				aria-label={`Go to step ${i + 1}: ${step.title} ${step.suffix ?? ''}`}
 			>
-				{step}
+				<span class="flex flex-col items-center">
+					<span>{step.title}</span>
+					{#if step.suffix}
+						<span class="mt-0.5 text-xs font-normal opacity-70">{step.suffix}</span>
+					{/if}
+				</span>
 			</button>
 		{/each}
 	</ul>
@@ -147,61 +152,88 @@
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep bind:product />
+	<ImagesStep bind:product editMode={true} />
 {:else if currentStep === 1}
 	<BasicInfoStep
 		bind:product
+		bind:comment
 		{categoryNames}
 		{labelNames}
 		{brandNames}
 		{storeNames}
 		{countriesNames}
+		{originNames}
+		{languages}
+		{addLanguage}
+		editMode={false}
 	/>
 {:else if currentStep === 2}
-	<OriginTraceabilityStep bind:product {originNames} />
-{:else if currentStep === 3}
-	<LanguagesStep bind:product codes={languages} {addLanguage} />
-{:else if currentStep === 4}
-	<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
-{:else if currentStep === 5}
-	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
-{:else if currentStep === 6}
-	<PackagingStep bind:product {getPackagingImage} />
-{:else if currentStep === 7}
-	<CommentStep bind:comment />
+	<ScoreCalculationStep
+		bind:product
+		{units}
+		{getIngredientsImage}
+		{getNutritionImage}
+		{getPackagingImage}
+		{handleNutrimentInput}
+		{allergenNames}
+	/>
 {/if}
 
 <!-- Navigation Buttons for Add Mode -->
-<div class="mt-8 flex justify-between gap-3">
+<div
+	class="mt-8 mb-24 flex flex-col items-stretch justify-between gap-3 pb-8 md:mb-28 md:flex-row md:items-center"
+>
 	{#if currentStep > 0}
 		<button
-			class="btn min-w-50 btn-outline text-sm max-md:grow sm:text-base"
+			class="btn w-full shrink-0 btn-outline text-sm sm:text-base md:w-auto md:min-w-40"
 			onclick={prevStep}
 			type="button"
 		>
-			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back')}
+			<IconMdiArrowLeft class="mr-2 h-4 w-4" />{$_('common.back', { default: 'Back' })}
 		</button>
 	{/if}
 
-	{#if currentStep < STEPS.length - 1}
-		<button
-			class="btn min-w-50 text-sm btn-secondary max-md:grow sm:text-base"
-			onclick={nextStep}
-			type="button"
-		>
-			{$_('common.next')}<IconMdiArrowRight class="ml-2 h-4 w-4" />
-		</button>
-	{:else}
-		<button
-			class="btn min-w-50 text-sm btn-success max-md:grow sm:text-base"
-			onclick={submit}
-			disabled={isSubmitting || disableSubmit}
-			type="button"
-		>
-			{#if isSubmitting}
-				<span class="loading mr-2 loading-sm loading-spinner"></span>
-			{/if}
-			{$_('product.edit.add_product')}
-		</button>
-	{/if}
+	<div class="flex w-full flex-col justify-end gap-3 md:flex-row">
+		{#if currentStep === 0}
+			<button
+				class="btn w-full text-sm btn-secondary sm:text-base md:ml-auto md:w-auto md:min-w-40"
+				onclick={nextStep}
+				type="button"
+			>
+				{$_('common.next', { default: 'Next' })}<IconMdiArrowRight class="ml-2 h-4 w-4" />
+			</button>
+		{:else if currentStep === 1}
+			<button
+				class="btn w-full text-sm btn-success sm:text-base md:w-auto md:min-w-40"
+				onclick={submit}
+				disabled={isSubmitting || disableSubmit}
+				type="button"
+			>
+				{#if isSubmitting}
+					<span class="loading mr-2 loading-sm loading-spinner"></span>
+				{/if}
+				{$_('product.edit.submit_product', { default: 'Submit' })}
+			</button>
+			<button
+				class="btn w-full text-sm btn-secondary sm:text-base md:w-auto md:min-w-40"
+				onclick={nextStep}
+				type="button"
+			>
+				{$_('product.edit.continue_to_score', { default: 'Score Calculation' })}
+				<IconMdiArrowRight class="ml-2 h-4 w-4" />
+			</button>
+		{:else if currentStep === 2}
+			<button
+				class="btn w-full text-sm btn-success sm:text-base md:ml-auto md:w-auto md:min-w-40"
+				onclick={submit}
+				disabled={isSubmitting || disableSubmit}
+				type="button"
+			>
+				{#if isSubmitting}
+					<span class="loading mr-2 loading-sm loading-spinner"></span>
+				{/if}
+				{$_('product.edit.submit_product', { default: 'Submit' })}
+			</button>
+		{/if}
+	</div>
 </div>
