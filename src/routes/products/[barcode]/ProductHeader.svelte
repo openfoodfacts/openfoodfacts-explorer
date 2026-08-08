@@ -297,7 +297,6 @@
 	facet: string
 )}
 	{#if tags != null && tags.length > 0}
-		{const href = resolve('/facets/[facet]/[value]', { facet: facet, value: tags[0] })}
 		<div class="mb-2">
 			<div class="mb-2 text-sm font-bold text-secondary">
 				{$_(titleKey, { default: defaultTitle })}
@@ -306,7 +305,7 @@
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
-					href
+					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
 				}))}
 			/>
 		</div>
