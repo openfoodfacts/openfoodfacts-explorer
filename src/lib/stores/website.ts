@@ -1,16 +1,22 @@
-import { getContext, setContext } from 'svelte';
+import { createContext } from 'svelte';
+import { writable, type Writable } from 'svelte/store';
 import type { WebsiteFlavor } from '$lib/flavor';
 
-type WebsiteContext = {
+export type WebsiteContext = {
 	flavor: WebsiteFlavor;
+	forcedFlavor: WebsiteFlavor | null;
 };
 
-export function setWebsiteCtx(ctx: () => WebsiteContext) {
-	setContext('website-ctx', ctx);
-}
+export type WebsiteContextStore = Writable<WebsiteContext>;
 
-export function getWebsiteCtx() {
-	const lambda = getContext('website-ctx') as () => WebsiteContext;
-	if (!lambda) throw new Error('Website context not found');
-	return lambda();
+export const [getWebsiteCtx, setWebsiteCtx] = createContext<WebsiteContextStore>();
+
+export function createWebsiteCtx(): WebsiteContextStore {
+	const websiteCtx = writable<WebsiteContext>({
+		flavor: 'food',
+		forcedFlavor: null
+	});
+
+	setWebsiteCtx(websiteCtx);
+	return websiteCtx;
 }

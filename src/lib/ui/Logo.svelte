@@ -4,7 +4,7 @@
 
 	let websiteCtx = getWebsiteCtx();
 
-	let logoSuffix = $derived(WEBSITE_FLAVOR_METADATA[websiteCtx.flavor]?.reportFlavor ?? 'off');
+	let logoSuffix = $derived(WEBSITE_FLAVOR_METADATA[$websiteCtx.flavor]?.reportFlavor ?? 'off');
 	let {
 		class: className = '',
 		mono = false

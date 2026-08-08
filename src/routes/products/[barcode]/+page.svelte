@@ -46,6 +46,7 @@
 	import type { ProductGroupedAttributes } from './types';
 	import { personalizedSearch } from '$lib/stores/preferencesStore';
 	import { PRODUCT_URL } from '$lib/const';
+	import { toWebsiteFlavor } from '$lib/flavor';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -76,7 +77,12 @@
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
 		// Update website context based on product type
-		if (product.product_type) websiteCtx.flavor = product.product_type;
+		if ($websiteCtx.forcedFlavor == null && product.product_type) {
+			const productFlavor = toWebsiteFlavor(product.product_type);
+			if ($websiteCtx.flavor !== productFlavor) {
+				websiteCtx.update((ctx) => ({ ...ctx, flavor: productFlavor }));
+			}
+		}
 	});
 
 	// Track product score presence (fire once per product page view)
