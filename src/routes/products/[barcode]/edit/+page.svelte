@@ -208,7 +208,8 @@
 				};
 	}
 
-	let product = $derived(createProductStore(data));
+	// svelte-ignore state_referenced_locally
+	let product = $state<Product>(createProductStore(data));
 
 	let comment = $state('');
 

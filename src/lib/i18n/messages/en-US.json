@@ -320,6 +320,10 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"mandatory_badge": "Mandatory",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -458,6 +462,7 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "Basic Information",
 				"take_photos": "Take key photos of the product",

@@ -378,32 +378,6 @@
 	{/if}
 
 	<div class="space-y-6">
-		<!-- Product Type (Available for everyone during product addition) -->
-		<div class="form-control w-full">
-			<label class="label">
-				<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-					{$_('product.edit.product_type')}
-					<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
-				</span>
-			</label>
-			<div class="flex flex-wrap gap-2">
-				{#each PRODUCT_TYPES as type (type)}
-					<button
-						type="button"
-						class="btn min-w-[120px] flex-1 rounded-lg border border-base-300 font-normal transition-all btn-sm sm:btn-md {(product.product_type ??
-							'food') === type
-							? 'border-primary font-semibold shadow-sm btn-primary'
-							: 'border-base-300 bg-base-100 text-base-content/80 hover:bg-base-200'}"
-						onclick={() => {
-							product = { ...product, product_type: type };
-						}}
-					>
-						{$_(`product.edit.product_types.${type}`)}
-					</button>
-				{/each}
-			</div>
-		</div>
-
 		<!-- Main Language selector -->
 		<div class="form-control w-full">
 			<label class="label" for="main_language_select">
