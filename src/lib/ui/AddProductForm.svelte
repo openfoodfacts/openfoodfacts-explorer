@@ -152,7 +152,7 @@
 
 <!-- Step Components -->
 {#if currentStep === 0}
-	<ImagesStep bind:product editMode={true} />
+	<ImagesStep bind:product />
 {:else if currentStep === 1}
 	<BasicInfoStep
 		bind:product

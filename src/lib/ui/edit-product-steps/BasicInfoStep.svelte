@@ -74,9 +74,8 @@
 		);
 		if (!confirmed) return;
 
-		const newCodes = { ...product.languages_codes };
+		const newCodes = { ...(product.languages_codes ?? {}) };
 		delete newCodes[code];
-		product.languages_codes = newCodes;
 
 		const fieldsToDelete = [
 			`product_name_${code}`,
@@ -85,7 +84,7 @@
 			`packaging_text_${code}`
 		];
 		const clearedFields = Object.fromEntries(fieldsToDelete.map((field) => [field, '']));
-		product = { ...product, ...clearedFields };
+		product = { ...product, languages_codes: newCodes, ...clearedFields };
 	}
 
 	// Derived list of language names for InputAutocomplete
@@ -99,7 +98,7 @@
 	onMount(() => {
 		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
-			action: () => focusEditField('#quantity-input')
+			action: () => focusEditField('#quantity')
 		});
 		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
@@ -760,7 +759,11 @@
 								}}
 							/>
 							<div class="mt-1 text-xs text-base-content/60">
-								<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
+								<p>
+									{$_('product.edit.traceability_examples', {
+										default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
+									})}
+								</p>
 							</div>
 						</div>
 					</div>
