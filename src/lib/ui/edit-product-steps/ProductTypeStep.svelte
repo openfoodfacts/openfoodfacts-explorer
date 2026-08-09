@@ -20,6 +20,12 @@
 		petfood: addPetFood,
 		product: addProducts
 	};
+	const TYPE_FALLBACKS: Record<ProductType, string> = {
+		food: 'Food',
+		beauty: 'Beauty',
+		petfood: 'Pet Food',
+		product: 'Other'
+	};
 </script>
 
 <div class="space-y-6">
@@ -45,8 +51,10 @@
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 		{#each PRODUCT_TYPES as type (type)}
 			{@const isSelected = product.product_type === type}
+			{@const fallbackLabel = TYPE_FALLBACKS[type]}
 			<button
 				type="button"
+				aria-pressed={isSelected}
 				class="card flex min-h-[180px] cursor-pointer flex-col items-center justify-between border p-6 text-center transition-all duration-200 hover:border-primary/50 hover:shadow-md {isSelected
 					? 'border-2 border-primary bg-primary/10 shadow-md ring-2 ring-primary/20'
 					: 'border-base-300 bg-base-100'}"
@@ -58,13 +66,13 @@
 					<div class="flex h-20 w-full items-center justify-center p-1">
 						<img
 							src={TYPE_IMAGES[type]}
-							alt={$_(`product.edit.product_types.${type}`)}
+							alt={$_(`product.edit.product_types.${type}`, { default: fallbackLabel })}
 							class="h-16 w-16 object-contain transition-transform duration-200"
 						/>
 					</div>
 
 					<h3 class="text-base font-bold sm:text-lg">
-						{$_(`product.edit.product_types.${type}`)}
+						{$_(`product.edit.product_types.${type}`, { default: fallbackLabel })}
 					</h3>
 				</div>
 			</button>

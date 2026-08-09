@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
+	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 	import { trackOffEvent } from '$lib/analytics';
@@ -210,6 +211,15 @@
 
 	// svelte-ignore state_referenced_locally
 	let product = $state<Product>(createProductStore(data));
+
+	$effect(() => {
+		const currentBarcode = page.params.barcode;
+		untrack(() => {
+			if (product.code !== currentBarcode) {
+				product = createProductStore(data);
+			}
+		});
+	});
 
 	let comment = $state('');
 

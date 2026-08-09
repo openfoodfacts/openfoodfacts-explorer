@@ -134,7 +134,7 @@
 
 <!-- Desktop step navigation -->
 <div class="mb-6 hidden md:block">
-	<ul class="steps w-full text-xs sm:text-sm">
+	<div class="steps w-full text-xs sm:text-sm">
 		{#each STEPS as step, i (step.title)}
 			{@const isStepDisabled = i > 0 && !isProductTypeSelected}
 			<button
@@ -159,7 +159,7 @@
 				</span>
 			</button>
 		{/each}
-	</ul>
+	</div>
 </div>
 
 <!-- Mobile step header -->
