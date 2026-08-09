@@ -47,3 +47,11 @@ export type CurrentUserPermissions = {
 		impact?: { id: string };
 	}>;
 };
+
+export type KnowledgePanelTableRow = {
+	values: {
+		icon_url?: string;
+		text: string;
+		evaluation?: string;
+	}[];
+};
