@@ -440,11 +440,11 @@
 
 {#snippet ingredientSection(product: Product)}
 	<details class="rounded-box bg-base-200">
-		<summary class="cursor-pointer px-3 py-2 text-sm font-semibold">
+		<summary class="cursor-pointer px-3 py-2 text-center text-sm font-semibold">
 			{$_('compare.ingredients', { default: 'Ingredients' })}
 		</summary>
 
-		<div class="border-t border-base-300 px-3 py-2 text-sm">
+		<div class="border-t border-base-300 px-3 py-2 text-center text-sm">
 			{#if product.product_type === 'beauty'}
 				{@const ingredientItems = getIngredientItems(product)}
 
