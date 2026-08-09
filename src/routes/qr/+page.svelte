@@ -111,7 +111,9 @@
 
 		html5QrCode = scanner;
 		startScanner(scanner).catch(async (err) => {
-			error = 'Camera access is required. Please enable it in your browser settings.';
+			error = $_('qr.camera_access_required', {
+				default: 'Camera access is required. Please enable it in your browser settings.'
+			});
 			console.error('QR Code Scanner Error:', err);
 			await cleanupScanner();
 		});
@@ -154,7 +156,7 @@
 
 {#if error != null}
 	<div class="flex h-screen items-center justify-center">
-		<p class="text-red-500">{error}</p>
+		<p class="text-error">{error}</p>
 	</div>
 {:else}
 	<div class="flex flex-col items-center p-8">
