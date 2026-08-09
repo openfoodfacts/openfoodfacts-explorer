@@ -8,12 +8,11 @@
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
-	let productNotFound = $state(false);
-	let lastScannedCode = $state('');
 	let scannerTimedOut = $state(false);
 	let manualBarcode = $state('');
 	let scannerTimeout: ReturnType<typeof setTimeout> | null = null;
 	let isSubmittingBarcode = $state(false);
+	let isDestroyed = false;
 
 	function getQrBoxSize() {
 		if (!browser) throw new Error('getQrBoxSize can only be called inside browser');
@@ -25,13 +24,16 @@
 	async function handleBarcodeSubmit(barcode: string) {
 		const code = barcode.trim();
 
-		if (!/^\d+$/.test(code) || isSubmittingBarcode) return;
+		if (isDestroyed || !/^\d{5,18}$/.test(code) || isSubmittingBarcode) return;
 
 		isSubmittingBarcode = true;
 
-		lastScannedCode = code;
-
-		await goto(`/search?q=${encodeURIComponent(code)}`);
+		try {
+			await goto(`/search?q=${encodeURIComponent(code)}`);
+		} catch (err) {
+			console.error('Barcode navigation failed:', err);
+			isSubmittingBarcode = false;
+		}
 	}
 
 	async function startScanning(scanner: Html5Qrcode) {
@@ -39,7 +41,7 @@
 			{ facingMode: 'environment' },
 			{ fps: 10, qrbox: getQrBoxSize() },
 			async (text) => {
-				if (text == null) return;
+				if (isDestroyed || text == null) return;
 				clearScannerTimeout();
 				console.debug('QR code detected:', text);
 
@@ -54,7 +56,9 @@
 					console.error('Error stopping scanner:', error);
 				}
 
-				await handleBarcodeSubmit(text);
+				if (!isDestroyed) {
+					await handleBarcodeSubmit(text);
+				}
 			},
 			() => {
 				/* ignored */
@@ -71,14 +75,22 @@
 
 	function startScannerTimeout() {
 		clearScannerTimeout();
+
 		scannerTimeout = setTimeout(() => {
-			scannerTimedOut = true;
+			if (!isDestroyed) {
+				scannerTimedOut = true;
+			}
 		}, 20000);
 	}
 
 	async function startScanner(scanner: Html5Qrcode) {
+		if (isDestroyed) return;
+
 		await startScanning(scanner);
-		startScannerTimeout();
+
+		if (!isDestroyed) {
+			startScannerTimeout();
+		}
 	}
 
 	onMount(async () => {
@@ -123,16 +135,13 @@
 	}
 
 	onDestroy(() => {
+		isDestroyed = true;
 		clearScannerTimeout();
-		cleanupScanner();
-	});
 
-	function addNewProduct() {
-		// Navigate to the product edit page with the scanned barcode
-		if (lastScannedCode) {
-			goto(`/products/${lastScannedCode}/edit`);
-		}
-	}
+		cleanupScanner().catch((err) => {
+			console.error('Error cleaning up scanner:', err);
+		});
+	});
 
 	async function submitManualBarcode(event: SubmitEvent) {
 		event.preventDefault();
@@ -144,24 +153,6 @@
 {#if error != null}
 	<div class="flex h-screen items-center justify-center">
 		<p class="text-red-500">{error}</p>
-	</div>
-{:else if productNotFound}
-	<div class="flex flex-col items-center justify-center p-8 text-center">
-		<h2 class="mb-2 text-xl font-semibold">
-			{$_('qr.product_not_found', { default: 'Product Not Found' })}
-		</h2>
-		<p class="mb-6 text-base-content/70">
-			{$_('qr.barcode_scanned_not_found', {
-				values: { barcode: lastScannedCode },
-				default: `Barcode ${lastScannedCode} was scanned successfully, but no product was found.`
-			})}
-		</p>
-
-		<div class="flex gap-4">
-			<button class="btn btn-outline" onclick={addNewProduct}
-				>{$_('qr.add_new_product', { default: 'Add new product' })}</button
-			>
-		</div>
 	</div>
 {:else}
 	<div class="flex flex-col items-center p-8">
@@ -183,7 +174,9 @@
 						bind:value={manualBarcode}
 						class="input input-bordered join-item w-full"
 						required
-						pattern="\d+"
+						pattern="[0-9]+"
+						minlength="5"
+						maxlength="18"
 					/>
 
 					<button class="btn btn-primary join-item" type="submit">
