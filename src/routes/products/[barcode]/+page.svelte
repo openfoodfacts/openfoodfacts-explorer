@@ -247,10 +247,17 @@
 	{/await}
 
 	<div class="collapse-arrow collapse border border-base-300 bg-base-100">
-		<input type="checkbox" bind:checked={showPreferences} />
-		<div class="collapse-title flex items-center gap-2 text-sm font-medium">
+		<input
+			type="checkbox"
+			bind:checked={showPreferences}
+			aria-labelledby="preferences-collapse-title"
+		/>
+		<div
+			id="preferences-collapse-title"
+			class="collapse-title flex items-center gap-2 text-sm font-medium"
+		>
 			<IconMdiCog class="h-4 w-4" />
-			{$_('preferences.edit_preferences')}
+			{$_('preferences.edit_preferences', { default: 'Edit Preferences' })}
 		</div>
 		<div class="collapse-content">
 			<PreferencesForm
