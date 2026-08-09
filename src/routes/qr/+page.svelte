@@ -174,14 +174,14 @@
 						placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
 						aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
 						bind:value={manualBarcode}
-						class="input input-bordered join-item w-full"
+						class="input-bordered input join-item w-full"
 						required
 						pattern="[0-9]+"
 						minlength="5"
 						maxlength="18"
 					/>
 
-					<button class="btn btn-primary join-item" type="submit">
+					<button class="btn join-item btn-primary" type="submit">
 						{$_('search.button', { default: 'Search' })}
 					</button>
 				</div>
