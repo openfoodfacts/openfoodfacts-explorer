@@ -18,10 +18,34 @@
 			{#each element.table_element.rows as row, rowIndex (rowIndex)}
 				<tr>
 					{#each row.values as cell, cellIndex (cellIndex)}
-						<td><HtmlPurify dirty={cell.text} /></td>
+						<td>
+							{#if cell.icon_url}
+								<img src={cell.icon_url} class="row-item-icon" alt="icon" />
+							{/if}
+							<HtmlPurify dirty={cell.text} />
+						</td>
 					{/each}
 				</tr>
 			{/each}
 		</tbody>
 	</table>
 </div>
+
+<style>
+	.row-item-icon {
+		font-size: 18px;
+		vertical-align: middle;
+		display: inline-block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		margin-right: 0.25em;
+		filter: brightness(0);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.row-item-icon {
+			filter: brightness(0) invert(1);
+		}
+	}
+</style>
