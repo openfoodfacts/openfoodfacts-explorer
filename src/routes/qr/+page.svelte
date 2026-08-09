@@ -101,6 +101,8 @@
 
 		const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
 
+		if (isDestroyed) return;
+
 		const scanner = new Html5Qrcode('reader', {
 			useBarCodeDetectorIfSupported: true,
 			formatsToSupport: [Html5QrcodeSupportedFormats.EAN_13],
