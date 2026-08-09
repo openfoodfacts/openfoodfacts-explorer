@@ -301,7 +301,7 @@
 
 	<div
 		class={[
-			'relative w-full pb-18 transition-all duration-300 lg:grid lg:gap-8',
+			'relative w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
 			sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
 		]}
 	>

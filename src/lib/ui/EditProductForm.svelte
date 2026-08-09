@@ -242,6 +242,7 @@
 		bind:this={sidebar}
 		bind:activeSection
 		type="edit"
+		scrollHeaderOffset={100}
 		sections={editSections}
 		headerActionLabel={$preferences.editing.expandAllSections
 			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })

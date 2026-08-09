@@ -168,6 +168,7 @@
 
 		return () => {
 			clearTimeout(timer);
+			clearTimeout(observerTimeout);
 			window.removeEventListener('scroll', handleScroll);
 			window.removeEventListener('resize', updateIndicator);
 		};
@@ -195,7 +196,9 @@
 		{/if}
 		<nav
 			bind:this={navElement}
-			aria-label={$_('product.sidebar_navigation', { default: 'Product sections' })}
+			aria-label={type === 'edit'
+				? $_('product.edit.sidebar_navigation', { default: 'Product edit sections' })
+				: $_('product.sidebar_navigation', { default: 'Product sections' })}
 			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
@@ -247,6 +250,7 @@
 		onclick={() => (hidden = false)}
 		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content lg:flex"
 		title={$_('product.sidebar.show', { default: 'Show Sidebar' })}
+		aria-label={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 	>
 		<IconMdiChevronRight class="h-4 w-4 transition-transform duration-200 group-hover:scale-125" />
 	</button>
