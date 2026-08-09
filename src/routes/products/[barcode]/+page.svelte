@@ -16,13 +16,16 @@
 	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
 	import { userInfo } from '$lib/stores/user';
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
+	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 
+	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -91,6 +94,8 @@
 	let useWCFolksonomyEditor = $state(false);
 
 	let showBarcode = $state(false);
+
+	let showPreferences = $state(false);
 
 	const shortcutCtx = getShortcutCtx();
 
@@ -240,6 +245,27 @@
 			</div>
 		{/if}
 	{/await}
+
+	<div class="collapse-arrow collapse border border-base-300 bg-base-100">
+		<input
+			type="checkbox"
+			bind:checked={showPreferences}
+			aria-labelledby="preferences-collapse-title"
+		/>
+		<div
+			id="preferences-collapse-title"
+			class="collapse-title flex items-center gap-2 text-sm font-medium"
+		>
+			<IconMdiCog class="h-4 w-4" />
+			{$_('preferences.edit_preferences', { default: 'Edit Preferences' })}
+		</div>
+		<div class="collapse-content">
+			<PreferencesForm
+				onClose={() => (showPreferences = false)}
+				groups={data.attributeGroups as AttributeGroup[]}
+			/>
+		</div>
+	</div>
 
 	<KnowledgePanelsComp panels={product.knowledge_panels} code={product.code} roots={['root']} />
 

@@ -117,17 +117,17 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		? getPricesCoords(pricesApi, params.barcode)
 		: Promise.resolve(null);
 
-	const defaultPreferences = (async () => {
-		const { data: attributeGroups } = await productsApi.getAttributeGroups();
+	const attributeGroups = (async () => {
+		const { data } = await productsApi.getAttributeGroups();
 		// FIXME: Remove cast when SDK fixes ids type being string | undefined
-		const attributeGroupsList = (attributeGroups ?? []) as AttributeGroup[];
-		return attributesToDefaultPreferences(attributeGroupsList);
+		return (data ?? []) as AttributeGroup[];
 	})();
 
 	return {
 		state,
 		lc,
-		defaultProductPreferences: await defaultPreferences,
+		attributeGroups: await attributeGroups,
+		defaultProductPreferences: attributesToDefaultPreferences(await attributeGroups),
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
 		prices: await pricesResponse
