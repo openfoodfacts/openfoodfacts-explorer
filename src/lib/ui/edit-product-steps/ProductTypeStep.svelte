@@ -34,9 +34,6 @@
 	>
 		<IconMdiShape class="h-6 w-6" />
 		{$_('product.edit.sections.product_type_step', { default: 'Product Type' })}
-		<span class="badge text-xs badge-sm font-semibold text-error-content badge-error sm:badge-md">
-			{$_('product.edit.mandatory_badge', { default: 'Mandatory' })}
-		</span>
 	</h2>
 
 	<div class="rounded-lg border border-primary/20 bg-primary/5 p-4 text-center shadow-sm">
@@ -48,30 +45,30 @@
 		</p>
 	</div>
 
-	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
 		{#each PRODUCT_TYPES as type (type)}
 			{@const isSelected = product.product_type === type}
 			{@const fallbackLabel = TYPE_FALLBACKS[type]}
 			<button
 				type="button"
 				aria-pressed={isSelected}
-				class="card flex min-h-[180px] cursor-pointer flex-col items-center justify-between border p-6 text-center transition-all duration-200 hover:border-primary/50 hover:shadow-md {isSelected
+				class="card flex min-h-[120px] cursor-pointer flex-col items-center justify-between border p-4 text-center transition-all duration-200 hover:border-primary/50 hover:shadow-md sm:min-h-[180px] sm:p-6 {isSelected
 					? 'border-2 border-primary bg-primary/10 shadow-md ring-2 ring-primary/20'
 					: 'border-base-300 bg-base-100'}"
 				onclick={() => {
 					product = { ...product, product_type: type };
 				}}
 			>
-				<div class="flex w-full flex-col items-center gap-4">
-					<div class="flex h-20 w-full items-center justify-center p-1">
+				<div class="flex w-full flex-col items-center gap-2 sm:gap-4">
+					<div class="flex h-12 w-full items-center justify-center p-1 sm:h-20">
 						<img
 							src={TYPE_IMAGES[type]}
 							alt={$_(`product.edit.product_types.${type}`, { default: fallbackLabel })}
-							class="h-16 w-16 object-contain transition-transform duration-200"
+							class="h-10 w-10 object-contain transition-transform duration-200 sm:h-16 sm:w-16"
 						/>
 					</div>
 
-					<h3 class="text-base font-bold sm:text-lg">
+					<h3 class="text-sm font-bold sm:text-base lg:text-lg">
 						{$_(`product.edit.product_types.${type}`, { default: fallbackLabel })}
 					</h3>
 				</div>
