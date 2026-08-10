@@ -27,15 +27,20 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
+	import IconMdiDownload from '@iconify-svelte/mdi/download';
 
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
 	import type { SearchResult } from '$lib/api/search';
+	import { getToastCtx } from '$lib/stores/toasts';
+	import { exportSearchResultsCsv, SEARCH_CSV_EXPORT_LIMIT } from '$lib/utils/searchCsvExport';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
+	const toastCtx = getToastCtx();
+	let isExportingCsv = $state(false);
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -112,6 +117,39 @@
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));
+
+	async function handleExportCsv() {
+		if (isExportingCsv || searchResult.count === 0) return;
+
+		isExportingCsv = true;
+		try {
+			const result = await exportSearchResultsCsv({
+				q: data.query,
+				sortBy: selectedSort.value
+			});
+
+			if (result.truncated) {
+				toastCtx.warning(
+					$_('search.export_csv_truncated', {
+						values: {
+							count: result.exportedCount,
+							total: result.totalCount,
+							limit: SEARCH_CSV_EXPORT_LIMIT
+						}
+					})
+				);
+			} else {
+				toastCtx.success(
+					$_('search.export_csv_success', { values: { count: result.exportedCount } })
+				);
+			}
+		} catch (err) {
+			console.error('CSV export failed:', err);
+			toastCtx.error($_('search.export_csv_error'));
+		} finally {
+			isExportingCsv = false;
+		}
+	}
 </script>
 
 <Metadata
@@ -254,6 +292,24 @@
 <div class="divider"></div>
 
 {#if searchResult.count > 0}
+	<div
+		class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
+	>
+		<p class="text-base-content/70 text-sm">
+			{$_('search.export_csv_limit_hint', { values: { limit: SEARCH_CSV_EXPORT_LIMIT } })}
+		</p>
+		<button
+			type="button"
+			class="btn btn-soft btn-sm gap-2 max-sm:w-full"
+			onclick={handleExportCsv}
+			disabled={isExportingCsv}
+			aria-busy={isExportingCsv}
+		>
+			<IconMdiDownload class="h-5 w-5" />
+			{isExportingCsv ? $_('search.export_csv_exporting') : $_('search.export_csv')}
+		</button>
+	</div>
+
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
