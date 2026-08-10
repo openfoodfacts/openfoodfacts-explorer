@@ -4,8 +4,10 @@
 		type AutocompleteOption,
 		type AutocompleteResponse
 	} from '$lib/api/search';
+	import { getTaxonomySuggestions } from '$lib/api';
 	import { _, getBrowserLocale } from '$lib/i18n';
 	import { onDestroy } from 'svelte';
+	import { deduplicateAutocompleteOptions } from './searchbar';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -33,36 +35,87 @@
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
+	// track the current query and request ID to prevent stale results from overwriting newer queries
+	let currentQuery = $state('');
+	let requestId = 0;
+
 	async function fetchAutocomplete(query: string) {
 		autocompleteAbortController?.abort();
 
 		if (query.trim().length < minQueryLength) {
 			autocompleteLoading = false;
 			autocompleteList = null;
+			currentQuery = '';
 			return;
 		}
 
 		autocompleteAbortController = new AbortController();
-
-		const autocompleteQuery = {
-			q: query,
-			taxonomy_names: 'brands,categories,labels',
-			lang: getBrowserLocale(),
-			size: 5,
-			fuzziness: null,
-			index_id: null
-		};
+		currentQuery = query;
+		const currentRequestId = ++requestId;
 
 		autocompleteLoading = true;
+
 		try {
-			const api = createSearchApi(fetch);
-			const { data, error } = await api.autocomplete(autocompleteQuery);
-			if (error) {
-				console.error('Autocomplete error', error);
-				autocompleteList = [];
-			} else {
-				const result = data as AutocompleteResponse | undefined;
-				autocompleteList = Array.isArray(result?.options) ? result.options : [];
+			// TODO: When search-a-licious supports brand autocomplete, remove the classic taxonomy
+			// fallback and use search-a-licious for all taxonomy types (brands, categories, labels).
+			// Currently, search-a-licious does not return brand suggestions, so we use the classic
+			// taxonomy suggester for brands while search-a-licious handles categories and labels.
+
+			// Fetch brand suggestions from classic taxonomy suggester
+			const brandSuggestionsPromise = getTaxonomySuggestions(fetch, 'brands', query, 5).then(
+				(result: { data?: { suggestions?: string[] }; error?: unknown }) => {
+					if (result.error || !result.data) {
+						console.warn('Brand taxonomy suggestions error:', result.error);
+						return [];
+					}
+					return result.data.suggestions ?? [];
+				}
+			);
+
+			// Fetch category/label suggestions from search-a-licious (excluding brands)
+			const searchApi = createSearchApi(fetch);
+			const searchQuery = {
+				q: query,
+				taxonomy_names: 'categories,labels',
+				lang: getBrowserLocale(),
+				size: 5,
+				fuzziness: null,
+				index_id: null
+			};
+
+			const searchSuggestionsPromise = searchApi.autocomplete(searchQuery).then((result) => {
+				if (result.error || !result.data) {
+					console.warn('Search-a-licious autocomplete error:', result.error);
+					return [];
+				}
+				const data = result.data as AutocompleteResponse | undefined;
+				return Array.isArray(data?.options) ? data.options : [];
+			});
+
+			// Run both requests in parallel
+			const [brandSuggestions, searchSuggestions] = await Promise.allSettled([
+				brandSuggestionsPromise,
+				searchSuggestionsPromise
+			]);
+
+			const brands = brandSuggestions.status === 'fulfilled' ? brandSuggestions.value : [];
+			const categoriesLabels =
+				searchSuggestions.status === 'fulfilled' ? searchSuggestions.value : [];
+
+			// Convert brand suggestions to AutocompleteOption format
+			const brandOptions: AutocompleteOption[] = brands.map((brand: string) => ({
+				id: `brand-${brand}`,
+				text: brand,
+				taxonomy_name: 'brands'
+			}));
+
+			// Merge results, preferring brands first, then deduplicate by text (case-insensitive)
+			const mergedOptions = [...brandOptions, ...categoriesLabels];
+			const deduplicatedOptions = deduplicateAutocompleteOptions(mergedOptions);
+
+			// Only update if this is still the current request (prevent stale results)
+			if (currentRequestId === requestId) {
+				autocompleteList = deduplicatedOptions;
 			}
 		} catch (e) {
 			if (e instanceof Error && e.name !== 'AbortError') {
