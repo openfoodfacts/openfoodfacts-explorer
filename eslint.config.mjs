@@ -64,6 +64,7 @@ export default [
 					argsIgnorePattern: '^_$'
 				}
 			],
+			'@typescript-eslint/no-explicit-any': 'error',
 			// Re-enable when the following issues are resolved:
 			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1336
 			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1329

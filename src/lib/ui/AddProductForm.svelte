@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
+	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
 	import LanguagesStep from './edit-product-steps/LanguagesStep.svelte';
 	import IngredientsStep from './edit-product-steps/IngredientsStep.svelte';
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
@@ -13,6 +14,7 @@
 	import { _ } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let currentStep = $derived.by(() => {
 		const params = page.url.searchParams;
@@ -23,6 +25,7 @@
 	const STEPS = $derived([
 		$_('product.edit.sections.images'),
 		$_('product.edit.sections.basic_info'),
+		$_('product.edit.sections.origin_traceability'),
 		$_('product.edit.sections.languages'),
 		$_('product.edit.sections.ingredients'),
 		$_('product.edit.sections.nutrition'),
@@ -35,7 +38,7 @@
 			return;
 		}
 
-		const params = page.url.searchParams;
+		const params = new SvelteURLSearchParams(page.url.search);
 		params.set('step', (step + 1).toString());
 		goto(`?${params.toString()}`, { replaceState: true, noScroll: true });
 	}
@@ -53,6 +56,7 @@
 		// Submission
 
 		isSubmitting: boolean;
+		disableSubmit?: boolean;
 		submit: () => Promise<void>;
 		comment: string;
 		handleNutrimentInput: (e: Event, key: string) => void;
@@ -71,6 +75,7 @@
 		originNames: string[];
 		countriesNames: string[];
 		units: string[];
+		allergenNames: string[];
 	};
 
 	let {
@@ -89,7 +94,9 @@
 		originNames,
 		countriesNames,
 		units,
+		allergenNames,
 		isSubmitting,
+		disableSubmit = false,
 		submit
 	}: Props = $props();
 </script>
@@ -112,21 +119,21 @@
 
 <!-- Mobile step header -->
 <div class="navigation mb-6 flex items-center justify-between md:hidden">
-	<button class="btn btn-sm btn-outline" onclick={prevStep} type="button" title={$_('common.back')}>
+	<button class="btn btn-outline btn-sm" onclick={prevStep} type="button" title={$_('common.back')}>
 		<IconMdiArrowLeft class="h-4 w-4" />
 		{$_('common.back')}
 	</button>
 
-	<div class="bg-primary/10 my-2 rounded-full px-3 py-2 text-sm">
-		<span class="text-primary/80 font-medium">
+	<div class="my-2 rounded-full bg-primary/10 px-3 py-2 text-sm">
+		<span class="font-medium text-primary/80">
 			{$_('common.step')}
 			{`${currentStep + 1}`}
 		</span>
-		<span class="text-primary/60 font-medium">{$_('common.of')}{` ${STEPS.length}`}</span>
+		<span class="font-medium text-primary/60">{$_('common.of')}{` ${STEPS.length}`}</span>
 	</div>
 
 	<button
-		class="btn btn-sm btn-secondary"
+		class="btn btn-secondary btn-sm"
 		class:opacity-0={currentStep === STEPS.length - 1}
 		disabled={currentStep === STEPS.length - 1}
 		onclick={nextStep}
@@ -148,18 +155,19 @@
 		{labelNames}
 		{brandNames}
 		{storeNames}
-		{originNames}
 		{countriesNames}
 	/>
 {:else if currentStep === 2}
-	<LanguagesStep bind:product codes={languages} {addLanguage} />
+	<OriginTraceabilityStep bind:product {originNames} />
 {:else if currentStep === 3}
-	<IngredientsStep bind:product {getIngredientsImage} />
+	<LanguagesStep bind:product codes={languages} {addLanguage} />
 {:else if currentStep === 4}
-	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
+	<IngredientsStep bind:product {getIngredientsImage} {allergenNames} />
 {:else if currentStep === 5}
-	<PackagingStep bind:product {getPackagingImage} />
+	<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} />
 {:else if currentStep === 6}
+	<PackagingStep bind:product {getPackagingImage} />
+{:else if currentStep === 7}
 	<CommentStep bind:comment />
 {/if}
 
@@ -167,7 +175,7 @@
 <div class="mt-8 flex justify-between gap-3">
 	{#if currentStep > 0}
 		<button
-			class="btn btn-outline min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 btn-outline text-sm max-md:grow sm:text-base"
 			onclick={prevStep}
 			type="button"
 		>
@@ -177,7 +185,7 @@
 
 	{#if currentStep < STEPS.length - 1}
 		<button
-			class="btn btn-secondary min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 text-sm btn-secondary max-md:grow sm:text-base"
 			onclick={nextStep}
 			type="button"
 		>
@@ -185,13 +193,13 @@
 		</button>
 	{:else}
 		<button
-			class="btn btn-success min-w-50 text-sm max-md:grow sm:text-base"
+			class="btn min-w-50 text-sm btn-success max-md:grow sm:text-base"
 			onclick={submit}
-			disabled={isSubmitting}
+			disabled={isSubmitting || disableSubmit}
 			type="button"
 		>
 			{#if isSubmitting}
-				<span class="loading loading-spinner loading-sm mr-2"></span>
+				<span class="loading mr-2 loading-sm loading-spinner"></span>
 			{/if}
 			{$_('product.edit.add_product')}
 		</button>

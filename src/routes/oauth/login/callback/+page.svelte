@@ -7,6 +7,7 @@
 	import { resolve } from '$app/paths';
 	import { createKeycloakApi } from '$lib/api';
 	import { getSafeRedirectUrl } from '$lib/utils';
+	import { trackOffEvent } from '$lib/analytics';
 
 	async function doPkceExchange() {
 		const url = page.url;
@@ -40,6 +41,7 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
+			trackOffEvent('account', 'login_success');
 
 			const redirectUrl = localStorage.getItem('authRedirect');
 			localStorage.removeItem('authRedirect');
@@ -66,15 +68,15 @@
 		{#if loginResult}
 			{#await loginResult}
 				<div class="mb-4 text-4xl font-bold">Logging in...</div>
-				<progress class="progress progress-primary my-3 w-56"></progress>
+				<progress class="progress my-3 w-56 progress-primary"></progress>
 				<p class="text-lg text-gray-600">You will be redirected shortly.</p>
 			{:then _}
 				<div class="mb-4 text-4xl font-bold text-green-600">Login Successful</div>
 				<p class="text-lg text-gray-600">Redirecting...</p>
 			{:catch error}
 				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
-				<p class="text-base-content text-lg">{error.message}</p>
-				<a class="btn btn-outline btn-primary mt-4" href={resolve('/oauth/login')}> Try Again </a>
+				<p class="text-lg text-base-content">{error.message}</p>
+				<a class="btn mt-4 btn-outline btn-primary" href={resolve('/oauth/login')}> Try Again </a>
 			{/await}
 		{/if}
 	</div>

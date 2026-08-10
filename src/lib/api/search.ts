@@ -1,8 +1,4 @@
-import {
-	SearchApi,
-	type AutocompleteQuery,
-	type Product
-} from '@openfoodfacts/openfoodfacts-nodejs';
+import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
@@ -22,15 +18,6 @@ export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(searchBaseUrl));
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
-
-export const autocomplete = async (
-	query: AutocompleteQuery,
-	fetch: typeof window.fetch
-): Promise<AutocompleteResponse> => {
-	const api = createSearchApi(fetch);
-	const response = await api.autocomplete(query);
-	return response.data as AutocompleteResponse;
-};
 
 export type AutocompleteOption = {
 	id: string;

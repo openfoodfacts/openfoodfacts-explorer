@@ -3,9 +3,9 @@ import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { browser } from '$app/environment';
 
-const locales = ['en-US', 'it-IT'];
+const locales = ['en', 'it'];
 
-const FALLBACK_LOCALE = 'en-US';
+const FALLBACK_LOCALE = 'en';
 
 locales.forEach((locale) => {
 	register(locale, async () => {
