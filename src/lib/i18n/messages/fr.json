@@ -40,7 +40,7 @@
 		"advanced_search_classic": "Recherche avancée pour {term} (version classique)",
 		"superset_query": "Lancer une requête",
 		"superset_discover": "Découvrir les tableaux de bord",
-		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_title": "Requête OFF avec SQL",
 		"superset_promo_desc": "Libérez la puissance des données ouvertes ! Explorez la base de données complète d'Open Food Facts en utilisant des requêtes SQL, des graphiques personnalisés et des tableaux de bord partagés.",
 		"prices_badge": "{count} prix",
 		"creation_date": "Date de création",
@@ -523,24 +523,24 @@
 			"no_prices_found": "Aucun prix trouvé pour ce produit",
 			"loading": "Tarifs de chargement…",
 			"view_prices": "Voir les prix sur Open Prices",
-			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
-			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
-			"loading_map": "Loading prices map…"
+			"kp_subtitle_found": "{count, plural, one {{count} prix} other {{count} prix}} trouvé(s) dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
+			"no_prices_explanation": "Aidez-nous à construire la plus grande base de données Open Prices en ajoutant des informations sur les prix de ce produit.",
+			"loading_map": "Chargement de la carte des prix…"
 		},
 		"knowledge_panels": {
 			"action": {
 				"edit_product": "Modifier le produit",
-				"add_categories": "Add categories",
+				"add_categories": "Ajouter des catégories",
 				"report_product_to_nutripatrol": "Signaler un problème avec ce produit",
 				"add_ingredients_text": "Ajouter le texte des ingrédients",
 				"add_packaging_components": "Ajouter des composants d'emballage",
-				"add_origins": "Add origins of ingredients",
+				"add_origins": "Ajouter les origines des ingrédients",
 				"add_price": "Ajouter un prix sur Open Prices",
 				"view_prices": "Voir les prix sur Open Prices",
-				"add_recycling_instructions": "Add recycling instructions",
-				"add_quantity": "Add quantity",
-				"add_packaging_image": "Add a photo of the packaging",
-				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_recycling_instructions": "Ajouter les instructions de recyclage",
+				"add_quantity": "Ajouter la quantité",
+				"add_packaging_image": "Ajouter une photo de l'emballage",
+				"add_ingredients_image": "Ajouter une photo des ingrédients",
 				"add_nutrition_facts": "Ajouter les informations nutritionnelles"
 			}
 		},
