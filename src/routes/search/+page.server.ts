@@ -62,7 +62,7 @@ async function compatSearch(
 		if (error || data == null) {
 			throw error || new Error('No data');
 		}
-		return { data } as any;
+		return { data } as unknown as ReturnType<SearchApi['search']>;
 	} catch {
 		console.warn('search: new API failed, falling back to old API');
 	}
@@ -78,7 +78,7 @@ async function compatSearch(
 		]
 	};
 
-	return api.search(oldParams as any);
+	return api.search(oldParams as unknown as SearchBody);
 }
 
 export const load: PageServerLoad = async ({ fetch, url }) => {

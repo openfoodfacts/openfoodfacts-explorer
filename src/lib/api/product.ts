@@ -38,7 +38,9 @@ export async function getBulkProductAttributes(
 	// Create a map of product code to attribute groups
 	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
 	for (const product of data.products || []) {
-		attributesByCode[product.code!] = (product as any).attribute_groups || [];
+		attributesByCode[product.code!] =
+			(product as unknown as { attribute_groups: ProductAttributeForScoringGroup[] })
+				.attribute_groups || [];
 	}
 
 	return attributesByCode;
@@ -49,7 +51,7 @@ export async function addOrEditProductV2(
 	product: Product & { comment?: string }
 ) {
 	const off = createProductsApi(fetch);
-	return off.addOrEditProductV2(product as any);
+	return off.addOrEditProductV2(product as unknown as Parameters<typeof off.addOrEditProductV2>[0]);
 }
 
 /**
@@ -782,7 +784,12 @@ export function selectImage(
 	field: string
 ) {
 	const off = createProductsApi(fetch);
-	return off.cropImage(code, imgid as any, field, {} as any);
+	return off.cropImage(
+		code,
+		imgid as unknown as number,
+		field,
+		{} as unknown as Parameters<typeof off.cropImage>[3]
+	);
 }
 
 /**

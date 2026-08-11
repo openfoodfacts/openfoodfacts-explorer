@@ -201,8 +201,8 @@
 					allergens_tags: (data.state.product.allergens_tags as string[]) ?? [],
 					traces_tags: (data.state.product.traces_tags as string[]) ?? [],
 					languages_codes: data.state.product.languages_codes ?? {},
-					images: (data.state.product as any).images ?? {},
-					nutriments: (data.state.product as any).nutriments ?? {}
+					images: (data.state.product as unknown as Record<string, unknown>).images ?? {},
+					nutriments: (data.state.product as unknown as Record<string, unknown>).nutriments ?? {}
 				} as unknown as Product);
 	}
 

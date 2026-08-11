@@ -66,7 +66,7 @@ const MIGRATIONS: {
 		version: 2,
 		upgrade: (preferences) => {
 			if (!('moderator' in preferences)) {
-				(preferences as any).moderator = false;
+				Object.assign(preferences, { moderator: false });
 			}
 			return preferences;
 		}
@@ -91,7 +91,7 @@ const MIGRATIONS: {
 		version: 4,
 		upgrade: (preferences) => {
 			if (!('displayPricesInSearch' in preferences)) {
-				(preferences as any).displayPricesInSearch = true;
+				Object.assign(preferences, { displayPricesInSearch: true });
 			}
 			return preferences;
 		}

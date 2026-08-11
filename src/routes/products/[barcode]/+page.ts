@@ -83,7 +83,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			`stores_tags_${lc}`,
 			`countries_tags_${lc}`
 		],
-		...({ knowledge_panels_client: 'web' } as any),
+		...({ knowledge_panels_client: 'web' } as unknown as Record<string, string>),
 		lc
 	});
 

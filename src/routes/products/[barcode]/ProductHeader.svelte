@@ -57,7 +57,9 @@
 			name: product.product_name || code,
 			quantity: 100,
 			imageUrl: product.image_front_small_url,
-			nutriments: extractNutriments((product as any).nutriments)
+			nutriments: extractNutriments(
+				product.nutriments as unknown as Parameters<typeof extractNutriments>[0]
+			)
 		});
 	}
 
