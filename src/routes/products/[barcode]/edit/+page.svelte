@@ -187,7 +187,7 @@
 			!('product' in data.state) ||
 			!data.state.product
 			? emptyProduct
-			: {
+			: ({
 					...data.state.product,
 					emb_codes: data.state.product.emb_codes ?? '',
 					categories: data.state.product.categories ?? '',
@@ -201,11 +201,9 @@
 					allergens_tags: (data.state.product.allergens_tags as string[]) ?? [],
 					traces_tags: (data.state.product.traces_tags as string[]) ?? [],
 					languages_codes: data.state.product.languages_codes ?? {},
-					// @ts-expect-error - FIXME: to be fixed in the SDK
-					images: data.state.product.images ?? {},
-					// @ts-expect-error - FIXME: to be fixed in the SDK
-					nutriments: data.state.product.nutriments ?? {}
-				};
+					images: (data.state.product as any).images ?? {},
+					nutriments: (data.state.product as any).nutriments ?? {}
+				} as unknown as Product);
 	}
 
 	let product = $derived(createProductStore(data));

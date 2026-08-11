@@ -62,8 +62,7 @@ async function compatSearch(
 		if (error || data == null) {
 			throw error || new Error('No data');
 		}
-		// @ts-expect-error - data is unknown
-		return { data };
+		return { data } as any;
 	} catch {
 		console.warn('search: new API failed, falling back to old API');
 	}
@@ -79,8 +78,7 @@ async function compatSearch(
 		]
 	};
 
-	// @ts-expect-error - SDK only accepts the new params
-	return api.search(oldParams);
+	return api.search(oldParams as any);
 }
 
 export const load: PageServerLoad = async ({ fetch, url }) => {

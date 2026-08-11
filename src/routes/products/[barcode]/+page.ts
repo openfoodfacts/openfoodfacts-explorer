@@ -83,8 +83,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			`stores_tags_${lc}`,
 			`countries_tags_${lc}`
 		],
-		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
-		knowledge_panels_client: 'web',
+		...({ knowledge_panels_client: 'web' } as any),
 		lc
 	});
 

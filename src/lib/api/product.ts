@@ -38,8 +38,7 @@ export async function getBulkProductAttributes(
 	// Create a map of product code to attribute groups
 	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
 	for (const product of data.products || []) {
-		// @ts-expect-error - FIXME: deduplicate attribute groups definition
-		attributesByCode[product.code!] = product.attribute_groups || [];
+		attributesByCode[product.code!] = (product as any).attribute_groups || [];
 	}
 
 	return attributesByCode;
@@ -50,8 +49,7 @@ export async function addOrEditProductV2(
 	product: Product & { comment?: string }
 ) {
 	const off = createProductsApi(fetch);
-	// @ts-expect-error - we should use v3
-	return off.addOrEditProductV2(product);
+	return off.addOrEditProductV2(product as any);
 }
 
 /**
@@ -784,8 +782,7 @@ export function selectImage(
 	field: string
 ) {
 	const off = createProductsApi(fetch);
-	// @ts-expect-error - cropdata should not be mandatory
-	return off.cropImage(code, imgid, field, {});
+	return off.cropImage(code, imgid as any, field, {} as any);
 }
 
 /**

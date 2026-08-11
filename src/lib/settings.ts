@@ -66,8 +66,7 @@ const MIGRATIONS: {
 		version: 2,
 		upgrade: (preferences) => {
 			if (!('moderator' in preferences)) {
-				// @ts-expect-error - adding new field
-				preferences.moderator = false;
+				(preferences as any).moderator = false;
 			}
 			return preferences;
 		}
@@ -92,8 +91,7 @@ const MIGRATIONS: {
 		version: 4,
 		upgrade: (preferences) => {
 			if (!('displayPricesInSearch' in preferences)) {
-				// @ts-expect-error - adding new field
-				preferences.displayPricesInSearch = true;
+				(preferences as any).displayPricesInSearch = true;
 			}
 			return preferences;
 		}

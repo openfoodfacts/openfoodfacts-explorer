@@ -50,9 +50,9 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		}
 	});
 
-	// @ts-expect-error - Product should not have { [key: string]: string }, because
-	// that means it ONLY has string values
-	const products: Product[] = (await Promise.all(productPromises)).filter((p) => p !== null);
+	const products: Product[] = (await Promise.all(productPromises)).filter(
+		(p): p is NonNullable<typeof p> => p !== null
+	) as unknown as Product[];
 
 	return {
 		products,
