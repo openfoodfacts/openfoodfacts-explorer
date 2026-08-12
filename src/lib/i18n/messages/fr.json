@@ -523,7 +523,7 @@
 			"no_prices_found": "Aucun prix trouvé pour ce produit",
 			"loading": "Tarifs de chargement…",
 			"view_prices": "Voir les prix sur Open Prices",
-			"kp_subtitle_found": "{count, plural, one {{count} prix} other {{count} prix}} trouvé(s) dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
+			"kp_subtitle_found": "{count, plural, one {{count} prix trouvé} other {{count} prix trouvés}} dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
 			"no_prices_explanation": "Aidez-nous à construire la plus grande base de données Open Prices en ajoutant des informations sur les prix de ce produit.",
 			"loading_map": "Chargement de la carte des prix…"
 		},
