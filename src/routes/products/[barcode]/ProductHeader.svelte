@@ -58,7 +58,7 @@
 			quantity: 100,
 			imageUrl: product.image_front_small_url,
 			nutriments: extractNutriments(
-				product.nutriments as unknown as Parameters<typeof extractNutriments>[0]
+				(product.nutriments ?? {}) as unknown as Parameters<typeof extractNutriments>[0]
 			)
 		});
 	}

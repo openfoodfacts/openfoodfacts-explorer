@@ -66,7 +66,7 @@ const MIGRATIONS: {
 		version: 2,
 		upgrade: (preferences) => {
 			if (!('moderator' in preferences)) {
-				Object.assign(preferences, { moderator: false });
+				(preferences as Omit<Preferences, 'moderator'> & { moderator?: boolean }).moderator = false;
 			}
 			return preferences;
 		}
@@ -91,7 +91,11 @@ const MIGRATIONS: {
 		version: 4,
 		upgrade: (preferences) => {
 			if (!('displayPricesInSearch' in preferences)) {
-				Object.assign(preferences, { displayPricesInSearch: true });
+				(
+					preferences as Omit<Preferences, 'displayPricesInSearch'> & {
+						displayPricesInSearch?: boolean;
+					}
+				).displayPricesInSearch = true;
 			}
 			return preferences;
 		}

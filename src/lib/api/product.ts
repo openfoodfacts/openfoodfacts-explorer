@@ -38,9 +38,11 @@ export async function getBulkProductAttributes(
 	// Create a map of product code to attribute groups
 	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
 	for (const product of data.products || []) {
-		attributesByCode[product.code!] =
-			(product as unknown as { attribute_groups: ProductAttributeForScoringGroup[] })
-				.attribute_groups || [];
+		if (product.code) {
+			attributesByCode[product.code] =
+				(product as unknown as { attribute_groups: ProductAttributeForScoringGroup[] })
+					.attribute_groups || [];
+		}
 	}
 
 	return attributesByCode;

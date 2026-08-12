@@ -51,7 +51,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 	});
 
 	const products: Product[] = (await Promise.all(productPromises)).filter(
-		(p): p is NonNullable<typeof p> => p !== null
+		(p): p is NonNullable<typeof p> => p != null
 	) as unknown as Product[];
 
 	return {
