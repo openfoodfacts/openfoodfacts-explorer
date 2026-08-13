@@ -332,6 +332,12 @@
 			},
 			"allergens": "Al·lèrgens",
 			"traces": "Rastres",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Primer has de seleccionar un tipus de producte!",
 			"main_language": "Idioma principal",
 			"add_product": "Afegir producte",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fotos",
 				"basic_info": "Informació bàsica",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Idiomes i noms de productes",
 				"ingredients": "Ingredients",
@@ -481,6 +490,22 @@
 				"prices": "Preus",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Detalls del producte",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Llengües",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Envia",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "No pengis imatges amb drets d'autor",
 			"legal_warning_photos_1": "No pengis fotos que no siguin de la teva propietat o de les quals no tinguis els drets. Penjar imatges amb drets d'autor sense permís és il·legal i pot comportar la suspensió del teu compte.",
 			"legal_warning_photos_2": "Només penja fotos teves o aquelles per a les quals tinguis permís explícit.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Producte no trobat",
 		"barcode_scanned_not_found": "El codi de barres {barcode} s'ha escanejat correctament, però no s'ha trobat cap producte a les nostres seccions Open Food Data, Open Beauty Data, Open Products Data o Open Pet Food Data.",
 		"add_new_product": "Afegeix un producte nou",
-		"scan_again": "Torna a escanejar"
+		"scan_again": "Torna a escanejar",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
