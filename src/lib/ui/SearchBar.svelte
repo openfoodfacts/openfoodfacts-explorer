@@ -35,23 +35,21 @@
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
-	// track the current query and request ID to prevent stale results from overwriting newer queries
-	let currentQuery = $state('');
+	// track request ID to prevent stale results from overwriting newer queries
 	let requestId = 0;
 
 	async function fetchAutocomplete(query: string) {
 		autocompleteAbortController?.abort();
 
+		const currentRequestId = ++requestId;
+
 		if (query.trim().length < minQueryLength) {
 			autocompleteLoading = false;
 			autocompleteList = null;
-			currentQuery = '';
 			return;
 		}
 
 		autocompleteAbortController = new AbortController();
-		currentQuery = query;
-		const currentRequestId = ++requestId;
 
 		autocompleteLoading = true;
 
@@ -122,7 +120,9 @@
 				console.error('Autocomplete error', e);
 			}
 		} finally {
-			autocompleteLoading = false;
+			if (currentRequestId === requestId) {
+				autocompleteLoading = false;
+			}
 		}
 	}
 
