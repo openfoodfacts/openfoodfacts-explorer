@@ -332,6 +332,12 @@
 			},
 			"allergens": "Alergen",
 			"traces": "Jejak - jejak",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Anda harus memilih jenis produk terlebih dahulu!",
 			"main_language": "Bahasa utama",
 			"add_product": "Tambahkan produk",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Foto - foto",
 				"basic_info": "Informasi Dasar",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Bahasa & Nama Produk",
 				"ingredients": "bahan",
@@ -481,6 +490,22 @@
 				"prices": "Harga",
 				"comment": "Komentar"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Detail Produk",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Bahasa",
+				"comment": "Komentar"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Kirim",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Jangan mengunggah gambar yang memiliki hak cipta",
 			"legal_warning_photos_1": "Jangan mengunggah foto yang bukan milik Anda atau yang bukan hak Anda. Mengunggah gambar berhak cipta tanpa izin adalah tindakan ilegal dan dapat mengakibatkan akun Anda ditangguhkan.",
 			"legal_warning_photos_2": "Hanya unggah foto Anda sendiri atau foto yang Anda miliki izin khusus untuk menggunakannya.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produk Tidak Ditemukan",
 		"barcode_scanned_not_found": "Barcode {barcode} berhasil dipindai, tetapi tidak ada produk yang ditemukan di Fakta Makanan Terbuka, Fakta Kecantikan Terbuka, Fakta Produk Terbuka, atau Fakta Makanan Hewan Peliharaan Terbuka kami.",
 		"add_new_product": "Tambahkan produk baru",
-		"scan_again": "Pindai lagi"
+		"scan_again": "Pindai lagi",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
