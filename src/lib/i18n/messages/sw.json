@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Unahitaji kuchagua aina ya bidhaa kwanza!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Picha",
 				"basic_info": "Taarifa za Msingi",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Lugha na Majina ya Bidhaa",
 				"ingredients": "Viungo",
@@ -481,6 +490,22 @@
 				"prices": "Bei",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Usipakie picha zilizo na hakimiliki",
 			"legal_warning_photos_1": "Usipakie picha ambazo humiliki au huna haki nazo. Kupakia picha zilizo na hakimiliki bila ruhusa ni kinyume cha sheria na kunaweza kusababisha akaunti yako kusimamishwa.",
 			"legal_warning_photos_2": "Pakia tu picha zako mwenyewe au zile ambazo una ruhusa wazi ya kutumia.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Bidhaa Haijapatikana",
 		"barcode_scanned_not_found": "Msimbo pau {barcode} ilichanganuliwa kwa mafanikio, lakini hakuna bidhaa iliyopatikana katika Ukweli wa Chakula Wazi, Ukweli wa Urembo wa Wazi, Ukweli wa Bidhaa za Wazi au Ukweli wa Open Pet Food.",
 		"add_new_product": "Ongeza bidhaa mpya",
-		"scan_again": "Changanua tena"
+		"scan_again": "Changanua tena",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
