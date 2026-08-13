@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Aztarnak",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
 			"add_product": "Gehitu produktua",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Argazkiak",
 				"basic_info": "Oinarrizko informazioa",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Hizkuntzak eta produktuen izenak",
 				"ingredients": "Osagaiak",
@@ -481,6 +490,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Produktuaren xehetasunak",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Hizkuntzak",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ez igo copyrighta duten irudiak",
 			"legal_warning_photos_1": "Ez igo zure jabetzakoak ez diren edo haien eskubiderik ez duten argazkirik. Baimenik gabe copyrighta duten irudiak igotzea legez kanpokoa da eta zure kontua etetea ekar dezake.",
 			"legal_warning_photos_2": "Zure argazkiak edo erabiltzeko baimen esplizitua duzunak bakarrik igo itzazu.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produktua ez da aurkitu",
 		"barcode_scanned_not_found": "{barcode} barra-kodea behar bezala eskaneatu da, baina ez da produkturik aurkitu gure Janari Informazio Irekian, Edertasun Informazio Irekian, Produktu Informazio Irekian edo Maskoten Janari Informazio Irekian.",
 		"add_new_product": "Gehitu produktu berria",
-		"scan_again": "Eskaneatu berriro"
+		"scan_again": "Eskaneatu berriro",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
