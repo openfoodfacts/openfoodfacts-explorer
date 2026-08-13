@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Spuren",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Haaptsprooch",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "Basisinformatiounen",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Sproochen & Produktnimm",
 				"ingredients": "Inhaltstoffer",
@@ -481,6 +490,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Keng urheberrechtlech geschützt Biller eroplueden",
 			"legal_warning_photos_1": "Luet keng Fotoen erop, déi net Ärem Besëtz gehéieren oder un deenen Dir keng Rechter hutt. D'Eroplueden vun urheberrechtlech geschützte Biller ouni Erlaabnes ass illegal a kann dozou féieren, datt Äre Kont suspendéiert gëtt.",
 			"legal_warning_photos_2": "Luet nëmmen Är eege Fotoen erop oder déi, fir déi Dir explizit Erlaabnes hutt.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produkt net fonnt",
 		"barcode_scanned_not_found": "De Barcode {barcode} gouf erfollegräich gescannt, awer kee Produkt gouf an eisen Open Food Facts, Open Beauty Facts, Open Products Facts oder Open Pet Food Facts fonnt.",
 		"add_new_product": "Neit Produkt derbäisetzen",
-		"scan_again": "Nach eng Kéier scannen"
+		"scan_again": "Nach eng Kéier scannen",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
