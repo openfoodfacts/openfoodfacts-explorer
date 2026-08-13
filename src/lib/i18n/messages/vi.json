@@ -332,6 +332,12 @@
 			},
 			"allergens": "Chất gây dị ứng",
 			"traces": "Truy gốc",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Trước tiên, bạn cần chọn loại sản phẩm!",
 			"main_language": "Ngôn ngữ chính",
 			"add_product": "Thêm sản phẩm",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Ảnh",
 				"basic_info": "Thông tin cơ bản",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Ngôn ngữ & Tên sản phẩm",
 				"ingredients": "Thành phần",
@@ -481,6 +490,22 @@
 				"prices": "Giá cả",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Chi tiết sản phẩm",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Ngôn ngữ",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Gửi",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Không tải lên hình ảnh có bản quyền",
 			"legal_warning_photos_1": "Không tải lên ảnh mà bạn không sở hữu hoặc không có quyền. Việc tải lên ảnh có bản quyền mà không được phép là bất hợp pháp và có thể dẫn đến việc tài khoản của bạn bị đình chỉ.",
 			"legal_warning_photos_2": "Chỉ tải lên ảnh của riêng bạn hoặc ảnh bạn được phép sử dụng rõ ràng.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Không tìm thấy sản phẩm",
 		"barcode_scanned_not_found": "Mã vạch {barcode} đã được quét thành công, nhưng không tìm thấy sản phẩm nào trong Thông tin thực phẩm mở, Thông tin làm đẹp mở, Thông tin sản phẩm mở hoặc Thông tin thức ăn cho thú cưng mở.",
 		"add_new_product": "Thêm sản phẩm mới",
-		"scan_again": "Quét lại"
+		"scan_again": "Quét lại",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
