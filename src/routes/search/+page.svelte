@@ -3,7 +3,8 @@
 	import { tracker } from '$lib/matomo';
 
 	import { navigating, page } from '$app/state';
-	import { goto } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
+	import { onDestroy } from 'svelte';
 
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
@@ -108,14 +109,26 @@
 
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-	function updateFacets(nextFacets: FacetsSelection, immediate = false) {
-		// Update local state immediately so UI (chips, badges, buttons) changes in 0ms
-		localFacets = nextFacets;
-
+	function clearPendingTimer() {
 		if (debounceTimer) {
 			clearTimeout(debounceTimer);
 			debounceTimer = null;
 		}
+	}
+
+	beforeNavigate(() => {
+		clearPendingTimer();
+	});
+
+	onDestroy(() => {
+		clearPendingTimer();
+	});
+
+	function updateFacets(nextFacets: FacetsSelection, immediate = false) {
+		// Update local state immediately so UI (chips, badges, buttons) changes in 0ms
+		localFacets = nextFacets;
+
+		clearPendingTimer();
 
 		const applyNavigation = () => {
 			const mainQuery = extractQuery(data.query);

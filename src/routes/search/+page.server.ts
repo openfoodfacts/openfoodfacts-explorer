@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
@@ -22,16 +22,43 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
+async function fetchWithTimeout<T>(
+	requestFn: (signal: AbortSignal) => Promise<T>,
+	timeoutMs: number
+): Promise<T> {
+	const controller = new AbortController();
+	let timerId: ReturnType<typeof setTimeout> | null = null;
+
+	const timeoutPromise = new Promise<never>((_, reject) => {
+		timerId = setTimeout(() => {
+			controller.abort();
+			reject(new Error(`Request timed out after ${timeoutMs}ms`));
+		}, timeoutMs);
+	});
+
+	try {
+		return await Promise.race([requestFn(controller.signal), timeoutPromise]);
+	} finally {
+		if (timerId !== null) {
+			clearTimeout(timerId);
+		}
+	}
+}
+
+async function getPrices(
+	baseFetch: typeof fetch,
+	barcodes: string[]
+): Promise<Record<string, number>> {
 	const prices: Record<string, number> = {};
 	const results = await Promise.all(
 		barcodes.map(async (code) => {
 			try {
-				const fetchPromise = api.getPrices({ product_code: code });
-				const timeoutPromise = new Promise<{ data: null }>((resolve) =>
-					setTimeout(() => resolve({ data: null }), 1500)
-				);
-				const res = await Promise.race([fetchPromise, timeoutPromise]);
+				const res = await fetchWithTimeout(async (signal) => {
+					const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
+						baseFetch(input, { ...init, signal });
+					const api = createPricesApi(abortableFetch);
+					return api.getPrices({ product_code: code });
+				}, 1500);
 				return { code, prices: res };
 			} catch {
 				return { code, prices: { data: null } };
@@ -50,7 +77,7 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 
 // FIXME: We can drop this compatibility layer once the new API is deployed in production
 async function compatSearch(
-	api: SearchApi,
+	baseFetch: typeof fetch,
 	params: Omit<SearchBody, 'facets' | 'charts'>
 ): ReturnType<SearchApi['search']> {
 	// Try the new API first
@@ -66,18 +93,20 @@ async function compatSearch(
 	};
 
 	try {
-		const timeoutPromise = new Promise<never>((_, reject) =>
-			setTimeout(() => reject(new Error('Search API timeout')), 6000)
-		);
-		const searchPromise = api.search(newParams);
-		const { data, error } = await Promise.race([searchPromise, timeoutPromise]);
-		if (error || data == null) {
-			throw error || new Error('No data');
+		const res = await fetchWithTimeout(async (signal) => {
+			const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
+				baseFetch(input, { ...init, signal });
+			const api = createSearchApi(abortableFetch);
+			return api.search(newParams);
+		}, 6000);
+
+		if (res.error || res.data == null) {
+			throw res.error || new Error('No data');
 		}
 		// @ts-expect-error - data is unknown
-		return { data };
+		return { data: res.data };
 	} catch {
-		console.warn('search: API failed or timed out, falling back');
+		console.warn('search: API failed or timed out, falling back to old API');
 	}
 
 	const oldParams = {
@@ -91,8 +120,13 @@ async function compatSearch(
 		]
 	};
 
-	// @ts-expect-error - SDK only accepts the new params
-	return api.search(oldParams);
+	return fetchWithTimeout(async (signal) => {
+		const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
+			baseFetch(input, { ...init, signal });
+		const api = createSearchApi(abortableFetch);
+		// @ts-expect-error - SDK only accepts the new params
+		return api.search(oldParams);
+	}, 6000);
 }
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
@@ -111,9 +145,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
-	const api = createSearchApi(fetch);
-
-	const { data: searchData, error: searchError } = await compatSearch(api, {
+	const { data: searchData, error: searchError } = await compatSearch(fetch, {
 		q: query,
 		langs: ['en'],
 		page,
@@ -147,7 +179,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const attributesPromise = getBulkProductAttributes(fetch, productCodes);
 
 	const pricesPromise = isPricesConfigured()
-		? getPrices(createPricesApi(fetch), productCodes)
+		? getPrices(fetch, productCodes)
 		: Promise.resolve({} as Record<string, number>);
 
 	const attributeGroupsPromise = off.getAttributeGroups();

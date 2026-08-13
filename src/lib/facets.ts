@@ -128,11 +128,47 @@ export function toggleExcludeFacet(
 	}
 }
 
+function splitOutsideQuotes(str: string, delimiterPattern: RegExp): string[] {
+	const result: string[] = [];
+	let current = '';
+	let inQuotes = false;
+	let i = 0;
+
+	while (i < str.length) {
+		const char = str[i];
+		if (char === '"') {
+			inQuotes = !inQuotes;
+			current += char;
+			i++;
+		} else if (!inQuotes) {
+			const remaining = str.slice(i);
+			const match = remaining.match(delimiterPattern);
+			if (match && match.index === 0) {
+				if (current.trim()) {
+					result.push(current.trim());
+				}
+				current = '';
+				i += match[0].length;
+			} else {
+				current += char;
+				i++;
+			}
+		} else {
+			current += char;
+			i++;
+		}
+	}
+	if (current.trim()) {
+		result.push(current.trim());
+	}
+	return result;
+}
+
 export function parseLuceneFacets(luceneQuery: string): FacetsSelection {
 	const sel: FacetsSelection = {};
 	if (!luceneQuery) return sel;
 
-	const parts = luceneQuery.split(/\s+AND\s+/i);
+	const parts = splitOutsideQuotes(luceneQuery, /^\s+AND\s+/i);
 
 	for (const part of parts) {
 		const trimmed = part.trim();
@@ -153,8 +189,7 @@ export function parseLuceneFacets(luceneQuery: string): FacetsSelection {
 			valExpr = valExpr.slice(1, -1).trim();
 		}
 
-		const values = valExpr
-			.split(/\s+OR\s+/i)
+		const values = splitOutsideQuotes(valExpr, /^\s+OR\s+/i)
 			.map((v) => v.trim().replace(/^"(.*)"$/, '$1'))
 			.filter((v) => v.length > 0);
 

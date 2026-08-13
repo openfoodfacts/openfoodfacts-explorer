@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { _ } from '$lib/i18n';
 	import type { Facet, FacetItem } from '$lib/api/search';
 	import type { FacetsSelection } from '$lib/facets';
 	import FacetCard from './FacetCard.svelte';
@@ -17,8 +18,8 @@
 	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-2 max-md:flex-nowrap max-md:overflow-x-auto max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
 >
 	{#if !facets || Object.keys(facets).length === 0}
-		<div class="col-span-full text-center text-gray-500">
-			<p>No facets available</p>
+		<div class="col-span-full text-center text-base-content/60">
+			<p>{$_('search.no_facets_available', { default: 'No filters available' })}</p>
 		</div>
 	{/if}
 	{#if facets && Object.keys(facets).length > 0}

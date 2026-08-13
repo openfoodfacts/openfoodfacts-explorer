@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 	import type { Facet, FacetItem } from '$lib/api/search';
@@ -47,6 +48,22 @@
 		}
 	}
 
+	function cleanupListeners() {
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('scroll', updateMobilePosition);
+			window.removeEventListener('resize', updateMobilePosition);
+		}
+		if (resizeObserver) {
+			resizeObserver.disconnect();
+			resizeObserver = null;
+		}
+		mobileDropdownStyle = '';
+	}
+
+	onDestroy(() => {
+		cleanupListeners();
+	});
+
 	// Recalculate position when filters are added/removed and shift DOM layout height
 	$effect(() => {
 		void selectedInclude.length;
@@ -71,12 +88,7 @@
 				resizeObserver.observe(document.body);
 			}
 		} else {
-			window.removeEventListener('scroll', updateMobilePosition);
-			window.removeEventListener('resize', updateMobilePosition);
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-			}
-			mobileDropdownStyle = '';
+			cleanupListeners();
 		}
 	}
 
@@ -115,20 +127,16 @@
 	});
 
 	let visibleValues = $derived.by(() => {
-		let list = sortedItems;
-		if (searchQuery) {
-			return list.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+		const list = sortedItems.filter((i) =>
+			i.name.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+		if (searchQuery != '') {
+			return list;
 		}
-
-		if (!showAll) {
-			const activeCount = list.filter(
-				(item) => selectedInclude.includes(item.key) || selectedExclude.includes(item.key)
-			).length;
-			const limit = Math.max(5, activeCount);
-			return list.slice(0, limit);
+		if (showAll) {
+			return list;
 		}
-
-		return list;
+		return list.slice(0, 5);
 	});
 </script>
 
@@ -160,7 +168,7 @@
 		<li>
 			<input
 				type="text"
-				placeholder="Search..."
+				placeholder={$_('search.search_placeholder', { default: 'Search...' })}
 				class="input-bordered input mb-2 w-full input-sm"
 				bind:value={searchQuery}
 			/>
@@ -178,7 +186,18 @@
 						class:bg-base-200={!isExcluded}
 						class:text-base-content={!isExcluded}
 						onclick={() => onToggleExclude(item)}
-						title={isExcluded ? 'Remove exclude filter' : 'Exclude (NOT) ' + item.name}
+						aria-label={isExcluded
+							? $_('search.remove_exclude', { default: 'Remove exclude filter' })
+							: $_('search.exclude_item', {
+									values: { name: item.name },
+									default: `Exclude (NOT) ${item.name}`
+								})}
+						title={isExcluded
+							? $_('search.remove_exclude', { default: 'Remove exclude filter' })
+							: $_('search.exclude_item', {
+									values: { name: item.name },
+									default: `Exclude (NOT) ${item.name}`
+								})}
 					>
 						<IconMdiMinus class="h-3.5 w-3.5" />
 					</button>
@@ -199,7 +218,18 @@
 						class:bg-base-200={!isIncluded}
 						class:text-base-content={!isIncluded}
 						onclick={() => onToggleInclude(item)}
-						title={isIncluded ? 'Remove include filter' : 'Include ' + item.name}
+						aria-label={isIncluded
+							? $_('search.remove_include', { default: 'Remove include filter' })
+							: $_('search.include_item', {
+									values: { name: item.name },
+									default: `Include ${item.name}`
+								})}
+						title={isIncluded
+							? $_('search.remove_include', { default: 'Remove include filter' })
+							: $_('search.include_item', {
+									values: { name: item.name },
+									default: `Include ${item.name}`
+								})}
 					>
 						<IconMdiPlus class="h-3.5 w-3.5" />
 					</button>
@@ -213,7 +243,9 @@
 					class="btn mt-1 w-full btn-link btn-xs"
 					onclick={() => toggleShowAll()}
 				>
-					{showAll ? 'Show Less' : 'See All'}
+					{showAll
+						? $_('search.show_less', { default: 'Show Less' })
+						: $_('search.see_all', { default: 'See All' })}
 				</button>
 			</li>
 		{/if}

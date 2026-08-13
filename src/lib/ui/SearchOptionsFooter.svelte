@@ -2,7 +2,6 @@
 	import { SORT_OPTIONS } from '$lib/const';
 	import { _ } from '$lib/i18n';
 
-	import IconMdiSort from '@iconify-svelte/mdi/sort';
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 
@@ -89,9 +88,9 @@
 					{$_('search.filters_title', { default: 'Filters' })}
 				</h3>
 				<button
-					class="btn btn-circle btn-ghost btn-xs"
+					class="btn btn-circle btn-ghost btn-xs focus-visible:ring-2 focus-visible:ring-primary"
 					onclick={() => (filterDropdownOpen = false)}
-					aria-label="Close filters"
+					aria-label={$_('search.close_filters', { default: 'Close filters' })}
 				>
 					<IconMdiClose class="h-4 w-4" />
 				</button>
@@ -113,18 +112,18 @@
 
 	<div class="flex h-full w-full">
 		<button
-			class="flex h-full w-1/2 flex-col items-center justify-center border-r border-base-200 py-1 focus:outline-none"
+			class="flex h-full w-1/2 flex-col items-center justify-center border-r border-base-200 py-1 focus-visible:ring-2 focus-visible:ring-primary"
 			onclick={toggleSort}
-			aria-label="Sort"
+			aria-label={$_('search.sort_title', { default: 'Sort' })}
 			aria-expanded={sortDropdownOpen}
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
-				Sort <IconMdiSort class="ml-2 text-lg" />
+				{$_('search.sort_title', { default: 'Sort' })}
 			</span>
 		</button>
 		<button
-			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus:outline-none"
-			aria-label="Filter"
+			class="flex h-full w-1/2 flex-col items-center justify-center py-1 focus-visible:ring-2 focus-visible:ring-primary"
+			aria-label={$_('search.filters_title', { default: 'Filter' })}
 			aria-expanded={filterDropdownOpen}
 			onclick={() => {
 				if (searchResult?.facets && Object.keys(searchResult.facets).length > 0) {
@@ -135,7 +134,8 @@
 			}}
 		>
 			<span class="flex items-center text-sm leading-tight font-semibold tracking-wide">
-				Filter <IconMdiFilter class="ml-2 text-lg" />
+				{$_('search.filters_title', { default: 'Filter' })}
+				<IconMdiFilter class="ml-2 text-lg" />
 			</span>
 		</button>
 	</div>

@@ -94,6 +94,16 @@ describe('parseLuceneFacets', () => {
 			brands: { include: [], exclude: ['Coca-Cola', 'Pepsi'] }
 		});
 	});
+
+	it('preserves AND and OR operators inside quoted values', () => {
+		const query =
+			'categories:("Salt AND Vinegar" OR "Sweet OR Sour") AND -brands:("Ben & Jerry\'s")';
+		const parsed = parseLuceneFacets(query);
+		expect(parsed).toEqual({
+			categories: { include: ['Salt AND Vinegar', 'Sweet OR Sour'], exclude: [] },
+			brands: { include: [], exclude: ["Ben & Jerry's"] }
+		});
+	});
 });
 
 describe('toggleIncludeFacet & toggleExcludeFacet', () => {
