@@ -9,7 +9,7 @@ overrides:
   '@sveltejs/kit@<=2.57.0': '>=2.57.1'
   ajv@<6.14.0: '>=6.14.0 <7.0.0'
   brace-expansion@>=4.0.0 <5.0.5: '>=5.0.5'
-  cookie@<0.7.0: '>=0.7.0'
+  cookie: 1.1.1
   devalue@<5.6.3: '>=5.6.3'
   diff@<8.0.3: '>=8.0.3'
   dompurify@<3.4.9: '>=3.4.9'
@@ -1738,9 +1738,9 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  cookie@2.0.1:
-    resolution: {integrity: sha512-yuToqVvRrj6pfDXREyQAAv8SkAEk/8GS3jQRTiUMm66TVtBYmqQeoEjL2Lmq8Rpo6271vH76InTChTitEAm65w==}
-    engines: {node: '>=22'}
+  cookie@1.1.1:
+    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
+    engines: {node: '>=18'}
 
   cropperjs@2.1.1:
     resolution: {integrity: sha512-FDJMarkY+/SepYarPZsvkG2LmI2PElecciMFnvBiBIoKnFYua/scprC5qejCLLyuX2jEqJRS2njbAsHxfjtIXA==}
@@ -4498,7 +4498,7 @@ snapshots:
       '@sveltejs/vite-plugin-svelte': 7.2.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@8.2.1(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@types/cookie': 0.6.0
       acorn: 8.18.0
-      cookie: 2.0.1
+      cookie: 1.1.1
       devalue: 5.9.0
       esm-env: 1.2.2
       kleur: 4.1.5
@@ -4942,7 +4942,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie@2.0.1: {}
+  cookie@1.1.1: {}
 
   cropperjs@2.1.1:
     dependencies:
