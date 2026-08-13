@@ -10,6 +10,7 @@
 	import TagChipList from '$lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
+	import { userInfo } from '$lib/stores/user';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -151,6 +152,7 @@
 					</button>
 
 					<a
+						id="report-problem"
 						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
@@ -161,14 +163,16 @@
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
 
-					<button
-						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToCalculator}
-						title={$_('product.buttons.add_to_calculator')}
-						aria-label={$_('product.buttons.add_to_calculator')}
-					>
-						<IconMdiCalculator class="h-5 w-5" />
-					</button>
+					{#if $userInfo != null}
+						<button
+							class="btn btn-secondary btn-sm md:btn-md"
+							onclick={addToCalculator}
+							title={$_('product.buttons.add_to_calculator')}
+							aria-label={$_('product.buttons.add_to_calculator')}
+						>
+							<IconMdiCalculator class="h-5 w-5" />
+						</button>
+					{/if}
 
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"

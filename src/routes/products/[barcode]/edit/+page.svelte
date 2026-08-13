@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
+	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 	import { trackOffEvent } from '$lib/analytics';
@@ -208,7 +209,17 @@
 				};
 	}
 
-	let product = $derived(createProductStore(data));
+	// svelte-ignore state_referenced_locally
+	let product = $state<Product>(createProductStore(data));
+
+	$effect(() => {
+		const currentBarcode = page.params.barcode;
+		untrack(() => {
+			if (product.code !== currentBarcode) {
+				product = createProductStore(data);
+			}
+		});
+	});
 
 	let comment = $state('');
 
@@ -519,7 +530,7 @@
 
 <div class="space-y-8">
 	<!-- Super Title -->
-	<div class="mb-8 space-y-2 text-center">
+	<div class="mt-4 mb-6 space-y-2 pt-2 text-center sm:mt-6">
 		<h1 class="text-2xl font-semibold tracking-wide text-primary sm:text-3xl">
 			{#if isAddMode}
 				{$_('product.edit.add_product_title')}

@@ -24,7 +24,10 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -311,6 +314,15 @@
 									<span>{$_('navbar.account', { default: 'Account' })}</span>
 								</a>
 							</li>
+							<li>
+								<button
+									onclick={toggleCalculator}
+									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+									<span>{$_('calculator', { default: 'Calculator' })}</span>
+								</button>
+							</li>
 							<div class="divider my-1"></div>
 							<li>
 								<a
@@ -416,6 +428,18 @@
 		</a>
 
 		<div class="divider md:divider-horizontal"></div>
+		<button
+			type="button"
+			class="btn link btn-outline"
+			onclick={() => {
+				toggleCalculator();
+				accordionOpen = false;
+			}}
+			title={$_('calculator', { default: 'Calculator' })}
+			aria-label={$_('calculator', { default: 'Calculator' })}
+		>
+			<span>{$_('calculator', { default: 'Calculator' })}</span>
+		</button>
 		<a
 			class="btn link btn-outline"
 			href="/settings"
@@ -474,6 +498,7 @@
 	</div>
 {/if}
 <CompareFloatingButton />
+<NutritionCalculator />
 <Footer />
 <Toast />
 
