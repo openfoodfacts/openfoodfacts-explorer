@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergeenit",
 			"traces": "Jäämät",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Tuotteen tyyppi on valittava ensin!",
 			"main_language": "Pääkieli",
 			"add_product": "Lisää tuote",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Kuvat",
 				"basic_info": "Perustiedot",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Kielet ja tuotenimet",
 				"ingredients": "Ainesosat",
@@ -481,6 +490,22 @@
 				"prices": "Hinnat",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Tuotetiedot",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Kielet",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Lähetä",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Älä lataa tekijänoikeuksin suojattuja kuvia",
 			"legal_warning_photos_1": "Älä lataa kuvia, joita et omista tai joihin sinulla ei ole oikeuksia. Tekijänoikeuksilla suojattujen kuvien lataaminen ilman lupaa on laitonta ja voi johtaa tilisi sulkemiseen.",
 			"legal_warning_photos_2": "Lataa vain omia kuviasi tai sellaisia, joiden käyttöön sinulla on nimenomainen lupa.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Tuotetta ei löytynyt",
 		"barcode_scanned_not_found": "Viivakoodi {barcode} skannattiin onnistuneesti, mutta tuotetta ei löytynyt avoimista ruokatiedoistamme, avoimista kauneustiedoistamme, avoimista tuotetiedoistamme tai avoimista lemmikkieläinten ruokatiedoistamme.",
 		"add_new_product": "Lisää uusi tuote",
-		"scan_again": "Skannaa uudelleen"
+		"scan_again": "Skannaa uudelleen",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
