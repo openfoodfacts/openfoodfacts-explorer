@@ -22,7 +22,7 @@
 					{#each row.values as cell, cellIndex (cellIndex)}
 						<td>
 							{#if cell.icon_url}
-								<img src={cell.icon_url} class="row-item-icon" alt="icon" />
+								<img src={cell.icon_url} class="row-item-icon" alt="" aria-hidden="true" />
 							{/if}
 							<HtmlPurify dirty={cell.text} />
 						</td>

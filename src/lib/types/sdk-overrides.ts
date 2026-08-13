@@ -1,3 +1,4 @@
+import type { KnowledgePanelTableRow as SDKKnowledgePanelTableRow } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { AttributeGroupV2 } from '@openfoodfacts/openfoodfacts-nodejs';
 
 /**
@@ -48,10 +49,6 @@ export type CurrentUserPermissions = {
 	}>;
 };
 
-export type KnowledgePanelTableRow = {
-	values: {
-		icon_url?: string;
-		text: string;
-		evaluation?: string;
-	}[];
+export type KnowledgePanelTableRow = SDKKnowledgePanelTableRow & {
+	values: (SDKKnowledgePanelTableRow['values'][number] & { icon_url?: string })[];
 };
