@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Trazas",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Idioma principal",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "Información básica",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Idiomas e nomes de produtos",
 				"ingredients": "Ingredientes",
@@ -481,6 +490,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Linguas",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Enviar",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Non subir imaxes protexidas por dereitos de autor",
 			"legal_warning_photos_1": "Non subas fotos que non sexan da túa propiedade ou das que non teñas os dereitos. Subir imaxes protexidas por dereitos de autor sen permiso é ilegal e pode resultar na suspensión da túa conta.",
 			"legal_warning_photos_2": "Sube só as túas propias fotos ou aquelas para as que teñas permiso explícito para usar.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produto non atopado",
 		"barcode_scanned_not_found": "O código de barras {barcode} escaneouse correctamente, pero non se atopou ningún produto na nosa sección Información sobre alimentos, información sobre beleza, información sobre produtos ou información sobre alimentos para mascotas.",
 		"add_new_product": "Engadir novo produto",
-		"scan_again": "Volver escanear"
+		"scan_again": "Volver escanear",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
