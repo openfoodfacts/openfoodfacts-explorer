@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergeenid",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Esmalt tuleb valida toote tüüp!",
 			"main_language": "Põhikeel",
 			"add_product": "Lisa toode",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fotod",
 				"basic_info": "Põhiteave",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Keeled ja tootenimed",
 				"ingredients": "Koostisosad",
@@ -481,6 +490,22 @@
 				"prices": "Hinnad",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Toote üksikasjad",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Keeled",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Salvesta",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ärge laadige üles autoriõigustega kaitstud pilte",
 			"legal_warning_photos_1": "Ära laadi üles fotosid, mis ei kuulu sulle või mille kasutamiseks sul pole õigusi. Autoriõigustega kaitstud piltide üleslaadimine ilma loata on ebaseaduslik ja võib kaasa tuua sinu konto peatamise.",
 			"legal_warning_photos_2": "Laadi üles ainult oma fotosid või neid, mille kasutamiseks sul on selgesõnaline luba.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Toodet ei leitud",
 		"barcode_scanned_not_found": "Triipkood {barcode} skanniti edukalt, kuid meie avatud toidu-, ilu-, toote- ega lemmikloomatoiduteabe hulgast ei leitud ühtegi toodet.",
 		"add_new_product": "Lisa uus toode",
-		"scan_again": "Skanni uuesti"
+		"scan_again": "Skanni uuesti",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
