@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "Infurmazioni basiche",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Lingue è nomi di prudutti",
 				"ingredients": "Ingredients",
@@ -481,6 +490,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ùn caricate micca imagine prutette da copyright",
 			"legal_warning_photos_1": "Ùn caricate micca foto chì ùn site micca pruprietariu o di e quali ùn avete micca i diritti. Caricà imagine prutette da copyright senza permessu hè illegale è pò risultà in a sospensione di u vostru contu.",
 			"legal_warning_photos_2": "Caricate solu e vostre foto o quelle chì avete l'autorizazione esplicita di aduprà.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Pruduttu micca trovu",
 		"barcode_scanned_not_found": "U codice à barre {barcode} hè statu scanatu cù successu, ma nisun pruduttu hè statu trovu in i nostri Open Food Facts, Open Beauty Facts, Open Products Facts o Open Pet Food Facts.",
 		"add_new_product": "Aghjunghje un novu pruduttu",
-		"scan_again": "Scannà torna"
+		"scan_again": "Scannà torna",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
