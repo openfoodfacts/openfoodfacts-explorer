@@ -280,7 +280,22 @@
 			"never_checked": "Nikdy nekontrolováno",
 			"check_be_first": "Buďte první, kdo zkontroluje tento produkt"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produkt",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Zdroje dat",
+			"prices": "Ceny",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Sbalit vše",
 				"expand_all": "Rozbalit vše"
@@ -632,7 +647,8 @@
 		"step": "Krok",
 		"of": "z",
 		"cancel": "Zrušit",
-		"close": "zavřít"
+		"close": "zavřít",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",
