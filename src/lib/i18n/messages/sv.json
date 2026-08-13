@@ -280,7 +280,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produkt",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Datakällor",
+			"prices": "Priser",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Minimera alla",
 				"expand_all": "Expandera alla"
@@ -632,7 +647,8 @@
 		"step": "Steg",
 		"of": "av",
 		"cancel": "Annulera",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Meny",
