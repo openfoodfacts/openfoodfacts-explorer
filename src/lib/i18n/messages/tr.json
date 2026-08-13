@@ -332,6 +332,12 @@
 			},
 			"allergens": "Alerjenler",
 			"traces": "İz",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Öncelikle bir ürün türü seçmeniz gerekiyor!",
 			"main_language": "Ana dil",
 			"add_product": "Ürün ekle",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fotoğraflar",
 				"basic_info": "Temel Bilgiler",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Diller ve Ürün Adları",
 				"ingredients": "Malzemeler",
@@ -481,6 +490,22 @@
 				"prices": "Fiyatlar",
 				"comment": "Yorum"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Ürün Detayları",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Diller",
+				"comment": "Yorum"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Gönder",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Telif hakkıyla korunan görselleri yüklemeyin",
 			"legal_warning_photos_1": "Sahip olmadığınız veya haklarına sahip olmadığınız fotoğrafları yüklemeyin. Telif hakkıyla korunan görselleri izinsiz yüklemek yasa dışıdır ve hesabınızın askıya alınmasına neden olabilir.",
 			"legal_warning_photos_2": "Yalnızca kendi fotoğraflarınızı veya kullanmanıza açıkça izin verdiğiniz fotoğrafları yükleyin.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Ürün Bulunamadı",
 		"barcode_scanned_not_found": "Barkod {barcode} başarıyla tarandı, ancak Açık Gıda Bilgileri, Açık Güzellik Bilgileri, Açık Ürünler Bilgileri veya Açık Evcil Hayvan Maması Bilgilerimizde hiçbir ürün bulunamadı.",
 		"add_new_product": "Yeni ürün ekle",
-		"scan_again": "Tekrar tarayın"
+		"scan_again": "Tekrar tarayın",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
