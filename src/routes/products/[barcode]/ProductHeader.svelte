@@ -151,6 +151,7 @@
 					</button>
 
 					<a
+						id="report-problem"
 						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
