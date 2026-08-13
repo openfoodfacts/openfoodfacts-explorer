@@ -639,6 +639,8 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"nutrition_grades": "Nutrition Grades",
+		"environmental_score_grade": "Environmental Score Grade",
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
 		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
 		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",

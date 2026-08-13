@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { toLuceneString } from './facets';
+import {
+	parseLuceneFacets,
+	toLuceneString,
+	toggleExcludeFacet,
+	toggleIncludeFacet
+} from './facets';
 import type { FacetsSelection } from './facets';
 
 describe('toLuceneString', () => {
@@ -77,5 +82,41 @@ describe('toLuceneString', () => {
 		};
 		const result = toLuceneString('test', facets);
 		expect(result).toBe('test');
+	});
+});
+
+describe('parseLuceneFacets', () => {
+	it('parses include and exclude facets from lucene string', () => {
+		const query = 'categories:("en:beverages") AND -brands:("Coca-Cola" OR "Pepsi")';
+		const parsed = parseLuceneFacets(query);
+		expect(parsed).toEqual({
+			categories: { include: ['en:beverages'], exclude: [] },
+			brands: { include: [], exclude: ['Coca-Cola', 'Pepsi'] }
+		});
+	});
+});
+
+describe('toggleIncludeFacet & toggleExcludeFacet', () => {
+	it('toggles include on and off', () => {
+		let sel: FacetsSelection = {};
+		sel = toggleIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).toContain('Nestle');
+		sel = toggleIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).not.toContain('Nestle');
+	});
+
+	it('switches from exclude to include', () => {
+		let sel: FacetsSelection = { brands: { include: [], exclude: ['Nestle'] } };
+		sel = toggleIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).toContain('Nestle');
+		expect(sel.brands.exclude).not.toContain('Nestle');
+	});
+
+	it('toggles exclude on and off', () => {
+		let sel: FacetsSelection = {};
+		sel = toggleExcludeFacet(sel, 'brands', 'Coca-Cola');
+		expect(sel.brands.exclude).toContain('Coca-Cola');
+		sel = toggleExcludeFacet(sel, 'brands', 'Coca-Cola');
+		expect(sel.brands.exclude).not.toContain('Coca-Cola');
 	});
 });

@@ -2,17 +2,20 @@
 	import { slide } from 'svelte/transition';
 	import { tracker } from '$lib/matomo';
 
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import { goto } from '$app/navigation';
 
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
 	import { SORT_OPTIONS } from '$lib/const';
 	import {
-		addIncludeFacet,
 		extractQuery,
+		parseLuceneFacets,
+		removeExcludeFacet,
 		removeIncludeFacet,
 		toLuceneString,
+		toggleExcludeFacet,
+		toggleIncludeFacet,
 		type FacetsSelection
 	} from '$lib/facets';
 	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
@@ -31,6 +34,7 @@
 
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
+	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
 
@@ -94,24 +98,42 @@
 		goto(newUrl.toString());
 	}
 
-	// State to hold selected facets
-	//  { key1 => { include: ['value1', 'value2'], exclude: ['value3'] } }
-	let selectedFacets: FacetsSelection = $derived.by(() => {
-		const entries = Object.entries(searchResult.facets).map(([key, facet]) => {
-			const selectedItems = facet.items.filter((item) => item.selected).map((item) => item.key);
-			return [key, { include: selectedItems, exclude: [] }];
-		});
-		return Object.fromEntries(entries);
+	// Local state for UI facet toggling, synced with data.query from server
+	// eslint-disable-next-line svelte/prefer-writable-derived
+	let localFacets = $state<FacetsSelection>({});
+
+	$effect(() => {
+		localFacets = parseLuceneFacets(data.query);
 	});
 
-	function refreshQuery() {
-		// recreate the full lucene query with selected facets
-		const mainQuery = extractQuery(data.query);
-		const newQuery = toLuceneString(mainQuery, selectedFacets);
+	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('q', newQuery);
-		goto(newUrl.toString());
+	function updateFacets(nextFacets: FacetsSelection, immediate = false) {
+		// Update local state immediately so UI (chips, badges, buttons) changes in 0ms
+		localFacets = nextFacets;
+
+		if (debounceTimer) {
+			clearTimeout(debounceTimer);
+			debounceTimer = null;
+		}
+
+		const applyNavigation = () => {
+			const mainQuery = extractQuery(data.query);
+			const newQuery = toLuceneString(mainQuery, localFacets);
+			const newUrl = new URL(page.url);
+			newUrl.searchParams.set('q', newQuery);
+			newUrl.searchParams.set('page', '1');
+
+			if (newUrl.toString() !== page.url.toString()) {
+				goto(newUrl.toString(), { keepFocus: true, noScroll: true, replaceState: true });
+			}
+		};
+
+		if (immediate) {
+			applyNavigation();
+		} else {
+			debounceTimer = setTimeout(applyNavigation, 3000);
+		}
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));
@@ -177,17 +199,22 @@
 	</h2>
 	<div class="flex items-center gap-2">
 		<!-- Sort By Dropdown -->
-		<details class="dropdown dropdown-end" bind:this={sortDropdown}>
-			<summary class="btn gap-2 btn-outline btn-sm">
-				<span>{getSelectedSortLabel()}</span>
-				<IconMdiChevronDown class="h-4 w-4" />
+		<details class="dropdown relative dropdown-end shrink-0 open:z-50" bind:this={sortDropdown}>
+			<summary
+				class="sm:rounded-btn btn flex w-60 shrink-0 items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
+			>
+				<span class="truncate">{getSelectedSortLabel()}</span>
+				<IconMdiChevronDown class="h-4 w-4 shrink-0" />
 			</summary>
 			<ul
-				class="menu dropdown-content z-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-md"
+				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:w-64"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
-						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
+						<button
+							class="w-full text-left leading-tight break-words whitespace-normal"
+							onclick={() => handleSortChange(value)}
+						>
 							{$_(label)}
 						</button>
 					</li>
@@ -333,18 +360,36 @@
 	</div>
 {/if}
 
+<!-- Active Filters Bar -->
+<ActiveFiltersBar
+	selectedFacets={localFacets}
+	facets={searchResult.facets}
+	onRemoveInclude={(facetKey, val) => {
+		const next = removeIncludeFacet(localFacets, facetKey, val);
+		updateFacets(next);
+	}}
+	onRemoveExclude={(facetKey, val) => {
+		const next = removeExcludeFacet(localFacets, facetKey, val);
+		updateFacets(next);
+	}}
+	onClearAll={() => {
+		updateFacets({}, true);
+	}}
+/>
+
 <!-- Facet Bar -->
 {#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
 	<div class="my-4" id="facets">
 		<FacetBar
 			facets={searchResult.facets}
-			onAddFacet={(key, val) => {
-				selectedFacets = addIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
+			selectedFacets={localFacets}
+			onToggleInclude={(key, val) => {
+				const next = toggleIncludeFacet(localFacets, key, val);
+				updateFacets(next);
 			}}
-			onRemoveFacet={(key, val) => {
-				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
+			onToggleExclude={(key, val) => {
+				const next = toggleExcludeFacet(localFacets, key, val);
+				updateFacets(next);
 			}}
 		/>
 	</div>
@@ -352,7 +397,31 @@
 
 <div class="divider"></div>
 
-{#if searchResult.count > 0}
+{#if navigating.to != null}
+	<!-- Product Card Skeleton Loading State during API Call -->
+	<div class="my-6 max-md:me-4">
+		<div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{#each Array(6) as _, index (index)}
+				<div
+					class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
+				>
+					<div class="flex gap-4">
+						<div class="h-24 w-24 shrink-0 skeleton rounded-lg"></div>
+						<div class="flex flex-1 flex-col gap-2.5">
+							<div class="h-4 w-3/4 skeleton rounded"></div>
+							<div class="h-3 w-1/2 skeleton rounded"></div>
+							<div class="h-3 w-1/3 skeleton rounded"></div>
+						</div>
+					</div>
+					<div class="flex items-center justify-between pt-2">
+						<div class="h-5 w-16 skeleton rounded-full"></div>
+						<div class="h-5 w-20 skeleton rounded-full"></div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+{:else if searchResult.count > 0}
 	<div class="max-md:me-4">
 		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
@@ -472,12 +541,13 @@
 		goto('/facets');
 	}}
 	{searchResult}
-	onAddFacet={(key, val) => {
-		selectedFacets = addIncludeFacet(selectedFacets, key, val);
-		refreshQuery();
+	selectedFacets={localFacets}
+	onToggleInclude={(key, val) => {
+		const next = toggleIncludeFacet(localFacets, key, val);
+		updateFacets(next);
 	}}
-	onRemoveFacet={(key, val) => {
-		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-		refreshQuery();
+	onToggleExclude={(key, val) => {
+		const next = toggleExcludeFacet(localFacets, key, val);
+		updateFacets(next);
 	}}
 />

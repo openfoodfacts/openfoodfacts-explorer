@@ -99,3 +99,83 @@ export function removeExcludeFacet(
 	}
 	return newQuery;
 }
+
+export function toggleIncludeFacet(
+	sel: FacetsSelection,
+	facet: string,
+	value: string
+): FacetsSelection {
+	const isCurrentlyIncluded = sel[facet]?.include?.includes(value);
+	if (isCurrentlyIncluded) {
+		return removeIncludeFacet(sel, facet, value);
+	} else {
+		const withoutExclude = removeExcludeFacet(sel, facet, value);
+		return addIncludeFacet(withoutExclude, facet, value);
+	}
+}
+
+export function toggleExcludeFacet(
+	sel: FacetsSelection,
+	facet: string,
+	value: string
+): FacetsSelection {
+	const isCurrentlyExcluded = sel[facet]?.exclude?.includes(value);
+	if (isCurrentlyExcluded) {
+		return removeExcludeFacet(sel, facet, value);
+	} else {
+		const withoutInclude = removeIncludeFacet(sel, facet, value);
+		return addExcludeFacet(withoutInclude, facet, value);
+	}
+}
+
+export function parseLuceneFacets(luceneQuery: string): FacetsSelection {
+	const sel: FacetsSelection = {};
+	if (!luceneQuery) return sel;
+
+	const parts = luceneQuery.split(/\s+AND\s+/i);
+
+	for (const part of parts) {
+		const trimmed = part.trim();
+		if (!trimmed) continue;
+
+		const isExclude = trimmed.startsWith('-');
+		const cleanPart = isExclude ? trimmed.slice(1) : trimmed;
+
+		const colonIdx = cleanPart.indexOf(':');
+		if (colonIdx === -1) continue;
+
+		const facet = cleanPart.slice(0, colonIdx).trim();
+		let valExpr = cleanPart.slice(colonIdx + 1).trim();
+
+		if (!facet || !valExpr) continue;
+
+		if (valExpr.startsWith('(') && valExpr.endsWith(')')) {
+			valExpr = valExpr.slice(1, -1).trim();
+		}
+
+		const values = valExpr
+			.split(/\s+OR\s+/i)
+			.map((v) => v.trim().replace(/^"(.*)"$/, '$1'))
+			.filter((v) => v.length > 0);
+
+		if (!sel[facet]) {
+			sel[facet] = { include: [], exclude: [] };
+		}
+
+		if (isExclude) {
+			for (const val of values) {
+				if (!sel[facet].exclude.includes(val)) {
+					sel[facet].exclude.push(val);
+				}
+			}
+		} else {
+			for (const val of values) {
+				if (!sel[facet].include.includes(val)) {
+					sel[facet].include.push(val);
+				}
+			}
+		}
+	}
+
+	return sel;
+}

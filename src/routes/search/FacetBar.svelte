@@ -1,17 +1,21 @@
 <script lang="ts">
-	import type { Facet } from '$lib/api/search';
+	import type { Facet, FacetItem } from '$lib/api/search';
+	import type { FacetsSelection } from '$lib/facets';
 	import FacetCard from './FacetCard.svelte';
 
 	type Props = {
 		facets: Record<string, Facet>;
-		onAddFacet: (facetKey: string, itemKey: string) => void;
-		onRemoveFacet: (facetKey: string, itemKey: string) => void;
+		selectedFacets?: FacetsSelection;
+		onToggleInclude: (facetKey: string, itemKey: string) => void;
+		onToggleExclude: (facetKey: string, itemKey: string) => void;
 	};
 
-	let { facets, onAddFacet, onRemoveFacet }: Props = $props();
+	let { facets, selectedFacets = {}, onToggleInclude, onToggleExclude }: Props = $props();
 </script>
 
-<div class="flex flex-wrap justify-center gap-4">
+<div
+	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-2 max-md:flex-nowrap max-md:overflow-x-auto max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
+>
 	{#if !facets || Object.keys(facets).length === 0}
 		<div class="col-span-full text-center text-gray-500">
 			<p>No facets available</p>
@@ -19,11 +23,16 @@
 	{/if}
 	{#if facets && Object.keys(facets).length > 0}
 		{#each Object.entries(facets) as [facetKey, facet] (facetKey)}
+			{@const sel = selectedFacets[facetKey]}
+			{@const selectedInclude =
+				sel?.include ?? facet.items.filter((item) => item.selected).map((item) => item.key)}
+			{@const selectedExclude = sel?.exclude ?? []}
 			<FacetCard
 				{facet}
-				selected={facet.items.filter((item) => item.selected).map((item) => item.key)}
-				onSelect={(item) => onAddFacet(facetKey, item.key)}
-				onUnselect={(item) => onRemoveFacet(facetKey, item.key)}
+				{selectedInclude}
+				{selectedExclude}
+				onToggleInclude={(item: FacetItem) => onToggleInclude(facetKey, item.key)}
+				onToggleExclude={(item: FacetItem) => onToggleExclude(facetKey, item.key)}
 			/>
 		{/each}
 	{/if}

@@ -25,14 +25,22 @@ function isValidEAN13(code: string): boolean {
 async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
 	const prices: Record<string, number> = {};
 	const results = await Promise.all(
-		barcodes.map(async (code) => ({
-			code: code,
-			prices: await api.getPrices({ product_code: code })
-		}))
+		barcodes.map(async (code) => {
+			try {
+				const fetchPromise = api.getPrices({ product_code: code });
+				const timeoutPromise = new Promise<{ data: null }>((resolve) =>
+					setTimeout(() => resolve({ data: null }), 1500)
+				);
+				const res = await Promise.race([fetchPromise, timeoutPromise]);
+				return { code, prices: res };
+			} catch {
+				return { code, prices: { data: null } };
+			}
+		})
 	);
 
 	for (const result of results) {
-		if (result.prices.data && result.prices.data.items) {
+		if (result.prices && result.prices.data && result.prices.data.items) {
 			prices[result.code] = result.prices.data.total;
 		}
 	}
@@ -58,14 +66,18 @@ async function compatSearch(
 	};
 
 	try {
-		const { data, error } = await api.search(newParams);
+		const timeoutPromise = new Promise<never>((_, reject) =>
+			setTimeout(() => reject(new Error('Search API timeout')), 6000)
+		);
+		const searchPromise = api.search(newParams);
+		const { data, error } = await Promise.race([searchPromise, timeoutPromise]);
 		if (error || data == null) {
 			throw error || new Error('No data');
 		}
 		// @ts-expect-error - data is unknown
 		return { data };
 	} catch {
-		console.warn('search: new API failed, falling back to old API');
+		console.warn('search: API failed or timed out, falling back');
 	}
 
 	const oldParams = {
@@ -118,6 +130,17 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 	// Prepare data
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
+
+	if (productCodes.length === 0) {
+		return {
+			query,
+			search: searchDataTyped,
+			attributesByCode: {},
+			prices: {},
+			attributeGroups: []
+		};
+	}
+
 	const off = createProductsApi(fetch);
 
 	// Create promises
