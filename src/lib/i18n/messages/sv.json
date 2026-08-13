@@ -280,22 +280,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
-		"sidebar_navigation": "Product sections",
+		"sidebar_navigation": "Produktsektioner",
 		"sidebar": {
-			"show": "Show Sidebar",
-			"hide": "Hide Sidebar"
+			"show": "Visa sidofält",
+			"hide": "Dölj sidofält"
 		},
 		"sections": {
 			"product": "Produkt",
-			"health": "Health & Nutrition",
-			"environment": "Environment & Sustainability",
-			"knowledge_panels": "Analysis & Insights",
+			"health": "Hälsa & näring",
+			"environment": "Miljö & hållbarhet",
+			"knowledge_panels": "Analys & insikter",
 			"datasources": "Datakällor",
 			"prices": "Priser",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Taggar & community"
 		},
 		"edit": {
-			"sidebar_navigation": "Product edit sections",
+			"sidebar_navigation": "Produktredigeringsavsnitt",
 			"sidebar": {
 				"collapse_all": "Minimera alla",
 				"expand_all": "Expandera alla"
@@ -675,7 +675,7 @@
 		"of": "av",
 		"cancel": "Annulera",
 		"close": "close",
-		"scroll_to_top": "Scroll to top"
+		"scroll_to_top": "Skrolla till toppen"
 	},
 	"menu": {
 		"button": "Meny",
