@@ -332,6 +332,12 @@
 			},
 			"allergens": "过敏原",
 			"traces": "跟踪",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "您需要先选择产品类型！",
 			"main_language": "主要语言",
 			"add_product": "添加产品",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "照片",
 				"basic_info": "基本信息",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "语言和产品名称",
 				"ingredients": "成分",
@@ -481,6 +490,22 @@
 				"prices": "价格",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "产品细节",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "语言",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "提交",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "请勿上传受版权保护的图片",
 			"legal_warning_photos_1": "请勿上传不属于您或您无权使用的照片。未经许可上传受版权保护的图片属于违法行为，可能会导致您的帐户被暂停。",
 			"legal_warning_photos_2": "仅上传您自己的照片或您有明确许可使用的照片。",
@@ -631,7 +656,9 @@
 		"product_not_found": "未找到产品",
 		"barcode_scanned_not_found": "条形码 {barcode} 已成功扫描，但在我们的开放食品事实、开放美容事实、开放产品事实或开放宠物食品事实中未找到任何产品。",
 		"add_new_product": "添加新产品",
-		"scan_again": "再次扫描"
+		"scan_again": "再次扫描",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
