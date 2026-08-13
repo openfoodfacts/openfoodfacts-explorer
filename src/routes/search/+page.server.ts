@@ -22,29 +22,6 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-async function fetchWithTimeout<T>(
-	requestFn: (signal: AbortSignal) => Promise<T>,
-	timeoutMs: number
-): Promise<T> {
-	const controller = new AbortController();
-	let timerId: ReturnType<typeof setTimeout> | null = null;
-
-	const timeoutPromise = new Promise<never>((_, reject) => {
-		timerId = setTimeout(() => {
-			controller.abort();
-			reject(new Error(`Request timed out after ${timeoutMs}ms`));
-		}, timeoutMs);
-	});
-
-	try {
-		return await Promise.race([requestFn(controller.signal), timeoutPromise]);
-	} finally {
-		if (timerId !== null) {
-			clearTimeout(timerId);
-		}
-	}
-}
-
 async function getPrices(
 	baseFetch: typeof fetch,
 	barcodes: string[]
@@ -53,12 +30,8 @@ async function getPrices(
 	const results = await Promise.all(
 		barcodes.map(async (code) => {
 			try {
-				const res = await fetchWithTimeout(async (signal) => {
-					const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
-						baseFetch(input, { ...init, signal });
-					const api = createPricesApi(abortableFetch);
-					return api.getPrices({ product_code: code });
-				}, 1500);
+				const api = createPricesApi(baseFetch);
+				const res = await api.getPrices({ product_code: code });
 				return { code, prices: res };
 			} catch {
 				return { code, prices: { data: null } };
@@ -80,8 +53,46 @@ async function compatSearch(
 	baseFetch: typeof fetch,
 	params: Omit<SearchBody, 'facets' | 'charts'>
 ): ReturnType<SearchApi['search']> {
+	const api = createSearchApi(baseFetch);
+
 	// Try the new API first
 	const newParams: SearchBody = {
+		...params,
+		facets: [
+			'brands',
+			'categories',
+			'nutrition_grades',
+			'environmental_score_grade',
+			'nova_group',
+			'labels',
+			'countries',
+			'allergens',
+			'additives',
+			'stores',
+			'languages'
+		],
+		charts: [
+			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChart', field: 'nova_group' },
+			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+		]
+	};
+
+	try {
+		const res = await api.search(newParams);
+
+		if (res.error || res.data == null) {
+			console.error('Search API newParams error:', res.error);
+			throw res.error || new Error('No data');
+		}
+		// @ts-expect-error - data is unknown
+		return { data: res.data };
+	} catch (e) {
+		console.warn('search: API failed, falling back to basic facets:', e);
+	}
+
+	const oldParams: SearchBody = {
 		...params,
 		facets: ['brands', 'categories', 'nutrition_grades', 'environmental_score_grade'],
 		charts: [
@@ -92,41 +103,7 @@ async function compatSearch(
 		]
 	};
 
-	try {
-		const res = await fetchWithTimeout(async (signal) => {
-			const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
-				baseFetch(input, { ...init, signal });
-			const api = createSearchApi(abortableFetch);
-			return api.search(newParams);
-		}, 6000);
-
-		if (res.error || res.data == null) {
-			throw res.error || new Error('No data');
-		}
-		// @ts-expect-error - data is unknown
-		return { data: res.data };
-	} catch {
-		console.warn('search: API failed or timed out, falling back to old API');
-	}
-
-	const oldParams = {
-		...params,
-		facets: ['nutrition_grades', 'environmental_score_grade'],
-		charts: [
-			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
-			{ chart_type: 'DistributionChartType', field: 'nova_group' },
-			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
-		]
-	};
-
-	return fetchWithTimeout(async (signal) => {
-		const abortableFetch = (input: RequestInfo | URL, init?: RequestInit) =>
-			baseFetch(input, { ...init, signal });
-		const api = createSearchApi(abortableFetch);
-		// @ts-expect-error - SDK only accepts the new params
-		return api.search(oldParams);
-	}, 6000);
+	return api.search(oldParams);
 }
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
