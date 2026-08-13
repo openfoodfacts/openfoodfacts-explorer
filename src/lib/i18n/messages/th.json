@@ -332,6 +332,12 @@
 			},
 			"allergens": "สารก่อภูมิแพ้",
 			"traces": "สารเจือปน",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "คุณต้องเลือกประเภทสินค้าก่อน!",
 			"main_language": "ภาษาหลักบนฉลากของผลิตภัณฑ์",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "รูปภาพ",
 				"basic_info": "ข้อมูลพื้นฐาน",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ภาษาและชื่อผลิตภัณฑ์",
 				"ingredients": "ส่วนผสม",
@@ -481,6 +490,22 @@
 				"prices": "ราคา",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "ภาษา",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "ห้ามอัพโหลดรูปภาพที่มีลิขสิทธิ์",
 			"legal_warning_photos_1": "อย่าอัปโหลดรูปภาพที่คุณไม่ได้เป็นเจ้าของหรือไม่มีสิทธิ์ การอัปโหลดรูปภาพที่มีลิขสิทธิ์โดยไม่ได้รับอนุญาตถือเป็นสิ่งผิดกฎหมายและอาจส่งผลให้บัญชีของคุณถูกระงับ",
 			"legal_warning_photos_2": "อัปโหลดเฉพาะภาพถ่ายของคุณเองหรือภาพถ่ายที่คุณได้รับอนุญาตอย่างชัดเจนให้ใช้เท่านั้น",
@@ -631,7 +656,9 @@
 		"product_not_found": "ไม่พบสินค้า",
 		"barcode_scanned_not_found": "สแกนบาร์โค้ด {barcode} สำเร็จแล้ว แต่ไม่พบผลิตภัณฑ์ใดๆ ใน Open Food Facts, Open Beauty Facts, Open Products Facts หรือ Open Pet Food Facts ของเรา",
 		"add_new_product": "เพิ่มสินค้าใหม่",
-		"scan_again": "สแกนอีกครั้ง"
+		"scan_again": "สแกนอีกครั้ง",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
