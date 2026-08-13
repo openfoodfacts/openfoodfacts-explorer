@@ -332,6 +332,12 @@
 			},
 			"allergens": "Alergenai",
 			"traces": "Pėdsakai",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Pirmiausia turite pasirinkti produkto tipą!",
 			"main_language": "Pagrindinė kalba",
 			"add_product": "Pridėti produktą",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Nuotraukos",
 				"basic_info": "Pagrindinė informacija",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Kalbos ir produktų pavadinimai",
 				"ingredients": "Sudėtis",
@@ -481,6 +490,22 @@
 				"prices": "Kainos",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Produkto Duomenys",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Kalbos",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Pateikti",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Nekelkite autorių teisių saugomų vaizdų",
 			"legal_warning_photos_1": "Nekelkite nuotraukų, kurios jums nepriklauso arba į kurias neturite teisių. Autorių teisių saugomų vaizdų įkėlimas be leidimo yra neteisėtas ir gali būti užblokuotas jūsų paskyra.",
 			"legal_warning_photos_2": "Įkelkite tik savo nuotraukas arba tas, kurias turite aiškų leidimą naudoti.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produktas nerastas",
 		"barcode_scanned_not_found": "Brūkšninis kodas {barcode} buvo sėkmingai nuskaitytas, bet mūsų atviruose maisto faktuose, atviruose grožio faktuose, atviruose produktų faktuose ar atviruose naminių gyvūnėlių ėdalo faktuose nerasta jokio produkto.",
 		"add_new_product": "Pridėti naują produktą",
-		"scan_again": "Nuskaityti dar kartą"
+		"scan_again": "Nuskaityti dar kartą",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
