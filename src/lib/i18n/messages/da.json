@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergener",
 			"traces": "Spor",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Du skal først vælge en produkttype!",
 			"main_language": "Hovedsprog",
 			"add_product": "Tilføj produkt",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fotos",
 				"basic_info": "Grundlæggende oplysninger",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Sprog og produktnavne",
 				"ingredients": "Ingredienser",
@@ -481,6 +490,22 @@
 				"prices": "Priser",
 				"comment": "Kommentér"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Produktoplysninger",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Sprog",
+				"comment": "Kommentér"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Indsend",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Upload ikke ophavsretligt beskyttede billeder",
 			"legal_warning_photos_1": "Upload ikke billeder, du ikke ejer eller har rettighederne til. Upload af ophavsretligt beskyttede billeder uden tilladelse er ulovligt og kan resultere i, at din konto bliver suspenderet.",
 			"legal_warning_photos_2": "Upload kun dine egne billeder eller billeder, du har udtrykkelig tilladelse til at bruge.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produkt ikke fundet",
 		"barcode_scanned_not_found": "Stregkoden {barcode} blev scannet, men der blev ikke fundet noget produkt i vores Åbne fødevarefakta, Åbne skønhedsfakta, Åbne produktfakta eller Åbne kæledyrsfoderfakta.",
 		"add_new_product": "Tilføj nyt produkt",
-		"scan_again": "Scan igen"
+		"scan_again": "Scan igen",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
