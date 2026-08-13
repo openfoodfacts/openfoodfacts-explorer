@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "መጀመሪያ የምርት አይነት መምረጥ ያስፈልግዎታል!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "ፎቶዎች",
 				"basic_info": "መሰረታዊ መረጃ",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ቋንቋዎች እና የምርት ስሞች",
 				"ingredients": "Ingredients",
@@ -481,6 +490,22 @@
 				"prices": "ዋጋዎች",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "የቅጂ መብት ያላቸው ምስሎችን አይስቀሉ",
 			"legal_warning_photos_1": "በባለቤትነት ያልሆንክ ወይም መብት የሌለህ ፎቶዎችን አትስቀል። ያለፈቃድ የቅጂ መብት ያላቸውን ምስሎች መስቀል ህገወጥ ነው እና መለያዎ እንዲታገድ ሊያደርግ ይችላል።",
 			"legal_warning_photos_2": "የራስዎን ፎቶዎች ብቻ ይስቀሉ ወይም ለመጠቀም ግልጽ ፍቃድ ያለዎትን ብቻ።",
@@ -631,7 +656,9 @@
 		"product_not_found": "ምርት አልተገኘም።",
 		"barcode_scanned_not_found": "ባርኮድ {barcode} በተሳካ ሁኔታ ተቃኝቷል፣ ነገር ግን በእኛ ክፍት የምግብ እውነታዎች ፣ ክፍት የውበት እውነታዎች ፣ ክፍት ምርቶች እውነታዎች ወይም ክፍት የቤት እንስሳት ምግብ እውነታዎች ውስጥ ምንም ምርት አልተገኘም።",
 		"add_new_product": "አዲስ ምርት ያክሉ",
-		"scan_again": "እንደገና ይቃኙ"
+		"scan_again": "እንደገና ይቃኙ",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
