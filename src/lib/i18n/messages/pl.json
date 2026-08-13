@@ -332,6 +332,12 @@
 			},
 			"allergens": "Alergeny",
 			"traces": "Ślady",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Najpierw musisz wybrać typ produktu!",
 			"main_language": "Główny język",
 			"add_product": "Dodaj produkt",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Zdjęcia",
 				"basic_info": "Informacje podstawowe",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Języki i nazwy produktów",
 				"ingredients": "Składniki",
@@ -481,6 +490,22 @@
 				"prices": "Ceny",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Szczegóły produktu",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Języki",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Prześlij",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Nie przesyłaj obrazów objętych prawami autorskimi",
 			"legal_warning_photos_1": "Nie przesyłaj zdjęć, których nie jesteś właścicielem lub do których nie masz praw. Przesyłanie zdjęć chronionych prawem autorskim bez zezwolenia jest nielegalne i może skutkować zawieszeniem konta.",
 			"legal_warning_photos_2": "Możesz przesyłać tylko własne zdjęcia lub takie, na których użycie masz wyraźną zgodę.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produkt nie został znaleziony",
 		"barcode_scanned_not_found": "Kod kreskowy {barcode} został pomyślnie zeskanowany, ale nie znaleziono żadnego produktu w naszych otwartych informacjach o żywności, otwartych informacjach o urodzie, otwartych informacjach o produktach ani otwartych informacjach o karmie dla zwierząt.",
 		"add_new_product": "Dodaj nowy produkt",
-		"scan_again": "Zeskanuj ponownie"
+		"scan_again": "Zeskanuj ponownie",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
