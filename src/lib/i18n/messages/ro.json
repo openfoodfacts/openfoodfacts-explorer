@@ -332,6 +332,12 @@
 			},
 			"allergens": "Alergeni",
 			"traces": "Urme",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Mai întâi trebuie să selectați un tip de produs!",
 			"main_language": "Limba principală",
 			"add_product": "Adaugă produs",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Imagini",
 				"basic_info": "Informații de bază",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Limbi și nume de produse",
 				"ingredients": "Ingrediente",
@@ -481,6 +490,22 @@
 				"prices": "Prețuri",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Detalii ale produsului",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Limbi",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Trimite",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Nu încărcați imagini protejate de drepturi de autor",
 			"legal_warning_photos_1": "Nu încărcați fotografii pe care nu le dețineți sau asupra cărora nu aveți drepturi. Încărcarea de imagini protejate prin drepturi de autor fără permisiune este ilegală și poate duce la suspendarea contului dumneavoastră.",
 			"legal_warning_photos_2": "Încarcă doar propriile fotografii sau doar pe cele pentru care ai permisiunea explicită de a le utiliza.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Produs negăsit",
 		"barcode_scanned_not_found": "Codul de bare {barcode} a fost scanat cu succes, dar nu a fost găsit niciun produs în secțiunile noastre Open Food Information, Open Beauty Information, Open Products Information sau Open Pet Food Information.",
 		"add_new_product": "Adăugați un produs nou",
-		"scan_again": "Scanați din nou"
+		"scan_again": "Scanați din nou",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
