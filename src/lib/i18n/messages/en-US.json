@@ -656,7 +656,9 @@
 		"product_not_found": "Product Not Found",
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
-		"scan_again": "Scan again"
+		"scan_again": "Scan again",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
