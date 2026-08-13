@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergenen",
 			"traces": "Sporen",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "U moet eerst een producttype selecteren!",
 			"main_language": "Hoofdtaal",
 			"add_product": "Artikel toevoegen",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Foto's",
 				"basic_info": "Basisgegevens",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Talen en productnamen",
 				"ingredients": "Ingrediënten",
@@ -481,6 +490,22 @@
 				"prices": "Prijzen",
 				"comment": "Reactie"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Productdetails",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Talen",
+				"comment": "Reactie"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Verzenden",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Upload geen afbeeldingen waarop auteursrecht rust",
 			"legal_warning_photos_1": "Upload geen foto's waarvan u niet de eigenaar bent of waarvoor u geen rechten hebt. Het uploaden van auteursrechtelijk beschermde afbeeldingen zonder toestemming is illegaal en kan leiden tot schorsing van uw account.",
 			"legal_warning_photos_2": "Upload alleen foto's die u zelf heeft gemaakt of waarvoor u expliciet toestemming heeft gekregen om ze te gebruiken.",
@@ -631,7 +656,9 @@
 		"product_not_found": "Product niet gevonden",
 		"barcode_scanned_not_found": "Barcode {barcode} is succesvol gescand, maar er is geen product gevonden in Open Food Facts, Open Beauty Facts, Open Products Facts of Open Pet Food Facts.",
 		"add_new_product": "Nieuw product toevoegen",
-		"scan_again": "Scan opnieuw"
+		"scan_again": "Scan opnieuw",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
