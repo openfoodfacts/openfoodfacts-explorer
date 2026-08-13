@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "நீங்கள் முதலில் ஒரு தயாரிப்பு வகையைத் தேர்ந்தெடுக்க வேண்டும்!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "புகைப்படங்கள்",
 				"basic_info": "அடிப்படைத் தகவல்",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "மொழிகள் & தயாரிப்பு பெயர்கள்",
 				"ingredients": "Ingredients",
@@ -481,6 +490,22 @@
 				"prices": "விலைகள்",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "பதிப்புரிமை பெற்ற படங்களை பதிவேற்ற வேண்டாம்.",
 			"legal_warning_photos_1": "உங்களுக்குச் சொந்தமில்லாத அல்லது உங்களுக்கு உரிமை இல்லாத புகைப்படங்களைப் பதிவேற்ற வேண்டாம். பதிப்புரிமை பெற்ற படங்களை அனுமதியின்றி பதிவேற்றுவது சட்டவிரோதமானது மற்றும் உங்கள் கணக்கு இடைநிறுத்தப்படுவதற்கு வழிவகுக்கும்.",
 			"legal_warning_photos_2": "உங்கள் சொந்த புகைப்படங்களையோ அல்லது நீங்கள் பயன்படுத்த வெளிப்படையான அனுமதி பெற்ற புகைப்படங்களையோ மட்டுமே பதிவேற்றவும்.",
@@ -631,7 +656,9 @@
 		"product_not_found": "தயாரிப்பு கிடைக்கவில்லை",
 		"barcode_scanned_not_found": "பார்கோடு {barcode} வெற்றிகரமாக ஸ்கேன் செய்யப்பட்டது, ஆனால் எங்கள் திறந்த உணவு உண்மைகள், திறந்த அழகு உண்மைகள், திறந்த தயாரிப்புகள் உண்மைகள் அல்லது திறந்த செல்லப்பிராணி உணவு உண்மைகள் ஆகியவற்றில் எந்த தயாரிப்பும் காணப்படவில்லை.",
 		"add_new_product": "புதிய தயாரிப்பைச் சேர்க்கவும்",
-		"scan_again": "மீண்டும் ஸ்கேன் செய்"
+		"scan_again": "மீண்டும் ஸ்கேன் செய்",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
