@@ -332,6 +332,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -470,8 +476,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "आधारभूत जानकारी",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "भाषाहरू र उत्पादन नामहरू",
 				"ingredients": "आवश्यक सामग्रीहरू",
@@ -481,6 +490,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "प्रतिलिपि अधिकार भएका तस्बिरहरू अपलोड नगर्नुहोस्",
 			"legal_warning_photos_1": "आफ्नो स्वामित्व नभएका वा अधिकार नभएका तस्बिरहरू अपलोड नगर्नुहोस्। अनुमति बिना प्रतिलिपि अधिकार भएका तस्बिरहरू अपलोड गर्नु गैरकानूनी हो र यसको परिणामस्वरूप तपाईंको खाता निलम्बन हुन सक्छ।",
 			"legal_warning_photos_2": "केवल आफ्नै फोटोहरू वा प्रयोग गर्न स्पष्ट अनुमति भएका फोटोहरू अपलोड गर्नुहोस्।",
@@ -631,7 +656,9 @@
 		"product_not_found": "उत्पादन फेला परेन",
 		"barcode_scanned_not_found": "बारकोड {barcode} सफलतापूर्वक स्क्यान गरियो, तर हाम्रो खुला खाद्य तथ्यहरू, खुला सौन्दर्य तथ्यहरू, खुला उत्पादन तथ्यहरू वा खुला घरपालुवा जनावरको खाना तथ्यहरूमा कुनै पनि उत्पादन फेला परेन।",
 		"add_new_product": "नयाँ उत्पादन थप्नुहोस्",
-		"scan_again": "फेरि स्क्यान गर्नुहोस्"
+		"scan_again": "फेरि स्क्यान गर्नुहोस्",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
