@@ -46,13 +46,7 @@
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
 		"page_size": "Page size",
-		"advanced_view": "Advanced view",
-		"export_csv": "Export CSV",
-		"export_csv_exporting": "Exporting…",
-		"export_csv_success": "Exported {count} products",
-		"export_csv_truncated": "Exported first {count} of {total} products (limit {limit})",
-		"export_csv_error": "Failed to export search results",
-		"export_csv_limit_hint": "Up to {limit} products from the current filters"
+		"advanced_view": "Advanced view"
 	},
 	"auth": {
 		"username": "Username",
@@ -77,7 +71,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Language",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Currency",
 		"loading": "Loading…",
@@ -157,6 +151,8 @@
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
+		"dev_warning": "Warning: These settings are for development purposes only. Use with caution.",
+		"moderator_mode_help": "Enable advanced moderator tools for managing products and content.",
 		"dev_access_denied": "Access Denied",
 		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
@@ -451,14 +447,14 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
-			"energy": "Energy",
+			"energy": "Calories",
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
-				"sugars": "Sugars",
+				"sugars": "Sugar",
 				"proteins": "Proteins",
 				"salt": "Salt",
 				"fibers": "Fibers",
@@ -579,7 +575,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "View prices on Open Prices",
@@ -662,9 +658,7 @@
 		"product_not_found": "Product Not Found",
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
-		"scan_again": "Scan again",
-		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"scan_again": "Scan again"
 	},
 	"errors": {
 		"network": {
