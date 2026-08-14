@@ -458,7 +458,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									`${$_('compare.nova_group')} ${product.nova_group}`,
 									comparison.isBest
 								)}
 							{/if}
@@ -624,7 +624,7 @@
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
-								`Nova Group ${product.nova_group}`,
+								`${$_('compare.nova_group')} ${product.nova_group}`,
 								comparison.isBest
 							)}
 						{:else}
