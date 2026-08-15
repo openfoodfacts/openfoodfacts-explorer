@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +287,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Product",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "డేటా సోర్సెస్",
+			"prices": "ధరలు",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "మీరు ముందుగా ఉత్పత్తి రకాన్ని ఎంచుకోవాలి!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "ఫోటోలు",
 				"basic_info": "ప్రాథమిక సమాచారం",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "భాషలు & ఉత్పత్తి పేర్లు",
 				"ingredients": "Ingredients",
@@ -466,6 +497,22 @@
 				"prices": "ధరలు",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "కాపీరైట్ ఉన్న చిత్రాలను అప్‌లోడ్ చేయవద్దు.",
 			"legal_warning_photos_1": "మీకు స్వంతం కాని లేదా మీకు హక్కులు లేని ఫోటోలను అప్‌లోడ్ చేయవద్దు. కాపీరైట్ చేయబడిన చిత్రాలను అనుమతి లేకుండా అప్‌లోడ్ చేయడం చట్టవిరుద్ధం మరియు మీ ఖాతా తాత్కాలికంగా నిలిపివేయబడటానికి దారితీయవచ్చు.",
 			"legal_warning_photos_2": "మీ స్వంత ఫోటోలను లేదా మీకు ఉపయోగించడానికి స్పష్టమైన అనుమతి ఉన్న ఫోటోలను మాత్రమే అప్‌లోడ్ చేయండి.",
@@ -616,7 +663,9 @@
 		"product_not_found": "ఉత్పత్తి కనుగొనబడలేదు",
 		"barcode_scanned_not_found": "బార్‌కోడ్ {barcode} విజయవంతంగా స్కాన్ చేయబడింది, కానీ మా ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్, ఓపెన్ బ్యూటీ ఫ్యాక్ట్స్, ఓపెన్ ప్రొడక్ట్స్ ఫ్యాక్ట్స్ లేదా ఓపెన్ పెట్ ఫుడ్ ఫ్యాక్ట్స్‌లో ఏ ఉత్పత్తి కనుగొనబడలేదు.",
 		"add_new_product": "కొత్త ఉత్పత్తిని జోడించండి",
-		"scan_again": "మళ్ళీ స్కాన్ చేయి"
+		"scan_again": "మళ్ళీ స్కాన్ చేయి",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "దశ",
 		"of": "యొక్క",
 		"cancel": "రద్దుచేయి",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +287,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Продукт",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Источники данных",
+			"prices": "Цены",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Аллергены",
 			"traces": "Следы",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Сначала вам необходимо выбрать тип продукта!",
 			"main_language": "Основной язык",
 			"add_product": "Добавить продукт",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Фотографии",
 				"basic_info": "Основная информация",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Языки и названия продуктов",
 				"ingredients": "Ингредиенты",
@@ -466,6 +497,22 @@
 				"prices": "Цены",
 				"comment": "Комментарий"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Информация о товаре",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Языки",
+				"comment": "Комментарий"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Подтвердить",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Не загружайте изображения, защищенные авторским правом.",
 			"legal_warning_photos_1": "Не загружайте фотографии, которые вам не принадлежат или на которые у вас нет прав. Загрузка изображений, защищённых авторским правом, без разрешения является незаконной и может привести к блокировке вашего аккаунта.",
 			"legal_warning_photos_2": "Загружайте только свои собственные фотографии или те, на использование которых у вас есть явное разрешение.",
@@ -616,7 +663,9 @@
 		"product_not_found": "Товар не найден",
 		"barcode_scanned_not_found": "Штрихкод {barcode} был успешно отсканирован, но продукт не найден в разделах Open Food Facts, Open Beauty Facts, Open Products Facts или Open Pet Food Facts.",
 		"add_new_product": "Добавить новый продукт",
-		"scan_again": "Сканировать еще раз"
+		"scan_again": "Сканировать еще раз",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "Шаг",
 		"of": "из",
 		"cancel": "Отмена",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Меню",

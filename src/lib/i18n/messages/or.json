@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +287,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Product",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "ଡାଟା ଉତ୍ସଗୁଡ଼ିକ",
+			"prices": "Prices",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "ମୁଖ୍ୟ ଭାଷା",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "ମୌଳିକ ସୂଚନା",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ଭାଷା ଏବଂ ଉତ୍ପାଦ ନାମ",
 				"ingredients": "Ingredients",
@@ -466,6 +497,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "ଭାଷା",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "କପିରାଇଟ୍ ଥିବା ପ୍ରତିଛବିଗୁଡିକ ଅପଲୋଡ୍ କରନ୍ତୁ ନାହିଁ",
 			"legal_warning_photos_1": "ଏପରି ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ ନାହିଁ ଯାହା ଆପଣଙ୍କର ନୁହେଁ କିମ୍ବା ଯାହାର ଅଧିକାର ଆପଣଙ୍କର ନାହିଁ। ଅନୁମତି ବିନା କପିରାଇଟ୍ ଥିବା ଫଟୋ ଅପଲୋଡ୍ କରିବା ବେଆଇନ ଏବଂ ଏହାର ଫଳସ୍ୱରୂପ ଆପଣଙ୍କ ଆକାଉଣ୍ଟକୁ ନିଲମ୍ବିତ କରାଯାଇପାରେ।",
 			"legal_warning_photos_2": "କେବଳ ଆପଣଙ୍କର ନିଜର ଫଟୋ କିମ୍ବା ବ୍ୟବହାର କରିବାକୁ ଆପଣଙ୍କର ସ୍ପଷ୍ଟ ଅନୁମତି ଥିବା ଫଟୋଗୁଡ଼ିକୁ ଅପଲୋଡ୍ କରନ୍ତୁ।",
@@ -616,7 +663,9 @@
 		"product_not_found": "ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ",
 		"barcode_scanned_not_found": "ବାରକୋଡ୍ {barcode} ସଫଳତାର ସହ ସ୍କାନ କରାଯାଇଥିଲା, କିନ୍ତୁ ଆମର ଖୋଲା ଖାଦ୍ୟ ତଥ୍ୟ, ଖୋଲା ସୌନ୍ଦର୍ଯ୍ୟ ତଥ୍ୟ, ଖୋଲା ଉତ୍ପାଦ ତଥ୍ୟ କିମ୍ବା ଖୋଲା ପେଟ ଖାଦ୍ୟ ତଥ୍ୟରେ କୌଣସି ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ।",
 		"add_new_product": "ନୂତନ ଉତ୍ପାଦ ଯୋଗ କରନ୍ତୁ",
-		"scan_again": "ପୁଣି ସ୍କାନ୍ କରନ୍ତୁ"
+		"scan_again": "ପୁଣି ସ୍କାନ୍ କରନ୍ତୁ",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "ପାଦେ",
 		"of": "ର",
 		"cancel": "Cancel",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

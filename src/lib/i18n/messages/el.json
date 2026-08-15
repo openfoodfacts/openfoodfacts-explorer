@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Βοηθήστε μας να βελτιώσουμε τον Εξερευνητή στο GitHub",
 		"github_help_text": "Βοηθήστε μας να βελτιώσουμε το Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Ρυθμίσεις ανάπτυξης",
 		"moderator_mode": "Λειτουργία Επόπτη",
 		"dev_access_denied": "Δεν επιτρέπεται η πρόσβαση",
@@ -280,7 +287,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Προϊόν",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Πηγές δεδομένων",
+			"prices": "Τιμές",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Αλλεργιογόνα",
 			"traces": "Ίχνη",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Πρέπει πρώτα να επιλέξετε έναν τύπο προϊόντος!",
 			"main_language": "Κύρια γλώσσα",
 			"add_product": "Προσθήκη προϊόντος",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Φωτογραφίες",
 				"basic_info": "Βασικές πληροφορίες",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Γλώσσες & Ονόματα Προϊόντων",
 				"ingredients": "Συστατικά",
@@ -466,6 +497,22 @@
 				"prices": "Τιμές",
 				"comment": "Σχόλιο"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Λεπτομέρειες Προϊόντος",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Γλώσσες",
+				"comment": "Σχόλιο"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Υποβολή",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Μην ανεβάζετε εικόνες με πνευματικά δικαιώματα",
 			"legal_warning_photos_1": "Μην ανεβάζετε φωτογραφίες που δεν σας ανήκουν ή δεν έχετε τα δικαιώματα για αυτές. Η μεταφόρτωση εικόνων που προστατεύονται από πνευματικά δικαιώματα χωρίς άδεια είναι παράνομη και μπορεί να οδηγήσει στην αναστολή του λογαριασμού σας.",
 			"legal_warning_photos_2": "Ανεβάστε μόνο τις δικές σας φωτογραφίες ή εκείνες για τις οποίες έχετε ρητή άδεια χρήσης.",
@@ -616,7 +663,9 @@
 		"product_not_found": "Το Προϊόν Δε Βρέθηκε",
 		"barcode_scanned_not_found": "Ο γραμμωτός κώδικας {barcode} σαρώθηκε με επιτυχία, αλλά δεν βρέθηκε κανένα προϊόν στις κατηγορίες Open Food Facts, Open Beauty Facts, Open Products Facts ή Open Pet Food Facts.",
 		"add_new_product": "Προσθήκη νέου προϊόντος",
-		"scan_again": "Σάρωση ξανά"
+		"scan_again": "Σάρωση ξανά",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "Βήμα",
 		"of": "από",
 		"cancel": "Ακύρωση",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Μενού",

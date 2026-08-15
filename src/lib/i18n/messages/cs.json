@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Pomozte nám vylepšit Průzkumníka na GitHubu",
 		"github_help_text": "Pomozte vylepšit Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
 		"dev_access_denied": "Přístup odepřen",
@@ -280,7 +287,22 @@
 			"never_checked": "Nikdy nekontrolováno",
 			"check_be_first": "Buďte první, kdo zkontroluje tento produkt"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produkt",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Zdroje dat",
+			"prices": "Ceny",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Sbalit vše",
 				"expand_all": "Rozbalit vše"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Alergeny",
 			"traces": "Stopy",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Nejprve musíte vybrat typ produktu!",
 			"main_language": "Hlavní jazyk",
 			"add_product": "Přidat produkt",
 			"nutrition_issues": "Problémy s výživou",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fotky",
 				"basic_info": "Základní informace",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Sledovatelnost a původ",
 				"languages": "Jazyky a názvy produktů",
 				"ingredients": "Složení",
@@ -466,6 +497,22 @@
 				"prices": "Ceny",
 				"comment": "Komentář"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Podrobnosti o výrobku",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Jazyky",
+				"comment": "Komentář"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Odeslat",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Nenahrávejte obrázky chráněné autorskými právy",
 			"legal_warning_photos_1": "Nenahrávejte fotografie, které nevlastníte nebo na které nemáte práva. Nahrávání obrázků chráněných autorskými právy bez povolení je nezákonné a může vést k pozastavení vašeho účtu.",
 			"legal_warning_photos_2": "Nahrávejte pouze své vlastní fotografie nebo ty, k jejichž použití máte výslovné svolení.",
@@ -616,7 +663,9 @@
 		"product_not_found": "Produkt nenalezen",
 		"barcode_scanned_not_found": "Čárový kód {barcode} byl úspěšně naskenován, ale v našich Open Food Facts, Open Beauty Facts, Open Products Facts ani Open Pet Food Facts nebyl nalezen žádný produkt.",
 		"add_new_product": "Přidat nový produkt",
-		"scan_again": "Znovu naskenovat"
+		"scan_again": "Znovu naskenovat",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "Krok",
 		"of": "z",
 		"cancel": "Zrušit",
-		"close": "zavřít"
+		"close": "zavřít",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

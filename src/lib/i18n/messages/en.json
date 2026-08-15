@@ -149,10 +149,15 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
-		"dev_warning": "Warning: These settings are for development purposes only. Use with caution.",
-		"moderator_mode_help": "Enable advanced moderator tools for managing products and content.",
 		"dev_access_denied": "Access Denied",
 		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
 	},
@@ -658,7 +663,9 @@
 		"product_not_found": "Product Not Found",
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
-		"scan_again": "Scan again"
+		"scan_again": "Scan again",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {

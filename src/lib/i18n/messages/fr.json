@@ -40,7 +40,7 @@
 		"advanced_search_classic": "Recherche avancée pour {term} (version classique)",
 		"superset_query": "Lancer une requête",
 		"superset_discover": "Découvrir les tableaux de bord",
-		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_title": "Requête OFF avec SQL",
 		"superset_promo_desc": "Libérez la puissance des données ouvertes ! Explorez la base de données complète d'Open Food Facts en utilisant des requêtes SQL, des graphiques personnalisés et des tableaux de bord partagés.",
 		"prices_badge": "{count} prix",
 		"creation_date": "Date de création",
@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Aidez-nous à améliorer Explorer sur GitHub",
 		"github_help_text": "Aidez-nous à améliorer Open Food Facts Explorer !",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Paramètres de développement",
 		"moderator_mode": "Mode modérateur",
 		"dev_access_denied": "Accès refusé",
@@ -280,7 +287,22 @@
 			"never_checked": "Jamais vérifié",
 			"check_be_first": "Soyez le premier à vérifier ce produit"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produit",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Sources de données",
+			"prices": "Prix",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Tout réduire",
 				"expand_all": "Tout développer"
@@ -317,6 +339,12 @@
 			},
 			"allergens": "Allergènes",
 			"traces": "Traces éventuelles",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Vous devez d'abord sélectionner un type de produit !",
 			"main_language": "Langue principale",
 			"add_product": "Ajouter un produit",
 			"nutrition_issues": "Problèmes nutritionnels",
@@ -455,8 +483,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "Informations de base",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traçabilité & Origines",
 				"languages": "Langues et noms de produits",
 				"ingredients": "Ingrédients",
@@ -466,6 +497,22 @@
 				"prices": "Prix",
 				"comment": "Commentaire"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Détails du produit",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Langue",
+				"comment": "Commentaire"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Envoyer",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ne téléchargez pas d'images protégées par des droits d'auteur",
 			"legal_warning_photos_1": "Ne publiez pas de photos dont vous n'êtes pas propriétaire ou dont vous ne détenez pas les droits. Publier des images protégées par des droits d'auteur sans autorisation est illégal et peut entraîner la suspension de votre compte.",
 			"legal_warning_photos_2": "Téléchargez uniquement vos propres photos ou celles pour lesquelles vous avez l'autorisation explicite d'utiliser.",
@@ -523,24 +570,24 @@
 			"no_prices_found": "Aucun prix trouvé pour ce produit",
 			"loading": "Tarifs de chargement…",
 			"view_prices": "Voir les prix sur Open Prices",
-			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
-			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
-			"loading_map": "Loading prices map…"
+			"kp_subtitle_found": "{count, plural, one {{count} prix} other {{count} prix}} trouvé(s) dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
+			"no_prices_explanation": "Aidez-nous à construire la plus grande base de données Open Prices en ajoutant des informations sur les prix de ce produit.",
+			"loading_map": "Chargement de la carte des prix…"
 		},
 		"knowledge_panels": {
 			"action": {
 				"edit_product": "Modifier le produit",
-				"add_categories": "Add categories",
+				"add_categories": "Ajouter des catégories",
 				"report_product_to_nutripatrol": "Signaler un problème avec ce produit",
 				"add_ingredients_text": "Ajouter le texte des ingrédients",
 				"add_packaging_components": "Ajouter des composants d'emballage",
-				"add_origins": "Add origins of ingredients",
+				"add_origins": "Ajouter les origines des ingrédients",
 				"add_price": "Ajouter un prix sur Open Prices",
 				"view_prices": "Voir les prix sur Open Prices",
-				"add_recycling_instructions": "Add recycling instructions",
-				"add_quantity": "Add quantity",
-				"add_packaging_image": "Add a photo of the packaging",
-				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_recycling_instructions": "Ajouter les instructions de recyclage",
+				"add_quantity": "Ajouter la quantité",
+				"add_packaging_image": "Ajouter une photo de l'emballage",
+				"add_ingredients_image": "Ajouter une photo des ingrédients",
 				"add_nutrition_facts": "Ajouter les informations nutritionnelles"
 			}
 		},
@@ -616,7 +663,9 @@
 		"product_not_found": "Produit non trouvé",
 		"barcode_scanned_not_found": "Le code-barres {barcode} a été scanné avec succès, mais aucun produit n'a été trouvé dans nos Open Food Facts, Open Beauty Facts, Open Products Facts ou Open Pet Food Facts.",
 		"add_new_product": "Ajouter un nouveau produit",
-		"scan_again": "Scannez à nouveau"
+		"scan_again": "Scannez à nouveau",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +681,8 @@
 		"step": "Étape",
 		"of": "de",
 		"cancel": "Annuler",
-		"close": "fermer"
+		"close": "fermer",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",
