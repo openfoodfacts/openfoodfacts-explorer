@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Mag-ambag",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
