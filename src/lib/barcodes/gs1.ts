@@ -49,10 +49,24 @@ export class Gs1Barcode {
 }
 
 function parseGs1DigitalLink(barcode: string): string | null {
-	// Matches /01/ followed by 12 to 14 digits, stopping at a slash, question mark, or end of string
-	const gtinRegex = /\/01\/(\d{12,14})(?=\/|\?|$)/;
-	const match = barcode.match(gtinRegex);
-	return match ? match[1] : null;
+	let url: URL;
+	try {
+		url = new URL(barcode);
+	} catch {
+		return null;
+	}
+
+	if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+		return null;
+	}
+
+	// The primary GTIN key is the path segment immediately following AI 01.
+	// Keep accepting 12- and 13-digit legacy links for backwards compatibility.
+	const pathSegments = url.pathname.split('/').filter(Boolean);
+	const gtinIndex = pathSegments.indexOf('01');
+	const gtin = gtinIndex >= 0 ? pathSegments[gtinIndex + 1] : url.searchParams.get('01');
+
+	return gtin && /^\d{12,14}$/.test(gtin) ? gtin : null;
 }
 
 function validateGS1Checksum(gtin: string): boolean {

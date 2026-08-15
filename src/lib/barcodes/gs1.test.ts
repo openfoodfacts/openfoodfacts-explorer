@@ -65,6 +65,12 @@ describe('Gs1Barcode.parse()', () => {
 			expect(barcode!.gtin).toBe('00012345678905');
 		});
 
+		it('extracts GTIN from a digital link with a fragment', () => {
+			const barcode = Gs1Barcode.parse('https://example.com/01/00012345678905#details');
+			expect(barcode).not.toBeNull();
+			expect(barcode!.code).toBe('00012345678905');
+		});
+
 		it('extracts GTIN from a digital link with additional path segments', () => {
 			const barcode = Gs1Barcode.parse('https://example.com/01/5000159484695/10/ABC');
 			expect(barcode).not.toBeNull();
@@ -97,6 +103,10 @@ describe('Gs1Barcode.parse()', () => {
 
 		it('rejects a URL that is not a GS1 Digital Link', () => {
 			expect(Gs1Barcode.parse('https://example.com/product/123')).toBeNull();
+		});
+
+		it('rejects non-URL text containing a GS1-looking path', () => {
+			expect(Gs1Barcode.parse('not-a-url /01/00012345678905')).toBeNull();
 		});
 	});
 });
