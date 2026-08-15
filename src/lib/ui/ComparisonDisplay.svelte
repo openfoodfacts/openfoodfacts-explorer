@@ -337,18 +337,9 @@
 
 	function getIngredientItems(product: Product): string[] {
 		const ingredientItems: string[] = [];
-		const ingredients = [...(product.ingredients ?? [])].reverse();
-
-		while (ingredients.length > 0) {
-			const ingredient = ingredients.pop();
-			if (!ingredient) continue;
-
-			const ingredientText = ingredient.text?.trim();
-			if (ingredientText) ingredientItems.push(ingredientText);
-
-			if (ingredient.ingredients) {
-				ingredients.push(...[...ingredient.ingredients].reverse());
-			}
+		for (const ingredient of product.ingredients ?? []) {
+			const text = ingredient.text?.trim();
+			if (text) ingredientItems.push(text);
 		}
 
 		const fallbackIngredientText = getIngredientText(product);
