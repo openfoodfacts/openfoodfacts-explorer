@@ -40,37 +40,19 @@
 	let indicatorHeight = $state(0);
 
 	function updateIndicator() {
-		if (!navElement || !activeSection) {
-			indicatorTop = 0;
-			indicatorHeight = 0;
-			return;
+		if (activeSection && navElement) {
+			const activeBtn = navElement.querySelector(
+				`[data-section="${activeSection}"]`
+			) as HTMLElement;
+			if (activeBtn) {
+				indicatorTop = activeBtn.offsetTop;
+				indicatorHeight = activeBtn.offsetHeight;
+			}
 		}
-
-		const activeBtn = Array.from(navElement.querySelectorAll<HTMLElement>('[data-section]')).find(
-			(button) => button.dataset.section === activeSection
-		);
-
-		if (!activeBtn) {
-			indicatorTop = 0;
-			indicatorHeight = 0;
-			return;
-		}
-
-		indicatorTop = activeBtn.offsetTop;
-		indicatorHeight = activeBtn.offsetHeight;
 	}
 
 	$effect(() => {
-		const sectionIds = sections.map((section) => section.id);
-		const nextActiveSection = sectionIds.includes(activeSection)
-			? activeSection
-			: (sectionIds[0] ?? '');
-
-		if (activeSection !== nextActiveSection) {
-			activeSection = nextActiveSection;
-		}
-
-		if (navElement) {
+		if (activeSection && navElement) {
 			updateIndicator();
 		}
 	});
@@ -161,11 +143,11 @@
 	}
 
 	onMount(() => {
-		let ticking = false;
-		const resizeObserver = new ResizeObserver(updateIndicator);
-		if (navElement) {
-			resizeObserver.observe(navElement);
+		if (!activeSection && sections.length > 0) {
+			activeSection = sections[0].id;
 		}
+
+		let ticking = false;
 
 		function handleScroll() {
 			if (!ticking) {
@@ -178,6 +160,7 @@
 		}
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', updateIndicator, { passive: true });
 
 		const timer = setTimeout(() => {
 			updateActiveSection();
@@ -186,8 +169,8 @@
 		return () => {
 			clearTimeout(timer);
 			clearTimeout(observerTimeout);
-			resizeObserver.disconnect();
 			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', updateIndicator);
 		};
 	});
 </script>
@@ -237,10 +220,10 @@
 					type="button"
 					data-section={section.id}
 					aria-controls={section.id}
-					aria-current={activeSection === section.id ? 'location' : undefined}
+					aria-current={activeSection === section.id ? 'true' : 'false'}
 					onclick={() => handleSectionClick(section.id)}
 					class={[
-						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none',
 						activeSection === section.id
 							? section.style === 'warning'
 								? 'font-semibold text-warning'
@@ -252,10 +235,7 @@
 				>
 					{#if section.icon}
 						{@const Icon = section.icon}
-						<Icon
-							aria-hidden="true"
-							class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
-						/>
+						<Icon class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
 					{/if}
 					<span>{section.label}</span>
 				</button>
@@ -268,13 +248,10 @@
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
-		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:flex"
+		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content lg:flex"
 		title={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 		aria-label={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 	>
-		<IconMdiChevronRight
-			aria-hidden="true"
-			class="h-4 w-4 transition-transform duration-200 group-hover:scale-125"
-		/>
+		<IconMdiChevronRight class="h-4 w-4 transition-transform duration-200 group-hover:scale-125" />
 	</button>
 {/if}
