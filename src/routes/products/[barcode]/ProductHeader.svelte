@@ -203,7 +203,7 @@
 
 				<!-- Action Toolbar -->
 				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
-					{#each productActions as action}
+					{#each productActions as action (action.id)}
 						{#if action.visible}
 							{#if action.id === 'classic'}
 								<a
@@ -393,7 +393,7 @@
 </Card>
 
 {#if editActionsOpen}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-base-content/50 p-4">
 		<div class="w-full max-w-2xl rounded-3xl bg-base-100 shadow-2xl">
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b border-base-300 p-4">
@@ -415,7 +415,7 @@
 					<div
 						animate:flip={{ duration: 250 }}
 						class="flex items-center gap-3 rounded-2xl bg-base-200 p-3"
-						class:opacity-45={!action.visible}
+						class:opacity-50={!action.visible}
 					>
 						<!-- Visibility -->
 						<button
