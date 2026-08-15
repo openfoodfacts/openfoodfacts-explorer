@@ -86,6 +86,14 @@
 		"stay_updated": "Blijf op de hoogte",
 		"contribute": "Bijdragen",
 		"discover_title": "Ontdek ons project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Product Facts"
+		},
 		"tagline": "Een gezamenlijke, gratis en open database met voedingsproducten.",
 		"tagline_break": "van over de hele wereld.",
 		"decorative_alt": "Een decoratieve grafiek",
