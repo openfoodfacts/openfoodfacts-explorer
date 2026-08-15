@@ -149,6 +149,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Aidez-nous à améliorer Explorer sur GitHub",
 		"github_help_text": "Aidez-nous à améliorer Open Food Facts Explorer !",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Paramètres de développement",
 		"moderator_mode": "Mode modérateur",
 		"dev_access_denied": "Accès refusé",
