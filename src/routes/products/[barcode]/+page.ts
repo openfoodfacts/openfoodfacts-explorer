@@ -112,9 +112,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		? folkApi.getKeys().then((it) => it.data)
 		: Promise.resolve([]);
 
-	const pricesApi = createPricesApi(fetch);
 	const pricesResponse = isPriceConfigured()
-		? getPricesCoords(pricesApi, params.barcode)
+		? getPricesCoords(createPricesApi(fetch), params.barcode)
 		: Promise.resolve(null);
 
 	const defaultPreferences = (async () => {

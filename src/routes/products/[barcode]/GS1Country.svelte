@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { _ } from '$lib/i18n';
 	import Card from '$lib/ui/Card.svelte';
 
 	interface Props {
@@ -7,7 +8,7 @@
 
 	let { barcode }: Props = $props();
 
-	const gs1Country: Array<{ name: string; prefixes: number[]; code: string }> = [
+	const gs1Allocations: Array<{ name: string; prefixes: number[]; code: string }> = [
 		{ name: 'USA and Canada', prefixes: [0], code: 'US-CA' },
 		{ name: 'USA', prefixes: [1], code: 'US' },
 		{ name: 'France and Monaco', prefixes: [30, 31, 32, 33, 34, 35, 36, 37], code: 'FR-MC' },
@@ -130,28 +131,28 @@
 		{ name: 'Refund receipts', prefixes: [980], code: '' }
 	];
 
-	function getCountry(barcode: string) {
+	function getAllocation(barcode: string) {
 		// Try with the first 3 digits
 		let prefix = parseInt(barcode.slice(0, 3));
-		for (const country of gs1Country) {
-			if (country.prefixes.includes(prefix)) {
-				return country;
+		for (const allocation of gs1Allocations) {
+			if (allocation.prefixes.includes(prefix)) {
+				return allocation;
 			}
 		}
 
 		// Try with the first 2 digits
 		prefix = parseInt(barcode.slice(0, 2));
-		for (const country of gs1Country) {
-			if (country.prefixes.includes(prefix)) {
-				return country;
+		for (const allocation of gs1Allocations) {
+			if (allocation.prefixes.includes(prefix)) {
+				return allocation;
 			}
 		}
 
 		// Try with the first digit
 		prefix = parseInt(barcode.slice(0, 1));
-		for (const country of gs1Country) {
-			if (country.prefixes.includes(prefix)) {
-				return country;
+		for (const allocation of gs1Allocations) {
+			if (allocation.prefixes.includes(prefix)) {
+				return allocation;
 			}
 		}
 
@@ -172,37 +173,79 @@
 			.join('');
 	}
 
-	let country = $derived(getCountry(barcode));
+	let allocation = $derived(getAllocation(barcode));
 </script>
 
 <Card>
-	<h1 class="my-4 text-2xl font-bold sm:text-4xl">Barcode information</h1>
+	<h1 class="my-4 text-2xl font-bold sm:text-4xl">
+		{$_('product.gs1.title', { default: 'GS1 barcode information' })}
+	</h1>
 
-	<div>
-		<div class="flex items-center gap-2">
-			<div class="text-xl sm:text-3xl">{getFlagEmoji(country.code)}</div>
-			<p class="sm:text-md text-xs">
-				<strong>GS1 Country:</strong>
-				{country.name}
+	<div class="space-y-4 text-sm sm:text-base">
+		<p>
+			{$_('product.gs1.intro', {
+				default:
+					'GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.'
+			})}
+			<em class="ml-1 text-base-content/70">
+				{$_('product.gs1.important', {
+					default:
+						'This does not indicate where the product was manufactured or its country of origin.'
+				})}
+			</em>
+		</p>
+
+		<div class="rounded-lg border border-base-300 bg-base-200 p-4">
+			<h2 class="mb-2 font-semibold">
+				{$_('product.gs1.prefix_title', { default: 'Prefix allocation' })}
+			</h2>
+			<div class="flex items-center gap-2">
+				{#if allocation.code}
+					<div class="text-xl sm:text-3xl" aria-hidden="true">{getFlagEmoji(allocation.code)}</div>
+				{/if}
+				<p>
+					<strong>{$_('product.gs1.prefix_label', { default: 'Registered through:' })}</strong>
+					{allocation.name}
+				</p>
+			</div>
+			<p class="mt-2 text-sm text-base-content/70">
+				{$_('product.gs1.prefix_note', {
+					default:
+						'The location shown here refers to the GS1 registration, not the product’s origin.'
+				})}
 			</p>
 		</div>
 
-		<div class="my-4">
+		<div>
+			<h2 class="mb-2 font-semibold">
+				{$_('product.gs1.verified_title', { default: 'More information' })}
+			</h2>
+			<p>
+				{$_('product.gs1.verified_description', {
+					default:
+						'Verified by GS1 may provide more information about the company and product linked to this barcode.'
+				})}
+			</p>
+		</div>
+
+		<div>
 			<a
 				class="btn btn-secondary"
 				href="https://www.gs1.org/services/verified-by-gs1/results?gtin={barcode}"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				Get more information from GS1
+				{$_('product.gs1.verified_link', { default: 'View this barcode on GS1' })}
 			</a>
 		</div>
-		<p class="mt-4 text-end text-sm text-secondary italic">
-			Source: <a
+		<p class="text-end text-sm text-secondary italic">
+			{$_('product.gs1.source_label', { default: 'Source:' })}
+			<a
 				class="link"
 				href="https://www.gs1.org/standards/id-keys/company-prefix"
 				target="_blank"
-				rel="noopener noreferrer">GS1</a
+				rel="noopener noreferrer"
+				>{$_('product.gs1.source_link', { default: 'GS1 prefix standards' })}</a
 			>
 		</p>
 	</div>

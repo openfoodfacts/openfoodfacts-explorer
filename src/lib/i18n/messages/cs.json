@@ -86,6 +86,14 @@
 		"stay_updated": "Zůstaňte v obraze",
 		"contribute": "Přispět",
 		"discover_title": "Objevte náš projekt",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "Kolaborativní, bezplatná a otevřená databáze potravinářských produktů",
 		"tagline_break": "z celého světa.",
 		"decorative_alt": "Dekorativní grafika",
