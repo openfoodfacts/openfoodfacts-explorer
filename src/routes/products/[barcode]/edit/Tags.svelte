@@ -7,10 +7,11 @@
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
+		placeholder?: string;
 		onChange?: (tags: string[]) => void;
 	};
 
-	let { tags = $bindable([]), autocomplete = [], onChange }: Props = $props();
+	let { tags = $bindable([]), autocomplete = [], placeholder, onChange }: Props = $props();
 
 	let autoCompleteFuse = $derived(new Fuse(autocomplete, { threshold: 0.2 }));
 	let autoCompleteIndex = $state(-1);
@@ -234,6 +235,7 @@
 		<input
 			type="text"
 			class="input-bordered input w-full bg-transparent outline-hidden"
+			{placeholder}
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>
