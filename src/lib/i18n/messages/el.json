@@ -86,6 +86,14 @@
 		"stay_updated": "Μείνετε ενημερωμένοι",
 		"contribute": "Συμβάλλετε",
 		"discover_title": "Ανακαλύψτε το Έργο μας",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Ανοιχτά Γεγονότα Ομορφιάς",
+			"open_pet_food_facts": "Ανοίξτε τα στοιχεία για τις τροφές για κατοικίδια",
+			"open_products_facts": "Ανοιχτά στοιχεία για τα προϊόντα"
+		},
 		"tagline": "Μια συνεργατική, ελεύθερη και ανοικτή βάση δεδομένων των προϊόντων διατροφής",
 		"tagline_break": "από όλο τον κόσμο.",
 		"decorative_alt": "Ένα διακοσμητικό γραφικό",

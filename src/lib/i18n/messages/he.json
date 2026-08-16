@@ -86,6 +86,14 @@
 		"stay_updated": "עדכונים שימושיים",
 		"contribute": "לתרום",
 		"discover_title": "חשיפת המיזם שלנו",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "מסד נתונים שיתופי, חופשי ופתוח של מוצרי",
 		"tagline_break": "מזון מכל רחבי העולם.",
 		"decorative_alt": "A decorative graphic",
@@ -150,11 +158,11 @@
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"admin_tools": {
-			"title": "Admin tools",
-			"description": "Useful links for Open Food Facts administrators",
-			"organization_table": "Organization table",
-			"recent_changes": "Recent changes",
-			"top_translators": "Top translators"
+			"title": "כלי ניהול",
+			"description": "קישורים שימושיים למנהלי Open Food Facts",
+			"organization_table": "טבלת ארגון",
+			"recent_changes": "שינויים אחרונים",
+			"top_translators": "מתרגמים מובילים"
 		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
