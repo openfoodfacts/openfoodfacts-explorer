@@ -11,6 +11,7 @@ import { requireInt } from '$lib/utils';
 import { getBulkProductAttributes } from '$lib/api';
 import { getTaxo } from '$lib/api/taxonomy/api';
 import { getOrDefault } from '$lib/api/taxonomy/types';
+import { getLocale } from '$lib/i18n';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
@@ -18,12 +19,10 @@ type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 
-	let facetDisplayValue = value;
+	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
 
-	if (facet === 'origins' || facet === 'countries') {
-		const taxonomy = await getTaxo(facet, fetch);
-		facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}) ?? value;
-	}
+	let facetDisplayValue = value;
+	let taxonomy: Awaited<ReturnType<typeof getTaxo>> | null = null;
 
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
@@ -54,6 +53,10 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	let distributionData = null;
 
 	try {
+		if (facet === 'origins' || facet === 'countries') {
+			taxonomy = await getTaxo(facet, fetch);
+			facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}, lang) ?? value;
+		}
 		results = await getFacetValue(fetch, facet, value, searchOptions);
 		kp = await getFacetKnowledgePanels(fetch, facet, value);
 
@@ -79,16 +82,14 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 					}
 				});
 
-				const taxonomy = await getTaxo(facet, fetch);
-
 				const mappedTags = Object.entries(tagCounts).map(([id, count]) => {
-					const taxoNode = taxonomy[id];
+					const taxoNode = taxonomy?.[id];
 
 					return {
 						id,
 						products: count,
 						known: 1,
-						name: taxoNode?.name ? (getOrDefault(taxoNode.name) ?? id) : id
+						name: taxoNode?.name ? (getOrDefault(taxoNode.name, lang) ?? id) : id
 					};
 				});
 

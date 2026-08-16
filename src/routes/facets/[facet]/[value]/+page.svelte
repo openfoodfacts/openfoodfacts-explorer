@@ -50,7 +50,13 @@
 {#if distributionData && MapComponent}
 	<div class="my-8 w-full">
 		<h2 class="mb-4 text-2xl font-bold">
-			{facet.name === 'origins' ? 'Origins of the ingredients' : 'Where these products are sold'}
+			{facet.name === 'origins'
+				? $_('facets.map_heading_origins', {
+						default: 'Origins of the ingredients'
+					})
+				: $_('facets.map_heading_countries', {
+						default: 'Where these products are sold'
+					})}
 		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
