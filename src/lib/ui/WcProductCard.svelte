@@ -4,14 +4,7 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import {
-		createProductsApi,
-		getTaxo,
-		getOrDefault,
-		type Brand,
-		type Taxonomy,
-		stripTaxonomyPrefix
-	} from '$lib/api';
+	import { createProductsApi, stripTaxonomyPrefix } from '$lib/api';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -33,38 +26,40 @@ Wraps the <product-card> web component and adds accessibility features.
 
 	let { lang } = $derived($preferences);
 
-	let brandsTaxonomy = $state<Taxonomy<Brand> | null>(null);
+	/**
+	 * The API already ships display ready brand names in language suffixed fields
+	 * (`brands_tags_fr`, `brands_tags_en`, ...), so the card can localize without
+	 * downloading the brands taxonomy. Fetching it here would repeat the same
+	 * request for every card rendered in a grid.
+	 */
+	function getLocalizedBrandsTags(): string[] | undefined {
+		const rawProduct = product as unknown as Record<string, unknown>;
 
-	$effect(() => {
-		const p = product as Product;
-		if (p.brands_tags && p.brands_tags.length > 0) {
-			getTaxo<Brand>('brands', fetch)
-				.then((t) => (brandsTaxonomy = t))
-				.catch(console.error);
+		if (lang) {
+			const langTags = rawProduct[`brands_tags_${lang.toLowerCase()}`];
+			if (Array.isArray(langTags) && langTags.length > 0) return langTags as string[];
 		}
-	});
+
+		const enTags = rawProduct['brands_tags_en'];
+		if (Array.isArray(enTags) && enTags.length > 0) return enTags as string[];
+
+		return undefined;
+	}
 
 	let sanitizedProduct = $derived.by(() => {
 		const p = product as Product;
-		const taxo = brandsTaxonomy;
+		const localizedTags = getLocalizedBrandsTags();
 		let brandsTags = p.brands_tags;
 		let brandsStr: string | undefined;
 
-		if (taxo && brandsTags && Array.isArray(brandsTags)) {
-			const localizedTags = brandsTags.map((tag) => {
-				const localized = taxo[tag] ? getOrDefault(taxo[tag].name, lang) : null;
-				return localized ?? stripTaxonomyPrefix(tag);
-			});
-			brandsStr = localizedTags.join(', ');
-			brandsTags = localizedTags;
+		if (brandsTags && Array.isArray(brandsTags)) {
+			brandsTags = brandsTags.map((tag, idx) => localizedTags?.[idx] ?? stripTaxonomyPrefix(tag));
+			brandsStr = brandsTags.join(', ');
 		} else {
 			brandsStr = p.brands
 				?.split(',')
 				.map((b: string) => stripTaxonomyPrefix(b.trim()))
 				.join(', ');
-			if (brandsTags && Array.isArray(brandsTags)) {
-				brandsTags = brandsTags.map(stripTaxonomyPrefix);
-			}
 		}
 
 		return {
