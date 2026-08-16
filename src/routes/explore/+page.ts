@@ -6,7 +6,7 @@ import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 export const load: PageLoad = async ({ fetch }) => {
 	const api = createSearchApi(fetch);
 
-	// Example: fetch some popular categories (replace with real API call as needed)
+	// Fetch some popular categories for the Explore landing page.
 	const categories = [
 		'Snacks',
 		'Beverages',
@@ -20,11 +20,11 @@ export const load: PageLoad = async ({ fetch }) => {
 		'Sauces'
 	];
 
-	// For each category, fetch a few products (limit to 4 per category for demo)
+	// For each category, fetch a few popular products.
 	const sections = await Promise.all(
 		categories.map(async (cat) => {
 			const { data: searchRes, error: searchError } = (await api.search({
-				q: `categories:(${cat.toLowerCase()})`,
+				q: `categories:"en:${cat.toLowerCase()}"`,
 				page_size: 6,
 				langs: ['en'],
 				page: 1,
