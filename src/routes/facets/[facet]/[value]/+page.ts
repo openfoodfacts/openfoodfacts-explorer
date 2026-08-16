@@ -9,12 +9,21 @@ import {
 import type { PageLoad } from './$types';
 import { requireInt } from '$lib/utils';
 import { getBulkProductAttributes } from '$lib/api';
+import { getTaxo } from '$lib/api/taxonomy/api';
+import { getOrDefault } from '$lib/api/taxonomy/types';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
+
+	let facetDisplayValue = value;
+
+	if (facet === 'origins' || facet === 'countries') {
+		const taxonomy = await getTaxo(facet, fetch);
+		facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}) ?? value;
+	}
 
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
@@ -53,21 +62,35 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 			productAttributes = await getBulkProductAttributes(fetch, productCodes);
 
 			if (facet === 'origins' || facet === 'countries') {
-				const countryCounts: Record<string, number> = {};
+				const tagCounts: Record<string, number> = {};
+
 				results.products.forEach((product) => {
-					if (Array.isArray(product.countries_tags)) {
-						product.countries_tags.forEach((tag: string) => {
-							countryCounts[tag] = (countryCounts[tag] || 0) + 1;
+					const tags = facet === 'origins' ? product.origins_tags : product.countries_tags;
+
+					if (Array.isArray(tags)) {
+						tags.forEach((tag) => {
+							const tagId =
+								typeof tag === 'string' ? tag : typeof tag.id === 'string' ? tag.id : undefined;
+
+							if (tagId) {
+								tagCounts[tagId] = (tagCounts[tagId] || 0) + 1;
+							}
 						});
 					}
 				});
 
-				const mappedTags = Object.entries(countryCounts).map(([id, count]) => ({
-					id,
-					products: count,
-					known: 1,
-					name: id
-				}));
+				const taxonomy = await getTaxo(facet, fetch);
+
+				const mappedTags = Object.entries(tagCounts).map(([id, count]) => {
+					const taxoNode = taxonomy[id];
+
+					return {
+						id,
+						products: count,
+						known: 1,
+						name: taxoNode?.name ? (getOrDefault(taxoNode.name) ?? id) : id
+					};
+				});
 
 				if (mappedTags.length > 0) {
 					distributionData = { count: mappedTags.length, tags: mappedTags };
@@ -80,7 +103,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 
 	return {
 		searchOptions,
-		facet: { name: facet, value },
+		facet: { name: facet, value: facetDisplayValue },
 		results: results,
 		knowledgePanels: kp.knowledge_panels || {},
 		productAttributes,

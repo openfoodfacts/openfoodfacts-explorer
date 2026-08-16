@@ -49,7 +49,9 @@
 
 {#if distributionData && MapComponent}
 	<div class="my-8 w-full">
-		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<h2 class="mb-4 text-2xl font-bold">
+			{facet.name === 'origins' ? 'Origins of the ingredients' : 'Where these products are sold'}
+		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
 			Note: The geographic distribution shown on this map is based only on the products visible on
