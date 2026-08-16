@@ -51,18 +51,51 @@
 
 	const calculatorAction: ProductAction = {
 		id: 'calculator',
-		label: 'Calculator',
+		label: $_('product.actions.calculator', { default: 'Calculator' }),
 		visible: true
 	};
 
 	let productActions = $state<ProductAction[]>([
-		{ id: 'classic', label: 'Classic view', visible: true },
-		{ id: 'edit', label: 'Edit', visible: true },
-		{ id: 'share', label: 'Share', visible: true },
-		{ id: 'report', label: 'Report problem', visible: true },
-		...($userInfo != null ? [calculatorAction] : []),
-		{ id: 'compare', label: 'Compare', visible: true }
+		{
+			id: 'classic',
+			label: $_('product.buttons.classic_view', { default: 'Classic view' }),
+			visible: true
+		},
+		{
+			id: 'edit',
+			label: $_('product.buttons.edit', { default: 'Edit' }),
+			visible: true
+		},
+		{
+			id: 'share',
+			label: $_('product.buttons.share', { default: 'Share' }),
+			visible: true
+		},
+		{
+			id: 'report',
+			label: $_('product.actions.report_problem', { default: 'Report problem' }),
+			visible: true
+		},
+		{
+			id: 'compare',
+			label: $_('product.buttons.compare', { default: 'Compare' }),
+			visible: true
+		}
 	]);
+
+	$effect(() => {
+		const calculatorIndex = productActions.findIndex((action) => action.id === 'calculator');
+
+		if ($userInfo != null && calculatorIndex === -1) {
+			const compareIndex = productActions.findIndex((action) => action.id === 'compare');
+
+			productActions.splice(compareIndex === -1 ? productActions.length : compareIndex, 0, {
+				...calculatorAction
+			});
+		} else if ($userInfo == null && calculatorIndex !== -1) {
+			productActions.splice(calculatorIndex, 1);
+		}
+	});
 
 	function getLocalizedTags(facet: string): string[] | undefined {
 		const rawProduct = product as unknown as Record<string, unknown>;
@@ -276,8 +309,8 @@
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
 						onclick={() => (editActionsOpen = true)}
-						title="Edit actions"
-						aria-label="Edit actions"
+						title={$_('product.actions.edit_actions', { default: 'Edit actions' })}
+						aria-label={$_('product.actions.edit_actions', { default: 'Edit actions' })}
 					>
 						<IconMdiTune class="h-5 w-5" />
 					</button>
@@ -393,17 +426,19 @@
 </Card>
 
 {#if editActionsOpen}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-base-content/50 p-4">
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-base-content/15 p-4">
 		<div class="w-full max-w-2xl rounded-3xl bg-base-100 shadow-2xl">
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b border-base-300 p-4">
-				<h2 class="text-xl font-bold">Edit actions</h2>
+				<h2 class="text-xl font-bold">
+					{$_('product.actions.edit_actions', { default: 'Edit actions' })}
+				</h2>
 
 				<button
 					class="btn btn-circle bg-base-content/15 hover:bg-base-content/20"
 					onclick={() => (editActionsOpen = false)}
-					aria-label="Close edit actions"
-					title="Close"
+					aria-label={$_('product.actions.close_edit_actions', { default: 'Close edit actions' })}
+					title={$_('common.close', { default: 'Close' })}
 				>
 					<IconMdiClose class="h-6 w-6" />
 				</button>
@@ -422,8 +457,24 @@
 							class="btn btn-circle shrink-0 btn-ghost"
 							class:text-error={!action.visible}
 							onclick={() => toggleAction(action.id)}
-							aria-label={action.visible ? `Hide ${action.label}` : `Show ${action.label}`}
-							title={action.visible ? `Hide ${action.label}` : `Show ${action.label}`}
+							aria-label={action.visible
+								? $_('product.actions.hide', {
+										values: { action: action.label },
+										default: 'Hide {action}'
+									})
+								: $_('product.actions.show', {
+										values: { action: action.label },
+										default: 'Show {action}'
+									})}
+							title={action.visible
+								? $_('product.actions.hide', {
+										values: { action: action.label },
+										default: 'Hide {action}'
+									})
+								: $_('product.actions.show', {
+										values: { action: action.label },
+										default: 'Show {action}'
+									})}
 						>
 							{#if action.visible}
 								<IconMdiEye class="h-6 w-6" />
@@ -457,8 +508,14 @@
 								class="btn btn-circle bg-base-content/10 btn-sm hover:bg-base-content/20"
 								disabled={!action.visible || index === 0 || !productActions[index - 1]?.visible}
 								onclick={() => moveAction(action.id, -1)}
-								aria-label={`Move ${action.label} up`}
-								title="Move up"
+								aria-label={$_('product.actions.move_up', {
+									values: { action: action.label },
+									default: 'Move {action} up'
+								})}
+								title={$_('product.actions.move_up', {
+									values: { action: action.label },
+									default: 'Move {action} up'
+								})}
 							>
 								<IconMdiChevronUp class="h-5 w-5" />
 							</button>
@@ -468,8 +525,14 @@
 									index === productActions.length - 1 ||
 									!productActions[index + 1]?.visible}
 								onclick={() => moveAction(action.id, 1)}
-								aria-label={`Move ${action.label} down`}
-								title="Move down"
+								aria-label={$_('product.actions.move_down', {
+									values: { action: action.label },
+									default: 'Move {action} down'
+								})}
+								title={$_('product.actions.move_down', {
+									values: { action: action.label },
+									default: 'Move {action} down'
+								})}
 							>
 								<IconMdiChevronDown class="h-5 w-5" />
 							</button>
