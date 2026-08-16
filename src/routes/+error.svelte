@@ -33,13 +33,13 @@
 			<h1 class="mb-4 text-4xl font-bold">
 				{$_('general.page_not_found', { default: 'Page Not Found' })}
 			</h1>
-			<p class="text-base-content/70 mb-8 text-lg">
+			<p class="mb-8 text-lg text-base-content/70">
 				{$_('general.page_not_found_desc', {
 					default: "We looked everywhere, but we couldn't find the page you requested."
 				})}
 			</p>
 			<div class="flex justify-center gap-4">
-				<a href="/" class="btn btn-primary btn-lg">
+				<a href="/" class="btn btn-lg btn-primary">
 					{$_('general.return_home', { default: 'Return Home' })}
 				</a>
 			</div>

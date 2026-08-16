@@ -15,6 +15,7 @@
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { trackOffEvent } from '$lib/analytics';
 	import { userInfo } from '$lib/stores/user';
 
 	type PhotoType = { id: string; label: string };
@@ -85,7 +86,8 @@
 				return;
 			}
 
-			if (uploadResult.data?.status === 'success') {
+			const status = uploadResult.data?.status;
+			if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here
 					// to access the uploaded images
@@ -98,7 +100,25 @@
 						firstImageKey && uploadedImages ? uploadedImages[firstImageKey]?.imgid : null;
 
 					if (imgid) {
-						toast.success($_('product.edit.images.toast.upload_success'));
+						const isDuplicate =
+							uploadResult.data.warnings?.[0]?.message?.id === 'image_already_uploaded';
+
+						if (isDuplicate) {
+							toast.warning(
+								$_('product.edit.images.toast.already_uploaded', {
+									default:
+										'This image was already uploaded; reusing the existing photo to replace the active one.'
+								})
+							);
+						} else {
+							toast.success(
+								$_('product.edit.images.toast.upload_success', {
+									default: 'Image uploaded successfully.'
+								})
+							);
+						}
+
+						trackOffEvent('product', 'upload_image', sectionType.id);
 						onImageUploaded(imgid);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
@@ -138,6 +158,7 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
+				trackOffEvent('product', 'unselect_image', sectionType.id);
 				await invalidateAll();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -181,38 +202,51 @@
 				disabled={isUploading}
 				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
-			<button
-				type="button"
-				class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
-				class:loading={isUploading}
-				disabled={isUploading}
-				onclick={() => triggerFileInput(inputId)}
-			>
-				{#if isUploading}
-					<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
-					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
-					>
-				{:else}
-					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
-					<span class="text-xs sm:text-sm"
-						>{$_('product.edit.images.upload_type', {
-							values: { type: sectionType.label },
-							default: 'Upload ' + sectionType.label
-						})}</span
-					>
-				{/if}
-			</button>
+			{#if !(isStandardType && hasImagesOfType)}
+				<button
+					type="button"
+					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
+					class:loading={isUploading}
+					disabled={isUploading}
+					onclick={() => triggerFileInput(inputId)}
+				>
+					{#if isUploading}
+						<span class="loading h-3 w-3 loading-spinner sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.uploading', { default: 'Uploading...' })}</span
+						>
+					{:else}
+						<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.upload_type', {
+								values: { type: sectionType.label },
+								default: 'Upload ' + sectionType.label
+							})}</span
+						>
+					{/if}
+				</button>
+			{/if}
 			{#if isStandardType && hasImagesOfType}
 				<button
 					type="button"
-					class="btn btn-xs sm:btn-sm btn-outline btn-error w-full sm:w-auto"
+					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
+					disabled={isUploading || isUnselecting}
+					onclick={() => triggerFileInput(inputId)}
+				>
+					<IconMdiUpload class="h-3 w-3 sm:h-4 sm:w-4" />
+					<span class="text-xs sm:text-sm"
+						>{$_('product.edit.images.replace', { default: 'Replace' })}</span
+					>
+				</button>
+				<button
+					type="button"
+					class="btn w-full btn-outline btn-error btn-xs sm:w-auto sm:btn-sm"
 					class:loading={isUnselecting}
 					disabled={isUploading || isUnselecting}
 					onclick={() => handleImageUnselect()}
 				>
 					{#if isUnselecting}
-						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="loading h-3 w-3 loading-spinner sm:h-4 sm:w-4"></span>
 						<span class="text-xs sm:text-sm"
 							>{$_('product.edit.images.unselecting', { default: 'Unselecting...' })}</span
 						>
@@ -230,7 +264,7 @@
 			{#if hasMoreImages}
 				<button
 					type="button"
-					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
 					disabled={isUploading}
 					onclick={() => onToggleExpansion(sectionType.label)}
 				>
@@ -246,6 +280,14 @@
 			{/if}
 		</div>
 	</div>
+
+	{#if imagesOfType.length === 0}
+		<div class="alert justify-center alert-dash">
+			{$_('product.edit.images.section_no_photos', {
+				default: 'No photo selected for this section yet.'
+			})}
+		</div>
+	{/if}
 	{#if imagesOfType.length > 0}
 		<div class="relative">
 			<div
@@ -278,7 +320,7 @@
 							class="absolute top-1 right-1 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
 						>
 							<a
-								class="btn btn-circle btn-xs bg-base-100/80 hover:bg-base-100 text-base-content border-none"
+								class="btn btn-circle border-none bg-base-100/80 text-base-content btn-xs hover:bg-base-100"
 								href={IMAGE_REPORT_URL(product.code, image.imgid)}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -290,12 +332,12 @@
 							</a>
 						</div>
 
-						<p class="text-base-content/70 mt-1 line-clamp-1 text-center text-xs">
+						<p class="mt-1 line-clamp-1 text-center text-xs text-base-content/70">
 							<a href={resolve('/users/[user]', { user: image.uploader })} class="hover:underline">
 								{image.uploader}
 							</a>
 						</p>
-						<p class="text-base-content/50 mt-0.5 line-clamp-1 text-center text-xs">
+						<p class="mt-0.5 line-clamp-1 text-center text-xs text-base-content/50">
 							{getDateFormatter({
 								dateStyle: 'medium',
 								timeStyle: 'medium'
@@ -308,11 +350,11 @@
 			<!-- Upload/Unselect loading overlay -->
 			{#if isUploading || isUnselecting}
 				<div
-					class="bg-base-100/80 absolute inset-0 flex items-center justify-center rounded backdrop-blur-sm"
+					class="absolute inset-0 flex items-center justify-center rounded bg-base-100/80 backdrop-blur-sm"
 				>
 					<div class="text-center">
-						<div class="loading loading-spinner loading-lg text-primary"></div>
-						<p class="text-base-content/70 mt-2 text-sm">
+						<div class="loading loading-lg loading-spinner text-primary"></div>
+						<p class="mt-2 text-sm text-base-content/70">
 							{isUploading
 								? $_('product.edit.images.processing_upload', { default: 'Processing upload...' })
 								: $_('product.edit.images.unselecting_image', { default: 'Unselecting image...' })}
@@ -320,19 +362,19 @@
 					</div>
 				</div>
 			{:else}
-				<p class="text-base-content/60 text-center text-xs sm:text-sm">
+				<p class="text-center text-xs text-base-content/60 sm:text-sm">
 					No {sectionType.label.toLowerCase()}
 					{$_('product.edit.images.photos_available', { default: 'photos available' })}
 				</p>
 				<button
 					type="button"
-					class="btn btn-xs sm:btn-sm btn-outline w-full sm:w-auto"
+					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
 					class:loading={isSelectingImage}
 					disabled={isSelectingImage}
 					onclick={() => onSelectImage?.()}
 				>
 					{#if isSelectingImage}
-						<span class="loading loading-spinner h-3 w-3 sm:h-4 sm:w-4"></span>
+						<span class="loading h-3 w-3 loading-spinner sm:h-4 sm:w-4"></span>
 						<span class="text-xs sm:text-sm"
 							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
 						>

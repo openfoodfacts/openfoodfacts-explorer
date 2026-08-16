@@ -19,7 +19,7 @@
 	"search": {
 		"title": "Αναζήτηση - {query} - Άνοιγμα Εξερεύνησης Open Food Facts",
 		"placeholder": "Ερώτημα ή γραμμωτός κώδικας",
-		"go": "Πάω",
+		"go": "Go",
 		"scan": "Σάρωση ενός γραμμωτού κώδικα",
 		"button": "Αναζήτηση",
 		"product_not_found": "Δεν βρέθηκαν προϊόντα",
@@ -27,6 +27,8 @@
 		"add_product": "Προσθήκη νέου Προϊόντος",
 		"description": "Αναζήτηση στο Open Food Facts Explorer για {query}",
 		"charts_title": "Αναλυτικά Αναζήτησης",
+		"results_for": "Αποτελέσματα αναζήτησης για \"{term}\"",
+		"classic_tools": "Κλασικά εργαλεία:",
 		"show_prices_label": "Εμφάνιση Τιμών",
 		"sort_by_label": "Ταξινομήστε ανά",
 		"raw_query_label": "Ακατέργαστο Ερώτημα",
@@ -36,11 +38,15 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Δημιουργία γραφημάτων για {term} (κλασική έκδοση)",
 		"advanced_search_classic": "Σύνθετη Αναζήτηση για {term} (κλασική έκδοση)",
+		"superset_query": "Ξεκινήστε ένα ερώτημα",
+		"superset_discover": "Ανακαλύψτε τους πίνακες εργαλείων",
+		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_desc": "Ξεκλειδώστε τη δύναμη των ανοιχτών δεδομένων! Εξερευνήστε την πλήρη βάση δεδομένων Open Food Facts χρησιμοποιώντας ερωτήματα SQL, προσαρμοσμένα γραφήματα και κοινόχρηστους πίνακες ελέγχου.",
 		"prices_badge": "{count} τιμές",
 		"creation_date": "Ημερομηνία δημιουργίας",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Τελευταία ημερομηνία τροποποίησης",
+		"page_size": "Μέγεθος σελίδας",
+		"advanced_view": "Προηγμένη προβολή"
 	},
 	"auth": {
 		"username": "Όνομα χρήστη",
@@ -57,12 +63,12 @@
 		"actions": "Δράσεις",
 		"role": {
 			"user": "Χρήστης",
-			"admin": "Administrator",
+			"admin": "Διαχειριστής",
 			"moderator": "Συντονιστής"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Βοήθεια και Συντομεύσεις"
 	},
 	"general": {
 		"language": "Γλώσσα",
@@ -77,25 +83,25 @@
 		"errors_occurred": "Παρουσιάστηκαν σφάλματα:"
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Μείνετε ενημερωμένοι",
 		"contribute": "Συμβάλλετε",
-		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
-		"tagline_break": "from around the world.",
-		"decorative_alt": "A decorative graphic",
+		"discover_title": "Ανακαλύψτε το Έργο μας",
+		"tagline": "Μια συνεργατική, ελεύθερη και ανοικτή βάση δεδομένων των προϊόντων διατροφής",
+		"tagline_break": "από όλο τον κόσμο.",
+		"decorative_alt": "Ένα διακοσμητικό γραφικό",
 		"social": {
-			"x": "X (formerly Twitter)",
+			"x": "X (πρώην Twitter)",
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack",
+			"slack": "Slack app",
 			"mastodon": "Mastodon",
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Ενημερωτικό δελτίο",
 			"forum": "Φόρουμ",
-			"producers": "Producers Platform",
+			"producers": "Πλατφόρμα Παραγωγών",
 			"translators": "Μεταφραστές",
 			"github": "GitHub",
 			"data_api_sdks": "Data, API, SDKs",
@@ -116,18 +122,18 @@
 	},
 	"settings": {
 		"page_title": "Ρυθμίσεις",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Διαχειριστείτε τις προτιμήσεις και τις ρυθμίσεις του λογαριασμού σας",
+		"subtitle": "Διαχειριστείτε τις προτιμήσεις σας και εξατομικεύστε την εμπειρία σας",
 		"tab": {
 			"account": "Λογαριασμός",
 			"general": "Γενικά",
 			"editing": "Επεξεργασία",
 			"preferences": "Προτιμήσεις",
-			"developer": "Developer"
+			"developer": "Προγραμματιστής"
 		},
 		"username": "Όνομα χρήστη",
 		"email": "E-mail",
-		"roles": "Roles",
+		"roles": "Ρόλοι",
 		"section_general": "Γενικά",
 		"section_editing": "Επεξεργασία",
 		"section_user": "Χρήστης",
@@ -135,18 +141,25 @@
 		"login": "Σύνδεση (αποθηκεύτηκε στο localStorage) [ΜΗ ΑΣΦΑΛΕΣ - ΜΟΝΟ ΓΙΑ ΕΝΤΟΠΙΣΜΟ ΣΦΑΛΜΑΤΩΝ]",
 		"news": "Νέα",
 		"expand_all_sections": "Ανάπτυξη όλων των ενοτήτων",
-		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
-		"display_prices_in_search": "Display prices in search results",
-		"display_prices_in_search_help": "Show price information in search results when available",
-		"logged_in_as": "Logged in as: {username}",
+		"expand_all_sections_help": "Αυτόματη ανάπτυξη όλων των ενοτήτων κατά την προβολή λεπτομερειών προϊόντος",
+		"display_prices_in_search": "Εμφάνιση τιμών στα αποτελέσματα αναζήτησης",
+		"display_prices_in_search_help": "Εμφάνιση πληροφοριών τιμών στα αποτελέσματα αναζήτησης όταν είναι διαθέσιμα",
+		"logged_in_as": "Έχετε συνδεθεί ως {{userName}}",
 		"not_logged_in": "Δεν έχετε συνδεθεί",
 		"github_link": "GitHub",
-		"github_cta": "Help us improve Explorer on GitHub",
-		"github_help_text": "Help us improve Open Food Facts Explorer!",
-		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"github_cta": "Βοηθήστε μας να βελτιώσουμε τον Εξερευνητή στο GitHub",
+		"github_help_text": "Βοηθήστε μας να βελτιώσουμε το Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
+		"dev_settings_title": "Ρυθμίσεις ανάπτυξης",
+		"moderator_mode": "Λειτουργία Επόπτη",
+		"dev_access_denied": "Δεν επιτρέπεται η πρόσβαση",
+		"dev_access_message": "Οι ρυθμίσεις για προγραμματιστές είναι διαθέσιμες μόνο σε συντονιστές και προγραμματιστές. Αν πιστεύετε ότι θα πρέπει να έχετε πρόσβαση, επικοινωνήστε με το διαχειριστή."
 	},
 	"folksonomy": {
 		"title": "Μηχανή Folksonomy",
@@ -156,9 +169,9 @@
 		"keys_found": "βρέθηκαν κλειδιά",
 		"key_found": "βρέθηκε κλειδί",
 		"for": "για",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Χρησιμοποιείται σε {count} προϊόντα ({percent}% σχετικής χρήσης)",
+		"badge_values": "Έχει {values} διαφορετικές πιθανές τιμές",
+		"progress_bar": "Δείκτης συχνότητας χρήσης: {percent}% σε σχέση με άλλα πλήκτρα",
 		"key_visualization_guide": {
 			"title": "Key Visualization Guide:",
 			"badge_products_start": "The first badge ",
@@ -182,6 +195,7 @@
 		"edit_preferences": "Επεξεργασία προτιμήσεων",
 		"close": "Κλείσιμο",
 		"classify_products": "Ταξινομήστε προϊόντα σύμφωνα με τις προτιμήσεις σας",
+		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Χρήση προεπιλεγμένων προτιμήσεων",
 		"default_description": "Nutri-Score, Green-Score και επίπεδο επεξεργασίας τροφίμων (NOVA)",
 		"options": {
@@ -273,11 +287,31 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Προϊόν",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Πηγές δεδομένων",
+			"prices": "Τιμές",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
+			"sidebar": {
+				"collapse_all": "Collapse All",
+				"expand_all": "Expand All"
+			},
 			"moderator_only": "Moderator only",
 			"info": {
 				"images": "Ανεβάστε ευκρινείς εικόνες του προϊόντος, των συστατικών και των διατροφικών στοιχείων για να βοηθήσετε άλλους να το αναγνωρίσουν.",
 				"basic_info": "Παρέχετε τις κύριες λεπτομέρειες σχετικά με το προϊόν, όπως ποσότητα, συσκευασία και κατασκευαστή.",
+				"origin_traceability": "Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.",
 				"languages": "Προσθέστε ονόματα προϊόντων και περιγραφές σε διαφορετικές γλώσσες για να κάνετε το προϊόν προσβάσιμο σε περισσότερους χρήστες.",
 				"ingredients": "Αναφέρετε όλα τα συστατικά που υπάρχουν στο προϊόν. Αυτό βοηθά τους χρήστες με αλλεργίες ή διατροφικές προτιμήσεις.",
 				"nutrition": "Εισαγάγετε τις διατροφικές τιμές ανά 100g/ml όπως αναγράφεται στη συσκευασία. Αυτό βοηθά τους χρήστες να συγκρίνουν προϊόντα.",
@@ -305,12 +339,24 @@
 			},
 			"allergens": "Αλλεργιογόνα",
 			"traces": "Ίχνη",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Πρέπει πρώτα να επιλέξετε έναν τύπο προϊόντος!",
 			"main_language": "Κύρια γλώσσα",
 			"add_product": "Προσθήκη προϊόντος",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
 			"add_product_title": "Προσθήκη νέου προϊόντος",
 			"edit_product_title": "Επεξεργασία προϊόντος",
+			"login_required_title": "Login Required",
+			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
+			"return_to_home": "Return to Home",
+			"dev_not_logged_in_title": "You are not logged in!",
+			"dev_not_logged_in_body": "This means that the product will not be saved to the database.",
+			"dev_not_logged_in_hint": "We allow opening this page because you're in development mode, but the submit button will not work.",
 			"add_language": "Προσθήκη γλώσσας",
 			"search_languages": "Αναζήτηση γλωσσών για προσθήκη",
 			"no_languages_found": "Δεν βρέθηκαν γλώσσες",
@@ -373,7 +419,11 @@
 				"petfood": "Pet Food",
 				"product": "Άλλο"
 			},
-			"product_page_url": "Σύνδεσμος στη σελίδα του προϊόντος στον επίσημο ιστότοπο του παραγωγού",
+			"product_page_url": "Official product page",
+			"product_page_url_add": "Σύνδεσμος στη σελίδα του προϊόντος στον επίσημο ιστότοπο του παραγωγού",
+			"product_page_url_placeholder": "https://example.com/products/pasta-n8",
+			"generic_name": "Κοινή ονομασία",
+			"generic_name_placeholder": "e.g., Chocolate chip cookies, Orange juice",
 			"photos": "Φωτογραφίες Προϊόντων",
 			"no_photo_available": "Δεν υπάρχει διαθέσιμη φωτογραφία",
 			"ingredients": "Συστατικά",
@@ -433,8 +483,12 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Φωτογραφίες",
 				"basic_info": "Βασικές πληροφορίες",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
+				"origin_traceability": "Traceability & Origins",
 				"languages": "Γλώσσες & Ονόματα Προϊόντων",
 				"ingredients": "Συστατικά",
 				"nutrition": "Διατροφικές Πληροφορίες",
@@ -443,6 +497,22 @@
 				"prices": "Τιμές",
 				"comment": "Σχόλιο"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Λεπτομέρειες Προϊόντος",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Γλώσσες",
+				"comment": "Σχόλιο"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Υποβολή",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Μην ανεβάζετε εικόνες με πνευματικά δικαιώματα",
 			"legal_warning_photos_1": "Μην ανεβάζετε φωτογραφίες που δεν σας ανήκουν ή δεν έχετε τα δικαιώματα για αυτές. Η μεταφόρτωση εικόνων που προστατεύονται από πνευματικά δικαιώματα χωρίς άδεια είναι παράνομη και μπορεί να οδηγήσει στην αναστολή του λογαριασμού σας.",
 			"legal_warning_photos_2": "Ανεβάστε μόνο τις δικές σας φωτογραφίες ή εκείνες για τις οποίες έχετε ρητή άδεια χρήσης.",
@@ -499,13 +569,26 @@
 		"prices": {
 			"no_prices_found": "Δεν βρέθηκαν τιμές για αυτό το προϊόν",
 			"loading": "Φόρτωση τιμών…",
-			"view_prices": "Δείτε τις τιμές στο Open Prices"
+			"view_prices": "Δείτε τις τιμές στο Open Prices",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Επεξεργασία προϊόντος",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Προσθέστε μέρη της συσκευασίας",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Δείτε τις τιμές στο Open Prices",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Προσθέστε διατροφικά στοιχεία"
 			}
 		},
 		"moderator": {
@@ -515,14 +598,74 @@
 			"barcode_correction_placeholder": "Enter the correct barcode",
 			"barcode_correction_submit": "Correct Barcode",
 			"barcode_correction_success": "Barcode corrected successfully. Redirecting...",
-			"barcode_correction_error": "Failed to correct barcode. Please try again."
+			"barcode_correction_error": "Failed to correct barcode. Please try again.",
+			"delete_product_title": "Διαγράψτε τη σελίδα του προϊόντος",
+			"delete_product_confirm": "Σίγουρα θέλετε να διαγράψετε τη σελίδα για αυτό το προϊόν;",
+			"delete_product_comment_label": "Αιτία διαγραφής",
+			"delete_product_comment_placeholder": "Enter reason for removal",
+			"delete_product_submit": "Διαγράψτε τη σελίδα του προϊόντος",
+			"delete_product_success": "Product deleted successfully.",
+			"delete_product_error": "Failed to delete product. Please try again.",
+			"delete_product_confirm_barcode_label": "Type barcode to confirm",
+			"delete_product_modal_title": "Confirm Deletion",
+			"delete_product_modal_desc": "You are about to delete this product page. This action is permanent and cannot be undone.",
+			"delete_product_modal_prompt_prefix": "To confirm, type the barcode ",
+			"delete_product_modal_prompt_suffix": " below:",
+			"delete_product_modal_btn": "Permanently Delete",
+			"delete_product_prefill_reasons_label": "Common reasons:",
+			"delete_reason_personal": "Personal data",
+			"delete_reason_nsfw": "NSFW",
+			"delete_reason_copyright": "Copyrighted data and images",
+			"delete_reason_app_test": "Test by an app",
+			"delete_reason_user_test": "Test by a user",
+			"delete_reason_duplicate": "Duplicate product",
+			"delete_reason_spam": "Spam or vandalism",
+			"delete_reason_invalid_barcode": "Incorrect barcode",
+			"obsolete_title": "Το προϊόν αποσύρθηκε από την αγορά",
+			"obsolete_important_note_prefix": "Important note:",
+			"obsolete_important_note_body": " This product is no longer sold. The data is kept for reference only. This product does not appear in regular searches and is not taken into account for statistics.",
+			"obsolete_checkbox_label": "Το προϊόν αποσύρθηκε από την αγορά",
+			"obsolete_badge": "Το προϊόν αποσύρθηκε από την αγορά",
+			"obsolete_save_btn": "Save Obsolete Status",
+			"obsolete_save_success": "Product obsolete status updated successfully.",
+			"obsolete_save_error": "Failed to update obsolete status. Please try again.",
+			"image_manager_title": "Manage Images",
+			"image_manager_description": "Μπορείτε να επιλέξετε μία ή περισσότερες εικόνες και στη συνέχεια:",
+			"image_manager_no_images": "No uploaded images found for this product.",
+			"image_manager_select_all": "Επιλογή όλων",
+			"image_manager_clear": "Εκκαθάριση",
+			"image_manager_select_image": "Select image {imgid}",
+			"image_manager_uploaded_by": "Uploaded by {uploader}",
+			"image_manager_uploaded_at": "Uploaded on {date}",
+			"image_manager_preview_label": "Preview image",
+			"image_manager_move_btn": "Μετακινήστε τις εικόνες σε άλλο προϊόν",
+			"image_manager_move_target_label": "Destination Barcode",
+			"image_manager_move_target_placeholder": "Enter barcode (e.g. 3017620422003)",
+			"image_manager_copy_data_label": "Αντιγραφή δεδομένων από το τρέχον προϊόν σε νέο προϊόν",
+			"image_manager_moving": "Moving...",
+			"image_manager_move_success": "Images moved to product {code}.",
+			"image_manager_move_error": "Failed to move images. Please try again.",
+			"image_manager_select_first": "Please select at least one image first.",
+			"image_manager_tab_move": "Move",
+			"image_manager_tab_delete": "Διαγραφή",
+			"image_manager_delete_btn": "Delete the selected image(s)",
+			"image_manager_delete_confirm_label": "Yes, I confirm I want to permanently delete these images.",
+			"image_manager_delete_warning_prefix": "Warning:",
+			"image_manager_delete_warning_body": " Deleting raw images is permanent and cannot be undone.",
+			"image_manager_delete_success": "Images deleted successfully.",
+			"image_manager_delete_error": "Failed to delete images. Please try again.",
+			"image_manager_in_use": "Active / In Use",
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_image_alt": "Uploaded image {imgid}"
 		}
 	},
 	"qr": {
 		"product_not_found": "Το Προϊόν Δε Βρέθηκε",
 		"barcode_scanned_not_found": "Ο γραμμωτός κώδικας {barcode} σαρώθηκε με επιτυχία, αλλά δεν βρέθηκε κανένα προϊόν στις κατηγορίες Open Food Facts, Open Beauty Facts, Open Products Facts ή Open Pet Food Facts.",
 		"add_new_product": "Προσθήκη νέου προϊόντος",
-		"scan_again": "Σάρωση ξανά"
+		"scan_again": "Σάρωση ξανά",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -537,7 +680,9 @@
 		"skip": "Παράλειψη",
 		"step": "Βήμα",
 		"of": "από",
-		"cancel": "Ακύρωση"
+		"cancel": "Ακύρωση",
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Μενού",

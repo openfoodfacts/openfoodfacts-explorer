@@ -4,21 +4,13 @@
 	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
-	import {
-		getOrDefault,
-		type Brand,
-		type Category,
-		type Country,
-		type Label,
-		type Origin,
-		type Store,
-		type Taxonomy,
-		stripTaxonomyPrefix
-	} from '$lib/api';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
+	import { stripTaxonomyPrefix } from '$lib/api';
 	import { preferences } from '$lib/settings';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
+	import TagChipList from '$lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
+	import { userInfo } from '$lib/stores/user';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -28,20 +20,33 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
-		taxonomies: {
-			brands: Promise<Taxonomy<Brand>>;
-			categories: Promise<Taxonomy<Category>>;
-			stores: Promise<Taxonomy<Store>>;
-			labels: Promise<Taxonomy<Label>>;
-			countries: Promise<Taxonomy<Country>>;
-			origins: Promise<Taxonomy<Origin>>;
-		};
+		lc?: string;
 	};
-	let { product, taxonomies }: Props = $props();
+	let { product, lc }: Props = $props();
 
 	let { lang } = $derived($preferences);
+
+	function getLocalizedTags(facet: string): string[] | undefined {
+		const rawProduct = product as unknown as Record<string, unknown>;
+		const activeLang = lc || lang;
+		// Prioritize specific language suffix fields (e.g. categories_tags_fr, brands_tags_fr)
+		if (activeLang) {
+			const langKey = `${facet}_tags_${activeLang.toLowerCase()}`;
+			const langTags = rawProduct[langKey];
+			if (Array.isArray(langTags) && langTags.length > 0) return langTags as string[];
+		}
+
+		// Fallback to English language suffix if available
+		const enKey = `${facet}_tags_en`;
+		const enTags = rawProduct[enKey];
+		if (Array.isArray(enTags) && enTags.length > 0) return enTags as string[];
+
+		return undefined;
+	}
 
 	let toastCtx = getToastCtx();
 	function addToCalculator() {
@@ -74,11 +79,6 @@
 		);
 	}
 
-	function localizedTaxoName(taxonomy: Taxonomy, tag: string) {
-		const localized = taxonomy?.[tag] ? getOrDefault(taxonomy[tag].name, lang) : null;
-		return localized ?? stripTaxonomyPrefix(tag);
-	}
-
 	let frontImage = $derived(
 		'image_front_url' in product ? (product.image_front_url as string) : undefined
 	);
@@ -96,16 +96,12 @@
 	}
 </script>
 
-{#snippet loadingTaxonomy()}
-	<div class="skeleton h-6 w-full"></div>
-{/snippet}
-
 <Card>
 	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
 		<!-- 1. Image Column (Visual Anchor) -->
 		<!-- Left on Desktop, Top on Mobile -->
 		<div
-			class="mx-auto flex w-full max-w-[200px] shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
+			class="mx-auto flex w-full max-w-50 shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
 		>
 			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
 		</div>
@@ -127,29 +123,37 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
+						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
+						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
 					>
-						{$_('product.buttons.classic_view')}
+						<IconMdiOpenInNew class="h-5 w-5" />
+						<span>{$_('product.buttons.classic_view')}</span>
 					</a>
 
 					<a
 						href={`/products/${product.code}/edit`}
 						class="btn btn-secondary btn-sm md:btn-md"
 						class:pointer-events-none={navigating.to}
+						title={$_('product.buttons.edit', { default: 'Edit' })}
+						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
 					>
 						<IconMdiPencil class="h-5 w-5" />
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
 					</a>
 
 					<button
-						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						onclick={sharePage}
+						title={$_('product.buttons.share', { default: 'Share' })}
+						aria-label={$_('product.buttons.share', { default: 'Share' })}
 					>
 						<IconMdiShareVariant class="h-5 w-5" />
 						<span class="hidden md:block">{$_('product.buttons.share')}</span>
 					</button>
 
 					<a
-						class="btn btn-secondary btn-sm md:btn-md flex items-center gap-2"
+						id="report-problem"
+						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -159,14 +163,16 @@
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
 
-					<button
-						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToCalculator}
-						title={$_('product.buttons.add_to_calculator')}
-						aria-label={$_('product.buttons.add_to_calculator')}
-					>
-						<IconMdiCalculator class="h-5 w-5" />
-					</button>
+					{#if $userInfo != null}
+						<button
+							class="btn btn-secondary btn-sm md:btn-md"
+							onclick={addToCalculator}
+							title={$_('product.buttons.add_to_calculator')}
+							aria-label={$_('product.buttons.add_to_calculator')}
+						>
+							<IconMdiCalculator class="h-5 w-5" />
+						</button>
+					{/if}
 
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
@@ -182,87 +188,56 @@
 			<!-- Metadata Body -->
 			<div class="flex flex-col gap-3 text-center md:text-left">
 				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.quantity')}</div>
+					<div class="mb-2 text-sm font-bold text-secondary">{$_('product.header.quantity')}</div>
 					<div>{product.quantity}</div>
 				</div>
 
 				<!-- Brands -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.brands')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.brands}
-							{@render loadingTaxonomy()}
-						{:then brands}
-							{#each product.brands_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/brands/{tag}">
-									{localizedTaxoName(brands, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				{@render taxonomyTags(
+					'product.header.brands',
+					'Brands',
+					product.brands_tags,
+					getLocalizedTags('brands'),
+					'brands'
+				)}
 
 				<!-- Categories -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.categories')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.categories}
-							{@render loadingTaxonomy()}
-						{:then categories}
-							{#each product.categories_tags ?? [] as tag (tag)}
-								<a class="badge badge-secondary wrap-break-word" href="/facets/categories/{tag}">
-									{localizedTaxoName(categories, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				{@render taxonomyTags(
+					'product.header.categories',
+					'Categories',
+					product.categories_tags,
+					getLocalizedTags('categories'),
+					'categories'
+				)}
 
 				<!-- Labels -->
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.labels')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.labels}
-							{@render loadingTaxonomy()}
-						{:then labels}
-							{#each product.labels_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/labels/{tag}">
-									{localizedTaxoName(labels, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				{@render taxonomyTags(
+					'product.header.labels',
+					'Labels',
+					product.labels_tags,
+					getLocalizedTags('labels'),
+					'labels'
+				)}
 
 				<!-- Origins -->
-				{#if product.origins_tags != null && product.origins_tags.length > 0}
-					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.origins')}</div>
-						<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-							{#await taxonomies.origins}
-								{@render loadingTaxonomy()}
-							{:then origins}
-								<!-- FIXME: the type override is needed because product.origins_tags results as Record<string, unknown> -->
-								{#each (product.origins_tags as unknown as string[]) ?? [] as tag, i (i)}
-									<a class="badge wrap-break-word" href="/facets/origin/{tag}">
-										{localizedTaxoName(origins, tag)}
-									</a>
-								{/each}
-							{/await}
-						</div>
-					</div>
-				{/if}
+				{@render taxonomyTags(
+					'product.header.origins',
+					'Origins',
+					product.origins_tags as unknown as string[],
+					getLocalizedTags('origins'),
+					'origins'
+				)}
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">
+						<div class="mb-2 text-sm font-bold text-secondary">
 							<span>{$_('product.header.traceability_codes')}</span>
 							<a
 								href={TRACEABILITY_CODES_URL}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="link link-secondary text-xs"
+								class="link text-xs link-secondary"
 							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
@@ -280,7 +255,7 @@
 
 				{#if product.link != null}
 					<div class="mb-2">
-						<div class="text-secondary mb-2 text-sm font-bold">
+						<div class="mb-2 text-sm font-bold text-secondary">
 							{$_('product.header.producer_link')}
 						</div>
 						<a
@@ -296,36 +271,47 @@
 					</div>
 				{/if}
 
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.stores')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.stores}
-							{@render loadingTaxonomy()}
-						{:then stores}
-							{#each product.stores_tags ?? [] as tag, i (i)}
-								<span class="badge wrap-break-word">
-									{localizedTaxoName(stores, tag)}
-								</span>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<!-- Stores -->
+				{@render taxonomyTags(
+					'product.header.stores',
+					'Stores',
+					product.stores_tags,
+					getLocalizedTags('stores'),
+					'stores'
+				)}
 
-				<div class="mb-2">
-					<div class="text-secondary mb-2 text-sm font-bold">{$_('product.header.countries')}</div>
-					<div class="flex flex-wrap justify-center gap-1 md:justify-start">
-						{#await taxonomies.countries}
-							{@render loadingTaxonomy()}
-						{:then countries}
-							{#each product.countries_tags ?? [] as tag, i (i)}
-								<a class="badge wrap-break-word" href="/facets/countries/{tag}">
-									{localizedTaxoName(countries, tag)}
-								</a>
-							{/each}
-						{/await}
-					</div>
-				</div>
+				<!-- Countries -->
+				{@render taxonomyTags(
+					'product.header.countries',
+					'Countries',
+					product.countries_tags,
+					getLocalizedTags('countries'),
+					'countries'
+				)}
 			</div>
 		</div>
 	</div>
 </Card>
+
+{#snippet taxonomyTags(
+	titleKey: string,
+	defaultTitle: string,
+	tags: string[] | undefined,
+	localizedTags: string[] | undefined,
+	facet: string
+)}
+	{#if tags != null && tags.length > 0}
+		<div class="mb-2">
+			<div class="mb-2 text-sm font-bold text-secondary">
+				{$_(titleKey, { default: defaultTitle })}
+			</div>
+			<TagChipList
+				tags={tags.map((tag, idx) => ({
+					id: tag,
+					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : stripTaxonomyPrefix(tag),
+					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
+				}))}
+			/>
+		</div>
+	{/if}
+{/snippet}

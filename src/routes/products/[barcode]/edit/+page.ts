@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
@@ -11,10 +11,12 @@ import {
 	type Country,
 	type Unit,
 	type Allergen,
-	createProductsApi
+	createProductsApi,
+	type ProductStateFailure
 } from '$lib/api';
+import { type ProductStateResponse } from '$lib/api/errorUtils';
 import { userInfo } from '$lib/stores/user';
-import { PRODUCT_STATUS } from '$lib/const';
+import { PRODUCT_STATUS, type ProductType } from '$lib/const';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
@@ -23,23 +25,16 @@ import { resolve } from '$app/paths';
 
 export const ssr = false;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
 
 	if (get(userInfo) == null && !dev) {
-		// If the user is not logged in, redirect to the login page
-		// We allow an exception for development mode
-		error(401, {
-			message: 'You must be logged in to view this page',
-			actions: [
-				{
-					label: 'Login',
-					url: resolve('/oauth/login')
-				}
-			]
-		});
+		redirect(
+			302,
+			resolve('/loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+		);
 	}
 
 	const off = createProductsApi(fetch);
@@ -50,20 +45,34 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	});
 
 	const { data: productState, error: productError } = productReq;
-	if (productError || !productState) {
+	const parsedError = (productError || null) as ProductStateResponse | null;
+
+	const isNotFound =
+		(parsedError && parsedError.result?.id === 'product_not_found') ||
+		(productState &&
+			productState.status === 'failure' &&
+			productState.result?.id === 'product_not_found');
+
+	if (!isNotFound && (productError || !productState)) {
 		error(500, 'Error loading product');
 	}
 
-	if (productState.status === 'failure' && productState.result?.id !== 'product_not_found') {
+	if (
+		productState &&
+		productState.status === 'failure' &&
+		productState.result?.id !== 'product_not_found'
+	) {
 		error(500, {
 			message: 'Failure to load product',
-			errors: productState.errors
+			errors: (productState as ProductStateFailure).errors
 		});
 	}
 
 	// TODO: switch to SDK
 	const productType =
-		productState.status !== 'failure' ? productState.product.product_type : undefined;
+		productState && 'product' in productState
+			? (productState.product.product_type as ProductType)
+			: undefined;
 
 	const [categories, labels, brands, stores, origins, countries, units, allergens] =
 		await Promise.all([
@@ -77,14 +86,19 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			getTaxo<Allergen>('allergens', fetch, productType)
 		]);
 
-	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
+	console.debug(`Product state for barcode ${params.barcode}:`, productState?.status || 'failure');
 
-	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
+	if (isNotFound) {
+		const stateErrors =
+			productState && 'errors' in productState
+				? (productState as ProductStateFailure).errors
+				: undefined;
+
 		return {
 			state: {
 				status: PRODUCT_STATUS.EMPTY,
 				product: null,
-				errors: productState.errors
+				errors: stateErrors ?? parsedError?.errors ?? []
 			},
 			categories,
 			labels,
@@ -98,7 +112,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	}
 
 	return {
-		state: productState,
+		state: productState!,
 		categories,
 		labels,
 		brands,

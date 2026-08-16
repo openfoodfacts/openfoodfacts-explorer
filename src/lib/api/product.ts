@@ -6,21 +6,8 @@ import { preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 
-// TODO: switch to SDK once it is updated
-export type PackagingTaxonomyTag = {
-	id?: string;
-	lc_name?: string;
-};
-
-// TODO: switch to SDK once it is updated
-export type PackagingComponent = {
-	number_of_units?: number;
-	shape?: PackagingTaxonomyTag;
-	material?: PackagingTaxonomyTag;
-	recycling?: PackagingTaxonomyTag;
-	quantity_per_unit?: string;
-	weight_measured?: number;
-};
+import type { PackagingTaxonomyTag, PackagingComponent } from '$lib/types/sdk-overrides';
+export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -31,6 +18,10 @@ export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
 ): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	if (productCodes.length === 0) {
+		return {};
+	}
+
 	const off = createProductsApi(fetch);
 
 	const params = new URLSearchParams({
@@ -84,6 +75,140 @@ export async function updateBarcode(
 	} catch (error) {
 		console.error('Error updating barcode:', error);
 		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Move images from one product to another (moderator-only action).
+ * // TODO: switch to `moveImages` from the SDK
+ * @param fetch - The fetch function
+ * @param code - source product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ * @param moveToBarcode - destination product barcode
+ * @param copyData - whether to copy product data to destination
+ */
+export async function moveImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string,
+	moveToBarcode: string,
+	copyData: boolean = false
+): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty source product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+	if (!moveToBarcode || moveToBarcode.trim().length === 0) {
+		return { error: 'A non-empty destination product barcode is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', moveToBarcode);
+	body.append('copy_data_override', copyData ? 'true' : 'false');
+
+	try {
+		const res = await wrapFetch(url, {
+			method: 'POST',
+			body
+		});
+		if (res.status === 200) {
+			return { data: true };
+		}
+		return { error: `Failed to move images (status: ${res.status})` };
+	} catch (error) {
+		console.error('Error moving images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete product images by moving them to trash (moderator-only action).
+ * // TODO: switch to `deleteImages` from the SDK
+ * @param fetch - The fetch function
+ * @param code - product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ */
+export async function deleteImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string
+): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(fetch);
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', 'trash');
+	body.append('copy_data_override', 'false');
+
+	try {
+		const res = await wrapFetch(url, {
+			method: 'POST',
+			body
+		});
+		if (res.status === 200) {
+			return { data: true };
+		}
+		return { error: `Failed to delete images (status: ${res.status})` };
+	} catch (error) {
+		console.error('Error deleting images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete a product page (moderator-only action).
+ * This sends a POST request to /cgi/product.pl with the required parameters.
+ * @param fetch - The fetch function
+ * @param code - The barcode of the product to delete
+ * @param comment - The reason/comment for deletion
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function deleteProduct(
+	fetch: typeof window.fetch,
+	code: string,
+	comment: string
+): Promise<{ data?: boolean; error?: string }> {
+	// TODO: switch to `deleteProduct` from SDK
+	try {
+		const formData = new FormData();
+		formData.append('type', 'delete');
+		formData.append('action', 'process');
+		formData.append('code', code);
+		formData.append('comment', comment);
+
+		const fetchToUse = wrapFetchWithAuth(fetch);
+		const url = `${API_HOST}/cgi/product.pl`;
+		const response = await fetchToUse(url, {
+			method: 'POST',
+			body: formData
+		});
+
+		if (!response.ok) {
+			return {
+				error: `HTTP error: ${response.status} ${response.statusText}`
+			};
+		}
+
+		return { data: true };
+	} catch (error) {
+		console.error('Error deleting product:', error);
+		return {
+			error: error instanceof Error ? error.message : String(error)
+		};
 	}
 }
 
@@ -312,6 +437,17 @@ export async function getProductReducedForCard(fetch: typeof window.fetch, code:
 	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
 }
 
+export async function getBulkProductCards(fetch: typeof window.fetch, codes: string[]) {
+	const off = createProductsApi(fetch);
+
+	const params = new URLSearchParams({
+		code: codes.join(','),
+		fields: REDUCED_FIELDS.join(',')
+	});
+
+	return off.apiv2.search(Object.fromEntries(params.entries()));
+}
+
 export type ProductStateBase = {
 	result: {
 		id: string;
@@ -427,6 +563,7 @@ export type ImageOperationResponse = {
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
+type LangGenericName = `generic_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -575,7 +712,8 @@ export type Product = ProductDataSection & {
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
 	Partial<Record<LangIngredient, string>> &
-	Partial<Record<LangPackagingText, string>>;
+	Partial<Record<LangPackagingText, string>> &
+	Partial<Record<LangGenericName, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',

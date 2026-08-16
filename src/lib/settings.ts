@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 4,
+	version: 6,
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -15,10 +15,11 @@ const DEFAULT_PREFERENCES = {
 	},
 
 	editing: {
-		expandAllSections: false
+		expandAllSections: true
 	},
 
 	displayPricesInSearch: true,
+	productSidebarVisible: true,
 
 	moderator: false
 };
@@ -94,6 +95,31 @@ const MIGRATIONS: {
 			if (!('displayPricesInSearch' in preferences)) {
 				// @ts-expect-error - adding new field
 				preferences.displayPricesInSearch = true;
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 5,
+		upgrade: (preferences) => {
+			if (preferences.editing) {
+				if (preferences.editing.expandAllSections === undefined) {
+					preferences.editing.expandAllSections = true;
+				}
+			} else {
+				preferences.editing = {
+					expandAllSections: true
+				};
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 6,
+		upgrade: (preferences) => {
+			if (!('productSidebarVisible' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.productSidebarVisible = true;
 			}
 			return preferences;
 		}
