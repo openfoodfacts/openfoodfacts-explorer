@@ -174,6 +174,7 @@
 			id: sec.id,
 			label: $_(sec.labelKey, { default: sec.defaultLabel }),
 			icon: sec.icon,
+			href: `#${sec.id}`,
 			isCollapsed: () => !openSections[sec.id],
 			onToggle: (open?: boolean) => {
 				openSections[sec.id] = open !== undefined ? open : !openSections[sec.id];
@@ -186,6 +187,7 @@
 				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
 				icon: IconMdiShieldAccount,
 				style: 'warning',
+				href: '#moderator-tools',
 				isCollapsed: () => !openSections['moderator-tools'],
 				onToggle: (open?: boolean) => {
 					openSections['moderator-tools'] =
@@ -223,18 +225,6 @@
 		});
 		handleCollapseToggle(editSections[0]?.id || '');
 	}
-
-	function handleSidebarSectionClick(id: string) {
-		const section = editSections.find((s) => s.id === id);
-		sidebar?.scrollToSection(id, () => {
-			if (activeSection === id) {
-				section?.onToggle?.();
-			} else {
-				section?.onToggle?.(true);
-			}
-			handleCollapseToggle(id);
-		});
-	}
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
@@ -248,7 +238,6 @@
 			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
 			: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
 		onHeaderAction={toggleExpandAll}
-		onSectionClick={handleSidebarSectionClick}
 	/>
 
 	<div class="w-full min-w-0 space-y-4">

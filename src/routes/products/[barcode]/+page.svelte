@@ -24,7 +24,7 @@
 	import { userAuthTokens } from '$lib/stores/auth';
 	import { getWebsiteCtx } from '$lib/stores/website';
 
-	import Sidebar, { type SidebarSection } from '$lib/ui/Sidebar.svelte';
+	import Sidebar, { type SidebarSectionBase } from '$lib/ui/Sidebar.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
@@ -111,9 +111,10 @@
 
 	let showBarcode = $state(false);
 	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
+	let sidebar = $state<ReturnType<typeof Sidebar>>();
 
 	const activeSections = $derived.by(() => {
-		const rawList: (SidebarSection | false | undefined | null)[] = [
+		const rawList: (SidebarSectionBase | false | undefined | null)[] = [
 			{
 				id: 'overview',
 				label: $_('product.sections.product', { default: 'Product' }),
@@ -177,7 +178,12 @@
 				icon: IconMdiLabel
 			}
 		];
-		return rawList.filter((item): item is SidebarSection => !!item);
+		return rawList
+			.filter((item): item is SidebarSectionBase => !!item)
+			.map((section) => ({
+				...section,
+				onClick: () => sidebar?.scrollToSection(section.id)
+			}));
 	});
 
 	const shortcutCtx = getShortcutCtx();
@@ -312,6 +318,7 @@
 		]}
 	>
 		<Sidebar
+			bind:this={sidebar}
 			type="product"
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
