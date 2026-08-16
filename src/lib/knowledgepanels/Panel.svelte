@@ -22,6 +22,15 @@
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
 	let expanded = $derived(panel?.expanded ?? false);
+
+	/**
+	 * Open Food Facts serves its monochrome UI icons (black on transparent) from
+	 * `/images/icons/`. Colored assets — Nutri-Score and Green-Score grades, NOVA groups,
+	 * nutrient level dots, label logos — live under other paths and must be left alone.
+	 * The Knowledge Panels API is not dark mode aware, so the monochrome ones have to be
+	 * tinted white client side to stay visible on a dark background.
+	 */
+	const MONOCHROME_ICON_PATH = '/images/icons/';
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
@@ -53,7 +62,8 @@
 					class={[
 						'kp-icon mr-4 ml-2 h-12 w-12 object-contain',
 						title.icon_size && `kp-icon-${title.icon_size}`,
-						title.icon_color_from_evaluation && 'kp-icon-from-eval'
+						title.icon_color_from_evaluation && 'kp-icon-from-eval',
+						title.icon_url.includes(MONOCHROME_ICON_PATH) && 'kp-icon-monochrome'
 					]}
 					src={title.icon_url}
 					alt={title.title}
@@ -106,6 +116,9 @@
 	@reference 'tailwindcss';
 
 	@media (prefers-color-scheme: dark) {
+		/* Flip black knowledge panel icons to white so they stay readable on a dark
+		   background. Only monochrome icons are inverted: see MONOCHROME_ICON_PATH. */
+		.kp-icon-monochrome,
 		.kp-icon-from-eval {
 			@apply invert;
 		}
