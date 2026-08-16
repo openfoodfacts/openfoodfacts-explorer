@@ -41,7 +41,10 @@
 <div class="mb-4">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
+		label={$_('facets.facet_back_to_overview', {
+			values: { facet: facet.name },
+			default: 'Back to {facet} overview'
+		})}
 	/>
 </div>
 
