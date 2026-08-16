@@ -86,6 +86,14 @@
 		"stay_updated": "Rimani aggiornato",
 		"contribute": "Contribuire",
 		"discover_title": "Scopri il nostro progetto",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "Un database collaborativo, gratuito e aperto di prodotti alimentari",
 		"tagline_break": "da tutto il mondo.",
 		"decorative_alt": "Una grafica decorativa",
