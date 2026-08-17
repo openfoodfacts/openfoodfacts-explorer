@@ -161,8 +161,8 @@
 			"title": "Admin tools",
 			"description": "Useful links for Open Food Facts administrators",
 			"organization_table": "Organization table",
-			"recent_changes": "Recent changes",
-			"top_translators": "Top translators"
+			"recent_changes": "Poslední změny",
+			"top_translators": "Nejlepší překladatelé"
 		},
 		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
@@ -295,7 +295,7 @@
 			"never_checked": "Nikdy nekontrolováno",
 			"check_be_first": "Buďte první, kdo zkontroluje tento produkt"
 		},
-		"sidebar_navigation": "Product sections",
+		"sidebar_navigation": "Sekce produktů",
 		"sidebar": {
 			"show": "Zobrazit postranní panel",
 			"hide": "Skrýt boční panel"
@@ -591,8 +591,8 @@
 			"no_prices_found": "Pro tento produkt nebyly nalezeny žádné ceny",
 			"loading": "Načítání cen…",
 			"view_prices": "Zobrazit ceny na Open Prices",
-			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
-			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"kp_subtitle_found": "{count, plural, one {{count} cena} few {{count} ceny} many {{count} cen} other {{count} cen}} nalezeno v {storeCount, plural, one {{storeCount} obchodě} few {{storeCount} obchodech} many {{storeCount} obchodech} other {{storeCount} obchodech}}",
+			"no_prices_explanation": "Pomozte nám vytvořit největší databázi otevřených cen přidáním informací o ceně tohoto produktu.",
 			"loading_map": "Načítání mapy cen…"
 		},
 		"knowledge_panels": {
@@ -602,13 +602,13 @@
 				"report_product_to_nutripatrol": "Nahlásit problém s tímto produktem",
 				"add_ingredients_text": "Přidat text ingrediencí",
 				"add_packaging_components": "Přidat součásti obalu",
-				"add_origins": "Add origins of ingredients",
+				"add_origins": "Přidejte původ ingrediencí",
 				"add_price": "Přidejte cenu na Open Prices",
 				"view_prices": "Zobrazit ceny na Open Prices",
-				"add_recycling_instructions": "Add recycling instructions",
-				"add_quantity": "Add quantity",
-				"add_packaging_image": "Add a photo of the packaging",
-				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_recycling_instructions": "Přidejte pokyny k recyklaci",
+				"add_quantity": "Přidejte množství",
+				"add_packaging_image": "Přidejte fotografii obalu",
+				"add_ingredients_image": "Přidejte fotku ingrediencí",
 				"add_nutrition_facts": "Přidat výživová fakta"
 			}
 		},
@@ -685,8 +685,8 @@
 		"barcode_scanned_not_found": "Čárový kód {barcode} byl úspěšně naskenován, ale v našich Open Food Facts, Open Beauty Facts, Open Products Facts ani Open Pet Food Facts nebyl nalezen žádný produkt.",
 		"add_new_product": "Přidat nový produkt",
 		"scan_again": "Znovu naskenovat",
-		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"manual_barcode": "Zadejte čárový kód ručně",
+		"camera_access_required": "Je vyžadován přístup k fotoaparátu. Povolte jej prosím v nastavení prohlížeče."
 	},
 	"errors": {
 		"network": {
@@ -703,7 +703,7 @@
 		"of": "z",
 		"cancel": "Zrušit",
 		"close": "zavřít",
-		"scroll_to_top": "Scroll to top"
+		"scroll_to_top": "Přejděte na začátek"
 	},
 	"menu": {
 		"button": "Menu",
