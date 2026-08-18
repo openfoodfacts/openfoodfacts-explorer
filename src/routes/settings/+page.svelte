@@ -283,7 +283,7 @@
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
 					<IconMdiHeart class="h-6 w-6" />
-					{$_('settings.food_preferences')}
+					{$_('settings.influences')}
 				</h2>
 
 				<div class="mt-6">
