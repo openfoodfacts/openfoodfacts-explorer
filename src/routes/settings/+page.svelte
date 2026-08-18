@@ -223,21 +223,24 @@
 						</select>
 					</div>
 					<div class="form-control">
-						<label class="label">
+						<label class="label" for="theme-select">
 							<span class="label-text flex items-center gap-2 font-semibold">
 								<IconMdiThemeLightDark class="h-5 w-5" />
-								{$_('general.theme')}
+								{$_('general.theme', { default: 'Theme' })}
 							</span>
 						</label>
 
 						<select
+							id="theme-select"
 							class="select-bordered select w-full"
 							name="theme-select"
 							bind:value={$preferences.theme}
 						>
-							<option value="system">{$_('general.theme_system')}</option>
-							<option value="light">{$_('general.theme_light')}</option>
-							<option value="dark">{$_('general.theme_dark')}</option>
+							<option value="system"
+								>{$_('general.theme_system', { default: 'System default' })}</option
+							>
+							<option value="light">{$_('general.theme_light', { default: 'Light' })}</option>
+							<option value="dark">{$_('general.theme_dark', { default: 'Dark' })}</option>
 						</select>
 					</div>
 				</div>
