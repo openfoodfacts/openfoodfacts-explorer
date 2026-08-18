@@ -184,7 +184,7 @@
 {/snippet}
 
 <div
-	class="flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 p-2 focus-within:border-primary focus-within:outline-primary"
+	class="flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 bg-base-100 p-2 focus-within:border-primary focus-within:outline-primary"
 >
 	{#each tags as tag, index (tag)}
 		<div
