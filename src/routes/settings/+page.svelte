@@ -17,6 +17,7 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
+	import IconMdiThemeLightDark from '@iconify-svelte/mdi/theme-light-dark';
 
 	import type { PageProps } from './$types';
 
@@ -219,6 +220,24 @@
 									{currency}
 								</option>
 							{/each}
+						</select>
+					</div>
+					<div class="form-control">
+						<label class="label">
+							<span class="label-text flex items-center gap-2 font-semibold">
+								<IconMdiThemeLightDark class="h-5 w-5" />
+								{$_('general.theme')}
+							</span>
+						</label>
+
+						<select
+							class="select-bordered select w-full"
+							name="theme-select"
+							bind:value={$preferences.theme}
+						>
+							<option value="system">{$_('general.theme_system')}</option>
+							<option value="light">{$_('general.theme_light')}</option>
+							<option value="dark">{$_('general.theme_dark')}</option>
 						</select>
 					</div>
 				</div>

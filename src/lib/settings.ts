@@ -2,7 +2,8 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 6,
+	version: 7,
+	theme: 'system' as 'system' | 'light' | 'dark',
 	lang: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -120,6 +121,16 @@ const MIGRATIONS: {
 			if (!('productSidebarVisible' in preferences)) {
 				// @ts-expect-error - adding new field
 				preferences.productSidebarVisible = true;
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 7,
+		upgrade: (preferences) => {
+			if (!('theme' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.theme = 'system';
 			}
 			return preferences;
 		}
