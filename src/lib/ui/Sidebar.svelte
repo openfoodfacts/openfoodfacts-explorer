@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import type { Component, ComponentType } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
-	export interface SidebarSection {
+	export interface SidebarSectionBase {
 		id: string;
 		label: string;
 		icon?: Component | ComponentType;
@@ -13,6 +14,18 @@
 		onToggle?: (open?: boolean) => void;
 	}
 
+	type SidebarSectionAction =
+		| {
+				href: string;
+				onClick?: never;
+		  }
+		| {
+				href?: never;
+				onClick: () => void;
+		  };
+
+	export type SidebarSection = SidebarSectionBase & SidebarSectionAction;
+
 	type Props = {
 		sections: SidebarSection[];
 		activeSection?: string;
@@ -20,7 +33,6 @@
 		hidden?: boolean;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
-		onSectionClick?: (id: string) => void;
 		type?: 'product' | 'edit';
 	};
 
@@ -31,7 +43,6 @@
 		hidden = $bindable(false),
 		headerActionLabel,
 		onHeaderAction,
-		onSectionClick,
 		type = 'product'
 	}: Props = $props();
 
@@ -112,12 +123,47 @@
 		}
 	}
 
-	function handleSectionClick(id: string) {
-		if (onSectionClick) {
-			onSectionClick(id);
+	function handleSectionClick(section: SidebarSection) {
+		if (section.onClick) {
+			section.onClick();
 		} else {
-			scrollToSection(id);
+			scrollToSection(section.id);
 		}
+	}
+
+	function getSectionClass(section: SidebarSection) {
+		return [
+			'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+			activeSection === section.id
+				? section.style === 'warning'
+					? 'font-semibold text-warning'
+					: 'font-semibold text-primary'
+				: section.style === 'warning'
+					? 'text-warning/70 hover:text-warning'
+					: 'text-base-content/60 hover:text-primary'
+		];
+	}
+
+	async function handleAnchorClick(
+		event: MouseEvent,
+		section: Extract<SidebarSection, { href: string }>
+	) {
+		if (
+			event.button !== 0 ||
+			event.metaKey ||
+			event.ctrlKey ||
+			event.shiftKey ||
+			event.altKey ||
+			!section.href.startsWith('#')
+		) {
+			return;
+		}
+
+		const targetId = decodeURIComponent(section.href.slice(1));
+		if (!document.getElementById(targetId)) return;
+
+		event.preventDefault();
+		await goto(section.href, { noScroll: true });
 	}
 
 	function updateActiveSection() {
@@ -233,32 +279,43 @@
 			{/if}
 
 			{#each sections as section (section.id)}
-				<button
-					type="button"
-					data-section={section.id}
-					aria-controls={section.id}
-					aria-current={activeSection === section.id ? 'location' : undefined}
-					onclick={() => handleSectionClick(section.id)}
-					class={[
-						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
-						activeSection === section.id
-							? section.style === 'warning'
-								? 'font-semibold text-warning'
-								: 'font-semibold text-primary'
-							: section.style === 'warning'
-								? 'text-warning/70 hover:text-warning'
-								: 'text-base-content/60 hover:text-primary'
-					]}
-				>
-					{#if section.icon}
-						{@const Icon = section.icon}
-						<Icon
-							aria-hidden="true"
-							class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
-						/>
-					{/if}
-					<span>{section.label}</span>
-				</button>
+				{#if section.href}
+					<a
+						href={section.href}
+						onclick={(event) => handleAnchorClick(event, section)}
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</a>
+				{:else}
+					<button
+						type="button"
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						onclick={() => handleSectionClick(section)}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</button>
+				{/if}
 			{/each}
 		</nav>
 	</aside>
