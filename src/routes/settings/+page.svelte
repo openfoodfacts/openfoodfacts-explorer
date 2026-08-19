@@ -296,8 +296,53 @@
 			role="tabpanel"
 			id="tabpanel-developer"
 			aria-labelledby="tab-developer"
+			class="space-y-6"
 			class:hidden={activeTab !== 'developer'}
 		>
+			{#if permissions.isAdmin}
+				<div class="card bg-base-200 shadow-md">
+					<div class="card-body">
+						<h2 class="card-title flex items-center gap-2">
+							<IconMdiTools class="h-6 w-6" aria-hidden="true" />
+							{$_('settings.admin_tools.title', { default: 'Admin tools' })}
+						</h2>
+
+						<p class="mt-4 text-sm text-base-content/70">
+							{$_('settings.admin_tools.description', {
+								default: 'Useful links for Open Food Facts administrators'
+							})}
+						</p>
+
+						<div class="mt-6 flex flex-wrap gap-3">
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/display_org_table.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.organization_table', { default: 'Organization table' })}
+							</a>
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/recent_changes.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.recent_changes', { default: 'Recent changes' })}
+							</a>
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/top_translators.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.top_translators', { default: 'Top translators' })}
+							</a>
+						</div>
+					</div>
+				</div>
+			{/if}
+
 			{#if permissions.isModerator}
 				<div class="card border-2 border-warning bg-warning/10 shadow-md">
 					<div class="card-body">

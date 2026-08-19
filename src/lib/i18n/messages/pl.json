@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Wnieś wkład",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produkt",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Źródła danych",
+			"prices": "Ceny",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "Alergeny",
 			"traces": "Ślady",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Najpierw musisz wybrać typ produktu!",
 			"main_language": "Główny język",
 			"add_product": "Dodaj produkt",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Zdjęcia",
 				"basic_info": "Informacje podstawowe",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Języki i nazwy produktów",
 				"ingredients": "Składniki",
@@ -466,6 +505,22 @@
 				"prices": "Ceny",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Szczegóły produktu",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Języki",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Prześlij",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Nie przesyłaj obrazów objętych prawami autorskimi",
 			"legal_warning_photos_1": "Nie przesyłaj zdjęć, których nie jesteś właścicielem lub do których nie masz praw. Przesyłanie zdjęć chronionych prawem autorskim bez zezwolenia jest nielegalne i może skutkować zawieszeniem konta.",
 			"legal_warning_photos_2": "Możesz przesyłać tylko własne zdjęcia lub takie, na których użycie masz wyraźną zgodę.",
@@ -616,7 +671,9 @@
 		"product_not_found": "Produkt nie został znaleziony",
 		"barcode_scanned_not_found": "Kod kreskowy {barcode} został pomyślnie zeskanowany, ale nie znaleziono żadnego produktu w naszych otwartych informacjach o żywności, otwartych informacjach o urodzie, otwartych informacjach o produktach ani otwartych informacjach o karmie dla zwierząt.",
 		"add_new_product": "Dodaj nowy produkt",
-		"scan_again": "Zeskanuj ponownie"
+		"scan_again": "Zeskanuj ponownie",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "Krok",
 		"of": "z",
 		"cancel": "Anuluj",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

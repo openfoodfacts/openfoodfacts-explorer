@@ -86,6 +86,14 @@
 		"stay_updated": "עדכונים שימושיים",
 		"contribute": "לתרום",
 		"discover_title": "חשיפת המיזם שלנו",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "מסד נתונים שיתופי, חופשי ופתוח של מוצרי",
 		"tagline_break": "מזון מכל רחבי העולם.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "Github",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "כלי ניהול",
+			"description": "קישורים שימושיים למנהלי Open Food Facts",
+			"organization_table": "טבלת ארגון",
+			"recent_changes": "שינויים אחרונים",
+			"top_translators": "מתרגמים מובילים"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "מוצר",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "מקורות נתונים",
+			"prices": "מחירים",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "אלרגנים",
 			"traces": "עקבות",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "קודם צריך לבחור סוג מוצר!",
 			"main_language": "השפה העיקרית",
 			"add_product": "הוספת מוצר",
 			"nutrition_issues": "בעיות תזונתיות",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "תמונות",
 				"basic_info": "מידע בסיסי",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "שפות ושמות מוצרים",
 				"ingredients": "רכיבים",
@@ -466,6 +505,22 @@
 				"prices": "מחירים",
 				"comment": "הערה"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "פרטי המוצר",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "שפות",
+				"comment": "הערה"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "הגשה",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "אין להעלות תמונות המוגנות בזכויות יוצרים",
 			"legal_warning_photos_1": "אל תעלה תמונות שאינן בבעלותך או שאין לך את הזכויות עליהן. העלאת תמונות המוגנות בזכויות יוצרים ללא אישור היא בלתי חוקית ועלולה לגרום להשעיית חשבונך.",
 			"legal_warning_photos_2": "העלו רק תמונות שלכם או כאלה שיש לכם אישור מפורש להשתמש בהן.",
@@ -616,7 +671,9 @@
 		"product_not_found": "המוצר לא נמצא",
 		"barcode_scanned_not_found": "הברקוד {barcode} נסרק בהצלחה, אך לא נמצא מוצר במידע על מזון פתוח, מידע על יופי פתוח, מידע על מוצרים פתוחים או מידע על מזון לחיות מחמד פתוחים.",
 		"add_new_product": "הוסף מוצר חדש",
-		"scan_again": "סרוק שוב"
+		"scan_again": "סרוק שוב",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "שָׁלָב",
 		"of": "שֶׁל",
 		"cancel": "ביטול",
-		"close": "סגירה"
+		"close": "סגירה",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "תפריט",

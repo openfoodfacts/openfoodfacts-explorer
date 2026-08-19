@@ -24,7 +24,10 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -38,8 +41,8 @@
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
-	import { setWebsiteCtx } from '$lib/stores/website';
-	import type { WebsiteFlavor } from '$lib/flavor';
+	import { getWebsiteFlavorFromParam } from '$lib/flavor';
+	import { createWebsiteCtx } from '$lib/stores/website';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
@@ -49,10 +52,22 @@
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: WebsiteFlavor } = $state({
-		flavor: 'food'
+	const websiteCtx = createWebsiteCtx();
+
+	function syncWebsiteFlavor(url: URL) {
+		const landingFlavor = getWebsiteFlavorFromParam(url.searchParams.get('flavor'));
+		websiteCtx.update((ctx) => ({
+			...ctx,
+			flavor: landingFlavor ?? 'food',
+			forcedFlavor: landingFlavor ?? null
+		}));
+	}
+
+	syncWebsiteFlavor(page.url);
+
+	$effect(() => {
+		syncWebsiteFlavor(page.url);
 	});
-	setWebsiteCtx(() => websiteCtx);
 
 	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
@@ -317,6 +332,15 @@
 									<span>{$_('navbar.account', { default: 'Account' })}</span>
 								</a>
 							</li>
+							<li>
+								<button
+									onclick={toggleCalculator}
+									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+									<span>{$_('calculator', { default: 'Calculator' })}</span>
+								</button>
+							</li>
 							<div class="divider my-1"></div>
 							<li>
 								<a
@@ -422,6 +446,18 @@
 		</a>
 
 		<div class="divider md:divider-horizontal"></div>
+		<button
+			type="button"
+			class="btn link btn-outline"
+			onclick={() => {
+				toggleCalculator();
+				accordionOpen = false;
+			}}
+			title={$_('calculator', { default: 'Calculator' })}
+			aria-label={$_('calculator', { default: 'Calculator' })}
+		>
+			<span>{$_('calculator', { default: 'Calculator' })}</span>
+		</button>
 		<a
 			class="btn link btn-outline"
 			href="/settings"
@@ -480,6 +516,7 @@
 	</div>
 {/if}
 <CompareFloatingButton />
+<NutritionCalculator />
 <Footer />
 <Toast />
 

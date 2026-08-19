@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "ओपन ब्यूटी फैक्ट्स",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "उत्पाद",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "डेटा स्रोत",
+			"prices": "कीमतों",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "अवशेष",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "आपको पहले एक उत्पाद प्रकार का चयन करना होगा!",
 			"main_language": "Main language",
 			"add_product": "उत्पाद जोड़ें",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "तस्वीरें",
 				"basic_info": "मूल जानकारी",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "भाषाएँ और उत्पाद नाम",
 				"ingredients": "सामग्री",
@@ -466,6 +505,22 @@
 				"prices": "कीमतों",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "उत्पाद विवरण",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "भाषा",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "दर्ज करें",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "कॉपीराइट वाली छवियां अपलोड न करें",
 			"legal_warning_photos_1": "ऐसी तस्वीरें अपलोड न करें जो आपकी नहीं हैं या जिनके अधिकार आपके पास नहीं हैं। बिना अनुमति के कॉपीराइट वाली तस्वीरें अपलोड करना गैरकानूनी है और इसके परिणामस्वरूप आपका खाता निलंबित किया जा सकता है।",
 			"legal_warning_photos_2": "केवल अपनी स्वयं की तस्वीरें या वे तस्वीरें अपलोड करें जिनके उपयोग की आपको स्पष्ट अनुमति है।",
@@ -616,7 +671,9 @@
 		"product_not_found": "उत्पाद नहीं मिला",
 		"barcode_scanned_not_found": "बारकोड {barcode} को सफलतापूर्वक स्कैन किया गया, लेकिन हमारे ओपन फूड फैक्ट्स, ओपन ब्यूटी फैक्ट्स, ओपन प्रोडक्ट्स फैक्ट्स या ओपन पेट फूड फैक्ट्स में कोई उत्पाद नहीं मिला।",
 		"add_new_product": "नया उत्पाद जोड़ें",
-		"scan_again": "पुनः स्कैन करें"
+		"scan_again": "पुनः स्कैन करें",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "कदम",
 		"of": "का",
 		"cancel": "रद्द करें",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

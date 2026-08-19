@@ -9,7 +9,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
-	import EditProductSidebar from './EditProductSidebar.svelte';
+	import Sidebar, { type SidebarSection } from './Sidebar.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -32,6 +32,63 @@
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
+	const DEFAULT_SECTIONS = [
+		{
+			id: 'languages',
+			labelKey: 'product.edit.sections.languages',
+			defaultLabel: 'Languages',
+			icon: IconMdiTranslate
+		},
+		{
+			id: 'images',
+			labelKey: 'product.edit.sections.images',
+			defaultLabel: 'Images',
+			icon: IconMdiImageMultiple
+		},
+		{
+			id: 'basic-info',
+			labelKey: 'product.edit.sections.basic_info',
+			defaultLabel: 'Basic Info',
+			icon: IconMdiInformation
+		},
+		{
+			id: 'origin-traceability',
+			labelKey: 'product.edit.sections.origin_traceability',
+			defaultLabel: 'Traceability & Origins',
+			icon: IconMdiEarth
+		},
+		{
+			id: 'ingredients',
+			labelKey: 'product.edit.sections.ingredients',
+			defaultLabel: 'Ingredients',
+			icon: IconMdiFormatListBulleted
+		},
+		{
+			id: 'nutrition',
+			labelKey: 'product.edit.sections.nutrition',
+			defaultLabel: 'Nutrition',
+			icon: IconMdiNutrition
+		},
+		{
+			id: 'prices',
+			labelKey: 'product.edit.sections.prices',
+			defaultLabel: 'Prices',
+			icon: IconMdiTagMultiple
+		},
+		{
+			id: 'packaging',
+			labelKey: 'product.edit.sections.packaging',
+			defaultLabel: 'Packaging',
+			icon: IconMdiPackageVariant
+		},
+		{
+			id: 'comment',
+			labelKey: 'product.edit.sections.comment',
+			defaultLabel: 'Comment',
+			icon: IconMdiCommentText
+		}
+	];
+
 	type Props = {
 		product: Product;
 
@@ -107,8 +164,40 @@
 		return scrollToAndHighlight(targetEl);
 	});
 
-	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
+	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let activeSection = $state('languages');
 	let isMobile = $state(false);
+	let openSections = $state<Record<string, boolean>>({});
+
+	const editSections = $derived.by(() => {
+		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({
+			id: sec.id,
+			label: $_(sec.labelKey, { default: sec.defaultLabel }),
+			icon: sec.icon,
+			href: `#${sec.id}`,
+			isCollapsed: () => !openSections[sec.id],
+			onToggle: (open?: boolean) => {
+				openSections[sec.id] = open !== undefined ? open : !openSections[sec.id];
+			}
+		}));
+
+		if (permissions.isModerator && $preferences.moderator) {
+			sections.push({
+				id: 'moderator-tools',
+				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
+				icon: IconMdiShieldAccount,
+				style: 'warning',
+				href: '#moderator-tools',
+				isCollapsed: () => !openSections['moderator-tools'],
+				onToggle: (open?: boolean) => {
+					openSections['moderator-tools'] =
+						open !== undefined ? open : !openSections['moderator-tools'];
+				}
+			});
+		}
+
+		return sections;
+	});
 
 	onMount(() => {
 		const updateMobileState = () => {
@@ -116,26 +205,48 @@
 		};
 		updateMobileState();
 		window.addEventListener('resize', updateMobileState);
+
+		// Initialize sections open state based on preferences and mobile view
+		const isDefaultOpen = !isMobile && $preferences.editing.expandAllSections;
+		editSections.forEach((sec) => {
+			openSections[sec.id] = isDefaultOpen;
+		});
+
 		return () => window.removeEventListener('resize', updateMobileState);
 	});
-
 	function handleCollapseToggle(id: string) {
 		sidebar?.handleCollapseToggle(id);
+	}
+
+	function toggleExpandAll() {
+		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
+		editSections.forEach((sec) => {
+			sec.onToggle?.($preferences.editing.expandAllSections);
+		});
+		handleCollapseToggle(editSections[0]?.id || '');
 	}
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
-	<EditProductSidebar bind:this={sidebar} />
+	<Sidebar
+		bind:this={sidebar}
+		bind:activeSection
+		type="edit"
+		scrollHeaderOffset={100}
+		sections={editSections}
+		headerActionLabel={$preferences.editing.expandAllSections
+			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+			: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+		onHeaderAction={toggleExpandAll}
+	/>
 
 	<div class="w-full min-w-0 space-y-4">
 		<!-- Languages Section -->
 		<div id="languages" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('languages');
-				}}
+				bind:checked={openSections['languages']}
+				onchange={() => handleCollapseToggle('languages')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -150,10 +261,8 @@
 		<div id="images" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('images');
-				}}
+				bind:checked={openSections['images']}
+				onchange={() => handleCollapseToggle('images')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -168,10 +277,8 @@
 		<div id="basic-info" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('basic-info');
-				}}
+				bind:checked={openSections['basic-info']}
+				onchange={() => handleCollapseToggle('basic-info')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -194,10 +301,8 @@
 		<div id="origin-traceability" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('origin-traceability');
-				}}
+				bind:checked={openSections['origin-traceability']}
+				onchange={() => handleCollapseToggle('origin-traceability')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiEarth class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -212,10 +317,8 @@
 		<div id="ingredients" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('ingredients');
-				}}
+				bind:checked={openSections['ingredients']}
+				onchange={() => handleCollapseToggle('ingredients')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -231,10 +334,8 @@
 		<div id="nutrition" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('nutrition');
-				}}
+				bind:checked={openSections['nutrition']}
+				onchange={() => handleCollapseToggle('nutrition')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -249,10 +350,8 @@
 		<div id="prices" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('prices');
-				}}
+				bind:checked={openSections['prices']}
+				onchange={() => handleCollapseToggle('prices')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -280,10 +379,8 @@
 		<div class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md" id="packaging">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('packaging');
-				}}
+				bind:checked={openSections['packaging']}
+				onchange={() => handleCollapseToggle('packaging')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -298,10 +395,8 @@
 		<div id="comment" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('comment');
-				}}
+				bind:checked={openSections['comment']}
+				onchange={() => handleCollapseToggle('comment')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -320,10 +415,8 @@
 			>
 				<input
 					type="checkbox"
-					checked={isMobile ? false : $preferences.editing.expandAllSections}
-					onchange={(e) => {
-						if (e.isTrusted) handleCollapseToggle('moderator-tools');
-					}}
+					bind:checked={openSections['moderator-tools']}
+					onchange={() => handleCollapseToggle('moderator-tools')}
 				/>
 				<div class="collapse-title flex items-center text-sm font-bold text-warning sm:text-base">
 					<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
