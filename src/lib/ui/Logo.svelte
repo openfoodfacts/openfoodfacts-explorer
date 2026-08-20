@@ -3,6 +3,7 @@
 	import { getWebsiteCtx } from '$lib/stores/website';
 	import { WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 	import { preferences } from '$lib/settings';
+	import { _ } from '$lib/i18n';
 
 	let websiteCtx = getWebsiteCtx();
 
@@ -48,5 +49,15 @@
 </script>
 
 <picture class={className}>
-	<img src={logoSrc} alt="OpenFoodFacts Explorer" class="h-full w-full object-contain" />
+	<source
+		srcset={mono
+			? `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-mono-white.svg`
+			: `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-dark.svg`}
+		media={$preferences.theme === 'system' ? '(prefers-color-scheme: dark)' : 'not all'}
+	/>
+	<img
+		src={logoSrc}
+		alt={$_('footer.decorative_alt', { default: 'Open Food Facts Explorer' })}
+		class="h-full w-full object-contain"
+	/>
 </picture>
