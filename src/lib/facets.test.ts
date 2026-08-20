@@ -2,8 +2,20 @@ import { describe, it, expect } from 'vitest';
 import {
 	parseLuceneFacets,
 	toLuceneString,
+	extractQuery,
+	addIncludeFacet,
+	addExcludeFacet,
+	removeIncludeFacet,
+	removeExcludeFacet,
 	toggleExcludeFacet,
-	toggleIncludeFacet
+	toggleIncludeFacet,
+	getSearchFieldForFacet,
+	getFacetKeyForSearchField,
+	groupCatalogFacets,
+	MASTER_FACET_CATALOG,
+	KNOWN_AGGREGATED_FACETS,
+	DEFAULT_VISIBLE_FACET_KEYS,
+	DEFAULT_FREE_TEXT_FACETS
 } from './facets';
 import type { FacetsSelection } from './facets';
 
@@ -128,5 +140,106 @@ describe('toggleIncludeFacet & toggleExcludeFacet', () => {
 		expect(sel.brands.exclude).toContain('Coca-Cola');
 		sel = toggleExcludeFacet(sel, 'brands', 'Coca-Cola');
 		expect(sel.brands.exclude).not.toContain('Coca-Cola');
+	});
+});
+
+describe('search field mappings', () => {
+	it('maps new facet keys to their respective search fields', () => {
+		expect(getSearchFieldForFacet('packaging_shapes')).toBe('packagings.shape');
+		expect(getSearchFieldForFacet('packaging_recycling')).toBe('packagings.recycling');
+		expect(getSearchFieldForFacet('ingredients_analysis')).toBe('ingredients_analysis');
+		expect(getSearchFieldForFacet('owner')).toBe('owner');
+		expect(getSearchFieldForFacet('photographers')).toBe('photographers');
+		expect(getSearchFieldForFacet('data_quality_warnings')).toBe('data_quality_warnings');
+		expect(getSearchFieldForFacet('data_quality_errors')).toBe('data_quality_errors_tags');
+		expect(getSearchFieldForFacet('popularity_tags')).toBe('popularity_tags');
+	});
+
+	it('maps search fields back to their respective facet keys', () => {
+		expect(getFacetKeyForSearchField('packagings.shape')).toBe('packaging_shapes');
+		expect(getFacetKeyForSearchField('packagings.recycling')).toBe('packaging_recycling');
+		expect(getFacetKeyForSearchField('ingredients_analysis')).toBe('ingredients_analysis');
+		expect(getFacetKeyForSearchField('owner')).toBe('owner');
+		expect(getFacetKeyForSearchField('photographers')).toBe('photographers');
+		expect(getFacetKeyForSearchField('data_quality_warnings')).toBe('data_quality_warnings');
+		expect(getFacetKeyForSearchField('data_quality_errors_tags')).toBe('data_quality_errors');
+		expect(getFacetKeyForSearchField('popularity_tags')).toBe('popularity_tags');
+	});
+
+	it('falls back to facetKey or searchField if not explicitly mapped', () => {
+		expect(getSearchFieldForFacet('custom_field')).toBe('custom_field');
+		expect(getFacetKeyForSearchField('custom_field')).toBe('custom_field');
+	});
+});
+
+describe('extractQuery', () => {
+	it('extracts plain query text without facet terms', () => {
+		expect(extractQuery('organic juice')).toBe('organic juice');
+	});
+
+	it('extracts query text from query with facet conditions', () => {
+		expect(extractQuery('dark chocolate AND brands:("Lindt")')).toBe('dark chocolate');
+	});
+
+	it('returns empty string when query only contains facet filters', () => {
+		expect(extractQuery('brands:("Coca-Cola") AND -categories:("en:sodas")')).toBe('');
+	});
+});
+
+describe('add & remove facet helpers', () => {
+	it('adds include facets without duplicates', () => {
+		let sel: FacetsSelection = {};
+		sel = addIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).toEqual(['Nestle']);
+		sel = addIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).toEqual(['Nestle']);
+		sel = addIncludeFacet(sel, 'brands', 'Danone');
+		expect(sel.brands.include).toEqual(['Nestle', 'Danone']);
+	});
+
+	it('adds exclude facets without duplicates', () => {
+		let sel: FacetsSelection = {};
+		sel = addExcludeFacet(sel, 'allergens', 'en:peanuts');
+		expect(sel.allergens.exclude).toEqual(['en:peanuts']);
+		sel = addExcludeFacet(sel, 'allergens', 'en:peanuts');
+		expect(sel.allergens.exclude).toEqual(['en:peanuts']);
+	});
+
+	it('removes include and exclude facets', () => {
+		let sel: FacetsSelection = {
+			brands: { include: ['Nestle', 'Danone'], exclude: ['Pepsi'] }
+		};
+		sel = removeIncludeFacet(sel, 'brands', 'Nestle');
+		expect(sel.brands.include).toEqual(['Danone']);
+		sel = removeExcludeFacet(sel, 'brands', 'Pepsi');
+		expect(sel.brands.exclude).toEqual([]);
+	});
+});
+
+describe('groupCatalogFacets', () => {
+	it('correctly groups catalog items by their category', () => {
+		const groups = groupCatalogFacets(MASTER_FACET_CATALOG);
+		expect(groups['General']).toBeDefined();
+		expect(groups['Nutrition & Health']).toBeDefined();
+		expect(groups['Packaging & Origin']).toBeDefined();
+		expect(groups['Community & Metadata']).toBeDefined();
+
+		const totalGrouped = Object.values(groups).reduce((sum, items) => sum + items.length, 0);
+		expect(totalGrouped).toBe(MASTER_FACET_CATALOG.length);
+	});
+});
+
+describe('MASTER_FACET_CATALOG integrity', () => {
+	it('has 35 total facets with unique keys', () => {
+		expect(MASTER_FACET_CATALOG.length).toBe(35);
+		const keys = MASTER_FACET_CATALOG.map((f) => f.key);
+		const uniqueKeys = new Set(keys);
+		expect(uniqueKeys.size).toBe(MASTER_FACET_CATALOG.length);
+	});
+
+	it('defines known aggregated and free text facet subsets', () => {
+		expect(KNOWN_AGGREGATED_FACETS.length).toBe(11);
+		expect(DEFAULT_VISIBLE_FACET_KEYS.length).toBe(14);
+		expect(DEFAULT_FREE_TEXT_FACETS.length).toBeGreaterThanOrEqual(0);
 	});
 });

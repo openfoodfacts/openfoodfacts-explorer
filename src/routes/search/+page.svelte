@@ -10,6 +10,8 @@
 	import { preferences } from '$lib/settings';
 	import { SORT_OPTIONS } from '$lib/const';
 	import {
+		addExcludeFacet,
+		addIncludeFacet,
 		extractQuery,
 		parseLuceneFacets,
 		removeExcludeFacet,
@@ -32,9 +34,12 @@
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
+	import IconMdiFilterVariant from '@iconify-svelte/mdi/filter-variant';
 
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
+	import Sidebar from '$lib/ui/Sidebar.svelte';
+	import SearchFilters from './SearchFilters.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
@@ -107,6 +112,15 @@
 		localFacets = parseLuceneFacets(data.query);
 	});
 
+	let totalActiveFilters = $derived.by(() => {
+		let count = 0;
+		for (const sel of Object.values(localFacets)) {
+			if (sel.include) count += sel.include.length;
+			if (sel.exclude) count += sel.exclude.length;
+		}
+		return count;
+	});
+
 	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 	function clearPendingTimer() {
@@ -154,6 +168,7 @@
 	let queryIsBarcode = $derived(/^\d{5,18}$/.test(cleanedQuery));
 	let barcodeInput = $state('');
 	let encodedMainSearchTerm = $derived(encodeURIComponent(mainSearchTerm));
+	let sidebarHidden = $state(false);
 </script>
 
 <Metadata
@@ -390,10 +405,38 @@
 	}}
 />
 
-<!-- Facet Bar -->
-{#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4" id="facets">
-		<FacetBar
+<div
+	class={[
+		'relative w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
+		sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
+	]}
+>
+	<!-- Desktop Sidebar -->
+	<Sidebar bind:hidden={sidebarHidden} type="search">
+		{#snippet header()}
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-1.5">
+					<IconMdiFilterVariant class="h-4 w-4 text-base-content/70" />
+					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
+						{$_('search.filters_title', { default: 'Filters' })}
+					</span>
+					{#if totalActiveFilters > 0}
+						<span class="badge badge-xs font-semibold badge-primary">{totalActiveFilters}</span>
+					{/if}
+				</div>
+				<div class="flex items-center gap-2">
+					<button
+						type="button"
+						onclick={() => (sidebarHidden = true)}
+						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+					>
+						{$_('search.hide_sidebar', { default: 'Hide' })}
+					</button>
+				</div>
+			</div>
+		{/snippet}
+
+		<SearchFilters
 			facets={searchResult.facets}
 			selectedFacets={localFacets}
 			onToggleInclude={(key, val) => {
@@ -404,59 +447,200 @@
 				const next = toggleExcludeFacet(localFacets, key, val);
 				updateFacets(next);
 			}}
+			onAddInclude={(key, val) => {
+				const next = addIncludeFacet(localFacets, key, val);
+				updateFacets(next);
+			}}
+			onAddExclude={(key, val) => {
+				const next = addExcludeFacet(localFacets, key, val);
+				updateFacets(next);
+			}}
+			onRemoveInclude={(key, val) => {
+				const next = removeIncludeFacet(localFacets, key, val);
+				updateFacets(next);
+			}}
+			onRemoveExclude={(key, val) => {
+				const next = removeExcludeFacet(localFacets, key, val);
+				updateFacets(next);
+			}}
 		/>
-	</div>
-{/if}
+	</Sidebar>
 
-<div class="divider"></div>
+	<div class="flex w-full min-w-0 flex-col">
+		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
+		{#if (searchResult.facets && Object.keys(searchResult.facets).length > 0) || true}
+			<div class="mt-2 mb-1 lg:hidden" id="facets">
+				<FacetBar
+					facets={searchResult.facets}
+					selectedFacets={localFacets}
+					onToggleInclude={(key, val) => {
+						const next = toggleIncludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+					onToggleExclude={(key, val) => {
+						const next = toggleExcludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+					onAddInclude={(key, val) => {
+						const next = addIncludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+					onAddExclude={(key, val) => {
+						const next = addExcludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+					onRemoveInclude={(key, val) => {
+						const next = removeIncludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+					onRemoveExclude={(key, val) => {
+						const next = removeExcludeFacet(localFacets, key, val);
+						updateFacets(next);
+					}}
+				/>
+			</div>
+		{/if}
 
-{#if navigating.to != null}
-	<!-- Product Card Skeleton Loading State during API Call -->
-	<div class="my-6 max-md:me-4">
-		<div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-			{#each Array(6) as _, index (index)}
+		<div class="divider my-1 lg:hidden"></div>
+
+		{#if navigating.to != null}
+			<!-- Product Card Skeleton Loading State during API Call -->
+			<div class="my-6 max-md:me-4">
 				<div
-					class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
+					class={[
+						'grid w-full grid-cols-1 gap-6 sm:grid-cols-2',
+						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+					]}
 				>
-					<div class="flex gap-4">
-						<div class="h-24 w-24 shrink-0 skeleton rounded-lg"></div>
-						<div class="flex flex-1 flex-col gap-2.5">
-							<div class="h-4 w-3/4 skeleton rounded"></div>
-							<div class="h-3 w-1/2 skeleton rounded"></div>
-							<div class="h-3 w-1/3 skeleton rounded"></div>
+					{#each Array(6) as _, index (index)}
+						<div
+							class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
+						>
+							<div class="flex gap-4">
+								<div class="h-24 w-24 shrink-0 skeleton rounded-lg"></div>
+								<div class="flex flex-1 flex-col gap-2.5">
+									<div class="h-4 w-3/4 skeleton rounded"></div>
+									<div class="h-3 w-1/2 skeleton rounded"></div>
+									<div class="h-3 w-1/3 skeleton rounded"></div>
+								</div>
+							</div>
+							<div class="flex items-center justify-between pt-2">
+								<div class="h-5 w-16 skeleton rounded-full"></div>
+								<div class="h-5 w-20 skeleton rounded-full"></div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{:else if searchResult.count > 0}
+			<div class="max-md:me-4">
+				<div
+					class={[
+						'mt-4 grid w-full grid-cols-1 gap-6 sm:grid-cols-2',
+						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+					]}
+				>
+					{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
+						<div class="indicator block w-full">
+							{#if $preferences.displayPricesInSearch}
+								<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
+									{$_('search.prices_badge', {
+										values: { count: data.prices[product.code] }
+									})}
+								</span>
+							{/if}
+							<WcProductCard
+								{product}
+								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
+							/>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{:else}
+			<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
+				{#if queryIsBarcode}
+					<div class="card w-full max-w-lg bg-base-100 shadow-xl">
+						<div class="card-body items-center p-8 text-center">
+							<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+							<h1 class="text-3xl font-bold">
+								{$_('search.product_not_found', { default: 'No products found' })}
+							</h1>
+							<p class="py-4 text-sm text-base-content/80 sm:text-base">
+								{$_('qr.barcode_scanned_not_found', {
+									values: { barcode: cleanedQuery },
+									default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
+								})}
+							</p>
+							<div class="mt-4 card-actions flex w-full flex-col gap-3">
+								<a
+									href="/products/{cleanedQuery}/edit"
+									class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
+								>
+									<span class="text-xl">➕</span>
+									{$_('product.add_product', { default: 'Add This Product' })}
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="flex items-center justify-between pt-2">
-						<div class="h-5 w-16 skeleton rounded-full"></div>
-						<div class="h-5 w-20 skeleton rounded-full"></div>
+				{:else}
+					<div class="card w-full max-w-lg bg-base-100 shadow-xl">
+						<div class="card-body items-center p-8 text-center">
+							<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+							<h1 class="text-3xl font-bold">
+								{$_('search.product_not_found', { default: 'No products found' })}
+							</h1>
+							<p class="py-4 text-sm text-base-content/80 sm:text-base">
+								{$_('search.product_not_found_desc', {
+									default: "We couldn't find any products matching your search."
+								})}
+							</p>
+							<div class="mt-4 card-actions flex w-full flex-col gap-3">
+								<p class="text-xs text-base-content/60">
+									{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
+										'search.enter_barcode_below',
+										{ default: 'Enter the barcode below.' }
+									)}
+								</p>
+								<form
+									onsubmit={(e) => {
+										e.preventDefault();
+										const barcode = barcodeInput.trim();
+										if (/^\d+$/.test(barcode)) {
+											goto(`/products/${barcode}/edit`);
+										}
+									}}
+									class="join w-full shadow-sm"
+								>
+									<input
+										type="text"
+										placeholder={$_('search.barcode_placeholder', {
+											default: 'Barcode (e.g. 1234567890123)'
+										})}
+										bind:value={barcodeInput}
+										class="input-bordered input join-item w-full focus:outline-none"
+										required
+										pattern="\d+"
+										title={$_('search.barcode_validation_title', {
+											default: 'Barcode must contain digits only'
+										})}
+									/>
+									<button type="submit" class="btn join-item font-bold btn-primary">
+										{$_('search.go', { default: 'Go' })}
+									</button>
+								</form>
+							</div>
+						</div>
 					</div>
-				</div>
-			{/each}
-		</div>
+				{/if}
+			</div>
+		{/if}
 	</div>
-{:else if searchResult.count > 0}
-	<div class="max-md:me-4">
-		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
-				<div class="indicator block w-full">
-					{#if $preferences.displayPricesInSearch}
-						<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
-							{$_('search.prices_badge', {
-								values: { count: data.prices[product.code] }
-							})}
-						</span>
-					{/if}
-					<WcProductCard
-						{product}
-						personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
-					/>
-				</div>
-			{/each}
-		</div>
-	</div>
+</div>
 
-	<!-- Pagination -->
-	<div class="mt-8">
+<!-- Pagination -->
+{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
@@ -466,83 +650,6 @@
 				return newUrl.toString();
 			}}
 		/>
-	</div>
-{:else}
-	<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
-		{#if queryIsBarcode}
-			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-				<div class="card-body items-center p-8 text-center">
-					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
-					<h1 class="text-3xl font-bold">
-						{$_('search.product_not_found', { default: 'No products found' })}
-					</h1>
-					<p class="py-4 text-sm text-base-content/80 sm:text-base">
-						{$_('qr.barcode_scanned_not_found', {
-							values: { barcode: cleanedQuery },
-							default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
-						})}
-					</p>
-					<div class="mt-4 card-actions flex w-full flex-col gap-3">
-						<a
-							href="/products/{cleanedQuery}/edit"
-							class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
-						>
-							<span class="text-xl">➕</span>
-							{$_('product.add_product', { default: 'Add This Product' })}
-						</a>
-					</div>
-				</div>
-			</div>
-		{:else}
-			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-				<div class="card-body items-center p-8 text-center">
-					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
-					<h1 class="text-3xl font-bold">
-						{$_('search.product_not_found', { default: 'No products found' })}
-					</h1>
-					<p class="py-4 text-sm text-base-content/80 sm:text-base">
-						{$_('search.product_not_found_desc', {
-							default: "We couldn't find any products matching your search."
-						})}
-					</p>
-					<div class="mt-4 card-actions flex w-full flex-col gap-3">
-						<p class="text-xs text-base-content/60">
-							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
-								'search.enter_barcode_below',
-								{ default: 'Enter the barcode below.' }
-							)}
-						</p>
-						<form
-							onsubmit={(e) => {
-								e.preventDefault();
-								const barcode = barcodeInput.trim();
-								if (/^\d+$/.test(barcode)) {
-									goto(`/products/${barcode}/edit`);
-								}
-							}}
-							class="join w-full shadow-sm"
-						>
-							<input
-								type="text"
-								placeholder={$_('search.barcode_placeholder', {
-									default: 'Barcode (e.g. 1234567890123)'
-								})}
-								bind:value={barcodeInput}
-								class="input-bordered input join-item w-full focus:outline-none"
-								required
-								pattern="\d+"
-								title={$_('search.barcode_validation_title', {
-									default: 'Barcode must contain digits only'
-								})}
-							/>
-							<button type="submit" class="btn join-item font-bold btn-primary">
-								{$_('search.go', { default: 'Go' })}
-							</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		{/if}
 	</div>
 {/if}
 
