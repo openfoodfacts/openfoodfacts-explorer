@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Bidra",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Öppna Pet Food Facts",
+			"open_products_facts": "Öppna Produktfakta"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Produktsektioner",
+		"sidebar": {
+			"show": "Visa sidofält",
+			"hide": "Dölj sidofält"
+		},
+		"sections": {
+			"product": "Produkt",
+			"health": "Hälsa & näring",
+			"environment": "Miljö & hållbarhet",
+			"knowledge_panels": "Analys & insikter",
+			"datasources": "Datakällor",
+			"prices": "Priser",
+			"folksonomy": "Taggar & community"
+		},
 		"edit": {
+			"sidebar_navigation": "Produktredigeringsavsnitt",
 			"sidebar": {
 				"collapse_all": "Minimera alla",
 				"expand_all": "Expandera alla"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "Allergener",
 			"traces": "Spår",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Du måste först välja en produkttyp!",
 			"main_language": "Huvudspråk",
 			"add_product": "Lagg till produkt",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Foton",
 				"basic_info": "Grundläggande information",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Spårbarhet och ursprung",
 				"languages": "Språk och produktnamn",
 				"ingredients": "Ingredienser",
@@ -466,6 +505,22 @@
 				"prices": "Priser",
 				"comment": "Kommentar"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Produktdetaljer",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Språk",
+				"comment": "Kommentar"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Skicka in",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ladda inte upp upphovsrättsskyddade bilder",
 			"legal_warning_photos_1": "Ladda inte upp foton som du inte äger eller inte har rättigheterna till. Att ladda upp upphovsrättsskyddade bilder utan tillstånd är olagligt och kan leda till att ditt konto stängs av.",
 			"legal_warning_photos_2": "Ladda bara upp dina egna foton eller de du har uttryckligt tillstånd att använda.",
@@ -616,7 +671,9 @@
 		"product_not_found": "Produkten hittades inte",
 		"barcode_scanned_not_found": "Streckkoden {barcode} skannades, men ingen produkt hittades i våra Öppna matfakta, Öppna skönhetsfakta, Öppna produktfakta eller Öppna djurfoderfakta.",
 		"add_new_product": "Lägg till ny produkt",
-		"scan_again": "Skanna igen"
+		"scan_again": "Skanna igen",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "Steg",
 		"of": "av",
 		"cancel": "Annulera",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Skrolla till toppen"
 	},
 	"menu": {
 		"button": "Meny",

@@ -30,10 +30,24 @@ export const WEBSITE_FLAVOR_METADATA: Record<WebsiteFlavor, WebsiteFlavorMetadat
 	}
 };
 
-export function toWebsiteFlavor(productType: string): WebsiteFlavor {
-	if ((WEBSITE_FLAVORS as readonly string[]).includes(productType)) {
-		return productType as WebsiteFlavor;
-	}
+const WEBSITE_FLAVOR_ALIASES: Record<string, WebsiteFlavor> = {
+	food: 'food',
+	off: 'food',
+	beauty: 'beauty',
+	obf: 'beauty',
+	petfood: 'petfood',
+	opff: 'petfood',
+	product: 'product',
+	opf: 'product'
+};
 
-	return 'food';
+export function toWebsiteFlavor(value: string): WebsiteFlavor {
+	return WEBSITE_FLAVOR_ALIASES[value.trim().toLowerCase()] ?? 'food';
+}
+
+export function getWebsiteFlavorFromParam(flavorParam: string | null): WebsiteFlavor | undefined {
+	if (flavorParam == null || flavorParam.trim() === '') return undefined;
+
+	const flavor = WEBSITE_FLAVOR_ALIASES[flavorParam.trim().toLowerCase()];
+	return flavor;
 }

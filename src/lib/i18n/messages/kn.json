@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Product",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "ಡೇಟಾ ಮೂಲಗಳು",
+			"prices": "ಬೆಲೆಗಳು",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "ಕುರುಹುಗಳು:",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "ನೀವು ಮೊದಲು ಉತ್ಪನ್ನದ ಪ್ರಕಾರವನ್ನು ಆರಿಸಬೇಕು!",
 			"main_language": "Main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "ಫೋಟೋಗಳು",
 				"basic_info": "ಮೂಲ ಮಾಹಿತಿ",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ಭಾಷೆಗಳು ಮತ್ತು ಉತ್ಪನ್ನದ ಹೆಸರುಗಳು",
 				"ingredients": "ಪದಾರ್ಥಗಳು",
@@ -466,6 +505,22 @@
 				"prices": "ಬೆಲೆಗಳು",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "ಉತ್ಪನ್ನ ವಿವರಗಳು",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "ಹಕ್ಕುಸ್ವಾಮ್ಯ ಹೊಂದಿರುವ ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಡಿ.",
 			"legal_warning_photos_1": "ನೀವು ಹೊಂದಿರದ ಅಥವಾ ನಿಮಗೆ ಹಕ್ಕುಗಳಿಲ್ಲದ ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಡಿ. ಹಕ್ಕುಸ್ವಾಮ್ಯ ಹೊಂದಿರುವ ಚಿತ್ರಗಳನ್ನು ಅನುಮತಿಯಿಲ್ಲದೆ ಅಪ್‌ಲೋಡ್ ಮಾಡುವುದು ಕಾನೂನುಬಾಹಿರ ಮತ್ತು ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಅಮಾನತುಗೊಳಿಸಲು ಕಾರಣವಾಗಬಹುದು.",
 			"legal_warning_photos_2": "ನಿಮ್ಮ ಸ್ವಂತ ಫೋಟೋಗಳನ್ನು ಅಥವಾ ನೀವು ಬಳಸಲು ಸ್ಪಷ್ಟ ಅನುಮತಿ ಹೊಂದಿರುವ ಫೋಟೋಗಳನ್ನು ಮಾತ್ರ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.",
@@ -616,7 +671,9 @@
 		"product_not_found": "ಉತ್ಪನ್ನ ಕಂಡುಬಂದಿಲ್ಲ",
 		"barcode_scanned_not_found": "ಬಾರ್‌ಕೋಡ್ {barcode} ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗಿದೆ, ಆದರೆ ನಮ್ಮ ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್, ಓಪನ್ ಬ್ಯೂಟಿ ಫ್ಯಾಕ್ಟ್ಸ್, ಓಪನ್ ಪ್ರಾಡಕ್ಟ್ಸ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಅಥವಾ ಓಪನ್ ಪೆಟ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್‌ನಲ್ಲಿ ಯಾವುದೇ ಉತ್ಪನ್ನ ಕಂಡುಬಂದಿಲ್ಲ.",
 		"add_new_product": "ಹೊಸ ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ",
-		"scan_again": "ಮತ್ತೊಮ್ಮೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ"
+		"scan_again": "ಮತ್ತೊಮ್ಮೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "ನಡೆಯಿರಿ",
 		"of": "ನ",
 		"cancel": "Cancel",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",

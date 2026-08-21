@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import type { Component, ComponentType } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
-	export interface SidebarSection {
+	export interface SidebarSectionBase {
 		id: string;
 		label: string;
 		icon?: Component | ComponentType;
@@ -13,6 +14,18 @@
 		onToggle?: (open?: boolean) => void;
 	}
 
+	type SidebarSectionAction =
+		| {
+				href: string;
+				onClick?: never;
+		  }
+		| {
+				href?: never;
+				onClick: () => void;
+		  };
+
+	export type SidebarSection = SidebarSectionBase & SidebarSectionAction;
+
 	type Props = {
 		sections: SidebarSection[];
 		activeSection?: string;
@@ -20,7 +33,6 @@
 		hidden?: boolean;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
-		onSectionClick?: (id: string) => void;
 		type?: 'product' | 'edit';
 	};
 
@@ -31,7 +43,6 @@
 		hidden = $bindable(false),
 		headerActionLabel,
 		onHeaderAction,
-		onSectionClick,
 		type = 'product'
 	}: Props = $props();
 
@@ -40,19 +51,37 @@
 	let indicatorHeight = $state(0);
 
 	function updateIndicator() {
-		if (activeSection && navElement) {
-			const activeBtn = navElement.querySelector(
-				`[data-section="${activeSection}"]`
-			) as HTMLElement;
-			if (activeBtn) {
-				indicatorTop = activeBtn.offsetTop;
-				indicatorHeight = activeBtn.offsetHeight;
-			}
+		if (!navElement || !activeSection) {
+			indicatorTop = 0;
+			indicatorHeight = 0;
+			return;
 		}
+
+		const activeBtn = Array.from(navElement.querySelectorAll<HTMLElement>('[data-section]')).find(
+			(button) => button.dataset.section === activeSection
+		);
+
+		if (!activeBtn) {
+			indicatorTop = 0;
+			indicatorHeight = 0;
+			return;
+		}
+
+		indicatorTop = activeBtn.offsetTop;
+		indicatorHeight = activeBtn.offsetHeight;
 	}
 
 	$effect(() => {
-		if (activeSection && navElement) {
+		const sectionIds = sections.map((section) => section.id);
+		const nextActiveSection = sectionIds.includes(activeSection)
+			? activeSection
+			: (sectionIds[0] ?? '');
+
+		if (activeSection !== nextActiveSection) {
+			activeSection = nextActiveSection;
+		}
+
+		if (navElement) {
 			updateIndicator();
 		}
 	});
@@ -94,12 +123,47 @@
 		}
 	}
 
-	function handleSectionClick(id: string) {
-		if (onSectionClick) {
-			onSectionClick(id);
+	function handleSectionClick(section: SidebarSection) {
+		if (section.onClick) {
+			section.onClick();
 		} else {
-			scrollToSection(id);
+			scrollToSection(section.id);
 		}
+	}
+
+	function getSectionClass(section: SidebarSection) {
+		return [
+			'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+			activeSection === section.id
+				? section.style === 'warning'
+					? 'font-semibold text-warning'
+					: 'font-semibold text-primary'
+				: section.style === 'warning'
+					? 'text-warning/70 hover:text-warning'
+					: 'text-base-content/60 hover:text-primary'
+		];
+	}
+
+	async function handleAnchorClick(
+		event: MouseEvent,
+		section: Extract<SidebarSection, { href: string }>
+	) {
+		if (
+			event.button !== 0 ||
+			event.metaKey ||
+			event.ctrlKey ||
+			event.shiftKey ||
+			event.altKey ||
+			!section.href.startsWith('#')
+		) {
+			return;
+		}
+
+		const targetId = decodeURIComponent(section.href.slice(1));
+		if (!document.getElementById(targetId)) return;
+
+		event.preventDefault();
+		await goto(section.href, { noScroll: true });
 	}
 
 	function updateActiveSection() {
@@ -143,11 +207,11 @@
 	}
 
 	onMount(() => {
-		if (!activeSection && sections.length > 0) {
-			activeSection = sections[0].id;
-		}
-
 		let ticking = false;
+		const resizeObserver = new ResizeObserver(updateIndicator);
+		if (navElement) {
+			resizeObserver.observe(navElement);
+		}
 
 		function handleScroll() {
 			if (!ticking) {
@@ -160,7 +224,6 @@
 		}
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
-		window.addEventListener('resize', updateIndicator, { passive: true });
 
 		const timer = setTimeout(() => {
 			updateActiveSection();
@@ -169,8 +232,8 @@
 		return () => {
 			clearTimeout(timer);
 			clearTimeout(observerTimeout);
+			resizeObserver.disconnect();
 			window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('resize', updateIndicator);
 		};
 	});
 </script>
@@ -216,29 +279,43 @@
 			{/if}
 
 			{#each sections as section (section.id)}
-				<button
-					type="button"
-					data-section={section.id}
-					aria-controls={section.id}
-					aria-current={activeSection === section.id ? 'true' : 'false'}
-					onclick={() => handleSectionClick(section.id)}
-					class={[
-						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none',
-						activeSection === section.id
-							? section.style === 'warning'
-								? 'font-semibold text-warning'
-								: 'font-semibold text-primary'
-							: section.style === 'warning'
-								? 'text-warning/70 hover:text-warning'
-								: 'text-base-content/60 hover:text-primary'
-					]}
-				>
-					{#if section.icon}
-						{@const Icon = section.icon}
-						<Icon class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-					{/if}
-					<span>{section.label}</span>
-				</button>
+				{#if section.href}
+					<a
+						href={section.href}
+						onclick={(event) => handleAnchorClick(event, section)}
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</a>
+				{:else}
+					<button
+						type="button"
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						onclick={() => handleSectionClick(section)}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</button>
+				{/if}
 			{/each}
 		</nav>
 	</aside>
@@ -248,10 +325,13 @@
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
-		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content lg:flex"
+		class="group fixed top-1/2 left-0 z-50 hidden h-24 w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-r-xl border border-l-0 border-base-300 bg-base-200 text-base-content/70 shadow-md transition-all duration-300 outline-none hover:w-7 hover:border-primary hover:bg-primary hover:text-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:flex"
 		title={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 		aria-label={$_('product.sidebar.show', { default: 'Show Sidebar' })}
 	>
-		<IconMdiChevronRight class="h-4 w-4 transition-transform duration-200 group-hover:scale-125" />
+		<IconMdiChevronRight
+			aria-hidden="true"
+			class="h-4 w-4 transition-transform duration-200 group-hover:scale-125"
+		/>
 	</button>
 {/if}
