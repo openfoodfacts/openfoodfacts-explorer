@@ -13,6 +13,8 @@ Props:
 <script lang="ts">
 	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api';
 	import Panel from './Panel.svelte';
+	import { setContext } from 'svelte';
+	import { _ as t } from '$lib/i18n';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -22,6 +24,14 @@ Props:
 	};
 
 	let { panels, code, summary = true, roots }: Props = $props();
+
+	const expandState = $state<{
+		expanded: boolean | undefined;
+	}>({
+		expanded: undefined
+	});
+
+	setContext('knowledge-panels-expand', expandState);
 
 	const SUMMARY_ID = 'knowledge-panels';
 
@@ -47,12 +57,28 @@ Props:
 			([id, panel]) => id && toDisplay.includes(id) && panel.title_element
 		);
 	});
+	function expandAll() {
+		expandState.expanded = true;
+	}
+
+	function collapseAll() {
+		expandState.expanded = false;
+	}
 </script>
 
 {#if summary}
 	<div>
 		<div class="absolute ms-5 max-w-max rounded-xl bg-secondary px-4 text-secondary-content">
 			Summary
+		</div>
+		<div class="mt-2 flex justify-end gap-2">
+			<button type="button" class="btn btn-outline btn-sm" onclick={expandAll}>
+				{$t('knowledgePanels.expandAll', { default: 'Expand all' })}
+			</button>
+
+			<button type="button" class="btn btn-outline btn-sm" onclick={collapseAll}>
+				{$t('knowledgePanels.collapseAll', { default: 'Collapse all' })}
+			</button>
 		</div>
 
 		<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
