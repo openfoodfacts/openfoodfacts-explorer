@@ -176,8 +176,10 @@
 	let { children }: LayoutProps = $props();
 
 	onMount(() => {
-		// only inject the script on the client side
-		injectSpeedInsights();
+		if (import.meta.env.VERCEL) {
+			// if we're on vercel and on the client, inject the speed insights script
+			injectSpeedInsights();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
