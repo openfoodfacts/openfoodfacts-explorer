@@ -352,7 +352,10 @@
 					packagingText
 				);
 				if (packResult.error) {
+					trackOffEvent('contribution', 'edit_failed');
 					console.error('Packaging update failed:', packResult.error);
+					console.groupEnd();
+					return;
 				} else {
 					console.debug('Packaging updated successfully');
 				}

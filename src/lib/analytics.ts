@@ -52,7 +52,7 @@ export function trackOffSiteSearch(keyword: string, resultsCount?: number): void
 	if (
 		normalizedKeyword === '' ||
 		/^\d{5,18}$/.test(normalizedBarcode) ||
-		/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedKeyword)
+		/[^\s@]+@[^\s@]+\.[^\s@]+/.test(normalizedKeyword)
 	) {
 		return;
 	}
