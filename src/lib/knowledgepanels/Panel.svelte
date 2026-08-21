@@ -23,17 +23,6 @@
 
 	let expanded = $derived(panel?.expanded ?? false);
 
-	/**
-	 * Open Food Facts serves its monochrome UI icon set (black on transparent) from
-	 * `/images/icons/dist/`, built by the `icons` gulp task of openfoodfacts-server from a
-	 * flat `icons/*.svg` glob. The Knowledge Panels API is not dark mode aware, so those
-	 * icons have to be tinted white client side to stay visible on a dark background.
-	 *
-	 * Everything else is left alone on purpose: colored assets — Nutri-Score and
-	 * Green-Score grades, NOVA groups, nutrient level dots, label logos — live under other
-	 * paths, and the Citeo packaging shapes under `/images/icons/packaging-shapes/`
-	 * already ship their own light-mode and dark-mode variants.
-	 */
 	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
 </script>
 
