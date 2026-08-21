@@ -276,6 +276,7 @@
 		isSubmitting = false;
 
 		if (data && !error) {
+			trackOffEvent('contribution', 'product_deleted');
 			toastCtx.success(
 				$_('product.moderator.delete_product_success', {
 					default: 'Product deleted successfully.'
@@ -319,6 +320,7 @@
 	async function submit() {
 		isSubmitting = true;
 		const commentValue = comment;
+		trackOffEvent('contribution', 'edit_started');
 
 		try {
 			console.group('Product added/edited');
@@ -331,6 +333,7 @@
 			console.groupEnd();
 
 			if (!submittedOk) {
+				trackOffEvent('contribution', 'edit_failed');
 				toastCtx.error($_('product.edit.toast.save_error'));
 				return;
 			}
@@ -367,6 +370,7 @@
 					product.obsolete === 'on' ? 'on' : ''
 				);
 				if (obsResult.error) {
+					trackOffEvent('contribution', 'edit_failed');
 					console.error('Obsolete status update failed:', obsResult.error);
 					toastCtx.error(
 						$_('product.moderator.obsolete_save_error', {
@@ -376,16 +380,22 @@
 					return;
 				} else {
 					console.debug('Obsolete status updated successfully');
-					trackOffEvent('product', 'delete_submitted');
+					trackOffEvent(
+						'contribution',
+						'obsolete_status_updated',
+						product.obsolete === 'on' ? 'on' : 'off'
+					);
 				}
 				console.groupEnd();
 			}
 
 			toastCtx.success($_('product.edit.toast.save_success'));
+			trackOffEvent('contribution', 'edit_succeeded');
 			goto('/products/' + product.code, {
 				state: { currentStep: 0 }
 			});
 		} catch (err) {
+			trackOffEvent('contribution', 'edit_failed');
 			console.error('Error saving product:', err);
 			toastCtx.error($_('product.edit.toast.save_error'));
 		} finally {
