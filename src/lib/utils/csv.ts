@@ -5,10 +5,12 @@
 export function escapeCsvValue(value: unknown): string {
 	if (value == null) return '';
 	const str = String(value);
-	if (/[",\n\r]/.test(str)) {
-		return `"${str.replace(/"/g, '""')}"`;
+	// Prevent spreadsheet formula injection for string cells (=, +, -, @).
+	const safeStr = typeof value === 'string' && /^[\t\r\n ]*[=+\-@]/.test(str) ? `'${str}` : str;
+	if (/[",\n\r]/.test(safeStr)) {
+		return `"${safeStr.replace(/"/g, '""')}"`;
 	}
-	return str;
+	return safeStr;
 }
 
 export function toCsv(headers: string[], rows: unknown[][]): string {

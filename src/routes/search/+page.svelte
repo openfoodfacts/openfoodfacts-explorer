@@ -142,17 +142,21 @@
 							count: result.exportedCount,
 							total: result.totalCount,
 							limit: SEARCH_CSV_EXPORT_LIMIT
-						}
+						},
+						default: 'Exported first {count} of {total} products (limit {limit})'
 					})
 				);
 			} else {
 				toastCtx.success(
-					$_('search.export_csv_success', { values: { count: result.exportedCount } })
+					$_('search.export_csv_success', {
+						values: { count: result.exportedCount },
+						default: 'Exported {count} products'
+					})
 				);
 			}
 		} catch (err) {
 			console.error('CSV export failed:', err);
-			toastCtx.error($_('search.export_csv_error'));
+			toastCtx.error($_('search.export_csv_error', { default: 'Failed to export search results' }));
 		} finally {
 			isExportingCsv = false;
 		}
@@ -395,7 +399,10 @@
 		class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
 	>
 		<p class="text-sm text-base-content/70">
-			{$_('search.export_csv_limit_hint', { values: { limit: SEARCH_CSV_EXPORT_LIMIT } })}
+			{$_('search.export_csv_limit_hint', {
+				values: { limit: SEARCH_CSV_EXPORT_LIMIT },
+				default: 'Up to {limit} products from the current filters'
+			})}
 		</p>
 		<button
 			type="button"
@@ -405,7 +412,9 @@
 			aria-busy={isExportingCsv}
 		>
 			<IconMdiDownload class="h-5 w-5" />
-			{isExportingCsv ? $_('search.export_csv_exporting') : $_('search.export_csv')}
+			{isExportingCsv
+				? $_('search.export_csv_exporting', { default: 'Exporting…' })
+				: $_('search.export_csv', { default: 'Export CSV' })}
 		</button>
 	</div>
 

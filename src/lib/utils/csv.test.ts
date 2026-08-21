@@ -14,6 +14,15 @@ describe('escapeCsvValue', () => {
 		expect(escapeCsvValue('say "hi"')).toBe('"say ""hi"""');
 		expect(escapeCsvValue('line1\nline2')).toBe('"line1\nline2"');
 	});
+
+	it('prefixes formula-like strings to prevent CSV injection', () => {
+		expect(escapeCsvValue('=1+1')).toBe("'=1+1");
+		expect(escapeCsvValue('+cmd')).toBe("'+cmd");
+		expect(escapeCsvValue('-2+2')).toBe("'-2+2");
+		expect(escapeCsvValue('@SUM(A1)')).toBe("'@SUM(A1)");
+		expect(escapeCsvValue('  =1+1')).toBe("'  =1+1");
+		expect(escapeCsvValue(-5)).toBe('-5');
+	});
 });
 
 describe('toCsv', () => {
