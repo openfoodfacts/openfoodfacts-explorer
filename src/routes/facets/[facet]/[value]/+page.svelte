@@ -18,8 +18,15 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
-		$derived(data);
+	let {
+		facet,
+		results,
+		knowledgePanels,
+		searchOptions,
+		productAttributes,
+		distributionData,
+		mapFacet
+	} = $derived(data);
 
 	let listView = $state(false);
 
@@ -47,9 +54,13 @@
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
 
-{#if distributionData && MapComponent}
+{#if distributionData && MapComponent && mapFacet}
 	<div class="my-8 w-full">
-		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<h2 class="mb-4 text-2xl font-bold">
+			{$_(mapFacet.heading, {
+				default: mapFacet.defaultHeading
+			})}
+		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
 			Note: The geographic distribution shown on this map is based only on the products visible on
