@@ -1,24 +1,16 @@
 /**
- * Minimal CSV helpers for client-side downloads.
+ * CSV helpers for client-side downloads, backed by csv-stringify.
  */
 
-export function escapeCsvValue(value: unknown): string {
-	if (value == null) return '';
-	const str = String(value);
-	// Prevent spreadsheet formula injection for string cells (=, +, -, @).
-	const safeStr = typeof value === 'string' && /^[\t\r\n ]*[=+\-@]/.test(str) ? `'${str}` : str;
-	if (/[",\n\r]/.test(safeStr)) {
-		return `"${safeStr.replace(/"/g, '""')}"`;
-	}
-	return safeStr;
-}
+import { stringify } from 'csv-stringify/sync';
 
 export function toCsv(headers: string[], rows: unknown[][]): string {
-	const lines = [
-		headers.map(escapeCsvValue).join(','),
-		...rows.map((row) => row.map(escapeCsvValue).join(','))
-	];
-	return lines.join('\r\n') + '\r\n';
+	return stringify([headers, ...rows], {
+		escape_formulas: true,
+		record_delimiter: '\r\n',
+		// With CRLF record delimiters, lone \n/\r in cells still need quoting.
+		quoted_match: /\r|\n/
+	});
 }
 
 export function downloadCsv(filename: string, csv: string): void {

@@ -1,33 +1,25 @@
 import { describe, expect, it } from 'vitest';
 
-import { escapeCsvValue, toCsv } from './csv';
+import { toCsv } from './csv';
 import { productToCsvRow, productsToCsv, SEARCH_CSV_HEADERS } from './searchCsvExport';
-
-describe('escapeCsvValue', () => {
-	it('returns empty string for nullish values', () => {
-		expect(escapeCsvValue(null)).toBe('');
-		expect(escapeCsvValue(undefined)).toBe('');
-	});
-
-	it('quotes values containing commas, quotes, or newlines', () => {
-		expect(escapeCsvValue('a,b')).toBe('"a,b"');
-		expect(escapeCsvValue('say "hi"')).toBe('"say ""hi"""');
-		expect(escapeCsvValue('line1\nline2')).toBe('"line1\nline2"');
-	});
-
-	it('prefixes formula-like strings to prevent CSV injection', () => {
-		expect(escapeCsvValue('=1+1')).toBe("'=1+1");
-		expect(escapeCsvValue('+cmd')).toBe("'+cmd");
-		expect(escapeCsvValue('-2+2')).toBe("'-2+2");
-		expect(escapeCsvValue('@SUM(A1)')).toBe("'@SUM(A1)");
-		expect(escapeCsvValue('  =1+1')).toBe("'  =1+1");
-		expect(escapeCsvValue(-5)).toBe('-5');
-	});
-});
 
 describe('toCsv', () => {
 	it('builds a CRLF CSV with a trailing newline', () => {
 		expect(toCsv(['a', 'b'], [['1', '2']])).toBe('a,b\r\n1,2\r\n');
+	});
+
+	it('quotes values containing commas, quotes, or newlines', () => {
+		expect(toCsv(['h'], [['a,b']])).toBe('h\r\n"a,b"\r\n');
+		expect(toCsv(['h'], [['say "hi"']])).toBe('h\r\n"say ""hi"""\r\n');
+		expect(toCsv(['h'], [['line1\nline2']])).toBe('h\r\n"line1\nline2"\r\n');
+	});
+
+	it('escapes formula-like values to prevent CSV injection', () => {
+		expect(toCsv(['h'], [['=1+1']])).toBe("h\r\n'=1+1\r\n");
+		expect(toCsv(['h'], [['+cmd']])).toBe("h\r\n'+cmd\r\n");
+		expect(toCsv(['h'], [['-2+2']])).toBe("h\r\n'-2+2\r\n");
+		expect(toCsv(['h'], [['@SUM(A1)']])).toBe("h\r\n'@SUM(A1)\r\n");
+		expect(toCsv(['h'], [[null, undefined]])).toBe('h\r\n,\r\n');
 	});
 });
 

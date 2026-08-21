@@ -100,6 +100,7 @@
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
 		"@sentry/sveltekit": "^10.69.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"csv-stringify": "^6.8.3",
 		"isomorphic-dompurify": "^3.21.0"
 	},
 	"packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72"
