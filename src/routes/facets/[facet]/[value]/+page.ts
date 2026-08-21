@@ -16,10 +16,25 @@ import { getLocale } from '$lib/i18n';
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
+const WITH_MAP_FACETS = {
+	origins: {
+		tagsField: 'origins_tags',
+		heading: 'facets.map_heading_origins',
+		defaultHeading: 'Origins of the ingredients'
+	},
+	countries: {
+		tagsField: 'countries_tags',
+		heading: 'facets.map_heading_countries',
+		defaultHeading: 'Where these products are sold'
+	}
+} as const;
+
+type MapFacet = keyof typeof WITH_MAP_FACETS;
+
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
-
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
+	const mapFacet = facet in WITH_MAP_FACETS ? WITH_MAP_FACETS[facet as MapFacet] : undefined;
 
 	let facetDisplayValue = value;
 	let taxonomy: Awaited<ReturnType<typeof getTaxo>> | null = null;
@@ -53,10 +68,11 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	let distributionData = null;
 
 	try {
-		if (facet === 'origins' || facet === 'countries') {
+		if (mapFacet) {
 			taxonomy = await getTaxo(facet, fetch);
 			facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}, lang) ?? value;
 		}
+
 		results = await getFacetValue(fetch, facet, value, searchOptions);
 		kp = await getFacetKnowledgePanels(fetch, facet, value);
 
@@ -64,11 +80,11 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 			const productCodes = results.products.map((state) => state.code as string);
 			productAttributes = await getBulkProductAttributes(fetch, productCodes);
 
-			if (facet === 'origins' || facet === 'countries') {
+			if (mapFacet) {
 				const tagCounts: Record<string, number> = {};
 
 				results.products.forEach((product) => {
-					const tags = facet === 'origins' ? product.origins_tags : product.countries_tags;
+					const tags = product[mapFacet.tagsField];
 
 					if (Array.isArray(tags)) {
 						tags.forEach((tag) => {
@@ -108,6 +124,12 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		results: results,
 		knowledgePanels: kp.knowledge_panels || {},
 		productAttributes,
-		distributionData
+		distributionData,
+		mapFacet: mapFacet
+			? {
+					heading: mapFacet.heading,
+					defaultHeading: mapFacet.defaultHeading
+				}
+			: null
 	};
 };
