@@ -51,7 +51,12 @@
 		"available_facets": "Available facets",
 		"search_available_facets": "Filter available facets...",
 		"no_matching_facets": "No matching facets",
-		"remove_filter_section": "Hide this filter"
+		"remove_filter_section": "Hide this filter",
+		"close": "Close",
+		"filter_placeholder": "Filter...",
+		"include_item": "Include {name}",
+		"exclude_item": "Exclude (NOT) {name}",
+		"see_all_count": "See all ({count})"
 	},
 	"auth": {
 		"username": "Username",

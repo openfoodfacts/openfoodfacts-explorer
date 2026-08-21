@@ -170,6 +170,19 @@ describe('search field mappings', () => {
 		expect(getSearchFieldForFacet('custom_field')).toBe('custom_field');
 		expect(getFacetKeyForSearchField('custom_field')).toBe('custom_field');
 	});
+
+	it('correctly round-trips aliased facets through toLuceneString and parseLuceneFacets', () => {
+		const selection: FacetsSelection = {
+			packaging_shapes: {
+				include: ['bottle', 'box'],
+				exclude: ['can']
+			}
+		};
+		const lucene = toLuceneString('', selection);
+		expect(lucene).toBe('packagings.shape:("bottle" OR "box") AND -packagings.shape:("can")');
+		const parsed = parseLuceneFacets(lucene);
+		expect(parsed).toEqual(selection);
+	});
 });
 
 describe('extractQuery', () => {
@@ -240,6 +253,6 @@ describe('MASTER_FACET_CATALOG integrity', () => {
 	it('defines known aggregated and free text facet subsets', () => {
 		expect(KNOWN_AGGREGATED_FACETS.length).toBe(11);
 		expect(DEFAULT_VISIBLE_FACET_KEYS.length).toBe(14);
-		expect(DEFAULT_FREE_TEXT_FACETS.length).toBeGreaterThanOrEqual(0);
+		expect(DEFAULT_FREE_TEXT_FACETS.length).toBe(3);
 	});
 });

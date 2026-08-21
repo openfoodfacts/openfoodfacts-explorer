@@ -468,38 +468,36 @@
 
 	<div class="flex w-full min-w-0 flex-col">
 		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
-		{#if (searchResult.facets && Object.keys(searchResult.facets).length > 0) || true}
-			<div class="mt-2 mb-1 lg:hidden" id="facets">
-				<FacetBar
-					facets={searchResult.facets}
-					selectedFacets={localFacets}
-					onToggleInclude={(key, val) => {
-						const next = toggleIncludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-					onToggleExclude={(key, val) => {
-						const next = toggleExcludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-					onAddInclude={(key, val) => {
-						const next = addIncludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-					onAddExclude={(key, val) => {
-						const next = addExcludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-					onRemoveInclude={(key, val) => {
-						const next = removeIncludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-					onRemoveExclude={(key, val) => {
-						const next = removeExcludeFacet(localFacets, key, val);
-						updateFacets(next);
-					}}
-				/>
-			</div>
-		{/if}
+		<div class="mt-2 mb-1 lg:hidden" id="facets">
+			<FacetBar
+				facets={searchResult.facets}
+				selectedFacets={localFacets}
+				onToggleInclude={(key, val) => {
+					const next = toggleIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onToggleExclude={(key, val) => {
+					const next = toggleExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onAddInclude={(key, val) => {
+					const next = addIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onAddExclude={(key, val) => {
+					const next = addExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onRemoveInclude={(key, val) => {
+					const next = removeIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onRemoveExclude={(key, val) => {
+					const next = removeExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+			/>
+		</div>
 
 		<div class="divider my-1 lg:hidden"></div>
 

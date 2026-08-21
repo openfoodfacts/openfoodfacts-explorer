@@ -1,20 +1,13 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { _ } from '$lib/i18n';
-	import { SvelteSet } from 'svelte/reactivity';
 	import type { Facet, FacetItem } from '$lib/api/search';
-	import type { FacetsSelection } from '$lib/facets';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import FacetCard from './FacetCard.svelte';
-	import {
-		MASTER_FACET_CATALOG,
-		KNOWN_AGGREGATED_FACETS,
-		DEFAULT_FREE_TEXT_FACETS,
-		groupCatalogFacets
-	} from '$lib/facets';
+	import { computeFacetCollections, type FacetsSelection } from '$lib/facets';
 
 	type Props = {
 		facets: Record<string, Facet>;
@@ -47,96 +40,17 @@
 	let addPickerInput: HTMLInputElement | null = $state(null);
 	let addPickerMobileStyle = $state('');
 
-	let allFreeTextFacets = $derived.by(() => {
-		const result = [...DEFAULT_FREE_TEXT_FACETS];
-		for (const key of customFacetKeys) {
-			const catalogItem = MASTER_FACET_CATALOG.find((f) => f.key === key);
-			if (catalogItem?.isFreeText && !result.some((f) => f.key === key)) {
-				result.push(catalogItem);
-			}
-		}
-		for (const [key, sel] of Object.entries(selectedFacets)) {
-			if ((sel?.include?.length ?? 0) > 0 || (sel?.exclude?.length ?? 0) > 0) {
-				const catalogItem = MASTER_FACET_CATALOG.find((f) => f.key === key);
-				if (catalogItem?.isFreeText && !result.some((f) => f.key === key)) {
-					result.push(catalogItem);
-				}
-			}
-		}
-		return result;
-	});
+	let collections = $derived(
+		computeFacetCollections(facets, selectedFacets, customFacetKeys, addPickerQuery, (k, opt) =>
+			$_(k, opt)
+		)
+	);
 
-	let allAggregatedFacets = $derived.by(() => {
-		const result: Record<string, Facet> = { ...(facets || {}) };
-
-		for (const key of KNOWN_AGGREGATED_FACETS) {
-			if (!result[key]) {
-				result[key] = {
-					name: key,
-					items: [],
-					count_error_margin: 0
-				};
-			}
-		}
-
-		for (const key of customFacetKeys) {
-			const catalogItem = MASTER_FACET_CATALOG.find((f) => f.key === key);
-			if (!catalogItem?.isFreeText && !result[key]) {
-				result[key] = {
-					name: key,
-					items: [],
-					count_error_margin: 0
-				};
-			}
-		}
-
-		for (const [key, sel] of Object.entries(selectedFacets)) {
-			if ((sel?.include?.length ?? 0) > 0 || (sel?.exclude?.length ?? 0) > 0) {
-				if (!allFreeTextFacets.some((f) => f.key === key) && !result[key]) {
-					result[key] = {
-						name: key,
-						items: [],
-						count_error_margin: 0
-					};
-				}
-			}
-		}
-
-		return result;
-	});
-
-	let activeFacetKeys = $derived.by(() => {
-		const keys = new SvelteSet<string>();
-		for (const key of Object.keys(allAggregatedFacets)) {
-			keys.add(key);
-		}
-		for (const f of allFreeTextFacets) {
-			keys.add(f.key);
-		}
-		for (const key of Object.keys(selectedFacets)) {
-			keys.add(key);
-		}
-		return Array.from(keys);
-	});
-
-	let availableCatalogFacets = $derived.by(() => {
-		const activeSet = new SvelteSet(activeFacetKeys);
-		return MASTER_FACET_CATALOG.filter((f) => !activeSet.has(f.key));
-	});
-
-	let filteredCatalogFacets = $derived.by(() => {
-		const q = addPickerQuery.toLowerCase().trim();
-		if (!q) return availableCatalogFacets;
-		return availableCatalogFacets.filter(
-			(f) =>
-				f.defaultLabel.toLowerCase().includes(q) ||
-				$_(f.labelKey, { default: f.defaultLabel }).toLowerCase().includes(q) ||
-				f.category.toLowerCase().includes(q) ||
-				f.key.toLowerCase().includes(q)
-		);
-	});
-
-	let groupedCatalogFacets = $derived(groupCatalogFacets(filteredCatalogFacets));
+	let allFreeTextFacets = $derived(collections.allFreeTextFacets);
+	let allAggregatedFacets = $derived(collections.allAggregatedFacets);
+	let availableCatalogFacets = $derived(collections.availableCatalogFacets);
+	let filteredCatalogFacets = $derived(collections.filteredCatalogFacets);
+	let groupedCatalogFacets = $derived(collections.groupedCatalogFacets);
 
 	function updateAddPickerPosition() {
 		if (addPickerElement?.open && addPickerSummaryElement && window.innerWidth < 768) {
@@ -313,7 +227,7 @@
 							if (addPickerElement) addPickerElement.open = false;
 							openDropdownKey = null;
 						}}
-						aria-label="Close"
+						aria-label={$_('search.close', { default: 'Close' })}
 					>
 						<IconMdiClose class="h-3.5 w-3.5" />
 					</button>

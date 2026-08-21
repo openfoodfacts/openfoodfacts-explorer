@@ -3,6 +3,7 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 	import type { Facet, FacetItem } from '$lib/api/search';
+	import { getFacetKeyForSearchField } from '$lib/facets';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
@@ -94,9 +95,7 @@
 	$effect(() => {
 		if (dropdownElement && dropdownElement.open !== isOpen) {
 			dropdownElement.open = isOpen;
-			if (isOpen) {
-				handleToggle();
-			} else {
+			if (!isOpen) {
 				cleanupListeners();
 			}
 		}
@@ -119,8 +118,8 @@
 
 		if (isNowOpen) {
 			updateMobilePosition();
-			window.addEventListener('scroll', updateMobilePosition, { passive: true });
-			window.addEventListener('resize', updateMobilePosition, { passive: true });
+			window.addEventListener('resize', updateMobilePosition);
+			window.addEventListener('scroll', updateMobilePosition, true);
 
 			if (typeof ResizeObserver !== 'undefined') {
 				if (!resizeObserver) {
@@ -200,7 +199,8 @@
 			return $_(labelKey, { default: defaultLabel });
 		}
 		if (facet) {
-			return `${$_(`facets.${facet.name}`, { default: facet.name.replace(/_/g, ' ') })} (${facet.items.length})`;
+			const facetKey = getFacetKeyForSearchField(facet.name);
+			return `${$_(`facets.${facetKey}`, { default: facet.name.replace(/_/g, ' ') })} (${facet.items.length})`;
 		}
 		return '';
 	});
