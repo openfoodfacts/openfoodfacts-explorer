@@ -96,6 +96,29 @@
 		}
 	];
 
+	const LINKS_OPEN_X_FACTS = [
+		{
+			flavor: 'off',
+			key: 'footer.open_x_facts.open_food_facts',
+			default: 'Open Food Facts'
+		},
+		{
+			flavor: 'obf',
+			key: 'footer.open_x_facts.open_beauty_facts',
+			default: 'Open Beauty Facts'
+		},
+		{
+			flavor: 'opff',
+			key: 'footer.open_x_facts.open_pet_food_facts',
+			default: 'Open Pet Food Facts'
+		},
+		{
+			flavor: 'opf',
+			key: 'footer.open_x_facts.open_products_facts',
+			default: 'Open Products Facts'
+		}
+	];
+
 	const LINKS_FOOTER = [
 		{ url: '/static/legal', key: 'footer.links.legal' },
 		{ url: '/static/privacy', key: 'footer.links.privacy' },
@@ -143,6 +166,24 @@
 					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 				>
 					{$_(link.key)}
+				</a>
+			{/each}
+		</div>
+		<h2 class="mt-6 text-3xl font-extrabold">
+			{$_('footer.open_x_facts_title', { default: 'Open X Facts' })}
+		</h2>
+		<p class="text-sm text-secondary-content/80">
+			{$_('footer.open_x_facts_description', {
+				default: 'Try the temporary landing pages for each Open X Facts project.'
+			})}
+		</p>
+		<div class="mt-2 flex flex-wrap gap-2">
+			{#each LINKS_OPEN_X_FACTS as link (link.flavor)}
+				<a
+					href={`/?flavor=${link.flavor}`}
+					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
+				>
+					{$_(link.key, { default: link.default })}
 				</a>
 			{/each}
 		</div>

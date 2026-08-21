@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "貢献する",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "オープン製品情報"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "製品",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "データソース",
+			"prices": "価格",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "アレルゲン",
 			"traces": "形跡",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "まず製品タイプを選択する必要があります。",
 			"main_language": "主な言語",
 			"add_product": "商品を追加",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "写真",
 				"basic_info": "基本情報",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "言語と製品名",
 				"ingredients": "原材料",
@@ -466,6 +505,22 @@
 				"prices": "価格",
 				"comment": "コメント"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "製品の詳細",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "言語",
+				"comment": "コメント"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "送信",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "著作権のある画像をアップロードしないでください",
 			"legal_warning_photos_1": "所有していない写真や権利のない写真をアップロードしないでください。著作権のある画像を許可なくアップロードすることは違法であり、アカウントが停止される可能性があります。",
 			"legal_warning_photos_2": "自分の写真、または明示的に使用許可を得た写真のみをアップロードしてください。",
@@ -616,7 +671,9 @@
 		"product_not_found": "商品が見つかりません",
 		"barcode_scanned_not_found": "バーコード {barcode} は正常にスキャンされましたが、Open Food Facts、Open Beauty Facts、Open Products Facts、Open Pet Food Facts に製品が見つかりません。",
 		"add_new_product": "新商品を追加",
-		"scan_again": "もう一度スキャン"
+		"scan_again": "もう一度スキャン",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "ステップ",
 		"of": "の",
 		"cancel": "取消",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "メニュー",

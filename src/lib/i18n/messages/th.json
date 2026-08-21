@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "ร่วมสนับสนุน",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "สินค้า",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "แหล่งที่มาของข้อมูล",
+			"prices": "ราคา",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "สารก่อภูมิแพ้",
 			"traces": "สารเจือปน",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "คุณต้องเลือกประเภทสินค้าก่อน!",
 			"main_language": "ภาษาหลักบนฉลากของผลิตภัณฑ์",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "รูปภาพ",
 				"basic_info": "ข้อมูลพื้นฐาน",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ภาษาและชื่อผลิตภัณฑ์",
 				"ingredients": "ส่วนผสม",
@@ -466,6 +505,22 @@
 				"prices": "ราคา",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "ภาษา",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "ห้ามอัพโหลดรูปภาพที่มีลิขสิทธิ์",
 			"legal_warning_photos_1": "อย่าอัปโหลดรูปภาพที่คุณไม่ได้เป็นเจ้าของหรือไม่มีสิทธิ์ การอัปโหลดรูปภาพที่มีลิขสิทธิ์โดยไม่ได้รับอนุญาตถือเป็นสิ่งผิดกฎหมายและอาจส่งผลให้บัญชีของคุณถูกระงับ",
 			"legal_warning_photos_2": "อัปโหลดเฉพาะภาพถ่ายของคุณเองหรือภาพถ่ายที่คุณได้รับอนุญาตอย่างชัดเจนให้ใช้เท่านั้น",
@@ -616,7 +671,9 @@
 		"product_not_found": "ไม่พบสินค้า",
 		"barcode_scanned_not_found": "สแกนบาร์โค้ด {barcode} สำเร็จแล้ว แต่ไม่พบผลิตภัณฑ์ใดๆ ใน Open Food Facts, Open Beauty Facts, Open Products Facts หรือ Open Pet Food Facts ของเรา",
 		"add_new_product": "เพิ่มสินค้าใหม่",
-		"scan_again": "สแกนอีกครั้ง"
+		"scan_again": "สแกนอีกครั้ง",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "ขั้นตอน",
 		"of": "ของ",
 		"cancel": "ยกเลิก",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "เมนู",

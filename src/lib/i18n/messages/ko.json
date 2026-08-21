@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "기여하기",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "생성물",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "데이터 소스",
+			"prices": "물가",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "알레르기 정보",
 			"traces": "흔적",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "먼저 제품 유형을 선택해야 합니다!",
 			"main_language": "주 언어",
 			"add_product": "제품 추가",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "사진",
 				"basic_info": "기본 정보",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "언어 및 제품 이름",
 				"ingredients": "성분",
@@ -466,6 +505,22 @@
 				"prices": "물가",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "제품 상세 정보",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "언어",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "제출",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "저작권이 있는 이미지를 업로드하지 마세요",
 			"legal_warning_photos_1": "본인이 소유하지 않았거나 권한이 없는 사진은 업로드하지 마세요. 저작권이 있는 이미지를 허가 없이 업로드하는 것은 불법이며, 계정이 정지될 수 있습니다.",
 			"legal_warning_photos_2": "본인의 사진이나 사용 허가를 받은 사진만 업로드하세요.",
@@ -616,7 +671,9 @@
 		"product_not_found": "제품을 찾을 수 없습니다",
 		"barcode_scanned_not_found": "바코드 {barcode} 가 성공적으로 스캔되었으나, 당사의 공개 식품 정보, 공개 뷰티 정보, 공개 제품 정보 또는 공개 반려동물 사료 정보에서 제품을 찾을 수 없습니다.",
 		"add_new_product": "새로운 제품 추가",
-		"scan_again": "다시 스캔하세요"
+		"scan_again": "다시 스캔하세요",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "단계",
 		"of": "~의",
 		"cancel": "취소",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "메뉴",

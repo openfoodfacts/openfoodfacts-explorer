@@ -37,6 +37,9 @@ export default defineConfig({
 		})
 	],
 	define: {
-		'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion)
+		'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion),
+		// Vercel provides this variable during the build. Keep the value in the
+		// client bundle so self-hosted Node builds do not load Vercel-only scripts.
+		'import.meta.env.VERCEL': JSON.stringify('VERCEL' in process.env)
 	}
 });

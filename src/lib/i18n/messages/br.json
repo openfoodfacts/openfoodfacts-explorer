@@ -86,6 +86,14 @@
 		"stay_updated": "Stay Updated",
 		"contribute": "Kenoberiañ",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +157,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -280,7 +295,22 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produ",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Mammennoù roadennoù",
+			"prices": "Prizioù",
+			"folksonomy": "Tags & Community"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -317,6 +347,12 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Roudennoù",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Ret eo deoc'h dibab ur seurt produ da gentañ !",
 			"main_language": "Yezh pennañ",
 			"add_product": "Ouzhpennañ ur produ",
 			"nutrition_issues": "Nutrition issues",
@@ -455,8 +491,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Skeudennoù",
 				"basic_info": "Titouroù diazez",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Yezhoù ha anvioù produioù",
 				"ingredients": "Aozennoù",
@@ -466,6 +505,22 @@
 				"prices": "Prizioù",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Yezhoù",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Arabat pellgargañ skeudennoù gwarezet gant gwirioù eilañ",
 			"legal_warning_photos_1": "Arabat pellgargañ luc'hskeudennoù n'oc'h ket perc'henn warno pe n'hoc'h eus ket ar gwirioù warno. Kargañ skeudennoù gwarezet gant gwirioù eilañ hep aotre zo diouzh al lezenn ha gallout a rafe lakaat ho kont da vezañ harzet.",
 			"legal_warning_photos_2": "N'eus nemet pellgargañ ho luc'hskeudennoù hoc'h-unan pe ar re hoc'h eus aotre da implijout.",
@@ -616,7 +671,9 @@
 		"product_not_found": "Produ n'eo ket bet kavet",
 		"barcode_scanned_not_found": "Skanet eo bet ar c'hod barrennoù {barcode} gant berzh, met n'eus bet kavet produ ebet en hor fedoù boued digor, fedoù kaerder digor, fedoù produioù digor pe fedoù boued loened-ti digor.",
 		"add_new_product": "Ouzhpennañ ur produ nevez",
-		"scan_again": "Skannañ en-dro"
+		"scan_again": "Skannañ en-dro",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +689,8 @@
 		"step": "Derez",
 		"of": "eus",
 		"cancel": "Nullañ",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Lañser",

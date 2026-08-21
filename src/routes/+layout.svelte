@@ -41,8 +41,8 @@
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
-	import { setWebsiteCtx } from '$lib/stores/website';
-	import type { WebsiteFlavor } from '$lib/flavor';
+	import { getWebsiteFlavorFromParam } from '$lib/flavor';
+	import { createWebsiteCtx } from '$lib/stores/website';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
@@ -52,10 +52,22 @@
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: WebsiteFlavor } = $state({
-		flavor: 'food'
+	const websiteCtx = createWebsiteCtx();
+
+	function syncWebsiteFlavor(url: URL) {
+		const landingFlavor = getWebsiteFlavorFromParam(url.searchParams.get('flavor'));
+		websiteCtx.update((ctx) => ({
+			...ctx,
+			flavor: landingFlavor ?? 'food',
+			forcedFlavor: landingFlavor ?? null
+		}));
+	}
+
+	syncWebsiteFlavor(page.url);
+
+	$effect(() => {
+		syncWebsiteFlavor(page.url);
 	});
-	setWebsiteCtx(() => websiteCtx);
 
 	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
@@ -164,8 +176,10 @@
 	let { children }: LayoutProps = $props();
 
 	onMount(() => {
-		// only inject the script on the client side
-		injectSpeedInsights();
+		if (import.meta.env.VERCEL) {
+			// if we're on vercel and on the client, inject the speed insights script
+			injectSpeedInsights();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
