@@ -489,7 +489,11 @@
 							}}
 							aria-expanded={expandedNutrients[product.code] ?? false}
 						>
-							<span>{$_('compare.nutrients_per_100g')}</span>
+							<span
+								>{$_('compare.nutrients_per_100g', {
+									default: 'Nutrients /100g:'
+								})}</span
+							>
 							<span>{expandedNutrients[product.code] ? '▲' : '▼'}</span>
 						</button>
 
