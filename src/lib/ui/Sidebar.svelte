@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import type { Component, ComponentType } from 'svelte';
+	import type { Component, ComponentType, Snippet } from 'svelte';
 	import { _ } from '$lib/i18n';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
@@ -27,23 +27,29 @@
 	export type SidebarSection = SidebarSectionBase & SidebarSectionAction;
 
 	type Props = {
-		sections: SidebarSection[];
+		sections?: SidebarSection[];
 		activeSection?: string;
 		scrollHeaderOffset?: number;
 		hidden?: boolean;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
-		type?: 'product' | 'edit';
+		type?: 'product' | 'edit' | 'search';
+		title?: string;
+		header?: Snippet;
+		children?: Snippet;
 	};
 
 	let {
-		sections,
+		sections = [],
 		activeSection = $bindable(''),
 		scrollHeaderOffset = 120,
 		hidden = $bindable(false),
 		headerActionLabel,
 		onHeaderAction,
-		type = 'product'
+		type = 'product',
+		title,
+		header,
+		children
 	}: Props = $props();
 
 	let navElement = $state<HTMLElement>();
@@ -245,83 +251,102 @@
 		type === 'product' ? 'lg:pt-28' : ''
 	]}
 >
-	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
-		{#if headerActionLabel && onHeaderAction}
-			<div class="mb-4 flex items-center justify-end px-1">
-				<button
-					type="button"
-					onclick={onHeaderAction}
-					class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
-				>
-					{headerActionLabel}
-				</button>
+	<aside class="sticky top-24 flex max-h-[calc(100vh-140px)] w-50 flex-col pr-2 xl:w-60">
+		{#if header}
+			<div class="mb-3 shrink-0 px-1">
+				{@render header()}
+			</div>
+		{:else if (headerActionLabel && onHeaderAction) || title}
+			<div class="mb-4 flex shrink-0 items-center justify-between px-1">
+				{#if title}
+					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
+						{title}
+					</span>
+				{:else}
+					<div></div>
+				{/if}
+				{#if headerActionLabel && onHeaderAction}
+					<button
+						type="button"
+						onclick={onHeaderAction}
+						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+					>
+						{headerActionLabel}
+					</button>
+				{/if}
 			</div>
 		{/if}
 		<nav
 			bind:this={navElement}
 			aria-label={type === 'edit'
 				? $_('product.edit.sidebar_navigation', { default: 'Product edit sections' })
-				: $_('product.sidebar_navigation', { default: 'Product sections' })}
-			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
+				: type === 'search'
+					? $_('search.filters_sidebar_title', { default: 'Search filters' })
+					: $_('product.sidebar_navigation', { default: 'Product sections' })}
+			class="relative flex flex-1 [scrollbar-width:none] flex-col gap-1 overflow-y-auto border-l-2 border-base-300 pl-3 text-sm [&::-webkit-scrollbar]:hidden"
 		>
-			<!-- Active indicator line with smooth sliding transition -->
-			{#if indicatorHeight > 0}
-				<div
-					aria-hidden="true"
-					class={[
-						'absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out',
-						sections.find((s) => s.id === activeSection)?.style === 'warning'
-							? 'bg-warning'
-							: 'bg-primary'
-					]}
-					style="top: {indicatorTop}px; height: {indicatorHeight}px;"
-				></div>
-			{/if}
-
-			{#each sections as section (section.id)}
-				{#if section.href}
-					<a
-						href={section.href}
-						onclick={(event) => handleAnchorClick(event, section)}
-						data-section={section.id}
-						aria-controls={section.id}
-						aria-current={activeSection === section.id ? 'location' : undefined}
-						class={getSectionClass(section)}
-					>
-						{#if section.icon}
-							{@const Icon = section.icon}
-							<Icon
-								aria-hidden="true"
-								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
-							/>
-						{/if}
-						<span>{section.label}</span>
-					</a>
-				{:else}
-					<button
-						type="button"
-						data-section={section.id}
-						aria-controls={section.id}
-						aria-current={activeSection === section.id ? 'location' : undefined}
-						onclick={() => handleSectionClick(section)}
-						class={getSectionClass(section)}
-					>
-						{#if section.icon}
-							{@const Icon = section.icon}
-							<Icon
-								aria-hidden="true"
-								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
-							/>
-						{/if}
-						<span>{section.label}</span>
-					</button>
+			{#if children}
+				{@render children()}
+			{:else}
+				<!-- Active indicator line with smooth sliding transition -->
+				{#if indicatorHeight > 0}
+					<div
+						aria-hidden="true"
+						class={[
+							'absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out',
+							sections.find((s) => s.id === activeSection)?.style === 'warning'
+								? 'bg-warning'
+								: 'bg-primary'
+						]}
+						style="top: {indicatorTop}px; height: {indicatorHeight}px;"
+					></div>
 				{/if}
-			{/each}
+
+				{#each sections as section (section.id)}
+					{#if section.href}
+						<a
+							href={section.href}
+							onclick={(event) => handleAnchorClick(event, section)}
+							data-section={section.id}
+							aria-controls={section.id}
+							aria-current={activeSection === section.id ? 'location' : undefined}
+							class={getSectionClass(section)}
+						>
+							{#if section.icon}
+								{@const Icon = section.icon}
+								<Icon
+									aria-hidden="true"
+									class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+								/>
+							{/if}
+							<span>{section.label}</span>
+						</a>
+					{:else}
+						<button
+							type="button"
+							data-section={section.id}
+							aria-controls={section.id}
+							aria-current={activeSection === section.id ? 'location' : undefined}
+							onclick={() => handleSectionClick(section)}
+							class={getSectionClass(section)}
+						>
+							{#if section.icon}
+								{@const Icon = section.icon}
+								<Icon
+									aria-hidden="true"
+									class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+								/>
+							{/if}
+							<span>{section.label}</span>
+						</button>
+					{/if}
+				{/each}
+			{/if}
 		</nav>
 	</aside>
 </div>
 
-{#if type === 'product' && hidden}
+{#if (type === 'product' || type === 'search') && hidden}
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
