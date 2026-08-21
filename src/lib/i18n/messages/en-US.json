@@ -53,9 +53,20 @@
 		"no_matching_facets": "No matching facets",
 		"remove_filter_section": "Hide this filter",
 		"close": "Close",
+		"close_facet_picker": "Close available facets",
+		"close_filters": "Close filters",
+		"clear_search": "Clear search",
+		"filters_title": "Filters",
+		"sort_title": "Sort",
+		"no_facets_available": "No filters available",
+		"no_matching_items": "No matching items",
+		"show_less": "Show less",
+		"see_all": "See all",
 		"filter_placeholder": "Filter...",
 		"include_item": "Include {name}",
 		"exclude_item": "Exclude (NOT) {name}",
+		"remove_include": "Remove include filter",
+		"remove_exclude": "Remove exclude filter",
 		"see_all_count": "See all ({count})"
 	},
 	"auth": {
@@ -724,6 +735,10 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"category_general": "General",
+		"category_nutrition": "Nutrition & Health",
+		"category_packaging": "Packaging & Origin",
+		"category_community": "Community & Metadata",
 		"brands": "Brands",
 		"brands_tags": "Brands",
 		"categories": "Categories",

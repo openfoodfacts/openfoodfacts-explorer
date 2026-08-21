@@ -18,6 +18,10 @@
 		selectedFacets?: FacetsSelection;
 		onToggleInclude?: (key: string, val: string) => void;
 		onToggleExclude?: (key: string, val: string) => void;
+		onAddInclude?: (key: string, val: string) => void;
+		onAddExclude?: (key: string, val: string) => void;
+		onRemoveInclude?: (key: string, val: string) => void;
+		onRemoveExclude?: (key: string, val: string) => void;
 	}
 
 	let {
@@ -27,7 +31,11 @@
 		searchResult,
 		selectedFacets = {},
 		onToggleInclude = () => {},
-		onToggleExclude = () => {}
+		onToggleExclude = () => {},
+		onAddInclude = () => {},
+		onAddExclude = () => {},
+		onRemoveInclude = () => {},
+		onRemoveExclude = () => {}
 	}: Props = $props();
 
 	let sortDropdownOpen = $state(false);
@@ -101,6 +109,10 @@
 					{selectedFacets}
 					{onToggleInclude}
 					{onToggleExclude}
+					{onAddInclude}
+					{onAddExclude}
+					{onRemoveInclude}
+					{onRemoveExclude}
 				/>
 			{:else}
 				<div class="p-4 text-center text-sm text-base-content/60">

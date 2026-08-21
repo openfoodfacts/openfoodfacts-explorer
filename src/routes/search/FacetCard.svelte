@@ -223,19 +223,6 @@
 				<span class="badge badge-xs badge-primary">
 					{selectedInclude.length + selectedExclude.length}
 				</span>
-			{:else if onRemoveFacet}
-				<button
-					type="button"
-					class="cursor-pointer rounded p-0.5 text-base-content/40 hover:bg-base-300 hover:text-base-content"
-					onclick={(e) => {
-						e.stopPropagation();
-						onRemoveFacet();
-					}}
-					title={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-					aria-label={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-				>
-					<IconMdiClose class="h-3.5 w-3.5" />
-				</button>
 			{/if}
 			<IconMdiChevronDown class="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
 		</div>
@@ -244,6 +231,18 @@
 		style={mobileDropdownStyle}
 		class="menu dropdown-content absolute top-full left-0 z-50 mt-1 w-full max-w-[calc(100vw-2rem)] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl max-md:fixed md:w-60"
 	>
+		{#if onRemoveFacet && selectedInclude.length === 0 && selectedExclude.length === 0}
+			<li class="mb-1 border-b border-base-300/40 pb-1">
+				<button
+					type="button"
+					class="btn flex w-full items-center justify-between btn-ghost text-base-content/60 btn-xs hover:text-error"
+					onclick={onRemoveFacet}
+				>
+					<span>{$_('search.remove_filter_section', { default: 'Hide this filter' })}</span>
+					<IconMdiClose class="h-3.5 w-3.5" />
+				</button>
+			</li>
+		{/if}
 		{#if isFreeText}
 			<li>
 				<input

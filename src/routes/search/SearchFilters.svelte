@@ -7,7 +7,12 @@
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
-	import { MASTER_FACET_CATALOG, computeFacetCollections, type FacetsSelection } from '$lib/facets';
+	import {
+		MASTER_FACET_CATALOG,
+		FACET_CATEGORY_LABELS,
+		computeFacetCollections,
+		type FacetsSelection
+	} from '$lib/facets';
 
 	type Props = {
 		facets?: Record<string, Facet>;
@@ -129,7 +134,7 @@
 			return items.filter((i) => i.name.toLowerCase().includes(query));
 		}
 
-		if (showAllFacets[facetKey]) {
+		if (showAllFacets[facetKey] || SCORE_FACET_KEYS.has(facetKey)) {
 			return items;
 		}
 
@@ -170,20 +175,6 @@
 				{/if}
 			</div>
 			<div class="flex items-center gap-1">
-				{#if customFacetKeys.includes(facetKey) && activeCount === 0}
-					<button
-						type="button"
-						class="cursor-pointer rounded p-0.5 text-base-content/40 hover:bg-base-300 hover:text-base-content"
-						onclick={(e) => {
-							e.stopPropagation();
-							handleRemoveFacet(facetKey);
-						}}
-						title={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-						aria-label={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-					>
-						<IconMdiClose class="h-3.5 w-3.5" />
-					</button>
-				{/if}
 				<IconMdiChevronDown
 					class="h-4 w-4 shrink-0 opacity-70 transition-transform duration-200 group-open:rotate-180"
 				/>
@@ -191,6 +182,20 @@
 		</summary>
 
 		<div class="mt-1 flex flex-col gap-1 px-0.5 pt-0.5 pb-1">
+			{#if customFacetKeys.includes(facetKey) && activeCount === 0}
+				<div class="flex justify-end pb-1">
+					<button
+						type="button"
+						class="btn h-5 min-h-5 gap-1 btn-ghost text-[11px] text-base-content/50 btn-xs hover:text-error"
+						onclick={() => handleRemoveFacet(facetKey)}
+						title={$_('search.remove_filter_section', { default: 'Hide this filter' })}
+						aria-label={$_('search.remove_filter_section', { default: 'Hide this filter' })}
+					>
+						<IconMdiClose class="h-3 w-3" />
+						<span>{$_('search.remove_filter_section', { default: 'Hide this filter' })}</span>
+					</button>
+				</div>
+			{/if}
 			{#if isScoreFacet}
 				<!-- Horizontal badges for score facets (Nutri-Score, NOVA, Eco-Score) -->
 				<div class="flex flex-wrap gap-1.5 py-1">
@@ -423,19 +428,21 @@
 					{/each}
 				</ul>
 
-				<!-- See All / Show Less -->
-				{#if facet.items.length > 5 && !searchQueries[facetKey]}
+				<!-- Show more / less -->
+				{#if facet.items.length > 5}
 					<button
 						type="button"
-						class="btn mt-1 w-full btn-link p-0 text-xs text-primary/80 btn-xs hover:text-primary"
+						class="btn mt-1 btn-ghost text-xs text-primary btn-xs"
 						onclick={() => (showAllFacets[facetKey] = !isExpanded)}
 					>
-						{isExpanded
-							? $_('search.show_less', { default: 'Show Less' })
-							: $_('search.see_all_count', {
-									values: { count: facet.items.length },
-									default: `See All (${facet.items.length})`
-								})}
+						{#if isExpanded}
+							{$_('search.show_less', { default: 'Show less' })}
+						{:else}
+							{$_('search.see_all_count', {
+								values: { count: facet.items.length },
+								default: `See all (${facet.items.length})`
+							})}
+						{/if}
 					</button>
 				{/if}
 			{/if}
@@ -468,20 +475,6 @@
 				{/if}
 			</div>
 			<div class="flex items-center gap-1">
-				{#if customFacetKeys.includes(freeFacet.key) && activeCount === 0}
-					<button
-						type="button"
-						class="cursor-pointer rounded p-0.5 text-base-content/40 hover:bg-base-300 hover:text-base-content"
-						onclick={(e) => {
-							e.stopPropagation();
-							handleRemoveFacet(freeFacet.key);
-						}}
-						title={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-						aria-label={$_('search.remove_filter_section', { default: 'Hide this filter' })}
-					>
-						<IconMdiClose class="h-3.5 w-3.5" />
-					</button>
-				{/if}
 				<IconMdiChevronDown
 					class="h-4 w-4 shrink-0 opacity-70 transition-transform duration-200 group-open:rotate-180"
 				/>
@@ -489,6 +482,21 @@
 		</summary>
 
 		<div class="mt-1 flex flex-col gap-1 px-0.5 pt-0.5 pb-1">
+			{#if customFacetKeys.includes(freeFacet.key) && activeCount === 0}
+				<div class="flex justify-end pb-1">
+					<button
+						type="button"
+						class="btn h-5 min-h-5 gap-1 btn-ghost text-[11px] text-base-content/50 btn-xs hover:text-error"
+						onclick={() => handleRemoveFacet(freeFacet.key)}
+						title={$_('search.remove_filter_section', { default: 'Hide this filter' })}
+						aria-label={$_('search.remove_filter_section', { default: 'Hide this filter' })}
+					>
+						<IconMdiClose class="h-3 w-3" />
+						<span>{$_('search.remove_filter_section', { default: 'Hide this filter' })}</span>
+					</button>
+				</div>
+			{/if}
+
 			<!-- Search within facet -->
 			<div class="relative mb-2">
 				<IconMdiMagnify class="absolute top-2 left-2 h-3.5 w-3.5 text-base-content/40" />
@@ -514,6 +522,7 @@
 						type="button"
 						class="absolute top-1.5 right-1.5 text-base-content/50 hover:text-base-content"
 						onclick={() => (searchQueries[freeFacet.key] = '')}
+						aria-label={$_('search.clear_search', { default: 'Clear search' })}
 					>
 						<IconMdiClose class="h-3 w-3" />
 					</button>
@@ -703,6 +712,7 @@
 						type="button"
 						class="absolute top-1.5 right-1.5 text-base-content/50 hover:text-base-content"
 						onclick={() => (addPickerQuery = '')}
+						aria-label={$_('search.clear_search', { default: 'Clear search' })}
 					>
 						<IconMdiClose class="h-3.5 w-3.5" />
 					</button>
@@ -717,9 +727,15 @@
 					</div>
 				{:else}
 					{#each Object.entries(groupedCatalogFacets) as [category, items] (category)}
+						{@const categoryMeta = FACET_CATEGORY_LABELS[
+							category as keyof typeof FACET_CATEGORY_LABELS
+						] || {
+							labelKey: `facets.category_${category.toLowerCase()}`,
+							defaultLabel: category
+						}}
 						<div class="mb-2 last:mb-0">
 							<div class="px-1 py-0.5 text-[10px] font-semibold text-base-content/50 uppercase">
-								{category}
+								{$_(categoryMeta.labelKey, { default: categoryMeta.defaultLabel })}
 							</div>
 							<ul class="flex flex-col gap-0.5">
 								{#each items as item (item.key)}

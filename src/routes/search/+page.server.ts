@@ -92,17 +92,18 @@ async function compatSearch(
 		console.warn('search: API failed, falling back to basic facets:', e);
 	}
 
-	const oldParams: SearchBody = {
+	const oldParams = {
 		...params,
 		facets: ['brands', 'categories', 'nutrition_grades', 'environmental_score_grade'],
 		charts: [
-			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_group' },
-			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_group' },
+			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		]
 	};
 
+	// @ts-expect-error - legacy search API parameters fallback
 	return api.search(oldParams);
 }
 

@@ -430,6 +430,25 @@ export const DEFAULT_FREE_TEXT_FACETS: FacetCatalogItem[] = MASTER_FACET_CATALOG
 	(f) => f.isFreeText && f.defaultVisible
 );
 
+export const FACET_CATEGORY_LABELS: Record<
+	FacetCatalogItem['category'],
+	{ labelKey: string; defaultLabel: string }
+> = {
+	General: { labelKey: 'facets.category_general', defaultLabel: 'General' },
+	'Nutrition & Health': {
+		labelKey: 'facets.category_nutrition',
+		defaultLabel: 'Nutrition & Health'
+	},
+	'Packaging & Origin': {
+		labelKey: 'facets.category_packaging',
+		defaultLabel: 'Packaging & Origin'
+	},
+	'Community & Metadata': {
+		labelKey: 'facets.category_community',
+		defaultLabel: 'Community & Metadata'
+	}
+};
+
 export function groupCatalogFacets(items: FacetCatalogItem[]): Record<string, FacetCatalogItem[]> {
 	const groups: Record<string, FacetCatalogItem[]> = {};
 	for (const item of items) {

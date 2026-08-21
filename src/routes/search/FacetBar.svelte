@@ -7,7 +7,11 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import FacetCard from './FacetCard.svelte';
-	import { computeFacetCollections, type FacetsSelection } from '$lib/facets';
+	import {
+		computeFacetCollections,
+		FACET_CATEGORY_LABELS,
+		type FacetsSelection
+	} from '$lib/facets';
 
 	type Props = {
 		facets: Record<string, Facet>;
@@ -227,7 +231,7 @@
 							if (addPickerElement) addPickerElement.open = false;
 							openDropdownKey = null;
 						}}
-						aria-label={$_('search.close', { default: 'Close' })}
+						aria-label={$_('search.close_facet_picker', { default: 'Close available facets' })}
 					>
 						<IconMdiClose class="h-3.5 w-3.5" />
 					</button>
@@ -250,6 +254,7 @@
 							type="button"
 							class="absolute top-1.5 right-1.5 text-base-content/40 hover:text-base-content"
 							onclick={() => (addPickerQuery = '')}
+							aria-label={$_('search.clear_search', { default: 'Clear search' })}
 						>
 							<IconMdiClose class="h-3 w-3" />
 						</button>
@@ -264,11 +269,17 @@
 						</div>
 					{:else}
 						{#each Object.entries(groupedCatalogFacets) as [category, items] (category)}
+							{@const categoryMeta = FACET_CATEGORY_LABELS[
+								category as keyof typeof FACET_CATEGORY_LABELS
+							] || {
+								labelKey: `facets.category_${category.toLowerCase()}`,
+								defaultLabel: category
+							}}
 							<div class="mb-2 last:mb-0">
 								<div
 									class="px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-base-content/50 uppercase"
 								>
-									{category}
+									{$_(categoryMeta.labelKey, { default: categoryMeta.defaultLabel })}
 								</div>
 								<div class="mt-0.5 flex flex-col gap-0.5">
 									{#each items as item (item.key)}

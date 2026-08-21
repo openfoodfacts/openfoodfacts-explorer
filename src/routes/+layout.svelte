@@ -230,12 +230,6 @@
 	let navigationTooSlow: Promise<void> | null = $state(null);
 	$effect(() => {
 		if (navigating.to != null) {
-			// Exempt search page from 5s slow server popup
-			if (navigating.to.url.pathname.startsWith('/search')) {
-				navigationTooSlow = null;
-				return;
-			}
-
 			let timeout: ReturnType<typeof setTimeout>;
 
 			navigationTooSlow = new Promise((resolve) => {

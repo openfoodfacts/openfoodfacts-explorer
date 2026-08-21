@@ -510,7 +510,7 @@
 						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
 					]}
 				>
-					{#each Array(6) as _, index (index)}
+					{#each Array(6), index (index)}
 						<div
 							class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
 						>
@@ -666,6 +666,22 @@
 	}}
 	onToggleExclude={(key, val) => {
 		const next = toggleExcludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onAddInclude={(key, val) => {
+		const next = addIncludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onAddExclude={(key, val) => {
+		const next = addExcludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onRemoveInclude={(key, val) => {
+		const next = removeIncludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onRemoveExclude={(key, val) => {
+		const next = removeExcludeFacet(localFacets, key, val);
 		updateFacets(next);
 	}}
 />
