@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Skanet eo bet ar c'hod barrennoù {barcode} gant berzh, met n'eus bet kavet produ ebet en hor fedoù boued digor, fedoù kaerder digor, fedoù produioù digor pe fedoù boued loened-ti digor.",
 		"add_new_product": "Ouzhpennañ ur produ nevez",
 		"scan_again": "Skannañ en-dro",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
