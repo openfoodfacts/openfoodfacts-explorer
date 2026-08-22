@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} scanner ka ɲɛ, nka fura si ma sɔrɔ an ka dumuni dafalenw kɔnɔ, cɛɲi dafalen tiɲɛw, fɛn dafalenw tiɲɛw walima sokɔnɔbaganw ka dumuni dafalenw kɔnɔ.",
 		"add_new_product": "Aw bɛ fura kura fara a kan",
 		"scan_again": "Scan kɛ tuguni",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
