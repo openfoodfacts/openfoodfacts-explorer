@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Msimbo pau {barcode} ilichanganuliwa kwa mafanikio, lakini hakuna bidhaa iliyopatikana katika Ukweli wa Chakula Wazi, Ukweli wa Urembo wa Wazi, Ukweli wa Bidhaa za Wazi au Ukweli wa Open Pet Food.",
 		"add_new_product": "Ongeza bidhaa mpya",
 		"scan_again": "Changanua tena",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
