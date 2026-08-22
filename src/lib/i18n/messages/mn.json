@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Баркод {barcode} -г амжилттай сканнердсан боловч манай Нээлттэй хүнсний баримтууд, Нээлттэй гоо сайхны баримтууд, Нээлттэй бүтээгдэхүүний тухай баримтууд болон Гэрийн тэжээмэл амьтдын хоолны нээлттэй баримтуудаас бүтээгдэхүүн олдсонгүй.",
 		"add_new_product": "Шинэ бүтээгдэхүүн нэмнэ үү",
 		"scan_again": "Дахин сканнердах",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
