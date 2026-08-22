@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Mã vạch {barcode} đã được quét thành công, nhưng không tìm thấy sản phẩm nào trong Thông tin thực phẩm mở, Thông tin làm đẹp mở, Thông tin sản phẩm mở hoặc Thông tin thức ăn cho thú cưng mở.",
 		"add_new_product": "Thêm sản phẩm mới",
 		"scan_again": "Quét lại",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
