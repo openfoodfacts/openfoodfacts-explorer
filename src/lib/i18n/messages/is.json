@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Strikamerkið {barcode} var skannað með góðum árangri en engin vara fannst í Opnum matvælaupplýsingum, Opnum fegurðarupplýsingum, Opnum vöruupplýsingum eða Opnum gæludýrafóðurupplýsingum okkar.",
 		"add_new_product": "Bæta við nýrri vöru",
 		"scan_again": "Skannaðu aftur",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
