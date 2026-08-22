@@ -2,7 +2,7 @@
  * CSV helpers for client-side downloads, backed by csv-stringify.
  */
 
-import { stringify } from 'csv-stringify/sync';
+import { stringify } from 'csv-stringify/browser/esm/sync';
 
 export function toCsv(headers: string[], rows: unknown[][]): string {
 	return stringify([headers, ...rows], {
