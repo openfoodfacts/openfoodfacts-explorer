@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Yo te eskane kòd bar {barcode} avèk siksè, men yo pa jwenn okenn pwodwi nan lis Enfòmasyon sou Manje nou yo, Enfòmasyon sou Bote nou yo, Enfòmasyon sou Pwodwi nou yo oswa Enfòmasyon sou Manje Bèt Kay nou yo.",
 		"add_new_product": "Ajoute nouvo pwodwi",
 		"scan_again": "Eskane ankò",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
