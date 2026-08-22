@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "बारकोड {barcode} सफलतापूर्वक स्क्यान गरियो, तर हाम्रो खुला खाद्य तथ्यहरू, खुला सौन्दर्य तथ्यहरू, खुला उत्पादन तथ्यहरू वा खुला घरपालुवा जनावरको खाना तथ्यहरूमा कुनै पनि उत्पादन फेला परेन।",
 		"add_new_product": "नयाँ उत्पादन थप्नुहोस्",
 		"scan_again": "फेरि स्क्यान गर्नुहोस्",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
