@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "A {barcode} vonalkód beolvasása sikeresen megtörtént, de nem találtunk terméket az Élelmiszerinformációk, Szépségápolási cikkek, Termékinformációk vagy Állateledel-információk között.",
 		"add_new_product": "Új termék hozzáadása",
 		"scan_again": "Szkennelés újra",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
