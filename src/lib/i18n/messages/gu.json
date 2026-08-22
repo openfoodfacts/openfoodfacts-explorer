@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "બારકોડ {barcode} સફળતાપૂર્વક સ્કેન કરવામાં આવ્યો, પરંતુ અમારા ઓપન ફૂડ ફેક્ટ્સ, ઓપન બ્યુટી ફેક્ટ્સ, ઓપન પ્રોડક્ટ્સ ફેક્ટ્સ અથવા ઓપન પેટ ફૂડ ફેક્ટ્સમાં કોઈ ઉત્પાદન મળ્યું નથી.",
 		"add_new_product": "નવું ઉત્પાદન ઉમેરો",
 		"scan_again": "ફરીથી સ્કેન કરો",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
