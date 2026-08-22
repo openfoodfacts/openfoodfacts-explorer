@@ -4,6 +4,7 @@
 	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
+	import { flip } from 'svelte/animate';
 
 	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
@@ -21,6 +22,14 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+
+	import IconMdiTune from '@iconify-svelte/mdi/tune';
+	import IconMdiEye from '@iconify-svelte/mdi/eye';
+	import IconMdiEyeOff from '@iconify-svelte/mdi/eye-off';
+	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
+	import IconMdiClose from '@iconify-svelte/mdi/close';
+
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -29,6 +38,64 @@
 	let { product, lc }: Props = $props();
 
 	let { lang } = $derived($preferences);
+
+	type ActionId = 'classic' | 'edit' | 'share' | 'report' | 'calculator' | 'compare';
+
+	type ProductAction = {
+		id: ActionId;
+		label: string;
+		visible: boolean;
+	};
+
+	let editActionsOpen = $state(false);
+
+	const calculatorAction: ProductAction = {
+		id: 'calculator',
+		label: $_('product.actions.calculator', { default: 'Calculator' }),
+		visible: true
+	};
+
+	let productActions = $state<ProductAction[]>([
+		{
+			id: 'classic',
+			label: $_('product.buttons.classic_view', { default: 'Classic view' }),
+			visible: true
+		},
+		{
+			id: 'edit',
+			label: $_('product.buttons.edit', { default: 'Edit' }),
+			visible: true
+		},
+		{
+			id: 'share',
+			label: $_('product.buttons.share', { default: 'Share' }),
+			visible: true
+		},
+		{
+			id: 'report',
+			label: $_('product.actions.report_problem', { default: 'Report problem' }),
+			visible: true
+		},
+		{
+			id: 'compare',
+			label: $_('product.buttons.compare', { default: 'Compare' }),
+			visible: true
+		}
+	]);
+
+	$effect(() => {
+		const calculatorIndex = productActions.findIndex((action) => action.id === 'calculator');
+
+		if ($userInfo != null && calculatorIndex === -1) {
+			const compareIndex = productActions.findIndex((action) => action.id === 'compare');
+
+			productActions.splice(compareIndex === -1 ? productActions.length : compareIndex, 0, {
+				...calculatorAction
+			});
+		} else if ($userInfo == null && calculatorIndex !== -1) {
+			productActions.splice(calculatorIndex, 1);
+		}
+	});
 
 	function getLocalizedTags(facet: string): string[] | undefined {
 		const rawProduct = product as unknown as Record<string, unknown>;
@@ -94,6 +161,57 @@
 			toastCtx.warning('Product is already in comparison or comparison is full');
 		}
 	}
+
+	function toggleAction(id: ActionId) {
+		const index = productActions.findIndex((item) => item.id === id);
+
+		if (index < 0) {
+			return;
+		}
+
+		const action = productActions[index];
+
+		if (action.visible) {
+			// Disable: remove from the enabled group and place at the
+			// beginning of the disabled group.
+			action.visible = false;
+
+			productActions.splice(index, 1);
+
+			const firstDisabledIndex = productActions.findIndex((item) => !item.visible);
+
+			if (firstDisabledIndex === -1) {
+				productActions.push(action);
+			} else {
+				productActions.splice(firstDisabledIndex, 0, action);
+			}
+		} else {
+			// Enable: remove from disabled group and place at the end
+			// of the enabled group.
+			action.visible = true;
+
+			productActions.splice(index, 1);
+
+			const firstDisabledIndex = productActions.findIndex((item) => !item.visible);
+
+			if (firstDisabledIndex === -1) {
+				productActions.push(action);
+			} else {
+				productActions.splice(firstDisabledIndex, 0, action);
+			}
+		}
+	}
+	function moveAction(id: ActionId, direction: -1 | 1) {
+		const index = productActions.findIndex((item) => item.id === id);
+		const newIndex = index + direction;
+
+		if (index < 0 || newIndex < 0 || newIndex >= productActions.length) {
+			return;
+		}
+
+		const [action] = productActions.splice(index, 1);
+		productActions.splice(newIndex, 0, action);
+	}
 </script>
 
 <Card>
@@ -118,69 +236,83 @@
 
 				<!-- Action Toolbar -->
 				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
-					<a
-						href={productWebsiteUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn btn-secondary btn-sm md:btn-md"
-						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
-						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
-					>
-						<IconMdiOpenInNew class="h-5 w-5" />
-						<span>{$_('product.buttons.classic_view')}</span>
-					</a>
+					{#each productActions as action (action.id)}
+						{#if action.visible}
+							{#if action.id === 'classic'}
+								<a
+									href={productWebsiteUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="btn btn-secondary btn-sm md:btn-md"
+									title={$_('product.buttons.classic_view', { default: 'Classic view' })}
+									aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
+								>
+									<IconMdiOpenInNew class="h-5 w-5" />
+									<span>{$_('product.buttons.classic_view')}</span>
+								</a>
+							{:else if action.id === 'edit'}
+								<a
+									href={`/products/${product.code}/edit`}
+									class="btn btn-secondary btn-sm md:btn-md"
+									class:pointer-events-none={navigating.to}
+									title={$_('product.buttons.edit', { default: 'Edit' })}
+									aria-label={$_('product.buttons.edit', { default: 'Edit' })}
+								>
+									<IconMdiPencil class="h-5 w-5" />
+									<span class="hidden md:block">{$_('product.buttons.edit')}</span>
+								</a>
+							{:else if action.id === 'share'}
+								<button
+									class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
+									onclick={sharePage}
+									title={$_('product.buttons.share', { default: 'Share' })}
+									aria-label={$_('product.buttons.share', { default: 'Share' })}
+								>
+									<IconMdiShareVariant class="h-5 w-5" />
+									<span class="hidden md:block">{$_('product.buttons.share')}</span>
+								</button>
+							{:else if action.id === 'report'}
+								<a
+									id="report-problem"
+									class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
+									href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
+									target="_blank"
+									rel="noopener noreferrer"
+									title={$_('product.buttons.report')}
+									aria-label={$_('product.buttons.report')}
+								>
+									<IconMdiFlag class="h-5 w-5" />
+								</a>
+							{:else if action.id === 'calculator' && $userInfo != null}
+								<button
+									class="btn btn-secondary btn-sm md:btn-md"
+									onclick={addToCalculator}
+									title={$_('product.buttons.add_to_calculator')}
+									aria-label={$_('product.buttons.add_to_calculator')}
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+								</button>
+							{:else if action.id === 'compare'}
+								<button
+									class="btn btn-secondary btn-sm md:btn-md"
+									onclick={addToComparison}
+									title={$_('product.buttons.compare')}
+									aria-label={$_('product.buttons.compare')}
+								>
+									<IconMdiCompare class="h-5 w-5" />
+								</button>
+							{/if}
+						{/if}
+					{/each}
 
-					<a
-						href={`/products/${product.code}/edit`}
-						class="btn btn-secondary btn-sm md:btn-md"
-						class:pointer-events-none={navigating.to}
-						title={$_('product.buttons.edit', { default: 'Edit' })}
-						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
-					>
-						<IconMdiPencil class="h-5 w-5" />
-						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
-					</a>
-
+					<!-- Edit actions button -->
 					<button
-						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
-						onclick={sharePage}
-						title={$_('product.buttons.share', { default: 'Share' })}
-						aria-label={$_('product.buttons.share', { default: 'Share' })}
-					>
-						<IconMdiShareVariant class="h-5 w-5" />
-						<span class="hidden md:block">{$_('product.buttons.share')}</span>
-					</button>
-
-					<a
-						id="report-problem"
-						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
-						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
-						target="_blank"
-						rel="noopener noreferrer"
-						title={$_('product.buttons.report')}
-						aria-label={$_('product.buttons.report')}
-					>
-						<IconMdiFlag class="h-5 w-5" />
-					</a>
-
-					{#if $userInfo != null}
-						<button
-							class="btn btn-secondary btn-sm md:btn-md"
-							onclick={addToCalculator}
-							title={$_('product.buttons.add_to_calculator')}
-							aria-label={$_('product.buttons.add_to_calculator')}
-						>
-							<IconMdiCalculator class="h-5 w-5" />
-						</button>
-					{/if}
-
-					<button
 						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToComparison}
-						title={$_('product.buttons.compare')}
-						aria-label={$_('product.buttons.compare')}
+						onclick={() => (editActionsOpen = true)}
+						title={$_('product.actions.edit_actions', { default: 'Edit actions' })}
+						aria-label={$_('product.actions.edit_actions', { default: 'Edit actions' })}
 					>
-						<IconMdiCompare class="h-5 w-5" />
+						<IconMdiTune class="h-5 w-5" />
 					</button>
 				</div>
 			</div>
@@ -292,6 +424,125 @@
 		</div>
 	</div>
 </Card>
+
+{#if editActionsOpen}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-base-content/15 p-4">
+		<div class="w-full max-w-2xl rounded-3xl bg-base-100 shadow-2xl">
+			<!-- Header -->
+			<div class="flex items-center justify-between border-b border-base-300 p-4">
+				<h2 class="text-xl font-bold">
+					{$_('product.actions.edit_actions', { default: 'Edit actions' })}
+				</h2>
+
+				<button
+					class="btn btn-circle bg-base-content/15 hover:bg-base-content/20"
+					onclick={() => (editActionsOpen = false)}
+					aria-label={$_('product.actions.close_edit_actions', { default: 'Close edit actions' })}
+					title={$_('common.close', { default: 'Close' })}
+				>
+					<IconMdiClose class="h-6 w-6" />
+				</button>
+			</div>
+
+			<!-- Actions -->
+			<div class="max-h-[70vh] space-y-3 overflow-y-auto p-4">
+				{#each productActions as action, index (action.id)}
+					<div
+						animate:flip={{ duration: 250 }}
+						class="flex items-center gap-3 rounded-2xl bg-base-200 p-3"
+						class:opacity-50={!action.visible}
+					>
+						<!-- Visibility -->
+						<button
+							class="btn btn-circle shrink-0 btn-ghost"
+							class:text-error={!action.visible}
+							onclick={() => toggleAction(action.id)}
+							aria-label={action.visible
+								? $_('product.actions.hide', {
+										values: { action: action.label },
+										default: 'Hide {action}'
+									})
+								: $_('product.actions.show', {
+										values: { action: action.label },
+										default: 'Show {action}'
+									})}
+							title={action.visible
+								? $_('product.actions.hide', {
+										values: { action: action.label },
+										default: 'Hide {action}'
+									})
+								: $_('product.actions.show', {
+										values: { action: action.label },
+										default: 'Show {action}'
+									})}
+						>
+							{#if action.visible}
+								<IconMdiEye class="h-6 w-6" />
+							{:else}
+								<IconMdiEyeOff class="h-6 w-6" />
+							{/if}
+						</button>
+						<!-- Action icon -->
+						<div>
+							{#if action.id === 'classic'}
+								<IconMdiOpenInNew class="h-6 w-6" />
+							{:else if action.id === 'edit'}
+								<IconMdiPencil class="h-6 w-6" />
+							{:else if action.id === 'share'}
+								<IconMdiShareVariant class="h-6 w-6" />
+							{:else if action.id === 'report'}
+								<IconMdiFlag class="h-6 w-6" />
+							{:else if action.id === 'calculator'}
+								<IconMdiCalculator class="h-6 w-6" />
+							{:else if action.id === 'compare'}
+								<IconMdiCompare class="h-6 w-6" />
+							{/if}
+						</div>
+						<!-- Action name -->
+						<div class="min-w-0 flex-1 font-semibold">
+							{action.label}
+						</div>
+						<!-- Reorder -->
+						<div class="flex gap-2">
+							<button
+								class="btn btn-circle bg-base-content/10 btn-sm hover:bg-base-content/20"
+								disabled={!action.visible || index === 0 || !productActions[index - 1]?.visible}
+								onclick={() => moveAction(action.id, -1)}
+								aria-label={$_('product.actions.move_up', {
+									values: { action: action.label },
+									default: 'Move {action} up'
+								})}
+								title={$_('product.actions.move_up', {
+									values: { action: action.label },
+									default: 'Move {action} up'
+								})}
+							>
+								<IconMdiChevronUp class="h-5 w-5" />
+							</button>
+							<button
+								class="btn btn-circle bg-base-content/10 btn-sm hover:bg-base-content/20"
+								disabled={!action.visible ||
+									index === productActions.length - 1 ||
+									!productActions[index + 1]?.visible}
+								onclick={() => moveAction(action.id, 1)}
+								aria-label={$_('product.actions.move_down', {
+									values: { action: action.label },
+									default: 'Move {action} down'
+								})}
+								title={$_('product.actions.move_down', {
+									values: { action: action.label },
+									default: 'Move {action} down'
+								})}
+							>
+								<IconMdiChevronDown class="h-5 w-5" />
+							</button>
+						</div>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+{/if}
 
 {#snippet taxonomyTags(
 	titleKey: string,
