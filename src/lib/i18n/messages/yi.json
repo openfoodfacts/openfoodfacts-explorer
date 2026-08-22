@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "באַרקאָד {barcode} איז געסקענט געוואָרן מיט הצלחה, אָבער קיין פּראָדוקט איז נישט געפֿונען געוואָרן אין אונדזערע אָפֿענע פֿוד פֿאַקטן, אָפֿענע שיינקייט פֿאַקטן, אָפֿענע פּראָדוקטן פֿאַקטן אָדער אָפֿענע פֿוד פֿאַקטן וועגן ליבלינג חיות.",
 		"add_new_product": "לייג צו א נייעם פראדוקט",
 		"scan_again": "סקענען נאכאמאל",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
