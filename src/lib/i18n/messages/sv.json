@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Streckkoden {barcode} skannades, men ingen produkt hittades i våra Öppna matfakta, Öppna skönhetsfakta, Öppna produktfakta eller Öppna djurfoderfakta.",
 		"add_new_product": "Lägg till ny produkt",
 		"scan_again": "Skanna igen",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
