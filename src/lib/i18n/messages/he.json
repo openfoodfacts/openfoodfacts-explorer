@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "הברקוד {barcode} נסרק בהצלחה, אך לא נמצא מוצר במידע על מזון פתוח, מידע על יופי פתוח, מידע על מוצרים פתוחים או מידע על מזון לחיות מחמד פתוחים.",
 		"add_new_product": "הוסף מוצר חדש",
 		"scan_again": "סרוק שוב",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
