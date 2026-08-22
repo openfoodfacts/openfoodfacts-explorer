@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ബാർകോഡ് {barcode} വിജയകരമായി സ്കാൻ ചെയ്തു, പക്ഷേ ഞങ്ങളുടെ ഓപ്പൺ ഫുഡ് ഫാക്‌ട്‌സ്, ഓപ്പൺ ബ്യൂട്ടി ഫാക്‌ട്‌സ്, ഓപ്പൺ പ്രോഡക്‌ട്‌സ് ഫാക്‌ട്‌സ് അല്ലെങ്കിൽ ഓപ്പൺ പെറ്റ് ഫുഡ് ഫാക്‌ട്‌സ് എന്നിവയിൽ ഒരു ഉൽപ്പന്നവും കണ്ടെത്തിയില്ല.",
 		"add_new_product": "പുതിയ ഉൽപ്പന്നം ചേർക്കുക",
 		"scan_again": "വീണ്ടും സ്കാൻ ചെയ്യുക",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
