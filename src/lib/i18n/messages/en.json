@@ -603,6 +603,8 @@
 		"external_sources": {
 			"title": "External sources",
 			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
 			"source_label": "External source",
 			"reason_category": "Category match",
 			"reason_country": "Country match",

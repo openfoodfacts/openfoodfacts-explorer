@@ -77,8 +77,17 @@
 	);
 
 	let externalKnowledgePanels = $state<ExternalKnowledgePanels[]>([]);
+	let externalKnowledgePanelsPromise = $state<Promise<ExternalKnowledgePanels[]> | null>(null);
+	let externalKnowledgePanelsLoading = $state(false);
+	let externalKnowledgePanelsError = $state<unknown>(null);
 	$effect(() => {
-		if (!browser || !product.code) return;
+		if (!browser || !product.code) {
+			externalKnowledgePanelsPromise = null;
+			externalKnowledgePanels = [];
+			externalKnowledgePanelsLoading = false;
+			externalKnowledgePanelsError = null;
+			return;
+		}
 
 		const requestContext = {
 			code: product.code,
@@ -89,15 +98,36 @@
 		};
 		let cancelled = false;
 		externalKnowledgePanels = [];
+		externalKnowledgePanelsLoading = true;
+		externalKnowledgePanelsError = null;
 
-		getExternalKnowledgePanels(window.fetch.bind(window), requestContext).then((panels) => {
-			if (!cancelled) externalKnowledgePanels = panels;
-		});
+		const request = getExternalKnowledgePanels(window.fetch.bind(window), requestContext);
+		externalKnowledgePanelsPromise = request;
+		request.then(
+			(panels) => {
+				if (!cancelled) {
+					externalKnowledgePanels = panels;
+					externalKnowledgePanelsLoading = false;
+				}
+			},
+			(error) => {
+				if (!cancelled) {
+					externalKnowledgePanelsLoading = false;
+					externalKnowledgePanelsError = error;
+				}
+			}
+		);
 
 		return () => {
 			cancelled = true;
 		};
 	});
+
+	let hasExternalKnowledgePanelsSection = $derived(
+		externalKnowledgePanelsLoading ||
+			externalKnowledgePanels.length > 0 ||
+			externalKnowledgePanelsError != null
+	);
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
@@ -159,7 +189,7 @@
 				label: $_('product.sections.product_information', { default: 'Product information' }),
 				icon: IconMdiFormatListBulleted
 			},
-			externalKnowledgePanels.length > 0 && {
+			hasExternalKnowledgePanelsSection && {
 				id: 'external-sources',
 				label: $_('product.sections.external_sources', { default: 'External sources' }),
 				icon: IconMdiDatabase
@@ -387,9 +417,31 @@
 				/>
 			</div>
 
-			{#if externalKnowledgePanels.length > 0}
+			{#if externalKnowledgePanelsPromise != null && hasExternalKnowledgePanelsSection}
 				<div id="external-sources">
-					<ExternalPanels panels={externalKnowledgePanels} />
+					{#await externalKnowledgePanelsPromise}
+						<div class="flex items-center justify-center py-8">
+							<span class="loading loading-lg loading-spinner"></span>
+							<span class="ml-2">
+								{$_('product.external_sources.loading', {
+									default: 'Loading external sources…'
+								})}
+							</span>
+						</div>
+					{:then panels}
+						{#if panels.length > 0}
+							<ExternalPanels {panels} />
+						{/if}
+					{:catch}
+						<div class="alert alert-warning">
+							<IconMdiWarning class="h-6 w-6 shrink-0" />
+							<span>
+								{$_('product.external_sources.error', {
+									default: 'External sources could not be loaded.'
+								})}
+							</span>
+						</div>
+					{/await}
 				</div>
 			{/if}
 
