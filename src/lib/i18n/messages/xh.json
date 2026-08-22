@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Ibhakhowudi {barcode} yaskenwa ngempumelelo, kodwa akukho mveliso yafunyanwayo kwiiNyaniso zethu ezivulekileyo zoKutya, iinyani ezivulekileyo zobuhle, iiNyaniso zeeMveliso ezivulekileyo okanye iiNyaniso eziVulekileyo zokuTya kwezilwanyana.",
 		"add_new_product": "Yongeza imveliso entsha",
 		"scan_again": "Skena kwakhona",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
