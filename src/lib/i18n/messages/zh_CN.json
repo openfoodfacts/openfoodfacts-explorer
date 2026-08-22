@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "条形码 {barcode} 已成功扫描，但在我们的开放食品事实、开放美容事实、开放产品事实或开放宠物食品事实中未找到任何产品。",
 		"add_new_product": "添加新产品",
 		"scan_again": "再次扫描",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
