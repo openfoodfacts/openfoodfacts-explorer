@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "තීරු කේතය {barcode} සාර්ථකව ස්කෑන් කරන ලදී, නමුත් අපගේ විවෘත ආහාර කරුණු, විවෘත රූපලාවන්‍ය කරුණු, විවෘත නිෂ්පාදන කරුණු හෝ විවෘත සුරතල් ආහාර කරුණු තුළ කිසිදු නිෂ්පාදනයක් හමු නොවීය.",
 		"add_new_product": "නව නිෂ්පාදනයක් එක් කරන්න",
 		"scan_again": "නැවත ස්කෑන් කරන්න",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
