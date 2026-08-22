@@ -309,6 +309,19 @@
 			"prices": "물가",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "제품을 구매한 매장을 입력하세요. 예: 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "포장에 원산지 표시가 있으면 모두 추가하세요. 성분표에 직접 표시된 원산지는 걱정할 필요가 없습니다. 예를 들어, '소고기 아르헨티나산', '콩은 유럽 연합산이 아닙니다'와 같이 표기할 수 있습니다.",
 				"traceability_code": "이 섹션에서는 포장 표시, 식별 표시 또는 건강 표시와 관련된 코드를 입력할 수 있습니다.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "해당 제품을 널리 구입할 수 있는 국가(외국 제품을 전문으로 취급하는 매장 제외).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "먼저 제품 유형을 선택해야 합니다!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "바코드 {barcode} 가 성공적으로 스캔되었으나, 당사의 공개 식품 정보, 공개 뷰티 정보, 공개 제품 정보 또는 공개 반려동물 사료 정보에서 제품을 찾을 수 없습니다.",
 		"add_new_product": "새로운 제품 추가",
 		"scan_again": "다시 스캔하세요",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "브랜드",
 		"quantity": "양",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

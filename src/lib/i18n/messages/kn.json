@@ -309,6 +309,19 @@
 			"prices": "ಬೆಲೆಗಳು",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "ನೀವು ಉತ್ಪನ್ನವನ್ನು ಖರೀದಿಸಿದ ಅಂಗಡಿಯನ್ನು ನಮೂದಿಸಿ. ಉದಾಹರಣೆಗೆ, 'ಕ್ಯಾರಿಫೋರ್', 'ವಾಲ್ಮಾರ್ಟ್', 'ಲಿಡ್ಲ್'.",
 				"origins": "ಪ್ಯಾಕೇಜಿಂಗ್‌ನಲ್ಲಿ ನೀವು ಕಂಡುಕೊಳ್ಳಬಹುದಾದ ಮೂಲದ ಯಾವುದೇ ಸೂಚನೆಗಳನ್ನು ಸೇರಿಸಿ. ಪದಾರ್ಥಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನೇರವಾಗಿ ಸೂಚಿಸಲಾದ ಮೂಲದ ಬಗ್ಗೆ ನೀವು ಚಿಂತಿಸಬೇಕಾಗಿಲ್ಲ. ಉದಾಹರಣೆಗೆ, 'ಅರ್ಜೆಂಟೀನಾದಿಂದ ಗೋಮಾಂಸ', 'ಸೋಯಾ ಯುರೋಪಿಯನ್ ಒಕ್ಕೂಟದಿಂದ ಬರುವುದಿಲ್ಲ'.",
 				"traceability_code": "ಈ ವಿಭಾಗದಲ್ಲಿ, ನೀವು ಪ್ಯಾಕೇಜಿಂಗ್ ಗುರುತುಗಳು, ಗುರುತಿನ ಗುರುತುಗಳು ಅಥವಾ ಆರೋಗ್ಯ ಗುರುತುಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ಕೋಡ್‌ಗಳನ್ನು ನಮೂದಿಸಬಹುದು.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "ಉತ್ಪನ್ನವು ವ್ಯಾಪಕವಾಗಿ ಲಭ್ಯವಿರುವ ದೇಶಗಳು (ವಿದೇಶಿ ಉತ್ಪನ್ನಗಳಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿರುವ ಅಂಗಡಿಗಳನ್ನು ಹೊರತುಪಡಿಸಿ).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "ನೀವು ಮೊದಲು ಉತ್ಪನ್ನದ ಪ್ರಕಾರವನ್ನು ಆರಿಸಬೇಕು!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "ಬಾರ್‌ಕೋಡ್ {barcode} ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗಿದೆ, ಆದರೆ ನಮ್ಮ ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್, ಓಪನ್ ಬ್ಯೂಟಿ ಫ್ಯಾಕ್ಟ್ಸ್, ಓಪನ್ ಪ್ರಾಡಕ್ಟ್ಸ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಅಥವಾ ಓಪನ್ ಪೆಟ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್‌ನಲ್ಲಿ ಯಾವುದೇ ಉತ್ಪನ್ನ ಕಂಡುಬಂದಿಲ್ಲ.",
 		"add_new_product": "ಹೊಸ ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ",
 		"scan_again": "ಮತ್ತೊಮ್ಮೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "ಬ್ರ್ಯಾಂಡ್",
 		"quantity": "ಪ್ರಮಾಣ",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

@@ -309,6 +309,19 @@
 			"prices": "Prices",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "ထုတ်ကုန်ကို သင်ဝယ်ယူသည့် စတိုးဆိုင်တွင် ထည့်သွင်းပါ။ ဥပမာ 'Carrefour'၊ 'Walmart'၊ 'Lidl'။",
 				"origins": "ထုပ်ပိုးမှုတွင် သင်ရှာတွေ့နိုင်သော မူရင်းအညွှန်းများကို ထည့်ပါ။ ပါဝင်ပစ္စည်းစာရင်းတွင် တိုက်ရိုက်ဖော်ပြထားသည့် ဇစ်မြစ်အတွက် သင်စိုးရိမ်စရာ မလိုပါ။ ဥပမာအားဖြင့်၊ 'အာဂျင်တီးနားမှအမဲသား'၊ 'ပဲပိစပ်သည် ဥရောပသမဂ္ဂမှလာသည်'။",
 				"traceability_code": "ဤကဏ္ဍတွင်၊ ထုပ်ပိုးမှုအမှတ်အသားများ၊ သက်သေခံအမှတ်အသားများ သို့မဟုတ် ကျန်းမာရေးအမှတ်အသားများနှင့် ဆက်စပ်သောကုဒ်များကို ထည့်သွင်းနိုင်သည်။",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "ထုတ်ကုန်ကို တွင်ကျယ်စွာရရှိနိုင်သည့်နိုင်ငံများ (နိုင်ငံခြားထုတ်ကုန်များကို အထူးပြုစတိုးဆိုင်များ မပါဝင်ပါ)။",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "ဘားကုဒ် {barcode} ကို အောင်မြင်စွာ စကင်န်ဖတ်ပြီးသော်လည်း ကျွန်ုပ်တို့၏ Open Food Facts၊ Open Beauty Facts၊ Open Products Facts သို့မဟုတ် Open Pet Food Facts တွင် မည်သည့်ထုတ်ကုန်မျှ မတွေ့ပါ။",
 		"add_new_product": "ထုတ်ကုန်အသစ်ထည့်ပါ။",
 		"scan_again": "ပြန်စကင်န်ဖတ်ပါ။",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "အမှတ်တံဆိပ်",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

@@ -309,6 +309,19 @@
 			"prices": "Awọn idiyele",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "Wọle ile itaja ti o ti ra ọja naa. Fun apẹẹrẹ, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Ṣafikun eyikeyi awọn itọkasi ti awọn ipilẹṣẹ ti o le rii lori apoti naa. O ko nilo aibalẹ nipa awọn ipilẹṣẹ ti o tọka taara ninu atokọ eroja. Fun apẹẹrẹ, 'Eran malu lati Argentina', 'Soy ko wa lati European Union'.",
 				"traceability_code": "Ni abala yii, o le tẹ awọn koodu sii ti o ni ibatan si awọn ami idii, awọn ami idanimọ tabi awọn ami ilera.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Awọn orilẹ-ede nibiti ọja wa lọpọlọpọ (kii ṣe pẹlu awọn ile itaja ti o ṣe amọja ni awọn ọja ajeji).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "O nilo lati yan iru ọja akọkọ!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} ti ṣayẹwo daradara, ṣugbọn ko si ọja ti a rii ninu Awọn Otitọ Ounjẹ Ṣii wa, Awọn Otitọ Ẹwa Ṣiṣii, Awọn Otitọ Awọn ọja Ṣii tabi Awọn Otitọ Ounjẹ Ọsin Ṣii.",
 		"add_new_product": "Fi ọja tuntun kun",
 		"scan_again": "Ṣayẹwo lẹẹkansi",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Eya",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

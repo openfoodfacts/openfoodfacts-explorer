@@ -309,6 +309,19 @@
 			"prices": "Prices",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "Inserite u magazinu induve avete compru u pruduttu. Per esempiu, \"Carrefour\", \"Walmart\", \"Lidl\".",
 				"origins": "Aghjunghjite qualsiasi indicazione d'origine chì pudete truvà nantu à l'imballu. Ùn avete micca bisognu di preoccupassi di l'origine indicate direttamente in a lista di l'ingredienti. Per esempiu, \"Carne di manzo da l'Argentina\", \"A soia ùn vene micca da l'Unione Europea\".",
 				"traceability_code": "In questa sezione, pudete inserisce codici relativi à i marchi di imballaggio, i marchi di identificazione o i marchi sanitari.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Paesi induve u pruduttu hè largamente dispunibule (senza include i magazini specializati in prudutti stranieri).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "U codice à barre {barcode} hè statu scanatu cù successu, ma nisun pruduttu hè statu trovu in i nostri Open Food Facts, Open Beauty Facts, Open Products Facts o Open Pet Food Facts.",
 		"add_new_product": "Aghjunghje un novu pruduttu",
 		"scan_again": "Scannà torna",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Brand",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

@@ -309,6 +309,19 @@
 			"prices": "Prijzen",
 			"folksonomy": "Tags & Community"
 		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
@@ -339,6 +352,7 @@
 				"stores": "Voer de winkel in waar u het product hebt gekocht. Bijvoorbeeld 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Voeg alle herkomstaanduidingen toe die u op de verpakking kunt vinden. U hoeft zich geen zorgen te maken over de herkomst die direct in de ingrediëntenlijst staat. Bijvoorbeeld: 'Rundvlees uit Argentinië', 'De soja komt niet uit de Europese Unie'.",
 				"traceability_code": "In dit gedeelte kunt u codes invoeren die betrekking hebben op verpakkingskenmerken, identificatiekenmerken of gezondheidskenmerken.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Landen waar het product algemeen verkrijgbaar is (met uitzondering van winkels die gespecialiseerd zijn in buitenlandse producten).",
 				"product_type": "Selecteer het type product: Voeding, Schoonheidsproducten, Dierenvoeding of Anders.",
 				"empty_fiber": "Voer een koppelteken (-) in als de waarde niet op de verpakking staat.",
@@ -350,6 +364,9 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "U moet eerst een producttype selecteren!",
@@ -672,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} is succesvol gescand, maar er is geen product gevonden in Open Food Facts, Open Beauty Facts, Open Products Facts of Open Pet Food Facts.",
 		"add_new_product": "Nieuw product toevoegen",
 		"scan_again": "Scan opnieuw",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +801,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Merk",
 		"quantity": "Hoeveelheid",
-		"nova_group": "Nova-groep",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Voedingswaarden (per 100 g)",
 		"fruits_vegetables_nuts": "Fruit/Groenten/Noten",

@@ -40,7 +40,7 @@
 		"advanced_search_classic": "Rozšířené vyhledávání pro {term} (klasická verze)",
 		"superset_query": "Začít dotaz",
 		"superset_discover": "Objevte dashboardy",
-		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_title": "Databázový dotaz OFF s SQL",
 		"superset_promo_desc": "Odemkněte sílu otevřených dat! Prozkoumejte celou databázi Open Food Facts pomocí SQL dotazů, vlastních grafů a sdílených dashboardů.",
 		"prices_badge": "{count} cen",
 		"creation_date": "Datum vytvoření",
@@ -87,7 +87,7 @@
 		"contribute": "Přispět",
 		"discover_title": "Objevte náš projekt",
 		"open_x_facts_title": "Open X Facts",
-		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts_description": "Vyzkoušejte dočasné vstupní stránky pro každý projekt Open X Facts.",
 		"open_x_facts": {
 			"open_food_facts": "Open Food Facts",
 			"open_beauty_facts": "Open Beauty Facts",
@@ -158,11 +158,11 @@
 		"github_cta": "Pomozte nám vylepšit Průzkumníka na GitHubu",
 		"github_help_text": "Pomozte vylepšit Open Food Facts Explorer!",
 		"admin_tools": {
-			"title": "Admin tools",
-			"description": "Useful links for Open Food Facts administrators",
+			"title": "Nástroje správce",
+			"description": "Užitečné odkazy pro správce Open Food Facts",
 			"organization_table": "Organization table",
-			"recent_changes": "Recent changes",
-			"top_translators": "Top translators"
+			"recent_changes": "Poslední změny",
+			"top_translators": "Nejlepší překladatelé"
 		},
 		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
@@ -295,22 +295,35 @@
 			"never_checked": "Nikdy nekontrolováno",
 			"check_be_first": "Buďte první, kdo zkontroluje tento produkt"
 		},
-		"sidebar_navigation": "Product sections",
+		"sidebar_navigation": "Sekce produktů",
 		"sidebar": {
-			"show": "Show Sidebar",
-			"hide": "Hide Sidebar"
+			"show": "Zobrazit postranní panel",
+			"hide": "Skrýt boční panel"
 		},
 		"sections": {
 			"product": "Produkt",
-			"health": "Health & Nutrition",
-			"environment": "Environment & Sustainability",
-			"knowledge_panels": "Analysis & Insights",
+			"health": "Zdraví a výživa",
+			"environment": "Životní prostředí a udržitelnost",
+			"knowledge_panels": "Analýza a postřehy",
 			"datasources": "Zdroje dat",
 			"prices": "Ceny",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Štítky a komunita"
+		},
+		"gs1": {
+			"title": "Informace o čárových kódech GS1",
+			"intro": "GS1 poskytuje standardy pro čárové kódy produktů. Prefix na začátku čárového kódu je spojen se společností nebo organizací, která jej zaregistrovala.",
+			"important": "Toto neuvádí, kde byl produkt vyroben ani zemi jeho původu.",
+			"prefix_title": "Předpona GS1",
+			"prefix_label": "Registrováno prostřednictvím:",
+			"prefix_note": "Zde uvedené umístění se vztahuje k registraci GS1, nikoli k původu produktu.",
+			"verified_title": "Víc informací",
+			"verified_description": "Ověření přes GS1 může poskytnout více informací o společnosti a produktu spojeném s tímto čárovým kódem.",
+			"verified_link": "Zobrazit tento čárový kód na GS1",
+			"source_label": "Zdroj:",
+			"source_link": "GS1"
 		},
 		"edit": {
-			"sidebar_navigation": "Product edit sections",
+			"sidebar_navigation": "Sekce úpravy produktu",
 			"sidebar": {
 				"collapse_all": "Sbalit vše",
 				"expand_all": "Rozbalit vše"
@@ -339,6 +352,7 @@
 				"stores": "Zadejte prodejnu, kde jste produkt zakoupili. Například „Carrefour“, „Walmart“, „Lidl“.",
 				"origins": "Uveďte jakékoli údaje o původu, které najdete na obalu. Nemusíte se obávat původu uvedeného přímo v seznamu složek. Například „Hovězí maso z Argentiny“, „Sója nepochází z Evropské unie“.",
 				"traceability_code": "V této části můžete zadat kódy týkající se značek obalů, identifikačních značek nebo značek zdravotní nezávadnosti.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Země, kde je produkt široce dostupný (bez započítání obchodů specializujících se na zahraniční produkty).",
 				"product_type": "Vyberte typ produktu: Potraviny, Kosmetika, Krmivo pro domácí mazlíčky nebo Jiné.",
 				"empty_fiber": "Pokud hodnota není na obalu uvedena, zadejte pomlčku (-).",
@@ -347,11 +361,14 @@
 			},
 			"allergens": "Alergeny",
 			"traces": "Stopy",
-			"cannot_delete_main_language": "Cannot delete the main language",
-			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
-			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
-			"mandatory_suffix": "(mandatory)",
-			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"cannot_delete_main_language": "Hlavní jazyk nelze odstranit",
+			"confirm_delete_language": "Opravdu chcete smazat všechna pole pro {language}?",
+			"traceability_examples": "Příklady: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
+			"mandatory_suffix": "(povinné)",
+			"product_type_description": "Vyberte kategorii, která nejlépe popisuje tento produkt. Tím se nakonfiguruje cílová databáze a relevantní atributy.",
 			"select_product_type_first": "Nejprve musíte vybrat typ produktu!",
 			"main_language": "Hlavní jazyk",
 			"add_product": "Přidat produkt",
@@ -491,11 +508,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
-				"product_type_step": "Product Type",
+				"product_type_step": "Typ produktu",
 				"images": "Fotky",
 				"basic_info": "Základní informace",
-				"take_photos": "Take key photos of the product",
-				"score_calculation": "Score Calculation",
+				"take_photos": "Vyfoťte klíčové fotky produktu",
+				"score_calculation": "Výpočet skóre",
 				"origin_traceability": "Sledovatelnost a původ",
 				"languages": "Jazyky a názvy produktů",
 				"ingredients": "Složení",
@@ -505,22 +522,22 @@
 				"prices": "Ceny",
 				"comment": "Komentář"
 			},
-			"more_details": "More details",
+			"more_details": "Více informací",
 			"more_details_subsections": {
 				"product_details": "Podrobnosti o výrobku",
-				"classification": "Classification",
-				"origin_traceability": "Origin & Traceability",
+				"classification": "Klasifikace",
+				"origin_traceability": "Původ a sledovatelnost",
 				"languages": "Jazyky",
 				"comment": "Komentář"
 			},
-			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
-			"optional_suffix": "(optional)",
+			"score_calculation_description": "Vyplňte tyto údaje pro výpočet Nutri-Score, úrovně Ultra-processing (skupiny NOVA) a Green-Score.",
+			"optional_suffix": "(volitelné)",
 			"submit_product": "Odeslat",
-			"continue_to_score": "Score Calculation",
-			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
-			"product_tags": "Product tags",
-			"product_names": "Product names",
-			"delete_language": "Delete language",
+			"continue_to_score": "Výpočet skóre",
+			"skip_score_info": "Tento krok můžete přeskočit. Ostatní přispěvatelé ho mohou dokončit později.",
+			"product_tags": "Štítky produktu",
+			"product_names": "Názvy produktů",
+			"delete_language": "Smazat jazyk",
 			"legal_warning_title": "Nenahrávejte obrázky chráněné autorskými právy",
 			"legal_warning_photos_1": "Nenahrávejte fotografie, které nevlastníte nebo na které nemáte práva. Nahrávání obrázků chráněných autorskými právy bez povolení je nezákonné a může vést k pozastavení vašeho účtu.",
 			"legal_warning_photos_2": "Nahrávejte pouze své vlastní fotografie nebo ty, k jejichž použití máte výslovné svolení.",
@@ -565,7 +582,7 @@
 				"tool": "Nástroj",
 				"crop_drag_to_move": "Přetažením přesunete, rohy změníte velikost",
 				"crop_click_to_start": "Kliknutím a tažením spustíte ořezávání",
-				"resize_handle_aria_label": "Resize {action} handle",
+				"resize_handle_aria_label": "Změnit velikost úchytu {action}",
 				"report_image": "Nahlásit obrázek",
 				"save_changes": "Uložit Změny"
 			},
@@ -578,24 +595,24 @@
 			"no_prices_found": "Pro tento produkt nebyly nalezeny žádné ceny",
 			"loading": "Načítání cen…",
 			"view_prices": "Zobrazit ceny na Open Prices",
-			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
-			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
-			"loading_map": "Loading prices map…"
+			"kp_subtitle_found": "{count, plural, one {{count} cena} few {{count} ceny} many {{count} cen} other {{count} cen}} nalezeno v {storeCount, plural, one {{storeCount} obchodě} few {{storeCount} obchodech} many {{storeCount} obchodech} other {{storeCount} obchodech}}",
+			"no_prices_explanation": "Pomozte nám vytvořit největší databázi otevřených cen přidáním informací o ceně tohoto produktu.",
+			"loading_map": "Načítání mapy cen…"
 		},
 		"knowledge_panels": {
 			"action": {
 				"edit_product": "Upravit produkt",
-				"add_categories": "Add categories",
+				"add_categories": "Přidat kategorie",
 				"report_product_to_nutripatrol": "Nahlásit problém s tímto produktem",
 				"add_ingredients_text": "Přidat text ingrediencí",
 				"add_packaging_components": "Přidat součásti obalu",
-				"add_origins": "Add origins of ingredients",
+				"add_origins": "Přidejte původ ingrediencí",
 				"add_price": "Přidejte cenu na Open Prices",
 				"view_prices": "Zobrazit ceny na Open Prices",
-				"add_recycling_instructions": "Add recycling instructions",
-				"add_quantity": "Add quantity",
-				"add_packaging_image": "Add a photo of the packaging",
-				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_recycling_instructions": "Přidejte pokyny k recyklaci",
+				"add_quantity": "Přidejte množství",
+				"add_packaging_image": "Přidejte fotografii obalu",
+				"add_ingredients_image": "Přidejte fotku ingrediencí",
 				"add_nutrition_facts": "Přidat výživová fakta"
 			}
 		},
@@ -672,8 +689,9 @@
 		"barcode_scanned_not_found": "Čárový kód {barcode} byl úspěšně naskenován, ale v našich Open Food Facts, Open Beauty Facts, Open Products Facts ani Open Pet Food Facts nebyl nalezen žádný produkt.",
 		"add_new_product": "Přidat nový produkt",
 		"scan_again": "Znovu naskenovat",
-		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"manual_barcode": "Zadejte čárový kód ručně",
+		"camera_access_required": "Je vyžadován přístup k fotoaparátu. Povolte jej prosím v nastavení prohlížeče."
 	},
 	"errors": {
 		"network": {
@@ -690,7 +708,7 @@
 		"of": "z",
 		"cancel": "Zrušit",
 		"close": "zavřít",
-		"scroll_to_top": "Scroll to top"
+		"scroll_to_top": "Přejděte na začátek"
 	},
 	"menu": {
 		"button": "Menu",
@@ -783,7 +801,7 @@
 		"code_barcode": "Kód (čárový kód)",
 		"brand": "Značka",
 		"quantity": "Množství",
-		"nova_group": "Skupina Nova",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "Počet přísad",
 		"nutritional_values_per_100g": "Nutriční hodnoty (na 100 g)",
 		"fruits_vegetables_nuts": "Ovoce / zelenina / ořechy",
