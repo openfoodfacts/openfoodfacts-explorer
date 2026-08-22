@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ବାରକୋଡ୍ {barcode} ସଫଳତାର ସହ ସ୍କାନ କରାଯାଇଥିଲା, କିନ୍ତୁ ଆମର ଖୋଲା ଖାଦ୍ୟ ତଥ୍ୟ, ଖୋଲା ସୌନ୍ଦର୍ଯ୍ୟ ତଥ୍ୟ, ଖୋଲା ଉତ୍ପାଦ ତଥ୍ୟ କିମ୍ବା ଖୋଲା ପେଟ ଖାଦ୍ୟ ତଥ୍ୟରେ କୌଣସି ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ।",
 		"add_new_product": "ନୂତନ ଉତ୍ପାଦ ଯୋଗ କରନ୍ତୁ",
 		"scan_again": "ପୁଣି ସ୍କାନ୍ କରନ୍ତୁ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
