@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Wɔyɛɛ Barcode {barcode} scan yiye, nanso wɔanhu ade biara wɔ yɛn Open Food Facts, Open Beauty Facts, Open Products Facts anaa Open Pet Food Facts no mu.",
 		"add_new_product": "Fa ade foforo ka ho",
 		"scan_again": "Scan bio",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
