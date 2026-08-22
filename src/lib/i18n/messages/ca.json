@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "El codi de barres {barcode} s'ha escanejat correctament, però no s'ha trobat cap producte a les nostres seccions Open Food Data, Open Beauty Data, Open Products Data o Open Pet Food Data.",
 		"add_new_product": "Afegeix un producte nou",
 		"scan_again": "Torna a escanejar",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
