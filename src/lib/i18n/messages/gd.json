@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Chaidh an còd-barra {barcode} a sganadh gu soirbheachail, ach cha deach toradh sam bith a lorg anns na Fiosrachaidhean Bidhe Fosgailte againn, Fiosrachaidhean Bòidhchead Fosgailte, Fiosrachaidhean Toraidhean Fosgailte no Fiosrachaidhean Biadh Pheataichean Fosgailte.",
 		"add_new_product": "Cuir toradh ùr ris",
 		"scan_again": "Sgan a-rithist",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
