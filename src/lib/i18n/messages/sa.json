@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "बारकोड {barcode} सफलतया स्कैन् कृतः, परन्तु अस्माकं खुले खाद्यतथ्ये, मुक्तसौन्दर्यतथ्ये, मुक्तउत्पादतथ्ये वा खुले पालतूपजीविनां खाद्यतथ्ये कोऽपि उत्पादः न प्राप्तः।",
 		"add_new_product": "नूतनं उत्पादं योजयन्तु",
 		"scan_again": "पुनः स्कैन् कुर्वन्तु",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
