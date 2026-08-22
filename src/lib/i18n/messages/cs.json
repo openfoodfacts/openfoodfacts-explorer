@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Čárový kód {barcode} byl úspěšně naskenován, ale v našich Open Food Facts, Open Beauty Facts, Open Products Facts ani Open Pet Food Facts nebyl nalezen žádný produkt.",
 		"add_new_product": "Přidat nový produkt",
 		"scan_again": "Znovu naskenovat",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Zadejte čárový kód ručně",
 		"camera_access_required": "Je vyžadován přístup k fotoaparátu. Povolte jej prosím v nastavení prohlížeče."
 	},
