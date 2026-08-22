@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barkodi {barcode} u skanua me sukses, por nuk u gjet asnjë produkt në Fakte Ushqimore të Hapura, Fakte Bukurie të Hapura, Fakte Produktesh të Hapura ose Fakte Ushqimore për Kafshë Shtëpiake.",
 		"add_new_product": "Shto produkt të ri",
 		"scan_again": "Skano përsëri",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
