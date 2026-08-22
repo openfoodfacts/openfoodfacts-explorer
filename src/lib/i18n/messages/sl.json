@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Črtna koda {barcode} je bila uspešno skenirana, vendar v naših odprtih dejstvih o hrani, odprtih dejstvih o lepoti, odprtih dejstvih o izdelkih ali odprtih dejstvih o hrani za hišne ljubljenčke ni bilo mogoče najti nobenega izdelka.",
 		"add_new_product": "Dodaj nov izdelek",
 		"scan_again": "Ponovno skeniraj",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
