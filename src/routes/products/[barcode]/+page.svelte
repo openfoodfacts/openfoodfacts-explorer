@@ -5,6 +5,7 @@
 	import { preferences } from '$lib/settings';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
+	import ExternalPanels from '$lib/knowledgepanels/ExternalPanels.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 
@@ -49,6 +50,10 @@
 	import { goto } from '$app/navigation';
 	import { trackOffEvent } from '$lib/analytics';
 	import { browser } from '$app/environment';
+	import {
+		getExternalKnowledgePanels,
+		type ExternalKnowledgePanels
+	} from '$lib/api/externalSources';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -70,6 +75,29 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+
+	let externalKnowledgePanels = $state<ExternalKnowledgePanels[]>([]);
+	$effect(() => {
+		if (!browser || !product.code) return;
+
+		const requestContext = {
+			code: product.code,
+			lc: data.lc || $preferences.lang || 'en',
+			cc: $preferences.country || 'world',
+			productType: product.product_type,
+			categories: product.categories_tags ?? []
+		};
+		let cancelled = false;
+		externalKnowledgePanels = [];
+
+		getExternalKnowledgePanels(window.fetch.bind(window), requestContext).then((panels) => {
+			if (!cancelled) externalKnowledgePanels = panels;
+		});
+
+		return () => {
+			cancelled = true;
+		};
+	});
 
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
@@ -130,6 +158,11 @@
 				id: 'product_card',
 				label: $_('product.sections.product_information', { default: 'Product information' }),
 				icon: IconMdiFormatListBulleted
+			},
+			externalKnowledgePanels.length > 0 && {
+				id: 'external-sources',
+				label: $_('product.sections.external_sources', { default: 'External sources' }),
+				icon: IconMdiDatabase
 			},
 			isPriceConfigured() &&
 				data.prices != null && {
@@ -353,6 +386,12 @@
 					summary={sidebarHidden}
 				/>
 			</div>
+
+			{#if externalKnowledgePanels.length > 0}
+				<div id="external-sources">
+					<ExternalPanels panels={externalKnowledgePanels} />
+				</div>
+			{/if}
 
 			{#if isPriceConfigured() && data?.prices != null}
 				<div id="prices">
