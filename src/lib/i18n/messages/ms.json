@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Kod Bar {barcode} berjaya diimbas, tetapi tiada produk ditemui dalam Fakta Makanan Terbuka, Fakta Kecantikan Terbuka, Fakta Produk Terbuka atau Fakta Makanan Terbuka Haiwan Peliharaan kami.",
 		"add_new_product": "Tambah produk baharu",
 		"scan_again": "Imbas semula",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
