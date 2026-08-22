@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} yi skeniwile hi ndlela leyi humelelaka, kambe ku hava xitirhisiwa lexi kumiweke eka Tinhla ta hina ta Swakudya leswi Pfulekeke, Tinhla ta ku Saseka leti Pfulekeke, Tinhla ta Swikumiwa leswi Pfulekeke kumbe Tinhla ta Swakudya swa Swifuwo swa le Ndlwini leti Pfulekeke.",
 		"add_new_product": "Engetelani xitirhisiwa lexintshwa",
 		"scan_again": "Scan nakambe",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
