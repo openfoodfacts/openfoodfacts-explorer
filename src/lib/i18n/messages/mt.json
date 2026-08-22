@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Il-barcode {barcode} ġie skennjat b'suċċess, iżda ma nstab l-ebda prodott fil-Fatti Miftuħa dwar l-Ikel, Fatti Miftuħa dwar is-Sbuħija, Fatti Miftuħa dwar il-Prodotti jew Fatti Miftuħa dwar l-Ikel għall-Annimali Domestiċi tagħna.",
 		"add_new_product": "Żid prodott ġdid",
 		"scan_again": "Skennja mill-ġdid",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
