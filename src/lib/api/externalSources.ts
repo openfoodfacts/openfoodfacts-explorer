@@ -34,6 +34,16 @@ export type ExternalKnowledgePanels = ExternalSource & {
 	productImageUrl?: string;
 };
 
+export type ExternalKnowledgePanelRequest = {
+	source: ExternalSource;
+	matchReasons: ExternalSourceMatchReason[];
+	promise: Promise<ExternalKnowledgePanels | null>;
+};
+
+export type ExternalKnowledgePanelBatch = {
+	requests: ExternalKnowledgePanelRequest[];
+};
+
 export type ExternalSourceProductContext = {
 	code: string;
 	lc: string;
@@ -228,10 +238,10 @@ async function fetchExternalSourcePanels(
 	}
 }
 
-export async function getExternalKnowledgePanels(
+export async function getExternalKnowledgePanelRequests(
 	fetch: typeof window.fetch,
 	context: ExternalSourceProductContext
-): Promise<ExternalKnowledgePanels[]> {
+): Promise<ExternalKnowledgePanelBatch> {
 	const sources = await getExternalSources(fetch);
 	const sourceDiagnostics = sources.map((source) => ({
 		id: source.id,
@@ -246,28 +256,36 @@ export async function getExternalKnowledgePanels(
 			rejected: sourceDiagnostics.filter(({ issues }) => issues.length > 0)
 		});
 	}
-	const results = await Promise.allSettled(
-		eligibleSources.map((source) =>
-			fetchExternalSourcePanels(
-				fetch,
-				source,
-				context,
-				getExternalSourceMatchReasons(source, context)
-			)
-		)
-	);
+	const requests = eligibleSources.map((source) => {
+		const matchReasons = getExternalSourceMatchReasons(source, context);
+		return {
+			source,
+			matchReasons,
+			promise: fetchExternalSourcePanels(fetch, source, context, matchReasons)
+		};
+	});
+
+	return { requests };
+}
+
+export async function getExternalKnowledgePanels(
+	fetch: typeof window.fetch,
+	context: ExternalSourceProductContext
+): Promise<ExternalKnowledgePanels[]> {
+	const { requests } = await getExternalKnowledgePanelRequests(fetch, context);
+	const results = await Promise.allSettled(requests.map(({ promise }) => promise));
 
 	return results.flatMap((result, index) => {
 		if (result.status === 'fulfilled' && result.value != null) {
 			if (dev)
-				console.debug('[external sources] Provider panels loaded', eligibleSources[index].id);
+				console.debug('[external sources] Provider panels loaded', requests[index].source.id);
 			return [result.value];
 		}
 		if (result.status === 'fulfilled' && dev) {
-			console.debug('[external sources] Provider returned no panels', eligibleSources[index].id);
+			console.debug('[external sources] Provider returned no panels', requests[index].source.id);
 		}
 		if (result.status === 'rejected') {
-			console.warn(`Failed to fetch external source ${eligibleSources[index].id}`, result.reason);
+			console.warn(`Failed to fetch external source ${requests[index].source.id}`, result.reason);
 		}
 		return [];
 	});

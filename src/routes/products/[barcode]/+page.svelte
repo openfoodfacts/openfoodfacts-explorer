@@ -51,8 +51,8 @@
 	import { trackOffEvent } from '$lib/analytics';
 	import { browser } from '$app/environment';
 	import {
-		getExternalKnowledgePanels,
-		type ExternalKnowledgePanels
+		getExternalKnowledgePanelRequests,
+		type ExternalKnowledgePanelBatch
 	} from '$lib/api/externalSources';
 
 	let { data }: PageProps = $props();
@@ -76,16 +76,12 @@
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
 
-	let externalKnowledgePanels = $state<ExternalKnowledgePanels[]>([]);
-	let externalKnowledgePanelsPromise = $state<Promise<ExternalKnowledgePanels[]> | null>(null);
-	let externalKnowledgePanelsLoading = $state(false);
-	let externalKnowledgePanelsError = $state<unknown>(null);
+	let externalKnowledgePanelBatchPromise = $state<Promise<ExternalKnowledgePanelBatch> | null>(
+		null
+	);
 	$effect(() => {
 		if (!browser || !product.code) {
-			externalKnowledgePanelsPromise = null;
-			externalKnowledgePanels = [];
-			externalKnowledgePanelsLoading = false;
-			externalKnowledgePanelsError = null;
+			externalKnowledgePanelBatchPromise = null;
 			return;
 		}
 
@@ -97,25 +93,15 @@
 			categories: product.categories_tags ?? []
 		};
 		let cancelled = false;
-		externalKnowledgePanels = [];
-		externalKnowledgePanelsLoading = true;
-		externalKnowledgePanelsError = null;
+		const request = getExternalKnowledgePanelRequests(window.fetch.bind(window), requestContext);
+		externalKnowledgePanelBatchPromise = request;
 
-		const request = getExternalKnowledgePanels(window.fetch.bind(window), requestContext);
-		externalKnowledgePanelsPromise = request;
 		request.then(
-			(panels) => {
-				if (!cancelled) {
-					externalKnowledgePanels = panels;
-					externalKnowledgePanelsLoading = false;
-				}
+			({ requests }) => {
+				if (cancelled) return;
+				if (requests.length === 0) externalKnowledgePanelBatchPromise = null;
 			},
-			(error) => {
-				if (!cancelled) {
-					externalKnowledgePanelsLoading = false;
-					externalKnowledgePanelsError = error;
-				}
-			}
+			() => {}
 		);
 
 		return () => {
@@ -124,9 +110,7 @@
 	});
 
 	let hasExternalKnowledgePanelsSection = $derived(
-		externalKnowledgePanelsLoading ||
-			externalKnowledgePanels.length > 0 ||
-			externalKnowledgePanelsError != null
+		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
 
 	let websiteCtx = getWebsiteCtx();
@@ -417,9 +401,9 @@
 				/>
 			</div>
 
-			{#if externalKnowledgePanelsPromise != null && hasExternalKnowledgePanelsSection}
+			{#if hasExternalKnowledgePanelsSection}
 				<div id="external-sources">
-					{#await externalKnowledgePanelsPromise}
+					{#await externalKnowledgePanelBatchPromise}
 						<div class="flex items-center justify-center py-8">
 							<span class="loading loading-lg loading-spinner"></span>
 							<span class="ml-2">
@@ -428,9 +412,9 @@
 								})}
 							</span>
 						</div>
-					{:then panels}
-						{#if panels.length > 0}
-							<ExternalPanels {panels} />
+					{:then batch}
+						{#if batch != null && batch.requests.length > 0}
+							<ExternalPanels requests={batch.requests} />
 						{/if}
 					{:catch}
 						<div class="alert alert-warning">
