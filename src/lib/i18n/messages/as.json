@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "বাৰকোড {barcode} সফলতাৰে স্কেন কৰা হৈছিল, কিন্তু আমাৰ মুক্ত খাদ্যৰ তথ্য, মুক্ত সৌন্দৰ্য্যৰ তথ্য, মুক্ত সামগ্ৰীৰ তথ্য বা মুকলি পোহনীয়া জন্তুৰ খাদ্যৰ তথ্যত কোনো সামগ্ৰী পোৱা নগ'ল।",
 		"add_new_product": "নতুন সামগ্ৰী যোগ কৰক",
 		"scan_again": "আকৌ স্কেন কৰক",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
