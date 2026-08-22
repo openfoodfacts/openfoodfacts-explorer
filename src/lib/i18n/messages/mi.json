@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Ko te Waehere Pae {barcode} i pai te karapa, engari karekau he hua i kitea i roto i a maatau Meka Tuwhera Kai, Meka Ataahua Tuwhera, Meka Hua Tuwhera, Meka Kai Mokai Tuwhera ranei.",
 		"add_new_product": "Tāpiri hua hou",
 		"scan_again": "Matawai ano",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
