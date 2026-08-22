@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Ny barcode {barcode} dia nojerena soa aman-tsara, saingy tsy nisy vokatra hita tao amin'ny Open Food Facts, Open Beauty Facts, Open Products Facts na Open Pet Food Facts.",
 		"add_new_product": "Manampia vokatra vaovao",
 		"scan_again": "Scan indray",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
