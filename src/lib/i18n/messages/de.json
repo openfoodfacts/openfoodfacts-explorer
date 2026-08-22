@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Der Barcode {barcode} wurde erfolgreich gescannt, aber es wurde kein Produkt in unseren Datenbanken Open Food Facts, Open Beauty Facts, Open Products Facts oder Open Pet Food Facts gefunden.",
 		"add_new_product": "Neues Produkt hinzufügen",
 		"scan_again": "Erneut scannen",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
