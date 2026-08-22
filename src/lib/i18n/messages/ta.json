@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "பார்கோடு {barcode} வெற்றிகரமாக ஸ்கேன் செய்யப்பட்டது, ஆனால் எங்கள் திறந்த உணவு உண்மைகள், திறந்த அழகு உண்மைகள், திறந்த தயாரிப்புகள் உண்மைகள் அல்லது திறந்த செல்லப்பிராணி உணவு உண்மைகள் ஆகியவற்றில் எந்த தயாரிப்பும் காணப்படவில்லை.",
 		"add_new_product": "புதிய தயாரிப்பைச் சேர்க்கவும்",
 		"scan_again": "மீண்டும் ஸ்கேன் செய்",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
