@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Штрих-код {barcode} успішно проскановано, але жодного продукту не знайдено в наших розділах «Факти про їжу», «Факти про красу», «Факти про продукти» або «Факти про корм для домашніх тварин».",
 		"add_new_product": "Додати новий продукт",
 		"scan_again": "Скануйте ще раз",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
