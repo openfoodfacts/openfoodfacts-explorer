@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} si guul leh ayaa loo sawiray, laakiin wax alaab ah lagama helin Xaqiiqda Cuntadayada Furan, Xaqiiqooyinka Quruxda Furan, Xaqiiqda Alaabada Furan ama Xaqiiqda Cunnada Xayawaanka Furan.",
 		"add_new_product": "Ku dar badeeco cusub",
 		"scan_again": "Mar labaad baadh",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
