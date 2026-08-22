@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Matagumpay na na-scan ang Barcode {barcode} , ngunit walang nakitang produkto sa aming Open Food Facts, Open Beauty Facts, Open Products Facts o Open Pet Food Facts.",
 		"add_new_product": "Magdagdag ng bagong produkto",
 		"scan_again": "I-scan muli",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
