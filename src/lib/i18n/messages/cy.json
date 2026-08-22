@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Sganiwyd y cod bar {barcode} yn llwyddiannus, ond ni chanfuwyd unrhyw gynnyrch yn ein Ffeithiau Bwyd Agored, Ffeithiau Harddwch Agored, Ffeithiau Cynhyrchion Agored na Ffeithiau Bwyd Anifeiliaid Anwes Agored.",
 		"add_new_product": "Ychwanegu cynnyrch newydd",
 		"scan_again": "Sganiwch eto",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
