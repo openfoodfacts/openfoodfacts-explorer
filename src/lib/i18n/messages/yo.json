@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} ti ṣayẹwo daradara, ṣugbọn ko si ọja ti a rii ninu Awọn Otitọ Ounjẹ Ṣii wa, Awọn Otitọ Ẹwa Ṣiṣii, Awọn Otitọ Awọn ọja Ṣii tabi Awọn Otitọ Ounjẹ Ọsin Ṣii.",
 		"add_new_product": "Fi ọja tuntun kun",
 		"scan_again": "Ṣayẹwo lẹẹkansi",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
