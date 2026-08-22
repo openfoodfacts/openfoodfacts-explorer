@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { untrack } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
@@ -49,7 +47,6 @@
 	import { toWebsiteFlavor } from '$lib/flavor';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
 	import { trackOffEvent } from '$lib/analytics';
 	import { browser } from '$app/environment';
 
@@ -83,28 +80,6 @@
 				websiteCtx.update((ctx) => ({ ...ctx, flavor: productFlavor }));
 			}
 		}
-	});
-
-	// Track product score presence (fire once per product page view)
-	const trackedScores = new SvelteSet<string>();
-	$effect(() => {
-		// Depend only on pathname (navigation), not product data (invalidateAll)
-		const path = page.url.pathname;
-		untrack(() => {
-			const p = product;
-			if (p.code && !trackedScores.has(path)) {
-				trackedScores.add(path);
-				if (p.nutriscore_grade) {
-					trackOffEvent('product', 'has_nutriscore', p.nutriscore_grade);
-				}
-				if (p.ecoscore_grade) {
-					trackOffEvent('product', 'has_greenscore', p.ecoscore_grade);
-				}
-				if (p.nova_group) {
-					trackOffEvent('product', 'has_nova', String(p.nova_group));
-				}
-			}
-		});
 	});
 
 	let useWCFolksonomyEditor = $state(false);
@@ -342,7 +317,7 @@
 				<robotoff-contribution-message
 					product-code={product.code}
 					is-logged-in={$userInfo != null}
-					onclick={() => trackOffEvent('product', 'open_nutrisight')}
+					onclick={() => trackOffEvent('feature', 'nutrisight_opened')}
 				></robotoff-contribution-message>
 			</div>
 
