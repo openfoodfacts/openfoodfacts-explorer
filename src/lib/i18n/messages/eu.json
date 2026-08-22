@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "{barcode} barra-kodea behar bezala eskaneatu da, baina ez da produkturik aurkitu gure Janari Informazio Irekian, Edertasun Informazio Irekian, Produktu Informazio Irekian edo Maskoten Janari Informazio Irekian.",
 		"add_new_product": "Gehitu produktu berria",
 		"scan_again": "Eskaneatu berriro",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
