@@ -46,7 +46,13 @@
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
 		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"advanced_view": "Advanced view",
+		"export_csv": "Export CSV",
+		"export_csv_exporting": "Exporting…",
+		"export_csv_success": "Exported {count} products",
+		"export_csv_truncated": "Exported first {count} of {total} products (limit {limit})",
+		"export_csv_error": "Failed to export search results",
+		"export_csv_limit_hint": "Up to {limit} products from the current filters"
 	},
 	"auth": {
 		"username": "Username",
