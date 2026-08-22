@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "바코드 {barcode} 가 성공적으로 스캔되었으나, 당사의 공개 식품 정보, 공개 뷰티 정보, 공개 제품 정보 또는 공개 반려동물 사료 정보에서 제품을 찾을 수 없습니다.",
 		"add_new_product": "새로운 제품 추가",
 		"scan_again": "다시 스캔하세요",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
