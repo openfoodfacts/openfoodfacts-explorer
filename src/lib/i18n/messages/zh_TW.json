@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "條碼 {barcode} 已成功掃描，但在我們的開放食品事實、開放美容事實、開放產品事實或開放寵物食品事實中未找到任何產品。",
 		"add_new_product": "新增產品",
 		"scan_again": "再次掃描",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
