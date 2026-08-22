@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Ibhakhodi engu- {barcode} iskenwe ngempumelelo, kodwa awukho umkhiqizo otholakele kokuthi Open Food Facts, Open Beauty Facts, Open Products Facts noma Open Pet Food Facts.",
 		"add_new_product": "Engeza umkhiqizo omusha",
 		"scan_again": "Skena futhi",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
