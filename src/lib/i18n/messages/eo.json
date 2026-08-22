@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Strekkodo {barcode} estis sukcese skanita, sed neniu produkto estis trovita en niaj Malfermaj Faktoj pri Manĝaĵoj, Malfermaj Faktoj pri Belecoj, Malfermaj Faktoj pri Produktoj aŭ Malfermaj Faktoj pri Bestomanĝaĵoj.",
 		"add_new_product": "Aldoni novan produkton",
 		"scan_again": "Skanu denove",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
