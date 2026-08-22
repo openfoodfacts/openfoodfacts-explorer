@@ -795,6 +795,14 @@
 			"copy_failed": "Failed to copy link to clipboard."
 		}
 	},
+	"pwa": {
+		"install_label": "Install as app",
+		"install_description": "Install Open Food Facts Explorer on your device for a faster, full-screen experience.",
+		"install_button": "Install app",
+		"install_in_progress": "Installing…",
+		"install_success": "App installed successfully!",
+		"install_error": "Could not install the app. Please try again."
+	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
 	}
