@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ਬਾਰਕੋਡ {barcode} ਸਫਲਤਾਪੂਰਵਕ ਸਕੈਨ ਕੀਤਾ ਗਿਆ, ਪਰ ਸਾਡੇ ਓਪਨ ਫੂਡ ਫੈਕਟਸ, ਓਪਨ ਬਿਊਟੀ ਫੈਕਟਸ, ਓਪਨ ਪ੍ਰੋਡਕਟਸ ਫੈਕਟਸ ਜਾਂ ਓਪਨ ਪਾਲਤੂ ਜਾਨਵਰਾਂ ਦੇ ਭੋਜਨ ਫੈਕਟਸ ਵਿੱਚ ਕੋਈ ਉਤਪਾਦ ਨਹੀਂ ਮਿਲਿਆ।",
 		"add_new_product": "ਨਵਾਂ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ",
 		"scan_again": "ਦੁਬਾਰਾ ਸਕੈਨ ਕਰੋ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
