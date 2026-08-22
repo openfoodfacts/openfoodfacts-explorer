@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} kasil dipindai, nanging ora ana produk sing ditemokake ing Open Food Facts, Open Beauty Facts, Open Products Facts utawa Open Pet Food Facts.",
 		"add_new_product": "Tambah produk anyar",
 		"scan_again": "Scan maneh",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
