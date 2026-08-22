@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ບາໂຄດ {barcode} ຖືກສະແກນສຳເລັດແລ້ວ, ແຕ່ບໍ່ມີຜະລິດຕະພັນໃດຖືກພົບເຫັນຢູ່ໃນຂໍ້ເທັດຈິງອາຫານເປີດຂອງພວກເຮົາ, ຄວາມຈິງກ່ຽວກັບຄວາມງາມແບບເປີດ, ຄວາມຈິງກ່ຽວກັບຜະລິດຕະພັນເປີດ ຫຼື ເປີດຄວາມຈິງກ່ຽວກັບອາຫານສັດ.",
 		"add_new_product": "ເພີ່ມຜະລິດຕະພັນໃຫມ່",
 		"scan_again": "ສະແກນອີກຄັ້ງ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
