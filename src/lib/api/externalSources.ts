@@ -52,10 +52,6 @@ export type ExternalSourceProductContext = {
 	categories: string[];
 };
 
-type ExternalSourcesResponse = {
-	external_sources?: ExternalSource[];
-};
-
 type ExternalSourceProductResponse = {
 	name?: string;
 	product_image_url?: string;
@@ -67,6 +63,31 @@ type ExternalSourceProductResponse = {
 };
 
 const EXTERNAL_SOURCE_TIMEOUT_MS = 10_000;
+
+function getExternalSourcesResponse(fetch: typeof window.fetch) {
+	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources');
+}
+
+type ExternalSourceApiItem = NonNullable<
+	NonNullable<Awaited<ReturnType<typeof getExternalSourcesResponse>>['data']>['external_sources']
+>[number];
+
+function mapExternalSource(source: ExternalSourceApiItem): ExternalSource {
+	return {
+		id: source.id,
+		name: source.name,
+		description: source.description,
+		icon_url: source.icon_url,
+		knowledge_panel_url: source.knowledge_panel_url,
+		provider_name: source.provider_name,
+		provider_website: source.provider_website,
+		privacy_policy_url: source.privacy_policy_url,
+		section: source.section,
+		scope: source.scope,
+		user_in_scope: source.user_in_scope,
+		filters: source.filters
+	};
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
@@ -294,20 +315,20 @@ export async function getExternalKnowledgePanels(
 /** Fetch the ordered external source metadata from Product Opener v3. */
 export async function getExternalSources(fetch: typeof window.fetch): Promise<ExternalSource[]> {
 	try {
-		const { data, error } = await createProductsApi(fetch).apiv3.client.GET(
-			'/api/v3/external_sources'
-		);
+		const { data, error } = await getExternalSourcesResponse(fetch);
 		if (error != null || data == null) {
 			console.warn('Failed to fetch external knowledge panel sources', error);
 			return [];
 		}
 
-		const sources = ((data as ExternalSourcesResponse).external_sources ?? []).filter(
-			(source): source is ExternalSource =>
-				typeof source?.id === 'string' &&
-				typeof source?.name === 'string' &&
-				typeof source?.knowledge_panel_url === 'string'
-		);
+		const sources = (data?.external_sources ?? [])
+			.map(mapExternalSource)
+			.filter(
+				(source) =>
+					typeof source.id === 'string' &&
+					typeof source.name === 'string' &&
+					typeof source.knowledge_panel_url === 'string'
+			);
 		return sources;
 	} catch (error) {
 		console.warn('Failed to fetch external knowledge panel sources', error);

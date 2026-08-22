@@ -307,7 +307,8 @@
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "Data Sources",
 			"prices": "Prices",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
 		},
 		"gs1": {
 			"title": "GS1 barcode information",
@@ -520,8 +521,7 @@
 				"moderator_tools": "Moderator Tools",
 				"packaging": "Packaging",
 				"prices": "Prices",
-			"comment": "Comment",
-			"external_sources": "External sources"
+				"comment": "Comment"
 			},
 			"more_details": "More details",
 			"more_details_subsections": {

@@ -96,7 +96,7 @@
 			{@const panelId = `external-source-panel-${source.id}`}
 			{#if requestStatuses[source.id] !== 'empty'}
 				<article
-					class="overflow-hidden rounded-box border border-base-300 bg-white shadow-md dark:bg-base-200"
+					class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-md dark:bg-base-200"
 				>
 					<header class="border-b border-base-300 bg-base-200">
 						<button
