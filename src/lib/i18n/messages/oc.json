@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Lo còde de barras {barcode} foguèt escanejat amb succès, mas cap de produch foguèt pas trobat dins nòstres faches de noiridura dobèrts, faches de beutat dobèrts, faches de produchs dobèrts o faches de noiridura dobèrts per animals de companhiá.",
 		"add_new_product": "Apondre un produch novèl",
 		"scan_again": "Tornatz escanar",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
