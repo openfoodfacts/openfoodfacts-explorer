@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "I-Barcode {barcode} yaskenwa ngemphumelelo, kepha kute umkhicito lowatfolakala kuMaciniso etfu Ekudla Lokuvulekile, Emaciniso Ebuhle Lavulekile, Emaciniso Emikhicito Levulekile noma Emaciniso Ekudla Kwetilwane Letifuywako.",
 		"add_new_product": "Ngeta umkhicito lomusha",
 		"scan_again": "Skena futsi",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
