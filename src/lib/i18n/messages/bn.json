@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "বারকোড {barcode} সফলভাবে স্ক্যান করা হয়েছে, কিন্তু আমাদের ওপেন ফুড ফ্যাক্টস, ওপেন বিউটি ফ্যাক্টস, ওপেন প্রোডাক্টস ফ্যাক্টস বা ওপেন পোষা প্রাণীর খাবারের ফ্যাক্টস-এ কোনও পণ্য পাওয়া যায়নি।",
 		"add_new_product": "নতুন পণ্য যোগ করুন",
 		"scan_again": "আবার স্ক্যান করুন",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
