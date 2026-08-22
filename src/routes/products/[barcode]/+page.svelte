@@ -5,6 +5,7 @@
 	import { preferences } from '$lib/settings';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
+	import ExternalPanels from '$lib/knowledgepanels/ExternalPanels.svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import Metadata from '$lib/Metadata.svelte';
 
@@ -49,6 +50,10 @@
 	import { goto } from '$app/navigation';
 	import { trackOffEvent } from '$lib/analytics';
 	import { browser } from '$app/environment';
+	import {
+		getExternalKnowledgePanelRequests,
+		type ExternalKnowledgePanelBatch
+	} from '$lib/api/externalSources';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -69,6 +74,43 @@
 	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
+	);
+
+	let externalKnowledgePanelBatchPromise = $state<Promise<ExternalKnowledgePanelBatch> | null>(
+		null
+	);
+	$effect(() => {
+		if (!browser || !product.code) {
+			externalKnowledgePanelBatchPromise = null;
+			return;
+		}
+
+		const requestContext = {
+			code: product.code,
+			lc: data.lc || $preferences.lang || 'en',
+			cc: $preferences.country || 'world',
+			productType: product.product_type,
+			categories: product.categories_tags ?? []
+		};
+		let cancelled = false;
+		const request = getExternalKnowledgePanelRequests(window.fetch.bind(window), requestContext);
+		externalKnowledgePanelBatchPromise = request;
+
+		request.then(
+			({ requests }) => {
+				if (cancelled) return;
+				if (requests.length === 0) externalKnowledgePanelBatchPromise = null;
+			},
+			() => {}
+		);
+
+		return () => {
+			cancelled = true;
+		};
+	});
+
+	let hasExternalKnowledgePanelsSection = $derived(
+		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
 
 	let websiteCtx = getWebsiteCtx();
@@ -130,6 +172,11 @@
 				id: 'product_card',
 				label: $_('product.sections.product_information', { default: 'Product information' }),
 				icon: IconMdiFormatListBulleted
+			},
+			hasExternalKnowledgePanelsSection && {
+				id: 'external-sources',
+				label: $_('product.sections.external_sources', { default: 'External sources' }),
+				icon: IconMdiDatabase
 			},
 			isPriceConfigured() &&
 				data.prices != null && {
@@ -353,6 +400,34 @@
 					summary={sidebarHidden}
 				/>
 			</div>
+
+			{#if hasExternalKnowledgePanelsSection}
+				<div id="external-sources">
+					{#await externalKnowledgePanelBatchPromise}
+						<div class="flex items-center justify-center py-8">
+							<span class="loading loading-lg loading-spinner"></span>
+							<span class="ml-2">
+								{$_('product.external_sources.loading', {
+									default: 'Loading external sources…'
+								})}
+							</span>
+						</div>
+					{:then batch}
+						{#if batch != null && batch.requests.length > 0}
+							<ExternalPanels requests={batch.requests} />
+						{/if}
+					{:catch}
+						<div class="alert alert-warning">
+							<IconMdiWarning class="h-6 w-6 shrink-0" />
+							<span>
+								{$_('product.external_sources.error', {
+									default: 'External sources could not be loaded.'
+								})}
+							</span>
+						</div>
+					{/await}
+				</div>
+			{/if}
 
 			{#if isPriceConfigured() && data?.prices != null}
 				<div id="prices">
