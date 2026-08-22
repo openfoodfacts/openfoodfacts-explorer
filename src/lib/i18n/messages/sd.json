@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "بارڪوڊ {barcode} ڪاميابي سان اسڪين ڪيو ويو، پر اسان جي اوپن فوڊ فيڪٽس، اوپن بيوٽي فيڪٽس، اوپن پراڊڪٽس فيڪٽس يا اوپن پيٽ فوڊ فيڪٽس ۾ ڪا به پراڊڪٽ نه ملي.",
 		"add_new_product": "نئين پراڊڪٽ شامل ڪريو",
 		"scan_again": "ٻيهر اسڪين ڪريو",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
