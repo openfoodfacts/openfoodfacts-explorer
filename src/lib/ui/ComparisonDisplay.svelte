@@ -458,7 +458,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 									comparison.isBest
 								)}
 							{/if}
@@ -625,14 +625,16 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.nova_group')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
+					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
+				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
-								`Nova Group ${product.nova_group}`,
+								`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 								comparison.isBest
 							)}
 						{:else}
