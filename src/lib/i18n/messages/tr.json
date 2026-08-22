@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barkod {barcode} başarıyla tarandı, ancak Açık Gıda Bilgileri, Açık Güzellik Bilgileri, Açık Ürünler Bilgileri veya Açık Evcil Hayvan Maması Bilgilerimizde hiçbir ürün bulunamadı.",
 		"add_new_product": "Yeni ürün ekle",
 		"scan_again": "Tekrar tarayın",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
