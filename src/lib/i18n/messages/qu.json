@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Código de barras {barcode} allinta escaneasqa karqa, ichaqa mana ima rurupas tarisqachu Kichasqa Mikhuy Chiqakuna, Kichasqa Sumaq Kaymanta Chiqakuna, Kichasqa Rurukuna Chiqakuna utaq Kichasqa Uywa Mikhuy Chiqakuna nisqaykupi.",
 		"add_new_product": "Musuq ruruta yapay",
 		"scan_again": "Hukmanta escanear",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
