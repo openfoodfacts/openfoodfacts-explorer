@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} e ne ya sekasekwa ka katlego, mme ga go na setlhagiswa se se fitlhetsweng mo Dintlhang tsa rona tsa Dijo tse di Buletsweng, Dintlha tsa Bontle tse di Buletsweng, Dintlha tsa Dikumo tse di Buletsweng kgotsa Dintlha tsa Dijo tsa Diruiwa tsa mo Gae tse di Buletsweng.",
 		"add_new_product": "Tsenya sedirisiwa se sesha",
 		"scan_again": "Sekena gape",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
