@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} yakaongororwa zvakabudirira, asi hapana chigadzirwa chakawanikwa mune yedu Yakavhurika Chikafu Chokwadi, Vhura Runako Chokwadi, Vhura Zvigadzirwa Chokwadi kana Vhura Pet Chikafu Chokwadi.",
 		"add_new_product": "Wedzera chigadzirwa chitsva",
 		"scan_again": "Scan zvakare",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
