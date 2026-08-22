@@ -337,38 +337,6 @@
 	</div>
 {/snippet}
 
-{#snippet nutrientValue(
-	comparison: NutrientComparison,
-	unit: string | undefined,
-	nutrientKey: string
-)}
-	{#if comparison.value != null}
-		<div class="flex items-center gap-2">
-			<span class={comparison.isBest ? 'font-semibold' : ''}>
-				{comparison.formatted}
-				{unit}
-			</span>
-			{#if comparison.isBest}
-				<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
-			{:else if comparison.isWorst}
-				<span class="badge badge-sm badge-error">{$_('compare.worst')}</span>
-			{/if}
-			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
-				<span
-					class="font-mono text-xs {getDiffColorClass(
-						comparison.diff,
-						comparison.isBest,
-						comparison.isWorst,
-						nutrientKey
-					)}"
-				>
-					{comparison.diffFormatted}
-				</span>
-			{/if}
-		</div>
-	{/if}
-{/snippet}
-
 {#snippet nutrientValueDesktop(
 	comparison: NutrientComparison,
 	unit: string | undefined,
@@ -403,37 +371,55 @@
 	{/if}
 {/snippet}
 
-<!-- Mobile: Card View -->
+<!-- Mobile: horizontally scrollable product cards -->
 <div class="block lg:hidden">
-	<div class="flex flex-col gap-4">
+	<div class="flex snap-x snap-mandatory flex-row gap-4 overflow-x-auto pt-1 pr-2 pb-2">
 		{#each products as product, index (product.code)}
-			<div class="relative rounded-lg border-2 p-4 shadow-md">
-				{#if !readonly && onRemoveProduct}
-					<button
-						class="btn absolute top-2 right-2 z-10 btn-circle btn-soft btn-error btn-sm"
-						onclick={() => onRemoveProduct(product.code)}
-						aria-label="Remove product from comparison"
-					>
-						<IconMdiClose class="block h-4 w-4" />
-					</button>
+			<div class="relative min-w-64 shrink-0 snap-start rounded-lg border-2 p-4 shadow-md">
+				{#if !readonly && (onRemoveProduct || onReorderProduct)}
+					<div class="absolute top-2 right-2 z-10 flex flex-col items-center gap-1">
+						{#if onRemoveProduct}
+							<button
+								class="btn btn-circle btn-soft transition-all btn-error btn-sm"
+								onclick={() => onRemoveProduct(product.code)}
+								aria-label="Remove product from comparison"
+							>
+								<IconMdiClose class="block h-4 w-4" />
+							</button>
+						{/if}
+						{#if onReorderProduct}
+							<button
+								class="btn btn-circle cursor-grab btn-soft btn-primary btn-sm active:cursor-grabbing"
+								draggable="true"
+								ondragstart={() => {
+									dragSrcIndex = { code: product.code, idx: index };
+								}}
+								ondragend={() => {
+									dragSrcIndex = null;
+								}}
+								aria-label="Drag to reorder"
+							>
+								<IconMdiDrag class="block h-4 w-4" />
+							</button>
+						{/if}
+					</div>
 				{/if}
 
-				<div class="flex flex-col items-center pt-4">
+				<div class="flex flex-col items-center pt-8">
 					{#if product.image_front_small_url}
-						<img
+						<BlurredImageDisplay
 							src={product.image_front_small_url}
 							alt={product.product_name ?? product.code}
-							class="mb-2 h-24 object-contain"
+							class="mb-2 aspect-square w-28 rounded-xl object-contain"
 						/>
 					{/if}
-					<h3 class="mt-2 text-center font-semibold">
+					<h3 class="mt-2 text-center text-sm font-semibold">
 						<a href={`/products/${product.code}`} class="link">
-							{product.product_name ?? product.code}
+							{product.product_name ?? '-'}
 						</a>
 					</h3>
-					<p class="mt-1 text-center text-sm text-base-content/70">
-						{product.brands ?? ''}
-						{#if product.brands && product.quantity},{/if}
+					<p class="mt-1 text-center text-xs text-base-content/70">
+						{product.brands ?? ''}{#if product.brands && product.quantity},{/if}
 						{product.quantity ?? ''}
 					</p>
 				</div>
@@ -458,7 +444,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									`Nova Group ${product.nova_group}`,
 									comparison.isBest
 								)}
 							{/if}
@@ -485,9 +471,12 @@
 							{#each availableNutrients as nutrient (nutrient.key)}
 								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
 								{#if comparison.value != null}
-									<div class="flex items-center justify-between">
-										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
+									<div class="flex items-baseline justify-between gap-2">
+										<span class="text-xs font-medium">{nutrient.label}:</span>
+										<span class="text-right text-xs">
+											{comparison.formatted}
+											{nutrient.unit}
+										</span>
 									</div>
 								{/if}
 							{/each}
@@ -499,16 +488,19 @@
 	</div>
 </div>
 
-<!-- Desktop: Table View -->
+<!-- Desktop: comparison table -->
 <div class="hidden overflow-x-auto lg:block">
-	<table class="table w-full table-fixed table-zebra">
+	<table
+		class="table w-full table-fixed table-zebra"
+		style={`min-width: ${10 + products.length * 12}rem`}
+	>
 		<thead>
 			<tr>
 				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
-						class="relative min-w-40"
+						class="relative w-48"
 						ondragover={(e) => {
 							if (
 								!readonly &&
