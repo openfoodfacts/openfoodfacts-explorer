@@ -27,17 +27,14 @@ export type ExternalSource = {
 export type ExternalSourceMatchReason =
 	'category' | 'country' | 'language' | 'product_type' | 'public' | 'moderator' | 'account';
 
-export type ExternalKnowledgePanels = ExternalSource & {
+export type ExternalKnowledgePanelResult = {
 	knowledgePanels: KnowledgePanels;
-	matchReasons: ExternalSourceMatchReason[];
-	productName?: string;
-	productImageUrl?: string;
 };
 
 export type ExternalKnowledgePanelRequest = {
 	source: ExternalSource;
 	matchReasons: ExternalSourceMatchReason[];
-	promise: Promise<ExternalKnowledgePanels | null>;
+	promise: Promise<ExternalKnowledgePanelResult | null>;
 };
 
 export type ExternalKnowledgePanelBatch = {
@@ -53,8 +50,6 @@ export type ExternalSourceProductContext = {
 };
 
 type ExternalSourceProductResponse = {
-	name?: string;
-	product_image_url?: string;
 	knowledge_panels?: KnowledgePanels;
 	result?: {
 		knowledge_panels?: KnowledgePanels;
@@ -218,9 +213,8 @@ function getKnowledgePanels(payload: unknown): KnowledgePanels | undefined {
 async function fetchExternalSourcePanels(
 	fetch: typeof window.fetch,
 	source: ExternalSource,
-	context: ExternalSourceProductContext,
-	matchReasons: ExternalSourceMatchReason[]
-): Promise<ExternalKnowledgePanels | null> {
+	context: ExternalSourceProductContext
+): Promise<ExternalKnowledgePanelResult | null> {
 	const url = expandExternalSourceUrl(source.knowledge_panel_url, context);
 	if (dev) console.debug('[external sources] Fetching provider panels', source.id, url);
 	const controller = new AbortController();
@@ -242,12 +236,7 @@ async function fetchExternalSourcePanels(
 		}
 
 		return {
-			...source,
-			knowledgePanels,
-			matchReasons,
-			productName: typeof payload.name === 'string' ? payload.name : undefined,
-			productImageUrl:
-				typeof payload.product_image_url === 'string' ? payload.product_image_url : undefined
+			knowledgePanels
 		};
 	} finally {
 		clearTimeout(timeout);
@@ -277,7 +266,7 @@ export async function getExternalKnowledgePanelRequests(
 		return {
 			source,
 			matchReasons,
-			promise: fetchExternalSourcePanels(fetch, source, context, matchReasons)
+			promise: fetchExternalSourcePanels(fetch, source, context)
 		};
 	});
 
@@ -287,7 +276,7 @@ export async function getExternalKnowledgePanelRequests(
 export async function getExternalKnowledgePanels(
 	fetch: typeof window.fetch,
 	context: ExternalSourceProductContext
-): Promise<ExternalKnowledgePanels[]> {
+): Promise<ExternalKnowledgePanelResult[]> {
 	const { requests } = await getExternalKnowledgePanelRequests(fetch, context);
 	const results = await Promise.allSettled(requests.map(({ promise }) => promise));
 

@@ -177,9 +177,9 @@
 							{:then panels}
 								{#if panels != null}
 									<div class="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-										{#if panels.provider_website}
+										{#if source.provider_website}
 											<a
-												href={panels.provider_website}
+												href={source.provider_website}
 												target="_blank"
 												rel="noopener"
 												class="link link-hover"
@@ -189,9 +189,9 @@
 												})}
 											</a>
 										{/if}
-										{#if panels.privacy_policy_url}
+										{#if source.privacy_policy_url}
 											<a
-												href={panels.privacy_policy_url}
+												href={source.privacy_policy_url}
 												target="_blank"
 												rel="noopener"
 												class="link link-hover"
