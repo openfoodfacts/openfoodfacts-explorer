@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Ο γραμμωτός κώδικας {barcode} σαρώθηκε με επιτυχία, αλλά δεν βρέθηκε κανένα προϊόν στις κατηγορίες Open Food Facts, Open Beauty Facts, Open Products Facts ή Open Pet Food Facts.",
 		"add_new_product": "Προσθήκη νέου προϊόντος",
 		"scan_again": "Σάρωση ξανά",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
