@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "U codice à barre {barcode} hè statu scanatu cù successu, ma nisun pruduttu hè statu trovu in i nostri Open Food Facts, Open Beauty Facts, Open Products Facts o Open Pet Food Facts.",
 		"add_new_product": "Aghjunghje un novu pruduttu",
 		"scan_again": "Scannà torna",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
