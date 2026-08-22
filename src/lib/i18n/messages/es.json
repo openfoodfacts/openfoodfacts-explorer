@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "El código de barras {barcode} se escaneó correctamente, pero no se encontró ningún producto en nuestra sección de Datos Abiertos sobre Alimentos, Datos Abiertos sobre Belleza, Datos Abiertos sobre Productos o Datos Abiertos sobre Alimentos para Mascotas.",
 		"add_new_product": "Añadir nuevo producto",
 		"scan_again": "Escanear de nuevo",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
