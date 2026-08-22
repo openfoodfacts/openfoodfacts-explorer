@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barkod {barcode} bi serkeftî hate skankirin, lê di Rastiyên Xwarinê yên Vekirî, Rastiyên Bedewiyê yên Vekirî, Rastiyên Berhemên Vekirî an Rastiyên Xwarina Heywanan ên Vekirî de ti hilber nehat dîtin.",
 		"add_new_product": "Berhemeke nû lê zêde bike",
 		"scan_again": "Dîsa bisken bike",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
