@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barkod {barcode} je uspješno skeniran, ali nijedan proizvod nije pronađen u našim Open Food Facts, Open Beauty Facts, Open Products Facts ili Open Pet Food Facts.",
 		"add_new_product": "Dodaj novi proizvod",
 		"scan_again": "Ponovno skeniraj",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
