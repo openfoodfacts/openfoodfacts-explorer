@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Strekkoden {barcode} ble skannet, men ingen produkter ble funnet i våre Åpne matfakta, Åpne skjønnhetsfakta, Åpne produktfakta eller Åpne kjæledyrfôrfakta.",
 		"add_new_product": "Legg til nytt produkt",
 		"scan_again": "Skann på nytt",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
