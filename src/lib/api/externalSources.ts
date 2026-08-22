@@ -205,15 +205,10 @@ function getKnowledgePanels(payload: unknown): KnowledgePanels | undefined {
 	}
 
 	// Also accept a provider returning the knowledge-panels map directly.
-	const directPanelEntries = Object.entries(payload).filter(([, value]) => isRecord(value));
-	if (
-		directPanelEntries.length > 0 &&
-		directPanelEntries.every(([, value]) => {
-			return (
-				isRecord(value) && ('elements' in value || 'title_element' in value || 'type' in value)
-			);
-		})
-	) {
+	const directPanelEntries = Object.entries(payload).filter(([, value]) => {
+		return isRecord(value) && ('elements' in value || 'title_element' in value || 'type' in value);
+	});
+	if (directPanelEntries.length > 0) {
 		return Object.fromEntries(directPanelEntries) as KnowledgePanels;
 	}
 

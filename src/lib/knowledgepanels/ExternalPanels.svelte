@@ -93,7 +93,7 @@
 	<div class="mt-6 space-y-6">
 		{#each requests as request (request.source.id)}
 			{@const source = request.source}
-			{@const panelId = `external-source-panel-${source.id}`}
+			{@const panelId = `external-source-panel-${encodeURIComponent(source.id)}`}
 			{#if requestStatuses[source.id] !== 'empty'}
 				<article
 					class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-md dark:bg-base-200"
@@ -166,8 +166,8 @@
 						</button>
 					</header>
 
-					{#if isExpanded(source.id)}
-						<div id={panelId} class="p-4 sm:p-6">
+					<div id={panelId} class="p-4 sm:p-6" hidden={!isExpanded(source.id)}>
+						{#if isExpanded(source.id)}
 							{#await request.promise}
 								<div class="space-y-3 py-2" aria-busy="true">
 									<div class="h-4 w-1/3 skeleton"></div>
@@ -214,8 +214,8 @@
 									</span>
 								</div>
 							{/await}
-						</div>
-					{/if}
+						{/if}
+					</div>
 				</article>
 			{/if}
 		{/each}
