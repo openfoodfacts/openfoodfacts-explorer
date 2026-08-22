@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} an bincika cikin nasara, amma ba a sami wani samfuri a cikin Buɗaɗɗen Bayanan Abincinmu, Buɗewar Kyawun Facts, Facts ɗin Buɗaɗɗen Bayanan Ko Buɗe Bayanan Abincin Dabbobin ba.",
 		"add_new_product": "Ƙara sabon samfur",
 		"scan_again": "Duba kuma",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
