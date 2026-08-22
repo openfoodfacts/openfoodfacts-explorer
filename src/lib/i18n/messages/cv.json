@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Штрих-код {barcode} ӑнӑҫлӑн сканерланӑ, анчах пирӗн Уҫӑ апат-ҫимӗҫ факчӗсенче, Уҫӑ илемлӗх факчӗсенче, Уҫӑ продукт факчӗсенче е Уҫӑ чӗрчун апачӗн факчӗсенче нимӗнле продукт та тупӑнмарӗ.",
 		"add_new_product": "Ҫӗнӗ продукт хушӑр",
 		"scan_again": "Тепӗр хут сканерла",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
