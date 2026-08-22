@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ባርኮድ {barcode} በተሳካ ሁኔታ ተቃኝቷል፣ ነገር ግን በእኛ ክፍት የምግብ እውነታዎች ፣ ክፍት የውበት እውነታዎች ፣ ክፍት ምርቶች እውነታዎች ወይም ክፍት የቤት እንስሳት ምግብ እውነታዎች ውስጥ ምንም ምርት አልተገኘም።",
 		"add_new_product": "አዲስ ምርት ያክሉ",
 		"scan_again": "እንደገና ይቃኙ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
