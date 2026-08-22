@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "बारकोड {barcode} को सफलतापूर्वक स्कैन किया गया, लेकिन हमारे ओपन फूड फैक्ट्स, ओपन ब्यूटी फैक्ट्स, ओपन प्रोडक्ट्स फैक्ट्स या ओपन पेट फूड फैक्ट्स में कोई उत्पाद नहीं मिला।",
 		"add_new_product": "नया उत्पाद जोड़ें",
 		"scan_again": "पुनः स्कैन करें",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
