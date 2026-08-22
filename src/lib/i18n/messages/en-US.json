@@ -80,7 +80,11 @@
 		"summary": "Summary",
 		"product_not_found": "Product not found",
 		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"errors_occurred": "errors occurred:",
+		"theme": "Theme",
+		"theme_system": "System default",
+		"theme_light": "Light",
+		"theme_dark": "Dark"
 	},
 	"footer": {
 		"stay_updated": "Stay Updated",
