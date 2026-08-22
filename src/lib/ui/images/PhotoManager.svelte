@@ -288,7 +288,7 @@
 			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
 
 			toast.success($_('product.edit.images.toast.save_success'));
-			trackOffEvent('product', 'crop_save_image', imageData.typeId);
+			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
@@ -361,7 +361,7 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
-				trackOffEvent('product', 'unselect_image', image.typeId);
+				trackOffEvent('contribution', 'image_unselected', image.typeId);
 				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
