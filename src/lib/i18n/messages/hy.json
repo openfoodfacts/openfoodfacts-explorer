@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Շտրիխ կոդը՝ {barcode} , հաջողությամբ սկանավորվել է, բայց մեր «Բաց սննդի փաստեր», «Բաց գեղեցկության փաստեր», «Բաց ապրանքների փաստեր» կամ «Բաց կենդանիների կերերի փաստեր» բաժիններում ոչ մի ապրանք չի գտնվել։",
 		"add_new_product": "Ավելացնել նոր ապրանք",
 		"scan_again": "Սկանավորել կրկին",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
