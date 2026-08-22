@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Rinneadh scanadh rathúil ar an gcód barra {barcode} , ach ní bhfuarthas aon táirge inár n-Fíricí Bia Oscailte, Fíricí Áilleachta Oscailte, Fíricí Táirgí Oscailte ná Fíricí Bia Peataí Oscailte.",
 		"add_new_product": "Cuir táirge nua leis",
 		"scan_again": "Scanadh arís",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
