@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Kod kreskowy {barcode} został pomyślnie zeskanowany, ale nie znaleziono żadnego produktu w naszych otwartych informacjach o żywności, otwartych informacjach o urodzie, otwartych informacjach o produktach ani otwartych informacjach o karmie dla zwierząt.",
 		"add_new_product": "Dodaj nowy produkt",
 		"scan_again": "Zeskanuj ponownie",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
