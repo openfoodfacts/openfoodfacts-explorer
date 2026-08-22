@@ -1,8 +1,13 @@
 /**
  * CSV helpers for client-side downloads, backed by csv-stringify.
+ * Uses the browser ESM build in the client and the Node build on the server/tests.
  */
 
-import { stringify } from 'csv-stringify/browser/esm/sync';
+import { browser } from '$app/environment';
+import { stringify as stringifyBrowser } from 'csv-stringify/browser/esm/sync';
+import { stringify as stringifyNode } from 'csv-stringify/sync';
+
+const stringify = browser ? stringifyBrowser : stringifyNode;
 
 export function toCsv(headers: string[], rows: unknown[][]): string {
 	return stringify([headers, ...rows], {
