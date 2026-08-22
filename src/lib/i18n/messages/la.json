@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Codex striatus {barcode} feliciter perscrutatus est, sed nullum productum in \"Apertis Factis Ciborum\", \"Apertis Factis Pulchritudinis\", \"Apertis Factis Productuum\", aut \"Apertis Factis Cibi Animalium\" inventum est.",
 		"add_new_product": "Novum productum adde",
 		"scan_again": "Iterum inspice",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
