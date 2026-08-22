@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "បាកូដ {barcode} ត្រូវបានស្កែនដោយជោគជ័យ ប៉ុន្តែគ្មានផលិតផលណាមួយត្រូវបានរកឃើញនៅក្នុងការពិតនៃអាហារបើកចំហរបស់យើង ការពិតនៃភាពស្រស់ស្អាតបើកចំហ ការពិតផលិតផលបើកចំហ ឬការពិតអាហារសត្វចិញ្ចឹមបើកចំហទេ។",
 		"add_new_product": "បន្ថែមផលិតផលថ្មី។",
 		"scan_again": "ស្កេនម្តងទៀត",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
