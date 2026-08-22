@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ဘားကုဒ် {barcode} ကို အောင်မြင်စွာ စကင်န်ဖတ်ပြီးသော်လည်း ကျွန်ုပ်တို့၏ Open Food Facts၊ Open Beauty Facts၊ Open Products Facts သို့မဟုတ် Open Pet Food Facts တွင် မည်သည့်ထုတ်ကုန်မျှ မတွေ့ပါ။",
 		"add_new_product": "ထုတ်ကုန်အသစ်ထည့်ပါ။",
 		"scan_again": "ပြန်စကင်န်ဖတ်ပါ။",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
