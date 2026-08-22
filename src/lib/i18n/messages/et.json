@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Triipkood {barcode} skanniti edukalt, kuid meie avatud toidu-, ilu-, toote- ega lemmikloomatoiduteabe hulgast ei leitud ühtegi toodet.",
 		"add_new_product": "Lisa uus toode",
 		"scan_again": "Skanni uuesti",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
