@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "ባርኮድ {barcode} ብዓወት ስካን ተገይሩሉ፣ ኣብ ክፉት ሓቅታት መግቢ፣ ክፉት ሓቅታት ጽባቐ፣ ሓቅታት ክፉት ፍርያት ወይ ሓቅታት መግቢ እንስሳ ዘቤት ግን ዝኾነ ፍርያት ኣይተረኽበን።",
 		"add_new_product": "ሓድሽ ፍርያት ምውሳኽ",
 		"scan_again": "እንደገና ስካን ግበር",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
