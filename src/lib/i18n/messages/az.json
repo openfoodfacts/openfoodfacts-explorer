@@ -689,6 +689,7 @@
 		"barcode_scanned_not_found": "Barkod {barcode} uğurla skan edildi, lakin Açıq Qida Faktları, Açıq Gözəllik Faktları, Açıq Məhsullar Faktları və ya Açıq Heyvan Yemi Faktlarımızda heç bir məhsul tapılmadı.",
 		"add_new_product": "Yeni məhsul əlavə edin",
 		"scan_again": "Yenidən skan edin",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
