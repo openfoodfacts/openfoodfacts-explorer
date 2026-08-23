@@ -10,6 +10,7 @@
 	import { shareContent } from '$lib/utils/webShare';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { browser } from '$app/environment';
@@ -166,6 +167,18 @@
 				</div>
 			{/if}
 		{:else}
+			{#if $compareStore.length === 1}
+				<div class="mb-4 alert alert-info">
+					<IconMdiInformation class="h-5 w-5 flex-shrink-0" />
+					<div>
+						<p class="font-semibold">{$_('compare.single_product_title')}</p>
+						<p class="text-sm">{$_('compare.single_product_hint')}</p>
+					</div>
+					<a href={resolve('/explore')} class="btn btn-primary btn-sm">
+						{$_('compare.browse_products')}
+					</a>
+				</div>
+			{/if}
 			<ComparisonDisplay
 				products={$compareStore}
 				{comparisonMode}
