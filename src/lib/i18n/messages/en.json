@@ -329,6 +329,7 @@
 				"packaging": "Describe each packaging component (bottle, cap, box, etc.) with its shape, material, and recycling instructions. You can add multiple components."
 			},
 			"tooltips": {
+    			"website_url": "Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.",
 				"serving_size": "This value helps to make a proportional calculation of each nutrient per serving size. For example, 60 g, 60g or 60 G (prefer the first one), 1000 ml or 1L",
 				"ingredients_list": "Keep the original order. Indicate the percentage when specified. Separate with a comma or hyphen and use parentheses for ingredients of an ingredient.",
 				"categories": "Indicate only the most specific category. Parent categories will be automatically added. For example, 'Sardines in olive oil', 'Orange juice from concentrate'.",

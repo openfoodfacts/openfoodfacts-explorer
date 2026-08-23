@@ -246,6 +246,7 @@
 						{$_('product.edit.product_page_url_add', {
 							default: 'Link to the product page on the official site of the producer'
 						})}
+						<InfoTooltip text={$_('product.edit.tooltips.website_url')} />
 					</span>
 				</label>
 				<input
