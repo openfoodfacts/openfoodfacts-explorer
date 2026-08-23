@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
 	expandExternalSourceUrl,
+	getExternalKnowledgePanels,
 	isExternalSourceEligible,
 	type ExternalSource
 } from './externalSources';
@@ -61,5 +62,35 @@ describe('external knowledge panel sources', () => {
 		expect(
 			isExternalSourceEligible(source({ scope: 'moderators', user_in_scope: true }), context)
 		).toBe(true);
+	});
+
+	it('accepts the panels response returned by external providers', async () => {
+		const externalSource = source();
+		const fetch = vi.fn(async (input: RequestInfo | URL) => {
+			const url = input instanceof Request ? input.url : String(input);
+			if (url.includes('/api/v3/external_sources')) {
+				return Response.json({ external_sources: [externalSource] });
+			}
+
+			return Response.json({
+				panels: {
+					root: {
+						elements: [],
+						type: 'root'
+					}
+				}
+			});
+		});
+
+		const results = await getExternalKnowledgePanels(fetch, {
+			code: '5000326011242',
+			lc: 'en',
+			cc: 'world',
+			productType: 'food',
+			categories: ['en:eggs']
+		});
+
+		expect(results).toHaveLength(1);
+		expect(results[0].knowledgePanels).toHaveProperty('root');
 	});
 });

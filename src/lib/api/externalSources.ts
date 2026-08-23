@@ -37,9 +37,8 @@ export type ExternalSourceProductContext = {
 
 type ExternalSourceProductResponse = {
 	knowledge_panels?: KnowledgePanels;
+	panels?: KnowledgePanels;
 };
-
-const EXTERNAL_SOURCE_TIMEOUT_MS = 10_000;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
@@ -150,9 +149,14 @@ export function getExternalSourceMatchReasons(
 function getKnowledgePanels(payload: unknown): KnowledgePanels | undefined {
 	if (!isRecord(payload)) return undefined;
 
-	return isRecord(payload.knowledge_panels)
-		? (payload.knowledge_panels as KnowledgePanels)
-		: undefined;
+	if (isRecord(payload.knowledge_panels)) {
+		return payload.knowledge_panels as KnowledgePanels;
+	}
+	if (isRecord(payload.panels)) {
+		return payload.panels as KnowledgePanels;
+	}
+
+	return undefined;
 }
 
 async function fetchExternalSourcePanels(
@@ -162,30 +166,22 @@ async function fetchExternalSourcePanels(
 ): Promise<ExternalKnowledgePanelResult | null> {
 	const url = expandExternalSourceUrl(source.knowledge_panel_url, context);
 	if (dev) console.debug('[external sources] Fetching provider panels', source.id, url);
-	const controller = new AbortController();
-	const timeout = setTimeout(() => controller.abort(), EXTERNAL_SOURCE_TIMEOUT_MS);
-
-	try {
-		const response = await fetch(url, {
-			headers: { Accept: 'application/json' },
-			signal: controller.signal
-		});
-		if (!response.ok) {
-			throw new Error(`Provider returned ${response.status} ${response.statusText}`);
-		}
-
-		const payload = (await response.json()) as ExternalSourceProductResponse;
-		const knowledgePanels = getKnowledgePanels(payload);
-		if (knowledgePanels == null || Object.keys(knowledgePanels).length === 0) {
-			return null;
-		}
-
-		return {
-			knowledgePanels
-		};
-	} finally {
-		clearTimeout(timeout);
+	const response = await fetch(url, {
+		headers: { Accept: 'application/json' }
+	});
+	if (!response.ok) {
+		throw new Error(`Provider returned ${response.status} ${response.statusText}`);
 	}
+
+	const payload = (await response.json()) as ExternalSourceProductResponse;
+	const knowledgePanels = getKnowledgePanels(payload);
+	if (knowledgePanels == null || Object.keys(knowledgePanels).length === 0) {
+		return null;
+	}
+
+	return {
+		knowledgePanels
+	};
 }
 
 export async function getExternalKnowledgePanelRequests(
