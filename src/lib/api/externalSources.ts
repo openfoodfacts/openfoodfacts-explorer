@@ -51,10 +51,6 @@ export type ExternalSourceProductContext = {
 
 type ExternalSourceProductResponse = {
 	knowledge_panels?: KnowledgePanels;
-	result?: {
-		knowledge_panels?: KnowledgePanels;
-	};
-	panels?: KnowledgePanels;
 };
 
 const EXTERNAL_SOURCE_TIMEOUT_MS = 10_000;
@@ -192,22 +188,9 @@ export function getExternalSourceMatchReasons(
 function getKnowledgePanels(payload: unknown): KnowledgePanels | undefined {
 	if (!isRecord(payload)) return undefined;
 
-	const candidates = [payload, payload.result, payload.product];
-	for (const candidate of candidates) {
-		if (!isRecord(candidate)) continue;
-		const panels = candidate.knowledge_panels ?? candidate.panels;
-		if (isRecord(panels)) return panels as KnowledgePanels;
-	}
-
-	// Also accept a provider returning the knowledge-panels map directly.
-	const directPanelEntries = Object.entries(payload).filter(([, value]) => {
-		return isRecord(value) && ('elements' in value || 'title_element' in value || 'type' in value);
-	});
-	if (directPanelEntries.length > 0) {
-		return Object.fromEntries(directPanelEntries) as KnowledgePanels;
-	}
-
-	return undefined;
+	return isRecord(payload.knowledge_panels)
+		? (payload.knowledge_panels as KnowledgePanels)
+		: undefined;
 }
 
 async function fetchExternalSourcePanels(
