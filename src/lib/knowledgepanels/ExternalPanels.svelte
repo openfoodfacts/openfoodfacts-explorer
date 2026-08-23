@@ -83,7 +83,7 @@
 )}
 	{@const source = request.source}
 	{@const panelId = `external-source-panel-${encodeURIComponent(source.id)}`}
-	<article
+	<div
 		class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-md dark:bg-base-200"
 	>
 		<header class="border-b border-base-300 bg-base-200">
@@ -194,7 +194,7 @@
 				{/if}
 			{/if}
 		</div>
-	</article>
+	</div>
 {/snippet}
 
 <section aria-labelledby="external-sources-title">
