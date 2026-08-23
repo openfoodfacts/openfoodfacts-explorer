@@ -9,6 +9,7 @@
 	import IconMdiAccountCheck from '@iconify-svelte/mdi/account-check';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiEarth from '@iconify-svelte/mdi/earth';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiPackageVariantClosed from '@iconify-svelte/mdi/package-variant-closed';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 	import IconMdiTagOutline from '@iconify-svelte/mdi/tag-outline';
@@ -159,33 +160,37 @@
 						</span>
 					</div>
 				{:else if panels != null}
-					<div class="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-						{#if source.provider_website}
-							<a
-								href={source.provider_website}
-								target="_blank"
-								rel="noopener"
-								class="link link-hover"
-							>
-								{$_('product.external_sources.provider_website', {
-									default: 'Provider website'
-								})}
-							</a>
-						{/if}
-						{#if source.privacy_policy_url}
-							<a
-								href={source.privacy_policy_url}
-								target="_blank"
-								rel="noopener"
-								class="link link-hover"
-							>
-								{$_('product.external_sources.privacy_policy', {
-									default: 'Privacy policy'
-								})}
-							</a>
-						{/if}
-					</div>
 					<Panels panels={panels.knowledgePanels} summary={false} />
+					{#if source.provider_website || source.privacy_policy_url}
+						<div class="mt-6 flex flex-wrap gap-2 border-t border-base-300 pt-4">
+							{#if source.provider_website}
+								<a
+									href={source.provider_website}
+									target="_blank"
+									rel="noopener"
+									class="badge gap-1 border-base-300 bg-base-100 text-base-content/70 hover:bg-base-200"
+								>
+									{$_('product.external_sources.provider_website', {
+										default: 'Provider website'
+									})}
+									<IconMdiOpenInNew class="h-3.5 w-3.5" aria-hidden="true" />
+								</a>
+							{/if}
+							{#if source.privacy_policy_url}
+								<a
+									href={source.privacy_policy_url}
+									target="_blank"
+									rel="noopener"
+									class="badge gap-1 border-base-300 bg-base-100 text-base-content/70 hover:bg-base-200"
+								>
+									{$_('product.external_sources.privacy_policy', {
+										default: 'Privacy policy'
+									})}
+									<IconMdiOpenInNew class="h-3.5 w-3.5" aria-hidden="true" />
+								</a>
+							{/if}
+						</div>
+					{/if}
 				{/if}
 			{/if}
 		</div>
