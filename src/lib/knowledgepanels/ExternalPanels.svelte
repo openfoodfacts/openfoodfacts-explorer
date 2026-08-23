@@ -160,7 +160,7 @@
 						</span>
 					</div>
 				{:else if panels != null}
-					<Panels panels={panels.knowledgePanels} summary={false} />
+					<Panels panels={panels.knowledgePanels} roots={['root']} summary={false} />
 					{#if source.provider_website || source.privacy_policy_url}
 						<div class="mt-6 flex flex-wrap gap-2 border-t border-base-300 pt-4">
 							{#if source.provider_website}
