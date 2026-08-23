@@ -55,6 +55,8 @@ function matchesFilter(values: string[] | undefined, value: string | undefined, 
  * Expand the template variables documented by the Product Opener API.
  * Values are encoded individually so that a barcode or locale cannot alter
  * the provider URL structure.
+ *
+ * @see https://openfoodfacts.github.io/documentation/docs/Product-Opener/v3/knowledge-panels/get-api-v3-external-sources/
  */
 export function expandExternalSourceUrl(
 	template: string,
