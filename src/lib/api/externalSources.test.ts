@@ -9,6 +9,8 @@ const source = (overrides: Partial<ExternalSource> = {}): ExternalSource => ({
 	id: 'source',
 	name: 'Source',
 	knowledge_panel_url: 'https://provider.example/$code?lang=$lc&country=$cc',
+	section: 'external',
+	scope: 'public',
 	...overrides
 });
 

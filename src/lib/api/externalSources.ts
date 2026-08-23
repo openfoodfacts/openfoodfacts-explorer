@@ -2,27 +2,13 @@ import type { KnowledgePanels } from './knowledgepanels';
 import { createProductsApi } from './product';
 import { dev } from '$app/environment';
 
-export type ExternalSourceFilters = {
-	categories?: string[];
-	countries?: string[];
-	languages?: string[];
-	product_types?: string[];
-};
+function getExternalSourcesResponse(fetch: typeof window.fetch) {
+	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources');
+}
 
-export type ExternalSource = {
-	id: string;
-	name: string;
-	description?: string;
-	icon_url?: string;
-	knowledge_panel_url: string;
-	provider_name?: string;
-	provider_website?: string;
-	privacy_policy_url?: string;
-	section?: string;
-	scope?: 'public' | 'users' | 'moderators' | string;
-	user_in_scope?: boolean;
-	filters?: ExternalSourceFilters;
-};
+export type ExternalSource = NonNullable<
+	NonNullable<Awaited<ReturnType<typeof getExternalSourcesResponse>>['data']>['external_sources']
+>[number];
 
 export type ExternalSourceMatchReason =
 	'category' | 'country' | 'language' | 'product_type' | 'public' | 'moderator' | 'account';
@@ -54,31 +40,6 @@ type ExternalSourceProductResponse = {
 };
 
 const EXTERNAL_SOURCE_TIMEOUT_MS = 10_000;
-
-function getExternalSourcesResponse(fetch: typeof window.fetch) {
-	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources');
-}
-
-type ExternalSourceApiItem = NonNullable<
-	NonNullable<Awaited<ReturnType<typeof getExternalSourcesResponse>>['data']>['external_sources']
->[number];
-
-function mapExternalSource(source: ExternalSourceApiItem): ExternalSource {
-	return {
-		id: source.id,
-		name: source.name,
-		description: source.description,
-		icon_url: source.icon_url,
-		knowledge_panel_url: source.knowledge_panel_url,
-		provider_name: source.provider_name,
-		provider_website: source.provider_website,
-		privacy_policy_url: source.privacy_policy_url,
-		section: source.section,
-		scope: source.scope,
-		user_in_scope: source.user_in_scope,
-		filters: source.filters
-	};
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
@@ -288,14 +249,7 @@ export async function getExternalSources(fetch: typeof window.fetch): Promise<Ex
 			return [];
 		}
 
-		const sources = (data?.external_sources ?? [])
-			.map(mapExternalSource)
-			.filter(
-				(source) =>
-					typeof source.id === 'string' &&
-					typeof source.name === 'string' &&
-					typeof source.knowledge_panel_url === 'string'
-			);
+		const sources = data?.external_sources ?? [];
 		return sources;
 	} catch (error) {
 		console.warn('Failed to fetch external knowledge panel sources', error);
