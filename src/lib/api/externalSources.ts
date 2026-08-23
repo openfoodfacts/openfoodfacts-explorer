@@ -45,10 +45,15 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
 }
 
-function matchesFilter(values: string[] | undefined, value: string | undefined, list: string[]) {
-	if (values == null || values.length === 0) return true;
-	if (value != null && values.includes(value)) return true;
-	return list.some((item) => values.includes(item));
+function matchesFilter(
+	allowedValues: readonly string[] | undefined,
+	contextValue: string | readonly string[] | undefined
+) {
+	if (allowedValues == null || allowedValues.length === 0) return true;
+	if (contextValue == null) return false;
+
+	const contextValues = Array.isArray(contextValue) ? contextValue : [contextValue];
+	return contextValues.some((value) => allowedValues.includes(value));
 }
 
 /**
@@ -95,16 +100,16 @@ export function getExternalSourceEligibilityIssues(
 	const filters = source.filters;
 	if (filters == null) return issues;
 
-	if (!matchesFilter(filters.categories, undefined, context.categories)) {
+	if (!matchesFilter(filters.categories, context.categories)) {
 		issues.push('categories');
 	}
-	if (!matchesFilter(filters.countries, context.cc, [])) {
+	if (!matchesFilter(filters.countries, context.cc)) {
 		issues.push(`country:${context.cc}`);
 	}
-	if (!matchesFilter(filters.languages, context.lc, [])) {
+	if (!matchesFilter(filters.languages, context.lc)) {
 		issues.push(`language:${context.lc}`);
 	}
-	if (!matchesFilter(filters.product_types, context.productType, [])) {
+	if (!matchesFilter(filters.product_types, context.productType)) {
 		issues.push(`product_type:${context.productType ?? 'unknown'}`);
 	}
 
@@ -118,22 +123,16 @@ export function getExternalSourceMatchReasons(
 	const reasons: ExternalSourceMatchReason[] = [];
 	const filters = source.filters;
 
-	if (
-		filters?.categories?.length &&
-		matchesFilter(filters.categories, undefined, context.categories)
-	) {
+	if (filters?.categories?.length && matchesFilter(filters.categories, context.categories)) {
 		reasons.push('category');
 	}
-	if (filters?.countries?.length && matchesFilter(filters.countries, context.cc, [])) {
+	if (filters?.countries?.length && matchesFilter(filters.countries, context.cc)) {
 		reasons.push('country');
 	}
-	if (filters?.languages?.length && matchesFilter(filters.languages, context.lc, [])) {
+	if (filters?.languages?.length && matchesFilter(filters.languages, context.lc)) {
 		reasons.push('language');
 	}
-	if (
-		filters?.product_types?.length &&
-		matchesFilter(filters.product_types, context.productType, [])
-	) {
+	if (filters?.product_types?.length && matchesFilter(filters.product_types, context.productType)) {
 		reasons.push('product_type');
 	}
 
