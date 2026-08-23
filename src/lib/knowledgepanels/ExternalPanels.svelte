@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
+	import type { ComponentType } from 'svelte';
 	import type {
 		ExternalKnowledgePanelResult,
 		ExternalKnowledgePanelRequest,
@@ -21,29 +22,56 @@
 	let { requests }: Props = $props();
 	let expandedSources = $state<Record<string, boolean>>({});
 
+	type MatchReasonMetadata = {
+		key: string;
+		fallback: string;
+		icon: ComponentType;
+	};
+
+	const matchReasonMetadata: Record<ExternalSourceMatchReason, MatchReasonMetadata> = {
+		category: {
+			key: 'product.external_sources.reason_category',
+			fallback: 'Category match',
+			icon: IconMdiTagOutline
+		},
+		country: {
+			key: 'product.external_sources.reason_country',
+			fallback: 'Country match',
+			icon: IconMdiEarth
+		},
+		language: {
+			key: 'product.external_sources.reason_language',
+			fallback: 'Language match',
+			icon: IconMdiTranslate
+		},
+		product_type: {
+			key: 'product.external_sources.reason_product_type',
+			fallback: 'Product type match',
+			icon: IconMdiPackageVariantClosed
+		},
+		public: {
+			key: 'product.external_sources.reason_public',
+			fallback: 'Public source',
+			icon: IconMdiEarth
+		},
+		moderator: {
+			key: 'product.external_sources.reason_moderator',
+			fallback: 'Moderator access',
+			icon: IconMdiShieldAccount
+		},
+		account: {
+			key: 'product.external_sources.reason_account',
+			fallback: 'Account access',
+			icon: IconMdiAccountCheck
+		}
+	};
+
 	function isExpanded(sourceId: string) {
 		return expandedSources[sourceId] === true;
 	}
 
 	function toggleSource(sourceId: string) {
 		expandedSources[sourceId] = !isExpanded(sourceId);
-	}
-
-	function reasonLabel(reason: ExternalSourceMatchReason): string {
-		const labels: Record<ExternalSourceMatchReason, string> = {
-			category: $_('product.external_sources.reason_category', { default: 'Category match' }),
-			country: $_('product.external_sources.reason_country', { default: 'Country match' }),
-			language: $_('product.external_sources.reason_language', { default: 'Language match' }),
-			product_type: $_('product.external_sources.reason_product_type', {
-				default: 'Product type match'
-			}),
-			public: $_('product.external_sources.reason_public', { default: 'Public source' }),
-			moderator: $_('product.external_sources.reason_moderator', {
-				default: 'Moderator access'
-			}),
-			account: $_('product.external_sources.reason_account', { default: 'Account access' })
-		};
-		return labels[reason];
 	}
 </script>
 
@@ -86,26 +114,14 @@
 					{#if request.matchReasons?.length}
 						<div class="mt-3 flex flex-wrap gap-2">
 							{#each request.matchReasons as reason (reason)}
+								{@const metadata = matchReasonMetadata[reason]}
+								{@const reasonLabel = $_(metadata.key, { default: metadata.fallback })}
 								<span
 									class="badge gap-1 border-base-300 bg-base-100/70 badge-sm text-base-content/70"
-									title={reasonLabel(reason)}
+									title={reasonLabel}
 								>
-									{#if reason === 'category'}
-										<IconMdiTagOutline class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else if reason === 'country'}
-										<IconMdiEarth class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else if reason === 'language'}
-										<IconMdiTranslate class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else if reason === 'product_type'}
-										<IconMdiPackageVariantClosed class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else if reason === 'moderator'}
-										<IconMdiShieldAccount class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else if reason === 'account'}
-										<IconMdiAccountCheck class="h-3.5 w-3.5" aria-hidden="true" />
-									{:else}
-										<IconMdiEarth class="h-3.5 w-3.5" aria-hidden="true" />
-									{/if}
-									<span>{reasonLabel(reason)}</span>
+									<metadata.icon class="h-3.5 w-3.5" aria-hidden="true" />
+									<span>{reasonLabel}</span>
 								</span>
 							{/each}
 						</div>
