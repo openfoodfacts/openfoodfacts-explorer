@@ -295,6 +295,8 @@
 							type="button"
 							class="absolute top-1.5 right-1.5 text-base-content/50 hover:text-base-content"
 							onclick={() => (searchQueries[facetKey] = '')}
+							title={$_('search.clear_search', { default: 'Clear search' })}
+							aria-label={$_('search.clear_search', { default: 'Clear search' })}
 						>
 							<IconMdiClose class="h-3 w-3" />
 						</button>

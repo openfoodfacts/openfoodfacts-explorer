@@ -133,7 +133,7 @@
 		clearPendingTimer();
 	});
 
-	function updateFacets(nextFacets: FacetsSelection, immediate = false) {
+	function updateFacets(nextFacets: FacetsSelection, immediate: boolean = false) {
 		// Update local state immediately so UI (chips, badges, buttons) changes in 0ms
 		localFacets = nextFacets;
 
@@ -141,7 +141,7 @@
 
 		const applyNavigation = () => {
 			const mainQuery = extractQuery(data.query);
-			const newQuery = toLuceneString(mainQuery, localFacets);
+			const newQuery = toLuceneString(mainQuery, nextFacets);
 			const newUrl = new URL(page.url);
 			newUrl.searchParams.set('q', newQuery);
 			newUrl.searchParams.set('page', '1');

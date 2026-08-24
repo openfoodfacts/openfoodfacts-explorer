@@ -577,7 +577,8 @@ export function toLuceneString(query: string, facets: FacetsSelection): string {
 	}
 
 	// Now we create the Conjunctive Normal Form
-	const orExpr = (terms: string[]) => terms.map((term) => `"${term}"`).join(' OR ');
+	const escapeTerm = (term: string) => term.replace(/([\\"])/g, '\\$1');
+	const orExpr = (terms: string[]) => terms.map((term) => `"${escapeTerm(term)}"`).join(' OR ');
 
 	for (const [facet, values] of Object.entries(facets)) {
 		const searchField = getSearchFieldForFacet(facet);
@@ -608,14 +609,17 @@ export function addIncludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...sel };
-	if (!newQuery[facet]) {
-		newQuery[facet] = { include: [], exclude: [] };
+	const current = sel[facet] || { include: [], exclude: [] };
+	if (current.include.includes(value)) {
+		return sel;
 	}
-	if (!newQuery[facet].include.includes(value)) {
-		newQuery[facet].include.push(value);
-	}
-	return newQuery;
+	return {
+		...sel,
+		[facet]: {
+			include: [...current.include, value],
+			exclude: current.exclude ? [...current.exclude] : []
+		}
+	};
 }
 
 export function addExcludeFacet(
@@ -623,14 +627,17 @@ export function addExcludeFacet(
 	facet: string,
 	value: string
 ): FacetsSelection {
-	const newQuery: FacetsSelection = { ...sel };
-	if (!newQuery[facet]) {
-		newQuery[facet] = { include: [], exclude: [] };
+	const current = sel[facet] || { include: [], exclude: [] };
+	if (current.exclude.includes(value)) {
+		return sel;
 	}
-	if (!newQuery[facet].exclude.includes(value)) {
-		newQuery[facet].exclude.push(value);
-	}
-	return newQuery;
+	return {
+		...sel,
+		[facet]: {
+			include: current.include ? [...current.include] : [],
+			exclude: [...current.exclude, value]
+		}
+	};
 }
 
 export function removeIncludeFacet(
@@ -699,7 +706,10 @@ function splitOutsideQuotes(str: string, delimiterPattern: RegExp): string[] {
 
 	while (i < str.length) {
 		const char = str[i];
-		if (char === '"') {
+		if (char === '\\' && i + 1 < str.length) {
+			current += char + str[i + 1];
+			i += 2;
+		} else if (char === '"') {
 			inQuotes = !inQuotes;
 			current += char;
 			i++;
@@ -762,12 +772,16 @@ export function parseLuceneFacets(luceneQuery: string): FacetsSelection {
 			valExpr = valExpr.replace(/\)+$/, '').trim();
 
 			const values = splitOutsideQuotes(valExpr, /^\s+OR\s+/i)
-				.map((v) =>
-					v
+				.map((v) => {
+					let s = v
 						.trim()
 						.replace(/^\(+|\)+$/g, '')
-						.replace(/^"+|"+$/g, '')
-				)
+						.trim();
+					if (s.startsWith('"') && s.endsWith('"') && s.length >= 2) {
+						s = s.slice(1, -1);
+					}
+					return s.replace(/\\([\\"])/g, '$1');
+				})
 				.filter((v) => v.length > 0);
 
 			if (!sel[facet]) {

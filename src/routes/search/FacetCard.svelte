@@ -77,7 +77,7 @@
 
 	function cleanupListeners() {
 		if (typeof window !== 'undefined') {
-			window.removeEventListener('scroll', updateMobilePosition);
+			window.removeEventListener('scroll', updateMobilePosition, true);
 			window.removeEventListener('resize', updateMobilePosition);
 		}
 		if (resizeObserver) {

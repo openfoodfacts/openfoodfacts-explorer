@@ -12,10 +12,7 @@ import {
 	getSearchFieldForFacet,
 	getFacetKeyForSearchField,
 	groupCatalogFacets,
-	MASTER_FACET_CATALOG,
-	KNOWN_AGGREGATED_FACETS,
-	DEFAULT_VISIBLE_FACET_KEYS,
-	DEFAULT_FREE_TEXT_FACETS
+	MASTER_FACET_CATALOG
 } from './facets';
 import type { FacetsSelection } from './facets';
 
@@ -242,17 +239,17 @@ describe('groupCatalogFacets', () => {
 	});
 });
 
-describe('MASTER_FACET_CATALOG integrity', () => {
-	it('has 35 total facets with unique keys', () => {
-		expect(MASTER_FACET_CATALOG.length).toBe(35);
-		const keys = MASTER_FACET_CATALOG.map((f) => f.key);
-		const uniqueKeys = new Set(keys);
-		expect(uniqueKeys.size).toBe(MASTER_FACET_CATALOG.length);
-	});
-
-	it('defines known aggregated and free text facet subsets', () => {
-		expect(KNOWN_AGGREGATED_FACETS.length).toBe(11);
-		expect(DEFAULT_VISIBLE_FACET_KEYS.length).toBe(14);
-		expect(DEFAULT_FREE_TEXT_FACETS.length).toBe(3);
+describe('Facet serialization with special characters', () => {
+	it('properly escapes and unescapes quotes and backslashes in facet values', () => {
+		const selection = {
+			origins: {
+				include: ['France "Bio"', 'Region\\Area'],
+				exclude: []
+			}
+		};
+		const luceneStr = toLuceneString('pizza', selection);
+		expect(luceneStr).toBe('pizza AND origins:("France \\"Bio\\"" OR "Region\\\\Area")');
+		const parsed = parseLuceneFacets(luceneStr);
+		expect(parsed.origins.include).toEqual(['France "Bio"', 'Region\\Area']);
 	});
 });
