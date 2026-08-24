@@ -307,7 +307,8 @@
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "Data Sources",
 			"prices": "Prices",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
 		},
 		"gs1": {
 			"title": "GS1 barcode information",
@@ -431,7 +432,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Toerana famokarana",
-			"categories": "Categories :",
+			"categories": "Sokajy",
 			"labels": "Labels",
 			"brands": "Marika",
 			"stores": "Stores",
@@ -615,6 +616,22 @@
 				"add_ingredients_image": "Add a photo of the ingredients",
 				"add_nutrition_facts": "Add nutrition facts"
 			}
+		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Privacy policy"
 		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
