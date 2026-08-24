@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { tracker } from '$lib/matomo';
+	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';
@@ -76,12 +77,6 @@
 
 	// State for showing/hiding advanced options panel
 	let showAdvancedOptions = $state(false);
-
-	// Update facets when search results change or facetBarComponent changes
-	$effect(() => {
-		// Track search queries that return no results
-		if (searchResult.count == 0) $tracker.trackEvent('Product Search', 'No Results', data.query);
-	});
 
 	let selectedSort = $derived.by(() => {
 		const url = new URL(page.url);
@@ -169,6 +164,19 @@
 	let barcodeInput = $state('');
 	let encodedMainSearchTerm = $derived(encodeURIComponent(mainSearchTerm));
 	let sidebarHidden = $state(false);
+	let trackedSearchKey = $state<string | null>(null);
+
+	// Track each loaded search once. Page views remain responsible for
+	// navigation tracking; this provides structured search reporting.
+	$effect(() => {
+		const currentTracker = $tracker;
+		const searchKey = `${data.query}|${searchResult.count}`;
+		if (!currentTracker || trackedSearchKey === searchKey) return;
+
+		trackedSearchKey = searchKey;
+		trackOffSiteSearch(mainSearchTerm, searchResult.count);
+		if (searchResult.count === 0) trackOffEvent('search', 'no_results');
+	});
 </script>
 
 <Metadata

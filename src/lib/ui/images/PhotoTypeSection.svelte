@@ -118,7 +118,7 @@
 							);
 						}
 
-						trackOffEvent('product', 'upload_image', sectionType.id);
+						trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
 						onImageUploaded(imgid);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
@@ -158,7 +158,7 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
-				trackOffEvent('product', 'unselect_image', sectionType.id);
+				trackOffEvent('contribution', 'image_unselected', sectionType.id);
 				await invalidateAll();
 			} else {
 				console.warn('Image unselect failed:', result);

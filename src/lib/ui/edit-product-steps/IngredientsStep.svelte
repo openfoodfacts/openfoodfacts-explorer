@@ -55,7 +55,7 @@
 		}
 
 		ocrLoading = true;
-		trackOffEvent('product', 'launch_ocr', 'ingredients');
+		trackOffEvent('contribution', 'ocr_started', 'ingredients');
 
 		try {
 			const openfoodfacts = createProductsApi(fetch);
@@ -67,24 +67,29 @@
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
 			if (error) {
 				console.error('Error performing OCR:', error);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 
 			const data = tmpData as OCRResult;
 			if (!data || typeof data !== 'object') {
 				console.warn('OCR failed - invalid result:', data);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 			const ocrText = data.ingredients_text_from_image || data.text || data.ingredients_text || '';
 			if (!ocrText || !ocrText.trim()) {
 				console.warn('OCR returned empty text:', data);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 
 			// Set OCR result
 			product[`ingredients_text_${languageCode}`] = ocrText;
+			trackOffEvent('contribution', 'ocr_succeeded', 'ingredients');
 		} catch (error) {
 			console.error('Error performing OCR:', error);
+			trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 		} finally {
 			ocrLoading = false;
 		}
