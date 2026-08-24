@@ -556,13 +556,14 @@
 						</label>
 						<button
 							type="button"
-							class="btn join-item btn-error"
+							class="btn join-item btn-square shrink-0 btn-error disabled:border-base-300 disabled:bg-base-300 disabled:text-base-content/60"
 							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
+							title={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
 							disabled={product.nutriments?.[nutrient] !== undefined &&
 								(product.nutriments?.[nutrient] as string | number) !== ''}
 							onclick={() => removeNutrient(nutrient)}
 						>
-							<IconMdiClose />
+							<IconMdiClose class="h-5 w-5" aria-hidden="true" />
 						</button>
 					</div>
 				{/each}
