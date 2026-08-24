@@ -171,11 +171,20 @@
 				<div class="mb-4 alert alert-info">
 					<IconMdiInformation class="h-5 w-5 flex-shrink-0" />
 					<div>
-						<p class="font-semibold">{$_('compare.single_product_title')}</p>
-						<p class="text-sm">{$_('compare.single_product_hint')}</p>
+						<p class="font-semibold">
+							{$_('compare.single_product_title', {
+								default: 'Add one more product to compare'
+							})}
+						</p>
+						<p class="text-sm">
+							{$_('compare.single_product_hint', {
+								default:
+									'Comparisons work with at least 2 products. Add another one to see how they stack up.'
+							})}
+						</p>
 					</div>
 					<a href={resolve('/explore')} class="btn btn-primary btn-sm">
-						{$_('compare.browse_products')}
+						{$_('compare.browse_products', { default: 'Browse Products' })}
 					</a>
 				</div>
 			{/if}
