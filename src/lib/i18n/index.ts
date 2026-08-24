@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { browser } from '$app/environment';
 
-const locales = ['en', 'it'];
+export const locales = ['en', 'it'];
 
 const FALLBACK_LOCALE = 'en';
 
