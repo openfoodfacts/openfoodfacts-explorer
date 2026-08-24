@@ -51,8 +51,8 @@ importers:
         version: 3.21.0
     devDependencies:
       '@crowdin/cli':
-        specifier: ^4.15.0
-        version: 4.15.0
+        specifier: ^4.15.1
+        version: 4.15.1
       '@eslint/eslintrc':
         specifier: ^3.3.6
         version: 3.3.6(supports-color@10.2.2)
@@ -374,8 +374,8 @@ packages:
   '@cropper/utils@2.1.1':
     resolution: {integrity: sha512-0eQs08WyQUNFMfU3ieE091dEQkrW0YdgZ3n6Thnk1EUQv45ypfiL+MevHwr7UzNnUlqUYR2FNSCgE6qBxK0sFw==}
 
-  '@crowdin/cli@4.15.0':
-    resolution: {integrity: sha512-4hOWF2lUENe+TDYZIpBwCQO5aOe7O1Q7CmQ4Py1uwWtBlN855P3tWwnKpLxoAQ+wUx2jv9bJcZ3xgmeoD2qzkQ==}
+  '@crowdin/cli@4.15.1':
+    resolution: {integrity: sha512-ck64SSRQFVaU8C09d1kti1/fAGQh2EJGPZvEpTQvnf9l/2GCGBc/hJJt8cC1TdPzc+BCnfwHm2cva47eD/kEmw==}
     hasBin: true
 
   '@csstools/color-helpers@6.1.0':
@@ -3713,7 +3713,7 @@ snapshots:
 
   '@cropper/utils@2.1.1': {}
 
-  '@crowdin/cli@4.15.0':
+  '@crowdin/cli@4.15.1':
     dependencies:
       command-exists-promise: 2.0.2
       node-fetch: 2.7.0
