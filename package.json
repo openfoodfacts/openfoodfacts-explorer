@@ -55,7 +55,7 @@
 		"@vercel/speed-insights": "^2.0.0",
 		"cropperjs": "^2.1.1",
 		"cytoscape": "^3.34.0",
-		"daisyui": "5.7.16",
+		"daisyui": "5.7.20",
 		"eslint": "^10.8.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.23.0",
