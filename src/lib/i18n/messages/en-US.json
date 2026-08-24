@@ -67,6 +67,8 @@
 		"exclude_item": "Exclude (NOT) {name}",
 		"remove_include": "Remove include filter",
 		"remove_exclude": "Remove exclude filter",
+		"remove_include_name": "Remove {name} filter",
+		"remove_exclude_name": "Remove exclude {name} filter",
 		"see_all_count": "See all ({count})"
 	},
 	"auth": {

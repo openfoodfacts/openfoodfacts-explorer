@@ -35,12 +35,9 @@
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
-	import IconMdiFilterVariant from '@iconify-svelte/mdi/filter-variant';
-
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
-	import Sidebar from '$lib/ui/Sidebar.svelte';
-	import SearchFilters from './SearchFilters.svelte';
+	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
@@ -420,59 +417,36 @@
 	]}
 >
 	<!-- Desktop Sidebar -->
-	<Sidebar bind:hidden={sidebarHidden} type="search">
-		{#snippet header()}
-			<div class="flex items-center justify-between">
-				<div class="flex items-center gap-1.5">
-					<IconMdiFilterVariant class="h-4 w-4 text-base-content/70" />
-					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
-						{$_('search.filters_title', { default: 'Filters' })}
-					</span>
-					{#if totalActiveFilters > 0}
-						<span class="badge badge-xs font-semibold badge-primary">{totalActiveFilters}</span>
-					{/if}
-				</div>
-				<div class="flex items-center gap-2">
-					<button
-						type="button"
-						onclick={() => (sidebarHidden = true)}
-						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
-					>
-						{$_('search.hide_sidebar', { default: 'Hide' })}
-					</button>
-				</div>
-			</div>
-		{/snippet}
-
-		<SearchFilters
-			facets={searchResult.facets}
-			selectedFacets={localFacets}
-			onToggleInclude={(key, val) => {
-				const next = toggleIncludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-			onToggleExclude={(key, val) => {
-				const next = toggleExcludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-			onAddInclude={(key, val) => {
-				const next = addIncludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-			onAddExclude={(key, val) => {
-				const next = addExcludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-			onRemoveInclude={(key, val) => {
-				const next = removeIncludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-			onRemoveExclude={(key, val) => {
-				const next = removeExcludeFacet(localFacets, key, val);
-				updateFacets(next);
-			}}
-		/>
-	</Sidebar>
+	<SearchSidebar
+		bind:hidden={sidebarHidden}
+		{totalActiveFilters}
+		facets={searchResult.facets}
+		selectedFacets={localFacets}
+		onToggleInclude={(key, val) => {
+			const next = toggleIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onToggleExclude={(key, val) => {
+			const next = toggleExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onAddInclude={(key, val) => {
+			const next = addIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onAddExclude={(key, val) => {
+			const next = addExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onRemoveInclude={(key, val) => {
+			const next = removeIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onRemoveExclude={(key, val) => {
+			const next = removeExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+	/>
 
 	<div class="flex w-full min-w-0 flex-col">
 		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
@@ -518,7 +492,7 @@
 						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
 					]}
 				>
-					{#each Array(6), index (index)}
+					{#each Array(6) as _, index (index)}
 						<div
 							class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
 						>

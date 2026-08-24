@@ -294,9 +294,10 @@
 	>
 		<Sidebar
 			bind:this={sidebar}
-			type="product"
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
+			collapsible={true}
+			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
