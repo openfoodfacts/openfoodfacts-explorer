@@ -93,7 +93,7 @@
 		"vega-lite": "^6.4.3",
 		"vite": "^8.2.2",
 		"vite-plugin-static-copy": "^4.1.1",
-		"vitest": "^4.1.10",
+		"vitest": "^4.1.11",
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
