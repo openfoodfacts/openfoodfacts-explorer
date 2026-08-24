@@ -41,7 +41,7 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
-			trackOffEvent('account', 'login_success');
+			trackOffEvent('account', 'login_succeeded');
 
 			const redirectUrl = localStorage.getItem('authRedirect');
 			localStorage.removeItem('authRedirect');
