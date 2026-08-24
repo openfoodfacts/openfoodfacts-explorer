@@ -482,6 +482,10 @@
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
@@ -490,9 +494,14 @@
 				"salt": "Salt",
 				"fibers": "Fibers",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
