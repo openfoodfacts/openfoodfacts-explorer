@@ -4,7 +4,7 @@
 	import { shareContent } from '$lib/utils/webShare';
 
 	import { navigating } from '$app/state';
-
+	import { stripTaxonomyPrefix } from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import TagChipList from '$lib/ui/TagChips.svelte';
@@ -308,7 +308,7 @@
 			<TagChipList
 				tags={tags.map((tag, idx) => ({
 					id: tag,
-					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
+					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : stripTaxonomyPrefix(tag),
 					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
 				}))}
 			/>

@@ -4,11 +4,12 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createProductsApi } from '$lib/api';
+	import { createProductsApi, stripTaxonomyPrefix } from '$lib/api';
 	import type { ProductReduced } from '$lib/api';
 	import type { ScoreData } from '$lib/scoring';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
+	import { preferences } from '$lib/settings';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
@@ -22,6 +23,51 @@ Wraps the <product-card> web component and adds accessibility features.
 		personalScore?: ScoreData;
 	};
 	let { product, personalScore }: Props = $props();
+
+	let { lang } = $derived($preferences);
+
+	/**
+	 * The API already ships display ready brand names in language suffixed fields
+	 * (`brands_tags_fr`, `brands_tags_en`, ...), so the card can localize without
+	 * downloading the brands taxonomy. Fetching it here would repeat the same
+	 * request for every card rendered in a grid.
+	 */
+	function getLocalizedBrandsTags(): string[] | undefined {
+		const rawProduct = product as unknown as Record<string, unknown>;
+
+		if (lang) {
+			const langTags = rawProduct[`brands_tags_${lang.toLowerCase()}`];
+			if (Array.isArray(langTags) && langTags.length > 0) return langTags as string[];
+		}
+
+		const enTags = rawProduct['brands_tags_en'];
+		if (Array.isArray(enTags) && enTags.length > 0) return enTags as string[];
+
+		return undefined;
+	}
+
+	let sanitizedProduct = $derived.by(() => {
+		const p = product as Product;
+		const localizedTags = getLocalizedBrandsTags();
+		let brandsTags = p.brands_tags;
+		let brandsStr: string | undefined;
+
+		if (brandsTags && Array.isArray(brandsTags)) {
+			brandsTags = brandsTags.map((tag, idx) => localizedTags?.[idx] ?? stripTaxonomyPrefix(tag));
+			brandsStr = brandsTags.join(', ');
+		} else {
+			brandsStr = p.brands
+				?.split(',')
+				.map((b: string) => stripTaxonomyPrefix(b.trim()))
+				.join(', ');
+		}
+
+		return {
+			...product,
+			...(brandsStr ? { brands: brandsStr } : {}),
+			...(brandsTags ? { brands_tags: brandsTags } : {})
+		};
+	});
 
 	let navigating = $state(false);
 	async function navigateToProduct() {
@@ -131,7 +177,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 <product-card
 	class="h-44 w-full cursor-pointer"
-	{product}
+	product={sanitizedProduct}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
 	aria-label={product.product_name

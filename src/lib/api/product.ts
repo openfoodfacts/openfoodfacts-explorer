@@ -564,6 +564,8 @@ type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
 type LangGenericName = `generic_name_${string}`;
+/** Display ready brand names per language, e.g. `brands_tags_en`. */
+type LangBrandsTags = `brands_tags_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -711,6 +713,7 @@ export type Product = ProductDataSection & {
 	};
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
+	Partial<Record<LangBrandsTags, string[]>> &
 	Partial<Record<LangIngredient, string>> &
 	Partial<Record<LangPackagingText, string>> &
 	Partial<Record<LangGenericName, string>>;
@@ -720,6 +723,8 @@ const REDUCED_FIELDS = [
 	'code',
 	'product_name',
 	'brands',
+	'brands_tags',
+	'brands_tags_en',
 	'quantity',
 	'nutriscore_grade',
 	'ecoscore_grade',
