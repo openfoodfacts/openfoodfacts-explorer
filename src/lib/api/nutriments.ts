@@ -134,6 +134,33 @@ export function getSelectableNutrients(
 	);
 }
 
+const DERIVED_NUTRIENT_KEY_SUFFIX = /_(?:100g|serving|unit|value|modifier|product)$/;
+
+/**
+ * Creates fallback options for persisted nutrient values absent from the catalog.
+ * Derived fields such as units and per-100g values do not represent separate nutrients.
+ */
+export function getMissingNutrientOptions(
+	nutriments: Partial<Nutriments> | undefined,
+	nutrientCatalog: NutrientOption[]
+): NutrientOption[] {
+	const knownIds = new Set(nutrientCatalog.map((nutrient) => nutrient.id));
+	const missingNutrients: NutrientOption[] = [];
+
+	for (const [id, value] of Object.entries(nutriments ?? {})) {
+		if (value == null || DERIVED_NUTRIENT_KEY_SUFFIX.test(id) || knownIds.has(id)) continue;
+
+		const unit = nutriments?.[`${id}_unit`];
+		missingNutrients.push({
+			id,
+			name: id,
+			...(typeof unit === 'string' ? { unit } : {})
+		});
+	}
+
+	return missingNutrients;
+}
+
 export async function getNutrients(
 	fetch: typeof globalThis.fetch,
 	locale: string,

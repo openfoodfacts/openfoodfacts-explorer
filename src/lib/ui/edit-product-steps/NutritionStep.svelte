@@ -4,6 +4,7 @@
 	import { getLanguageName } from '$lib/languages';
 	import {
 		getNutrients,
+		getMissingNutrientOptions,
 		getSelectableNutrients,
 		NUTRIENTS,
 		type NutrientOption,
@@ -97,6 +98,13 @@
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
 
+	function addPersistedNutrientsToFallbackCatalog() {
+		nutrientCatalog = [
+			...nutrientCatalog,
+			...getMissingNutrientOptions(product.nutriments, nutrientCatalog)
+		];
+	}
+
 	function syncExistingNutrients() {
 		const existingNutrients = nutrientCatalog
 			.filter((nutrient) => !DEFAULT_NUTRIENT_IDS.has(nutrient.id))
@@ -106,6 +114,7 @@
 		additionalNutrients = [...new Set([...additionalNutrients, ...existingNutrients])];
 	}
 
+	addPersistedNutrientsToFallbackCatalog();
 	syncExistingNutrients();
 
 	$effect(() => {
@@ -581,7 +590,9 @@
 						}}
 					>
 						<option disabled value="" selected>
-							{$_('product.edit.additional_nutrients')}
+							{$_('product.edit.additional_nutrients', {
+								default: 'Additional nutrients'
+							})}
 						</option>
 						{#each canAddNutrients as nutrient (nutrient)}
 							<option value={nutrient.id}>

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
 	flattenNutrients,
+	getMissingNutrientOptions,
 	getNutrients,
 	getSelectableNutrients,
 	type NutrientOption
@@ -36,6 +37,21 @@ describe('nutrients API', () => {
 		const options = getSelectableNutrients(nutrientOptions, new Set(), ['fat']);
 
 		expect(options.map(({ id }) => id)).toEqual(['trans-fat']);
+	});
+
+	it('preserves persisted nutrients missing from the fallback catalog', () => {
+		const missingNutrients = getMissingNutrientOptions(
+			{
+				caffeine: 20,
+				caffeine_unit: 'mg',
+				caffeine_100g: 20,
+				fat: 5,
+				fat_unit: 'g'
+			},
+			nutrientOptions
+		);
+
+		expect(missingNutrients).toEqual([{ id: 'caffeine', name: 'caffeine', unit: 'mg' }]);
 	});
 
 	it('loads localized nutrients through the SDK client', async () => {
