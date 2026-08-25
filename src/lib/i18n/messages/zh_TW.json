@@ -82,6 +82,10 @@
 		"error_occurred": "發生錯誤：",
 		"errors_occurred": "發生錯誤："
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "貢獻",
