@@ -82,6 +82,10 @@
 		"error_occurred": "Er is een fout opgetreden:",
 		"errors_occurred": "Er zijn fouten opgetreden:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Blijf op de hoogte",
 		"contribute": "Bijdragen",
