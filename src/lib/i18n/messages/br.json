@@ -82,6 +82,10 @@
 		"error_occurred": "fazi zo c'hoarvezet :",
 		"errors_occurred": "fazioù zo c'hoarvezet :"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Kenoberiañ",
