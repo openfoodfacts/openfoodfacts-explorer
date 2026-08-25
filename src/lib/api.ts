@@ -10,6 +10,7 @@ export * from './api/product';
 export * from './api/nutriments';
 
 export * from './api/knowledgepanels';
+export * from './api/externalSources';
 
 export function createRobotoffApi(fetch: typeof window.fetch) {
 	// We hardcode this because it is not expected to change
