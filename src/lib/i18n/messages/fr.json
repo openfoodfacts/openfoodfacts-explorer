@@ -224,7 +224,7 @@
 		"attributes_error_title": "Impossible de charger les attributs personnalisés",
 		"attributes_error_body": "Une erreur est survenue lors du chargement des attributs personnalisés. Veuillez réessayer plus tard.",
 		"shortcuts": {
-			"show_barcode": "Afficher/masquer le code-barres du produit",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Ouvrir la page API du produit",
 			"edit_same_window": "Modifier le produit dans la fenêtre actuelle",
 			"edit_new_window": "Modifier le produit dans une nouvelle fenêtre",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Lien copié dans le presse-papier !",
 			"failed_copy": "Échec de la copie du lien"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Code-barres",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Rechercher",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Ouvrir",
+			"found": "Found",
+			"not_found": "Page inexistante",
+			"check_error": "Erreur",
+			"not_checked": "Not checked",
+			"loading": "Vérification…"
 		},
 		"header": {
 			"quantity": "Quantité",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Produit",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "Vous devez d'abord sélectionner un type de produit !",
 			"main_language": "Langue principale",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Ajouter un produit",
 			"nutrition_issues": "Problèmes nutritionnels",
 			"nutrition_issues_description": "Nous avons détecté des problèmes potentiels avec les informations nutritionnelles que vous avez fournies. Veuillez examiner les avertissements suivants et effectuer les corrections nécessaires avant d'enregistrer vos modifications.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Macronutriments",
 			"micronutrients": "Micronutriments",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholestérol",
 				"fat": "Matières grasses totales",
 				"saturated-fat": "graisses saturées",
 				"carbohydrates": "Glucides",
@@ -490,9 +519,14 @@
 				"salt": "Sel",
 				"fibers": "Fibres",
 				"sodium": "Sodium",
-				"alcohol": "Alcool"
+				"alcohol": "Alcool",
+				"iron": "Fer",
+				"potassium": "Potassium",
+				"trans-fat": "Graisses transaturées",
+				"vitamin-d": "Vitamine D"
 			},
 			"additional_nutrients": "Nutriments supplémentaires",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Commentaire",
 			"comment_placeholder": "Ajouter un commentaire à cette modification",
 			"save_btn": "Enregistrer",
