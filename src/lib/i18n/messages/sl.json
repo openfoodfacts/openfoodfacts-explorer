@@ -82,6 +82,10 @@
 		"error_occurred": "prišlo je do napake:",
 		"errors_occurred": "prišlo je do napak:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Prispevaj",
