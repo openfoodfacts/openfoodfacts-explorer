@@ -13,7 +13,6 @@
 	import Folksonomy from './Folksonomy.svelte';
 	import DataSources from './DataSources.svelte';
 
-	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
 	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
@@ -126,9 +125,9 @@
 
 	let useWCFolksonomyEditor = $state(false);
 
-	let showBarcode = $state(false);
 	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
 	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let barcodeInfo = $state<ReturnType<typeof BarcodeInfo>>();
 
 	const activeSections = $derived.by(() => {
 		const rawList: (SidebarSectionBase | false | undefined | null)[] = [
@@ -137,12 +136,6 @@
 				label: $_('product.sections.product', { default: 'Product' }),
 				icon: IconMdiInformation
 			},
-			showBarcode &&
-				product.code != null && {
-					id: 'barcode-info',
-					label: $_('product.sections.barcode_info_debug', { default: 'Barcode debug' }),
-					icon: IconMdiBarcode
-				},
 			{
 				id: 'attributes',
 				label: $_('product.sections.attributes', { default: 'Attributes' }),
@@ -185,7 +178,7 @@
 					icon: IconMdiTagMultiple
 				},
 			product.code != null && {
-				id: 'barcode-gs1',
+				id: 'barcode-info',
 				label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
 				icon: IconMdiBarcode
 			},
@@ -212,8 +205,8 @@
 
 	onMount(() => {
 		shortcutCtx.set('Shift+B', {
-			description: $_('product.shortcuts.show_barcode'),
-			action: () => (showBarcode = !showBarcode)
+			description: $_('product.shortcuts.show_barcode', { default: 'Show/hide barcode tools' }),
+			action: () => barcodeInfo?.togglePowerUserDetails()
 		});
 
 		shortcutCtx.set('A', {
@@ -353,12 +346,6 @@
 				<ProductHeader {product} lc={data.lc} />
 			</div>
 
-			{#if showBarcode && product.code != null}
-				<div id="barcode-info">
-					<BarcodeInfo code={product.code} />
-				</div>
-			{/if}
-
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 				<robotoff-contribution-message
@@ -436,8 +423,8 @@
 			{/if}
 
 			{#if product.code}
-				<div id="barcode-gs1">
-					<Gs1Country barcode={product.code} />
+				<div id="barcode-info">
+					<BarcodeInfo bind:this={barcodeInfo} code={product.code} />
 				</div>
 			{/if}
 
