@@ -8,7 +8,7 @@
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
-	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiBookOpenVariant from '@iconify-svelte/mdi/book-open-variant';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = {
@@ -28,7 +28,8 @@
 	}: Props = $props();
 
 	// Documentation page explaining the NOVA (ultra-processing) classification
-	const NOVA_INFO_URL = 'https://world.openfoodfacts.org/nova';
+	// In-app static page (proxied from world.openfoodfacts.org/nova), see /static/[id]
+	const NOVA_INFO_URL = '/static/nova';
 
 	type NutrientKey = string;
 
@@ -643,8 +644,6 @@
 						/>
 						<a
 							href={NOVA_INFO_URL}
-							target="_blank"
-							rel="noopener"
 							class="link link-primary"
 							title={$_('compare.nova_group_learn_more', {
 								default: 'Learn more about NOVA groups'
@@ -653,7 +652,7 @@
 								default: 'Learn more about NOVA groups'
 							})}
 						>
-							<IconMdiOpenInNew class="h-4 w-4" />
+							<IconMdiBookOpenVariant class="h-4 w-4" />
 						</a>
 					</div>
 				</td>
