@@ -707,6 +707,8 @@
 		"add_new_product": "නව නිෂ්පාදනයක් එක් කරන්න",
 		"scan_again": "නැවත ස්කෑන් කරන්න",
 		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
