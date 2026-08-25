@@ -1,4 +1,5 @@
 import { resolve } from '$app/paths';
+import { dev } from '$app/environment';
 import { env as publicEnv } from '$env/dynamic/public';
 import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 
@@ -20,6 +21,8 @@ export {
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
 export const API_HOST = publicEnv.PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
+export const IS_NON_PRODUCTION =
+	dev || ['development', 'staging'].includes(publicEnv.PUBLIC_ENVIRONMENT ?? '');
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;
 export const PRODUCT_EDIT_URL = `${API_HOST}/product/`;
 

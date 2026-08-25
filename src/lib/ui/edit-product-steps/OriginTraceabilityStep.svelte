@@ -63,9 +63,15 @@
 	<!-- Manufacturing Places -->
 	<div class="form-control w-full">
 		<label class="label" for="manufacturing_places">
-			<span class="label-text text-sm font-medium sm:text-base"
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base"
 				>{$_('product.edit.manufacturing_places')}</span
 			>
+			<InfoTooltip
+				text={$_('product.edit.tooltips.manufacturing_places', {
+					default:
+						'The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.'
+				})}
+			/>
 		</label>
 		<input
 			id="manufacturing_places"
@@ -78,7 +84,9 @@
 					manufacturing_places: (e.currentTarget as HTMLInputElement).value
 				};
 			}}
-			placeholder="e.g., France, Italy"
+			placeholder={$_('product.edit.manufacturing_places_placeholder', {
+				default: 'e.g., France, Italy'
+			})}
 		/>
 	</div>
 
@@ -110,21 +118,25 @@
 		<TagsString
 			tagsString={product.emb_codes ?? ''}
 			autocomplete={[]}
+			placeholder={$_('product.edit.traceability_examples', {
+				default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
+			})}
 			onChange={(v) => {
 				product = { ...product, emb_codes: v };
 			}}
 		/>
 		<div class="mt-1 text-xs text-base-content/60">
-			<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
 			<p>
-				More info:
+				{$_('product.edit.traceability_codes_more_info', { default: 'More info:' })}
 				<a
 					href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="link"
 				>
-					Food Traceability Codes Wiki
+					{$_('product.edit.traceability_codes_wiki', {
+						default: 'Food Traceability Codes Wiki'
+					})}
 				</a>
 			</p>
 		</div>

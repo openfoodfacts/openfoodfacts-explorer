@@ -16,6 +16,7 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import EnvironmentNotice from '$lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
@@ -176,8 +177,10 @@
 	let { children }: LayoutProps = $props();
 
 	onMount(() => {
-		// only inject the script on the client side
-		injectSpeedInsights();
+		if (import.meta.env.VERCEL) {
+			// if we're on vercel and on the client, inject the speed insights script
+			injectSpeedInsights();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -274,6 +277,8 @@
 	<progress class="progress fixed top-0 left-0 z-50 h-1 w-full rounded-none progress-secondary"
 	></progress>
 {/if}
+
+<EnvironmentNotice />
 
 <!-- Desktop Header -->
 <div class="hidden xl:block">

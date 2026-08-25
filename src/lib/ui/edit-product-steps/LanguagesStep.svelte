@@ -125,7 +125,11 @@
 			<option value={lang}>{getLanguageName(lang)}</option>
 		{/each}
 	</select>
-	<span class="label">The main language of the product</span>
+	<span class="label">
+		{$_('product.edit.main_language_description', {
+			default: 'The main language of the product'
+		})}
+	</span>
 </fieldset>
 
 <div class="mt-4 space-y-4">
@@ -144,8 +148,18 @@
 			{@const langName = getLanguageName(code)}
 			<div class="flex items-center gap-2">
 				<div
-					class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
-					title={langName}
+					class={[
+						'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold uppercase',
+						code === product.lang
+							? 'bg-secondary text-secondary-content ring-2 ring-secondary/30'
+							: 'bg-primary/10 text-primary'
+					]}
+					title={code === product.lang
+						? $_('product.edit.main_language_title', {
+								default: '{language} - main language',
+								values: { language: langName }
+							})
+						: langName}
 				>
 					{code}
 				</div>
