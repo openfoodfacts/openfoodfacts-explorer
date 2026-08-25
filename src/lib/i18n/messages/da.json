@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Stregkode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Søg",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Åben",
+			"found": "Found",
+			"not_found": "Ikke fundet",
+			"check_error": "Fejlmelding",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Kvantitet",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Produkt",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "Du skal først vælge en produkttype!",
 			"main_language": "Hovedsprog",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Tilføj produkt",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Makronæringsstoffer",
 			"micronutrients": "Mikronæringsstoffer",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Kalcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Kolesterol",
 				"fat": "Total fedt",
 				"saturated-fat": "Mættet fedt",
 				"carbohydrates": "Kulhydrater",
@@ -490,9 +519,14 @@
 				"salt": "Salt",
 				"fibers": "Fibre",
 				"sodium": "Natrium",
-				"alcohol": "Alkohol"
+				"alcohol": "Alkohol",
+				"iron": "Jern",
+				"potassium": "Kalium",
+				"trans-fat": "Transfedt",
+				"vitamin-d": "D-vitamin"
 			},
 			"additional_nutrients": "Yderligere næringsstoffer",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Kommentér",
 			"comment_placeholder": "Tilføj en kommentar til denne redigering",
 			"save_btn": "Gem",
