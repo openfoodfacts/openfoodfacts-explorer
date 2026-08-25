@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Product bewerken in het huidige venster",
 			"edit_new_window": "Product bewerken in een nieuw venster",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link gekopieerd naar klembord!",
 			"failed_copy": "Kopiëren van link mislukt"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Streepjescode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Zoeken",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Open",
+			"found": "Found",
+			"not_found": "Niet gevonden",
+			"check_error": "Foutmelding",
+			"not_checked": "Not checked",
+			"loading": "Controleren…"
 		},
 		"header": {
 			"quantity": "Hoeveelheid",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "U moet eerst een producttype selecteren!",
 			"main_language": "Hoofdtaal",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Artikel toevoegen",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We hebben enkele potentiële problemen ontdekt met de voedingsinformatie die u heeft verstrekt. Bekijk de volgende waarschuwingen en breng indien nodig correcties aan voordat u uw wijzigingen opslaat.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Macronutriënten",
 			"micronutrients": "Micronutriënten",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "Totaal vet",
 				"saturated-fat": "Verzadigd vet",
 				"carbohydrates": "Koolhydraten",
@@ -490,9 +519,14 @@
 				"salt": "Zout",
 				"fibers": "Vezels",
 				"sodium": "Natrium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "IJzer",
+				"potassium": "Kalium",
+				"trans-fat": "Transvet",
+				"vitamin-d": "Vitamine D"
 			},
 			"additional_nutrients": "Extra voedingsstoffen",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Reactie",
 			"comment_placeholder": "Voeg een opmerking toe aan deze bewerking",
 			"save_btn": "Opslaan",
