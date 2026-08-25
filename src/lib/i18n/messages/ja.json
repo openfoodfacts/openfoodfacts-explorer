@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "バーコード",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "検索",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "開ける",
+			"found": "Found",
+			"not_found": "見つかりません",
+			"check_error": "エラー",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "数量",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "製品",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "まず製品タイプを選択する必要があります。",
 			"main_language": "主な言語",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "商品を追加",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "マクロ栄養素",
 			"micronutrients": "微量栄養素",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "カルシウム",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "コレステロール",
 				"fat": "総脂肪",
 				"saturated-fat": "飽和脂肪",
 				"carbohydrates": "炭水化物",
@@ -490,9 +519,14 @@
 				"salt": "食塩",
 				"fibers": "繊維",
 				"sodium": "ナトリウム",
-				"alcohol": "アルコール"
+				"alcohol": "アルコール",
+				"iron": "鉄",
+				"potassium": "カリウム",
+				"trans-fat": "トランス脂肪酸",
+				"vitamin-d": "ビタミン D"
 			},
 			"additional_nutrients": "追加の栄養素",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "コメント",
 			"comment_placeholder": "この編集にコメントを追加する",
 			"save_btn": "保存",
