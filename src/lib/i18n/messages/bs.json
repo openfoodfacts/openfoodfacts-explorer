@@ -82,6 +82,10 @@
 		"error_occurred": "došlo je do greške:",
 		"errors_occurred": "došlo je do grešaka:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
