@@ -140,7 +140,8 @@
 		try {
 			const result = await exportSearchResultsCsv({
 				q: data.query,
-				sortBy: selectedSort.value
+				// Preserve raw URL sort_by (selectedSort may fall back when the value isn't in SORT_OPTIONS).
+				sortBy: page.url.searchParams.get('sort_by') || '-unique_scans_n'
 			});
 
 			if (result.truncated) {
