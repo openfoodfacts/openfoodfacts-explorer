@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barra-kodea",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Bilatu",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Ireki",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Errorea",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Kopurua",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Produktua",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Gehitu produktua",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Makronutrienteak",
 			"micronutrients": "Mikronutrienteak",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Kaltzioa",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Kolesterola",
 				"fat": "Gantz totala",
 				"saturated-fat": "Gantz saturatuak",
 				"carbohydrates": "Karbohidratoak",
@@ -490,9 +519,14 @@
 				"salt": "Gatza",
 				"fibers": "Zuntzak",
 				"sodium": "Sodioa",
-				"alcohol": "Alkohola"
+				"alcohol": "Alkohola",
+				"iron": "Burdina",
+				"potassium": "Potasioa",
+				"trans-fat": "Trans gantza",
+				"vitamin-d": "D bitamina"
 			},
 			"additional_nutrients": "Mantenugai gehigarriak",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Gehitu iruzkin bat edizio honetan",
 			"save_btn": "Gorde",
