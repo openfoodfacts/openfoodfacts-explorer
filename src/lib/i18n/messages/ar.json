@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "الرمز الشريطي",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "بحث",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "يفتح",
+			"found": "Found",
+			"not_found": "غير موجود",
+			"check_error": "خطأ",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "الكميه",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "نتاج",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "يجب عليك تحديد نوع المنتج أولاً!",
 			"main_language": "اللغه الرئيسيه",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "إضافة المنتوج",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "العناصر الغذائية الكبرى",
 			"micronutrients": "المغذيات الدقيقة",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "الكالسيوم",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "كوليسترول",
 				"fat": "إجمالي الدهون",
 				"saturated-fat": "الدهون المشبعة",
 				"carbohydrates": "الكربوهيدرات",
@@ -490,9 +519,14 @@
 				"salt": "ملح",
 				"fibers": "الألياف",
 				"sodium": "صوديوم",
-				"alcohol": "الكحول"
+				"alcohol": "الكحول",
+				"iron": "الحديد",
+				"potassium": "بوتاسيوم",
+				"trans-fat": "الدهون غير المشبعة",
+				"vitamin-d": "فيتامين د"
 			},
 			"additional_nutrients": "العناصر الغذائية الإضافية",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "تعليق",
 			"comment_placeholder": "أضف تعليقًا على هذا التعديل",
 			"save_btn": "حفظ",
