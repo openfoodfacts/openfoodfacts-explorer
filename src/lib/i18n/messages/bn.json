@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "বারকোড",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "অনুসন্ধান",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "খোলা",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "ত্রুটি",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "পরিমান",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "আপনাকে প্রথমে একটি পণ্যের ধরণ নির্বাচন করতে হবে!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "ম্যাক্রো-নিউট্রিয়েন্টস",
 			"micronutrients": "মাইক্রো-পুষ্টিকর উপাদান",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "ক্যালসিয়াম",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "কোলেস্টেরল",
 				"fat": "মোট চর্বি",
 				"saturated-fat": "স্যাচুরেটেড ফ্যাট",
 				"carbohydrates": "কার্বোহাইড্রেট",
@@ -490,9 +519,14 @@
 				"salt": "লবন",
 				"fibers": "তন্তু",
 				"sodium": "সোডিয়াম",
-				"alcohol": "অ্যালকোহল"
+				"alcohol": "অ্যালকোহল",
+				"iron": "লৌহ",
+				"potassium": "পটাসিয়াম",
+				"trans-fat": "ট্রান্স ফ্যাট",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "অতিরিক্ত পুষ্টি উপাদান",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "এই সম্পাদনায় একটি মন্তব্য যোগ করুন",
 			"save_btn": "সংরক্ষণ করুন",
