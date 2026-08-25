@@ -45,7 +45,7 @@
 		"prices_badge": "{count} priser",
 		"creation_date": "Skapandedatum",
 		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
+		"page_size": "Sidstorlek",
 		"advanced_view": "Advanced view"
 	},
 	"auth": {
@@ -111,7 +111,7 @@
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Nyhetsbrev",
 			"forum": "Forum",
 			"producers": "Producers Platform",
 			"translators": "Översättare",
@@ -141,11 +141,11 @@
 			"general": "Allmänt",
 			"editing": "Redigering",
 			"preferences": "Inställningar",
-			"developer": "Developer"
+			"developer": "Utvecklare"
 		},
 		"username": "Användarnamn",
 		"email": "E-post",
-		"roles": "Roles",
+		"roles": "Roller",
 		"section_general": "Allmänt",
 		"section_editing": "Redigering",
 		"section_user": "Användare",
@@ -243,7 +243,7 @@
 			"edit_product_fibers": "Jump to product fibers"
 		},
 		"buttons": {
-			"classic_view": "Classic view",
+			"classic_view": "Klassisk vy",
 			"edit": "Redigera",
 			"share": "Dela",
 			"report": "Report an issue with this product",
@@ -276,7 +276,7 @@
 			"not_found": "Hittades inte",
 			"check_error": "Fel",
 			"not_checked": "Not checked",
-			"loading": "Checking…"
+			"loading": "Kontrollerar…"
 		},
 		"header": {
 			"quantity": "Kvantitet",
@@ -306,7 +306,7 @@
 		},
 		"datasources": {
 			"title": "Datakällor",
-			"user": "User: ",
+			"user": "Användare: ",
 			"added_on_title": "Product added",
 			"last_edit_title": "Last edit",
 			"last_check_title": "Last check",
@@ -392,7 +392,7 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
-			"traceability_codes_more_info": "More info:",
+			"traceability_codes_more_info": "Mer info:",
 			"traceability_codes_wiki": "Food Traceability Codes Wiki",
 			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
@@ -421,7 +421,7 @@
 			"packaging": "Förpackning",
 			"packaging_component": {
 				"number_of_units": "Antal enheter",
-				"number_of_units_placeholder": "e.g. 1",
+				"number_of_units_placeholder": "t.ex. 1",
 				"shape": "Form",
 				"shape_placeholder": "e.g. bottle, box, pouch...",
 				"material": "Material",
@@ -471,7 +471,7 @@
 			"product_types": {
 				"food": "Mat",
 				"beauty": "Skönhet",
-				"petfood": "Pet Food",
+				"petfood": "Djurmat",
 				"product": "Övrigt"
 			},
 			"product_page_url": "Officiell produktsida",
@@ -547,7 +547,7 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
-				"product_type_step": "Product Type",
+				"product_type_step": "Produkttyp",
 				"images": "Foton",
 				"basic_info": "Grundläggande information",
 				"take_photos": "Take key photos of the product",
@@ -561,7 +561,7 @@
 				"prices": "Priser",
 				"comment": "Kommentar"
 			},
-			"more_details": "More details",
+			"more_details": "Mer detaljer",
 			"more_details_subsections": {
 				"product_details": "Produktdetaljer",
 				"classification": "Classification",
@@ -574,7 +574,7 @@
 			"submit_product": "Skicka in",
 			"continue_to_score": "Score Calculation",
 			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
-			"product_tags": "Product tags",
+			"product_tags": "Produkttaggar",
 			"product_names": "Product names",
 			"delete_language": "Delete language",
 			"legal_warning_title": "Ladda inte upp upphovsrättsskyddade bilder",
@@ -598,14 +598,14 @@
 					"invalid_crop": "Please select a valid crop area."
 				},
 				"select_image": "Select an Image",
-				"uploading": "Uploading...",
+				"uploading": "Laddar upp...",
 				"upload_type": "Upload {type}",
 				"unselecting": "Unselecting...",
 				"unselect_type": "Unselect {type}",
 				"unselect_image": "Avmarkera bild",
 				"selecting": "Selecting...",
 				"select_type": "Select {type}",
-				"show_less": "Show Less",
+				"show_less": "Visa mindre",
 				"see_all": "See All ({count})",
 				"processing_upload": "Processing upload...",
 				"unselecting_image": "Unselecting image...",
@@ -613,17 +613,17 @@
 				"edit_photo": "Redigera foto",
 				"loading_editor": "Loading image editor...",
 				"rotate_left": "Rotate Left",
-				"rotate_right": "Rotate Right",
+				"rotate_right": "Rotera höger",
 				"zoom_in": "Zoom In",
-				"zoom_out": "Zoom Out",
+				"zoom_out": "Zooma ut",
 				"reset": "Återställ",
 				"rotation": "Rotation",
-				"tool": "Tool",
+				"tool": "Verktyg",
 				"crop_drag_to_move": "Drag to move, corners to resize",
 				"crop_click_to_start": "Click and drag to start cropping",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Rapportera bild",
-				"save_changes": "Save Changes"
+				"save_changes": "Spara ändringar"
 			},
 			"comment_description": "Add a comment about your changes (optional)",
 			"prices": {
@@ -764,7 +764,7 @@
 		"step": "Steg",
 		"of": "av",
 		"cancel": "Annulera",
-		"close": "close",
+		"close": "stäng",
 		"scroll_to_top": "Skrolla till toppen"
 	},
 	"menu": {
@@ -829,13 +829,13 @@
 		"page_description": "Compare nutritional information of food products",
 		"title_placeholder": "Enter comparison title...",
 		"click_to_edit": "Click to edit title",
-		"mode_absolute": "Absolute",
+		"mode_absolute": "Absolut",
 		"mode_vs_first": "vs First",
 		"mode_vs_best": "vs Best",
 		"share": "Dela",
 		"share_title": "Product Comparison",
 		"share_text": "Check out this product comparison I made!",
-		"clear_all": "Clear All",
+		"clear_all": "Rensa alla",
 		"no_products_selected": "No products selected for comparison",
 		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
 		"browse_products": "Bläddra bland produkter",
@@ -845,13 +845,13 @@
 		"read_only": "Read-only comparison",
 		"import_to_my": "Import to My Comparison",
 		"import_dialog_title": "Import Comparison",
-		"continue_question": "Continue?",
+		"continue_question": "Fortsätt?",
 		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
 		"import": "Importera",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
-		"best": "Best",
-		"worst": "Worst",
+		"best": "Bästa",
+		"worst": "Sämst",
 		"scores": "Scores:",
 		"nutrients_per_100g": "Nutrients / 100g:",
 		"name": "Namn",
