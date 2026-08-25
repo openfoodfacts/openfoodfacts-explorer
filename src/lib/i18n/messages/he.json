@@ -707,6 +707,8 @@
 		"add_new_product": "הוסף מוצר חדש",
 		"scan_again": "סרוק שוב",
 		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
