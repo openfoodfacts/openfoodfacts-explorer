@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "條碼",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "搜尋",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Open",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "错误",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "數量",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "產品",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "主要語言",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "鈣",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "膽固醇",
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "碳水化合物",
@@ -490,9 +519,14 @@
 				"salt": "鹽",
 				"fibers": "Fibers",
 				"sodium": "鈉",
-				"alcohol": "酒精"
+				"alcohol": "酒精",
+				"iron": "鐵",
+				"potassium": "鉀",
+				"trans-fat": "反式脂肪",
+				"vitamin-d": "維他命D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "儲存",
