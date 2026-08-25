@@ -224,7 +224,7 @@
 		"attributes_error_title": "Nelze načíst personalizované atributy",
 		"attributes_error_body": "Při načítání personalizovaných atributů došlo k chybě. Zkuste to prosím znovu později.",
 		"shortcuts": {
-			"show_barcode": "Zobrazit/skrýt čárový kód produktu",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Otevřít stránku API produktu",
 			"edit_same_window": "Upravit produkt v aktuálním okně",
 			"edit_new_window": "Upravit produkt v novém okně",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Odkaz zkopírován do schránky",
 			"failed_copy": "Kopírování odkazu se nezdařilo"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Čárový kód",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Vyhledat",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "OTEVŘENO",
+			"found": "Found",
+			"not_found": "Nenalezeno",
+			"check_error": "Chyba",
+			"not_checked": "Not checked",
+			"loading": "Kontrola…"
 		},
 		"header": {
 			"quantity": "Množství",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Produkt",
+			"barcode_info": "Barcode information",
 			"health": "Zdraví a výživa",
 			"environment": "Životní prostředí a udržitelnost",
 			"knowledge_panels": "Analýza a postřehy",
@@ -372,6 +395,8 @@
 			"product_type_description": "Vyberte kategorii, která nejlépe popisuje tento produkt. Tím se nakonfiguruje cílová databáze a relevantní atributy.",
 			"select_product_type_first": "Nejprve musíte vybrat typ produktu!",
 			"main_language": "Hlavní jazyk",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Přidat produkt",
 			"nutrition_issues": "Problémy s výživou",
 			"nutrition_issues_description": "Zjistili jsme některé potenciální problémy s informacemi o výživě, které jste poskytli. Před uložením změn si prosím přečtěte následující upozornění a proveďte potřebné opravy.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Makroživiny",
 			"micronutrients": "Mikroživiny",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Vápník",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "Celkový tuk",
 				"saturated-fat": "Nasycené tuky",
 				"carbohydrates": "Sacharidy",
@@ -490,9 +519,14 @@
 				"salt": "Sůl",
 				"fibers": "Vlákna",
 				"sodium": "Sodík",
-				"alcohol": "Alkohol"
+				"alcohol": "Alkohol",
+				"iron": "Železo",
+				"potassium": "Draslík",
+				"trans-fat": "Trans-tuky",
+				"vitamin-d": "Vitamín D"
 			},
 			"additional_nutrients": "Další živiny",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Komentář",
 			"comment_placeholder": "Přidat komentář k této úpravě",
 			"save_btn": "Uložit",
