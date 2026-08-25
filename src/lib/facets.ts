@@ -52,6 +52,8 @@ export type FacetCatalogItem = {
 	icon: Component | ComponentType;
 	isFreeText?: boolean;
 	placeholder?: string;
+	placeholderKey?: string;
+	defaultPlaceholder?: string;
 	defaultVisible?: boolean;
 };
 
@@ -152,6 +154,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMaterialGlobeLocationPin,
 		isFreeText: true,
 		placeholder: 'e.g. France, Spain...',
+		placeholderKey: 'facets.placeholders.origins',
+		defaultPlaceholder: 'e.g. France, Spain...',
 		defaultVisible: true
 	},
 	{
@@ -162,6 +166,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiFactory,
 		isFreeText: true,
 		placeholder: 'e.g. Lyon, Berlin...',
+		placeholderKey: 'facets.placeholders.manufacturing_places',
+		defaultPlaceholder: 'e.g. Lyon, Berlin...',
 		defaultVisible: true
 	},
 	{
@@ -172,6 +178,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiBarcode,
 		isFreeText: true,
 		placeholder: 'e.g. EMB 29007...',
+		placeholderKey: 'facets.placeholders.emb_codes',
+		defaultPlaceholder: 'e.g. EMB 29007...',
 		defaultVisible: true
 	},
 	{
@@ -183,6 +191,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiPackage,
 		isFreeText: true,
 		placeholder: 'e.g. glass, plastic...',
+		placeholderKey: 'facets.placeholders.packaging',
+		defaultPlaceholder: 'e.g. glass, plastic...',
 		defaultVisible: false
 	},
 	{
@@ -194,6 +204,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiShapeOutline,
 		isFreeText: true,
 		placeholder: 'e.g. bottle, box...',
+		placeholderKey: 'facets.placeholders.packaging_shapes',
+		defaultPlaceholder: 'e.g. bottle, box...',
 		defaultVisible: false
 	},
 	{
@@ -205,6 +217,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiRecycle,
 		isFreeText: true,
 		placeholder: 'e.g. discard, recycle...',
+		placeholderKey: 'facets.placeholders.packaging_recycling',
+		defaultPlaceholder: 'e.g. discard, recycle...',
 		defaultVisible: false
 	},
 	{
@@ -216,6 +230,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiFoodVariant,
 		isFreeText: true,
 		placeholder: 'e.g. sugar, water...',
+		placeholderKey: 'facets.placeholders.ingredients',
+		defaultPlaceholder: 'e.g. sugar, water...',
 		defaultVisible: false
 	},
 	{
@@ -227,6 +243,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiSprout,
 		isFreeText: true,
 		placeholder: 'e.g. en:palm-oil-free, en:vegan...',
+		placeholderKey: 'facets.placeholders.ingredients_analysis',
+		defaultPlaceholder: 'e.g. en:palm-oil-free, en:vegan...',
 		defaultVisible: false
 	},
 	{
@@ -237,6 +255,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiAlert,
 		isFreeText: true,
 		placeholder: 'e.g. nuts, milk...',
+		placeholderKey: 'facets.placeholders.traces',
+		defaultPlaceholder: 'e.g. nuts, milk...',
 		defaultVisible: false
 	},
 	{
@@ -247,6 +267,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiPill,
 		isFreeText: true,
 		placeholder: 'e.g. vitamin-c...',
+		placeholderKey: 'facets.placeholders.vitamins',
+		defaultPlaceholder: 'e.g. vitamin-c...',
 		defaultVisible: false
 	},
 	{
@@ -257,6 +279,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDiamond,
 		isFreeText: true,
 		placeholder: 'e.g. calcium, iron...',
+		placeholderKey: 'facets.placeholders.minerals',
+		defaultPlaceholder: 'e.g. calcium, iron...',
 		defaultVisible: false
 	},
 	{
@@ -267,6 +291,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDna,
 		isFreeText: true,
 		placeholder: 'e.g. inosine...',
+		placeholderKey: 'facets.placeholders.nucleotides',
+		defaultPlaceholder: 'e.g. inosine...',
 		defaultVisible: false
 	},
 	{
@@ -277,6 +303,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiMolecule,
 		isFreeText: true,
 		placeholder: 'e.g. taurine, leucine...',
+		placeholderKey: 'facets.placeholders.amino_acids',
+		defaultPlaceholder: 'e.g. taurine, leucine...',
 		defaultVisible: false
 	},
 	{
@@ -288,6 +316,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiPlusCircle,
 		isFreeText: true,
 		placeholder: 'e.g. polyphenols...',
+		placeholderKey: 'facets.placeholders.other_nutritional_substances',
+		defaultPlaceholder: 'e.g. polyphenols...',
 		defaultVisible: false
 	},
 	{
@@ -298,6 +328,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDatabase,
 		isFreeText: true,
 		placeholder: 'e.g. ingredients-completed...',
+		placeholderKey: 'facets.placeholders.states',
+		defaultPlaceholder: 'e.g. ingredients-completed...',
 		defaultVisible: false
 	},
 	{
@@ -308,6 +340,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiAlertCircle,
 		isFreeText: true,
 		placeholder: 'e.g. packaging-data-complete...',
+		placeholderKey: 'facets.placeholders.data_quality_tags',
+		defaultPlaceholder: 'e.g. packaging-data-complete...',
 		defaultVisible: false
 	},
 	{
@@ -319,6 +353,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiAlert,
 		isFreeText: true,
 		placeholder: 'e.g. warning tag...',
+		placeholderKey: 'facets.placeholders.data_quality_warnings',
+		defaultPlaceholder: 'e.g. warning tag...',
 		defaultVisible: false
 	},
 	{
@@ -330,6 +366,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiAlertOctagon,
 		isFreeText: true,
 		placeholder: 'e.g. error tag...',
+		placeholderKey: 'facets.placeholders.data_quality_errors',
+		defaultPlaceholder: 'e.g. error tag...',
 		defaultVisible: false
 	},
 	{
@@ -341,6 +379,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiStar,
 		isFreeText: true,
 		placeholder: 'e.g. top-1000-fr...',
+		placeholderKey: 'facets.placeholders.popularity_tags',
+		defaultPlaceholder: 'e.g. top-1000-fr...',
 		defaultVisible: false
 	},
 	{
@@ -352,6 +392,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDotsHorizontal,
 		isFreeText: true,
 		placeholder: 'e.g. nutriscore-computed...',
+		placeholderKey: 'facets.placeholders.misc',
+		defaultPlaceholder: 'e.g. nutriscore-computed...',
 		defaultVisible: false
 	},
 	{
@@ -363,6 +405,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiAccountMultiple,
 		isFreeText: true,
 		placeholder: 'e.g. username...',
+		placeholderKey: 'facets.placeholders.contributors',
+		defaultPlaceholder: 'e.g. username...',
 		defaultVisible: false
 	},
 	{
@@ -374,6 +418,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDomain,
 		isFreeText: true,
 		placeholder: 'e.g. producer id...',
+		placeholderKey: 'facets.placeholders.owner',
+		defaultPlaceholder: 'e.g. producer id...',
 		defaultVisible: false
 	},
 	{
@@ -385,6 +431,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiCamera,
 		isFreeText: true,
 		placeholder: 'e.g. username...',
+		placeholderKey: 'facets.placeholders.photographers',
+		defaultPlaceholder: 'e.g. username...',
 		defaultVisible: false
 	},
 	{
@@ -395,6 +443,8 @@ export const MASTER_FACET_CATALOG: FacetCatalogItem[] = [
 		icon: IconMdiDatabase,
 		isFreeText: true,
 		placeholder: 'e.g. 2024-01...',
+		placeholderKey: 'facets.placeholders.entry_dates',
+		defaultPlaceholder: 'e.g. 2024-01...',
 		defaultVisible: false
 	}
 ];

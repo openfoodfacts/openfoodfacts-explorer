@@ -81,7 +81,7 @@
 		class="my-3 hidden flex-wrap items-center gap-2 rounded-lg border border-base-300 bg-base-100 p-3 shadow-2xs md:flex"
 	>
 		<span class="text-xs font-semibold tracking-wider text-base-content/60 uppercase">
-			Active Filters:
+			{$_('search.active_filters', { default: 'Active Filters' })}:
 		</span>
 
 		{#each activeChips as chip (chip.type + ':' + chip.facetKey + ':' + chip.itemKey)}
@@ -103,7 +103,9 @@
 				</span>
 			{:else}
 				<span class="badge gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error">
-					<span class="opacity-80">NOT {chip.facetLabel}:</span>
+					<span class="opacity-80"
+						>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span
+					>
 					<span>{chip.itemLabel}</span>
 					<button
 						type="button"
@@ -126,7 +128,7 @@
 			onclick={onClearAll}
 		>
 			<IconMdiFilterOffOutline class="h-3.5 w-3.5" />
-			<span>Clear All</span>
+			<span>{$_('search.clear_all', { default: 'Clear All' })}</span>
 		</button>
 	</div>
 
@@ -138,7 +140,7 @@
 		<summary class="flex cursor-pointer list-none items-center justify-between gap-2 select-none">
 			<div class="flex items-center gap-2">
 				<span class="text-xs font-semibold tracking-wider text-base-content/60 uppercase">
-					Active Filters
+					{$_('search.active_filters', { default: 'Active Filters' })}
 				</span>
 				<span class="badge badge-sm font-medium">
 					{activeChips.length}
@@ -161,7 +163,7 @@
 					}}
 				>
 					<IconMdiFilterOffOutline class="h-3.5 w-3.5" />
-					<span>Clear All</span>
+					<span>{$_('search.clear_all', { default: 'Clear All' })}</span>
 				</button>
 				<span class="text-xs text-base-content/50 transition-transform group-open:rotate-180"
 					>▼</span
@@ -196,7 +198,9 @@
 						class="badge flex w-full items-center justify-between gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error"
 					>
 						<span class="truncate">
-							<span class="opacity-80">NOT {chip.facetLabel}:</span>
+							<span class="opacity-80"
+								>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span
+							>
 							<span>{chip.itemLabel}</span>
 						</span>
 						<button

@@ -160,6 +160,9 @@
 	<details
 		class="group mb-1 rounded-md border-b border-base-300/40 pb-1 transition-colors last:mb-0 last:border-b-0 last:pb-0"
 		open={activeCount > 0 || forcedOpenFacets[facetKey]}
+		ontoggle={(e) => {
+			forcedOpenFacets[facetKey] = e.currentTarget.open;
+		}}
 	>
 		<summary
 			title={displayName}
@@ -463,6 +466,9 @@
 	<details
 		class="group mb-1 rounded-md border-b border-base-300/40 pb-1 transition-colors last:mb-0 last:border-b-0 last:pb-0"
 		open={activeCount > 0 || forcedOpenFacets[freeFacet.key]}
+		ontoggle={(e) => {
+			forcedOpenFacets[freeFacet.key] = e.currentTarget.open;
+		}}
 	>
 		<summary
 			title={freeLabel}
@@ -504,8 +510,11 @@
 				<IconMdiMagnify class="absolute top-2 left-2 h-3.5 w-3.5 text-base-content/40" />
 				<input
 					type="text"
-					placeholder={freeFacet.placeholder ||
-						$_('search.filter_placeholder', { default: 'Filter...' })}
+					placeholder={freeFacet.placeholderKey
+						? $_(freeFacet.placeholderKey, {
+								default: freeFacet.defaultPlaceholder || freeFacet.placeholder
+							})
+						: freeFacet.placeholder || $_('search.filter_placeholder', { default: 'Filter...' })}
 					class="input-bordered input w-full rounded-md bg-base-100 pl-7 text-xs input-xs"
 					bind:value={searchQueries[freeFacet.key]}
 					onkeydown={(e) => {

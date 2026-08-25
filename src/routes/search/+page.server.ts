@@ -27,10 +27,10 @@ async function getPrices(
 	barcodes: string[]
 ): Promise<Record<string, number>> {
 	const prices: Record<string, number> = {};
+	const api = createPricesApi(baseFetch);
 	const results = await Promise.all(
 		barcodes.map(async (code) => {
 			try {
-				const api = createPricesApi(baseFetch);
 				const res = await api.getPrices({ product_code: code });
 				return { code, prices: res };
 			} catch {

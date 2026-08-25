@@ -175,7 +175,11 @@
 			isFreeText={true}
 			labelKey={freeFacet.labelKey}
 			defaultLabel={freeFacet.defaultLabel}
-			placeholder={freeFacet.placeholder}
+			placeholder={freeFacet.placeholderKey
+				? $_(freeFacet.placeholderKey, {
+						default: freeFacet.defaultPlaceholder || freeFacet.placeholder
+					})
+				: freeFacet.placeholder}
 			{selectedInclude}
 			{selectedExclude}
 			isOpen={openDropdownKey === freeFacet.key}
