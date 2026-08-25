@@ -3,9 +3,19 @@
 
 	type Props = {
 		text: string;
+		/** Side on which the tooltip opens. Use e.g. `right` when the icon sits at the edge of the viewport. */
+		position?: 'top' | 'bottom' | 'left' | 'right';
 	};
 
-	let { text }: Props = $props();
+	let { text, position = 'top' }: Props = $props();
+
+	// Full class names so Tailwind can detect them
+	const positionClasses = {
+		top: 'tooltip-top',
+		bottom: 'tooltip-bottom',
+		left: 'tooltip-left',
+		right: 'tooltip-right'
+	} as const;
 
 	const tooltipContentClasses = [
 		'[&:before]:max-w-[160px]',
@@ -20,7 +30,10 @@
 	].join(' ');
 </script>
 
-<div class="tooltip tooltip-top {tooltipContentClasses} z-50 tooltip-primary" data-tip={text}>
+<div
+	class="tooltip {positionClasses[position]} {tooltipContentClasses} z-50 tooltip-primary"
+	data-tip={text}
+>
 	<button
 		type="button"
 		class="btn h-5 min-h-0 w-5 rounded-full btn-ghost p-0 transition-colors duration-200 btn-xs hover:bg-primary/10"
