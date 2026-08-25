@@ -82,6 +82,10 @@
 		"error_occurred": "une erreur s'est produite :",
 		"errors_occurred": "des erreurs se sont produites :"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Rester informé",
 		"contribute": "Contribuer",
