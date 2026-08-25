@@ -52,6 +52,7 @@ jobs:
           echo "PUBLIC_ROBOTOFF_URL=https://robotoff.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_IMAGES_URL=https://images.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_NUTRIPATROL_URL=https://nutripatrol.openfoodfacts.net" >> $GITHUB_ENV
+          echo "PUBLIC_ENVIRONMENT=staging" >> $GITHUB_ENV
       - name: Set various variable for production deployment
         if: matrix.env == 'off-explorer-org'
         run: |
@@ -132,6 +133,7 @@ jobs:
             echo "PUBLIC_ROBOTOFF_URL=${{ env.PUBLIC_ROBOTOFF_URL }}" >> .env
             echo "PUBLIC_IMAGES_URL=${{ env.PUBLIC_IMAGES_URL }}" >> .env
             echo "PUBLIC_NUTRIPATROL_URL=${{ env.PUBLIC_NUTRIPATROL_URL }}" >> .env
+            echo "PUBLIC_ENVIRONMENT=${{ env.PUBLIC_ENVIRONMENT }}" >> .env
 
       - name: Pull Docker image
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5

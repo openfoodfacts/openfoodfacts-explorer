@@ -82,6 +82,10 @@
 		"error_occurred": "si è verificato un errore:",
 		"errors_occurred": "si sono verificati degli errori:"
 	},
+	"environment_notice": {
+		"title": "Ambiente non di produzione",
+		"message": "I dati e le funzionalità di questo sito possono cambiare o essere ripristinati senza preavviso."
+	},
 	"footer": {
 		"stay_updated": "Rimani aggiornato",
 		"contribute": "Contribuire",
