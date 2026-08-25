@@ -9,6 +9,9 @@
 
 	let { text, position = 'top' }: Props = $props();
 
+	// Unique, SSR-safe id so the tooltip text is exposed to assistive tech via aria-describedby
+	const descriptionId = $props.id();
+
 	// Full class names so Tailwind can detect them
 	const positionClasses = {
 		top: 'tooltip-top',
@@ -38,9 +41,11 @@
 		type="button"
 		class="btn h-5 min-h-0 w-5 rounded-full btn-ghost p-0 transition-colors duration-200 btn-xs hover:bg-primary/10"
 		aria-label="More information"
+		aria-describedby={descriptionId}
 	>
 		<IconMdiHelpCircleOutline
 			class="h-4 w-4 text-primary transition-colors duration-200 hover:text-primary/70"
 		/>
 	</button>
+	<span id={descriptionId} class="sr-only">{text}</span>
 </div>
