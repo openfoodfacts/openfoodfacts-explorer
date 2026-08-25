@@ -82,6 +82,10 @@
 		"error_occurred": "došlo k chybě:",
 		"errors_occurred": "došlo k chybám:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Zůstaňte v obraze",
 		"contribute": "Přispět",
