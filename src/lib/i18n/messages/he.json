@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "הצגת/הסתרת ברקוד המוצר",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "הקישור הועתק ללוח הגזירים!",
 			"failed_copy": "העתקת הקישור נכשלה"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "ברקוד",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "חיפוש",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "פתיחה",
+			"found": "Found",
+			"not_found": "לא נמצא",
+			"check_error": "שגיאה",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "כמות",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "מוצר",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "קודם צריך לבחור סוג מוצר!",
 			"main_language": "השפה העיקרית",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "הוספת מוצר",
 			"nutrition_issues": "בעיות תזונתיות",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "מאקרו-נוטריינטים",
 			"micronutrients": "מיקרו-נוטריינטים",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "סידן",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "כולסטרול",
 				"fat": "סך השומן",
 				"saturated-fat": "שומן רווי",
 				"carbohydrates": "פחמימות",
@@ -490,9 +519,14 @@
 				"salt": "מלח",
 				"fibers": "סיבים",
 				"sodium": "נתרן",
-				"alcohol": "אלכוהול"
+				"alcohol": "אלכוהול",
+				"iron": "ברזל",
+				"potassium": "אשלגן",
+				"trans-fat": "שומן טרנס",
+				"vitamin-d": "ויטמין D"
 			},
 			"additional_nutrients": "חומרים מזינים נוספים",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "הערה",
 			"comment_placeholder": "הוסף תגובה לעריכה זו",
 			"save_btn": "שמירה",
