@@ -82,6 +82,10 @@
 		"error_occurred": "si è verificato un errore:",
 		"errors_occurred": "si sono verificati degli errori:"
 	},
+	"environment_notice": {
+		"title": "Ambiente non di produzione",
+		"message": "I dati e le funzionalità di questo sito possono cambiare o essere ripristinati senza preavviso."
+	},
 	"footer": {
 		"stay_updated": "Rimani aggiornato",
 		"contribute": "Contribuire",
@@ -224,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide barcode tools",
+			"show_barcode": "Show/hide product barcode",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -854,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Marche",
 		"quantity": "Quantità",
-		"nova_group": "Ultra-processing level",
+		"nova_group": "Nova Group",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
