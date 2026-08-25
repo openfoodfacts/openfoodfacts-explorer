@@ -224,7 +224,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +251,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Código de barras",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Procurar",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Aberto",
+			"found": "Found",
+			"not_found": "Não encontrado",
+			"check_error": "Erro",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantidade",
@@ -302,6 +324,7 @@
 		},
 		"sections": {
 			"product": "Produto",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
@@ -372,6 +395,8 @@
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "Deve primeiro selecionar um tipo de produto!",
 			"main_language": "Idioma principal",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Adicionar produto",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -482,6 +507,10 @@
 			"macronutrients": "Macronutrientes",
 			"micronutrients": "Micronutrientes",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Cálcio",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Colesterol",
 				"fat": "Gordura Total",
 				"saturated-fat": "Gordura saturada",
 				"carbohydrates": "Carboidratos",
@@ -490,9 +519,14 @@
 				"salt": "Sal",
 				"fibers": "Fibras",
 				"sodium": "Sódio (Na+)",
-				"alcohol": "Álcool"
+				"alcohol": "Álcool",
+				"iron": "Ferro",
+				"potassium": "Potássio",
+				"trans-fat": "Gorduras trans",
+				"vitamin-d": "Vitamina D"
 			},
 			"additional_nutrients": "Nutrientes adicionais",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comentário",
 			"comment_placeholder": "Adicione um comentário a esta edição",
 			"save_btn": "Guardar",
