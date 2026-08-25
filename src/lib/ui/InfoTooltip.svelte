@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
+	import { _ } from '$lib/i18n';
 
 	type Props = {
 		text: string;
@@ -40,7 +41,7 @@
 	<button
 		type="button"
 		class="btn h-5 min-h-0 w-5 rounded-full btn-ghost p-0 transition-colors duration-200 btn-xs hover:bg-primary/10"
-		aria-label="More information"
+		aria-label={$_('common.more_information', { default: 'More information' })}
 		aria-describedby={descriptionId}
 	>
 		<IconMdiHelpCircleOutline

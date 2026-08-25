@@ -701,6 +701,7 @@
 		}
 	},
 	"common": {
+		"more_information": "More information",
 		"next": "Next",
 		"back": "Back",
 		"skip": "Skip",
