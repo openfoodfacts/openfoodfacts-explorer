@@ -82,6 +82,10 @@
 		"error_occurred": "a apărut o eroare:",
 		"errors_occurred": "au apărut erori:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribuiți",
