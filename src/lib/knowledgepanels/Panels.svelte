@@ -29,7 +29,10 @@ Props:
 		roots == null
 			? panels
 			: Object.fromEntries(
-					Object.entries(panels).filter(([_, panel]) => panel.type && roots.includes(panel.type))
+					Object.entries(panels).filter(
+						([id, panel]) =>
+							roots.includes(id) || (panel.type != null && roots.includes(panel.type))
+					)
 				)
 	);
 
@@ -70,7 +73,7 @@ Props:
 {/if}
 
 {#each Object.entries(panels) as [id, panel] (id)}
-	{#if roots == null || (panel.type != null && roots.includes(panel.type))}
+	{#if roots == null || roots.includes(id) || (panel.type != null && roots.includes(panel.type))}
 		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
 	{/if}
 {/each}

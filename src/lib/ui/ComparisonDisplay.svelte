@@ -243,7 +243,7 @@
 	}
 
 	function getGreenScoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
+		return KP_ATTRIBUTE_IMG('green-score-' + (grade ?? 'unknown') + '.svg');
 	}
 
 	// Number formatters
@@ -458,7 +458,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 									comparison.isBest
 								)}
 							{/if}
@@ -555,11 +555,17 @@
 								</div>
 							{/if}
 							{#if product.image_front_small_url}
-								<BlurredImageDisplay
-									src={product.image_front_small_url}
-									alt={product.product_name ?? product.code}
-									class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
-								/>
+								<a
+									href={`/products/${product.code}`}
+									class="contents"
+									aria-label={product.product_name ?? product.code}
+								>
+									<BlurredImageDisplay
+										src={product.image_front_small_url}
+										alt={product.product_name ?? product.code}
+										class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
+									/>
+								</a>
 							{/if}
 						</div>
 					</th>
@@ -571,7 +577,9 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
-						{product.product_name ?? '-'}
+						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
+							{product.product_name ?? '-'}
+						</a>
 					</td>
 				{/each}
 			</tr>
@@ -617,14 +625,16 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.nova_group')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
+					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
+				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
-								`Nova Group ${product.nova_group}`,
+								`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 								comparison.isBest
 							)}
 						{:else}
@@ -641,7 +651,7 @@
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
-								`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+								`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
 								comparison.isBest
 							)}
 						{:else}

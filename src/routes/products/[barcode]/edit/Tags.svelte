@@ -9,6 +9,7 @@
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
+		placeholder?: string;
 		onChange?: (tags: string[]) => void;
 		highlightEmpty?: boolean;
 		highlightSeverity?: 'error' | 'warning' | 'info' | '';
@@ -18,6 +19,7 @@
 	let {
 		tags = $bindable([]),
 		autocomplete = [],
+		placeholder,
 		onChange,
 		highlightEmpty = false,
 		highlightSeverity = '',
@@ -252,6 +254,7 @@
 		<input
 			type="text"
 			class="input-bordered input w-full bg-transparent outline-hidden"
+			{placeholder}
 			onkeydown={inputHandler}
 			bind:value={newValue}
 		/>

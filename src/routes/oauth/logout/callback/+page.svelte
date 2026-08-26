@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { clearAuthTokens } from '$lib/stores/auth';
+	import { trackOffEvent } from '$lib/analytics';
 	import { onMount } from 'svelte';
 
 	async function doLogout() {
 		clearAuthTokens();
+		trackOffEvent('account', 'logout_succeeded');
 		goto('/'); // Redirect to home page after logout
 	}
 

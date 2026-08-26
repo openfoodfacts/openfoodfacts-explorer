@@ -10,6 +10,7 @@
 	import TagChipList from '$lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
 	import { compareStore } from '$lib/stores/compareStore';
+	import { userInfo } from '$lib/stores/user';
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
@@ -19,6 +20,7 @@
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -121,14 +123,19 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn btn-secondary btn-sm md:btn-md"
+						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
+						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
 					>
-						{$_('product.buttons.classic_view')}
+						<IconMdiOpenInNew class="h-5 w-5" />
+						<span>{$_('product.buttons.classic_view')}</span>
 					</a>
 
 					<a
 						href={`/products/${product.code}/edit`}
 						class="btn btn-secondary btn-sm md:btn-md"
 						class:pointer-events-none={navigating.to}
+						title={$_('product.buttons.edit', { default: 'Edit' })}
+						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
 					>
 						<IconMdiPencil class="h-5 w-5" />
 						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
@@ -137,12 +144,15 @@
 					<button
 						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						onclick={sharePage}
+						title={$_('product.buttons.share', { default: 'Share' })}
+						aria-label={$_('product.buttons.share', { default: 'Share' })}
 					>
 						<IconMdiShareVariant class="h-5 w-5" />
 						<span class="hidden md:block">{$_('product.buttons.share')}</span>
 					</button>
 
 					<a
+						id="report-problem"
 						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
 						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 						target="_blank"
@@ -153,14 +163,16 @@
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
 
-					<button
-						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToCalculator}
-						title={$_('product.buttons.add_to_calculator')}
-						aria-label={$_('product.buttons.add_to_calculator')}
-					>
-						<IconMdiCalculator class="h-5 w-5" />
-					</button>
+					{#if $userInfo != null}
+						<button
+							class="btn btn-secondary btn-sm md:btn-md"
+							onclick={addToCalculator}
+							title={$_('product.buttons.add_to_calculator')}
+							aria-label={$_('product.buttons.add_to_calculator')}
+						>
+							<IconMdiCalculator class="h-5 w-5" />
+						</button>
+					{/if}
 
 					<button
 						class="btn btn-secondary btn-sm md:btn-md"
@@ -289,7 +301,6 @@
 	facet: string
 )}
 	{#if tags != null && tags.length > 0}
-		{const href = resolve('/facets/[facet]/[value]', { facet: facet, value: tags[0] })}
 		<div class="mb-2">
 			<div class="mb-2 text-sm font-bold text-secondary">
 				{$_(titleKey, { default: defaultTitle })}
@@ -298,7 +309,7 @@
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
-					href
+					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
 				}))}
 			/>
 		</div>

@@ -48,11 +48,11 @@ async function compatSearch(
 	// Try the new API first
 	const newParams: SearchBody = {
 		...params,
-		facets: ['brands', 'categories', 'nutrition_grades', 'ecoscore_grade'],
+		facets: ['brands', 'categories', 'nutrition_grades', 'environmental_score_grade'],
 		charts: [
 			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'ecoscore_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_groups' },
+			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChart', field: 'nova_group' },
 			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		]
 	};
@@ -70,11 +70,11 @@ async function compatSearch(
 
 	const oldParams = {
 		...params,
-		facets: ['nutrition_grades', 'ecoscore_grade'],
+		facets: ['nutrition_grades', 'environmental_score_grade'],
 		charts: [
 			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChartType', field: 'ecoscore_grade' },
-			{ chart_type: 'DistributionChartType', field: 'nova_groups' },
+			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_group' },
 			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		]
 	};

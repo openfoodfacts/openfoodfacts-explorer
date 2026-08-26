@@ -5,6 +5,7 @@
 		tagsString: string;
 		separator?: string;
 		autocomplete?: readonly string[];
+		placeholder?: string;
 		onChange?: (value: string) => void;
 		highlightEmpty?: boolean;
 		highlightSeverity?: 'error' | 'warning' | 'info' | '';
@@ -15,6 +16,7 @@
 		tagsString,
 		separator = ',',
 		autocomplete = [],
+		placeholder,
 		onChange,
 		highlightEmpty = false,
 		highlightSeverity = '',
@@ -24,6 +26,7 @@
 
 <Tags
 	{autocomplete}
+	{placeholder}
 	tags={tagsString?.split(separator)?.filter((str) => str !== '') ?? []}
 	onChange={(tags) => onChange?.(tags.join(separator))}
 	{highlightEmpty}

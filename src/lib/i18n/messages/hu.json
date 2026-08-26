@@ -82,10 +82,22 @@
 		"error_occurred": "hiba történt:",
 		"errors_occurred": "hibák történtek:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Hozzájárulás",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +161,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -209,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -236,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Vonalkód",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Keresés",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Nyitott",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Hiba",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Mennyiség",
@@ -280,7 +321,37 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Termék",
+			"barcode_info": "Barcode information",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Adatforrások",
+			"prices": "Árak",
+			"folksonomy": "Tags & Community",
+			"external_sources": "Külső források"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -309,6 +380,7 @@
 				"stores": "Add meg az üzlet nevét, ahol a terméket vásároltad. Például: „Carrefour”, „Walmart”, „Lidl”.",
 				"origins": "Adja meg a csomagoláson található származási helyekre vonatkozó bármilyen jelzést. Nem kell aggódnia az összetevők listájában közvetlenül feltüntetett származási helyek miatt. Például: „Argentínából származó marhahús”, „A szója nem az Európai Unióból származik”.",
 				"traceability_code": "Ebben a részben a csomagolási jelölésekhez, azonosító jelölésekhez vagy egészségügyi jelölésekhez kapcsolódó kódokat adhatja meg.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Azok az országok, ahol a termék széles körben elérhető (a külföldi termékekre szakosodott üzletek kivételével).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -317,7 +389,18 @@
 			},
 			"allergens": "Allergének",
 			"traces": "Nyomokban",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Először ki kell választania a termék típusát!",
 			"main_language": "Fő nyelv",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -378,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Gyártási helyszínek",
-			"categories": "Kategóriák:",
+			"categories": "Kategóriák",
 			"labels": "Címkék",
 			"brands": "Márkanevek",
 			"stores": "Boltok",
@@ -428,6 +511,10 @@
 			"macronutrients": "Makrotápanyagok",
 			"micronutrients": "Mikrotápanyagok",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Kalcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Koleszterin",
 				"fat": "Összes zsír",
 				"saturated-fat": "Telített zsír",
 				"carbohydrates": "Szénhidrátok",
@@ -436,9 +523,14 @@
 				"salt": "Só",
 				"fibers": "Rostok",
 				"sodium": "Nátrium",
-				"alcohol": "Alkohol"
+				"alcohol": "Alkohol",
+				"iron": "Vas",
+				"potassium": "Kálium",
+				"trans-fat": "Transzzsír",
+				"vitamin-d": "D-vitamin"
 			},
 			"additional_nutrients": "További tápanyagok",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Hozzászólás hozzáadása ehhez a szerkesztéshez",
 			"save_btn": "Mentés",
@@ -455,8 +547,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Fényképek",
 				"basic_info": "Alapvető információk",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Nyelvek és terméknevek",
 				"ingredients": "Összetevők",
@@ -466,6 +561,22 @@
 				"prices": "Árak",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Termék részletei",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Nyelvek",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Elküldés",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Ne töltsön fel szerzői joggal védett képeket",
 			"legal_warning_photos_1": "Ne töltsön fel olyan fotókat, amelyek nem a tulajdonában vannak, vagy amelyekhez nem rendelkezik a jogokkal. A szerzői joggal védett képek engedély nélküli feltöltése illegális, és a fiókja felfüggesztését vonhatja maga után.",
 			"legal_warning_photos_2": "Csak saját fotókat tölts fel, vagy olyanokat, amelyek felhasználására kifejezett engedélyed van.",
@@ -544,6 +655,22 @@
 				"add_nutrition_facts": "Tápértékadatok hozzáadása"
 			}
 		},
+		"external_sources": {
+			"title": "Külső források",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Adatvédelmi Irányelvek"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -616,7 +743,12 @@
 		"product_not_found": "A termék nem található",
 		"barcode_scanned_not_found": "A {barcode} vonalkód beolvasása sikeresen megtörtént, de nem találtunk terméket az Élelmiszerinformációk, Szépségápolási cikkek, Termékinformációk vagy Állateledel-információk között.",
 		"add_new_product": "Új termék hozzáadása",
-		"scan_again": "Szkennelés újra"
+		"scan_again": "Szkennelés újra",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +764,8 @@
 		"step": "Lépés",
 		"of": "a",
 		"cancel": "Mégse",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menü",
@@ -725,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Márkanév",
 		"quantity": "Mennyiség",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
