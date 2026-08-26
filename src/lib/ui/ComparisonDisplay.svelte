@@ -8,7 +8,6 @@
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
-	import IconMdiBookOpenVariant from '@iconify-svelte/mdi/book-open-variant';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	type Props = {
@@ -26,10 +25,6 @@
 		onReorderProduct,
 		readonly = false
 	}: Props = $props();
-
-	// Documentation page explaining the NOVA (ultra-processing) classification
-	// In-app static page (proxied from world.openfoodfacts.org/nova), see /static/[id]
-	const NOVA_INFO_URL = '/static/nova';
 
 	type NutrientKey = string;
 
@@ -639,21 +634,9 @@
 							position="right"
 							text={$_('compare.nova_group_info', {
 								default:
-									'NOVA classifies foods by their degree of processing, from group 1 (unprocessed or minimally processed) to group 4 (ultra-processed). A lower group is generally better.'
+									'NOVA classifies foods by their degree of processing, from group 1 (unprocessed or minimally processed) to group 4 (ultra-processed).'
 							})}
 						/>
-						<a
-							href={NOVA_INFO_URL}
-							class="link link-primary"
-							title={$_('compare.nova_group_learn_more', {
-								default: 'Learn more about NOVA groups'
-							})}
-							aria-label={$_('compare.nova_group_learn_more', {
-								default: 'Learn more about NOVA groups'
-							})}
-						>
-							<IconMdiBookOpenVariant class="h-4 w-4" />
-						</a>
 					</div>
 				</td>
 				{#each products as product (product.code)}
