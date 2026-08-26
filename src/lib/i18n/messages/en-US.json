@@ -485,6 +485,7 @@
 			"no_languages_found": "No languages found",
 			"name": "Name",
 			"quantity": "Quantity",
+			"quantity_placeholder": "e.g., 250g, 1L, 500ml",
 			"emb_code": "Traceability codes",
 			"packaging": "Packaging",
 			"packaging_component": {

@@ -111,7 +111,7 @@
 	onMount(() => {
 		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
-			action: () => focusEditField('#quantity')
+			action: () => focusEditField('#quantity-input')
 		});
 		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
@@ -263,7 +263,9 @@
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
 					}}
-					placeholder="e.g., 250g, 1L, 500ml"
+					placeholder={$_('product.edit.quantity_placeholder', {
+						default: 'e.g., 250g, 1L, 500ml'
+					})}
 				/>
 				{#if quantityError}
 					<span
@@ -350,6 +352,10 @@
 					onChange={(v) => {
 						product = { ...product, labels: v };
 					}}
+					highlightSeverity={labelsError ? labelsError.severity : ''}
+					highlightMessage={labelsError
+						? $_(labelsError.message, { default: 'Quality issue' })
+						: ''}
 				/>
 			</div>
 			<div class="form-control w-full">
@@ -590,7 +596,9 @@
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
 					}}
-					placeholder="e.g., 250g, 1L, 500ml"
+					placeholder={$_('product.edit.quantity_placeholder', {
+						default: 'e.g., 250g, 1L, 500ml'
+					})}
 				/>
 				{#if quantityError}
 					<span

@@ -212,6 +212,8 @@
 					'textarea-bordered textarea w-full text-sm transition-all sm:text-base',
 					quality.isEnabled &&
 						!product[`ingredients_text_${code}`]?.trim() &&
+						!hasError &&
+						!hasWarning &&
 						'border-dashed border-warning/50 bg-warning/5',
 					hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''
 				]}
@@ -228,12 +230,21 @@
 				<span
 					class={[
 						'mt-1 flex items-center gap-1 text-xs font-medium',
-						error.severity === 'error' ? 'text-error' : 'text-warning/70'
+						error.severity === 'error'
+							? 'text-error'
+							: error.severity === 'warning'
+								? 'text-warning/70'
+								: 'text-info/70'
 					]}
 				>
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 					{$_(`product.edit.quality.${error.severity}_label`, {
-						default: error.severity === 'error' ? 'Error' : 'Warning'
+						default:
+							error.severity === 'error'
+								? 'Error'
+								: error.severity === 'warning'
+									? 'Warning'
+									: 'Info'
 					})}: {$_(error.message, { default: 'Quality issue' })}
 				</span>
 			{:else}
