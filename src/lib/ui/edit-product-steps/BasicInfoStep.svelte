@@ -50,18 +50,11 @@
 
 	let showInfo = $state(false);
 
-	import { getQualityErrors } from '$lib/utils/dataQuality';
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
 
-	let apiQualityErrors = $derived(
-		getQualityErrors(
-			product.data_quality_errors_tags,
-			product.data_quality_warnings_tags,
-			product.data_quality_info_tags
-		)
-	);
-
-	let quantityError = $derived(apiQualityErrors.find((e) => e.field === 'quantity'));
-	let labelsError = $derived(apiQualityErrors.find((e) => e.field === 'labels'));
+	const quality = $derived(getDataQualityCtx());
+	let quantityError = $derived(quality.forField('quantity'));
+	let labelsError = $derived(quality.forField('labels'));
 
 	const SEVERITY_INPUT_CLASS: Record<string, string> = {
 		error: 'input-error',
@@ -260,7 +253,8 @@
 					type="text"
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
-						!product.quantity?.trim() &&
+						quality.isEnabled &&
+							!product.quantity?.trim() &&
 							!quantityError &&
 							'border-dashed border-warning/50 bg-warning/5',
 						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
@@ -292,7 +286,7 @@
 										: 'Info'
 						})}: {$_(quantityError.message, { default: 'Quality issue' })}
 					</span>
-				{:else if !product.quantity?.trim()}
+				{:else if quality.isEnabled && !product.quantity?.trim()}
 					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
 						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 						{$_('product.edit.missing_info', { default: 'Missing info' })}
@@ -586,7 +580,8 @@
 					type="text"
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
-						!product.quantity?.trim() &&
+						quality.isEnabled &&
+							!product.quantity?.trim() &&
 							!quantityError &&
 							'border-dashed border-warning/50 bg-warning/5',
 						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
@@ -618,7 +613,7 @@
 										: 'Info'
 						})}: {$_(quantityError.message, { default: 'Quality issue' })}
 					</span>
-				{:else if !product.quantity?.trim()}
+				{:else if quality.isEnabled && !product.quantity?.trim()}
 					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
 						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 						{$_('product.edit.missing_info', { default: 'Missing info' })}
@@ -723,7 +718,7 @@
 								onChange={(v) => {
 									product = { ...product, categories: v };
 								}}
-								highlightEmpty={true}
+								highlightEmpty={quality.isEnabled}
 							/>
 						</div>
 						<div id="labels" class="form-control w-full">

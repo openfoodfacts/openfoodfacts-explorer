@@ -98,17 +98,10 @@
 
 	let activeLang = $state(product.lang);
 
-	import { getQualityErrors } from '$lib/utils/dataQuality';
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
 
-	let apiQualityErrors = $derived(
-		getQualityErrors(
-			product.data_quality_errors_tags,
-			product.data_quality_warnings_tags,
-			product.data_quality_info_tags
-		)
-	);
-
-	let ingredientsErrors = $derived(apiQualityErrors.filter((e) => e.field === 'ingredients_text'));
+	const quality = $derived(getDataQualityCtx());
+	let ingredientsErrors = $derived(quality.forSection('ingredients'));
 	function getIngredientsErrors(code: string) {
 		return ingredientsErrors.filter((e) => {
 			const prefix = e.tag.split(':')[0];
@@ -217,7 +210,9 @@
 				id={`ingredients-list-${code}`}
 				class={[
 					'textarea-bordered textarea w-full text-sm transition-all sm:text-base',
-					!product[`ingredients_text_${code}`] && 'border-dashed border-warning/50 bg-warning/5',
+					quality.isEnabled &&
+						!product[`ingredients_text_${code}`]?.trim() &&
+						'border-dashed border-warning/50 bg-warning/5',
 					hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''
 				]}
 				class:opacity-50={ocrLoading}
@@ -239,10 +234,10 @@
 					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 					{$_(`product.edit.quality.${error.severity}_label`, {
 						default: error.severity === 'error' ? 'Error' : 'Warning'
-					})}: {$_(error.message)}
+					})}: {$_(error.message, { default: 'Quality issue' })}
 				</span>
 			{:else}
-				{#if !product[`ingredients_text_${code}`]}
+				{#if quality.isEnabled && !product[`ingredients_text_${code}`]?.trim()}
 					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
 						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 						{$_('product.edit.quality.missing_info', { default: 'Missing info' })}

@@ -292,25 +292,18 @@
 			values: { examples: servingSizeExamples }
 		})
 	);
-	import { getQualityErrors } from '$lib/utils/dataQuality';
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
 
-	let apiQualityErrors = $derived(
-		getQualityErrors(
-			product.data_quality_errors_tags,
-			product.data_quality_warnings_tags,
-			product.data_quality_info_tags
-		)
-	);
+	const quality = $derived(getDataQualityCtx());
+	let apiQualityErrors = $derived(quality.forSection('nutrition'));
 	let nutritionIssues = $derived([
 		...getNutritionIssues(product),
-		...apiQualityErrors
-			.filter((e) => e.section === 'nutrition')
-			.map((e) => ({
-				severity: e.severity,
-				field: e.field.replace('_100g', '').replace(/_/g, '-'),
-				title: $_(e.message, { default: 'Nutrition issue' }),
-				desc: ''
-			}))
+		...apiQualityErrors.map((e) => ({
+			severity: e.severity,
+			field: e.field.replace('_100g', '').replace(/_/g, '-'),
+			title: $_(e.message, { default: 'Nutrition issue' }),
+			desc: ''
+		}))
 	]);
 
 	let issuesByField = $derived((keys: string | string[]) => {

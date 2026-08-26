@@ -256,6 +256,26 @@
 
 					<div class="form-control">
 						<label class="label cursor-pointer">
+							<span class="label-text font-semibold">
+								{$_('settings.show_data_quality_errors', { default: 'Show data quality issues' })}
+							</span>
+							<input
+								id="show-data-quality-errors"
+								type="checkbox"
+								class="toggle toggle-primary"
+								bind:checked={$preferences.editing.showDataQualityErrors}
+							/>
+						</label>
+						<p class="mt-1 text-xs text-base-content/70">
+							{$_('settings.show_data_quality_errors_help', {
+								default:
+									'Highlight potential data quality errors, warnings, and missing fields while editing products'
+							})}
+						</p>
+					</div>
+
+					<div class="form-control">
+						<label class="label cursor-pointer">
 							<span class="label-text font-semibold">{$_('settings.display_prices_in_search')}</span
 							>
 							<input
