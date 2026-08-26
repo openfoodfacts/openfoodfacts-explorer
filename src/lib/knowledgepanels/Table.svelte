@@ -22,7 +22,12 @@
 					{#each row.values as cell, cellIndex (cellIndex)}
 						<td>
 							{#if cell.icon_url}
-								<img src={cell.icon_url} class="row-item-icon" alt="" aria-hidden="true" />
+								<img
+									src={cell.icon_url}
+									class="mr-1 inline-block h-[1em] w-[1em] overflow-hidden align-middle text-[18px] brightness-0 dark:invert"
+									alt=""
+									aria-hidden="true"
+								/>
 							{/if}
 							<HtmlPurify dirty={cell.text} />
 						</td>
@@ -32,22 +37,3 @@
 		</tbody>
 	</table>
 </div>
-
-<style>
-	.row-item-icon {
-		font-size: 18px;
-		vertical-align: middle;
-		display: inline-block;
-		overflow: hidden;
-		width: 1em;
-		height: 1em;
-		margin-right: 0.25em;
-		filter: brightness(0);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.row-item-icon {
-			filter: brightness(0) invert(1);
-		}
-	}
-</style>
