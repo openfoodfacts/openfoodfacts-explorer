@@ -353,6 +353,7 @@
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
 	let expandedNutrients = $state<Record<string, boolean>>({});
+	let showIngredients = $state(false);
 </script>
 
 {#snippet scoreImage(imageSrc: string, altText: string, isBest: boolean)}
@@ -431,11 +432,7 @@
 {/snippet}
 
 {#snippet ingredientSection(product: Product)}
-	<details class="rounded-box bg-base-200">
-		<summary class="cursor-pointer px-3 py-2 text-center text-sm font-semibold">
-			{$_('compare.ingredients', { default: 'Ingredients' })}
-		</summary>
-
+	{#if showIngredients}
 		<div class="border-t border-base-300 px-3 py-2 text-center text-sm">
 			{#if product.product_type === 'beauty'}
 				{@const ingredientItems = getIngredientItems(product)}
@@ -456,8 +453,15 @@
 				</p>
 			{/if}
 		</div>
-	</details>
+	{/if}
 {/snippet}
+
+<div class="mb-4 flex items-center justify-between lg:hidden">
+	<span class="font-semibold">
+		{$_('compare.ingredients', { default: 'Ingredients' })}
+	</span>
+	<input type="checkbox" class="toggle toggle-sm" bind:checked={showIngredients} />
+</div>
 
 <!-- Mobile: Card View -->
 <div class="block lg:hidden">
@@ -662,11 +666,19 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
-					{$_('compare.ingredients', { default: 'Ingredients' })}
+					<button
+						type="button"
+						class="flex w-full items-center justify-between text-left font-semibold"
+						onclick={() => (showIngredients = !showIngredients)}
+						aria-expanded={showIngredients}
+					>
+						<span>{$_('compare.ingredients', { default: 'Ingredients' })}</span>
+						<span>{showIngredients ? '▼' : '▶'}</span>
+					</button>
 				</td>
 
 				{#each products as product (product.code)}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="align-top" animate:flip={{ duration: 300 }}>
 						{@render ingredientSection(product)}
 					</td>
 				{/each}
