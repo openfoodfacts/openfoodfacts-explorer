@@ -365,9 +365,9 @@ export function getQualityErrors(
 ): QualityError[] {
 	const result: QualityError[] = [];
 
-	processList(errors, 'error', result);
-	processList(warnings, 'warning', result);
-	processList(infos, 'info', result);
+	processQualityTags(errors, 'error', result);
+	processQualityTags(warnings, 'warning', result);
+	processQualityTags(infos, 'info', result);
 
 	return result;
 }
@@ -378,7 +378,7 @@ const DYNAMIC_NUTRIENT_PATTERNS = [
 	{ regex: /value-over-1000-([a-zA-Z0-9-]+)$/, message: 'product.edit.quality.value_over_1000' }
 ];
 
-function processList(
+function processQualityTags(
 	tags: string[] | undefined,
 	defaultSeverity: 'error' | 'warning' | 'info',
 	result: QualityError[]

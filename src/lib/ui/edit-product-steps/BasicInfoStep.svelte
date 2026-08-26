@@ -63,6 +63,12 @@
 	let quantityError = $derived(apiQualityErrors.find((e) => e.field === 'quantity'));
 	let labelsError = $derived(apiQualityErrors.find((e) => e.field === 'labels'));
 
+	const SEVERITY_INPUT_CLASS: Record<string, string> = {
+		error: 'input-error',
+		warning: 'input-warning',
+		info: 'input-info'
+	};
+
 	const permissions = getPermissionsCtx();
 
 	function toggleInfo() {
@@ -248,12 +254,7 @@
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
 						!product.quantity && 'border-dashed border-warning/50 bg-warning/5',
-						quantityError &&
-							(quantityError.severity === 'error'
-								? 'input-error'
-								: quantityError.severity === 'warning'
-									? 'input-warning'
-									: 'input-info')
+						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
 					]}
 					value={product.quantity ?? ''}
 					oninput={(e) => {
@@ -574,12 +575,7 @@
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
 						!product.quantity && 'border-dashed border-warning/50 bg-warning/5',
-						quantityError &&
-							(quantityError.severity === 'error'
-								? 'input-error'
-								: quantityError.severity === 'warning'
-									? 'input-warning'
-									: 'input-info')
+						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
 					]}
 					value={product.quantity ?? ''}
 					oninput={(e) => {
