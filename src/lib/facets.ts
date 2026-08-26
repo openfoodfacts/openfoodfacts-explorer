@@ -667,7 +667,7 @@ export function addIncludeFacet(
 		...sel,
 		[facet]: {
 			include: [...current.include, value],
-			exclude: current.exclude ? [...current.exclude] : []
+			exclude: current.exclude ? current.exclude.filter((v: string) => v !== value) : []
 		}
 	};
 }
@@ -684,7 +684,7 @@ export function addExcludeFacet(
 	return {
 		...sel,
 		[facet]: {
-			include: current.include ? [...current.include] : [],
+			include: current.include ? current.include.filter((v: string) => v !== value) : [],
 			exclude: [...current.exclude, value]
 		}
 	};

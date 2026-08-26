@@ -159,7 +159,7 @@
 
 	<details
 		class="group mb-1 rounded-md border-b border-base-300/40 pb-1 transition-colors last:mb-0 last:border-b-0 last:pb-0"
-		open={activeCount > 0 || forcedOpenFacets[facetKey]}
+		open={forcedOpenFacets[facetKey] ?? activeCount > 0}
 		ontoggle={(e) => {
 			forcedOpenFacets[facetKey] = e.currentTarget.open;
 		}}
@@ -465,7 +465,7 @@
 
 	<details
 		class="group mb-1 rounded-md border-b border-base-300/40 pb-1 transition-colors last:mb-0 last:border-b-0 last:pb-0"
-		open={activeCount > 0 || forcedOpenFacets[freeFacet.key]}
+		open={forcedOpenFacets[freeFacet.key] ?? activeCount > 0}
 		ontoggle={(e) => {
 			forcedOpenFacets[freeFacet.key] = e.currentTarget.open;
 		}}

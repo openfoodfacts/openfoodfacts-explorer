@@ -224,6 +224,19 @@ describe('add & remove facet helpers', () => {
 		sel = removeExcludeFacet(sel, 'brands', 'Pepsi');
 		expect(sel.brands.exclude).toEqual([]);
 	});
+
+	it('ensures include and exclude are mutually exclusive on add', () => {
+		let sel: FacetsSelection = {
+			ingredients: { include: ['water'], exclude: ['sugar'] }
+		};
+		sel = addIncludeFacet(sel, 'ingredients', 'sugar');
+		expect(sel.ingredients.include).toEqual(['water', 'sugar']);
+		expect(sel.ingredients.exclude).toEqual([]);
+
+		sel = addExcludeFacet(sel, 'ingredients', 'water');
+		expect(sel.ingredients.include).toEqual(['sugar']);
+		expect(sel.ingredients.exclude).toEqual(['water']);
+	});
 });
 
 describe('groupCatalogFacets', () => {
