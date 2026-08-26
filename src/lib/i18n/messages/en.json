@@ -82,6 +82,10 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
@@ -224,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barcode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Search",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Open",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Error",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -302,12 +328,14 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "Data Sources",
 			"prices": "Prices",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -340,6 +368,7 @@
 				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Countries where the product is widely available (not including stores specialising in foreign products).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -351,10 +380,15 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -415,7 +449,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"categories": "Categories",
 			"labels": "Labels",
 			"brands": "Brands",
 			"stores": "Stores",
@@ -465,6 +499,10 @@
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
@@ -473,9 +511,14 @@
 				"salt": "Salt",
 				"fibers": "Fibers",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
@@ -600,6 +643,22 @@
 				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Privacy policy"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -673,6 +732,7 @@
 		"barcode_scanned_not_found": "Barcode {barcode} was scanned successfully, but no product was found in our Open Food Facts, Open Beauty Facts, Open Products Facts or Open Pet Food Facts.",
 		"add_new_product": "Add new product",
 		"scan_again": "Scan again",
+		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -784,7 +844,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Brand",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

@@ -192,7 +192,7 @@
 		<h2 class="mb-2 text-2xl font-bold text-primary">
 			{$_('landing.help_improve_title')}
 		</h2>
-		<p class="mx-auto max-w-2xl text-base text-base-content/70">
+		<p class="mx-auto max-w-3xl text-base text-base-content/70">
 			{$_('landing.help_improve_desc')}
 		</p>
 		<div class="mx-auto mt-4 mb-2 h-1 w-16 rounded bg-primary/30"></div>
