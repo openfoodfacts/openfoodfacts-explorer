@@ -168,7 +168,10 @@
 			</button>
 			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
 			<span class="p-6 text-sm text-base-content/80 sm:text-base">
-				{$_('product.edit.info.basic_info')}
+				{$_('product.edit.info.basic_info', {
+					default:
+						'Provide the main details about the product, such as quantity, packaging, and manufacturer.'
+				})}
 			</span>
 		</div>
 	{/if}
@@ -179,11 +182,15 @@
 			<div class="form-control w-full">
 				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.product_type')}
+						{$_('product.edit.product_type', { default: 'Product type' })}
 						<span class="badge badge-outline badge-xs badge-info sm:badge-sm">
-							{$_('product.edit.moderator_only')}
+							{$_('product.edit.moderator_only', { default: 'Moderator only' })}
 						</span>
-						<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+						<InfoTooltip
+							text={$_('product.edit.tooltips.product_type', {
+								default: 'Select the type of product: Food, Beauty, Pet Food, or Other.'
+							})}
+						/>
 					</span>
 				</label>
 				<div class="flex flex-wrap gap-2">
@@ -198,7 +205,7 @@
 								product = { ...product, product_type: type };
 							}}
 						>
-							{$_(`product.edit.product_types.${type}`)}
+							{$_(`product.edit.product_types.${type}`, { default: type })}
 						</button>
 					{/each}
 				</div>
@@ -253,7 +260,9 @@
 					type="text"
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
-						!product.quantity && 'border-dashed border-warning/50 bg-warning/5',
+						!product.quantity?.trim() &&
+							!quantityError &&
+							'border-dashed border-warning/50 bg-warning/5',
 						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
 					]}
 					value={product.quantity ?? ''}
@@ -281,9 +290,9 @@
 									: quantityError.severity === 'warning'
 										? 'Warning'
 										: 'Info'
-						})}: {$_(quantityError.message)}
+						})}: {$_(quantityError.message, { default: 'Quality issue' })}
 					</span>
-				{:else if !product.quantity}
+				{:else if !product.quantity?.trim()}
 					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
 						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 						{$_('product.edit.missing_info', { default: 'Missing info' })}
@@ -423,7 +432,10 @@
 			</button>
 			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
 			<span class="p-6 text-sm text-base-content/80 sm:text-base">
-				{$_('product.edit.info.basic_info')}
+				{$_('product.edit.info.basic_info', {
+					default:
+						'Provide the main details about the product, such as quantity, packaging, and manufacturer.'
+				})}
 			</span>
 		</div>
 	{/if}
@@ -574,7 +586,9 @@
 					type="text"
 					class={[
 						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
-						!product.quantity && 'border-dashed border-warning/50 bg-warning/5',
+						!product.quantity?.trim() &&
+							!quantityError &&
+							'border-dashed border-warning/50 bg-warning/5',
 						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
 					]}
 					value={product.quantity ?? ''}
@@ -602,9 +616,9 @@
 									: quantityError.severity === 'warning'
 										? 'Warning'
 										: 'Info'
-						})}: {$_(quantityError.message)}
+						})}: {$_(quantityError.message, { default: 'Quality issue' })}
 					</span>
-				{:else if !product.quantity}
+				{:else if !product.quantity?.trim()}
 					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
 						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
 						{$_('product.edit.missing_info', { default: 'Missing info' })}
@@ -726,7 +740,9 @@
 									product = { ...product, labels: v };
 								}}
 								highlightSeverity={labelsError ? labelsError.severity : ''}
-								highlightMessage={labelsError ? $_(labelsError.message) : ''}
+								highlightMessage={labelsError
+									? $_(labelsError.message, { default: 'Quality issue' })
+									: ''}
 							/>
 						</div>
 						<div class="form-control w-full">
