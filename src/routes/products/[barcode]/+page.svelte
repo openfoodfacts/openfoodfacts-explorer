@@ -2,7 +2,7 @@
 	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
 	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 
 	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
 	import ExternalPanels from '$lib/knowledgepanels/ExternalPanels.svelte';
@@ -86,7 +86,7 @@
 
 		const requestContext = {
 			code: product.code,
-			lc: data.lc || $preferences.lang || 'en',
+			lc: data.lc || getLanguageCode($preferences.locale),
 			cc: $preferences.country || 'world',
 			productType: product.product_type,
 			categories: product.categories_tags ?? []

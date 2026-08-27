@@ -5,7 +5,7 @@
 
 	import { navigating } from '$app/state';
 
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
 	import TagChipList from '$lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
@@ -28,11 +28,11 @@
 	};
 	let { product, lc }: Props = $props();
 
-	let { lang } = $derived($preferences);
+	let { locale: preferredLocale } = $derived($preferences);
 
 	function getLocalizedTags(facet: string): string[] | undefined {
 		const rawProduct = product as unknown as Record<string, unknown>;
-		const activeLang = lc || lang;
+		const activeLang = lc || getLanguageCode(preferredLocale);
 		// Prioritize specific language suffix fields (e.g. categories_tags_fr, brands_tags_fr)
 		if (activeLang) {
 			const langKey = `${facet}_tags_${activeLang.toLowerCase()}`;
