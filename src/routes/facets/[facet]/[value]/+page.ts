@@ -38,7 +38,9 @@ const WITH_MAP_FACETS: Record<string, MapFacet> = {
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
-	const mapFacet = WITH_MAP_FACETS[facet];
+	const mapFacet = Object.prototype.hasOwnProperty.call(WITH_MAP_FACETS, facet)
+		? WITH_MAP_FACETS[facet]
+		: undefined;
 
 	let facetDisplayValue = value;
 	let taxonomy: Awaited<ReturnType<typeof getTaxo>> | null = null;
@@ -73,8 +75,12 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 
 	try {
 		if (mapFacet) {
-			taxonomy = await getTaxo(facet, fetch);
-			facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}, lang) ?? value;
+			try {
+				taxonomy = await getTaxo(facet, fetch);
+				facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}, lang) ?? value;
+			} catch (e) {
+				console.error('Taxonomy fetch failed:', e);
+			}
 		}
 
 		results = await getFacetValue(fetch, facet, value, searchOptions);
