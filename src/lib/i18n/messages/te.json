@@ -82,6 +82,10 @@
 		"error_occurred": "లోపం సంభవించింది:",
 		"errors_occurred": "లోపాలు సంభవించాయి:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
@@ -224,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barcode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Search",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "ఓపెన్",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "లోపం",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -302,12 +328,27 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "డేటా సోర్సెస్",
 			"prices": "ధరలు",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -339,6 +380,7 @@
 				"stores": "మీరు ఉత్పత్తిని కొనుగోలు చేసిన స్టోర్‌ను ఇన్‌పుట్ చేయండి. ఉదాహరణకు, 'క్యారీఫోర్', 'వాల్‌మార్ట్', 'లిడ్ల్'.",
 				"origins": "ప్యాకేజింగ్‌లో మీరు కనుగొనగలిగే మూలాల సూచనలను జోడించండి. పదార్థాల జాబితాలో నేరుగా సూచించబడిన మూలాల గురించి మీరు ఆందోళన చెందాల్సిన అవసరం లేదు. ఉదాహరణకు, 'అర్జెంటీనా నుండి గొడ్డు మాంసం', 'సోయా యూరోపియన్ యూనియన్ నుండి రాదు'.",
 				"traceability_code": "ఈ విభాగంలో, మీరు ప్యాకేజింగ్ గుర్తులు, గుర్తింపు గుర్తులు లేదా ఆరోగ్య గుర్తులకు సంబంధించిన కోడ్‌లను ఇన్‌పుట్ చేయవచ్చు.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "ఉత్పత్తి విస్తృతంగా అందుబాటులో ఉన్న దేశాలు (విదేశీ ఉత్పత్తులలో ప్రత్యేకత కలిగిన దుకాణాలను చేర్చలేదు).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,10 +392,15 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "మీరు ముందుగా ఉత్పత్తి రకాన్ని ఎంచుకోవాలి!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -414,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "తయారీ ప్రదేశాలు",
-			"categories": "వర్గాలు :",
+			"categories": "వర్గాలు",
 			"labels": "Labels",
 			"brands": "Brands",
 			"stores": "దుకాణాలు",
@@ -464,6 +511,10 @@
 			"macronutrients": "స్థూల పోషకాలు",
 			"micronutrients": "సూక్ష్మ పోషకాలు",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "మొత్తం కొవ్వు",
 				"saturated-fat": "సంతృప్త కొవ్వు",
 				"carbohydrates": "Carbohydrate",
@@ -472,9 +523,14 @@
 				"salt": "Salt",
 				"fibers": "ఫైబర్స్",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "అదనపు పోషకాలు",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "ఈ సవరణకు వ్యాఖ్యను జోడించండి",
 			"save_btn": "Save",
@@ -599,6 +655,22 @@
 				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "గోప్యతా విధానం"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -672,6 +744,9 @@
 		"barcode_scanned_not_found": "బార్‌కోడ్ {barcode} విజయవంతంగా స్కాన్ చేయబడింది, కానీ మా ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్, ఓపెన్ బ్యూటీ ఫ్యాక్ట్స్, ఓపెన్ ప్రొడక్ట్స్ ఫ్యాక్ట్స్ లేదా ఓపెన్ పెట్ ఫుడ్ ఫ్యాక్ట్స్‌లో ఏ ఉత్పత్తి కనుగొనబడలేదు.",
 		"add_new_product": "కొత్త ఉత్పత్తిని జోడించండి",
 		"scan_again": "మళ్ళీ స్కాన్ చేయి",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "బ్రాండ్",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

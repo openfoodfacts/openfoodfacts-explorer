@@ -6,6 +6,7 @@
 	} from '$lib/api/search';
 	import { getTaxonomySuggestions } from '$lib/api';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { getLanguageCode } from '$lib/settings';
 	import { onDestroy } from 'svelte';
 	import { deduplicateAutocompleteOptions } from './searchbar';
 
@@ -50,6 +51,15 @@
 		}
 
 		autocompleteAbortController = new AbortController();
+
+		const autocompleteQuery = {
+			q: query,
+			taxonomy_names: 'brands,categories,labels',
+			lang: getLanguageCode(getBrowserLocale()),
+			size: 5,
+			fuzziness: null,
+			index_id: null
+		};
 
 		autocompleteLoading = true;
 

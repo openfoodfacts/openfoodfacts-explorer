@@ -82,6 +82,10 @@
 		"error_occurred": "אירעה שגיאה:",
 		"errors_occurred": "אירעו שגיאות:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "עדכונים שימושיים",
 		"contribute": "לתרום",
@@ -224,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "הצגת/הסתרת ברקוד המוצר",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +255,28 @@
 		"toast": {
 			"copied_link": "הקישור הועתק ללוח הגזירים!",
 			"failed_copy": "העתקת הקישור נכשלה"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "ברקוד",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "חיפוש",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "פתיחה",
+			"found": "Found",
+			"not_found": "לא נמצא",
+			"check_error": "שגיאה",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "כמות",
@@ -302,12 +328,27 @@
 		},
 		"sections": {
 			"product": "מוצר",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "מקורות נתונים",
 			"prices": "מחירים",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -339,6 +380,7 @@
 				"stores": "הזן את החנות שבה רכשת את המוצר. לדוגמה, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "הוסיפו כל סימן מוצא שתוכלו למצוא על האריזה. אינכם צריכים לדאוג לגבי מקורות המצוינים ישירות ברשימת הרכיבים. לדוגמה, 'בקר מארגנטינה', 'הסויה אינה מגיעה מהאיחוד האירופי'.",
 				"traceability_code": "בחלק זה, ניתן להזין קודים הקשורים לסימני אריזה, סימני זיהוי או סימני בריאות.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "מדינות בהן המוצר זמין באופן נרחב (לא כולל חנויות המתמחות במוצרים מחו\"ל).",
 				"product_type": "נא לבחור את סוג המוצר: מזון, טיפוח, מזון לחיות מחמד או אחר.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,10 +392,15 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "קודם צריך לבחור סוג מוצר!",
 			"main_language": "השפה העיקרית",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "הוספת מוצר",
 			"nutrition_issues": "בעיות תזונתיות",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -414,7 +461,7 @@
 				"multiple_uploads_guidance": "עם Chrome,‏ Firefox ו־Safari, אפשר לבחור כמה תמונות (מוצר, רכיבים, הרכב תזונתי ועוד) בלחיצה על Ctrl ועל התמונות כדי להוסיף את כולן בבת אחת."
 			},
 			"manufacturing_places": "מקומות ייצור",
-			"categories": "קטגוריות:",
+			"categories": "קטגוריות",
 			"labels": "תוויות",
 			"brands": "מותגים",
 			"stores": "חנויות",
@@ -464,6 +511,10 @@
 			"macronutrients": "מאקרו-נוטריינטים",
 			"micronutrients": "מיקרו-נוטריינטים",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "סידן",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "כולסטרול",
 				"fat": "סך השומן",
 				"saturated-fat": "שומן רווי",
 				"carbohydrates": "פחמימות",
@@ -472,9 +523,14 @@
 				"salt": "מלח",
 				"fibers": "סיבים",
 				"sodium": "נתרן",
-				"alcohol": "אלכוהול"
+				"alcohol": "אלכוהול",
+				"iron": "ברזל",
+				"potassium": "אשלגן",
+				"trans-fat": "שומן טרנס",
+				"vitamin-d": "ויטמין D"
 			},
 			"additional_nutrients": "חומרים מזינים נוספים",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "הערה",
 			"comment_placeholder": "הוסף תגובה לעריכה זו",
 			"save_btn": "שמירה",
@@ -599,6 +655,22 @@
 				"add_nutrition_facts": "הוספת מפרט תזונתי"
 			}
 		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "מדיניות פרטיות"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -672,6 +744,9 @@
 		"barcode_scanned_not_found": "הברקוד {barcode} נסרק בהצלחה, אך לא נמצא מוצר במידע על מזון פתוח, מידע על יופי פתוח, מידע על מוצרים פתוחים או מידע על מזון לחיות מחמד פתוחים.",
 		"add_new_product": "הוסף מוצר חדש",
 		"scan_again": "סרוק שוב",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "מותג",
 		"quantity": "כמות",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

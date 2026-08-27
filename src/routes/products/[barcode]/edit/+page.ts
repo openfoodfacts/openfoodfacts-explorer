@@ -20,7 +20,7 @@ import { PRODUCT_STATUS, type ProductType } from '$lib/const';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
-import { preferences } from '$lib/settings';
+import { getLanguageCode, preferences } from '$lib/settings';
 import { resolve } from '$app/paths';
 
 export const ssr = false;
@@ -40,7 +40,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	const off = createProductsApi(fetch);
 
 	const productReq = await off.getProductV3(params.barcode, {
-		lc: get(preferences).lang,
+		lc: getLanguageCode(get(preferences).locale),
 		cc: get(preferences).country
 	});
 

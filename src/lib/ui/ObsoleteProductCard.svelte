@@ -15,7 +15,7 @@
 	function handleToggle(e: Event) {
 		const target = e.target as HTMLInputElement;
 		product.obsolete = target.checked ? 'on' : '';
-		trackOffEvent('product', 'delete_toggle', target.checked ? 'on' : 'off');
+		trackOffEvent('contribution', 'obsolete_status_toggled', target.checked ? 'on' : 'off');
 	}
 </script>
 
