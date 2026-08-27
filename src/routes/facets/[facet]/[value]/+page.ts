@@ -16,7 +16,13 @@ import { getLocale } from '$lib/i18n';
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
-const WITH_MAP_FACETS = {
+type MapFacet = {
+	tagsField: 'origins_tags' | 'countries_tags';
+	heading: string;
+	defaultHeading: string;
+};
+
+const WITH_MAP_FACETS: Record<string, MapFacet> = {
 	origins: {
 		tagsField: 'origins_tags',
 		heading: 'facets.map_heading_origins',
@@ -27,14 +33,12 @@ const WITH_MAP_FACETS = {
 		heading: 'facets.map_heading_countries',
 		defaultHeading: 'Where these products are sold'
 	}
-} as const;
-
-type MapFacet = keyof typeof WITH_MAP_FACETS;
+};
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
-	const mapFacet = facet in WITH_MAP_FACETS ? WITH_MAP_FACETS[facet as MapFacet] : undefined;
+	const mapFacet = WITH_MAP_FACETS[facet];
 
 	let facetDisplayValue = value;
 	let taxonomy: Awaited<ReturnType<typeof getTaxo>> | null = null;
@@ -125,11 +129,6 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		knowledgePanels: kp.knowledge_panels || {},
 		productAttributes,
 		distributionData,
-		mapFacet: mapFacet
-			? {
-					heading: mapFacet.heading,
-					defaultHeading: mapFacet.defaultHeading
-				}
-			: null
+		mapFacet: mapFacet ?? null
 	};
 };
