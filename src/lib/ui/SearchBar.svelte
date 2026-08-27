@@ -40,9 +40,9 @@
 	let requestId = 0;
 
 	async function fetchAutocomplete(query: string) {
-		autocompleteAbortController?.abort();
-
 		const currentRequestId = ++requestId;
+
+		autocompleteAbortController?.abort();
 
 		if (query.trim().length < minQueryLength) {
 			autocompleteLoading = false;
@@ -52,13 +52,8 @@
 
 		autocompleteAbortController = new AbortController();
 
-		const autocompleteQuery = {
-			q: query,
-			taxonomy_names: 'brands,categories,labels',
-			lang: getLanguageCode(getBrowserLocale()),
-			size: 5,
-			fuzziness: null,
-			index_id: null
+		const abortingFetch = (input: URL | RequestInfo, init?: RequestInit) => {
+			return fetch(input, { ...init, signal: autocompleteAbortController!.signal });
 		};
 
 		autocompleteLoading = true;
@@ -70,28 +65,31 @@
 			// taxonomy suggester for brands while search-a-licious handles categories and labels.
 
 			// Fetch brand suggestions from classic taxonomy suggester
-			const brandSuggestionsPromise = getTaxonomySuggestions(fetch, 'brands', query, 5).then(
-				(result: { data?: { suggestions?: string[] }; error?: unknown }) => {
-					if (result.error || !result.data) {
-						console.warn('Brand taxonomy suggestions error:', result.error);
-						return [];
-					}
-					return result.data.suggestions ?? [];
+			const brandSuggestionsPromise = getTaxonomySuggestions(
+				abortingFetch,
+				'brands',
+				query,
+				5
+			).then((result: { data?: { suggestions?: string[] }; error?: unknown }) => {
+				if (result.error || !result.data) {
+					console.warn('Brand taxonomy suggestions error:', result.error);
+					return [];
 				}
-			);
+				return result.data.suggestions ?? [];
+			});
 
 			// Fetch category/label suggestions from search-a-licious (excluding brands)
-			const searchApi = createSearchApi(fetch);
-			const searchQuery = {
+			const searchApi = createSearchApi(abortingFetch);
+			const autocompleteQuery = {
 				q: query,
 				taxonomy_names: 'categories,labels',
-				lang: getBrowserLocale(),
+				lang: getLanguageCode(getBrowserLocale()),
 				size: 5,
 				fuzziness: null,
 				index_id: null
 			};
 
-			const searchSuggestionsPromise = searchApi.autocomplete(searchQuery).then((result) => {
+			const searchSuggestionsPromise = searchApi.autocomplete(autocompleteQuery).then((result) => {
 				if (result.error || !result.data) {
 					console.warn('Search-a-licious autocomplete error:', result.error);
 					return [];
@@ -155,6 +153,11 @@
 	function handleSelect(item: AutocompleteOption) {
 		searchQuery = item.text;
 		onSearch?.(item.text);
+	}
+
+	function getLocalizedTaxonomyName(taxonomyName: string): string {
+		const key = `product.edit.${taxonomyName}`;
+		return $_(key, { default: taxonomyName });
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
@@ -237,7 +240,9 @@
 									>
 										<div class="flex flex-col gap-1">
 											<p class="">{item.text}</p>
-											<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
+											<p class=" text-xs text-base-content">
+												{getLocalizedTaxonomyName(item.taxonomy_name)}
+											</p>
 										</div>
 									</button>
 								</li>
