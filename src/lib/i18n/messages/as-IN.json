@@ -28,6 +28,9 @@
 		"description": "{query}ৰ বাবে মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত সন্ধান কৰক",
 		"charts_title": "সন্ধান বিশ্লেষণ",
 		"results_for": "Search results for \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Classic Tools:",
 		"show_prices_label": "মূল্য দেখুৱাওক",
 		"sort_by_label": "Sort by",
@@ -107,6 +110,9 @@
 		"product_not_found": "Product not found",
 		"error_occurred": "ত্ৰুটি ঘটিল:",
 		"errors_occurred": "ভুলসমূহ সংঘটিত হৈছে:"
+	},
+	"slow_server": {
+		"dismiss": "Dismiss"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
