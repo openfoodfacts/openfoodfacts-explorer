@@ -71,6 +71,28 @@
 		syncWebsiteFlavor(page.url);
 	});
 
+	$effect(() => {
+		const theme = $preferences.theme;
+
+		if (theme === 'light' || theme === 'dark') {
+			document.documentElement.setAttribute('data-theme', theme);
+			return;
+		}
+
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+		const applySystemTheme = () => {
+			document.documentElement.setAttribute('data-theme', mediaQuery.matches ? 'dark' : 'light');
+		};
+
+		applySystemTheme();
+		mediaQuery.addEventListener('change', applySystemTheme);
+
+		return () => {
+			mediaQuery.removeEventListener('change', applySystemTheme);
+		};
+	});
+
 	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
 	let toastId = 0;
