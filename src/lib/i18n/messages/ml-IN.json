@@ -28,6 +28,9 @@
 		"description": "{query}എന്നതിനായി ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ തിരയുക.",
 		"charts_title": "തിരയൽ അനലിറ്റിക്സ്",
 		"results_for": "Search results for \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Classic Tools:",
 		"show_prices_label": "വിലകൾ കാണിക്കുക",
 		"sort_by_label": "Sort by",
@@ -107,6 +110,9 @@
 		"product_not_found": "Product not found",
 		"error_occurred": "പിശക് സംഭവിച്ചു:",
 		"errors_occurred": "പിശകുകൾ സംഭവിച്ചു:"
+	},
+	"slow_server": {
+		"dismiss": "Dismiss"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
