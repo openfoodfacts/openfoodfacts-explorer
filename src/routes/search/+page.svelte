@@ -3,17 +3,23 @@
 	import { tracker } from '$lib/matomo';
 	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
-	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
+	import { navigating, page } from '$app/state';
+	import { beforeNavigate, goto } from '$app/navigation';
+	import { onDestroy } from 'svelte';
 
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
 	import { SORT_OPTIONS } from '$lib/const';
 	import {
+		addExcludeFacet,
 		addIncludeFacet,
 		extractQuery,
+		parseLuceneFacets,
+		removeExcludeFacet,
 		removeIncludeFacet,
 		toLuceneString,
+		toggleExcludeFacet,
+		toggleIncludeFacet,
 		type FacetsSelection
 	} from '$lib/facets';
 	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
@@ -30,9 +36,10 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiDownload from '@iconify-svelte/mdi/download';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
-
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
+	import SearchSidebar from './SearchSidebar.svelte';
+	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
 	import { getToastCtx } from '$lib/stores/toasts';
@@ -64,6 +71,8 @@
 		}));
 	});
 
+	let visibleProducts = $derived(sortedProducts.filter(({ product }) => product.code != null));
+
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
 
@@ -94,24 +103,63 @@
 		goto(newUrl.toString());
 	}
 
-	// State to hold selected facets
-	//  { key1 => { include: ['value1', 'value2'], exclude: ['value3'] } }
-	let selectedFacets: FacetsSelection = $derived.by(() => {
-		const entries = Object.entries(searchResult.facets).map(([key, facet]) => {
-			const selectedItems = facet.items.filter((item) => item.selected).map((item) => item.key);
-			return [key, { include: selectedItems, exclude: [] }];
-		});
-		return Object.fromEntries(entries);
+	// Local state for UI facet toggling, synced with data.query from server
+	// eslint-disable-next-line svelte/prefer-writable-derived
+	let localFacets = $state<FacetsSelection>({});
+
+	$effect(() => {
+		localFacets = parseLuceneFacets(data.query);
 	});
 
-	function refreshQuery() {
-		// recreate the full lucene query with selected facets
-		const mainQuery = extractQuery(data.query);
-		const newQuery = toLuceneString(mainQuery, selectedFacets);
+	let totalActiveFilters = $derived.by(() => {
+		let count = 0;
+		for (const sel of Object.values(localFacets)) {
+			if (sel.include) count += sel.include.length;
+			if (sel.exclude) count += sel.exclude.length;
+		}
+		return count;
+	});
 
-		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('q', newQuery);
-		goto(newUrl.toString());
+	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function clearPendingTimer() {
+		if (debounceTimer) {
+			clearTimeout(debounceTimer);
+			debounceTimer = null;
+		}
+	}
+
+	beforeNavigate(() => {
+		clearPendingTimer();
+	});
+
+	onDestroy(() => {
+		clearPendingTimer();
+	});
+
+	function updateFacets(nextFacets: FacetsSelection, immediate: boolean = false) {
+		// Update local state immediately so UI (chips, badges, buttons) changes in 0ms
+		localFacets = nextFacets;
+
+		clearPendingTimer();
+
+		const applyNavigation = () => {
+			const mainQuery = extractQuery(data.query);
+			const newQuery = toLuceneString(mainQuery, nextFacets);
+			const newUrl = new URL(page.url);
+			newUrl.searchParams.set('q', newQuery);
+			newUrl.searchParams.set('page', '1');
+
+			if (newUrl.toString() !== page.url.toString()) {
+				goto(newUrl.toString(), { keepFocus: true, noScroll: true, replaceState: true });
+			}
+		};
+
+		if (immediate) {
+			applyNavigation();
+		} else {
+			debounceTimer = setTimeout(applyNavigation, 3000);
+		}
 	}
 
 	let mainSearchTerm = $derived(extractQuery(data.query));
@@ -119,6 +167,7 @@
 	let queryIsBarcode = $derived(/^\d{5,18}$/.test(cleanedQuery));
 	let barcodeInput = $state('');
 	let encodedMainSearchTerm = $derived(encodeURIComponent(mainSearchTerm));
+	let sidebarHidden = $state(false);
 	let trackedSearchKey = $state<string | null>(null);
 
 	// Track each loaded search once. Page views remain responsible for
@@ -221,24 +270,54 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{$_('search.results_for', {
-			values: { term: mainSearchTerm },
-			default: 'Search results for "{term}"'
-		})}
+		{#if navigating.to != null}
+			<span class="block h-7 w-64 skeleton rounded"></span>
+			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
+		{:else}
+			<span class="block">
+				{$_('search.searching_for', {
+					values: { term: mainSearchTerm },
+					default: 'Searching for "{term}"'
+				})}
+			</span>
+			<span class="mt-1 block text-sm font-normal text-base-content/70">
+				{$_(
+					searchResult.is_count_exact === false
+						? 'search.results_summary_inexact'
+						: 'search.results_summary',
+					{
+						values: {
+							total: searchResult.count,
+							displayed: visibleProducts.length,
+							time: (searchResult.took / 1000).toFixed(2)
+						},
+						default:
+							searchResult.is_count_exact === false
+								? 'More than {total} results - showing {displayed} on this page ({time} seconds)'
+								: '{total} results - showing {displayed} on this page ({time} seconds)'
+					}
+				)}
+			</span>
+		{/if}
 	</h2>
 	<div class="flex items-center gap-2">
 		<!-- Sort By Dropdown -->
-		<details class="dropdown dropdown-end" bind:this={sortDropdown}>
-			<summary class="btn gap-2 btn-outline btn-sm">
-				<span>{getSelectedSortLabel()}</span>
-				<IconMdiChevronDown class="h-4 w-4" />
+		<details class="dropdown relative dropdown-end shrink-0 open:z-50" bind:this={sortDropdown}>
+			<summary
+				class="sm:rounded-btn btn flex w-60 shrink-0 items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
+			>
+				<span class="truncate">{getSelectedSortLabel()}</span>
+				<IconMdiChevronDown class="h-4 w-4 shrink-0" />
 			</summary>
 			<ul
-				class="menu dropdown-content z-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-md"
+				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:w-64"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
-						<button class="w-full text-left" onclick={() => handleSortChange(value)}>
+						<button
+							class="w-full text-left leading-tight break-words whitespace-normal"
+							onclick={() => handleSortChange(value)}
+						>
 							{$_(label)}
 						</button>
 					</li>
@@ -384,71 +463,257 @@
 	</div>
 {/if}
 
-<!-- Facet Bar -->
-{#if searchResult.facets && Object.keys(searchResult.facets).length > 0}
-	<div class="my-4" id="facets">
-		<FacetBar
-			facets={searchResult.facets}
-			onAddFacet={(key, val) => {
-				selectedFacets = addIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
-			}}
-			onRemoveFacet={(key, val) => {
-				selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-				refreshQuery();
-			}}
-		/>
-	</div>
-{/if}
+<!-- Active Filters Bar -->
+<ActiveFiltersBar
+	selectedFacets={localFacets}
+	facets={searchResult.facets}
+	onRemoveInclude={(facetKey, val) => {
+		const next = removeIncludeFacet(localFacets, facetKey, val);
+		updateFacets(next);
+	}}
+	onRemoveExclude={(facetKey, val) => {
+		const next = removeExcludeFacet(localFacets, facetKey, val);
+		updateFacets(next);
+	}}
+	onClearAll={() => {
+		updateFacets({}, true);
+	}}
+/>
 
-<div class="divider"></div>
+<div
+	class={[
+		'relative w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
+		sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
+	]}
+>
+	<!-- Desktop Sidebar -->
+	<SearchSidebar
+		bind:hidden={sidebarHidden}
+		{totalActiveFilters}
+		facets={searchResult.facets}
+		selectedFacets={localFacets}
+		onToggleInclude={(key, val) => {
+			const next = toggleIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onToggleExclude={(key, val) => {
+			const next = toggleExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onAddInclude={(key, val) => {
+			const next = addIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onAddExclude={(key, val) => {
+			const next = addExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onRemoveInclude={(key, val) => {
+			const next = removeIncludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+		onRemoveExclude={(key, val) => {
+			const next = removeExcludeFacet(localFacets, key, val);
+			updateFacets(next);
+		}}
+	/>
 
-{#if searchResult.count > 0}
-	<div
-		class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
-	>
-		<p class="text-sm text-base-content/70">
-			{$_('search.export_csv_limit_hint', {
-				values: { limit: SEARCH_CSV_EXPORT_LIMIT },
-				default: 'Up to {limit} products from the current filters'
-			})}
-		</p>
-		<button
-			type="button"
-			class="btn gap-2 btn-soft btn-sm max-sm:w-full"
-			onclick={handleExportCsv}
-			disabled={isExportingCsv}
-			aria-busy={isExportingCsv}
-		>
-			<IconMdiDownload class="h-5 w-5" />
-			{isExportingCsv
-				? $_('search.export_csv_exporting', { default: 'Exporting…' })
-				: $_('search.export_csv', { default: 'Export CSV' })}
-		</button>
-	</div>
-
-	<div class="max-md:me-4">
-		<div class="mt-4 grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
-				<div class="indicator block w-full">
-					{#if $preferences.displayPricesInSearch}
-						<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
-							{$_('search.prices_badge', {
-								values: { count: data.prices[product.code] }
-							})}
-						</span>
-					{/if}
-					<WcProductCard
-						{product}
-						personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
-					/>
-				</div>
-			{/each}
+	<div class="flex w-full min-w-0 flex-col">
+		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
+		<div class="mt-2 mb-1 lg:hidden" id="facets">
+			<FacetBar
+				facets={searchResult.facets}
+				selectedFacets={localFacets}
+				onToggleInclude={(key, val) => {
+					const next = toggleIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onToggleExclude={(key, val) => {
+					const next = toggleExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onAddInclude={(key, val) => {
+					const next = addIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onAddExclude={(key, val) => {
+					const next = addExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onRemoveInclude={(key, val) => {
+					const next = removeIncludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+				onRemoveExclude={(key, val) => {
+					const next = removeExcludeFacet(localFacets, key, val);
+					updateFacets(next);
+				}}
+			/>
 		</div>
-	</div>
 
-	<!-- Pagination -->
-	<div class="mt-8">
+		<div class="divider my-1 lg:hidden"></div>
+
+		{#if navigating.to != null}
+			<!-- Product Card Skeleton Loading State during API Call -->
+			<div class="my-6 max-md:me-4">
+				<div
+					class={[
+						'grid w-full grid-cols-1 gap-6 sm:grid-cols-2',
+						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+					]}
+				>
+					{#each Array(6) as _, index (index)}
+						<div
+							class="flex h-44 w-full flex-col justify-between rounded-xl border border-base-300 bg-base-100 p-4 shadow-xs"
+						>
+							<div class="flex gap-4">
+								<div class="h-24 w-24 shrink-0 skeleton rounded-lg"></div>
+								<div class="flex flex-1 flex-col gap-2.5">
+									<div class="h-4 w-3/4 skeleton rounded"></div>
+									<div class="h-3 w-1/2 skeleton rounded"></div>
+									<div class="h-3 w-1/3 skeleton rounded"></div>
+								</div>
+							</div>
+							<div class="flex items-center justify-between pt-2">
+								<div class="h-5 w-16 skeleton rounded-full"></div>
+								<div class="h-5 w-20 skeleton rounded-full"></div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{:else if searchResult.count > 0}
+			<div
+				class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
+			>
+				<p class="text-sm text-base-content/70">
+					{$_('search.export_csv_limit_hint', {
+						values: { limit: SEARCH_CSV_EXPORT_LIMIT },
+						default: 'Up to {limit} products from the current filters'
+					})}
+				</p>
+				<button
+					type="button"
+					class="btn gap-2 btn-soft btn-sm max-sm:w-full"
+					onclick={handleExportCsv}
+					disabled={isExportingCsv}
+					aria-busy={isExportingCsv}
+				>
+					<IconMdiDownload class="h-5 w-5" />
+					{isExportingCsv
+						? $_('search.export_csv_exporting', { default: 'Exporting…' })
+						: $_('search.export_csv', { default: 'Export CSV' })}
+				</button>
+			</div>
+
+			<div class="max-md:me-4">
+				<div
+					class={[
+						'mt-4 grid w-full grid-cols-1 gap-6 sm:grid-cols-2',
+						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+					]}
+				>
+					{#each visibleProducts as { product, scoreData } (product.code)}
+						<div class="indicator block w-full">
+							{#if $preferences.displayPricesInSearch}
+								<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
+									{$_('search.prices_badge', {
+										values: { count: data.prices[product.code] }
+									})}
+								</span>
+							{/if}
+							<WcProductCard
+								{product}
+								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
+							/>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{:else}
+			<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
+				{#if queryIsBarcode}
+					<div class="card w-full max-w-lg bg-base-100 shadow-xl">
+						<div class="card-body items-center p-8 text-center">
+							<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+							<h1 class="text-3xl font-bold">
+								{$_('search.product_not_found', { default: 'No products found' })}
+							</h1>
+							<p class="py-4 text-sm text-base-content/80 sm:text-base">
+								{$_('qr.barcode_scanned_not_found', {
+									values: { barcode: cleanedQuery },
+									default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
+								})}
+							</p>
+							<div class="mt-4 card-actions flex w-full flex-col gap-3">
+								<a
+									href="/products/{cleanedQuery}/edit"
+									class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
+								>
+									<span class="text-xl">➕</span>
+									{$_('product.add_product', { default: 'Add This Product' })}
+								</a>
+							</div>
+						</div>
+					</div>
+				{:else}
+					<div class="card w-full max-w-lg bg-base-100 shadow-xl">
+						<div class="card-body items-center p-8 text-center">
+							<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
+							<h1 class="text-3xl font-bold">
+								{$_('search.product_not_found', { default: 'No products found' })}
+							</h1>
+							<p class="py-4 text-sm text-base-content/80 sm:text-base">
+								{$_('search.product_not_found_desc', {
+									default: "We couldn't find any products matching your search."
+								})}
+							</p>
+							<div class="mt-4 card-actions flex w-full flex-col gap-3">
+								<p class="text-xs text-base-content/60">
+									{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
+										'search.enter_barcode_below',
+										{ default: 'Enter the barcode below.' }
+									)}
+								</p>
+								<form
+									onsubmit={(e) => {
+										e.preventDefault();
+										const barcode = barcodeInput.trim();
+										if (/^\d+$/.test(barcode)) {
+											goto(`/products/${barcode}/edit`);
+										}
+									}}
+									class="join w-full shadow-sm"
+								>
+									<input
+										type="text"
+										placeholder={$_('search.barcode_placeholder', {
+											default: 'Barcode (e.g. 1234567890123)'
+										})}
+										bind:value={barcodeInput}
+										class="input-bordered input join-item w-full focus:outline-none"
+										required
+										pattern="\d+"
+										title={$_('search.barcode_validation_title', {
+											default: 'Barcode must contain digits only'
+										})}
+									/>
+									<button type="submit" class="btn join-item font-bold btn-primary">
+										{$_('search.go', { default: 'Go' })}
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				{/if}
+			</div>
+		{/if}
+	</div>
+</div>
+
+<!-- Pagination -->
+{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
@@ -458,83 +723,6 @@
 				return newUrl.toString();
 			}}
 		/>
-	</div>
-{:else}
-	<div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
-		{#if queryIsBarcode}
-			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-				<div class="card-body items-center p-8 text-center">
-					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
-					<h1 class="text-3xl font-bold">
-						{$_('search.product_not_found', { default: 'No products found' })}
-					</h1>
-					<p class="py-4 text-sm text-base-content/80 sm:text-base">
-						{$_('qr.barcode_scanned_not_found', {
-							values: { barcode: cleanedQuery },
-							default: `Barcode ${cleanedQuery} was searched, but no product was found in our databases.`
-						})}
-					</p>
-					<div class="mt-4 card-actions flex w-full flex-col gap-3">
-						<a
-							href="/products/{cleanedQuery}/edit"
-							class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
-						>
-							<span class="text-xl">➕</span>
-							{$_('product.add_product', { default: 'Add This Product' })}
-						</a>
-					</div>
-				</div>
-			</div>
-		{:else}
-			<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-				<div class="card-body items-center p-8 text-center">
-					<div class="mb-4 text-8xl grayscale-[20%]">🔍</div>
-					<h1 class="text-3xl font-bold">
-						{$_('search.product_not_found', { default: 'No products found' })}
-					</h1>
-					<p class="py-4 text-sm text-base-content/80 sm:text-base">
-						{$_('search.product_not_found_desc', {
-							default: "We couldn't find any products matching your search."
-						})}
-					</p>
-					<div class="mt-4 card-actions flex w-full flex-col gap-3">
-						<p class="text-xs text-base-content/60">
-							{$_('product.edit.add_product_title', { default: 'Add a new product' })}: {$_(
-								'search.enter_barcode_below',
-								{ default: 'Enter the barcode below.' }
-							)}
-						</p>
-						<form
-							onsubmit={(e) => {
-								e.preventDefault();
-								const barcode = barcodeInput.trim();
-								if (/^\d+$/.test(barcode)) {
-									goto(`/products/${barcode}/edit`);
-								}
-							}}
-							class="join w-full shadow-sm"
-						>
-							<input
-								type="text"
-								placeholder={$_('search.barcode_placeholder', {
-									default: 'Barcode (e.g. 1234567890123)'
-								})}
-								bind:value={barcodeInput}
-								class="input-bordered input join-item w-full focus:outline-none"
-								required
-								pattern="\d+"
-								title={$_('search.barcode_validation_title', {
-									default: 'Barcode must contain digits only'
-								})}
-							/>
-							<button type="submit" class="btn join-item font-bold btn-primary">
-								{$_('search.go', { default: 'Go' })}
-							</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		{/if}
 	</div>
 {/if}
 
@@ -546,12 +734,29 @@
 		goto('/facets');
 	}}
 	{searchResult}
-	onAddFacet={(key, val) => {
-		selectedFacets = addIncludeFacet(selectedFacets, key, val);
-		refreshQuery();
+	selectedFacets={localFacets}
+	onToggleInclude={(key, val) => {
+		const next = toggleIncludeFacet(localFacets, key, val);
+		updateFacets(next);
 	}}
-	onRemoveFacet={(key, val) => {
-		selectedFacets = removeIncludeFacet(selectedFacets, key, val);
-		refreshQuery();
+	onToggleExclude={(key, val) => {
+		const next = toggleExcludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onAddInclude={(key, val) => {
+		const next = addIncludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onAddExclude={(key, val) => {
+		const next = addExcludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onRemoveInclude={(key, val) => {
+		const next = removeIncludeFacet(localFacets, key, val);
+		updateFacets(next);
+	}}
+	onRemoveExclude={(key, val) => {
+		const next = removeExcludeFacet(localFacets, key, val);
+		updateFacets(next);
 	}}
 />
