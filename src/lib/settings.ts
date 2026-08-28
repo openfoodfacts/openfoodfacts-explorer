@@ -2,8 +2,8 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 7,
-	lang: undefined as string | undefined,
+	version: 8,
+	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
 	nutriscoreInfluence: 50,
@@ -26,6 +26,10 @@ const DEFAULT_PREFERENCES = {
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
+
+export function getLanguageCode(locale: string | undefined): string {
+	return locale?.replaceAll('_', '-').split('-')[0]?.toLowerCase() || 'en';
+}
 
 export const preferences = persisted('preferences', DEFAULT_PREFERENCES);
 
@@ -128,7 +132,19 @@ const MIGRATIONS: {
 		}
 	},
 	{
+		// 2026-08-26: Store the UI locale separately from the API language code.
 		version: 7,
+		upgrade: (preferences) => {
+			const legacyPreferences = preferences as Preferences & { lang?: string };
+			if (legacyPreferences.locale == null && legacyPreferences.lang != null) {
+				legacyPreferences.locale = legacyPreferences.lang;
+			}
+			delete legacyPreferences.lang;
+			return preferences;
+		}
+	},
+	{
+		version: 8,
 		upgrade: (preferences) => {
 			if (preferences.editing) {
 				if (preferences.editing.showDataQualityErrors === undefined) {
