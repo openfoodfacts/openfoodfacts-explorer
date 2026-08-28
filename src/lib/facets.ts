@@ -805,10 +805,12 @@ export function parseLuceneFacets(luceneQuery: string): FacetsSelection {
 		let trimmed = part.trim();
 		if (!trimmed) continue;
 
+		// Strip outer parens if the entire part is parenthesized
 		while (trimmed.startsWith('(') && trimmed.endsWith(')')) {
 			trimmed = trimmed.slice(1, -1).trim();
 		}
 
+		// Support clauses that might still contain internal AND-split fragments
 		const subParts = trimmed.includes(':') ? [trimmed] : [];
 		for (const subPart of subParts) {
 			const cleanSub = subPart.trim().replace(/^\(+/, '');

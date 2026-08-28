@@ -113,6 +113,14 @@ describe('parseLuceneFacets', () => {
 			brands: { include: [], exclude: ["Ben & Jerry's"] }
 		});
 	});
+
+	it('handles parenthesized multi-criteria queries and repeated facet keys', () => {
+		const query = '(brands:("xx:nutella") AND brands:("xx:Ferrero"))';
+		const parsed = parseLuceneFacets(query);
+		expect(parsed).toEqual({
+			brands: { include: ['xx:nutella', 'xx:Ferrero'], exclude: [] }
+		});
+	});
 });
 
 describe('toggleIncludeFacet & toggleExcludeFacet', () => {

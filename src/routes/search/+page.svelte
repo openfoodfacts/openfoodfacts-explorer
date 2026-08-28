@@ -39,6 +39,7 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
+	import AdvancedSearchPanel from './AdvancedSearchPanel.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
 
@@ -320,6 +321,25 @@
 					</a>
 				</div>
 			</div>
+
+			<div class="divider my-2"></div>
+
+			<!-- Interactive Query Builder & Ingredient Toggles -->
+			<AdvancedSearchPanel
+				currentQuery={data.query}
+				onApplyQuery={(newQuery) => {
+					const newUrl = new URL(page.url);
+					if (newQuery) {
+						newUrl.searchParams.set('q', newQuery);
+					} else {
+						newUrl.searchParams.delete('q');
+					}
+					newUrl.searchParams.delete('page');
+					goto(newUrl.toString());
+				}}
+			/>
+
+			<div class="divider my-2"></div>
 
 			{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
 				<div class="flex flex-col gap-2">
