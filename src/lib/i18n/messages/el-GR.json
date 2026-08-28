@@ -28,6 +28,9 @@
 		"description": "Αναζήτηση στο Open Food Facts Explorer για {query}",
 		"charts_title": "Αναλυτικά Αναζήτησης",
 		"results_for": "Αποτελέσματα αναζήτησης για \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Κλασικά εργαλεία:",
 		"show_prices_label": "Εμφάνιση Τιμών",
 		"sort_by_label": "Ταξινομήστε ανά",
@@ -107,6 +110,9 @@
 		"product_not_found": "Το προϊόν δεν βρέθηκε",
 		"error_occurred": "Παρουσιάστηκε σφάλμα:",
 		"errors_occurred": "Παρουσιάστηκαν σφάλματα:"
+	},
+	"slow_server": {
+		"dismiss": "Απόρριψη"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
