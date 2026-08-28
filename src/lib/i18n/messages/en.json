@@ -111,6 +111,9 @@
 		"error_occurred": "error occurred:",
 		"errors_occurred": "errors occurred:"
 	},
+	"slow_server": {
+		"dismiss": "Dismiss"
+	},
 	"environment_notice": {
 		"title": "Non-production environment",
 		"message": "Data and features on this site may change or be reset without notice."
