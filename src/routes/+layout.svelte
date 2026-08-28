@@ -16,6 +16,7 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import EnvironmentNotice from '$lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
@@ -46,7 +47,7 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
@@ -261,7 +262,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
+		language-code={getLanguageCode($preferences.locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
@@ -276,6 +277,8 @@
 	<progress class="progress fixed top-0 left-0 z-50 h-1 w-full rounded-none progress-secondary"
 	></progress>
 {/if}
+
+<EnvironmentNotice />
 
 <!-- Desktop Header -->
 <div class="hidden xl:block">
