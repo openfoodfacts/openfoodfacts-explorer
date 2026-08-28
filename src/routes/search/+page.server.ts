@@ -142,12 +142,15 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
 
 	if (productCodes.length === 0) {
+		const off = createProductsApi(fetch);
+		const attributeGroupsResponse = await off.getAttributeGroups();
+
 		return {
 			query,
 			search: searchDataTyped,
 			attributesByCode: {},
 			prices: {},
-			attributeGroups: []
+			attributeGroups: attributeGroupsResponse.data ?? []
 		};
 	}
 
