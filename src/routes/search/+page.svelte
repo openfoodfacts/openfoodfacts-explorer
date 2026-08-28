@@ -43,7 +43,7 @@
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
 	import { getToastCtx } from '$lib/stores/toasts';
-	import { exportSearchResultsCsv, SEARCH_CSV_EXPORT_LIMIT } from '$lib/utils/searchCsvExport';
+	import { exportSearchResultsCsv } from '$lib/utils/searchCsvExport';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
@@ -183,35 +183,20 @@
 	});
 
 	async function handleExportCsv() {
-		if (isExportingCsv || searchResult.count === 0) return;
+		if (isExportingCsv || visibleProducts.length === 0) return;
 
 		isExportingCsv = true;
 		try {
-			const result = await exportSearchResultsCsv({
-				q: data.query,
-				// Preserve raw URL sort_by (selectedSort may fall back when the value isn't in SORT_OPTIONS).
-				sortBy: page.url.searchParams.get('sort_by') || '-unique_scans_n'
-			});
+			const exportedCount = await exportSearchResultsCsv(
+				visibleProducts.map(({ product }) => product)
+			);
 
-			if (result.truncated) {
-				toastCtx.warning(
-					$_('search.export_csv_truncated', {
-						values: {
-							count: result.exportedCount,
-							total: result.totalCount,
-							limit: SEARCH_CSV_EXPORT_LIMIT
-						},
-						default: 'Exported first {count} of {total} products (limit {limit})'
-					})
-				);
-			} else {
-				toastCtx.success(
-					$_('search.export_csv_success', {
-						values: { count: result.exportedCount },
-						default: 'Exported {count} products'
-					})
-				);
-			}
+			toastCtx.success(
+				$_('search.export_csv_success', {
+					values: { count: exportedCount },
+					default: 'Exported {count} products'
+				})
+			);
 		} catch (err) {
 			console.error('CSV export failed:', err);
 			toastCtx.error($_('search.export_csv_error', { default: 'Failed to export search results' }));
@@ -587,9 +572,9 @@
 				class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
 			>
 				<p class="text-sm text-base-content/70">
-					{$_('search.export_csv_limit_hint', {
-						values: { limit: SEARCH_CSV_EXPORT_LIMIT },
-						default: 'Up to {limit} products from the current filters'
+					{$_('search.export_csv_page_hint', {
+						values: { count: visibleProducts.length },
+						default: '{count} products displayed on this page'
 					})}
 				</p>
 				<button

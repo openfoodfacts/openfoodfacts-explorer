@@ -1,29 +1,14 @@
-import type { SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
-
-import { createSearchApi, type SearchResult } from '$lib/api/search';
+import { resolve } from '$app/paths';
 import { downloadCsv, toCsv } from '$lib/utils/csv';
-
-/** Hard cap so large queries stay responsive and don't hammer the search API. */
-export const SEARCH_CSV_EXPORT_LIMIT = 500;
-
-const EXPORT_PAGE_SIZE = 100;
-
-const EXPORT_FIELDS = [
-	'code',
-	'product_name',
-	'brands',
-	'quantity',
-	'nutriscore_grade',
-	'environmental_score_grade',
-	'nova_group',
-	'nutriments'
-] as const;
 
 export const SEARCH_CSV_HEADERS = [
 	'barcode',
 	'product_name',
 	'brands',
 	'quantity',
+	'categories',
+	'countries',
+	'product_url',
 	'nutriscore_grade',
 	'environmental_score_grade',
 	'nova_group',
@@ -42,6 +27,8 @@ export type SearchCsvProduct = {
 	product_name?: string | null;
 	brands?: string | null;
 	quantity?: string | null;
+	categories?: string | null;
+	countries?: string | null;
 	nutriscore_grade?: string | null;
 	environmental_score_grade?: string | null;
 	ecoscore_grade?: string | null;
@@ -68,6 +55,9 @@ export function productToCsvRow(product: SearchCsvProduct): unknown[] {
 		product.product_name ?? '',
 		product.brands ?? '',
 		product.quantity ?? '',
+		product.categories ?? '',
+		product.countries ?? '',
+		product.code ? resolve('/products/[barcode]', { barcode: product.code }) : '',
 		product.nutriscore_grade ?? '',
 		product.environmental_score_grade ?? product.ecoscore_grade ?? '',
 		product.nova_group ?? '',
@@ -82,65 +72,13 @@ export function productToCsvRow(product: SearchCsvProduct): unknown[] {
 	];
 }
 
-export function productsToCsv(products: SearchCsvProduct[]): string {
+export async function productsToCsv(products: SearchCsvProduct[]): Promise<string> {
 	return toCsv([...SEARCH_CSV_HEADERS], products.map(productToCsvRow));
 }
 
-export type SearchCsvExportResult = {
-	exportedCount: number;
-	totalCount: number;
-	truncated: boolean;
-};
-
-/**
- * Fetches search hits for the current query (no facets/charts) up to SEARCH_CSV_EXPORT_LIMIT,
- * then downloads a CSV. Uses the same `q` / `sort_by` as the results page so filters are respected.
- */
-export async function exportSearchResultsCsv(options: {
-	q: string;
-	sortBy: string;
-	fetch?: typeof globalThis.fetch;
-}): Promise<SearchCsvExportResult> {
-	const api = createSearchApi(options.fetch ?? fetch);
-	const hits: SearchCsvProduct[] = [];
-	let totalCount = 0;
-	let page = 1;
-	let pageCount = 1;
-
-	while (hits.length < SEARCH_CSV_EXPORT_LIMIT && page <= pageCount) {
-		const remaining = SEARCH_CSV_EXPORT_LIMIT - hits.length;
-		const pageSize = Math.min(EXPORT_PAGE_SIZE, remaining);
-
-		const body: SearchBody = {
-			q: options.q,
-			langs: ['en'],
-			page,
-			page_size: pageSize,
-			sort_by: options.sortBy,
-			fields: [...EXPORT_FIELDS]
-		};
-
-		const { data, error } = await api.search(body);
-		if (error || data == null) {
-			throw error ?? new Error('Failed to fetch search results for export');
-		}
-
-		const result = data as SearchResult;
-		totalCount = result.count ?? 0;
-		pageCount = result.page_count ?? page;
-		hits.push(...(result.hits ?? []));
-
-		if (!result.hits?.length) break;
-		page += 1;
-	}
-
-	const truncated = totalCount > hits.length;
+/** Downloads the products already displayed on the current search results page. */
+export async function exportSearchResultsCsv(products: SearchCsvProduct[]): Promise<number> {
 	const stamp = new Date().toISOString().slice(0, 10);
-	downloadCsv(`off-search-${stamp}.csv`, productsToCsv(hits));
-
-	return {
-		exportedCount: hits.length,
-		totalCount,
-		truncated
-	};
+	downloadCsv(`off-search-${stamp}.csv`, await productsToCsv(products));
+	return products.length;
 }

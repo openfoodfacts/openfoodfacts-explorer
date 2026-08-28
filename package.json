@@ -4,6 +4,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#csv-stringify-sync": {
+			"browser": "csv-stringify/browser/esm/sync",
+			"default": "csv-stringify/sync"
+		}
+	},
 	"license": "AGPL-3.0",
 	"repository": {
 		"type": "git",

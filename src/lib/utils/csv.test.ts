@@ -4,32 +4,34 @@ import { toCsv } from './csv';
 import { productToCsvRow, productsToCsv, SEARCH_CSV_HEADERS } from './searchCsvExport';
 
 describe('toCsv', () => {
-	it('builds a CRLF CSV with a trailing newline', () => {
-		expect(toCsv(['a', 'b'], [['1', '2']])).toBe('a,b\r\n1,2\r\n');
+	it('builds a CRLF CSV with a trailing newline', async () => {
+		expect(await toCsv(['a', 'b'], [['1', '2']])).toBe('a,b\r\n1,2\r\n');
 	});
 
-	it('quotes values containing commas, quotes, or newlines', () => {
-		expect(toCsv(['h'], [['a,b']])).toBe('h\r\n"a,b"\r\n');
-		expect(toCsv(['h'], [['say "hi"']])).toBe('h\r\n"say ""hi"""\r\n');
-		expect(toCsv(['h'], [['line1\nline2']])).toBe('h\r\n"line1\nline2"\r\n');
+	it('quotes values containing commas, quotes, or newlines', async () => {
+		expect(await toCsv(['h'], [['a,b']])).toBe('h\r\n"a,b"\r\n');
+		expect(await toCsv(['h'], [['say "hi"']])).toBe('h\r\n"say ""hi"""\r\n');
+		expect(await toCsv(['h'], [['line1\nline2']])).toBe('h\r\n"line1\nline2"\r\n');
 	});
 
-	it('escapes formula-like values to prevent CSV injection', () => {
-		expect(toCsv(['h'], [['=1+1']])).toBe("h\r\n'=1+1\r\n");
-		expect(toCsv(['h'], [['+cmd']])).toBe("h\r\n'+cmd\r\n");
-		expect(toCsv(['h'], [['-2+2']])).toBe("h\r\n'-2+2\r\n");
-		expect(toCsv(['h'], [['@SUM(A1)']])).toBe("h\r\n'@SUM(A1)\r\n");
-		expect(toCsv(['h'], [[null, undefined]])).toBe('h\r\n,\r\n');
+	it('escapes formula-like values to prevent CSV injection', async () => {
+		expect(await toCsv(['h'], [['=1+1']])).toBe("h\r\n'=1+1\r\n");
+		expect(await toCsv(['h'], [['+cmd']])).toBe("h\r\n'+cmd\r\n");
+		expect(await toCsv(['h'], [['-2+2']])).toBe("h\r\n'-2+2\r\n");
+		expect(await toCsv(['h'], [['@SUM(A1)']])).toBe("h\r\n'@SUM(A1)\r\n");
+		expect(await toCsv(['h'], [[null, undefined]])).toBe('h\r\n,\r\n');
 	});
 });
 
 describe('productToCsvRow', () => {
-	it('maps product fields and nutriments to the default columns', () => {
+	it('maps product fields and nutriments to the default columns', async () => {
 		const row = productToCsvRow({
 			code: '3017620422003',
 			product_name: 'Nutella',
 			brands: 'Ferrero',
 			quantity: '400 g',
+			categories: 'Spreads, Hazelnut spreads',
+			countries: 'France, Germany',
 			nutriscore_grade: 'e',
 			environmental_score_grade: 'd',
 			nova_group: 4,
@@ -50,6 +52,9 @@ describe('productToCsvRow', () => {
 			'Nutella',
 			'Ferrero',
 			'400 g',
+			'Spreads, Hazelnut spreads',
+			'France, Germany',
+			'/products/3017620422003',
 			'e',
 			'd',
 			4,
@@ -64,7 +69,7 @@ describe('productToCsvRow', () => {
 		]);
 		expect(SEARCH_CSV_HEADERS).toHaveLength(row.length);
 		expect(
-			productsToCsv([
+			await productsToCsv([
 				{
 					code: '1',
 					product_name: 'A, B',
