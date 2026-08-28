@@ -28,6 +28,9 @@
 		"description": "在 Open Food Facts Explorer 上搜索 {query}",
 		"charts_title": "搜索分析",
 		"results_for": "\"{term}\" 的搜索结果",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "经典工具：",
 		"show_prices_label": "显示价格",
 		"sort_by_label": "排序方式",
@@ -107,6 +110,9 @@
 		"product_not_found": "未找到产品",
 		"error_occurred": "发生错误：",
 		"errors_occurred": "发生错误："
+	},
+	"slow_server": {
+		"dismiss": "忽略"
 	},
 	"environment_notice": {
 		"title": "非生产环境",
