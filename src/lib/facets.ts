@@ -660,13 +660,17 @@ export function addIncludeFacet(
 	value: string
 ): FacetsSelection {
 	const current = sel[facet] || { include: [], exclude: [] };
-	if (current.include.includes(value)) {
+	const alreadyIncluded = current.include.includes(value);
+	const inExclude = current.exclude ? current.exclude.includes(value) : false;
+
+	if (alreadyIncluded && !inExclude) {
 		return sel;
 	}
+
 	return {
 		...sel,
 		[facet]: {
-			include: [...current.include, value],
+			include: alreadyIncluded ? [...current.include] : [...current.include, value],
 			exclude: current.exclude ? current.exclude.filter((v: string) => v !== value) : []
 		}
 	};
@@ -678,14 +682,18 @@ export function addExcludeFacet(
 	value: string
 ): FacetsSelection {
 	const current = sel[facet] || { include: [], exclude: [] };
-	if (current.exclude.includes(value)) {
+	const alreadyExcluded = current.exclude ? current.exclude.includes(value) : false;
+	const inInclude = current.include ? current.include.includes(value) : false;
+
+	if (alreadyExcluded && !inInclude) {
 		return sel;
 	}
+
 	return {
 		...sel,
 		[facet]: {
 			include: current.include ? current.include.filter((v: string) => v !== value) : [],
-			exclude: [...current.exclude, value]
+			exclude: alreadyExcluded ? [...current.exclude] : [...current.exclude, value]
 		}
 	};
 }

@@ -237,6 +237,22 @@ describe('add & remove facet helpers', () => {
 		expect(sel.ingredients.include).toEqual(['sugar']);
 		expect(sel.ingredients.exclude).toEqual(['water']);
 	});
+
+	it('purges conflicting entries on duplicate addition when selection is in a conflicting state', () => {
+		let conflictingSel: FacetsSelection = {
+			brands: { include: ['Nestle'], exclude: ['Nestle'] }
+		};
+		const cleanedInclude = addIncludeFacet(conflictingSel, 'brands', 'Nestle');
+		expect(cleanedInclude.brands.include).toEqual(['Nestle']);
+		expect(cleanedInclude.brands.exclude).toEqual([]);
+
+		conflictingSel = {
+			brands: { include: ['Nestle'], exclude: ['Nestle'] }
+		};
+		const cleanedExclude = addExcludeFacet(conflictingSel, 'brands', 'Nestle');
+		expect(cleanedExclude.brands.include).toEqual([]);
+		expect(cleanedExclude.brands.exclude).toEqual(['Nestle']);
+	});
 });
 
 describe('groupCatalogFacets', () => {
