@@ -28,6 +28,9 @@
 		"description": "Rechercher sur Open Food Facts Explorer pour {query}",
 		"charts_title": "Analyse de la recherche",
 		"results_for": "Résultats de recherche pour \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Outils classiques :",
 		"show_prices_label": "Afficher les prix",
 		"sort_by_label": "Trier par",
@@ -107,6 +110,9 @@
 		"product_not_found": "Produit introuvable",
 		"error_occurred": "une erreur s'est produite :",
 		"errors_occurred": "des erreurs se sont produites :"
+	},
+	"slow_server": {
+		"dismiss": "Ignorer"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
