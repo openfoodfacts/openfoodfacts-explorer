@@ -28,6 +28,9 @@
 		"description": "Pretraži Open Food Facts Explorer za {query}",
 		"charts_title": "Analitika pretraživanja",
 		"results_for": "Rezultati pretraživanja za \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Klasični alati:",
 		"show_prices_label": "Prikaži cijene",
 		"sort_by_label": "Sort by",
@@ -107,6 +110,9 @@
 		"product_not_found": "Proizvod nije pronađen",
 		"error_occurred": "Došlo je do pogreške:",
 		"errors_occurred": "dogodile su se pogreške:"
+	},
+	"slow_server": {
+		"dismiss": "Dismiss"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
