@@ -28,6 +28,9 @@
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "ئىزدەش ئانالىزى",
 		"results_for": "Search results for \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Classic Tools:",
 		"show_prices_label": "باھانى كۆرسىتىش",
 		"sort_by_label": "Sort by",
@@ -107,6 +110,9 @@
 		"product_not_found": "Product not found",
 		"error_occurred": "خاتالىق كۆرۈلدى:",
 		"errors_occurred": "خاتالىق كۆرۈلدى:"
+	},
+	"slow_server": {
+		"dismiss": "Dismiss"
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
