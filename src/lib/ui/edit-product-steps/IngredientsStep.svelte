@@ -161,6 +161,7 @@
 		{@const langErrors = getIngredientsErrors(code)}
 		{@const hasError = langErrors.some((e) => e.severity === 'error')}
 		{@const hasWarning = langErrors.some((e) => e.severity === 'warning')}
+		{@const hasInfo = langErrors.some((e) => e.severity === 'info')}
 		<input
 			type="radio"
 			name="ingredients_tabs"
@@ -212,10 +213,15 @@
 					'textarea-bordered textarea w-full text-sm transition-all sm:text-base',
 					quality.isEnabled &&
 						!product[`ingredients_text_${code}`]?.trim() &&
-						!hasError &&
-						!hasWarning &&
+						langErrors.length === 0 &&
 						'border-dashed border-warning/50 bg-warning/5',
-					hasError ? 'textarea-error' : hasWarning ? 'textarea-warning' : ''
+					hasError
+						? 'textarea-error'
+						: hasWarning
+							? 'textarea-warning'
+							: hasInfo
+								? 'textarea-info'
+								: ''
 				]}
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
