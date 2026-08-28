@@ -26,7 +26,7 @@
 	});
 
 	let isDark = $derived(
-		$preferences.theme === 'dark' || ($preferences.theme === 'system' && isSystemDark)
+		$preferences.theme === 'dark' || ($preferences.theme !== 'light' && isSystemDark)
 	);
 
 	let {
@@ -53,7 +53,9 @@
 		srcset={mono
 			? `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-mono-white.svg`
 			: `https://static.openfoodfacts.org/images/logos/${logoSuffix}-logo-horizontal-dark.svg`}
-		media={$preferences.theme === 'system' ? '(prefers-color-scheme: dark)' : 'not all'}
+		media={$preferences.theme !== 'light' && $preferences.theme !== 'dark'
+			? '(prefers-color-scheme: dark)'
+			: 'not all'}
 	/>
 	<img
 		src={logoSrc}
