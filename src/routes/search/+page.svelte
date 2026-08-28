@@ -34,6 +34,7 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
+	import IconMdiDownload from '@iconify-svelte/mdi/download';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
@@ -41,9 +42,13 @@
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
 	import WcProductCard from '$lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '$lib/api/search';
+	import { getToastCtx } from '$lib/stores/toasts';
+	import { exportSearchResultsCsv } from '$lib/utils/searchCsvExport';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
+	const toastCtx = getToastCtx();
+	let isExportingCsv = $state(false);
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -176,6 +181,29 @@
 		trackOffSiteSearch(mainSearchTerm, searchResult.count);
 		if (searchResult.count === 0) trackOffEvent('search', 'no_results');
 	});
+
+	async function handleExportCsv() {
+		if (isExportingCsv || visibleProducts.length === 0) return;
+
+		isExportingCsv = true;
+		try {
+			const exportedCount = await exportSearchResultsCsv(
+				visibleProducts.map(({ product }) => product)
+			);
+
+			toastCtx.success(
+				$_('search.export_csv_success', {
+					values: { count: exportedCount },
+					default: 'Exported {count} products'
+				})
+			);
+		} catch (err) {
+			console.error('CSV export failed:', err);
+			toastCtx.error($_('search.export_csv_error', { default: 'Failed to export search results' }));
+		} finally {
+			isExportingCsv = false;
+		}
+	}
 </script>
 
 <Metadata
@@ -540,6 +568,29 @@
 				</div>
 			</div>
 		{:else if searchResult.count > 0}
+			<div
+				class="mb-4 flex flex-wrap items-center justify-between gap-2 max-sm:flex-col max-sm:items-stretch"
+			>
+				<p class="text-sm text-base-content/70">
+					{$_('search.export_csv_page_hint', {
+						values: { count: visibleProducts.length },
+						default: '{count} products displayed on this page'
+					})}
+				</p>
+				<button
+					type="button"
+					class="btn gap-2 btn-soft btn-sm max-sm:w-full"
+					onclick={handleExportCsv}
+					disabled={isExportingCsv}
+					aria-busy={isExportingCsv}
+				>
+					<IconMdiDownload class="h-5 w-5" />
+					{isExportingCsv
+						? $_('search.export_csv_exporting', { default: 'Exporting…' })
+						: $_('search.export_csv', { default: 'Export CSV' })}
+				</button>
+			</div>
+
 			<div class="max-md:me-4">
 				<div
 					class={[

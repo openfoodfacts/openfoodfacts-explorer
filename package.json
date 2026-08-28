@@ -4,6 +4,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#csv-stringify-sync": {
+			"browser": "csv-stringify/browser/esm/sync",
+			"default": "csv-stringify/sync"
+		}
+	},
 	"license": "AGPL-3.0",
 	"repository": {
 		"type": "git",
@@ -100,6 +106,7 @@
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
 		"@sentry/sveltekit": "^10.70.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"csv-stringify": "^6.8.3",
 		"isomorphic-dompurify": "^3.22.0"
 	},
 	"packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
