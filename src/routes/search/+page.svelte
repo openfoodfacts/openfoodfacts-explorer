@@ -66,6 +66,8 @@
 		}));
 	});
 
+	let visibleProducts = $derived(sortedProducts.filter(({ product }) => product.code != null));
+
 	// State for showing/hiding graphs
 	let showGraphs = $state(false);
 
@@ -225,10 +227,35 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{$_('search.results_for', {
-			values: { term: mainSearchTerm },
-			default: 'Search results for "{term}"'
-		})}
+		{#if navigating.to != null}
+			<span class="block h-7 w-64 skeleton rounded"></span>
+			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
+		{:else}
+			<span class="block">
+				{$_('search.searching_for', {
+					values: { term: mainSearchTerm },
+					default: 'Searching for "{term}"'
+				})}
+			</span>
+			<span class="mt-1 block text-sm font-normal text-base-content/70">
+				{$_(
+					searchResult.is_count_exact === false
+						? 'search.results_summary_inexact'
+						: 'search.results_summary',
+					{
+						values: {
+							total: searchResult.count,
+							displayed: visibleProducts.length,
+							time: (searchResult.took / 1000).toFixed(2)
+						},
+						default:
+							searchResult.is_count_exact === false
+								? 'More than {total} results - showing {displayed} on this page ({time} seconds)'
+								: '{total} results - showing {displayed} on this page ({time} seconds)'
+					}
+				)}
+			</span>
+		{/if}
 	</h2>
 	<div class="flex items-center gap-2">
 		<!-- Sort By Dropdown -->
@@ -520,7 +547,7 @@
 						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
 					]}
 				>
-					{#each sortedProducts.filter(({ product }) => product.code != null) as { product, scoreData } (product.code)}
+					{#each visibleProducts as { product, scoreData } (product.code)}
 						<div class="indicator block w-full">
 							{#if $preferences.displayPricesInSearch}
 								<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
