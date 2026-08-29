@@ -104,8 +104,12 @@ describe('CountriesMap buildCountryData', () => {
 		const countryData = buildCountryData(taxo, facetTags);
 
 		// Calculate min/max as done in the legend
-		const minVal = Math.min(...[...countryData.values()].map((d: { products: number }) => d.products));
-		const maxVal = Math.max(...[...countryData.values()].map((d: { products: number }) => d.products));
+		const minVal = Math.min(
+			...[...countryData.values()].map((d: { products: number }) => d.products)
+		);
+		const maxVal = Math.max(
+			...[...countryData.values()].map((d: { products: number }) => d.products)
+		);
 
 		// Assert: Min should be 50 (from actual facet data), not 0 (from missing countries)
 		expect(minVal).toBe(50);
