@@ -5,6 +5,7 @@
 		type AutocompleteResponse
 	} from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
+	import { getLanguageCode } from '$lib/settings';
 	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
@@ -47,7 +48,7 @@
 		const autocompleteQuery = {
 			q: query,
 			taxonomy_names: 'brands,categories,labels',
-			lang: getBrowserLocale(),
+			lang: getLanguageCode(getBrowserLocale()),
 			size: 5,
 			fuzziness: null,
 			index_id: null

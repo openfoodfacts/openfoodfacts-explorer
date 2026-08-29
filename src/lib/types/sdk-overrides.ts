@@ -1,4 +1,7 @@
-import type { AttributeGroupV2 } from '@openfoodfacts/openfoodfacts-nodejs';
+import type {
+	KnowledgePanelTableRow as SDKKnowledgePanelTableRow,
+	AttributeGroupV2
+} from '@openfoodfacts/openfoodfacts-nodejs';
 
 /**
  * Temporary SDK type overrides until @openfoodfacts/openfoodfacts-nodejs package exports are complete.
@@ -46,4 +49,8 @@ export type CurrentUserPermissions = {
 		message?: { id: string };
 		impact?: { id: string };
 	}>;
+};
+
+export type KnowledgePanelTableRow = SDKKnowledgePanelTableRow & {
+	values: (SDKKnowledgePanelTableRow['values'][number] & { icon_url?: string })[];
 };
