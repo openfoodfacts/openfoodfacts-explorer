@@ -89,9 +89,15 @@
 		// Convert Product to ProductReduced - using type assertion since the product exists
 		const added = compareStore.addProduct(product);
 		if (added) {
-			toastCtx.success('Product added to comparison');
+			toastCtx.success(
+				$_('product.menu.added_to_comparison', { default: 'Product added to comparison' })
+			);
 		} else {
-			toastCtx.warning('Product is already in comparison or comparison is full');
+			toastCtx.warning(
+				$_('product.menu.add_to_comparison_failed', {
+					default: 'Product is already in comparison or comparison list is full'
+				})
+			);
 		}
 	}
 </script>

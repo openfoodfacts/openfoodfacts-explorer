@@ -14,7 +14,8 @@
 	"navbar": {
 		"login": "Login",
 		"logout": "Logout",
-		"account": "Account"
+		"account": "Account",
+		"welcome": "User Menu"
 	},
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
@@ -75,7 +76,18 @@
 		"remove_exclude": "Remove exclude filter",
 		"remove_include_name": "Remove {name} filter",
 		"remove_exclude_name": "Remove exclude {name} filter",
-		"see_all_count": "See all ({count})"
+		"see_all_count": "See all ({count})",
+		"barcode_placeholder": "Barcode (e.g. 1234567890123)",
+		"barcode_validation_title": "Barcode must contain digits only",
+		"enter_barcode_below": "Enter the barcode below.",
+		"export_csv": "Export CSV",
+		"export_csv_error": "Failed to export search results",
+		"export_csv_exporting": "Exporting…",
+		"export_csv_page_hint": "{count} products displayed on this page",
+		"export_csv_success": "Exported {count} products",
+		"filters_sidebar_title": "Search filters",
+		"hide_sidebar": "Hide",
+		"search_placeholder": "Search..."
 	},
 	"auth": {
 		"username": "Username",
@@ -109,10 +121,19 @@
 		"summary": "Summary",
 		"product_not_found": "Product not found",
 		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"errors_occurred": "errors occurred:",
+		"page_not_found": "Page Not Found",
+		"page_not_found_desc": "We looked everywhere, but we couldn't find the page you requested.",
+		"return_home": "Return Home",
+		"search_again": "Search for something else",
+		"try_search_again": "Try Search Again",
+		"unknown_error": "Something went wrong"
 	},
 	"slow_server": {
-		"dismiss": "Dismiss"
+		"dismiss": "Dismiss",
+		"message": "Check your internet connection and our status page to see if there are any ongoing issues.",
+		"status_page": "View Status Page",
+		"title": "This is taking longer than expected..."
 	},
 	"environment_notice": {
 		"title": "Non-production environment",
@@ -203,7 +224,9 @@
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator.",
+		"dev_warning": "These settings are intended for moderators and developers. Changing them affects how the site behaves for you.",
+		"moderator_mode_help": "Show moderator only tools and actions across the site."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -281,7 +304,8 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "View product on Open Food Facts",
+			"report_issue": "Report"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
@@ -351,7 +375,8 @@
 			"toDo": "To do",
 			"states": "States",
 			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"check_be_first": "Be the first to check this product",
+			"just_now": "Just now"
 		},
 		"sidebar_navigation": "Product sections",
 		"sidebar": {
@@ -367,7 +392,12 @@
 			"datasources": "Data Sources",
 			"prices": "Prices",
 			"folksonomy": "Tags & Community",
-			"external_sources": "External sources"
+			"external_sources": "External sources",
+			"attributes": "Attributes",
+			"contribution": "Contribution",
+			"data_sources": "Data Sources",
+			"product_information": "Product information",
+			"report_problem": "Report a Problem"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -614,7 +644,8 @@
 					"select_success": "Image selected successfully!",
 					"select_error": "Error selecting image. Please try again.",
 					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
+					"invalid_crop": "Please select a valid crop area.",
+					"already_uploaded": "This image was already uploaded; reusing the existing photo to replace the active one."
 				},
 				"select_image": "Select an Image",
 				"uploading": "Uploading...",
@@ -642,12 +673,19 @@
 				"crop_click_to_start": "Click and drag to start cropping",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Report Image",
-				"save_changes": "Save Changes"
+				"save_changes": "Save Changes",
+				"replace": "Replace",
+				"replace_image": "Replace Image",
+				"replace_image_aria": "Replace this image",
+				"section_no_photos": "No photo selected for this section yet."
 			},
 			"comment_description": "Add a comment about your changes (optional)",
 			"prices": {
 				"add_price_btn": "Add a price on Open Prices"
-			}
+			},
+			"barcode": "Barcode",
+			"product_name": "Product name",
+			"si_percent_vol": "% vol"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -655,7 +693,8 @@
 			"view_prices": "View prices on Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
-			"loading_map": "Loading prices map…"
+			"loading_map": "Loading prices map…",
+			"title": "Prices"
 		},
 		"knowledge_panels": {
 			"action": {
@@ -756,7 +795,25 @@
 			"image_manager_in_use": "Active / In Use",
 			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
 			"image_manager_image_alt": "Uploaded image {imgid}"
-		}
+		},
+		"add_product": "Add This Product",
+		"gs1": {
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"source_link": "GS1 prefix standards",
+			"verified_link": "View this barcode on GS1"
+		},
+		"invalid_barcode_desc": "We couldn't recognize that product code. Barcodes are typically 8 or 13 digits long.",
+		"invalid_barcode_title": "Let's check that barcode",
+		"menu": {
+			"add_to_comparison": "Add to comparison",
+			"add_to_comparison_failed": "Product is already in comparison or comparison list is full",
+			"added_to_comparison": "Product added to comparison",
+			"edit": "Edit product",
+			"load_for_comparison_failed": "Could not load product details for comparison"
+		},
+		"not_found_desc": "You've discovered a new item. Be the hero who adds it to the database!",
+		"not_found_title": "We don't know this product yet!"
 	},
 	"qr": {
 		"product_not_found": "Product Not Found",
@@ -765,7 +822,9 @@
 		"scan_again": "Scan again",
 		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings.",
+		"empty_barcode_payload": "(empty)",
+		"invalid_barcode_payload": "Scanner payload"
 	},
 	"errors": {
 		"network": {
@@ -962,5 +1021,13 @@
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
+	},
+	"calculator": {
+		"clear_all": "Clear All",
+		"clear_all_aria": "Clear all items from calculator",
+		"title": "Calculator"
+	},
+	"navigation": {
+		"return_to_home": "Return to Home"
 	}
 }
