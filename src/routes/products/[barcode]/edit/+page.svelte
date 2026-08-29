@@ -21,7 +21,7 @@
 		updateObsoleteStatusV3
 	} from '$lib/api';
 	import { getToastCtx } from '$lib/stores/toasts';
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
@@ -150,7 +150,7 @@
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
-			.map((t) => getOrDefault(t.name, $preferences.lang))
+			.map((t) => getOrDefault(t.name, getLanguageCode($preferences.locale)))
 			.filter((t): t is string => t !== undefined);
 	}
 

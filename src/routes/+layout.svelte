@@ -16,6 +16,7 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import SlowServerDialog from '$lib/ui/SlowServerDialog.svelte';
 	import EnvironmentNotice from '$lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -47,7 +48,7 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
@@ -228,24 +229,6 @@
 			unsubscribe();
 		};
 	});
-
-	// Track navigation time. If > 5s, show a popup suggesting server is slow or down
-	let navigationTooSlow: Promise<void> | null = $state(null);
-	$effect(() => {
-		if (navigating.to != null) {
-			let timeout: ReturnType<typeof setTimeout>;
-
-			navigationTooSlow = new Promise((resolve) => {
-				timeout = setTimeout(() => {
-					resolve();
-				}, 5000);
-			});
-
-			return () => clearTimeout(timeout);
-		} else {
-			navigationTooSlow = null;
-		}
-	});
 </script>
 
 <svelte:head>
@@ -262,7 +245,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
+		language-code={getLanguageCode($preferences.locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
@@ -337,7 +320,7 @@
 									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
 								>
 									<IconMdiCalculator class="h-5 w-5" />
-									<span>{$_('calculator', { default: 'Calculator' })}</span>
+									<span>{$_('calculator.title', { default: 'Calculator' })}</span>
 								</button>
 							</li>
 							<div class="divider my-1"></div>
@@ -452,10 +435,10 @@
 				toggleCalculator();
 				accordionOpen = false;
 			}}
-			title={$_('calculator', { default: 'Calculator' })}
-			aria-label={$_('calculator', { default: 'Calculator' })}
+			title={$_('calculator.title', { default: 'Calculator' })}
+			aria-label={$_('calculator.title', { default: 'Calculator' })}
 		>
-			<span>{$_('calculator', { default: 'Calculator' })}</span>
+			<span>{$_('calculator.title', { default: 'Calculator' })}</span>
 		</button>
 		<a
 			class="btn link btn-outline"
@@ -518,31 +501,4 @@
 <NutritionCalculator />
 <Footer />
 <Toast />
-
-{#if navigationTooSlow != null}
-	{#await navigationTooSlow then}
-		<dialog id="slow-server-dialog" class="modal" open>
-			<div class="modal-box">
-				<h3 class="text-lg font-bold">
-					{$_('slow_server.title', { default: 'This is taking longer than expected...' })}
-				</h3>
-				<p class="py-4">
-					{$_('slow_server.message', {
-						default:
-							'Check your internet connection and our status page to see if there are any ongoing issues.'
-					})}
-				</p>
-				<div class="modal-action">
-					<a
-						href="https://status.openfoodfacts.org"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn btn-primary"
-					>
-						{$_('slow_server.status_page', { default: 'View Status Page' })}
-					</a>
-				</div>
-			</div>
-		</dialog>
-	{/await}
-{/if}
+<SlowServerDialog />
