@@ -320,7 +320,7 @@
 									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
 								>
 									<IconMdiCalculator class="h-5 w-5" />
-									<span>{$_('calculator', { default: 'Calculator' })}</span>
+									<span>{$_('calculator.title', { default: 'Calculator' })}</span>
 								</button>
 							</li>
 							<div class="divider my-1"></div>
@@ -435,10 +435,10 @@
 				toggleCalculator();
 				accordionOpen = false;
 			}}
-			title={$_('calculator', { default: 'Calculator' })}
-			aria-label={$_('calculator', { default: 'Calculator' })}
+			title={$_('calculator.title', { default: 'Calculator' })}
+			aria-label={$_('calculator.title', { default: 'Calculator' })}
 		>
-			<span>{$_('calculator', { default: 'Calculator' })}</span>
+			<span>{$_('calculator.title', { default: 'Calculator' })}</span>
 		</button>
 		<a
 			class="btn link btn-outline"
