@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { KnowledgeTableElement } from '$lib/api';
+	import type { KnowledgePanelTableRow } from '$lib/types/sdk-overrides';
 	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
 
 	let { element }: { element: KnowledgeTableElement } = $props();
+	let rows = $derived(element.table_element.rows as KnowledgePanelTableRow[]);
 </script>
 
 <div class="overflow-x-auto">
@@ -15,10 +17,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each element.table_element.rows as row, rowIndex (rowIndex)}
+			{#each rows as row, rowIndex (rowIndex)}
 				<tr>
 					{#each row.values as cell, cellIndex (cellIndex)}
-						<td><HtmlPurify dirty={cell.text} /></td>
+						<td>
+							{#if cell.icon_url}
+								<img
+									src={cell.icon_url}
+									class="mr-1 inline-block h-[1em] w-[1em] overflow-hidden align-middle text-[18px] brightness-0 dark:invert"
+									alt=""
+									aria-hidden="true"
+								/>
+							{/if}
+							<HtmlPurify dirty={cell.text} />
+						</td>
 					{/each}
 				</tr>
 			{/each}
