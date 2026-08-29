@@ -222,7 +222,8 @@
 
 		// 3. Handle empty countryData to avoid Math.min([]) = Infinity
 		const hasData = countryData.size > 0;
-		const maxProducts = hasData ? Math.max(...countryData.values().map((d) => d.products), 1) : 1;
+		const productValues = [...countryData.values()].map((d) => d.products);
+		const maxProducts = hasData ? Math.max(...productValues, 1) : 1;
 
 		const dataBorder = dark ? THEME.borders.dark : THEME.borders.light;
 		const hoverBorder = dark ? THEME.borders.hoverDark : THEME.borders.hoverLight;
@@ -305,7 +306,7 @@
 		}
 
 		// Add legend
-		const minVal = hasData ? Math.min(...countryData.values().map((d) => d.products)) : 0;
+		const minVal = hasData ? Math.min(...productValues) : 0;
 		const LegendControl = L.Control.extend({
 			onAdd() {
 				if (L == null) {
