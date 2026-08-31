@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Élelmiszerinformációk böngészőjének megnyitása",
 		"description": "{productName} termékoldala az Open Food Facts Explorer oldalon",
+		"image_alt": "Kép",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
