@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - 오픈 식품 정보 탐색기",
 		"description": "Open Food Facts Explorer의 {productName} 에 대한 제품 페이지",
+		"image_alt": "이미지",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
