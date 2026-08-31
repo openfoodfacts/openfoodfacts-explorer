@@ -80,7 +80,8 @@
 	}
 
 	let frontImage = $derived(
-		'image_front_url' in product ? (product.image_front_url as string) : undefined
+		product.image_front_small_url ??
+			('image_front_url' in product ? (product.image_front_url as string) : undefined)
 	);
 
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));

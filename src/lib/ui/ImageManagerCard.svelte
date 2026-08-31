@@ -45,7 +45,7 @@
 			default: 'Uploaded on {date}',
 			values: { date: formatDate(img.uploaded_t) }
 		});
-		modal.displayImage(fullUrl, `${uploaderText} ${dateText}`, img.imgid, product.code);
+		modal.displayImage(fullUrl, `${uploaderText} ${dateText}`, img.imgid, product.code, img.url);
 	}
 
 	// Extract numeric raw images from product.images
