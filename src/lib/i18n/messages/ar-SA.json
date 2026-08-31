@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - مستكشف حقائق الطعام المفتوح",
 		"description": "صفحة المنتج لـ {productName} على مستكشف حقائق الطعام المفتوح",
+		"image_alt": "الصورة",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
