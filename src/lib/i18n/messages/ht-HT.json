@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Louvri Eksploratè Enfòmasyon sou Manje",
 		"description": "Paj pwodwi pou {productName} sou Open Food Facts Explorer",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
