@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
 		"description": "ओपन फूड फॅक्ट्स एक्सप्लोरर वर {productName} साठी उत्पादन पृष्ठ",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
