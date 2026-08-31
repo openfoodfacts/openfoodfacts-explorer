@@ -13,8 +13,15 @@
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 	import IconMdiPencilOutline from '@iconify-svelte/mdi/pencil-outline';
 
-	type ImageState = { url: string; alt?: string; imageid?: number; productCode?: string };
+	type ImageState = {
+		url: string;
+		previewUrl?: string;
+		alt?: string;
+		imageid?: number;
+		productCode?: string;
+	};
 	let image: ImageState | undefined = $state();
+	let isImageLoading = $state(false);
 
 	let dialog: HTMLDialogElement | undefined = $state();
 	let zoomLevel = $state(1);
@@ -23,8 +30,15 @@
 
 	let rotation = $state(0);
 
-	export function displayImage(url: string, alt?: string, imageid?: number, productCode?: string) {
-		image = { url, alt, imageid, productCode };
+	export function displayImage(
+		url: string,
+		alt?: string,
+		imageid?: number,
+		productCode?: string,
+		previewUrl?: string
+	) {
+		image = { url, previewUrl, alt, imageid, productCode };
+		isImageLoading = true;
 
 		zoomLevel = 1;
 		dialog?.showModal();
@@ -76,14 +90,34 @@
 	<div class="relative flex h-full w-full flex-col">
 		<div class="h-full w-full p-5">
 			{#if image}
-				<ResizableImage
-					src={image.url}
-					alt={image.alt ?? 'Image'}
-					bind:zoom={zoomLevel}
-					bind:rotation
-					bind:translation
-					maxzoom={10}
-				/>
+				<div class="relative h-full w-full overflow-hidden">
+					{#if isImageLoading}
+						<img
+							src={image.previewUrl ?? image.url}
+							alt=""
+							class="absolute inset-0 h-full w-full scale-105 object-contain opacity-60 blur-lg"
+							aria-hidden="true"
+						/>
+						<div class="absolute inset-0 z-10 flex items-center justify-center" aria-hidden="true">
+							<span class="loading loading-lg loading-spinner text-primary"></span>
+						</div>
+					{/if}
+					<div
+						class="h-full w-full transition-opacity duration-200"
+						class:opacity-0={isImageLoading}
+					>
+						<ResizableImage
+							src={image.url}
+							alt={image.alt ?? 'Image'}
+							bind:zoom={zoomLevel}
+							bind:rotation
+							bind:translation
+							maxzoom={10}
+							onload={() => (isImageLoading = false)}
+							onerror={() => (isImageLoading = false)}
+						/>
+					</div>
+				</div>
 			{/if}
 		</div>
 		<div class="absolute right-2 z-10 flex h-full flex-col items-center justify-center gap-2">
