@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Food Facts Explorer ကိုဖွင့်ပါ။",
 		"description": "Open Food Facts Explorer ရှိ {productName} အတွက် ထုတ်ကုန်စာမျက်နှာ",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
