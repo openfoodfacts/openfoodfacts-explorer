@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Відкрити дослідник фактів про їжу",
 		"description": "Сторінка товару для {productName} на Open Food Facts Explorer",
+		"image_alt": "Зображення",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
