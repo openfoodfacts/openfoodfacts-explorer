@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Produktsida för {productName} på Open Food Facts Explorer",
+		"image_alt": "Bild",
 		"card": {
 			"aria_label": "Gå till produkten {productName} med koden {productCode}",
 			"aria_label_no_name": "Gå till produkten med koden {productCode}"
