@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - খোলা খাদ্য তথ্য এক্সপ্লোৰাৰ",
 		"description": "মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত {productName} ৰ বাবে প্ৰডাক্ট পেজ",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
