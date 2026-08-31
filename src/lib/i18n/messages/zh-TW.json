@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - 打開食物資訊探索器",
 		"description": "Open Food Facts Explorer 上的 {productName} 產品頁面",
+		"image_alt": "圖片",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
