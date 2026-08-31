@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Explorador de datos alimentarios abiertos",
 		"description": "Página de producto para {productName} en Open Food Facts Explorer",
+		"image_alt": "Imagen",
 		"card": {
 			"aria_label": "Ir al producto {productName} con el código {productCode}",
 			"aria_label_no_name": "Ir al producto con el código {productCode}"
