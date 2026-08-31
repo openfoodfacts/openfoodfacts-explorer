@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - খাদ্য তথ্য অনুসন্ধানকারী খুলুন",
 		"description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {productName} এর পণ্য পৃষ্ঠা",
+		"image_alt": "ভাবমূর্তি",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
