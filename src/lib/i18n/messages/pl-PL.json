@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Otwórz Eksplorator Faktów o Żywności",
 		"description": "Strona produktu {productName} w Open Food Facts Explorer",
+		"image_alt": "Zdjęcie",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
