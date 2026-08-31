@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Open Food Facts Explorer",
 		"description": "Stranica proizvoda za {productName} na Open Food Facts Exploreru",
+		"image_alt": "Slika",
 		"card": {
 			"aria_label": "Idite na proizvod {productName} s kodom {productCode}",
 			"aria_label_no_name": "Idite na proizvod s kodom {productCode}"
