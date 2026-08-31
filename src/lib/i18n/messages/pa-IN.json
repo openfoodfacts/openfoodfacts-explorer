@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ਫੂਡ ਫੈਕਟਸ ਐਕਸਪਲੋਰਰ ਖੋਲ੍ਹੋ",
 		"description": "ਓਪਨ ਫੂਡ ਫੈਕਟਸ ਐਕਸਪਲੋਰਰ 'ਤੇ {productName} ਲਈ ਉਤਪਾਦ ਪੰਨਾ",
+		"image_alt": "ਚਿੱਤਰ",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
