@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
 		"description": "ઓપન ફૂડ ફેક્ટ્સ એક્સપ્લોરર પર {productName} માટે પ્રોડક્ટ પેજ",
+		"image_alt": "છબી",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
