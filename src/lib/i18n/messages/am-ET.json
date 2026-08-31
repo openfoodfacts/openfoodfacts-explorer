@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ክፍት የምግብ እውነታዎች አሳሽ",
 		"description": "የምርት ገጽ ለ {productName} በክፍት ፉድ እውነታዎች አሳሽ ላይ",
+		"image_alt": "ምስል",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
