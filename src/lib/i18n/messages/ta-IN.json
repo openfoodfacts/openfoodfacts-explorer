@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
 		"description": "திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரரில் {productName} க்கான தயாரிப்புப் பக்கம்",
+		"image_alt": "படம்",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
