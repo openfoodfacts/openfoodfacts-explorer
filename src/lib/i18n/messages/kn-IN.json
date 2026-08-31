@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
 		"description": "ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ {productName} ಗಾಗಿ ಉತ್ಪನ್ನ ಪುಟ",
+		"image_alt": "ಚಿತ್ರ",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
