@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Avaa ruokatietoselain",
 		"description": "Tuotesivu {productName} :lle Open Food Facts Explorerissa",
+		"image_alt": "Kuva",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
