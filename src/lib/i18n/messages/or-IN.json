@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
 		"description": "ଓପନ ଫୁଡ୍ ଫ୍ୟାକ୍ଟସ୍ ଏକ୍ସପ୍ଲୋରରରେ {productName} ପାଇଁ ଉତ୍ପାଦ ପୃଷ୍ଠା",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
