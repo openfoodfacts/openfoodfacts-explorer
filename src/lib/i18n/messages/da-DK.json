@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Åbn Madfakta-Explorer",
 		"description": "Produktside for {productName} på Open Food Facts Explorer",
+		"image_alt": "Billed",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
