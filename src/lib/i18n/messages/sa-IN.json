@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - खाद्यतथ्य अन्वेषकः उद्घाटयतु",
 		"description": "Open Food Facts Explorer इत्यत्र {productName} इत्यस्य उत्पादपृष्ठम्",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
