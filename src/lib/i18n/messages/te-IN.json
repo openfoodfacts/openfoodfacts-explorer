@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
 		"description": "ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో {productName} కోసం ఉత్పత్తి పేజీ",
+		"image_alt": "చిత్రం",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
