@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Otevřít Průzkumník faktů o jídle",
 		"description": "Stránka produktu {productName} na Open Food Facts Explorer",
+		"image_alt": "Obrázek",
 		"card": {
 			"aria_label": "Přejděte k produktu {productName} s kódem {productCode}",
 			"aria_label_no_name": "Přejděte k produktu s kódem {productCode}"
