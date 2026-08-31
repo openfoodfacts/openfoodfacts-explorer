@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Hapni Eksploruesin e Fakteve Ushqimore",
 		"description": "Faqja e produktit për {productName} në Open Food Facts Explorer",
+		"image_alt": "Figura, imazhi",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
