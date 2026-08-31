@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Atidaryti maisto faktų naršyklę",
 		"description": "Produkto puslapis, skirtas {productName} , „Open Food Facts Explorer“ platformoje",
+		"image_alt": "Vaizdas",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
