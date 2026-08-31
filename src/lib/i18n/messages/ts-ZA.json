@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Vula Mukambisisi wa Tinhla ta Swakudya",
 		"description": "Tluka ra swikumiwa ra {productName} eka Open Food Facts Explorer",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
