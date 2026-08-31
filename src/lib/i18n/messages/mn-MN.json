@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Хүнсний баримт судлаачийг нээнэ үү",
 		"description": "Open Food Facts Explorer дээрх {productName} бүтээгдэхүүний хуудас",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
