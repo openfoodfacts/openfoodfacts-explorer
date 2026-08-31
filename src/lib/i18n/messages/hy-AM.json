@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Բացեք սննդի մասին տեղեկություններ ուսումնասիրողը",
 		"description": "{productName} -ի ապրանքի էջը Open Food Facts Explorer-ում",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
