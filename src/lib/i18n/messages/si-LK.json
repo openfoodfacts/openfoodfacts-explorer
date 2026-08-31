@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - විවෘත ආහාර කරුණු ගවේෂකය",
 		"description": "Open Food Facts Explorer හි {productName} සඳහා නිෂ්පාදන පිටුව",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
