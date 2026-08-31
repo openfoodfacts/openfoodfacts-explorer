@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - გახსენით საკვების ფაქტების მკვლევარი",
 		"description": "პროდუქტის გვერდი {productName} -ისთვის Open Food Facts Explorer-ზე",
+		"image_alt": "სურათი",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
