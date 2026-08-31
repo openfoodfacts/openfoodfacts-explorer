@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Ireki Janari Datuen Arakatzailea",
 		"description": "{productName} produktuaren orria Open Food Facts Explorer-en",
+		"image_alt": "Irudia",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
