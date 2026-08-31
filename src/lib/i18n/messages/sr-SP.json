@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Отвори истраживач чињеница о храни",
 		"description": "Страница производа за {productName} на Open Food Facts Explorer-у",
+		"image_alt": "Слика",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
