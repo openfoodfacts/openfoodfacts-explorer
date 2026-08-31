@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Oziq-ovqat faktlari tadqiqotchisini oching",
 		"description": "Open Food Facts Explorer-da {productName} uchun mahsulot sahifasi",
+		"image_alt": "Rasm",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
