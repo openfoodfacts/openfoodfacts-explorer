@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
 		"description": "Aguade krataafa ma {productName} wɔ Open Food Facts Explorer so",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
