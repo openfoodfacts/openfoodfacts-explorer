@@ -108,7 +108,7 @@
 					>
 						<ResizableImage
 							src={image.url}
-							alt={image.alt ?? 'Image'}
+							alt={image.alt ?? $_('product.image_alt', { default: 'Image' })}
 							bind:zoom={zoomLevel}
 							bind:rotation
 							bind:translation
