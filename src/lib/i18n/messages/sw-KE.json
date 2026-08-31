@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Fungua Kichunguzi cha Ukweli wa Chakula",
 		"description": "Ukurasa wa bidhaa wa {productName} kwenye Open Food Facts Explorer",
+		"image_alt": "Picha",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
