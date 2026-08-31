@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - Ṣiṣawari Awọn Otitọ Ounje",
 		"description": "Oju-iwe ọja fun {productName} lori Ṣiṣawari Awọn Otitọ Ounje",
+		"image_alt": "Àwòrán",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
