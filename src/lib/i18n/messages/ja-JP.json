@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - 食品情報エクスプローラーを開く",
 		"description": "Open Food Facts Explorer の {productName} の製品ページ",
+		"image_alt": "画像",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
