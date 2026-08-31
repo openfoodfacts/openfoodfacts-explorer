@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - បើក Food Facts Explorer",
 		"description": "ទំព័រផលិតផលសម្រាប់ {productName} នៅលើ Open Food Facts Explorer",
+		"image_alt": "រូបភាព",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
