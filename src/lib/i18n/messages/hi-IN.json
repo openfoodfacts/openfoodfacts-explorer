@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - खाद्य तथ्य एक्सप्लोरर खोलें",
 		"description": "ओपन फ़ूड फ़ैक्ट्स एक्सप्लोरर पर {productName} के लिए उत्पाद पृष्ठ",
+		"image_alt": "छवि",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
