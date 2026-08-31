@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - עפֿענען עסן פאַקטן עקספּלאָרער",
 		"description": "פּראָדוקט בלאַט פֿאַר {productName} אויף Open Food Facts Explorer",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
