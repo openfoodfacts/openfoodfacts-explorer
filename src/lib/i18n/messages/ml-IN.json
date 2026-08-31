@@ -257,6 +257,7 @@
 	"product": {
 		"title": "{productName} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
 		"description": "ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ {productName} എന്നതിനായുള്ള ഉൽപ്പന്ന പേജ്",
+		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
