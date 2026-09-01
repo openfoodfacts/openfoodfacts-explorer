@@ -14,7 +14,8 @@
 	"navbar": {
 		"login": "Login",
 		"logout": "Logout",
-		"account": "Account"
+		"account": "Account",
+		"welcome": "User Menu"
 	},
 	"search": {
 		"title": "Search - {query} - Open Food Facts Explorer",
@@ -28,6 +29,9 @@
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Search Analytics",
 		"results_for": "Search results for \"{term}\"",
+		"searching_for": "Searching for \"{term}\"",
+		"results_summary": "{total, plural, one {1 result - showing {displayed} on this page ({time} seconds)} other {# results - showing {displayed} on this page ({time} seconds)}}",
+		"results_summary_inexact": "{total, plural, one {More than 1 result - showing {displayed} on this page ({time} seconds)} other {More than # results - showing {displayed} on this page ({time} seconds)}}",
 		"classic_tools": "Classic Tools:",
 		"show_prices_label": "Show Prices",
 		"sort_by_label": "Sort by",
@@ -46,7 +50,44 @@
 		"creation_date": "Creation date",
 		"last_modified_date": "Last modified date",
 		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"advanced_view": "Advanced view",
+		"add_facet_button": "Add facet",
+		"available_facets": "Available facets",
+		"search_available_facets": "Filter available facets...",
+		"no_matching_facets": "No matching facets",
+		"remove_filter_section": "Hide this filter",
+		"close": "Close",
+		"close_facet_picker": "Close available facets",
+		"close_filters": "Close filters",
+		"clear_search": "Clear search",
+		"clear_all": "Clear All",
+		"active_filters": "Active Filters",
+		"not_prefix": "NOT",
+		"filters_title": "Filters",
+		"sort_title": "Sort",
+		"no_facets_available": "No filters available",
+		"no_matching_items": "No matching items",
+		"show_less": "Show less",
+		"see_all": "See all",
+		"filter_placeholder": "Filter...",
+		"include_item": "Include {name}",
+		"exclude_item": "Exclude (NOT) {name}",
+		"remove_include": "Remove include filter",
+		"remove_exclude": "Remove exclude filter",
+		"remove_include_name": "Remove {name} filter",
+		"remove_exclude_name": "Remove exclude {name} filter",
+		"see_all_count": "See all ({count})",
+		"barcode_placeholder": "Barcode (e.g. 1234567890123)",
+		"barcode_validation_title": "Barcode must contain digits only",
+		"enter_barcode_below": "Enter the barcode below.",
+		"export_csv": "Export CSV",
+		"export_csv_error": "Failed to export search results",
+		"export_csv_exporting": "Exporting…",
+		"export_csv_page_hint": "{count} products displayed on this page",
+		"export_csv_success": "Exported {count} products",
+		"filters_sidebar_title": "Search filters",
+		"hide_sidebar": "Hide",
+		"search_placeholder": "Search..."
 	},
 	"auth": {
 		"username": "Username",
@@ -80,7 +121,23 @@
 		"summary": "Summary",
 		"product_not_found": "Product not found",
 		"error_occurred": "error occurred:",
-		"errors_occurred": "errors occurred:"
+		"errors_occurred": "errors occurred:",
+		"page_not_found": "Page Not Found",
+		"page_not_found_desc": "We looked everywhere, but we couldn't find the page you requested.",
+		"return_home": "Return Home",
+		"search_again": "Search for something else",
+		"try_search_again": "Try Search Again",
+		"unknown_error": "Something went wrong"
+	},
+	"slow_server": {
+		"dismiss": "Dismiss",
+		"message": "Check your internet connection and our status page to see if there are any ongoing issues.",
+		"status_page": "View Status Page",
+		"title": "This is taking longer than expected..."
+	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
 	},
 	"footer": {
 		"stay_updated": "Stay Updated",
@@ -167,7 +224,9 @@
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator.",
+		"dev_warning": "These settings are intended for moderators and developers. Changing them affects how the site behaves for you.",
+		"moderator_mode_help": "Show moderator only tools and actions across the site."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -224,7 +283,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -245,12 +304,35 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "View product on Open Food Facts",
+			"report_issue": "Report"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barcode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Search",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Open",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Error",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -293,7 +375,8 @@
 			"toDo": "To do",
 			"states": "States",
 			"never_checked": "Never checked",
-			"check_be_first": "Be the first to check this product"
+			"check_be_first": "Be the first to check this product",
+			"just_now": "Just now"
 		},
 		"sidebar_navigation": "Product sections",
 		"sidebar": {
@@ -302,12 +385,19 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "Data Sources",
 			"prices": "Prices",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources",
+			"attributes": "Attributes",
+			"contribution": "Contribution",
+			"data_sources": "Data Sources",
+			"product_information": "Product information",
+			"report_problem": "Report a Problem"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -339,6 +429,7 @@
 				"stores": "Input the store where you bought the product. For example, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Add any indications of origins you can find on the packaging. You need not worry about origins indicated directly in the ingredient list. For example, 'Beef from Argentina', 'The soy does not come from the European Union'.",
 				"traceability_code": "In this section, you can input codes related to packaging marks, identification marks or health marks.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Countries where the product is widely available (not including stores specialising in foreign products).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,10 +441,15 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -414,7 +510,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Manufacturing places",
-			"categories": "Categories:",
+			"categories": "Categories",
 			"labels": "Labels",
 			"brands": "Brands",
 			"stores": "Stores",
@@ -464,6 +560,10 @@
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
@@ -472,9 +572,14 @@
 				"salt": "Salt",
 				"fibers": "Fibers",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
@@ -539,7 +644,8 @@
 					"select_success": "Image selected successfully!",
 					"select_error": "Error selecting image. Please try again.",
 					"not_loaded": "Image not fully loaded. Please wait and try again.",
-					"invalid_crop": "Please select a valid crop area."
+					"invalid_crop": "Please select a valid crop area.",
+					"already_uploaded": "This image was already uploaded; reusing the existing photo to replace the active one."
 				},
 				"select_image": "Select an Image",
 				"uploading": "Uploading...",
@@ -567,12 +673,19 @@
 				"crop_click_to_start": "Click and drag to start cropping",
 				"resize_handle_aria_label": "Resize {action} handle",
 				"report_image": "Report Image",
-				"save_changes": "Save Changes"
+				"save_changes": "Save Changes",
+				"replace": "Replace",
+				"replace_image": "Replace Image",
+				"replace_image_aria": "Replace this image",
+				"section_no_photos": "No photo selected for this section yet."
 			},
 			"comment_description": "Add a comment about your changes (optional)",
 			"prices": {
 				"add_price_btn": "Add a price on Open Prices"
-			}
+			},
+			"barcode": "Barcode",
+			"product_name": "Product name",
+			"si_percent_vol": "% vol"
 		},
 		"prices": {
 			"no_prices_found": "No prices found for this product",
@@ -580,7 +693,8 @@
 			"view_prices": "View prices on Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
-			"loading_map": "Loading prices map…"
+			"loading_map": "Loading prices map…",
+			"title": "Prices"
 		},
 		"knowledge_panels": {
 			"action": {
@@ -598,6 +712,22 @@
 				"add_ingredients_image": "Add a photo of the ingredients",
 				"add_nutrition_facts": "Add nutrition facts"
 			}
+		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Privacy policy"
 		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
@@ -665,7 +795,25 @@
 			"image_manager_in_use": "Active / In Use",
 			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
 			"image_manager_image_alt": "Uploaded image {imgid}"
-		}
+		},
+		"add_product": "Add This Product",
+		"gs1": {
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"source_link": "GS1 prefix standards",
+			"verified_link": "View this barcode on GS1"
+		},
+		"invalid_barcode_desc": "We couldn't recognize that product code. Barcodes are typically 8 or 13 digits long.",
+		"invalid_barcode_title": "Let's check that barcode",
+		"menu": {
+			"add_to_comparison": "Add to comparison",
+			"add_to_comparison_failed": "Product is already in comparison or comparison list is full",
+			"added_to_comparison": "Product added to comparison",
+			"edit": "Edit product",
+			"load_for_comparison_failed": "Could not load product details for comparison"
+		},
+		"not_found_desc": "You've discovered a new item. Be the hero who adds it to the database!",
+		"not_found_title": "We don't know this product yet!"
 	},
 	"qr": {
 		"product_not_found": "Product Not Found",
@@ -674,7 +822,9 @@
 		"scan_again": "Scan again",
 		"invalid_barcode": "Scanned code is not a valid barcode",
 		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings.",
+		"empty_barcode_payload": "(empty)",
+		"invalid_barcode_payload": "Scanner payload"
 	},
 	"errors": {
 		"network": {
@@ -698,6 +848,79 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"category_general": "General",
+		"category_nutrition": "Nutrition & Health",
+		"category_packaging": "Packaging & Origin",
+		"category_community": "Community & Metadata",
+		"brands": "Brands",
+		"brands_tags": "Brands",
+		"categories": "Categories",
+		"categories_tags": "Categories",
+		"nutrition_grades": "Nutri-Score",
+		"environmental_score_grade": "Green-Score",
+		"ecoscore_grade": "Green-Score",
+		"nova_group": "Ultra-processing level (NOVA)",
+		"nova_groups": "Ultra-processing level (NOVA)",
+		"labels": "Labels & Certifications",
+		"labels_tags": "Labels & Certifications",
+		"allergens": "Allergens",
+		"additives": "Additives",
+		"stores": "Stores",
+		"origins": "Origins of Ingredients",
+		"countries": "Countries",
+		"countries_tags": "Countries",
+		"manufacturing_places": "Manufacturing Places",
+		"emb_codes": "Traceability Codes",
+		"packaging": "Packaging",
+		"languages": "Languages",
+		"ingredients": "Ingredients",
+		"traces": "Traces",
+		"vitamins": "Added vitamins",
+		"minerals": "Added minerals",
+		"amino_acids": "Added amino acids",
+		"nucleotides": "Added nucleotides",
+		"other_nutritional_substances": "Other nutritional substances",
+		"states": "Completion states",
+		"data_sources": "Data sources",
+		"contributors": "Contributors",
+		"teams": "Teams",
+		"misc": "Miscellaneous Tags",
+		"packaging_shapes": "Packaging shapes",
+		"packaging_recycling": "Packaging recycling",
+		"ingredients_analysis": "Ingredients analysis",
+		"owner": "Brand owner",
+		"photographers": "Photographers",
+		"data_quality_tags": "Data Quality Tags",
+		"data_quality_warnings": "Data quality warnings",
+		"data_quality_errors": "Data quality errors",
+		"popularity_tags": "Popularity",
+		"entry_dates": "Entry Dates (YYYY-MM)",
+		"placeholders": {
+			"origins": "e.g. France, Spain...",
+			"manufacturing_places": "e.g. Lyon, Berlin...",
+			"emb_codes": "e.g. EMB 29007...",
+			"packaging": "e.g. glass, plastic...",
+			"packaging_shapes": "e.g. bottle, box...",
+			"packaging_recycling": "e.g. discard, recycle...",
+			"ingredients": "e.g. sugar, water...",
+			"ingredients_analysis": "e.g. en:palm-oil-free, en:vegan...",
+			"traces": "e.g. nuts, milk...",
+			"vitamins": "e.g. vitamin-c...",
+			"minerals": "e.g. calcium, iron...",
+			"nucleotides": "e.g. inosine...",
+			"amino_acids": "e.g. taurine, leucine...",
+			"other_nutritional_substances": "e.g. polyphenols...",
+			"states": "e.g. ingredients-completed...",
+			"data_quality_tags": "e.g. packaging-data-complete...",
+			"data_quality_warnings": "e.g. warning tag...",
+			"data_quality_errors": "e.g. error tag...",
+			"popularity_tags": "e.g. top-1000-fr...",
+			"misc": "e.g. nutriscore-computed...",
+			"contributors": "e.g. username...",
+			"owner": "e.g. producer id...",
+			"photographers": "e.g. username...",
+			"entry_dates": "e.g. 2024-01..."
+		},
 		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
 		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
 		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
@@ -800,5 +1023,13 @@
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
+	},
+	"calculator": {
+		"clear_all": "Clear All",
+		"clear_all_aria": "Clear all items from calculator",
+		"title": "Calculator"
+	},
+	"navigation": {
+		"return_to_home": "Return to Home"
 	}
 }

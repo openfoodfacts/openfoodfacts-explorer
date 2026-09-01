@@ -10,6 +10,7 @@
 	let html5QrCode: Html5Qrcode | null = null;
 	let scannerTimedOut = $state(false);
 	let manualBarcode = $state('');
+	let invalidBarcodePayload = $state<string | null>(null);
 	let scannerTimeout: ReturnType<typeof setTimeout> | null = null;
 	let isSubmittingBarcode = $state(false);
 	let canRetryScan = $state(false);
@@ -52,6 +53,7 @@
 		if (isDestroyed || productCode == null || isSubmittingBarcode) {
 			if (productCode == null && !isDestroyed) {
 				canRetryScan = true;
+				invalidBarcodePayload = barcode;
 				error = $_('qr.invalid_barcode', {
 					default: 'Scanned code is not a valid barcode'
 				});
@@ -202,6 +204,7 @@
 			canRetryScan = false;
 			scannerTimedOut = false;
 			manualBarcode = '';
+			invalidBarcodePayload = null;
 
 			await tick();
 
@@ -219,7 +222,21 @@
 {#if error != null}
 	<div class="flex h-screen items-center justify-center">
 		<div class="flex flex-col items-center gap-4 text-center">
-			<p class="text-error">{error}</p>
+			<div class="max-w-full px-4" role="alert">
+				<p class="text-error">{error}</p>
+				{#if invalidBarcodePayload !== null}
+					<div class="mt-3 max-w-full text-left">
+						<p class="mb-1 text-sm font-semibold">
+							{$_('qr.invalid_barcode_payload', { default: 'Scanner payload' })}
+						</p>
+						<code
+							class="block max-w-full overflow-x-auto rounded-box bg-base-200 p-3 text-sm break-all whitespace-pre-wrap"
+						>
+							{invalidBarcodePayload || $_('qr.empty_barcode_payload', { default: '(empty)' })}
+						</code>
+					</div>
+				{/if}
+			</div>
 			{#if canRetryScan}
 				<button class="btn btn-outline" onclick={restartScanner}>
 					{$_('qr.scan_again', { default: 'Scan again' })}

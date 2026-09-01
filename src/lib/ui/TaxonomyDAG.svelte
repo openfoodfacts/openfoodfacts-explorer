@@ -6,7 +6,7 @@
 	import type { TaxoNode, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	import { getOrDefault } from '$lib/api';
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 
 	type Props = {
 		id: string;
@@ -51,7 +51,7 @@
 		elements.push({
 			data: {
 				id: id,
-				label: getOrDefault(node.name, $preferences.lang),
+				label: getOrDefault(node.name, getLanguageCode($preferences.locale)),
 				type: 'current'
 			}
 		});
@@ -63,7 +63,7 @@
 				elements.push({
 					data: {
 						id: parentId,
-						label: getOrDefault(parent.name, $preferences.lang),
+						label: getOrDefault(parent.name, getLanguageCode($preferences.locale)),
 						type: 'parent'
 					}
 				});
@@ -84,7 +84,7 @@
 				elements.push({
 					data: {
 						id: childId,
-						label: getOrDefault(child.name, $preferences.lang),
+						label: getOrDefault(child.name, getLanguageCode($preferences.locale)),
 						type: 'child'
 					}
 				});
