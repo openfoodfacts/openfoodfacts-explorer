@@ -958,7 +958,7 @@
 		"import_dialog_title": "Import Comparison",
 		"continue_question": "Continue?",
 		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
-		"import": "Import",
+		"import": "Importă",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
 		"best": "Best",
