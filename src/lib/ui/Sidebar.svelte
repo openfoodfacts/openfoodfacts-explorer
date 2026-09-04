@@ -37,6 +37,8 @@
 		title?: string;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
+		headerSecondaryActionLabel?: string;
+		onHeaderSecondaryAction?: () => void;
 	};
 
 	let {
@@ -49,7 +51,9 @@
 		class: className = '',
 		title,
 		headerActionLabel,
-		onHeaderAction
+		onHeaderAction,
+		headerSecondaryActionLabel,
+		onHeaderSecondaryAction
 	}: Props = $props();
 
 	let navElement = $state<HTMLElement>();
@@ -250,22 +254,33 @@
 
 <div class={['hidden h-full lg:block', hidden ? 'lg:hidden' : '', className]}>
 	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
-		{#if title || (headerActionLabel && onHeaderAction)}
+		{#if title || (headerActionLabel && onHeaderAction) || (headerSecondaryActionLabel && onHeaderSecondaryAction)}
 			<div class={['mb-4 flex items-center px-1', title ? 'justify-between' : 'justify-end']}>
 				{#if title}
 					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
 						{title}
 					</span>
 				{/if}
-				{#if headerActionLabel && onHeaderAction}
-					<button
-						type="button"
-						onclick={onHeaderAction}
-						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
-					>
-						{headerActionLabel}
-					</button>
-				{/if}
+				<span class="flex items-center">
+					{#if headerActionLabel && onHeaderAction}
+						<button
+							type="button"
+							onclick={onHeaderAction}
+							class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+						>
+							{headerActionLabel}
+						</button>
+					{/if}
+					{#if headerSecondaryActionLabel && onHeaderSecondaryAction}
+						<button
+							type="button"
+							onclick={onHeaderSecondaryAction}
+							class="ml-4 cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+						>
+							{headerSecondaryActionLabel}
+						</button>
+					{/if}
+				</span>
 			</div>
 		{/if}
 		<nav
