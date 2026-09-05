@@ -29,7 +29,7 @@
 									aria-hidden="true"
 								/>
 							{/if}
-							<div class="kp-html-content inline">
+							<div class="kp-html-content inline-block align-middle">
 								<HtmlPurify dirty={cell.text} />
 							</div>
 						</td>
