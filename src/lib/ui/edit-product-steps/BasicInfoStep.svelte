@@ -246,6 +246,12 @@
 						{$_('product.edit.product_page_url_add', {
 							default: 'Link to the product page on the official site of the producer'
 						})}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.website_url', {
+								default:
+									'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+							})}
+						/>
 					</span>
 				</label>
 				<input
@@ -591,6 +597,12 @@
 										default: 'Link to the product page on the official site of the producer'
 									})}
 								</span>
+								<InfoTooltip
+									text={$_('product.edit.tooltips.website_url', {
+										default:
+											'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+									})}
+								/>
 							</label>
 							<input
 								id="website_url"
