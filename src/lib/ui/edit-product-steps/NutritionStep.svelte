@@ -207,17 +207,24 @@
 		};
 	}
 
+	const SEVERITY_PRIORITY: Record<IssueSeverity, number> = {
+		error: 3,
+		warning: 2,
+		info: 1
+	};
+
 	const bySeverity = (a: Issue, b: Issue) => {
-		if (a.severity === b.severity) return 0;
-		if (a.severity === 'error') return -1;
-		return 1;
+		const priorityA = SEVERITY_PRIORITY[a.severity] ?? 0;
+		const priorityB = SEVERITY_PRIORITY[b.severity] ?? 0;
+		return priorityB - priorityA;
 	};
 
 	const INPUT_CLASS_BY_SEVERITY: Record<IssueSeverity, string> = {
 		error: 'input-error',
-		warning: 'input-warning'
+		warning: 'input-warning',
+		info: 'input-info'
 	};
-	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning'];
+	const SEVERITY_PRECEDENCE: IssueSeverity[] = ['error', 'warning', 'info'];
 	const SERVING_SIZE_VALIDATION_ISSUES = {
 		'missing-number': {
 			severity: 'error',
@@ -255,25 +262,49 @@
 		getServingSizeValidationResult(product.serving_size, units)
 	);
 	let servingSizeIssue = $derived.by((): Issue | null => {
-		if (servingSizeValidationResult === 'valid') {
-			return null;
+		if (servingSizeValidationResult !== 'valid') {
+			const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+			return {
+				severity: validationIssue.severity,
+				field: 'serving_size',
+				title: $_(validationIssue.title, { default: validationIssue.title }),
+				desc: $_(validationIssue.desc, {
+					default: validationIssue.desc,
+					values: { examples: servingSizeExamples }
+				})
+			};
 		}
 
-		const validationIssue = SERVING_SIZE_VALIDATION_ISSUES[servingSizeValidationResult];
+		const apiError = apiQualityErrors.find((e) => e.field === 'serving_size');
+		if (apiError) {
+			return {
+				severity: apiError.severity,
+				field: 'serving_size',
+				title: $_(apiError.message, { default: 'Serving size issue' }),
+				desc: ''
+			};
+		}
 
-		return {
-			severity: validationIssue.severity,
-			field: 'serving_size',
-			title: $_(validationIssue.title),
-			desc: $_(validationIssue.desc, { values: { examples: servingSizeExamples } })
-		};
+		return null;
 	});
 	let servingSizePlaceholder = $derived(
 		$_('product.edit.serving_size_placeholder', {
 			values: { examples: servingSizeExamples }
 		})
 	);
-	let nutritionIssues = $derived(getNutritionIssues(product));
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
+
+	const quality = $derived(getDataQualityCtx());
+	let apiQualityErrors = $derived(quality.forSection('nutrition'));
+	let nutritionIssues = $derived([
+		...getNutritionIssues(product),
+		...apiQualityErrors.map((e) => ({
+			severity: e.severity,
+			field: e.field.replace('_100g', '').replace(/_/g, '-'),
+			title: $_(e.message, { default: 'Nutrition issue' }),
+			desc: ''
+		}))
+	]);
 
 	let issuesByField = $derived((keys: string | string[]) => {
 		const keysArray = Array.isArray(keys) ? keys : [keys];
@@ -319,10 +350,14 @@
 
 {#snippet issueTooltip(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
-	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
-	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
+	{@const isWarning = issue.severity === 'warning'}
+	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
+	{@const iconColorClass = isError ? 'text-error' : isWarning ? 'text-warning' : 'text-info'}
 	<div
-		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning']}
+		class={[
+			'tooltip cursor-default',
+			isError ? 'tooltip-error' : isWarning ? 'tooltip-warning' : 'tooltip-info'
+		]}
 		data-tip={issue.title}
 	>
 		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
@@ -331,8 +366,9 @@
 
 {#snippet issueAlert(issue: Issue)}
 	{@const isError = issue.severity === 'error'}
-	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
-	{@const alertColorClass = isError ? 'alert-error' : 'alert-warning'}
+	{@const isWarning = issue.severity === 'warning'}
+	{@const Icon = isError ? IconMdiAlertCircle : isWarning ? IconMdiAlert : IconMdiInformation}
+	{@const alertColorClass = isError ? 'alert-error' : isWarning ? 'alert-warning' : 'alert-info'}
 	<div class={[alertColorClass, 'mt-4 alert']}>
 		<Icon class="h-5 w-5" />
 		<div>

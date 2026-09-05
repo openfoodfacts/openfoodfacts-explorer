@@ -12,6 +12,7 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -48,6 +49,18 @@
 	}: Props = $props();
 
 	let showInfo = $state(false);
+
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
+
+	const quality = $derived(getDataQualityCtx());
+	let quantityError = $derived(quality.forField('quantity'));
+	let labelsError = $derived(quality.forField('labels'));
+
+	const SEVERITY_INPUT_CLASS: Record<string, string> = {
+		error: 'input-error',
+		warning: 'input-warning',
+		info: 'input-info'
+	};
 
 	const permissions = getPermissionsCtx();
 
@@ -98,7 +111,7 @@
 	onMount(() => {
 		shortcutCtx.set('Shift+Q', {
 			description: $_('product.shortcuts.edit_product_quantity'),
-			action: () => focusEditField('#quantity')
+			action: () => focusEditField('#quantity-input')
 		});
 		shortcutCtx.set('Shift+C', {
 			description: $_('product.shortcuts.edit_product_categories'),
@@ -148,7 +161,10 @@
 			</button>
 			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
 			<span class="p-6 text-sm text-base-content/80 sm:text-base">
-				{$_('product.edit.info.basic_info')}
+				{$_('product.edit.info.basic_info', {
+					default:
+						'Provide the main details about the product, such as quantity, packaging, and manufacturer.'
+				})}
 			</span>
 		</div>
 	{/if}
@@ -159,11 +175,15 @@
 			<div class="form-control w-full">
 				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.product_type')}
+						{$_('product.edit.product_type', { default: 'Product type' })}
 						<span class="badge badge-outline badge-xs badge-info sm:badge-sm">
-							{$_('product.edit.moderator_only')}
+							{$_('product.edit.moderator_only', { default: 'Moderator only' })}
 						</span>
-						<InfoTooltip text={$_('product.edit.tooltips.product_type')} />
+						<InfoTooltip
+							text={$_('product.edit.tooltips.product_type', {
+								default: 'Select the type of product: Food, Beauty, Pet Food, or Other.'
+							})}
+						/>
 					</span>
 				</label>
 				<div class="flex flex-wrap gap-2">
@@ -178,7 +198,7 @@
 								product = { ...product, product_type: type };
 							}}
 						>
-							{$_(`product.edit.product_types.${type}`)}
+							{$_(`product.edit.product_types.${type}`, { default: type })}
 						</button>
 					{/each}
 				</div>
@@ -221,23 +241,59 @@
 					{/each}
 				</div>
 			</div>
-			<div class="form-control w-full sm:col-span-2">
-				<label class="label" for="quantity">
+			<div class="form-control w-full sm:col-span-2" id="quantity">
+				<label class="label" for="quantity-input">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.quantity')}
 						<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
 					</span>
 				</label>
 				<input
-					id="quantity"
+					id="quantity-input"
 					type="text"
-					class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
+					class={[
+						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
+						quality.isEnabled &&
+							!product.quantity?.trim() &&
+							!quantityError &&
+							'border-dashed border-warning/50 bg-warning/5',
+						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
+					]}
 					value={product.quantity ?? ''}
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
 					}}
-					placeholder="e.g., 250g, 1L, 500ml"
+					placeholder={$_('product.edit.quantity_placeholder', {
+						default: 'e.g., 250g, 1L, 500ml'
+					})}
 				/>
+				{#if quantityError}
+					<span
+						class={[
+							'mt-1 flex items-center gap-1 text-xs font-medium',
+							quantityError.severity === 'error'
+								? 'text-error'
+								: quantityError.severity === 'warning'
+									? 'text-warning/70'
+									: 'text-info/70'
+						]}
+					>
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_(`product.edit.quality.${quantityError.severity}_label`, {
+							default:
+								quantityError.severity === 'error'
+									? 'Error'
+									: quantityError.severity === 'warning'
+										? 'Warning'
+										: 'Info'
+						})}: {$_(quantityError.message, { default: 'Quality issue' })}
+					</span>
+				{:else if quality.isEnabled && !product.quantity?.trim()}
+					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_('product.edit.missing_info', { default: 'Missing info' })}
+					</span>
+				{/if}
 			</div>
 
 			<div class="form-control w-full sm:col-span-2">
@@ -296,6 +352,10 @@
 					onChange={(v) => {
 						product = { ...product, labels: v };
 					}}
+					highlightSeverity={labelsError ? labelsError.severity : ''}
+					highlightMessage={labelsError
+						? $_(labelsError.message, { default: 'Quality issue' })
+						: ''}
 				/>
 			</div>
 			<div class="form-control w-full">
@@ -372,7 +432,10 @@
 			</button>
 			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
 			<span class="p-6 text-sm text-base-content/80 sm:text-base">
-				{$_('product.edit.info.basic_info')}
+				{$_('product.edit.info.basic_info', {
+					default:
+						'Provide the main details about the product, such as quantity, packaging, and manufacturer.'
+				})}
 			</span>
 		</div>
 	{/if}
@@ -511,23 +574,59 @@
 			</div>
 
 			<!-- Quantity -->
-			<div class="form-control w-full">
-				<label class="label" for="quantity">
+			<div class="form-control w-full" id="quantity">
+				<label class="label" for="quantity-input">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.quantity')}
 						<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
 					</span>
 				</label>
 				<input
-					id="quantity"
+					id="quantity-input"
 					type="text"
-					class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
+					class={[
+						'input-bordered input mt-2 w-full text-sm transition-all focus:border-primary focus:outline-none sm:text-base',
+						quality.isEnabled &&
+							!product.quantity?.trim() &&
+							!quantityError &&
+							'border-dashed border-warning/50 bg-warning/5',
+						quantityError && SEVERITY_INPUT_CLASS[quantityError.severity]
+					]}
 					value={product.quantity ?? ''}
 					oninput={(e) => {
 						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
 					}}
-					placeholder="e.g., 250g, 1L, 500ml"
+					placeholder={$_('product.edit.quantity_placeholder', {
+						default: 'e.g., 250g, 1L, 500ml'
+					})}
 				/>
+				{#if quantityError}
+					<span
+						class={[
+							'mt-1 flex items-center gap-1 text-xs font-medium',
+							quantityError.severity === 'error'
+								? 'text-error'
+								: quantityError.severity === 'warning'
+									? 'text-warning/70'
+									: 'text-info/70'
+						]}
+					>
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_(`product.edit.quality.${quantityError.severity}_label`, {
+							default:
+								quantityError.severity === 'error'
+									? 'Error'
+									: quantityError.severity === 'warning'
+										? 'Warning'
+										: 'Info'
+						})}: {$_(quantityError.message, { default: 'Quality issue' })}
+					</span>
+				{:else if quality.isEnabled && !product.quantity?.trim()}
+					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_('product.edit.missing_info', { default: 'Missing info' })}
+					</span>
+				{/if}
 			</div>
 		</div>
 
@@ -614,7 +713,7 @@
 						})}
 					</div>
 					<div class="space-y-4">
-						<div class="form-control w-full">
+						<div id="categories" class="form-control w-full">
 							<label class="label" for="categories-input">
 								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.categories')}
@@ -627,9 +726,10 @@
 								onChange={(v) => {
 									product = { ...product, categories: v };
 								}}
+								highlightEmpty={quality.isEnabled}
 							/>
 						</div>
-						<div class="form-control w-full">
+						<div id="labels" class="form-control w-full">
 							<label class="label" for="labels-input">
 								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.labels')}
@@ -642,6 +742,10 @@
 								onChange={(v) => {
 									product = { ...product, labels: v };
 								}}
+								highlightSeverity={labelsError ? labelsError.severity : ''}
+								highlightMessage={labelsError
+									? $_(labelsError.message, { default: 'Quality issue' })
+									: ''}
 							/>
 						</div>
 						<div class="form-control w-full">

@@ -10,6 +10,7 @@
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
@@ -96,6 +97,18 @@
 	}
 
 	let activeLang = $state(product.lang);
+
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
+
+	const quality = $derived(getDataQualityCtx());
+	let ingredientsErrors = $derived(quality.forSection('ingredients'));
+	function getIngredientsErrors(code: string) {
+		return ingredientsErrors.filter((e) => {
+			const prefix = e.tag.split(':')[0];
+			return prefix === code;
+		});
+	}
+
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
 		shortcutCtx.set('Shift+I', {
@@ -145,6 +158,10 @@
 		<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
 	</div>
 	{#each Object.keys(product.languages_codes ?? {}) as code (code)}
+		{@const langErrors = getIngredientsErrors(code)}
+		{@const hasError = langErrors.some((e) => e.severity === 'error')}
+		{@const hasWarning = langErrors.some((e) => e.severity === 'warning')}
+		{@const hasInfo = langErrors.some((e) => e.severity === 'info')}
 		<input
 			type="radio"
 			name="ingredients_tabs"
@@ -192,7 +209,20 @@
 
 			<textarea
 				id={`ingredients-list-${code}`}
-				class="textarea-bordered textarea w-full text-sm sm:text-base"
+				class={[
+					'textarea-bordered textarea w-full text-sm transition-all sm:text-base',
+					quality.isEnabled &&
+						!product[`ingredients_text_${code}`]?.trim() &&
+						langErrors.length === 0 &&
+						'border-dashed border-warning/50 bg-warning/5',
+					hasError
+						? 'textarea-error'
+						: hasWarning
+							? 'textarea-warning'
+							: hasInfo
+								? 'textarea-info'
+								: ''
+				]}
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
@@ -202,6 +232,35 @@
 					};
 				}}
 				disabled={ocrLoading}></textarea>
+			{#each langErrors as error (error.tag)}
+				<span
+					class={[
+						'mt-1 flex items-center gap-1 text-xs font-medium',
+						error.severity === 'error'
+							? 'text-error'
+							: error.severity === 'warning'
+								? 'text-warning/70'
+								: 'text-info/70'
+					]}
+				>
+					<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+					{$_(`product.edit.quality.${error.severity}_label`, {
+						default:
+							error.severity === 'error'
+								? 'Error'
+								: error.severity === 'warning'
+									? 'Warning'
+									: 'Info'
+					})}: {$_(error.message, { default: 'Quality issue' })}
+				</span>
+			{:else}
+				{#if quality.isEnabled && !product[`ingredients_text_${code}`]?.trim()}
+					<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
+						<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+						{$_('product.edit.quality.missing_info', { default: 'Missing info' })}
+					</span>
+				{/if}
+			{/each}
 		</div>
 	{/each}
 	{#if Object.keys(product.languages_codes ?? {}).length === 0}
