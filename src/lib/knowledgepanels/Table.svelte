@@ -51,7 +51,8 @@
 		}
 
 		:global(.kp-html-content img) {
-			filter: brightness(0) invert(1);
+			background-color: #fff;
+			border-radius: 0.25rem;
 		}
 	}
 </style>
