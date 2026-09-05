@@ -18,7 +18,7 @@
 	{/if}
 </div>
 
-<div class="prose w-full max-w-full dark:text-white">
+<div class="kp-html-content prose w-full max-w-full dark:text-white">
 	<HtmlPurify dirty={html} />
 </div>
 
@@ -29,6 +29,20 @@
 {/if}
 
 <style>
+	:global(.kp-html-content img) {
+		margin: 0;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(.kp-html-content *:not(.allergen):not(.text_info)) {
+			color: inherit !important;
+		}
+
+		:global(.kp-html-content img) {
+			filter: brightness(0) invert(1);
+		}
+	}
+
 	:global(.allergen) {
 		background-color: #f8d7da;
 		border-color: #f5c6cb;
