@@ -111,7 +111,7 @@
 	class={[element.action_element.html != '' && 'rounded border-s border-accent bg-accent/10 p-4']}
 >
 	{#if element.action_element.html != ''}
-		<div class="mb-4 text-sm">
+		<div class="kp-html-content mb-4 text-sm">
 			<HtmlPurify dirty={element.action_element.html} />
 		</div>
 	{/if}
@@ -127,3 +127,19 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	:global(.kp-html-content img) {
+		margin: 0;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(.kp-html-content *:not(.allergen):not(.text_info)) {
+			color: inherit !important;
+		}
+
+		:global(.kp-html-content img) {
+			filter: brightness(0) invert(1);
+		}
+	}
+</style>
