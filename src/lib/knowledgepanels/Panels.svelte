@@ -19,9 +19,18 @@ Props:
 		code?: string;
 		summary?: boolean;
 		roots?: string[];
+		expandedPanels?: Record<string, boolean>;
+		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
 	};
 
-	let { panels, code, summary = true, roots }: Props = $props();
+	let {
+		panels,
+		code,
+		summary = true,
+		roots,
+		expandedPanels,
+		onPanelExpansionChange
+	}: Props = $props();
 
 	const SUMMARY_ID = 'knowledge-panels';
 
@@ -74,6 +83,15 @@ Props:
 
 {#each Object.entries(panels) as [id, panel] (id)}
 	{#if roots == null || roots.includes(id) || (panel.type != null && roots.includes(panel.type))}
-		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
+		<Panel
+			{panel}
+			{panels}
+			{id}
+			link={'#' + SUMMARY_ID}
+			productCode={code}
+			{expandedPanels}
+			{onPanelExpansionChange}
+			inline
+		/>
 	{/if}
 {/each}
