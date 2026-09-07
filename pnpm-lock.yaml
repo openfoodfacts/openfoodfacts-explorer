@@ -78,8 +78,8 @@ importers:
         specifier: ^1.0.41
         version: 1.0.41(svelte@5.57.0(@typescript-eslint/types@8.69.0))
       '@openfoodfacts/openfoodfacts-nodejs':
-        specifier: 2.0.0-alpha.33
-        version: 2.0.0-alpha.33
+        specifier: 2.0.0-alpha.35
+        version: 2.0.0-alpha.35
       '@sveltejs/adapter-node':
         specifier: ^5.5.7
         version: 5.5.7(@sveltejs/kit@2.70.3(@opentelemetry/api@1.9.1)(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.0(@typescript-eslint/types@8.69.0))(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)))(svelte@5.57.0(@typescript-eslint/types@8.69.0))(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)))
@@ -775,8 +775,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.33':
-    resolution: {integrity: sha512-KBHOmzX3Ms4tBlIrUUoBVt/SG0wRS41ulGX9cH6jCbmCp41LldTk6CKUNoohUFibdxMWYrhLQfL7oAqPgTDtCQ==}
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.35':
+    resolution: {integrity: sha512-0VvjDfjq2y49QoIyWEvTAqZuWhEcS6dWB6m3y9kvpQuBtUT1m6sXpJRoBCePrSd/nUV0ycVw+Xsmoc/wxVgh7A==}
 
   '@openfoodfacts/openfoodfacts-webcomponents@1.16.0':
     resolution: {integrity: sha512-jYMQd0M1/49gEOJosBemSWlvCWxQHtBrszhoHThFqBBPKmD+vgWUFa7hwXi0MTzXb7apgGmnz7mCriXMpTqzIw==}
@@ -3973,7 +3973,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.33':
+  '@openfoodfacts/openfoodfacts-nodejs@2.0.0-alpha.35':
     dependencies:
       jwt-decode: 4.0.0
       openapi-fetch: 0.17.0
