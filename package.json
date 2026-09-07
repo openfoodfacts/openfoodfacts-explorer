@@ -35,7 +35,7 @@
 		"test": "vitest run --passWithNoTests"
 	},
 	"devDependencies": {
-		"@crowdin/cli": "^5.0.0",
+		"@crowdin/cli": "^5.0.1",
 		"@eslint/eslintrc": "^3.3.6",
 		"@eslint/js": "^10.0.1",
 		"@fontsource-variable/plus-jakarta-sans": "^5.3.0",
