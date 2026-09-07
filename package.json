@@ -83,7 +83,7 @@
 		"prettier-plugin-svelte": "^4.1.1",
 		"prettier-plugin-tailwindcss": "^0.8.1",
 		"pretty-quick": "^4.2.2",
-		"svelte": "^5.56.10",
+		"svelte": "^5.57.0",
 		"svelte-check": "^4.7.6",
 		"svelte-eslint-parser": "^1.8.1",
 		"svelte-i18n": "^4.0.1",
