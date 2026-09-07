@@ -21,10 +21,12 @@ export type {
  * and keeps the raw `xx:` prefixed tag from leaking into the UI.
  */
 export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en'): T | undefined {
-	const nonNullLang = lang?.toLowerCase() ?? 'en';
+	const nonNullLang = lang?.replaceAll('_', '-').toLowerCase() ?? 'en';
+	const languageCode = nonNullLang.split('-')[0] ?? 'en';
 
 	return (
 		localized[nonNullLang] ?? // try full locale
+		localized[languageCode] ?? // try base language
 		localized['xx'] ?? // fallback to the language independent name
 		localized['en'] ?? // fallback to english
 		Object.values(localized)[0] // fallback to first available

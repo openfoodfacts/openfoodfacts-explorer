@@ -43,7 +43,8 @@ const config = {
 					'https://tile.openstreetmap.org',
 					'https://play.google.com',
 					'https://fdroid.gitlab.io',
-					'https://upload.wikimedia.org'
+					'https://upload.wikimedia.org',
+					'https://lheuredescomptes.org'
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'frame-ancestors': ['none']

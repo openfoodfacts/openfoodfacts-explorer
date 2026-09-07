@@ -6,7 +6,7 @@ import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from '$lib/api';
 
 import { get } from 'svelte/store';
-import { preferences } from '$lib/settings';
+import { getLanguageCode, preferences } from '$lib/settings';
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
@@ -68,8 +68,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const userLang = get(preferences).lang;
-	const lc = userLang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',

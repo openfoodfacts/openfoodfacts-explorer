@@ -2,7 +2,7 @@ import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
-import { preferences } from '$lib/settings';
+import { getLanguageCode, preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 
@@ -228,7 +228,7 @@ export async function getTaxonomySuggestions(
 	limit: number = 25
 ) {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 	const cc = get(preferences).country;
 
 	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
@@ -297,7 +297,7 @@ export async function updatePackagingsV3(
 	packagingText?: string
 ): Promise<{ data?: unknown; error?: string }> {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 
 	const filteredPackagings = packagings
 		.map(cleanPackagingComponent)
@@ -344,7 +344,7 @@ export async function updateObsoleteStatusV3(
 ): Promise<{ data?: unknown; error?: string }> {
 	// TODO: switch to `updateObsoleteStatus` from SDK
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 
 	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
 		params: { path: { code } },
@@ -377,7 +377,7 @@ export async function uploadImageV3(
 	imagefield?: string
 ) {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang;
+	const lc = getLanguageCode(get(preferences).locale);
 	const cc = get(preferences).country;
 
 	return off.apiv3.uploadProductImage(barcode, {

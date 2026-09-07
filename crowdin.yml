@@ -4,20 +4,4 @@ pull_request_body: '### What\n- Automated pull request pulling in new or updated
 pull_request_title: 'l10n: New Crowdin translations to review and merge'
 files:
   - source: /src/lib/i18n/messages/en-US.json
-    translation: /src/lib/i18n/messages/%two_letters_code%.json
-    languages_mapping:
-      two_letters_code:
-        pt-BR: pt_BR
-        pt-PT: pt_PT
-        zh-CN: zh_CN
-        zh-HK: zh_HK
-        en-GB: en_GB
-        en-AU: en_AU
-        en-US: en_US
-        nl-BE: nl_BE
-        nl: nl_NL
-        zh-TW: zh_TW
-        sr-CS: sr_CS
-        sr: sr_RS
-        ku: kmr_TR
-        kmr: kmr
+    translation: /src/lib/i18n/messages/%locale%.json

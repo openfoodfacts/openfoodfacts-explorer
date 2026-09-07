@@ -9,7 +9,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	import type { ScoreData } from '$lib/scoring';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
@@ -24,7 +24,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	};
 	let { product, personalScore }: Props = $props();
 
-	let { lang } = $derived($preferences);
+	let lang = $derived(getLanguageCode($preferences.locale));
 
 	/**
 	 * The API already ships display ready brand names in language suffixed fields

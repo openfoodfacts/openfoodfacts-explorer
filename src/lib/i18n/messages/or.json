@@ -82,6 +82,10 @@
 		"error_occurred": "ତ୍ରୁଟି ଘଟିଲା:",
 		"errors_occurred": "ତ୍ରୁଟି ଘଟିଛି:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "ଯୋଗଦାନ କରନ୍ତୁ",
@@ -224,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -251,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barcode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Search",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "ଖୋଲନ୍ତୁ",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Error",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -302,12 +328,27 @@
 		},
 		"sections": {
 			"product": "Product",
+			"barcode_info": "Barcode information",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "ଡାଟା ଉତ୍ସଗୁଡ଼ିକ",
 			"prices": "Prices",
-			"folksonomy": "Tags & Community"
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
 		},
 		"edit": {
 			"sidebar_navigation": "Product edit sections",
@@ -339,6 +380,7 @@
 				"stores": "ଆପଣ ଯେଉଁ ଦୋକାନରୁ ଉତ୍ପାଦଟି କିଣିଛନ୍ତି ସେହି ଦୋକାନଟି ଇନପୁଟ୍ କରନ୍ତୁ। ଉଦାହରଣ ସ୍ୱରୂପ, 'କ୍ୟାରେଫୋର', 'ୱାଲମାର୍ଟ', 'ଲିଡଲ୍'।",
 				"origins": "ପ୍ୟାକେଜିଂରେ ଆପଣ ପାଇପାରିବେ ଏପରି ଉତ୍ପତ୍ତିର ଯେକୌଣସି ସୂଚନା ଯୋଡନ୍ତୁ। ଉପାଦାନ ତାଲିକାରେ ସିଧାସଳଖ ସୂଚିତ ଉତ୍ପତ୍ତି ବିଷୟରେ ଆପଣଙ୍କୁ ଚିନ୍ତା କରିବାକୁ ପଡ଼ିବ ନାହିଁ। ଉଦାହରଣ ସ୍ୱରୂପ, 'ଆର୍ଜେଣ୍ଟିନାରୁ ଗୋମାଂସ', 'ସୋୟା ୟୁରୋପୀୟ ସଂଘରୁ ଆସିନାହିଁ'।",
 				"traceability_code": "ଏହି ବିଭାଗରେ, ଆପଣ ପ୍ୟାକେଜିଂ ଚିହ୍ନ, ପରିଚୟ ଚିହ୍ନ କିମ୍ବା ସ୍ୱାସ୍ଥ୍ୟ ଚିହ୍ନ ସହିତ ଜଡିତ କୋଡ୍ ଇନପୁଟ୍ କରିପାରିବେ।",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "ଯେଉଁ ଦେଶଗୁଡ଼ିକରେ ଉତ୍ପାଦଟି ବହୁଳ ଭାବରେ ଉପଲବ୍ଧ (ବିଦେଶୀ ଉତ୍ପାଦରେ ବିଶେଷଜ୍ଞ ଷ୍ଟୋରଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରି ନାହିଁ)।",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -350,10 +392,15 @@
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
 			"mandatory_suffix": "(mandatory)",
 			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
 			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "ମୁଖ୍ୟ ଭାଷା",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -414,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "ଉତ୍ପାଦନ ସ୍ଥାନ",
-			"categories": "ବର୍ଗଗୁଡିକ:",
+			"categories": "Categories",
 			"labels": "Labels",
 			"brands": "Brands",
 			"stores": "Stores",
@@ -464,6 +511,10 @@
 			"macronutrients": "ମାକ୍ରୋ-ପୁଷ୍ଟିକର ତତ୍ତ୍ୱ",
 			"micronutrients": "ସୂକ୍ଷ୍ମ-ପୁଷ୍ଟିକର ପଦାର୍ଥ",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "ମୋଟ ଚର୍ବି",
 				"saturated-fat": "ସାଚୁରେଟେଡ୍ ଫ୍ୟାଟ୍",
 				"carbohydrates": "ଶ୍ୱେତସାର",
@@ -472,9 +523,14 @@
 				"salt": "Salt",
 				"fibers": "ତନ୍ତୁ",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "ଜୀଵସାର ଘ"
 			},
 			"additional_nutrients": "ଅତିରିକ୍ତ ପୁଷ୍ଟିକର ପଦାର୍ଥ",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "ଏହି ସମ୍ପାଦନାରେ ଏକ ମନ୍ତବ୍ୟ ଯୋଡନ୍ତୁ",
 			"save_btn": "Save",
@@ -599,6 +655,22 @@
 				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Privacy policy"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -672,6 +744,9 @@
 		"barcode_scanned_not_found": "ବାରକୋଡ୍ {barcode} ସଫଳତାର ସହ ସ୍କାନ କରାଯାଇଥିଲା, କିନ୍ତୁ ଆମର ଖୋଲା ଖାଦ୍ୟ ତଥ୍ୟ, ଖୋଲା ସୌନ୍ଦର୍ଯ୍ୟ ତଥ୍ୟ, ଖୋଲା ଉତ୍ପାଦ ତଥ୍ୟ କିମ୍ବା ଖୋଲା ପେଟ ଖାଦ୍ୟ ତଥ୍ୟରେ କୌଣସି ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ।",
 		"add_new_product": "ନୂତନ ଉତ୍ପାଦ ଯୋଗ କରନ୍ତୁ",
 		"scan_again": "ପୁଣି ସ୍କାନ୍ କରନ୍ତୁ",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
 		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
@@ -783,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Brand",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
