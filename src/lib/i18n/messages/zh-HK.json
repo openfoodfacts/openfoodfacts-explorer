@@ -337,7 +337,7 @@
 			"link_properties": "the list of properties already used by the community",
 			"link_middle": " or explore the ",
 			"link_docs": "properties' documentation and its search engine",
-			"warning": "Be aware the data model might be modified. Use at your own risk.",
+			"warning": "請注意資料模型可能會被修改。使用風險自負。",
 			"footer_before": "This is brought by the ",
 			"footer_link": "Folksonomy Engine project",
 			"footer_after": ". Don't hesitate to participate or give feedback."
