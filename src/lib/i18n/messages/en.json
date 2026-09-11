@@ -202,7 +202,7 @@
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
-		"influences": "Influences",
+		"influences": "Food preferences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
 		"expand_all_sections": "Expand all sections",
