@@ -184,10 +184,13 @@
 {/snippet}
 
 <div
-	class="flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 bg-base-100 p-2 focus-within:border-primary focus-within:outline-primary"
+	class="flex h-auto min-h-12 w-full flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border-base-200 p-2 focus-within:border-primary focus-within:outline-primary"
 >
 	{#each tags as tag, index (tag)}
-		<div class="badge flex h-min items-center badge-ghost py-2" transition:fade={{ duration: 100 }}>
+		<div
+			class="badge flex h-min items-center badge-ghost bg-base-100 py-2"
+			transition:fade={{ duration: 100 }}
+		>
 			{#if editingIndex === index}
 				<div class="dropdown">
 					<input
@@ -234,7 +237,7 @@
 	<div class="dropdown grow">
 		<input
 			type="text"
-			class="input-bordered input w-full bg-transparent outline-hidden"
+			class="input-bordered input w-full outline-hidden"
 			{placeholder}
 			onkeydown={inputHandler}
 			bind:value={newValue}
