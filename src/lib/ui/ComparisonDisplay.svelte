@@ -611,7 +611,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
 							{@render scoreImage(
 								getNutriScoreImage(product.nutriscore_grade),
@@ -630,7 +630,7 @@
 				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
@@ -647,7 +647,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
