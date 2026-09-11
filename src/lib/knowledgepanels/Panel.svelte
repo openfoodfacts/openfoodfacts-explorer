@@ -51,16 +51,31 @@
 			]}
 		>
 			{#if title.icon_url != null}
-				<img
-					class={[
-						'kp-icon mr-4 ml-2 h-12 w-12 object-contain',
-						title.icon_size && `kp-icon-${title.icon_size}`,
-						title.icon_color_from_evaluation && 'kp-icon-from-eval',
-						title.icon_url.includes(MONOCHROME_ICON_PATH) && 'kp-icon-monochrome'
-					]}
-					src={title.icon_url}
-					alt={title.title}
-				/>
+				{#if title.icon_color_from_evaluation}
+					<!-- CSS `color` has no effect on an <img>'s pixels, so icons that must be
+					     tinted from the panel's evaluation are painted with currentColor
+					     through a mask instead -->
+					<span
+						class={[
+							'kp-icon kp-icon-from-eval mr-4 ml-2 h-12 w-12',
+							title.icon_size && `kp-icon-${title.icon_size}`
+						]}
+						style:mask-image="url('{title.icon_url}')"
+						style:-webkit-mask-image="url('{title.icon_url}')"
+						role="img"
+						aria-label={title.title}
+					></span>
+				{:else}
+					<img
+						class={[
+							'kp-icon mr-4 ml-2 h-12 w-12 object-contain',
+							title.icon_size && `kp-icon-${title.icon_size}`,
+							title.icon_url.includes(MONOCHROME_ICON_PATH) && 'kp-icon-monochrome'
+						]}
+						src={title.icon_url}
+						alt={title.title}
+					/>
+				{/if}
 			{/if}
 			<div class="grow">
 				<div class="kp-title">{title.title}</div>
@@ -110,11 +125,25 @@
 
 	@media (prefers-color-scheme: dark) {
 		/* Flip black knowledge panel icons to white so they stay readable on a dark
-		   background. Only monochrome icons are inverted: see MONOCHROME_ICON_PATH. */
-		.kp-icon-monochrome,
-		.kp-icon-from-eval {
+		   background. Only monochrome icons are inverted: see MONOCHROME_ICON_PATH.
+		   kp-icon-from-eval icons are not inverted: they are painted with
+		   currentColor, which is already theme-aware. */
+		.kp-icon-monochrome {
 			@apply invert;
 		}
+	}
+
+	/* Icons with icon_color_from_evaluation are rendered as a mask painted with
+	   currentColor, so the kp-panel-eval-* color below actually tints them
+	   (and they stay readable in dark mode when the panel has no evaluation). */
+	.kp-icon-from-eval {
+		@apply bg-current;
+		mask-size: contain;
+		mask-repeat: no-repeat;
+		mask-position: center;
+		-webkit-mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		-webkit-mask-position: center;
 	}
 
 	/*.kp-icon-small {
