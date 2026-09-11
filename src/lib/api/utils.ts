@@ -1,3 +1,8 @@
+export function stripTaxonomyPrefix(tag?: string): string {
+	if (!tag) return '';
+	return tag.replace(/^[a-z0-9-]+:/i, '');
+}
+
 export function formBody(params: Record<string, string | null | undefined>) {
 	const formBody = new URLSearchParams();
 	for (const [key, value] of Object.entries(params)) {
