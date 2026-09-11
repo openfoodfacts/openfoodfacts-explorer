@@ -128,6 +128,36 @@
 	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
 	let sidebar = $state<ReturnType<typeof Sidebar>>();
 	let barcodeInfo = $state<ReturnType<typeof BarcodeInfo>>();
+	let expandedPanels = $state<Record<string, boolean>>({});
+	let expansionProductCode = $state<string | undefined>();
+
+	$effect(() => {
+		if (product.code !== expansionProductCode) {
+			expandedPanels = {};
+			expansionProductCode = product.code;
+		}
+	});
+
+	let allPanelsExpanded = $derived.by(() => {
+		const panels = product.knowledge_panels ?? {};
+		const panelIds = Object.keys(panels);
+
+		return (
+			panelIds.length > 0 &&
+			panelIds.every((id) => expandedPanels[id] ?? panels[id]?.expanded ?? false)
+		);
+	});
+
+	function handlePanelExpansionChange(id: string, expanded: boolean) {
+		expandedPanels = { ...expandedPanels, [id]: expanded };
+	}
+
+	function toggleAllPanels() {
+		const expanded = !allPanelsExpanded;
+		expandedPanels = Object.fromEntries(
+			Object.keys(product.knowledge_panels ?? {}).map((id) => [id, expanded])
+		);
+	}
 
 	const activeSections = $derived.by(() => {
 		const rawList: (SidebarSectionBase | false | undefined | null)[] = [
@@ -340,6 +370,10 @@
 			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
+			headerSecondaryActionLabel={allPanelsExpanded
+				? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+				: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+			onHeaderSecondaryAction={toggleAllPanels}
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
@@ -386,6 +420,8 @@
 					code={product.code}
 					roots={['root']}
 					summary={sidebarHidden}
+					{expandedPanels}
+					onPanelExpansionChange={handlePanelExpansionChange}
 				/>
 			</div>
 
