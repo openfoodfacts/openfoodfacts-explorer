@@ -326,6 +326,7 @@
 	}
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
+	let expandedNutrients = $state<Record<string, boolean>>({});
 </script>
 
 {#snippet scoreImage(imageSrc: string, altText: string, isBest: boolean)}
@@ -480,18 +481,41 @@
 
 				{#if product.nutriments}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">{$_('compare.nutrients_per_100g')}</p>
-						<div class="space-y-1 text-sm">
-							{#each availableNutrients as nutrient (nutrient.key)}
-								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-								{#if comparison.value != null}
-									<div class="flex items-center justify-between">
-										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
-									</div>
-								{/if}
-							{/each}
-						</div>
+						<button
+							type="button"
+							class="flex w-full items-center justify-between text-left text-sm font-semibold"
+							onclick={() => {
+								expandedNutrients[product.code] = !expandedNutrients[product.code];
+							}}
+							aria-expanded={expandedNutrients[product.code] ?? false}
+						>
+							<span
+								>{$_('compare.nutrients_per_100g', {
+									default: 'Nutrients /100g:'
+								})}</span
+							>
+							<span>{expandedNutrients[product.code] ? '▲' : '▼'}</span>
+						</button>
+
+						{#if expandedNutrients[product.code]}
+							<div class="mt-2 space-y-1 text-sm">
+								{#each availableNutrients as nutrient (nutrient.key)}
+									{@const comparison = getNutrientComparison(
+										product,
+										nutrient.key,
+										products,
+										index
+									)}
+
+									{#if comparison.value != null}
+										<div class="flex items-center justify-between">
+											<span class="font-medium">{nutrient.label}:</span>
+											{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
+										</div>
+									{/if}
+								{/each}
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>
