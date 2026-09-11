@@ -612,6 +612,18 @@ export type ProductDataSection = {
 	states_hierarchy?: string[];
 };
 
+export type ProductIngredient = {
+	id: string;
+	ingredients?: ProductIngredient[];
+	percent: number;
+	percent_estimate: number;
+	percent_max: number;
+	percent_min: number;
+	text: string;
+	vegan: string;
+	vegetarian: string;
+};
+
 export type Product = ProductDataSection & {
 	knowledge_panels: KnowledgePanels;
 	product_name: string;
@@ -619,16 +631,8 @@ export type Product = ProductDataSection & {
 	code: string;
 	_keywords: string[];
 	additives_n: number;
-	ingredients: {
-		id: string;
-		percent: number;
-		percent_estimate: number;
-		percent_max: number;
-		percent_min: number;
-		text: string;
-		vegan: string;
-		vegetarian: string;
-	}[];
+	ingredients: ProductIngredient[];
+
 	additives_tags: string[];
 
 	ingredients_text: string;
