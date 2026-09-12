@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
 import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 
@@ -111,7 +111,7 @@ async function compatSearch(
 	return api.search(oldParams);
 }
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
