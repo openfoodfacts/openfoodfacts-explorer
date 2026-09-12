@@ -608,7 +608,7 @@
 								</span>
 							{/if}
 							<WcProductCard
-								{product}
+								product={data.productCardsByCode[product.code] ?? product}
 								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
 							/>
 						</div>
