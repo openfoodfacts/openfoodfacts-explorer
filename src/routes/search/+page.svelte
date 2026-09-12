@@ -4,7 +4,7 @@
 	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
-	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 
 	import { _ } from '$lib/i18n';
@@ -104,6 +104,17 @@
 		goto(newUrl.toString());
 	}
 
+	function getSearchPageUrl(nextPage: number) {
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('page', nextPage.toString());
+		return newUrl.toString();
+	}
+
+	function navigateToSearchPage(nextPage: number) {
+		window.scrollTo(0, 0);
+		void goto(getSearchPageUrl(nextPage), { noScroll: false });
+	}
+
 	// Local state for UI facet toggling, synced with data.query from server
 	// eslint-disable-next-line svelte/prefer-writable-derived
 	let localFacets = $state<FacetsSelection>({});
@@ -132,13 +143,6 @@
 
 	beforeNavigate(() => {
 		clearPendingTimer();
-	});
-
-	afterNavigate(({ from, to }) => {
-		const pageChanged = from?.url.searchParams.get('page') !== to?.url.searchParams.get('page');
-		if (from?.url.pathname === '/search' && to?.url.pathname === '/search' && pageChanged) {
-			window.scrollTo(0, 0);
-		}
 	});
 
 	onDestroy(() => {
@@ -710,11 +714,8 @@
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
-			pageUrl={(p: number) => {
-				const newUrl = new URL(page.url);
-				newUrl.searchParams.set('page', p.toString());
-				return newUrl.toString();
-			}}
+			pageUrl={getSearchPageUrl}
+			onPageChange={navigateToSearchPage}
 		/>
 	</div>
 {/if}
