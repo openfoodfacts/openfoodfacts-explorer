@@ -49,6 +49,7 @@
 	let { search: searchResult } = $derived(data);
 	const toastCtx = getToastCtx();
 	let isExportingCsv = $state(false);
+	let isNavigatingToSearch = $derived(navigating.to?.route.id === '/search');
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -255,7 +256,7 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<span class="block h-7 w-64 skeleton rounded"></span>
 			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
 		{:else}
@@ -538,7 +539,7 @@
 
 		<div class="divider my-1 lg:hidden"></div>
 
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<!-- Product Card Skeleton Loading State during API Call -->
 			<div class="my-6 max-md:me-4">
 				<div
@@ -697,7 +698,7 @@
 </div>
 
 <!-- Pagination -->
-{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+{#if !isNavigatingToSearch && searchResult.count > 0 && searchResult.page_count > 1}
 	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
