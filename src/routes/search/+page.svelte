@@ -4,7 +4,7 @@
 	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 
 	import { _ } from '$lib/i18n';
@@ -132,6 +132,13 @@
 
 	beforeNavigate(() => {
 		clearPendingTimer();
+	});
+
+	afterNavigate(({ from, to }) => {
+		const pageChanged = from?.url.searchParams.get('page') !== to?.url.searchParams.get('page');
+		if (from?.url.pathname === '/search' && to?.url.pathname === '/search' && pageChanged) {
+			window.scrollTo(0, 0);
+		}
 	});
 
 	onDestroy(() => {
