@@ -19,18 +19,42 @@ Props:
 		code?: string;
 		summary?: boolean;
 		roots?: string[];
-		expandedPanels?: Record<string, boolean>;
-		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
+		onAllPanelsExpandedChange?: (expanded: boolean) => void;
 	};
 
-	let {
-		panels,
-		code,
-		summary = true,
-		roots,
-		expandedPanels,
-		onPanelExpansionChange
-	}: Props = $props();
+	let { panels, code, summary = true, roots, onAllPanelsExpandedChange }: Props = $props();
+
+	let expandedPanels = $state<Record<string, boolean>>({});
+	let expansionProductCode = $state<string | undefined>();
+
+	$effect(() => {
+		if (code !== expansionProductCode) {
+			expandedPanels = {};
+			expansionProductCode = code;
+		}
+	});
+
+	let allPanelsExpanded = $derived.by(() => {
+		const panelIds = Object.keys(panels);
+
+		return (
+			panelIds.length > 0 &&
+			panelIds.every((id) => expandedPanels[id] ?? panels[id]?.expanded ?? false)
+		);
+	});
+
+	$effect(() => {
+		onAllPanelsExpandedChange?.(allPanelsExpanded);
+	});
+
+	function handlePanelExpansionChange(id: string, expanded: boolean) {
+		expandedPanels = { ...expandedPanels, [id]: expanded };
+	}
+
+	export function toggleAllPanels() {
+		const expanded = !allPanelsExpanded;
+		expandedPanels = Object.fromEntries(Object.keys(panels).map((id) => [id, expanded]));
+	}
 
 	const SUMMARY_ID = 'knowledge-panels';
 
@@ -90,7 +114,7 @@ Props:
 			link={'#' + SUMMARY_ID}
 			productCode={code}
 			{expandedPanels}
-			{onPanelExpansionChange}
+			onPanelExpansionChange={handlePanelExpansionChange}
 			inline
 		/>
 	{/if}
