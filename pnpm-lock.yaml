@@ -54,8 +54,8 @@ importers:
         version: 4.1.0
     devDependencies:
       '@crowdin/cli':
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^5.0.2
+        version: 5.0.2
       '@eslint/eslintrc':
         specifier: ^3.3.7
         version: 3.3.7(supports-color@10.2.2)
@@ -66,8 +66,8 @@ importers:
         specifier: ^5.3.0
         version: 5.3.0
       '@formatjs/intl-durationformat':
-        specifier: ^0.10.18
-        version: 0.10.18
+        specifier: ^0.11.0
+        version: 0.11.0
       '@iconify-svelte/material-symbols':
         specifier: ^1.0.49
         version: 1.0.49(svelte@5.57.0(@typescript-eslint/types@8.69.0))
@@ -366,47 +366,47 @@ packages:
   '@cropper/utils@2.2.0':
     resolution: {integrity: sha512-wTrpZl+F4Kr2hzovqjztSexWUU+EVK1CxPymbYgFYoAS/NZXwCDsrvikJQn+HYZVxjqyo/ClnFxA0fG+tFy6Hw==}
 
-  '@crowdin/cli-darwin-arm64@5.0.1':
-    resolution: {integrity: sha512-x8sfmegf4Rqdyw6mTH5Dvj+MKpSNrU32xLZjjZZ3SZ9jDGIke/ULOTO4mbd2UA+ryNrk+a9PgHxcKX5CF0LDgg==}
+  '@crowdin/cli-darwin-arm64@5.0.2':
+    resolution: {integrity: sha512-gMNXyJYxkfgJF4cAXrss6mgkvPoFOkwRi4PO/93+wlOMTLOQ7ENlq45hbjQqxAsLbysYF1oHyzafaPNlC7JuMQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@crowdin/cli-darwin-x64@5.0.1':
-    resolution: {integrity: sha512-tKWIGOKJVW+0L40E5pEhy4ghlFd5nYzJLdYbrTnOtmK+g3D/QkQpmY5Y3yujZah1A9KOewg5AgNDl2sEZFASLQ==}
+  '@crowdin/cli-darwin-x64@5.0.2':
+    resolution: {integrity: sha512-0iBJLy+kn0W095lFlkPG0jE0uLamFGjSR15N9yW3Q+Yps1zJBVyIH9IpjvALZOEHX0w9l5DZdCWzDowD9GTSQg==}
     cpu: [x64]
     os: [darwin]
 
-  '@crowdin/cli-linux-arm64-musl@5.0.1':
-    resolution: {integrity: sha512-88r2zA+QwgzqqY6cY2qdFlO8r5gmMkv4WYFeiCh6fIFMFcFFpKkJh1xyAu/bg+Gt6/ltOXHWXtflkxppncvmpg==}
+  '@crowdin/cli-linux-arm64-musl@5.0.2':
+    resolution: {integrity: sha512-/cfHw6bvPgFCGdIhYyFltGSQt33vgYbK1gFZO3BVGpM4gxLj/7cHz6sU4IRw+vHvSIHanfqeyAZzVLpCsfQwiA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@crowdin/cli-linux-arm64@5.0.1':
-    resolution: {integrity: sha512-cZrzCGNeN6n0QVTYnSBy18mdv4M+PcXyJ/MAAIq4E603WEP2pKQ5KM9eS32tdQIIaCl3NZ8miXundFcYOAlHEQ==}
+  '@crowdin/cli-linux-arm64@5.0.2':
+    resolution: {integrity: sha512-8LPMdQqqdVrn5t1KWywv/ewmxslwvUKMaFLFlNj44DFwRyd34yCXM3J56HazepMhuXIBD8tx0W6WMt9axv4j5w==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@crowdin/cli-linux-x64-musl@5.0.1':
-    resolution: {integrity: sha512-4MGZ+1M+A2cp8RyuQC2cvX5wwEpPS4i/qOVTGJ3QIYK0xn3IR/GKt9QObKqIjZNYCsn8tUDzwDiyHuM+LZmhUw==}
+  '@crowdin/cli-linux-x64-musl@5.0.2':
+    resolution: {integrity: sha512-0BwcXbcBvCqutHyegSUqdUfSSrkNSxaar4y4TZE3Kgfjcw2laiTeOK8CAWhWxk523Jj/3/6P45wById07g0qKQ==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@crowdin/cli-linux-x64@5.0.1':
-    resolution: {integrity: sha512-a76gwEcI0EUPcZKhjHsWP6V8BhoLqK7Qo19avQ5Fdque+uh7YTfYZ5CYM8oI2PIozkpL7rXECj4PY7Ul07vxTA==}
+  '@crowdin/cli-linux-x64@5.0.2':
+    resolution: {integrity: sha512-Fk1abpG2a9tM+49NyZU6l1/OyooNz9ZPIrpsR4xWP/c6ui0rh1l2XjOtbPjvXh2dW3YWemeOqiatW2j+WFj/cg==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@crowdin/cli-win32-x64@5.0.1':
-    resolution: {integrity: sha512-wqPqWsCtw2s2eVopy2ZEYC6KfIcphI/1dVo+ikJAb47OQwzRot3JWN2n9GS+WKtRqtfuCTug3QVOx6Ypbme43Q==}
+  '@crowdin/cli-win32-x64@5.0.2':
+    resolution: {integrity: sha512-cMarWbzeJvJ6f0MNwRH2fEEKKUM8gQn+oEtCo2PQ3a3wXXMpOb1gRw96tthgYxaHIHISYxdYalNNITnswLGE/A==}
     cpu: [x64]
     os: [win32]
 
-  '@crowdin/cli@5.0.1':
-    resolution: {integrity: sha512-4CUJYUNK8qVB2htvdbGWsmToC2wB9L3L7O41jfhlWs5QK/YpeMjnDJIkN5fDL6bq9Iq9AlgsGqVojamQwmqWkw==}
+  '@crowdin/cli@5.0.2':
+    resolution: {integrity: sha512-TBUGFCIzAexEvePLet8aBRUEicB1A8r+A3/3gz+4paVKEc86cHK2CtaNhbto1ptKMRPkgFGXq8Z3f/TaoF09Lw==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -675,14 +675,14 @@ packages:
   '@formatjs/icu-skeleton-parser@1.8.14':
     resolution: {integrity: sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==}
 
-  '@formatjs/intl-durationformat@0.10.18':
-    resolution: {integrity: sha512-Wyn7TYW1c5EORLuh6IeAyEpaJf6GmvHPN7TXjJj3VT0bl9U2/zv/A518R+5lYtCmXLmmxX7DYz4iKSKzoKkR7g==}
+  '@formatjs/intl-durationformat@0.11.0':
+    resolution: {integrity: sha512-Pucips7a/j4+U5WNWUC/0crt3oWO8e+ps8in10NLOmWJJ4tyiJz4YmOQRYf/pT2tvWMYyuJWrfW08LY+ouDCKg==}
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
 
-  '@formatjs/intl-localematcher@0.8.13':
-    resolution: {integrity: sha512-kHEAFOkeJSPNi7c5PaKaRjxcBrJwzzt81ifUu+8uve1EDW/VJl83KsxmqgqNZLzcFEhSliZGvx3+pk/RH0IOmg==}
+  '@formatjs/intl-localematcher@0.8.14':
+    resolution: {integrity: sha512-8O7V38QmbB11+ryJ3KM/znrzXtiqgpXzqNoqDsndHZZ5/zDKTTL+cf5F0mzXkQEwhx8IlWnqYvEovf2S5EwLTw==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -3587,36 +3587,36 @@ snapshots:
 
   '@cropper/utils@2.2.0': {}
 
-  '@crowdin/cli-darwin-arm64@5.0.1':
+  '@crowdin/cli-darwin-arm64@5.0.2':
     optional: true
 
-  '@crowdin/cli-darwin-x64@5.0.1':
+  '@crowdin/cli-darwin-x64@5.0.2':
     optional: true
 
-  '@crowdin/cli-linux-arm64-musl@5.0.1':
+  '@crowdin/cli-linux-arm64-musl@5.0.2':
     optional: true
 
-  '@crowdin/cli-linux-arm64@5.0.1':
+  '@crowdin/cli-linux-arm64@5.0.2':
     optional: true
 
-  '@crowdin/cli-linux-x64-musl@5.0.1':
+  '@crowdin/cli-linux-x64-musl@5.0.2':
     optional: true
 
-  '@crowdin/cli-linux-x64@5.0.1':
+  '@crowdin/cli-linux-x64@5.0.2':
     optional: true
 
-  '@crowdin/cli-win32-x64@5.0.1':
+  '@crowdin/cli-win32-x64@5.0.2':
     optional: true
 
-  '@crowdin/cli@5.0.1':
+  '@crowdin/cli@5.0.2':
     optionalDependencies:
-      '@crowdin/cli-darwin-arm64': 5.0.1
-      '@crowdin/cli-darwin-x64': 5.0.1
-      '@crowdin/cli-linux-arm64': 5.0.1
-      '@crowdin/cli-linux-arm64-musl': 5.0.1
-      '@crowdin/cli-linux-x64': 5.0.1
-      '@crowdin/cli-linux-x64-musl': 5.0.1
-      '@crowdin/cli-win32-x64': 5.0.1
+      '@crowdin/cli-darwin-arm64': 5.0.2
+      '@crowdin/cli-darwin-x64': 5.0.2
+      '@crowdin/cli-linux-arm64': 5.0.2
+      '@crowdin/cli-linux-arm64-musl': 5.0.2
+      '@crowdin/cli-linux-x64': 5.0.2
+      '@crowdin/cli-linux-x64-musl': 5.0.2
+      '@crowdin/cli-win32-x64': 5.0.2
 
   '@csstools/color-helpers@6.1.0': {}
 
@@ -3798,16 +3798,16 @@ snapshots:
       '@formatjs/ecma402-abstract': 2.3.4
       tslib: 2.8.1
 
-  '@formatjs/intl-durationformat@0.10.18':
+  '@formatjs/intl-durationformat@0.11.0':
     dependencies:
       '@formatjs/bigdecimal': 0.2.7
-      '@formatjs/intl-localematcher': 0.8.13
+      '@formatjs/intl-localematcher': 0.8.14
 
   '@formatjs/intl-localematcher@0.6.1':
     dependencies:
       tslib: 2.8.1
 
-  '@formatjs/intl-localematcher@0.8.13':
+  '@formatjs/intl-localematcher@0.8.14':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
 
