@@ -59,17 +59,6 @@ export const BACKEND_DOMAINS: Record<ProductType, string> = {
 	product: 'openproductsfacts.org'
 };
 
-const STATIC_HOSTS: Record<ProductType, string> = {
-	food: `https://static.${BACKEND_DOMAINS.food}`,
-	beauty: `https://static.${BACKEND_DOMAINS.beauty}`,
-	petfood: `https://static.${BACKEND_DOMAINS.petfood}`,
-	product: `https://static.${BACKEND_DOMAINS.product}`
-};
-
-// TODO: switch to SDK
-export const TAXONOMY_URL = (taxo: string, productType?: ProductType) =>
-	`${STATIC_HOSTS[productType ?? 'food']}/data/taxonomies/${taxo}.json`;
-
 export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
 export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;
 export const OAUTH_REDIRECT_URI = (url: URL) => url.origin + resolve('/oauth/login/callback');
