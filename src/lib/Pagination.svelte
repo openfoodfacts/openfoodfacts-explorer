@@ -9,6 +9,9 @@
 
 	function handlePageChange(event: MouseEvent, nextPage: number) {
 		if (!onPageChange) return;
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+			return;
+		}
 
 		event.preventDefault();
 		onPageChange(nextPage);
