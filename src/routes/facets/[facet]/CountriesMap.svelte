@@ -138,7 +138,7 @@
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
 
-			const abortingFetch = (input: RequestInfo, init?: RequestInit) => {
+			const abortingFetch: typeof fetch = (input, init) => {
 				return fetch(input, { ...init, signal: abortController.signal });
 			};
 

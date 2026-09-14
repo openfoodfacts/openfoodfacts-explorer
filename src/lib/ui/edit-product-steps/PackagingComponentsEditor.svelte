@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	// TODO: switch to SDK
-	import type { Product, PackagingComponent } from '$lib/api';
+	import type { PackagingComponent } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '$lib/api';
 	import { getTaxonomySuggestions } from '$lib/api';
 
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
