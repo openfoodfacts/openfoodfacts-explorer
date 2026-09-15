@@ -12,7 +12,7 @@
 		<thead>
 			<tr>
 				{#each element.table_element.columns as column, columnIndex (columnIndex)}
-					<th><HtmlPurify dirty={column.text} /></th>
+					<th><div class="kp-html-content"><HtmlPurify dirty={column.text} /></div></th>
 				{/each}
 			</tr>
 		</thead>
@@ -29,7 +29,9 @@
 									aria-hidden="true"
 								/>
 							{/if}
-							<HtmlPurify dirty={cell.text} />
+							<div class="kp-html-content inline-block align-middle">
+								<HtmlPurify dirty={cell.text} />
+							</div>
 						</td>
 					{/each}
 				</tr>
@@ -37,3 +39,20 @@
 		</tbody>
 	</table>
 </div>
+
+<style>
+	:global(.kp-html-content img) {
+		margin: 0;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(.kp-html-content *:not(.allergen):not(.text_info)) {
+			color: inherit !important;
+		}
+
+		:global(.kp-html-content img) {
+			background-color: #fff;
+			border-radius: 0.25rem;
+		}
+	}
+</style>
