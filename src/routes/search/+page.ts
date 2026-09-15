@@ -1,11 +1,15 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
 import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
-import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
+import {
+	createProductsApi,
+	getBulkProductAttributes,
+	getBulkProductCardsByCode
+} from '$lib/api/product';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -107,7 +111,7 @@ async function compatSearch(
 	return api.search(oldParams);
 }
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
@@ -150,6 +154,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 			search: searchDataTyped,
 			attributesByCode: {},
 			prices: {},
+			productCardsByCode: {},
 			attributeGroups: attributeGroupsResponse.data ?? []
 		};
 	}
@@ -158,6 +163,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 	// Create promises
 	const attributesPromise = getBulkProductAttributes(fetch, productCodes);
+	const productCardsPromise = getBulkProductCardsByCode(fetch, productCodes);
 
 	const pricesPromise = isPricesConfigured()
 		? getPrices(fetch, productCodes)
@@ -166,11 +172,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const attributeGroupsPromise = off.getAttributeGroups();
 
 	// Load data in parallel
-	const [attributesByCode, prices, attributeGroupsResponse] = await Promise.all([
-		attributesPromise,
-		pricesPromise,
-		attributeGroupsPromise
-	]);
+	const [attributesByCode, prices, productCardsByCode, attributeGroupsResponse] = await Promise.all(
+		[attributesPromise, pricesPromise, productCardsPromise, attributeGroupsPromise]
+	);
 
 	const attributeGroups = attributeGroupsResponse.data ?? [];
 
@@ -179,6 +183,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		search: searchDataTyped,
 		attributesByCode,
 		prices,
+		productCardsByCode,
 		attributeGroups
 	};
 };
