@@ -289,6 +289,15 @@
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
 		},
+		"actions": {
+			"calculator": "Calculator",
+		    "edit_actions": "Edit actions",
+		    "close_edit_actions": "Close edit actions",
+		    "hide": "Hide {action}",
+		    "show": "Show {action}",
+		    "move_up": "Move {action} up",
+		    "move_down": "Move {action} down"
+		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
