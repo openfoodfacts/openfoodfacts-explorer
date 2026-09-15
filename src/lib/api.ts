@@ -1,4 +1,5 @@
 import { Robotoff } from '@openfoodfacts/openfoodfacts-nodejs';
+export * from './api/utils';
 import { wrapFetchWithCredentials } from './api/utils';
 import { KEYCLOAK_URL, OAUTH_CLIENT_ID, OAUTH_REDIRECT_URI, ROBOTOFF_URL } from './const';
 import { KeycloakApi } from './api/keycloak';
