@@ -227,7 +227,8 @@
 	}
 </script>
 
-<div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
+<!-- Keep the sidebar track fixed and allow the form column to shrink safely. -->
+<div class="relative w-full lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-8">
 	<Sidebar
 		bind:this={sidebar}
 		bind:activeSection
@@ -252,7 +253,8 @@
 				<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.languages')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<LanguagesStep bind:product {addLanguage} codes={languages} editMode />
 			</div>
 		</div>
@@ -268,7 +270,8 @@
 				<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.images')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<ImagesStep bind:product editMode />
 			</div>
 		</div>
@@ -284,7 +287,8 @@
 				<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.basic_info')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<BasicInfoStep
 					bind:product
 					{brandNames}
@@ -308,7 +312,8 @@
 				<IconMdiEarth class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.origin_traceability')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<OriginTraceabilityStep bind:product {originNames} editMode />
 			</div>
 		</div>
@@ -324,7 +329,8 @@
 				<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.ingredients')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} editMode />
 			</div>
 		</div>
@@ -341,7 +347,8 @@
 				<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.nutrition')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} editMode />
 			</div>
 		</div>
@@ -357,7 +364,8 @@
 				<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.prices')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<p class="mt-2 mb-4 text-sm text-base-content/70">
 					{$_('product.edit.info.prices')}
 				</p>
@@ -386,7 +394,8 @@
 				<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.packaging')}
 			</div>
-			<div class="collapse-content">
+			<!-- Match section body padding so every step starts on the same content edge. -->
+			<div class="collapse-content px-4 sm:px-6">
 				<PackagingStep bind:product {getPackagingImage} editMode />
 			</div>
 		</div>
@@ -422,7 +431,8 @@
 					<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 					{$_('product.edit.sections.moderator_tools')}
 				</div>
-				<div class="collapse-content">
+				<!-- Match section body padding so every step starts on the same content edge. -->
+				<div class="collapse-content px-4 sm:px-6">
 					<p class="mb-4 text-sm text-base-content/70">
 						{$_('product.edit.info.moderator_tools')}
 					</p>

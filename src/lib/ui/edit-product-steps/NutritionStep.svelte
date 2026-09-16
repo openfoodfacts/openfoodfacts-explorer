@@ -345,8 +345,9 @@
 {/snippet}
 
 {#if !editMode}
+	<!-- Use flex so heading alignment utilities work for the icon and label. -->
 	<h2
-		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 flex items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiNutrition class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.nutrition')}
@@ -369,14 +370,16 @@
 				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
 			<IconMdiInformation class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
-			<span class="p-6 text-sm text-base-content/80 sm:text-base"
+			<!-- Remove nested padding so alert text aligns with the alert icon. -->
+			<span class="text-sm text-base-content/80 sm:text-base"
 				>{$_('product.edit.info.nutrition')}</span
 			>
 		</div>
 	{/if}
 {/if}
-<div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
-	<div>
+<!-- Use a stable responsive grid and prevent either column from forcing overflow. -->
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+	<div class="min-w-0">
 		<div class="space-y-4">
 			<div>
 				<label class="label">
@@ -627,7 +630,7 @@
 			</div>
 		{/if}
 	</div>
-	<div class="tabs tabs-box mb-4 bg-base-100">
+	<div class="tabs tabs-box mb-4 min-w-0 bg-base-100">
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 			{@const nutritionImage = getNutritionImage(code)}
 			<input

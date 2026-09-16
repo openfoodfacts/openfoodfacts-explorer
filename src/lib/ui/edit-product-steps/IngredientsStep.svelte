@@ -110,8 +110,9 @@
 </script>
 
 {#if !editMode}
+	<!-- Use flex so heading alignment utilities work for the icon and label. -->
 	<h2
-		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 flex items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiFormatListBulleted class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.ingredients')}
@@ -134,7 +135,8 @@
 				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
 			<IconMdiInformation class="mt-0.5 h-6 w-6 shrink-0 text-primary" />
-			<span class="p-6 text-sm text-base-content/80 sm:text-base">
+			<!-- Remove nested padding so alert text aligns with the alert icon. -->
+			<span class="text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.ingredients')}
 			</span>
 		</div>
