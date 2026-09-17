@@ -6,7 +6,7 @@ Sentry.init({
 
     tracesSampleRate: 0.1,
 	
-    beforeSend(event: any, hint: any) {
+    beforeSend(event, hint) {
         const error = hint?.originalException;
         if (error && typeof error === 'object' && 'status' in error && error.status === 429) {
             return null;

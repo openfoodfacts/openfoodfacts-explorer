@@ -411,7 +411,7 @@
 				<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.comment')}
 			</div>
-			<div class="collapse-content">
+			<div class="collapse-content px-4 sm:px-6">
 				<CommentStep bind:comment editMode />
 			</div>
 		</div>
