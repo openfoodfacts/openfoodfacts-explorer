@@ -16,7 +16,17 @@ export async function getTaxo<T extends TaxoNode>(
 	fetch: typeof globalThis.fetch,
 	productType?: ProductType
 ): Promise<Taxonomy<T>> {
-	const off = new OpenFoodFacts(fetch, {
+	const checkedFetch: typeof globalThis.fetch = async (input, init) => {
+		const response = await fetch(input, init);
+		if (!response.ok) {
+			throw new Error(
+				`Failed to fetch taxonomy ${taxo}: ${response.status} ${response.statusText}`
+			);
+		}
+		return response;
+	};
+
+	const off = new OpenFoodFacts(checkedFetch, {
 		type: BACKEND_TYPES[productType ?? 'food']
 	});
 	return off.getTaxo<T>(taxo);
