@@ -448,6 +448,36 @@ export async function getBulkProductCards(fetch: typeof window.fetch, codes: str
 	return off.apiv2.search(Object.fromEntries(params.entries()));
 }
 
+/**
+ * Fetch the canonical product-card fields and index them by barcode.
+ *
+ * The Search API returns indexed taxonomy values (for example, brands as
+ * `['xx:brand']`) rather than the display fields expected by <product-card>.
+ */
+export async function getBulkProductCardsByCode(
+	fetch: typeof window.fetch,
+	codes: string[]
+): Promise<Record<string, ProductReduced>> {
+	if (codes.length === 0) {
+		return {};
+	}
+
+	const { data, error } = await getBulkProductCards(fetch, codes);
+	if (error != null || data == null) {
+		console.error('Error fetching canonical product-card data:', error);
+		return {};
+	}
+
+	const cardsByCode: Record<string, ProductReduced> = {};
+	for (const product of data.products ?? []) {
+		if (product.code != null) {
+			cardsByCode[product.code] = product as unknown as ProductReduced;
+		}
+	}
+
+	return cardsByCode;
+}
+
 export type ProductStateBase = {
 	result: {
 		id: string;
