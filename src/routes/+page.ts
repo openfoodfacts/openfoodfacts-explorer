@@ -1,4 +1,5 @@
 import { createProductsApi } from '$lib/api';
+import { ssrSafeFetch } from '$lib/api/utils';
 import { API_HOST } from '$lib/const';
 import { fetchRequired } from '$lib/promises';
 import type { PageLoad } from './$types';
@@ -7,7 +8,7 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 	// The API doesn't provide a dedicated endpoint for getting the total number of products,
 	// so we fetch the first page of products and read the "count" property from the response.
 
-	const data = await fetchRequired(fetch, new URL('.json', API_HOST));
+	const data = await fetchRequired(ssrSafeFetch(fetch), new URL('.json', API_HOST));
 	if (
 		typeof data !== 'object' ||
 		data === null ||

@@ -7,6 +7,24 @@ import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
 
+function emptySearchResult(page: number, pageSize: number): SearchResult {
+	return {
+		aggregations: null,
+		charts: {},
+		count: 0,
+		debug: {},
+		facets: {},
+		hits: [],
+		is_count_exact: true,
+		page,
+		page_count: 0,
+		page_size: pageSize,
+		timed_out: false,
+		took: 0,
+		warnings: []
+	};
+}
+
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
 		return false;
@@ -103,8 +121,13 @@ async function compatSearch(
 		]
 	};
 
-	// @ts-expect-error - legacy search API parameters fallback
-	return api.search(oldParams);
+	try {
+		// @ts-expect-error - legacy search API parameters fallback
+		return await api.search(oldParams);
+	} catch (cause) {
+		console.error('Search API legacy fallback failed', cause);
+		return { error: cause } as Awaited<ReturnType<SearchApi['search']>>;
+	}
 }
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
@@ -123,17 +146,39 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
-	const { data: searchData, error: searchError } = await compatSearch(fetch, {
-		q: query,
-		langs: ['en'],
-		page,
-		page_size: pageSize,
-		sort_by: sortBy
-	});
+	let searchResponse: Awaited<ReturnType<SearchApi['search']>>;
+	try {
+		searchResponse = await compatSearch(fetch, {
+			q: query,
+			langs: ['en'],
+			page,
+			page_size: pageSize,
+			sort_by: sortBy
+		});
+	} catch (cause) {
+		console.error('Search API request failed', cause);
+		return {
+			query,
+			search: emptySearchResult(page, pageSize),
+			attributesByCode: {},
+			prices: {},
+			attributeGroups: [],
+			searchUnavailable: true
+		};
+	}
+
+	const { data: searchData, error: searchError } = searchResponse;
 
 	if (searchError || !searchData) {
 		console.error('Search API error:', searchError);
-		error(500, 'Failed to fetch search results');
+		return {
+			query,
+			search: emptySearchResult(page, pageSize),
+			attributesByCode: {},
+			prices: {},
+			attributeGroups: [],
+			searchUnavailable: true
+		};
 	}
 
 	const searchDataTyped = searchData as SearchResult;
@@ -142,15 +187,13 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
 
 	if (productCodes.length === 0) {
-		const off = createProductsApi(fetch);
-		const attributeGroupsResponse = await off.getAttributeGroups();
-
 		return {
 			query,
 			search: searchDataTyped,
 			attributesByCode: {},
 			prices: {},
-			attributeGroups: attributeGroupsResponse.data ?? []
+			attributeGroups: [],
+			searchUnavailable: false
 		};
 	}
 
@@ -166,19 +209,30 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const attributeGroupsPromise = off.getAttributeGroups();
 
 	// Load data in parallel
-	const [attributesByCode, prices, attributeGroupsResponse] = await Promise.all([
-		attributesPromise,
-		pricesPromise,
-		attributeGroupsPromise
-	]);
+	try {
+		const [attributesByCode, prices, attributeGroupsResponse] = await Promise.all([
+			attributesPromise,
+			pricesPromise,
+			attributeGroupsPromise
+		]);
 
-	const attributeGroups = attributeGroupsResponse.data ?? [];
-
-	return {
-		query,
-		search: searchDataTyped,
-		attributesByCode,
-		prices,
-		attributeGroups
-	};
+		return {
+			query,
+			search: searchDataTyped,
+			attributesByCode,
+			prices,
+			attributeGroups: attributeGroupsResponse.data ?? [],
+			searchUnavailable: false
+		};
+	} catch (cause) {
+		console.error('Could not load search result details', cause);
+		return {
+			query,
+			search: searchDataTyped,
+			attributesByCode: {},
+			prices: {},
+			attributeGroups: [],
+			searchUnavailable: false
+		};
+	}
 };

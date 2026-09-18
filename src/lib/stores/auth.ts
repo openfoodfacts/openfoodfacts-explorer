@@ -128,9 +128,24 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 		// Add the application identification header
 		headers.set('X-User-Agent', appHeaderValue);
 
+		const processResponse = (response: Response) => {
+			const originalJson = response.json.bind(response);
+			response.json = async () => {
+				const contentType = response.headers.get('content-type') || '';
+				if (contentType.includes('text/html')) {
+					throw new Error(
+						`API returned HTML instead of JSON (Status ${response.status}) for ${response.url}`
+					);
+				}
+				return originalJson();
+			};
+			return response;
+		};
+
 		const tokens = get(userAuthTokens);
 		if (!tokens) {
-			return fetch(input, { ...init, headers });
+			const res = await fetch(input, { ...init, headers });
+			return processResponse(res);
 		}
 
 		// Proactively ensure token is valid before making the request
@@ -144,7 +159,7 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 
 			// Clone request input to allow retry if body exists
 			const requestInit = { ...init, headers };
-			const response = await fetch(input, requestInit);
+			let response = await fetch(input, requestInit);
 
 			// If still getting 401 (e.g., token was revoked), try one more refresh
 			if (response.status === 401) {
@@ -153,9 +168,9 @@ export function wrapFetchWithAuth(fetch: typeof window.fetch): typeof window.fet
 				const newTokens = await initiateTokenRefresh(url);
 
 				headers.set('Authorization', 'Bearer ' + newTokens.access_token);
-				return fetch(input, { ...init, headers });
+				response = await fetch(input, { ...init, headers });
 			}
-			return response;
+			return processResponse(response);
 		} catch (error) {
 			// If token validation/refresh fails, clear tokens and propagate error
 			if (error instanceof Error && error.message.includes('No authentication tokens')) {

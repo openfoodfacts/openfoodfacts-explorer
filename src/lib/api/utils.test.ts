@@ -1,5 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
-import { wrapFetchWithCredentials } from './utils';
+import { ssrSafeFetch, wrapFetchWithCredentials } from './utils';
+
+describe('ssrSafeFetch', () => {
+	it('uses native fetch during SSR', () => {
+		const svelteKitFetch = vi.fn() as unknown as typeof fetch;
+
+		expect(ssrSafeFetch(svelteKitFetch)).toBe(globalThis.fetch);
+	});
+});
 
 describe('wrapFetchWithCredentials', () => {
 	it('removes credentials from URL', () => {

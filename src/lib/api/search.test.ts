@@ -4,6 +4,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const mockEnv = {
 	PUBLIC_SEARCH_BASE_URL: ''
 };
+const mockEnvironment = {
+	browser: false
+};
 
 // mock Svelte public env
 vi.mock('$env/dynamic/public', () => ({
@@ -12,19 +15,28 @@ vi.mock('$env/dynamic/public', () => ({
 	}
 }));
 
+vi.mock('$app/environment', () => mockEnvironment);
+
 describe('getSearchBaseUrl', () => {
 	beforeEach(() => {
+		mockEnvironment.browser = false;
 		vi.resetModules();
 	});
 
-	it('should throw error if PUBLIC_SEARCH_BASE_URL is empty', async () => {
+	it('uses the relative proxy URL in the browser', async () => {
+		mockEnvironment.browser = true;
+
+		const { getSearchBaseUrl } = await import('./search');
+
+		expect(getSearchBaseUrl()).toBe('/api/search');
+	});
+
+	it('should return fallback if PUBLIC_SEARCH_BASE_URL is empty', async () => {
 		mockEnv.PUBLIC_SEARCH_BASE_URL = '';
 
 		const { getSearchBaseUrl } = await import('./search');
 
-		expect(() => getSearchBaseUrl()).toThrow(
-			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
-		);
+		expect(getSearchBaseUrl()).toBe('https://search.openfoodfacts.org');
 	});
 
 	it('should return base URL if PUBLIC_SEARCH_BASE_URL is set', async () => {

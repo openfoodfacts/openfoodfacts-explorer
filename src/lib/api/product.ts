@@ -5,12 +5,13 @@ import type { Nutriments } from './nutriments';
 import { getLanguageCode, preferences } from '$lib/settings';
 import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
+import { ssrSafeFetch } from './utils';
 
 import type { PackagingTaxonomyTag, PackagingComponent } from '$lib/types/sdk-overrides';
 export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	const fetchToUse = wrapFetchWithAuth(fetch);
+	const fetchToUse = wrapFetchWithAuth(ssrSafeFetch(fetch));
 	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
@@ -104,7 +105,7 @@ export async function moveImages(
 		return { error: 'A non-empty destination product barcode is required.' };
 	}
 
-	const wrapFetch = wrapFetchWithAuth(fetch);
+	const wrapFetch = wrapFetchWithAuth(ssrSafeFetch(fetch));
 	const url = `${API_HOST}/cgi/product_image_move.pl`;
 	const body = new FormData();
 	body.append('code', code);
@@ -146,7 +147,7 @@ export async function deleteImages(
 		return { error: 'A non-empty list of image IDs is required.' };
 	}
 
-	const wrapFetch = wrapFetchWithAuth(fetch);
+	const wrapFetch = wrapFetchWithAuth(ssrSafeFetch(fetch));
 	const url = `${API_HOST}/cgi/product_image_move.pl`;
 	const body = new FormData();
 	body.append('code', code);
@@ -190,7 +191,7 @@ export async function deleteProduct(
 		formData.append('code', code);
 		formData.append('comment', comment);
 
-		const fetchToUse = wrapFetchWithAuth(fetch);
+		const fetchToUse = wrapFetchWithAuth(ssrSafeFetch(fetch));
 		const url = `${API_HOST}/cgi/product.pl`;
 		const response = await fetchToUse(url, {
 			method: 'POST',
@@ -480,6 +481,9 @@ export type ProductAttributeForScoring = {
 	id: string;
 	match?: number;
 	status?: string;
+	name?: string;
+	title?: string;
+	icon_url?: string;
 };
 
 export type ProductAttributeForScoringGroup = {

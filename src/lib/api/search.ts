@@ -1,21 +1,24 @@
 import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
-import { wrapFetchWithCredentials } from './utils';
+import { ssrSafeFetch, wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
+import { browser } from '$app/environment';
 
 export function getSearchBaseUrl() {
+	if (browser) {
+		return '/api/search';
+	}
 	const searchBaseUrl = env.PUBLIC_SEARCH_BASE_URL;
 	if (searchBaseUrl == null || searchBaseUrl === '') {
-		throw new Error(
-			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'
-		);
+		return 'https://search.openfoodfacts.org';
 	}
 	return searchBaseUrl;
 }
 
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	const searchBaseUrl = getSearchBaseUrl();
-	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(searchBaseUrl));
+	const rawUrl = browser ? new URL(searchBaseUrl, window.location.origin) : new URL(searchBaseUrl);
+	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(ssrSafeFetch(fetch), rawUrl);
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
 }
 

@@ -1,5 +1,6 @@
 import { API_HOST } from '$lib/const';
 import type { CurrentUserPermissions } from '$lib/types/sdk-overrides';
+import { ssrSafeFetch } from './utils';
 export type { CurrentUserPermissions };
 
 export async function fetchCurrentUserPermissions(
@@ -7,7 +8,7 @@ export async function fetchCurrentUserPermissions(
 ): Promise<{ data?: CurrentUserPermissions; error?: string }> {
 	try {
 		const targetUrl = `${API_HOST}/api/v3/current-user/permissions`;
-		const response = await fetch(targetUrl);
+		const response = await ssrSafeFetch(fetch)(targetUrl);
 
 		if (!response.ok) {
 			return { error: `Failed to fetch user permissions: HTTP ${response.status}` };

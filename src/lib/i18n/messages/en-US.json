@@ -24,6 +24,7 @@
 		"button": "Search",
 		"product_not_found": "No products found",
 		"product_not_found_desc": "We couldn't find any products matching your search",
+		"service_unavailable": "Search is temporarily unavailable. Please try again shortly.",
 		"add_product": "Add new Product",
 		"description": "Search on Open Food Facts Explorer for {query}",
 		"charts_title": "Search Analytics",
@@ -260,7 +261,8 @@
 		"image_alt": "Image",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
-			"aria_label_no_name": "Go to product with code {productCode}"
+			"aria_label_no_name": "Go to product with code {productCode}",
+			"scans": "scans"
 		},
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
@@ -922,6 +924,8 @@
 	"explore": {
 		"title": "Explore Open Food Facts",
 		"subtitle": "Discover trending products, popular categories, and contribute to food transparency!",
+		"search_unavailable": "Some products could not be loaded. Please try again shortly.",
+		"no_products": "No products are available to explore yet.",
 		"trending_products": "Trending Products",
 		"trending_products_desc": "See what products are being viewed and edited the most right now.",
 		"popular_categories": "Popular Categories",

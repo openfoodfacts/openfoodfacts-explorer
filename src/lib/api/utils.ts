@@ -1,3 +1,24 @@
+import { browser } from '$app/environment';
+
+/**
+ * Returns a fetch function safe for SSR use with cross-origin APIs.
+ *
+ * SvelteKit's `event.fetch` in universal load functions (`+page.ts`)
+ * enforces CORS even during SSR, which breaks calls to external APIs
+ * that don't return `Access-Control-Allow-Origin` headers.
+ *
+ * On the **server** this returns native `globalThis.fetch` (no CORS).
+ * In the **browser** it returns the caller-provided `fetch` so that
+ * the Vite dev-proxy or production routing works correctly.
+ */
+export function ssrSafeFetch(svelteKitFetch: typeof globalThis.fetch): typeof globalThis.fetch {
+	if (browser) {
+		return svelteKitFetch;
+	}
+	// On the server, bypass SvelteKit's CORS-enforcing wrapper
+	return globalThis.fetch;
+}
+
 export function formBody(params: Record<string, string | null | undefined>) {
 	const formBody = new URLSearchParams();
 	for (const [key, value] of Object.entries(params)) {

@@ -67,7 +67,8 @@
 
 		return personalizedResults.map(({ product, scoreData }) => ({
 			product: product.product,
-			scoreData
+			scoreData,
+			attributes: product.attributes
 		}));
 	});
 
@@ -169,6 +170,7 @@
 	let encodedMainSearchTerm = $derived(encodeURIComponent(mainSearchTerm));
 	let sidebarHidden = $state(false);
 	let trackedSearchKey = $state<string | null>(null);
+	let isSearchNavigation = $derived(navigating.to?.url.pathname === '/search');
 
 	// Track each loaded search once. Page views remain responsible for
 	// navigation tracking; this provides structured search reporting.
@@ -210,6 +212,16 @@
 	title={$_('search.title', { values: { query: data.query } })}
 	description={$_('search.description', { values: { query: data.query } })}
 />
+
+{#if data.searchUnavailable}
+	<div class="my-4 alert alert-warning" role="alert" aria-live="polite">
+		<span>
+			{$_('search.service_unavailable', {
+				default: 'Search is temporarily unavailable. Please try again shortly.'
+			})}
+		</span>
+	</div>
+{/if}
 
 <!-- Superset SQL Promo Banner -->
 <div
@@ -538,8 +550,8 @@
 
 		<div class="divider my-1 lg:hidden"></div>
 
-		{#if navigating.to != null}
-			<!-- Product Card Skeleton Loading State during API Call -->
+		{#if isSearchNavigation && visibleProducts.length === 0}
+			<!-- Use skeletons only before a result list exists; preserve existing keyed cards on revalidation. -->
 			<div class="my-6 max-md:me-4">
 				<div
 					class={[
@@ -598,7 +610,7 @@
 						sidebarHidden ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
 					]}
 				>
-					{#each visibleProducts as { product, scoreData } (product.code)}
+					{#each visibleProducts as { product, scoreData, attributes } (product.code)}
 						<div class="indicator block w-full">
 							{#if $preferences.displayPricesInSearch}
 								<span class="indicator-item right-4 z-20 badge badge-sm badge-secondary">
@@ -609,6 +621,7 @@
 							{/if}
 							<WcProductCard
 								{product}
+								{attributes}
 								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
 							/>
 						</div>
