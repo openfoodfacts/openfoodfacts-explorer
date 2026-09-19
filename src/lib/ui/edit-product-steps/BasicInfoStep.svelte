@@ -188,88 +188,93 @@
 		{/if}
 
 		<!-- Primary Fields Grid -->
-		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-			<div class="form-control w-full sm:col-span-2">
-				<div class="label">
-					<span class="label-text text-sm font-medium sm:text-base">
-						{$_('product.edit.generic_name', { default: 'Common name' })}
-					</span>
-				</div>
-				<div class="space-y-3">
-					{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-						{@const langName = getLanguageName(code)}
-						<div class="flex items-center gap-2">
-							<div
-								class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
-								title={langName}
-							>
-								{code}
-							</div>
-							<input
-								id={`generic-name-${code}`}
-								type="text"
-								class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
-								value={product[`generic_name_${code}`] ?? ''}
-								oninput={(e) => {
-									product = {
-										...product,
-										[`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
-									};
-								}}
-								placeholder={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
-								aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
-							/>
-						</div>
-					{/each}
-				</div>
-			</div>
-			<div class="form-control w-full sm:col-span-2">
-				<label class="label" for="quantity">
-					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
-						{$_('product.edit.quantity')}
-						<InfoTooltip text={$_('product.edit.tooltips.quantity')} />
-					</span>
-				</label>
-				<input
-					id="quantity"
-					type="text"
-					class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
-					value={product.quantity ?? ''}
-					oninput={(e) => {
-						product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
-					}}
-					placeholder="e.g., 250g, 1L, 500ml"
-				/>
-			</div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="form-control w-full sm:col-span-2">
+                <label class="label" for="generic-name">
+                    <span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+                        {$_('product.edit.generic_name', { default: 'Common name' })}
+                        <InfoTooltip
+                            text={$_('product.edit.tooltips.generic_name', {
+                                default: 'Chocolate bar with milk and hazelnuts. Do not include any brands or quantities.'
+                            })}
+                        />
+                    </span>
+                </label>
+                <div class="space-y-3">
+                    {#each Object.keys(product.languages_codes ?? {}) as code (code)}
+                        {@const langName = getLanguageName(code)}
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary uppercase"
+                                title={langName}
+                            >
+                                {code}
+                            </div>
+                            <input
+                                id={`generic-name-${code}`}
+                                type="text"
+                                class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
+                                value={product[`generic_name_${code}`] ?? ''}
+                                oninput={(e) => {
+                                    product = {
+                                        ...product,
+                                        [`generic_name_${code}`]: (e.currentTarget as HTMLInputElement).value
+                                    };
+                                }}
+                                placeholder={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
+                                aria-label={`${$_('product.edit.generic_name', { default: 'Common name' })} (${langName})`}
+                            />
+                        </div>
+                    {/each}
+                </div>
+            </div>
+            <div class="form-control w-full sm:col-span-2">
+                <label class="label" for="quantity">
+                    <span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
+                        {$_('product.edit.quantity')}
+                        <InfoTooltip text={$_('product.edit.tooltips.quantity')} />
+                    </span>
+                </label>
+                <input
+                    id="quantity"
+                    type="text"
+                    class="input-bordered input mt-2 w-full text-sm focus:border-primary focus:outline-none sm:text-base"
+                    value={product.quantity ?? ''}
+                    oninput={(e) => {
+                        product = { ...product, quantity: (e.currentTarget as HTMLInputElement).value };
+                    }}
+                    placeholder="e.g., 250g, 1L, 500ml"
+                />
+            </div>
 
-			<div class="form-control w-full sm:col-span-2">
-				<label class="label" for="website_url">
-					<span class="label-text text-sm font-medium text-wrap sm:text-base">
-						{$_('product.edit.product_page_url_add', {
-							default: 'Link to the product page on the official site of the producer'
-						})}
-						<InfoTooltip
-							text={$_('product.edit.tooltips.website_url', {
-								default:
-									'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
-							})}
-						/>
-					</span>
-				</label>
-				<input
-					id="website_url"
-					type="url"
-					class="input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
-					value={product.link ?? ''}
-					oninput={(e) => {
-						product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
-					}}
-					placeholder={$_('product.edit.product_page_url_placeholder', {
-						default: 'https://example.com/products/pasta-n8'
-					})}
-				/>
-			</div>
-		</div>
+            <div class="form-control w-full sm:col-span-2">
+                <label class="label" for="website_url">
+                    <span class="label-text text-sm font-medium text-wrap sm:text-base">
+                        {$_('product.edit.product_page_url_add', {
+                            default: 'Link to the product page on the official site of the producer'
+                        })}
+                        <InfoTooltip
+                            text={$_('product.edit.tooltips.website_url', {
+                                default:
+                                    'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+                            })}
+                        />
+                    </span>
+                </label>
+                <input
+                    id="website_url"
+                    type="url"
+                    class="input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
+                    value={product.link ?? ''}
+                    oninput={(e) => {
+                        product = { ...product, link: (e.currentTarget as HTMLInputElement).value };
+                    }}
+                    placeholder={$_('product.edit.product_page_url_placeholder', {
+                        default: 'https://example.com/products/pasta-n8'
+                    })}
+                />
+            </div>
+        </div>
 
 		<!-- Tags Section -->
 		<div class="divider text-sm font-medium opacity-60">
