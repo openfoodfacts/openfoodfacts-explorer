@@ -8,7 +8,7 @@
 		{ name: 'discover_link', href: '/static/discover' },
 		{ name: 'contribute_link', href: '/static/contribute' },
 		{ name: 'producers_link', href: '/static/producers' },
-		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL },
+		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL, external: true },
 		{ name: 'folksonomy_link', href: '/folksonomy' },
 		{ name: 'facets_link', href: '/facets' }
 	];
@@ -19,7 +19,12 @@
 		<div class="m-2 flex w-3/4 items-center justify-evenly 2xl:w-[60%]">
 			{#each navItems as item (item.name)}
 				<li>
-					<a href={item.href} class="font-medium text-secondary-content hover:underline">
+					<a
+						href={item.href}
+						target={item.external ? '_blank' : undefined}
+						rel={item.external ? 'noopener noreferrer' : undefined}
+						class="font-medium text-secondary-content hover:underline"
+					>
 						{$_(item.name)}
 					</a>
 				</li>
