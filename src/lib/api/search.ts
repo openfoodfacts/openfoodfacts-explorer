@@ -1,4 +1,4 @@
-import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+import { SearchApi, type Product, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
@@ -17,6 +17,70 @@ export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	const searchBaseUrl = getSearchBaseUrl();
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(searchBaseUrl));
 	return new SearchApi(wrappedFetch, { baseUrl: url.toString() });
+}
+
+export const DEFAULT_SEARCH_FACETS = [
+	'brands',
+	'categories',
+	'nutrition_grades',
+	'environmental_score_grade',
+	'nova_group',
+	'labels',
+	'countries',
+	'allergens',
+	'additives',
+	'stores',
+	'languages'
+];
+
+export const FALLBACK_SEARCH_FACETS = [
+	'brands',
+	'categories',
+	'nutrition_grades',
+	'environmental_score_grade'
+];
+
+export const DEFAULT_SEARCH_CHARTS: NonNullable<SearchBody['charts']> = [
+	{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
+	{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
+	{ chart_type: 'DistributionChart', field: 'nova_group' },
+	{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+];
+
+// FIXME: We can drop this compatibility layer once the new API is deployed in production
+export async function compatSearch(
+	baseFetch: typeof fetch,
+	params: Omit<SearchBody, 'facets' | 'charts'>
+): ReturnType<SearchApi['search']> {
+	const api = createSearchApi(baseFetch);
+
+	// Try the new API first
+	const newParams: SearchBody = {
+		...params,
+		facets: DEFAULT_SEARCH_FACETS,
+		charts: DEFAULT_SEARCH_CHARTS
+	};
+
+	try {
+		const res = await api.search(newParams);
+
+		if (res.error || res.data == null) {
+			console.error('Search API newParams error:', res.error);
+			throw res.error || new Error('No data');
+		}
+		// @ts-expect-error - data is unknown
+		return { data: res.data };
+	} catch (e) {
+		console.warn('search: API failed, falling back to basic facets:', e);
+	}
+
+	const oldParams: SearchBody = {
+		...params,
+		facets: FALLBACK_SEARCH_FACETS,
+		charts: DEFAULT_SEARCH_CHARTS
+	};
+
+	return api.search(oldParams);
 }
 
 export type AutocompleteOption = {
