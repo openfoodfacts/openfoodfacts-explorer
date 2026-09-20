@@ -28,7 +28,10 @@
 />
 
 <div class="mb-4">
-	<BackLink href={resolve('/facets')} label={$_('facets.facet_back_to_list')} />
+	<BackLink
+		href={resolve('/facets')}
+		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
+	/>
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
