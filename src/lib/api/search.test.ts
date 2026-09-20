@@ -92,7 +92,7 @@ describe('search parameters and fallback', () => {
 			if (callCount === 1) {
 				// Simulate primary newParams failure (e.g. 422 on legacy server)
 				return new Response(JSON.stringify({ detail: 'Error in complex facets' }), {
-					status: 500,
+					status: 422,
 					headers: { 'Content-Type': 'application/json' }
 				});
 			}
