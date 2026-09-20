@@ -3,6 +3,12 @@ import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
 import { env } from '$env/dynamic/public';
 
+/**
+ * Retrieves the base URL for the Search API from environment variables.
+ *
+ * @throws {Error} If PUBLIC_SEARCH_BASE_URL is not configured.
+ * @returns {string} The base URL for search requests.
+ */
 export function getSearchBaseUrl() {
 	const searchBaseUrl = env.PUBLIC_SEARCH_BASE_URL;
 	if (searchBaseUrl == null || searchBaseUrl === '') {
@@ -13,6 +19,12 @@ export function getSearchBaseUrl() {
 	return searchBaseUrl;
 }
 
+/**
+ * Creates an instance of SearchApi configured with credentials and baseUrl.
+ *
+ * @param {typeof window.fetch} fetch - The fetch implementation to use.
+ * @returns {SearchApi} The initialized SearchApi instance.
+ */
 export function createSearchApi(fetch: typeof window.fetch): SearchApi {
 	const searchBaseUrl = getSearchBaseUrl();
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, new URL(searchBaseUrl));
@@ -47,6 +59,22 @@ export const DEFAULT_SEARCH_CHARTS: NonNullable<SearchBody['charts']> = [
 	{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 ];
 
+export const FALLBACK_SEARCH_CHARTS = [
+	{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
+	{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
+	{ chart_type: 'DistributionChartType', field: 'nova_group' },
+	{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+];
+
+/**
+ * Executes a search query using the new Search API format first,
+ * falling back to the legacy format for compatibility with deployments
+ * running the older search backend (such as production search.openfoodfacts.org).
+ *
+ * @param {typeof fetch} baseFetch - The fetch implementation to use.
+ * @param {Omit<SearchBody, 'facets' | 'charts'>} params - The search parameters without facets/charts.
+ * @returns {ReturnType<SearchApi['search']>} The search response containing hits, facets, and charts.
+ */
 // FIXME: We can drop this compatibility layer once the new API is deployed in production
 export async function compatSearch(
 	baseFetch: typeof fetch,
@@ -74,12 +102,13 @@ export async function compatSearch(
 		console.warn('search: API failed, falling back to basic facets:', e);
 	}
 
-	const oldParams: SearchBody = {
+	const oldParams = {
 		...params,
 		facets: FALLBACK_SEARCH_FACETS,
-		charts: DEFAULT_SEARCH_CHARTS
+		charts: FALLBACK_SEARCH_CHARTS
 	};
 
+	// @ts-expect-error - legacy search API parameters fallback for production (search.openfoodfacts.org)
 	return api.search(oldParams);
 }
 

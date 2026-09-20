@@ -54,8 +54,18 @@ describe('search parameters and fallback', () => {
 		}
 	});
 
-	it('should fall back to basic facets with valid chart types when primary search fails', async () => {
-		const { compatSearch, FALLBACK_SEARCH_FACETS } = await import('./search');
+	it('should use legacy chart types in FALLBACK_SEARCH_CHARTS for backward compatibility', async () => {
+		const { FALLBACK_SEARCH_CHARTS } = await import('./search');
+
+		expect(FALLBACK_SEARCH_CHARTS.length).toBeGreaterThan(0);
+		for (const chart of FALLBACK_SEARCH_CHARTS) {
+			expect(['DistributionChartType', 'ScatterChartType']).toContain(chart.chart_type);
+		}
+	});
+
+	it('should fall back to basic facets with legacy chart types when primary search fails', async () => {
+		const { compatSearch, FALLBACK_SEARCH_FACETS, FALLBACK_SEARCH_CHARTS } =
+			await import('./search');
 
 		const requestBodies: SearchBody[] = [];
 		let callCount = 0;
@@ -80,7 +90,7 @@ describe('search parameters and fallback', () => {
 			}
 
 			if (callCount === 1) {
-				// Simulate primary newParams failure
+				// Simulate primary newParams failure (e.g. 422 on legacy server)
 				return new Response(JSON.stringify({ detail: 'Error in complex facets' }), {
 					status: 500,
 					headers: { 'Content-Type': 'application/json' }
@@ -113,16 +123,10 @@ describe('search parameters and fallback', () => {
 		expect(callCount).toBe(2);
 		expect(requestBodies.length).toBe(2);
 
-		// Verify fallback request (second call)
+		// Verify fallback request (second call) sends legacy fallback facets and charts
 		const fallbackBody = requestBodies[1];
 		expect(fallbackBody.facets).toEqual(FALLBACK_SEARCH_FACETS);
-		expect(fallbackBody.charts).toBeDefined();
-		expect(fallbackBody.charts?.length).toBeGreaterThan(0);
-		for (const chart of fallbackBody.charts ?? []) {
-			expect(['DistributionChart', 'ScatterChart']).toContain(chart.chart_type);
-			expect(chart.chart_type).not.toBe('DistributionChartType');
-			expect(chart.chart_type).not.toBe('ScatterChartType');
-		}
+		expect(fallbackBody.charts).toEqual(FALLBACK_SEARCH_CHARTS);
 
 		expect(result.data).toBeDefined();
 	});
