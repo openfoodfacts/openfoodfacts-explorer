@@ -101,7 +101,6 @@
 			...product,
 			[`image_ingredients_${languageCode}`]: null
 		};
-		trackOffEvent('contribution', 'image_unselected', `ingredients_${languageCode}`);
 	}
 
 	let activeLang = $state(product.lang);
@@ -189,10 +188,10 @@
 							type="button"
 							class="btn btn-outline btn-error btn-sm"
 							onclick={() => unselectIngredientsImage(code)}
-							title="Unselect image"
+							title={$_('product.edit.images.unselect', { default: 'Unselect image' })}
 						>
 							<IconMdiClose class="h-4 w-4" />
-							<span>Unselect image</span>
+							<span>{$_('product.edit.images.unselect', { default: 'Unselect image' })}</span>
 						</button>
 					</div>
 				{:else}
