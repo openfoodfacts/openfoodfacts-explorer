@@ -591,16 +591,16 @@
 							</div>
 						</div>
 						<div class="form-control w-full sm:col-span-2">
-							<label class="label" for="website_url">
+							<label class="label" for="common_name">
 								<span class="label-text text-sm font-medium text-wrap sm:text-base">
-									{$_('product.edit.product_page_url_add', {
-										default: 'Link to the product page on the official site of the producer'
+									{$_('product.edit.common_name_add', {
+										default: 'Common name'
 									})}
 								</span>
 								<InfoTooltip
-									text={$_('product.edit.tooltips.website_url', {
+									text={$_('product.edit.tooltips.common_name', {
 										default:
-											'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+											'Chocolate bar with milk and hazelnuts. Do not include any brands or quantities. This should be very similar to the category of the products in many cases.'
 									})}
 								/>
 							</label>
