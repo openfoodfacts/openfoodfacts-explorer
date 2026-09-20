@@ -11,6 +11,14 @@
 	"prices_link": "Prices",
 	"account_link": "Account",
 	"world_option": "World",
+	"navigation": {
+		"explore_by": "Explore by",
+		"browse_products_by": "Browse products by…",
+		"explore_products_by": "Explore products by",
+		"custom_properties": "Custom properties",
+		"explore_prices": "Explore prices",
+		"back_to_explore_by": "Back to explore by"
+	},
 	"navbar": {
 		"login": "Login",
 		"logout": "Logout",
