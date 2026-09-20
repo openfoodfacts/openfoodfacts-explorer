@@ -95,6 +95,15 @@
 		}
 	}
 
+	// Function to unselect/remove ingredients image (#1794)
+	function unselectIngredientsImage(languageCode: string) {
+		product = {
+			...product,
+			[`image_ingredients_${languageCode}`]: null
+		};
+		trackOffEvent('contribution', 'image_unselected', `ingredients_${languageCode}`);
+	}
+
 	let activeLang = $state(product.lang);
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
@@ -174,6 +183,16 @@
 								<IconMdiTextRecognition class="h-4 w-4" />
 								<span>Extract ingredients from image</span>
 							{/if}
+						</button>
+						<!-- One-Tap Unselect Button (#1794) -->
+						<button
+							type="button"
+							class="btn btn-outline btn-error btn-sm"
+							onclick={() => unselectIngredientsImage(code)}
+							title="Unselect image"
+						>
+							<IconMdiClose class="h-4 w-4" />
+							<span>Unselect image</span>
 						</button>
 					</div>
 				{:else}
