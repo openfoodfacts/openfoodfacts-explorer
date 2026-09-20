@@ -42,7 +42,7 @@
 		"@formatjs/intl-durationformat": "^0.11.0",
 		"@iconify-svelte/material-symbols": "^1.0.49",
 		"@iconify-svelte/mdi": "^1.0.2",
-		"@iconify-svelte/simple-icons": "^1.0.42",
+		"@iconify-svelte/simple-icons": "^1.0.43",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.35",
 		"@sveltejs/adapter-node": "^5.5.7",
 		"@sveltejs/adapter-vercel": "^6.3.4",
@@ -60,7 +60,7 @@
 		"@typescript-eslint/parser": "^8.70.0",
 		"@vercel/speed-insights": "^2.0.0",
 		"cropperjs": "^2.2.0",
-		"cytoscape": "^3.34.2",
+		"cytoscape": "^3.34.3",
 		"daisyui": "5.7.36",
 		"eslint": "^10.10.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -104,10 +104,10 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
-		"@sentry/sveltekit": "^10.73.0",
+		"@sentry/sveltekit": "^10.74.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"csv-stringify": "^6.8.3",
-		"isomorphic-dompurify": "^4.1.0"
+		"isomorphic-dompurify": "^4.2.0"
 	},
 	"packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
 }

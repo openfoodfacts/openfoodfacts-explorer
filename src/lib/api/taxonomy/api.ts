@@ -1,15 +1,33 @@
-import { TAXONOMY_URL, type ProductType } from '$lib/const';
-import { wrapFetch } from '$lib/utils';
+import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { type ProductType } from '$lib/const';
 import type { TaxoNode, Taxonomy } from './types';
+
+type BackendType = NonNullable<NonNullable<ConstructorParameters<typeof OpenFoodFacts>[1]>['type']>;
+
+const BACKEND_TYPES: Record<ProductType, BackendType> = {
+	food: 'OFF' as BackendType,
+	beauty: 'OBF' as BackendType,
+	petfood: 'OPFF' as BackendType,
+	product: 'OPF' as BackendType
+};
 
 export async function getTaxo<T extends TaxoNode>(
 	taxo: string,
-	fetch: (url: string, options?: RequestInit) => Promise<Response>,
+	fetch: typeof globalThis.fetch,
 	productType?: ProductType
 ): Promise<Taxonomy<T>> {
-	const res = await wrapFetch(fetch)(TAXONOMY_URL(taxo, productType));
-	if (!res.ok) {
-		throw new Error(`Failed to fetch taxonomy ${taxo}: ${res.status} ${res.statusText}`);
-	}
-	return await res.json();
+	const checkedFetch: typeof globalThis.fetch = async (input, init) => {
+		const response = await fetch(input, init);
+		if (!response.ok) {
+			throw new Error(
+				`Failed to fetch taxonomy ${taxo}: ${response.status} ${response.statusText}`
+			);
+		}
+		return response;
+	};
+
+	const off = new OpenFoodFacts(checkedFetch, {
+		type: BACKEND_TYPES[productType ?? 'food']
+	});
+	return off.getTaxo<T>(taxo);
 }
