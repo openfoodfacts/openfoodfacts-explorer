@@ -95,7 +95,6 @@
 		}
 	}
 
-	// Function to unselect/remove ingredients image (#1794)
 	function unselectIngredientsImage(languageCode: string) {
 		product = {
 			...product,
