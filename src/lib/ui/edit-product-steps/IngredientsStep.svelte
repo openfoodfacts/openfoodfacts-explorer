@@ -96,9 +96,14 @@
 	}
 
 	function unselectIngredientsImage(languageCode: string) {
+		const imageName = `ingredients_${languageCode}`;
+		const images = Object.fromEntries(
+			Object.entries(product.images ?? {}).filter(([key]) => key !== imageName)
+		);
 		product = {
 			...product,
-			[`image_ingredients_${languageCode}`]: null
+			[`image_ingredients_${languageCode}`]: null,
+			images
 		};
 	}
 
