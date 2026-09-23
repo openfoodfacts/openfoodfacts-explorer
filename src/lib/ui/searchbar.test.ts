@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import { deduplicateAutocompleteOptions } from './searchbar';
+import { deduplicateAutocompleteOptions, fetchBrandSuggestions } from './searchbar';
 import type { AutocompleteOption } from '$lib/api/search';
+import { getTaxonomySuggestions } from '$lib/api/product';
+
+// Mock getTaxonomySuggestions
+vi.mock('$lib/api/product', () => ({
+	getTaxonomySuggestions: vi.fn()
+}));
 
 describe('deduplicateAutocompleteOptions', () => {
 	it('removes duplicate entries case-insensitively', () => {
@@ -86,5 +92,62 @@ describe('deduplicateAutocompleteOptions', () => {
 		expect(result).toHaveLength(2);
 		expect(result[0].text).toBe('Café');
 		expect(result[1].text).toBe('cafe');
+	});
+});
+
+describe('fetchBrandSuggestions', () => {
+	it('successfully maps suggestions to AutocompleteOption shape', async () => {
+		const mockFetch = vi.fn();
+		vi.mocked(getTaxonomySuggestions).mockResolvedValue({
+			data: { suggestions: ['Nestlé', 'Ferrero', 'Danone'] }
+		} as never);
+
+		const result = await fetchBrandSuggestions(mockFetch, 'nes', 5);
+
+		expect(result).toEqual([
+			{ id: 'brand-Nestlé', text: 'Nestlé', taxonomy_name: 'brands' },
+			{ id: 'brand-Ferrero', text: 'Ferrero', taxonomy_name: 'brands' },
+			{ id: 'brand-Danone', text: 'Danone', taxonomy_name: 'brands' }
+		]);
+	});
+
+	it('returns empty array when suggestions array is empty', async () => {
+		const mockFetch = vi.fn();
+		vi.mocked(getTaxonomySuggestions).mockResolvedValue({
+			data: { suggestions: [] }
+		} as never);
+
+		const result = await fetchBrandSuggestions(mockFetch, 'xyz', 5);
+
+		expect(result).toEqual([]);
+	});
+
+	it('returns empty array when data is missing', async () => {
+		const mockFetch = vi.fn();
+		vi.mocked(getTaxonomySuggestions).mockResolvedValue({} as never);
+
+		const result = await fetchBrandSuggestions(mockFetch, 'test', 5);
+
+		expect(result).toEqual([]);
+	});
+
+	it('returns empty array on error', async () => {
+		const mockFetch = vi.fn();
+		vi.mocked(getTaxonomySuggestions).mockResolvedValue({
+			error: new Error('API error')
+		} as never);
+
+		const result = await fetchBrandSuggestions(mockFetch, 'test', 5);
+
+		expect(result).toEqual([]);
+	});
+
+	it('returns empty array when getTaxonomySuggestions throws', async () => {
+		const mockFetch = vi.fn();
+		vi.mocked(getTaxonomySuggestions).mockRejectedValue(new Error('Network error'));
+
+		const result = await fetchBrandSuggestions(mockFetch, 'test', 5);
+
+		expect(result).toEqual([]);
 	});
 });

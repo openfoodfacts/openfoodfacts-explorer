@@ -4,11 +4,10 @@
 		type AutocompleteOption,
 		type AutocompleteResponse
 	} from '$lib/api/search';
-	import { getTaxonomySuggestions } from '$lib/api';
 	import { _, getBrowserLocale } from '$lib/i18n';
 	import { getLanguageCode } from '$lib/settings';
 	import { onDestroy } from 'svelte';
-	import { deduplicateAutocompleteOptions } from './searchbar';
+	import { deduplicateAutocompleteOptions, fetchBrandSuggestions } from './searchbar';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -65,18 +64,7 @@
 			// taxonomy suggester for brands while search-a-licious handles categories and labels.
 
 			// Fetch brand suggestions from classic taxonomy suggester
-			const brandSuggestionsPromise = getTaxonomySuggestions(
-				abortingFetch,
-				'brands',
-				query,
-				5
-			).then((result: { data?: { suggestions?: string[] }; error?: unknown }) => {
-				if (result.error || !result.data) {
-					console.warn('Brand taxonomy suggestions error:', result.error);
-					return [];
-				}
-				return result.data.suggestions ?? [];
-			});
+			const brandSuggestionsPromise = fetchBrandSuggestions(abortingFetch, query, 5);
 
 			// Fetch category/label suggestions from search-a-licious (excluding brands)
 			const searchApi = createSearchApi(abortingFetch);
@@ -104,16 +92,9 @@
 				searchSuggestionsPromise
 			]);
 
-			const brands = brandSuggestions.status === 'fulfilled' ? brandSuggestions.value : [];
+			const brandOptions = brandSuggestions.status === 'fulfilled' ? brandSuggestions.value : [];
 			const categoriesLabels =
 				searchSuggestions.status === 'fulfilled' ? searchSuggestions.value : [];
-
-			// Convert brand suggestions to AutocompleteOption format
-			const brandOptions: AutocompleteOption[] = brands.map((brand: string) => ({
-				id: `brand-${brand}`,
-				text: brand,
-				taxonomy_name: 'brands'
-			}));
 
 			// Merge results, preferring brands first, then deduplicate by text (case-insensitive)
 			const mergedOptions = [...brandOptions, ...categoriesLabels];
