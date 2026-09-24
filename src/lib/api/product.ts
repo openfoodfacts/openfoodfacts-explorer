@@ -3,11 +3,15 @@ import { get } from 'svelte/store';
 import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
 import { getLanguageCode, preferences } from '$lib/settings';
-import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	type PackagingComponent,
+	type PackagingTaxonomyTag,
+	type ProductV3,
+	OpenFoodFacts
+} from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 import { ssrSafeFetch } from './utils';
 
-import type { PackagingTaxonomyTag, PackagingComponent } from '$lib/types/sdk-overrides';
 export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
@@ -81,7 +85,6 @@ export async function updateBarcode(
 
 /**
  * Move images from one product to another (moderator-only action).
- * // TODO: switch to `moveImages` from the SDK
  * @param fetch - The fetch function
  * @param code - source product barcode
  * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
@@ -114,14 +117,11 @@ export async function moveImages(
 	body.append('copy_data_override', copyData ? 'true' : 'false');
 
 	try {
-		const res = await wrapFetch(url, {
-			method: 'POST',
-			body
-		});
-		if (res.status === 200) {
-			return { data: true };
+		const result = await createProductsApi(fetch).moveImages(code, imgids, moveToBarcode, copyData);
+		if ('error' in result) {
+			return { error: result.error.message };
 		}
-		return { error: `Failed to move images (status: ${res.status})` };
+		return { data: true };
 	} catch (error) {
 		console.error('Error moving images:', error);
 		return { error: error instanceof Error ? error.message : String(error) };
@@ -130,7 +130,6 @@ export async function moveImages(
 
 /**
  * Delete product images by moving them to trash (moderator-only action).
- * // TODO: switch to `deleteImages` from the SDK
  * @param fetch - The fetch function
  * @param code - product barcode
  * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
@@ -156,14 +155,11 @@ export async function deleteImages(
 	body.append('copy_data_override', 'false');
 
 	try {
-		const res = await wrapFetch(url, {
-			method: 'POST',
-			body
-		});
-		if (res.status === 200) {
-			return { data: true };
+		const result = await createProductsApi(fetch).deleteImages(code, imgids);
+		if ('error' in result) {
+			return { error: result.error.message };
 		}
-		return { error: `Failed to delete images (status: ${res.status})` };
+		return { data: true };
 	} catch (error) {
 		console.error('Error deleting images:', error);
 		return { error: error instanceof Error ? error.message : String(error) };
@@ -183,7 +179,6 @@ export async function deleteProduct(
 	code: string,
 	comment: string
 ): Promise<{ data?: boolean; error?: string }> {
-	// TODO: switch to `deleteProduct` from SDK
 	try {
 		const formData = new FormData();
 		formData.append('type', 'delete');
@@ -215,7 +210,6 @@ export async function deleteProduct(
 
 /**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
- * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function
  * @param tagtype - The taxonomy type (e.g. 'packaging_shapes', 'labels')
  * @param searchString - Optional search string for autocomplete filtering
@@ -232,16 +226,12 @@ export async function getTaxonomySuggestions(
 	const lc = getLanguageCode(get(preferences).locale);
 	const cc = get(preferences).country;
 
-	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
-		params: {
-			query: {
-				tagtype,
-				lc,
-				...(cc && { cc }),
-				...(searchString && { string: searchString }),
-				limit: String(limit)
-			}
-		}
+	return off.apiv3.getTaxonomySuggestions({
+		tagtype,
+		lc,
+		...(cc && { cc }),
+		...(searchString && { string: searchString }),
+		limit: String(limit)
 	});
 }
 
@@ -447,6 +437,36 @@ export async function getBulkProductCards(fetch: typeof window.fetch, codes: str
 	});
 
 	return off.apiv2.search(Object.fromEntries(params.entries()));
+}
+
+/**
+ * Fetch the canonical product-card fields and index them by barcode.
+ *
+ * The Search API returns indexed taxonomy values (for example, brands as
+ * `['xx:brand']`) rather than the display fields expected by <product-card>.
+ */
+export async function getBulkProductCardsByCode(
+	fetch: typeof window.fetch,
+	codes: string[]
+): Promise<Record<string, ProductReduced>> {
+	if (codes.length === 0) {
+		return {};
+	}
+
+	const { data, error } = await getBulkProductCards(fetch, codes);
+	if (error != null || data == null) {
+		console.error('Error fetching canonical product-card data:', error);
+		return {};
+	}
+
+	const cardsByCode: Record<string, ProductReduced> = {};
+	for (const product of data.products ?? []) {
+		if (product.code != null) {
+			cardsByCode[product.code] = product as unknown as ProductReduced;
+		}
+	}
+
+	return cardsByCode;
 }
 
 export type ProductStateBase = {

@@ -1,3 +1,4 @@
+import { OpenFoodFacts, type CurrentUserPermissions } from '@openfoodfacts/openfoodfacts-nodejs';
 import { API_HOST } from '$lib/const';
 import type { CurrentUserPermissions } from '$lib/types/sdk-overrides';
 import { ssrSafeFetch } from './utils';
@@ -13,8 +14,6 @@ export async function fetchCurrentUserPermissions(
 		if (!response.ok) {
 			return { error: `Failed to fetch user permissions: HTTP ${response.status}` };
 		}
-
-		const data = (await response.json()) as CurrentUserPermissions;
 		return { data };
 	} catch (error) {
 		return { error: error instanceof Error ? error.message : String(error) };

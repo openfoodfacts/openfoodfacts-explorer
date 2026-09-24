@@ -49,6 +49,7 @@
 	let { search: searchResult } = $derived(data);
 	const toastCtx = getToastCtx();
 	let isExportingCsv = $state(false);
+	let isNavigatingToSearch = $derived(navigating.to?.route.id === '/search');
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -102,6 +103,17 @@
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
+	}
+
+	function getSearchPageUrl(nextPage: number) {
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('page', nextPage.toString());
+		return newUrl.toString();
+	}
+
+	function navigateToSearchPage(nextPage: number) {
+		window.scrollTo(0, 0);
+		void goto(getSearchPageUrl(nextPage), { noScroll: false });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
@@ -267,7 +279,7 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<span class="block h-7 w-64 skeleton rounded"></span>
 			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
 		{:else}
@@ -710,16 +722,13 @@
 </div>
 
 <!-- Pagination -->
-{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+{#if !isNavigatingToSearch && searchResult.count > 0 && searchResult.page_count > 1}
 	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
-			pageUrl={(p: number) => {
-				const newUrl = new URL(page.url);
-				newUrl.searchParams.set('page', p.toString());
-				return newUrl.toString();
-			}}
+			pageUrl={getSearchPageUrl}
+			onPageChange={navigateToSearchPage}
 		/>
 	</div>
 {/if}

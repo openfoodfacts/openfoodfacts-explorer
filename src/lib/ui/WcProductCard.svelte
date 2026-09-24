@@ -69,6 +69,35 @@ Wraps the <product-card> web component and adds accessibility features.
 		keyAttributes.filter((a: ProductAttributeForScoring) => a.name).slice(0, 3)
 	);
 
+	function normalizeBrands(value: unknown): string {
+		if (Array.isArray(value)) {
+			return value
+				.filter((brand): brand is string => typeof brand === 'string')
+				.map((brand) => brand.replace(/^[a-z]{2}:/i, ''))
+				.join(', ');
+		}
+
+		return typeof value === 'string' ? value : '';
+	}
+
+	const productForCard = $derived.by(() => {
+		const rawProduct = product as Product & {
+			brands?: unknown;
+			environmental_score_grade?: string;
+			greenscore_grade?: string;
+		};
+		const greenScoreGrade =
+			rawProduct.greenscore_grade ??
+			rawProduct.ecoscore_grade ??
+			rawProduct.environmental_score_grade;
+
+		return {
+			...product,
+			brands: normalizeBrands(rawProduct.brands),
+			...(greenScoreGrade != null && { greenscore_grade: greenScoreGrade })
+		};
+	});
+
 	let navigating = $state(false);
 	async function navigateToProduct() {
 		navigating = true;
