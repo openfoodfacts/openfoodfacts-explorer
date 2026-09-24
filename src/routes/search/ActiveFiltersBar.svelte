@@ -4,6 +4,8 @@
 	import type { FacetsSelection } from '$lib/facets';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiFilterOffOutline from '@iconify-svelte/mdi/filter-off-outline';
+	import TagMiniature from '$lib/ui/TagMiniature.svelte';
+	import { getTagMiniatureUrl } from '$lib/ui/tagUtils';
 
 	type Props = {
 		selectedFacets: FacetsSelection;
@@ -21,14 +23,14 @@
 		itemKey: string;
 		itemLabel: string;
 		type: 'include' | 'exclude';
+		item?: unknown;
 	};
 
-	function getItemName(facetKey: string, itemKey: string): string {
+	function getItem(facetKey: string, itemKey: string) {
 		if (facets && facets[facetKey]) {
-			const item = facets[facetKey].items.find((i) => i.key === itemKey);
-			if (item) return item.name;
+			return facets[facetKey].items.find((i) => i.key === itemKey);
 		}
-		return itemKey;
+		return undefined;
 	}
 
 	function getFacetLabel(facetKey: string): string {
@@ -47,23 +49,27 @@
 			const label = getFacetLabel(facetKey);
 			if (selection.include) {
 				for (const itemKey of selection.include) {
+					const item = getItem(facetKey, itemKey);
 					chips.push({
 						facetKey,
 						facetLabel: label,
 						itemKey,
-						itemLabel: getItemName(facetKey, itemKey),
-						type: 'include'
+						itemLabel: item ? item.name : itemKey,
+						type: 'include',
+						item
 					});
 				}
 			}
 			if (selection.exclude) {
 				for (const itemKey of selection.exclude) {
+					const item = getItem(facetKey, itemKey);
 					chips.push({
 						facetKey,
 						facetLabel: label,
 						itemKey,
-						itemLabel: getItemName(facetKey, itemKey),
-						type: 'exclude'
+						itemLabel: item ? item.name : itemKey,
+						type: 'exclude',
+						item
 					});
 				}
 			}
@@ -87,6 +93,13 @@
 		{#each activeChips as chip (chip.type + ':' + chip.facetKey + ':' + chip.itemKey)}
 			{#if chip.type === 'include'}
 				<span class="badge gap-1.5 py-3 text-xs font-medium shadow-2xs badge-primary">
+					{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
+						<TagMiniature
+							src={getTagMiniatureUrl(chip.item || chip.itemKey)}
+							alt={chip.itemLabel}
+							size="xs"
+						/>
+					{/if}
 					<span class="opacity-80">{chip.facetLabel}:</span>
 					<span>{chip.itemLabel}</span>
 					<button
@@ -103,6 +116,13 @@
 				</span>
 			{:else}
 				<span class="badge gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error">
+					{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
+						<TagMiniature
+							src={getTagMiniatureUrl(chip.item || chip.itemKey)}
+							alt={chip.itemLabel}
+							size="xs"
+						/>
+					{/if}
 					<span class="opacity-80"
 						>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span
 					>
@@ -177,7 +197,14 @@
 					<span
 						class="badge flex w-full items-center justify-between gap-1.5 py-3 text-xs font-medium shadow-2xs badge-primary"
 					>
-						<span class="truncate">
+						<span class="flex items-center gap-1 truncate">
+							{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
+								<TagMiniature
+									src={getTagMiniatureUrl(chip.item || chip.itemKey)}
+									alt={chip.itemLabel}
+									size="xs"
+								/>
+							{/if}
 							<span class="opacity-80">{chip.facetLabel}:</span>
 							<span>{chip.itemLabel}</span>
 						</span>
@@ -197,7 +224,14 @@
 					<span
 						class="badge flex w-full items-center justify-between gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error"
 					>
-						<span class="truncate">
+						<span class="flex items-center gap-1 truncate">
+							{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
+								<TagMiniature
+									src={getTagMiniatureUrl(chip.item || chip.itemKey)}
+									alt={chip.itemLabel}
+									size="xs"
+								/>
+							{/if}
 							<span class="opacity-80"
 								>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span
 							>

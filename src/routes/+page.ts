@@ -21,9 +21,14 @@ async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> 
 }
 
 async function getNumberOfContributors(fetch: typeof window.fetch): Promise<number> {
-	const api = createProductsApi(fetch);
-	const data = await api.getFacet('contributors');
-	return data.count;
+	try {
+		const api = createProductsApi(fetch);
+		const data = await api.getFacet('contributors');
+		return data.count;
+	} catch (e) {
+		console.warn('Unable to load contributors count:', e);
+		return 0;
+	}
 }
 
 export const load: PageLoad = async ({ fetch }) => {

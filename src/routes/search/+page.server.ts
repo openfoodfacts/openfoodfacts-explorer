@@ -7,13 +7,77 @@ import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
 import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
 
+const MOCK_FACET_FALLBACKS = {
+	categories: {
+		name: 'categories',
+		count_error_margin: 0,
+		items: [
+			{
+				key: 'en:beverages',
+				name: 'Beverages',
+				count: 4200,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/beverages.svg'
+			},
+			{
+				key: 'en:snacks',
+				name: 'Snacks',
+				count: 3100,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/snacks.svg'
+			},
+			{
+				key: 'en:dairies',
+				name: 'Dairies',
+				count: 2500,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/dairies.svg'
+			}
+		]
+	},
+	labels: {
+		name: 'labels',
+		count_error_margin: 0,
+		items: [
+			{
+				key: 'en:organic',
+				name: 'Organic',
+				count: 8500,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/organic.svg'
+			},
+			{
+				key: 'en:fair-trade',
+				name: 'Fair Trade',
+				count: 1900,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/fair-trade.svg'
+			},
+			{
+				key: 'en:vegan',
+				name: 'Vegan',
+				count: 5400,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/vegan.svg'
+			},
+			{
+				key: 'en:gluten-free',
+				name: 'Gluten-Free',
+				count: 3200,
+				selected: false,
+				icon_url: 'https://static.openfoodfacts.org/images/icons/dist/gluten-free.svg'
+			}
+		]
+	}
+};
+
 function emptySearchResult(page: number, pageSize: number): SearchResult {
 	return {
 		aggregations: null,
 		charts: {},
 		count: 0,
 		debug: {},
-		facets: {},
+		facets: MOCK_FACET_FALLBACKS,
 		hits: [],
 		is_count_exact: true,
 		page,
@@ -90,11 +154,11 @@ async function compatSearch(
 			'languages'
 		],
 		charts: [
-			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_group' },
-			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
-		]
+			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
+			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_group' },
+			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
+		] as unknown as SearchBody['charts']
 	};
 
 	try {

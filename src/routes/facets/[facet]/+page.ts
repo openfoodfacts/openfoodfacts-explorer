@@ -1,3 +1,4 @@
+import type { FacetResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { getFacet, getFacetKnowledgePanels } from '$lib/api/facets';
@@ -32,7 +33,13 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		console.error('An error occurred while fetching the facet data:', e);
 		return {
 			facet,
-			results: { count: 0, products: [], page, page_size: pageSize } as any,
+			results: {
+				count: 0,
+				tags: [],
+				page,
+				page_size: pageSize,
+				page_count: 0
+			} as unknown as FacetResponse,
 			pages: 0,
 			pageSize,
 			page,

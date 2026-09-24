@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
 		server: {
 			proxy: {
 				'/api/search': {
-					target: 'https://search.openfoodfacts.org',
+					target: env.PUBLIC_SEARCH_BASE_URL || 'https://search.openfoodfacts.org',
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/api\/search/, '')
 				},

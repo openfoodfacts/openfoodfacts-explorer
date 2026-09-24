@@ -3,6 +3,8 @@
 	import Fuse from 'fuse.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import TagMiniature from '$lib/ui/TagMiniature.svelte';
+	import { getTagMiniatureUrl } from '$lib/ui/tagUtils';
 
 	type Props = {
 		tags?: string[];
@@ -165,7 +167,7 @@
 					<li>
 						<button
 							type="button"
-							class="w-full rounded-md bg-base-200 px-4 py-2 text-left text-base-content transition-colors duration-150 hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content"
+							class="flex w-full items-center gap-2 rounded-md bg-base-200 px-4 py-2 text-left text-base-content transition-colors duration-150 hover:bg-primary hover:text-primary-content focus:bg-primary focus:text-primary-content"
 							class:bg-primary={autoCompleteIndex === index}
 							class:text-primary-content={autoCompleteIndex === index}
 							onmousedown={(e) => {
@@ -174,6 +176,13 @@
 								selectSuggestion(key);
 							}}
 						>
+							{#if getTagMiniatureUrl(suggestion.item || key)}
+								<TagMiniature
+									src={getTagMiniatureUrl(suggestion.item || key)}
+									alt={key}
+									size="sm"
+								/>
+							{/if}
 							<span class="block truncate">{key}</span>
 						</button>
 					</li>

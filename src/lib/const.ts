@@ -3,7 +3,6 @@ import { env as publicEnv } from '$env/dynamic/public';
 import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 
 const {
-	PUBLIC_ROBOTOFF_URL,
 	PUBLIC_IMAGES_URL,
 	PUBLIC_NUTRIPATROL_URL,
 	PUBLIC_AUTH_BASE_URL,

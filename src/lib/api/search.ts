@@ -26,6 +26,10 @@ export type AutocompleteOption = {
 	id: string;
 	text: string;
 	taxonomy_name: string;
+	icon_url?: string;
+	image_url?: string;
+	miniature?: string;
+	icon?: string;
 };
 
 export type AutocompleteResponse = {
@@ -37,6 +41,10 @@ export type FacetItem = {
 	name: string;
 	count: number;
 	selected: boolean;
+	icon_url?: string;
+	image_url?: string;
+	miniature?: string;
+	icon?: string;
 };
 
 export type Facet = {
