@@ -6,7 +6,7 @@
 //
 // Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 
-import { writable } from 'svelte/store';
+import { tracker } from '$lib/analytics';
 
 // https://developer.matomo.org/api-reference/tracking-javascript
 export interface Tracker {
@@ -220,7 +220,7 @@ export interface Tracker {
 	) => void;
 }
 
-export const tracker = writable<Tracker>();
+export { tracker };
 
 type Matomo = {
 	getTracker: (trackerUrl: string, siteId: number) => Tracker | undefined;

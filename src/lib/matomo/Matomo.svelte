@@ -45,7 +45,6 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 	}: Props = $props();
 
 	let checkInterval: ReturnType<typeof setInterval> | null = null;
-	let scriptElement: HTMLScriptElement | null = null;
 	let scriptLoadError = $state(false);
 
 	function isMatomoLoaded(): boolean {
@@ -142,10 +141,6 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 			clearInterval(checkInterval);
 			checkInterval = null;
 		}
-		if (scriptElement) {
-			scriptElement.removeEventListener('error', handleScriptError);
-			scriptElement = null;
-		}
 	});
 
 	afterNavigate(async ({ to }) => {
@@ -171,11 +166,5 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 </script>
 
 <svelte:head>
-	<script
-		async
-		defer
-		src={`${url}/matomo.js`}
-		onerror={handleScriptError}
-		bind:this={scriptElement}
-	></script>
+	<script async defer src={`${url}/matomo.js`}></script>
 </svelte:head>
