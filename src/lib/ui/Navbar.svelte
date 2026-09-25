@@ -3,14 +3,13 @@
 	import { page } from '$app/state';
 	import { shouldBeContainer } from '$lib/layout';
 	import { OPEN_PRICES_BASE_URL } from '$lib/const';
+	import ExploreByMenu from '$lib/ui/ExploreByMenu.svelte';
 
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },
 		{ name: 'contribute_link', href: '/static/contribute' },
 		{ name: 'producers_link', href: '/static/producers' },
-		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL },
-		{ name: 'folksonomy_link', href: '/folksonomy' },
-		{ name: 'facets_link', href: '/facets' }
+		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL }
 	];
 </script>
 
@@ -24,6 +23,7 @@
 					</a>
 				</li>
 			{/each}
+			<ExploreByMenu />
 		</div>
 	</ul>
 </nav>
