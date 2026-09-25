@@ -957,6 +957,8 @@
 		"no_products_selected": "未选择要比较的产品",
 		"add_products_hint": "从产品详情页添加产品，开始比较营养价值",
 		"browse_products": "浏览产品",
+		"single_product_title": "Add one more product to compare",
+		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
 		"shared_comparison": "共享比较",
 		"shared_description": "共享的产品比较",
 		"shared_product_comparison": "共享产品比较",
