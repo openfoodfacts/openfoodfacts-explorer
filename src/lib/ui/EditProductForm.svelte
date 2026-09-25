@@ -27,6 +27,8 @@
 	import { _ } from '$lib/i18n';
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
+	import { setDataQualityCtx } from '$lib/stores/dataQuality';
+	import { getQualityErrors } from '$lib/utils/dataQuality';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
 	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
 	import DeleteProductCard from './DeleteProductCard.svelte';
@@ -153,6 +155,24 @@
 	}
 
 	const permissions = getPermissionsCtx();
+
+	const isDataQualityEnabled = $derived(Boolean($preferences.editing?.showDataQualityErrors));
+	const allQualityErrors = $derived(
+		isDataQualityEnabled
+			? getQualityErrors(
+					product.data_quality_errors_tags,
+					product.data_quality_warnings_tags,
+					product.data_quality_info_tags
+				)
+			: []
+	);
+
+	setDataQualityCtx(() => ({
+		isEnabled: isDataQualityEnabled,
+		errors: allQualityErrors,
+		forField: (field: string) => allQualityErrors.find((e) => e.field === field),
+		forSection: (section: string) => allQualityErrors.filter((e) => e.section === section)
+	}));
 
 	$effect(() => {
 		const hash = page.url.hash;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
+	import { getDataQualityCtx } from '$lib/stores/dataQuality';
 	import { getLanguageName } from '$lib/languages';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
@@ -8,6 +9,7 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
@@ -22,6 +24,8 @@
 	};
 
 	let { product = $bindable(), codes, addLanguage, editMode = false }: Props = $props();
+
+	const quality = $derived(getDataQualityCtx());
 
 	let languageNames = $derived(
 		codes.map((code) => {
@@ -98,16 +102,24 @@
 		>
 			<button
 				type="button"
-				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
-				aria-label="Close"
+				class="btn absolute top-2 right-2 btn-circle btn-ghost btn-xs"
 				onclick={toggleInfo}
+				aria-label={$_('product.edit.close', { default: 'Close' })}
 			>
-				<IconMdiClose class="h-5 w-5 text-primary" />
+				<IconMdiClose class="h-4 w-4 text-primary" />
 			</button>
-			<IconMdiInformation class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
-			<span class="p-6 text-sm text-base-content/80 sm:text-base">
-				{$_('product.edit.info.languages')}
-			</span>
+			<IconMdiInformation class="h-5 w-5 shrink-0 text-primary" />
+			<div class="space-y-1">
+				<p class="font-bold">
+					{$_('product.edit.languages_title', { default: 'Product Languages' })}
+				</p>
+				<p class="text-xs opacity-80 sm:text-sm">
+					{$_('product.edit.languages_description', {
+						default:
+							'Configure the main language and additional languages for multilingual product information.'
+					})}
+				</p>
+			</div>
 		</div>
 	{/if}
 {/if}
@@ -132,9 +144,9 @@
 	</span>
 </fieldset>
 
-<div class="mt-4 space-y-4">
+<div class="form-control w-full" id="product_names">
 	<fieldset class="fieldset">
-		<legend class="fieldset-legend">
+		<legend class="fieldset-legend text-sm font-medium sm:text-base">
 			{$_('product.edit.product_names', { default: 'Product names' })}
 		</legend>
 
@@ -163,19 +175,32 @@
 				>
 					{code}
 				</div>
-				<input
-					id={`product-name-${code}`}
-					type="text"
-					class="input-bordered input w-full text-sm sm:text-base"
-					value={product[`product_name_${code}`] ?? ''}
-					oninput={(e) => {
-						product = {
-							...product,
-							[`product_name_${code}`]: (e.currentTarget as HTMLInputElement).value
-						};
-					}}
-					aria-label={`${$_('product.edit.name')} (${langName})`}
-				/>
+				<div class="w-full">
+					<input
+						id={`product-name-${code}`}
+						type="text"
+						class={[
+							'input-bordered input w-full text-sm transition-all sm:text-base',
+							quality.isEnabled &&
+								!product[`product_name_${code}`]?.trim() &&
+								'border-dashed border-warning/50 bg-warning/5'
+						]}
+						value={product[`product_name_${code}`] ?? ''}
+						oninput={(e) => {
+							product = {
+								...product,
+								[`product_name_${code}`]: (e.currentTarget as HTMLInputElement).value
+							};
+						}}
+						aria-label={`${$_('product.edit.name')} (${langName})`}
+					/>
+					{#if quality.isEnabled && !product[`product_name_${code}`]?.trim()}
+						<span class="mt-1 flex items-center gap-1 text-xs font-medium text-warning/70">
+							<IconMdiAlert class="h-3.5 w-3.5 shrink-0" />
+							{$_('product.edit.missing_info', { default: 'Missing info' })}
+						</span>
+					{/if}
+				</div>
 				{#if code !== product.lang}
 					<button
 						type="button"
