@@ -70,7 +70,7 @@
 <div>
 	<h2 class="text-2xl font-bold">Products</h2>
 
-	<table class="table-zebra my-4 table">
+	<table class="table my-4 table-zebra">
 		<thead>
 			<tr>
 				<th>Name</th>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
 	import OriginTraceabilityStep from './edit-product-steps/OriginTraceabilityStep.svelte';
@@ -8,7 +9,7 @@
 	import NutritionStep from './edit-product-steps/NutritionStep.svelte';
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
-	import EditProductSidebar from './EditProductSidebar.svelte';
+	import Sidebar, { type SidebarSection } from './Sidebar.svelte';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -27,8 +28,67 @@
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
+	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
+	import ImageManagerCard from './ImageManagerCard.svelte';
+	const DEFAULT_SECTIONS = [
+		{
+			id: 'languages',
+			labelKey: 'product.edit.sections.languages',
+			defaultLabel: 'Languages',
+			icon: IconMdiTranslate
+		},
+		{
+			id: 'images',
+			labelKey: 'product.edit.sections.images',
+			defaultLabel: 'Images',
+			icon: IconMdiImageMultiple
+		},
+		{
+			id: 'basic-info',
+			labelKey: 'product.edit.sections.basic_info',
+			defaultLabel: 'Basic Info',
+			icon: IconMdiInformation
+		},
+		{
+			id: 'origin-traceability',
+			labelKey: 'product.edit.sections.origin_traceability',
+			defaultLabel: 'Traceability & Origins',
+			icon: IconMdiEarth
+		},
+		{
+			id: 'ingredients',
+			labelKey: 'product.edit.sections.ingredients',
+			defaultLabel: 'Ingredients',
+			icon: IconMdiFormatListBulleted
+		},
+		{
+			id: 'nutrition',
+			labelKey: 'product.edit.sections.nutrition',
+			defaultLabel: 'Nutrition',
+			icon: IconMdiNutrition
+		},
+		{
+			id: 'prices',
+			labelKey: 'product.edit.sections.prices',
+			defaultLabel: 'Prices',
+			icon: IconMdiTagMultiple
+		},
+		{
+			id: 'packaging',
+			labelKey: 'product.edit.sections.packaging',
+			defaultLabel: 'Packaging',
+			icon: IconMdiPackageVariant
+		},
+		{
+			id: 'comment',
+			labelKey: 'product.edit.sections.comment',
+			defaultLabel: 'Comment',
+			icon: IconMdiCommentText
+		}
+	];
+
 	type Props = {
 		product: Product;
 
@@ -39,6 +99,7 @@
 		// Submission
 
 		isSubmitting: boolean;
+		disableSubmit?: boolean;
 		submit: () => Promise<void>;
 		onCorrectBarcode: (newCode: string) => Promise<void>;
 		onDeleteProduct?: (comment: string) => Promise<void>;
@@ -80,6 +141,7 @@
 		units,
 		allergenNames,
 		isSubmitting,
+		disableSubmit = false,
 		submit,
 		onCorrectBarcode,
 		onDeleteProduct
@@ -92,8 +154,50 @@
 
 	const permissions = getPermissionsCtx();
 
-	let sidebar = $state<ReturnType<typeof EditProductSidebar>>();
+	$effect(() => {
+		const hash = page.url.hash;
+		if (!hash) return;
+
+		const targetEl = document.getElementById(hash.slice(1));
+		if (!targetEl) return;
+
+		return scrollToAndHighlight(targetEl);
+	});
+
+	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let activeSection = $state('languages');
 	let isMobile = $state(false);
+	let openSections = $state<Record<string, boolean>>({});
+
+	const editSections = $derived.by(() => {
+		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({
+			id: sec.id,
+			label: $_(sec.labelKey, { default: sec.defaultLabel }),
+			icon: sec.icon,
+			href: `#${sec.id}`,
+			isCollapsed: () => !openSections[sec.id],
+			onToggle: (open?: boolean) => {
+				openSections[sec.id] = open !== undefined ? open : !openSections[sec.id];
+			}
+		}));
+
+		if (permissions.isModerator && $preferences.moderator) {
+			sections.push({
+				id: 'moderator-tools',
+				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
+				icon: IconMdiShieldAccount,
+				style: 'warning',
+				href: '#moderator-tools',
+				isCollapsed: () => !openSections['moderator-tools'],
+				onToggle: (open?: boolean) => {
+					openSections['moderator-tools'] =
+						open !== undefined ? open : !openSections['moderator-tools'];
+				}
+			});
+		}
+
+		return sections;
+	});
 
 	onMount(() => {
 		const updateMobileState = () => {
@@ -101,26 +205,48 @@
 		};
 		updateMobileState();
 		window.addEventListener('resize', updateMobileState);
+
+		// Initialize sections open state based on preferences and mobile view
+		const isDefaultOpen = !isMobile && $preferences.editing.expandAllSections;
+		editSections.forEach((sec) => {
+			openSections[sec.id] = isDefaultOpen;
+		});
+
 		return () => window.removeEventListener('resize', updateMobileState);
 	});
-
 	function handleCollapseToggle(id: string) {
 		sidebar?.handleCollapseToggle(id);
+	}
+
+	function toggleExpandAll() {
+		$preferences.editing.expandAllSections = !$preferences.editing.expandAllSections;
+		editSections.forEach((sec) => {
+			sec.onToggle?.($preferences.editing.expandAllSections);
+		});
+		handleCollapseToggle(editSections[0]?.id || '');
 	}
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
-	<EditProductSidebar bind:this={sidebar} />
+	<Sidebar
+		bind:this={sidebar}
+		bind:activeSection
+		ariaLabel={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
+		scrollHeaderOffset={100}
+		sections={editSections}
+		headerActionLabel={$preferences.editing.expandAllSections
+			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+			: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+		onHeaderAction={toggleExpandAll}
+	/>
 
-	<div class="space-y-4 min-w-0 w-full">
+	<div class="w-full min-w-0 space-y-4">
 		<!-- Languages Section -->
-		<div id="languages" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="languages" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('languages');
-				}}
+				bind:checked={openSections['languages']}
+				onchange={() => handleCollapseToggle('languages')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTranslate class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -132,13 +258,11 @@
 		</div>
 
 		<!-- Images Section -->
-		<div id="images" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="images" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('images');
-				}}
+				bind:checked={openSections['images']}
+				onchange={() => handleCollapseToggle('images')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiImageMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -150,13 +274,11 @@
 		</div>
 
 		<!-- Basic Info Section -->
-		<div id="basic-info" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="basic-info" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('basic-info');
-				}}
+				bind:checked={openSections['basic-info']}
+				onchange={() => handleCollapseToggle('basic-info')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiInformation class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -176,13 +298,11 @@
 		</div>
 
 		<!-- Traceability & Origins Section -->
-		<div id="origin-traceability" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="origin-traceability" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('origin-traceability');
-				}}
+				bind:checked={openSections['origin-traceability']}
+				onchange={() => handleCollapseToggle('origin-traceability')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiEarth class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -194,13 +314,11 @@
 		</div>
 
 		<!-- Ingredients Section -->
-		<div id="ingredients" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="ingredients" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('ingredients');
-				}}
+				bind:checked={openSections['ingredients']}
+				onchange={() => handleCollapseToggle('ingredients')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiFormatListBulleted class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -213,13 +331,11 @@
 
 		<!-- Nutrition Section -->
 		<!-- overflow-visible is needed for the sticky image -->
-		<div id="nutrition" class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md">
+		<div id="nutrition" class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('nutrition');
-				}}
+				bind:checked={openSections['nutrition']}
+				onchange={() => handleCollapseToggle('nutrition')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -231,20 +347,18 @@
 		</div>
 
 		<!-- Prices Section -->
-		<div id="prices" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="prices" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('prices');
-				}}
+				bind:checked={openSections['prices']}
+				onchange={() => handleCollapseToggle('prices')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiTagMultiple class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.prices')}
 			</div>
 			<div class="collapse-content">
-				<p class="text-base-content/70 mt-2 mb-4 text-sm">
+				<p class="mt-2 mb-4 text-sm text-base-content/70">
 					{$_('product.edit.info.prices')}
 				</p>
 				{#if product.code != null}
@@ -262,13 +376,11 @@
 		</div>
 
 		<!-- Packaging Section -->
-		<div class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md" id="packaging">
+		<div class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md" id="packaging">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('packaging');
-				}}
+				bind:checked={openSections['packaging']}
+				onchange={() => handleCollapseToggle('packaging')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiPackageVariant class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -280,13 +392,11 @@
 		</div>
 
 		<!-- Comment Section -->
-		<div id="comment" class="collapse-arrow bg-base-200 collapse shadow-md">
+		<div id="comment" class="collapse-arrow collapse bg-base-200 shadow-md">
 			<input
 				type="checkbox"
-				checked={isMobile ? false : $preferences.editing.expandAllSections}
-				onchange={(e) => {
-					if (e.isTrusted) handleCollapseToggle('comment');
-				}}
+				bind:checked={openSections['comment']}
+				onchange={() => handleCollapseToggle('comment')}
 			/>
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiCommentText class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -301,21 +411,19 @@
 		{#if permissions.isModerator && $preferences.moderator}
 			<div
 				id="moderator-tools"
-				class="collapse-arrow bg-base-200 collapse overflow-visible shadow-md"
+				class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md"
 			>
 				<input
 					type="checkbox"
-					checked={isMobile ? false : $preferences.editing.expandAllSections}
-					onchange={(e) => {
-						if (e.isTrusted) handleCollapseToggle('moderator-tools');
-					}}
+					bind:checked={openSections['moderator-tools']}
+					onchange={() => handleCollapseToggle('moderator-tools')}
 				/>
-				<div class="collapse-title text-warning flex items-center text-sm font-bold sm:text-base">
+				<div class="collapse-title flex items-center text-sm font-bold text-warning sm:text-base">
 					<IconMdiShieldAccount class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 					{$_('product.edit.sections.moderator_tools')}
 				</div>
 				<div class="collapse-content">
-					<p class="text-base-content/70 mb-4 text-sm">
+					<p class="mb-4 text-sm text-base-content/70">
 						{$_('product.edit.info.moderator_tools')}
 					</p>
 					<BarcodeCorrectionCard currentCode={product.code} onCorrect={onCorrectBarcode} />
@@ -329,6 +437,8 @@
 							onDelete={onDeleteProduct}
 						/>
 					{/if}
+					<div class="divider"></div>
+					<ImageManagerCard {product} />
 				</div>
 			</div>
 		{/if}
@@ -337,14 +447,14 @@
 
 <div class="mt-8 flex justify-end">
 	<button
-		class="btn btn-primary w-full text-sm sm:w-auto sm:text-base"
+		class="btn w-full text-sm btn-primary sm:w-auto sm:text-base"
 		onclick={submit}
-		disabled={isSubmitting}
+		disabled={isSubmitting || disableSubmit}
 		aria-busy={isSubmitting}
 		type="button"
 	>
 		{#if isSubmitting}
-			<span class="loading loading-spinner loading-xs sm:loading-sm mr-2" aria-hidden="true"></span>
+			<span class="loading mr-2 loading-xs loading-spinner sm:loading-sm" aria-hidden="true"></span>
 		{/if}
 		{$_('product.edit.save_btn')}
 	</button>

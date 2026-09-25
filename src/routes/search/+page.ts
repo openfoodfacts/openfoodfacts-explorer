@@ -1,11 +1,15 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
-import { PricesApi, SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
+import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 
 import { createSearchApi, type SearchResult } from '$lib/api/search';
 import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
-import { createProductsApi, getBulkProductAttributes } from '$lib/api/product';
+import {
+	createProductsApi,
+	getBulkProductAttributes,
+	getBulkProductCardsByCode
+} from '$lib/api/product';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -22,17 +26,25 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
-async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<string, number>> {
+async function getPrices(
+	baseFetch: typeof fetch,
+	barcodes: string[]
+): Promise<Record<string, number>> {
 	const prices: Record<string, number> = {};
+	const api = createPricesApi(baseFetch);
 	const results = await Promise.all(
-		barcodes.map(async (code) => ({
-			code: code,
-			prices: await api.getPrices({ product_code: code })
-		}))
+		barcodes.map(async (code) => {
+			try {
+				const res = await api.getPrices({ product_code: code });
+				return { code, prices: res };
+			} catch {
+				return { code, prices: { data: null } };
+			}
+		})
 	);
 
 	for (const result of results) {
-		if (result.prices.data && result.prices.data.items) {
+		if (result.prices && result.prices.data && result.prices.data.items) {
 			prices[result.code] = result.prices.data.total;
 		}
 	}
@@ -42,48 +54,64 @@ async function getPrices(api: PricesApi, barcodes: string[]): Promise<Record<str
 
 // FIXME: We can drop this compatibility layer once the new API is deployed in production
 async function compatSearch(
-	api: SearchApi,
+	baseFetch: typeof fetch,
 	params: Omit<SearchBody, 'facets' | 'charts'>
 ): ReturnType<SearchApi['search']> {
+	const api = createSearchApi(baseFetch);
+
 	// Try the new API first
 	const newParams: SearchBody = {
 		...params,
-		facets: ['brands', 'categories', 'nutrition_grades', 'ecoscore_grade'],
+		facets: [
+			'brands',
+			'categories',
+			'nutrition_grades',
+			'environmental_score_grade',
+			'nova_group',
+			'labels',
+			'countries',
+			'allergens',
+			'additives',
+			'stores',
+			'languages'
+		],
 		charts: [
 			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'ecoscore_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_groups' },
+			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChart', field: 'nova_group' },
 			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		]
 	};
 
 	try {
-		const { data, error } = await api.search(newParams);
-		if (error || data == null) {
-			throw error || new Error('No data');
+		const res = await api.search(newParams);
+
+		if (res.error || res.data == null) {
+			console.error('Search API newParams error:', res.error);
+			throw res.error || new Error('No data');
 		}
 		// @ts-expect-error - data is unknown
-		return { data };
-	} catch {
-		console.warn('search: new API failed, falling back to old API');
+		return { data: res.data };
+	} catch (e) {
+		console.warn('search: API failed, falling back to basic facets:', e);
 	}
 
 	const oldParams = {
 		...params,
-		facets: ['nutrition_grades', 'ecoscore_grade'],
+		facets: ['brands', 'categories', 'nutrition_grades', 'environmental_score_grade'],
 		charts: [
 			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChartType', field: 'ecoscore_grade' },
-			{ chart_type: 'DistributionChartType', field: 'nova_groups' },
+			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
+			{ chart_type: 'DistributionChartType', field: 'nova_group' },
 			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
 		]
 	};
 
-	// @ts-expect-error - SDK only accepts the new params
+	// @ts-expect-error - legacy search API parameters fallback
 	return api.search(oldParams);
 }
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
 	const query = url.searchParams.get('q');
 	const sortBy = url.searchParams.get('sort_by') || '-unique_scans_n';
 
@@ -99,9 +127,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 
-	const api = createSearchApi(fetch);
-
-	const { data: searchData, error: searchError } = await compatSearch(api, {
+	const { data: searchData, error: searchError } = await compatSearch(fetch, {
 		q: query,
 		langs: ['en'],
 		page,
@@ -118,23 +144,37 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 	// Prepare data
 	const productCodes = searchDataTyped.hits.map((hit) => hit.code);
+
+	if (productCodes.length === 0) {
+		const off = createProductsApi(fetch);
+		const attributeGroupsResponse = await off.getAttributeGroups();
+
+		return {
+			query,
+			search: searchDataTyped,
+			attributesByCode: {},
+			prices: {},
+			productCardsByCode: {},
+			attributeGroups: attributeGroupsResponse.data ?? []
+		};
+	}
+
 	const off = createProductsApi(fetch);
 
 	// Create promises
 	const attributesPromise = getBulkProductAttributes(fetch, productCodes);
+	const productCardsPromise = getBulkProductCardsByCode(fetch, productCodes);
 
 	const pricesPromise = isPricesConfigured()
-		? getPrices(createPricesApi(fetch), productCodes)
+		? getPrices(fetch, productCodes)
 		: Promise.resolve({} as Record<string, number>);
 
 	const attributeGroupsPromise = off.getAttributeGroups();
 
 	// Load data in parallel
-	const [attributesByCode, prices, attributeGroupsResponse] = await Promise.all([
-		attributesPromise,
-		pricesPromise,
-		attributeGroupsPromise
-	]);
+	const [attributesByCode, prices, productCardsByCode, attributeGroupsResponse] = await Promise.all(
+		[attributesPromise, pricesPromise, productCardsPromise, attributeGroupsPromise]
+	);
 
 	const attributeGroups = attributeGroupsResponse.data ?? [];
 
@@ -143,6 +183,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		search: searchDataTyped,
 		attributesByCode,
 		prices,
+		productCardsByCode,
 		attributeGroups
 	};
 };

@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
@@ -20,34 +20,27 @@ import { PRODUCT_STATUS, type ProductType } from '$lib/const';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/environment';
-import { preferences } from '$lib/settings';
+import { getLanguageCode, preferences } from '$lib/settings';
 import { resolve } from '$app/paths';
 
 export const ssr = false;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
 
 	if (get(userInfo) == null && !dev) {
-		// If the user is not logged in, redirect to the login page
-		// We allow an exception for development mode
-		error(401, {
-			message: 'You must be logged in to view this page',
-			actions: [
-				{
-					label: 'Login',
-					url: resolve('/oauth/login')
-				}
-			]
-		});
+		redirect(
+			302,
+			resolve('/loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+		);
 	}
 
 	const off = createProductsApi(fetch);
 
 	const productReq = await off.getProductV3(params.barcode, {
-		lc: get(preferences).lang,
+		lc: getLanguageCode(get(preferences).locale),
 		cc: get(preferences).country
 	});
 

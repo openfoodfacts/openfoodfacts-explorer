@@ -1,8 +1,17 @@
 <script lang="ts">
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import { _ } from '$lib/i18n';
+	import { _, locale } from '$lib/i18n';
 	import { getLanguageName } from '$lib/languages';
-	import { NUTRIENTS, type NutrientKey, type Product, type Nutriments } from '$lib/api';
+	import {
+		getNutrients,
+		getMissingNutrientOptions,
+		getSelectableNutrients,
+		NUTRIENTS,
+		type NutrientOption,
+		type NutrientKey,
+		type Product,
+		type Nutriments
+	} from '$lib/api';
 	import { preferences } from '$lib/settings';
 	import { getPermissionsCtx } from '$lib/stores/user';
 
@@ -57,6 +66,26 @@
 	const EMPTY_NUTRIENT_TOOLTIPS: Record<string, string> = {
 		fibers: 'product.edit.tooltips.empty_fiber'
 	};
+	const FALLBACK_NUTRIENTS: NutrientOption[] = [
+		...NUTRIENTS.map((id) => ({
+			id,
+			name: id,
+			unit: id === 'energy-kcal' ? 'kcal' : id.startsWith('energy') ? 'kJ' : 'g'
+		})),
+		{ id: 'added-sugars', name: 'Added sugars', unit: 'g' },
+		{ id: 'calcium', name: 'Calcium', unit: 'mg' },
+		{
+			id: 'carbohydrates-total',
+			name: 'Total carbohydrates (includes fiber)',
+			unit: 'g'
+		},
+		{ id: 'cholesterol', name: 'Cholesterol', unit: 'mg' },
+		{ id: 'iron', name: 'Iron', unit: 'mg' },
+		{ id: 'potassium', name: 'Potassium', unit: 'mg' },
+		{ id: 'trans-fat', name: 'Trans fat', unit: 'g' },
+		{ id: 'vitamin-d', name: 'Vitamin D', unit: 'µg' }
+	];
+	const DEFAULT_NUTRIENT_IDS = new Set<string>([...DEFAULT_SHOWN, ...IGNORE_NUTRIENTS, 'fiber']);
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -65,24 +94,86 @@
 
 	const permissions = getPermissionsCtx();
 
-	let additionalNutrients: NutrientKey[] = $state(
-		NUTRIENTS.filter(
-			(key) =>
-				!IGNORE_NUTRIENTS.includes(key) &&
-				!DEFAULT_SHOWN.includes(key) &&
-				product.nutriments[key] != null
-		)
-	);
+	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
+	let additionalNutrients = $state<string[]>([]);
+	let nutrientLoadFailed = $state(false);
+
+	function addPersistedNutrientsToFallbackCatalog() {
+		nutrientCatalog = [
+			...nutrientCatalog,
+			...getMissingNutrientOptions(product.nutriments, nutrientCatalog)
+		];
+	}
+
+	function syncExistingNutrients() {
+		const existingNutrients = nutrientCatalog
+			.filter((nutrient) => !DEFAULT_NUTRIENT_IDS.has(nutrient.id))
+			.filter((nutrient) => product.nutriments?.[nutrient.id] != null)
+			.map((nutrient) => nutrient.id);
+
+		additionalNutrients = [...new Set([...additionalNutrients, ...existingNutrients])];
+	}
+
+	addPersistedNutrientsToFallbackCatalog();
+	syncExistingNutrients();
+
+	$effect(() => {
+		const currentLocale = $locale ?? 'en';
+		const country = $preferences.country;
+		let cancelled = false;
+
+		getNutrients(fetch, currentLocale, country)
+			.then((nutrients) => {
+				if (cancelled) return;
+				nutrientCatalog = nutrients;
+				nutrientLoadFailed = false;
+				syncExistingNutrients();
+			})
+			.catch((error) => {
+				if (cancelled) return;
+				console.error('Failed to load nutrients', error);
+				nutrientLoadFailed = true;
+			});
+
+		return () => {
+			cancelled = true;
+		};
+	});
+
+	let nutrientById = $derived(new Map(nutrientCatalog.map((nutrient) => [nutrient.id, nutrient])));
 
 	let canAddNutrients = $derived(
-		NUTRIENTS.filter((key) => {
-			return (
-				!IGNORE_NUTRIENTS.includes(key) && // Ignore certain nutrients
-				!DEFAULT_SHOWN.includes(key) && // Ignore default shown nutrients
-				!additionalNutrients.includes(key) // Ignore already added nutrients
-			);
-		})
+		getSelectableNutrients(nutrientCatalog, DEFAULT_NUTRIENT_IDS, additionalNutrients)
 	);
+
+	function nutrientName(nutrient: NutrientOption) {
+		return $_(`product.edit.nutrient.${nutrient.id}`, { default: nutrient.name });
+	}
+
+	function addNutrient(id: string) {
+		if (!id || additionalNutrients.includes(id)) return;
+
+		additionalNutrients = [...additionalNutrients, id];
+		const unit = nutrientById.get(id)?.unit;
+		if (unit && product.nutriments?.[`${id}_unit`] == null) {
+			product = {
+				...product,
+				nutriments: { ...product.nutriments, [`${id}_unit`]: unit }
+			};
+		}
+	}
+
+	function removeNutrient(id: string) {
+		additionalNutrients = additionalNutrients.filter((nutrient) => nutrient !== id);
+		product = {
+			...product,
+			nutriments: Object.fromEntries(
+				Object.entries(product.nutriments ?? {}).filter(
+					([key]) => key !== id && key !== `${id}_unit`
+				)
+			) as Nutriments
+		};
+	}
 
 	function switchKjAndKcal() {
 		const energyKj = product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g'];
@@ -242,7 +333,7 @@
 	{@const isError = issue.severity === 'error'}
 	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
 	{@const alertColorClass = isError ? 'alert-error' : 'alert-warning'}
-	<div class={[alertColorClass, 'alert mt-4']}>
+	<div class={[alertColorClass, 'mt-4 alert']}>
 		<Icon class="h-5 w-5" />
 		<div>
 			<p class="text-sm font-bold sm:text-base">{issue.title}</p>
@@ -255,30 +346,30 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiNutrition class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.nutrition')}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformation class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base"
+			<IconMdiInformation class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base"
 				>{$_('product.edit.info.nutrition')}</span
 			>
 		</div>
@@ -314,7 +405,7 @@
 						<input
 							id="serving-size-input"
 							type="text"
-							class={['input input-bordered w-full text-sm sm:text-base', servingSizeInputClass]}
+							class={['input-bordered input w-full text-sm sm:text-base', servingSizeInputClass]}
 							value={product.serving_size ?? ''}
 							oninput={handleServingSize}
 							placeholder={servingSizePlaceholder}
@@ -340,7 +431,7 @@
 						<IconMdiDeleteSweep class="h-4 w-4" />
 						{$_('product.edit.remove_all_nutrient_values')}
 					</button>
-					<span class="badge badge-info badge-outline badge-sm">
+					<span class="badge badge-outline badge-sm badge-info">
 						{$_('product.edit.moderator_only')}
 					</span>
 				</div>
@@ -374,7 +465,7 @@
 
 					<button
 						type="button"
-						class="btn btn-ghost btn-square btn-sm"
+						class="btn btn-square btn-ghost btn-sm"
 						aria-label="Swap units"
 						onclick={switchKjAndKcal}
 					>
@@ -453,10 +544,11 @@
 					{$_('product.edit.additional_nutrients')}
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
+					{@const nutrientDetails = nutrientById.get(nutrient)}
 					<div class="join">
 						<label class="input join-item w-full">
 							<span class="label w-60">
-								{$_(`product.edit.nutrient.${nutrient}`)}
+								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
 								id={`${nutrient}-input`}
@@ -468,21 +560,19 @@
 								min="0"
 							/>
 							<span class="label">
-								{$_('product.edit.si_grams')}
+								{product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g'}
 							</span>
 						</label>
 						<button
 							type="button"
-							class="btn btn-error join-item"
+							class="btn join-item btn-square shrink-0 btn-error disabled:border-base-300 disabled:bg-base-300 disabled:text-base-content/60"
 							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
+							title={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
 							disabled={product.nutriments?.[nutrient] !== undefined &&
 								(product.nutriments?.[nutrient] as string | number) !== ''}
-							onclick={() => {
-								// Remove the nutrient from additional nutrients
-								additionalNutrients = additionalNutrients.filter((n) => n !== nutrient);
-							}}
+							onclick={() => removeNutrient(nutrient)}
 						>
-							<IconMdiClose />
+							<IconMdiClose class="h-5 w-5" aria-hidden="true" />
 						</button>
 					</div>
 				{/each}
@@ -494,30 +584,36 @@
 
 					<select
 						class="select w-full"
-						oninput={(e) => {
-							const selectedNutrient = e.currentTarget.value;
-							if (selectedNutrient) {
-								// Add the selected nutrient to the additional nutrients
-								additionalNutrients.push(selectedNutrient as NutrientKey);
-							}
+						onchange={(e) => {
+							addNutrient(e.currentTarget.value);
+							e.currentTarget.value = '';
 						}}
 					>
-						<option disabled selected>
-							{$_('product.edit.additional_nutrients')}
+						<option disabled value="" selected>
+							{$_('product.edit.additional_nutrients', {
+								default: 'Additional nutrients'
+							})}
 						</option>
 						{#each canAddNutrients as nutrient (nutrient)}
-							<option value={nutrient}>
-								{$_(`product.edit.nutrient.${nutrient}`)}
+							<option value={nutrient.id}>
+								{nutrientName(nutrient)}
 							</option>
 						{/each}
 					</select>
+				{/if}
+				{#if nutrientLoadFailed}
+					<p class="text-sm text-base-content/70">
+						{$_('product.edit.nutrients_load_failed', {
+							default: 'The complete nutrient list could not be loaded.'
+						})}
+					</p>
 				{/if}
 			</fieldset>
 
 			{#if nutritionIssues.length > 0}
 				<div class="divider"></div>
 				<h3 class="text-lg font-bold">{$_('product.edit.nutrition_issues')}</h3>
-				<p class="text-base-content/80 text-sm">
+				<p class="text-sm text-base-content/80">
 					{$_('product.edit.nutrition_issues_description')}
 				</p>
 				{#each nutritionIssues.toSorted(bySeverity) as result (result.title)}
@@ -531,7 +627,7 @@
 			</div>
 		{/if}
 	</div>
-	<div class="tabs tabs-box mb-4">
+	<div class="tabs tabs-box mb-4 bg-base-100">
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
 			{@const nutritionImage = getNutritionImage(code)}
 			<input
@@ -543,7 +639,7 @@
 			/>
 			<div class="tab-content p-6">
 				{#if nutritionImage == null}
-					<p class="alert alert-warning mb-4 text-sm sm:text-base">
+					<p class="mb-4 alert text-sm alert-warning sm:text-base">
 						{$_('product.edit.no_nutrition_image', {
 							values: { language: getLanguageName(code) }
 						})}
@@ -560,7 +656,7 @@
 			</div>
 		{/each}
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}
-			<div class="alert alert-warning text-sm sm:text-base">
+			<div class="alert text-sm alert-warning sm:text-base">
 				{$_('product.edit.no_languages_found')}
 			</div>
 		{/if}

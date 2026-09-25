@@ -26,30 +26,30 @@
 
 {#if !editMode}
 	<h2
-		class="text-primary mb-6 items-center justify-center gap-2 text-center text-base font-bold md:text-lg lg:text-xl xl:text-2xl"
+		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
 		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.origin_traceability', { default: 'Traceability & Origins' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
-				class="hover:text-primary/70 text-primary ml-4 h-6 w-6 hover:cursor-pointer"
+				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
 			/>
 		</button>
 	</h2>
 	{#if showInfo}
 		<div
-			class="border-primary/30 bg-primary/5 text-primary-content relative mb-4 flex items-center gap-2 rounded-lg border p-4 text-sm shadow-sm"
+			class="relative mb-4 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm text-primary-content shadow-sm"
 		>
 			<button
 				type="button"
-				class="hover:bg-primary/10 absolute top-2 right-2 m-2 rounded p-1"
+				class="absolute top-2 right-2 m-2 rounded p-1 hover:bg-primary/10"
 				aria-label="Close"
 				onclick={toggleInfo}
 			>
-				<IconMdiClose class="text-primary h-5 w-5" />
+				<IconMdiClose class="h-5 w-5 text-primary" />
 			</button>
-			<IconMdiInformationOutline class="text-primary mt-0.5 h-6 w-6 flex-shrink-0" />
-			<span class="text-base-content/80 p-6 text-sm sm:text-base">
+			<IconMdiInformationOutline class="mt-0.5 h-6 w-6 flex-shrink-0 text-primary" />
+			<span class="p-6 text-sm text-base-content/80 sm:text-base">
 				{$_('product.edit.info.origin_traceability', {
 					default:
 						'Provide origin and traceability information, such as manufacturing places, origins of ingredients, and traceability codes.'
@@ -63,14 +63,20 @@
 	<!-- Manufacturing Places -->
 	<div class="form-control w-full">
 		<label class="label" for="manufacturing_places">
-			<span class="label-text text-sm font-medium sm:text-base"
+			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base"
 				>{$_('product.edit.manufacturing_places')}</span
 			>
+			<InfoTooltip
+				text={$_('product.edit.tooltips.manufacturing_places', {
+					default:
+						'The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.'
+				})}
+			/>
 		</label>
 		<input
 			id="manufacturing_places"
 			type="text"
-			class="input focus:border-primary w-full text-sm focus:outline-none sm:text-base"
+			class="input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 			value={product.manufacturing_places ?? ''}
 			oninput={(e) => {
 				product = {
@@ -78,12 +84,14 @@
 					manufacturing_places: (e.currentTarget as HTMLInputElement).value
 				};
 			}}
-			placeholder="e.g., France, Italy"
+			placeholder={$_('product.edit.manufacturing_places_placeholder', {
+				default: 'e.g., France, Italy'
+			})}
 		/>
 	</div>
 
 	<!-- Origins -->
-	<div class="form-control w-full">
+	<div id="origins" class="form-control w-full rounded-lg">
 		<label class="label" for="origins-input">
 			<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 				{$_('product.edit.origins')}
@@ -110,21 +118,25 @@
 		<TagsString
 			tagsString={product.emb_codes ?? ''}
 			autocomplete={[]}
+			placeholder={$_('product.edit.traceability_examples', {
+				default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
+			})}
 			onChange={(v) => {
 				product = { ...product, emb_codes: v };
 			}}
 		/>
 		<div class="mt-1 text-xs text-base-content/60">
-			<p>Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE</p>
 			<p>
-				More info:
+				{$_('product.edit.traceability_codes_more_info', { default: 'More info:' })}
 				<a
 					href="https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="link"
 				>
-					Food Traceability Codes Wiki
+					{$_('product.edit.traceability_codes_wiki', {
+						default: 'Food Traceability Codes Wiki'
+					})}
 				</a>
 			</p>
 		</div>

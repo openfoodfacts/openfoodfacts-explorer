@@ -19,7 +19,7 @@
 	"search": {
 		"title": "Αναζήτηση - {query} - Άνοιγμα Εξερεύνησης Open Food Facts",
 		"placeholder": "Ερώτημα ή γραμμωτός κώδικας",
-		"go": "Πάω",
+		"go": "Go",
 		"scan": "Σάρωση ενός γραμμωτού κώδικα",
 		"button": "Αναζήτηση",
 		"product_not_found": "Δεν βρέθηκαν προϊόντα",
@@ -27,8 +27,8 @@
 		"add_product": "Προσθήκη νέου Προϊόντος",
 		"description": "Αναζήτηση στο Open Food Facts Explorer για {query}",
 		"charts_title": "Αναλυτικά Αναζήτησης",
-		"results_for": "Search results for \"{term}\"",
-		"classic_tools": "Classic Tools:",
+		"results_for": "Αποτελέσματα αναζήτησης για \"{term}\"",
+		"classic_tools": "Κλασικά εργαλεία:",
 		"show_prices_label": "Εμφάνιση Τιμών",
 		"sort_by_label": "Ταξινομήστε ανά",
 		"raw_query_label": "Ακατέργαστο Ερώτημα",
@@ -38,14 +38,15 @@
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Δημιουργία γραφημάτων για {term} (κλασική έκδοση)",
 		"advanced_search_classic": "Σύνθετη Αναζήτηση για {term} (κλασική έκδοση)",
-		"superset_query": "Start a query",
-		"superset_discover": "Discover dashboards",
-		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
+		"superset_query": "Ξεκινήστε ένα ερώτημα",
+		"superset_discover": "Ανακαλύψτε τους πίνακες εργαλείων",
+		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_desc": "Ξεκλειδώστε τη δύναμη των ανοιχτών δεδομένων! Εξερευνήστε την πλήρη βάση δεδομένων Open Food Facts χρησιμοποιώντας ερωτήματα SQL, προσαρμοσμένα γραφήματα και κοινόχρηστους πίνακες ελέγχου.",
 		"prices_badge": "{count} τιμές",
 		"creation_date": "Ημερομηνία δημιουργίας",
-		"last_modified_date": "Last modified date",
-		"page_size": "Page size",
-		"advanced_view": "Advanced view"
+		"last_modified_date": "Τελευταία ημερομηνία τροποποίησης",
+		"page_size": "Μέγεθος σελίδας",
+		"advanced_view": "Προηγμένη προβολή"
 	},
 	"auth": {
 		"username": "Όνομα χρήστη",
@@ -62,12 +63,12 @@
 		"actions": "Δράσεις",
 		"role": {
 			"user": "Χρήστης",
-			"admin": "Administrator",
+			"admin": "Διαχειριστής",
 			"moderator": "Συντονιστής"
 		}
 	},
 	"help": {
-		"button": "Help and Shortcuts"
+		"button": "Βοήθεια και Συντομεύσεις"
 	},
 	"general": {
 		"language": "Γλώσσα",
@@ -81,26 +82,38 @@
 		"error_occurred": "Παρουσιάστηκε σφάλμα:",
 		"errors_occurred": "Παρουσιάστηκαν σφάλματα:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Μείνετε ενημερωμένοι",
 		"contribute": "Συμβάλλετε",
-		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
-		"tagline_break": "from around the world.",
-		"decorative_alt": "A decorative graphic",
+		"discover_title": "Ανακαλύψτε το Έργο μας",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Ανοιχτά Γεγονότα Ομορφιάς",
+			"open_pet_food_facts": "Ανοίξτε τα στοιχεία για τις τροφές για κατοικίδια",
+			"open_products_facts": "Ανοιχτά στοιχεία για τα προϊόντα"
+		},
+		"tagline": "Μια συνεργατική, ελεύθερη και ανοικτή βάση δεδομένων των προϊόντων διατροφής",
+		"tagline_break": "από όλο τον κόσμο.",
+		"decorative_alt": "Ένα διακοσμητικό γραφικό",
 		"social": {
-			"x": "X (formerly Twitter)",
+			"x": "X (πρώην Twitter)",
 			"instagram": "Instagram",
 			"github": "GitHub",
 			"facebook": "Facebook",
-			"slack": "Slack",
+			"slack": "Slack app",
 			"mastodon": "Mastodon",
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Ενημερωτικό δελτίο",
 			"forum": "Φόρουμ",
-			"producers": "Producers Platform",
+			"producers": "Πλατφόρμα Παραγωγών",
 			"translators": "Μεταφραστές",
 			"github": "GitHub",
 			"data_api_sdks": "Data, API, SDKs",
@@ -121,18 +134,18 @@
 	},
 	"settings": {
 		"page_title": "Ρυθμίσεις",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Διαχειριστείτε τις προτιμήσεις και τις ρυθμίσεις του λογαριασμού σας",
+		"subtitle": "Διαχειριστείτε τις προτιμήσεις σας και εξατομικεύστε την εμπειρία σας",
 		"tab": {
 			"account": "Λογαριασμός",
 			"general": "Γενικά",
 			"editing": "Επεξεργασία",
 			"preferences": "Προτιμήσεις",
-			"developer": "Developer"
+			"developer": "Προγραμματιστής"
 		},
 		"username": "Όνομα χρήστη",
 		"email": "E-mail",
-		"roles": "Roles",
+		"roles": "Ρόλοι",
 		"section_general": "Γενικά",
 		"section_editing": "Επεξεργασία",
 		"section_user": "Χρήστης",
@@ -140,18 +153,25 @@
 		"login": "Σύνδεση (αποθηκεύτηκε στο localStorage) [ΜΗ ΑΣΦΑΛΕΣ - ΜΟΝΟ ΓΙΑ ΕΝΤΟΠΙΣΜΟ ΣΦΑΛΜΑΤΩΝ]",
 		"news": "Νέα",
 		"expand_all_sections": "Ανάπτυξη όλων των ενοτήτων",
-		"expand_all_sections_help": "Automatically expand all sections when viewing product details",
-		"display_prices_in_search": "Display prices in search results",
-		"display_prices_in_search_help": "Show price information in search results when available",
-		"logged_in_as": "Logged in as: {username}",
+		"expand_all_sections_help": "Αυτόματη ανάπτυξη όλων των ενοτήτων κατά την προβολή λεπτομερειών προϊόντος",
+		"display_prices_in_search": "Εμφάνιση τιμών στα αποτελέσματα αναζήτησης",
+		"display_prices_in_search_help": "Εμφάνιση πληροφοριών τιμών στα αποτελέσματα αναζήτησης όταν είναι διαθέσιμα",
+		"logged_in_as": "Έχετε συνδεθεί ως {{userName}}",
 		"not_logged_in": "Δεν έχετε συνδεθεί",
 		"github_link": "GitHub",
-		"github_cta": "Help us improve Explorer on GitHub",
-		"github_help_text": "Help us improve Open Food Facts Explorer!",
-		"dev_settings_title": "Development Settings",
-		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"github_cta": "Βοηθήστε μας να βελτιώσουμε τον Εξερευνητή στο GitHub",
+		"github_help_text": "Βοηθήστε μας να βελτιώσουμε το Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
+		"dev_settings_title": "Ρυθμίσεις ανάπτυξης",
+		"moderator_mode": "Λειτουργία Επόπτη",
+		"dev_access_denied": "Δεν επιτρέπεται η πρόσβαση",
+		"dev_access_message": "Οι ρυθμίσεις για προγραμματιστές είναι διαθέσιμες μόνο σε συντονιστές και προγραμματιστές. Αν πιστεύετε ότι θα πρέπει να έχετε πρόσβαση, επικοινωνήστε με το διαχειριστή."
 	},
 	"folksonomy": {
 		"title": "Μηχανή Folksonomy",
@@ -161,9 +181,9 @@
 		"keys_found": "βρέθηκαν κλειδιά",
 		"key_found": "βρέθηκε κλειδί",
 		"for": "για",
-		"badge_products": "Used in {count} products ({percent}% relative usage)",
-		"badge_values": "Has {values} different possible values",
-		"progress_bar": "Usage frequency indicator: {percent}% relative to other keys",
+		"badge_products": "Χρησιμοποιείται σε {count} προϊόντα ({percent}% σχετικής χρήσης)",
+		"badge_values": "Έχει {values} διαφορετικές πιθανές τιμές",
+		"progress_bar": "Δείκτης συχνότητας χρήσης: {percent}% σε σχέση με άλλα πλήκτρα",
 		"key_visualization_guide": {
 			"title": "Key Visualization Guide:",
 			"badge_products_start": "The first badge ",
@@ -208,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -235,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Γραμμικός κωδικός",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Αναζήτηση",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Ανοιχτό",
+			"found": "Found",
+			"not_found": "Δεν βρέθηκε",
+			"check_error": "Σφάλμα",
+			"not_checked": "Not checked",
+			"loading": "Έλεγχος…"
 		},
 		"header": {
 			"quantity": "Ποσότητα",
@@ -279,7 +321,37 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Προϊόν",
+			"barcode_info": "Barcode information",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Πηγές δεδομένων",
+			"prices": "Τιμές",
+			"folksonomy": "Tags & Community",
+			"external_sources": "Εξωτερικές πηγές"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -308,6 +380,7 @@
 				"stores": "Εισαγάγετε το κατάστημα από όπου αγοράσατε το προϊόν. Για παράδειγμα, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "Προσθέστε τυχόν ενδείξεις προέλευσης που μπορείτε να βρείτε στη συσκευασία. Δεν χρειάζεται να ανησυχείτε για την προέλευση που αναγράφεται απευθείας στη λίστα συστατικών. Για παράδειγμα, «Μοσχάρι από την Αργεντινή», «Η σόγια δεν προέρχεται από την Ευρωπαϊκή Ένωση».",
 				"traceability_code": "Σε αυτήν την ενότητα, μπορείτε να εισαγάγετε κωδικούς που σχετίζονται με σήματα συσκευασίας, σήματα αναγνώρισης ή σήματα υγείας.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Χώρες όπου το προϊόν είναι ευρέως διαθέσιμο (δεν περιλαμβάνονται καταστήματα που ειδικεύονται σε ξένα προϊόντα).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -316,12 +389,29 @@
 			},
 			"allergens": "Αλλεργιογόνα",
 			"traces": "Ίχνη",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Πρέπει πρώτα να επιλέξετε έναν τύπο προϊόντος!",
 			"main_language": "Κύρια γλώσσα",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Προσθήκη προϊόντος",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
 			"add_product_title": "Προσθήκη νέου προϊόντος",
 			"edit_product_title": "Επεξεργασία προϊόντος",
+			"login_required_title": "Login Required",
+			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
+			"return_to_home": "Return to Home",
+			"dev_not_logged_in_title": "You are not logged in!",
+			"dev_not_logged_in_body": "This means that the product will not be saved to the database.",
+			"dev_not_logged_in_hint": "We allow opening this page because you're in development mode, but the submit button will not work.",
 			"add_language": "Προσθήκη γλώσσας",
 			"search_languages": "Αναζήτηση γλωσσών για προσθήκη",
 			"no_languages_found": "Δεν βρέθηκαν γλώσσες",
@@ -371,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Τόποι παραγωγής",
-			"categories": "Κατηγορίες:",
+			"categories": "Κατηγορίες",
 			"labels": "Ετικέτες",
 			"brands": "Μάρκες",
 			"stores": "Καταστήματα",
@@ -421,6 +511,10 @@
 			"macronutrients": "Μακροθρεπτικά συστατικά",
 			"micronutrients": "Μικροθρεπτικά συστατικά",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Ασβέστιο",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Χοληστερόλη",
 				"fat": "Συνολικό Λίπος",
 				"saturated-fat": "Κορεσμένο Λίπος",
 				"carbohydrates": "Υδατάνθρακες",
@@ -429,9 +523,14 @@
 				"salt": "Αλάτι",
 				"fibers": "Ίνες",
 				"sodium": "Νάτριο",
-				"alcohol": "Αλκοόλη"
+				"alcohol": "Αλκοόλη",
+				"iron": "Σίδηρος",
+				"potassium": "Κάλιο",
+				"trans-fat": "Τρανς Λιπαρά",
+				"vitamin-d": "Βιταμίνη D"
 			},
 			"additional_nutrients": "Επιπλέον θρεπτικά συστατικά",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Σχόλιο",
 			"comment_placeholder": "Προσθήκη σχολίου σε αυτήν την επεξεργασία",
 			"save_btn": "Αποθήκευση",
@@ -448,8 +547,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Φωτογραφίες",
 				"basic_info": "Βασικές πληροφορίες",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Γλώσσες & Ονόματα Προϊόντων",
 				"ingredients": "Συστατικά",
@@ -459,6 +561,22 @@
 				"prices": "Τιμές",
 				"comment": "Σχόλιο"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Λεπτομέρειες Προϊόντος",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Γλώσσες",
+				"comment": "Σχόλιο"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Υποβολή",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Μην ανεβάζετε εικόνες με πνευματικά δικαιώματα",
 			"legal_warning_photos_1": "Μην ανεβάζετε φωτογραφίες που δεν σας ανήκουν ή δεν έχετε τα δικαιώματα για αυτές. Η μεταφόρτωση εικόνων που προστατεύονται από πνευματικά δικαιώματα χωρίς άδεια είναι παράνομη και μπορεί να οδηγήσει στην αναστολή του λογαριασμού σας.",
 			"legal_warning_photos_2": "Ανεβάστε μόνο τις δικές σας φωτογραφίες ή εκείνες για τις οποίες έχετε ρητή άδεια χρήσης.",
@@ -515,14 +633,43 @@
 		"prices": {
 			"no_prices_found": "Δεν βρέθηκαν τιμές για αυτό το προϊόν",
 			"loading": "Φόρτωση τιμών…",
-			"view_prices": "Δείτε τις τιμές στο Open Prices"
+			"view_prices": "Δείτε τις τιμές στο Open Prices",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Επεξεργασία προϊόντος",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Προσθέστε μέρη της συσκευασίας",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Δείτε τις τιμές στο Open Prices",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Προσθέστε διατροφικά στοιχεία"
 			}
+		},
+		"external_sources": {
+			"title": "Εξωτερικές πηγές",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Πολιτική απορρήτου"
 		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
@@ -561,14 +708,47 @@
 			"obsolete_badge": "Το προϊόν αποσύρθηκε από την αγορά",
 			"obsolete_save_btn": "Save Obsolete Status",
 			"obsolete_save_success": "Product obsolete status updated successfully.",
-			"obsolete_save_error": "Failed to update obsolete status. Please try again."
+			"obsolete_save_error": "Failed to update obsolete status. Please try again.",
+			"image_manager_title": "Manage Images",
+			"image_manager_description": "Μπορείτε να επιλέξετε μία ή περισσότερες εικόνες και στη συνέχεια:",
+			"image_manager_no_images": "No uploaded images found for this product.",
+			"image_manager_select_all": "Επιλογή όλων",
+			"image_manager_clear": "Εκκαθάριση",
+			"image_manager_select_image": "Select image {imgid}",
+			"image_manager_uploaded_by": "Uploaded by {uploader}",
+			"image_manager_uploaded_at": "Uploaded on {date}",
+			"image_manager_preview_label": "Preview image",
+			"image_manager_move_btn": "Μετακινήστε τις εικόνες σε άλλο προϊόν",
+			"image_manager_move_target_label": "Destination Barcode",
+			"image_manager_move_target_placeholder": "Enter barcode (e.g. 3017620422003)",
+			"image_manager_copy_data_label": "Αντιγραφή δεδομένων από το τρέχον προϊόν σε νέο προϊόν",
+			"image_manager_moving": "Moving...",
+			"image_manager_move_success": "Images moved to product {code}.",
+			"image_manager_move_error": "Failed to move images. Please try again.",
+			"image_manager_select_first": "Please select at least one image first.",
+			"image_manager_tab_move": "Move",
+			"image_manager_tab_delete": "Διαγραφή",
+			"image_manager_delete_btn": "Delete the selected image(s)",
+			"image_manager_delete_confirm_label": "Yes, I confirm I want to permanently delete these images.",
+			"image_manager_delete_warning_prefix": "Warning:",
+			"image_manager_delete_warning_body": " Deleting raw images is permanent and cannot be undone.",
+			"image_manager_delete_success": "Images deleted successfully.",
+			"image_manager_delete_error": "Failed to delete images. Please try again.",
+			"image_manager_in_use": "Active / In Use",
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_image_alt": "Uploaded image {imgid}"
 		}
 	},
 	"qr": {
 		"product_not_found": "Το Προϊόν Δε Βρέθηκε",
 		"barcode_scanned_not_found": "Ο γραμμωτός κώδικας {barcode} σαρώθηκε με επιτυχία, αλλά δεν βρέθηκε κανένα προϊόν στις κατηγορίες Open Food Facts, Open Beauty Facts, Open Products Facts ή Open Pet Food Facts.",
 		"add_new_product": "Προσθήκη νέου προϊόντος",
-		"scan_again": "Σάρωση ξανά"
+		"scan_again": "Σάρωση ξανά",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -584,7 +764,8 @@
 		"step": "Βήμα",
 		"of": "από",
 		"cancel": "Ακύρωση",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Μενού",
@@ -677,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Μάρκα",
 		"quantity": "Ποσότητα",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

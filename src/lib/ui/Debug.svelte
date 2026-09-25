@@ -8,6 +8,6 @@
 <details>
 	<summary>Debug {title ?? ''}</summary>
 	<div class="overflow-x-auto">
-		<pre class="bg-base-200 rounded-md p-2 break-words whitespace-pre-wrap">{formattedData}</pre>
+		<pre class="rounded-md bg-base-200 p-2 break-words whitespace-pre-wrap">{formattedData}</pre>
 	</div>
 </details>

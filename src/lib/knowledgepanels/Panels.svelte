@@ -29,7 +29,10 @@ Props:
 		roots == null
 			? panels
 			: Object.fromEntries(
-					Object.entries(panels).filter(([_, panel]) => panel.type && roots.includes(panel.type))
+					Object.entries(panels).filter(
+						([id, panel]) =>
+							roots.includes(id) || (panel.type != null && roots.includes(panel.type))
+					)
 				)
 	);
 
@@ -51,26 +54,26 @@ Props:
 
 {#if summary}
 	<div>
-		<div class="bg-secondary text-secondary-content absolute ms-5 max-w-max rounded-xl px-4">
+		<div class="absolute ms-5 max-w-max rounded-xl bg-secondary px-4 text-secondary-content">
 			Summary
 		</div>
 
-		<div class="border-secondary mt-3 border-b-2 border-dashed"></div>
+		<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
 
 		<div class="my-4 flex flex-row flex-wrap justify-center gap-2 md:gap-4" id={SUMMARY_ID}>
 			{#each sections as [panelKey, panel] (panelKey)}
-				<a class="btn btn-secondary text-lg" href={'#' + panelKey}>
+				<a class="btn text-lg btn-secondary" href={'#' + panelKey}>
 					{panel.title_element!.title}
 				</a>
 			{/each}
 		</div>
 
-		<div class="border-secondary border-b-2 border-dashed"></div>
+		<div class="border-b-2 border-dashed border-secondary"></div>
 	</div>
 {/if}
 
 {#each Object.entries(panels) as [id, panel] (id)}
-	{#if roots == null || (panel.type != null && roots.includes(panel.type))}
+	{#if roots == null || roots.includes(id) || (panel.type != null && roots.includes(panel.type))}
 		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
 	{/if}
 {/each}

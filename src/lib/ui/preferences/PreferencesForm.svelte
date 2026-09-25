@@ -39,8 +39,8 @@
 	<div class="space-y-6">
 		<!-- Header -->
 		<div class="mb-6">
-			<h2 class="text-base-content mb-2 text-xl font-semibold">{$_('preferences.title')}</h2>
-			<p class="text-base-content/70 text-sm">
+			<h2 class="mb-2 text-xl font-semibold text-base-content">{$_('preferences.title')}</h2>
+			<p class="text-sm text-base-content/70">
 				{$_('preferences.subtitle')}
 			</p>
 		</div>
@@ -48,7 +48,7 @@
 		<!-- Preference Sections -->
 		{#await groups}
 			<div class="flex items-center justify-center py-8">
-				<span class="loading loading-spinner loading-lg"></span>
+				<span class="loading loading-lg loading-spinner"></span>
 				<span class="ml-2">Loading preferences...</span>
 			</div>
 		{:then groups}
@@ -59,7 +59,7 @@
 
 		<!-- Close Button -->
 		{#if onClose}
-			<div class="border-base-300 flex justify-end border-t pt-4">
+			<div class="flex justify-end border-t border-base-300 pt-4">
 				<button class="btn btn-primary" onclick={onClose}>
 					{$_('preferences.close')}
 				</button>

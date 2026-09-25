@@ -14,10 +14,12 @@ export type {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en'): T | undefined {
-	const nonNullLang = lang?.toLowerCase() ?? 'en';
+	const nonNullLang = lang?.replaceAll('_', '-').toLowerCase() ?? 'en';
+	const languageCode = nonNullLang.split('-')[0] ?? 'en';
 
 	return (
 		localized[nonNullLang] ?? // try full locale
+		localized[languageCode] ?? // try base language
 		localized['en'] ?? // fallback to english
 		Object.values(localized)[0] // fallback to first available
 	);

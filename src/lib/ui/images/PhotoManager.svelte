@@ -173,6 +173,7 @@
 
 	let editingImageData: ProductImage | undefined = $state();
 	let editingImageModal: PhotoEditDialog | undefined = $state();
+	let isSavingImage = $state(false);
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -270,24 +271,37 @@
 	}
 
 	async function saveCurrentImage(data: ImageEditData) {
-		if (!editingImageData) {
+		if (isSavingImage) return;
+
+		const imageData = editingImageData;
+
+		if (!imageData) {
 			console.error('No image data available for editing');
 			return;
 		}
 
+		isSavingImage = true;
+
 		try {
 			const { cropData, rotationAngle } = data;
-			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
+
+			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
 
 			toast.success($_('product.edit.images.toast.save_success'));
-			trackOffEvent('product', 'crop_save_image', editingImageData.typeId);
+			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
 			console.error('Error processing image:', error);
+
 			toast.error(
-				$_('product.edit.images.toast.process_error', { values: { error: errorMessage } })
+				$_('product.edit.images.toast.process_error', {
+					values: { error: errorMessage }
+				})
 			);
 		} finally {
+			isSavingImage = false;
+
 			await invalidateAll();
 			closeEditModal();
 		}
@@ -347,7 +361,7 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
-				trackOffEvent('product', 'unselect_image', image.typeId);
+				trackOffEvent('contribution', 'image_unselected', image.typeId);
 				await invalidateAll();
 				editingImageModal?.closeModal();
 			} else {
@@ -417,7 +431,7 @@
 				onchange={() => handleLanguageChange(code)}
 			/>
 			<div
-				class="tab-content bg-base-100 border-base-300 p-3 sm:p-6"
+				class="tab-content border-base-300 bg-base-100 p-3 sm:p-6"
 				class:hidden={code !== activeLanguageCode}
 			>
 				<!-- Show standard photo types first -->
@@ -455,8 +469,8 @@
 
 				<!-- Show message if no images at all -->
 				{#if currentImages.length === 0}
-					<div class="bg-base-200 flex w-full items-center justify-center rounded p-4 sm:p-6">
-						<p class="text-base-content/60 text-center text-sm sm:text-base">
+					<div class="flex w-full items-center justify-center rounded bg-base-200 p-4 sm:p-6">
+						<p class="text-center text-sm text-base-content/60 sm:text-base">
 							{$_('product.edit.no_photo_available')}
 						</p>
 					</div>
@@ -474,7 +488,17 @@
 		image={editingImageData}
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
+		isSaving={isSavingImage}
 		onImageUnselected={unselectCurrentImage}
+		onImageReplace={() => {
+			if (editingImageData) {
+				const inputId = `${editingImageData.typeId}-${activeLanguageCode}-upload`;
+				const fileInput = document.getElementById(inputId);
+				if (fileInput instanceof HTMLInputElement) {
+					fileInput.click();
+				}
+			}
+		}}
 	/>
 {/if}
 

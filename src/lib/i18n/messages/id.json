@@ -40,7 +40,8 @@
 		"advanced_search_classic": "Pencarian Lanjutan untuk {term} (versi klasik)",
 		"superset_query": "Start a query",
 		"superset_discover": "Discover dashboards",
-		"superset_promo_desc": "Unlock the power of open data! Explore the full Open Food Facts database using SQL queries, custom charts, and shared dashboards.",
+		"superset_promo_title": "Query OFF with SQL",
+		"superset_promo_desc": "Manfaatkan kekuatan data terbuka! Jelajahi seluruh basis data Open Food Facts menggunakan kueri SQL, grafik kustom, dan dasbor bersama.",
 		"prices_badge": "{count} harga",
 		"creation_date": "Tanggal pembuatan",
 		"last_modified_date": "Last modified date",
@@ -81,11 +82,23 @@
 		"error_occurred": "terjadi kesalahan:",
 		"errors_occurred": "terjadi kesalahan:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Berkontribusi",
 		"discover_title": "Discover our Project",
-		"tagline": "A collaborative, free and open database of food products",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
+		"tagline": "Basis data produk pangan yang kolaboratif, gratis, dan terbuka",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
 		"social": {
@@ -148,10 +161,17 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Pengaturan pengembang hanya tersedia untuk moderator dan developer. Jika Anda merasa seharusnya memiliki akses, silakan hubungi administrator."
 	},
 	"folksonomy": {
 		"title": "Mesin Folksonomy",
@@ -208,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -236,6 +256,28 @@
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
 		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Kode batang",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Cari",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "Membuka",
+			"found": "Found",
+			"not_found": "Tidak ditemukan",
+			"check_error": "Kesalahan",
+			"not_checked": "Not checked",
+			"loading": "Memeriksa…"
+		},
 		"header": {
 			"quantity": "Kuantitas",
 			"brands": "Merek",
@@ -251,7 +293,7 @@
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
-			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
+			"intro_before": "Properti ini dibuat dan diisi oleh pengguna untuk berbagai keperluan. Silakan tambahkan properti Anda sendiri. Properti dan nilai yang Anda buat ",
 			"intro_emphasis": "must be factual",
 			"intro_after": ". You can dive into ",
 			"link_properties": "the list of properties already used by the community",
@@ -279,7 +321,37 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Produk",
+			"barcode_info": "Barcode information",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "Sumber Data",
+			"prices": "Harga",
+			"folksonomy": "Tags & Community",
+			"external_sources": "Sumber eksternal"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -308,6 +380,7 @@
 				"stores": "Masukkan toko tempat Anda membeli produk. Misalnya, \"Carrefour\", \"Walmart\", \"Lidl\".",
 				"origins": "Tambahkan indikasi asal produk yang tertera pada kemasan. Anda tidak perlu khawatir tentang asal produk yang tertera langsung di daftar bahan. Misalnya, \"Daging sapi dari Argentina\", \"Kedelai tidak berasal dari Uni Eropa\".",
 				"traceability_code": "Di bagian ini, Anda dapat memasukkan kode yang terkait dengan tanda kemasan, tanda identifikasi, atau tanda kesehatan.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "Negara tempat produk tersedia secara luas (tidak termasuk toko yang mengkhususkan diri pada produk asing).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -316,12 +389,29 @@
 			},
 			"allergens": "Alergen",
 			"traces": "Jejak - jejak",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "Anda harus memilih jenis produk terlebih dahulu!",
 			"main_language": "Bahasa utama",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Tambahkan produk",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
 			"add_product_title": "Tambahkan produk baru",
 			"edit_product_title": "Sunting produk",
+			"login_required_title": "Login Required",
+			"login_required_body": "You must be logged in to contribute to the database. Sign in to add or edit food product information.",
+			"return_to_home": "Return to Home",
+			"dev_not_logged_in_title": "You are not logged in!",
+			"dev_not_logged_in_body": "This means that the product will not be saved to the database.",
+			"dev_not_logged_in_hint": "We allow opening this page because you're in development mode, but the submit button will not work.",
 			"add_language": "Tambahkan bahasa",
 			"search_languages": "Cari bahasa yang ingin ditambahkan",
 			"no_languages_found": "Bahasa tidak ditemukan",
@@ -371,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "Tempat manufaktur",
-			"categories": "Kategori:",
+			"categories": "Kategori",
 			"labels": "Label - label",
 			"brands": "Merek",
 			"stores": "Toko",
@@ -421,6 +511,10 @@
 			"macronutrients": "Makronutrien",
 			"micronutrients": "Zat gizi mikro",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Kalsium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Kolesterol",
 				"fat": "Total Lemak",
 				"saturated-fat": "Lemak Jenuh",
 				"carbohydrates": "Karbohidrat",
@@ -429,9 +523,14 @@
 				"salt": "Garam",
 				"fibers": "Serat",
 				"sodium": "Natrium",
-				"alcohol": "Alkohol"
+				"alcohol": "Alkohol",
+				"iron": "Zat Besi",
+				"potassium": "Potasium",
+				"trans-fat": "Lemak trans",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Nutrisi tambahan",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Komentar",
 			"comment_placeholder": "Tambahkan komentar ke suntingan ini",
 			"save_btn": "Simpan",
@@ -448,8 +547,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Foto - foto",
 				"basic_info": "Informasi Dasar",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "Bahasa & Nama Produk",
 				"ingredients": "bahan",
@@ -459,6 +561,22 @@
 				"prices": "Harga",
 				"comment": "Komentar"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Detail Produk",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Bahasa",
+				"comment": "Komentar"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Kirim",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "Jangan mengunggah gambar yang memiliki hak cipta",
 			"legal_warning_photos_1": "Jangan mengunggah foto yang bukan milik Anda atau yang bukan hak Anda. Mengunggah gambar berhak cipta tanpa izin adalah tindakan ilegal dan dapat mengakibatkan akun Anda ditangguhkan.",
 			"legal_warning_photos_2": "Hanya unggah foto Anda sendiri atau foto yang Anda miliki izin khusus untuk menggunakannya.",
@@ -515,14 +633,43 @@
 		"prices": {
 			"no_prices_found": "Tidak ada harga yang ditemukan untuk produk ini",
 			"loading": "Memuat harga…",
-			"view_prices": "Lihat harga di Harga Terbuka"
+			"view_prices": "Lihat harga di Harga Terbuka",
+			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
+			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
+			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
 			"action": {
+				"edit_product": "Sunting produk",
+				"add_categories": "Add categories",
+				"report_product_to_nutripatrol": "Report an issue with this product",
+				"add_ingredients_text": "Add ingredients text",
 				"add_packaging_components": "Menambahkan komponen kemasan",
-				"add_origins": "Add origins",
-				"add_ingredients_text": "Add ingredients text"
+				"add_origins": "Add origins of ingredients",
+				"add_price": "Add a price on Open Prices",
+				"view_prices": "Lihat harga di Harga Terbuka",
+				"add_recycling_instructions": "Add recycling instructions",
+				"add_quantity": "Add quantity",
+				"add_packaging_image": "Add a photo of the packaging",
+				"add_ingredients_image": "Add a photo of the ingredients",
+				"add_nutrition_facts": "Tambahkan nilai gizi"
 			}
+		},
+		"external_sources": {
+			"title": "Sumber eksternal",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Kebijakan privasi"
 		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
@@ -561,14 +708,47 @@
 			"obsolete_badge": "Produk diambil dari pasar",
 			"obsolete_save_btn": "Save Obsolete Status",
 			"obsolete_save_success": "Product obsolete status updated successfully.",
-			"obsolete_save_error": "Failed to update obsolete status. Please try again."
+			"obsolete_save_error": "Failed to update obsolete status. Please try again.",
+			"image_manager_title": "Manage Images",
+			"image_manager_description": "Anda dapat memilih satu atau lebih gambar, lalu:",
+			"image_manager_no_images": "No uploaded images found for this product.",
+			"image_manager_select_all": "Pilih semua",
+			"image_manager_clear": "Hapus",
+			"image_manager_select_image": "Select image {imgid}",
+			"image_manager_uploaded_by": "Uploaded by {uploader}",
+			"image_manager_uploaded_at": "Uploaded on {date}",
+			"image_manager_preview_label": "Preview image",
+			"image_manager_move_btn": "Pindahkan gambar ke produk lain",
+			"image_manager_move_target_label": "Destination Barcode",
+			"image_manager_move_target_placeholder": "Enter barcode (e.g. 3017620422003)",
+			"image_manager_copy_data_label": "Salin data dari produk saat ini ke produk baru",
+			"image_manager_moving": "Moving...",
+			"image_manager_move_success": "Images moved to product {code}.",
+			"image_manager_move_error": "Failed to move images. Please try again.",
+			"image_manager_select_first": "Please select at least one image first.",
+			"image_manager_tab_move": "Move",
+			"image_manager_tab_delete": "Hapus",
+			"image_manager_delete_btn": "Delete the selected image(s)",
+			"image_manager_delete_confirm_label": "Yes, I confirm I want to permanently delete these images.",
+			"image_manager_delete_warning_prefix": "Warning:",
+			"image_manager_delete_warning_body": " Deleting raw images is permanent and cannot be undone.",
+			"image_manager_delete_success": "Images deleted successfully.",
+			"image_manager_delete_error": "Failed to delete images. Please try again.",
+			"image_manager_in_use": "Active / In Use",
+			"image_manager_in_use_tooltip": "This image is currently active. Unselect it from the Image Manager first to delete it.",
+			"image_manager_image_alt": "Uploaded image {imgid}"
 		}
 	},
 	"qr": {
 		"product_not_found": "Produk Tidak Ditemukan",
 		"barcode_scanned_not_found": "Barcode {barcode} berhasil dipindai, tetapi tidak ada produk yang ditemukan di Fakta Makanan Terbuka, Fakta Kecantikan Terbuka, Fakta Produk Terbuka, atau Fakta Makanan Hewan Peliharaan Terbuka kami.",
 		"add_new_product": "Tambahkan produk baru",
-		"scan_again": "Pindai lagi"
+		"scan_again": "Pindai lagi",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -584,7 +764,8 @@
 		"step": "Melangkah",
 		"of": "dari",
 		"cancel": "Batalkan",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",
@@ -677,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Merek",
 		"quantity": "Kuantitas",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

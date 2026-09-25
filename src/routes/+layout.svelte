@@ -16,6 +16,8 @@
 	import Footer from '$lib/ui/Footer.svelte';
 	import SearchBar from '$lib/ui/SearchBar.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import SlowServerDialog from '$lib/ui/SlowServerDialog.svelte';
+	import EnvironmentNotice from '$lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
@@ -24,8 +26,11 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 	import CommandPalette from '$lib/ui/CommandPalette.svelte';
+	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -39,24 +44,36 @@
 	import { extractQuery } from '$lib/facets';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
-	import { setWebsiteCtx } from '$lib/stores/website';
-	import type { WebsiteFlavor } from '$lib/flavor';
+	import { getWebsiteFlavorFromParam } from '$lib/flavor';
+	import { createWebsiteCtx } from '$lib/stores/website';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import { setCommandCtx } from '$lib/stores/commandPalette';
 	import { getNavigationCommands } from '$lib/commands/navigation';
 	import type { Command } from '$lib/commands/types';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: WebsiteFlavor } = $state({
-		flavor: 'food'
+	const websiteCtx = createWebsiteCtx();
+
+	function syncWebsiteFlavor(url: URL) {
+		const landingFlavor = getWebsiteFlavorFromParam(url.searchParams.get('flavor'));
+		websiteCtx.update((ctx) => ({
+			...ctx,
+			flavor: landingFlavor ?? 'food',
+			forcedFlavor: landingFlavor ?? null
+		}));
+	}
+
+	syncWebsiteFlavor(page.url);
+
+	$effect(() => {
+		syncWebsiteFlavor(page.url);
 	});
-	setWebsiteCtx(() => websiteCtx);
 
 	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
@@ -157,7 +174,6 @@
 
 	import { setPermissionsCtx, type UserPermissionsContext } from '$lib/stores/user';
 	import { fetchCurrentUserPermissions } from '$lib/api/permissions';
-	import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
 	import { wrapFetchWithAuth } from '$lib/stores/auth';
 
 	let permissionsCtx = $state<UserPermissionsContext>({
@@ -171,17 +187,15 @@
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
-			fetchCurrentUserPermissions(authFetch, CURRENT_USER_PERMISSIONS_URL).then(
-				(permissionsData) => {
-					if (permissionsData && permissionsData.status === 'success' && permissionsData.user) {
-						permissionsCtx.isAdmin = permissionsData.user.admin === 1;
-						permissionsCtx.isModerator = permissionsData.user.moderator === 1;
-					} else {
-						permissionsCtx.isAdmin = false;
-						permissionsCtx.isModerator = false;
-					}
+			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (data && data.status === 'success' && data.user) {
+					permissionsCtx.isAdmin = data.user.admin === 1;
+					permissionsCtx.isModerator = data.user.moderator === 1;
+				} else {
+					permissionsCtx.isAdmin = false;
+					permissionsCtx.isModerator = false;
 				}
-			);
+			});
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
@@ -196,8 +210,10 @@
 	let { children }: LayoutProps = $props();
 
 	onMount(() => {
-		// only inject the script on the client side
-		injectSpeedInsights();
+		if (import.meta.env.VERCEL) {
+			// if we're on vercel and on the client, inject the speed insights script
+			injectSpeedInsights();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -245,24 +261,6 @@
 			unsubscribe();
 		};
 	});
-
-	// Track navigation time. If > 5s, show a popup suggesting server is slow or down
-	let navigationTooSlow: Promise<void> | null = $state(null);
-	$effect(() => {
-		if (navigating.to != null) {
-			let timeout: ReturnType<typeof setTimeout>;
-
-			navigationTooSlow = new Promise((resolve) => {
-				timeout = setTimeout(() => {
-					resolve();
-				}, 5000);
-			});
-
-			return () => clearTimeout(timeout);
-		} else {
-			navigationTooSlow = null;
-		}
-	});
 </script>
 
 <svelte:head>
@@ -279,11 +277,11 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
+		language-code={getLanguageCode($preferences.locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
-			apiUrl: ROBOTOFF_URL + '/api/v1',
+			apiUrl: new URL('/api/v1', ROBOTOFF_URL).toString(),
 			imgUrl: IMAGE_HOST + '/images/products'
 		})}
 	>
@@ -291,14 +289,16 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	<progress class="progress fixed top-0 left-0 z-50 h-1 w-full rounded-none progress-secondary"
 	></progress>
 {/if}
+
+<EnvironmentNotice />
 
 <!-- Desktop Header -->
 <div class="hidden xl:block">
 	<div class="flex justify-center">
-		<div class="bg-base-100 navbar flex max-w-7xl px-10">
+		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
 				<a href="/"> <Logo /> </a>
 			</div>
@@ -317,7 +317,7 @@
 				</button>
 				<!-- Settings button -->
 				<a
-					class="btn btn-ghost link"
+					class="btn link btn-ghost"
 					href={resolve('/settings')}
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
@@ -330,7 +330,7 @@
 							<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
 						</div>
 						<ul
-							class="dropdown-content menu bg-base-100 rounded-box z-50 mt-1 w-52 p-2 shadow-xl border border-base-300"
+							class="menu dropdown-content z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
 						>
 							<li
 								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"
@@ -340,17 +340,26 @@
 							<li>
 								<a
 									href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
-									class="flex gap-2 py-2 px-4 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
 								>
 									<IconMdiAccountCircle class="h-5 w-5" />
 									<span>{$_('navbar.account', { default: 'Account' })}</span>
 								</a>
 							</li>
+							<li>
+								<button
+									onclick={toggleCalculator}
+									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+									<span>{$_('calculator.title', { default: 'Calculator' })}</span>
+								</button>
+							</li>
 							<div class="divider my-1"></div>
 							<li>
 								<a
 									href={resolve('/oauth/logout')}
-									class="flex gap-2 py-2 px-4 text-error hover:bg-error/10 active:bg-error active:text-error-content"
+									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
 									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
@@ -360,7 +369,8 @@
 					</div>
 				{:else}
 					<a
-						class="btn btn-outline gap-2 rounded-full px-4 border-base-300 hover:border-primary hover:bg-primary hover:text-primary-content transition-all duration-300"
+						rel="external"
+						class="btn gap-2 rounded-full border-base-300 btn-outline px-4 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content"
 						href={getLoginUrl(page.url)}
 					>
 						<IconMdiLogin class="h-5 w-5" />
@@ -378,8 +388,8 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 mb-2 xl:hidden">
-	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
+<div class="top-0 right-0 left-0 z-50 mx-4 mb-2 bg-base-100 xl:hidden">
+	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
@@ -388,7 +398,7 @@
 		<div class="navbar-end flex gap-1 sm:gap-2">
 			<button
 				aria-label={$_('search.button')}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					searchActive = !searchActive;
 				}}
@@ -401,7 +411,7 @@
 				aria-label={$_('menu.button')}
 				aria-expanded={accordionOpen}
 				aria-controls={mobileMenuId}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
 				}}
@@ -430,28 +440,40 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn btn-outline link" href="/static/discover">
+		<a class="btn link btn-outline" href="/static/discover">
 			{$_('discover_link')}
 		</a>
-		<a class="btn btn-outline link" href="/static/contribute">
+		<a class="btn link btn-outline" href="/static/contribute">
 			{$_('contribute_link')}
 		</a>
-		<a class="btn btn-outline link" href="/static/producers">
+		<a class="btn link btn-outline" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn btn-outline link" href={OPEN_PRICES_BASE_URL}>
+		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
 			{$_('prices_link')}
 		</a>
-		<a class="btn btn-outline link" href="/folksonomy">
+		<a class="btn link btn-outline" href="/folksonomy">
 			{$_('folksonomy_link')}
 		</a>
-		<a class="btn btn-outline link" href="/facets">
+		<a class="btn link btn-outline" href="/facets">
 			{$_('facets_link')}
 		</a>
 
 		<div class="divider md:divider-horizontal"></div>
+		<button
+			type="button"
+			class="btn link btn-outline"
+			onclick={() => {
+				toggleCalculator();
+				accordionOpen = false;
+			}}
+			title={$_('calculator.title', { default: 'Calculator' })}
+			aria-label={$_('calculator.title', { default: 'Calculator' })}
+		>
+			<span>{$_('calculator.title', { default: 'Calculator' })}</span>
+		</button>
 		<a
-			class="btn btn-outline link"
+			class="btn link btn-outline"
 			href="/settings"
 			title={$_('settings_link')}
 			aria-label={$_('settings_link')}
@@ -460,25 +482,25 @@
 		</a>
 
 		{#if $userInfo != null}
-			<div class="w-full flex justify-center mt-2 md:mt-0">
+			<div class="mt-2 flex w-full justify-center md:mt-0">
 				<div
-					class="flex flex-col gap-2 w-full md:w-auto p-2 bg-base-200 rounded-box border border-base-300"
+					class="flex w-full flex-col gap-2 rounded-box border border-base-300 bg-base-200 p-2 md:w-auto"
 				>
-					<div class="px-2 py-1.5 flex items-center gap-3">
+					<div class="flex items-center gap-3 px-2 py-1.5">
 						<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
-						<span class="font-semibold truncate text-base-content text-sm"
+						<span class="truncate text-sm font-semibold text-base-content"
 							>{$userInfo.preferred_username}</span
 						>
 					</div>
 					<div class="grid grid-cols-2 gap-2">
 						<a
-							class="btn btn-sm btn-outline gap-2"
+							class="btn gap-2 btn-outline btn-sm"
 							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
 						>
 							<IconMdiAccountCircle class="h-4 w-4" />
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
-						<a class="btn btn-sm btn-outline btn-error gap-2" href={resolve('/oauth/logout')}>
+						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('/oauth/logout')}>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
 						</a>
@@ -487,7 +509,8 @@
 			</div>
 		{:else}
 			<a
-				class="btn btn-outline gap-2 rounded-full px-5 hover:bg-primary hover:text-primary-content transition-all duration-300"
+				rel="external"
+				class="btn gap-2 rounded-full btn-outline px-5 transition-all duration-300 hover:bg-primary hover:text-primary-content"
 				href={getLoginUrl(page.url)}
 			>
 				<IconMdiLogin class="h-5 w-5" />
@@ -507,34 +530,8 @@
 	</div>
 {/if}
 <CompareFloatingButton />
+<NutritionCalculator />
 <Footer />
 <Toast />
 <CommandPalette />
-
-{#if navigationTooSlow != null}
-	{#await navigationTooSlow then}
-		<dialog id="slow-server-dialog" class="modal" open>
-			<div class="modal-box">
-				<h3 class="text-lg font-bold">
-					{$_('slow_server.title', { default: 'This is taking longer than expected...' })}
-				</h3>
-				<p class="py-4">
-					{$_('slow_server.message', {
-						default:
-							'Check your internet connection and our status page to see if there are any ongoing issues.'
-					})}
-				</p>
-				<div class="modal-action">
-					<a
-						href="https://status.openfoodfacts.org"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn btn-primary"
-					>
-						{$_('slow_server.status_page', { default: 'View Status Page' })}
-					</a>
-				</div>
-			</div>
-		</dialog>
-	{/await}
-{/if}
+<SlowServerDialog />

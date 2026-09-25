@@ -78,7 +78,7 @@ Use sizing classes to match the context:
 For buttons with both an icon and text, use `gap-2` to maintain consistent spacing:
 
 ```svelte
-<button class="btn btn-primary gap-2">
+<button class="btn gap-2 btn-primary">
 	<IconMdiPencil class="h-5 w-5" />
 	<span>{$_('action.edit', { default: 'Edit' })}</span>
 </button>
@@ -100,8 +100,8 @@ Use the `join` pattern when buttons are part of a connected group (e.g., a searc
 
 ```svelte
 <div class="join">
-	<input class="input join-item input-bordered" placeholder="Search..." />
-	<button class="btn btn-secondary join-item">Go</button>
+	<input class="input-bordered input join-item" placeholder="Search..." />
+	<button class="btn join-item btn-secondary">Go</button>
 </div>
 ```
 
@@ -110,7 +110,7 @@ Use the `join` pattern when buttons are part of a connected group (e.g., a searc
 Use `card` with `bg-base-100` and `shadow-xl` for content containers. Use `card-body` for padded inner content:
 
 ```svelte
-<div class="card bg-base-100 w-full shadow-xl">
+<div class="card w-full bg-base-100 shadow-xl">
 	<div class="card-body">
 		<h2 class="card-title">Card Title</h2>
 		<p>Card content goes here.</p>
@@ -140,7 +140,7 @@ For tag-like links (e.g., in the Footer's "Discover our Project" section), use `
 ```svelte
 <a
 	href="/about"
-	class="bg-secondary-content text-primary rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+	class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 >
 	{$_('footer.discover.about', { default: 'About Us' })}
 </a>
@@ -220,7 +220,7 @@ We aim to make Open Food Facts accessible to everyone. Before submitting a PR, r
 <!-- SearchBar: accessible input -->
 <input
 	type="text"
-	class="input join-item input-bordered w-full"
+	class="input-bordered input join-item w-full"
 	placeholder={$_('search.placeholder')}
 	aria-label={$_('search.placeholder')}
 />

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { preferences } from '$lib/settings';
+	import { getLanguageCode, preferences } from '$lib/settings';
 	import { _ } from '$lib/i18n';
-	import { locale } from '$lib/i18n';
+	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '$lib/i18n';
 	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
 	import Tabs from '$lib/ui/Tabs.svelte';
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
@@ -37,15 +37,61 @@
 		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
+
+	function getDisplayName(
+		type: 'language' | 'region',
+		code: string,
+		displayLocale = 'en'
+	): string | undefined {
+		if (typeof Intl.DisplayNames !== 'function') return undefined;
+		try {
+			return new Intl.DisplayNames([displayLocale], { type }).of(code) ?? undefined;
+		} catch {
+			return undefined;
+		}
+	}
+
+	function getLocaleLabel(code: string): string {
+		const languageCode = getLanguageCode(code);
+		const language = Object.values(data.languages).find(
+			(item) => item.language_code_2?.en?.toLowerCase() === languageCode
+		);
+		const exonym = language?.name?.en ?? getDisplayName('language', languageCode) ?? languageCode;
+		const endonym =
+			language?.name?.[languageCode] ??
+			getDisplayName('language', languageCode, languageCode) ??
+			exonym;
+		const region = code.split('-').find((part) => /^[A-Z]{2}$/.test(part));
+		const englishRegion = region && getDisplayName('region', region);
+		const nativeRegion = region && getDisplayName('region', region, languageCode);
+		const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
+		const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
+
+		return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
+	}
+
+	let localeOptions = $derived(
+		availableLocales.map((code) => ({ code, label: getLocaleLabel(code) }))
+	);
+
+	function getSelectedLocale(): string {
+		return resolveAvailableLocale($preferences.locale ?? getLocale());
+	}
+
+	function handleLocaleChange(event: Event) {
+		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
+		preferences.update((current) => ({ ...current, locale: selectedLocale }));
+		locale.set(selectedLocale);
+	}
 </script>
 
 <Metadata title={$_('settings.page_title')} description={$_('settings.page_description')} />
 
-<div class="bg-base-100 min-h-screen">
+<div class="min-h-screen bg-base-100">
 	<div class="mx-auto max-w-4xl px-4 py-8">
 		<div class="mb-8">
-			<h1 class="text-base-content text-4xl font-bold">{$_('settings_link')}</h1>
-			<p class="text-base-content/70 mt-2">
+			<h1 class="text-4xl font-bold text-base-content">{$_('settings_link')}</h1>
+			<p class="mt-2 text-base-content/70">
 				{$_('settings.subtitle')}
 			</p>
 		</div>
@@ -76,16 +122,16 @@
 					{#if $userInfo}
 						<div class="mt-4 space-y-4">
 							<div>
-								<p class="text-base-content/70 text-sm">{$_('settings.username')}</p>
+								<p class="text-sm text-base-content/70">{$_('settings.username')}</p>
 								<p class="text-lg font-semibold">{$userInfo.preferred_username}</p>
 							</div>
 							<div>
-								<p class="text-base-content/70 mb-2 text-sm">{$_('settings.email')}</p>
+								<p class="mb-2 text-sm text-base-content/70">{$_('settings.email')}</p>
 								<p class="text-lg font-semibold">{$userInfo.email}</p>
 							</div>
 							{#if $userInfo.roles && $userInfo.roles.length > 0}
 								<div>
-									<p class="text-base-content/70 mb-2 text-sm">{$_('settings.roles')}</p>
+									<p class="mb-2 text-sm text-base-content/70">{$_('settings.roles')}</p>
 									<div class="flex flex-wrap gap-2">
 										{#each $userInfo.roles as role (role)}
 											<span class="badge badge-primary">
@@ -155,18 +201,14 @@
 							</span>
 						</label>
 						<select
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							name="lang-select"
-							bind:value={$preferences.lang}
-							onchange={() => locale.set($preferences.lang)}
+							value={getSelectedLocale()}
+							onchange={handleLocaleChange}
 						>
-							{#each Object.keys(data.languages).toSorted() as langKey (langKey)}
-								{@const lang = data.languages[langKey]}
-								<option
-									value={lang.language_code_2.en}
-									selected={$preferences.lang === lang.language_code_2.en}
-								>
-									{lang.name['en']} ({lang.name[lang.language_code_2.en]})
+							{#each localeOptions as localeOption (localeOption.code)}
+								<option value={localeOption.code}>
+									{localeOption.label}
 								</option>
 							{/each}
 						</select>
@@ -181,7 +223,7 @@
 						</label>
 						<select
 							name="country-select"
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							bind:value={$preferences.country}
 						>
 							<option value="world" selected={$preferences.country === 'world'}>
@@ -211,7 +253,7 @@
 						</label>
 						<select
 							name="currency-select"
-							class="select select-bordered w-full"
+							class="select-bordered select w-full"
 							bind:value={$preferences.currency}
 						>
 							{#each data.currencies as currency (currency)}
@@ -249,7 +291,7 @@
 								bind:checked={$preferences.editing.expandAllSections}
 							/>
 						</label>
-						<p class="text-base-content/70 mt-1 text-xs">
+						<p class="mt-1 text-xs text-base-content/70">
 							{$_('settings.expand_all_sections_help')}
 						</p>
 					</div>
@@ -265,7 +307,7 @@
 								bind:checked={$preferences.displayPricesInSearch}
 							/>
 						</label>
-						<p class="text-base-content/70 mt-1 text-xs">
+						<p class="mt-1 text-xs text-base-content/70">
 							{$_('settings.display_prices_in_search_help')}
 						</p>
 					</div>
@@ -296,17 +338,62 @@
 			role="tabpanel"
 			id="tabpanel-developer"
 			aria-labelledby="tab-developer"
+			class="space-y-6"
 			class:hidden={activeTab !== 'developer'}
 		>
+			{#if permissions.isAdmin}
+				<div class="card bg-base-200 shadow-md">
+					<div class="card-body">
+						<h2 class="card-title flex items-center gap-2">
+							<IconMdiTools class="h-6 w-6" aria-hidden="true" />
+							{$_('settings.admin_tools.title', { default: 'Admin tools' })}
+						</h2>
+
+						<p class="mt-4 text-sm text-base-content/70">
+							{$_('settings.admin_tools.description', {
+								default: 'Useful links for Open Food Facts administrators'
+							})}
+						</p>
+
+						<div class="mt-6 flex flex-wrap gap-3">
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/display_org_table.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.organization_table', { default: 'Organization table' })}
+							</a>
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/recent_changes.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.recent_changes', { default: 'Recent changes' })}
+							</a>
+							<a
+								class="btn btn-outline"
+								href="https://world.openfoodfacts.org/cgi/top_translators.pl"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{$_('settings.admin_tools.top_translators', { default: 'Top translators' })}
+							</a>
+						</div>
+					</div>
+				</div>
+			{/if}
+
 			{#if permissions.isModerator}
-				<div class="card border-warning bg-warning/10 border-2 shadow-md">
+				<div class="card border-2 border-warning bg-warning/10 shadow-md">
 					<div class="card-body">
 						<h2 class="card-title flex items-center gap-2">
 							<IconMdiTools class="h-6 w-6" />
 							{$_('settings.dev_settings_title')}
 						</h2>
 
-						<p class="text-base-content/70 mt-4 text-sm">
+						<p class="mt-4 text-sm text-base-content/70">
 							{$_('settings.dev_warning')}
 						</p>
 
@@ -321,7 +408,7 @@
 										bind:checked={$preferences.moderator}
 									/>
 								</label>
-								<p class="text-base-content/70 mt-1 text-xs">
+								<p class="mt-1 text-xs text-base-content/70">
 									{$_('settings.moderator_mode_help')}
 								</p>
 							</div>

@@ -83,17 +83,17 @@
 
 <div class="flex flex-col gap-3 p-2">
 	<div class="flex items-center gap-2">
-		<IconMdiDelete class="text-error h-5 w-5" />
+		<IconMdiDelete class="h-5 w-5 text-error" />
 		<h2 class="text-lg font-bold">
 			{$_('product.moderator.delete_product_title', { default: 'Delete the product page' })}
 		</h2>
 	</div>
 
 	<div class="form-control">
-		<label class="label cursor-pointer justify-start gap-3 p-0 items-start">
+		<label class="label cursor-pointer items-start justify-start gap-3 p-0">
 			<input
 				type="checkbox"
-				class="checkbox checkbox-error checkbox-sm mt-1"
+				class="checkbox mt-1 checkbox-sm checkbox-error"
 				bind:checked={isConfirmed}
 				disabled={isSubmitting}
 			/>
@@ -111,9 +111,9 @@
 		</label>
 	</div>
 
-	<div class="flex flex-col gap-2 mt-2">
-		<div class="flex flex-wrap gap-1.5 items-center">
-			<span class="text-xs text-base-content/60 mr-1">
+	<div class="mt-2 flex flex-col gap-2">
+		<div class="flex flex-wrap items-center gap-1.5">
+			<span class="mr-1 text-xs text-base-content/60">
 				{$_('product.moderator.delete_product_prefill_reasons_label', {
 					default: 'Common reasons:'
 				})}
@@ -121,9 +121,9 @@
 			{#each reasons as reason (reason.value)}
 				<button
 					type="button"
-					class="btn btn-xs transition-all {comment === reason.value
-						? 'btn-error text-error-content'
-						: 'btn-soft btn-neutral text-base-content/80'}"
+					class="btn transition-all btn-xs {comment === reason.value
+						? 'text-error-content btn-error'
+						: 'btn-soft text-base-content/80 btn-neutral'}"
 					onclick={() => {
 						comment = reason.value;
 					}}
@@ -134,7 +134,7 @@
 			{/each}
 		</div>
 
-		<div class="flex flex-col gap-2 sm:flex-row sm:items-end mt-1">
+		<div class="mt-1 flex flex-col gap-2 sm:flex-row sm:items-end">
 			<label class="input w-full">
 				<span class="label"
 					>{$_('product.moderator.delete_product_comment_label', {
@@ -152,13 +152,13 @@
 			</label>
 
 			<button
-				class="btn btn-error btn-sm sm:btn-md shrink-0"
+				class="btn shrink-0 btn-error btn-sm sm:btn-md"
 				onclick={openConfirmModal}
 				disabled={isSubmitting || !isConfirmed || !comment.trim()}
 				type="button"
 			>
 				{#if isSubmitting}
-					<span class="loading loading-spinner loading-sm"></span>
+					<span class="loading loading-sm loading-spinner"></span>
 				{/if}
 				{$_('product.moderator.delete_product_submit', { default: 'Delete the product page' })}
 			</button>
@@ -168,9 +168,9 @@
 
 <!-- Confirmation Modal Dialog -->
 <dialog bind:this={dialogEl} class="modal modal-bottom sm:modal-middle">
-	<div class="modal-box border border-error/20 flex flex-col gap-4">
+	<div class="modal-box flex flex-col gap-4 border border-error/20">
 		<div class="flex items-start gap-3 text-error">
-			<IconMdiAlert class="h-6 w-6 shrink-0 mt-0.5" />
+			<IconMdiAlert class="mt-0.5 h-6 w-6 shrink-0" />
 			<div class="flex flex-col gap-1">
 				<h3 class="text-lg font-bold">
 					{$_('product.moderator.delete_product_modal_title', {
@@ -186,7 +186,7 @@
 			</div>
 		</div>
 
-		<div class="bg-base-200 p-3 rounded-lg text-sm font-mono flex flex-col gap-1">
+		<div class="flex flex-col gap-1 rounded-lg bg-base-200 p-3 font-mono text-sm">
 			<div>
 				<strong>{$_('product.edit.product_name', { default: 'Product name' })}:</strong>
 				{productName}
@@ -200,7 +200,7 @@
 					{$_('product.moderator.delete_product_modal_prompt_prefix', {
 						default: 'To confirm, type the barcode '
 					})}
-					<kbd class="kbd kbd-md font-mono font-bold text-base-content bg-base-300 mx-1 rounded-md"
+					<kbd class="mx-1 kbd rounded-md bg-base-300 font-mono kbd-md font-bold text-base-content"
 						>{barcode}</kbd
 					>
 					{$_('product.moderator.delete_product_modal_prompt_suffix', {
@@ -211,14 +211,14 @@
 			<input
 				id="confirm-barcode-input"
 				type="text"
-				class="input input-bordered w-full"
+				class="input-bordered input w-full"
 				bind:value={typedBarcode}
 				placeholder={barcode}
 				disabled={isSubmitting}
 			/>
 		</div>
 
-		<div class="modal-action flex gap-2 justify-end mt-2">
+		<div class="modal-action mt-2 flex justify-end gap-2">
 			<button
 				type="button"
 				class="btn btn-outline"
@@ -234,7 +234,7 @@
 				disabled={isSubmitting || typedBarcode.trim() !== barcode}
 			>
 				{#if isSubmitting}
-					<span class="loading loading-spinner loading-xs mr-1"></span>
+					<span class="loading mr-1 loading-xs loading-spinner"></span>
 				{/if}
 				{$_('product.moderator.delete_product_modal_btn', {
 					default: 'Permanently Delete'
