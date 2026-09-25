@@ -125,7 +125,7 @@
 		"theme": "Theme",
 		"theme_system": "System default",
 		"theme_light": "Light",
-		"theme_dark": "Dark"
+		"theme_dark": "Dark",
 		"page_not_found": "Page Not Found",
 		"page_not_found_desc": "We looked everywhere, but we couldn't find the page you requested.",
 		"return_home": "Return Home",
