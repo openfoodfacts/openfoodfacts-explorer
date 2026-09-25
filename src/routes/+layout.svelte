@@ -417,7 +417,12 @@
 		<a class="btn link btn-outline" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
+		<a
+			class="btn link btn-outline"
+			href={OPEN_PRICES_BASE_URL}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			{$_('prices_link')}
 		</a>
 		<a class="btn link btn-outline" href="/folksonomy">
