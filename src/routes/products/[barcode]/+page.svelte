@@ -127,7 +127,9 @@
 
 	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
 	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let knowledgePanels = $state<ReturnType<typeof KnowledgePanelsComp>>();
 	let barcodeInfo = $state<ReturnType<typeof BarcodeInfo>>();
+	let allPanelsExpanded = $state(false);
 
 	const activeSections = $derived.by(() => {
 		const rawList: (SidebarSectionBase | false | undefined | null)[] = [
@@ -340,6 +342,10 @@
 			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
+			headerSecondaryActionLabel={allPanelsExpanded
+				? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
+				: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
+			onHeaderSecondaryAction={() => knowledgePanels?.toggleAllPanels()}
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
@@ -382,10 +388,12 @@
 
 			<div id="knowledge-panels-container">
 				<KnowledgePanelsComp
+					bind:this={knowledgePanels}
 					panels={product.knowledge_panels}
 					code={product.code}
 					roots={['root']}
 					summary={sidebarHidden}
+					onAllPanelsExpandedChange={(expanded) => (allPanelsExpanded = expanded)}
 				/>
 			</div>
 
