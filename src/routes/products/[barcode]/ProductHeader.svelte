@@ -80,7 +80,8 @@
 	}
 
 	let frontImage = $derived(
-		'image_front_url' in product ? (product.image_front_url as string) : undefined
+		product.image_front_small_url ??
+			('image_front_url' in product ? (product.image_front_url as string) : undefined)
 	);
 
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
@@ -89,9 +90,15 @@
 		// Convert Product to ProductReduced - using type assertion since the product exists
 		const added = compareStore.addProduct(product);
 		if (added) {
-			toastCtx.success('Product added to comparison');
+			toastCtx.success(
+				$_('product.menu.added_to_comparison', { default: 'Product added to comparison' })
+			);
 		} else {
-			toastCtx.warning('Product is already in comparison or comparison is full');
+			toastCtx.warning(
+				$_('product.menu.add_to_comparison_failed', {
+					default: 'Product is already in comparison or comparison list is full'
+				})
+			);
 		}
 	}
 </script>

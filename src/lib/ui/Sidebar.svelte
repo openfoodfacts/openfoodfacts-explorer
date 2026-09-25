@@ -27,23 +27,29 @@
 	export type SidebarSection = SidebarSectionBase & SidebarSectionAction;
 
 	type Props = {
-		sections: SidebarSection[];
+		sections?: SidebarSection[];
 		activeSection?: string;
 		scrollHeaderOffset?: number;
 		hidden?: boolean;
+		collapsible?: boolean;
+		ariaLabel?: string;
+		class?: string;
+		title?: string;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
-		type?: 'product' | 'edit';
 	};
 
 	let {
-		sections,
+		sections = [],
 		activeSection = $bindable(''),
 		scrollHeaderOffset = 120,
 		hidden = $bindable(false),
+		collapsible = false,
+		ariaLabel,
+		class: className = '',
+		title,
 		headerActionLabel,
-		onHeaderAction,
-		type = 'product'
+		onHeaderAction
 	}: Props = $props();
 
 	let navElement = $state<HTMLElement>();
@@ -203,6 +209,7 @@
 
 		if (currentSection && activeSection !== currentSection) {
 			activeSection = currentSection;
+			updateIndicator();
 		}
 	}
 
@@ -225,8 +232,11 @@
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 
+		updateIndicator();
+
 		const timer = setTimeout(() => {
 			updateActiveSection();
+			updateIndicator();
 		}, 300);
 
 		return () => {
@@ -238,30 +248,29 @@
 	});
 </script>
 
-<div
-	class={[
-		'hidden h-full lg:block',
-		hidden ? 'lg:hidden' : '',
-		type === 'product' ? 'lg:pt-28' : ''
-	]}
->
+<div class={['hidden h-full lg:block', hidden ? 'lg:hidden' : '', className]}>
 	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
-		{#if headerActionLabel && onHeaderAction}
-			<div class="mb-4 flex items-center justify-end px-1">
-				<button
-					type="button"
-					onclick={onHeaderAction}
-					class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
-				>
-					{headerActionLabel}
-				</button>
+		{#if title || (headerActionLabel && onHeaderAction)}
+			<div class={['mb-4 flex items-center px-1', title ? 'justify-between' : 'justify-end']}>
+				{#if title}
+					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
+						{title}
+					</span>
+				{/if}
+				{#if headerActionLabel && onHeaderAction}
+					<button
+						type="button"
+						onclick={onHeaderAction}
+						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+					>
+						{headerActionLabel}
+					</button>
+				{/if}
 			</div>
 		{/if}
 		<nav
 			bind:this={navElement}
-			aria-label={type === 'edit'
-				? $_('product.edit.sidebar_navigation', { default: 'Product edit sections' })
-				: $_('product.sidebar_navigation', { default: 'Product sections' })}
+			aria-label={ariaLabel || $_('product.sidebar_navigation', { default: 'Product sections' })}
 			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
@@ -269,7 +278,7 @@
 				<div
 					aria-hidden="true"
 					class={[
-						'absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out',
+						'absolute -left-[2px] w-[2px] rounded-full transition-all duration-300 ease-in-out',
 						sections.find((s) => s.id === activeSection)?.style === 'warning'
 							? 'bg-warning'
 							: 'bg-primary'
@@ -321,7 +330,7 @@
 	</aside>
 </div>
 
-{#if type === 'product' && hidden}
+{#if collapsible && hidden}
 	<button
 		type="button"
 		onclick={() => (hidden = false)}

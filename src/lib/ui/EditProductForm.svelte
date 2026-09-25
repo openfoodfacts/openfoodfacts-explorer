@@ -231,7 +231,7 @@
 	<Sidebar
 		bind:this={sidebar}
 		bind:activeSection
-		type="edit"
+		ariaLabel={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
 		scrollHeaderOffset={100}
 		sections={editSections}
 		headerActionLabel={$preferences.editing.expandAllSections

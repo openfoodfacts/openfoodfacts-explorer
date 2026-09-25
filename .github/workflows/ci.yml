@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 
-      - uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # ratchet:pnpm/setup@v2
+      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # ratchet:pnpm/setup@v3.0.0
         with:
           cache: true
           runtime: node@22

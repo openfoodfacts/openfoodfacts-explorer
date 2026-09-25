@@ -1,4 +1,5 @@
 import { createSearchApi } from '$lib/api/search';
+import { getBulkProductCardsByCode } from '$lib/api/product';
 import type { PageLoad } from './$types';
 import type { Product, SearchApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
@@ -27,8 +28,12 @@ export const load: PageLoad = async ({ fetch }) => {
 	// For each category, fetch a few popular products.
 	const sectionsPromise = Promise.all(categories.map((c) => getSomeProducts(api, c)));
 	const sections = (await sectionsPromise).filter((s): s is ExploreSection => s != null);
+	const productCodes = [
+		...new Set(sections.flatMap((section) => section.products.map((p) => p.code)))
+	];
+	const productCardsByCode = await getBulkProductCardsByCode(fetch, productCodes);
 
-	return { sections };
+	return { sections, productCardsByCode };
 };
 
 async function getSomeProducts(api: SearchApi, cat: string): Promise<ExploreSection | null> {

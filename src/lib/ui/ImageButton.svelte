@@ -24,7 +24,7 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode);
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src);
 	});
 </script>
 
