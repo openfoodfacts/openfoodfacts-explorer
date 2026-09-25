@@ -42,7 +42,7 @@
 		"@formatjs/intl-durationformat": "^0.11.0",
 		"@iconify-svelte/material-symbols": "^1.0.49",
 		"@iconify-svelte/mdi": "^1.0.2",
-		"@iconify-svelte/simple-icons": "^1.0.43",
+		"@iconify-svelte/simple-icons": "^1.0.44",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.35",
 		"@sveltejs/adapter-node": "^5.5.7",
 		"@sveltejs/adapter-vercel": "^6.3.4",
@@ -104,10 +104,10 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.16.0",
-		"@sentry/sveltekit": "^10.74.0",
+		"@sentry/sveltekit": "^10.75.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"csv-stringify": "^6.8.3",
-		"isomorphic-dompurify": "^4.2.0"
+		"isomorphic-dompurify": "^4.3.0"
 	},
 	"packageManager": "pnpm@12.5.1+sha512.e3f305bc784a2bc89f5ad3b6138889470fae8d2af5f36b61216ec91c2c3d64089775f9de38aac331044ea40f245cb0d5666392dfdf65824e1907ef6a2c62de5f"
 }
