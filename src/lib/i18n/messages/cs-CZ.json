@@ -957,6 +957,8 @@
 		"no_products_selected": "Nebyly vybrány žádné produkty pro porovnání",
 		"add_products_hint": "Přidejte produkty z jejich stránek s podrobnostmi a začněte porovnávat nutriční hodnoty",
 		"browse_products": "Procházet výrobky",
+		"single_product_title": "Add one more product to compare",
+		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
 		"shared_comparison": "Sdílené srovnání",
 		"shared_description": "Sdílené porovnání produktů",
 		"shared_product_comparison": "Sdílené porovnání produktů",
