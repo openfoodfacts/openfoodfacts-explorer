@@ -1,10 +1,8 @@
 import { resolve } from '$app/paths';
-import { dev } from '$app/environment';
 import { env as publicEnv } from '$env/dynamic/public';
 import { toWebsiteFlavor, WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
 
 const {
-	PUBLIC_ROBOTOFF_URL,
 	PUBLIC_IMAGES_URL,
 	PUBLIC_NUTRIPATROL_URL,
 	PUBLIC_AUTH_BASE_URL,
@@ -13,14 +11,18 @@ const {
 	PUBLIC_PRICES_API_URL
 } = publicEnv;
 
-export {
-	PUBLIC_ROBOTOFF_URL as ROBOTOFF_URL,
-	PUBLIC_IMAGES_URL as IMAGE_HOST,
-	PUBLIC_NUTRIPATROL_URL as NUTRIPATROL_URL
-};
+import { browser, dev } from '$app/environment';
+const ROBOTOFF_URL_RAW = publicEnv.PUBLIC_ROBOTOFF_URL || 'https://robotoff.openfoodfacts.org';
+// SSR calls external APIs directly. Relative proxy URLs only resolve in the browser.
+export const ROBOTOFF_URL = browser ? '/proxy/robotoff' : ROBOTOFF_URL_RAW;
+
+export const IMAGE_HOST = PUBLIC_IMAGES_URL;
+export const NUTRIPATROL_URL = PUBLIC_NUTRIPATROL_URL;
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
-export const API_HOST = publicEnv.PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
+export const API_HOST = browser
+	? '/proxy/off'
+	: publicEnv.PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const IS_NON_PRODUCTION =
 	dev || ['development', 'staging'].includes(publicEnv.PUBLIC_ENVIRONMENT ?? '');
 export const SEARCH_URL = `${API_HOST}/api/v2/search`;

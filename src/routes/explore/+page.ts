@@ -8,9 +8,12 @@ type ExploreSection = {
 	products: Product[];
 };
 
-export const load: PageLoad = async ({ fetch }) => {
-	const api = createSearchApi(fetch);
+type ExploreSearchResult = {
+	section: ExploreSection | null;
+	failed: boolean;
+};
 
+export const load: PageLoad = async ({ fetch }) => {
 	// Fetch some popular categories for the Explore landing page.
 	const categories = [
 		'Snacks',
@@ -25,31 +28,34 @@ export const load: PageLoad = async ({ fetch }) => {
 		'Sauces'
 	];
 
-	// For each category, fetch a few popular products.
-	const sectionsPromise = Promise.all(categories.map((c) => getSomeProducts(api, c)));
-	const sections = (await sectionsPromise).filter((s): s is ExploreSection => s != null);
-	const productCodes = [
-		...new Set(sections.flatMap((section) => section.products.map((p) => p.code)))
-	];
-	const productCardsByCode = await getBulkProductCardsByCode(fetch, productCodes);
+	try {
+		const api = createSearchApi(fetch);
+		const results = await Promise.all(categories.map((category) => getSomeProducts(api, category)));
 
-	return { sections, productCardsByCode };
+		return {
+			sections: results.flatMap((result) => (result.section ? [result.section] : [])),
+			hasSearchError: results.some((result) => result.failed)
+		};
+	} catch (cause) {
+		console.error('Explore search client could not be created', { cause });
+		return { sections: [], hasSearchError: true };
+	}
 };
 
-async function getSomeProducts(api: SearchApi, cat: string): Promise<ExploreSection | null> {
+async function getSomeProducts(api: SearchApi, cat: string): Promise<ExploreSearchResult> {
 	let searchResponse: { data?: { hits?: Product[] }; error?: unknown };
 
 	try {
 		searchResponse = (await api.search({
-			q: `categories:"en:${cat.toLowerCase()}"`,
+			q: `categories_tags:"en:${cat.toLowerCase()}"`,
 			page_size: 6,
 			langs: ['en'],
 			page: 1,
-			sort_by: '-scans_n'
+			sort_by: '-unique_scans_n'
 		})) as { data?: { hits?: Product[] }; error?: unknown };
 	} catch (cause) {
 		console.error('Explore search request failed', { category: cat, cause });
-		return null;
+		return { section: null, failed: true };
 	}
 
 	if (searchResponse == null || searchResponse.error != null || searchResponse.data == null) {
@@ -57,16 +63,19 @@ async function getSomeProducts(api: SearchApi, cat: string): Promise<ExploreSect
 			category: cat,
 			error: searchResponse?.error
 		});
-		return null;
+		return { section: null, failed: true };
 	}
 
 	const products = searchResponse.data.hits ?? [];
 	if (products.length === 0) {
-		return null;
+		return { section: null, failed: false };
 	}
 
 	return {
-		category: cat,
-		products
+		section: {
+			category: cat,
+			products
+		},
+		failed: false
 	};
 }

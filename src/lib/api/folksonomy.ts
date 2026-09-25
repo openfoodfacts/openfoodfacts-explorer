@@ -1,5 +1,6 @@
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
+import { ssrSafeFetch } from './utils';
 import { env } from '$env/dynamic/public';
 
 const BASE_URL = env.PUBLIC_FOLKSONOMY_API_URL;
@@ -9,7 +10,7 @@ export function isConfigured() {
 }
 
 export function createFolksonomyApi(fetch: typeof window.fetch): Folksonomy {
-	const wrappedFetch = wrapFetchWithAuth(fetch);
+	const wrappedFetch = wrapFetchWithAuth(ssrSafeFetch(fetch));
 	return new Folksonomy(wrappedFetch, { baseUrl: BASE_URL });
 }
 

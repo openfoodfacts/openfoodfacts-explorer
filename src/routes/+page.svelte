@@ -46,21 +46,32 @@
 	const SKELETON_COUNT = 6;
 
 	async function getProducts() {
-		const roffApi = createRobotoffApi(fetch);
-		const { data: robotoffData } = await roffApi.insights({ count: INSIGHT_COUNT });
+		try {
+			const roffApi = createRobotoffApi(fetch);
+			const { data: robotoffData, error: insightsError } = await roffApi.insights({
+				count: INSIGHT_COUNT
+			});
+			if (insightsError) {
+				console.error('Error fetching Robotoff insights:', insightsError);
+				return [];
+			}
 
-		const insights = robotoffData?.insights ?? [];
-		const insightBarcodes = insights.map((insight) => insight.barcode.toString());
-		console.debug(`Fetched ${insightBarcodes.length} insights`);
+			const insightBarcodes = (robotoffData?.insights ?? [])
+				.map((insight) => insight.barcode?.toString())
+				.filter((barcode): barcode is string => barcode != null);
+			if (insightBarcodes.length === 0) return [];
 
-		const { data: productsData, error } = await getBulkProductCards(fetch, insightBarcodes);
-		if (error) {
-			console.error('Error fetching products for insights:', error);
+			const { data: productsData, error } = await getBulkProductCards(fetch, insightBarcodes);
+			if (error) {
+				console.error('Error fetching products for insights:', error);
+				return [];
+			}
+
+			return deduplicate(productsData?.products ?? [], (product) => product.code);
+		} catch (cause) {
+			console.error('Could not load homepage products:', cause);
 			return [];
 		}
-
-		const products = productsData?.products ?? [];
-		return deduplicate(products, (it) => it.code);
 	}
 
 	async function getAttributes(products: ReducedState[]) {

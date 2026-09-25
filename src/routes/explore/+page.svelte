@@ -36,27 +36,32 @@
 </section>
 
 <div class="mx-auto w-full max-w-7xl px-4 pb-16">
-	{#if data.sections}
+	{#if data.hasSearchError}
+		<div class="mb-8 alert alert-warning" role="alert" aria-live="polite">
+			<span>
+				{$_('explore.search_unavailable', {
+					default: 'Some products could not be loaded. Please try again shortly.'
+				})}
+			</span>
+		</div>
+	{/if}
+
+	{#if data.sections.length > 0}
 		{#each data.sections as section (section.category)}
 			<section class="mb-12">
 				<h2 class="mb-4 text-2xl font-bold text-primary">Most popular {section.category}</h2>
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{#each section.products as product (product.code)}
-						<div>
-							<div class="indicator w-full indicator-center indicator-bottom">
-								<p class="indicator-item badge text-xs badge-info select-none">
-									{product.scans_n} scans
-								</p>
-								<WcProductCard product={data.productCardsByCode[product.code] ?? product} />
-							</div>
-						</div>
+						<WcProductCard {product} scanCount={product.scans_n} />
 					{/each}
 				</div>
 			</section>
 		{/each}
-	{:else}
-		<div class="flex h-32 items-center justify-center">
-			<span class="loading loading-lg loading-spinner"></span>
+	{:else if !data.hasSearchError}
+		<div class="alert alert-info" role="status">
+			<span
+				>{$_('explore.no_products', { default: 'No products are available to explore yet.' })}</span
+			>
 		</div>
 	{/if}
 </div>

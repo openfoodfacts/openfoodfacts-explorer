@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { preferences } from '$lib/settings';
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
+import { ssrSafeFetch } from './utils';
 import { env } from '$env/dynamic/public';
 
 const BASE_URL = env.PUBLIC_PRICES_API_URL;
@@ -17,7 +18,7 @@ export const createPricesApi = (fetch: typeof window.fetch): PricesApi => {
 	const baseUrl = BASE_URL!;
 
 	const authToken = get(preferences)?.prices?.authToken ?? undefined;
-	const pricesApi = new PricesApi(fetch, { baseUrl: baseUrl, authToken });
+	const pricesApi = new PricesApi(ssrSafeFetch(fetch), { baseUrl: baseUrl, authToken });
 	return pricesApi;
 };
 

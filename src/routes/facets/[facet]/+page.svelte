@@ -12,6 +12,8 @@
 	import Metadata from '$lib/Metadata.svelte';
 
 	import CountriesMap from './CountriesMap.svelte';
+	import TagMiniature from '$lib/ui/TagMiniature.svelte';
+	import { getTagMiniatureUrl } from '$lib/ui/tagUtils';
 
 	let { data }: PageProps = $props();
 
@@ -79,15 +81,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each results.tags as { known, name, products, id } (id)}
+			{#each results.tags as tag (tag.id)}
 				<tr>
 					<td>
-						<a href={`/facets/${facet}/${id}`} class="link">
-							{name}
-						</a>
+						<div class="flex items-center gap-2">
+							{#if getTagMiniatureUrl(tag)}
+								<TagMiniature src={getTagMiniatureUrl(tag)} alt={tag.name} size="md" />
+							{/if}
+							<a href={`/facets/${facet}/${tag.id}`} class="link">
+								{tag.name}
+							</a>
+						</div>
 					</td>
-					<td>{known === 1 ? 'Yes' : 'No'}</td>
-					<td class="text-end">{formatNumber(products)}</td>
+					<td>{tag.known === 1 ? 'Yes' : 'No'}</td>
+					<td class="text-end">{formatNumber(tag.products)}</td>
 				</tr>
 			{/each}
 		</tbody>

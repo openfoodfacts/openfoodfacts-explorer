@@ -10,11 +10,12 @@ import {
 	OpenFoodFacts
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
+import { ssrSafeFetch } from './utils';
 
 export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
-	const fetchToUse = wrapFetchWithAuth(fetch);
+	const fetchToUse = wrapFetchWithAuth(ssrSafeFetch(fetch));
 	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
@@ -97,6 +98,24 @@ export async function moveImages(
 	moveToBarcode: string,
 	copyData: boolean = false
 ): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty source product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+	if (!moveToBarcode || moveToBarcode.trim().length === 0) {
+		return { error: 'A non-empty destination product barcode is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(ssrSafeFetch(fetch));
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', moveToBarcode);
+	body.append('copy_data_override', copyData ? 'true' : 'false');
+
 	try {
 		const result = await createProductsApi(fetch).moveImages(code, imgids, moveToBarcode, copyData);
 		if ('error' in result) {
@@ -120,6 +139,21 @@ export async function deleteImages(
 	code: string,
 	imgids: string
 ): Promise<{ data?: boolean; error?: string }> {
+	if (!code || code.trim().length === 0) {
+		return { error: 'A non-empty product barcode is required.' };
+	}
+	if (!imgids || imgids.trim().length === 0) {
+		return { error: 'A non-empty list of image IDs is required.' };
+	}
+
+	const wrapFetch = wrapFetchWithAuth(ssrSafeFetch(fetch));
+	const url = `${API_HOST}/cgi/product_image_move.pl`;
+	const body = new FormData();
+	body.append('code', code);
+	body.append('imgids', imgids);
+	body.append('move_to_override', 'trash');
+	body.append('copy_data_override', 'false');
+
 	try {
 		const result = await createProductsApi(fetch).deleteImages(code, imgids);
 		if ('error' in result) {
@@ -146,7 +180,26 @@ export async function deleteProduct(
 	comment: string
 ): Promise<{ data?: boolean; error?: string }> {
 	try {
-		return { data: await createProductsApi(fetch).deleteProduct(code, comment) };
+		const formData = new FormData();
+		formData.append('type', 'delete');
+		formData.append('action', 'process');
+		formData.append('code', code);
+		formData.append('comment', comment);
+
+		const fetchToUse = wrapFetchWithAuth(ssrSafeFetch(fetch));
+		const url = `${API_HOST}/cgi/product.pl`;
+		const response = await fetchToUse(url, {
+			method: 'POST',
+			body: formData
+		});
+
+		if (!response.ok) {
+			return {
+				error: `HTTP error: ${response.status} ${response.statusText}`
+			};
+		}
+
+		return { data: true };
 	} catch (error) {
 		console.error('Error deleting product:', error);
 		return {
@@ -448,6 +501,9 @@ export type ProductAttributeForScoring = {
 	id: string;
 	match?: number;
 	status?: string;
+	name?: string;
+	title?: string;
+	icon_url?: string;
 };
 
 export type ProductAttributeForScoringGroup = {
