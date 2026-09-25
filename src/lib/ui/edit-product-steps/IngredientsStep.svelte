@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import { createProductsApi, type Product } from '$lib/api';
+	import { createProductsApi, unselectImageV3, type Product } from '$lib/api';
 	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
@@ -90,9 +90,11 @@
 			ocrLoading = false;
 		}
 	}
-
-	function unselectIngredientsImage(languageCode: string) {
+	async function unselectIngredientsImage(languageCode: string) {
 		const imageName = `ingredients_${languageCode}`;
+		const result = await unselectImageV3(fetch, product.code, 'ingredients', languageCode);
+		if (result.error) return;
+
 		const images = Object.fromEntries(
 			Object.entries(product.images ?? {}).filter(([key]) => key !== imageName)
 		);
@@ -102,7 +104,6 @@
 			images
 		};
 	}
-
 	let activeLang = $state(product.lang);
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
