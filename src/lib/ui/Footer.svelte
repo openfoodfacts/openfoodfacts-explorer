@@ -15,54 +15,78 @@
 	import IconMdiSlack from '@iconify-svelte/mdi/slack';
 
 	const LINKS_STAY_UPDATED = [
-		{ url: 'https://link.openfoodfacts.org/newsletter-en', key: 'footer.links.newsletter' },
-		{ url: 'https://forum.openfoodfacts.org/', key: 'footer.links.forum' }
+		{
+			url: 'https://link.openfoodfacts.org/newsletter-en',
+			key: 'footer.links.newsletter',
+			default: 'Newsletter'
+		},
+		{ url: 'https://forum.openfoodfacts.org/', key: 'footer.links.forum', default: 'Forum' }
 	];
 
 	const LINKS_SOCIAL = [
 		{
 			url: 'https://twitter.com/OpenFoodFacts',
 			key: 'footer.social.x',
+			default: 'X (formerly Twitter)',
 			icon: IconSimpleIconsX,
 			iconClass: 'h-6 w-5'
 		},
 		{
 			url: 'https://mastodon.social/@openfoodfacts',
 			key: 'footer.social.mastodon',
+			default: 'Mastodon',
 			icon: IconSimpleIconsMastodon
 		},
 		{
 			url: 'https://bsky.app/profile/openfoodfacts.bsky.social',
 			key: 'footer.social.bluesky',
+			default: 'Bluesky',
 			icon: IconSimpleIconsBluesky
 		},
 		{
 			url: 'https://www.instagram.com/open.food.facts/',
 			key: 'footer.social.instagram',
+			default: 'Instagram',
 			icon: IconMdiInstagram
 		},
 		{
 			url: 'https://github.com/openfoodfacts/openfoodfacts-explorer',
 			key: 'footer.social.github',
+			default: 'GitHub',
 			icon: IconMdiGithub
 		},
 		{
 			url: 'https://www.facebook.com/OpenFoodFacts',
 			key: 'footer.social.facebook',
+			default: 'Facebook',
 			icon: IconMdiFacebook
 		},
-		{ url: 'https://slack.openfoodfacts.org/', key: 'footer.social.slack', icon: IconMdiSlack }
+		{
+			url: 'https://slack.openfoodfacts.org/',
+			key: 'footer.social.slack',
+			default: 'Slack',
+			icon: IconMdiSlack
+		}
 	];
 
 	const LINKS_CONTRIBUTE = [
-		{ url: 'https://world.pro.openfoodfacts.org/', key: 'footer.links.producers' },
+		{
+			url: 'https://world.pro.openfoodfacts.org/',
+			key: 'footer.links.producers',
+			default: 'Producers Platform'
+		},
 		{
 			url: 'https://world.openfoodfacts.org/cgi/top_translators.pl',
-			key: 'footer.links.translators'
+			key: 'footer.links.translators',
+			default: 'Translators'
 		},
-		{ url: 'https://github.com/openfoodfacts', key: 'footer.links.github' },
-		{ url: '/static/data', key: 'footer.links.data_api_sdks' },
-		{ url: 'https://wiki.openfoodfacts.org/', key: 'footer.links.wiki' }
+		{
+			url: 'https://github.com/openfoodfacts',
+			key: 'footer.links.github',
+			default: 'GitHub'
+		},
+		{ url: '/static/data', key: 'footer.links.data_api_sdks', default: 'Data, API, SDKs' },
+		{ url: 'https://wiki.openfoodfacts.org/', key: 'footer.links.wiki', default: 'Wiki' }
 	];
 
 	const LINKS_DISCOVER_PROJECTS = [
@@ -132,28 +156,38 @@
 >
 	<div class="relative z-20 order-1 flex w-full flex-col gap-2 md:w-1/2">
 		<h2 class="text-3xl font-extrabold">{$_('footer.stay_updated')}</h2>
-		<div class="flex flex-col gap-0">
+		<div class="mt-2 flex flex-wrap gap-2">
 			{#each LINKS_STAY_UPDATED as stayUpdatedLink (stayUpdatedLink.url)}
-				<a href={stayUpdatedLink.url} class="link link-hover">{$_(stayUpdatedLink.key)}</a>
+				<a
+					href={stayUpdatedLink.url}
+					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
+				>
+					{$_(stayUpdatedLink.key, { default: stayUpdatedLink.default })}
+				</a>
 			{/each}
-			<div class="mt-1 flex gap-3">
-				{#each LINKS_SOCIAL as social (social.url)}
-					<a
-						href={social.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label={$_(social.key)}
-					>
-						<svelte:component this={social.icon} class={social.iconClass ?? 'h-6 w-6'} />
-					</a>
-				{/each}
-			</div>
+		</div>
+		<div class="mt-2 flex gap-3">
+			{#each LINKS_SOCIAL as social (social.url)}
+				<a
+					href={social.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={$_(social.key, { default: social.default })}
+				>
+					<svelte:component this={social.icon} class={social.iconClass ?? 'h-6 w-6'} />
+				</a>
+			{/each}
 		</div>
 
-		<h2 class="mt-3 text-3xl font-extrabold">{$_('footer.contribute')}</h2>
-		<div class="flex flex-wrap gap-3">
+		<h2 class="mt-6 text-3xl font-extrabold">{$_('footer.contribute')}</h2>
+		<div class="mt-2 flex flex-wrap gap-2">
 			{#each LINKS_CONTRIBUTE as contributeLink (contributeLink.url)}
-				<a href={contributeLink.url} class="link link-hover">{$_(contributeLink.key)}</a>
+				<a
+					href={contributeLink.url}
+					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
+				>
+					{$_(contributeLink.key, { default: contributeLink.default })}
+				</a>
 			{/each}
 		</div>
 	</div>
