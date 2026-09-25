@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '$lib/matomo';
-	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
+	import { tracker, trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';

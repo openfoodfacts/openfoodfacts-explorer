@@ -11,8 +11,11 @@
  * No barcode, email, username, or image URL should ever be passed here.
  */
 
-import { get } from 'svelte/store';
-import { tracker } from '$lib/matomo';
+import { get, writable } from 'svelte/store';
+import type { Tracker } from '$lib/matomo/tracker';
+
+export type { Tracker };
+export const tracker = writable<Tracker | null>(null);
 
 /**
  * Track an Open Food Facts event via Matomo.
