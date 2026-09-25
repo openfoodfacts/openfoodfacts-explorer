@@ -8,7 +8,6 @@
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
@@ -126,7 +125,6 @@
 	<h2
 		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
@@ -189,8 +187,14 @@
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div class="form-control w-full sm:col-span-2">
 				<div class="label">
-					<span class="label-text text-sm font-medium sm:text-base">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.generic_name', { default: 'Common name' })}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.generic_name', {
+								default:
+									' Chocolate bar with milk and hazelnuts. Do not include any brands or quantities. This should be very similar to the category of the products in many cases.'
+							})}
+						/>
 					</span>
 				</div>
 				<div class="space-y-3">
@@ -356,7 +360,6 @@
 	<h2
 		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
 		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
 			<IconMdiHelpCircleOutline
@@ -558,8 +561,14 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control w-full sm:col-span-2">
 							<div class="label">
-								<span class="label-text text-sm font-medium sm:text-base">
+								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.generic_name', { default: 'Common name' })}
+									<InfoTooltip
+										text={$_('product.edit.tooltips.common_name', {
+											default:
+												'Chocolate bar with milk and hazelnuts. Do not include any brands or quantities. This should be very similar to the category of the products in many cases.'
+										})}
+									/>
 								</span>
 							</div>
 							<div class="space-y-3">
@@ -573,7 +582,7 @@
 											{code}
 										</div>
 										<input
-											id={`generic-name-${code}`}
+											id={`details-generic-name-${code}`}
 											type="text"
 											class="input-bordered input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 											value={product[`generic_name_${code}`] ?? ''}
@@ -591,7 +600,7 @@
 							</div>
 						</div>
 						<div class="form-control w-full sm:col-span-2">
-							<label class="label" for="website_url">
+							<label class="label" for="details-website-url">
 								<span class="label-text text-sm font-medium text-wrap sm:text-base">
 									{$_('product.edit.product_page_url_add', {
 										default: 'Link to the product page on the official site of the producer'
@@ -605,7 +614,7 @@
 								/>
 							</label>
 							<input
-								id="website_url"
+								id="details-website-url"
 								type="url"
 								class="input-bordered input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
 								value={product.link ?? ''}
