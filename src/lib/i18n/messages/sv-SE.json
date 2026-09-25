@@ -957,6 +957,8 @@
 		"no_products_selected": "Inga produkter valda för jämförelse",
 		"add_products_hint": "Lägg till produkter från deras informationssidor för att börja jämföra näringsvärden",
 		"browse_products": "Bläddra bland produkter",
+		"single_product_title": "Add one more product to compare",
+		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
 		"shared_comparison": "Delad jämförelse",
 		"shared_description": "Delad produktjämförelse",
 		"shared_product_comparison": "Delad produktjämförelse",
