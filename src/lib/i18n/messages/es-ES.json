@@ -957,6 +957,8 @@
 		"no_products_selected": "No se han seleccionado productos para la comparación",
 		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
 		"browse_products": "Explorar productos",
+		"single_product_title": "Add one more product to compare",
+		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
 		"shared_comparison": "Comparación compartida",
 		"shared_description": "Comparación de productos compartidos",
 		"shared_product_comparison": "Comparación de productos compartida",
