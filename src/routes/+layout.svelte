@@ -73,7 +73,7 @@
 			const mod = await import('$lib/matomo');
 			MatomoComponent = mod.Matomo;
 		} catch {
-			// Analytics was blocked or failed to load. Gracefully degrade without crashing.
+			console.warn('Matomo analytics failed to load or was blocked.');
 		}
 	});
 
