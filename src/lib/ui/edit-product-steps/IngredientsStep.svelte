@@ -61,9 +61,6 @@
 			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
-			console.debug(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
-
-			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
 			if (error) {
 				console.error('Error performing OCR:', error);
@@ -84,7 +81,6 @@
 				return;
 			}
 
-			// Set OCR result
 			product[`ingredients_text_${languageCode}`] = ocrText;
 			trackOffEvent('contribution', 'ocr_succeeded', 'ingredients');
 		} catch (error) {
@@ -187,7 +183,8 @@
 								<span>Extract ingredients from image</span>
 							{/if}
 						</button>
-						<!-- One-Tap Unselect Button (#1794) -->
+
+						<!-- Unselect Button -->
 						<button
 							type="button"
 							class="btn btn-outline btn-error btn-sm"
@@ -211,7 +208,6 @@
 					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
 				</span>
 			</label>
-
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea-bordered textarea w-full text-sm sm:text-base"
