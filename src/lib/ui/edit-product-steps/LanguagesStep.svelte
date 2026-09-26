@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
-	import { getLanguageName } from '$lib/languages';
+	import { getLanguageName, getLanguageOption } from '$lib/languages';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -23,9 +23,12 @@
 
 	let { product = $bindable(), codes, addLanguage, editMode = false }: Props = $props();
 
+	// Autocomplete prints "{locale} ({en})". Put English in locale and the
+	// name in that language in en so the label matches the settings list.
 	let languageNames = $derived(
 		codes.map((code) => {
-			return { code: code, en: getLanguageName(code, 'en'), locale: getLanguageName(code) };
+			const { english, vernacular } = getLanguageOption(code);
+			return { code, locale: english, en: vernacular, ui: getLanguageName(code) };
 		})
 	);
 
@@ -42,7 +45,7 @@
 		const confirmed = confirm(
 			$_('product.edit.confirm_delete_language', {
 				default: 'Are you sure you want to delete all fields for {language}?',
-				values: { language: getLanguageName(code) }
+				values: { language: getLanguageOption(code).label }
 			})
 		);
 		if (!confirmed) return;
@@ -122,7 +125,7 @@
 		}}
 	>
 		{#each Object.keys(product.languages_codes ?? {}) as lang (lang)}
-			<option value={lang}>{getLanguageName(lang)}</option>
+			<option value={lang}>{getLanguageOption(lang).label}</option>
 		{/each}
 	</select>
 	<span class="label">
@@ -145,7 +148,7 @@
 		{/if}
 
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-			{@const langName = getLanguageName(code)}
+			{@const langName = getLanguageOption(code).label}
 			<div class="flex items-center gap-2">
 				<div
 					class={[
@@ -222,7 +225,7 @@
 	<div class="collapse-content">
 		<InputAutocomplete
 			items={languageNames}
-			searchKeys={['code', 'en', 'locale']}
+			searchKeys={['code', 'en', 'locale', 'ui']}
 			placeholder={$_('product.edit.search_languages')}
 			inline
 			onselect={(lang) => {
