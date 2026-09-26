@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
-	import { getLanguageName } from '$lib/languages';
+	import { getLanguageName, getLanguageOption } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 
@@ -25,7 +25,8 @@
 
 	let languageNames = $derived(
 		codes.map((code) => {
-			return { code: code, en: getLanguageName(code, 'en'), locale: getLanguageName(code) };
+			const { english, vernacular, label } = getLanguageOption(code);
+			return { code, en: english, vernacular, label, locale: getLanguageName(code) };
 		})
 	);
 
@@ -33,7 +34,7 @@
 	let languageSearch = $state('');
 	let filteredLanguages = $derived(
 		languageNames.filter((code) =>
-			[code.code, code.en, code.locale].some((name) =>
+			[code.code, code.en, code.vernacular, code.locale].some((name) =>
 				name.toLowerCase().includes(languageSearch.toLowerCase())
 			)
 		)
@@ -92,7 +93,7 @@
 	<legend class="fieldset-legend">{$_('product.edit.main_language')}</legend>
 	<select class="select w-full">
 		{#each Object.keys(product.languages_codes) ?? [] as lang (lang)}
-			<option value={lang} selected={product.lang === lang}>{getLanguageName(lang)}</option>
+			<option value={lang} selected={product.lang === lang}>{getLanguageOption(lang).label}</option>
 		{/each}
 	</select>
 	<span class="label">The main language of the product</span>
@@ -123,7 +124,7 @@
 			>
 				{#each filteredLanguages as lang (lang)}
 					<button class="btn btn-ghost text-xs sm:text-sm" onclick={() => addLanguage(lang.code)}>
-						{lang.locale} ({lang.en}) - {lang.code}
+						{lang.label} - {lang.code}
 					</button>
 				{/each}
 			</div>
