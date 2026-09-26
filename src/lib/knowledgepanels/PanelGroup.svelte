@@ -15,6 +15,12 @@
 	} = $props();
 
 	let groupEl = $derived(element.panel_group_element);
+	let previewImageUrl = $derived(
+		groupEl.image?.sizes['400']?.url ??
+			groupEl.image?.sizes['200']?.url ??
+			groupEl.image?.sizes['100']?.url ??
+			groupEl.image?.sizes['full']?.url
+	);
 </script>
 
 <h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
@@ -26,11 +32,11 @@
 		{/each}
 	</div>
 
-	{#if groupEl.image != null}
+	{#if groupEl.image != null && previewImageUrl != null}
 		{@const parsedImageId = Number(groupEl.image.id)}
 		<div class="md:max-w-64">
 			<ImageButton
-				src={groupEl.image.sizes['full'].url}
+				src={previewImageUrl}
 				alt={groupEl.image.alt}
 				rawImageId={Number.isFinite(parsedImageId) ? parsedImageId : undefined}
 				productCode={code}

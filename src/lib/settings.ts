@@ -2,8 +2,8 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 4,
-	lang: undefined as string | undefined,
+	version: 7,
+	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
 	nutriscoreInfluence: 50,
@@ -15,15 +15,20 @@ const DEFAULT_PREFERENCES = {
 	},
 
 	editing: {
-		expandAllSections: false
+		expandAllSections: true
 	},
 
 	displayPricesInSearch: true,
+	productSidebarVisible: true,
 
 	moderator: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
+
+export function getLanguageCode(locale: string | undefined): string {
+	return locale?.replaceAll('_', '-').split('-')[0]?.toLowerCase() || 'en';
+}
 
 export const preferences = persisted('preferences', DEFAULT_PREFERENCES);
 
@@ -95,6 +100,43 @@ const MIGRATIONS: {
 				// @ts-expect-error - adding new field
 				preferences.displayPricesInSearch = true;
 			}
+			return preferences;
+		}
+	},
+	{
+		version: 5,
+		upgrade: (preferences) => {
+			if (preferences.editing) {
+				if (preferences.editing.expandAllSections === undefined) {
+					preferences.editing.expandAllSections = true;
+				}
+			} else {
+				preferences.editing = {
+					expandAllSections: true
+				};
+			}
+			return preferences;
+		}
+	},
+	{
+		version: 6,
+		upgrade: (preferences) => {
+			if (!('productSidebarVisible' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.productSidebarVisible = true;
+			}
+			return preferences;
+		}
+	},
+	{
+		// 2026-08-26: Store the UI locale separately from the API language code.
+		version: 7,
+		upgrade: (preferences) => {
+			const legacyPreferences = preferences as Preferences & { lang?: string };
+			if (legacyPreferences.locale == null && legacyPreferences.lang != null) {
+				legacyPreferences.locale = legacyPreferences.lang;
+			}
+			delete legacyPreferences.lang;
 			return preferences;
 		}
 	}

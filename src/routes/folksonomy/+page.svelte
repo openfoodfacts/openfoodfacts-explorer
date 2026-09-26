@@ -110,7 +110,7 @@
 <div class="folksonomy-container flex flex-col gap-6 sm:p-4" transition:fade={{ duration: 500 }}>
 	{#snippet headerSection()}
 		<div class="header-section mb-2">
-			<h1 class="text-primary mb-4 text-3xl font-bold">
+			<h1 class="mb-4 text-3xl font-bold text-primary">
 				{$_('folksonomy.title')}
 				<span class="text-base font-normal opacity-70">{$_('folksonomy.subtitle')}</span>
 			</h1>
@@ -125,11 +125,11 @@
 						<input
 							type="text"
 							placeholder={$_('folksonomy.search_placeholder')}
-							class="input input-bordered join-item w-full"
+							class="input-bordered input join-item w-full"
 							bind:value={searchQuery}
 							transition:fade={{ duration: 200 }}
 						/>
-						<button class="btn btn-square join-item" aria-label={$_('search.button')}>
+						<button class="btn join-item btn-square" aria-label={$_('search.button')}>
 							<IconMdiMagnify class="h-6 w-6" />
 						</button>
 					</div>
@@ -155,11 +155,14 @@
 
 	{#snippet keyCard(key: FolksonomyKey)}
 		<div
-			class="key-card bg-base-100 border-base-300 rounded-lg border p-3 transition-all duration-300 hover:shadow-lg"
+			class="key-card rounded-lg border border-base-300 bg-base-100 p-3 transition-all duration-300 hover:shadow-lg"
 		>
-			<a href="/folksonomy/{key.k}" class="hover:text-primary block font-mono transition-colors">
-				<div class="mb-2 flex items-center justify-between">
-					<span class="truncate text-sm md:text-base" title={key.k}>{key.k}</span>
+			<a
+				href="/folksonomy/{key.k}"
+				class="flex h-full flex-col font-mono transition-colors hover:text-primary"
+			>
+				<div class="mb-2 flex items-start justify-between gap-2">
+					<span class="text-sm break-all md:text-base" title={key.k}>{key.k}</span>
 					<div class="flex gap-1">
 						{#if key.count != null && key.count > 0}
 							{@const usagePercent = getUsagePercent(key.count)}
@@ -169,7 +172,9 @@
 								class:badge-secondary={usagePercent > 50 && usagePercent <= 75}
 								class:badge-accent={usagePercent > 25 && usagePercent <= 50}
 								class:badge-ghost={usagePercent <= 25}
-								title="Used in {key.count} products ({usagePercent}% relative usage)"
+								title={$_('folksonomy.badge_products', {
+									values: { count: key.count, percent: usagePercent }
+								})}
 							>
 								{key.count}
 							</div>
@@ -177,7 +182,7 @@
 						{#if key.values != null && key.values > 0}
 							<div
 								class="badge badge-sm {getColorClass(getValuesPercent(key.values))}"
-								title="Has {key.values} different possible values"
+								title={$_('folksonomy.badge_values', { values: { values: key.values } })}
 							>
 								{key.values}
 							</div>
@@ -186,11 +191,13 @@
 				</div>
 				{#if key.count != null && key.count > 0}
 					<div
-						class="bg-base-300 h-1 w-full overflow-hidden rounded-full"
-						title="Usage frequency indicator: {getUsagePercent(key.count)}% relative to other keys"
+						class="h-1 w-full overflow-hidden rounded-full bg-base-300"
+						title={$_('folksonomy.progress_bar', {
+							values: { percent: getUsagePercent(key.count) }
+						})}
 					>
 						<div
-							class="bg-primary h-full rounded-full"
+							class="h-full rounded-full bg-primary"
 							style="width: {getUsagePercent(key.count)}%"
 						></div>
 					</div>
@@ -212,7 +219,7 @@
 				<span class="break-all">{group}</span>
 				<div class="badge">{keys.length}</div>
 			</div>
-			<button class="btn btn-sm btn-circle" aria-hidden="true">
+			<button class="btn btn-circle btn-sm" aria-hidden="true">
 				{#if expandedGroups[group]}
 					<IconMdiChevronUp class="h-6 w-6" />
 				{:else}
@@ -237,31 +244,33 @@
 	{@render headerSection()}
 
 	{#if data.keys == null || data.keys.length === 0}
-		{@render emptyState(
-			'No Folksonomy keys available. Keys will appear here once they are created.'
-		)}
+		{@render emptyState($_('folksonomy.no_keys_available'))}
 	{:else if filteredTags.length === 0}
-		{@render emptyState('No keys found with the current search query.')}
+		{@render emptyState($_('folksonomy.no_keys_found'))}
 	{:else}
-		<div class="bg-base-200 mb-4 rounded-lg p-3 text-sm opacity-75">
-			<h3 class="mb-1 font-semibold">Key Visualization Guide:</h3>
+		<div class="mb-4 rounded-lg bg-base-200 p-3 text-sm opacity-75">
+			<h3 class="mb-1 font-semibold">{$_('folksonomy.key_visualization_guide.title')}</h3>
 			<ul class="ml-4 list-disc">
 				<li>
-					The first badge <span class="badge badge-sm mr-1 ml-1">123</span> shows the number of products
-					using this key
+					{$_('folksonomy.key_visualization_guide.badge_products_start')}
+					<span class="mr-1 ml-1 badge badge-sm">123</span>
+					{$_('folksonomy.key_visualization_guide.badge_products_end')}
 				</li>
 				<li>
-					The second badge <span class="badge badge-sm badge-accent mr-1 ml-1">45</span> shows the number
-					of unique values for this key
+					{$_('folksonomy.key_visualization_guide.badge_values_start')}
+					<span class="mr-1 ml-1 badge badge-sm badge-accent">45</span>
+					{$_('folksonomy.key_visualization_guide.badge_values_end')}
 				</li>
-				<li>The progress bar represents how commonly the key is used relative to other keys</li>
+				<li>
+					{$_('folksonomy.key_visualization_guide.progress_bar')}
+				</li>
 			</ul>
 		</div>
 
 		<div class="keys-container">
 			{#each groupedTags as [group, keys] (group)}
 				<div
-					class="group-container card bg-base-200 mb-4 shadow-md"
+					class="group-container card mb-4 bg-base-200 shadow-md"
 					transition:fly={{ y: 20, duration: 300 }}
 				>
 					{@render groupHeader(group, keys)}

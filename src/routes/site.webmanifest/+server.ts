@@ -25,6 +25,8 @@ export const GET: RequestHandler = async () => {
 	const manifest: WebManifest = {
 		name: 'Open Food Facts Explorer',
 		short_name: 'OFF Explorer',
+		start_url: '/',
+		scope: '/',
 		icons: [
 			{
 				src: android192PNG,

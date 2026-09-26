@@ -4,7 +4,7 @@
 	import NetworkError from '$lib/ui/NetworkError.svelte';
 	import StandardError from '$lib/ui/StandardError.svelte';
 	import { ERROR_TYPES } from '$lib/errors';
-	import { tracker } from '$lib/matomo';
+	import { trackOffEvent } from '$lib/analytics';
 
 	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
 
@@ -19,8 +19,7 @@
 			for (const err of errorDetails) console.error('Error detail:', err);
 		}
 
-		// track the error event with Matomo
-		$tracker?.trackEvent('Error', 'Error Occurred', errorMessage, errorDetails.length);
+		trackOffEvent('system', 'error', String(page.status), errorDetails.length);
 	});
 </script>
 
@@ -33,13 +32,13 @@
 			<h1 class="mb-4 text-4xl font-bold">
 				{$_('general.page_not_found', { default: 'Page Not Found' })}
 			</h1>
-			<p class="text-base-content/70 mb-8 text-lg">
+			<p class="mb-8 text-lg text-base-content/70">
 				{$_('general.page_not_found_desc', {
 					default: "We looked everywhere, but we couldn't find the page you requested."
 				})}
 			</p>
 			<div class="flex justify-center gap-4">
-				<a href="/" class="btn btn-primary btn-lg">
+				<a href="/" class="btn btn-lg btn-primary">
 					{$_('general.return_home', { default: 'Return Home' })}
 				</a>
 			</div>

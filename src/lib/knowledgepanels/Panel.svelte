@@ -22,6 +22,8 @@
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
 	let expanded = $derived(panel?.expanded ?? false);
+
+	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
@@ -33,7 +35,7 @@
 {#snippet detailsElement(title: KnowledgePanelTitle, elements: KnowledgeElement[] = [])}
 	<div
 		class={[
-			'border-base-300 collapse border',
+			'collapse border border-base-300',
 			elements.length !== 0 ? 'collapse-arrow' : 'collapse-close',
 			panel.size && `kp-panel-size-${panel.size}`,
 			panel.evaluation && `kp-panel-eval-${panel.evaluation}`,
@@ -45,15 +47,16 @@
 
 		<div
 			class={[
-				'hover:bg-base-200 dark:hover:bg-base-100 collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none'
+				'collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none hover:bg-base-200 dark:hover:bg-base-100'
 			]}
 		>
 			{#if title.icon_url != null}
 				<img
 					class={[
-						'kp-icon mr-4 h-12',
+						'kp-icon mr-4 ml-2 h-12 w-12 object-contain',
 						title.icon_size && `kp-icon-${title.icon_size}`,
-						title.icon_color_from_evaluation && 'kp-icon-from-eval'
+						title.icon_color_from_evaluation && 'kp-icon-from-eval',
+						title.icon_url.includes(MONOCHROME_ICON_PATH) && 'kp-icon-monochrome'
 					]}
 					src={title.icon_url}
 					alt={title.title}
@@ -62,7 +65,7 @@
 			<div class="grow">
 				<div class="kp-title">{title.title}</div>
 				{#if title.subtitle != null}
-					<h3 class="kp-subtitle text-secondary text-sm italic">{title.subtitle}</h3>
+					<h3 class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</h3>
 				{/if}
 			</div>
 		</div>
@@ -106,14 +109,17 @@
 	@reference 'tailwindcss';
 
 	@media (prefers-color-scheme: dark) {
+		/* Flip black knowledge panel icons to white so they stay readable on a dark
+		   background. Only monochrome icons are inverted: see MONOCHROME_ICON_PATH. */
+		.kp-icon-monochrome,
 		.kp-icon-from-eval {
 			@apply invert;
 		}
 	}
 
-	.kp-icon-small {
+	/*.kp-icon-small {
 		@apply h-6 w-6;
-	}
+	}*/
 
 	.kp-panel-size-small .kp-title {
 		@apply text-sm;

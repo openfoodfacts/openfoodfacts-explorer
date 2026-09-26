@@ -11,14 +11,46 @@ Wraps the <product-card> web component and adds accessibility features.
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
+	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
+
 	import { compareStore } from '$lib/stores/compareStore';
 	import { getToastCtx } from '$lib/stores/toasts';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		product: ProductReduced | Product;
 		personalScore?: ScoreData;
 	};
 	let { product, personalScore }: Props = $props();
+
+	function normalizeBrands(value: unknown): string {
+		if (Array.isArray(value)) {
+			return value
+				.filter((brand): brand is string => typeof brand === 'string')
+				.map((brand) => brand.replace(/^[a-z]{2}:/i, ''))
+				.join(', ');
+		}
+
+		return typeof value === 'string' ? value : '';
+	}
+
+	const productForCard = $derived.by(() => {
+		const rawProduct = product as Product & {
+			brands?: unknown;
+			environmental_score_grade?: string;
+			greenscore_grade?: string;
+		};
+		const greenScoreGrade =
+			rawProduct.greenscore_grade ??
+			rawProduct.ecoscore_grade ??
+			rawProduct.environmental_score_grade;
+
+		return {
+			...product,
+			brands: normalizeBrands(rawProduct.brands),
+			...(greenScoreGrade != null && { greenscore_grade: greenScoreGrade })
+		};
+	});
 
 	let navigating = $state(false);
 	async function navigateToProduct() {
@@ -49,6 +81,14 @@ Wraps the <product-card> web component and adds accessibility features.
 	}
 
 	const contextItems = [
+		{
+			id: 'edit',
+			label: $_('product.menu.edit', { default: 'Edit product' }),
+			icon: IconMdiEdit,
+			action: () => {
+				goto(resolve('/products/[barcode]/edit', { barcode: product.code }));
+			}
+		},
 		{
 			id: 'add-to-comparison',
 			label: $_('product.menu.add_to_comparison', { default: 'Add to comparison' }),
@@ -120,15 +160,17 @@ Wraps the <product-card> web component and adds accessibility features.
 
 <product-card
 	class="h-44 w-full cursor-pointer"
-	{product}
+	product={productForCard}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
-	aria-label={product.product_name
+	aria-label={productForCard.product_name
 		? $_('product.card.aria_label', {
-				values: { productName: product.product_name, productCode: product.code }
+				values: { productName: productForCard.product_name, productCode: productForCard.code },
+				default: 'Go to product {productName} with code {productCode}'
 			})
 		: $_('product.card.aria_label_no_name', {
-				values: { productCode: product.code }
+				values: { productCode: productForCard.code },
+				default: 'Go to product with code {productCode}'
 			})}
 	showMatchTag={personalScore != undefined}
 	navigating={{
@@ -144,7 +186,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	<div
 		role="menu"
 		tabindex="-1"
-		class="bg-base-100 border-base-300 animate-in fade-in slide-in-from-top-1 fixed z-50 min-w-48 rounded-xl border shadow-2xl backdrop-blur-sm duration-200"
+		class="animate-in fade-in slide-in-from-top-1 fixed z-50 min-w-48 rounded-xl border border-base-300 bg-base-100 shadow-2xl backdrop-blur-sm duration-200"
 		style="top: {pos.y}px; left: {pos.x}px;"
 		onmousedown={(e) => e.stopPropagation()}
 		onkeydown={handleKeyDown}
@@ -153,7 +195,7 @@ Wraps the <product-card> web component and adds accessibility features.
 			{#each contextItems as item (item.id)}
 				<button
 					role="menuitem"
-					class="hover:bg-base-200 active:bg-base-300 focus:bg-base-200 focus:ring-primary flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out focus:ring-2 focus:ring-offset-1 focus:outline-none"
+					class="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium transition-all duration-150 ease-out hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary focus:ring-offset-1 focus:outline-none active:bg-base-300"
 					onclick={item.action}
 				>
 					<item.icon class="h-5 w-5 opacity-70" />

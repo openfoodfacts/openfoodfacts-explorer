@@ -2,25 +2,16 @@ import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
 import { get } from 'svelte/store';
 import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
-import { preferences } from '$lib/settings';
-import { type ProductV3, OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
+import { getLanguageCode, preferences } from '$lib/settings';
+import {
+	type PackagingComponent,
+	type PackagingTaxonomyTag,
+	type ProductV3,
+	OpenFoodFacts
+} from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '$lib/stores/auth';
 
-// TODO: switch to SDK once it is updated
-export type PackagingTaxonomyTag = {
-	id?: string;
-	lc_name?: string;
-};
-
-// TODO: switch to SDK once it is updated
-export type PackagingComponent = {
-	number_of_units?: number;
-	shape?: PackagingTaxonomyTag;
-	material?: PackagingTaxonomyTag;
-	recycling?: PackagingTaxonomyTag;
-	quantity_per_unit?: string;
-	weight_measured?: number;
-};
+export type { PackagingTaxonomyTag, PackagingComponent };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -31,6 +22,10 @@ export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
 ): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	if (productCodes.length === 0) {
+		return {};
+	}
+
 	const off = createProductsApi(fetch);
 
 	const params = new URLSearchParams({
@@ -64,8 +59,104 @@ export async function addOrEditProductV2(
 }
 
 /**
+ * Update the barcode of a product (moderator-only action).
+ * This sends a POST request to the OFF API with the current code and the new code.
+ * @param fetch - The fetch function
+ * @param currentCode - The current barcode of the product
+ * @param newCode - The correct barcode to replace the current one
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function updateBarcode(
+	fetch: typeof window.fetch,
+	currentCode: string,
+	newCode: string
+): Promise<{ data?: unknown; error?: string }> {
+	const off = createProductsApi(fetch);
+
+	try {
+		const success = await off.apiv2.changeBarcode(currentCode, newCode);
+		return { data: success };
+	} catch (error) {
+		console.error('Error updating barcode:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Move images from one product to another (moderator-only action).
+ * @param fetch - The fetch function
+ * @param code - source product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ * @param moveToBarcode - destination product barcode
+ * @param copyData - whether to copy product data to destination
+ */
+export async function moveImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string,
+	moveToBarcode: string,
+	copyData: boolean = false
+): Promise<{ data?: boolean; error?: string }> {
+	try {
+		const result = await createProductsApi(fetch).moveImages(code, imgids, moveToBarcode, copyData);
+		if ('error' in result) {
+			return { error: result.error.message };
+		}
+		return { data: true };
+	} catch (error) {
+		console.error('Error moving images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete product images by moving them to trash (moderator-only action).
+ * @param fetch - The fetch function
+ * @param code - product barcode
+ * @param imgids - comma-separated list of image IDs (e.g. "1,2,3")
+ */
+export async function deleteImages(
+	fetch: typeof window.fetch,
+	code: string,
+	imgids: string
+): Promise<{ data?: boolean; error?: string }> {
+	try {
+		const result = await createProductsApi(fetch).deleteImages(code, imgids);
+		if ('error' in result) {
+			return { error: result.error.message };
+		}
+		return { data: true };
+	} catch (error) {
+		console.error('Error deleting images:', error);
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+/**
+ * Delete a product page (moderator-only action).
+ * This sends a POST request to /cgi/product.pl with the required parameters.
+ * @param fetch - The fetch function
+ * @param code - The barcode of the product to delete
+ * @param comment - The reason/comment for deletion
+ * @returns An object with `data` on success or `error` with a message on failure
+ */
+export async function deleteProduct(
+	fetch: typeof window.fetch,
+	code: string,
+	comment: string
+): Promise<{ data?: boolean; error?: string }> {
+	try {
+		return { data: await createProductsApi(fetch).deleteProduct(code, comment) };
+	} catch (error) {
+		console.error('Error deleting product:', error);
+		return {
+			error: error instanceof Error ? error.message : String(error)
+		};
+	}
+}
+
+/**
  * Fetch taxonomy suggestions for packaging fields (shapes, materials, labels, recycling, etc.)
- * // TODO: switch to the generic `getTaxonomySuggestions` from the SDK
  * @param fetch - The fetch function
  * @param tagtype - The taxonomy type (e.g. 'packaging_shapes', 'labels')
  * @param searchString - Optional search string for autocomplete filtering
@@ -79,19 +170,15 @@ export async function getTaxonomySuggestions(
 	limit: number = 25
 ) {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 	const cc = get(preferences).country;
 
-	return off.apiv3.client.GET('/api/v3/taxonomy_suggestions', {
-		params: {
-			query: {
-				tagtype,
-				lc,
-				...(cc && { cc }),
-				...(searchString && { string: searchString }),
-				limit: String(limit)
-			}
-		}
+	return off.apiv3.getTaxonomySuggestions({
+		tagtype,
+		lc,
+		...(cc && { cc }),
+		...(searchString && { string: searchString }),
+		limit: String(limit)
 	});
 }
 
@@ -148,7 +235,7 @@ export async function updatePackagingsV3(
 	packagingText?: string
 ): Promise<{ data?: unknown; error?: string }> {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang || 'en';
+	const lc = getLanguageCode(get(preferences).locale);
 
 	const filteredPackagings = packagings
 		.map(cleanPackagingComponent)
@@ -183,6 +270,39 @@ export async function updatePackagingsV3(
 }
 
 /**
+ * Update the obsolete status of a product (moderator-only action).
+ * @param fetch - The fetch function
+ * @param code - Product barcode
+ * @param obsolete - Whether the product is obsolete ('on' or '')
+ */
+export async function updateObsoleteStatusV3(
+	fetch: typeof window.fetch,
+	code: string,
+	obsolete: 'on' | ''
+): Promise<{ data?: unknown; error?: string }> {
+	// TODO: switch to `updateObsoleteStatus` from SDK
+	const off = createProductsApi(fetch);
+	const lc = getLanguageCode(get(preferences).locale);
+
+	const { data, error } = await off.apiv3.client.PATCH('/api/v3/product/{code}', {
+		params: { path: { code } },
+		body: {
+			lc,
+			fields: 'obsolete',
+			product: {
+				obsolete
+			}
+		}
+	});
+
+	if (error) {
+		return { error: `Failed to update obsolete status: ${JSON.stringify(error)}` };
+	}
+
+	return { data };
+}
+
+/**
  * Upload image using API v3.3 with base64 encoded data
  * @param barcode Product barcode
  * @param imageDataBase64 Base64 encoded image data
@@ -195,7 +315,7 @@ export async function uploadImageV3(
 	imagefield?: string
 ) {
 	const off = createProductsApi(fetch);
-	const lc = get(preferences).lang;
+	const lc = getLanguageCode(get(preferences).locale);
 	const cc = get(preferences).country;
 
 	return off.apiv3.uploadProductImage(barcode, {
@@ -253,6 +373,47 @@ export async function unselectImageV3(
 export async function getProductReducedForCard(fetch: typeof window.fetch, code: string) {
 	const off = createProductsApi(fetch);
 	return off.getProductV3(code, { fields: [...REDUCED_FIELDS] });
+}
+
+export async function getBulkProductCards(fetch: typeof window.fetch, codes: string[]) {
+	const off = createProductsApi(fetch);
+
+	const params = new URLSearchParams({
+		code: codes.join(','),
+		fields: REDUCED_FIELDS.join(',')
+	});
+
+	return off.apiv2.search(Object.fromEntries(params.entries()));
+}
+
+/**
+ * Fetch the canonical product-card fields and index them by barcode.
+ *
+ * The Search API returns indexed taxonomy values (for example, brands as
+ * `['xx:brand']`) rather than the display fields expected by <product-card>.
+ */
+export async function getBulkProductCardsByCode(
+	fetch: typeof window.fetch,
+	codes: string[]
+): Promise<Record<string, ProductReduced>> {
+	if (codes.length === 0) {
+		return {};
+	}
+
+	const { data, error } = await getBulkProductCards(fetch, codes);
+	if (error != null || data == null) {
+		console.error('Error fetching canonical product-card data:', error);
+		return {};
+	}
+
+	const cardsByCode: Record<string, ProductReduced> = {};
+	for (const product of data.products ?? []) {
+		if (product.code != null) {
+			cardsByCode[product.code] = product as unknown as ProductReduced;
+		}
+	}
+
+	return cardsByCode;
 }
 
 export type ProductStateBase = {
@@ -370,6 +531,7 @@ export type ImageOperationResponse = {
 type LangIngredient = `ingredients_text_${string}`;
 type LangProduct = `product_name_${string}`;
 type LangPackagingText = `packaging_text_${string}`;
+type LangGenericName = `generic_name_${string}`;
 
 type ImageSize = {
 	h: number;
@@ -487,9 +649,16 @@ export type Product = ProductDataSection & {
 	emb_codes: string;
 	emb_codes_tags: string[];
 
+	allergens: string;
+	allergens_tags: string[];
+	traces: string;
+	traces_tags: string[];
+
 	nutriments: Nutriments;
 
 	no_nutrition_data?: boolean;
+	obsolete?: string;
+	obsolete_since_date?: string;
 
 	source: {
 		fields: string[];
@@ -511,7 +680,8 @@ export type Product = ProductDataSection & {
 	lang: string;
 } & Partial<Record<LangProduct, string>> &
 	Partial<Record<LangIngredient, string>> &
-	Partial<Record<LangPackagingText, string>>;
+	Partial<Record<LangPackagingText, string>> &
+	Partial<Record<LangGenericName, string>>;
 
 const REDUCED_FIELDS = [
 	'image_front_small_url',

@@ -9,14 +9,17 @@ export type {
 	Store,
 	Brand,
 	Language,
-	Country
+	Country,
+	Allergen
 } from '@openfoodfacts/openfoodfacts-nodejs';
 
 export function getOrDefault<T>(localized: Record<string, T>, lang: string = 'en'): T | undefined {
-	const nonNullLang = lang?.toLowerCase() ?? 'en';
+	const nonNullLang = lang?.replaceAll('_', '-').toLowerCase() ?? 'en';
+	const languageCode = nonNullLang.split('-')[0] ?? 'en';
 
 	return (
 		localized[nonNullLang] ?? // try full locale
+		localized[languageCode] ?? // try base language
 		localized['en'] ?? // fallback to english
 		Object.values(localized)[0] // fallback to first available
 	);
@@ -34,5 +37,6 @@ export const TAXONOMIES_NAMES: Record<string, string> = {
 	brands: 'Brand',
 	countries: 'Country',
 	origins: 'Origin',
-	languages: 'Language'
+	languages: 'Language',
+	allergens: 'Allergen'
 };

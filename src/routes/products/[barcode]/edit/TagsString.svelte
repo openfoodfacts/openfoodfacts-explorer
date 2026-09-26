@@ -5,13 +5,16 @@
 		tagsString: string;
 		separator?: string;
 		autocomplete?: readonly string[];
+		placeholder?: string;
+		onChange?: (value: string) => void;
 	};
 
-	let { tagsString = $bindable(), separator = ',', autocomplete = [] }: Props = $props();
+	let { tagsString, separator = ',', autocomplete = [], placeholder, onChange }: Props = $props();
 </script>
 
 <Tags
 	{autocomplete}
+	{placeholder}
 	tags={tagsString?.split(separator)?.filter((str) => str !== '') ?? []}
-	onChange={(tags) => (tagsString = tags.join(separator))}
+	onChange={(tags) => onChange?.(tags.join(separator))}
 />

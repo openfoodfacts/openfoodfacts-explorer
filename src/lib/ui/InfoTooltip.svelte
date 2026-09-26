@@ -20,14 +20,14 @@
 	].join(' ');
 </script>
 
-<div class="tooltip tooltip-top {tooltipContentClasses} tooltip-primary z-50" data-tip={text}>
+<div class="tooltip tooltip-top {tooltipContentClasses} z-50 tooltip-primary" data-tip={text}>
 	<button
 		type="button"
-		class="btn btn-ghost btn-xs hover:bg-primary/10 h-5 min-h-0 w-5 rounded-full p-0 transition-colors duration-200"
+		class="btn h-5 min-h-0 w-5 rounded-full btn-ghost p-0 transition-colors duration-200 btn-xs hover:bg-primary/10"
 		aria-label="More information"
 	>
 		<IconMdiHelpCircleOutline
-			class="text-primary hover:text-primary/70 h-4 w-4 transition-colors duration-200"
+			class="h-4 w-4 text-primary transition-colors duration-200 hover:text-primary/70"
 		/>
 	</button>
 </div>

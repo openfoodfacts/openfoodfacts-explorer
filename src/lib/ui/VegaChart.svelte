@@ -154,12 +154,12 @@
 	<div bind:this={chartContainer} class="vega-chart relative w-full">
 		{#if isLoading}
 			<div class="flex h-32 items-center justify-center">
-				<div class="loading loading-spinner loading-md"></div>
+				<div class="loading loading-md loading-spinner"></div>
 				<span class="ml-2">Loading chart...</span>
 			</div>
 		{/if}
 		{#if error}
-			<div class="bg-error/10 border-error/20 text-error rounded border p-4">
+			<div class="rounded border border-error/20 bg-error/10 p-4 text-error">
 				<p class="font-semibold">Chart Error:</p>
 				<p class="text-sm">{error}</p>
 			</div>

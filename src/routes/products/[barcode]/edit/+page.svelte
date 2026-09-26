@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
+	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
+	import { trackOffEvent } from '$lib/analytics';
 
 	import {
 		getOrDefault,
@@ -13,13 +15,17 @@
 		type Nutriments,
 		type RawImage,
 		addOrEditProductV2,
-		updatePackagingsV3
+		updateBarcode,
+		updatePackagingsV3,
+		deleteProduct,
+		updateObsoleteStatusV3
 	} from '$lib/api';
-	import { preferences } from '$lib/settings';
+	import { getToastCtx } from '$lib/stores/toasts';
+	import { getLanguageCode, preferences } from '$lib/settings';
 	import EditProductForm from '$lib/ui/EditProductForm.svelte';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
-	import { getToastCtx } from '$lib/stores/toasts';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { userInfo } from '$lib/stores/user';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
@@ -74,6 +80,8 @@
 			stores: '',
 			origins: '',
 			countries: '',
+			allergens: '',
+			traces: '',
 			link: '',
 			ingredients_text: '',
 			ingredients_text_en: '',
@@ -112,6 +120,8 @@
 			labels_tags: [],
 			origins_tags: [],
 			countries_tags: [],
+			allergens_tags: [],
+			traces_tags: [],
 
 			nutriments: {} as Nutriments,
 
@@ -140,7 +150,7 @@
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
-			.map((t) => getOrDefault(t.name, $preferences.lang))
+			.map((t) => getOrDefault(t.name, getLanguageCode($preferences.locale)))
 			.filter((t): t is string => t !== undefined);
 	}
 
@@ -170,6 +180,7 @@
 	let storeNames = $derived(getNames(data.stores));
 	let originNames = $derived(getNames(data.origins));
 	let countriesNames = $derived(getNames(data.countries));
+	let allergenNames = $derived(getNames(data.allergens));
 	let units = $derived(getUnits(data.units));
 
 	function createProductStore(data: PageData): Product {
@@ -186,6 +197,10 @@
 					stores: data.state.product.stores ?? '',
 					origins: data.state.product.origins ?? '',
 					countries: data.state.product.countries ?? '',
+					allergens: data.state.product.allergens ?? '',
+					traces: data.state.product.traces ?? '',
+					allergens_tags: (data.state.product.allergens_tags as string[]) ?? [],
+					traces_tags: (data.state.product.traces_tags as string[]) ?? [],
 					languages_codes: data.state.product.languages_codes ?? {},
 					// @ts-expect-error - FIXME: to be fixed in the SDK
 					images: data.state.product.images ?? {},
@@ -194,7 +209,17 @@
 				};
 	}
 
-	let product = $derived(createProductStore(data));
+	// svelte-ignore state_referenced_locally
+	let product = $state<Product>(createProductStore(data));
+
+	$effect(() => {
+		const currentBarcode = page.params.barcode;
+		untrack(() => {
+			if (product.code !== currentBarcode) {
+				product = createProductStore(data);
+			}
+		});
+	});
 
 	let comment = $state('');
 
@@ -214,6 +239,62 @@
 	let isSubmitting = $state(false);
 	let productNotFound = $derived(data.state.status === 'empty');
 
+	async function handleBarcodeCorrection(newCode: string) {
+		try {
+			const { data, error } = await updateBarcode(fetch, product.code, newCode);
+			if (error) {
+				console.error(error);
+				toastCtx.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
+			} else if (data) {
+				toastCtx.success(
+					$_('product.moderator.barcode_correction_success', {
+						default: 'Barcode updated successfully'
+					})
+				);
+				goto(`/products/${newCode}`);
+			} else {
+				toastCtx.error(
+					$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+				);
+			}
+		} catch (err) {
+			console.error(err);
+			toastCtx.error(
+				$_('product.moderator.barcode_correction_error', { default: 'Failed to update barcode' })
+			);
+		}
+	}
+
+	async function handleDeleteProduct(comment: string) {
+		if (isSubmitting) {
+			return;
+		}
+		isSubmitting = true;
+		const { data, error } = await deleteProduct(fetch, product.code, comment);
+		isSubmitting = false;
+
+		if (data && !error) {
+			trackOffEvent('contribution', 'product_deleted');
+			toastCtx.success(
+				$_('product.moderator.delete_product_success', {
+					default: 'Product deleted successfully.'
+				})
+			);
+			goto('/');
+		} else {
+			if (error) {
+				console.error(error);
+			}
+			toastCtx.error(
+				$_('product.moderator.delete_product_error', {
+					default: 'Failed to delete product. Please try again.'
+				})
+			);
+		}
+	}
+
 	// Initialize nutriments object if it doesn't exist
 	function ensureNutriments() {
 		if (!product.nutriments) {
@@ -222,28 +303,24 @@
 	}
 
 	// Handle nutriment value changes
-	function updateNutriment(key: string, value: number | null) {
+	function updateNutriment(key: string, value: number | string) {
 		ensureNutriments();
 
-		if (value === null) {
-			delete product.nutriments[key];
-			product = { ...product, nutriments: { ...product.nutriments } }; // Trigger reactivity
-		} else {
-			product = {
-				...product,
-				nutriments: { ...product.nutriments, [key]: value }
-			};
-		}
+		product = {
+			...product,
+			nutriments: { ...product.nutriments, [key]: value }
+		};
 	}
 
 	function handleNutrimentInput(e: Event, key: string) {
 		const target = e.currentTarget as HTMLInputElement;
-		updateNutriment(key, target.value ? Number(target.value) : null);
+		updateNutriment(key, target.value !== '' ? Number(target.value) : '');
 	}
 
 	async function submit() {
 		isSubmitting = true;
 		const commentValue = comment;
+		trackOffEvent('contribution', 'edit_started');
 
 		try {
 			console.group('Product added/edited');
@@ -256,6 +333,7 @@
 			console.groupEnd();
 
 			if (!submittedOk) {
+				trackOffEvent('contribution', 'edit_failed');
 				toastCtx.error($_('product.edit.toast.save_error'));
 				return;
 			}
@@ -274,18 +352,53 @@
 					packagingText
 				);
 				if (packResult.error) {
+					trackOffEvent('contribution', 'edit_failed');
 					console.error('Packaging update failed:', packResult.error);
+					console.groupEnd();
+					return;
 				} else {
 					console.debug('Packaging updated successfully');
 				}
 				console.groupEnd();
 			}
 
+			// Submit obsolete status via V3 API if it changed
+			const originalObsolete = 'product' in data.state ? data.state.product?.obsolete : undefined;
+			if (product.obsolete !== originalObsolete) {
+				console.group('Obsolete update (V3)');
+				console.debug('Submitting obsolete status');
+				const obsResult = await updateObsoleteStatusV3(
+					fetch,
+					product.code,
+					product.obsolete === 'on' ? 'on' : ''
+				);
+				if (obsResult.error) {
+					trackOffEvent('contribution', 'edit_failed');
+					console.error('Obsolete status update failed:', obsResult.error);
+					toastCtx.error(
+						$_('product.moderator.obsolete_save_error', {
+							default: 'Failed to update obsolete status. Please try again.'
+						})
+					);
+					return;
+				} else {
+					console.debug('Obsolete status updated successfully');
+					trackOffEvent(
+						'contribution',
+						'obsolete_status_updated',
+						product.obsolete === 'on' ? 'on' : 'off'
+					);
+				}
+				console.groupEnd();
+			}
+
 			toastCtx.success($_('product.edit.toast.save_success'));
+			trackOffEvent('contribution', 'edit_succeeded');
 			goto('/products/' + product.code, {
 				state: { currentStep: 0 }
 			});
 		} catch (err) {
+			trackOffEvent('contribution', 'edit_failed');
 			console.error('Error saving product:', err);
 			toastCtx.error($_('product.edit.toast.save_error'));
 		} finally {
@@ -406,17 +519,23 @@
 	});
 </script>
 
-{#if dev}
-	<div class="alert alert-warning my-8 text-lg" role="alert">
+{#if dev && !$userInfo}
+	<div class="my-8 alert text-lg alert-warning" role="alert">
 		<IconMdiAlert class="mr-2 h-6 w-6 shrink-0" />
 		<div>
 			<p>
-				<strong> You are not logged in! </strong>
-				This means that the product will not be saved to the database.
+				<strong>
+					{$_('product.edit.dev_not_logged_in_title', { default: 'You are not logged in!' })}
+				</strong>
+				{$_('product.edit.dev_not_logged_in_body', {
+					default: 'This means that the product will not be saved to the database.'
+				})}
 			</p>
 			<p class="text-sm">
-				We allow opening this page because you're in development mode, but the submit button will
-				not work.
+				{$_('product.edit.dev_not_logged_in_hint', {
+					default:
+						"We allow opening this page because you're in development mode, but the submit button will not work."
+				})}
 			</p>
 		</div>
 	</div>
@@ -424,16 +543,16 @@
 
 <div class="space-y-8">
 	<!-- Super Title -->
-	<div class="mb-8 space-y-2 text-center">
-		<h1 class="text-primary text-2xl font-semibold tracking-wide sm:text-3xl">
+	<div class="mt-4 mb-6 space-y-2 pt-2 text-center sm:mt-6">
+		<h1 class="text-2xl font-semibold tracking-wide text-primary sm:text-3xl">
 			{#if isAddMode}
 				{$_('product.edit.add_product_title')}
 			{:else}
 				{$_('product.edit.edit_product_title')}
 			{/if}
 		</h1>
-		<div class="bg-primary/20 mx-auto h-px w-16"></div>
-		<p class="text-base-content/60 font-mono text-base tracking-wider sm:text-lg">
+		<div class="mx-auto h-px w-16 bg-primary/20"></div>
+		<p class="font-mono text-base tracking-wider text-base-content/60 sm:text-lg">
 			{#if product.product_name}
 				{product.product_name}
 			{:else if product.product_name_en}
@@ -463,6 +582,8 @@
 			{storeNames}
 			{units}
 			{handleNutrimentInput}
+			{allergenNames}
+			disableSubmit={dev && !$userInfo}
 		/>
 	{:else}
 		<EditProductForm
@@ -482,7 +603,11 @@
 			{originNames}
 			{storeNames}
 			{units}
+			{allergenNames}
 			languages={filteredLanguages}
+			onCorrectBarcode={handleBarcodeCorrection}
+			onDeleteProduct={handleDeleteProduct}
+			disableSubmit={dev && !$userInfo}
 		/>
 	{/if}
 </div>
