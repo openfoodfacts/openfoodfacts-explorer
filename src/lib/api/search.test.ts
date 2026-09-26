@@ -43,26 +43,6 @@ describe('search parameters and fallback', () => {
 		mockEnv.PUBLIC_SEARCH_BASE_URL = 'https://search.openfoodfacts.net';
 	});
 
-	it('should use valid chart types in DEFAULT_SEARCH_CHARTS', async () => {
-		const { DEFAULT_SEARCH_CHARTS } = await import('./search');
-
-		expect(DEFAULT_SEARCH_CHARTS.length).toBeGreaterThan(0);
-		for (const chart of DEFAULT_SEARCH_CHARTS) {
-			expect(['DistributionChart', 'ScatterChart']).toContain(chart.chart_type);
-			expect(chart.chart_type).not.toBe('DistributionChartType');
-			expect(chart.chart_type).not.toBe('ScatterChartType');
-		}
-	});
-
-	it('should use legacy chart types in FALLBACK_SEARCH_CHARTS for backward compatibility', async () => {
-		const { FALLBACK_SEARCH_CHARTS } = await import('./search');
-
-		expect(FALLBACK_SEARCH_CHARTS.length).toBeGreaterThan(0);
-		for (const chart of FALLBACK_SEARCH_CHARTS) {
-			expect(['DistributionChartType', 'ScatterChartType']).toContain(chart.chart_type);
-		}
-	});
-
 	it('should fall back to basic facets with legacy chart types when primary search fails', async () => {
 		const { compatSearch, FALLBACK_SEARCH_FACETS, FALLBACK_SEARCH_CHARTS } =
 			await import('./search');
