@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import { createProductsApi, type Product } from '$lib/api';
+	import { createProductsApi, unselectImageV3, type Product } from '$lib/api';
 	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
@@ -61,9 +61,6 @@
 			const openfoodfacts = createProductsApi(fetch);
 			const imagefield = `ingredients_${languageCode}`;
 
-			console.debug(`Performing OCR for ${product.code} with imagefield: ${imagefield}`);
-
-			// TODO: The typing is incorrect hence, doing casting. Needs to be fixed.
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
 			if (error) {
 				console.error('Error performing OCR:', error);
@@ -84,7 +81,6 @@
 				return;
 			}
 
-			// Set OCR result
 			product[`ingredients_text_${languageCode}`] = ocrText;
 			trackOffEvent('contribution', 'ocr_succeeded', 'ingredients');
 		} catch (error) {
@@ -94,7 +90,20 @@
 			ocrLoading = false;
 		}
 	}
+	async function unselectIngredientsImage(languageCode: string) {
+		const imageName = `ingredients_${languageCode}`;
+		const result = await unselectImageV3(fetch, product.code, 'ingredients', languageCode);
+		if (result.error) return;
 
+		const images = Object.fromEntries(
+			Object.entries(product.images ?? {}).filter(([key]) => key !== imageName)
+		);
+		product = {
+			...product,
+			[`image_ingredients_${languageCode}`]: null,
+			images
+		};
+	}
 	let activeLang = $state(product.lang);
 	const shortcutCtx = getShortcutCtx();
 	onMount(() => {
@@ -175,6 +184,17 @@
 								<span>Extract ingredients from image</span>
 							{/if}
 						</button>
+
+						<!-- Unselect Button -->
+						<button
+							type="button"
+							class="btn btn-outline btn-error btn-sm"
+							onclick={() => unselectIngredientsImage(code)}
+							title={$_('product.edit.images.unselect', { default: 'Unselect image' })}
+						>
+							<IconMdiClose class="h-4 w-4" />
+							<span>{$_('product.edit.images.unselect', { default: 'Unselect image' })}</span>
+						</button>
 					</div>
 				{:else}
 					<p class="mb-4 alert text-sm alert-warning sm:text-base">
@@ -189,7 +209,6 @@
 					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
 				</span>
 			</label>
-
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea-bordered textarea w-full text-sm sm:text-base"
