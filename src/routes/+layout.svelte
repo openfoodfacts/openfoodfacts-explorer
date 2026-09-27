@@ -30,6 +30,7 @@
 	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import ExploreByMenu from '$lib/ui/ExploreByMenu.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -420,12 +421,7 @@
 		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
 			{$_('prices_link')}
 		</a>
-		<a class="btn link btn-outline" href="/folksonomy">
-			{$_('folksonomy_link')}
-		</a>
-		<a class="btn link btn-outline" href="/facets">
-			{$_('facets_link')}
-		</a>
+		<ExploreByMenu mobile onNavigate={() => (accordionOpen = false)} />
 
 		<div class="divider md:divider-horizontal"></div>
 		<button

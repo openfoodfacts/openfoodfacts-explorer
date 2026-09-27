@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { _ } from '$lib/i18n';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 </script>
 
-<h2 class="text-3xl font-bold">Exploring Facets</h2>
+<h2 class="text-3xl font-bold">
+	{$_('navigation.explore_products_by', { default: 'Explore products by' })}
+</h2>
 
 <div class="mt-8">
 	<ul class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
