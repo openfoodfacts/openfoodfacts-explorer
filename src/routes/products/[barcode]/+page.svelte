@@ -67,6 +67,8 @@
 		knowledge_panels: KnowledgePanels;
 		image_front_small_url?: string;
 		image_front_url?: string;
+		image_ingredients_url?: string;
+		image_nutrition_url?: string;
 		taxonomies?: string[];
 	};
 
@@ -425,7 +427,13 @@
 
 			{#if product.code}
 				<div id="barcode-info">
-					<BarcodeInfo bind:this={barcodeInfo} code={product.code} />
+					<BarcodeInfo
+						bind:this={barcodeInfo}
+						code={product.code}
+						imageFrontUrl={product.image_front_url ?? product.image_front_small_url}
+						imageIngredientsUrl={product.image_ingredients_url}
+						imageNutritionUrl={product.image_nutrition_url}
+					/>
 				</div>
 			{/if}
 

@@ -8,9 +8,20 @@
 	import { OPEN_PRICES_PRODUCT_URL } from '#lib/const.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { tick } from 'svelte';
+	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '$lib/utils/imageSearch';
 	import Card from './Card.svelte';
 
-	let { code }: { code: string } = $props();
+	let {
+		code,
+		imageFrontUrl,
+		imageIngredientsUrl,
+		imageNutritionUrl
+	}: {
+		code: string;
+		imageFrontUrl?: string;
+		imageIngredientsUrl?: string;
+		imageNutritionUrl?: string;
+	} = $props();
 
 	type AvailabilityStatus = 'loading' | 'found' | 'not-found' | 'error';
 	type AvailabilityKey = 'open_prices' | 'pro_off';
@@ -281,6 +292,43 @@
 							{/each}
 						</div>
 					</section>
+
+					{#if imageFrontUrl || imageIngredientsUrl || imageNutritionUrl}
+						<section class="border-t border-base-300 pt-5 lg:col-span-2">
+							<h3 class="mb-3 font-semibold">
+								{$_('product.reverse_search.title', { default: 'Reverse Image Search' })}
+							</h3>
+							<div class="grid gap-2">
+								{#each [{ label: $_( 'product.reverse_search.front', { default: 'Front' } ), url: imageFrontUrl }, { label: $_( 'product.reverse_search.ingredients', { default: 'Ingredients' } ), url: imageIngredientsUrl }, { label: $_( 'product.reverse_search.nutrition', { default: 'Nutrition' } ), url: imageNutritionUrl }] as entry (entry.label)}
+									{#if entry.url}
+										<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+											<span class="w-24 text-sm font-medium text-base-content/70"
+												>{entry.label}</span
+											>
+											<a
+												class="link text-sm link-hover"
+												href={getGoogleReverseSearchUrl(entry.url)}
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{$_('product.reverse_search.google', { default: 'Google Lens' })}
+												<span aria-hidden="true">↗</span>
+											</a>
+											<a
+												class="link text-sm link-hover"
+												href={getYandexReverseSearchUrl(entry.url)}
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{$_('product.reverse_search.yandex', { default: 'Yandex Images' })}
+												<span aria-hidden="true">↗</span>
+											</a>
+										</div>
+									{/if}
+								{/each}
+							</div>
+						</section>
+					{/if}
 
 					<section class="border-t border-base-300 pt-5 lg:col-span-2">
 						<div class="flex flex-wrap items-center justify-between gap-3">
