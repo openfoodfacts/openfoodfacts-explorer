@@ -81,6 +81,11 @@
 			default: 'Translators'
 		},
 		{
+			url: 'https://hunger.openfoodfacts.org/',
+			key: 'footer.links.hunger_games',
+			default: 'Hunger Games'
+		},
+		{
 			url: 'https://github.com/openfoodfacts',
 			key: 'footer.links.github',
 			default: 'GitHub'
