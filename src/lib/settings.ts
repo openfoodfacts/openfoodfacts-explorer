@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 7,
+	version: 8,
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -21,7 +21,7 @@ const DEFAULT_PREFERENCES = {
 	displayPricesInSearch: true,
 	productSidebarVisible: true,
 
-	moderator: false
+	moderator: true
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -137,6 +137,14 @@ const MIGRATIONS: {
 				legacyPreferences.locale = legacyPreferences.lang;
 			}
 			delete legacyPreferences.lang;
+			return preferences;
+		}
+	},
+	{
+		// 2026-09-29: Enable moderator mode by default. UI still requires moderator permissions.
+		version: 8,
+		upgrade: (preferences) => {
+			preferences.moderator = true;
 			return preferences;
 		}
 	}
