@@ -17,6 +17,7 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
 	import type { PageProps } from './$types';
 
@@ -151,6 +152,38 @@
 					{/if}
 				</div>
 			</div>
+			{#if permissions.isModerator}
+				<div class="card bg-base-200 shadow-md">
+					<div class="card-body">
+						<h2 class="card-title flex items-center gap-2">
+							<IconMdiShieldAccount class="h-6 w-6" aria-hidden="true" />
+							{$_('settings.section_moderation', { default: 'Moderation' })}
+						</h2>
+
+						<div class="mt-6 space-y-6">
+							<div class="form-control">
+								<label class="label cursor-pointer">
+									<span class="label-text font-semibold">
+										{$_('settings.enable_moderator_mode', { default: 'Enable moderator mode' })}
+									</span>
+									<input
+										id="moderator-mode-toggle"
+										type="checkbox"
+										class="toggle toggle-primary"
+										bind:checked={$preferences.moderator}
+									/>
+								</label>
+								<p class="mt-1 text-xs text-base-content/70">
+									{$_('settings.enable_moderator_mode_help', {
+										default:
+											'Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.'
+									})}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title">{$_('settings.news')}</h2>
