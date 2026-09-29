@@ -416,38 +416,6 @@
 						</div>
 					</div>
 				</div>
-			{/if}
-
-			{#if permissions.isModerator}
-				<div class="card border-2 border-warning bg-warning/10 shadow-md">
-					<div class="card-body">
-						<h2 class="card-title flex items-center gap-2">
-							<IconMdiTools class="h-6 w-6" />
-							{$_('settings.dev_settings_title')}
-						</h2>
-
-						<p class="mt-4 text-sm text-base-content/70">
-							{$_('settings.dev_warning')}
-						</p>
-
-						<div class="mt-6">
-							<div class="form-control">
-								<label class="label cursor-pointer">
-									<span class="label-text font-semibold">{$_('settings.moderator_mode')}</span>
-									<input
-										id="dev-mode-toggle"
-										type="checkbox"
-										class="toggle toggle-accent"
-										bind:checked={$preferences.moderator}
-									/>
-								</label>
-								<p class="mt-1 text-xs text-base-content/70">
-									{$_('settings.moderator_mode_help')}
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
 			{:else}
 				<div class="alert alert-warning">
 					<div>
