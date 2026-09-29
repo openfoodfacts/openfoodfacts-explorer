@@ -203,7 +203,6 @@
 		"section_editing": "Editing",
 		"section_user": "User",
 		"section_moderation": "Moderation",
-		"enable_moderator_mode": "Enable moderator mode",
 		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",

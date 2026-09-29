@@ -164,7 +164,7 @@
 							<div class="form-control">
 								<label class="label cursor-pointer">
 									<span class="label-text font-semibold">
-										{$_('settings.enable_moderator_mode', { default: 'Enable moderator mode' })}
+										{$_('settings.moderator_mode', { default: 'Moderator Mode' })}
 									</span>
 									<input
 										id="moderator-mode-toggle"
