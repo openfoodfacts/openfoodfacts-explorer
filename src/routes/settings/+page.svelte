@@ -170,7 +170,10 @@
 										id="moderator-mode-toggle"
 										type="checkbox"
 										class="toggle toggle-primary"
-										bind:checked={$preferences.moderator}
+										checked={!$preferences.hideModeratorTools}
+										onchange={(e) => {
+											$preferences.hideModeratorTools = !e.currentTarget.checked;
+										}}
 									/>
 								</label>
 								<p class="mt-1 text-xs text-base-content/70">

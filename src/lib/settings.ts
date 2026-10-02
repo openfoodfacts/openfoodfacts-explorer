@@ -21,7 +21,7 @@ const DEFAULT_PREFERENCES = {
 	displayPricesInSearch: true,
 	productSidebarVisible: true,
 
-	moderator: true
+	hideModeratorTools: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -141,10 +141,12 @@ const MIGRATIONS: {
 		}
 	},
 	{
-		// 2026-09-29: Enable moderator mode by default. UI still requires moderator permissions.
+		// 2026-10-02: Replace the opt-in `moderator` flag with an opt-out `hideModeratorTools` flag.
 		version: 8,
 		upgrade: (preferences) => {
-			preferences.moderator = true;
+			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
+			delete legacyPreferences.moderator;
+			legacyPreferences.hideModeratorTools = false;
 			return preferences;
 		}
 	}
