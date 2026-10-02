@@ -155,8 +155,11 @@
 	$effect(() => {
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
+			// Ignore responses for a previous user if they log out or switch accounts mid-request
+			let cancelled = false;
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (cancelled) return;
 				if (data && data.status === 'success' && data.user) {
 					permissionsCtx.isAdmin = data.user.admin === 1;
 					permissionsCtx.isModerator = data.user.moderator === 1;
@@ -165,6 +168,9 @@
 					permissionsCtx.isModerator = false;
 				}
 			});
+			return () => {
+				cancelled = true;
+			};
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
