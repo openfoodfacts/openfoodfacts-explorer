@@ -18,17 +18,28 @@
 		id: string;
 		link?: string;
 		productCode?: string;
+		expandedPanels?: Record<string, boolean>;
+		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
 	};
-	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
+	let {
+		panels,
+		panel,
+		inline = false,
+		id,
+		link,
+		productCode,
+		expandedPanels,
+		onPanelExpansionChange
+	}: Props = $props();
 
-	let expanded = $derived(panel?.expanded ?? false);
+	let expanded = $derived(expandedPanels?.[id] ?? panel?.expanded ?? false);
 
 	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		<Element {element} {panels} {productCode} />
+		<Element {element} {panels} {productCode} {expandedPanels} {onPanelExpansionChange} />
 	{/each}
 {/snippet}
 
@@ -43,7 +54,11 @@
 			'type' in title && `kp-panel-type-${title.type}`
 		]}
 	>
-		<input type="checkbox" checked={expanded} />
+		<input
+			type="checkbox"
+			checked={expanded}
+			onchange={(event) => onPanelExpansionChange?.(id, event.currentTarget.checked)}
+		/>
 
 		<div
 			class={[
