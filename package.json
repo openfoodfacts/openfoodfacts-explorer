@@ -104,7 +104,7 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.2",
-		"@sentry/sveltekit": "^10.75.1",
+		"@sentry/sveltekit": "^11.1.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"csv-stringify": "^6.8.3",
 		"isomorphic-dompurify": "^4.3.0"
