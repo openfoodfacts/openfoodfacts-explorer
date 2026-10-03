@@ -32,7 +32,7 @@
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
 	import ExploreByMenu from '$lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale } from '$lib/i18n';
+	import { _, getLocale, locale, locales } from '$lib/i18n';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -49,7 +49,7 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { getLanguageCode, preferences, runPreferencesMigrations } from '$lib/settings';
+	import { preferences, runPreferencesMigrations } from '$lib/settings';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '$lib/layout';
 	import { resolve } from '$app/paths';
@@ -219,12 +219,16 @@
 
 	let config: HTMLElement;
 
+	// off-webcomponents-configuration throws on language codes it has no translations for
+	function toWebComponentsLanguageCode(rawLocale: string | null | undefined): string {
+		const lang = rawLocale?.split(/[-_]/)[0]?.toLowerCase();
+		return lang && locales.includes(lang) ? lang : 'en';
+	}
+
 	onMount(() => {
 		runPreferencesMigrations();
 		const unsubscribe = locale.subscribe((locale) => {
-			const lang = locale?.split('-')[0]?.toLowerCase();
-
-			config.setAttribute('language-code', lang ?? 'en');
+			config.setAttribute('language-code', toWebComponentsLanguageCode(locale));
 		});
 		return () => {
 			unsubscribe();
@@ -246,7 +250,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={getLanguageCode($preferences.locale ?? getLocale())}
+		language-code={toWebComponentsLanguageCode($preferences.locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
