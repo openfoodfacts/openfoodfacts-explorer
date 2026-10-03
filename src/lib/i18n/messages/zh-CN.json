@@ -195,6 +195,8 @@
 		"section_general": "一般",
 		"section_editing": "编辑",
 		"section_user": "用户",
+		"section_moderation": "适度",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "影响",
 		"login": "登录（保存在 localStorage 中）[不安全 - 仅调试]",
 		"news": "新闻",
@@ -214,10 +216,9 @@
 			"recent_changes": "最近更改",
 			"top_translators": "顶尖翻译者"
 		},
-		"dev_settings_title": "开发设置",
 		"moderator_mode": "版主模式",
 		"dev_access_denied": "拒绝访问",
-		"dev_access_message": "开发者设置仅对版主和开发者开放。如果您认为自己应该拥有访问权限，请联系管理员。"
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "大众分类引擎",
