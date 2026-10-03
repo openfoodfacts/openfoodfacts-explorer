@@ -195,6 +195,8 @@
 		"section_general": "Γενικά",
 		"section_editing": "Επεξεργασία",
 		"section_user": "Χρήστης",
+		"section_moderation": "Μετριοπάθεια",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Επιρροές",
 		"login": "Σύνδεση (αποθηκεύτηκε στο localStorage) [ΜΗ ΑΣΦΑΛΕΣ - ΜΟΝΟ ΓΙΑ ΕΝΤΟΠΙΣΜΟ ΣΦΑΛΜΑΤΩΝ]",
 		"news": "Νέα",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Ρυθμίσεις ανάπτυξης",
 		"moderator_mode": "Λειτουργία Επόπτη",
 		"dev_access_denied": "Δεν επιτρέπεται η πρόσβαση",
-		"dev_access_message": "Οι ρυθμίσεις για προγραμματιστές είναι διαθέσιμες μόνο σε συντονιστές και προγραμματιστές. Αν πιστεύετε ότι θα πρέπει να έχετε πρόσβαση, επικοινωνήστε με το διαχειριστή."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Μηχανή Folksonomy",
