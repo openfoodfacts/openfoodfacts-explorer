@@ -8,6 +8,8 @@
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import TagMiniature from '$lib/ui/TagMiniature.svelte';
+	import { getTagMiniatureUrl } from '$lib/ui/tagUtils';
 
 	type Props = {
 		facet?: Facet;
@@ -425,10 +427,13 @@
 
 						<!-- Item name and count in middle -->
 						<span
-							class="min-w-0 flex-1 text-center text-xs leading-tight font-medium break-words whitespace-normal text-base-content"
+							class="flex min-w-0 flex-1 items-center justify-center gap-1 text-center text-xs leading-tight font-medium break-words whitespace-normal text-base-content"
 							title={item.name}
 						>
-							{item.name} <span class="text-base-content/50">({item.count})</span>
+							{#if getTagMiniatureUrl(item)}
+								<TagMiniature src={getTagMiniatureUrl(item)} alt={item.name} size="sm" />
+							{/if}
+							<span>{item.name} <span class="text-base-content/50">({item.count})</span></span>
 						</span>
 
 						<!-- Include (+) button on right -->
