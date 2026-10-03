@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 7,
+	version: 8,
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -15,7 +15,8 @@ const DEFAULT_PREFERENCES = {
 	},
 
 	editing: {
-		expandAllSections: true
+		expandAllSections: true,
+		showDataQualityErrors: false
 	},
 
 	displayPricesInSearch: true,
@@ -61,6 +62,7 @@ const MIGRATIONS: {
 	{
 		version: 1,
 		upgrade: (preferences) => {
+			// @ts-expect-error - migrating legacy structure
 			preferences.editing = {
 				expandAllSections: false
 			};
@@ -111,6 +113,7 @@ const MIGRATIONS: {
 					preferences.editing.expandAllSections = true;
 				}
 			} else {
+				// @ts-expect-error - migrating legacy structure
 				preferences.editing = {
 					expandAllSections: true
 				};
@@ -137,6 +140,22 @@ const MIGRATIONS: {
 				legacyPreferences.locale = legacyPreferences.lang;
 			}
 			delete legacyPreferences.lang;
+			return preferences;
+		}
+	},
+	{
+		version: 8,
+		upgrade: (preferences) => {
+			if (preferences.editing) {
+				if (preferences.editing.showDataQualityErrors === undefined) {
+					preferences.editing.showDataQualityErrors = false;
+				}
+			} else {
+				preferences.editing = {
+					expandAllSections: true,
+					showDataQualityErrors: false
+				};
+			}
 			return preferences;
 		}
 	}
