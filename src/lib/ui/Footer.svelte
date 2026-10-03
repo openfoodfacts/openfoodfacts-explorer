@@ -81,6 +81,12 @@
 			default: 'Translators'
 		},
 		{
+			url: 'https://hunger.openfoodfacts.org/',
+			target: '_blank',
+			key: 'footer.links.hunger_games',
+			default: 'Hunger Games'
+		},
+		{
 			url: 'https://github.com/openfoodfacts',
 			key: 'footer.links.github',
 			default: 'GitHub'
@@ -184,6 +190,8 @@
 			{#each LINKS_CONTRIBUTE as contributeLink (contributeLink.url)}
 				<a
 					href={contributeLink.url}
+					target={contributeLink.target}
+					rel={contributeLink.target ? 'noopener noreferrer' : undefined}
 					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 				>
 					{$_(contributeLink.key, { default: contributeLink.default })}
