@@ -195,6 +195,8 @@
 		"section_general": "Allmänt",
 		"section_editing": "Redigering",
 		"section_user": "Användare",
+		"section_moderation": "Moderation",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Påverkan",
 		"login": "Inloggning (sparad i localStorage) [OSÄKERT - ENDAST FELSÖKNING]",
 		"news": "Nyheter",
@@ -214,10 +216,9 @@
 			"recent_changes": "Senaste ändringar",
 			"top_translators": "Främsta översättare"
 		},
-		"dev_settings_title": "Utvecklingsinställningar",
 		"moderator_mode": "Moderatorläge",
 		"dev_access_denied": "Åtkomst nekad",
-		"dev_access_message": "Utvecklingsinställningarna är endast tillgängliga för moderatorer och utvecklare. Kontakta administratören om du anser att du bör ha åtkomst."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
