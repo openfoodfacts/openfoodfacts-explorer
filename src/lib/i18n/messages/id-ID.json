@@ -195,6 +195,8 @@
 		"section_general": "Umum",
 		"section_editing": "Mengedit",
 		"section_user": "Pengguna",
+		"section_moderation": "Moderasi",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Pengaruh",
 		"login": "Masuk (disimpan di localStorage) [TIDAK AMAN - HANYA UNTUK DEBUG]",
 		"news": "Berita",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Pengaturan pengembang hanya tersedia untuk moderator dan developer. Jika Anda merasa seharusnya memiliki akses, silakan hubungi administrator."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Mesin Folksonomy",
