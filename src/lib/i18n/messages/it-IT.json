@@ -195,6 +195,8 @@
 		"section_general": "Generale",
 		"section_editing": "Modifica",
 		"section_user": "Utente",
+		"section_moderation": "Moderazione",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Influenze",
 		"login": "Accesso (salvato in localStorage) [NON SICURO - SOLO DEBUG]",
 		"news": "Attualità",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Impostazioni di sviluppo",
 		"moderator_mode": "Modalità moderatore",
 		"dev_access_denied": "Accesso negato",
-		"dev_access_message": "Le impostazioni per sviluppatori sono disponibili solo per moderatori e sviluppatori. Se ritieni di dover avere accesso, contatta l'amministratore."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Motore di folksonomia",
