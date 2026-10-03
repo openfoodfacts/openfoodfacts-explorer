@@ -195,6 +195,8 @@
 		"section_general": "Hlavní nastavení",
 		"section_editing": "Editace",
 		"section_user": "Uživatel",
+		"section_moderation": "Umírněnost",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Vlivy",
 		"login": "Přihlášení (uloženo v localStorage) [NEBEZPEČNÉ - POUZE LADĚNÍ]",
 		"news": "Novinky",
@@ -214,10 +216,9 @@
 			"recent_changes": "Poslední změny",
 			"top_translators": "Nejlepší překladatelé"
 		},
-		"dev_settings_title": "Vývojářská nastavení",
 		"moderator_mode": "Režim moderátora",
 		"dev_access_denied": "Přístup odepřen",
-		"dev_access_message": "Nastavení pro vývojáře jsou dostupná pouze moderátorům a vývojářům. Pokud se domníváte, že byste měli mít přístup, kontaktujte prosím administrátora."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomický motor",
