@@ -17,6 +17,7 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
 	import type { PageProps } from './$types';
 
@@ -151,6 +152,41 @@
 					{/if}
 				</div>
 			</div>
+			{#if permissions.isModerator}
+				<div class="card bg-base-200 shadow-md">
+					<div class="card-body">
+						<h2 class="card-title flex items-center gap-2">
+							<IconMdiShieldAccount class="h-6 w-6" aria-hidden="true" />
+							{$_('settings.section_moderation', { default: 'Moderation' })}
+						</h2>
+
+						<div class="mt-6 space-y-6">
+							<div class="form-control">
+								<label class="label cursor-pointer">
+									<span class="label-text font-semibold">
+										{$_('settings.moderator_mode', { default: 'Moderator Mode' })}
+									</span>
+									<input
+										id="moderator-mode-toggle"
+										type="checkbox"
+										class="toggle toggle-primary"
+										checked={!$preferences.hideModeratorTools}
+										onchange={(e) => {
+											$preferences.hideModeratorTools = !e.currentTarget.checked;
+										}}
+									/>
+								</label>
+								<p class="mt-1 text-xs text-base-content/70">
+									{$_('settings.enable_moderator_mode_help', {
+										default:
+											'Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.'
+									})}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title">{$_('settings.news')}</h2>
@@ -380,38 +416,6 @@
 							>
 								{$_('settings.admin_tools.top_translators', { default: 'Top translators' })}
 							</a>
-						</div>
-					</div>
-				</div>
-			{/if}
-
-			{#if permissions.isModerator}
-				<div class="card border-2 border-warning bg-warning/10 shadow-md">
-					<div class="card-body">
-						<h2 class="card-title flex items-center gap-2">
-							<IconMdiTools class="h-6 w-6" />
-							{$_('settings.dev_settings_title')}
-						</h2>
-
-						<p class="mt-4 text-sm text-base-content/70">
-							{$_('settings.dev_warning')}
-						</p>
-
-						<div class="mt-6">
-							<div class="form-control">
-								<label class="label cursor-pointer">
-									<span class="label-text font-semibold">{$_('settings.moderator_mode')}</span>
-									<input
-										id="dev-mode-toggle"
-										type="checkbox"
-										class="toggle toggle-accent"
-										bind:checked={$preferences.moderator}
-									/>
-								</label>
-								<p class="mt-1 text-xs text-base-content/70">
-									{$_('settings.moderator_mode_help')}
-								</p>
-							</div>
 						</div>
 					</div>
 				</div>
