@@ -99,32 +99,67 @@
 
 	let possibleValues: { v: string; product_count: number }[] | null = $state(null);
 
-	$effect(() => {
-		// when newKey changes, fetch possible values
-		const key = newKey;
+	type DebouncedFn = (() => void) & {
+		cancel: () => void;
+	};
 
-		debounce(100, () => {
-			if (key == '') {
-				possibleValues = null;
-				return;
-			}
-			console.debug('Fetching possible values for key:', key);
+	// Create a single debounced function that maintains state across calls
+	const debouncedFetchValues = createDebounce(100, () => {
+		if (newKey == '') {
+			possibleValues = null;
+			return;
+		}
+		const requestedKey = newKey;
+		console.debug('Fetching possible values for key:', requestedKey);
 
-			getFolksonomyValues(fetch, key).then((values) => {
-				console.debug('Possible values for key', key, ':', values);
+		getFolksonomyValues(fetch, requestedKey)
+			.then((values) => {
+				if (requestedKey !== newKey) {
+					return;
+				}
+
+				console.debug('Possible values for key', requestedKey, ':', values);
 				possibleValues = values;
+			})
+			.catch((error) => {
+				if (requestedKey !== newKey) {
+					return;
+				}
+
+				console.error('Failed to fetch possible values for key', requestedKey, error);
 			});
-		});
 	});
 
-	function debounce(delay: number, fn: () => void) {
+	$effect(() => {
+		// when newKey changes, call the debounced fetch
+		// Reference newKey to make it a reactive dependency
+		void newKey;
+		debouncedFetchValues();
+
+		return () => {
+			debouncedFetchValues.cancel();
+		};
+	});
+
+	function createDebounce(delay: number, fn: () => void): DebouncedFn {
 		let timeoutId: number | undefined;
-		(() => {
-			if (timeoutId) {
+
+		// Return a function that maintains timeoutId through closure
+		const debounced = () => {
+			if (timeoutId !== undefined) {
 				clearTimeout(timeoutId);
 			}
 			timeoutId = window.setTimeout(fn, delay);
-		})();
+		};
+
+		debounced.cancel = () => {
+			if (timeoutId !== undefined) {
+				clearTimeout(timeoutId);
+				timeoutId = undefined;
+			}
+		};
+
+		return debounced;
 	}
 
 	let isLoading: boolean = $state(false);
