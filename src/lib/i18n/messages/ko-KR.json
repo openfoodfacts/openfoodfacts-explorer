@@ -195,6 +195,8 @@
 		"section_general": "일반",
 		"section_editing": "편집 중",
 		"section_user": "사용자",
+		"section_moderation": "절도",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "영향",
 		"login": "로그인(localStorage에 저장됨) [안전하지 않음 - 디버그 전용]",
 		"news": "뉴스",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "폴크소노미 엔진",
