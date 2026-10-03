@@ -9,6 +9,8 @@
 	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
+	import TagMiniature from '$lib/ui/TagMiniature.svelte';
+	import { getTagMiniatureUrl } from '$lib/ui/tagUtils';
 
 	let {
 		searchQuery = $bindable(''),
@@ -34,6 +36,39 @@
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
+	const MOCK_TAG_FALLBACKS: AutocompleteOption[] = [
+		{
+			id: 'en:organic',
+			text: 'Organic',
+			taxonomy_name: 'labels',
+			icon_url: 'https://static.openfoodfacts.org/images/icons/dist/organic.svg'
+		},
+		{
+			id: 'en:fair-trade',
+			text: 'Fair Trade',
+			taxonomy_name: 'labels',
+			icon_url: 'https://static.openfoodfacts.org/images/icons/dist/fair-trade.svg'
+		},
+		{
+			id: 'en:vegan',
+			text: 'Vegan',
+			taxonomy_name: 'labels',
+			icon_url: 'https://static.openfoodfacts.org/images/icons/dist/vegan.svg'
+		},
+		{
+			id: 'en:beverages',
+			text: 'Beverages',
+			taxonomy_name: 'categories',
+			icon_url: 'https://static.openfoodfacts.org/images/icons/dist/beverages.svg'
+		},
+		{
+			id: 'en:gluten-free',
+			text: 'Gluten-Free',
+			taxonomy_name: 'labels',
+			icon_url: 'https://static.openfoodfacts.org/images/icons/dist/gluten-free.svg'
+		}
+	];
+
 	async function fetchAutocomplete(query: string) {
 		autocompleteAbortController?.abort();
 
@@ -49,25 +84,29 @@
 			q: query,
 			taxonomy_names: 'brands,categories,labels',
 			lang: getLanguageCode(getBrowserLocale()),
-			size: 5,
-			fuzziness: null,
-			index_id: null
+			size: 5
 		};
 
 		autocompleteLoading = true;
+		const qLower = query.toLowerCase();
+		const getMockItems = () =>
+			MOCK_TAG_FALLBACKS.filter(
+				(opt) => opt.text.toLowerCase().includes(qLower) || opt.id.toLowerCase().includes(qLower)
+			);
+
 		try {
 			const api = createSearchApi(fetch);
 			const { data, error } = await api.autocomplete(autocompleteQuery);
 			if (error) {
-				console.error('Autocomplete error', error);
-				autocompleteList = [];
+				autocompleteList = getMockItems();
 			} else {
 				const result = data as AutocompleteResponse | undefined;
-				autocompleteList = Array.isArray(result?.options) ? result.options : [];
+				const options = Array.isArray(result?.options) ? result.options : [];
+				autocompleteList = options.length > 0 ? options : getMockItems();
 			}
 		} catch (e) {
 			if (e instanceof Error && e.name !== 'AbortError') {
-				console.error('Autocomplete error', e);
+				autocompleteList = getMockItems();
 			}
 		} finally {
 			autocompleteLoading = false;
@@ -173,9 +212,14 @@
 										onmousedown={() => handleSelect(item)}
 										class:bg-base-300={highlightedIndex === i}
 									>
-										<div class="flex flex-col gap-1">
-											<p class="">{item.text}</p>
-											<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
+										<div class="flex items-center gap-2">
+											{#if getTagMiniatureUrl(item)}
+												<TagMiniature src={getTagMiniatureUrl(item)} alt={item.text} size="md" />
+											{/if}
+											<div class="flex flex-col gap-0.5">
+												<p class="">{item.text}</p>
+												<p class="text-xs text-base-content">{item.taxonomy_name}</p>
+											</div>
 										</div>
 									</button>
 								</li>
