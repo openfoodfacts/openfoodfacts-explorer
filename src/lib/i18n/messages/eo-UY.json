@@ -195,6 +195,8 @@
 		"section_general": "General",
 		"section_editing": "Redaktado",
 		"section_user": "Uzanto",
+		"section_moderation": "Modereco",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Influoj",
 		"login": "Ensaluto (konservita en loka Stokado) [NESEKURA - NUR SENERARIGADO]",
 		"news": "Novaĵoj",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomia Motoro",
