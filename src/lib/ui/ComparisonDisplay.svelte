@@ -418,24 +418,28 @@
 					</button>
 				{/if}
 
-				<div class="flex flex-col items-center pt-4">
+				<div class="flex items-center gap-3 pt-2">
 					{#if product.image_front_small_url}
 						<img
 							src={product.image_front_small_url}
 							alt={product.product_name ?? product.code}
-							class="mb-2 h-24 object-contain"
+							class="h-16 w-16 shrink-0 rounded-lg object-contain"
 						/>
 					{/if}
-					<h3 class="mt-2 text-center font-semibold">
-						<a href={`/products/${product.code}`} class="link">
-							{product.product_name ?? product.code}
-						</a>
-					</h3>
-					<p class="mt-1 text-center text-sm text-base-content/70">
-						{product.brands ?? ''}
-						{#if product.brands && product.quantity},{/if}
-						{product.quantity ?? ''}
-					</p>
+					<div class="min-w-0">
+						<h3 class="line-clamp-2 leading-snug font-semibold">
+							<a href={`/products/${product.code}`} class="link">
+								{product.product_name ?? product.code}
+							</a>
+						</h3>
+						{#if product.brands || product.quantity}
+							<p class="mt-0.5 text-sm text-base-content/70">
+								{product.brands ?? ''}
+								{#if product.brands && product.quantity},{/if}
+								{product.quantity ?? ''}
+							</p>
+						{/if}
+					</div>
 				</div>
 
 				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
