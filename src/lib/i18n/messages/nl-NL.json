@@ -195,6 +195,8 @@
 		"section_general": "Algemeen",
 		"section_editing": "Bewerken",
 		"section_user": "Gebruiker",
+		"section_moderation": "Moderatie",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Invloeden",
 		"login": "Inloggen (opgeslagen in localStorage) [ONVEILIG - ALLEEN DEBUGGEN]",
 		"news": "Nieuws",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Ontwikkelingsinstellingen",
 		"moderator_mode": "Moderatormodus",
 		"dev_access_denied": "Toegang geweigerd",
-		"dev_access_message": "De ontwikkelaarsinstellingen zijn alleen beschikbaar voor moderators en ontwikkelaars. Als u van mening bent dat u toegang zou moeten hebben, neem dan contact op met de beheerder."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy-engine",
