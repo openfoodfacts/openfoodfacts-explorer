@@ -195,6 +195,8 @@
 		"section_general": "General",
 		"section_editing": "संपादन",
 		"section_user": "User",
+		"section_moderation": "नियंत्रण",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "प्रभाव",
 		"login": "लॉगिन (लोकलस्टोरेजमध्ये सेव्ह केलेले) [असुरक्षित - फक्त डीबग करा]",
 		"news": "News",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "फोकसोनोमी इंजिन",
