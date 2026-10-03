@@ -195,6 +195,8 @@
 		"section_general": "Općenito",
 		"section_editing": "Uređivanje",
 		"section_user": "User",
+		"section_moderation": "Moderacija",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Utjecaji",
 		"login": "Prijava (spremljeno u lokalnoj pohrani) [NESIGURNO - SAMO ZA OTKLANJANJE GREŠAKA]",
 		"news": "Vijesti",
@@ -214,10 +216,9 @@
 			"recent_changes": "Nedavne promjene",
 			"top_translators": "Najbolji prevoditelji"
 		},
-		"dev_settings_title": "Postavke razvoja",
 		"moderator_mode": "Moderatorski način rada",
 		"dev_access_denied": "Pristup zabranjen",
-		"dev_access_message": "Postavke za programere dostupne su samo moderatorima i programerima. Ako smatrate da biste trebali imati pristup, obratite se administratoru."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomski motor",
