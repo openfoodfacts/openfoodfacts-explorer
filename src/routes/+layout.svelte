@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '$lib/matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -67,6 +66,17 @@
 	}
 
 	syncWebsiteFlavor(page.url);
+
+	let MatomoComponent = $state<Component<{ url: string; siteId: number }> | null>(null);
+
+	onMount(async () => {
+		try {
+			const mod = await import('$lib/matomo');
+			MatomoComponent = mod.Matomo;
+		} catch {
+			console.warn('Matomo analytics failed to load or was blocked.');
+		}
+	});
 
 	$effect(() => {
 		syncWebsiteFlavor(page.url);
@@ -238,7 +248,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{#if MatomoComponent}
+	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{/if}
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
