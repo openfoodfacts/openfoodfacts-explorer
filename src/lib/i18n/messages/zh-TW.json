@@ -195,6 +195,8 @@
 		"section_general": "通用",
 		"section_editing": "編輯",
 		"section_user": "使用者",
+		"section_moderation": "適度",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "影響",
 		"login": "登入（儲存在 localStorage 中）[不安全 - 僅偵錯]",
 		"news": "新聞",
@@ -214,10 +216,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "大眾分類引擎",
