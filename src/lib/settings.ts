@@ -2,7 +2,8 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 7,
+	version: 8,
+	theme: 'system' as 'system' | 'light' | 'dark',
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -137,6 +138,16 @@ const MIGRATIONS: {
 				legacyPreferences.locale = legacyPreferences.lang;
 			}
 			delete legacyPreferences.lang;
+			return preferences;
+		}
+	},
+	{
+		version: 8,
+		upgrade: (preferences) => {
+			if (!('theme' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.theme = 'system';
+			}
 			return preferences;
 		}
 	}
