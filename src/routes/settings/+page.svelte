@@ -7,6 +7,7 @@
 	import type { AttributeGroup } from '$lib/stores/preferencesStore';
 	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
 	import Metadata from '$lib/Metadata.svelte';
+	import { COMMIT_SHA } from '$lib/const';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -22,6 +23,8 @@
 	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
+	const APP_VERSION = import.meta.env.PACKAGE_VERSION;
+	const SHORT_COMMIT_SHA = COMMIT_SHA.slice(0, 7);
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -211,6 +214,28 @@
 						<IconMdiGithub class="h-5 w-5" />
 						<span>{$_('settings.github_cta')}</span>
 					</a>
+					<p class="mt-4 text-sm text-primary-content/80">
+						{$_('settings.app_version', {
+							default: 'Version {version}',
+							values: { version: APP_VERSION }
+						})}
+						{#if COMMIT_SHA}
+							·
+							<a
+								class="link font-mono"
+								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
+								target="_blank"
+								rel="noopener noreferrer"
+								title={COMMIT_SHA}
+								aria-label={$_('settings.app_commit_link', {
+									default: 'View commit {sha} on GitHub',
+									values: { sha: SHORT_COMMIT_SHA }
+								})}
+							>
+								{SHORT_COMMIT_SHA}
+							</a>
+						{/if}
+					</p>
 				</div>
 			</div>
 		</div>
