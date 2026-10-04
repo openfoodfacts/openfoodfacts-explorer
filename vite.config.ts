@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { sentrySvelteKit } from '@sentry/sveltekit';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
@@ -6,6 +7,18 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tailwindcss from '@tailwindcss/vite';
 
 const packageVersion = packageJson.version;
+
+// This is a fallback for local/Vercel builds as docker deployments will set PUBLIC_COMMIT_SHA at runtime
+function resolveBuildCommitSha(): string {
+	if (process.env.VERCEL_GIT_COMMIT_SHA) return process.env.VERCEL_GIT_COMMIT_SHA;
+	try {
+		return execFileSync('git', ['rev-parse', 'HEAD'], { stdio: ['ignore', 'pipe', 'ignore'] })
+			.toString()
+			.trim();
+	} catch {
+		return '';
+	}
+}
 
 export default defineConfig({
 	server: {
@@ -40,6 +53,7 @@ export default defineConfig({
 	],
 	define: {
 		'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion),
+		'import.meta.env.BUILD_COMMIT_SHA': JSON.stringify(resolveBuildCommitSha()),
 		// Vercel provides this variable during the build. Keep the value in the
 		// client bundle so self-hosted Node builds do not load Vercel-only scripts.
 		'import.meta.env.VERCEL': JSON.stringify('VERCEL' in process.env)
