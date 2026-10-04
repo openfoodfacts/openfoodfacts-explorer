@@ -8,9 +8,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 const packageVersion = packageJson.version;
 
-// This is a fallback for local/Vercel builds as docker deployments will set PUBLIC_COMMIT_SHA at runtime
+// Docker builds receive GIT_COMMIT_SHA as a build arg, since .git is excluded from the build context
 function resolveBuildCommitSha(): string {
-	if (process.env.VERCEL_GIT_COMMIT_SHA) return process.env.VERCEL_GIT_COMMIT_SHA;
+	const fromEnv = process.env.GIT_COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA;
+	if (fromEnv) return fromEnv;
 	try {
 		return execFileSync('git', ['rev-parse', 'HEAD'], { stdio: ['ignore', 'pipe', 'ignore'] })
 			.toString()
