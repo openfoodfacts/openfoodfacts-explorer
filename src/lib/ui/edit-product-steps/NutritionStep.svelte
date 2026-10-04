@@ -24,7 +24,7 @@
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
-	import ImageButton from '../ImageButton.svelte';
+	import ProductImageEditor from '../images/ProductImageEditor.svelte';
 	import {
 		getServingSizeValidationResult,
 		getNutritionIssues,
@@ -39,7 +39,7 @@
 	type Props = {
 		product: Product;
 		units: string[];
-		getNutritionImage: (language: string) => string | null;
+		getNutritionImage?: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
 		editMode?: boolean;
 	};
@@ -51,6 +51,10 @@
 		handleNutrimentInput,
 		editMode = false
 	}: Props = $props();
+
+	$effect(() => {
+		void getNutritionImage;
+	});
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -629,7 +633,6 @@
 	</div>
 	<div class="tabs tabs-box mb-4 bg-base-100">
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-			{@const nutritionImage = getNutritionImage(code)}
 			<input
 				type="radio"
 				name="nutrition_image_tabs"
@@ -638,21 +641,14 @@
 				checked={code === product.lang}
 			/>
 			<div class="tab-content p-6">
-				{#if nutritionImage == null}
-					<p class="mb-4 alert text-sm alert-warning sm:text-base">
-						{$_('product.edit.no_nutrition_image', {
-							values: { language: getLanguageName(code) }
-						})}
-					</p>
-				{:else}
-					<div class="sticky top-4">
-						<ImageButton
-							src={nutritionImage ?? undefined}
-							alt={`Nutrition facts for ${getLanguageName(code)}`}
-							productCode={product.code}
-						/>
-					</div>
-				{/if}
+				<div class="sticky top-4">
+					<ProductImageEditor
+						{product}
+						imageType="nutrition"
+						languageCode={code}
+						label="Nutrition"
+					/>
+				</div>
 			</div>
 		{/each}
 		{#if Object.keys(product.languages_codes ?? {}).length === 0}

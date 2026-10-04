@@ -4,13 +4,12 @@
 	import { getLanguageName } from '$lib/languages';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import ImageButton from '../ImageButton.svelte';
+	import ProductImageEditor from '../images/ProductImageEditor.svelte';
 
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
-	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
@@ -155,32 +154,15 @@
 		/>
 		<div class="form-control tab-content border-base-300 bg-base-100 p-6">
 			<div class="mb-4">
-				{#if getIngredientsImage(code) != null}
-					<div class="flex flex-col gap-3">
-						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
-
-						<!-- OCR Button -->
-						<button
-							type="button"
-							class="btn self-start btn-outline btn-sm"
-							class:loading={ocrLoading}
-							disabled={ocrLoading}
-							onclick={() => performOCR(code)}
-						>
-							{#if ocrLoading}
-								<span class="loading h-4 w-4 loading-spinner"></span>
-								<span>Extracting ingredients...</span>
-							{:else}
-								<IconMdiTextRecognition class="h-4 w-4" />
-								<span>Extract ingredients from image</span>
-							{/if}
-						</button>
-					</div>
-				{:else}
-					<p class="mb-4 alert text-sm alert-warning sm:text-base">
-						{$_('product.edit.no_ingredients_image')}
-					</p>
-				{/if}
+				<ProductImageEditor
+					{product}
+					imageType="ingredients"
+					languageCode={code}
+					label="Ingredients"
+					showOcrButton={true}
+					{ocrLoading}
+					onPerformOcr={() => performOCR(code)}
+				/>
 			</div>
 
 			<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
