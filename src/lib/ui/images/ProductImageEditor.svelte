@@ -262,10 +262,17 @@
 				params
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, imageSelectionData);
-			toast.success($_('product.edit.images.toast.save_success'));
-			trackOffEvent('contribution', 'image_crop_saved', imageType);
-			await invalidateAll();
+			const result = await selectAndCropImagesV3(fetch, product.code, imageSelectionData);
+			if (result.data?.status === 'success') {
+				toast.success($_('product.edit.images.toast.save_success'));
+				trackOffEvent('contribution', 'image_crop_saved', imageType);
+				await invalidateAll();
+			} else {
+				toast.error(
+					$_('product.edit.images.toast.save_failed', { default: 'Failed to process image.' })
+				);
+				return;
+			}
 			editingModal?.closeModal();
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -304,7 +311,7 @@
 		isUnselecting = true;
 		try {
 			const result = await unselectImageV3(fetch, product.code, imageType, languageCode);
-			if (result.data?.status === 'success' || !result.error) {
+			if (result.data?.status === 'success') {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', imageType);
 				await invalidateAll();
