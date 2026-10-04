@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '$lib/matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -30,6 +29,7 @@
 	import { toggleCalculator } from '$lib/stores/calculatorStore';
 	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
 	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import ExploreByMenu from '$lib/ui/ExploreByMenu.svelte';
 
 	import { _, getLocale, locale } from '$lib/i18n';
 	import {
@@ -66,6 +66,17 @@
 	}
 
 	syncWebsiteFlavor(page.url);
+
+	let MatomoComponent = $state<Component<{ url: string; siteId: number }> | null>(null);
+
+	onMount(async () => {
+		try {
+			const mod = await import('$lib/matomo');
+			MatomoComponent = mod.Matomo;
+		} catch {
+			console.warn('Matomo analytics failed to load or was blocked.');
+		}
+	});
 
 	$effect(() => {
 		syncWebsiteFlavor(page.url);
@@ -154,8 +165,11 @@
 	$effect(() => {
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
+			// Ignore responses for a previous user if they log out or switch accounts mid-request
+			let cancelled = false;
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (cancelled) return;
 				if (data && data.status === 'success' && data.user) {
 					permissionsCtx.isAdmin = data.user.admin === 1;
 					permissionsCtx.isModerator = data.user.moderator === 1;
@@ -164,6 +178,9 @@
 					permissionsCtx.isModerator = false;
 				}
 			});
+			return () => {
+				cancelled = true;
+			};
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
@@ -237,7 +254,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{#if MatomoComponent}
+	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{/if}
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
@@ -417,15 +436,15 @@
 		<a class="btn link btn-outline" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
+		<a
+			class="btn link btn-outline"
+			href={OPEN_PRICES_BASE_URL}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			{$_('prices_link')}
 		</a>
-		<a class="btn link btn-outline" href="/folksonomy">
-			{$_('folksonomy_link')}
-		</a>
-		<a class="btn link btn-outline" href="/facets">
-			{$_('facets_link')}
-		</a>
+		<ExploreByMenu mobile onNavigate={() => (accordionOpen = false)} />
 
 		<div class="divider md:divider-horizontal"></div>
 		<button
