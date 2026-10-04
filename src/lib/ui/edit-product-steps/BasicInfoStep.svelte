@@ -566,7 +566,7 @@
 									<InfoTooltip
 										text={$_('product.edit.tooltips.common_name', {
 											default:
-												'Chocolate bar with milk and hazelnuts. Do not include any brands or quantities. This should be very similar to the category of the products in many cases.'
+												'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
 										})}
 									/>
 								</span>
@@ -582,7 +582,7 @@
 											{code}
 										</div>
 										<input
-											id={`details-generic-name-${code}`}
+											id={`generic-name-${code}`}
 											type="text"
 											class="input-bordered input w-full text-sm focus:border-primary focus:outline-none sm:text-base"
 											value={product[`generic_name_${code}`] ?? ''}
