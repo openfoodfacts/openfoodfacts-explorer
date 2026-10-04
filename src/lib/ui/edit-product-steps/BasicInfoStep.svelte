@@ -600,7 +600,7 @@
 							</div>
 						</div>
 						<div class="form-control w-full sm:col-span-2">
-							<label class="label" for="details-website-url">
+							<label class="label" for="website-url">
 								<span class="label-text text-sm font-medium text-wrap sm:text-base">
 									{$_('product.edit.product_page_url_add', {
 										default: 'Link to the product page on the official site of the producer'
@@ -614,7 +614,7 @@
 								/>
 							</label>
 							<input
-								id="details-website-url"
+								id="website-url"
 								type="url"
 								class="input-bordered input w-full text-sm break-all focus:border-primary focus:outline-none sm:text-base"
 								value={product.link ?? ''}
