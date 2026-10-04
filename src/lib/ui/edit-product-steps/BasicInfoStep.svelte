@@ -5,7 +5,7 @@
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import { PRODUCT_TYPES } from '$lib/const';
 
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import TagsString from '$lib/ui/inputs/TagsString.svelte';
 	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
