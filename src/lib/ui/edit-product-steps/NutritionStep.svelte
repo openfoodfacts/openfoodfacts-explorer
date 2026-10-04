@@ -425,7 +425,7 @@
 				</span>
 			</div>
 
-			{#if $preferences.moderator && permissions.isModerator}
+			{#if permissions.isModerator && !$preferences.hideModeratorTools}
 				<div class="mb-4 flex items-center gap-2">
 					<button type="button" class="btn btn-error btn-sm" onclick={wipeAllNutrientValues}>
 						<IconMdiDeleteSweep class="h-4 w-4" />
