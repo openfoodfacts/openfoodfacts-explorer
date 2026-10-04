@@ -8,7 +8,7 @@
 	import FacetBar from '../../routes/search/FacetBar.svelte';
 	import type { SearchResult } from '$lib/api/search';
 
-	import type { FacetsSelection } from '$lib/facets';
+	import type { FacetsSelection } from '$lib/search/facet-selection';
 
 	interface Props {
 		onSortOptionSelect?: (value: string) => void;
