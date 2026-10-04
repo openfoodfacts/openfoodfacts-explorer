@@ -209,6 +209,8 @@
 		"github_link": "GitHub",
 		"github_cta": "Pomozte nám vylepšit Průzkumníka na GitHubu",
 		"github_help_text": "Pomozte vylepšit Open Food Facts Explorer!",
+		"app_version": "Version {version}",
+		"app_commit_link": "View commit {sha} on GitHub",
 		"admin_tools": {
 			"title": "Nástroje správce",
 			"description": "Užitečné odkazy pro správce Open Food Facts",
