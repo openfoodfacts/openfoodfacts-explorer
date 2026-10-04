@@ -296,9 +296,13 @@
 				selectedImage.imgid
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await invalidateAll();
-			toast.success($_('product.edit.images.toast.select_success'));
+			const result = await selectAndCropImagesV3(fetch, product.code, selectionData);
+			if (result.data?.status === 'success') {
+				await invalidateAll();
+				toast.success($_('product.edit.images.toast.select_success'));
+			} else {
+				toast.error($_('product.edit.images.toast.select_error'));
+			}
 		} catch (error) {
 			console.error('Error selecting image:', error);
 			toast.error($_('product.edit.images.toast.select_error'));

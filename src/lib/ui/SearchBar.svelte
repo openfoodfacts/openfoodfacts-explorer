@@ -98,16 +98,18 @@
 			const api = createSearchApi(fetch);
 			const { data, error } = await api.autocomplete(autocompleteQuery);
 			if (error) {
+				console.error('Error fetching autocomplete:', error);
 				autocompleteList = getMockItems();
 			} else {
 				const result = data as AutocompleteResponse | undefined;
-				const options = Array.isArray(result?.options) ? result.options : [];
-				autocompleteList = options.length > 0 ? options : getMockItems();
+				autocompleteList = Array.isArray(result?.options) ? result.options : [];
 			}
 		} catch (e) {
-			if (e instanceof Error && e.name !== 'AbortError') {
-				autocompleteList = getMockItems();
+			if (e instanceof Error && e.name === 'AbortError') {
+				return;
 			}
+			console.error('Error fetching autocomplete:', e);
+			autocompleteList = getMockItems();
 		} finally {
 			autocompleteLoading = false;
 		}

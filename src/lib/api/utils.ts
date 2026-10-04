@@ -13,12 +13,21 @@ import { browser } from '$app/environment';
  */
 export function ssrSafeFetch(
 	svelteKitFetch: typeof globalThis.fetch,
-	_: string
+	url?: string | URL
 ): typeof globalThis.fetch {
 	if (browser) {
 		return svelteKitFetch;
 	}
 	// On the server, bypass SvelteKit's CORS-enforcing wrapper
+	if (url) {
+		try {
+			const parsedUrl = typeof url === 'string' ? new URL(url) : url;
+			const { fetch: wrappedFetch } = wrapFetchWithCredentials(globalThis.fetch, parsedUrl);
+			return wrappedFetch;
+		} catch {
+			// Fall back to globalThis.fetch if URL parsing fails
+		}
+	}
 	return globalThis.fetch;
 }
 
