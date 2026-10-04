@@ -165,8 +165,11 @@
 	$effect(() => {
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
+			// Ignore responses for a previous user if they log out or switch accounts mid-request
+			let cancelled = false;
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (cancelled) return;
 				if (data && data.status === 'success' && data.user) {
 					permissionsCtx.isAdmin = data.user.admin === 1;
 					permissionsCtx.isModerator = data.user.moderator === 1;
@@ -175,6 +178,9 @@
 					permissionsCtx.isModerator = false;
 				}
 			});
+			return () => {
+				cancelled = true;
+			};
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
@@ -430,7 +436,12 @@
 		<a class="btn link btn-outline" href="/static/producers">
 			{$_('producers_link')}
 		</a>
-		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
+		<a
+			class="btn link btn-outline"
+			href={OPEN_PRICES_BASE_URL}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			{$_('prices_link')}
 		</a>
 		<ExploreByMenu mobile onNavigate={() => (accordionOpen = false)} />
