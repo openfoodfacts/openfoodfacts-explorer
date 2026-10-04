@@ -219,8 +219,8 @@
 							default: 'Version {version}',
 							values: { version: APP_VERSION }
 						})}
-						{#if COMMIT_SHA}
-							·
+						·
+						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
 								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
@@ -234,6 +234,8 @@
 							>
 								{SHORT_COMMIT_SHA}
 							</a>
+						{:else}
+							SHA unknown
 						{/if}
 					</p>
 				</div>
