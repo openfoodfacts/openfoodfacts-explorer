@@ -373,7 +373,13 @@
 			"datasources": "Data Sources",
 			"prices": "Prices",
 			"folksonomy": "Tags & Community",
-			"external_sources": "External sources"
+			"external_sources": "External sources",
+			"hunger_games": "Logo Annotation"
+		},
+		"hunger_games": {
+			"title": "Hunger Games - Logo Annotation",
+			"description": "Help improve logo recognition on Open Food Facts by verifying and annotating logos on this product packaging.",
+			"button": "Help annotate logos on this product"
 		},
 		"gs1": {
 			"title": "GS1 barcode information",

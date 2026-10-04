@@ -110,3 +110,6 @@ export const IMAGE_REPORT_URL = (
 	});
 	return `${PUBLIC_NUTRIPATROL_URL}/flag/image/?${params.toString()}`;
 };
+
+export const HUNGER_GAMES_LOGOS_URL = (barcode: string) =>
+	`https://hunger.openfoodfacts.org/logos/search?barcode=${encodeURIComponent(barcode)}`;
