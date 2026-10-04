@@ -192,7 +192,7 @@
 						<InfoTooltip
 							text={$_('product.edit.tooltips.generic_name', {
 								default:
-									' Chocolate bar with milk and hazelnuts. Do not include any brands or quantities. This should be very similar to the category of the products in many cases.'
+									' The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
 							})}
 						/>
 					</span>
