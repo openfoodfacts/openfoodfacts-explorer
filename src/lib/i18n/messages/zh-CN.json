@@ -209,6 +209,8 @@
 		"github_link": "GitHub",
 		"github_cta": "在 GitHub 上帮助我们改进 Explorer",
 		"github_help_text": "帮助我们改进 Open Food Facts Explorer！",
+		"app_version": "Version {version}",
+		"app_commit_link": "View commit {sha} on GitHub",
 		"admin_tools": {
 			"title": "管理员工具",
 			"description": "Open Food Facts 管理员的实用链接",
