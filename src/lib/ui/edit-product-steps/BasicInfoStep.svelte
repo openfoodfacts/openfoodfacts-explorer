@@ -192,7 +192,7 @@
 						<InfoTooltip
 							text={$_('product.edit.tooltips.generic_name', {
 								default:
-									' The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+									'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
 							})}
 						/>
 					</span>
