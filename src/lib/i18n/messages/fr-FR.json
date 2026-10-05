@@ -12,12 +12,12 @@
 	"account_link": "Compte",
 	"world_option": "Monde",
 	"navigation": {
-		"explore_by": "Explore by",
-		"browse_products_by": "Browse products by…",
-		"explore_products_by": "Explore products by",
-		"custom_properties": "Custom properties",
-		"explore_prices": "Explore prices",
-		"back_to_explore_by": "Back to explore by"
+		"explore_by": "Explorer par",
+		"browse_products_by": "Parcourir les produits par…",
+		"explore_products_by": "Explorer les produits par",
+		"custom_properties": "Propriétés personnalisées",
+		"explore_prices": "Explorer les prix",
+		"back_to_explore_by": "Retour à l'exploration par"
 	},
 	"navbar": {
 		"login": "Connexion",
@@ -488,7 +488,7 @@
 				"remove_component": "Retirer",
 				"all_listed": "Tous les composants de l'emballage ont été listés",
 				"instructions_title": "Conseils pour les éléments d'emballage :",
-				"component_number": "Packaging component {number}",
+				"component_number": "Composant d'emballage {number}",
 				"number_of_units_desc": "Entrez le nombre d'unités d'emballage de la même forme et de la même matière contenue dans le produit.",
 				"shape_desc": "Entrez le nom de la forme indiqué dans les instructions de recyclage si elles sont disponibles, ou sélectionnez une forme.",
 				"material_desc": "Entrez le matériau spécifique s'il peut être déterminé (un code de matériau à l'intérieur d'un triangle peut souvent être trouvé sur les éléments d'emballage), ou un matériau générique (par exemple du plastique ou du métal) si vous n'êtes pas sûr.",
@@ -961,8 +961,8 @@
 		"no_products_selected": "Aucun produit sélectionné pour la comparaison",
 		"add_products_hint": "Ajoutez des produits depuis leurs pages de détail pour commencer à comparer leurs valeurs nutritionnelles",
 		"browse_products": "Parcourir les produits",
-		"single_product_title": "Add one more product to compare",
-		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
+		"single_product_title": "Ajouter un produit de plus à comparer",
+		"single_product_hint": "Les comparaisons fonctionnent avec au moins 2 produits. Ajoutez-en un autre pour voir comment ils se comparent.",
 		"shared_comparison": "Comparaison partagée",
 		"shared_description": "Comparaison de produits partagée",
 		"shared_product_comparison": "Comparaison de produits partagée",
