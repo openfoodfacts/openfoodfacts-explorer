@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { FacetResult } from '$lib/api/search';
-	import type { FacetsSelection } from '$lib/facets';
+	import type { FacetsSelection } from '$lib/search/facet-selection';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiFilterOffOutline from '@iconify-svelte/mdi/filter-off-outline';
 
