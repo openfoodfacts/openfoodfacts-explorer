@@ -340,6 +340,10 @@
 			"stores": "Stores",
 			"countries": "Countries"
 		},
+		"language_switcher": {
+			"label": "Product language",
+			"available": "Available languages"
+		},
 		"folksonomy": {
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",

@@ -7,6 +7,7 @@ import { createProductsApi } from '$lib/api';
 
 import { get } from 'svelte/store';
 import { getLanguageCode, preferences } from '$lib/settings';
+import { PRODUCT_LANGUAGE_PARAM, resolveProductLanguage } from '$lib/productLanguage';
 import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
 import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
 import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
@@ -64,11 +65,14 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	});
 }
 
-export const load: PageLoad = async ({ params, fetch }) => {
+export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const lc = getLanguageCode(get(preferences).locale);
+	const lc = resolveProductLanguage(
+		url.searchParams.get(PRODUCT_LANGUAGE_PARAM),
+		getLanguageCode(get(preferences).locale)
+	);
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',

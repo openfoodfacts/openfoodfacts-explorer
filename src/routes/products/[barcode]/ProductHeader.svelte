@@ -14,6 +14,7 @@
 	import { getToastCtx } from '$lib/stores/toasts';
 	import Card from '$lib/ui/Card.svelte';
 	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import ProductLanguageSwitcher from './ProductLanguageSwitcher.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
@@ -66,7 +67,7 @@
 	async function sharePage() {
 		await shareContent(
 			{
-				url: `${window.location.origin}${window.location.pathname}`,
+				url: `${window.location.origin}${window.location.pathname}${window.location.search}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
 					values: { productName: product.product_name || product.code }
@@ -189,6 +190,11 @@
 					>
 						<IconMdiCompare class="h-5 w-5" />
 					</button>
+
+					<ProductLanguageSwitcher
+						languagesCodes={product.languages_codes as Record<string, number> | undefined}
+						lc={lc || getLanguageCode(preferredLocale)}
+					/>
 				</div>
 			</div>
 
