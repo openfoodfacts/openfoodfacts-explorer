@@ -3,7 +3,7 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import { _ } from '$lib/i18n';
 	import type { Facet, FacetItem } from '$lib/api/search';
-	import { getFacetKeyForSearchField } from '$lib/facets';
+	import { getFacetKeyForSearchField } from '$lib/search/facet-fields';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';

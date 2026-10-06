@@ -7,11 +7,9 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import FacetCard from './FacetCard.svelte';
-	import {
-		computeFacetCollections,
-		FACET_CATEGORY_LABELS,
-		type FacetsSelection
-	} from '$lib/facets';
+	import { computeFacetCollections } from '$lib/search/facet-collections';
+	import { FACET_CATEGORY_LABELS } from '$lib/search/facet-catalog';
+	import { type FacetsSelection } from '$lib/search/facet-selection';
 
 	type Props = {
 		facets: Record<string, Facet>;

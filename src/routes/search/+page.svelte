@@ -12,15 +12,13 @@
 	import {
 		addExcludeFacet,
 		addIncludeFacet,
-		extractQuery,
-		parseLuceneFacets,
 		removeExcludeFacet,
 		removeIncludeFacet,
-		toLuceneString,
 		toggleExcludeFacet,
 		toggleIncludeFacet,
 		type FacetsSelection
-	} from '$lib/facets';
+	} from '$lib/search/facet-selection';
+	import { extractQuery, parseLuceneFacets, toLuceneString } from '$lib/search/lucene';
 	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import Pagination from '$lib/Pagination.svelte';

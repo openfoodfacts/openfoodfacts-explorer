@@ -7,7 +7,7 @@
 		type AttributeParameters,
 		type UserPreference
 	} from '$lib/stores/preferencesStore';
-	import Tags from '../../../routes/products/[barcode]/edit/Tags.svelte';
+	import Tags from '$lib/ui/inputs/Tags.svelte';
 
 	type Props = {
 		group: AttributeGroup;

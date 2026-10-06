@@ -40,7 +40,7 @@
 		ROBOTOFF_URL
 	} from '$lib/const';
 	import { userInfo } from '$lib/stores/user';
-	import { extractQuery } from '$lib/facets';
+	import { extractQuery } from '$lib/search/lucene';
 	import { dev } from '$app/environment';
 	import type { LayoutProps } from './$types';
 	import { getWebsiteFlavorFromParam } from '$lib/flavor';

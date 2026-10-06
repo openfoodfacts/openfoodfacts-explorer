@@ -17,7 +17,7 @@
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
 	import { trackOffEvent } from '$lib/analytics';
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import TagsString from '$lib/ui/inputs/TagsString.svelte';
 
 	type OCRResult = {
 		status?: number;
