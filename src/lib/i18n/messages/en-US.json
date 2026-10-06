@@ -946,6 +946,26 @@
 		"learn_more": "Learn More",
 		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
 	},
+	"calculator": {
+		"title": "Calculator",
+		"panel_title": "Nutrition Calculator",
+		"close": "Close calculator",
+		"empty": "Add products to calculate total nutrition",
+		"quantity_grams": "{quantity} g",
+		"missing_nutrition": "No nutrition data for this product",
+		"decrease_quantity": "Decrease quantity of {name}",
+		"increase_quantity": "Increase quantity of {name}",
+		"remove_item": "Remove {name}",
+		"total_nutrition": "Total nutrition",
+		"calories": "Calories: {value} kcal",
+		"proteins": "Protein: {value} g",
+		"carbohydrates": "Carbs: {value} g",
+		"fat": "Fat: {value} g",
+		"sugars": "Sugars: {value} g",
+		"salt": "Salt: {value} g",
+		"clear_all": "Clear All",
+		"clear_all_aria": "Clear all items from calculator"
+	},
 	"compare": {
 		"page_title": "Compare Products",
 		"page_description": "Compare nutritional information of food products",
