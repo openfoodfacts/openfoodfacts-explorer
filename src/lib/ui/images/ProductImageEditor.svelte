@@ -190,6 +190,7 @@
 
 		if ($userInfo == null) {
 			toast.warning($_('product.edit.images.toast.login_required'));
+			input.value = '';
 			return;
 		}
 
@@ -296,9 +297,13 @@
 				selectedImage.imgid
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await invalidateAll();
-			toast.success($_('product.edit.images.toast.select_success'));
+			const result = await selectAndCropImagesV3(fetch, product.code, selectionData);
+			if (result.data?.status === 'success' || result.data?.status === 'success_with_warnings') {
+				await invalidateAll();
+				toast.success($_('product.edit.images.toast.select_success'));
+			} else {
+				toast.error($_('product.edit.images.toast.select_error'));
+			}
 		} catch (error) {
 			console.error('Error selecting image:', error);
 			toast.error($_('product.edit.images.toast.select_error'));
@@ -410,10 +415,10 @@
 					>
 						{#if ocrLoading}
 							<span class="loading h-4 w-4 loading-spinner"></span>
-							<span>Extracting ingredients...</span>
+							<span>{$_('product.edit.images.ocr_extracting', { default: 'Extracting ingredients...' })}</span>
 						{:else}
 							<IconMdiTextRecognition class="h-4 w-4" />
-							<span>Extract ingredients from image</span>
+							<span>{$_('product.edit.images.ocr_extract', { default: 'Extract ingredients from image' })}</span>
 						{/if}
 					</button>
 				{/if}
