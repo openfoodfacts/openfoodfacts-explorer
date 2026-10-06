@@ -858,6 +858,8 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Brand",
 		"quantity": "Quantity",
+		"ingredients": "Ingredients",
+		"no_ingredients": "No ingredients available",
 		"nova_group": "Nova Group",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
