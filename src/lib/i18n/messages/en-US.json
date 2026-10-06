@@ -385,7 +385,19 @@
 			"datasources": "Data Sources",
 			"prices": "Prices",
 			"folksonomy": "Tags & Community",
-			"external_sources": "External sources"
+			"external_sources": "External sources",
+			"hunger_games": "Hunger Games"
+		},
+		"hunger_games": {
+			"title": "Hunger Games",
+			"subtitle": "Gamified annotations for Open Food Facts",
+			"description": "Answer quick questions on Hunger Games to help annotate and verify missing data for this product and earn contribution points.",
+			"answer_questions": "Answer questions for this product",
+			"track_scores": "Track my scores",
+			"logged_in_as": "Logged in as {username}",
+			"guest_mode": "Guest Mode",
+			"login_prompt": "Log in to track your contribution progress and scores in Hunger Games.",
+			"play_hunger_games": "Play Hunger Games"
 		},
 		"gs1": {
 			"title": "GS1 barcode information",
