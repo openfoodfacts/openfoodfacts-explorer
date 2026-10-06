@@ -11,7 +11,7 @@ Props:
   If not provided, all panels are displayed.
 -->
 <script lang="ts">
-	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api';
+	import type { KnowledgePanelElement, KnowledgePanels } from '#lib/api.js';
 	import Panel from './Panel.svelte';
 
 	type Props = {

@@ -5,8 +5,8 @@
 
 	import type { TaxoNode, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
-	import { getOrDefault } from '$lib/api';
-	import { getLanguageCode, preferences } from '$lib/settings';
+	import { getOrDefault } from '#lib/api.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 
 	type Props = {
 		id: string;

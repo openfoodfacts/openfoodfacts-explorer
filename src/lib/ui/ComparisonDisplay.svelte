@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 
-	import { _ } from '$lib/i18n';
-	import { KP_ATTRIBUTE_IMG } from '$lib/const';
-	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
+	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';

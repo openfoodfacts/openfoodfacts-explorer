@@ -6,7 +6,7 @@
 //
 // Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 
-import { tracker } from '$lib/analytics';
+import { tracker } from '#lib/analytics.js';
 
 // https://developer.matomo.org/api-reference/tracking-javascript
 export interface Tracker {

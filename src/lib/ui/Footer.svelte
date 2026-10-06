@@ -1,10 +1,10 @@
 <script lang="ts">
-	import footerTopLeft from '$lib/assets/footer-top-left.svg';
-	import footerBottomRight from '$lib/assets/footer-bottom-right.svg';
-	import { _ } from '$lib/i18n';
+	import footerTopLeft from '#lib/assets/footer-top-left.svg';
+	import footerBottomRight from '#lib/assets/footer-bottom-right.svg';
+	import { _ } from '#lib/i18n/index.js';
 	import { page } from '$app/state';
 	import Logo from './Logo.svelte';
-	import { shouldBeContainer } from '$lib/layout';
+	import { shouldBeContainer } from '#lib/layout.js';
 
 	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
 	import IconSimpleIconsMastodon from '@iconify-svelte/simple-icons/mastodon';

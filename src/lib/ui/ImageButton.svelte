@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 

@@ -1,7 +1,6 @@
-import { sequence } from '@sveltejs/kit/hooks';
+import { sequence, type Handle } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
-import type { Handle } from '@sveltejs/kit';
-import { locale } from '$lib/i18n';
+import { locale } from '#lib/i18n/index.js';
 
 import { clearWindow } from 'isomorphic-dompurify';
 

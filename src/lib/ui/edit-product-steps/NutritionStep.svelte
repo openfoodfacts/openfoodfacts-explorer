@@ -1,7 +1,7 @@
 <script lang="ts">
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import { _, locale } from '$lib/i18n';
-	import { getLanguageName } from '$lib/languages';
+	import { _, locale } from '#lib/i18n/index.js';
+	import { getLanguageName } from '#lib/languages.js';
 	import {
 		getNutrients,
 		getMissingNutrientOptions,
@@ -11,9 +11,9 @@
 		type NutrientKey,
 		type Product,
 		type Nutriments
-	} from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
+	} from '#lib/api.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
 
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -32,9 +32,9 @@
 		type IssueSeverity
 	} from './nutrition';
 
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
 
 	type Props = {
 		product: Product;

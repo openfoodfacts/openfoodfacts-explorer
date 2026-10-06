@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { getLanguageName } from '$lib/languages';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { getLanguageName } from '#lib/languages.js';
 
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 

@@ -1,5 +1,5 @@
-import { getPreference, type UserPreference } from '$lib/stores/preferencesStore';
-import type { ProductAttributeForScoringGroup } from '$lib/api/product';
+import { getPreference, type UserPreference } from '#lib/stores/preferencesStore.js';
+import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
 
 export type MatchStatus =
 	| 'unknown_match'
