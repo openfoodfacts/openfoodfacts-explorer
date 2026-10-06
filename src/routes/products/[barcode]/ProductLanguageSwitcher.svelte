@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _, getLocale } from '$lib/i18n';
 	import { getLanguageName } from '$lib/languages';
-	import { getProductLanguages, PRODUCT_LANGUAGE_PARAM } from '$lib/productLanguage';
+	import { getSortedProductLanguages, PRODUCT_LANGUAGE_PARAM } from '$lib/productLanguage';
 	import { page } from '$app/state';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
@@ -13,7 +13,9 @@
 	};
 	let { languagesCodes, lc }: Props = $props();
 
-	let languages = $derived(getProductLanguages(languagesCodes));
+	let languages = $derived(
+		getSortedProductLanguages(languagesCodes, (code) => getLanguageName(code), getLocale())
+	);
 
 	function languageHref(code: string): string {
 		const url = new URL(page.url);
@@ -40,7 +42,7 @@
 			<li class="menu-title">
 				{$_('product.language_switcher.available', { default: 'Available languages' })}
 			</li>
-			{#each languages as code (code)}
+			{#each languages as { code, name } (code)}
 				<li>
 					<a
 						href={languageHref(code)}
@@ -50,7 +52,7 @@
 						data-sveltekit-noscroll
 						onclick={() => details?.removeAttribute('open')}
 					>
-						<span class="flex-1">{getLanguageName(code)}</span>
+						<span class="flex-1">{name}</span>
 						{#if code === lc}
 							<IconMdiCheck class="h-4 w-4" aria-hidden="true" />
 						{/if}

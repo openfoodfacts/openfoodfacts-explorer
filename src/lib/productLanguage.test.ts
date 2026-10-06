@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getProductLanguages, resolveProductLanguage } from './productLanguage';
+import { getSortedProductLanguages, resolveProductLanguage } from './productLanguage';
 
 describe('resolveProductLanguage', () => {
 	it('uses a valid language code from the query parameter', () => {
@@ -23,17 +23,43 @@ describe('resolveProductLanguage', () => {
 	});
 });
 
-describe('getProductLanguages', () => {
+describe('getSortedProductLanguages', () => {
+	const names: Record<string, string> = {
+		de: 'German',
+		en: 'English',
+		fr: 'French',
+		es: 'Spanish'
+	};
+	const getName = (code: string) => names[code] ?? code;
+
 	it('returns an empty list when there are no languages', () => {
-		expect(getProductLanguages(undefined)).toEqual([]);
-		expect(getProductLanguages({})).toEqual([]);
+		expect(getSortedProductLanguages(undefined, getName)).toEqual([]);
+		expect(getSortedProductLanguages({}, getName)).toEqual([]);
 	});
 
-	it('sorts languages by number of filled fields, then by code', () => {
-		expect(getProductLanguages({ en: 3, fr: 5, de: 3 })).toEqual(['fr', 'de', 'en']);
+	it('sorts languages alphabetically by display name, not by code or field count', () => {
+		const languages = getSortedProductLanguages({ fr: 50, de: 3, en: 10, es: 1 }, getName, 'en');
+		expect(languages).toEqual([
+			{ code: 'en', name: 'English' },
+			{ code: 'fr', name: 'French' },
+			{ code: 'de', name: 'German' },
+			{ code: 'es', name: 'Spanish' }
+		]);
+	});
+
+	it('sorts using the given locale', () => {
+		const localNames: Record<string, string> = { de: 'Allemand', en: 'Anglais', es: 'Espagnol' };
+		const languages = getSortedProductLanguages(
+			{ es: 1, en: 1, de: 1 },
+			(code) => localNames[code],
+			'fr'
+		);
+		expect(languages.map((l) => l.code)).toEqual(['de', 'en', 'es']);
 	});
 
 	it('ignores invalid language codes', () => {
-		expect(getProductLanguages({ fr: 2, xx_invalid: 4 })).toEqual(['fr']);
+		expect(getSortedProductLanguages({ fr: 2, xx_invalid: 4 }, getName)).toEqual([
+			{ code: 'fr', name: 'French' }
+		]);
 	});
 });

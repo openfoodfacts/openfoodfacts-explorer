@@ -16,13 +16,23 @@ export function resolveProductLanguage(param: string | null | undefined, fallbac
 	return fallback;
 }
 
+export type ProductLanguage = {
+	code: string;
+	name: string;
+};
+
 /**
- * Returns the language codes a product has data for, ordered by number of
- * filled fields (descending), then alphabetically.
+ * Returns the languages a product has data for, sorted alphabetically by
+ * their display name so users can quickly find the language they want.
  */
-export function getProductLanguages(languagesCodes: Record<string, number> | null | undefined) {
-	return Object.entries(languagesCodes ?? {})
-		.filter(([code]) => LANGUAGE_CODE_REGEX.test(code))
-		.sort(([a, countA], [b, countB]) => countB - countA || a.localeCompare(b))
-		.map(([code]) => code);
+export function getSortedProductLanguages(
+	languagesCodes: Record<string, number> | null | undefined,
+	getName: (code: string) => string,
+	locale?: string
+): ProductLanguage[] {
+	const collator = new Intl.Collator(locale, { sensitivity: 'base' });
+	return Object.keys(languagesCodes ?? {})
+		.filter((code) => LANGUAGE_CODE_REGEX.test(code))
+		.map((code) => ({ code, name: getName(code) }))
+		.sort((a, b) => collator.compare(a.name, b.name) || a.code.localeCompare(b.code));
 }
