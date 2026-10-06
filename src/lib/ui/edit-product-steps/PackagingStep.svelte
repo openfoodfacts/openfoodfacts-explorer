@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	// TODO: switch to SDK
-	import type { Product } from '$lib/api';
+	import type { Product } from '#lib/api.js';
 
 	import IconMdiPackageVariant from '@iconify-svelte/mdi/package-variant';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Shortcut } from '$lib/stores/shortcuts';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Shortcut } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;

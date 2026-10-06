@@ -1,9 +1,9 @@
 <script>
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import { page } from '$app/state';
-	import { shouldBeContainer } from '$lib/layout';
-	import { OPEN_PRICES_BASE_URL } from '$lib/const';
-	import ExploreByMenu from '$lib/ui/ExploreByMenu.svelte';
+	import { shouldBeContainer } from '#lib/layout.js';
+	import { OPEN_PRICES_BASE_URL } from '#lib/const.js';
+	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },

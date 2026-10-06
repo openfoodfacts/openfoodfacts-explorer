@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 
-	import Card from '$lib/ui/Card.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
-	import { compareStore } from '$lib/stores/compareStore';
+	import Card from '#lib/ui/Card.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import ComparisonDisplay from '#lib/ui/ComparisonDisplay.svelte';
+	import { compareStore } from '#lib/stores/compareStore.js';
 	import IconMdiDownload from '@iconify-svelte/mdi/download';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import type { PageData } from './$types';
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 
 	type Props = {
 		data: PageData;
@@ -71,24 +71,22 @@
 							<button
 								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'absolute'}
-								onclick={() => (comparisonMode = 'absolute')}
+								onclick={() => (comparisonMode = 'absolute')}>{$_('compare.mode_absolute')}</button
 							>
-								{$_('compare.mode_absolute')}
-							</button>
+
 							<button
 								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'relative-first'}
 								onclick={() => (comparisonMode = 'relative-first')}
+								>{$_('compare.mode_vs_first')}</button
 							>
-								{$_('compare.mode_vs_first')}
-							</button>
+
 							<button
 								class="btn join-item btn-sm"
 								class:btn-active={comparisonMode === 'relative-best'}
 								onclick={() => (comparisonMode = 'relative-best')}
+								>{$_('compare.mode_vs_best')}</button
 							>
-								{$_('compare.mode_vs_best')}
-							</button>
 						</div>
 					{/if}
 				</div>
@@ -98,10 +96,8 @@
 		{#if data.products.length === 0}
 			<div class="py-8 text-center">
 				<p class="mb-4 text-lg">{$_('compare.no_products_to_compare')}</p>
-				<p class="mb-4 text-sm text-gray-600">
-					{$_('compare.invalid_link_hint')}
-				</p>
-				<a href={resolve('/explore')} class="btn btn-primary">{$_('compare.browse_products')}</a>
+				<p class="mb-4 text-sm text-gray-600">{$_('compare.invalid_link_hint')}</p>
+				<a href={resolve('explore')} class="btn btn-primary">{$_('compare.browse_products')}</a>
 			</div>
 		{:else}
 			<ComparisonDisplay products={data.products} {comparisonMode} readonly />

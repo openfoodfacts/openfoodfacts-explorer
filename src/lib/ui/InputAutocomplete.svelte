@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends Record<string, string | number | boolean | null | undefined>">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiSearch from '@iconify-svelte/mdi/search';
 	import type { ComponentType } from 'svelte';

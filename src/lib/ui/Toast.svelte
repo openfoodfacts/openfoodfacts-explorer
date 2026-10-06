@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getToastCtx, type Toast } from '$lib/stores/toasts';
+	import { getToastCtx, type Toast } from '#lib/stores/toasts.js';
 	import { fly } from 'svelte/transition';
 
 	import IconMdiCheckCircle from '@iconify-svelte/mdi/check-circle';

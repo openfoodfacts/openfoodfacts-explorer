@@ -2,8 +2,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
-	import { _ } from '$lib/i18n';
-	import { OPEN_PRICES_BASE_URL } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { OPEN_PRICES_BASE_URL } from '#lib/const.js';
 
 	type Props = {
 		mobile?: boolean;
@@ -20,12 +20,12 @@
 
 	const links = [
 		{
-			href: resolve('/facets'),
+			href: resolve('facets'),
 			labelKey: 'navigation.browse_products_by',
 			defaultLabel: 'Browse products by…'
 		},
 		{
-			href: resolve('/folksonomy'),
+			href: resolve('folksonomy'),
 			labelKey: 'navigation.custom_properties',
 			defaultLabel: 'Custom properties'
 		},

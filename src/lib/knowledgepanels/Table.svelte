@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { KnowledgeTableElement } from '$lib/api';
-	import type { KnowledgePanelTableRow } from '$lib/types/sdk-overrides';
-	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
+	import type { KnowledgeTableElement } from '#lib/api.js';
+	import type { KnowledgePanelTableRow } from '#lib/types/sdk-overrides.js';
+	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
 
 	let { element }: { element: KnowledgeTableElement } = $props();
 	let rows = $derived(element.table_element.rows as KnowledgePanelTableRow[]);

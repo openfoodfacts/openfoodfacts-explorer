@@ -1,28 +1,28 @@
 <script lang="ts">
-	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
-	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-	import { _ } from '$lib/i18n';
-	import { getLanguageCode, preferences } from '$lib/settings';
+	import { isConfigured as isPriceConfigured } from '#lib/api/prices.js';
+	import { isConfigured as isFolksonomyConfigured } from '#lib/api/folksonomy.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 
-	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
-	import ExternalPanels from '$lib/knowledgepanels/ExternalPanels.svelte';
-	import Card from '$lib/ui/Card.svelte';
-	import Metadata from '$lib/Metadata.svelte';
+	import KnowledgePanelsComp from '#lib/knowledgepanels/Panels.svelte';
+	import ExternalPanels from '#lib/knowledgepanels/ExternalPanels.svelte';
+	import Card from '#lib/ui/Card.svelte';
+	import Metadata from '#lib/Metadata.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import DataSources from './DataSources.svelte';
 
 	import ProductHeader from './ProductHeader.svelte';
-	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import BarcodeInfo from '#lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
-	import { userInfo } from '$lib/stores/user';
-	import { userAuthTokens } from '$lib/stores/auth';
-	import { getWebsiteCtx } from '$lib/stores/website';
+	import { userInfo } from '#lib/stores/user.js';
+	import { userAuthTokens } from '#lib/stores/auth.js';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
 
-	import Sidebar, { type SidebarSectionBase } from '$lib/ui/Sidebar.svelte';
+	import Sidebar, { type SidebarSectionBase } from '#lib/ui/Sidebar.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
@@ -37,22 +37,22 @@
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
-	import ScrollToTop from '$lib/ui/ScrollToTop.svelte';
+	import type { KnowledgePanels } from '#lib/api/knowledgepanels.js';
+	import ScrollToTop from '#lib/ui/ScrollToTop.svelte';
 	import { onMount } from 'svelte';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import type { ProductGroupedAttributes } from './types';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import { PRODUCT_URL } from '$lib/const';
-	import { toWebsiteFlavor } from '$lib/flavor';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
+	import { PRODUCT_URL } from '#lib/const.js';
+	import { toWebsiteFlavor } from '#lib/flavor.js';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { trackOffEvent } from '$lib/analytics';
-	import { browser } from '$app/environment';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import { browser } from '$app/env';
 	import {
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
-	} from '$lib/api/externalSources';
+	} from '#lib/api/externalSources.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -311,7 +311,9 @@
 
 <div itemscope itemtype="https://schema.org/Product">
 	<meta itemprop="name" content={product.product_name || ''} />
+
 	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
+
 	<meta
 		itemprop="description"
 		content={$_('product.description', {
@@ -343,9 +345,7 @@
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
-			<div id="overview" class="flex flex-col gap-4">
-				<ProductHeader {product} lc={data.lc} />
-			</div>
+			<div id="overview" class="flex flex-col gap-4"><ProductHeader {product} lc={data.lc} /></div>
 
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
@@ -429,9 +429,7 @@
 				</div>
 			{/if}
 
-			<div id="data-sources">
-				<DataSources {product} />
-			</div>
+			<div id="data-sources"><DataSources {product} /></div>
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">
@@ -456,9 +454,7 @@
 									{$_('product.folksonomy.intro_before')}
 									<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
 									{$_('product.folksonomy.intro_after')}
-									<a href={resolve('/folksonomy')}>
-										{$_('product.folksonomy.link_properties')}
-									</a>
+									<a href={resolve('folksonomy')}>{$_('product.folksonomy.link_properties')}</a>
 									{$_('product.folksonomy.link_middle')}
 									<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
 										{$_('product.folksonomy.link_docs')}
