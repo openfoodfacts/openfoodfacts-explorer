@@ -52,7 +52,8 @@ export function createPhotoTextSnapshot(product: ProductLike): PhotoTextSnapshot
 	for (const [key, value] of Object.entries(product)) {
 		const match = key.match(/^ingredients_text_(.+)$/);
 		if (match && typeof value === 'string') {
-			ingredients[match[1]] = value.trim();
+			// Collapse whitespace so that whitespace-only edits don't count as an update
+			ingredients[match[1]] = value.replace(/\s+/g, ' ').trim();
 		}
 	}
 

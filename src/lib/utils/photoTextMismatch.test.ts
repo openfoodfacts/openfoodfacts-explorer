@@ -42,6 +42,15 @@ describe('findPhotoTextMismatches', () => {
 		]);
 	});
 
+	it('ignores whitespace-only changes inside the ingredients text', () => {
+		const snapshot = createPhotoTextSnapshot(baseProduct);
+		const images = { ...baseProduct.images, ingredients_fr: { imgid: '1', rev: '9' } };
+		const edited = { ...baseProduct, ingredients_text_fr: 'sucre,  farine' };
+		expect(findPhotoTextMismatches(snapshot, images, edited)).toEqual([
+			{ type: 'ingredients', lang: 'fr' }
+		]);
+	});
+
 	it('flags a newly added photo for a language without text', () => {
 		const snapshot = createPhotoTextSnapshot(baseProduct);
 		const images = { ...baseProduct.images, ingredients_en: { imgid: '5', rev: '10' } };

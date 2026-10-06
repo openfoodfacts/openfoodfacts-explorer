@@ -37,12 +37,16 @@
 	}
 </script>
 
-<dialog bind:this={dialogEl} class="modal modal-bottom sm:modal-middle">
+<dialog
+	bind:this={dialogEl}
+	class="modal modal-bottom sm:modal-middle"
+	aria-labelledby="photo-text-mismatch-title"
+>
 	<div class="modal-box flex flex-col gap-4 border border-warning/20">
 		<div class="flex items-start gap-3 text-warning">
 			<IconMdiAlert class="mt-0.5 h-6 w-6 shrink-0" />
 			<div class="flex flex-col gap-1">
-				<h3 class="text-lg font-bold">
+				<h3 id="photo-text-mismatch-title" class="text-lg font-bold">
 					{$_('product.edit.photo_text_mismatch.title', {
 						default: 'Photo changed without updating the data'
 					})}
