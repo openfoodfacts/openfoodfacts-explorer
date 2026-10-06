@@ -17,7 +17,7 @@
 	let username = $derived($userInfo?.preferred_username ?? '');
 
 	const productHungerGamesUrl = $derived(
-		`https://hunger.openfoodfacts.org/?barcode=${encodeURIComponent(barcode)}`
+		`https://hunger.openfoodfacts.org/questions?barcode=${encodeURIComponent(barcode)}`
 	);
 
 	const userHungerGamesUrl = $derived(
