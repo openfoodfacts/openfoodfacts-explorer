@@ -583,6 +583,15 @@
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
 			"save_btn": "Save",
+			"photo_text_mismatch": {
+				"title": "Photo changed without updating the data",
+				"description": "Please check that the information still matches the new photos before saving.",
+				"ingredients": "The ingredients photo ({language}) was changed, but the ingredients list was not updated.",
+				"nutrition": "The nutrition photo ({language}) was changed, but the nutrition facts were not updated.",
+				"review": "Review",
+				"save_anyway": "Save anyway",
+				"close": "Close"
+			},
 			"toast": {
 				"save_success": "Product saved successfully!",
 				"save_error": "Failed to save product. Please try again."
