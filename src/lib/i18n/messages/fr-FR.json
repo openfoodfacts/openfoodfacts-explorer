@@ -196,7 +196,7 @@
 		"section_editing": "Édition",
 		"section_user": "Utilisateur",
 		"section_moderation": "Modération",
-		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
+		"enable_moderator_mode_help": "Afficher les outils réservés aux modérateurs lors de la modification de produits, tels que la correction de code-barres, la gestion des images et la suppression de produits.",
 		"influences": "Influences",
 		"login": "Connexion (enregistrée dans le stockage local) [DANGEREUX - DÉBOGAGE UNIQUEMENT]",
 		"news": "Actualité",
@@ -210,7 +210,7 @@
 		"github_cta": "Aidez-nous à améliorer Explorer sur GitHub",
 		"github_help_text": "Aidez-nous à améliorer Open Food Facts Explorer !",
 		"app_version": "Version {version}",
-		"app_commit_link": "View commit {sha} on GitHub",
+		"app_commit_link": "Voir le commit {sha} sur GitHub",
 		"admin_tools": {
 			"title": "Outils d'administration",
 			"description": "Liens utiles pour les administrateurs d'Open Food Facts",
@@ -220,7 +220,7 @@
 		},
 		"moderator_mode": "Mode modérateur",
 		"dev_access_denied": "Accès refusé",
-		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
+		"dev_access_message": "Les paramètres développeur ne sont accessibles qu'aux administrateurs. Si vous pensez devoir y avoir accès, veuillez contacter l'administrateur."
 	},
 	"folksonomy": {
 		"title": "Moteur de folksonomie",
