@@ -105,7 +105,7 @@
 					<p class="text-xs font-semibold tracking-widest text-secondary uppercase">
 						{$_('product.external_sources.source_label', { default: 'External source' })}
 					</p>
-					<h3 class="text-2xl font-bold">{source.name}</h3>
+					<h3 class="text-xl font-bold sm:text-2xl">{source.name}</h3>
 					{#if source.provider_name && source.provider_name !== source.name}
 						<p class="text-sm text-base-content/70">{source.provider_name}</p>
 					{/if}
@@ -198,7 +198,7 @@
 {/snippet}
 
 <section aria-labelledby="external-sources-title">
-	<h2 id="external-sources-title" class="text-3xl font-bold">
+	<h2 id="external-sources-title" class="text-2xl font-bold sm:text-3xl">
 		{$_('product.external_sources.title', { default: 'External sources' })}
 	</h2>
 	<p class="mt-2 text-base-content/70">

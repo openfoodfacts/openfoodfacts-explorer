@@ -18,8 +18,9 @@
 		id: string;
 		link?: string;
 		productCode?: string;
+		headingLevel?: 3 | 4;
 	};
-	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
+	let { panels, panel, inline = false, id, link, productCode, headingLevel = 3 }: Props = $props();
 
 	let expanded = $derived(panel?.expanded ?? false);
 
@@ -47,7 +48,7 @@
 
 		<div
 			class={[
-				'collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none hover:bg-base-200 dark:hover:bg-base-100'
+				'collapse-title my-1 flex w-full cursor-pointer items-center p-1 select-none hover:bg-base-200 sm:my-2 sm:p-2 dark:hover:bg-base-100'
 			]}
 		>
 			{#if title.icon_url != null}
@@ -63,9 +64,14 @@
 				/>
 			{/if}
 			<div class="grow">
-				<div class="kp-title">{title.title}</div>
+				<svelte:element
+					this={headingLevel === 4 ? 'h4' : 'h3'}
+					class="kp-title text-base font-medium text-base-content"
+				>
+					{title.title}
+				</svelte:element>
 				{#if title.subtitle != null}
-					<h3 class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</h3>
+					<p class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</p>
 				{/if}
 			</div>
 		</div>
@@ -87,9 +93,11 @@
 			<div>{@render elementList(panel.elements)}</div>
 		{/if}
 	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null}
-		<Card>
+		<Card compactMobile>
 			<div class="flex items-center">
-				<h2 class="my-3 grow text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
+				<h2 class="mb-3 grow text-2xl font-bold sm:text-3xl md:text-4xl">
+					{panel.title_element.title}
+				</h2>
 				{#if link != null}
 					<a class="link" href={link}>Go back</a>
 				{/if}
