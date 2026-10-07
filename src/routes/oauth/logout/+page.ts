@@ -15,5 +15,5 @@ export const load: PageLoad = async ({ fetch }) => {
 		refreshToken: '',
 		postLogoutRedirectUri: redirectUri
 	});
-	throw redirect(302, logoutUrl);
+	throw redirect(302, logoutUrl, { external: true });
 };
