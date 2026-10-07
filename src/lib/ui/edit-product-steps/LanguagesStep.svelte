@@ -184,7 +184,7 @@
 				{#if code !== product.lang}
 					<button
 						type="button"
-						class="btn h-auto min-h-0 shrink-0 p-1 text-error btn-ghost btn-xs hover:bg-base-300"
+						class="btn h-auto min-h-0 shrink-0 btn-ghost p-1 text-error btn-xs hover:bg-base-300"
 						onclick={() => deleteLanguage(code)}
 						title={$_('product.edit.delete_language', { default: 'Delete language' })}
 						aria-label={$_('product.edit.delete_language', { default: 'Delete language' })}
@@ -200,7 +200,7 @@
 					>
 						<button
 							type="button"
-							class="btn btn-disabled pointer-events-none h-auto min-h-0 p-1 text-base-content/30 btn-ghost btn-xs"
+							class="btn btn-disabled pointer-events-none h-auto min-h-0 btn-ghost p-1 text-base-content/30 btn-xs"
 							disabled
 							aria-label={$_('product.edit.cannot_delete_main_language', {
 								default: 'Cannot delete the main language'

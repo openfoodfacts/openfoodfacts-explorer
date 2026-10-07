@@ -111,7 +111,7 @@
 {#if !inline && !showInput}
 	<button
 		type="button"
-		class="btn ml-2 btn-circle btn-sm btn-primary"
+		class="btn ml-2 btn-circle btn-primary btn-sm"
 		onclick={() => (showInput = true)}
 		title={buttonTitle}
 		aria-label={buttonAriaLabel}
@@ -143,7 +143,7 @@
 		<label
 			class={inline
 				? 'input mt-2 w-full text-sm sm:text-base'
-				: 'input input-sm flex w-full items-center gap-2'}
+				: 'input flex w-full items-center gap-2 input-sm'}
 		>
 			{#if inline}
 				<IconMdiSearch class="h-5 w-5 opacity-70" />
@@ -181,7 +181,7 @@
 					{#each filteredItems as item, idx (item.code || idx)}
 						<button
 							type="button"
-							class="btn h-auto w-full justify-start py-2 text-left text-xs font-normal normal-case btn-ghost btn-sm sm:text-sm"
+							class="btn h-auto w-full justify-start btn-ghost py-2 text-left text-xs font-normal normal-case btn-sm sm:text-sm"
 							class:bg-primary={autoCompleteIndex === idx}
 							class:text-primary-content={autoCompleteIndex === idx}
 							onclick={() => {
