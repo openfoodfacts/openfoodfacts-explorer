@@ -1,14 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { getLanguageOption } from './languages';
+import { getLocaleLabel } from './languages';
 
-describe('getLanguageOption', () => {
-	it('shows the English name and the name in that language', () => {
-		expect(getLanguageOption('hi').label).toBe('Hindi (हिन्दी)');
-		expect(getLanguageOption('fr').label).toBe('French (Français)');
-		expect(getLanguageOption('de').label).toBe('German (Deutsch)');
+describe('getLocaleLabel', () => {
+	it('shows the name in that language and the English name', () => {
+		expect(getLocaleLabel('hi')).toBe('हिन्दी — Hindi');
+		expect(getLocaleLabel('fr')).toBe('français — French');
+		expect(getLocaleLabel('de')).toBe('Deutsch — German');
 	});
 
-	it('repeats the English name when it is also the vernacular name', () => {
-		expect(getLanguageOption('en').label).toBe('English (English)');
+	it('shows a single name when the endonym and English name match', () => {
+		expect(getLocaleLabel('en')).toBe('English');
+	});
+
+	it('prefers taxonomy names over Intl', () => {
+		expect(
+			getLocaleLabel('fr', [
+				{
+					language_code_2: { en: 'fr' },
+					name: { en: 'French', fr: 'Français' }
+				}
+			])
+		).toBe('Français — French');
+	});
+
+	it('includes the region for locale codes', () => {
+		expect(getLocaleLabel('en-US')).toBe('English (United States)');
+		expect(getLocaleLabel('fr-FR')).toBe('français (France) — French (France)');
 	});
 });

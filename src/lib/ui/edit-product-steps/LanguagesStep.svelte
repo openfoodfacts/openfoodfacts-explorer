@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
-	import { getLanguageName, getLanguageOption } from '$lib/languages';
+	import { getLanguageName, getLocaleLabel } from '$lib/languages';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -23,12 +23,14 @@
 
 	let { product = $bindable(), codes, addLanguage, editMode = false }: Props = $props();
 
-	// Autocomplete prints "{locale} ({en})". Put English in locale and the
-	// name in that language in en so the label matches the settings list.
 	let languageNames = $derived(
 		codes.map((code) => {
-			const { english, vernacular } = getLanguageOption(code);
-			return { code, locale: english, en: vernacular, ui: getLanguageName(code) };
+			return {
+				code,
+				label: getLocaleLabel(code),
+				en: getLanguageName(code, 'en'),
+				locale: getLanguageName(code)
+			};
 		})
 	);
 
@@ -45,7 +47,7 @@
 		const confirmed = confirm(
 			$_('product.edit.confirm_delete_language', {
 				default: 'Are you sure you want to delete all fields for {language}?',
-				values: { language: getLanguageOption(code).label }
+				values: { language: getLocaleLabel(code) }
 			})
 		);
 		if (!confirmed) return;
@@ -125,7 +127,7 @@
 		}}
 	>
 		{#each Object.keys(product.languages_codes ?? {}) as lang (lang)}
-			<option value={lang}>{getLanguageOption(lang).label}</option>
+			<option value={lang}>{getLocaleLabel(lang)}</option>
 		{/each}
 	</select>
 	<span class="label">
@@ -148,7 +150,7 @@
 		{/if}
 
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-			{@const langName = getLanguageOption(code).label}
+			{@const langName = getLocaleLabel(code)}
 			<div class="flex items-center gap-2">
 				<div
 					class={[
@@ -182,7 +184,7 @@
 				{#if code !== product.lang}
 					<button
 						type="button"
-						class="btn h-auto min-h-0 shrink-0 btn-ghost p-1 text-error btn-xs hover:bg-base-300"
+						class="btn h-auto min-h-0 shrink-0 p-1 text-error btn-ghost btn-xs hover:bg-base-300"
 						onclick={() => deleteLanguage(code)}
 						title={$_('product.edit.delete_language', { default: 'Delete language' })}
 						aria-label={$_('product.edit.delete_language', { default: 'Delete language' })}
@@ -198,7 +200,7 @@
 					>
 						<button
 							type="button"
-							class="btn btn-disabled pointer-events-none h-auto min-h-0 btn-ghost p-1 text-base-content/30 btn-xs"
+							class="btn btn-disabled pointer-events-none h-auto min-h-0 p-1 text-base-content/30 btn-ghost btn-xs"
 							disabled
 							aria-label={$_('product.edit.cannot_delete_main_language', {
 								default: 'Cannot delete the main language'
@@ -225,7 +227,7 @@
 	<div class="collapse-content">
 		<InputAutocomplete
 			items={languageNames}
-			searchKeys={['code', 'en', 'locale', 'ui']}
+			searchKeys={['code', 'label', 'en', 'locale']}
 			placeholder={$_('product.edit.search_languages')}
 			inline
 			onselect={(lang) => {

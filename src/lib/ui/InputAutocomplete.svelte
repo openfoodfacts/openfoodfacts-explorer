@@ -30,6 +30,12 @@
 	let autoCompleteIndex = $state(-1);
 	let showInput = $state(false);
 
+	function formatItem(item: T): string {
+		const code = typeof item.code === 'string' && item.code ? ` - ${item.code}` : '';
+		if (typeof item.label === 'string' && item.label) return `${item.label}${code}`;
+		return `${item.locale || item.name} (${item.en})${code}`;
+	}
+
 	function matchesSearchQuery(item: T, query: string, keys: (keyof T)[]): boolean {
 		const lowerQuery = query.toLowerCase();
 		return keys.some((key) => {
@@ -105,7 +111,7 @@
 {#if !inline && !showInput}
 	<button
 		type="button"
-		class="btn ml-2 btn-circle btn-primary btn-sm"
+		class="btn ml-2 btn-circle btn-sm btn-primary"
 		onclick={() => (showInput = true)}
 		title={buttonTitle}
 		aria-label={buttonAriaLabel}
@@ -128,10 +134,7 @@
 					showInput = false;
 				}}
 			>
-				<span
-					>{item.locale || item.name} ({item.en}){#if item.code}
-						- {item.code}{/if}</span
-				>
+				<span>{formatItem(item)}</span>
 			</button>
 		</li>
 	{/snippet}
@@ -140,7 +143,7 @@
 		<label
 			class={inline
 				? 'input mt-2 w-full text-sm sm:text-base'
-				: 'input flex w-full items-center gap-2 input-sm'}
+				: 'input input-sm flex w-full items-center gap-2'}
 		>
 			{#if inline}
 				<IconMdiSearch class="h-5 w-5 opacity-70" />
@@ -178,7 +181,7 @@
 					{#each filteredItems as item, idx (item.code || idx)}
 						<button
 							type="button"
-							class="btn h-auto w-full justify-start btn-ghost py-2 text-left text-xs font-normal normal-case btn-sm sm:text-sm"
+							class="btn h-auto w-full justify-start py-2 text-left text-xs font-normal normal-case btn-ghost btn-sm sm:text-sm"
 							class:bg-primary={autoCompleteIndex === idx}
 							class:text-primary-content={autoCompleteIndex === idx}
 							onclick={() => {
@@ -186,8 +189,7 @@
 								searchQuery = '';
 							}}
 						>
-							{item.locale || item.name} ({item.en}){#if item.code}
-								- {item.code}{/if}
+							{formatItem(item)}
 						</button>
 					{/each}
 				</div>
