@@ -25,6 +25,7 @@ describe('getLocaleLabel', () => {
 
 	it('includes the region for locale codes', () => {
 		expect(getLocaleLabel('en-US')).toBe('English (United States)');
+		expect(getLocaleLabel('en_US')).toBe('English (United States)');
 		expect(getLocaleLabel('fr-FR')).toBe('français (France) — French (France)');
 	});
 });
