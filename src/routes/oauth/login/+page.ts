@@ -54,5 +54,5 @@ export const load: PageLoad = async ({ url }) => {
 		codeChallengeMethod: 'S256'
 	});
 
-	redirect(302, oauthLoginUrl);
+	redirect(302, oauthLoginUrl, { external: true });
 };
