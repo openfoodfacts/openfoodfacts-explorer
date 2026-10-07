@@ -3,7 +3,7 @@ import { preferences } from '#lib/settings.js';
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 import { PUBLIC_PRICES_API_URL } from '$app/env/public';
 
-const BASE_URL = PUBLIC_PRICES_API_URL;
+const BASE_URL = PUBLIC_PRICES_API_URL || undefined;
 
 export function isConfigured() {
 	return BASE_URL != null;
