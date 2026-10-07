@@ -22,6 +22,12 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 			);
 		}
 	});
+	// Limit referrer details sent to other origins.
+	resolved.headers.set('referrer-policy', 'strict-origin-when-cross-origin');
+	// Prevent browsers from guessing a response's content type.
+	resolved.headers.set('x-content-type-options', 'nosniff');
+	// Allow this origin to use the camera while blocking microphone access.
+	resolved.headers.set('permissions-policy', 'camera=(self), microphone=()');
 
 	// Clear the jsdom window to prevent memory leaks in server-side rendering
 	clearWindow();
