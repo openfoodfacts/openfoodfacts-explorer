@@ -103,7 +103,7 @@
 	}
 </script>
 
-<Card>
+<Card compactMobile>
 	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
 		<!-- 1. Image Column (Visual Anchor) -->
 		<!-- Left on Desktop, Top on Mobile -->
@@ -118,7 +118,7 @@
 			<!-- Header Section: Title & Actions -->
 			<div class="flex flex-col gap-8">
 				<h1
-					class="text-center text-3xl leading-tight font-bold wrap-break-word md:text-left md:text-4xl"
+					class="text-center text-2xl leading-tight font-bold wrap-break-word sm:text-3xl md:text-left md:text-4xl"
 				>
 					{product.product_name ?? '[' + product.code + ']'}
 				</h1>
@@ -193,10 +193,14 @@
 			</div>
 
 			<!-- Metadata Body -->
-			<div class="flex flex-col gap-3 text-center md:text-left">
-				<div class="mb-2">
-					<div class="mb-2 text-sm font-bold text-secondary">{$_('product.header.quantity')}</div>
-					<div>{product.quantity}</div>
+			<div
+				class="flex flex-col gap-2 text-left md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:items-baseline md:gap-x-3 md:gap-y-2"
+			>
+				<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+					<span class="shrink-0 text-sm font-bold text-secondary">
+						{$_('product.header.quantity')}:
+					</span>
+					<span>{product.quantity}</span>
 				</div>
 
 				<!-- Brands -->
@@ -237,9 +241,10 @@
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
-					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
-							<span>{$_('product.header.traceability_codes')}</span>
+					{@const traceabilityCodes = product.emb_codes_tags as unknown as string[]}
+					<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+						<div class="shrink-0 text-sm font-bold text-secondary">
+							<span>{$_('product.header.traceability_codes')}:</span>
 							<a
 								href={TRACEABILITY_CODES_URL}
 								target="_blank"
@@ -250,20 +255,22 @@
 							</a>
 						</div>
 
-						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
-							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
-									{tag.toUpperCase()}
-								</a>
-							{/each}
-						</div>
+						<TagChipList
+							containerClass="contents md:flex md:flex-wrap md:gap-1"
+							class="font-mono"
+							tags={traceabilityCodes.map((tag) => ({
+								id: tag,
+								name: tag.toUpperCase(),
+								href: `/facets/packager-codes/${tag}`
+							}))}
+						/>
 					</div>
 				{/if}
 
 				{#if product.link != null}
-					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
-							{$_('product.header.producer_link')}
+					<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+						<div class="shrink-0 text-sm font-bold text-secondary">
+							{$_('product.header.producer_link')}:
 						</div>
 						<a
 							class="link break-all"
@@ -308,11 +315,12 @@
 	facet: string
 )}
 	{#if tags != null && tags.length > 0}
-		<div class="mb-2">
-			<div class="mb-2 text-sm font-bold text-secondary">
-				{$_(titleKey, { default: defaultTitle })}
+		<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+			<div class="shrink-0 text-sm font-bold text-secondary">
+				{$_(titleKey, { default: defaultTitle })}:
 			</div>
 			<TagChipList
+				containerClass="contents md:flex md:flex-wrap md:gap-1"
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,

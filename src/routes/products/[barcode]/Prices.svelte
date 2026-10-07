@@ -29,10 +29,10 @@
 	});
 </script>
 
-<Card>
-	<h1 class="my-4 text-2xl font-bold sm:text-4xl">
+<Card compactMobile>
+	<h2 class="mb-4 text-2xl font-bold sm:text-4xl">
 		{$_('product.prices.title', { default: 'Prices' })}
-	</h1>
+	</h2>
 
 	<p class="mb-4 text-sm text-secondary italic">
 		{#if count > 0}

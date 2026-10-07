@@ -512,7 +512,7 @@
 		{@render children?.()}
 	</div>
 {:else}
-	<div class="container mx-auto my-2 gap-4 px-4 xl:max-w-6xl">
+	<div class="container mx-auto my-2 gap-4 px-2 sm:px-4 xl:max-w-6xl">
 		{@render children?.()}
 	</div>
 {/if}

@@ -342,7 +342,7 @@
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
 
-		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
+		<div class="flex w-full min-w-0 flex-col gap-3 md:gap-4">
 			<div id="overview" class="flex flex-col gap-4">
 				<ProductHeader {product} lc={data.lc} />
 			</div>
@@ -435,7 +435,7 @@
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">
-					<Card>
+					<Card compactMobile>
 						<label class="label">
 							<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
 							{$_('product.folksonomy.use_wc_editor')}
@@ -449,7 +449,9 @@
 								auth-token={$userAuthTokens?.access_token ?? ''}
 							></folksonomy-editor>
 						{:else}
-							<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
+							<h2 class="mb-4 text-2xl font-bold sm:text-4xl">
+								{$_('product.folksonomy.title_beta')}
+							</h2>
 
 							<div class="my-4 prose text-justify">
 								<p>

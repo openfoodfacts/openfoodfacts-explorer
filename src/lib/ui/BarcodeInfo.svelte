@@ -134,12 +134,12 @@
 	}
 </script>
 
-<Card>
+<Card compactMobile>
 	<div class="space-y-6">
 		<header class="space-y-4">
-			<h1 class="text-2xl font-bold md:text-3xl">
+			<h2 class="text-2xl font-bold md:text-3xl">
 				{$_('product.barcode.title', { default: 'Barcode information' })}
-			</h1>
+			</h2>
 
 			<div class="flex flex-wrap items-end justify-between gap-3">
 				<div class="min-w-0">
@@ -238,15 +238,15 @@
 				bind:this={powerUserSection}
 				class="border-t border-base-300 pt-5"
 			>
-				<h2 class="mb-5 text-lg font-semibold">
+				<h3 class="mb-5 text-lg font-semibold">
 					{$_('product.barcode.power_user_title', { default: 'Power-user tools' })}
-				</h2>
+				</h3>
 
 				<div class="grid gap-6 lg:grid-cols-2">
 					<section>
-						<h3 class="mb-3 font-semibold">
+						<h4 class="mb-3 font-semibold">
 							{$_('product.barcode.render_title', { default: 'Rendered barcode' })}
-						</h3>
+						</h4>
 						{#if barcodeRenderError}
 							<p class="text-sm text-base-content/70">
 								{$_('product.barcode.render_unavailable', {
@@ -264,9 +264,9 @@
 					</section>
 
 					<section class="lg:border-s lg:border-base-300 lg:ps-6">
-						<h3 class="mb-3 font-semibold">
+						<h4 class="mb-3 font-semibold">
 							{$_('product.barcode.search_title', { default: 'Search' })}
-						</h3>
+						</h4>
 						<div class="flex flex-wrap gap-x-5 gap-y-2">
 							{#each SEARCH_ENTRIES as entry (entry.name)}
 								<a
@@ -284,9 +284,9 @@
 
 					<section class="border-t border-base-300 pt-5 lg:col-span-2">
 						<div class="flex flex-wrap items-center justify-between gap-3">
-							<h3 class="font-semibold">
+							<h4 class="font-semibold">
 								{$_('product.barcode.availability_title', { default: 'Product availability' })}
-							</h3>
+							</h4>
 							<button
 								class="btn btn-soft btn-sm"
 								type="button"
