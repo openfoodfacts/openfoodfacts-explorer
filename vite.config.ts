@@ -67,7 +67,7 @@ export default defineConfig({
 						'self',
 						'unsafe-eval' /* Required for Vega charts */,
 						...vercelScripts,
-						'https://analytics.openfoodfacts.org'
+						'https://analytics.openfoodfacts.org/matomo.js'
 					],
 					'img-src': [
 						'self',
