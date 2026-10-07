@@ -5,7 +5,7 @@
 	import { getPermissionsCtx } from '$lib/stores/user';
 	import { PRODUCT_TYPES } from '$lib/const';
 
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import TagsString from '$lib/ui/inputs/TagsString.svelte';
 	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
@@ -155,7 +155,7 @@
 
 	<div class="space-y-6">
 		<!-- Product Type (Moderators Only in edit mode) -->
-		{#if permissions.isModerator && $preferences.moderator}
+		{#if permissions.isModerator && !$preferences.hideModeratorTools}
 			<div class="form-control w-full">
 				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">

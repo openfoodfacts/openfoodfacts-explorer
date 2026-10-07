@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '$lib/matomo';
-	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
+	import { tracker, trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';
@@ -13,15 +12,13 @@
 	import {
 		addExcludeFacet,
 		addIncludeFacet,
-		extractQuery,
-		parseLuceneFacets,
 		removeExcludeFacet,
 		removeIncludeFacet,
-		toLuceneString,
 		toggleExcludeFacet,
 		toggleIncludeFacet,
 		type FacetsSelection
-	} from '$lib/facets';
+	} from '$lib/search/facet-selection';
+	import { extractQuery, parseLuceneFacets, toLuceneString } from '$lib/search/lucene';
 	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import Pagination from '$lib/Pagination.svelte';

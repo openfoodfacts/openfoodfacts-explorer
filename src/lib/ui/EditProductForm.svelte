@@ -181,7 +181,7 @@
 			}
 		}));
 
-		if (permissions.isModerator && $preferences.moderator) {
+		if (permissions.isModerator && !$preferences.hideModeratorTools) {
 			sections.push({
 				id: 'moderator-tools',
 				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
@@ -408,7 +408,7 @@
 		</div>
 
 		<!-- Moderator Tools Section -->
-		{#if permissions.isModerator && $preferences.moderator}
+		{#if permissions.isModerator && !$preferences.hideModeratorTools}
 			<div
 				id="moderator-tools"
 				class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md"
