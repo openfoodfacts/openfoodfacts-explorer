@@ -4,6 +4,7 @@
 	import { SvelteSet } from 'svelte/reactivity';
 
 	import { invalidateAll } from '$app/navigation';
+	import { trackRefresh } from '$lib/utils/pendingRefresh';
 
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
@@ -251,7 +252,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		invalidateAll().then(() => {
+		trackRefresh(invalidateAll()).then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -302,7 +303,7 @@
 		} finally {
 			isSavingImage = false;
 
-			await invalidateAll();
+			await trackRefresh(invalidateAll());
 			closeEditModal();
 		}
 	}
@@ -362,7 +363,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
-				await invalidateAll();
+				await trackRefresh(invalidateAll());
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -405,7 +406,7 @@
 			);
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await invalidateAll();
+			await trackRefresh(invalidateAll());
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);

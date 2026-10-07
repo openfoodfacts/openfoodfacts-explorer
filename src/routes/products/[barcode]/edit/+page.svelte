@@ -29,6 +29,7 @@
 		findPhotoTextMismatches,
 		type PhotoTextMismatch
 	} from '$lib/utils/photoTextMismatch';
+	import { waitForPendingRefreshes } from '$lib/utils/pendingRefresh';
 	import AddProductForm from '$lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { userInfo } from '$lib/stores/user';
@@ -334,7 +335,12 @@
 
 	async function submit() {
 		// Photo changes are saved immediately and reloaded into `data`,
-		// while text fields are only saved on submit
+		// while text fields are only saved on submit:
+		// wait for any pending reload so that we compare against the latest images
+		isSubmitting = true;
+		await waitForPendingRefreshes();
+		isSubmitting = false;
+
 		const currentImages = 'product' in data.state ? data.state.product?.images : undefined;
 		photoTextMismatches = isAddMode
 			? []
