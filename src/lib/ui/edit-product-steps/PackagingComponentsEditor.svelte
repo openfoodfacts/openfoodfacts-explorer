@@ -167,6 +167,17 @@
 		if (!tag) return '';
 		return tag.lc_name || tag.id || '';
 	}
+
+	function getComponentTitle(component: PackagingComponent, index: number): string {
+		const shape = getTaxonomyDisplayValue(component, 'shape').trim();
+		return (
+			shape ||
+			$_('product.edit.packaging_component.component_number', {
+				values: { number: index + 1 },
+				default: `Packaging component ${index + 1}`
+			})
+		);
+	}
 </script>
 
 <div class="space-y-4">
@@ -242,11 +253,7 @@
 		<div class="rounded-lg border border-base-300 bg-base-100 p-4 shadow-sm">
 			<div class="mb-3 flex items-center justify-between">
 				<h3 class="label-text text-sm font-semibold sm:text-base">
-					{index === 0
-						? $_('product.edit.packaging_component.parts_title')
-						: $_('product.edit.packaging_component.component_number', {
-								values: { number: index + 1 }
-							})}
+					{getComponentTitle(component, index)}
 				</h3>
 				{#if (product.packagings?.length ?? 0) > 1}
 					<button
