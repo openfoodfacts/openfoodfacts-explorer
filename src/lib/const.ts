@@ -30,6 +30,7 @@ export const TRACEABILITY_CODES_URL =
 	'https://wiki.openfoodfacts.org/Food_Traceability_Codes/EU_Food_establishments';
 
 export const USER_AGENT = `Open Food Facts Explorer (${import.meta.env.PACKAGE_VERSION})`;
+export const COMMIT_SHA = import.meta.env.BUILD_COMMIT_SHA;
 
 export const KP_ATTRIBUTE_IMG = (img: string) => `${STATIC_HOST}/images/attributes/dist/${img}`;
 export const PRODUCT_URL = (barcode: string) => `${API_HOST}/api/v3/product/${barcode}.json`;
@@ -58,17 +59,6 @@ export const BACKEND_DOMAINS: Record<ProductType, string> = {
 	petfood: 'openpetfoodfacts.org',
 	product: 'openproductsfacts.org'
 };
-
-const STATIC_HOSTS: Record<ProductType, string> = {
-	food: `https://static.${BACKEND_DOMAINS.food}`,
-	beauty: `https://static.${BACKEND_DOMAINS.beauty}`,
-	petfood: `https://static.${BACKEND_DOMAINS.petfood}`,
-	product: `https://static.${BACKEND_DOMAINS.product}`
-};
-
-// TODO: switch to SDK
-export const TAXONOMY_URL = (taxo: string, productType?: ProductType) =>
-	`${STATIC_HOSTS[productType ?? 'food']}/data/taxonomies/${taxo}.json`;
 
 export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
 export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;

@@ -2,7 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import TagsString from '$lib/ui/inputs/TagsString.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';

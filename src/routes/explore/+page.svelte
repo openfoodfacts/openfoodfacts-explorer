@@ -47,7 +47,7 @@
 								<p class="indicator-item badge text-xs badge-info select-none">
 									{product.scans_n} scans
 								</p>
-								<WcProductCard {product} />
+								<WcProductCard product={data.productCardsByCode[product.code] ?? product} />
 							</div>
 						</div>
 					{/each}

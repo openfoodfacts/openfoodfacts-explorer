@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '$lib/matomo';
-	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
+	import { tracker, trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';
@@ -13,15 +12,13 @@
 	import {
 		addExcludeFacet,
 		addIncludeFacet,
-		extractQuery,
-		parseLuceneFacets,
 		removeExcludeFacet,
 		removeIncludeFacet,
-		toLuceneString,
 		toggleExcludeFacet,
 		toggleIncludeFacet,
 		type FacetsSelection
-	} from '$lib/facets';
+	} from '$lib/search/facet-selection';
+	import { extractQuery, parseLuceneFacets, toLuceneString } from '$lib/search/lucene';
 	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
 	import { personalizeSearchResults } from '$lib/productScoring';
 	import Pagination from '$lib/Pagination.svelte';
@@ -49,6 +46,7 @@
 	let { search: searchResult } = $derived(data);
 	const toastCtx = getToastCtx();
 	let isExportingCsv = $state(false);
+	let isNavigatingToSearch = $derived(navigating.to?.route.id === '/search');
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -101,6 +99,17 @@
 		const newUrl = new URL(page.url);
 		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
+	}
+
+	function getSearchPageUrl(nextPage: number) {
+		const newUrl = new URL(page.url);
+		newUrl.searchParams.set('page', nextPage.toString());
+		return newUrl.toString();
+	}
+
+	function navigateToSearchPage(nextPage: number) {
+		window.scrollTo(0, 0);
+		void goto(getSearchPageUrl(nextPage), { noScroll: false });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
@@ -255,7 +264,7 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<span class="block h-7 w-64 skeleton rounded"></span>
 			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
 		{:else}
@@ -538,7 +547,7 @@
 
 		<div class="divider my-1 lg:hidden"></div>
 
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<!-- Product Card Skeleton Loading State during API Call -->
 			<div class="my-6 max-md:me-4">
 				<div
@@ -608,7 +617,7 @@
 								</span>
 							{/if}
 							<WcProductCard
-								{product}
+								product={data.productCardsByCode[product.code] ?? product}
 								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
 							/>
 						</div>
@@ -697,16 +706,13 @@
 </div>
 
 <!-- Pagination -->
-{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+{#if !isNavigatingToSearch && searchResult.count > 0 && searchResult.page_count > 1}
 	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
-			pageUrl={(p: number) => {
-				const newUrl = new URL(page.url);
-				newUrl.searchParams.set('page', p.toString());
-				return newUrl.toString();
-			}}
+			pageUrl={getSearchPageUrl}
+			onPageChange={navigateToSearchPage}
 		/>
 	</div>
 {/if}

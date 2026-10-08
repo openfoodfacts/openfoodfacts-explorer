@@ -1,9 +1,27 @@
+import { execFileSync } from 'node:child_process';
 import { sentrySvelteKit } from '@sentry/sveltekit';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import { version as packageVersion } from './package.json' with { type: 'json' };
+import packageJson from './package.json' with { type: 'json' };
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tailwindcss from '@tailwindcss/vite';
+
+const packageVersion = packageJson.version;
+
+// Docker builds receive GIT_COMMIT_SHA as a build arg, since .git is excluded from the build context
+function resolveBuildCommitSha(): string {
+	const fromEnv = process.env.GIT_COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA;
+	if (fromEnv) return fromEnv;
+	try {
+		return (
+			execFileSync('git', ['rev-parse', 'HEAD'], { stdio: ['ignore', 'pipe', 'ignore'] })
+				.toString()
+				.trim() || 'unknown'
+		);
+	} catch {
+		return 'unknown';
+	}
+}
 
 export default defineConfig({
 	server: {
@@ -38,6 +56,7 @@ export default defineConfig({
 	],
 	define: {
 		'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion),
+		'import.meta.env.BUILD_COMMIT_SHA': JSON.stringify(resolveBuildCommitSha()),
 		// Vercel provides this variable during the build. Keep the value in the
 		// client bundle so self-hosted Node builds do not load Vercel-only scripts.
 		'import.meta.env.VERCEL': JSON.stringify('VERCEL' in process.env)

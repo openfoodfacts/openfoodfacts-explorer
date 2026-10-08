@@ -7,12 +7,9 @@
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
-	import {
-		MASTER_FACET_CATALOG,
-		FACET_CATEGORY_LABELS,
-		computeFacetCollections,
-		type FacetsSelection
-	} from '$lib/facets';
+	import { MASTER_FACET_CATALOG, FACET_CATEGORY_LABELS } from '$lib/search/facet-catalog';
+	import { computeFacetCollections } from '$lib/search/facet-collections';
+	import { type FacetsSelection } from '$lib/search/facet-selection';
 
 	type Props = {
 		facets?: Record<string, Facet>;

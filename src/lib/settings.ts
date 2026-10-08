@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 7,
+	version: 8,
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -21,7 +21,7 @@ const DEFAULT_PREFERENCES = {
 	displayPricesInSearch: true,
 	productSidebarVisible: true,
 
-	moderator: false
+	hideModeratorTools: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -137,6 +137,16 @@ const MIGRATIONS: {
 				legacyPreferences.locale = legacyPreferences.lang;
 			}
 			delete legacyPreferences.lang;
+			return preferences;
+		}
+	},
+	{
+		// 2026-10-02: Replace the opt-in `moderator` flag with an opt-out `hideModeratorTools` flag.
+		version: 8,
+		upgrade: (preferences) => {
+			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
+			delete legacyPreferences.moderator;
+			legacyPreferences.hideModeratorTools = false;
 			return preferences;
 		}
 	}

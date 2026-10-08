@@ -202,6 +202,8 @@
 		"section_general": "General",
 		"section_editing": "Editing",
 		"section_user": "User",
+		"section_moderation": "Moderation",
+		"enable_moderator_mode_help": "Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.",
 		"influences": "Influences",
 		"login": "Login (saved in localStorage) [UNSAFE - DEBUG ONLY]",
 		"news": "News",
@@ -221,12 +223,9 @@
 			"recent_changes": "Recent changes",
 			"top_translators": "Top translators"
 		},
-		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
-		"dev_access_message": "Developer settings are only available to moderators and developers. If you believe you should have access, please contact the administrator.",
-		"dev_warning": "These settings are intended for moderators and developers. Changing them affects how the site behaves for you.",
-		"moderator_mode_help": "Show moderator only tools and actions across the site."
+		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
 		"title": "Folksonomy Engine",
@@ -989,6 +988,8 @@
 		"no_products_selected": "No products selected for comparison",
 		"add_products_hint": "Add products from their detail pages to start comparing nutritional values",
 		"browse_products": "Browse Products",
+		"single_product_title": "Add one more product to compare",
+		"single_product_hint": "Comparisons work with at least 2 products. Add another one to see how they stack up.",
 		"shared_comparison": "Shared Comparison",
 		"shared_description": "Shared product comparison",
 		"shared_product_comparison": "Shared Product Comparison",
