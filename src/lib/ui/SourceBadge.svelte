@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProductSource } from '$lib/api/sources';
+	import { isSafeSourceUrl, type ProductSource } from '$lib/api/sources';
 	import { _ } from '$lib/i18n';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
@@ -19,7 +19,7 @@
 </script>
 
 {#if source}
-	{#if source.url}
+	{#if isSafeSourceUrl(source.url)}
 		<a
 			href={source.url}
 			target="_blank"

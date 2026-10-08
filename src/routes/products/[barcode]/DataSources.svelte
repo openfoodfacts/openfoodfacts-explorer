@@ -6,7 +6,11 @@
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
-	import { extractProductSources, type ProductWithSources } from '$lib/api/sources';
+	import {
+		extractProductSources,
+		isSafeSourceUrl,
+		type ProductWithSources
+	} from '$lib/api/sources';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import { page } from '$app/state';
@@ -259,7 +263,7 @@
 							<span class="text-base font-bold">
 								{source.name || source.id || $_('datasources.source_name', { default: 'Source' })}
 							</span>
-							{#if source.url}
+							{#if isSafeSourceUrl(source.url)}
 								<a
 									href={source.url}
 									target="_blank"
@@ -269,6 +273,8 @@
 									<span>{$_('datasources.view_source', { default: 'Visit source' })}</span>
 									<IconMdiOpenInNew class="h-3.5 w-3.5" />
 								</a>
+							{:else if source.url}
+								<span class="text-xs break-all opacity-80">{source.url}</span>
 							{/if}
 						</div>
 
@@ -278,7 +284,7 @@
 									<span class="font-semibold"
 										>{$_('datasources.license', { default: 'License' })}:</span
 									>
-									{#if source.source_licence_url}
+									{#if isSafeSourceUrl(source.source_licence_url)}
 										<a
 											href={source.source_licence_url}
 											target="_blank"
@@ -287,6 +293,8 @@
 										>
 											{source.source_licence}
 										</a>
+									{:else if source.source_licence_url}
+										<span class="ml-1">{source.source_licence} ({source.source_licence_url})</span>
 									{:else}
 										<span class="ml-1">{source.source_licence}</span>
 									{/if}
@@ -309,7 +317,7 @@
 									{$_('datasources.source_fields', { default: 'Fields provided' })}:
 								</span>
 								<div class="flex flex-wrap gap-1">
-									{#each source.fields as field (field)}
+									{#each source.fields as field, idx (field + '_' + idx)}
 										<span class="badge badge-sm badge-neutral">{field}</span>
 									{/each}
 								</div>
