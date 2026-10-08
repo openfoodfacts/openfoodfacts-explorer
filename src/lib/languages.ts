@@ -37,7 +37,9 @@ export function getLocaleLabel(
 	const region = code
 		.replaceAll('_', '-')
 		.split('-')
-		.find((part) => /^[A-Z]{2}$/.test(part));
+		.slice(1)
+		.find((part) => /^[a-z]{2}$/i.test(part) || /^\d{3}$/.test(part))
+		?.replace(/^[a-z]{2}$/i, (part) => part.toUpperCase());
 	const englishRegion = region && getDisplayName('region', region);
 	const nativeRegion = region && getDisplayName('region', region, languageCode);
 	const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;

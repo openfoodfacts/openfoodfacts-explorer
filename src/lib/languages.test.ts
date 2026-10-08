@@ -26,6 +26,9 @@ describe('getLocaleLabel', () => {
 	it('includes the region for locale codes', () => {
 		expect(getLocaleLabel('en-US')).toBe('English (United States)');
 		expect(getLocaleLabel('en_US')).toBe('English (United States)');
+		expect(getLocaleLabel('en-us')).toBe('English (United States)');
+		expect(getLocaleLabel('es-419')).toBe('español (Latinoamérica) — Spanish (Latin America)');
 		expect(getLocaleLabel('fr-FR')).toBe('français (France) — French (France)');
+		expect(getLocaleLabel('zh-Hans-CN')).toBe('中文 (中国) — Chinese (China)');
 	});
 });
