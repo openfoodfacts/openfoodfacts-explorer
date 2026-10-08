@@ -286,7 +286,12 @@
 		try {
 			const { cropData, rotationAngle } = data;
 
-			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
+			// Track the request and the refresh as one operation, so saving the form waits for both
+			await trackRefresh(
+				saveImageWithSelectAndCrop(imageData, cropData, rotationAngle).finally(() =>
+					invalidateAll()
+				)
+			);
 
 			toast.success($_('product.edit.images.toast.save_success'));
 			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);
@@ -302,8 +307,6 @@
 			);
 		} finally {
 			isSavingImage = false;
-
-			await trackRefresh(invalidateAll());
 			closeEditModal();
 		}
 	}
@@ -405,8 +408,11 @@
 				image.imgid
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await trackRefresh(invalidateAll());
+			// The dialog is already closed: track the request and the refresh as one operation,
+			// so saving the form in the meantime waits for both
+			await trackRefresh(
+				selectAndCropImagesV3(fetch, product.code, selectionData).then(() => invalidateAll())
+			);
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);

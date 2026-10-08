@@ -35,7 +35,7 @@ describe('findPhotoTextMismatches', () => {
 
 	it('ignores whitespace-only changes to the ingredients text', () => {
 		const snapshot = createPhotoTextSnapshot(baseProduct);
-		const images = { ...baseProduct.images, ingredients_fr: { imgid: '1', rev: '9' } };
+		const images = { ...baseProduct.images, ingredients_fr: { imgid: '4', rev: '9' } };
 		const edited = { ...baseProduct, ingredients_text_fr: 'sucre, farine  ' };
 		expect(findPhotoTextMismatches(snapshot, images, edited)).toEqual([
 			{ type: 'ingredients', lang: 'fr' }
@@ -44,7 +44,7 @@ describe('findPhotoTextMismatches', () => {
 
 	it('ignores whitespace-only changes inside the ingredients text', () => {
 		const snapshot = createPhotoTextSnapshot(baseProduct);
-		const images = { ...baseProduct.images, ingredients_fr: { imgid: '1', rev: '9' } };
+		const images = { ...baseProduct.images, ingredients_fr: { imgid: '4', rev: '9' } };
 		const edited = { ...baseProduct, ingredients_text_fr: 'sucre,  farine' };
 		expect(findPhotoTextMismatches(snapshot, images, edited)).toEqual([
 			{ type: 'ingredients', lang: 'fr' }
@@ -61,7 +61,7 @@ describe('findPhotoTextMismatches', () => {
 
 	it('flags a nutrition photo change without nutrition update', () => {
 		const snapshot = createPhotoTextSnapshot(baseProduct);
-		const images = { ...baseProduct.images, nutrition_fr: { imgid: '2', rev: '11' } };
+		const images = { ...baseProduct.images, nutrition_fr: { imgid: '6', rev: '11' } };
 		expect(findPhotoTextMismatches(snapshot, images, baseProduct)).toEqual([
 			{ type: 'nutrition', lang: 'fr' }
 		]);
@@ -69,9 +69,19 @@ describe('findPhotoTextMismatches', () => {
 
 	it('does not flag a nutrition photo change when nutrition values were updated', () => {
 		const snapshot = createPhotoTextSnapshot(baseProduct);
-		const images = { ...baseProduct.images, nutrition_fr: { imgid: '2', rev: '11' } };
+		const images = { ...baseProduct.images, nutrition_fr: { imgid: '6', rev: '11' } };
 		const edited = { ...baseProduct, nutriments: { sugars_100g: 12, fat_100g: 2 } };
 		expect(findPhotoTextMismatches(snapshot, images, edited)).toEqual([]);
+	});
+
+	it('ignores a cropped or rotated photo (same imgid, new rev)', () => {
+		const snapshot = createPhotoTextSnapshot(baseProduct);
+		const images = {
+			...baseProduct.images,
+			ingredients_fr: { imgid: '1', rev: '9' },
+			nutrition_fr: { imgid: '2', rev: '11' }
+		};
+		expect(findPhotoTextMismatches(snapshot, images, baseProduct)).toEqual([]);
 	});
 
 	it('ignores removed photos and other photo types', () => {

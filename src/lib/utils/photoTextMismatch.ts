@@ -10,7 +10,7 @@ export type PhotoTextMismatch = {
  * without the corresponding text field being updated.
  */
 export type PhotoTextSnapshot = {
-	/** Signature (imgid + rev) of each selected image, keyed by image name (e.g. `ingredients_fr`) */
+	/** Id of the uploaded photo behind each selected image, keyed by image name (e.g. `ingredients_fr`) */
 	images: Record<string, string>;
 	/** Ingredients text, keyed by language code */
 	ingredients: Record<string, string>;
@@ -26,11 +26,15 @@ type ProductLike = {
 
 const PHOTO_TYPES: PhotoTextType[] = ['ingredients', 'nutrition'];
 
+/**
+ * Only the `imgid` is compared: cropping or rotating a photo creates a new `rev`
+ * of the same image, which doesn't change its content.
+ */
 function getImageSignature(image: unknown): string | undefined {
 	if (image == null || typeof image !== 'object') return undefined;
-	const { imgid, rev } = image as { imgid?: unknown; rev?: unknown };
-	if (imgid == null && rev == null) return undefined;
-	return `${imgid ?? ''}:${rev ?? ''}`;
+	const { imgid } = image as { imgid?: unknown };
+	if (imgid == null || imgid === '') return undefined;
+	return String(imgid);
 }
 
 function serializeNutriments(nutriments: Record<string, unknown> | null | undefined): string {
