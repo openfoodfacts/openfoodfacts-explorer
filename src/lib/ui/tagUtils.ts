@@ -8,7 +8,7 @@ export function getTagMiniatureUrl(tag: unknown): string | undefined {
 	let url: string | undefined = undefined;
 	let tagIdCandidate: string | undefined = undefined;
 
-	if (typeof tag === 'object' && tag !== null) {
+	if (typeof tag === 'object' && tag !== null && !Array.isArray(tag)) {
 		const obj = tag as Record<string, unknown>;
 		const candidate =
 			obj.icon_url ??
@@ -33,6 +33,7 @@ export function getTagMiniatureUrl(tag: unknown): string | undefined {
 			trimmed.startsWith('http://') ||
 			trimmed.startsWith('https://') ||
 			trimmed.startsWith('/') ||
+			trimmed.startsWith('//') ||
 			trimmed.startsWith('data:')
 		) {
 			url = trimmed;
@@ -50,16 +51,22 @@ export function getTagMiniatureUrl(tag: unknown): string | undefined {
 			.trim()
 			.replace(/[^a-z0-9_-]/g, '');
 
-		// Only attempt constructing static icon URL for valid text slugs (not pure numbers like barcodes)
-		if (cleanId.length > 1 && !/^\d+$/.test(cleanId)) {
+		// Only attempt constructing static icon URL for valid text slugs (not pure numbers like barcodes, has letters)
+		if (cleanId.length > 1 && !/^\d+$/.test(cleanId) && /[a-z]/.test(cleanId)) {
 			url = `https://static.openfoodfacts.org/images/icons/dist/${cleanId}.svg`;
 		}
 	}
 
 	if (!url) return undefined;
 
-	if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+	if (url.startsWith('//')) {
+		return `https:${url}`;
+	}
+	if (url.startsWith('https://') || url.startsWith('data:')) {
 		return url;
+	}
+	if (url.startsWith('http://')) {
+		return `https://${url.slice(7)}`;
 	}
 	if (url.startsWith('/')) {
 		return `https://static.openfoodfacts.org${url}`;

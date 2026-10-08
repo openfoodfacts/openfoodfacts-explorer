@@ -15,7 +15,7 @@
 		hasError = false;
 	});
 
-	const sizeClasses = {
+	const sizeClasses: Record<'xs' | 'sm' | 'md' | 'lg', string> = {
 		xs: 'h-3.5 w-3.5',
 		sm: 'h-4 w-4',
 		md: 'h-5 w-5',
@@ -31,9 +31,11 @@
 		decoding="async"
 		class={[
 			'inline-block shrink-0 rounded-xs object-contain dark:invert',
-			sizeClasses[size] || sizeClasses.md,
+			sizeClasses[size] ?? sizeClasses.md,
 			className
-		]}
+		]
+			.filter(Boolean)
+			.join(' ')}
 		onerror={() => {
 			hasError = true;
 		}}

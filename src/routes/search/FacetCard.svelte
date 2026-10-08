@@ -142,7 +142,7 @@
 
 	let searchQuery: string = $state('');
 	let sortedItems = $derived.by(() => {
-		if (isFreeText || !facet) return [];
+		if (isFreeText || !facet || !Array.isArray(facet.items)) return [];
 		const existingKeys = new SvelteSet(facet.items.map((i) => i.key));
 		const missingActive: FacetItem[] = [];
 
@@ -399,6 +399,7 @@
 			{#each visibleValues as item (item.key)}
 				{@const isIncluded = selectedInclude.includes(item.key)}
 				{@const isExcluded = selectedExclude.includes(item.key)}
+				{@const iconUrl = getTagMiniatureUrl(item)}
 				<li class="my-0.5">
 					<div class="flex items-center justify-between gap-2 rounded-md p-1 hover:bg-base-200">
 						<!-- Exclude (-) button on left -->
@@ -430,8 +431,8 @@
 							class="flex min-w-0 flex-1 items-center justify-center gap-1 text-center text-xs leading-tight font-medium break-words whitespace-normal text-base-content"
 							title={item.name}
 						>
-							{#if getTagMiniatureUrl(item)}
-								<TagMiniature src={getTagMiniatureUrl(item)} alt={item.name} size="sm" />
+							{#if iconUrl}
+								<TagMiniature src={iconUrl} alt={item.name} size="sm" />
 							{/if}
 							<span>{item.name} <span class="text-base-content/50">({item.count})</span></span>
 						</span>

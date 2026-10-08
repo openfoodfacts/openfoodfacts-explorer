@@ -21,18 +21,19 @@
 </script>
 
 <div class="flex flex-wrap justify-center gap-1 md:justify-start">
-	{#each tags as tag (tag.id)}
+	{#each tags as tag, index (tag.id ?? index)}
+		{@const iconUrl = getTagMiniatureUrl(tag)}
 		{#if tag.href}
 			<a class="badge gap-1 wrap-break-word {className}" href={tag.href}>
-				{#if getTagMiniatureUrl(tag)}
-					<TagMiniature src={getTagMiniatureUrl(tag)} alt={tag.name} size="xs" />
+				{#if iconUrl}
+					<TagMiniature src={iconUrl} alt={tag.name} size="xs" />
 				{/if}
 				<span>{tag.name}</span>
 			</a>
 		{:else}
 			<span class="badge gap-1 wrap-break-word {className}">
-				{#if getTagMiniatureUrl(tag)}
-					<TagMiniature src={getTagMiniatureUrl(tag)} alt={tag.name} size="xs" />
+				{#if iconUrl}
+					<TagMiniature src={iconUrl} alt={tag.name} size="xs" />
 				{/if}
 				<span>{tag.name}</span>
 			</span>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '$lib/i18n';
-	import type { FacetResult } from '$lib/api/search';
+	import type { FacetItem, FacetResult } from '$lib/api/search';
 	import type { FacetsSelection } from '$lib/facets';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiFilterOffOutline from '@iconify-svelte/mdi/filter-off-outline';
@@ -23,11 +23,11 @@
 		itemKey: string;
 		itemLabel: string;
 		type: 'include' | 'exclude';
-		item?: unknown;
+		item?: FacetItem;
 	};
 
-	function getItem(facetKey: string, itemKey: string) {
-		if (facets && facets[facetKey]) {
+	function getItem(facetKey: string, itemKey: string): FacetItem | undefined {
+		if (facets && facets[facetKey] && Array.isArray(facets[facetKey].items)) {
 			return facets[facetKey].items.find((i) => i.key === itemKey);
 		}
 		return undefined;
@@ -91,14 +91,11 @@
 		</span>
 
 		{#each activeChips as chip (chip.type + ':' + chip.facetKey + ':' + chip.itemKey)}
+			{@const iconUrl = getTagMiniatureUrl(chip.item || chip.itemKey)}
 			{#if chip.type === 'include'}
 				<span class="badge gap-1.5 py-3 text-xs font-medium shadow-2xs badge-primary">
-					{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
-						<TagMiniature
-							src={getTagMiniatureUrl(chip.item || chip.itemKey)}
-							alt={chip.itemLabel}
-							size="xs"
-						/>
+					{#if iconUrl}
+						<TagMiniature src={iconUrl} alt={chip.itemLabel} size="xs" />
 					{/if}
 					<span class="opacity-80">{chip.facetLabel}:</span>
 					<span>{chip.itemLabel}</span>
@@ -116,12 +113,8 @@
 				</span>
 			{:else}
 				<span class="badge gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error">
-					{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
-						<TagMiniature
-							src={getTagMiniatureUrl(chip.item || chip.itemKey)}
-							alt={chip.itemLabel}
-							size="xs"
-						/>
+					{#if iconUrl}
+						<TagMiniature src={iconUrl} alt={chip.itemLabel} size="xs" />
 					{/if}
 					<span class="opacity-80"
 						>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span
@@ -193,17 +186,14 @@
 
 		<div class="mt-3 flex flex-col gap-2">
 			{#each activeChips as chip (chip.type + ':' + chip.facetKey + ':' + chip.itemKey)}
+				{@const iconUrl = getTagMiniatureUrl(chip.item || chip.itemKey)}
 				{#if chip.type === 'include'}
 					<span
 						class="badge flex w-full items-center justify-between gap-1.5 py-3 text-xs font-medium shadow-2xs badge-primary"
 					>
 						<span class="flex items-center gap-1 truncate">
-							{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
-								<TagMiniature
-									src={getTagMiniatureUrl(chip.item || chip.itemKey)}
-									alt={chip.itemLabel}
-									size="xs"
-								/>
+							{#if iconUrl}
+								<TagMiniature src={iconUrl} alt={chip.itemLabel} size="xs" />
 							{/if}
 							<span class="opacity-80">{chip.facetLabel}:</span>
 							<span>{chip.itemLabel}</span>
@@ -225,12 +215,8 @@
 						class="badge flex w-full items-center justify-between gap-1.5 py-3 text-xs font-medium shadow-2xs badge-error"
 					>
 						<span class="flex items-center gap-1 truncate">
-							{#if getTagMiniatureUrl(chip.item || chip.itemKey)}
-								<TagMiniature
-									src={getTagMiniatureUrl(chip.item || chip.itemKey)}
-									alt={chip.itemLabel}
-									size="xs"
-								/>
+							{#if iconUrl}
+								<TagMiniature src={iconUrl} alt={chip.itemLabel} size="xs" />
 							{/if}
 							<span class="opacity-80"
 								>{$_('search.not_prefix', { default: 'NOT' })} {chip.facetLabel}:</span

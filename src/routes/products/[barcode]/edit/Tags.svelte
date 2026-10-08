@@ -164,6 +164,7 @@
 			<ul tabindex="0" class="divide-y divide-base-200">
 				{#each filteredAutocomplete as suggestion, index (suggestion.item)}
 					{@const key = suggestion.item}
+					{@const iconUrl = getTagMiniatureUrl(key)}
 					<li>
 						<button
 							type="button"
@@ -176,12 +177,8 @@
 								selectSuggestion(key);
 							}}
 						>
-							{#if getTagMiniatureUrl(suggestion.item || key)}
-								<TagMiniature
-									src={getTagMiniatureUrl(suggestion.item || key)}
-									alt={key}
-									size="sm"
-								/>
+							{#if iconUrl}
+								<TagMiniature src={iconUrl} alt={key} size="sm" />
 							{/if}
 							<span class="block truncate">{key}</span>
 						</button>

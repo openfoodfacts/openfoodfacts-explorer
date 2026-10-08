@@ -84,12 +84,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each results.tags as tag (tag.id)}
+			{#each results?.tags ?? [] as tag (tag.id)}
+				{@const iconUrl = getTagMiniatureUrl(tag)}
 				<tr>
 					<td>
 						<div class="flex items-center gap-2">
-							{#if getTagMiniatureUrl(tag)}
-								<TagMiniature src={getTagMiniatureUrl(tag)} alt={tag.name} size="md" />
+							{#if iconUrl}
+								<TagMiniature src={iconUrl} alt={tag.name} size="md" />
 							{/if}
 							<a href={`/facets/${facet}/${tag.id}`} class="link">
 								{tag.name}
@@ -98,6 +99,12 @@
 					</td>
 					<td>{tag.known === 1 ? 'Yes' : 'No'}</td>
 					<td class="text-end">{formatNumber(tag.products)}</td>
+				</tr>
+			{:else}
+				<tr>
+					<td colspan="3" class="py-4 text-center text-base-content/60">
+						{$_('facets.no_results', { default: 'No products found' })}
+					</td>
 				</tr>
 			{/each}
 		</tbody>
