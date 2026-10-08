@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getWebsiteFlavorFromParam, toWebsiteFlavor } from './flavor';
+import { getWebsiteFlavorFromParam, isCosmeticProduct, toWebsiteFlavor } from './flavor';
 
 describe('toWebsiteFlavor', () => {
 	it('maps known product types to their website flavor', () => {
@@ -26,5 +26,25 @@ describe('toWebsiteFlavor', () => {
 		expect(getWebsiteFlavorFromParam(null)).toBeUndefined();
 		expect(getWebsiteFlavorFromParam('unknown')).toBeUndefined();
 		expect(getWebsiteFlavorFromParam(' OBF ')).toBe('beauty');
+	});
+});
+
+describe('isCosmeticProduct', () => {
+	it('identifies cosmetic and beauty product types', () => {
+		expect(isCosmeticProduct('beauty')).toBe(true);
+		expect(isCosmeticProduct('obf')).toBe(true);
+		expect(isCosmeticProduct('cosmetic')).toBe(true);
+		expect(isCosmeticProduct('cosmetics')).toBe(true);
+		expect(isCosmeticProduct(' BEAUTY ')).toBe(true);
+	});
+
+	it('returns false for non-cosmetic product types', () => {
+		expect(isCosmeticProduct('food')).toBe(false);
+		expect(isCosmeticProduct('petfood')).toBe(false);
+		expect(isCosmeticProduct('product')).toBe(false);
+		expect(isCosmeticProduct('unknown')).toBe(false);
+		expect(isCosmeticProduct('')).toBe(false);
+		expect(isCosmeticProduct(null)).toBe(false);
+		expect(isCosmeticProduct(undefined)).toBe(false);
 	});
 });

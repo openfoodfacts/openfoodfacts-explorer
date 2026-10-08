@@ -10,6 +10,7 @@
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 	import Sidebar, { type SidebarSection } from './Sidebar.svelte';
+	import { isCosmeticProduct } from '$lib/flavor';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -153,6 +154,7 @@
 	}
 
 	const permissions = getPermissionsCtx();
+	let isCosmetic = $derived(isCosmeticProduct(product.product_type));
 
 	$effect(() => {
 		const hash = page.url.hash;
@@ -340,6 +342,13 @@
 			<div class="collapse-title flex items-center text-sm font-bold sm:text-base">
 				<IconMdiNutrition class="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
 				{$_('product.edit.sections.nutrition')}
+				{#if isCosmetic}
+					<span class="ml-2 badge badge-ghost badge-sm">
+						{$_('product.edit.nutrition_disabled_cosmetics_badge', {
+							default: 'Not applicable for cosmetics'
+						})}
+					</span>
+				{/if}
 			</div>
 			<div class="collapse-content">
 				<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} editMode />
