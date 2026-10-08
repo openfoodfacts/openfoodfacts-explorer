@@ -2,7 +2,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import type { Product } from '#lib/api.js';
 
-	import { isCosmeticProduct } from '$lib/flavor';
+	import { isCosmeticProduct } from '#lib/flavor.js';
 	import IngredientsStep from './IngredientsStep.svelte';
 	import NutritionStep from './NutritionStep.svelte';
 	import PackagingStep from './PackagingStep.svelte';

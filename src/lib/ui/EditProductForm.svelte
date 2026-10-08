@@ -10,7 +10,7 @@
 	import PackagingStep from './edit-product-steps/PackagingStep.svelte';
 	import CommentStep from './edit-product-steps/CommentStep.svelte';
 	import Sidebar, { type SidebarSection } from './Sidebar.svelte';
-	import { isCosmeticProduct } from '$lib/flavor';
+	import { isCosmeticProduct } from '#lib/flavor.js';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';

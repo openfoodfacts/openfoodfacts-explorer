@@ -4,6 +4,7 @@
 	import { preferences } from '#lib/settings.js';
 	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import { PRODUCT_TYPES } from '#lib/const.js';
+	import { updateProductType } from '#lib/flavor.js';
 
 	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 	import { getLanguageName } from '#lib/languages.js';
@@ -175,7 +176,7 @@
 								? 'border-primary font-semibold shadow-sm btn-primary'
 								: 'border-base-300 bg-base-100 text-base-content/80 hover:bg-base-200'}"
 							onclick={() => {
-								product = { ...product, product_type: type };
+								product = updateProductType(product, type);
 							}}
 						>
 							{$_(`product.edit.product_types.${type}`)}

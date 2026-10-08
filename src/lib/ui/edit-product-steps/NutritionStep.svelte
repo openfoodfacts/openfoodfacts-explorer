@@ -32,6 +32,8 @@
 		type IssueSeverity
 	} from './nutrition';
 
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
+	import { onMount } from 'svelte';
 	import { focusEditField } from '#lib/utils/fieldFocus.js';
 	import { isCosmeticProduct } from '#lib/flavor.js';
 
@@ -53,14 +55,22 @@
 
 	let isCosmetic = $derived(isCosmeticProduct(product.product_type));
 	let hasNoNutritionData = $derived(isCosmetic || Boolean(product.no_nutrition_data));
+	let prevIsCosmetic = isCosmeticProduct(product.product_type);
 
 	$effect(() => {
-		if (isCosmetic && !product.no_nutrition_data) {
+		const currentIsCosmetic = isCosmetic;
+		if (currentIsCosmetic && !product.no_nutrition_data) {
 			product = {
 				...product,
 				no_nutrition_data: true
 			};
+		} else if (prevIsCosmetic && !currentIsCosmetic && product.no_nutrition_data) {
+			product = {
+				...product,
+				no_nutrition_data: false
+			};
 		}
+		prevIsCosmetic = currentIsCosmetic;
 	});
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
