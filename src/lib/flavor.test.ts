@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { getWebsiteFlavorFromParam, isCosmeticProduct, toWebsiteFlavor } from './flavor';
+import {
+	getWebsiteFlavorFromParam,
+	isCosmeticProduct,
+	toWebsiteFlavor,
+	updateProductType
+} from './flavor';
 
 describe('toWebsiteFlavor', () => {
 	it('maps known product types to their website flavor', () => {
@@ -46,5 +51,63 @@ describe('isCosmeticProduct', () => {
 		expect(isCosmeticProduct('')).toBe(false);
 		expect(isCosmeticProduct(null)).toBe(false);
 		expect(isCosmeticProduct(undefined)).toBe(false);
+	});
+});
+
+describe('updateProductType', () => {
+	it('sets no_nutrition_data to true when switching from food to beauty', () => {
+		const initial = { product_type: 'food', no_nutrition_data: false, product_name: 'Cookie' };
+		const updated = updateProductType(initial, 'beauty');
+
+		expect(updated.product_type).toBe('beauty');
+		expect(updated.no_nutrition_data).toBe(true);
+		expect(updated.product_name).toBe('Cookie');
+	});
+
+	it('clears no_nutrition_data to false when switching from beauty to food', () => {
+		const initial = { product_type: 'beauty', no_nutrition_data: true, product_name: 'Shampoo' };
+		const updated = updateProductType(initial, 'food');
+
+		expect(updated.product_type).toBe('food');
+		expect(updated.no_nutrition_data).toBe(false);
+		expect(updated.product_name).toBe('Shampoo');
+	});
+
+	it('clears no_nutrition_data to false when switching from obf to petfood', () => {
+		const initial = { product_type: 'obf', no_nutrition_data: true };
+		const updated = updateProductType(initial, 'petfood');
+
+		expect(updated.product_type).toBe('petfood');
+		expect(updated.no_nutrition_data).toBe(false);
+	});
+
+	it('preserves existing no_nutrition_data when switching between non-cosmetic types', () => {
+		const withNutrition = { product_type: 'food', no_nutrition_data: false };
+		expect(updateProductType(withNutrition, 'petfood')).toEqual({
+			product_type: 'petfood',
+			no_nutrition_data: false
+		});
+
+		const withoutNutrition = { product_type: 'food', no_nutrition_data: true };
+		expect(updateProductType(withoutNutrition, 'petfood')).toEqual({
+			product_type: 'petfood',
+			no_nutrition_data: true
+		});
+	});
+
+	it('sets no_nutrition_data to true when setting beauty on an empty product', () => {
+		const initial = {};
+		const updated = updateProductType(initial, 'beauty');
+
+		expect(updated.product_type).toBe('beauty');
+		expect(updated.no_nutrition_data).toBe(true);
+	});
+
+	it('leaves no_nutrition_data unchanged when setting food on an empty product', () => {
+		const initial = {};
+		const updated = updateProductType(initial, 'food');
+
+		expect(updated.product_type).toBe('food');
+		expect(updated.no_nutrition_data).toBeUndefined();
 	});
 });

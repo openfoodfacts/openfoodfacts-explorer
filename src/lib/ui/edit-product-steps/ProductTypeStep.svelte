@@ -2,7 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 	import { PRODUCT_TYPES, type ProductType } from '$lib/const';
-	import { isCosmeticProduct } from '$lib/flavor';
+	import { updateProductType } from '$lib/flavor';
 	import IconMdiShape from '@iconify-svelte/mdi/shape';
 	import addFood from '$lib/assets/add_food.svg';
 	import addBeauty from '$lib/assets/add_beauty.svg';
@@ -57,11 +57,7 @@
 					? 'border-2 border-primary bg-primary/10 shadow-md ring-2 ring-primary/20'
 					: 'border-base-300 bg-base-100'}"
 				onclick={() => {
-					product = {
-						...product,
-						product_type: type,
-						...(isCosmeticProduct(type) ? { no_nutrition_data: true } : {})
-					};
+					product = updateProductType(product, type);
 				}}
 			>
 				<div class="flex w-full flex-col items-center gap-2 sm:gap-4">
