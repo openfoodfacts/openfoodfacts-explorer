@@ -2,6 +2,7 @@
 	import { _ } from '$lib/i18n';
 	import type { Product } from '$lib/api';
 
+	import { isCosmeticProduct } from '$lib/flavor';
 	import IngredientsStep from './IngredientsStep.svelte';
 	import NutritionStep from './NutritionStep.svelte';
 	import PackagingStep from './PackagingStep.svelte';
@@ -25,6 +26,8 @@
 		handleNutrimentInput,
 		allergenNames = []
 	}: Props = $props();
+
+	let isCosmetic = $derived(isCosmeticProduct(product.product_type));
 </script>
 
 <div class="space-y-6">
@@ -56,26 +59,49 @@
 		</div>
 
 		<!-- Nutrition Facts -->
-		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
-			<input
-				type="checkbox"
-				aria-label={$_('product.edit.sections.nutrition', { default: 'Nutrition Facts' })}
-			/>
-			<div class="collapse-title text-sm font-bold sm:text-base">
-				{$_('product.edit.sections.nutrition')}
+		{#if isCosmetic}
+			<div class="rounded-lg border border-base-300 bg-base-200/60 p-4 opacity-75">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-2">
+						<span class="text-sm font-bold opacity-60 sm:text-base">
+							{$_('product.edit.sections.nutrition', { default: 'Nutrition Facts' })}
+						</span>
+						<span class="badge badge-ghost badge-sm">
+							{$_('product.edit.nutrition_disabled_cosmetics_badge', {
+								default: 'Not applicable for cosmetics'
+							})}
+						</span>
+					</div>
+				</div>
+				<p class="mt-1 text-xs text-base-content/60">
+					{$_('product.edit.nutrition_disabled_cosmetics_help', {
+						default:
+							'Nutritional information is disabled because this product is classified as a cosmetic/beauty product.'
+					})}
+				</p>
 			</div>
-			<div class="collapse-content bg-base-100">
-				<div class="pt-5">
-					<NutritionStep
-						bind:product
-						{units}
-						{getNutritionImage}
-						{handleNutrimentInput}
-						editMode={true}
-					/>
+		{:else}
+			<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">
+				<input
+					type="checkbox"
+					aria-label={$_('product.edit.sections.nutrition', { default: 'Nutrition Facts' })}
+				/>
+				<div class="collapse-title text-sm font-bold sm:text-base">
+					{$_('product.edit.sections.nutrition')}
+				</div>
+				<div class="collapse-content bg-base-100">
+					<div class="pt-5">
+						<NutritionStep
+							bind:product
+							{units}
+							{getNutritionImage}
+							{handleNutrimentInput}
+							editMode={true}
+						/>
+					</div>
 				</div>
 			</div>
-		</div>
+		{/if}
 
 		<!-- Packaging -->
 		<div class="collapse-arrow collapse rounded-lg border border-base-300 bg-base-200">

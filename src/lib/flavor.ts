@@ -51,3 +51,14 @@ export function getWebsiteFlavorFromParam(flavorParam: string | null): WebsiteFl
 	const flavor = WEBSITE_FLAVOR_ALIASES[flavorParam.trim().toLowerCase()];
 	return flavor;
 }
+
+export function isCosmeticProduct(productType?: string | null): boolean {
+	if (productType == null || productType.trim() === '') return false;
+	const normalized = productType.trim().toLowerCase();
+	return (
+		normalized === 'beauty' ||
+		normalized === 'obf' ||
+		normalized === 'cosmetic' ||
+		normalized === 'cosmetics'
+	);
+}
