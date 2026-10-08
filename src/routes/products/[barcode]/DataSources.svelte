@@ -6,16 +6,20 @@
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '$lib/api';
+	import { extractProductSources, type ProductWithSources } from '$lib/api/sources';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import { page } from '$app/state';
 
 	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)
 	import '@formatjs/intl-durationformat/polyfill.js';
 
 	type Props = {
-		product: ProductDataSection;
+		product: ProductDataSection & ProductWithSources;
 	};
 
 	let { product }: Props = $props();
+	let externalSources = $derived(extractProductSources(product));
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -233,6 +237,88 @@
 				{@render user(checker)}
 			{/each}
 		</p>
+	{/if}
+
+	{#if externalSources.length > 0}
+		<div class="mt-6 rounded-box border border-base-300 bg-base-100 p-4">
+			<h2 class="flex items-center gap-2 text-xl font-bold">
+				<IconMdiDatabase class="h-5 w-5 text-primary" />
+				{$_('datasources.external_sources_title', { default: 'External Data Sources' })}
+			</h2>
+			<p class="mt-1 text-sm text-base-content/70">
+				{$_('datasources.external_sources_subtitle', {
+					default:
+						'This product contains data imported from external organizations, databases, or manufacturers.'
+				})}
+			</p>
+
+			<div class="mt-4 flex flex-col gap-4">
+				{#each externalSources as source, i (source.id ?? i)}
+					<div class="card bg-base-200 p-4 text-sm shadow-sm">
+						<div class="flex flex-wrap items-center justify-between gap-2">
+							<span class="text-base font-bold">
+								{source.name || source.id || $_('datasources.source_name', { default: 'Source' })}
+							</span>
+							{#if source.url}
+								<a
+									href={source.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="btn gap-1 btn-outline btn-xs"
+								>
+									<span>{$_('datasources.view_source', { default: 'Visit source' })}</span>
+									<IconMdiOpenInNew class="h-3.5 w-3.5" />
+								</a>
+							{/if}
+						</div>
+
+						<div class="mt-2 grid grid-cols-1 gap-2 text-xs text-base-content/80 sm:grid-cols-2">
+							{#if source.source_licence}
+								<div>
+									<span class="font-semibold"
+										>{$_('datasources.license', { default: 'License' })}:</span
+									>
+									{#if source.source_licence_url}
+										<a
+											href={source.source_licence_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="ml-1 underline"
+										>
+											{source.source_licence}
+										</a>
+									{:else}
+										<span class="ml-1">{source.source_licence}</span>
+									{/if}
+								</div>
+							{/if}
+
+							{#if source.import_t}
+								<div>
+									<span class="font-semibold"
+										>{$_('datasources.import_date', { default: 'Imported on' })}:</span
+									>
+									<span class="ml-1">{formatShortDate(source.import_t)}</span>
+								</div>
+							{/if}
+						</div>
+
+						{#if source.fields && source.fields.length > 0}
+							<div class="mt-3">
+								<span class="mb-1 block text-xs font-semibold text-base-content/70">
+									{$_('datasources.source_fields', { default: 'Fields provided' })}:
+								</span>
+								<div class="flex flex-wrap gap-1">
+									{#each source.fields as field (field)}
+										<span class="badge badge-sm badge-neutral">{field}</span>
+									{/each}
+								</div>
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		</div>
 	{/if}
 
 	<a

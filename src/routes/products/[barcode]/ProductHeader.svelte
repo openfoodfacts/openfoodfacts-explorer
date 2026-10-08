@@ -21,6 +21,8 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import SourceBadge from '$lib/ui/SourceBadge.svelte';
+	import { getSourceForField } from '$lib/api/sources';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -117,11 +119,17 @@
 		<div class="flex min-w-0 flex-1 flex-col gap-8">
 			<!-- Header Section: Title & Actions -->
 			<div class="flex flex-col gap-8">
-				<h1
-					class="text-center text-3xl leading-tight font-bold wrap-break-word md:text-left md:text-4xl"
-				>
-					{product.product_name ?? '[' + product.code + ']'}
-				</h1>
+				<div class="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+					<h1
+						class="text-center text-3xl leading-tight font-bold wrap-break-word md:text-left md:text-4xl"
+					>
+						{product.product_name ?? '[' + product.code + ']'}
+					</h1>
+					<SourceBadge
+						source={getSourceForField(product, 'product_name')}
+						fieldName="product_name"
+					/>
+				</div>
 
 				<!-- Action Toolbar -->
 				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
@@ -195,7 +203,10 @@
 			<!-- Metadata Body -->
 			<div class="flex flex-col gap-3 text-center md:text-left">
 				<div class="mb-2">
-					<div class="mb-2 text-sm font-bold text-secondary">{$_('product.header.quantity')}</div>
+					<div class="mb-2 flex items-center justify-center gap-2 md:justify-start">
+						<span class="text-sm font-bold text-secondary">{$_('product.header.quantity')}</span>
+						<SourceBadge source={getSourceForField(product, 'quantity')} fieldName="quantity" />
+					</div>
 					<div>{product.quantity}</div>
 				</div>
 
@@ -238,7 +249,9 @@
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
+						<div
+							class="mb-2 flex flex-wrap items-center justify-center gap-2 text-sm font-bold text-secondary md:justify-start"
+						>
 							<span>{$_('product.header.traceability_codes')}</span>
 							<a
 								href={TRACEABILITY_CODES_URL}
@@ -248,6 +261,10 @@
 							>
 								({$_('product.header.traceability_codes_learn_more')})
 							</a>
+							<SourceBadge
+								source={getSourceForField(product, 'emb_codes_tags')}
+								fieldName="emb_codes_tags"
+							/>
 						</div>
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
@@ -262,8 +279,11 @@
 
 				{#if product.link != null}
 					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
-							{$_('product.header.producer_link')}
+						<div class="mb-2 flex items-center justify-center gap-2 md:justify-start">
+							<span class="text-sm font-bold text-secondary"
+								>{$_('product.header.producer_link')}</span
+							>
+							<SourceBadge source={getSourceForField(product, 'link')} fieldName="link" />
 						</div>
 						<a
 							class="link break-all"
@@ -305,12 +325,19 @@
 	defaultTitle: string,
 	tags: string[] | undefined,
 	localizedTags: string[] | undefined,
-	facet: string
+	facet: string,
+	fieldName?: string
 )}
 	{#if tags != null && tags.length > 0}
 		<div class="mb-2">
-			<div class="mb-2 text-sm font-bold text-secondary">
-				{$_(titleKey, { default: defaultTitle })}
+			<div class="mb-2 flex items-center justify-center gap-2 md:justify-start">
+				<span class="text-sm font-bold text-secondary">
+					{$_(titleKey, { default: defaultTitle })}
+				</span>
+				<SourceBadge
+					source={getSourceForField(product, fieldName || facet)}
+					fieldName={fieldName || facet}
+				/>
 			</div>
 			<TagChipList
 				tags={tags.map((tag, idx) => ({
