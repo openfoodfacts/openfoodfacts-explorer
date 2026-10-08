@@ -35,6 +35,7 @@
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { isCosmeticProduct } from '$lib/flavor';
 
 	type Props = {
 		product: Product;
@@ -51,6 +52,26 @@
 		handleNutrimentInput,
 		editMode = false
 	}: Props = $props();
+
+	let isCosmetic = $derived(isCosmeticProduct(product.product_type));
+	let hasNoNutritionData = $derived(isCosmetic || Boolean(product.no_nutrition_data));
+	let prevIsCosmetic = isCosmeticProduct(product.product_type);
+
+	$effect(() => {
+		const currentIsCosmetic = isCosmetic;
+		if (currentIsCosmetic && !product.no_nutrition_data) {
+			product = {
+				...product,
+				no_nutrition_data: true
+			};
+		} else if (prevIsCosmetic && !currentIsCosmetic && product.no_nutrition_data) {
+			product = {
+				...product,
+				no_nutrition_data: false
+			};
+		}
+		prevIsCosmetic = currentIsCosmetic;
+	});
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
 	const DEFAULT_SHOWN: NutrientKey[] = [
@@ -378,21 +399,48 @@
 <div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
 	<div>
 		<div class="space-y-4">
+			{#if isCosmetic}
+				<div class="alert text-sm alert-info" role="status">
+					<IconMdiInformation class="h-5 w-5 shrink-0" />
+					<div>
+						<p class="font-semibold">
+							{$_('product.edit.nutrition_disabled_cosmetics_title', {
+								default: 'Nutrition facts are disabled'
+							})}
+						</p>
+						<p class="mt-0.5 text-xs">
+							{$_('product.edit.nutrition_disabled_cosmetics_help', {
+								default:
+									'Nutritional information is disabled because this product is classified as a cosmetic/beauty product.'
+							})}
+						</p>
+					</div>
+				</div>
+			{/if}
+
 			<div>
 				<label class="label">
 					<input
 						type="checkbox"
 						class="checkbox"
-						checked={product.no_nutrition_data ?? false}
+						checked={hasNoNutritionData}
+						disabled={isCosmetic}
 						onchange={handleNoNutritionData}
 					/>
-					<span>
+					<span class="flex items-center gap-2">
 						{$_('product.edit.no_nutrition_data')}
+						{#if isCosmetic}
+							<span class="badge badge-ghost badge-sm">
+								{$_('product.edit.nutrition_disabled_cosmetics_badge', {
+									default: 'Not applicable for cosmetics'
+								})}
+							</span>
+						{/if}
 					</span>
 				</label>
 			</div>
 
-			{#if !product.no_nutrition_data}
+			{#if !hasNoNutritionData}
 				<div>
 					<label>
 						<span class="label mb-2 flex items-center gap-2 leading-0">
@@ -418,7 +466,7 @@
 			{/if}
 		</div>
 
-		{#if !product.no_nutrition_data}
+		{#if !hasNoNutritionData}
 			<div class="divider">
 				<span class="text-sm font-medium opacity-60">
 					{$_('product.edit.nutritional_values')}
