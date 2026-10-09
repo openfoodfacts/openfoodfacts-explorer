@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { KnowledgeTextElement } from '$lib/api';
-	import { _ } from '$lib/i18n';
-	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
+	import type { KnowledgeTextElement } from '#lib/api.js';
+	import { _ } from '#lib/i18n/index.js';
+	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
 
 	let { element }: { element: KnowledgeTextElement } = $props();
 

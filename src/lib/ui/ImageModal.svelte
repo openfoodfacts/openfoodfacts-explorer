@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { IMAGE_REPORT_URL } from '$lib/const';
-	import { userInfo } from '$lib/stores/user';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
+	import { userInfo } from '#lib/stores/user.js';
 	import { resolve } from '$app/paths';
 	import { _ } from 'svelte-i18n';
 	import ResizableImage from './ResizableImage.svelte';

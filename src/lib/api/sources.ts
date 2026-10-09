@@ -54,9 +54,14 @@ export function extractProductSources(
 		if (key && seenMap.has(key)) {
 			// Merge fields from repeated imports of the same source
 			const existing = seenMap.get(key)!;
-			if (Array.isArray(src.fields)) {
-				const merged = Array.from(new Set([...(existing.fields || []), ...src.fields]));
-				existing.fields = merged;
+			const merged = Array.from(new Set([...(existing.fields || []), ...(src.fields || [])]));
+			// Preserve latest metadata (import_t, url, license, etc.) from newer import
+			Object.assign(existing, src, { fields: merged });
+			// Move to end of display list so later imports take precedence in ordering
+			const idx = result.indexOf(existing);
+			if (idx !== -1) {
+				result.splice(idx, 1);
+				result.push(existing);
 			}
 			return;
 		}
@@ -109,12 +114,22 @@ export function getSourceForField(
 ): ProductSource | undefined {
 	if (!product || !fieldName) return undefined;
 
-	const sources = extractProductSources(product);
 	const targetNormalized = normalizeFieldName(fieldName);
 
-	// Iterate in reverse (newest import first) to select the latest import
-	for (let i = sources.length - 1; i >= 0; i--) {
-		const src = sources[i];
+	// Collect unmerged import records in chronological order
+	const rawSources: ProductSource[] = [];
+	if (Array.isArray(product.sources)) {
+		for (const s of product.sources) {
+			if (s && typeof s === 'object') rawSources.push(s);
+		}
+	}
+	if (product.source && typeof product.source === 'object') {
+		rawSources.push(product.source);
+	}
+
+	// Iterate in reverse (newest import first) to select the latest import that modified the field
+	for (let i = rawSources.length - 1; i >= 0; i--) {
+		const src = rawSources[i];
 		if (Array.isArray(src.fields)) {
 			const hasField = src.fields.some(
 				(f) => f === fieldName || normalizeFieldName(f) === targetNormalized

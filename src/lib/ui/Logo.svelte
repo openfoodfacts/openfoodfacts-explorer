@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getWebsiteCtx } from '$lib/stores/website';
-	import { WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
+	import { WEBSITE_FLAVOR_METADATA } from '#lib/flavor.js';
 
 	let websiteCtx = getWebsiteCtx();
 

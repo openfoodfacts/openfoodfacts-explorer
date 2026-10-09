@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
-	import { _ } from '$lib/i18n';
-	import { IS_NON_PRODUCTION } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { IS_NON_PRODUCTION } from '#lib/const.js';
 </script>
 
 {#if IS_NON_PRODUCTION}

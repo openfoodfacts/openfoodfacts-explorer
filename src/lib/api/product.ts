@@ -1,19 +1,18 @@
-import { API_HOST, PRODUCT_IMAGE_URL } from '$lib/const';
+import { API_HOST, PRODUCT_IMAGE_URL } from '#lib/const.js';
 import { get } from 'svelte/store';
 import type { KnowledgePanels } from './knowledgepanels';
 import type { Nutriments } from './nutriments';
-import { getLanguageCode, preferences } from '$lib/settings';
+import { getLanguageCode, preferences } from '#lib/settings.js';
 import {
 	type PackagingComponent,
 	type PackagingTaxonomyTag,
 	type ProductV3,
 	OpenFoodFacts
 } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithAuth } from '$lib/stores/auth';
+import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
 import type { ProductSource } from '$lib/types/sdk-overrides';
 export type { PackagingTaxonomyTag, PackagingComponent, ProductSource };
-
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);

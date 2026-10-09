@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Card from '$lib/ui/Card.svelte';
-	import { _, getLocale } from '$lib/i18n';
+	import Card from '#lib/ui/Card.svelte';
+	import { _, getLocale } from '#lib/i18n/index.js';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
-	import type { ProductDataSection } from '$lib/api';
+	import type { ProductDataSection } from '#lib/api.js';
 	import {
 		extractProductSources,
 		isSafeSourceUrl,

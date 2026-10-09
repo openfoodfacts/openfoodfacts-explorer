@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product, RawImage } from '$lib/api';
-	import { getProductImageUrl, moveImages, deleteImages } from '$lib/api/product';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product, RawImage } from '#lib/api.js';
+	import { getProductImageUrl, moveImages, deleteImages } from '#lib/api/product.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import IconMdiImageMove from '@iconify-svelte/mdi/image-move';
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 	import IconMdiImageMultiple from '@iconify-svelte/mdi/image-multiple';
@@ -149,8 +149,8 @@
 				selectedImgIds.clear();
 				targetBarcode = '';
 				copyData = false;
-				const { invalidateAll } = await import('$app/navigation');
-				await invalidateAll();
+				const { refreshAll } = await import('$app/navigation');
+				await refreshAll();
 			}
 		} finally {
 			isSubmitting = false;
@@ -189,8 +189,8 @@
 				);
 				selectedImgIds.clear();
 				deleteConfirm = false;
-				const { invalidateAll } = await import('$app/navigation');
-				await invalidateAll();
+				const { refreshAll } = await import('$app/navigation');
+				await refreshAll();
 			}
 		} finally {
 			isSubmitting = false;

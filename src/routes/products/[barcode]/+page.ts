@@ -3,18 +3,24 @@ import type { PageLoad } from './$types';
 
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import { createProductsApi } from '$lib/api';
+import { createProductsApi } from '#lib/api.js';
 
 import { get } from 'svelte/store';
-import { getLanguageCode, preferences } from '$lib/settings';
-import { createFolksonomyApi, isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-import { createPricesApi, isConfigured as isPriceConfigured } from '$lib/api/prices';
-import { attributesToDefaultPreferences, type AttributeGroup } from '$lib/stores/preferencesStore';
+import { getLanguageCode, preferences } from '#lib/settings.js';
+import {
+	createFolksonomyApi,
+	isConfigured as isFolksonomyConfigured
+} from '#lib/api/folksonomy.js';
+import { createPricesApi, isConfigured as isPriceConfigured } from '#lib/api/prices.js';
+import {
+	attributesToDefaultPreferences,
+	type AttributeGroup
+} from '#lib/stores/preferencesStore.js';
 import {
 	ERR_INVALID_BARCODE,
 	ERR_PRODUCT_NOT_FOUND,
 	type ProductStateResponse
-} from '$lib/api/errorUtils';
+} from '#lib/api/errorUtils.js';
 
 async function getPricesCoords(api: PricesApi, code: string) {
 	// load all prices coordinates
@@ -45,23 +51,14 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	}));
 
 	if (isInvalidFormat) {
-		error(400, {
-			message: ERR_INVALID_BARCODE,
-			errors: cleanErrors
-		});
+		error(400, ERR_INVALID_BARCODE, { errors: cleanErrors });
 	}
 
 	if (err.result?.id === 'product_not_found') {
-		error(404, {
-			message: ERR_PRODUCT_NOT_FOUND,
-			errors: cleanErrors
-		});
+		error(404, ERR_PRODUCT_NOT_FOUND, { errors: cleanErrors });
 	}
 
-	error(500, {
-		message: 'Server Error',
-		errors: cleanErrors
-	});
+	error(500, 'Server Error', { errors: cleanErrors });
 }
 
 export const load: PageLoad = async ({ params, fetch }) => {
@@ -90,17 +87,11 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	handleProductApiError(apiErrorWrapped);
 
 	if (!state) {
-		error(500, {
-			message: 'Unable to connect to Open Food Facts API',
-			errors: []
-		});
+		error(500, 'Unable to connect to Open Food Facts API', { errors: [] });
 	}
 
 	if (state.status === 'failure') {
-		error(404, {
-			message: 'Failure to load product',
-			errors: state.errors
-		});
+		error(404, 'Failure to load product', { errors: state.errors });
 	}
 
 	const folksonomyTags = isFolksonomyConfigured()

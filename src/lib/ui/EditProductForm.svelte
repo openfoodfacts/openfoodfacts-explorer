@@ -23,12 +23,12 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
-	import type { Product } from '$lib/api';
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
+	import type { Product } from '#lib/api.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
-	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
+	import { scrollToAndHighlight } from '#lib/utils/fieldFocus.js';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';

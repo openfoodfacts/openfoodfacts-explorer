@@ -1,8 +1,8 @@
 import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-import { wrapFetchWithAuth } from '$lib/stores/auth';
-import { env } from '$env/dynamic/public';
+import { wrapFetchWithAuth } from '#lib/stores/auth.js';
+import { PUBLIC_FOLKSONOMY_API_URL } from '$app/env/public';
 
-const BASE_URL = env.PUBLIC_FOLKSONOMY_API_URL;
+const BASE_URL = PUBLIC_FOLKSONOMY_API_URL || undefined;
 
 export function isConfigured() {
 	return BASE_URL != null;

@@ -65,17 +65,32 @@ describe('extractProductSources', () => {
 		expect(result).toHaveLength(1);
 	});
 
-	it('merges fields from repeated imports with the same source ID', () => {
+	it('merges fields and retains latest metadata from repeated imports with the same source ID', () => {
 		const product: ProductWithSources = {
 			sources: [
-				{ id: 'usda', name: 'USDA', fields: ['brands'] },
-				{ id: 'usda', name: 'USDA', fields: ['quantity'] }
+				{
+					id: 'usda',
+					name: 'USDA Old',
+					import_t: 100,
+					url: 'https://old.usda.gov',
+					fields: ['brands']
+				},
+				{
+					id: 'usda',
+					name: 'USDA New',
+					import_t: 200,
+					url: 'https://new.usda.gov',
+					fields: ['quantity']
+				}
 			]
 		};
 
 		const result = extractProductSources(product);
 		expect(result).toHaveLength(1);
 		expect(result[0].fields).toEqual(['brands', 'quantity']);
+		expect(result[0].name).toBe('USDA New');
+		expect(result[0].import_t).toBe(200);
+		expect(result[0].url).toBe('https://new.usda.gov');
 		expect(getSourceForField(product, 'brands')?.id).toBe('usda');
 		expect(getSourceForField(product, 'quantity')?.id).toBe('usda');
 	});
@@ -124,6 +139,23 @@ describe('getSourceForField', () => {
 		const source = getSourceForField(product, 'brands');
 		expect(source).toBeDefined();
 		expect(source?.id).toBe('source-new');
+	});
+
+	it('handles A-B-A import sequences attributing each field to its latest modifier', () => {
+		const product: ProductWithSources = {
+			sources: [
+				{ id: 'source-a', name: 'Source A First', fields: ['brands'] },
+				{ id: 'source-b', name: 'Source B', fields: ['brands', 'quantity'] },
+				{ id: 'source-a', name: 'Source A Second', fields: ['categories'] }
+			]
+		};
+
+		// 'brands' was modified by A first, then overwritten by B
+		expect(getSourceForField(product, 'brands')?.id).toBe('source-b');
+		// 'quantity' was supplied by B
+		expect(getSourceForField(product, 'quantity')?.id).toBe('source-b');
+		// 'categories' was supplied by A in the latest import
+		expect(getSourceForField(product, 'categories')?.id).toBe('source-a');
 	});
 
 	it('does not invent attribution if source has no fields array', () => {

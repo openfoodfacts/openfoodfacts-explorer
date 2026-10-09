@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import type { ComponentType } from 'svelte';
 	import type {
 		ExternalKnowledgePanelResult,
 		ExternalKnowledgePanelRequest,
 		ExternalSourceMatchReason
-	} from '$lib/api/externalSources';
+	} from '#lib/api/externalSources.js';
 	import IconMdiAccountCheck from '@iconify-svelte/mdi/account-check';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiEarth from '@iconify-svelte/mdi/earth';
