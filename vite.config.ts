@@ -11,6 +11,19 @@ import tailwindcss from '@tailwindcss/vite';
 
 const packageVersion = packageJson.version;
 
+function resolveBuildVersion(): string {
+	if (process.env.GIT_DESCRIBE) return process.env.GIT_DESCRIBE;
+	try {
+		return (
+			execFileSync('git', ['describe', '--tags'], { stdio: ['ignore', 'pipe', 'ignore'] })
+				.toString()
+				.trim() || packageVersion
+		);
+	} catch {
+		return packageVersion;
+	}
+}
+
 // Docker builds receive GIT_COMMIT_SHA as a build arg, since .git is excluded from the build context
 function resolveBuildCommitSha(): string {
 	const fromEnv = process.env.GIT_COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA;
@@ -106,6 +119,7 @@ export default defineConfig({
 	],
 	define: {
 		'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageVersion),
+		'import.meta.env.BUILD_VERSION': JSON.stringify(resolveBuildVersion()),
 		'import.meta.env.BUILD_COMMIT_SHA': JSON.stringify(resolveBuildCommitSha()),
 		// Vercel provides this variable during the build. Keep the value in the
 		// client bundle so self-hosted Node builds do not load Vercel-only scripts.
