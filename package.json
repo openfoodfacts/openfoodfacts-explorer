@@ -46,6 +46,7 @@
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.44",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.35",
+		"@sentry/sveltekit": "^10.75.1",
 		"@sveltejs/adapter-node": "^6.0.0",
 		"@sveltejs/adapter-vercel": "^7.0.0",
 		"@sveltejs/kit": "^3.0.0",
@@ -108,7 +109,6 @@
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
 		"@opentelemetry/api": "^1.9.1",
-		"@sentry/sveltekit": "^10.75.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"csv-stringify": "^6.8.3",
 		"isomorphic-dompurify": "^4.3.0"
