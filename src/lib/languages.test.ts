@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { getLocaleLabel } from './languages';
 
 describe('getLocaleLabel', () => {
-	it('shows the name in that language and the English name', () => {
-		expect(getLocaleLabel('hi')).toBe('हिन्दी — Hindi');
-		expect(getLocaleLabel('fr')).toBe('français — French');
-		expect(getLocaleLabel('de')).toBe('Deutsch — German');
+	it('shows the English name, then the name in that language', () => {
+		expect(getLocaleLabel('hi')).toBe('Hindi (हिन्दी)');
+		expect(getLocaleLabel('fr')).toBe('French (français)');
+		expect(getLocaleLabel('de')).toBe('German (Deutsch)');
 	});
 
 	it('shows a single name when the endonym and English name match', () => {
@@ -20,15 +20,15 @@ describe('getLocaleLabel', () => {
 					name: { en: 'French', fr: 'Français' }
 				}
 			])
-		).toBe('Français — French');
+		).toBe('French (Français)');
 	});
 
 	it('includes the region for locale codes', () => {
 		expect(getLocaleLabel('en-US')).toBe('English (United States)');
 		expect(getLocaleLabel('en_US')).toBe('English (United States)');
 		expect(getLocaleLabel('en-us')).toBe('English (United States)');
-		expect(getLocaleLabel('es-419')).toBe('español (Latinoamérica) — Spanish (Latin America)');
-		expect(getLocaleLabel('fr-FR')).toBe('français (France) — French (France)');
-		expect(getLocaleLabel('zh-Hans-CN')).toBe('中文 (中国) — Chinese (China)');
+		expect(getLocaleLabel('es-419')).toBe('Spanish (Latin America) (español (Latinoamérica))');
+		expect(getLocaleLabel('fr-FR')).toBe('French (France) (français (France))');
+		expect(getLocaleLabel('zh-Hans-CN')).toBe('Chinese (China) (中文 (中国))');
 	});
 });

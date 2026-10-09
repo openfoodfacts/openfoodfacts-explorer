@@ -20,7 +20,7 @@ function getDisplayName(
 	}
 }
 
-/** Same label as the settings language list: endonym, then the English name when it differs. */
+/** English name first, with the name in that language in parentheses when it differs. */
 export function getLocaleLabel(
 	code: string,
 	languages: readonly LocaleLabelLanguage[] = []
@@ -45,7 +45,7 @@ export function getLocaleLabel(
 	const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
 	const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
 
-	return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
+	return nativeLabel === englishLabel ? nativeLabel : `${englishLabel} (${nativeLabel})`;
 }
 
 export function getLanguageName(code: string, locale: string = getLocale()): string {
