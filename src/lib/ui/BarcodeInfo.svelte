@@ -11,17 +11,20 @@
 	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '$lib/utils/imageSearch';
 	import Card from './Card.svelte';
 
-	let {
-		code,
-		imageFrontUrl,
-		imageIngredientsUrl,
-		imageNutritionUrl
-	}: {
+	export type BarcodeInfoProduct = {
 		code: string;
-		imageFrontUrl?: string;
-		imageIngredientsUrl?: string;
-		imageNutritionUrl?: string;
-	} = $props();
+		image_front_url?: string;
+		image_front_small_url?: string;
+		image_ingredients_url?: string;
+		image_nutrition_url?: string;
+	};
+
+	let { product }: { product: BarcodeInfoProduct } = $props();
+
+	let code = $derived(product.code);
+	let imageFrontUrl = $derived(product.image_front_url ?? product.image_front_small_url);
+	let imageIngredientsUrl = $derived(product.image_ingredients_url);
+	let imageNutritionUrl = $derived(product.image_nutrition_url);
 
 	type AvailabilityStatus = 'loading' | 'found' | 'not-found' | 'error';
 	type AvailabilityKey = 'open_prices' | 'pro_off';
