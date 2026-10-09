@@ -1,6 +1,6 @@
 import { createContext } from 'svelte';
 import { writable, type Writable } from 'svelte/store';
-import type { WebsiteFlavor } from '$lib/flavor';
+import type { WebsiteFlavor } from '#lib/flavor.js';
 
 export type WebsiteContext = {
 	flavor: WebsiteFlavor;

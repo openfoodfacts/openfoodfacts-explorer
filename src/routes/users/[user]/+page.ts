@@ -1,4 +1,4 @@
-import { getFacetValue } from '$lib/api/facets';
+import { getFacetValue } from '#lib/api/facets.js';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 

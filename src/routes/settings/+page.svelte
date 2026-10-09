@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { preferences } from '$lib/settings';
-	import { getLocaleLabel } from '$lib/languages';
-	import { _ } from '$lib/i18n';
-	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
-	import Tabs from '$lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
-	import Metadata from '$lib/Metadata.svelte';
-	import { COMMIT_SHA } from '$lib/const';
+	import { preferences } from '#lib/settings.js';
+	import { getLocaleLabel } from '#lib/languages.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
+	import Tabs from '#lib/ui/Tabs.svelte';
+	import type { AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
+	import Metadata from '#lib/Metadata.svelte';
+	import { COMMIT_SHA } from '#lib/const.js';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';

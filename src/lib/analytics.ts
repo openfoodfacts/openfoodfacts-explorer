@@ -12,7 +12,7 @@
  */
 
 import { get, writable } from 'svelte/store';
-import type { Tracker } from '$lib/matomo/tracker';
+import type { Tracker } from '#lib/matomo/tracker.js';
 
 export type { Tracker };
 export const tracker = writable<Tracker | null>(null);

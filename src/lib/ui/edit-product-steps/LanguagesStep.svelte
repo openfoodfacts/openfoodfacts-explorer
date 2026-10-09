@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { getLanguageName, getLocaleLabel } from '$lib/languages';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { getLanguageName, getLocaleLabel } from '#lib/languages.js';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
-	import InputAutocomplete from '$lib/ui/InputAutocomplete.svelte';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
+	import InputAutocomplete from '#lib/ui/InputAutocomplete.svelte';
 
 	type Props = {
 		product: Product;

@@ -5,6 +5,8 @@
 	"private": true,
 	"type": "module",
 	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*",
 		"#csv-stringify-sync": {
 			"browser": "csv-stringify/browser/esm/sync",
 			"default": "csv-stringify/sync"
@@ -16,7 +18,7 @@
 		"url": "git+https://github.com/openfoodfacts/openfoodfacts-explorer.git"
 	},
 	"engines": {
-		"node": ">=20.0.0 <25"
+		"node": ">=22.17.0 <25"
 	},
 	"scripts": {
 		"dev": "vite dev",
@@ -44,9 +46,10 @@
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.44",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.35",
-		"@sveltejs/adapter-node": "^5.5.7",
-		"@sveltejs/adapter-vercel": "^6.3.4",
-		"@sveltejs/kit": "^2.70.3",
+		"@sveltejs/adapter-node": "^6.0.0",
+		"@sveltejs/adapter-vercel": "^7.0.0",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/load-config": "^0.2.2",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "4.3.3",
@@ -88,7 +91,7 @@
 		"svelte-eslint-parser": "^1.8.1",
 		"svelte-i18n": "^4.0.1",
 		"svelte-local-storage-store": "^0.6.4",
-		"sveltekit-i18n": "^3.0.0",
+		"sveltekit-i18n": "^3.3.0",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-opentype": "^1.2.0",
 		"topojson-client": "^3.1.0",
@@ -103,7 +106,8 @@
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
-		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.2",
+		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
+		"@opentelemetry/api": "^1.9.1",
 		"@sentry/sveltekit": "^10.75.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"csv-stringify": "^6.8.3",

@@ -1,16 +1,5 @@
-// Disables access to DOM typings like `HTMLElement` which are not available
-// inside a service worker and instantiates the correct globals
-/// <reference no-default-lib="true"/>
-/// <reference lib="esnext" />
-/// <reference lib="webworker" />
-
-// Ensures that the `$service-worker` import has proper type definitions
-/// <reference types="@sveltejs/kit" />
-
-import { version } from '$service-worker';
-
-// This gives `self` the correct types
-const self = globalThis.self as unknown as ServiceWorkerGlobalScope;
+import { version } from '$app/env';
+import { self } from '$app/service-worker';
 
 // Create a unique cache name for this deployment
 const CACHE = `cache-${version}`;
