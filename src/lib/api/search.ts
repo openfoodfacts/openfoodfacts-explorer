@@ -1,10 +1,10 @@
 import { SearchApi, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { ProductReduced } from './product';
 import { wrapFetchWithCredentials } from './utils';
-import { env } from '$env/dynamic/public';
+import { PUBLIC_SEARCH_BASE_URL } from '$app/env/public';
 
 export function getSearchBaseUrl() {
-	const searchBaseUrl = env.PUBLIC_SEARCH_BASE_URL;
+	const searchBaseUrl = PUBLIC_SEARCH_BASE_URL;
 	if (searchBaseUrl == null || searchBaseUrl === '') {
 		throw new Error(
 			'PUBLIC_SEARCH_BASE_URL is not set. Please set it in your environment variables.'

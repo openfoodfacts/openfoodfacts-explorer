@@ -5,10 +5,10 @@ const mockEnv = {
 	PUBLIC_SEARCH_BASE_URL: ''
 };
 
-// mock Svelte public env
-vi.mock('$env/dynamic/public', () => ({
-	get env() {
-		return mockEnv;
+// mock SvelteKit's generated public env
+vi.mock('$app/env/public', () => ({
+	get PUBLIC_SEARCH_BASE_URL() {
+		return mockEnv.PUBLIC_SEARCH_BASE_URL;
 	}
 }));
 

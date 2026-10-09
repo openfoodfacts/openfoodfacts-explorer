@@ -3,29 +3,28 @@
 	import { tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
-	import { invalidateAll } from '$app/navigation';
-	import { trackRefresh } from '$lib/utils/pendingRefresh';
+	import { refreshAll } from '$app/navigation';
 
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
-	import { _ } from '$lib/i18n';
-	import type { Product, ProductImage, RawImage } from '$lib/api';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product, ProductImage, RawImage } from '#lib/api.js';
 	import {
 		getProductImageUrl,
 		createImageSelectionWithCrop,
 		createSimpleImageSelection,
 		selectAndCropImagesV3,
 		unselectImageV3
-	} from '$lib/api/product';
-	import type { ImageEditData } from '$lib/utils/imageEdit';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { trackOffEvent } from '$lib/analytics';
+	} from '#lib/api/product.js';
+	import type { ImageEditData } from '#lib/utils/imageEdit.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
-	import { IMAGE_REPORT_URL } from '$lib/const';
-	import { getLanguageName } from '$lib/languages';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
+	import { getLanguageName } from '#lib/languages.js';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -252,7 +251,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		trackRefresh(invalidateAll()).then(() => {
+		refreshAll().then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -307,6 +306,8 @@
 			);
 		} finally {
 			isSavingImage = false;
+
+			await refreshAll();
 			closeEditModal();
 		}
 	}
@@ -366,7 +367,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
-				await trackRefresh(invalidateAll());
+				await refreshAll();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -408,11 +409,8 @@
 				image.imgid
 			);
 
-			// The dialog is already closed: track the request and the refresh as one operation,
-			// so saving the form in the meantime waits for both
-			await trackRefresh(
-				selectAndCropImagesV3(fetch, product.code, selectionData).then(() => invalidateAll())
-			);
+			await selectAndCropImagesV3(fetch, product.code, selectionData);
+			await refreshAll();
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);

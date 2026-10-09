@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { personalizedSearch, type AttributePreference } from '$lib/stores/preferencesStore';
+	import { personalizedSearch, type AttributePreference } from '#lib/stores/preferencesStore.js';
 	import type { ProductAttributeV2 } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { ProductGroupedAttributes } from './types';
 

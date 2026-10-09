@@ -3,8 +3,8 @@
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { _ } from '$lib/i18n';
-	import { trackOffEvent } from '$lib/analytics';
+	import { _ } from '#lib/i18n/index.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import {
 		getOrDefault,
@@ -19,26 +19,19 @@
 		updatePackagingsV3,
 		deleteProduct,
 		updateObsoleteStatusV3
-	} from '$lib/api';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import EditProductForm from '$lib/ui/EditProductForm.svelte';
-	import PhotoTextMismatchDialog from '$lib/ui/PhotoTextMismatchDialog.svelte';
-	import {
-		createPhotoTextSnapshot,
-		findPhotoTextMismatches,
-		type PhotoTextMismatch
-	} from '$lib/utils/photoTextMismatch';
-	import { waitForPendingRefreshes } from '$lib/utils/pendingRefresh';
-	import AddProductForm from '$lib/ui/AddProductForm.svelte';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
-	import { userInfo } from '$lib/stores/user';
+	} from '#lib/api.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import EditProductForm from '#lib/ui/EditProductForm.svelte';
+	import AddProductForm from '#lib/ui/AddProductForm.svelte';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
+	import { userInfo } from '#lib/stores/user.js';
 
 	import type { PageData } from './$types';
-	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '$lib/const';
-	import { getLanguageName } from '$lib/languages';
+	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '#lib/const.js';
+	import { getLanguageName } from '#lib/languages.js';
 	import { page } from '$app/state';
-	import { dev } from '$app/environment';
+	import { dev } from '$app/env';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { resolve } from '$app/paths';
 
@@ -72,7 +65,7 @@
 
 		return {
 			_id: '',
-			code: code,
+			code,
 			created_t: 0,
 			creator: '',
 			last_modified_t: 0,

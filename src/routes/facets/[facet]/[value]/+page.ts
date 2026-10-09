@@ -5,10 +5,10 @@ import {
 	getFacetKnowledgePanels,
 	getFacetValue,
 	type FacetSortOption
-} from '$lib/api/facets';
+} from '#lib/api/facets.js';
 import type { PageLoad } from './$types';
-import { requireInt } from '$lib/utils';
-import { getBulkProductAttributes } from '$lib/api';
+import { requireInt } from '#lib/utils.js';
+import { getBulkProductAttributes } from '#lib/api.js';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;

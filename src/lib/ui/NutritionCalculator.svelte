@@ -7,7 +7,7 @@
 		clearCalculator,
 		toggleCalculator,
 		totalNutrition
-	} from '$lib/stores/calculatorStore';
+	} from '#lib/stores/calculatorStore.js';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 

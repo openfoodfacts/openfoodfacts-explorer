@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { SORT_OPTIONS } from '$lib/const';
-	import { _ } from '$lib/i18n';
+	import { SORT_OPTIONS } from '#lib/const.js';
+	import { _ } from '#lib/i18n/index.js';
 
 	import IconMdiFilter from '@iconify-svelte/mdi/filter';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 
 	import FacetBar from '../../routes/search/FacetBar.svelte';
-	import type { SearchResult } from '$lib/api/search';
+	import type { SearchResult } from '#lib/api/search.js';
 
-	import type { FacetsSelection } from '$lib/search/facet-selection';
+	import type { FacetsSelection } from '#lib/search/facet-selection.js';
 
 	interface Props {
 		onSortOptionSelect?: (value: string) => void;

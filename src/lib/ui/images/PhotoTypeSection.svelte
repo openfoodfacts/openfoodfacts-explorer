@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
+	import { refreshAll } from '$app/navigation';
 
-	import { getImageFieldName } from '$lib/utils';
-	import { trackRefresh } from '$lib/utils/pendingRefresh';
-	import { fileToBase64, unselectImageV3, uploadImageV3 } from '$lib/api';
-	import type { Product, ProductImage } from '$lib/api';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { getLanguageName } from '$lib/languages';
+	import { getImageFieldName } from '#lib/utils.js';
+	import { fileToBase64, unselectImageV3, uploadImageV3 } from '#lib/api.js';
+	import type { Product, ProductImage } from '#lib/api.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { getLanguageName } from '#lib/languages.js';
 	import { _, getDateFormatter } from 'svelte-i18n';
 	import { resolve } from '$app/paths';
 
@@ -15,9 +14,9 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiImagePlus from '@iconify-svelte/mdi/image-plus';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
-	import { IMAGE_REPORT_URL } from '$lib/const';
-	import { trackOffEvent } from '$lib/analytics';
-	import { userInfo } from '$lib/stores/user';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import { userInfo } from '#lib/stores/user.js';
 
 	type PhotoType = { id: string; label: string };
 
@@ -164,7 +163,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', sectionType.id);
-				await invalidateAll();
+				await refreshAll();
 			} else {
 				console.warn('Image unselect failed:', result);
 				toast.error($_('product.edit.images.toast.unselect_failed'));

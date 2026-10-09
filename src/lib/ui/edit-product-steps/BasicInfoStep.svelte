@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
-	import { PRODUCT_TYPES } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
+	import { PRODUCT_TYPES } from '#lib/const.js';
 
-	import TagsString from '$lib/ui/inputs/TagsString.svelte';
-	import { getLanguageName } from '$lib/languages';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
+	import { getLanguageName } from '#lib/languages.js';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
 
-	import InputAutocomplete from '$lib/ui/InputAutocomplete.svelte';
+	import InputAutocomplete from '#lib/ui/InputAutocomplete.svelte';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 
 	type Props = {

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { KnowledgePanelGroupElement, KnowledgePanels } from '$lib/api';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import type { KnowledgePanelGroupElement, KnowledgePanels } from '#lib/api.js';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 	import Panel from './Panel.svelte';
 
 	let {

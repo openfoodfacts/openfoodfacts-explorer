@@ -1,4 +1,4 @@
-import type { Facet } from '$lib/api/search';
+import type { Facet } from '#lib/api/search.js';
 import type { FacetsSelection } from './facet-selection';
 import {
 	MASTER_FACET_CATALOG,
