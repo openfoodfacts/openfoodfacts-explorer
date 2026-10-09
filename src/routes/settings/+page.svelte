@@ -24,8 +24,7 @@
 	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
-	const APP_VERSION = import.meta.env.PACKAGE_VERSION;
-	const SHORT_COMMIT_SHA = COMMIT_SHA.slice(0, 7);
+	const APP_VERSION = import.meta.env.BUILD_VERSION;
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -187,11 +186,6 @@
 						<span>{$_('settings.github_cta')}</span>
 					</a>
 					<p class="mt-4 text-sm text-primary-content/80">
-						{$_('settings.app_version', {
-							default: 'Version {version}',
-							values: { version: APP_VERSION }
-						})}
-						·
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
@@ -201,13 +195,19 @@
 								title={COMMIT_SHA}
 								aria-label={$_('settings.app_commit_link', {
 									default: 'View commit {sha} on GitHub',
-									values: { sha: SHORT_COMMIT_SHA }
+									values: { sha: COMMIT_SHA }
 								})}
 							>
-								{SHORT_COMMIT_SHA}
+								{$_('settings.app_version', {
+									default: 'Version {version}',
+									values: { version: APP_VERSION }
+								})}
 							</a>
 						{:else}
-							SHA unknown
+							{$_('settings.app_version', {
+								default: 'Version {version}',
+								values: { version: APP_VERSION }
+							})}
 						{/if}
 					</p>
 				</div>
