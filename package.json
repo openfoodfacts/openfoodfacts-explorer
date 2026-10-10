@@ -71,7 +71,7 @@
 		"eslint-plugin-svelte": "^3.23.0",
 		"fuse.js": "^7.5.0",
 		"geojson": "^0.5.0",
-		"globals": "^17.12.0",
+		"globals": "^17.13.0",
 		"html5-qrcode": "^2.3.8",
 		"husky": "^9.1.7",
 		"iso-3166-1": "^2.1.1",
@@ -110,8 +110,8 @@
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
 		"@opentelemetry/api": "^1.9.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
-		"csv-stringify": "^6.8.3",
-		"isomorphic-dompurify": "^4.3.0"
+		"csv-stringify": "^6.9.0",
+		"isomorphic-dompurify": "^4.5.0"
 	},
 	"packageManager": "pnpm@12.5.1+sha512.e3f305bc784a2bc89f5ad3b6138889470fae8d2af5f36b61216ec91c2c3d64089775f9de38aac331044ea40f245cb0d5666392dfdf65824e1907ef6a2c62de5f"
 }
