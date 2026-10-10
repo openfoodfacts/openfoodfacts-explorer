@@ -139,8 +139,15 @@
 		}
 	}
 
-	beforeNavigate(({ shallow }) => {
+	function withoutCharts(url: URL) {
+		const copy = new URL(url);
+		copy.searchParams.delete('charts');
+		return copy.href;
+	}
+
+	beforeNavigate(({ shallow, from, to }) => {
 		if (shallow) return;
+		if (from && to && withoutCharts(from.url) === withoutCharts(to.url)) return;
 
 		clearPendingTimer();
 	});

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { createSearchApi, type SearchResult } from '#lib/api/search.js';
@@ -47,7 +47,7 @@
 
 	function setFields(next: string[]) {
 		fields = next;
-		const url = new URL(page.url.href);
+		const url = new URL((navigating.to?.url ?? page.url).href);
 		url.searchParams.set('charts', next.join(','));
 		goto(url, { reset: false, replace: true });
 	}
