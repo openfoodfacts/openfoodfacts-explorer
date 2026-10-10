@@ -7,6 +7,7 @@ import { createProductsApi } from '#lib/api.js';
 
 import { get } from 'svelte/store';
 import { getLanguageCode, preferences } from '#lib/settings.js';
+import { PRODUCT_LANGUAGE_PARAM, resolveProductLanguage } from '#lib/productLanguage.js';
 import {
 	createFolksonomyApi,
 	isConfigured as isFolksonomyConfigured
@@ -61,11 +62,14 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	error(500, 'Server Error', { errors: cleanErrors });
 }
 
-export const load: PageLoad = async ({ params, fetch }) => {
+export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 	const folkApi = createFolksonomyApi(fetch);
 
-	const lc = getLanguageCode(get(preferences).locale);
+	const lc = resolveProductLanguage(
+		url.searchParams.get(PRODUCT_LANGUAGE_PARAM),
+		getLanguageCode(get(preferences).locale)
+	);
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
