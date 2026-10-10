@@ -3,6 +3,7 @@
 	import { userInfo } from '#lib/stores/user.js';
 	import { resolve } from '$app/paths';
 	import { _ } from 'svelte-i18n';
+	import { trackOffEvent } from '#lib/analytics.js';
 	import ResizableImage from './ResizableImage.svelte';
 
 	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
@@ -214,6 +215,7 @@
 						href={IMAGE_REPORT_URL(image.productCode, image.imageid)}
 						target="_blank"
 						rel="noopener noreferrer"
+						onclick={() => trackOffEvent('feature', 'report_problem_opened', 'image_report')}
 					>
 						<IconMdiFlagOutline class="h-5 w-5" />
 						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
