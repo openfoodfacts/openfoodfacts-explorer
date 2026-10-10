@@ -328,6 +328,15 @@
 			"not_checked": "Not checked",
 			"loading": "Memeriksa…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Tampak depan",
+			"ingredients": "bahan",
+			"nutrition": "kandungan nutrisi",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Kuantitas",
 			"brands": "Merek",
