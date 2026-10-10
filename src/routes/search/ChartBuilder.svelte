@@ -49,7 +49,7 @@
 		fields = next;
 		const url = new URL(page.url.href);
 		url.searchParams.set('charts', next.join(','));
-		goto(url, { replaceState: true, noScroll: true, keepFocus: true });
+		goto(url, { reset: false, replace: true });
 	}
 
 	function label(field: string) {
