@@ -98,7 +98,8 @@
 		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url.href);
 		newUrl.searchParams.set('sort_by', nextSort.value);
-		goto(newUrl.toString());
+		window.scrollTo(0, 0);
+		goto(newUrl.toString(), { reset: false });
 	}
 
 	function getSearchPageUrl(nextPage: number) {
@@ -109,7 +110,7 @@
 
 	function navigateToSearchPage(nextPage: number) {
 		window.scrollTo(0, 0);
-		void goto(getSearchPageUrl(nextPage), { reset: true });
+		void goto(getSearchPageUrl(nextPage), { reset: false });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
