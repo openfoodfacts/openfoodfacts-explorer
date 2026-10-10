@@ -8,7 +8,7 @@
 	import { OPEN_PRICES_PRODUCT_URL } from '#lib/const.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { tick } from 'svelte';
-	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '$lib/utils/imageSearch';
+	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '#lib/utils/imageSearch.js';
 	import Card from './Card.svelte';
 
 	export type BarcodeInfoProduct = {
