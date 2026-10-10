@@ -396,7 +396,7 @@
 				</div>
 			</div>
 
-			{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
+			{#if searchResult.count > 0}
 				<div class="flex flex-col gap-2">
 					<span class="text-sm font-semibold text-base-content/80">
 						{$_('search.charts_title', { default: 'Search Analytics' })}:
@@ -413,7 +413,7 @@
 					{#if showGraphs}
 						<div class="mt-2 grid grid-cols-1 gap-4" transition:slide={{ duration: 300 }}>
 							<ChartBuilder query={data.query} />
-							{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
+							{#each Object.entries(searchResult.charts ?? {}) as [chartKey, chartSpec] (chartKey)}
 								<div
 									class="border-t border-base-300 pt-3 md:rounded-lg md:border md:border-base-200 md:bg-base-100 md:p-4 md:shadow-sm"
 								>

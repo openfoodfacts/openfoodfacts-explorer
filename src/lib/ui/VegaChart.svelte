@@ -22,6 +22,7 @@
 	let error = $state<string | null>(null);
 	let darkMode = $state<boolean | undefined>(undefined);
 	let previousView: View | undefined;
+	let renderToken = 0;
 
 	function getDarkModeConfig() {
 		const style = getComputedStyle(document.documentElement);
@@ -91,8 +92,10 @@
 	async function updateSpec(spec: Spec | TopLevelSpec) {
 		if (!browser || !chartContainer || !spec) return;
 
+		const token = ++renderToken;
 		const vega = await import('vega');
 		const vegaLite = await import('vega-lite');
+		if (token !== renderToken) return;
 
 		isLoading = true;
 		error = null;
@@ -169,6 +172,7 @@
 			previousView = view;
 
 			await view.runAsync();
+			if (token !== renderToken) return;
 
 			// Sideways or not is decided after the first render, from the rows actually drawn (the spec's
 			// rows can include values its transforms filter out) and the real bar spacing. It is decided again
@@ -181,6 +185,7 @@
 			if (axisScale && domain?.data && domain.field) {
 				const { data, field } = domain;
 				const fitLabels = () => {
+					if (token !== renderToken) return;
 					const labels = view.data(data).map((row) => String(row[field]));
 					const step = (view.scale(axisScale) as unknown as { step(): number }).step();
 					return view
@@ -188,6 +193,7 @@
 						.runAsync();
 				};
 				await fitLabels();
+				if (token !== renderToken) return;
 				let fittedWidth = view.width();
 				view.addResizeListener((width) => {
 					if (width === fittedWidth) return;
@@ -197,6 +203,7 @@
 			}
 			isLoading = false;
 		} catch (err) {
+			if (token !== renderToken) return;
 			console.error('Chart rendering error:', err);
 			error = err instanceof Error ? err.message : 'Chart failed to load';
 			isLoading = false;
@@ -210,6 +217,7 @@
 		compat.addMediaQueryListener(mediaQuery, handler);
 		return () => {
 			compat.removeMediaQueryListener(mediaQuery, handler);
+			renderToken++;
 			previousView?.finalize();
 		};
 	});

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { navigating, page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { untrack } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import { createSearchApi, type SearchResult } from '#lib/api/search.js';
-	import { CHART_FIELDS, parseChartFields } from '#lib/search/chart-fields.js';
+	import { CHART_FIELDS, parseChartFields, rejectedChartFields } from '#lib/search/chart-fields.js';
 	import VegaChart from '#lib/ui/VegaChart.svelte';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
@@ -17,6 +18,33 @@
 	let latestRequest = 0;
 	let addMenu: HTMLDetailsElement | null = $state(null);
 
+	$effect(() => {
+		const fromUrl = parseChartFields(page.url.searchParams.get('charts'));
+		if (fromUrl.join() !== untrack(() => fields).join()) fields = fromUrl;
+	});
+
+	// One field the search service no longer accepts would fail the whole request, so drop the
+	// fields it names and ask once more for the rest.
+	async function loadCharts(q: string, requested: string[]): Promise<SearchResult['charts']> {
+		const api = createSearchApi(fetch);
+		const ask = (list: string[]) =>
+			api.search({
+				q,
+				langs: ['en'],
+				page: 1,
+				page_size: 1,
+				charts: list.map((field) => ({ chart_type: 'DistributionChart', field }))
+			});
+		let { data, error } = await ask(requested);
+		const rejected = rejectedChartFields(error);
+		if (rejected.length > 0) {
+			const accepted = requested.filter((field) => !rejected.includes(field));
+			if (accepted.length === 0) return {};
+			({ data } = await ask(accepted));
+		}
+		return (data as SearchResult | undefined)?.charts ?? {};
+	}
+
 	// The charts come from their own small request (one product, no product cards), so they cost
 	// nothing until the graphs are opened. Responses to an older selection are dropped.
 	$effect(() => {
@@ -27,15 +55,7 @@
 			return;
 		}
 		loading = true;
-		createSearchApi(fetch)
-			.search({
-				q: query,
-				langs: ['en'],
-				page: 1,
-				page_size: 1,
-				charts: fields.map((field) => ({ chart_type: 'DistributionChart', field }))
-			})
-			.then(({ data }) => (data as SearchResult | undefined)?.charts ?? {})
+		loadCharts(query, fields)
 			.catch((err) => {
 				console.error('Chart search failed:', err);
 				return {};
@@ -107,10 +127,19 @@
 	{/if}
 </div>
 
-{#each fields.filter((f) => charts[f]) as field (field)}
-	<div
-		class="border-t border-base-300 pt-3 md:rounded-lg md:border md:border-base-200 md:bg-base-100 md:p-4 md:shadow-sm"
-	>
-		<VegaChart spec={charts[field]} title={label(field)} />
-	</div>
+{#each fields as field (field)}
+	{#if charts[field] || !loading}
+		<div
+			class="border-t border-base-300 pt-3 md:rounded-lg md:border md:border-base-200 md:bg-base-100 md:p-4 md:shadow-sm"
+		>
+			{#if charts[field]}
+				<VegaChart spec={charts[field]} title={label(field)} />
+			{:else}
+				<h3 class="mb-2 text-lg font-semibold">{label(field)}</h3>
+				<p class="text-sm text-base-content/70">
+					{$_('search.chart_unavailable', { default: 'No chart available for this search.' })}
+				</p>
+			{/if}
+		</div>
+	{/if}
 {/each}

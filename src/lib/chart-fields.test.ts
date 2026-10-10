@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseChartFields } from './search/chart-fields';
+import { parseChartFields, rejectedChartFields } from './search/chart-fields';
 
 describe('parseChartFields', () => {
 	it('returns the default charts when the parameter is missing', () => {
@@ -23,5 +23,23 @@ describe('parseChartFields', () => {
 
 	it('drops unknown fields and duplicates', () => {
 		expect(parseChartFields('labels,unknown_field,labels,brands')).toEqual(['labels', 'brands']);
+	});
+});
+
+describe('rejectedChartFields', () => {
+	it('reads every field named in a validation error', () => {
+		const error = {
+			detail: [
+				{
+					msg: "Value error, ['Unknown field name in facets/charts: labels', 'Non aggregation field name in facets/charts: brands']"
+				}
+			]
+		};
+		expect(rejectedChartFields(error)).toEqual(['labels', 'brands']);
+	});
+
+	it('returns nothing for a missing or unrelated error', () => {
+		expect(rejectedChartFields(undefined)).toEqual([]);
+		expect(rejectedChartFields({ detail: 'Internal Server Error' })).toEqual([]);
 	});
 });
