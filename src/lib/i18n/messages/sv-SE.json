@@ -328,6 +328,15 @@
 			"not_checked": "Ej kontrollerad",
 			"loading": "Kontrollerar…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Främre",
+			"ingredients": "Ingredienser",
+			"nutrition": "Näring",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Kvantitet",
 			"brands": "Varumärken",
