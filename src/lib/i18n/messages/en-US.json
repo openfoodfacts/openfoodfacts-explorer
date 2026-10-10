@@ -996,5 +996,19 @@
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
+	},
+	"source_badge": {
+		"source": "External source",
+		"imported_from": "Source: {source}",
+		"view_source": "View source"
+	},
+	"datasources": {
+		"external_sources_title": "External Data Sources",
+		"external_sources_subtitle": "This product contains data imported from external organizations, databases, or manufacturers.",
+		"source_name": "Source",
+		"source_fields": "Fields provided",
+		"license": "License",
+		"import_date": "Imported on",
+		"view_source": "Visit source website"
 	}
 }

@@ -11,7 +11,8 @@ import {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
-export type { PackagingTaxonomyTag, PackagingComponent };
+import type { ProductSource } from '$lib/types/sdk-overrides';
+export type { PackagingTaxonomyTag, PackagingComponent, ProductSource };
 
 export function createProductsApi(fetch: typeof window.fetch) {
 	const fetchToUse = wrapFetchWithAuth(fetch);
@@ -660,17 +661,8 @@ export type Product = ProductDataSection & {
 	obsolete?: string;
 	obsolete_since_date?: string;
 
-	source: {
-		fields: string[];
-		id: string;
-		images: object[];
-		import_t: number;
-		manufacturer: number | string;
-		name: string;
-		source_licence: string;
-		source_licence_url: string;
-		url?: string;
-	};
+	source?: ProductSource;
+	sources?: ProductSource[];
 
 	link: string;
 
