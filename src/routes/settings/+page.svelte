@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { preferences } from '#lib/settings.js';
+	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
@@ -41,40 +42,11 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	function getDisplayName(
-		type: 'language' | 'region',
-		code: string,
-		displayLocale = 'en'
-	): string | undefined {
-		if (typeof Intl.DisplayNames !== 'function') return undefined;
-		try {
-			return new Intl.DisplayNames([displayLocale], { type }).of(code) ?? undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	function getLocaleLabel(code: string): string {
-		const languageCode = getLanguageCode(code);
-		const language = Object.values(data.languages).find(
-			(item) => item.language_code_2?.en?.toLowerCase() === languageCode
-		);
-		const exonym = language?.name?.en ?? getDisplayName('language', languageCode) ?? languageCode;
-		const endonym =
-			language?.name?.[languageCode] ??
-			getDisplayName('language', languageCode, languageCode) ??
-			exonym;
-		const region = code.split('-').find((part) => /^[A-Z]{2}$/.test(part));
-		const englishRegion = region && getDisplayName('region', region);
-		const nativeRegion = region && getDisplayName('region', region, languageCode);
-		const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
-		const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
-
-		return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
-	}
-
 	let localeOptions = $derived(
-		availableLocales.map((code) => ({ code, label: getLocaleLabel(code) }))
+		availableLocales.map((code) => ({
+			code,
+			label: getLocaleLabel(code, Object.values(data.languages))
+		}))
 	);
 
 	function getSelectedLocale(): string {
