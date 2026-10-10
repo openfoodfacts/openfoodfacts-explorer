@@ -75,13 +75,13 @@
 		</span>
 	{/each}
 	{#if CHART_FIELDS.some((f) => !fields.includes(f))}
-		<details class="dropdown" bind:this={addMenu}>
+		<details class="dropdown w-full sm:w-auto" bind:this={addMenu}>
 			<summary class="btn gap-2 rounded-full btn-outline btn-sm">
 				{$_('search.add_chart', { default: 'Add a chart' })}
 				<IconMdiChevronDown class="h-4 w-4" />
 			</summary>
 			<ul
-				class="menu dropdown-content z-50 mt-1 max-h-72 w-60 flex-nowrap overflow-y-auto rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+				class="menu dropdown-content z-50 mt-1 max-h-72 w-full flex-nowrap overflow-y-auto rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:w-60"
 			>
 				{#each CHART_FIELDS.filter((f) => !fields.includes(f)) as field (field)}
 					<li>
