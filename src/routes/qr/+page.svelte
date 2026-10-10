@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
+	import { resolve } from '$app/paths';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -64,7 +65,7 @@
 		isSubmittingBarcode = true;
 
 		try {
-			await goto(`/search?q=${encodeURIComponent(productCode)}`);
+			await goto(resolve('/products/[barcode]', { barcode: productCode }));
 		} catch (err) {
 			console.error('Barcode navigation failed:', err);
 			isSubmittingBarcode = false;
