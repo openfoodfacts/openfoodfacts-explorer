@@ -1,13 +1,3 @@
-<!--
-SPDX-FileCopyrightText:  Andreas Nüßlein <andreas@nuessle.in>
-SPDX-FileCopyrightText:  Mikkel Eide Eriksen <mikkel.eriksen@gmail.com>
-SPDX-FileCopyrightText:  VaiTon <eyadlorenzo@gmail.com>
-
-SPDX-License-Identifier: AGPL-3.0-or-later
-
-Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
--->
-
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 
@@ -45,7 +35,6 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 	}: Props = $props();
 
 	let checkInterval: ReturnType<typeof setInterval> | null = null;
-	let scriptElement: HTMLScriptElement | null = null;
 	let scriptLoadError = $state(false);
 
 	function isMatomoLoaded(): boolean {
@@ -142,13 +131,11 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 			clearInterval(checkInterval);
 			checkInterval = null;
 		}
-		if (scriptElement) {
-			scriptElement.removeEventListener('error', handleScriptError);
-			scriptElement = null;
-		}
 	});
 
-	afterNavigate(async ({ to }) => {
+	afterNavigate(async ({ to, shallow }) => {
+		if (shallow) return;
+
 		if (!$tracker) {
 			await initializeMatomo();
 			return;
@@ -170,12 +157,13 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 	});
 </script>
 
-<svelte:head>
-	<script
-		async
-		defer
-		src={`${url}/matomo.js`}
-		onerror={handleScriptError}
-		bind:this={scriptElement}
-	></script>
-</svelte:head>
+<!--
+SPDX-FileCopyrightText:  Andreas Nüßlein <andreas@nuessle.in>
+SPDX-FileCopyrightText:  Mikkel Eide Eriksen <mikkel.eriksen@gmail.com>
+SPDX-FileCopyrightText:  VaiTon <eyadlorenzo@gmail.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
+-->
+<svelte:head><script async defer src={`${url}/matomo.js`}></script></svelte:head>

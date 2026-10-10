@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { createFolksonomyApi, getFolksonomyValues } from '$lib/api/folksonomy';
+	import { createFolksonomyApi, getFolksonomyValues } from '#lib/api/folksonomy.js';
 	import { slide } from 'svelte/transition';
-	import { userInfo } from '$lib/stores/user';
+	import { userInfo } from '#lib/stores/user.js';
 
 	interface Props {
 		tags: FolksonomyTag[];

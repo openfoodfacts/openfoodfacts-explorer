@@ -4,17 +4,17 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createProductsApi } from '$lib/api';
-	import type { ProductReduced } from '$lib/api';
-	import type { ScoreData } from '$lib/scoring';
+	import { createProductsApi } from '#lib/api.js';
+	import type { ProductReduced } from '#lib/api.js';
+	import type { ScoreData } from '#lib/scoring.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
 
-	import { compareStore } from '$lib/stores/compareStore';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { resolve } from '$app/paths';
 
 	type Props = {
@@ -22,6 +22,35 @@ Wraps the <product-card> web component and adds accessibility features.
 		personalScore?: ScoreData;
 	};
 	let { product, personalScore }: Props = $props();
+
+	function normalizeBrands(value: unknown): string {
+		if (Array.isArray(value)) {
+			return value
+				.filter((brand): brand is string => typeof brand === 'string')
+				.map((brand) => brand.replace(/^[a-z]{2}:/i, ''))
+				.join(', ');
+		}
+
+		return typeof value === 'string' ? value : '';
+	}
+
+	const productForCard = $derived.by(() => {
+		const rawProduct = product as Product & {
+			brands?: unknown;
+			environmental_score_grade?: string;
+			greenscore_grade?: string;
+		};
+		const greenScoreGrade =
+			rawProduct.greenscore_grade ??
+			rawProduct.ecoscore_grade ??
+			rawProduct.environmental_score_grade;
+
+		return {
+			...product,
+			brands: normalizeBrands(rawProduct.brands),
+			...(greenScoreGrade != null && { greenscore_grade: greenScoreGrade })
+		};
+	});
 
 	let navigating = $state(false);
 	async function navigateToProduct() {
@@ -131,15 +160,17 @@ Wraps the <product-card> web component and adds accessibility features.
 
 <product-card
 	class="h-44 w-full cursor-pointer"
-	{product}
+	product={productForCard}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
-	aria-label={product.product_name
+	aria-label={productForCard.product_name
 		? $_('product.card.aria_label', {
-				values: { productName: product.product_name, productCode: product.code }
+				values: { productName: productForCard.product_name, productCode: productForCard.code },
+				default: 'Go to product {productName} with code {productCode}'
 			})
 		: $_('product.card.aria_label_no_name', {
-				values: { productCode: product.code }
+				values: { productCode: productForCard.code },
+				default: 'Go to product with code {productCode}'
 			})}
 	showMatchTag={personalScore != undefined}
 	navigating={{

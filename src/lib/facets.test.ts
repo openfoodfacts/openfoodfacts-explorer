@@ -1,20 +1,17 @@
 import { describe, it, expect } from 'vitest';
+import { parseLuceneFacets, toLuceneString, extractQuery } from './search/lucene';
 import {
-	parseLuceneFacets,
-	toLuceneString,
-	extractQuery,
 	addIncludeFacet,
 	addExcludeFacet,
 	removeIncludeFacet,
 	removeExcludeFacet,
 	toggleExcludeFacet,
-	toggleIncludeFacet,
-	getSearchFieldForFacet,
-	getFacetKeyForSearchField,
-	groupCatalogFacets,
-	MASTER_FACET_CATALOG
-} from './facets';
-import type { FacetsSelection } from './facets';
+	toggleIncludeFacet
+} from './search/facet-selection';
+import { getSearchFieldForFacet, getFacetKeyForSearchField } from './search/facet-fields';
+import { groupCatalogFacets } from './search/facet-collections';
+import { MASTER_FACET_CATALOG } from './search/facet-catalog';
+import type { FacetsSelection } from './search/facet-selection';
 
 describe('toLuceneString', () => {
 	it('handles empty query and empty facets', () => {

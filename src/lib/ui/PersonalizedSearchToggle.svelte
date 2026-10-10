@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { _ } from '#lib/i18n/index.js';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 </script>
 
 <div class="form-control">
