@@ -328,6 +328,15 @@
 			"not_checked": "Not checked",
 			"loading": "Controleren…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Voorkant",
+			"ingredients": "Ingrediënten",
+			"nutrition": "Voedingswaarde",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Hoeveelheid",
 			"brands": "Merken",
