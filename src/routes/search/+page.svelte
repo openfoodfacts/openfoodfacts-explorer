@@ -147,6 +147,7 @@
 
 	beforeNavigate(({ shallow, from, to }) => {
 		if (shallow) return;
+		// A chart selection change must not cancel a pending filter update.
 		if (from && to && withoutCharts(from.url) === withoutCharts(to.url)) return;
 
 		clearPendingTimer();
