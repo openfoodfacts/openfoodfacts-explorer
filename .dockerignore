@@ -7,7 +7,6 @@ compose.yml
 .gitattributes
 
 
-.npmrc
 .prettierrc
 .eslintrc.cjs
 .graphqlrc

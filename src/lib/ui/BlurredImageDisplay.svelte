@@ -4,10 +4,10 @@
 		alt?: string;
 		class?: string;
 	};
-	let { src, alt, class: clazz }: Props = $props();
+	let { src, alt, class: className }: Props = $props();
 </script>
 
-<div class={['relative overflow-hidden', clazz]}>
+<div class={['relative overflow-hidden', className]}>
 	<div class="absolute inset-0 overflow-hidden">
 		<img {src} {alt} class="h-full w-full scale-150 object-cover blur-sm" aria-hidden="true" />
 	</div>

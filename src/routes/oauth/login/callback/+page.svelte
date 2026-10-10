@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
-	import { saveAuthTokens } from '$lib/stores/auth';
+	import { saveAuthTokens } from '#lib/stores/auth.js';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
-	import { createKeycloakApi } from '$lib/api';
+	import { createKeycloakApi } from '#lib/api.js';
+	import { getSafeRedirectUrl } from '#lib/utils.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	async function doPkceExchange() {
-		const url = page.url;
+		const url = new URL(page.url.href);
 
 		const returnedState = url.searchParams.get('state');
 		const storedState = localStorage.getItem('authState');
@@ -39,7 +41,15 @@
 			});
 			localStorage.removeItem('verifier');
 			saveAuthTokens(jwt);
-			await goto(resolve('/'));
+			trackOffEvent('account', 'login_succeeded');
+
+			const redirectUrl = localStorage.getItem('authRedirect');
+			localStorage.removeItem('authRedirect');
+
+			// Verify the destination is same-origin
+			const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
+
+			await goto(targetPath);
 		} catch (error) {
 			console.error('Token exchange failed:', error);
 			throw new Error('Authentication failed: Token exchange error', { cause: error });
@@ -58,15 +68,16 @@
 		{#if loginResult}
 			{#await loginResult}
 				<div class="mb-4 text-4xl font-bold">Logging in...</div>
-				<progress class="progress progress-primary my-3 w-56"></progress>
+				<progress class="progress my-3 w-56 progress-primary"></progress>
 				<p class="text-lg text-gray-600">You will be redirected shortly.</p>
 			{:then _}
 				<div class="mb-4 text-4xl font-bold text-green-600">Login Successful</div>
-				<p class="text-lg text-gray-600">Redirecting to the homepage...</p>
+				<p class="text-lg text-gray-600">Redirecting...</p>
 			{:catch error}
 				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
-				<p class="text-base-content text-lg">{error.message}</p>
-				<a class="btn btn-outline btn-primary mt-4" href={resolve('/oauth/login')}> Try Again </a>
+				<p class="text-lg text-base-content">{error.message}</p>
+
+				<a class="btn mt-4 btn-outline btn-primary" href={resolve('oauth/login')}>Try Again</a>
 			{/await}
 		{/if}
 	</div>

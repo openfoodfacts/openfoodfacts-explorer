@@ -2,16 +2,18 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 
-	import Card from '$lib/ui/Card.svelte';
-	import { compareStore } from '$lib/stores/compareStore';
-	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
-	import { _ } from '$lib/i18n';
-	import { shareContent } from '$lib/utils/webShare';
+	import Card from '#lib/ui/Card.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import ComparisonDisplay from '#lib/ui/ComparisonDisplay.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -66,10 +68,12 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{$_('compare.page_title')}</title>
-	<meta name="description" content={$_('compare.page_description')} />
-</svelte:head>
+<Metadata
+	title={$_('compare.page_title', { default: 'Compare Products' })}
+	description={$_('compare.page_description', {
+		default: 'Compare nutritional information of food products'
+	})}
+/>
 
 <div class="mx-4">
 	<Card>
@@ -81,7 +85,7 @@
 						bind:value={comparisonTitle}
 						type="text"
 						placeholder={$_('compare.title_placeholder')}
-						class="input input-bordered input-lg w-full max-w-md text-2xl font-bold"
+						class="input-bordered input w-full max-w-md text-2xl font-bold input-lg"
 						onblur={finishEditingTitle}
 						onkeydown={(e) => {
 							if (e.key === 'Enter') finishEditingTitle();
@@ -93,7 +97,7 @@
 					/>
 				{:else}
 					<button
-						class="group hover:text-primary text-left transition-colors"
+						class="group text-left transition-colors hover:text-primary"
 						onclick={startEditingTitle}
 					>
 						<h1 class="text-2xl font-bold">
@@ -102,7 +106,7 @@
 								>✏️</span
 							>
 						</h1>
-						<p class="text-base-content/50 text-xs">{$_('compare.click_to_edit')}</p>
+						<p class="text-xs text-base-content/50">{$_('compare.click_to_edit')}</p>
 					</button>
 				{/if}
 			</div>
@@ -113,35 +117,33 @@
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'absolute'}
 							class:btn-ghost={comparisonMode !== 'absolute'}
-							onclick={() => (comparisonMode = 'absolute')}
+							onclick={() => (comparisonMode = 'absolute')}>{$_('compare.mode_absolute')}</button
 						>
-							{$_('compare.mode_absolute')}
-						</button>
+
 						<button
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'relative-first'}
 							class:btn-ghost={comparisonMode !== 'relative-first'}
 							onclick={() => (comparisonMode = 'relative-first')}
+							>{$_('compare.mode_vs_first')}</button
 						>
-							{$_('compare.mode_vs_first')}
-						</button>
+
 						<button
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'relative-best'}
 							class:btn-ghost={comparisonMode !== 'relative-best'}
 							onclick={() => (comparisonMode = 'relative-best')}
+							>{$_('compare.mode_vs_best')}</button
 						>
-							{$_('compare.mode_vs_best')}
-						</button>
 					</div>
 					<button
-						class="btn btn-sm bg-white text-black hover:bg-gray-200"
+						class="btn bg-white text-black btn-sm hover:bg-gray-200"
 						onclick={shareComparison}
 					>
 						<IconMdiShareVariant class="h-4 w-4" />
 						{$_('compare.share')}
 					</button>
-					<button class="btn btn-sm btn-outline" onclick={() => compareStore.clear()}>
+					<button class="btn btn-outline btn-sm" onclick={() => compareStore.clear()}>
 						{$_('compare.clear_all')}
 					</button>
 				{/if}
@@ -151,18 +153,38 @@
 		{#if $compareStore.length === 0}
 			{#if !mounted}
 				<div class="py-8 text-center">
-					<span class="loading loading-spinner loading-lg text-primary"></span>
+					<span class="loading loading-lg loading-spinner text-primary"></span>
 				</div>
 			{:else}
 				<div class="py-8 text-center">
 					<p class="mb-4 text-lg">{$_('compare.no_products_selected')}</p>
 					<p class="mb-4 text-sm text-gray-600">{$_('compare.add_products_hint')}</p>
-					<a href={resolve('/explore')} class="btn btn-primary">
-						{$_('compare.browse_products')}
-					</a>
+					<a href={resolve('explore')} class="btn btn-primary">{$_('compare.browse_products')}</a>
 				</div>
 			{/if}
 		{:else}
+			{#if $compareStore.length === 1}
+				<div class="mb-4 alert alert-info">
+					<IconMdiInformation class="h-5 w-5 flex-shrink-0" />
+					<div>
+						<p class="font-semibold">
+							{$_('compare.single_product_title', {
+								default: 'Add one more product to compare'
+							})}
+						</p>
+						<p class="text-sm">
+							{$_('compare.single_product_hint', {
+								default:
+									'Comparisons work with at least 2 products. Add another one to see how they stack up.'
+							})}
+						</p>
+					</div>
+
+					<a href={resolve('explore')} class="btn btn-primary btn-sm"
+						>{$_('compare.browse_products', { default: 'Browse Products' })}</a
+					>
+				</div>
+			{/if}
 			<ComparisonDisplay
 				products={$compareStore}
 				{comparisonMode}

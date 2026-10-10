@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 
-	import { _ } from '$lib/i18n';
-	import { KP_ATTRIBUTE_IMG } from '$lib/const';
-	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
+	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -114,66 +114,49 @@
 		},
 		{
 			key: 'fruits-vegetables-nuts-estimate-from-ingredients_100g',
-			label: 'Fruits/Vegetables/Nuts',
+			label: $_('compare.fruits_vegetables_nuts'),
 			unit: '%'
 		}
 	];
-
-	function getNutriScoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('nutriscore-' + (grade ?? 'unknown') + '-new-en.svg');
+	// Nutrients to compare
+	const nutrientRules: Record<string, 'min' | 'max'> = {
+		proteins_100g: 'max',
+		fibers_100g: 'max',
+		'fruits-vegetables-nuts-estimate-from-ingredients_100g': 'max',
+		sugars_100g: 'min',
+		salt_100g: 'min',
+		sodium_100g: 'min',
+		alcohol_100g: 'min',
+		carbohydrates_100g: 'min',
+		'energy-kcal_100g': 'min',
+		'energy-kj_100g': 'min',
+		fat_100g: 'min',
+		'saturated-fat_100g': 'min'
+	};
+	// Get the direction of the nutrient
+	function getDirection(nutrientKey: string): 'min' | 'max' {
+		return nutrientRules[nutrientKey] ?? 'min';
 	}
-
-	function getNovaImage(group: string | number | null | undefined) {
-		return group
-			? KP_ATTRIBUTE_IMG('nova-group-' + group + '.svg')
-			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
-	}
-
-	function getGreenScoreImage(grade: string | null | undefined) {
-		return KP_ATTRIBUTE_IMG('greenscore-' + (grade ?? 'unknown') + '.svg');
-	}
-
-	// Number formatters
-	const integerFormatter = new Intl.NumberFormat(undefined, {
-		maximumFractionDigits: 0
-	});
-
-	const decimalFormatter = new Intl.NumberFormat(undefined, {
-		minimumFractionDigits: 1,
-		maximumFractionDigits: 1
-	});
-
-	// Helper to format nutrient values
-	function formatNutrient(value: number | undefined | null, useDecimals = true): string {
-		if (value === undefined || value === null) {
-			return '-';
-		}
-		if (!useDecimals) {
-			return integerFormatter.format(value);
-		}
-		return decimalFormatter.format(value);
-	}
-
-	// Calculate percentage difference between two values
-	function calculatePercentageDiff(value: number, reference: number): number {
-		if (reference === 0) return 0;
-		return ((value - reference) / reference) * 100;
-	}
-
-	const percentageFormatter = new Intl.NumberFormat(undefined, {
-		maximumFractionDigits: 0,
-		signDisplay: 'exceptZero'
-	});
-
-	// Get the best value for a nutrient (lower is better for most nutrients)
+	// Get the best value for a nutrient
 	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
 		const values = products
 			.map((p) => getNutrientValue(p, nutrientKey))
 			.filter((v): v is number => v !== null);
-		if (values.length === 0) return null;
+		if (!values.length) return null;
 
-		// For all nutrients shown, lower is generally better
-		return Math.min(...values);
+		const direction = getDirection(nutrientKey);
+		return direction === 'min' ? Math.min(...values) : Math.max(...values);
+	}
+
+	// Get the worst value for a nutrient
+	function getWorstValue(products: Product[], nutrientKey: NutrientKey): number | null {
+		const values = products
+			.map((p) => getNutrientValue(p, nutrientKey))
+			.filter((v): v is number => v !== null);
+		if (!values.length) return null;
+
+		const direction = getDirection(nutrientKey);
+		return direction === 'min' ? Math.max(...values) : Math.min(...values);
 	}
 
 	// Get nutrient value with comparison data
@@ -212,29 +195,88 @@
 		}
 
 		const bestValue = getBestValue(products, nutrientKey);
-		const allValues = products
+		const worstValue = getWorstValue(products, nutrientKey);
+
+		// Count how many products have this nutrient to avoid highlighting "best" when only one is compared
+		const comparableCount = products
 			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		const worstValue = allValues.length > 0 ? Math.max(...allValues) : null;
+			.filter((v): v is number => v !== null).length;
 
 		return {
 			value,
 			formatted,
 			diff,
 			diffFormatted,
-			isBest: bestValue === value,
-			isWorst: worstValue === value && allValues.length > 1
+			isBest: comparableCount > 1 && bestValue === value,
+			isWorst: comparableCount > 1 && worstValue === value
 		};
 	}
 
 	// Get color class for difference indicator
-	function getDiffColorClass(diff: number | null, isBest: boolean, isWorst: boolean): string {
+	function getDiffColorClass(
+		diff: number | null,
+		isBest: boolean,
+		isWorst: boolean,
+		nutrientKey: string
+	): string {
 		if (isBest) return 'text-success font-semibold';
 		if (isWorst) return 'text-error';
 		if (diff == null) return '';
-		// For nutrients, lower is better, so negative diff is good
-		return diff < 0 ? 'text-success' : 'text-warning';
+
+		const direction = getDirection(nutrientKey);
+
+		if (direction === 'min') {
+			return diff < 0 ? 'text-success' : 'text-warning';
+		} else {
+			return diff > 0 ? 'text-success' : 'text-warning';
+		}
 	}
+
+	function getNutriScoreImage(grade: string | null | undefined) {
+		return KP_ATTRIBUTE_IMG('nutriscore-' + (grade ?? 'unknown') + '-new-en.svg');
+	}
+
+	function getNovaImage(group: string | number | null | undefined) {
+		return group
+			? KP_ATTRIBUTE_IMG('nova-group-' + group + '.svg')
+			: KP_ATTRIBUTE_IMG('nova-group-unknown.svg');
+	}
+
+	function getGreenScoreImage(grade: string | null | undefined) {
+		return KP_ATTRIBUTE_IMG('green-score-' + (grade ?? 'unknown') + '.svg');
+	}
+
+	// Number formatters
+	const integerFormatter = new Intl.NumberFormat(undefined, {
+		maximumFractionDigits: 0
+	});
+
+	const decimalFormatter = new Intl.NumberFormat(undefined, {
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 1
+	});
+
+	// Helper to format nutrient values
+	function formatNutrient(value: number | undefined | null, useDecimals = true): string {
+		if (value === undefined || value === null) {
+			return '-';
+		}
+		if (!useDecimals) {
+			return integerFormatter.format(value);
+		}
+		return decimalFormatter.format(value);
+	}
+
+	// Calculate percentage difference between two values
+	function calculatePercentageDiff(value: number, reference: number): number {
+		if (reference === 0) return 0;
+		return ((value - reference) / reference) * 100;
+	}
+
+	const percentageFormatter = new Intl.NumberFormat(undefined, {
+		maximumFractionDigits: 0,
+		signDisplay: 'exceptZero'
+	});
 
 	// Get score comparison
 	function getScoreComparison(
@@ -284,18 +326,23 @@
 	}
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
+	let expandedNutrients = $state<Record<string, boolean>>({});
 </script>
 
 {#snippet scoreImage(imageSrc: string, altText: string, isBest: boolean)}
 	<div class="flex flex-col items-center gap-1">
 		<img src={imageSrc} alt={altText} title={altText} class="h-12" />
 		{#if isBest}
-			<span class="badge badge-success badge-sm">Best</span>
+			<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
 		{/if}
 	</div>
 {/snippet}
 
-{#snippet nutrientValue(comparison: NutrientComparison, unit: string | undefined)}
+{#snippet nutrientValue(
+	comparison: NutrientComparison,
+	unit: string | undefined,
+	nutrientKey: string
+)}
 	{#if comparison.value != null}
 		<div class="flex items-center gap-2">
 			<span class={comparison.isBest ? 'font-semibold' : ''}>
@@ -303,16 +350,17 @@
 				{unit}
 			</span>
 			{#if comparison.isBest}
-				<span class="badge badge-success badge-sm">Best</span>
+				<span class="badge badge-sm badge-success">{$_('compare.best')}</span>
 			{:else if comparison.isWorst}
-				<span class="badge badge-error badge-sm">Worst</span>
+				<span class="badge badge-sm badge-error">{$_('compare.worst')}</span>
 			{/if}
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
 				<span
 					class="font-mono text-xs {getDiffColorClass(
 						comparison.diff,
 						comparison.isBest,
-						comparison.isWorst
+						comparison.isWorst,
+						nutrientKey
 					)}"
 				>
 					{comparison.diffFormatted}
@@ -322,16 +370,20 @@
 	{/if}
 {/snippet}
 
-{#snippet nutrientValueDesktop(comparison: NutrientComparison, unit: string | undefined)}
+{#snippet nutrientValueDesktop(
+	comparison: NutrientComparison,
+	unit: string | undefined,
+	nutrientKey: string
+)}
 	{#if comparison.value != null}
 		<div class="flex flex-col">
 			<span class={comparison.isBest ? 'font-semibold' : ''}>
 				{comparison.formatted}
 				{unit}
 				{#if comparison.isBest}
-					<span class="badge badge-success badge-sm ml-1">Best</span>
+					<span class="ml-1 badge badge-sm badge-success">{$_('compare.best')}</span>
 				{:else if comparison.isWorst}
-					<span class="badge badge-error badge-sm ml-1">Worst</span>
+					<span class="ml-1 badge badge-sm badge-error">{$_('compare.worst')}</span>
 				{/if}
 			</span>
 			{#if comparison.diffFormatted && comparisonMode !== 'absolute'}
@@ -339,7 +391,8 @@
 					class="font-mono text-xs {getDiffColorClass(
 						comparison.diff,
 						comparison.isBest,
-						comparison.isWorst
+						comparison.isWorst,
+						nutrientKey
 					)}"
 				>
 					{comparison.diffFormatted}
@@ -358,7 +411,7 @@
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
-						class="btn btn-circle btn-sm btn-soft btn-error absolute top-2 right-2 z-10"
+						class="btn absolute top-2 right-2 z-10 btn-circle btn-soft btn-error btn-sm"
 						onclick={() => onRemoveProduct(product.code)}
 						aria-label="Remove product from comparison"
 					>
@@ -379,7 +432,7 @@
 							{product.product_name ?? product.code}
 						</a>
 					</h3>
-					<p class="text-base-content/70 mt-1 text-center text-sm">
+					<p class="mt-1 text-center text-sm text-base-content/70">
 						{product.brands ?? ''}
 						{#if product.brands && product.quantity},{/if}
 						{product.quantity ?? ''}
@@ -388,7 +441,7 @@
 
 				{#if product.nutriscore_grade || product.nova_group || product.ecoscore_grade}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">Scores:</p>
+						<p class="mb-2 text-sm font-semibold">{$_('compare.scores')}</p>
 						<div class="flex items-center justify-around gap-2">
 							{#if product.nutriscore_grade}
 								{@const comparison = getScoreComparison(
@@ -406,7 +459,7 @@
 								{@const comparison = getNovaComparison(product.nova_group, products)}
 								{@render scoreImage(
 									getNovaImage(product.nova_group),
-									`Ultra-processing level ${product.nova_group}`,
+									`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 									comparison.isBest
 								)}
 							{/if}
@@ -428,18 +481,41 @@
 
 				{#if product.nutriments}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">Nutrients / 100g:</p>
-						<div class="space-y-1 text-sm">
-							{#each availableNutrients as nutrient (nutrient.key)}
-								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-								{#if comparison.value != null}
-									<div class="flex items-center justify-between">
-										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit)}
-									</div>
-								{/if}
-							{/each}
-						</div>
+						<button
+							type="button"
+							class="flex w-full items-center justify-between text-left text-sm font-semibold"
+							onclick={() => {
+								expandedNutrients[product.code] = !expandedNutrients[product.code];
+							}}
+							aria-expanded={expandedNutrients[product.code] ?? false}
+						>
+							<span
+								>{$_('compare.nutrients_per_100g', {
+									default: 'Nutrients /100g:'
+								})}</span
+							>
+							<span>{expandedNutrients[product.code] ? '▲' : '▼'}</span>
+						</button>
+
+						{#if expandedNutrients[product.code]}
+							<div class="mt-2 space-y-1 text-sm">
+								{#each availableNutrients as nutrient (nutrient.key)}
+									{@const comparison = getNutrientComparison(
+										product,
+										nutrient.key,
+										products,
+										index
+									)}
+
+									{#if comparison.value != null}
+										<div class="flex items-center justify-between">
+											<span class="font-medium">{nutrient.label}:</span>
+											{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
+										</div>
+									{/if}
+								{/each}
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>
@@ -449,10 +525,10 @@
 
 <!-- Desktop: Table View -->
 <div class="hidden overflow-x-auto lg:block">
-	<table class="table-zebra table w-full table-fixed">
+	<table class="table w-full table-fixed table-zebra">
 		<thead>
 			<tr>
-				<th class="bg-base-100 sticky left-0 z-10 w-40"></th>
+				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
 				{#each products as product, index (product.code)}
 					<th
 						animate:flip={{ duration: 300 }}
@@ -476,7 +552,7 @@
 								<div class="mb-2 flex flex-col items-center justify-center gap-1">
 									{#if onRemoveProduct}
 										<button
-											class="btn btn-soft btn-sm btn-square btn-error transition-all"
+											class="btn btn-square btn-soft transition-all btn-error btn-sm"
 											onclick={() => onRemoveProduct(product.code)}
 											aria-label="Remove product"
 											title="Remove product"
@@ -486,7 +562,7 @@
 									{/if}
 									{#if onReorderProduct}
 										<button
-											class="btn btn-soft btn-sm btn-square btn-primary cursor-grab active:cursor-grabbing"
+											class="btn btn-square cursor-grab btn-soft btn-primary btn-sm active:cursor-grabbing"
 											draggable="true"
 											ondragstart={() => {
 												dragSrcIndex = { code: product.code, idx: index };
@@ -503,11 +579,17 @@
 								</div>
 							{/if}
 							{#if product.image_front_small_url}
-								<BlurredImageDisplay
-									src={product.image_front_small_url}
-									alt={product.product_name ?? product.code}
-									class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
-								/>
+								<a
+									href={`/products/${product.code}`}
+									class="contents"
+									aria-label={product.product_name ?? product.code}
+								>
+									<BlurredImageDisplay
+										src={product.image_front_small_url}
+										alt={product.product_name ?? product.code}
+										class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
+									/>
+								</a>
 							{/if}
 						</div>
 					</th>
@@ -516,15 +598,17 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Name</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
-						{product.product_name ?? '-'}
+						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
+							{product.product_name ?? '-'}
+						</a>
 					</td>
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Code (Barcode)</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
 						{product.code}
@@ -532,7 +616,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Brand</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.brand')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
@@ -540,7 +624,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Quantity</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.quantity')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
@@ -548,10 +632,10 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nutri-Score</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
 							{@render scoreImage(
 								getNutriScoreImage(product.nutriscore_grade),
@@ -565,14 +649,16 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Nova Group</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
+					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
+				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
-								`Nova Group ${product.nova_group}`,
+								`${$_('compare.nova_group', { default: 'Ultra-processing level' })} ${product.nova_group}`,
 								comparison.isBest
 							)}
 						{:else}
@@ -582,14 +668,14 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">Green-Score</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),
-								`Eco-Score ${product.ecoscore_grade.toUpperCase()}`,
+								`Green-Score ${product.ecoscore_grade.toUpperCase()}`,
 								comparison.isBest
 							)}
 						{:else}
@@ -599,7 +685,7 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="bg-base-100 sticky left-0 w-40 font-semibold">N. of additives</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.num_additives')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
@@ -609,19 +695,19 @@
 			<tr class="bg-base-200">
 				<td></td>
 				<td colspan={products.length} class="sticky left-0 text-center font-bold">
-					Nutritional Values (per 100g)
+					{$_('compare.nutritional_values_per_100g')}
 				</td>
 			</tr>
 			{#each availableNutrients as nutrient (nutrient.key)}
 				<tr>
 					<td
-						class="bg-base-100 sticky left-0 w-40 overflow-hidden leading-tight font-semibold break-words whitespace-normal"
+						class="sticky left-0 w-40 overflow-hidden bg-base-100 leading-tight font-semibold break-words whitespace-normal"
 						>{nutrient.label}</td
 					>
 					{#each products as product, index (product.code)}
 						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
 						<td animate:flip={{ duration: 300 }}>
-							{@render nutrientValueDesktop(comparison, nutrient.unit)}
+							{@render nutrientValueDesktop(comparison, nutrient.unit, nutrient.key)}
 						</td>
 					{/each}
 				</tr>
@@ -631,11 +717,11 @@
 </div>
 
 {#if comparisonMode === 'relative-first'}
-	<div class="text-base-content/70 mt-4 text-center text-sm">
-		💡 Percentages show difference compared to the first product
+	<div class="mt-4 text-center text-sm text-base-content/70">
+		{$_('compare.hint_relative_first')}
 	</div>
 {:else if comparisonMode === 'relative-best'}
-	<div class="text-base-content/70 mt-4 text-center text-sm">
-		💡 Percentages show difference compared to the best value (lower is better for most nutrients)
+	<div class="mt-4 text-center text-sm text-base-content/70">
+		{$_('compare.hint_relative_best')}
 	</div>
 {/if}

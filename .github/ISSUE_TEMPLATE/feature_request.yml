@@ -1,0 +1,56 @@
+name: Feature Request
+description: Propose a new feature or improvement
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+        Please provide enough context for maintainers and AI agents to understand and plan the work.
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem does this feature solve? Who benefits from it?
+      placeholder: 'As a user who does X, I need Y because Z.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the feature you'd like. Be as specific as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How will we know this feature is done? List concrete, testable conditions.
+      placeholder: |
+        - [ ] User can do X
+        - [ ] Y is displayed when Z
+        - [ ] No regression on existing behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: design
+    attributes:
+      label: Design / mockup
+      description: Attach a screenshot, Figma link, or rough sketch if you have one. Not required but very helpful.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you thought of other approaches? Why is your proposal better?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any related issues, PRs, discussions, or external references.

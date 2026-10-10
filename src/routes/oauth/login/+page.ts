@@ -4,7 +4,8 @@ export const ssr = false;
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { createKeycloakApi } from '$lib/api';
+import { createKeycloakApi } from '#lib/api.js';
+import { getSafeRedirectUrl } from '#lib/utils.js';
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
@@ -38,6 +39,11 @@ export const load: PageLoad = async ({ url }) => {
 	localStorage.setItem('verifier', verifier);
 	localStorage.setItem('authState', state);
 
+	// Only store if it's a safe, same-origin relative path
+	const redirectUrl = url.searchParams.get('redirect');
+	const safeRedirect = getSafeRedirectUrl(redirectUrl, url.origin);
+	localStorage.setItem('authRedirect', safeRedirect);
+
 	// 4. Create and redirect to the Keycloak login URL
 	const api = createKeycloakApi(fetch, url);
 
@@ -48,5 +54,5 @@ export const load: PageLoad = async ({ url }) => {
 		codeChallengeMethod: 'S256'
 	});
 
-	redirect(302, oauthLoginUrl);
+	redirect(302, oauthLoginUrl, { external: true });
 };

@@ -1,6 +1,11 @@
 <script lang="ts">
-	import { autocomplete, type AutocompleteOption } from '$lib/api/search';
-	import { _, getBrowserLocale } from '$lib/i18n';
+	import {
+		createSearchApi,
+		type AutocompleteOption,
+		type AutocompleteResponse
+	} from '#lib/api/search.js';
+	import { _, getBrowserLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
@@ -31,69 +36,56 @@
 	let currentRequestId = 0;
 
 	async function fetchAutocomplete(query: string) {
-		if (query == null || query.trim().length < minQueryLength) {
+		const requestId = ++currentRequestId;
+		autocompleteAbortController?.abort();
+
+		if (query.trim().length < minQueryLength) {
 			autocompleteLoading = false;
 			autocompleteList = null;
 			return;
 		}
-		if (autocompleteAbortController) {
-			autocompleteAbortController.abort();
-		}
+
 		autocompleteAbortController = new AbortController();
 
 		const autocompleteQuery = {
 			q: query,
 			taxonomy_names: 'brands,categories,labels',
-			lang: getBrowserLocale(),
+			lang: getLanguageCode(getBrowserLocale()),
 			size: 5,
 			fuzziness: null,
 			index_id: null
 		};
 
+		autocompleteLoading = true;
 		try {
-			autocompleteLoading = true;
-			currentRequestId++;
-			const requestId = currentRequestId;
-			const response = await autocomplete(autocompleteQuery, fetch);
+			const api = createSearchApi(fetch);
+			const { data, error } = await api.autocomplete(autocompleteQuery);
 			if (requestId !== currentRequestId) return;
-			if (response && Array.isArray(response.options)) {
-				autocompleteList = response.options;
-			} else {
+			if (error) {
+				console.error('Autocomplete error', error);
 				autocompleteList = [];
+			} else {
+				const result = data as AutocompleteResponse | undefined;
+				autocompleteList = Array.isArray(result?.options) ? result.options : [];
 			}
 		} catch (e) {
-			if (e instanceof Error && e.name !== 'AbortError') {
+			if (requestId === currentRequestId && e instanceof Error && e.name !== 'AbortError') {
 				console.error('Autocomplete error', e);
 			}
+		} finally {
+			if (requestId === currentRequestId) autocompleteLoading = false;
 		}
-		autocompleteLoading = false;
 	}
 
 	function debouncedFetchAutocomplete(query: string) {
-		if (debounceTimeoutId !== undefined) {
-			clearTimeout(debounceTimeoutId);
-			debounceTimeoutId = undefined;
-		}
-
-		if (query.trim().length < minQueryLength) {
-			if (autocompleteAbortController) {
-				autocompleteAbortController.abort();
-				autocompleteAbortController = null;
-			}
-			autocompleteLoading = false;
-			autocompleteList = null;
-			return;
-		}
-
-		debounceTimeoutId = setTimeout(() => {
-			fetchAutocomplete(query);
-		}, DEBOUNCE_DELAY_MS);
+		clearTimeout(debounceTimeoutId);
+		debounceTimeoutId = setTimeout(() => fetchAutocomplete(query), DEBOUNCE_DELAY_MS);
 	}
 
 	onDestroy(() => {
-		if (debounceTimeoutId !== undefined) {
-			clearTimeout(debounceTimeoutId);
-		}
+		clearTimeout(debounceTimeoutId);
+		currentRequestId++;
+		autocompleteAbortController?.abort();
 	});
 
 	function handleEnter() {
@@ -146,11 +138,11 @@
 
 <div class="form-control">
 	<div class="flex w-full items-center gap-2">
-		<div class="join dropdown dropdown-bottom dropdown-center min-w-0 flex-1 md:w-98 md:flex-none">
+		<div class="dropdown dropdown-center dropdown-bottom join min-w-0 flex-1 md:w-98 md:flex-none">
 			<input
 				type="text"
 				bind:value={searchQuery}
-				class="input join-item input-bordered w-full"
+				class="input-bordered input join-item w-full"
 				placeholder={$_('search.placeholder')}
 				disabled={loading}
 				aria-label={$_('search.placeholder')}
@@ -167,15 +159,15 @@
 			/>
 			{#if autocompleteLoading || autocompleteList != null}
 				<div
-					class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-full min-w-0 p-2 shadow-sm"
+					class="menu dropdown-content z-1 mt-1 w-full min-w-0 rounded-box bg-base-100 p-2 shadow-sm"
 				>
 					{#if autocompleteList == null && autocompleteLoading}
 						<div class="flex justify-center">
-							<span class="loading loading-spinner loading-lg"></span>
+							<span class="loading loading-lg loading-spinner"></span>
 						</div>
 					{:else if autocompleteList == null || autocompleteList.length === 0}
 						<div class="flex justify-center">
-							<span class="text-base-content text-sm">{$_('search.no_results')}</span>
+							<span class="text-sm text-base-content">{$_('search.no_results')}</span>
 						</div>
 					{:else}
 						<ul>
@@ -187,7 +179,7 @@
 									>
 										<div class="flex flex-col gap-1">
 											<p class="">{item.text}</p>
-											<p class=" text-base-content text-xs">{item.taxonomy_name}</p>
+											<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
 										</div>
 									</button>
 								</li>
@@ -197,7 +189,7 @@
 				</div>
 			{/if}
 			<button
-				class="btn btn-secondary join-item px-10"
+				class="btn join-item px-10 btn-secondary"
 				onclick={handleEnter}
 				class:btn-loading={loading}
 				disabled={searchQuery == null || searchQuery.trim() === '' || loading}
@@ -213,7 +205,7 @@
 			href="/qr"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
-			class="btn btn-secondary join-item text-lg"
+			class="btn join-item text-lg btn-secondary"
 		>
 			<IconMdiBarcodeScan class="h-6 w-6" />
 		</a>

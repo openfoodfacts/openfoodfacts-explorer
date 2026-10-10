@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { KnowledgeElementAction } from '$lib/api';
+	import type { KnowledgeActionElement } from '#lib/api.js';
 	import { goto } from '$app/navigation';
-	import { _ } from '$lib/i18n';
-	import { NUTRIPATROL_URL } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { NUTRIPATROL_URL } from '#lib/const.js';
 	import { resolve } from '$app/paths';
-	import HtmlPurify from '$lib/ui/HtmlPurify.svelte';
+	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
 
 	type Props = {
-		element: KnowledgeElementAction;
+		element: KnowledgeActionElement;
 		code?: string;
 	};
 	let { element, code: code }: Props = $props();
@@ -56,13 +56,43 @@
 		{
 			type: 'add_packaging_components',
 			action: () => {
-				goto(`/products/${requireCode()}/edit#packaging`);
+				goto(`/products/${requireCode()}/edit#add-packaging-component`);
 			}
 		},
 		{
 			type: 'add_origins',
 			action: () => {
 				goto(`/products/${requireCode()}/edit#origins`);
+			}
+		},
+		{
+			type: 'add_recycling_instructions',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#recycling`);
+			}
+		},
+		{
+			type: 'add_quantity',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#quantity`);
+			}
+		},
+		{
+			type: 'add_packaging_image',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#images`);
+			}
+		},
+		{
+			type: 'add_ingredients_image',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#images`);
+			}
+		},
+		{
+			type: 'add_nutrition_facts',
+			action: () => {
+				goto(`/products/${requireCode()}/edit#nutrition`);
 			}
 		}
 	];
@@ -78,7 +108,7 @@
 </script>
 
 <div
-	class={[element.action_element.html != '' && 'border-accent bg-accent/10 rounded border-s p-4']}
+	class={[element.action_element.html != '' && 'rounded border-s border-accent bg-accent/10 p-4']}
 >
 	{#if element.action_element.html != ''}
 		<div class="mb-4 text-sm">

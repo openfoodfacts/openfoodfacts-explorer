@@ -1,23 +1,14 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { onMount } from 'svelte';
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
 
-	type Props = {
-		spec: Spec | TopLevelSpec;
-		title?: string;
-	};
+	import * as compat from '#lib/compat.js';
 
-	type VegaMarkEncodeEntry = {
-		fill?: { value: string };
-		stroke?: { value: string };
-	};
-
-	type VegaMarkEncode = {
-		enter?: VegaMarkEncodeEntry;
-		update?: VegaMarkEncodeEntry;
-	};
+	type Props = { spec: Spec | TopLevelSpec; title?: string };
+	type VegaMarkEncodeEntry = { fill?: { value: string }; stroke?: { value: string } };
+	type VegaMarkEncode = { enter?: VegaMarkEncodeEntry; update?: VegaMarkEncodeEntry };
 
 	type VegaMark = {
 		type: string;
@@ -40,21 +31,14 @@
 			background: 'transparent',
 			axis: {
 				domainColor: labelColor,
-				gridColor: gridColor,
-				labelColor: labelColor,
+				gridColor,
+				labelColor,
 				tickColor: labelColor,
 				titleColor: labelColor
 			},
-			legend: {
-				labelColor: labelColor,
-				titleColor: labelColor
-			},
-			title: {
-				color: labelColor
-			},
-			view: {
-				stroke: 'transparent'
-			}
+			legend: { labelColor, titleColor: labelColor },
+			title: { color: labelColor },
+			view: { stroke: 'transparent' }
 		};
 	}
 	// Vega does not support CSS variables natively. We patch the compiled
@@ -89,6 +73,7 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
+
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {
@@ -131,11 +116,11 @@
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		darkMode = mediaQuery.matches;
-		const handler = (e: MediaQueryListEvent) => {
-			darkMode = e.matches;
+		const handler = (e: MediaQueryListEvent) => (darkMode = e.matches);
+		compat.addMediaQueryListener(mediaQuery, handler);
+		return () => {
+			compat.removeMediaQueryListener(mediaQuery, handler);
 		};
-		mediaQuery.addEventListener('change', handler);
-		return () => mediaQuery.removeEventListener('change', handler);
 	});
 
 	$effect(() => {
@@ -152,12 +137,12 @@
 	<div bind:this={chartContainer} class="vega-chart relative w-full">
 		{#if isLoading}
 			<div class="flex h-32 items-center justify-center">
-				<div class="loading loading-spinner loading-md"></div>
+				<div class="loading loading-md loading-spinner"></div>
 				<span class="ml-2">Loading chart...</span>
 			</div>
 		{/if}
 		{#if error}
-			<div class="bg-error/10 border-error/20 text-error rounded border p-4">
+			<div class="rounded border border-error/20 bg-error/10 p-4 text-error">
 				<p class="font-semibold">Chart Error:</p>
 				<p class="text-sm">{error}</p>
 			</div>

@@ -9,6 +9,8 @@
 		rotation?: number;
 		minzoom?: number;
 		maxzoom?: number;
+		onload?: (event: Event) => void;
+		onerror?: (event: Event) => void;
 	};
 	let {
 		src,
@@ -17,7 +19,9 @@
 		rotation = $bindable(0),
 		translation = $bindable({ x: 0, y: 0 }),
 		minzoom = 1,
-		maxzoom = 3
+		maxzoom = 3,
+		onload,
+		onerror
 	}: Props = $props();
 
 	let containerEl: HTMLElement | undefined;
@@ -104,5 +108,12 @@
 	class:cursor-grabbing={isDragging}
 	bind:this={containerEl}
 >
-	<img class="pointer-events-none block h-full w-full object-contain" {src} {alt} {style} />
+	<img
+		class="pointer-events-none block h-full w-full object-contain"
+		{src}
+		{alt}
+		{style}
+		{onload}
+		{onerror}
+	/>
 </div>

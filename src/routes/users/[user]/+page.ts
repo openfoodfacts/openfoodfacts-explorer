@@ -1,4 +1,4 @@
-import { getFacetValue } from '$lib/api/facets';
+import { getFacetValue } from '#lib/api/facets.js';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -12,12 +12,20 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	const editorResponse = getFacetValue(fetch, 'editors', encodedUser, {}).catch(() => {
 		error(500, `Unable to load "editors" facet for user "${user}"`);
 	});
+	const photographerResponse = getFacetValue(fetch, 'photographers', encodedUser, {}).catch(() => {
+		error(500, `Unable to load "photographers" facet for user "${user}"`);
+	});
 
-	const [contributorData, editorData] = await Promise.all([contributorResponse, editorResponse]);
+	const [contributorData, editorData, photographerData] = await Promise.all([
+		contributorResponse,
+		editorResponse,
+		photographerResponse
+	]);
 
 	return {
 		user,
 		contributor: contributorData,
-		editor: editorData
+		editor: editorData,
+		photographer: photographerData
 	};
 };

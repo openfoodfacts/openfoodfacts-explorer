@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Community Slack
+    url: https://slack.openfoodfacts.org
+    about: Join the #off-explorer channel to ask questions or discuss ideas before opening an issue.
+  - name: 🎨 Design & UX
+    url: https://github.com/openfoodfacts/openfoodfacts-design
+    about: Design-only questions and brand guidelines live in the design repository.

@@ -3,7 +3,9 @@ import ts from 'typescript-eslint';
 import svelte from 'eslint-plugin-svelte';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
-import svelteConfig from './svelte.config.js';
+import { loadConfig } from '@sveltejs/load-config';
+
+const svelteConfig = (await loadConfig('./', { traverse: false }))?.config;
 
 export default [
 	js.configs.recommended,
@@ -64,6 +66,7 @@ export default [
 					argsIgnorePattern: '^_$'
 				}
 			],
+			'@typescript-eslint/no-explicit-any': 'error',
 			// Re-enable when the following issues are resolved:
 			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1336
 			// - https://github.com/sveltejs/eslint-plugin-svelte/issues/1329

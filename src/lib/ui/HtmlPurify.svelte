@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { sanitize } from 'isomorphic-dompurify';
 
-	type Props = {
-		dirty: string;
-		config?: Parameters<typeof sanitize>[1];
-	};
-	let { dirty, config = { USE_PROFILES: { html: true } } }: Props = $props();
+	type Props = { dirty: string };
+	let { dirty }: Props = $props();
 
-	let sanitizedHtml = $derived(sanitize(dirty, config));
+	let sanitizedHtml = $derived(
+		sanitize(dirty, { USE_PROFILES: { html: true }, RETURN_TRUSTED_TYPE: true })
+	);
 </script>
 
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->

@@ -3,24 +3,28 @@
 	import { tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
-	import { invalidateAll } from '$app/navigation';
+	import { refreshAll } from '$app/navigation';
 
-	import { _ } from '$lib/i18n';
-	import type { Product, ProductImage, RawImage } from '$lib/api';
+	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product, ProductImage, RawImage } from '#lib/api.js';
 	import {
 		getProductImageUrl,
 		createImageSelectionWithCrop,
 		createSimpleImageSelection,
 		selectAndCropImagesV3,
 		unselectImageV3
-	} from '$lib/api/product';
-	import type { ImageEditData } from '$lib/utils/imageEdit';
-	import { getToastCtx } from '$lib/stores/toasts';
+	} from '#lib/api/product.js';
+	import type { ImageEditData } from '#lib/utils/imageEdit.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
 	import PhotoSelectDialog from './PhotoSelectDialog.svelte';
-	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
+	import { getLanguageName } from '#lib/languages.js';
 
 	type Props = { product: Product };
 	let { product }: Props = $props();
@@ -169,6 +173,7 @@
 
 	let editingImageData: ProductImage | undefined = $state();
 	let editingImageModal: PhotoEditDialog | undefined = $state();
+	let isSavingImage = $state(false);
 
 	const additionalImageTypes = $derived.by(() => {
 		const standardTypes = new Set(photoTypes.map((pt) => pt.label));
@@ -246,7 +251,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		invalidateAll().then(() => {
+		refreshAll().then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -266,24 +271,38 @@
 	}
 
 	async function saveCurrentImage(data: ImageEditData) {
-		if (!editingImageData) {
+		if (isSavingImage) return;
+
+		const imageData = editingImageData;
+
+		if (!imageData) {
 			console.error('No image data available for editing');
 			return;
 		}
 
+		isSavingImage = true;
+
 		try {
 			const { cropData, rotationAngle } = data;
-			await saveImageWithSelectAndCrop(editingImageData, cropData, rotationAngle);
+
+			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
 
 			toast.success($_('product.edit.images.toast.save_success'));
+			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
 			console.error('Error processing image:', error);
+
 			toast.error(
-				$_('product.edit.images.toast.process_error', { values: { error: errorMessage } })
+				$_('product.edit.images.toast.process_error', {
+					values: { error: errorMessage }
+				})
 			);
 		} finally {
-			await invalidateAll();
+			isSavingImage = false;
+
+			await refreshAll();
 			closeEditModal();
 		}
 	}
@@ -342,7 +361,8 @@
 
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
-				await invalidateAll();
+				trackOffEvent('contribution', 'image_unselected', image.typeId);
+				await refreshAll();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -385,7 +405,7 @@
 			);
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await invalidateAll();
+			await refreshAll();
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
@@ -397,17 +417,23 @@
 </script>
 
 <div class="mb-4 sm:mb-6">
-	<div class="tabs tabs-box">
+	<div class="tabs tabs-lift">
+		<div class="tab tab-disabled cursor-default">
+			<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />
+		</div>
 		{#each Object.keys(product.languages_codes) as code (code)}
 			<input
 				type="radio"
 				name="photo_tabs"
 				class="tab"
-				aria-label={getLanguage(code)}
+				aria-label={getLanguageName(code)}
 				checked={code === activeLanguageCode}
 				onchange={() => handleLanguageChange(code)}
 			/>
-			<div class="tab-content p-3 sm:p-6" class:hidden={code !== activeLanguageCode}>
+			<div
+				class="tab-content border-base-300 bg-base-100 p-3 sm:p-6"
+				class:hidden={code !== activeLanguageCode}
+			>
 				<!-- Show standard photo types first -->
 				{#each photoTypes as photoType (photoType.id)}
 					<PhotoTypeSection
@@ -443,8 +469,8 @@
 
 				<!-- Show message if no images at all -->
 				{#if currentImages.length === 0}
-					<div class="bg-base-200 flex w-full items-center justify-center rounded p-4 sm:p-6">
-						<p class="text-base-content/60 text-center text-sm sm:text-base">
+					<div class="flex w-full items-center justify-center rounded bg-base-200 p-4 sm:p-6">
+						<p class="text-center text-sm text-base-content/60 sm:text-base">
 							{$_('product.edit.no_photo_available')}
 						</p>
 					</div>
@@ -462,7 +488,17 @@
 		image={editingImageData}
 		onClose={closeEditModal}
 		onSave={saveCurrentImage}
+		isSaving={isSavingImage}
 		onImageUnselected={unselectCurrentImage}
+		onImageReplace={() => {
+			if (editingImageData) {
+				const inputId = `${editingImageData.typeId}-${activeLanguageCode}-upload`;
+				const fileInput = document.getElementById(inputId);
+				if (fileInput instanceof HTMLInputElement) {
+					fileInput.click();
+				}
+			}
+		}}
 	/>
 {/if}
 

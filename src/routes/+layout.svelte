@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '@sinnwerkstatt/sveltekit-matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -9,38 +8,79 @@
 
 	import { goto } from '$app/navigation';
 	import { navigating, page } from '$app/state';
+	import { slide } from 'svelte/transition';
 
-	import Logo from '$lib/ui/Logo.svelte';
-	import Navbar from '$lib/ui/Navbar.svelte';
-	import Footer from '$lib/ui/Footer.svelte';
-	import SearchBar from '$lib/ui/SearchBar.svelte';
-	import Toast from '$lib/ui/Toast.svelte';
+	import Logo from '#lib/ui/Logo.svelte';
+	import Navbar from '#lib/ui/Navbar.svelte';
+	import Footer from '#lib/ui/Footer.svelte';
+	import SearchBar from '#lib/ui/SearchBar.svelte';
+	import Toast from '#lib/ui/Toast.svelte';
+	import SlowServerDialog from '#lib/ui/SlowServerDialog.svelte';
+	import EnvironmentNotice from '#lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
-	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
+	import IconMdiLogin from '@iconify-svelte/mdi/login';
+	import IconMdiLogout from '@iconify-svelte/mdi/logout';
+	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import { toggleCalculator } from '#lib/stores/calculatorStore.js';
+	import CompareFloatingButton from '#lib/ui/CompareFloatingButton.svelte';
+	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
+	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale } from '$lib/i18n';
-	import { IMAGE_HOST, MATOMO_HOST, MATOMO_SITE_ID, ROBOTOFF_URL } from '$lib/const';
-	import { userInfo } from '$lib/stores/user';
-	import { extractQuery } from '$lib/facets';
-	import { dev } from '$app/environment';
+	import { _, getLocale, locale } from '#lib/i18n/index.js';
+	import {
+		IMAGE_HOST,
+		MATOMO_HOST,
+		MATOMO_SITE_ID,
+		OPEN_PRICES_BASE_URL,
+		ROBOTOFF_URL
+	} from '#lib/const.js';
+	import { userInfo } from '#lib/stores/user.js';
+	import { extractQuery } from '#lib/search/lucene.js';
+	import { dev } from '$app/env';
 	import type { LayoutProps } from './$types';
-	import { setWebsiteCtx } from '$lib/stores/website';
-	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
-	import Shortcuts, { type Shortcut } from './Shortcuts.svelte';
-	import { preferences, runPreferencesMigrations } from '$lib/settings';
+	import { getWebsiteFlavorFromParam } from '#lib/flavor.js';
+	import { createWebsiteCtx } from '#lib/stores/website.js';
+	import { setToastCtx, type Toast as ToastType, type ToastContext } from '#lib/stores/toasts.js';
+	import Shortcuts from './Shortcuts.svelte';
+	import { setShortcutCtx, type Shortcut } from '#lib/stores/shortcuts.js';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
-	import { shouldBeContainer } from '$lib/layout';
+	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
-	let websiteCtx: { flavor: 'beauty' | 'food' | 'petfood' | 'product' } = $state({
-		flavor: 'food'
+	const websiteCtx = createWebsiteCtx();
+
+	function syncWebsiteFlavor(url: URL) {
+		const landingFlavor = getWebsiteFlavorFromParam(url.searchParams.get('flavor'));
+		websiteCtx.update((ctx) => ({
+			...ctx,
+			flavor: landingFlavor ?? 'food',
+			forcedFlavor: landingFlavor ?? null
+		}));
+	}
+
+	syncWebsiteFlavor(new URL(page.url.href));
+
+	let MatomoComponent = $state<Component<{ url: string; siteId: number }> | null>(null);
+
+	onMount(async () => {
+		try {
+			const mod = await import('#lib/matomo/index.js');
+			MatomoComponent = mod.Matomo;
+		} catch {
+			console.warn('Matomo analytics failed to load or was blocked.');
+		}
 	});
-	setWebsiteCtx(() => websiteCtx);
+
+	$effect(() => {
+		syncWebsiteFlavor(new URL(page.url.href));
+	});
 
 	// == Global toast context setup ==
 	let toasts = $state<ToastType[]>([]);
@@ -101,7 +141,7 @@
 		// Add more shortcuts here
 	]);
 
-	setContext('shortcuts', () => shortcuts);
+	setShortcutCtx(() => shortcuts);
 
 	// Load OpenFoodFacts Web Components
 
@@ -111,10 +151,9 @@
 
 	// == Global User Permissions Context ==
 
-	import { setPermissionsCtx, type UserPermissionsContext } from '$lib/stores/user';
-	import { fetchCurrentUserPermissions } from '$lib/api/permissions';
-	import { CURRENT_USER_PERMISSIONS_URL } from '$lib/const';
-	import { wrapFetchWithAuth } from '$lib/stores/auth';
+	import { setPermissionsCtx, type UserPermissionsContext } from '#lib/stores/user.js';
+	import { fetchCurrentUserPermissions } from '#lib/api/permissions.js';
+	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
 	let permissionsCtx = $state<UserPermissionsContext>({
 		isAdmin: false,
@@ -126,18 +165,22 @@
 	$effect(() => {
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
+			// Ignore responses for a previous user if they log out or switch accounts mid-request
+			let cancelled = false;
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
-			fetchCurrentUserPermissions(authFetch, CURRENT_USER_PERMISSIONS_URL).then(
-				(permissionsData) => {
-					if (permissionsData && permissionsData.status === 'success' && permissionsData.user) {
-						permissionsCtx.isAdmin = permissionsData.user.admin === 1;
-						permissionsCtx.isModerator = permissionsData.user.moderator === 1;
-					} else {
-						permissionsCtx.isAdmin = false;
-						permissionsCtx.isModerator = false;
-					}
+			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (cancelled) return;
+				if (data && data.status === 'success' && data.user) {
+					permissionsCtx.isAdmin = data.user.admin === 1;
+					permissionsCtx.isModerator = data.user.moderator === 1;
+				} else {
+					permissionsCtx.isAdmin = false;
+					permissionsCtx.isModerator = false;
 				}
-			);
+			});
+			return () => {
+				cancelled = true;
+			};
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
@@ -152,8 +195,10 @@
 	let { children }: LayoutProps = $props();
 
 	onMount(() => {
-		// only inject the script on the client side
-		injectSpeedInsights();
+		if (import.meta.env.VERCEL) {
+			// if we're on vercel and on the client, inject the speed insights script
+			injectSpeedInsights();
+		}
 	});
 
 	function updateSearchQuery(url: URL) {
@@ -162,7 +207,7 @@
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {
-		updateSearchQuery(page.url);
+		updateSearchQuery(new URL(page.url.href));
 	});
 
 	let isSearching = $state(false);
@@ -171,6 +216,10 @@
 		isSearching = true;
 		await goto('/search?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
+	}
+
+	function getLoginUrl(url: URL) {
+		return resolve('oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
 	}
 
 	let searchActive = $state(false);
@@ -197,24 +246,6 @@
 			unsubscribe();
 		};
 	});
-
-	// Track navigation time. If > 5s, show a popup suggesting server is slow or down
-	let navigationTooSlow: Promise<void> | null = $state(null);
-	$effect(() => {
-		if (navigating.to != null) {
-			let timeout: ReturnType<typeof setTimeout>;
-
-			navigationTooSlow = new Promise((resolve) => {
-				timeout = setTimeout(() => {
-					resolve();
-				}, 5000);
-			});
-
-			return () => clearTimeout(timeout);
-		} else {
-			navigationTooSlow = null;
-		}
-	});
 </script>
 
 <svelte:head>
@@ -223,7 +254,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{#if MatomoComponent}
+	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{/if}
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
@@ -231,11 +264,11 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={$preferences.lang ?? getLocale()?.split('-')[0]?.toLowerCase() ?? 'en'}
+		language-code={getLanguageCode($preferences.locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
-			apiUrl: ROBOTOFF_URL + '/api/v1',
+			apiUrl: new URL('/api/v1', ROBOTOFF_URL).toString(),
 			imgUrl: IMAGE_HOST + '/images/products'
 		})}
 	>
@@ -243,14 +276,16 @@
 </div>
 
 {#if navigating.to != null}
-	<progress class="progress progress-secondary fixed top-0 left-0 z-50 h-1 w-full rounded-none"
+	<progress class="progress fixed top-0 left-0 z-50 h-1 w-full rounded-none progress-secondary"
 	></progress>
 {/if}
+
+<EnvironmentNotice />
 
 <!-- Desktop Header -->
 <div class="hidden xl:block">
 	<div class="flex justify-center">
-		<div class="bg-base-100 navbar flex max-w-7xl px-10">
+		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
 				<a href="/"> <Logo /> </a>
 			</div>
@@ -258,24 +293,6 @@
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 			</div>
 			<div class="navbar-end gap-2">
-				{#if $userInfo != null}
-					<a
-						class="btn btn-outline link"
-						href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
-					>
-					<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
-				{:else}
-					<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
-				{/if}
-				<!-- Settings button -->
-				<a
-					class="btn btn-ghost link"
-					href={resolve('/settings')}
-					aria-label={$_('settings_link')}
-					title={$_('settings_link')}
-				>
-					<IconMdiCog class="w-6" />
-				</a>
 				<!-- Shortcuts button -->
 				<button
 					class="btn btn-ghost"
@@ -285,6 +302,68 @@
 				>
 					<IconMdiHelpCircleOutline class="w-6" />
 				</button>
+				<!-- Settings button -->
+				<a
+					class="btn link btn-ghost"
+					href={resolve('settings')}
+					aria-label={$_('settings_link')}
+					title={$_('settings_link')}
+				>
+					<IconMdiCog class="w-6" />
+				</a>
+				{#if $userInfo != null}
+					<div class="dropdown dropdown-end">
+						<div tabindex="0" role="button" class="btn btn-ghost">
+							<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
+						</div>
+						<ul
+							class="menu dropdown-content z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+						>
+							<li
+								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"
+							>
+								{$_('navbar.welcome', { default: 'User Menu' })}
+							</li>
+							<li>
+								<a
+									href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiAccountCircle class="h-5 w-5" />
+									<span>{$_('navbar.account', { default: 'Account' })}</span>
+								</a>
+							</li>
+							<li>
+								<button
+									onclick={toggleCalculator}
+									class="flex w-full gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiCalculator class="h-5 w-5" />
+									<span>{$_('calculator.title', { default: 'Calculator' })}</span>
+								</button>
+							</li>
+							<div class="divider my-1"></div>
+							<li>
+								<a
+									href={resolve('oauth/logout')}
+									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
+								>
+									<IconMdiLogout class="h-5 w-5" />
+									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				{:else}
+					<a
+						rel="external"
+						class="btn gap-2 rounded-full border-base-300 btn-outline px-4 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content"
+						href={getLoginUrl(new URL(page.url.href))}
+					>
+						<IconMdiLogin class="h-5 w-5" />
+						<span>{$_('navbar.login', { default: 'Login' })}</span>
+					</a>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -296,8 +375,8 @@
 </div>
 
 <!-- Mobile Header -->
-<div class="bg-base-100 top-0 right-0 left-0 z-50 mx-4 xl:hidden">
-	<div class="navbar bg-base-100 mx-auto mt-2 mb-2 px-0">
+<div class="top-0 right-0 left-0 z-50 mx-4 mb-2 bg-base-100 xl:hidden">
+	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
 			<a href="/">
 				<Logo />
@@ -306,7 +385,7 @@
 		<div class="navbar-end flex gap-1 sm:gap-2">
 			<button
 				aria-label={$_('search.button')}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					searchActive = !searchActive;
 				}}
@@ -319,7 +398,7 @@
 				aria-label={$_('menu.button')}
 				aria-expanded={accordionOpen}
 				aria-controls={mobileMenuId}
-				class="btn btn-square btn-secondary text-lg"
+				class="btn btn-square text-lg btn-secondary"
 				onclick={() => {
 					accordionOpen = !accordionOpen;
 				}}
@@ -337,7 +416,7 @@
 	</div>
 
 	{#if searchActive}
-		<div class="flex justify-center">
+		<div class="flex justify-center" transition:slide={{ duration: 200 }}>
 			<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
 		</div>
 	{/if}
@@ -348,28 +427,35 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn btn-outline link" href="/static/discover">
-			{$_('discover_link')}
-		</a>
-		<a class="btn btn-outline link" href="/static/contribute">
-			{$_('contribute_link')}
-		</a>
-		<a class="btn btn-outline link" href="/static/producers">
-			{$_('producers_link')}
-		</a>
-		<a class="btn btn-outline link" href="https://prices.openfoodfacts.org">
-			{$_('prices_link')}
-		</a>
-		<a class="btn btn-outline link" href="/folksonomy">
-			{$_('folksonomy_link')}
-		</a>
-		<a class="btn btn-outline link" href="/facets">
-			{$_('facets_link')}
-		</a>
+		<a class="btn link btn-outline" href="/static/discover">{$_('discover_link')}</a>
 
-		<div class="divider md:divider-horizontal"></div>
+		<a class="btn link btn-outline" href="/static/contribute">{$_('contribute_link')}</a>
+
+		<a class="btn link btn-outline" href="/static/producers">{$_('producers_link')}</a>
+
 		<a
-			class="btn btn-outline link"
+			class="btn link btn-outline"
+			href={OPEN_PRICES_BASE_URL}
+			target="_blank"
+			rel="noopener noreferrer">{$_('prices_link')}</a
+		>
+
+		<ExploreByMenu mobile onNavigate={() => (accordionOpen = false)} />
+		<div class="divider md:divider-horizontal"></div>
+		<button
+			type="button"
+			class="btn link btn-outline"
+			onclick={() => {
+				toggleCalculator();
+				accordionOpen = false;
+			}}
+			title={$_('calculator.title', { default: 'Calculator' })}
+			aria-label={$_('calculator.title', { default: 'Calculator' })}
+		>
+			<span>{$_('calculator.title', { default: 'Calculator' })}</span>
+		</button>
+		<a
+			class="btn link btn-outline"
 			href="/settings"
 			title={$_('settings_link')}
 			aria-label={$_('settings_link')}
@@ -378,13 +464,41 @@
 		</a>
 
 		{#if $userInfo != null}
-			<a
-				class="btn btn-outline link"
-				href={resolve('/users/[user]', { user: $userInfo.preferred_username })}>Account</a
-			>
-			<a class="btn btn-outline link" href={resolve('/oauth/logout')}>Log out</a>
+			<div class="mt-2 flex w-full justify-center md:mt-0">
+				<div
+					class="flex w-full flex-col gap-2 rounded-box border border-base-300 bg-base-200 p-2 md:w-auto"
+				>
+					<div class="flex items-center gap-3 px-2 py-1.5">
+						<IconMdiAccountCircle class="h-6 w-6 text-secondary" />
+						<span class="truncate text-sm font-semibold text-base-content"
+							>{$userInfo.preferred_username}</span
+						>
+					</div>
+					<div class="grid grid-cols-2 gap-2">
+						<a
+							class="btn gap-2 btn-outline btn-sm"
+							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
+						>
+							<IconMdiAccountCircle class="h-4 w-4" />
+							<span>{$_('navbar.account', { default: 'Account' })}</span>
+						</a>
+
+						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('oauth/logout')}>
+							<IconMdiLogout class="h-4 w-4" />
+							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		{:else}
-			<a class="btn btn-outline link" href={resolve('/oauth/login')}> Login </a>
+			<a
+				rel="external"
+				class="btn gap-2 rounded-full btn-outline px-5 transition-all duration-300 hover:bg-primary hover:text-primary-content"
+				href={getLoginUrl(new URL(page.url.href))}
+			>
+				<IconMdiLogin class="h-5 w-5" />
+				<span>{$_('navbar.login', { default: 'Login' })}</span>
+			</a>
 		{/if}
 	</div>
 </div>
@@ -399,33 +513,7 @@
 	</div>
 {/if}
 <CompareFloatingButton />
+<NutritionCalculator />
 <Footer />
 <Toast />
-
-{#if navigationTooSlow != null}
-	{#await navigationTooSlow then}
-		<dialog id="slow-server-dialog" class="modal" open>
-			<div class="modal-box">
-				<h3 class="text-lg font-bold">
-					{$_('slow_server.title', { default: 'This is taking longer than expected...' })}
-				</h3>
-				<p class="py-4">
-					{$_('slow_server.message', {
-						default:
-							'Check your internet connection and our status page to see if there are any ongoing issues.'
-					})}
-				</p>
-				<div class="modal-action">
-					<a
-						href="https://status.openfoodfacts.org"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn btn-primary"
-					>
-						{$_('slow_server.status_page', { default: 'View Status Page' })}
-					</a>
-				</div>
-			</div>
-		</dialog>
-	{/await}
-{/if}
+<SlowServerDialog />

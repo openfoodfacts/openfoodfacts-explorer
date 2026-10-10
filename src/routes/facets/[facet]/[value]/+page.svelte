@@ -5,15 +5,15 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
-	import { _ } from '$lib/i18n';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { _ } from '#lib/i18n/index.js';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import ProductGrid from '$lib/ui/ProductGrid.svelte';
-	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '$lib/ui/facets/BackLink.svelte';
+	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
+	import Pagination from '#lib/Pagination.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import ProductGrid from '#lib/ui/ProductGrid.svelte';
+	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
+	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 
@@ -134,7 +134,7 @@
 				sortByScore={$personalizedSearch.classifyProductsEnabled}
 			/>
 		{:else}
-			<table class="my-4 table">
+			<table class="table my-4">
 				<thead>
 					<tr>
 						<th>Code</th>
@@ -143,7 +143,7 @@
 				</thead>
 				<tbody>
 					{#each results.products as { product_name, code } (code)}
-						<tr class="hover:bg-base-200 cursor-pointer" onclick={() => goto(`/products/${code}`)}>
+						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
 								<a href={`/products/${code}`} class="link">
 									{code}

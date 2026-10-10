@@ -1,28 +1,34 @@
 <script>
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import { page } from '$app/state';
-	import { shouldBeContainer } from '$lib/layout';
+	import { shouldBeContainer } from '#lib/layout.js';
+	import { OPEN_PRICES_BASE_URL } from '#lib/const.js';
+	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
 	const navItems = [
 		{ name: 'discover_link', href: '/static/discover' },
 		{ name: 'contribute_link', href: '/static/contribute' },
 		{ name: 'producers_link', href: '/static/producers' },
-		{ name: 'prices_link', href: 'https://prices.openfoodfacts.org' },
-		{ name: 'folksonomy_link', href: '/folksonomy' },
-		{ name: 'facets_link', href: '/facets' }
+		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL, external: true }
 	];
 </script>
 
-<nav class="bg-secondary mt-2 px-4 {!shouldBeContainer(page.url.pathname) ? '' : 'mb-8'}">
+<nav class="mt-2 bg-secondary px-4 {!shouldBeContainer(page.url.pathname) ? '' : 'mb-8'}">
 	<ul class="flex justify-center">
 		<div class="m-2 flex w-3/4 items-center justify-evenly 2xl:w-[60%]">
 			{#each navItems as item (item.name)}
 				<li>
-					<a href={item.href} class="text-secondary-content font-medium hover:underline">
+					<a
+						href={item.href}
+						target={item.external ? '_blank' : undefined}
+						rel={item.external ? 'noopener noreferrer' : undefined}
+						class="font-medium text-secondary-content hover:underline"
+					>
 						{$_(item.name)}
 					</a>
 				</li>
 			{/each}
+			<ExploreByMenu />
 		</div>
 	</ul>
 </nav>

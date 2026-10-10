@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 
 import {
@@ -9,87 +9,115 @@ import {
 	type Brand,
 	type Store,
 	type Country,
-	createProductsApi
-} from '$lib/api';
-import { userInfo } from '$lib/stores/user';
-import { PRODUCT_STATUS } from '$lib/const';
+	type Unit,
+	type Allergen,
+	createProductsApi,
+	type ProductStateFailure
+} from '#lib/api.js';
+import { type ProductStateResponse } from '#lib/api/errorUtils.js';
+import { userInfo } from '#lib/stores/user.js';
+import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 
 import type { PageLoad } from './$types';
-import { dev } from '$app/environment';
-import { preferences } from '$lib/settings';
+import { dev } from '$app/env';
+import { getLanguageCode, preferences } from '#lib/settings.js';
 import { resolve } from '$app/paths';
 
 export const ssr = false;
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (window == null) {
 		error(500, 'This page requires a browser environment');
 	}
 
 	if (get(userInfo) == null && !dev) {
-		// If the user is not logged in, redirect to the login page
-		// We allow an exception for development mode
-		error(401, {
-			message: 'You must be logged in to view this page',
-			actions: [
-				{
-					label: 'Login',
-					url: resolve('/oauth/login')
-				}
-			]
-		});
+		redirect(
+			302,
+			resolve('loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+		);
 	}
 
 	const off = createProductsApi(fetch);
 
-	const [productReq, categories, labels, brands, stores, origins, countries] = await Promise.all([
-		off.getProductV3(params.barcode, {
-			lc: get(preferences).lang,
-			cc: get(preferences).country
-		}),
-		getTaxo<Category>('categories', fetch),
-		getTaxo<Label>('labels', fetch),
-		getTaxo<Brand>('brands', fetch),
-		getTaxo<Store>('stores', fetch),
-		getTaxo<Origin>('origins', fetch),
-		getTaxo<Country>('countries', fetch)
-	]);
+	const productReq = await off.getProductV3(params.barcode, {
+		lc: getLanguageCode(get(preferences).locale),
+		cc: get(preferences).country
+	});
 
 	const { data: productState, error: productError } = productReq;
-	if (productError || !productState) {
+	const parsedError = (productError || null) as ProductStateResponse | null;
+	const isNotFound =
+		(parsedError && parsedError.result?.id === 'product_not_found') ||
+		(productState &&
+			productState.status === 'failure' &&
+			productState.result?.id === 'product_not_found');
+
+	if (!isNotFound && (productError || !productState)) {
 		error(500, 'Error loading product');
 	}
 
-	console.debug(`Product state for barcode ${params.barcode}:`, productState.status);
+	if (
+		productState &&
+		productState.status === 'failure' &&
+		productState.result?.id !== 'product_not_found'
+	) {
+		error(500, 'Failure to load product', {
+			errors: (productState as ProductStateFailure).errors
+		});
+	}
 
-	if (productState.status === 'failure' && productState.result?.id === 'product_not_found') {
+	// TODO: switch to SDK
+	const productType =
+		productState && 'product' in productState
+			? (productState.product.product_type as ProductType)
+			: undefined;
+
+	const [categories, labels, brands, stores, origins, countries, units, allergens] =
+		await Promise.all([
+			getTaxo<Category>('categories', fetch, productType),
+			getTaxo<Label>('labels', fetch, productType),
+			getTaxo<Brand>('brands', fetch, productType),
+			getTaxo<Store>('stores', fetch, productType),
+			getTaxo<Origin>('origins', fetch, productType),
+			getTaxo<Country>('countries', fetch, productType),
+			getTaxo<Unit>('units', fetch, productType),
+			getTaxo<Allergen>('allergens', fetch, productType)
+		]);
+
+	console.debug(`Product state for barcode ${params.barcode}:`, productState?.status || 'failure');
+
+	if (isNotFound) {
+		const stateErrors =
+			productState && 'errors' in productState
+				? (productState as ProductStateFailure).errors
+				: undefined;
+
 		return {
 			state: {
 				status: PRODUCT_STATUS.EMPTY,
 				product: null,
-				errors: productState.errors
+				errors: stateErrors ?? parsedError?.errors ?? []
 			},
 			categories,
 			labels,
 			brands,
 			stores,
 			origins,
-			countries
+			countries,
+			units,
+			allergens
 		};
-	} else if (productState.status === 'failure') {
-		error(404, {
-			message: 'Failure to load product',
-			errors: productState.errors
-		});
 	}
 
 	return {
-		state: productState,
+		state: productState!,
 		categories,
 		labels,
 		brands,
 		stores,
 		origins,
-		countries
+		countries,
+		units,
+		allergens
 	};
 };

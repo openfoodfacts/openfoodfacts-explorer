@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { tracker } from '@sinnwerkstatt/sveltekit-matomo';
-	import type { KnowledgeElement, KnowledgePanel } from '$lib/api';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import type { KnowledgeElement, KnowledgePanels } from '#lib/api.js';
 
-	import Debug from '$lib/ui/Debug.svelte';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import Debug from '#lib/ui/Debug.svelte';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 
 	import Panel from './Panel.svelte';
 	import Map from './Map.svelte';
@@ -13,7 +13,7 @@
 	import Table from './Table.svelte';
 
 	type Props = {
-		panels: Record<string, KnowledgePanel>;
+		panels: KnowledgePanels;
 		element: KnowledgeElement;
 		productCode?: string;
 	};
@@ -25,7 +25,7 @@
 	{#if panel !== null}
 		<Panel {panel} {panels} {id} {productCode} />
 	{:else}
-		{$tracker?.trackEvent('Panel Not Found', 'Panel ID', id)}
+		{trackOffEvent('system', 'knowledge_panel_missing', id)}
 		<div class="alert alert-warning">Panel not found: {id}</div>
 	{/if}
 {/snippet}
@@ -51,7 +51,7 @@
 		<Map {element} />
 	{:else}
 		<div class="alert alert-warning">No renderer for element type!</div>
-		{$tracker?.trackEvent('Element Not Found', 'Element', JSON.stringify(element))}
+		{trackOffEvent('system', 'unsupported_knowledge_element', 'unknown')}
 		<Debug data={element} />
 	{/if}
 </div>

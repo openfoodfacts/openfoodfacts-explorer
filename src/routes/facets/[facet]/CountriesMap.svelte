@@ -6,7 +6,8 @@
 	import * as topojson from 'topojson-client';
 	import * as iso from 'iso-3166-1';
 
-	import { getTaxo } from '$lib/api';
+	import { getTaxo } from '#lib/api.js';
+	import { buildCountryData } from './country-data';
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -121,26 +122,38 @@
 	let isDark: boolean = $state(false);
 
 	onMount(() => {
+		const abortController = new AbortController();
+
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
 		isDark = mq.matches;
-		mq.addEventListener('change', (e) => (isDark = e.matches));
+		const handleColorSchemeChange = (e: MediaQueryListEvent) => (isDark = e.matches);
+		mq.addEventListener('change', handleColorSchemeChange);
 
 		(async () => {
-			// Dynamically import Leaflet
-			L = await import('leaflet');
+			L = await import('leaflet'); // Dynamically import Leaflet
+			if (abortController.signal.aborted) return; // Component was unmounted
 
-			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM }).setView(
-				[20, 0],
-				INITIAL_ZOOM
-			);
+			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM });
+			mapInstance.setView([20, 0], INITIAL_ZOOM);
 
 			// Leaflet injects its own background-color via JS; override it directly
 			mapContainer.style.setProperty('background', 'transparent');
 
-			countryTaxonomy = await getTaxo<Country>('countries', fetch);
-		})();
+			const abortingFetch: typeof fetch = (input, init) => {
+				return fetch(input, { ...init, signal: abortController.signal });
+			};
+
+			const taxonomy = await getTaxo<Country>('countries', abortingFetch);
+			if (abortController.signal.aborted) return; // Component was unmounted while loading
+			countryTaxonomy = taxonomy;
+		})().catch((err) => {
+			if (err.name === 'AbortError') return;
+			console.error('Error creating map:', err);
+		});
 
 		return () => {
+			abortController.abort();
+			mq.removeEventListener('change', handleColorSchemeChange);
 			if (mapInstance) {
 				mapInstance.off();
 				mapInstance.remove();
@@ -151,7 +164,6 @@
 				legendControl = null;
 			}
 
-			L = null;
 			countryTaxonomy = null;
 		};
 	});
@@ -197,24 +209,21 @@
 			legendControl = null;
 		}
 
-		// 1. Build a lookup: taxonomy id → product count (from facet data, 0 if absent)
-		const productsByTaxoId = new Map<string, number>(
-			facet.tags.map(({ id, products }) => [id, products])
-		);
-
-		// 2. Walk every country in the taxonomy; resolve its numeric ISO id
+		// 1. Build set of known country IDs from taxonomy (controls which features are rendered)
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const countryData = new Map<string, { name: string; products: number }>();
-		for (const [id, entry] of Object.entries(taxo)) {
+		const knownCountryIds = new Set<string>();
+		for (const entry of Object.values(taxo)) {
 			const numericId = resolveNumericId(entry);
-			if (!numericId) continue;
-			countryData.set(numericId, {
-				name: (entry as Country).name?.en ?? id,
-				products: productsByTaxoId.get(id) ?? 0
-			});
+			if (numericId) knownCountryIds.add(numericId);
 		}
 
-		const maxProducts = Math.max(...countryData.values().map((d) => d.products), 1);
+		// 2. Build country data from facet tags (controls product counts / choropleth / tooltip data)
+		const countryData = buildCountryData(taxo, facet.tags);
+
+		// 3. Handle empty countryData to avoid Math.min([]) = Infinity
+		const hasData = countryData.size > 0;
+		const productValues = [...countryData.values()].map((d) => d.products);
+		const maxProducts = hasData ? Math.max(...productValues, 1) : 1;
 
 		const dataBorder = dark ? THEME.borders.dark : THEME.borders.light;
 		const hoverBorder = dark ? THEME.borders.hoverDark : THEME.borders.hoverLight;
@@ -222,7 +231,9 @@
 		// Only render countries present in the taxonomy
 		const filteredGeoJSON = {
 			...worldGeoJSON,
-			features: worldGeoJSON.features.filter((f) => countryData.has(String(f.id).padStart(3, '0')))
+			features: worldGeoJSON.features.filter((f) =>
+				knownCountryIds.has(String(f.id).padStart(3, '0'))
+			)
 		};
 
 		const choroplethColor = (intensity: number) =>
@@ -295,7 +306,7 @@
 		}
 
 		// Add legend
-		const minVal = Math.min(...countryData.values().map((d) => d.products));
+		const minVal = hasData ? Math.min(...productValues) : 0;
 		const LegendControl = L.Control.extend({
 			onAdd() {
 				if (L == null) {

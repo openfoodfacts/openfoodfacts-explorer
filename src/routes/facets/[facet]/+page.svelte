@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import { _ } from '$lib/i18n';
-	import BackLink from '$lib/ui/facets/BackLink.svelte';
+	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
+	import Pagination from '#lib/Pagination.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import Metadata from '$lib/Metadata.svelte';
+	import Metadata from '#lib/Metadata.svelte';
 
 	import CountriesMap from './CountriesMap.svelte';
 
@@ -28,7 +28,10 @@
 />
 
 <div class="mb-4">
-	<BackLink href={resolve('/facets')} label={$_('facets.facet_back_to_list')} />
+	<BackLink
+		href={resolve('facets')}
+		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
+	/>
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
@@ -70,7 +73,7 @@
 <div>
 	<h2 class="text-2xl font-bold">Products</h2>
 
-	<table class="table-zebra my-4 table">
+	<table class="table my-4 table-zebra">
 		<thead>
 			<tr>
 				<th>Name</th>
