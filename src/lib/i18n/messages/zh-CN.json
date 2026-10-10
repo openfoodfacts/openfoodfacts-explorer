@@ -328,6 +328,15 @@
 			"not_checked": "未检查",
 			"loading": "Checking…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "正面",
+			"ingredients": "成分",
+			"nutrition": "营养",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "数量",
 			"brands": "品牌",
