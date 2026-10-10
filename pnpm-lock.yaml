@@ -296,8 +296,8 @@ importers:
         specifier: ^3.34.3
         version: 3.34.3
       daisyui:
-        specifier: 5.7.41
-        version: 5.7.41
+        specifier: 5.7.47
+        version: 5.7.47
       eslint:
         specifier: ^10.11.0
         version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
@@ -1999,8 +1999,8 @@ packages:
     resolution: {integrity: sha512-MOqHvMWF9/9MX6nza0KgvFH4HpMU0EF5uUDXqX/BtxtU8NfB0QzRtJ8Oe/6SuS4kbhyzVJwjd97EA4PKrzJ8bw==}
     engines: {node: '>=0.12'}
 
-  daisyui@5.7.41:
-    resolution: {integrity: sha512-dznSW4KGzuzYr3VLFOAEhilH2YMg9kLRtifevuQ3AkyHjHgoY5ADtmYPvGBT0sKp2fOh8Jx0z0VWgAGZ6cQLUA==}
+  daisyui@5.7.47:
+    resolution: {integrity: sha512-NOl4vPifelRqB3CMzoU751zc44KCDD9HdHMTTqQ30uiYVpIyK7+s94/ySDWgYqjdl1tQCaCrgGBx4KCizm+a3Q==}
 
   data-urls@7.0.0:
     resolution: {integrity: sha512-23XHcCF+coGYevirZceTVD7NdJOqVn+49IHyxgszm+JIiHLoB2TkmPtsYkNWT1pvRSGkc35L6NHs0yHkN2SumA==}
@@ -4993,7 +4993,7 @@ snapshots:
       es5-ext: 0.10.64
       type: 2.7.3
 
-  daisyui@5.7.41: {}
+  daisyui@5.7.47: {}
 
   data-urls@7.0.0:
     dependencies:
