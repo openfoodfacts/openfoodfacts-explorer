@@ -328,6 +328,15 @@
 			"not_checked": "Not checked",
 			"loading": "Έλεγχος…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Εμπρός",
+			"ingredients": "Συστατικά",
+			"nutrition": "Διατροφική Αξία",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Ποσότητα",
 			"brands": "Μάρκες",
