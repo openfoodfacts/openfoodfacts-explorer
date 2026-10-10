@@ -189,8 +189,14 @@
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div class="form-control w-full sm:col-span-2">
 				<div class="label">
-					<span class="label-text text-sm font-medium sm:text-base">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.generic_name', { default: 'Common name' })}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.generic_name', {
+								default:
+									'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+							})}
+						/>
 					</span>
 				</div>
 				<div class="space-y-3">
@@ -558,8 +564,14 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control w-full sm:col-span-2">
 							<div class="label">
-								<span class="label-text text-sm font-medium sm:text-base">
+								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.generic_name', { default: 'Common name' })}
+									<InfoTooltip
+										text={$_('product.edit.tooltips.common_name', {
+											default:
+												'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+										})}
+									/>
 								</span>
 							</div>
 							<div class="space-y-3">
