@@ -328,6 +328,15 @@
 			"not_checked": "Not checked",
 			"loading": "Checking…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Front",
+			"ingredients": "Sastojci",
+			"nutrition": "Nutritivne vrednosti",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Količina",
 			"brands": "Брендови",
