@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { _, getLocale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import { getSortedProductLanguages, PRODUCT_LANGUAGE_PARAM } from '#lib/productLanguage.js';
@@ -12,6 +13,11 @@
 		lc: string;
 	};
 	let { languagesCodes, lc }: Props = $props();
+	let hydrated = $state(false);
+
+	onMount(() => {
+		hydrated = true;
+	});
 
 	let languages = $derived(
 		getSortedProductLanguages(languagesCodes, (code) => getLanguageName(code), getLocale())
@@ -26,7 +32,7 @@
 	let details = $state<HTMLDetailsElement>();
 </script>
 
-{#if languages.length > 1}
+{#if hydrated && languages.length > 1}
 	<details class="dropdown dropdown-center md:dropdown-start" bind:this={details}>
 		<summary
 			class="btn btn-secondary btn-sm md:btn-md"
