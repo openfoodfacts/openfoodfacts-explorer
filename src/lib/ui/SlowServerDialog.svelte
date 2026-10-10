@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { navigating } from '$app/state';
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 
 	let { timeoutMs = 5000 }: { timeoutMs?: number } = $props();
 

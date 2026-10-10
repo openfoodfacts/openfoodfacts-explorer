@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import { createProductsApi, type Product } from '$lib/api';
-	import { getLanguageName } from '$lib/languages';
+	import { _ } from '#lib/i18n/index.js';
+	import { createProductsApi, type Product } from '#lib/api.js';
+	import { getLanguageName } from '#lib/languages.js';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
@@ -13,11 +13,11 @@
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
-	import { trackOffEvent } from '$lib/analytics';
-	import TagsString from '$lib/ui/inputs/TagsString.svelte';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 
 	type OCRResult = {
 		status?: number;

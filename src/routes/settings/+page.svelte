@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import { _ } from '$lib/i18n';
-	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
-	import Tabs from '$lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
-	import Metadata from '$lib/Metadata.svelte';
-	import { COMMIT_SHA } from '$lib/const';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
+	import Tabs from '#lib/ui/Tabs.svelte';
+	import type { AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
+	import Metadata from '#lib/Metadata.svelte';
+	import { COMMIT_SHA } from '#lib/const.js';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -23,8 +23,7 @@
 	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
-	const APP_VERSION = import.meta.env.PACKAGE_VERSION;
-	const SHORT_COMMIT_SHA = COMMIT_SHA.slice(0, 7);
+	const APP_VERSION = import.meta.env.BUILD_VERSION;
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -215,11 +214,6 @@
 						<span>{$_('settings.github_cta')}</span>
 					</a>
 					<p class="mt-4 text-sm text-primary-content/80">
-						{$_('settings.app_version', {
-							default: 'Version {version}',
-							values: { version: APP_VERSION }
-						})}
-						·
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
@@ -229,13 +223,19 @@
 								title={COMMIT_SHA}
 								aria-label={$_('settings.app_commit_link', {
 									default: 'View commit {sha} on GitHub',
-									values: { sha: SHORT_COMMIT_SHA }
+									values: { sha: COMMIT_SHA }
 								})}
 							>
-								{SHORT_COMMIT_SHA}
+								{$_('settings.app_version', {
+									default: 'Version {version}',
+									values: { version: APP_VERSION }
+								})}
 							</a>
 						{:else}
-							SHA unknown
+							{$_('settings.app_version', {
+								default: 'Version {version}',
+								values: { version: APP_VERSION }
+							})}
 						{/if}
 					</p>
 				</div>

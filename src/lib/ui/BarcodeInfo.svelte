@@ -2,11 +2,11 @@
 	import JsBarcode from 'jsbarcode';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
-	import { Gs1Barcode } from '$lib/barcodes/gs1';
-	import { getFlagEmoji, getGs1Allocation } from '$lib/barcodes/gs1-prefixes';
-	import { createPricesApi } from '$lib/api/prices';
-	import { OPEN_PRICES_PRODUCT_URL } from '$lib/const';
-	import { _ } from '$lib/i18n';
+	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
+	import { getFlagEmoji, getGs1Allocation } from '#lib/barcodes/gs1-prefixes.js';
+	import { createPricesApi } from '#lib/api/prices.js';
+	import { OPEN_PRICES_PRODUCT_URL } from '#lib/const.js';
+	import { _ } from '#lib/i18n/index.js';
 	import { tick } from 'svelte';
 	import Card from './Card.svelte';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _, getLocale } from '$lib/i18n';
-	import { getLanguageName } from '$lib/languages';
-	import { getSortedProductLanguages, PRODUCT_LANGUAGE_PARAM } from '$lib/productLanguage';
+	import { _, getLocale } from '#lib/i18n/index.js';
+	import { getLanguageName } from '#lib/languages.js';
+	import { getSortedProductLanguages, PRODUCT_LANGUAGE_PARAM } from '#lib/productLanguage.js';
 	import { page } from '$app/state';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
@@ -18,7 +18,7 @@
 	);
 
 	function languageHref(code: string): string {
-		const url = new URL(page.url);
+		const url = new URL(page.url.href);
 		url.searchParams.set(PRODUCT_LANGUAGE_PARAM, code);
 		return `${url.pathname}${url.search}`;
 	}

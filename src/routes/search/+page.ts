@@ -3,13 +3,13 @@ import type { PageLoad } from './$types';
 
 import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import { createSearchApi, type SearchResult } from '$lib/api/search';
-import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { createSearchApi, type SearchResult } from '#lib/api/search.js';
+import { createPricesApi, isConfigured as isPricesConfigured } from '#lib/api/prices.js';
 import {
 	createProductsApi,
 	getBulkProductAttributes,
 	getBulkProductCardsByCode
-} from '$lib/api/product';
+} from '#lib/api/product.js';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {

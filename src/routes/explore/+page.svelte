@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Logo from '$lib/ui/Logo.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchBar from '$lib/ui/SearchBar.svelte';
-	import { _ } from '$lib/i18n';
+	import Logo from '#lib/ui/Logo.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import SearchBar from '#lib/ui/SearchBar.svelte';
+	import { _ } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
-	import WcProductCard from '$lib/ui/WcProductCard.svelte';
+	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import { goto } from '$app/navigation';
 
 	let { data }: PageProps = $props();
