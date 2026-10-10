@@ -105,7 +105,7 @@
 			);
 			compiledSpec = {
 				...compiledSpec,
-				autosize: { type: 'fit-x', contains: 'padding' },
+				autosize: { type: 'fit-x', contains: 'padding', resize: true },
 				signals: [...(compiledSpec.signals ?? []), { name: 'labelsSideways', value: false }],
 				scales: compiledSpec.scales?.map((s) =>
 					s.type === 'band' ? { ...s, padding: BAND_PADDING } : s
