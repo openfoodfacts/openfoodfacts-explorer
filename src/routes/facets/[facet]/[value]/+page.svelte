@@ -16,12 +16,17 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
+	import type { HierarchyItem } from './hierarchy';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
 		$derived(data);
 
 	let listView = $state(false);
+
+	const CHILDREN_SHOWN = 8;
+	let childrenExpandedFor: string | null = $state(null);
+	const numberFormat = new Intl.NumberFormat();
 
 	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
 	onMount(async () => {
@@ -46,6 +51,57 @@
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+
+{#snippet chips(items: HierarchyItem[])}
+	{#each items as item (item.id)}
+		<a
+			class="badge badge-outline badge-lg hover:badge-secondary"
+			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
+		>
+			{item.name}
+			{#if item.count !== undefined}
+				<span class="opacity-60">{numberFormat.format(item.count)}</span>
+			{/if}
+		</a>
+	{/each}
+{/snippet}
+
+{#await data.hierarchy then { parents, children }}
+	{#if parents.length || children.length}
+		{@const expanded = childrenExpandedFor === facet.value}
+		<div class="-mt-4 mb-8 flex flex-col gap-3">
+			{#if parents.length}
+				<div class="flex flex-col gap-2 sm:flex-row">
+					<span class="w-24 shrink-0 pt-1 text-sm font-semibold opacity-70">
+						{$_('facets.hierarchy_belongs_to', { default: 'Belongs to' })}
+					</span>
+					<div class="flex flex-wrap gap-2">{@render chips(parents)}</div>
+				</div>
+			{/if}
+			{#if children.length}
+				<div class="flex flex-col gap-2 sm:flex-row">
+					<span class="w-24 shrink-0 pt-1 text-sm font-semibold opacity-70">
+						{$_('facets.hierarchy_includes', { default: 'Includes' })}
+					</span>
+					<div class="flex flex-wrap items-center gap-2">
+						{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{#if !expanded && children.length > CHILDREN_SHOWN}
+							<button
+								class="btn btn-ghost btn-xs"
+								onclick={() => (childrenExpandedFor = facet.value)}
+							>
+								{$_('facets.hierarchy_more', {
+									values: { count: children.length - CHILDREN_SHOWN },
+									default: '+ {count} more'
+								})}
+							</button>
+						{/if}
+					</div>
+				</div>
+			{/if}
+		</div>
+	{/if}
+{/await}
 
 {#if distributionData && MapComponent}
 	<div class="my-8 w-full">

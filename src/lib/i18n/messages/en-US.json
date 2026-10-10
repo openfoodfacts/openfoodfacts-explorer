@@ -899,7 +899,10 @@
 		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
-		"facet_back_to_overview": "Back to {facet} overview"
+		"facet_back_to_overview": "Back to {facet} overview",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
