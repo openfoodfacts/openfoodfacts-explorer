@@ -12,8 +12,6 @@
 	import IconMdiRotateRight from '@iconify-svelte/mdi/rotate-right';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 	import IconMdiPencilOutline from '@iconify-svelte/mdi/pencil-outline';
-	import IconMdiImageSearchOutline from '@iconify-svelte/mdi/image-search-outline';
-	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '$lib/utils/imageSearch';
 
 	type ImageState = {
 		url: string;
@@ -196,7 +194,7 @@
 			{/if}
 		</div>
 
-		<div class="absolute top-2 left-2 z-10 flex flex-wrap gap-2">
+		<div class="absolute top-2 left-2 z-10 flex gap-2">
 			{#if image?.productCode}
 				<!-- Edit button -->
 				{#if $userInfo}
@@ -221,29 +219,6 @@
 						<span>{$_('product.buttons.report_issue', { default: 'Report' })}</span>
 					</a>
 				{/if}
-			{/if}
-
-			{#if image?.url}
-				<a
-					class="btn gap-2 bg-base-100/80 btn-sm hover:bg-base-100"
-					href={getGoogleReverseSearchUrl(image.url)}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('product.reverse_search.google', { default: 'Google Lens' })}
-				>
-					<IconMdiImageSearchOutline class="h-5 w-5" />
-					<span>{$_('product.reverse_search.google', { default: 'Google Lens' })}</span>
-				</a>
-				<a
-					class="btn gap-2 bg-base-100/80 btn-sm hover:bg-base-100"
-					href={getYandexReverseSearchUrl(image.url)}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label={$_('product.reverse_search.yandex', { default: 'Yandex Images' })}
-				>
-					<IconMdiImageSearchOutline class="h-5 w-5" />
-					<span>{$_('product.reverse_search.yandex', { default: 'Yandex Images' })}</span>
-				</a>
 			{/if}
 		</div>
 	</div>
