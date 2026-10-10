@@ -328,6 +328,15 @@
 			"not_checked": "Not checked",
 			"loading": "Checking…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "Frontale",
+			"ingredients": "Ingredienti",
+			"nutrition": "Nutrizione",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Quantità",
 			"brands": "Marche",
