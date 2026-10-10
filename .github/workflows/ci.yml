@@ -20,7 +20,7 @@ jobs:
       - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # ratchet:pnpm/setup@v3.0.0
         with:
           cache: true
-          runtime: node@22
+          runtime: node@26
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
