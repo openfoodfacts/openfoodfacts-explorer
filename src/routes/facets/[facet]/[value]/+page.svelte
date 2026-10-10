@@ -69,7 +69,7 @@
 {#await data.hierarchy}
 	<div class="-mt-4 mb-8 flex items-center gap-2 text-sm opacity-70">
 		<span class="loading loading-sm loading-spinner"></span>
-		{$_('facets.hierarchy_loading', { default: 'Loading related categories…' })}
+		{$_('general.loading', { default: 'Loading…' })}
 	</div>
 {:then { parents, children }}
 	{#if parents.length || children.length}
