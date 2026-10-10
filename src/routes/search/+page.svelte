@@ -37,6 +37,7 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
+	import ChartBuilder from './ChartBuilder.svelte';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '#lib/api/search.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
@@ -138,8 +139,16 @@
 		}
 	}
 
-	beforeNavigate(({ shallow }) => {
+	function withoutCharts(url: URL) {
+		const copy = new URL(url);
+		copy.searchParams.delete('charts');
+		return copy.href;
+	}
+
+	beforeNavigate(({ shallow, from, to }) => {
 		if (shallow) return;
+		// A chart selection change must not cancel a pending filter update.
+		if (from && to && withoutCharts(from.url) === withoutCharts(to.url)) return;
 
 		clearPendingTimer();
 	});
@@ -337,7 +346,7 @@
 <!-- Advanced Options Panel (Collapsible) -->
 {#if showAdvancedOptions}
 	<div
-		class="card mb-6 border border-base-300 bg-base-200/50 p-6 shadow-xs"
+		class="card mb-6 border border-base-300 bg-base-200/50 p-3 shadow-xs md:p-6"
 		transition:slide={{ duration: 300 }}
 	>
 		<!-- Content Column: Query info & Classic tools -->
@@ -387,7 +396,7 @@
 				</div>
 			</div>
 
-			{#if searchResult.charts && Object.keys(searchResult.charts).length > 0}
+			{#if searchResult.count > 0}
 				<div class="flex flex-col gap-2">
 					<span class="text-sm font-semibold text-base-content/80">
 						{$_('search.charts_title', { default: 'Search Analytics' })}:
@@ -403,10 +412,14 @@
 					</button>
 					{#if showGraphs}
 						<div class="mt-2 grid grid-cols-1 gap-4" transition:slide={{ duration: 300 }}>
-							{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
-								<div class="rounded-lg border border-base-200 bg-base-100 p-4 shadow-sm">
+							<ChartBuilder query={data.query} />
+							{#each Object.entries(searchResult.charts ?? {}) as [chartKey, chartSpec] (chartKey)}
+								<div
+									class="border-t border-base-300 pt-3 md:rounded-lg md:border md:border-base-200 md:bg-base-100 md:p-4 md:shadow-sm"
+								>
 									<VegaChart
 										spec={chartSpec}
+										height={300}
 										title={$_('search.chart_title', {
 											values: { chartKey: chartKey.replace(/_/g, ' ').replace(':', ' vs ') },
 											default: '{chartKey}'

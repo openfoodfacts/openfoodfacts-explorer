@@ -1,0 +1,28 @@
+export const CHART_FIELDS = [
+	'nutrition_grades',
+	'environmental_score_grade',
+	'nova_group',
+	'categories',
+	'labels',
+	'brands',
+	'countries',
+	'stores',
+	'allergens',
+	'traces',
+	'additives',
+	'ingredients_analysis'
+];
+
+export const DEFAULT_CHART_FIELDS = ['nutrition_grades', 'environmental_score_grade', 'nova_group'];
+
+/** Chart fields named in a search-a-licious validation error ("... in facets/charts: <field>"). */
+export function rejectedChartFields(error: unknown): string[] {
+	const text = JSON.stringify(error ?? '');
+	return [...text.matchAll(/in facets\/charts: ([\w.]+)/g)].map((match) => match[1]);
+}
+
+/** Known chart fields from the `charts` URL parameter, deduplicated. */
+export function parseChartFields(param: string | null): string[] {
+	if (param == null) return [...DEFAULT_CHART_FIELDS];
+	return [...new Set(param.split(','))].filter((field) => CHART_FIELDS.includes(field));
+}
