@@ -20,6 +20,7 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG GIT_COMMIT_SHA
+ARG GIT_DESCRIBE
 RUN pnpm run build
 # Prune dev dependencies after build to save space
 RUN HUSKY=0 pnpm prune --prod

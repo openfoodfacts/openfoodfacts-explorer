@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
 
-	import TagsString from '$lib/ui/inputs/TagsString.svelte';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';

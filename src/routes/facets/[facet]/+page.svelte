@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import { _ } from '$lib/i18n';
-	import BackLink from '$lib/ui/facets/BackLink.svelte';
+	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
+	import Pagination from '#lib/Pagination.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import Metadata from '$lib/Metadata.svelte';
+	import Metadata from '#lib/Metadata.svelte';
 
 	import CountriesMap from './CountriesMap.svelte';
 
@@ -29,7 +29,7 @@
 
 <div class="mb-4">
 	<BackLink
-		href={resolve('/facets')}
+		href={resolve('facets')}
 		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
 	/>
 </div>

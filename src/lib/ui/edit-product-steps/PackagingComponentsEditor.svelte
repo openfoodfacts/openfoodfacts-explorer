@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import type { PackagingComponent } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { Product } from '$lib/api';
-	import { getTaxonomySuggestions } from '$lib/api';
+	import type { Product } from '#lib/api.js';
+	import { getTaxonomySuggestions } from '#lib/api.js';
 
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';

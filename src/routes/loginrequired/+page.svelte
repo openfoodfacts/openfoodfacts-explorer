@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 
@@ -24,7 +24,7 @@
 			<div class="mt-4 card-actions flex w-full flex-col gap-3">
 				<a
 					rel="external"
-					href="{resolve('/oauth/login')}?redirect={encodeURIComponent(redirectTarget)}"
+					href="{resolve('oauth/login')}?redirect={encodeURIComponent(redirectTarget)}"
 					class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
 				>
 					{$_('navbar.login', { default: 'Login' })}

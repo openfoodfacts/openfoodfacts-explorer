@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker, trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
+	import { tracker, trackOffEvent, trackOffSiteSearch } from '#lib/analytics.js';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { SORT_OPTIONS } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { preferences } from '#lib/settings.js';
+	import { SORT_OPTIONS } from '#lib/const.js';
 	import {
 		addExcludeFacet,
 		addIncludeFacet,
@@ -17,15 +17,15 @@
 		toggleExcludeFacet,
 		toggleIncludeFacet,
 		type FacetsSelection
-	} from '$lib/search/facet-selection';
-	import { extractQuery, parseLuceneFacets, toLuceneString } from '$lib/search/lucene';
-	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
-	import { personalizeSearchResults } from '$lib/productScoring';
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
+	} from '#lib/search/facet-selection.js';
+	import { extractQuery, parseLuceneFacets, toLuceneString } from '#lib/search/lucene.js';
+	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { personalizeSearchResults } from '#lib/productScoring.js';
+	import Pagination from '#lib/Pagination.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import SearchOptionsFooter from '#lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '#lib/ui/VegaChart.svelte';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
@@ -37,10 +37,10 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
-	import WcProductCard from '$lib/ui/WcProductCard.svelte';
-	import type { SearchResult } from '$lib/api/search';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { exportSearchResultsCsv } from '$lib/utils/searchCsvExport';
+	import WcProductCard from '#lib/ui/WcProductCard.svelte';
+	import type { SearchResult } from '#lib/api/search.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { exportSearchResultsCsv } from '#lib/utils/searchCsvExport.js';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
@@ -81,7 +81,7 @@
 	let showAdvancedOptions = $state(false);
 
 	let selectedSort = $derived.by(() => {
-		const url = new URL(page.url);
+		const url = new URL(page.url.href);
 		const sortValue = url.searchParams.get('sort_by') || '-unique_scans_n';
 		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
 	});
@@ -96,20 +96,20 @@
 		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
 		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
-		const newUrl = new URL(page.url);
+		const newUrl = new URL(page.url.href);
 		newUrl.searchParams.set('sort_by', nextSort.value);
 		goto(newUrl.toString());
 	}
 
 	function getSearchPageUrl(nextPage: number) {
-		const newUrl = new URL(page.url);
+		const newUrl = new URL(page.url.href);
 		newUrl.searchParams.set('page', nextPage.toString());
 		return newUrl.toString();
 	}
 
 	function navigateToSearchPage(nextPage: number) {
 		window.scrollTo(0, 0);
-		void goto(getSearchPageUrl(nextPage), { noScroll: false });
+		void goto(getSearchPageUrl(nextPage), { reset: true });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
@@ -138,7 +138,9 @@
 		}
 	}
 
-	beforeNavigate(() => {
+	beforeNavigate(({ shallow }) => {
+		if (shallow) return;
+
 		clearPendingTimer();
 	});
 
@@ -155,12 +157,12 @@
 		const applyNavigation = () => {
 			const mainQuery = extractQuery(data.query);
 			const newQuery = toLuceneString(mainQuery, nextFacets);
-			const newUrl = new URL(page.url);
+			const newUrl = new URL(page.url.href);
 			newUrl.searchParams.set('q', newQuery);
 			newUrl.searchParams.set('page', '1');
 
 			if (newUrl.toString() !== page.url.toString()) {
-				goto(newUrl.toString(), { keepFocus: true, noScroll: true, replaceState: true });
+				goto(newUrl.toString(), { reset: false, replace: true });
 			}
 		};
 

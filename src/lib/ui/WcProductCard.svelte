@@ -4,17 +4,17 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createProductsApi } from '$lib/api';
-	import type { ProductReduced } from '$lib/api';
-	import type { ScoreData } from '$lib/scoring';
+	import { createProductsApi } from '#lib/api.js';
+	import type { ProductReduced } from '#lib/api.js';
+	import type { ScoreData } from '#lib/scoring.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from 'svelte-i18n';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
 
-	import { compareStore } from '$lib/stores/compareStore';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { resolve } from '$app/paths';
 
 	type Props = {

@@ -13,14 +13,14 @@ import {
 	type Allergen,
 	createProductsApi,
 	type ProductStateFailure
-} from '$lib/api';
-import { type ProductStateResponse } from '$lib/api/errorUtils';
-import { userInfo } from '$lib/stores/user';
-import { PRODUCT_STATUS, type ProductType } from '$lib/const';
+} from '#lib/api.js';
+import { type ProductStateResponse } from '#lib/api/errorUtils.js';
+import { userInfo } from '#lib/stores/user.js';
+import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 
 import type { PageLoad } from './$types';
-import { dev } from '$app/environment';
-import { getLanguageCode, preferences } from '$lib/settings';
+import { dev } from '$app/env';
+import { getLanguageCode, preferences } from '#lib/settings.js';
 import { resolve } from '$app/paths';
 
 export const ssr = false;
@@ -33,7 +33,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (get(userInfo) == null && !dev) {
 		redirect(
 			302,
-			resolve('/loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+			resolve('loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
 		);
 	}
 
@@ -46,7 +46,6 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 
 	const { data: productState, error: productError } = productReq;
 	const parsedError = (productError || null) as ProductStateResponse | null;
-
 	const isNotFound =
 		(parsedError && parsedError.result?.id === 'product_not_found') ||
 		(productState &&
@@ -62,8 +61,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		productState.status === 'failure' &&
 		productState.result?.id !== 'product_not_found'
 	) {
-		error(500, {
-			message: 'Failure to load product',
+		error(500, 'Failure to load product', {
 			errors: (productState as ProductStateFailure).errors
 		});
 	}

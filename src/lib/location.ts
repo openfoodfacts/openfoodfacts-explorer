@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 export async function getLocation(): Promise<GeolocationPosition> {
 	return new Promise((resolve, reject) => {

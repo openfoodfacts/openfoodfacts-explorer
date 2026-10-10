@@ -1,7 +1,7 @@
-import { calculateScore, type ScoreData, type MatchStatus } from '$lib/scoring';
-import type { ProductAttributeForScoringGroup } from '$lib/api/product';
-import type { UserPreference } from '$lib/stores/preferencesStore';
-import type { Product } from '$lib/api/product';
+import { calculateScore, type ScoreData, type MatchStatus } from '#lib/scoring.js';
+import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
+import type { UserPreference } from '#lib/stores/preferencesStore.js';
+import type { Product } from '#lib/api/product.js';
 
 export type ProductWithAttributes<T = Product> = {
 	product: T;

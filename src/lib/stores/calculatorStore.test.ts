@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { get } from 'svelte/store';
-import type { Nutriments } from '$lib/api/nutriments';
+import type { Nutriments } from '#lib/api/nutriments.js';
 import {
 	addItemToCalculator,
 	calculateTotals,
@@ -11,7 +11,7 @@ import {
 	removeItem,
 	updateItemQuantity,
 	type CalculatorItem
-} from './calculatorStore';
+} from './calculatorStore.js';
 
 function makeItem(overrides: Partial<CalculatorItem> = {}): CalculatorItem {
 	return {

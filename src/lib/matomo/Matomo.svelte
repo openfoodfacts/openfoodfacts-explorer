@@ -1,13 +1,3 @@
-<!--
-SPDX-FileCopyrightText:  Andreas Nüßlein <andreas@nuessle.in>
-SPDX-FileCopyrightText:  Mikkel Eide Eriksen <mikkel.eriksen@gmail.com>
-SPDX-FileCopyrightText:  VaiTon <eyadlorenzo@gmail.com>
-
-SPDX-License-Identifier: AGPL-3.0-or-later
-
-Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
--->
-
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 
@@ -143,7 +133,9 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 		}
 	});
 
-	afterNavigate(async ({ to }) => {
+	afterNavigate(async ({ to, shallow }) => {
+		if (shallow) return;
+
 		if (!$tracker) {
 			await initializeMatomo();
 			return;
@@ -165,6 +157,13 @@ Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
 	});
 </script>
 
-<svelte:head>
-	<script async defer src={`${url}/matomo.js`}></script>
-</svelte:head>
+<!--
+SPDX-FileCopyrightText:  Andreas Nüßlein <andreas@nuessle.in>
+SPDX-FileCopyrightText:  Mikkel Eide Eriksen <mikkel.eriksen@gmail.com>
+SPDX-FileCopyrightText:  VaiTon <eyadlorenzo@gmail.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+Initially taken from https://github.com/sinnwerkstatt/sveltekit-matomo
+-->
+<svelte:head><script async defer src={`${url}/matomo.js`}></script></svelte:head>

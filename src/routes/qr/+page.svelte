@@ -3,8 +3,8 @@
 	import type { Html5Qrcode } from 'html5-qrcode';
 
 	import { goto } from '$app/navigation';
-	import { _ } from '$lib/i18n';
-	import { Gs1Barcode } from '$lib/barcodes/gs1';
+	import { _ } from '#lib/i18n/index.js';
+	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;

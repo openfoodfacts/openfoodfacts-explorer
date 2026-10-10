@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import { _ } from '$lib/i18n';
-	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
-	import Tabs from '$lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
-	import Metadata from '$lib/Metadata.svelte';
-	import { COMMIT_SHA } from '$lib/const';
+	import { preferences } from '#lib/settings.js';
+	import { getLocaleLabel } from '#lib/languages.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
+	import Tabs from '#lib/ui/Tabs.svelte';
+	import type { AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
+	import Metadata from '#lib/Metadata.svelte';
+	import { COMMIT_SHA } from '#lib/const.js';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -23,8 +24,7 @@
 	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
-	const APP_VERSION = import.meta.env.PACKAGE_VERSION;
-	const SHORT_COMMIT_SHA = COMMIT_SHA.slice(0, 7);
+	const APP_VERSION = import.meta.env.BUILD_VERSION;
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -42,40 +42,11 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	function getDisplayName(
-		type: 'language' | 'region',
-		code: string,
-		displayLocale = 'en'
-	): string | undefined {
-		if (typeof Intl.DisplayNames !== 'function') return undefined;
-		try {
-			return new Intl.DisplayNames([displayLocale], { type }).of(code) ?? undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	function getLocaleLabel(code: string): string {
-		const languageCode = getLanguageCode(code);
-		const language = Object.values(data.languages).find(
-			(item) => item.language_code_2?.en?.toLowerCase() === languageCode
-		);
-		const exonym = language?.name?.en ?? getDisplayName('language', languageCode) ?? languageCode;
-		const endonym =
-			language?.name?.[languageCode] ??
-			getDisplayName('language', languageCode, languageCode) ??
-			exonym;
-		const region = code.split('-').find((part) => /^[A-Z]{2}$/.test(part));
-		const englishRegion = region && getDisplayName('region', region);
-		const nativeRegion = region && getDisplayName('region', region, languageCode);
-		const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
-		const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
-
-		return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
-	}
-
 	let localeOptions = $derived(
-		availableLocales.map((code) => ({ code, label: getLocaleLabel(code) }))
+		availableLocales.map((code) => ({
+			code,
+			label: getLocaleLabel(code, Object.values(data.languages))
+		}))
 	);
 
 	function getSelectedLocale(): string {
@@ -215,11 +186,6 @@
 						<span>{$_('settings.github_cta')}</span>
 					</a>
 					<p class="mt-4 text-sm text-primary-content/80">
-						{$_('settings.app_version', {
-							default: 'Version {version}',
-							values: { version: APP_VERSION }
-						})}
-						·
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
@@ -229,13 +195,19 @@
 								title={COMMIT_SHA}
 								aria-label={$_('settings.app_commit_link', {
 									default: 'View commit {sha} on GitHub',
-									values: { sha: SHORT_COMMIT_SHA }
+									values: { sha: COMMIT_SHA }
 								})}
 							>
-								{SHORT_COMMIT_SHA}
+								{$_('settings.app_version', {
+									default: 'Version {version}',
+									values: { version: APP_VERSION }
+								})}
 							</a>
 						{:else}
-							SHA unknown
+							{$_('settings.app_version', {
+								default: 'Version {version}',
+								values: { version: APP_VERSION }
+							})}
 						{/if}
 					</p>
 				</div>

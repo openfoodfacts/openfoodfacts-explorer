@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiMenu from '@iconify-svelte/mdi/menu';
 	import type { Component, ComponentType } from 'svelte';
 

@@ -1,6 +1,6 @@
 import type { KnowledgePanels } from './knowledgepanels';
 import { createProductsApi } from './product';
-import { dev } from '$app/environment';
+import { dev } from '$app/env';
 
 function getExternalSourcesResponse(fetch: typeof window.fetch) {
 	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources');

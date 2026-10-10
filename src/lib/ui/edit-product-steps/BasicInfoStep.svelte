@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
-	import { PRODUCT_TYPES } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
+	import { PRODUCT_TYPES } from '#lib/const.js';
 
-	import TagsString from '$lib/ui/inputs/TagsString.svelte';
-	import { getLanguageName } from '$lib/languages';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
+	import { getLanguageName } from '#lib/languages.js';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
 
-	import InputAutocomplete from '$lib/ui/InputAutocomplete.svelte';
+	import InputAutocomplete from '#lib/ui/InputAutocomplete.svelte';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 
 	type Props = {
@@ -189,8 +189,14 @@
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div class="form-control w-full sm:col-span-2">
 				<div class="label">
-					<span class="label-text text-sm font-medium sm:text-base">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.generic_name', { default: 'Common name' })}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.generic_name', {
+								default:
+									'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+							})}
+						/>
 					</span>
 				</div>
 				<div class="space-y-3">
@@ -558,8 +564,14 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control w-full sm:col-span-2">
 							<div class="label">
-								<span class="label-text text-sm font-medium sm:text-base">
+								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.generic_name', { default: 'Common name' })}
+									<InfoTooltip
+										text={$_('product.edit.tooltips.common_name', {
+											default:
+												'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+										})}
+									/>
 								</span>
 							</div>
 							<div class="space-y-3">

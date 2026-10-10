@@ -7,8 +7,8 @@
 		clearCalculator,
 		toggleCalculator,
 		totalNutrition
-	} from '$lib/stores/calculatorStore';
-	import { _ } from '$lib/i18n';
+	} from '#lib/stores/calculatorStore.js';
+	import { _ } from '#lib/i18n/index.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';

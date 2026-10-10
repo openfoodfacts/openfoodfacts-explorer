@@ -2,18 +2,18 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 
-	import Card from '$lib/ui/Card.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import { compareStore } from '$lib/stores/compareStore';
-	import ComparisonDisplay from '$lib/ui/ComparisonDisplay.svelte';
-	import { _ } from '$lib/i18n';
-	import { shareContent } from '$lib/utils/webShare';
+	import Card from '#lib/ui/Card.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import ComparisonDisplay from '#lib/ui/ComparisonDisplay.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -117,26 +117,24 @@
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'absolute'}
 							class:btn-ghost={comparisonMode !== 'absolute'}
-							onclick={() => (comparisonMode = 'absolute')}
+							onclick={() => (comparisonMode = 'absolute')}>{$_('compare.mode_absolute')}</button
 						>
-							{$_('compare.mode_absolute')}
-						</button>
+
 						<button
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'relative-first'}
 							class:btn-ghost={comparisonMode !== 'relative-first'}
 							onclick={() => (comparisonMode = 'relative-first')}
+							>{$_('compare.mode_vs_first')}</button
 						>
-							{$_('compare.mode_vs_first')}
-						</button>
+
 						<button
 							class="btn btn-sm"
 							class:btn-outline={comparisonMode === 'relative-best'}
 							class:btn-ghost={comparisonMode !== 'relative-best'}
 							onclick={() => (comparisonMode = 'relative-best')}
+							>{$_('compare.mode_vs_best')}</button
 						>
-							{$_('compare.mode_vs_best')}
-						</button>
 					</div>
 					<button
 						class="btn bg-white text-black btn-sm hover:bg-gray-200"
@@ -161,9 +159,7 @@
 				<div class="py-8 text-center">
 					<p class="mb-4 text-lg">{$_('compare.no_products_selected')}</p>
 					<p class="mb-4 text-sm text-gray-600">{$_('compare.add_products_hint')}</p>
-					<a href={resolve('/explore')} class="btn btn-primary">
-						{$_('compare.browse_products')}
-					</a>
+					<a href={resolve('explore')} class="btn btn-primary">{$_('compare.browse_products')}</a>
 				</div>
 			{/if}
 		{:else}
@@ -183,9 +179,10 @@
 							})}
 						</p>
 					</div>
-					<a href={resolve('/explore')} class="btn btn-primary btn-sm">
-						{$_('compare.browse_products', { default: 'Browse Products' })}
-					</a>
+
+					<a href={resolve('explore')} class="btn btn-primary btn-sm"
+						>{$_('compare.browse_products', { default: 'Browse Products' })}</a
+					>
 				</div>
 			{/if}
 			<ComparisonDisplay

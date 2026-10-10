@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { ProductStateError } from '$lib/api';
+import type { ProductStateError } from '#lib/api.js';
 
 // for information about these interfaces
 declare global {

@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import { SvelteSet } from 'svelte/reactivity';
-	import type { Facet, FacetItem } from '$lib/api/search';
+	import type { Facet, FacetItem } from '#lib/api/search.js';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
-	import { MASTER_FACET_CATALOG, FACET_CATEGORY_LABELS } from '$lib/search/facet-catalog';
-	import { computeFacetCollections } from '$lib/search/facet-collections';
-	import { type FacetsSelection } from '$lib/search/facet-selection';
+	import { MASTER_FACET_CATALOG, FACET_CATEGORY_LABELS } from '#lib/search/facet-catalog.js';
+	import { computeFacetCollections } from '#lib/search/facet-collections.js';
+	import { type FacetsSelection } from '#lib/search/facet-selection.js';
 
 	type Props = {
 		facets?: Record<string, Facet>;

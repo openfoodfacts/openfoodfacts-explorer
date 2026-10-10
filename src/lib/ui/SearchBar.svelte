@@ -3,9 +3,9 @@
 		createSearchApi,
 		type AutocompleteOption,
 		type AutocompleteResponse
-	} from '$lib/api/search';
-	import { _, getBrowserLocale } from '$lib/i18n';
-	import { getLanguageCode } from '$lib/settings';
+	} from '#lib/api/search.js';
+	import { _, getBrowserLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';

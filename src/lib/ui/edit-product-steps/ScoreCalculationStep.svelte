@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
 
 	import IngredientsStep from './IngredientsStep.svelte';
 	import NutritionStep from './NutritionStep.svelte';

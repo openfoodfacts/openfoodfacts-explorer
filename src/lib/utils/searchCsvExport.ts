@@ -1,5 +1,5 @@
 import { resolve } from '$app/paths';
-import { downloadCsv, toCsv } from '$lib/utils/csv';
+import { downloadCsv, toCsv } from '#lib/utils/csv.js';
 
 export const SEARCH_CSV_HEADERS = [
 	'barcode',

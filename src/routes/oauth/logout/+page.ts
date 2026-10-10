@@ -4,8 +4,8 @@ export const ssr = false;
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { OAUTH_LOGOUT_REDIRECT_URI } from '$lib/const';
-import { createKeycloakApi } from '$lib/api';
+import { OAUTH_LOGOUT_REDIRECT_URI } from '#lib/const.js';
+import { createKeycloakApi } from '#lib/api.js';
 
 export const load: PageLoad = async ({ fetch }) => {
 	const redirectUri = OAUTH_LOGOUT_REDIRECT_URI(new URL(window.location.href));
@@ -15,5 +15,5 @@ export const load: PageLoad = async ({ fetch }) => {
 		refreshToken: '',
 		postLogoutRedirectUri: redirectUri
 	});
-	throw redirect(302, logoutUrl);
+	throw redirect(302, logoutUrl, { external: true });
 };

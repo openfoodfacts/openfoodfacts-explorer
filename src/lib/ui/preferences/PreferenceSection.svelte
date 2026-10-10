@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import {
 		getPreference,
 		personalizedSearch,
 		type AttributeGroup,
 		type AttributeParameters,
 		type UserPreference
-	} from '$lib/stores/preferencesStore';
-	import Tags from '$lib/ui/inputs/Tags.svelte';
+	} from '#lib/stores/preferencesStore.js';
+	import Tags from '#lib/ui/inputs/Tags.svelte';
 
 	type Props = {
 		group: AttributeGroup;

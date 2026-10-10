@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { trackOffEvent } from '$lib/analytics';
-	import type { KnowledgeElement, KnowledgePanels } from '$lib/api';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import type { KnowledgeElement, KnowledgePanels } from '#lib/api.js';
 
-	import Debug from '$lib/ui/Debug.svelte';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import Debug from '#lib/ui/Debug.svelte';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 
 	import Panel from './Panel.svelte';
 	import Map from './Map.svelte';

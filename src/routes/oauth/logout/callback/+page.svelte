@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { clearAuthTokens } from '$lib/stores/auth';
-	import { trackOffEvent } from '$lib/analytics';
+	import { clearAuthTokens } from '#lib/stores/auth.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 	import { onMount } from 'svelte';
 
 	async function doLogout() {

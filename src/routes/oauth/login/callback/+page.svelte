@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
-	import { saveAuthTokens } from '$lib/stores/auth';
+	import { saveAuthTokens } from '#lib/stores/auth.js';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
-	import { createKeycloakApi } from '$lib/api';
-	import { getSafeRedirectUrl } from '$lib/utils';
-	import { trackOffEvent } from '$lib/analytics';
+	import { createKeycloakApi } from '#lib/api.js';
+	import { getSafeRedirectUrl } from '#lib/utils.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	async function doPkceExchange() {
-		const url = page.url;
+		const url = new URL(page.url.href);
 
 		const returnedState = url.searchParams.get('state');
 		const storedState = localStorage.getItem('authState');
@@ -76,7 +76,8 @@
 			{:catch error}
 				<div class="mb-4 text-4xl font-bold text-red-600">Login Failed</div>
 				<p class="text-lg text-base-content">{error.message}</p>
-				<a class="btn mt-4 btn-outline btn-primary" href={resolve('/oauth/login')}> Try Again </a>
+
+				<a class="btn mt-4 btn-outline btn-primary" href={resolve('oauth/login')}>Try Again</a>
 			{/await}
 		{/if}
 	</div>
