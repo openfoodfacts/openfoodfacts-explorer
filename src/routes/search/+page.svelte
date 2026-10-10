@@ -37,6 +37,7 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
+	import ChartBuilder from './ChartBuilder.svelte';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import type { SearchResult } from '#lib/api/search.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
@@ -403,6 +404,7 @@
 					</button>
 					{#if showGraphs}
 						<div class="mt-2 grid grid-cols-1 gap-4" transition:slide={{ duration: 300 }}>
+							<ChartBuilder query={data.query} />
 							{#each Object.entries(searchResult.charts) as [chartKey, chartSpec] (chartKey)}
 								<div
 									class="border-t border-base-300 pt-3 md:rounded-lg md:border md:border-base-200 md:bg-base-100 md:p-4 md:shadow-sm"

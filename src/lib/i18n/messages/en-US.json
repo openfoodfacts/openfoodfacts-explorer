@@ -45,6 +45,8 @@
 		"raw_query_label": "Raw Query",
 		"no_results": "No results",
 		"show_graphs": "Show Graphs",
+		"add_chart": "Add a chart",
+		"remove_chart": "Remove {name} chart",
 		"hide_graphs": "Hide Graphs",
 		"chart_title": "{chartKey}",
 		"generate_graphs_classic": "Generate graphs for {term} (classic version)",
