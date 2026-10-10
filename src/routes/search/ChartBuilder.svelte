@@ -17,6 +17,8 @@
 	let latestRequest = 0;
 	let addMenu: HTMLDetailsElement | null = $state(null);
 
+	// The charts come from their own small request (one product, no product cards), so they cost
+	// nothing until the graphs are opened. Responses to an older selection are dropped.
 	$effect(() => {
 		const request = ++latestRequest;
 		if (fields.length === 0) {
@@ -47,6 +49,7 @@
 
 	function setFields(next: string[]) {
 		fields = next;
+		// Build on a navigation still in flight (e.g. a filter change) so it is not lost.
 		const url = new URL((navigating.to?.url ?? page.url).href);
 		url.searchParams.set('charts', next.join(','));
 		goto(url, { reset: false, replace: true });

@@ -63,7 +63,11 @@
 		});
 	}
 
+	// Band axis labels stay readable on any width: the `xx:` language prefix is dropped, a label wider
+	// than its bar wraps at hyphens, and if neighbouring labels would still collide the whole axis turns
+	// sideways (one choice per chart, never mixed).
 	const CHAR_WIDTH = 6;
+	// Share of each bar slot left empty, so bars never touch on narrow screens.
 	const BAND_PADDING = 0.2;
 	const LABEL_FONT = '10px sans-serif';
 	const LABEL_GAP = 10;
@@ -105,6 +109,7 @@
 			);
 			compiledSpec = {
 				...compiledSpec,
+				// resize: grow the height when the labels turn sideways after the first render.
 				autosize: { type: 'fit-x', contains: 'padding', resize: true },
 				signals: [...(compiledSpec.signals ?? []), { name: 'labelsSideways', value: false }],
 				scales: compiledSpec.scales?.map((s) =>
@@ -165,6 +170,9 @@
 
 			await view.runAsync();
 
+			// Sideways or not is decided after the first render, from the rows actually drawn (the spec's
+			// rows can include values its transforms filter out) and the real bar spacing. It is decided again
+			// only when the container width changes, so a label flip cannot trigger another flip.
 			const axisScale = compiledSpec.axes?.find((a) => bandScales.has(a.scale))?.scale;
 			const domain = (
 				compiledSpec.scales?.find((s) => s.name === axisScale) as
