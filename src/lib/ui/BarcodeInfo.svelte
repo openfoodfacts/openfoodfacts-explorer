@@ -8,9 +8,36 @@
 	import { OPEN_PRICES_PRODUCT_URL } from '#lib/const.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { tick } from 'svelte';
+	import { getGoogleReverseSearchUrl, getYandexReverseSearchUrl } from '#lib/utils/imageSearch.js';
 	import Card from './Card.svelte';
 
-	let { code }: { code: string } = $props();
+	export type BarcodeInfoProduct = {
+		code: string;
+		image_front_url?: string;
+		image_front_small_url?: string;
+		image_ingredients_url?: string;
+		image_nutrition_url?: string;
+	};
+
+	let { product }: { product: BarcodeInfoProduct } = $props();
+
+	let code = $derived(product.code);
+	let reverseSearchEntries = $derived(
+		[
+			{
+				label: $_('product.reverse_search.front', { default: 'Front' }),
+				url: product.image_front_url || product.image_front_small_url
+			},
+			{
+				label: $_('product.reverse_search.ingredients', { default: 'Ingredients' }),
+				url: product.image_ingredients_url
+			},
+			{
+				label: $_('product.reverse_search.nutrition', { default: 'Nutrition' }),
+				url: product.image_nutrition_url
+			}
+		].filter((entry): entry is { label: string; url: string } => Boolean(entry.url))
+	);
 
 	type AvailabilityStatus = 'loading' | 'found' | 'not-found' | 'error';
 	type AvailabilityKey = 'open_prices' | 'pro_off';
@@ -281,6 +308,39 @@
 							{/each}
 						</div>
 					</section>
+
+					{#if reverseSearchEntries.length > 0}
+						<section class="border-t border-base-300 pt-5 lg:col-span-2">
+							<h3 class="mb-3 font-semibold">
+								{$_('product.reverse_search.title', { default: 'Reverse Image Search' })}
+							</h3>
+							<div class="grid gap-2">
+								{#each reverseSearchEntries as entry (entry.label)}
+									<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+										<span class="w-24 text-sm font-medium text-base-content/70">{entry.label}</span>
+										<a
+											class="link text-sm link-hover"
+											href={getGoogleReverseSearchUrl(entry.url)}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{$_('product.reverse_search.google', { default: 'Google Lens' })}
+											<span aria-hidden="true">↗</span>
+										</a>
+										<a
+											class="link text-sm link-hover"
+											href={getYandexReverseSearchUrl(entry.url)}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{$_('product.reverse_search.yandex', { default: 'Yandex Images' })}
+											<span aria-hidden="true">↗</span>
+										</a>
+									</div>
+								{/each}
+							</div>
+						</section>
+					{/if}
 
 					<section class="border-t border-base-300 pt-5 lg:col-span-2">
 						<div class="flex flex-wrap items-center justify-between gap-3">
