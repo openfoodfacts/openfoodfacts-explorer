@@ -101,11 +101,14 @@ describe('analytics', () => {
 			expect(mockTracker.trackSiteSearch).not.toHaveBeenCalled();
 		});
 
-		it('rejects embedded barcodes within search queries', () => {
-			tracker.set(mockTracker as Tracker);
-			trackOffSiteSearch('nutella 3017620422003');
-			expect(mockTracker.trackSiteSearch).not.toHaveBeenCalled();
-		});
+		it.each(['nutella 3017620422003', 'nutella3017620422003', '3017620422003ml'])(
+			'rejects embedded barcodes within search queries: "%s"',
+			(query) => {
+				tracker.set(mockTracker as Tracker);
+				trackOffSiteSearch(query);
+				expect(mockTracker.trackSiteSearch).not.toHaveBeenCalled();
+			}
+		);
 
 		it('tracks 4-digit numbers below the 5-digit barcode threshold', () => {
 			tracker.set(mockTracker as Tracker);
