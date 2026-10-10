@@ -22,9 +22,7 @@
 		onSearch: (query: string) => void;
 	} = $props();
 
-	// null = hidden
-	let autocompleteLoading = $state(false);
-	let autocompleteList = $state<AutocompleteOption[] | null>(null);
+	let autocompletePromise = $state<Promise<AutocompleteOption[]> | null>(null);
 	let highlightedIndex = $state<number | null>(null);
 
 	// debounce for autocomplete
@@ -34,16 +32,19 @@
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
-	async function fetchAutocomplete(query: string) {
-		autocompleteAbortController?.abort();
+	function abortAutocompleteRequest() {
+		const controller = autocompleteAbortController;
+		autocompleteAbortController = null;
+		controller?.abort();
+	}
 
-		if (query.trim().length < minQueryLength) {
-			autocompleteLoading = false;
-			autocompleteList = null;
-			return;
-		}
+	async function fetchAutocomplete(query: string): Promise<AutocompleteOption[]> {
+		abortAutocompleteRequest();
 
-		autocompleteAbortController = new AbortController();
+		if (query.trim().length < minQueryLength) return [];
+
+		const controller = new AbortController();
+		autocompleteAbortController = controller;
 
 		const autocompleteQuery = {
 			q: query,
@@ -54,34 +55,51 @@
 			index_id: null
 		};
 
-		autocompleteLoading = true;
 		try {
-			const api = createSearchApi(fetch);
+			const fetchWithSignal: typeof fetch = (input, init) =>
+				fetch(input, { ...init, signal: controller.signal });
+			const api = createSearchApi(fetchWithSignal);
 			const { data, error } = await api.autocomplete(autocompleteQuery);
+			if (controller.signal.aborted) return [];
 			if (error) {
 				console.error('Autocomplete error', error);
-				autocompleteList = [];
+				return [];
 			} else {
 				const result = data as AutocompleteResponse | undefined;
-				autocompleteList = Array.isArray(result?.options) ? result.options : [];
+				return Array.isArray(result?.options) ? result.options : [];
 			}
 		} catch (e) {
-			if (e instanceof Error && e.name !== 'AbortError') {
+			if (!controller.signal.aborted && e instanceof Error && e.name !== 'AbortError') {
 				console.error('Autocomplete error', e);
 			}
+			return [];
 		} finally {
-			autocompleteLoading = false;
+			if (autocompleteAbortController === controller) {
+				autocompleteAbortController = null;
+			}
 		}
 	}
 
 	function debouncedFetchAutocomplete(query: string) {
 		clearTimeout(debounceTimeoutId);
-		debounceTimeoutId = setTimeout(() => fetchAutocomplete(query), DEBOUNCE_DELAY_MS);
+		abortAutocompleteRequest();
+		autocompletePromise = null;
+
+		if (query.trim().length < minQueryLength) return;
+
+		debounceTimeoutId = setTimeout(() => {
+			autocompletePromise = fetchAutocomplete(query);
+		}, DEBOUNCE_DELAY_MS);
+	}
+
+	function fetchAutocompleteImmediately(query: string) {
+		clearTimeout(debounceTimeoutId);
+		autocompletePromise = fetchAutocomplete(query);
 	}
 
 	onDestroy(() => {
 		clearTimeout(debounceTimeoutId);
-		autocompleteAbortController?.abort();
+		abortAutocompleteRequest();
 	});
 
 	function handleEnter() {
@@ -92,42 +110,54 @@
 
 	function handleSelect(item: AutocompleteOption) {
 		searchQuery = item.text;
+		autocompletePromise = null;
+		highlightedIndex = null;
 		onSearch?.(item.text);
 	}
 
-	function handleKeyDown(e: KeyboardEvent) {
+	async function handleKeyDown(e: KeyboardEvent) {
 		if (loading) return; // prevent interactions while loading
 
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
-			if (autocompleteList == null || autocompleteList.length === 0) return;
+			const promise = autocompletePromise;
+			if (promise == null) return;
+			const options = await promise;
+			if (promise !== autocompletePromise || options.length === 0) return;
 
-			if (highlightedIndex === null || highlightedIndex === autocompleteList.length - 1) {
+			if (highlightedIndex === null || highlightedIndex === options.length - 1) {
 				highlightedIndex = 0;
 			} else {
 				highlightedIndex = highlightedIndex + 1;
 			}
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
-			if (autocompleteList == null || autocompleteList.length === 0) return;
+			const promise = autocompletePromise;
+			if (promise == null) return;
+			const options = await promise;
+			if (promise !== autocompletePromise || options.length === 0) return;
 
 			if (highlightedIndex === null || highlightedIndex === 0) {
-				highlightedIndex = autocompleteList.length - 1;
+				highlightedIndex = options.length - 1;
 			} else {
 				highlightedIndex = highlightedIndex - 1;
 			}
 		} else if (e.key === 'Enter') {
-			if (highlightedIndex !== null && autocompleteList !== null) {
+			if (highlightedIndex !== null && autocompletePromise !== null) {
 				e.preventDefault();
-				handleSelect(autocompleteList[highlightedIndex]);
-				highlightedIndex = null;
+				const promise = autocompletePromise;
+				const options = await promise;
+				if (promise === autocompletePromise && options[highlightedIndex]) {
+					handleSelect(options[highlightedIndex]);
+				}
 			} else if (searchQuery.trim() !== '') {
 				e.preventDefault();
 				onSearch?.(searchQuery);
 			}
 		} else if (e.key === 'Escape') {
 			highlightedIndex = null;
-			autocompleteList = null;
+			autocompletePromise = null;
+			abortAutocompleteRequest();
 		}
 	}
 </script>
@@ -149,39 +179,45 @@
 				}}
 				onfocus={() => {
 					if (searchQuery.trim().length >= minQueryLength) {
-						fetchAutocomplete(searchQuery);
+						fetchAutocompleteImmediately(searchQuery);
 					}
 				}}
 			/>
-			{#if autocompleteLoading || autocompleteList != null}
+			{#if autocompletePromise !== null}
 				<div
 					class="menu dropdown-content z-1 mt-1 w-full min-w-0 rounded-box bg-base-100 p-2 shadow-sm"
 				>
-					{#if autocompleteList == null && autocompleteLoading}
+					{#await autocompletePromise}
 						<div class="flex justify-center">
 							<span class="loading loading-lg loading-spinner"></span>
 						</div>
-					{:else if autocompleteList == null || autocompleteList.length === 0}
+					{:then autocompleteList}
+						{#if autocompleteList.length === 0}
+							<div class="flex justify-center">
+								<span class="text-sm text-base-content">{$_('search.no_results')}</span>
+							</div>
+						{:else}
+							<ul>
+								{#each autocompleteList as item, i (item.id)}
+									<li>
+										<button
+											onmousedown={() => handleSelect(item)}
+											class:bg-base-300={highlightedIndex === i}
+										>
+											<div class="flex flex-col gap-1">
+												<p class="">{item.text}</p>
+												<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
+											</div>
+										</button>
+									</li>
+								{/each}
+							</ul>
+						{/if}
+					{:catch}
 						<div class="flex justify-center">
 							<span class="text-sm text-base-content">{$_('search.no_results')}</span>
 						</div>
-					{:else}
-						<ul>
-							{#each autocompleteList as item, i (item.id)}
-								<li>
-									<button
-										onmousedown={() => handleSelect(item)}
-										class:bg-base-300={highlightedIndex === i}
-									>
-										<div class="flex flex-col gap-1">
-											<p class="">{item.text}</p>
-											<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
-										</div>
-									</button>
-								</li>
-							{/each}
-						</ul>
-					{/if}
+					{/await}
 				</div>
 			{/if}
 			<button
