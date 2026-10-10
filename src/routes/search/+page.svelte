@@ -98,7 +98,8 @@
 		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
 		const newUrl = new URL(page.url.href);
 		newUrl.searchParams.set('sort_by', nextSort.value);
-		goto(newUrl.toString());
+		window.scrollTo(0, 0);
+		goto(newUrl.toString(), { reset: false });
 	}
 
 	function getSearchPageUrl(nextPage: number) {
@@ -109,7 +110,7 @@
 
 	function navigateToSearchPage(nextPage: number) {
 		window.scrollTo(0, 0);
-		void goto(getSearchPageUrl(nextPage), { reset: true });
+		void goto(getSearchPageUrl(nextPage), { reset: false });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
@@ -296,17 +297,20 @@
 			</span>
 		{/if}
 	</h2>
-	<div class="flex items-center gap-2">
+	<div class="flex w-full items-center gap-2 sm:w-auto">
 		<!-- Sort By Dropdown -->
-		<details class="dropdown relative dropdown-end shrink-0 open:z-50" bind:this={sortDropdown}>
+		<details
+			class="dropdown relative dropdown-end min-w-0 flex-1 open:z-50 sm:flex-none"
+			bind:this={sortDropdown}
+		>
 			<summary
-				class="sm:rounded-btn btn flex w-60 shrink-0 items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
+				class="sm:rounded-btn btn flex w-full items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
 			>
 				<span class="truncate">{getSelectedSortLabel()}</span>
 				<IconMdiChevronDown class="h-4 w-4 shrink-0" />
 			</summary>
 			<ul
-				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:w-64"
+				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl max-sm:right-auto max-sm:left-0 sm:w-64"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
@@ -323,7 +327,7 @@
 
 		<!-- Advanced Options Toggle -->
 		<button
-			class="btn gap-2 btn-sm"
+			class="btn shrink-0 gap-2 btn-sm"
 			class:btn-primary={showAdvancedOptions}
 			class:btn-outline={!showAdvancedOptions}
 			onclick={() => (showAdvancedOptions = !showAdvancedOptions)}
@@ -364,7 +368,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn w-full btn-soft btn-sm md:w-fit"
+						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
 					>
 						{$_('search.generate_graphs_classic', {
 							values: { term: mainSearchTerm },
@@ -376,7 +380,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn w-full btn-soft btn-sm md:w-fit"
+						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
 					>
 						{$_('search.advanced_search_classic', {
 							values: { term: mainSearchTerm },
@@ -516,7 +520,7 @@
 
 	<div class="flex w-full min-w-0 flex-col">
 		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
-		<div class="mt-2 mb-1 lg:hidden" id="facets">
+		<div class="mt-2 mb-1 max-md:-mx-4 lg:hidden" id="facets">
 			<FacetBar
 				facets={searchResult.facets}
 				selectedFacets={localFacets}
