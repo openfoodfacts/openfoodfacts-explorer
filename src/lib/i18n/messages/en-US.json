@@ -902,7 +902,8 @@
 		"facet_back_to_overview": "Back to {facet} overview",
 		"hierarchy_belongs_to": "Belongs to",
 		"hierarchy_includes": "Includes",
-		"hierarchy_more": "+ {count} more"
+		"hierarchy_more": "+ {count} more",
+		"hierarchy_loading": "Loading related categories…"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",

@@ -55,7 +55,7 @@
 {#snippet chips(items: HierarchyItem[])}
 	{#each items as item (item.id)}
 		<a
-			class="badge badge-outline badge-lg hover:badge-secondary"
+			class="badge h-auto badge-outline py-1 badge-lg hover:badge-secondary"
 			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
 		>
 			{item.name}
@@ -66,7 +66,12 @@
 	{/each}
 {/snippet}
 
-{#await data.hierarchy then { parents, children }}
+{#await data.hierarchy}
+	<div class="-mt-4 mb-8 flex items-center gap-2 text-sm opacity-70">
+		<span class="loading loading-sm loading-spinner"></span>
+		{$_('facets.hierarchy_loading', { default: 'Loading related categories…' })}
+	</div>
+{:then { parents, children }}
 	{#if parents.length || children.length}
 		{@const expanded = childrenExpandedFor === facet.value}
 		<div class="-mt-4 mb-8 flex flex-col gap-3">
@@ -87,6 +92,7 @@
 						{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
 						{#if !expanded && children.length > CHILDREN_SHOWN}
 							<button
+								type="button"
 								class="btn btn-ghost btn-xs"
 								onclick={() => (childrenExpandedFor = facet.value)}
 							>

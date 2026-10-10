@@ -9,19 +9,12 @@ import {
 import type { PageLoad } from './$types';
 import { requireInt } from '#lib/utils.js';
 import { getBulkProductAttributes } from '#lib/api.js';
-import { getLocale } from '#lib/i18n/index.js';
-import { getHierarchy } from './hierarchy';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
-
-	const hierarchy = getHierarchy(fetch, facet, value, getLocale()).catch(() => ({
-		parents: [],
-		children: []
-	}));
 
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
@@ -86,7 +79,6 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	}
 
 	return {
-		hierarchy,
 		searchOptions,
 		facet: { name: facet, value },
 		results: results,
