@@ -21,8 +21,8 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
-	import SourceBadge from '$lib/ui/SourceBadge.svelte';
-	import { getSourceForField } from '$lib/api/sources';
+	import SourceBadge from '#lib/ui/SourceBadge.svelte';
+	import { getSourceForField } from '#lib/api/sources.js';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;

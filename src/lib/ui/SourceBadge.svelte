@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { isSafeSourceUrl, type ProductSource } from '$lib/api/sources';
-	import { _ } from '$lib/i18n';
+	import { isSafeSourceUrl, type ProductSource } from '#lib/api/sources.js';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 

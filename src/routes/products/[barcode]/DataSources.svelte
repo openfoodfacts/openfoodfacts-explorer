@@ -10,7 +10,7 @@
 		extractProductSources,
 		isSafeSourceUrl,
 		type ProductWithSources
-	} from '$lib/api/sources';
+	} from '#lib/api/sources.js';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import { page } from '$app/state';
