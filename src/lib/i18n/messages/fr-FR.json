@@ -328,6 +328,15 @@
 			"not_checked": "Non vérifié",
 			"loading": "Vérification…"
 		},
+		"reverse_search": {
+			"title": "Reverse Image Search",
+			"google": "Google Lens",
+			"yandex": "Yandex Images",
+			"front": "De face",
+			"ingredients": "Ingrédients",
+			"nutrition": "Nutrition",
+			"no_images": "No images available for reverse search"
+		},
 		"header": {
 			"quantity": "Quantité",
 			"brands": "Marques",
