@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { replaceState } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { createSearchApi, type SearchResult } from '#lib/api/search.js';
 	import { CHART_FIELDS, parseChartFields } from '#lib/search/chart-fields.js';
 	import VegaChart from '#lib/ui/VegaChart.svelte';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
+	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 
 	type Props = { query: string };
 	let { query }: Props = $props();
@@ -14,9 +15,15 @@
 	let charts = $state<SearchResult['charts']>({});
 	let loading = $state(false);
 	let latestRequest = 0;
+	let addMenu: HTMLDetailsElement | null = $state(null);
 
 	$effect(() => {
 		const request = ++latestRequest;
+		if (fields.length === 0) {
+			charts = {};
+			loading = false;
+			return;
+		}
 		loading = true;
 		createSearchApi(fetch)
 			.search({
@@ -27,7 +34,10 @@
 				charts: fields.map((field) => ({ chart_type: 'DistributionChart', field }))
 			})
 			.then(({ data }) => (data as SearchResult | undefined)?.charts ?? {})
-			.catch(() => ({}))
+			.catch((err) => {
+				console.error('Chart search failed:', err);
+				return {};
+			})
 			.then((result) => {
 				if (request !== latestRequest) return;
 				charts = result;
@@ -39,7 +49,7 @@
 		fields = next;
 		const url = new URL(page.url.href);
 		url.searchParams.set('charts', next.join(','));
-		replaceState(url, page.state);
+		goto(url, { replaceState: true, noScroll: true, keepFocus: true });
 	}
 
 	function label(field: string) {
@@ -53,31 +63,42 @@
 			{label(field)}
 			<button
 				type="button"
-				class="cursor-pointer rounded-full p-0.5 hover:bg-primary-content/20"
+				class="cursor-pointer rounded-full p-1 hover:bg-primary-content/20"
 				onclick={() => setFields(fields.filter((f) => f !== field))}
 				aria-label={$_('search.remove_chart', {
 					default: 'Remove {name} chart',
 					values: { name: label(field) }
 				})}
 			>
-				<IconMdiClose class="h-3.5 w-3.5" />
+				<IconMdiClose class="h-4 w-4" />
 			</button>
 		</span>
 	{/each}
-	<select
-		class="select w-full select-sm md:w-64"
-		value=""
-		aria-label={$_('search.add_chart', { default: 'Add a chart' })}
-		oninput={(e) => {
-			setFields([...fields, e.currentTarget.value]);
-			e.currentTarget.value = '';
-		}}
-	>
-		<option value="" disabled>{$_('search.add_chart', { default: 'Add a chart' })}</option>
-		{#each CHART_FIELDS.filter((f) => !fields.includes(f)) as field (field)}
-			<option value={field}>{label(field)}</option>
-		{/each}
-	</select>
+	{#if CHART_FIELDS.some((f) => !fields.includes(f))}
+		<details class="dropdown" bind:this={addMenu}>
+			<summary class="btn gap-2 rounded-full btn-outline btn-sm">
+				{$_('search.add_chart', { default: 'Add a chart' })}
+				<IconMdiChevronDown class="h-4 w-4" />
+			</summary>
+			<ul
+				class="menu dropdown-content z-50 mt-1 max-h-72 w-60 flex-nowrap overflow-y-auto rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+			>
+				{#each CHART_FIELDS.filter((f) => !fields.includes(f)) as field (field)}
+					<li>
+						<button
+							type="button"
+							onclick={() => {
+								setFields([...fields, field]);
+								if (addMenu) addMenu.open = false;
+							}}
+						>
+							{label(field)}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</details>
+	{/if}
 	{#if loading}
 		<span class="loading loading-sm loading-spinner"></span>
 	{/if}

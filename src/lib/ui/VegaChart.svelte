@@ -180,7 +180,12 @@
 						.runAsync();
 				};
 				await fitLabels();
-				view.addResizeListener(fitLabels);
+				let fittedWidth = view.width();
+				view.addResizeListener((width) => {
+					if (width === fittedWidth) return;
+					fittedWidth = width;
+					fitLabels();
+				});
 			}
 			isLoading = false;
 		} catch (err) {

@@ -1,9 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { DEFAULT_CHART_FIELDS, parseChartFields } from './search/chart-fields';
+import { parseChartFields } from './search/chart-fields';
 
 describe('parseChartFields', () => {
 	it('returns the default charts when the parameter is missing', () => {
-		expect(parseChartFields(null)).toEqual(DEFAULT_CHART_FIELDS);
+		expect(parseChartFields(null)).toEqual([
+			'nutrition_grades',
+			'environmental_score_grade',
+			'nova_group'
+		]);
 	});
 
 	it('returns no charts when the parameter is empty', () => {
