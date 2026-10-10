@@ -26,7 +26,7 @@
 		[
 			{
 				label: $_('product.reverse_search.front', { default: 'Front' }),
-				url: product.image_front_url ?? product.image_front_small_url
+				url: product.image_front_url || product.image_front_small_url
 			},
 			{
 				label: $_('product.reverse_search.ingredients', { default: 'Ingredients' }),
