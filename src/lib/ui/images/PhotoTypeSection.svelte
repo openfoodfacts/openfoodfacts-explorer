@@ -79,7 +79,11 @@
 
 		try {
 			const base64Data = await fileToBase64(file);
-			const uploadResult = await uploadImageV3(fetch, barcode, base64Data, imagefield);
+			// Track the upload so that saving the form waits for it
+			// (`onImageUploaded` then tracks the page refresh)
+			const uploadResult = await trackRefresh(
+				uploadImageV3(fetch, barcode, base64Data, imagefield)
+			);
 
 			if (!uploadResult || uploadResult.error || !uploadResult.data) {
 				toast.error($_('product.edit.images.toast.upload_failed_generic'));
