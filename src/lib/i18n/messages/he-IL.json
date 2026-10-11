@@ -329,13 +329,13 @@
 			"loading": "Checking…"
 		},
 		"reverse_search": {
-			"title": "Reverse Image Search",
+			"title": "חיפוש תמונות הפוך",
 			"google": "Google Lens",
-			"yandex": "Yandex Images",
+			"yandex": "תמונות Yandex",
 			"front": "חזית",
 			"ingredients": "רכיבים",
 			"nutrition": "תזונה",
-			"no_images": "No images available for reverse search"
+			"no_images": "אין תמונות זמינות לחיפוש הפוך"
 		},
 		"header": {
 			"quantity": "כמות",
