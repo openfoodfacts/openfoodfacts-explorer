@@ -5,7 +5,7 @@
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 	import Tabs from '#lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
 	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
 	import Metadata from '#lib/Metadata.svelte';
 	import { COMMIT_SHA } from '#lib/const.js';
@@ -362,6 +362,27 @@
 					<IconMdiHeart class="h-6 w-6" />
 					{$_('settings.influences')}
 				</h2>
+
+				<div class="mt-6 rounded-box border border-base-300 bg-base-100 p-4">
+					<label class="flex cursor-pointer items-center justify-between gap-4">
+						<span class="font-semibold text-base-content">
+							{$_('preferences.classify_products', {
+								default: 'Classify products according to your preferences'
+							})}
+						</span>
+						<input
+							id="classify-products-toggle"
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={$personalizedSearch.classifyProductsEnabled}
+						/>
+					</label>
+					<p class="mt-1 text-xs text-base-content/70">
+						{$_('preferences.classify_products_desc', {
+							default: 'Enable personalized product classification based on your preferences.'
+						})}
+					</p>
+				</div>
 
 				<div class="mt-6">
 					<PreferencesForm groups={attributeGroups as AttributeGroup[]} />
