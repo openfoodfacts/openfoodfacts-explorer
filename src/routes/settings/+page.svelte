@@ -391,9 +391,9 @@
 					{$_('settings.influences')}
 				</h2>
 
-				<div class="form-control mt-6">
-					<label class="label cursor-pointer">
-						<span class="label-text font-semibold">
+				<div class="mt-6 rounded-box border border-base-300 bg-base-100 p-4">
+					<label class="flex cursor-pointer items-center justify-between gap-4">
+						<span class="font-semibold text-base-content">
 							{$_('preferences.classify_products', {
 								default: 'Classify products according to your preferences'
 							})}
