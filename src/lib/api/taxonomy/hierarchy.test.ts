@@ -4,8 +4,25 @@ import { getHierarchy, sortChildren } from './hierarchy';
 
 vi.mock('#lib/api/facets.js', () => ({ getFacetValue: vi.fn() }));
 
-const taxoFetch = (taxo: object) =>
-	vi.fn(async () => ({ ok: true, json: async () => taxo }) as unknown as Response);
+// Like the real API, names come back only in the languages asked for with lc (English if none).
+type Entry = { name?: Record<string, string>; parents?: string[]; children?: string[] };
+
+const taxoFetch = (taxo: Record<string, Entry>) =>
+	vi.fn(async (url: RequestInfo | URL) => {
+		const langs = (new URL(String(url)).searchParams.get('lc') ?? 'en').split(',');
+		const filtered = Object.fromEntries(
+			Object.entries(taxo).map(([id, entry]) => [
+				id,
+				{
+					...entry,
+					name: Object.fromEntries(
+						Object.entries(entry.name ?? {}).filter(([l]) => langs.includes(l))
+					)
+				}
+			])
+		);
+		return { ok: true, json: async () => filtered } as unknown as Response;
+	});
 
 describe('sortChildren', () => {
 	it('puts the largest first, drops empty ones and keeps unknown counts last by name', () => {
@@ -52,7 +69,7 @@ describe('getHierarchy', () => {
 	it('skips the count requests and sorts by name above 30 children', async () => {
 		vi.mocked(getFacetValue).mockReset();
 		const ids = Array.from({ length: 31 }, (_, i) => `en:c${String(30 - i).padStart(2, '0')}`);
-		const taxo: Record<string, object> = { 'en:wines': { children: ids } };
+		const taxo: Record<string, Entry> = { 'en:wines': { children: ids } };
 		ids.forEach((id) => (taxo[id] = { name: { en: id.slice(3) } }));
 
 		const h = await getHierarchy(taxoFetch(taxo), 'categories', 'en:wines', 'en');

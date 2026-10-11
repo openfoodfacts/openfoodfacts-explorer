@@ -16,7 +16,7 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
-	import type { HierarchyItem } from './hierarchy';
+	import type { HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =

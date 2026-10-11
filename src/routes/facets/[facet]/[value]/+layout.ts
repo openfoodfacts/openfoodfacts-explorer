@@ -2,7 +2,7 @@ import { browser } from '$app/env';
 
 import { getLocale } from '#lib/i18n/index.js';
 import type { LayoutLoad } from './$types';
-import { getHierarchy } from './hierarchy';
+import { getHierarchy } from '#lib/api/taxonomy/hierarchy.js';
 
 export const load: LayoutLoad = ({ fetch, params }) => {
 	const empty = { parents: [], children: [] };

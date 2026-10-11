@@ -1,6 +1,6 @@
 import { getFacetValue } from '#lib/api/facets.js';
-import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { API_HOST } from '#lib/const.js';
+import { getOrDefault } from './types';
 
 type TaxoEntry = { name?: Record<string, string>; parents?: string[]; children?: string[] };
 
@@ -20,11 +20,14 @@ export async function getHierarchy(
 	value: string,
 	lang: string
 ) {
+	const baseLang = lang.replaceAll('_', '-').toLowerCase().split('-')[0];
 	const params = new URLSearchParams({
 		tagtype: facet,
 		tags: value,
 		include_parents: '1',
 		include_children: '1',
+		// Without lc the API answers in English only; en is the fallback for untranslated names.
+		lc: `${baseLang},en`,
 		fields: 'name,parents,children'
 	});
 	const res = await fetch(`${API_HOST}/api/v2/taxonomy?${params}`);
