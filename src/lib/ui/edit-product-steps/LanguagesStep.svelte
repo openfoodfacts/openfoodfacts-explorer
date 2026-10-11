@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ } from '#lib/i18n/index.js';
 	import type { Product } from '#lib/api.js';
-	import { getLanguageName } from '#lib/languages.js';
+	import { getLanguageName, getLocaleLabel } from '#lib/languages.js';
 
 	import IconMdiTranslate from '@iconify-svelte/mdi/translate';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -25,7 +25,12 @@
 
 	let languageNames = $derived(
 		codes.map((code) => {
-			return { code: code, en: getLanguageName(code, 'en'), locale: getLanguageName(code) };
+			return {
+				code,
+				label: getLocaleLabel(code),
+				en: getLanguageName(code, 'en'),
+				locale: getLanguageName(code)
+			};
 		})
 	);
 
@@ -42,7 +47,7 @@
 		const confirmed = confirm(
 			$_('product.edit.confirm_delete_language', {
 				default: 'Are you sure you want to delete all fields for {language}?',
-				values: { language: getLanguageName(code) }
+				values: { language: getLocaleLabel(code) }
 			})
 		);
 		if (!confirmed) return;
@@ -122,7 +127,7 @@
 		}}
 	>
 		{#each Object.keys(product.languages_codes ?? {}) as lang (lang)}
-			<option value={lang}>{getLanguageName(lang)}</option>
+			<option value={lang}>{getLocaleLabel(lang)}</option>
 		{/each}
 	</select>
 	<span class="label">
@@ -145,7 +150,7 @@
 		{/if}
 
 		{#each Object.keys(product.languages_codes ?? {}) as code (code)}
-			{@const langName = getLanguageName(code)}
+			{@const langName = getLocaleLabel(code)}
 			<div class="flex items-center gap-2">
 				<div
 					class={[
@@ -222,7 +227,7 @@
 	<div class="collapse-content">
 		<InputAutocomplete
 			items={languageNames}
-			searchKeys={['code', 'en', 'locale']}
+			searchKeys={['code', 'label', 'en', 'locale']}
 			placeholder={$_('product.edit.search_languages')}
 			inline
 			onselect={(lang) => {
