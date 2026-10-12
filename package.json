@@ -92,7 +92,7 @@
 		"svelte-eslint-parser": "^1.8.1",
 		"svelte-i18n": "^4.0.1",
 		"svelte-local-storage-store": "^0.6.4",
-		"sveltekit-i18n": "^3.3.0",
+		"sveltekit-i18n": "^3.4.1",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-opentype": "^1.2.0",
 		"topojson-client": "^3.1.0",
