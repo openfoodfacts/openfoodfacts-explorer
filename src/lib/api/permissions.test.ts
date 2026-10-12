@@ -1,11 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
-import { fetchCurrentUserPermissions } from './permissions';
+import { fetchCurrentUserPermissions, type CurrentUserPermissions } from './permissions';
 
 describe('permissions API service', () => {
 	it('returns user permissions data on successful response', async () => {
-		const mockPermissions = {
-			user_id: 'test_moderator',
-			permissions: ['edit_products', 'change_barcode']
+		const mockPermissions: CurrentUserPermissions = {
+			status: 'success',
+			user: {
+				userid: 'test_moderator',
+				name: 'Test Moderator',
+				moderator: 1,
+				admin: 0
+			}
 		};
 
 		const mockFetch = vi.fn().mockResolvedValue(

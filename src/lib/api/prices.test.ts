@@ -6,6 +6,14 @@ const mockEnv = {
 	PUBLIC_PRICES_API_URL: ''
 };
 
+vi.mock('@openfoodfacts/openfoodfacts-nodejs', async (importOriginal) => {
+	const actual = await importOriginal<Record<string, unknown>>();
+	return {
+		...actual,
+		PricesApi: vi.fn()
+	};
+});
+
 vi.mock('$app/env/public', async (importOriginal) => {
 	const actual = await importOriginal<Record<string, unknown>>();
 	return {
@@ -19,6 +27,7 @@ vi.mock('$app/env/public', async (importOriginal) => {
 describe('prices API service', () => {
 	beforeEach(() => {
 		vi.resetModules();
+		vi.clearAllMocks();
 		mockEnv.PUBLIC_PRICES_API_URL = '';
 	});
 
@@ -57,6 +66,10 @@ describe('prices API service', () => {
 			const api = createPricesApi(mockFetch as unknown as typeof fetch);
 
 			expect(api).toBeInstanceOf(PricesApi);
+			expect(PricesApi).toHaveBeenCalledWith(mockFetch, {
+				baseUrl: 'https://prices.openfoodfacts.org',
+				authToken: undefined
+			});
 		});
 
 		it('injects authToken from preferences into PricesApi client', async () => {
@@ -73,6 +86,10 @@ describe('prices API service', () => {
 			const api = createPricesApi(mockFetch as unknown as typeof fetch);
 
 			expect(api).toBeInstanceOf(PricesApi);
+			expect(PricesApi).toHaveBeenCalledWith(mockFetch, {
+				baseUrl: 'https://prices.openfoodfacts.org',
+				authToken: 'test-user-auth-token'
+			});
 		});
 	});
 
