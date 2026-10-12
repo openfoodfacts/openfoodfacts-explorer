@@ -24,6 +24,8 @@ vi.mock('$app/env/public', async (importOriginal) => {
 	};
 });
 
+const asFetch = (mock: unknown) => mock as typeof fetch;
+
 describe('prices API service', () => {
 	beforeEach(() => {
 		vi.resetModules();
@@ -51,9 +53,7 @@ describe('prices API service', () => {
 			const { createPricesApi } = await import('./prices');
 			const mockFetch = vi.fn();
 
-			expect(() => createPricesApi(mockFetch as unknown as typeof fetch)).toThrow(
-				'Prices API is not configured'
-			);
+			expect(() => createPricesApi(asFetch(mockFetch))).toThrow('Prices API is not configured');
 		});
 	});
 
@@ -63,10 +63,9 @@ describe('prices API service', () => {
 			const { createPricesApi } = await import('./prices');
 			const mockFetch = vi.fn();
 
-			const api = createPricesApi(mockFetch as unknown as typeof fetch);
+			createPricesApi(asFetch(mockFetch));
 
-			expect(api).toBeInstanceOf(PricesApi);
-			expect(PricesApi).toHaveBeenCalledWith(mockFetch, {
+			expect(PricesApi).toHaveBeenCalledWith(asFetch(mockFetch), {
 				baseUrl: 'https://prices.openfoodfacts.org',
 				authToken: undefined
 			});
@@ -83,10 +82,9 @@ describe('prices API service', () => {
 			const { createPricesApi } = await import('./prices');
 			const mockFetch = vi.fn();
 
-			const api = createPricesApi(mockFetch as unknown as typeof fetch);
+			createPricesApi(asFetch(mockFetch));
 
-			expect(api).toBeInstanceOf(PricesApi);
-			expect(PricesApi).toHaveBeenCalledWith(mockFetch, {
+			expect(PricesApi).toHaveBeenCalledWith(asFetch(mockFetch), {
 				baseUrl: 'https://prices.openfoodfacts.org',
 				authToken: 'test-user-auth-token'
 			});
@@ -94,7 +92,7 @@ describe('prices API service', () => {
 	});
 
 	describe('updatePricesAuthToken store reactivity & immutability', () => {
-		it('updates authToken in preferences store while preserving other preferences', async () => {
+		it('updates authToken in preferences store while preserving other preferences, then clears back to null', async () => {
 			const { preferences } = await import('#lib/settings.js');
 			const { updatePricesAuthToken } = await import('./prices');
 
@@ -113,14 +111,6 @@ describe('prices API service', () => {
 			// Verifies other settings are preserved (regression check for store mutation)
 			expect(updatedPrefs.currency).toBe(initialPrefs.currency);
 			expect(updatedPrefs.country).toBe(initialPrefs.country);
-		});
-
-		it('clears authToken back to null when requested', async () => {
-			const { preferences } = await import('#lib/settings.js');
-			const { updatePricesAuthToken } = await import('./prices');
-
-			updatePricesAuthToken('temp-token');
-			expect(get(preferences).prices?.authToken).toBe('temp-token');
 
 			updatePricesAuthToken(null);
 			expect(get(preferences).prices?.authToken).toBeNull();

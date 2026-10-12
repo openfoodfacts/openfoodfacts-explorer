@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fetchCurrentUserPermissions, type CurrentUserPermissions } from './permissions';
 
+const asFetch = (mock: unknown) => mock as typeof fetch;
+
 describe('permissions API service', () => {
 	it('returns user permissions data on successful response', async () => {
 		const mockPermissions: CurrentUserPermissions = {
@@ -20,7 +22,7 @@ describe('permissions API service', () => {
 			})
 		);
 
-		const result = await fetchCurrentUserPermissions(mockFetch as unknown as typeof fetch);
+		const result = await fetchCurrentUserPermissions(asFetch(mockFetch));
 
 		expect(result).toEqual({ data: mockPermissions });
 	});
@@ -33,7 +35,7 @@ describe('permissions API service', () => {
 			})
 		);
 
-		const result = await fetchCurrentUserPermissions(mockFetch as unknown as typeof fetch);
+		const result = await fetchCurrentUserPermissions(asFetch(mockFetch));
 
 		expect(result.error).toBeDefined();
 		expect(result.error).toContain('Failed to fetch user permissions:');
@@ -43,7 +45,7 @@ describe('permissions API service', () => {
 	it('catches network errors gracefully without crashing or throwing', async () => {
 		const mockFetch = vi.fn().mockRejectedValue(new Error('Network connection timeout'));
 
-		const result = await fetchCurrentUserPermissions(mockFetch as unknown as typeof fetch);
+		const result = await fetchCurrentUserPermissions(asFetch(mockFetch));
 
 		expect(result).toEqual({ error: 'Network connection timeout' });
 	});
@@ -51,7 +53,7 @@ describe('permissions API service', () => {
 	it('handles non-Error exceptions gracefully', async () => {
 		const mockFetch = vi.fn().mockRejectedValue('Internal Gateway Crash');
 
-		const result = await fetchCurrentUserPermissions(mockFetch as unknown as typeof fetch);
+		const result = await fetchCurrentUserPermissions(asFetch(mockFetch));
 
 		expect(result).toEqual({ error: 'Internal Gateway Crash' });
 	});

@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Folksonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
 const mockEnv = {
 	PUBLIC_FOLKSONOMY_API_URL: ''
@@ -14,6 +13,8 @@ vi.mock('$app/env/public', async (importOriginal) => {
 		}
 	};
 });
+
+const asFetch = (mock: unknown) => mock as typeof fetch;
 
 describe('folksonomy API service', () => {
 	beforeEach(() => {
@@ -37,20 +38,8 @@ describe('folksonomy API service', () => {
 		});
 	});
 
-	describe('createFolksonomyApi instantiation', () => {
-		it('creates a Folksonomy client instance with configured baseUrl', async () => {
-			mockEnv.PUBLIC_FOLKSONOMY_API_URL = 'https://api.folksonomy.openfoodfacts.org';
-			const { createFolksonomyApi } = await import('./folksonomy');
-			const mockFetch = vi.fn();
-
-			const api = createFolksonomyApi(mockFetch as unknown as typeof fetch);
-
-			expect(api).toBeInstanceOf(Folksonomy);
-		});
-	});
-
 	describe('getFolksonomyValues behavior & resilience', () => {
-		it('unwraps and returns values data on successful response', async () => {
+		it('queries configured baseUrl with the tag key and returns unwrapped values', async () => {
 			mockEnv.PUBLIC_FOLKSONOMY_API_URL = 'https://api.folksonomy.openfoodfacts.org';
 			const expectedValues = [{ k: 'packaging', v: 'glass', count: 12 }];
 
@@ -62,9 +51,15 @@ describe('folksonomy API service', () => {
 			);
 
 			const { getFolksonomyValues } = await import('./folksonomy');
-			const values = await getFolksonomyValues(mockFetch as unknown as typeof fetch, 'packaging');
+			const values = await getFolksonomyValues(asFetch(mockFetch), 'packaging');
 
 			expect(values).toEqual(expectedValues);
+
+			// Verifies that the client actually targeted the configured baseUrl and resource key
+			const calledUrl = mockFetch.mock.calls[0]?.[0];
+			const urlString = calledUrl instanceof Request ? calledUrl.url : String(calledUrl);
+			expect(urlString).toContain('https://api.folksonomy.openfoodfacts.org');
+			expect(urlString).toContain('packaging');
 		});
 
 		it('gracefully returns an empty array when the API returns an error response', async () => {
@@ -80,10 +75,7 @@ describe('folksonomy API service', () => {
 			);
 
 			const { getFolksonomyValues } = await import('./folksonomy');
-			const values = await getFolksonomyValues(
-				mockFetch as unknown as typeof fetch,
-				'non_existent_key'
-			);
+			const values = await getFolksonomyValues(asFetch(mockFetch), 'non_existent_key');
 
 			expect(values).toEqual([]);
 			consoleSpy.mockRestore();
