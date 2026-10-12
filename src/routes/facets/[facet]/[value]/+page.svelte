@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { browser } from '$app/env';
 
-	import { _ } from '#lib/i18n/index.js';
+	import { _, getLocale } from '#lib/i18n/index.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
@@ -16,17 +17,28 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
-	import type { HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
+	import { getHierarchy, type HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
 	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
 		$derived(data);
 
+	// Only facet and value may refetch the hierarchy; untrack keeps the reads inside the
+	// request from refetching it on every page or sort change.
+	const facetName = $derived(data.facet.name);
+	const facetValue = $derived(data.facet.value);
+	const noHierarchy = { parents: [] as HierarchyItem[], children: [] as HierarchyItem[] };
+	const hierarchy = $derived.by(() => {
+		const [name, value] = [facetName, facetValue];
+		return browser
+			? untrack(() => getHierarchy(fetch, name, value, getLocale()).catch(() => noHierarchy))
+			: Promise.resolve(noHierarchy);
+	});
+
 	let listView = $state(false);
 
 	const CHILDREN_SHOWN = 8;
 	let childrenExpandedFor: string | null = $state(null);
-	const numberFormat = new Intl.NumberFormat();
 
 	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
 	onMount(async () => {
@@ -59,14 +71,11 @@
 			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
 		>
 			{item.name}
-			{#if item.count !== undefined}
-				<span class="opacity-60">{numberFormat.format(item.count)}</span>
-			{/if}
 		</a>
 	{/each}
 {/snippet}
 
-{#await data.hierarchy}
+{#await hierarchy}
 	<div class="-mt-4 mb-8 flex items-center gap-2 text-sm opacity-70">
 		<span class="loading loading-sm loading-spinner"></span>
 		{$_('general.loading', { default: 'Loading…' })}

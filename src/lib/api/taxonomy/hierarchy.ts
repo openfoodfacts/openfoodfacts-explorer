@@ -1,18 +1,9 @@
-import { getFacetValue } from '#lib/api/facets.js';
 import { API_HOST } from '#lib/const.js';
 import { getOrDefault } from './types';
 
 type TaxoEntry = { name?: Record<string, string>; parents?: string[]; children?: string[] };
 
-export type HierarchyItem = { id: string; name: string; count?: number };
-
-const MAX_COUNTED_CHILDREN = 30;
-
-export function sortChildren(children: HierarchyItem[]) {
-	return children
-		.filter((c) => c.count !== 0)
-		.sort((a, b) => (b.count ?? -1) - (a.count ?? -1) || a.name.localeCompare(b.name));
-}
+export type HierarchyItem = { id: string; name: string };
 
 export async function getHierarchy(
 	fetch: typeof window.fetch,
@@ -30,6 +21,7 @@ export async function getHierarchy(
 		lc: `${baseLang},en`,
 		fields: 'name,parents,children'
 	});
+	// TODO: switch to the SDK's getTaxoEntries once openfoodfacts-js#994 is released
 	const res = await fetch(`${API_HOST}/api/v2/taxonomy?${params}`);
 	if (!res.ok) {
 		throw new Error(`Failed to fetch ${facet} hierarchy: ${res.status}`);
@@ -39,19 +31,10 @@ export async function getHierarchy(
 		id,
 		name: getOrDefault(taxo[id]?.name ?? {}, lang) ?? id
 	});
-
-	const children = (taxo[value]?.children ?? []).map(toItem);
-	if (children.length <= MAX_COUNTED_CHILDREN) {
-		const counts = await Promise.allSettled(
-			children.map((c) => getFacetValue(fetch, facet, c.id, { pageSize: 1 }))
-		);
-		counts.forEach((r, i) => {
-			if (r.status === 'fulfilled') children[i].count = r.value.count;
-		});
-	}
+	const byName = (a: HierarchyItem, b: HierarchyItem) => a.name.localeCompare(b.name, baseLang);
 
 	return {
 		parents: (taxo[value]?.parents ?? []).map(toItem),
-		children: sortChildren(children)
+		children: (taxo[value]?.children ?? []).map(toItem).sort(byName)
 	};
 }
