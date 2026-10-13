@@ -1001,7 +1001,11 @@
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
-		}
+		},
+		"info_label": "About product comparison",
+		"info_description": "Compare selected products side by side to explore nutrition, scores, and other available product information.",
+		"product_info_description": "Add this product to your comparison list to view it alongside other products.",
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."

@@ -19,7 +19,8 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
+	import CompareInfo from '#lib/ui/CompareInfo.svelte';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
@@ -181,14 +182,27 @@
 						</button>
 					{/if}
 
-					<button
-						class="btn btn-secondary btn-sm md:btn-md"
-						onclick={addToComparison}
-						title={$_('product.buttons.compare')}
-						aria-label={$_('product.buttons.compare')}
+					<div
+						role="group"
+						aria-label={$_('compare.page_title', { default: 'Compare Products' })}
+						class="inline-flex shrink-0 items-center gap-1 rounded-full border border-base-300 bg-base-100 p-1"
 					>
-						<IconMdiCompare class="h-5 w-5" />
-					</button>
+						<button
+							class="btn gap-2 rounded-full btn-secondary btn-sm md:btn-md"
+							onclick={addToComparison}
+							title={$_('product.buttons.compare', { default: 'Add to compare' })}
+							aria-label={$_('product.buttons.compare', { default: 'Add to compare' })}
+						>
+							<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
+							<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
+						</button>
+						<CompareInfo
+							text={$_('compare.product_info_description', {
+								default:
+									'Add this product to your comparison list to view it alongside other products.'
+							})}
+						/>
+					</div>
 				</div>
 			</div>
 
