@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
+	import { resolve } from '$app/paths';
 
 	let error: string | null = $state(null);
 	let html5QrCode: Html5Qrcode | null = null;
@@ -47,7 +48,9 @@
 	async function handleBarcodeSubmit(barcode: string) {
 		const code = barcode.trim();
 		const parsedBarcode = Gs1Barcode.parse(code);
-		const fallbackCode = /^(?:\d{5,7}|\d{15,18})$/.test(code) ? code : null;
+		// Store internal product codes are shorter than a GTIN and do not have a
+		// GS1 check digit. GTINs themselves must pass the checksum validation.
+		const fallbackCode = /^\d{5,7}$/.test(code) ? code : null;
 		const productCode = parsedBarcode?.code ?? fallbackCode;
 
 		if (isDestroyed || productCode == null || isSubmittingBarcode) {
@@ -64,7 +67,7 @@
 		isSubmittingBarcode = true;
 
 		try {
-			await goto(`/search?q=${encodeURIComponent(productCode)}`);
+			await goto(resolve('/products/[barcode]', { barcode: productCode }));
 		} catch (err) {
 			console.error('Barcode navigation failed:', err);
 			isSubmittingBarcode = false;
@@ -149,7 +152,8 @@
 				Html5QrcodeSupportedFormats.EAN_13,
 				Html5QrcodeSupportedFormats.EAN_8,
 				Html5QrcodeSupportedFormats.UPC_A,
-				Html5QrcodeSupportedFormats.ITF
+				Html5QrcodeSupportedFormats.ITF,
+				Html5QrcodeSupportedFormats.CODE_128
 			],
 			verbose: false
 		});
@@ -266,7 +270,7 @@
 						required
 						pattern="[0-9]+"
 						minlength="5"
-						maxlength="18"
+						maxlength="14"
 					/>
 
 					<button class="btn join-item btn-primary" type="submit">
