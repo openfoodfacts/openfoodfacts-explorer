@@ -198,7 +198,7 @@
 			</button>
 		</div>
 		<a
-			href="/qr"
+			href="/scan"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
 			class="btn join-item text-lg btn-secondary"
