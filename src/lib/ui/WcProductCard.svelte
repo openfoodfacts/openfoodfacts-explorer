@@ -12,6 +12,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
 
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
@@ -113,9 +114,12 @@ Wraps the <product-card> web component and adds accessibility features.
 	}
 
 	const toastCtx = getToastCtx();
+	let addingToComparison = $state(false);
 
 	async function addToComparison() {
 		closeContextMenu();
+		if (addingToComparison) return;
+		addingToComparison = true;
 
 		try {
 			const productsApi = createProductsApi(fetch);
@@ -147,6 +151,8 @@ Wraps the <product-card> web component and adds accessibility features.
 					default: 'Could not load product details for comparison'
 				})
 			);
+		} finally {
+			addingToComparison = false;
 		}
 	}
 </script>
@@ -158,29 +164,41 @@ Wraps the <product-card> web component and adds accessibility features.
 	}}
 />
 
-<product-card
-	class="h-44 w-full cursor-pointer"
-	product={productForCard}
-	onclick={navigateToProduct}
-	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
-	aria-label={productForCard.product_name
-		? $_('product.card.aria_label', {
-				values: { productName: productForCard.product_name, productCode: productForCard.code },
-				default: 'Go to product {productName} with code {productCode}'
-			})
-		: $_('product.card.aria_label_no_name', {
-				values: { productCode: productForCard.code },
-				default: 'Go to product with code {productCode}'
-			})}
-	showMatchTag={personalScore != undefined}
-	navigating={{
-		to: navigating ? { params: { barcode: product.code } } : null
-	}}
-	{personalScore}
-	role="button"
-	tabindex="0"
-	oncontextmenu={contextMenu}
-></product-card>
+<div class="flex min-w-0 flex-col rounded-2xl border border-base-300 bg-base-200">
+	<product-card
+		class="h-44 w-full cursor-pointer"
+		product={productForCard}
+		onclick={navigateToProduct}
+		onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
+		aria-label={productForCard.product_name
+			? $_('product.card.aria_label', {
+					values: { productName: productForCard.product_name, productCode: productForCard.code },
+					default: 'Go to product {productName} with code {productCode}'
+				})
+			: $_('product.card.aria_label_no_name', {
+					values: { productCode: productForCard.code },
+					default: 'Go to product with code {productCode}'
+				})}
+		showMatchTag={personalScore != undefined}
+		navigating={{
+			to: navigating ? { params: { barcode: product.code } } : null
+		}}
+		{personalScore}
+		role="button"
+		tabindex="0"
+		oncontextmenu={contextMenu}
+	></product-card>
+	<button
+		type="button"
+		class="btn min-h-11 gap-2 rounded-t-none rounded-b-2xl border-0 border-t border-base-300 btn-ghost btn-sm"
+		onclick={addToComparison}
+		disabled={addingToComparison}
+		aria-busy={addingToComparison}
+	>
+		<IconMdiScaleBalance class="h-4 w-4" aria-hidden="true" />
+		<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
+	</button>
+</div>
 
 {#if showContextMenu}
 	<div
