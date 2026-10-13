@@ -48,7 +48,9 @@
 	async function handleBarcodeSubmit(barcode: string) {
 		const code = barcode.trim();
 		const parsedBarcode = Gs1Barcode.parse(code);
-		const fallbackCode = /^(?:\d{5,7}|\d{15,18})$/.test(code) ? code : null;
+		// Store internal product codes are shorter than a GTIN and do not have a
+		// GS1 check digit. GTINs themselves must pass the checksum validation.
+		const fallbackCode = /^\d{5,7}$/.test(code) ? code : null;
 		const productCode = parsedBarcode?.code ?? fallbackCode;
 
 		if (isDestroyed || productCode == null || isSubmittingBarcode) {
@@ -150,7 +152,8 @@
 				Html5QrcodeSupportedFormats.EAN_13,
 				Html5QrcodeSupportedFormats.EAN_8,
 				Html5QrcodeSupportedFormats.UPC_A,
-				Html5QrcodeSupportedFormats.ITF
+				Html5QrcodeSupportedFormats.ITF,
+				Html5QrcodeSupportedFormats.CODE_128
 			],
 			verbose: false
 		});
@@ -267,7 +270,7 @@
 						required
 						pattern="[0-9]+"
 						minlength="5"
-						maxlength="18"
+						maxlength="14"
 					/>
 
 					<button class="btn join-item btn-primary" type="submit">
