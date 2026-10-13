@@ -329,13 +329,13 @@
 			"loading": "Vérification…"
 		},
 		"reverse_search": {
-			"title": "Reverse Image Search",
+			"title": "Recherche d'image inversée",
 			"google": "Google Lens",
 			"yandex": "Yandex Images",
 			"front": "De face",
 			"ingredients": "Ingrédients",
 			"nutrition": "Nutrition",
-			"no_images": "No images available for reverse search"
+			"no_images": "Aucune image disponible pour la recherche inversée"
 		},
 		"header": {
 			"quantity": "Quantité",
