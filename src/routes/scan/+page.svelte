@@ -1,48 +1,105 @@
 <script lang="ts">
 	import { onDestroy, onMount, tick } from 'svelte';
-	import type { Html5Qrcode } from 'html5-qrcode';
+	import type { BarcodeDetector as WasmBarcodeDetector } from 'barcode-detector/ponyfill';
 
 	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
 	import { resolve } from '$app/paths';
+	import zxingWasmUrl from 'zxing-wasm/reader/zxing_reader.wasm?url';
 
 	let error: string | null = $state(null);
-	let html5QrCode: Html5Qrcode | null = null;
 	let scannerTimedOut = $state(false);
 	let manualBarcode = $state('');
 	let invalidBarcodePayload = $state<string | null>(null);
 	let scannerTimeout: ReturnType<typeof setTimeout> | null = null;
+	let scanLoopTimeout: ReturnType<typeof setTimeout> | null = null;
+	let videoElement: HTMLVideoElement | undefined = $state();
+	let cameraStream: MediaStream | null = null;
+	let detector: Pick<WasmBarcodeDetector, 'detect'> | null = null;
+	let wasmBarcodeDetectorModule: Promise<typeof import('barcode-detector/ponyfill')> | null = null;
 	let isSubmittingBarcode = $state(false);
 	let canRetryScan = $state(false);
 	let isDestroyed = false;
-	let scanFailureCount = 0;
-	let lastScanFailureLogAt = 0;
+	let isScanning = false;
+	type ScannerStartupStage = 'decoder' | 'camera' | 'video';
 
-	function getQrBoxSize(viewfinderWidth: number, viewfinderHeight: number) {
-		// html5-qrcode passes the actual camera-frame dimensions here. Keep the
-		// region wide enough for horizontal product barcodes without scanning the
-		// entire frame at native camera resolution.
+	class ScannerStartupError extends Error {
+		readonly stage: ScannerStartupStage;
+
+		constructor(stage: ScannerStartupStage, cause: unknown) {
+			super(`Scanner startup failed during ${stage} initialization`, { cause });
+			this.stage = stage;
+		}
+	}
+
+	const scanFormats = ['qr_code', 'ean_13', 'ean_8', 'upc_a', 'itf', 'code_128'] as const;
+	type BarcodeDetectorLike = Pick<WasmBarcodeDetector, 'detect'>;
+	type NativeBarcodeDetectorConstructor = {
+		new (options?: { formats?: string[] }): BarcodeDetectorLike;
+		getSupportedFormats?: () => Promise<readonly string[]>;
+	};
+
+	async function createBarcodeDetector() {
+		const NativeBarcodeDetector = (
+			globalThis as typeof globalThis & {
+				BarcodeDetector?: NativeBarcodeDetectorConstructor;
+			}
+		).BarcodeDetector;
+
+		if (NativeBarcodeDetector?.getSupportedFormats) {
+			try {
+				const supportedFormats = await NativeBarcodeDetector.getSupportedFormats();
+				if (scanFormats.every((format) => supportedFormats.includes(format))) {
+					return {
+						detector: new NativeBarcodeDetector({ formats: [...scanFormats] }),
+						backend: 'native BarcodeDetector'
+					};
+				}
+			} catch (err) {
+				console.info('[Scanner] native detector unavailable; using WASM ponyfill', err);
+			}
+		}
+
+		wasmBarcodeDetectorModule ??= (async () => {
+			const module = await import('barcode-detector/ponyfill');
+			module.prepareZXingModule({
+				overrides: {
+					locateFile: (path: string, prefix: string) =>
+						path.endsWith('.wasm') ? zxingWasmUrl : `${prefix}${path}`
+				}
+			});
+			return module;
+		})();
+		const { BarcodeDetector } = await wasmBarcodeDetectorModule;
 		return {
-			width: Math.min(Math.floor(viewfinderWidth * 0.85), 700),
-			height: Math.min(Math.floor(viewfinderHeight * 0.5), 300)
+			detector: new BarcodeDetector({ formats: [...scanFormats] }),
+			backend: 'ZXing-C++ WASM ponyfill'
 		};
 	}
 
-	function logScanFailure(errorMessage: string) {
-		scanFailureCount += 1;
-		const now = Date.now();
+	function getStartupErrorMessage(err: unknown) {
+		if (err instanceof ScannerStartupError) {
+			switch (err.stage) {
+				case 'decoder':
+					return $_('qr.decoder_initialization_failed', {
+						default: 'Could not initialize barcode scanning in this browser.'
+					});
+				case 'camera':
+					return $_('qr.camera_access_required', {
+						default: 'Could not access the camera. Check your browser permissions and try again.'
+					});
+				case 'video':
+					return $_('qr.camera_preview_failed', {
+						default:
+							'Could not start the camera preview. Check your browser permissions and try again.'
+					});
+			}
+		}
 
-		// html5-qrcode calls this for every frame that does not contain a code.
-		// Throttle the diagnostic so it remains useful in the browser console.
-		if (now - lastScanFailureLogAt < 2000) return;
-
-		console.debug('[QR scanner] no code detected', {
-			attemptsSinceLastLog: scanFailureCount,
-			errorMessage
+		return $_('qr.scanner_unavailable', {
+			default: 'Barcode scanning is not available in this browser.'
 		});
-		scanFailureCount = 0;
-		lastScanFailureLogAt = now;
 	}
 
 	async function handleBarcodeSubmit(barcode: string) {
@@ -71,40 +128,11 @@
 		} catch (err) {
 			console.error('Barcode navigation failed:', err);
 			isSubmittingBarcode = false;
+			canRetryScan = true;
+			error = $_('qr.barcode_navigation_failed', {
+				default: 'Could not open the product page. Please try scanning again.'
+			});
 		}
-	}
-
-	async function startScanning(scanner: Html5Qrcode) {
-		return scanner.start(
-			{ facingMode: 'environment' },
-			{ fps: 10, qrbox: getQrBoxSize },
-			async (text, result) => {
-				if (isDestroyed || text == null) return;
-				clearScannerTimeout();
-				console.info('[QR scanner] code detected', {
-					text,
-					format: result.result.format?.formatName ?? 'unknown'
-				});
-
-				// We must stop the scanner first to release the camera
-				// This is important because:
-				// 1. It frees up camera resources
-				// 2. Prevents memory leaks
-				// 3. Ensures the camera is available for other applications
-				try {
-					await scanner.stop();
-				} catch (error) {
-					console.error('Error stopping scanner:', error);
-				}
-
-				if (!isDestroyed) {
-					await handleBarcodeSubmit(text);
-				}
-			},
-			(errorMessage) => {
-				logScanFailure(errorMessage);
-			}
-		);
 	}
 
 	function clearScannerTimeout() {
@@ -124,76 +152,118 @@
 		}, 20000);
 	}
 
-	async function startScanner(scanner: Html5Qrcode) {
-		if (isDestroyed) return;
-
-		await startScanning(scanner);
-
-		if (!isDestroyed) {
-			startScannerTimeout();
-			console.info('[QR scanner] camera started');
+	function stopScanner() {
+		isScanning = false;
+		clearScannerTimeout();
+		if (scanLoopTimeout != null) {
+			clearTimeout(scanLoopTimeout);
+			scanLoopTimeout = null;
 		}
+		cameraStream?.getTracks().forEach((track) => track.stop());
+		cameraStream = null;
+		if (videoElement != null) {
+			videoElement.pause();
+			videoElement.srcObject = null;
+		}
+	}
+
+	async function scanNextFrame() {
+		if (!isScanning || isDestroyed || detector == null || videoElement == null) return;
+
+		try {
+			const detections = await detector.detect(videoElement);
+			const detectedCode = detections[0];
+			if (detectedCode != null && detectedCode.rawValue !== '') {
+				console.info('[Scanner] code detected', {
+					text: detectedCode.rawValue,
+					format: detectedCode.format
+				});
+				stopScanner();
+				await handleBarcodeSubmit(detectedCode.rawValue);
+				return;
+			}
+		} catch (err) {
+			console.error('[Scanner] detection failed', err);
+			stopScanner();
+			canRetryScan = true;
+			error = $_('qr.scanner_unavailable', {
+				default: 'Barcode scanning is not available in this browser.'
+			});
+			return;
+		}
+
+		if (isScanning && !isDestroyed) {
+			scanLoopTimeout = setTimeout(scanNextFrame, 150);
+		}
+	}
+
+	async function startScanner() {
+		if (isDestroyed || videoElement == null) return;
+		stopScanner();
+		error = null;
+		scannerTimedOut = false;
+		canRetryScan = false;
+
+		let createdDetector: Awaited<ReturnType<typeof createBarcodeDetector>>;
+		try {
+			createdDetector = await createBarcodeDetector();
+		} catch (err) {
+			throw new ScannerStartupError('decoder', err);
+		}
+		if (isDestroyed) return;
+		detector = createdDetector.detector;
+
+		let stream: MediaStream;
+		try {
+			stream = await navigator.mediaDevices.getUserMedia({
+				video: { facingMode: { ideal: 'environment' } },
+				audio: false
+			});
+		} catch (err) {
+			throw new ScannerStartupError('camera', err);
+		}
+		if (isDestroyed) {
+			stream.getTracks().forEach((track) => track.stop());
+			return;
+		}
+		cameraStream = stream;
+		videoElement.srcObject = cameraStream;
+		try {
+			await videoElement.play();
+		} catch (err) {
+			throw new ScannerStartupError('video', err);
+		}
+
+		if (isDestroyed) {
+			stopScanner();
+			return;
+		}
+
+		isScanning = true;
+		startScannerTimeout();
+		console.info('[Scanner] started', { backend: createdDetector.backend });
+		void scanNextFrame();
 	}
 
 	onMount(async () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-			error = 'Your browser does not support the camera API';
+			error = $_('qr.scanner_unavailable', {
+				default: 'Barcode scanning is not available in this browser.'
+			});
 			return;
 		}
 
-		const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
-
-		if (isDestroyed) return;
-
-		const scanner = new Html5Qrcode('reader', {
-			useBarCodeDetectorIfSupported: true,
-			formatsToSupport: [
-				Html5QrcodeSupportedFormats.QR_CODE,
-				Html5QrcodeSupportedFormats.EAN_13,
-				Html5QrcodeSupportedFormats.EAN_8,
-				Html5QrcodeSupportedFormats.UPC_A,
-				Html5QrcodeSupportedFormats.ITF,
-				Html5QrcodeSupportedFormats.CODE_128
-			],
-			verbose: false
-		});
-
-		html5QrCode = scanner;
-		startScanner(scanner).catch(async (err) => {
-			error = $_('qr.camera_access_required', {
-				default: 'Camera access is required. Please enable it in your browser settings.'
-			});
-			console.error('QR Code Scanner Error:', err);
-			await cleanupScanner();
+		startScanner().catch((err) => {
+			error = getStartupErrorMessage(err);
+			console.error('[Scanner] failed to start', err);
+			stopScanner();
+			canRetryScan = true;
 		});
 	});
 
-	async function stopScanner() {
-		clearScannerTimeout();
-		if (html5QrCode != null) {
-			await html5QrCode.stop();
-		}
-	}
-
-	async function cleanupScanner() {
-		if (html5QrCode != null) {
-			try {
-				await stopScanner();
-				html5QrCode.clear();
-			} catch (e) {
-				console.error('Error cleaning up scanner:', e);
-			}
-			html5QrCode = null;
-		}
-	}
-
 	onDestroy(() => {
 		isDestroyed = true;
-		clearScannerTimeout();
-
-		cleanupScanner().catch((err) => {
-			console.error('Error cleaning up scanner:', err);
-		});
+		stopScanner();
 	});
 
 	async function submitManualBarcode(event: SubmitEvent) {
@@ -212,13 +282,11 @@
 
 			await tick();
 
-			if (html5QrCode) {
-				await startScanner(html5QrCode);
-			}
+			await startScanner();
 		} catch (err) {
 			console.error('Failed to restart the scanner:', err);
 			canRetryScan = true;
-			error = 'Failed to restart the scanner. Please refresh the page.';
+			error = getStartupErrorMessage(err);
 		}
 	}
 </script>
@@ -250,7 +318,14 @@
 	</div>
 {:else}
 	<div class="flex flex-col items-center p-8">
-		<div id="reader" class="w-full max-w-md rounded-lg border-2 border-base-300"></div>
+		<video
+			bind:this={videoElement}
+			id="reader"
+			class="w-full max-w-md rounded-lg border-2 border-base-300"
+			autoplay
+			muted
+			playsinline
+		></video>
 
 		{#if scannerTimedOut}
 			<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
