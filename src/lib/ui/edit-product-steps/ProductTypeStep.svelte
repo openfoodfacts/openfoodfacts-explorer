@@ -2,7 +2,6 @@
 	import { _ } from '#lib/i18n/index.js';
 	import type { Product } from '#lib/api.js';
 	import { PRODUCT_TYPES, type ProductType } from '#lib/const.js';
-	import { updateProductType } from '#lib/flavor.js';
 	import IconMdiShape from '@iconify-svelte/mdi/shape';
 	import addFood from '#lib/assets/add_food.svg';
 	import addBeauty from '#lib/assets/add_beauty.svg';
@@ -57,7 +56,7 @@
 					? 'border-2 border-primary bg-primary/10 shadow-md ring-2 ring-primary/20'
 					: 'border-base-300 bg-base-100'}"
 				onclick={() => {
-					product = updateProductType(product, type);
+					product = { ...product, product_type: type };
 				}}
 			>
 				<div class="flex w-full flex-col items-center gap-2 sm:gap-4">
