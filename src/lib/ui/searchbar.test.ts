@@ -6,11 +6,11 @@ import { fetchAutocompleteOptions } from './searchbar';
 
 const { mockAutocomplete } = vi.hoisted(() => ({ mockAutocomplete: vi.fn() }));
 
-vi.mock('$lib/api/search', () => ({
+vi.mock('#lib/api/search.js', () => ({
 	createSearchApi: vi.fn(() => ({ autocomplete: mockAutocomplete }))
 }));
 
-vi.mock('$lib/api/product', () => ({
+vi.mock('#lib/api/product.js', () => ({
 	getTaxonomySuggestions: vi.fn()
 }));
 
