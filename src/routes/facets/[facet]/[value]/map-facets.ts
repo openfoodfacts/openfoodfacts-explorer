@@ -1,5 +1,5 @@
-import { getOrDefault } from '$lib/api/taxonomy/types';
-import type { getTaxo } from '$lib/api/taxonomy/api';
+import { getOrDefault } from '#lib/api/taxonomy/types';
+import type { getTaxo } from '#lib/api/taxonomy/api';
 
 export type MapFacet = {
 	tagsField: 'origins_tags' | 'countries_tags';

@@ -154,7 +154,7 @@ We use [`svelte-i18n`](https://github.com/kaisermann/svelte-i18n) to support mul
 
 ```svelte
 <script>
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n';
 </script>
 ```
 
