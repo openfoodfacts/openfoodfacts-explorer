@@ -806,7 +806,11 @@
 		"invalid_barcode_payload": "Scanner payload",
 		"empty_barcode_payload": "(prázdný)",
 		"manual_barcode": "Zadejte čárový kód ručně",
-		"camera_access_required": "Je vyžadován přístup k fotoaparátu. Povolte jej prosím v nastavení prohlížeče."
+		"barcode_navigation_failed": "Could not open the product page. Please try scanning again.",
+		"camera_access_required": "Could not access the camera. Check your browser permissions and try again.",
+		"camera_preview_failed": "Could not start the camera preview. Check your browser permissions and try again.",
+		"decoder_initialization_failed": "Could not initialize barcode scanning in this browser.",
+		"scanner_unavailable": "Barcode scanning is not available in this browser."
 	},
 	"errors": {
 		"network": {
@@ -908,7 +912,9 @@
 		"facet_value_website_title": "Objevování {facet}: {value} - Open Food Facts Explorer",
 		"facet_value_website_description": "Objevte kategorii {value} na Open Food Facts Explorer.",
 		"facet_back_to_list": "Zpět k fasetám",
-		"facet_back_to_overview": "Zpět k přehledu {facet}"
+		"facet_back_to_overview": "Zpět k přehledu {facet}",
+		"map_heading_origins": "Origins of the ingredients",
+		"map_heading_countries": "Where these products are sold"
 	},
 	"landing": {
 		"title": "Otevřít Průzkumník faktů o jídle",
