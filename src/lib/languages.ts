@@ -8,7 +8,7 @@ export type LocaleLabelLanguage = {
 };
 
 function getDisplayName(
-	type: 'language' | 'region',
+	type: 'language' | 'region' | 'currency',
 	code: string,
 	displayLocale = 'en'
 ): string | undefined {
@@ -56,4 +56,10 @@ export function getLanguageName(code: string, locale: string = getLocale()): str
 	}
 	// Fallback: return the code itself if Intl.DisplayNames is not supported
 	return ISO6391.getName(code) || code;
+}
+
+/** Localized currency name with the ISO 4217 code retained for unambiguous selection. */
+export function getCurrencyLabel(code: string, locale: string = getLocale()): string {
+	const currencyName = getDisplayName('currency', code, locale);
+	return currencyName ? `${code} — ${currencyName}` : code;
 }

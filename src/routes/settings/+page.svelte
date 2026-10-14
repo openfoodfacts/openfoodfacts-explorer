@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { preferences } from '#lib/settings.js';
-	import { getLocaleLabel } from '#lib/languages.js';
+	import { getCurrencyLabel, getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
@@ -46,6 +46,12 @@
 		availableLocales.map((code) => ({
 			code,
 			label: getLocaleLabel(code, Object.values(data.languages))
+		}))
+	);
+	let currencyOptions = $derived(
+		data.currencies.map((currency) => ({
+			code: currency,
+			label: getCurrencyLabel(currency, $locale ?? undefined)
 		}))
 	);
 
@@ -291,9 +297,9 @@
 							class="select-bordered select w-full"
 							bind:value={$preferences.currency}
 						>
-							{#each data.currencies as currency (currency)}
-								<option value={currency} selected={$preferences.currency === currency}>
-									{currency}
+							{#each currencyOptions as currency (currency.code)}
+								<option value={currency.code} selected={$preferences.currency === currency.code}>
+									{currency.label}
 								</option>
 							{/each}
 						</select>

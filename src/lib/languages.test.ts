@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getLocaleLabel } from './languages';
+import { getCurrencyLabel, getLocaleLabel } from './languages';
 
 const displayNames: Record<string, Record<string, string>> = {
 	'en:language': {
@@ -65,5 +65,34 @@ describe('getLocaleLabel', () => {
 		expect(getLocaleLabel('es-419')).toBe('Spanish (Latin America) (español (Latinoamérica))');
 		expect(getLocaleLabel('fr-FR')).toBe('French (France) (français (France))');
 		expect(getLocaleLabel('zh-Hans-CN')).toBe('Chinese (China) (中文 (中国))');
+	});
+});
+
+describe('getCurrencyLabel', () => {
+	beforeEach(() => {
+		vi.spyOn(Intl, 'DisplayNames').mockImplementation(function (locales, options) {
+			const locale = Array.isArray(locales) ? String(locales[0]) : String(locales);
+			const names: Record<string, string> = {
+				'en:USD': 'US Dollar',
+				'fr:USD': 'dollar des États-Unis'
+			};
+
+			return {
+				of: (code: string) => names[`${locale}:${code}`]
+			} as Intl.DisplayNames;
+		});
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it('keeps the ISO code alongside the localized currency name', () => {
+		expect(getCurrencyLabel('USD', 'en')).toBe('USD — US Dollar');
+		expect(getCurrencyLabel('USD', 'fr')).toBe('USD — dollar des États-Unis');
+	});
+
+	it('falls back to the ISO code when a display name is unavailable', () => {
+		expect(getCurrencyLabel('ZZZ', 'en')).toBe('ZZZ');
 	});
 });
