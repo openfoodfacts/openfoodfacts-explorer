@@ -19,7 +19,7 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
@@ -187,7 +187,7 @@
 						title={$_('product.buttons.compare')}
 						aria-label={$_('product.buttons.compare')}
 					>
-						<IconMdiCompare class="h-5 w-5" />
+						<IconMdiSwapHorizontal class="h-5 w-5" aria-hidden="true" />
 					</button>
 				</div>
 			</div>

@@ -3,7 +3,7 @@
 	import { derived } from 'svelte/store';
 	import { page } from '$app/state';
 
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 
 	const count = derived(compareStore, ($compareStore) => $compareStore.length);
 	const isOnComparePage = $derived(page.url.pathname === '/compare');
@@ -16,7 +16,7 @@
 		title="Compare Products ({$count})"
 		aria-label="Compare Products ({$count})"
 	>
-		<IconMdiCompare class="h-5 w-5" />
+		<IconMdiSwapHorizontal class="h-5 w-5" aria-hidden="true" />
 		<span class="ml-2 hidden md:inline">Compare ({$count})</span>
 	</a>
 {/if}
