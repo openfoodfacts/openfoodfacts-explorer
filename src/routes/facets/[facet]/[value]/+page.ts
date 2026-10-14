@@ -6,44 +6,31 @@ import {
 	getFacetValue,
 	type FacetSortOption
 } from '$lib/api/facets';
-import type { PageLoad } from './$types';
 import { requireInt } from '$lib/utils';
 import { getBulkProductAttributes } from '$lib/api';
 import { getTaxo } from '$lib/api/taxonomy/api';
 import { getOrDefault } from '$lib/api/taxonomy/types';
 import { getLocale } from '$lib/i18n';
 
+import { getFacetDistribution, MAP_FACETS } from './map-facets';
+import type { PageLoad } from './$types';
+
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
-type MapFacet = {
-	tagsField: 'origins_tags' | 'countries_tags';
-	heading: string;
-	defaultHeading: string;
-};
-
-const WITH_MAP_FACETS: Record<string, MapFacet> = {
-	origins: {
-		tagsField: 'origins_tags',
-		heading: 'facets.map_heading_origins',
-		defaultHeading: 'Origins of the ingredients'
-	},
-	countries: {
-		tagsField: 'countries_tags',
-		heading: 'facets.map_heading_countries',
-		defaultHeading: 'Where these products are sold'
+async function getTaxonomyOrUndefined(facet: string, fetch: typeof window.fetch) {
+	try {
+		return await getTaxo(facet, fetch);
+	} catch (error) {
+		console.error('Taxonomy fetch failed:', error);
+		return undefined;
 	}
-};
+}
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
-	const mapFacet = Object.prototype.hasOwnProperty.call(WITH_MAP_FACETS, facet)
-		? WITH_MAP_FACETS[facet]
-		: undefined;
-
-	let facetDisplayValue = value;
-	let taxonomy: Awaited<ReturnType<typeof getTaxo>> | null = null;
+	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
@@ -62,70 +49,36 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		pageSize,
 		sortBy
 	};
+	const taxonomy = mapFacet ? await getTaxonomyOrUndefined(facet, fetch) : undefined;
+	const facetDisplayValue = getOrDefault(taxonomy?.[value]?.name ?? {}, lang) ?? value;
 
-	let results = {
+	let results: FacetResponseData = {
 		products: [],
 		count: 0,
 		page: 1,
+		page_count: 0,
 		page_size: pageSize
-	} as unknown as FacetResponseData;
-	let kp = { knowledge_panels: {} } as unknown as KPResponseData;
+	};
+	let kp: KPResponseData = { knowledge_panels: {} };
 	let productAttributes = {};
 	let distributionData = null;
 
 	try {
-		if (mapFacet) {
-			try {
-				taxonomy = await getTaxo(facet, fetch);
-				facetDisplayValue = getOrDefault(taxonomy[value]?.name ?? {}, lang) ?? value;
-			} catch (e) {
-				console.error('Taxonomy fetch failed:', e);
-			}
-		}
-
 		results = await getFacetValue(fetch, facet, value, searchOptions);
 		kp = await getFacetKnowledgePanels(fetch, facet, value);
 
-		if (results && results.products && results.products.length > 0) {
-			const productCodes = results.products.map((state) => state.code as string);
+		if (results.products.length > 0) {
+			const products = results.products;
+
+			const productCodes = products.map((state) => state.code as string);
 			productAttributes = await getBulkProductAttributes(fetch, productCodes);
 
 			if (mapFacet) {
-				const tagCounts: Record<string, number> = {};
-
-				results.products.forEach((product) => {
-					const tags = product[mapFacet.tagsField];
-
-					if (Array.isArray(tags)) {
-						tags.forEach((tag) => {
-							const tagId =
-								typeof tag === 'string' ? tag : typeof tag.id === 'string' ? tag.id : undefined;
-
-							if (tagId) {
-								tagCounts[tagId] = (tagCounts[tagId] || 0) + 1;
-							}
-						});
-					}
-				});
-
-				const mappedTags = Object.entries(tagCounts).map(([id, count]) => {
-					const taxoNode = taxonomy?.[id];
-
-					return {
-						id,
-						products: count,
-						known: 1,
-						name: taxoNode?.name ? (getOrDefault(taxoNode.name, lang) ?? id) : id
-					};
-				});
-
-				if (mappedTags.length > 0) {
-					distributionData = { count: mappedTags.length, tags: mappedTags };
-				}
+				distributionData = getFacetDistribution(products, mapFacet.tagsField, taxonomy, lang);
 			}
 		}
 	} catch (e) {
-		console.error('API Fetch failed (Likely server outage):', e);
+		console.error('API Fetch failed:', e);
 	}
 
 	return {
