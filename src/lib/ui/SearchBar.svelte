@@ -1,13 +1,9 @@
 <script lang="ts">
-	import {
-		createSearchApi,
-		type AutocompleteOption,
-		type AutocompleteResponse
-	} from '$lib/api/search';
+	import type { AutocompleteOption } from '$lib/api/search';
 	import { _, getBrowserLocale } from '$lib/i18n';
 	import { getLanguageCode } from '$lib/settings';
 	import { onDestroy } from 'svelte';
-	import { deduplicateAutocompleteOptions, fetchBrandSuggestions } from './searchbar';
+	import { fetchAutocompleteOptions } from './searchbar';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -58,51 +54,16 @@
 		autocompleteLoading = true;
 
 		try {
-			// TODO: When search-a-licious supports brand autocomplete, remove the classic taxonomy
-			// fallback and use search-a-licious for all taxonomy types (brands, categories, labels).
-			// Currently, search-a-licious does not return brand suggestions, so we use the classic
-			// taxonomy suggester for brands while search-a-licious handles categories and labels.
-
-			// Fetch brand suggestions from classic taxonomy suggester
-			const brandSuggestionsPromise = fetchBrandSuggestions(abortingFetch, query, 5);
-
-			// Fetch category/label suggestions from search-a-licious (excluding brands)
-			const searchApi = createSearchApi(abortingFetch);
-			const autocompleteQuery = {
-				q: query,
-				taxonomy_names: 'categories,labels',
-				lang: getLanguageCode(getBrowserLocale()),
-				size: 5,
-				fuzziness: null,
-				index_id: null
-			};
-
-			const searchSuggestionsPromise = searchApi.autocomplete(autocompleteQuery).then((result) => {
-				if (result.error || !result.data) {
-					console.warn('Search-a-licious autocomplete error:', result.error);
-					return [];
-				}
-				const data = result.data as AutocompleteResponse | undefined;
-				return Array.isArray(data?.options) ? data.options : [];
-			});
-
-			// Run both requests in parallel
-			const [brandSuggestions, searchSuggestions] = await Promise.allSettled([
-				brandSuggestionsPromise,
-				searchSuggestionsPromise
-			]);
-
-			const brandOptions = brandSuggestions.status === 'fulfilled' ? brandSuggestions.value : [];
-			const categoriesLabels =
-				searchSuggestions.status === 'fulfilled' ? searchSuggestions.value : [];
-
-			// Merge results, preferring brands first, then deduplicate by text (case-insensitive)
-			const mergedOptions = [...brandOptions, ...categoriesLabels];
-			const deduplicatedOptions = deduplicateAutocompleteOptions(mergedOptions);
+			const options = await fetchAutocompleteOptions(
+				abortingFetch,
+				query,
+				getLanguageCode(getBrowserLocale()),
+				5
+			);
 
 			// Only update if this is still the current request (prevent stale results)
 			if (currentRequestId === requestId) {
-				autocompleteList = deduplicatedOptions;
+				autocompleteList = options;
 			}
 		} catch (e) {
 			if (e instanceof Error && e.name !== 'AbortError') {

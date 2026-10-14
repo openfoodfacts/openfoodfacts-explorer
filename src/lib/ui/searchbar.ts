@@ -1,30 +1,49 @@
-import type { AutocompleteOption } from '$lib/api/search';
+import {
+	createSearchApi,
+	type AutocompleteOption,
+	type AutocompleteResponse
+} from '$lib/api/search';
 import { getTaxonomySuggestions } from '$lib/api/product';
+import { deduplicate } from '$lib/utils';
 
-type TaxonomySuggestionsResult = {
-	data?: { suggestions?: string[] };
-	error?: unknown;
-};
+export async function fetchAutocompleteOptions(
+	fetchFn: typeof fetch,
+	query: string,
+	language: string,
+	size: number
+): Promise<AutocompleteOption[]> {
+	const brandSuggestionsPromise = fetchBrandSuggestions(fetchFn, query, size);
+	const searchApi = createSearchApi(fetchFn);
+	const searchSuggestionsPromise = searchApi
+		.autocomplete({
+			q: query,
+			taxonomy_names: 'categories,labels',
+			lang: language,
+			size,
+			fuzziness: null,
+			index_id: null
+		})
+		.then((result) => {
+			if (result.error || !result.data) {
+				console.warn('Search-a-licious autocomplete error:', result.error);
+				return [];
+			}
+			const data = result.data as AutocompleteResponse | undefined;
+			return Array.isArray(data?.options) ? data.options : [];
+		});
 
-/**
- * Deduplicate autocomplete options by text (case-insensitive), preserving order.
- * Brands should be passed first to ensure they are prioritized in the result.
- */
-export function deduplicateAutocompleteOptions(
-	options: AutocompleteOption[]
-): AutocompleteOption[] {
-	const seenTexts = new Set<string>();
-	const deduplicated: AutocompleteOption[] = [];
+	const [brandSuggestions, searchSuggestions] = await Promise.allSettled([
+		brandSuggestionsPromise,
+		searchSuggestionsPromise
+	]);
 
-	for (const option of options) {
-		const lowerText = option.text.toLowerCase();
-		if (!seenTexts.has(lowerText)) {
-			seenTexts.add(lowerText);
-			deduplicated.push(option);
-		}
-	}
-
-	return deduplicated;
+	return deduplicate(
+		[
+			...(brandSuggestions.status === 'fulfilled' ? brandSuggestions.value : []),
+			...(searchSuggestions.status === 'fulfilled' ? searchSuggestions.value : [])
+		],
+		(option) => option.text.toLowerCase()
+	);
 }
 
 /**
@@ -36,18 +55,13 @@ export function deduplicateAutocompleteOptions(
  * @param size - Maximum number of suggestions to return
  * @returns Array of AutocompleteOption objects for brands
  */
-export async function fetchBrandSuggestions(
+async function fetchBrandSuggestions(
 	fetchFn: typeof fetch,
 	query: string,
 	size: number
 ): Promise<AutocompleteOption[]> {
 	try {
-		const result = (await getTaxonomySuggestions(
-			fetchFn,
-			'brands',
-			query,
-			size
-		)) as TaxonomySuggestionsResult;
+		const result = await getTaxonomySuggestions(fetchFn, 'brands', query, size);
 		if (result.error || !result.data) {
 			console.warn('Brand taxonomy suggestions error:', result.error);
 			return [];
