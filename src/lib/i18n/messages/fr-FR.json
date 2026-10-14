@@ -806,11 +806,11 @@
 		"invalid_barcode_payload": "Données du scanner",
 		"empty_barcode_payload": "(vide)",
 		"manual_barcode": "Saisir le code-barres manuellement",
-		"barcode_navigation_failed": "Could not open the product page. Please try scanning again.",
-		"camera_access_required": "Could not access the camera. Check your browser permissions and try again.",
-		"camera_preview_failed": "Could not start the camera preview. Check your browser permissions and try again.",
-		"decoder_initialization_failed": "Could not initialize barcode scanning in this browser.",
-		"scanner_unavailable": "Barcode scanning is not available in this browser."
+		"barcode_navigation_failed": "Impossible d'ouvrir la page du produit. Veuillez réessayer de scanner.",
+		"camera_access_required": "Impossible d'accéder à la caméra. Vérifiez les autorisations de votre navigateur et réessayez.",
+		"camera_preview_failed": "Impossible de démarrer l'aperçu de la caméra. Vérifiez les autorisations de votre navigateur et réessayez.",
+		"decoder_initialization_failed": "Impossible d'initialiser la lecture de codes-barres dans ce navigateur.",
+		"scanner_unavailable": "La lecture de codes-barres n'est pas disponible dans ce navigateur."
 	},
 	"errors": {
 		"network": {
@@ -913,8 +913,8 @@
 		"facet_value_website_description": "Découvrez la catégorie {value} sur Open Food Facts Explorer.",
 		"facet_back_to_list": "Retour aux facettes",
 		"facet_back_to_overview": "Retour à l'aperçu {facet}",
-		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_origins": "Origines des ingrédients",
+		"map_heading_countries": "Où ces produits sont vendus"
 	},
 	"landing": {
 		"title": "Ouvrir l'explorateur de faits alimentaires",
