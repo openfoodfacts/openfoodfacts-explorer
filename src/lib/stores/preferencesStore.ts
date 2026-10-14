@@ -1,6 +1,6 @@
 import { persisted } from 'svelte-local-storage-store';
 
-import type { AttributeParameters, Attribute, AttributeGroup } from '$lib/types/sdk-overrides';
+import type { AttributeParameters, Attribute, AttributeGroup } from '#lib/types/sdk-overrides.js';
 export type { AttributeParameters, Attribute, AttributeGroup };
 
 type BaseUserPreference = {

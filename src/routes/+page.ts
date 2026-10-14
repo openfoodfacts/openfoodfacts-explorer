@@ -1,6 +1,6 @@
-import { createProductsApi } from '$lib/api';
-import { API_HOST } from '$lib/const';
-import { fetchRequired } from '$lib/promises';
+import { createProductsApi } from '#lib/api.js';
+import { API_HOST } from '#lib/const.js';
+import { fetchRequired } from '#lib/promises.js';
 import type { PageLoad } from './$types';
 
 async function getNumberOfProducts(fetch: typeof window.fetch): Promise<number> {

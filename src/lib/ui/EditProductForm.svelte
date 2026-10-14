@@ -23,12 +23,12 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
-	import type { Product } from '$lib/api';
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
+	import type { Product } from '#lib/api.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
-	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
+	import { scrollToAndHighlight } from '#lib/utils/fieldFocus.js';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
@@ -174,18 +174,20 @@
 			id: sec.id,
 			label: $_(sec.labelKey, { default: sec.defaultLabel }),
 			icon: sec.icon,
+			href: `#${sec.id}`,
 			isCollapsed: () => !openSections[sec.id],
 			onToggle: (open?: boolean) => {
 				openSections[sec.id] = open !== undefined ? open : !openSections[sec.id];
 			}
 		}));
 
-		if (permissions.isModerator && $preferences.moderator) {
+		if (permissions.isModerator && !$preferences.hideModeratorTools) {
 			sections.push({
 				id: 'moderator-tools',
 				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
 				icon: IconMdiShieldAccount,
 				style: 'warning',
+				href: '#moderator-tools',
 				isCollapsed: () => !openSections['moderator-tools'],
 				onToggle: (open?: boolean) => {
 					openSections['moderator-tools'] =
@@ -223,32 +225,19 @@
 		});
 		handleCollapseToggle(editSections[0]?.id || '');
 	}
-
-	function handleSidebarSectionClick(id: string) {
-		const section = editSections.find((s) => s.id === id);
-		sidebar?.scrollToSection(id, () => {
-			if (activeSection === id) {
-				section?.onToggle?.();
-			} else {
-				section?.onToggle?.(true);
-			}
-			handleCollapseToggle(id);
-		});
-	}
 </script>
 
 <div class="relative w-full lg:grid lg:grid-cols-[auto_1fr] lg:gap-8">
 	<Sidebar
 		bind:this={sidebar}
 		bind:activeSection
-		type="edit"
+		ariaLabel={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
 		scrollHeaderOffset={100}
 		sections={editSections}
 		headerActionLabel={$preferences.editing.expandAllSections
 			? $_('product.edit.sidebar.collapse_all', { default: 'Collapse All' })
 			: $_('product.edit.sidebar.expand_all', { default: 'Expand All' })}
 		onHeaderAction={toggleExpandAll}
-		onSectionClick={handleSidebarSectionClick}
 	/>
 
 	<div class="w-full min-w-0 space-y-4">
@@ -419,7 +408,7 @@
 		</div>
 
 		<!-- Moderator Tools Section -->
-		{#if permissions.isModerator && $preferences.moderator}
+		{#if permissions.isModerator && !$preferences.hideModeratorTools}
 			<div
 				id="moderator-tools"
 				class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md"

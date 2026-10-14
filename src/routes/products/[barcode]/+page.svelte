@@ -1,30 +1,28 @@
 <script lang="ts">
-	import { untrack } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
-	import { isConfigured as isPriceConfigured } from '$lib/api/prices';
-	import { isConfigured as isFolksonomyConfigured } from '$lib/api/folksonomy';
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
+	import { isConfigured as isPriceConfigured } from '#lib/api/prices.js';
+	import { isConfigured as isFolksonomyConfigured } from '#lib/api/folksonomy.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 
-	import KnowledgePanelsComp from '$lib/knowledgepanels/Panels.svelte';
-	import Card from '$lib/ui/Card.svelte';
-	import Metadata from '$lib/Metadata.svelte';
+	import KnowledgePanelsComp from '#lib/knowledgepanels/Panels.svelte';
+	import ExternalPanels from '#lib/knowledgepanels/ExternalPanels.svelte';
+	import Card from '#lib/ui/Card.svelte';
+	import Metadata from '#lib/Metadata.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import DataSources from './DataSources.svelte';
 
-	import Gs1Country from './GS1Country.svelte';
 	import ProductHeader from './ProductHeader.svelte';
-	import BarcodeInfo from '$lib/ui/BarcodeInfo.svelte';
+	import BarcodeInfo from '#lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
 
 	import type { PageProps } from './$types';
-	import { userInfo } from '$lib/stores/user';
-	import { userAuthTokens } from '$lib/stores/auth';
-	import { getWebsiteCtx } from '$lib/stores/website';
+	import { userInfo } from '#lib/stores/user.js';
+	import { userAuthTokens } from '#lib/stores/auth.js';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
 
-	import Sidebar, { type SidebarSection } from '$lib/ui/Sidebar.svelte';
+	import Sidebar, { type SidebarSectionBase } from '#lib/ui/Sidebar.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
@@ -39,19 +37,22 @@
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
 	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import type { KnowledgePanels } from '$lib/api/knowledgepanels';
-	import ScrollToTop from '$lib/ui/ScrollToTop.svelte';
+	import type { KnowledgePanels } from '#lib/api/knowledgepanels.js';
+	import ScrollToTop from '#lib/ui/ScrollToTop.svelte';
 	import { onMount } from 'svelte';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import type { ProductGroupedAttributes } from './types';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import { PRODUCT_URL } from '$lib/const';
-	import { toWebsiteFlavor } from '$lib/flavor';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
+	import { PRODUCT_URL } from '#lib/const.js';
+	import { toWebsiteFlavor } from '#lib/flavor.js';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import { trackOffEvent } from '$lib/analytics';
-	import { browser } from '$app/environment';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import { browser } from '$app/env';
+	import {
+		getExternalKnowledgePanelRequests,
+		type ExternalKnowledgePanelBatch
+	} from '#lib/api/externalSources.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -66,12 +67,51 @@
 		knowledge_panels: KnowledgePanels;
 		image_front_small_url?: string;
 		image_front_url?: string;
+		image_ingredients_url?: string;
+		image_nutrition_url?: string;
 		taxonomies?: string[];
 	};
 
 	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
+	);
+
+	let externalKnowledgePanelBatchPromise = $state<Promise<ExternalKnowledgePanelBatch> | null>(
+		null
+	);
+	$effect(() => {
+		if (!browser || !product.code) {
+			externalKnowledgePanelBatchPromise = null;
+			return;
+		}
+
+		const requestContext = {
+			code: product.code,
+			lc: data.lc || getLanguageCode($preferences.locale),
+			cc: $preferences.country || 'world',
+			productType: product.product_type,
+			categories: product.categories_tags ?? []
+		};
+		let cancelled = false;
+		const request = getExternalKnowledgePanelRequests(window.fetch.bind(window), requestContext);
+		externalKnowledgePanelBatchPromise = request;
+
+		request.then(
+			({ requests }) => {
+				if (cancelled) return;
+				if (requests.length === 0) externalKnowledgePanelBatchPromise = null;
+			},
+			() => {}
+		);
+
+		return () => {
+			cancelled = true;
+		};
+	});
+
+	let hasExternalKnowledgePanelsSection = $derived(
+		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
 
 	let websiteCtx = getWebsiteCtx();
@@ -85,46 +125,19 @@
 		}
 	});
 
-	// Track product score presence (fire once per product page view)
-	const trackedScores = new SvelteSet<string>();
-	$effect(() => {
-		// Depend only on pathname (navigation), not product data (invalidateAll)
-		const path = page.url.pathname;
-		untrack(() => {
-			const p = product;
-			if (p.code && !trackedScores.has(path)) {
-				trackedScores.add(path);
-				if (p.nutriscore_grade) {
-					trackOffEvent('product', 'has_nutriscore', p.nutriscore_grade);
-				}
-				if (p.ecoscore_grade) {
-					trackOffEvent('product', 'has_greenscore', p.ecoscore_grade);
-				}
-				if (p.nova_group) {
-					trackOffEvent('product', 'has_nova', String(p.nova_group));
-				}
-			}
-		});
-	});
-
 	let useWCFolksonomyEditor = $state(false);
 
-	let showBarcode = $state(false);
 	let sidebarHidden = $state(!($preferences.productSidebarVisible ?? true));
+	let sidebar = $state<ReturnType<typeof Sidebar>>();
+	let barcodeInfo = $state<ReturnType<typeof BarcodeInfo>>();
 
 	const activeSections = $derived.by(() => {
-		const rawList: (SidebarSection | false | undefined | null)[] = [
+		const rawList: (SidebarSectionBase | false | undefined | null)[] = [
 			{
 				id: 'overview',
 				label: $_('product.sections.product', { default: 'Product' }),
 				icon: IconMdiInformation
 			},
-			showBarcode &&
-				product.code != null && {
-					id: 'barcode-info',
-					label: $_('product.sections.barcode_info_debug', { default: 'Barcode debug' }),
-					icon: IconMdiBarcode
-				},
 			{
 				id: 'attributes',
 				label: $_('product.sections.attributes', { default: 'Attributes' }),
@@ -155,6 +168,11 @@
 				label: $_('product.sections.product_information', { default: 'Product information' }),
 				icon: IconMdiFormatListBulleted
 			},
+			hasExternalKnowledgePanelsSection && {
+				id: 'external-sources',
+				label: $_('product.sections.external_sources', { default: 'External sources' }),
+				icon: IconMdiDatabase
+			},
 			isPriceConfigured() &&
 				data.prices != null && {
 					id: 'prices',
@@ -162,7 +180,7 @@
 					icon: IconMdiTagMultiple
 				},
 			product.code != null && {
-				id: 'barcode-gs1',
+				id: 'barcode-info',
 				label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
 				icon: IconMdiBarcode
 			},
@@ -177,15 +195,20 @@
 				icon: IconMdiLabel
 			}
 		];
-		return rawList.filter((item): item is SidebarSection => !!item);
+		return rawList
+			.filter((item): item is SidebarSectionBase => !!item)
+			.map((section) => ({
+				...section,
+				onClick: () => sidebar?.scrollToSection(section.id)
+			}));
 	});
 
 	const shortcutCtx = getShortcutCtx();
 
 	onMount(() => {
 		shortcutCtx.set('Shift+B', {
-			description: $_('product.shortcuts.show_barcode'),
-			action: () => (showBarcode = !showBarcode)
+			description: $_('product.shortcuts.show_barcode', { default: 'Show/hide barcode tools' }),
+			action: () => barcodeInfo?.togglePowerUserDetails()
 		});
 
 		shortcutCtx.set('A', {
@@ -290,7 +313,9 @@
 
 <div itemscope itemtype="https://schema.org/Product">
 	<meta itemprop="name" content={product.product_name || ''} />
+
 	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
+
 	<meta
 		itemprop="description"
 		content={$_('product.description', {
@@ -312,30 +337,24 @@
 		]}
 	>
 		<Sidebar
-			type="product"
+			bind:this={sidebar}
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
+			collapsible={true}
+			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
-			<div id="overview" class="flex flex-col gap-4">
-				<ProductHeader {product} lc={data.lc} />
-			</div>
-
-			{#if showBarcode && product.code != null}
-				<div id="barcode-info">
-					<BarcodeInfo code={product.code} />
-				</div>
-			{/if}
+			<div id="overview" class="flex flex-col gap-4"><ProductHeader {product} lc={data.lc} /></div>
 
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 				<robotoff-contribution-message
 					product-code={product.code}
 					is-logged-in={$userInfo != null}
-					onclick={() => trackOffEvent('product', 'open_nutrisight')}
+					onclick={() => trackOffEvent('feature', 'nutrisight_opened')}
 				></robotoff-contribution-message>
 			</div>
 
@@ -372,6 +391,34 @@
 				/>
 			</div>
 
+			{#if hasExternalKnowledgePanelsSection}
+				<div id="external-sources">
+					{#await externalKnowledgePanelBatchPromise}
+						<div class="flex items-center justify-center py-8">
+							<span class="loading loading-lg loading-spinner"></span>
+							<span class="ml-2">
+								{$_('product.external_sources.loading', {
+									default: 'Loading external sources…'
+								})}
+							</span>
+						</div>
+					{:then batch}
+						{#if batch != null && batch.requests.length > 0}
+							<ExternalPanels requests={batch.requests} />
+						{/if}
+					{:catch}
+						<div class="alert alert-warning">
+							<IconMdiWarning class="h-6 w-6 shrink-0" />
+							<span>
+								{$_('product.external_sources.error', {
+									default: 'External sources could not be loaded.'
+								})}
+							</span>
+						</div>
+					{/await}
+				</div>
+			{/if}
+
 			{#if isPriceConfigured() && data?.prices != null}
 				<div id="prices">
 					<Prices prices={data.prices} barcode={product.code} />
@@ -379,14 +426,12 @@
 			{/if}
 
 			{#if product.code}
-				<div id="barcode-gs1">
-					<Gs1Country barcode={product.code} />
+				<div id="barcode-info">
+					<BarcodeInfo bind:this={barcodeInfo} {product} />
 				</div>
 			{/if}
 
-			<div id="data-sources">
-				<DataSources {product} />
-			</div>
+			<div id="data-sources"><DataSources {product} /></div>
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">
@@ -411,9 +456,7 @@
 									{$_('product.folksonomy.intro_before')}
 									<strong>{$_('product.folksonomy.intro_emphasis')}</strong>
 									{$_('product.folksonomy.intro_after')}
-									<a href={resolve('/folksonomy')}>
-										{$_('product.folksonomy.link_properties')}
-									</a>
+									<a href={resolve('folksonomy')}>{$_('product.folksonomy.link_properties')}</a>
 									{$_('product.folksonomy.link_middle')}
 									<a href="https://wiki.openfoodfacts.org/Folksonomy/Property">
 										{$_('product.folksonomy.link_docs')}

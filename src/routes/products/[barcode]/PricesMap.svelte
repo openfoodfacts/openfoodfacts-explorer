@@ -2,11 +2,15 @@
 	import { onMount } from 'svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 	import L, {
+		type Icon,
 		type Map,
 		type Marker,
 		type MarkerClusterGroup,
 		type LatLngBoundsExpression
 	} from 'leaflet';
+	import markerIcon2xUrl from 'leaflet/dist/images/marker-icon-2x.png?url';
+	import markerIconUrl from 'leaflet/dist/images/marker-icon.png?url';
+	import markerShadowUrl from 'leaflet/dist/images/marker-shadow.png?url';
 
 	import 'leaflet/dist/leaflet.css';
 	import 'leaflet.markercluster';
@@ -23,15 +27,37 @@
 	let mapInstance: Map | null = null;
 	let markerClusterGroup: MarkerClusterGroup | null = null;
 	let markers: Marker[] = [];
+	let markerIcon: Icon | null = null;
 
 	const MAX_INITIAL_ZOOM = 3;
 	const MAX_ZOOM = 19;
 	const TILES_BASE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 	const ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+	const WORLD_BOUNDS: LatLngBoundsExpression = [
+		[-90, -180],
+		[90, 180]
+	];
 
 	onMount(() => {
-		mapInstance = L.map(mapContainer, {});
-		L.tileLayer(TILES_BASE_URL, { maxZoom: MAX_ZOOM, attribution: ATTRIBUTION }).addTo(mapInstance);
+		markerIcon = L.icon({
+			iconRetinaUrl: markerIcon2xUrl,
+			iconUrl: markerIconUrl,
+			shadowUrl: markerShadowUrl,
+			iconSize: [25, 41],
+			iconAnchor: [12, 41],
+			popupAnchor: [1, -34],
+			tooltipAnchor: [16, -28],
+			shadowSize: [41, 41]
+		});
+		mapInstance = L.map(mapContainer, {
+			maxBounds: WORLD_BOUNDS,
+			maxBoundsViscosity: 1
+		});
+		L.tileLayer(TILES_BASE_URL, {
+			maxZoom: MAX_ZOOM,
+			attribution: ATTRIBUTION,
+			noWrap: true
+		}).addTo(mapInstance);
 
 		return () => {
 			cleanupMap();
@@ -39,7 +65,7 @@
 	});
 
 	$effect(() => {
-		if (mapInstance && prices) {
+		if (mapInstance && markerIcon && prices) {
 			updateMap(prices);
 		}
 	});
@@ -66,18 +92,21 @@
 			try {
 				const lat = price.location.osm_lat as number;
 				const lon = price.location.osm_lon as number;
+				const priceDisplay = price.currency
+					? `${price.price ?? 'N/A'} ${price.currency}`
+					: (price.price ?? 'N/A');
 				const popupContent = `
 					<div>
-  					    <p style="font-size: 1.5em;">
-     					    Price: <strong>${price.price ?? 'N/A'}</strong>
-    				    </p>
+						<p style="font-size: 1.5em;">
+							Price: <strong>${priceDisplay}</strong>
+						</p>
 						<p>
-						  ${price.location.osm_display_name} - ${price.location.osm_address_city ?? ''}
-								${price.location.osm_address_country ?? ''}
+							${price.location.osm_display_name} - ${price.location.osm_address_city ?? ''}
+							${price.location.osm_address_country ?? ''}
 						</p>
 					</div>
 				`;
-				const marker = L.marker([lat, lon]);
+				const marker = L.marker([lat, lon], { icon: markerIcon ?? undefined });
 				marker.bindPopup(popupContent);
 				markerClusterGroup.addLayer(marker);
 				markers.push(marker);
@@ -110,6 +139,7 @@
 			mapInstance.remove();
 			mapInstance = null;
 		}
+		markerIcon = null;
 	}
 </script>
 

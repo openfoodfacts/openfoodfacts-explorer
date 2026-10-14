@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 
-	import type { ProductAttributeForScoringGroup, ProductReduced } from '$lib/api';
-	import type { ScoreData } from '$lib/scoring';
-	import { personalizeSearchResults, type ProductWithAttributes } from '$lib/productScoring';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import type { ProductAttributeForScoringGroup, ProductReduced } from '#lib/api.js';
+	import type { ScoreData } from '#lib/scoring.js';
+	import { personalizeSearchResults, type ProductWithAttributes } from '#lib/productScoring.js';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 
 	import WcProductCard from './WcProductCard.svelte';
 

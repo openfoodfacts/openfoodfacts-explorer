@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import Card from '../Card.svelte';
 	import PreferenceSection from './PreferenceSection.svelte';
 	import {
@@ -7,7 +7,7 @@
 		updateAttributePreference,
 		type AttributeGroup,
 		type UserPreference
-	} from '$lib/stores/preferencesStore';
+	} from '#lib/stores/preferencesStore.js';
 	import { onMount } from 'svelte';
 
 	export type PreferencesFormProps = {

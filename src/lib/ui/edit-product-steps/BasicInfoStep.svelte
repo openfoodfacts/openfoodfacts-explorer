@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
-	import { PRODUCT_TYPES } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
+	import { PRODUCT_TYPES } from '#lib/const.js';
 
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
-	import { getLanguageName } from '$lib/languages';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
+	import { getLanguageName } from '#lib/languages.js';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
 
-	import InputAutocomplete from '$lib/ui/InputAutocomplete.svelte';
+	import InputAutocomplete from '#lib/ui/InputAutocomplete.svelte';
 	import IconMdiDelete from '@iconify-svelte/mdi/delete';
 
 	type Props = {
@@ -155,7 +155,7 @@
 
 	<div class="space-y-6">
 		<!-- Product Type (Moderators Only in edit mode) -->
-		{#if permissions.isModerator && $preferences.moderator}
+		{#if permissions.isModerator && !$preferences.hideModeratorTools}
 			<div class="form-control w-full">
 				<label class="label">
 					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
@@ -189,8 +189,14 @@
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 			<div class="form-control w-full sm:col-span-2">
 				<div class="label">
-					<span class="label-text text-sm font-medium sm:text-base">
+					<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 						{$_('product.edit.generic_name', { default: 'Common name' })}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.generic_name', {
+								default:
+									'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+							})}
+						/>
 					</span>
 				</div>
 				<div class="space-y-3">
@@ -246,6 +252,12 @@
 						{$_('product.edit.product_page_url_add', {
 							default: 'Link to the product page on the official site of the producer'
 						})}
+						<InfoTooltip
+							text={$_('product.edit.tooltips.website_url', {
+								default:
+									'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+							})}
+						/>
 					</span>
 				</label>
 				<input
@@ -552,8 +564,14 @@
 					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div class="form-control w-full sm:col-span-2">
 							<div class="label">
-								<span class="label-text text-sm font-medium sm:text-base">
+								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base">
 									{$_('product.edit.generic_name', { default: 'Common name' })}
+									<InfoTooltip
+										text={$_('product.edit.tooltips.common_name', {
+											default:
+												'The common name of the product (e.g. breakfast cereal, orange juice). Do not include brand names or quantities.'
+										})}
+									/>
 								</span>
 							</div>
 							<div class="space-y-3">
@@ -591,6 +609,12 @@
 										default: 'Link to the product page on the official site of the producer'
 									})}
 								</span>
+								<InfoTooltip
+									text={$_('product.edit.tooltips.website_url', {
+										default:
+											'Add a link to the specific product page on the official site of the producer. Do NOT add links for a listing on a 3rd party website. Do not add affiliation/tracking parameters.'
+									})}
+								/>
 							</label>
 							<input
 								id="website_url"
@@ -685,9 +709,15 @@
 					<div class="space-y-4">
 						<div class="form-control w-full">
 							<label class="label" for="manufacturing_places">
-								<span class="label-text text-sm font-medium sm:text-base"
+								<span class="label-text flex items-center gap-2 text-sm font-medium sm:text-base"
 									>{$_('product.edit.manufacturing_places')}</span
 								>
+								<InfoTooltip
+									text={$_('product.edit.tooltips.manufacturing_places', {
+										default:
+											'The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.'
+									})}
+								/>
 							</label>
 							<input
 								id="manufacturing_places"
@@ -700,7 +730,9 @@
 										manufacturing_places: (e.currentTarget as HTMLInputElement).value
 									};
 								}}
-								placeholder="e.g., France, Italy"
+								placeholder={$_('product.edit.manufacturing_places_placeholder', {
+									default: 'e.g., France, Italy'
+								})}
 							/>
 						</div>
 						<div class="form-control w-full">
@@ -728,17 +760,13 @@
 							<TagsString
 								tagsString={product.emb_codes ?? ''}
 								autocomplete={[]}
+								placeholder={$_('product.edit.traceability_examples', {
+									default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
+								})}
 								onChange={(v) => {
 									product = { ...product, emb_codes: v };
 								}}
 							/>
-							<div class="mt-1 text-xs text-base-content/60">
-								<p>
-									{$_('product.edit.traceability_examples', {
-										default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
-									})}
-								</p>
-							</div>
 						</div>
 					</div>
 

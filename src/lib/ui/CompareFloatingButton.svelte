@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { compareStore } from '$lib/stores/compareStore';
+	import { compareStore } from '#lib/stores/compareStore.js';
 	import { derived } from 'svelte/store';
 	import { page } from '$app/state';
 

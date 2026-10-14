@@ -3,8 +3,9 @@
 		createSearchApi,
 		type AutocompleteOption,
 		type AutocompleteResponse
-	} from '$lib/api/search';
-	import { _, getBrowserLocale } from '$lib/i18n';
+	} from '#lib/api/search.js';
+	import { _, getBrowserLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import { onDestroy } from 'svelte';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
@@ -47,7 +48,7 @@
 		const autocompleteQuery = {
 			q: query,
 			taxonomy_names: 'brands,categories,labels',
-			lang: getBrowserLocale(),
+			lang: getLanguageCode(getBrowserLocale()),
 			size: 5,
 			fuzziness: null,
 			index_id: null
@@ -197,7 +198,7 @@
 			</button>
 		</div>
 		<a
-			href="/qr"
+			href="/scan"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
 			class="btn join-item text-lg btn-secondary"

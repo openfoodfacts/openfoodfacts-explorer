@@ -1,19 +1,19 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { _ } from '$lib/i18n';
-	import { shareContent } from '$lib/utils/webShare';
+	import { _ } from '#lib/i18n/index.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 
 	import { navigating } from '$app/state';
 
-	import { preferences } from '$lib/settings';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import TagChipList from '$lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
-	import { compareStore } from '$lib/stores/compareStore';
-	import { userInfo } from '$lib/stores/user';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import Card from '$lib/ui/Card.svelte';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
+	import TagChipList from '#lib/ui/TagChips.svelte';
+	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import { userInfo } from '#lib/stores/user.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import Card from '#lib/ui/Card.svelte';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
@@ -28,11 +28,11 @@
 	};
 	let { product, lc }: Props = $props();
 
-	let { lang } = $derived($preferences);
+	let { locale: preferredLocale } = $derived($preferences);
 
 	function getLocalizedTags(facet: string): string[] | undefined {
 		const rawProduct = product as unknown as Record<string, unknown>;
-		const activeLang = lc || lang;
+		const activeLang = lc || getLanguageCode(preferredLocale);
 		// Prioritize specific language suffix fields (e.g. categories_tags_fr, brands_tags_fr)
 		if (activeLang) {
 			const langKey = `${facet}_tags_${activeLang.toLowerCase()}`;
@@ -80,7 +80,8 @@
 	}
 
 	let frontImage = $derived(
-		'image_front_url' in product ? (product.image_front_url as string) : undefined
+		product.image_front_small_url ??
+			('image_front_url' in product ? (product.image_front_url as string) : undefined)
 	);
 
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
@@ -89,9 +90,15 @@
 		// Convert Product to ProductReduced - using type assertion since the product exists
 		const added = compareStore.addProduct(product);
 		if (added) {
-			toastCtx.success('Product added to comparison');
+			toastCtx.success(
+				$_('product.menu.added_to_comparison', { default: 'Product added to comparison' })
+			);
 		} else {
-			toastCtx.warning('Product is already in comparison or comparison is full');
+			toastCtx.warning(
+				$_('product.menu.add_to_comparison_failed', {
+					default: 'Product is already in comparison or comparison list is full'
+				})
+			);
 		}
 	}
 </script>

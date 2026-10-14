@@ -5,15 +5,14 @@ import {
 	getFacetKnowledgePanels,
 	getFacetValue,
 	type FacetSortOption
-} from '$lib/api/facets';
-import { requireInt } from '$lib/utils';
-import { getBulkProductAttributes } from '$lib/api';
-import { getTaxo } from '$lib/api/taxonomy/api';
-import { getOrDefault } from '$lib/api/taxonomy/types';
-import { getLocale } from '$lib/i18n';
-
-import { getFacetDistribution, MAP_FACETS } from './map-facets';
+} from '#lib/api/facets.js';
 import type { PageLoad } from './$types';
+import { requireInt } from '#lib/utils.js';
+import { getBulkProductAttributes } from '#lib/api.js';
+import { getTaxo } from '#lib/api/taxonomy/api.js';
+import { getOrDefault } from '#lib/api/taxonomy/types.js';
+import { getLocale } from '#lib/i18n/index.js';
+import { getFacetDistribution, MAP_FACETS } from './map-facets';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;

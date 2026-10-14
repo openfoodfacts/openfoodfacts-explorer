@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KnowledgeMapElement } from '$lib/api';
+	import type { KnowledgeMapElement } from '#lib/api.js';
 	import { onMount } from 'svelte';
 
 	import type { Map, Marker } from 'leaflet';

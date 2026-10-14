@@ -1,3 +1,5 @@
+import { createProductsApi } from './product';
+
 export type Nutriments = {
 	alcohol: number;
 	alcohol_100g: number;
@@ -96,3 +98,92 @@ export const NUTRIENTS = [
 ] as const;
 
 export type NutrientKey = (typeof NUTRIENTS)[number];
+
+export type NutrientOption = {
+	id: string;
+	name: string;
+	unit?: string;
+	displayInEditForm?: boolean;
+};
+
+type NutrientApiEntry = NutrientOption & {
+	display_in_edit_form?: boolean;
+	nutrients?: NutrientApiEntry[];
+};
+
+type NutrientsResponse = {
+	nutrients: NutrientApiEntry[];
+};
+
+export function flattenNutrients(nutrients: NutrientApiEntry[]): NutrientOption[] {
+	return nutrients.flatMap(
+		({ nutrients: children, display_in_edit_form: displayInEditForm, ...nutrient }) => [
+			{ ...nutrient, displayInEditForm },
+			...flattenNutrients(children ?? [])
+		]
+	);
+}
+
+export function getSelectableNutrients(
+	nutrients: NutrientOption[],
+	excludedIds: ReadonlySet<string>,
+	addedIds: readonly string[]
+): NutrientOption[] {
+	return nutrients.filter(
+		(nutrient) => !excludedIds.has(nutrient.id) && !addedIds.includes(nutrient.id)
+	);
+}
+
+const DERIVED_NUTRIENT_KEY_SUFFIX = /_(?:100g|serving|unit|value|modifier|product)$/;
+
+/**
+ * Creates fallback options for persisted nutrient values absent from the catalog.
+ * Derived fields such as units and per-100g values do not represent separate nutrients.
+ */
+export function getMissingNutrientOptions(
+	nutriments: Partial<Nutriments> | undefined,
+	nutrientCatalog: NutrientOption[]
+): NutrientOption[] {
+	const knownIds = new Set(nutrientCatalog.map((nutrient) => nutrient.id));
+	const missingNutrients: NutrientOption[] = [];
+
+	for (const [id, value] of Object.entries(nutriments ?? {})) {
+		if (value == null || DERIVED_NUTRIENT_KEY_SUFFIX.test(id) || knownIds.has(id)) continue;
+
+		const unit = nutriments?.[`${id}_unit`];
+		missingNutrients.push({
+			id,
+			name: id,
+			...(typeof unit === 'string' ? { unit } : {})
+		});
+	}
+
+	return missingNutrients;
+}
+
+export async function getNutrients(
+	fetch: typeof globalThis.fetch,
+	locale: string,
+	country?: string
+): Promise<NutrientOption[]> {
+	const query = {
+		lc: locale.toLowerCase(),
+		...(country && country !== 'world' ? { cc: country.toLowerCase() } : {})
+	};
+	const { data, error, response } = await createProductsApi(fetch).apiv2.client.GET(
+		'/cgi/nutrients.pl',
+		{ params: { query } }
+	);
+
+	if (!response.ok || error) {
+		throw new Error(`Failed to load nutrients (${response.status})`);
+	}
+
+	// The deployed endpoint wraps the array even though the current OpenAPI schema declares a bare array.
+	const nutrients = (data as unknown as Partial<NutrientsResponse>)?.nutrients;
+	if (!Array.isArray(nutrients)) {
+		throw new Error('Invalid nutrients response');
+	}
+
+	return flattenNutrients(nutrients);
+}

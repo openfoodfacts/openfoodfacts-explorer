@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import type { Product } from '$lib/api';
-	import { PRODUCT_TYPES, type ProductType } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Product } from '#lib/api.js';
+	import { PRODUCT_TYPES, type ProductType } from '#lib/const.js';
 	import IconMdiShape from '@iconify-svelte/mdi/shape';
-	import addFood from '$lib/assets/add_food.svg';
-	import addBeauty from '$lib/assets/add_beauty.svg';
-	import addPetFood from '$lib/assets/add_pet_food.svg';
-	import addProducts from '$lib/assets/add_products.svg';
+	import addFood from '#lib/assets/add_food.svg';
+	import addBeauty from '#lib/assets/add_beauty.svg';
+	import addPetFood from '#lib/assets/add_pet_food.svg';
+	import addProducts from '#lib/assets/add_products.svg';
 
 	type Props = {
 		product: Product;

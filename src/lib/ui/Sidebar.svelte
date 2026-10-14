@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import type { Component, ComponentType } from 'svelte';
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
-	export interface SidebarSection {
+	export interface SidebarSectionBase {
 		id: string;
 		label: string;
 		icon?: Component | ComponentType;
@@ -13,26 +14,42 @@
 		onToggle?: (open?: boolean) => void;
 	}
 
+	type SidebarSectionAction =
+		| {
+				href: string;
+				onClick?: never;
+		  }
+		| {
+				href?: never;
+				onClick: () => void;
+		  };
+
+	export type SidebarSection = SidebarSectionBase & SidebarSectionAction;
+
 	type Props = {
-		sections: SidebarSection[];
+		sections?: SidebarSection[];
 		activeSection?: string;
 		scrollHeaderOffset?: number;
 		hidden?: boolean;
+		collapsible?: boolean;
+		ariaLabel?: string;
+		class?: string;
+		title?: string;
 		headerActionLabel?: string;
 		onHeaderAction?: () => void;
-		onSectionClick?: (id: string) => void;
-		type?: 'product' | 'edit';
 	};
 
 	let {
-		sections,
+		sections = [],
 		activeSection = $bindable(''),
 		scrollHeaderOffset = 120,
 		hidden = $bindable(false),
+		collapsible = false,
+		ariaLabel,
+		class: className = '',
+		title,
 		headerActionLabel,
-		onHeaderAction,
-		onSectionClick,
-		type = 'product'
+		onHeaderAction
 	}: Props = $props();
 
 	let navElement = $state<HTMLElement>();
@@ -112,12 +129,47 @@
 		}
 	}
 
-	function handleSectionClick(id: string) {
-		if (onSectionClick) {
-			onSectionClick(id);
+	function handleSectionClick(section: SidebarSection) {
+		if (section.onClick) {
+			section.onClick();
 		} else {
-			scrollToSection(id);
+			scrollToSection(section.id);
 		}
+	}
+
+	function getSectionClass(section: SidebarSection) {
+		return [
+			'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+			activeSection === section.id
+				? section.style === 'warning'
+					? 'font-semibold text-warning'
+					: 'font-semibold text-primary'
+				: section.style === 'warning'
+					? 'text-warning/70 hover:text-warning'
+					: 'text-base-content/60 hover:text-primary'
+		];
+	}
+
+	async function handleAnchorClick(
+		event: MouseEvent,
+		section: Extract<SidebarSection, { href: string }>
+	) {
+		if (
+			event.button !== 0 ||
+			event.metaKey ||
+			event.ctrlKey ||
+			event.shiftKey ||
+			event.altKey ||
+			!section.href.startsWith('#')
+		) {
+			return;
+		}
+
+		const targetId = decodeURIComponent(section.href.slice(1));
+		if (!document.getElementById(targetId)) return;
+
+		event.preventDefault();
+		await goto(section.href, { reset: false });
 	}
 
 	function updateActiveSection() {
@@ -157,6 +209,7 @@
 
 		if (currentSection && activeSection !== currentSection) {
 			activeSection = currentSection;
+			updateIndicator();
 		}
 	}
 
@@ -179,8 +232,11 @@
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 
+		updateIndicator();
+
 		const timer = setTimeout(() => {
 			updateActiveSection();
+			updateIndicator();
 		}, 300);
 
 		return () => {
@@ -192,30 +248,29 @@
 	});
 </script>
 
-<div
-	class={[
-		'hidden h-full lg:block',
-		hidden ? 'lg:hidden' : '',
-		type === 'product' ? 'lg:pt-28' : ''
-	]}
->
+<div class={['hidden h-full lg:block', hidden ? 'lg:hidden' : '', className]}>
 	<aside class="sticky top-24 max-h-[calc(100vh-140px)] w-50 overflow-y-auto pr-2">
-		{#if headerActionLabel && onHeaderAction}
-			<div class="mb-4 flex items-center justify-end px-1">
-				<button
-					type="button"
-					onclick={onHeaderAction}
-					class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
-				>
-					{headerActionLabel}
-				</button>
+		{#if title || (headerActionLabel && onHeaderAction)}
+			<div class={['mb-4 flex items-center px-1', title ? 'justify-between' : 'justify-end']}>
+				{#if title}
+					<span class="text-xs font-bold tracking-wider text-base-content/70 uppercase">
+						{title}
+					</span>
+				{/if}
+				{#if headerActionLabel && onHeaderAction}
+					<button
+						type="button"
+						onclick={onHeaderAction}
+						class="cursor-pointer text-xs font-medium text-primary/70 underline transition-colors select-none hover:text-primary"
+					>
+						{headerActionLabel}
+					</button>
+				{/if}
 			</div>
 		{/if}
 		<nav
 			bind:this={navElement}
-			aria-label={type === 'edit'
-				? $_('product.edit.sidebar_navigation', { default: 'Product edit sections' })
-				: $_('product.sidebar_navigation', { default: 'Product sections' })}
+			aria-label={ariaLabel || $_('product.sidebar_navigation', { default: 'Product sections' })}
 			class="relative flex flex-col gap-1 border-l-2 border-base-300 pl-4 text-sm"
 		>
 			<!-- Active indicator line with smooth sliding transition -->
@@ -223,7 +278,7 @@
 				<div
 					aria-hidden="true"
 					class={[
-						'absolute -left-0.5 w-0.5 rounded-full transition-all duration-300 ease-in-out',
+						'absolute -left-[2px] w-[2px] rounded-full transition-all duration-300 ease-in-out',
 						sections.find((s) => s.id === activeSection)?.style === 'warning'
 							? 'bg-warning'
 							: 'bg-primary'
@@ -233,38 +288,49 @@
 			{/if}
 
 			{#each sections as section (section.id)}
-				<button
-					type="button"
-					data-section={section.id}
-					aria-controls={section.id}
-					aria-current={activeSection === section.id ? 'location' : undefined}
-					onclick={() => handleSectionClick(section.id)}
-					class={[
-						'group relative flex cursor-pointer items-center py-2 text-left transition-all duration-200 outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
-						activeSection === section.id
-							? section.style === 'warning'
-								? 'font-semibold text-warning'
-								: 'font-semibold text-primary'
-							: section.style === 'warning'
-								? 'text-warning/70 hover:text-warning'
-								: 'text-base-content/60 hover:text-primary'
-					]}
-				>
-					{#if section.icon}
-						{@const Icon = section.icon}
-						<Icon
-							aria-hidden="true"
-							class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
-						/>
-					{/if}
-					<span>{section.label}</span>
-				</button>
+				{#if section.href}
+					<a
+						href={section.href}
+						onclick={(event) => handleAnchorClick(event, section)}
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</a>
+				{:else}
+					<button
+						type="button"
+						data-section={section.id}
+						aria-controls={section.id}
+						aria-current={activeSection === section.id ? 'location' : undefined}
+						onclick={() => handleSectionClick(section)}
+						class={getSectionClass(section)}
+					>
+						{#if section.icon}
+							{@const Icon = section.icon}
+							<Icon
+								aria-hidden="true"
+								class="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+							/>
+						{/if}
+						<span>{section.label}</span>
+					</button>
+				{/if}
 			{/each}
 		</nav>
 	</aside>
 </div>
 
-{#if type === 'product' && hidden}
+{#if collapsible && hidden}
 	<button
 		type="button"
 		onclick={() => (hidden = false)}
