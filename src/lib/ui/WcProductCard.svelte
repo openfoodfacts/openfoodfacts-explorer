@@ -159,7 +159,7 @@ Wraps the <product-card> web component and adds accessibility features.
 />
 
 <product-card
-	class="h-44 w-full cursor-pointer"
+	class="block h-44 w-full cursor-pointer [&:not(:defined)]:skeleton"
 	product={productForCard}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
