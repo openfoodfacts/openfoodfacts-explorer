@@ -92,7 +92,11 @@ describe('getCurrencyLabel', () => {
 		expect(getCurrencyLabel('USD', 'fr')).toBe('USD — dollar des États-Unis');
 	});
 
-	it('falls back to the ISO code when a display name is unavailable', () => {
+	it('falls back to the ISO code when a display name is unavailable or repeats the code', () => {
+		expect(getCurrencyLabel('ZZZ', 'en')).toBe('ZZZ');
+		vi.mocked(Intl.DisplayNames).mockImplementationOnce(function () {
+			return { of: (code: string) => code } as Intl.DisplayNames;
+		});
 		expect(getCurrencyLabel('ZZZ', 'en')).toBe('ZZZ');
 	});
 });

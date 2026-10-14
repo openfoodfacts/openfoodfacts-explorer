@@ -61,5 +61,5 @@ export function getLanguageName(code: string, locale: string = getLocale()): str
 /** Localized currency name with the ISO 4217 code retained for unambiguous selection. */
 export function getCurrencyLabel(code: string, locale: string = getLocale()): string {
 	const currencyName = getDisplayName('currency', code, locale);
-	return currencyName ? `${code} — ${currencyName}` : code;
+	return currencyName && currencyName !== code ? `${code} — ${currencyName}` : code;
 }
