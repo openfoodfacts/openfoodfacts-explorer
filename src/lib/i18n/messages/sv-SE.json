@@ -806,7 +806,11 @@
 		"invalid_barcode_payload": "Skannerdata",
 		"empty_barcode_payload": "(tom)",
 		"manual_barcode": "Ange streckkoden manuellt",
-		"camera_access_required": "Kameraåtkomst krävs. Aktivera den i webbläsarens inställningar."
+		"barcode_navigation_failed": "Could not open the product page. Please try scanning again.",
+		"camera_access_required": "Could not access the camera. Check your browser permissions and try again.",
+		"camera_preview_failed": "Could not start the camera preview. Check your browser permissions and try again.",
+		"decoder_initialization_failed": "Could not initialize barcode scanning in this browser.",
+		"scanner_unavailable": "Barcode scanning is not available in this browser."
 	},
 	"errors": {
 		"network": {
@@ -908,7 +912,9 @@
 		"facet_value_website_title": "Utforskar {facet}: {value} - Open Food Facts Explorer",
 		"facet_value_website_description": "Upptäck kategorin {value} på Open Food Facts Explorer.",
 		"facet_back_to_list": "Tillbaka till fasetterna",
-		"facet_back_to_overview": "Tillbaka till översikt över {facet}"
+		"facet_back_to_overview": "Tillbaka till översikt över {facet}",
+		"map_heading_origins": "Origins of the ingredients",
+		"map_heading_countries": "Where these products are sold"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
