@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import { getLanguageName } from '$lib/languages';
+	import { _ } from '#lib/i18n/index.js';
+	import { getLanguageName } from '#lib/languages.js';
 	import ImageButton from '../ImageButton.svelte';
 
 	type Props = {

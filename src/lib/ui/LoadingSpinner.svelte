@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 
-	import chocoBarIcon from '$lib/assets/chocolate-bar.svg';
-	import cheeseIcon from '$lib/assets/cheese.svg';
-	import butterIcon from '$lib/assets/butter.svg';
-	import eggIcon from '$lib/assets/egg-01.svg';
-	import pastaIcon from '$lib/assets/pasta.svg';
+	import chocoBarIcon from '#lib/assets/chocolate-bar.svg';
+	import cheeseIcon from '#lib/assets/cheese.svg';
+	import butterIcon from '#lib/assets/butter.svg';
+	import eggIcon from '#lib/assets/egg-01.svg';
+	import pastaIcon from '#lib/assets/pasta.svg';
 
 	const foodIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
 

@@ -23,12 +23,12 @@
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import IconMdiEarth from '@iconify-svelte/mdi/earth';
 
-	import type { Product } from '$lib/api';
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { getPermissionsCtx } from '$lib/stores/user';
+	import type { Product } from '#lib/api.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { preferences } from '#lib/settings.js';
+	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
-	import { scrollToAndHighlight } from '$lib/utils/fieldFocus';
+	import { scrollToAndHighlight } from '#lib/utils/fieldFocus.js';
 	import DeleteProductCard from './DeleteProductCard.svelte';
 	import ObsoleteProductCard from './ObsoleteProductCard.svelte';
 	import ImageManagerCard from './ImageManagerCard.svelte';
@@ -181,7 +181,7 @@
 			}
 		}));
 
-		if (permissions.isModerator && $preferences.moderator) {
+		if (permissions.isModerator && !$preferences.hideModeratorTools) {
 			sections.push({
 				id: 'moderator-tools',
 				label: $_('product.edit.sections.moderator_tools', { default: 'Moderator Tools' }),
@@ -231,7 +231,7 @@
 	<Sidebar
 		bind:this={sidebar}
 		bind:activeSection
-		type="edit"
+		ariaLabel={$_('product.edit.sidebar_navigation', { default: 'Product edit sections' })}
 		scrollHeaderOffset={100}
 		sections={editSections}
 		headerActionLabel={$preferences.editing.expandAllSections
@@ -408,7 +408,7 @@
 		</div>
 
 		<!-- Moderator Tools Section -->
-		{#if permissions.isModerator && $preferences.moderator}
+		{#if permissions.isModerator && !$preferences.hideModeratorTools}
 			<div
 				id="moderator-tools"
 				class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md"

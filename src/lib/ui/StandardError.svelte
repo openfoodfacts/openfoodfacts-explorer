@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { _ } from '$lib/i18n';
-	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '$lib/api/errorUtils';
+	import { _ } from '#lib/i18n/index.js';
+	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '#lib/api/errorUtils.js';
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
 	import { resolve } from '$app/paths';
 
@@ -30,7 +30,7 @@
 				</p>
 				<div class="mt-4 card-actions flex w-full flex-col gap-3">
 					<a
-						href={resolve(`/products/${page.params.barcode}/edit`)}
+						href={resolve(`products/${page.params.barcode}/edit`)}
 						class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
 					>
 						<span class="text-xl">➕</span>

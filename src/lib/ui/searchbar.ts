@@ -2,9 +2,9 @@ import {
 	createSearchApi,
 	type AutocompleteOption,
 	type AutocompleteResponse
-} from '$lib/api/search';
-import { getTaxonomySuggestions } from '$lib/api/product';
-import { deduplicate } from '$lib/utils';
+} from '#lib/api/search.js';
+import { getTaxonomySuggestions } from '#lib/api/product.js';
+import { deduplicate } from '#lib/utils.js';
 
 export async function fetchAutocompleteOptions(
 	fetchFn: typeof fetch,

@@ -1,5 +1,5 @@
-import { createProductsApi } from '$lib/api';
-import { createFolksonomyApi } from '$lib/api/folksonomy';
+import { createProductsApi } from '#lib/api.js';
+import { createFolksonomyApi } from '#lib/api/folksonomy.js';
 import type { PageLoad } from './$types';
 
 export const ssr = false;

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { _ } from '$lib/i18n';
-	import NetworkError from '$lib/ui/NetworkError.svelte';
-	import StandardError from '$lib/ui/StandardError.svelte';
-	import { ERROR_TYPES } from '$lib/errors';
-	import { trackOffEvent } from '$lib/analytics';
+	import { _ } from '#lib/i18n/index.js';
+	import NetworkError from '#lib/ui/NetworkError.svelte';
+	import StandardError from '#lib/ui/StandardError.svelte';
+	import { ERROR_TYPES } from '#lib/errors.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
-	import { ERR_PRODUCT_NOT_FOUND } from '$lib/api/errorUtils';
+	import { ERR_PRODUCT_NOT_FOUND } from '#lib/api/errorUtils.js';
 
 	let errorMessage = $derived(page.error?.message || '');
 	let errorDetails = $derived(page.error?.errors || []);

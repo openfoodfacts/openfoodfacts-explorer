@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { _ } from '$lib/i18n';
-	import { OPEN_PRICES_PRODUCTS_URL, OPEN_PRICES_BASE_URL } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { OPEN_PRICES_PRODUCTS_URL, OPEN_PRICES_BASE_URL } from '#lib/const.js';
 
-	import Card from '$lib/ui/Card.svelte';
+	import Card from '#lib/ui/Card.svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
 
 	let PricesMap: Promise<typeof import('./PricesMap.svelte').default> | null = $state(null);

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getTaxonomySuggestions } from '$lib/api/product';
-import { createSearchApi, type AutocompleteOption } from '$lib/api/search';
+import { getTaxonomySuggestions } from '#lib/api/product.js';
+import { createSearchApi, type AutocompleteOption } from '#lib/api/search.js';
 import { fetchAutocompleteOptions } from './searchbar';
 
 const { mockAutocomplete } = vi.hoisted(() => ({ mockAutocomplete: vi.fn() }));

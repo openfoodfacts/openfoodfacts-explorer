@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { AutocompleteOption } from '$lib/api/search';
-	import { _, getBrowserLocale } from '$lib/i18n';
-	import { getLanguageCode } from '$lib/settings';
+	import type { AutocompleteOption } from '#lib/api/search.js';
+	import { _, getBrowserLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import { onDestroy } from 'svelte';
 	import { fetchAutocompleteOptions } from './searchbar';
 
@@ -207,7 +207,7 @@
 			</button>
 		</div>
 		<a
-			href="/qr"
+			href="/scan"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
 			class="btn join-item text-lg btn-secondary"
