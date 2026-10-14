@@ -12,6 +12,8 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+	import IconMdiCodeTags from '@iconify-svelte/mdi/code-tags';
+	import IconMdiFormatFont from '@iconify-svelte/mdi/format-font';
 
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
@@ -97,7 +99,26 @@
 
 	let activeLang = $state(product.lang);
 	const shortcutCtx = getShortcutCtx();
+
+	const MONOSPACE_STORAGE_KEY = 'off_ingredients_monospace';
+	let isMonospace = $state(false);
+
+	function toggleMonospace() {
+		isMonospace = !isMonospace;
+		try {
+			localStorage.setItem(MONOSPACE_STORAGE_KEY, String(isMonospace));
+		} catch {
+			// Ignore localStorage errors
+		}
+	}
+
 	onMount(() => {
+		try {
+			isMonospace = localStorage.getItem(MONOSPACE_STORAGE_KEY) === 'true';
+		} catch {
+			// Ignore localStorage errors
+		}
+
 		shortcutCtx.set('Shift+I', {
 			description: $_('product.shortcuts.edit_product_ingredients'),
 			action: () => focusEditField(`#ingredients-list-${activeLang}`)
@@ -183,16 +204,48 @@
 				{/if}
 			</div>
 
-			<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
-				<span class="flex items-center gap-2">
-					{$_('product.edit.ingredients_list')} ({getLanguageName(code)})
-					<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
-				</span>
-			</label>
+			<div class="mb-1 flex items-center justify-between">
+				<label class="label text-sm sm:text-base" for={`ingredients-list-${code}`}>
+					<span class="flex items-center gap-2">
+						{$_('product.edit.ingredients_list')} ({getLanguageName(code)})
+						<InfoTooltip text={$_('product.edit.tooltips.ingredients_list')} />
+					</span>
+				</label>
+
+				<button
+					type="button"
+					class="btn gap-1 btn-ghost btn-xs sm:btn-sm"
+					class:btn-active={isMonospace}
+					aria-pressed={isMonospace}
+					aria-label={isMonospace
+						? $_('product.edit.default_font_tooltip', { default: 'Switch back to default font' })
+						: $_('product.edit.toggle_monospace', { default: 'Toggle monospace font' })}
+					title={isMonospace
+						? $_('product.edit.default_font_tooltip', { default: 'Switch back to default font' })
+						: $_('product.edit.monospace_tooltip', {
+								default:
+									"Switch to monospace font to spot OCR errors (e.g. 'rn' vs 'm', 'I' vs 'l')"
+							})}
+					onclick={toggleMonospace}
+				>
+					{#if isMonospace}
+						<IconMdiFormatFont class="h-4 w-4" />
+						<span class="hidden sm:inline">
+							{$_('product.edit.default_font', { default: 'Default font' })}
+						</span>
+					{:else}
+						<IconMdiCodeTags class="h-4 w-4" />
+						<span class="hidden sm:inline">
+							{$_('product.edit.monospace', { default: 'Monospace' })}
+						</span>
+					{/if}
+				</button>
+			</div>
 
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea-bordered textarea w-full text-sm sm:text-base"
+				class:font-mono={isMonospace}
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
