@@ -19,7 +19,6 @@
 
 	import type { PageProps } from './$types';
 	import { userInfo } from '#lib/stores/user.js';
-	import { userAuthTokens } from '#lib/stores/auth.js';
 	import { getWebsiteCtx } from '#lib/stores/website.js';
 
 	import Sidebar, { type SidebarSectionBase } from '#lib/ui/Sidebar.svelte';
@@ -442,12 +441,7 @@
 						</label>
 
 						{#if useWCFolksonomyEditor}
-							<!-- TODO: This solution is far from optimal. Embedding tokens into the DOM is a security risk -->
-							<folksonomy-editor
-								page-type="edit"
-								product-code={product.code}
-								auth-token={$userAuthTokens?.access_token ?? ''}
-							></folksonomy-editor>
+							<folksonomy-editor page-type="edit" product-code={product.code}></folksonomy-editor>
 						{:else}
 							<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
 
