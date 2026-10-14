@@ -806,7 +806,11 @@
 		"invalid_barcode_payload": "扫描器载荷",
 		"empty_barcode_payload": "（空）",
 		"manual_barcode": "手动输入条形码",
-		"camera_access_required": "需要摄像头权限。请在浏览器设置中启用摄像头权限。"
+		"barcode_navigation_failed": "Could not open the product page. Please try scanning again.",
+		"camera_access_required": "Could not access the camera. Check your browser permissions and try again.",
+		"camera_preview_failed": "Could not start the camera preview. Check your browser permissions and try again.",
+		"decoder_initialization_failed": "Could not initialize barcode scanning in this browser.",
+		"scanner_unavailable": "Barcode scanning is not available in this browser."
 	},
 	"errors": {
 		"network": {
@@ -908,7 +912,9 @@
 		"facet_value_website_title": "探索 {facet}: {value} - 打开食物信息探索器",
 		"facet_value_website_description": "在 Open Food Facts Explorer 上发现 {value} 类别。",
 		"facet_back_to_list": "回到方面",
-		"facet_back_to_overview": "返回 {facet} 概览"
+		"facet_back_to_overview": "返回 {facet} 概览",
+		"map_heading_origins": "Origins of the ingredients",
+		"map_heading_countries": "Where these products are sold"
 	},
 	"landing": {
 		"title": "打开食物信息探索器",
