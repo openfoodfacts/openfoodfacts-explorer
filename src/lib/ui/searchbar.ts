@@ -62,8 +62,8 @@ async function fetchBrandSuggestions(
 ): Promise<AutocompleteOption[]> {
 	try {
 		const result = await getTaxonomySuggestions(fetchFn, 'brands', query, size);
-		if (result.error || !result.data) {
-			console.warn('Brand taxonomy suggestions error:', result.error);
+		if (!result.data) {
+			console.warn('Brand taxonomy suggestions returned no data');
 			return [];
 		}
 		const suggestions = result.data.suggestions ?? [];
