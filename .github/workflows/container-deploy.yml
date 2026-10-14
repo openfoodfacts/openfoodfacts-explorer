@@ -58,17 +58,49 @@ jobs:
         run: |
           echo "NO PRODUCTION DEPLOYMENT YET" && exit 1
       - name: Wait for search service image container build workflow
-        uses: tomchv/wait-my-workflow@15c168cfa0cf8d5234974e0047908173d3ab39a1 # v1.1.0
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: wait-build-service-image
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: 'Build and push Explorer Docker image'
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          intervalSeconds: 10
-          timeoutSeconds: 600 # 10m
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const checkName = 'Build and push Explorer Docker image';
+            const ref = '${{ github.event.pull_request.head.sha || github.sha }}';
+            const intervalMilliseconds = 10_000;
+            const timeoutMilliseconds = 600_000;
+            let now = Date.now();
+            let deadline = now + timeoutMilliseconds;
+
+            while (now <= deadline) {
+              core.info(`Retrieving check runs named ${checkName} on ${context.repo.owner}/${context.repo.repo}@${ref}...`);
+              const { data: { check_runs: checkRuns } } = await github.rest.checks.listForRef({
+                ...context.repo,
+                ref,
+                check_name: checkName,
+              });
+
+              if (!checkRuns.length) {
+                core.setOutput('conclusion', 'not found');
+                return;
+              }
+
+              if (checkRuns.some((checkRun) => checkRun.status === 'queued')) {
+                deadline = now + timeoutMilliseconds;
+              }
+
+              const completedCheck = checkRuns.find((checkRun) => checkRun.status === 'completed');
+              if (completedCheck) {
+                core.setOutput('conclusion', completedCheck.conclusion);
+                return;
+              }
+
+              await new Promise((resolve) => setTimeout(resolve, intervalMilliseconds));
+              now = Date.now();
+            }
+
+            core.setOutput('conclusion', 'timed_out');
 
       - name: Do something if build isn't launch
-        if: steps.wait-build-service-image.outputs.conclusion == 'does not exist'
+        if: steps.wait-build-service-image.outputs.conclusion == 'not found'
         run: echo job does not exist && true
 
       - name: Do something if build fail
