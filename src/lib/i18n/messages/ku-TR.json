@@ -806,7 +806,11 @@
 		"invalid_barcode_payload": "Scanner payload",
 		"empty_barcode_payload": "(empty)",
 		"manual_barcode": "Enter the barcode manually",
-		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
+		"barcode_navigation_failed": "Could not open the product page. Please try scanning again.",
+		"camera_access_required": "Could not access the camera. Check your browser permissions and try again.",
+		"camera_preview_failed": "Could not start the camera preview. Check your browser permissions and try again.",
+		"decoder_initialization_failed": "Could not initialize barcode scanning in this browser.",
+		"scanner_unavailable": "Barcode scanning is not available in this browser."
 	},
 	"errors": {
 		"network": {
@@ -908,7 +912,9 @@
 		"facet_value_website_title": "Lêkolîna {facet}: {value} - Lêgerînerê Agahiyên Xwarinê Vekirî",
 		"facet_value_website_description": "Kategoriya {value} li ser Open Food Facts Explorer kifş bikin.",
 		"facet_back_to_list": "Vegere bo aliyên",
-		"facet_back_to_overview": "Vegere bo pêşdîtina {facet}"
+		"facet_back_to_overview": "Vegere bo pêşdîtina {facet}",
+		"map_heading_origins": "Origins of the ingredients",
+		"map_heading_countries": "Where these products are sold"
 	},
 	"landing": {
 		"title": "Lêgerînerê Agahiyên Xwarinê Veke",
