@@ -142,18 +142,22 @@ const MIGRATIONS: {
 		}
 	},
 	{
-		version: 9,
-		upgrade: (preferences) => {
-			if (!('theme' in preferences)) {
-				// @ts-expect-error - adding new field
-				preferences.theme = 'system';
-			}
 		// 2026-10-02: Replace the opt-in `moderator` flag with an opt-out `hideModeratorTools` flag.
 		version: 8,
 		upgrade: (preferences) => {
 			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
 			delete legacyPreferences.moderator;
 			legacyPreferences.hideModeratorTools = false;
+			return preferences;
+		}
+	},
+	{
+		version: 9,
+		upgrade: (preferences) => {
+			if (!('theme' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.theme = 'system';
+			}
 			return preferences;
 		}
 	}

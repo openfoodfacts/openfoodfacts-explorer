@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getWebsiteCtx } from '$lib/stores/website';
-	import { WEBSITE_FLAVOR_METADATA } from '$lib/flavor';
-	import { preferences } from '$lib/settings';
-	import { _ } from '$lib/i18n';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
+	import { WEBSITE_FLAVOR_METADATA } from '#lib/flavor.js';
+	import { preferences } from '#lib/settings.js';
+	import { _ } from '#lib/i18n/index.js';
 
 	let websiteCtx = getWebsiteCtx();
 

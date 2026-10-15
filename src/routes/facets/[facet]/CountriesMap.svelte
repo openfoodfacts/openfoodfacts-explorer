@@ -6,8 +6,7 @@
 	import * as topojson from 'topojson-client';
 	import * as iso from 'iso-3166-1';
 
-	import { getTaxo } from '$lib/api';
-	import { preferences } from '$lib/settings';
+	import { preferences } from '#lib/settings.js';
 	import { getTaxo } from '#lib/api.js';
 	import { buildCountryData } from './country-data';
 

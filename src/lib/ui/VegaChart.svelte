@@ -4,8 +4,8 @@
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
 
-	import * as compat from '$lib/compat';
-	import { preferences } from '$lib/settings';
+	import * as compat from '#lib/compat.js';
+	import { preferences } from '#lib/settings.js';
 
 	type Props = { spec: Spec | TopLevelSpec; title?: string };
 	type VegaMarkEncodeEntry = { fill?: { value: string }; stroke?: { value: string } };
