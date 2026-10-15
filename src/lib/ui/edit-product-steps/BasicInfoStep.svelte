@@ -8,7 +8,6 @@
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
@@ -126,13 +125,7 @@
 	<h2
 		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
-		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-			<IconMdiHelpCircleOutline
-				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
-			/>
-		</button>
 	</h2>
 	{#if showInfo}
 		<div
@@ -356,13 +349,7 @@
 	<h2
 		class="mb-6 items-center justify-center gap-2 text-center text-base font-bold text-primary md:text-lg lg:text-xl xl:text-2xl"
 	>
-		<IconMdiInformation class="mr-1 h-6 w-6 align-middle" />
 		{$_('product.edit.sections.basic_info', { default: 'Basic Information' })}
-		<button type="button" class="ml-2 align-middle" aria-label="Info" onclick={toggleInfo}>
-			<IconMdiHelpCircleOutline
-				class="ml-4 h-6 w-6 text-primary hover:cursor-pointer hover:text-primary/70"
-			/>
-		</button>
 	</h2>
 	{#if showInfo}
 		<div
