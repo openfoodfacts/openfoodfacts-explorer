@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiStoreOff from '@iconify-svelte/mdi/store-off';
-	import type { Product } from '$lib/api';
-	import { trackOffEvent } from '$lib/analytics';
+	import type { Product } from '#lib/api.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	type Props = {
 		product: Product;
@@ -15,7 +15,7 @@
 	function handleToggle(e: Event) {
 		const target = e.target as HTMLInputElement;
 		product.obsolete = target.checked ? 'on' : '';
-		trackOffEvent('product', 'delete_toggle', target.checked ? 'on' : 'off');
+		trackOffEvent('contribution', 'obsolete_status_toggled', target.checked ? 'on' : 'off');
 	}
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IMAGE_REPORT_URL } from '$lib/const';
+	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
@@ -24,7 +24,7 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode);
+		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src);
 	});
 </script>
 

@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { getFacet, getFacetKnowledgePanels } from '$lib/api/facets';
-import { requireInt } from '$lib/utils';
+import { getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
+import { requireInt } from '#lib/utils.js';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet } = params;
@@ -25,8 +25,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 			knowledgePanels: (await kp).knowledge_panels
 		};
 	} catch (e) {
-		throw error(500, {
-			message: 'An error occurred while fetching the facet data',
+		throw error(500, 'An error occurred while fetching the facet data', {
 			errors: [e instanceof Error ? e.message : 'Unknown error']
 		});
 	}

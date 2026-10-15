@@ -82,10 +82,22 @@
 		"error_occurred": "പിശക് സംഭവിച്ചു:",
 		"errors_occurred": "പിശകുകൾ സംഭവിച്ചു:"
 	},
+	"environment_notice": {
+		"title": "Non-production environment",
+		"message": "Data and features on this site may change or be reset without notice."
+	},
 	"footer": {
 		"stay_updated": "Stay Updated",
 		"contribute": "Contribute",
 		"discover_title": "Discover our Project",
+		"open_x_facts_title": "Open X Facts",
+		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts": {
+			"open_food_facts": "Open Food Facts",
+			"open_beauty_facts": "Open Beauty Facts",
+			"open_pet_food_facts": "Open Pet Food Facts",
+			"open_products_facts": "Open Products Facts"
+		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
 		"decorative_alt": "A decorative graphic",
@@ -149,6 +161,13 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"admin_tools": {
+			"title": "Admin tools",
+			"description": "Useful links for Open Food Facts administrators",
+			"organization_table": "Organization table",
+			"recent_changes": "Recent changes",
+			"top_translators": "Top translators"
+		},
 		"dev_settings_title": "Development Settings",
 		"moderator_mode": "Moderator Mode",
 		"dev_access_denied": "Access Denied",
@@ -209,7 +228,7 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"shortcuts": {
-			"show_barcode": "Show/hide product barcode",
+			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
 			"edit_same_window": "Edit product in current window",
 			"edit_new_window": "Edit product in new window",
@@ -236,6 +255,28 @@
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
 			"failed_copy": "Failed to copy link"
+		},
+		"barcode": {
+			"title": "Barcode information",
+			"code_label": "Barcode",
+			"validity_label": "Validity",
+			"valid": "Valid {variant}",
+			"invalid": "Invalid",
+			"power_user_title": "Power-user tools",
+			"show_power_user": "Show advanced tools",
+			"hide_power_user": "Hide advanced tools",
+			"render_title": "Rendered barcode",
+			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
+			"search_title": "Search",
+			"availability_title": "Product availability",
+			"similar_products": "Similar products",
+			"run_checks": "Run availability checks",
+			"open": "തുറക്കുക",
+			"found": "Found",
+			"not_found": "Not found",
+			"check_error": "Error",
+			"not_checked": "Not checked",
+			"loading": "Checking…"
 		},
 		"header": {
 			"quantity": "Quantity",
@@ -280,7 +321,37 @@
 			"never_checked": "Never checked",
 			"check_be_first": "Be the first to check this product"
 		},
+		"sidebar_navigation": "Product sections",
+		"sidebar": {
+			"show": "Show Sidebar",
+			"hide": "Hide Sidebar"
+		},
+		"sections": {
+			"product": "Product",
+			"barcode_info": "Barcode information",
+			"health": "Health & Nutrition",
+			"environment": "Environment & Sustainability",
+			"knowledge_panels": "Analysis & Insights",
+			"datasources": "ഡാറ്റ ഉറവിടങ്ങൾ",
+			"prices": "Prices",
+			"folksonomy": "Tags & Community",
+			"external_sources": "External sources"
+		},
+		"gs1": {
+			"title": "GS1 barcode information",
+			"intro": "GS1 provides standards for product barcodes. The prefix at the beginning of a barcode is associated with the company or organisation that registered it.",
+			"important": "This does not indicate where the product was manufactured or its country of origin.",
+			"prefix_title": "GS1 prefix",
+			"prefix_label": "Registered through:",
+			"prefix_note": "The location shown here refers to the GS1 registration, not the product’s origin.",
+			"verified_title": "More information",
+			"verified_description": "Verified by GS1 may provide more information about the company and product linked to this barcode.",
+			"verified_link": "View this barcode on GS1",
+			"source_label": "Source:",
+			"source_link": "GS1"
+		},
 		"edit": {
+			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
 				"expand_all": "Expand All"
@@ -309,6 +380,7 @@
 				"stores": "നിങ്ങൾ ഉൽപ്പന്നം വാങ്ങിയ സ്റ്റോർ നൽകുക. ഉദാഹരണത്തിന്, 'Carrefour', 'Walmart', 'Lidl'.",
 				"origins": "പാക്കേജിംഗിൽ നിങ്ങൾക്ക് കണ്ടെത്താൻ കഴിയുന്ന ഉറവിടങ്ങളെക്കുറിച്ചുള്ള സൂചനകൾ ചേർക്കുക. ചേരുവകളുടെ പട്ടികയിൽ നേരിട്ട് സൂചിപ്പിച്ചിരിക്കുന്ന ഉറവിടങ്ങളെക്കുറിച്ച് നിങ്ങൾ വിഷമിക്കേണ്ടതില്ല. ഉദാഹരണത്തിന്, 'അർജന്റീനയിൽ നിന്നുള്ള ബീഫ്', 'സോയ യൂറോപ്യൻ യൂണിയനിൽ നിന്ന് വരുന്നതല്ല'.",
 				"traceability_code": "ഈ വിഭാഗത്തിൽ, പാക്കേജിംഗ് മാർക്കുകൾ, തിരിച്ചറിയൽ മാർക്കുകൾ അല്ലെങ്കിൽ ആരോഗ്യ മാർക്കുകൾ എന്നിവയുമായി ബന്ധപ്പെട്ട കോഡുകൾ നിങ്ങൾക്ക് നൽകാം.",
+				"manufacturing_places": "The places where the product was processed or manufactured. If the ingredients come from a different place, please also fill Origins of ingredients.",
 				"countries": "ഉൽപ്പന്നം വ്യാപകമായി ലഭ്യമായ രാജ്യങ്ങൾ (വിദേശ ഉൽപ്പന്നങ്ങളിൽ പ്രത്യേകതയുള്ള സ്റ്റോറുകൾ ഉൾപ്പെടുന്നില്ല).",
 				"product_type": "Select the type of product: Food, Beauty, Pet Food, or Other.",
 				"empty_fiber": "Enter a hyphen (-) if the value is not present on the packaging.",
@@ -317,7 +389,18 @@
 			},
 			"allergens": "Allergens",
 			"traces": "Traces",
+			"cannot_delete_main_language": "Cannot delete the main language",
+			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
+			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
+			"traceability_codes_more_info": "More info:",
+			"traceability_codes_wiki": "Food Traceability Codes Wiki",
+			"manufacturing_places_placeholder": "e.g., France, Italy",
+			"mandatory_suffix": "(mandatory)",
+			"product_type_description": "Select the category that best describes this product. This configures the target database and relevant attributes.",
+			"select_product_type_first": "You need to select a product type first!",
 			"main_language": "Main language",
+			"main_language_description": "The main language of the product",
+			"main_language_title": "{language} - main language",
 			"add_product": "Add product",
 			"nutrition_issues": "Nutrition issues",
 			"nutrition_issues_description": "We have detected some potential issues with the nutritional information you provided. Please review the following warnings and make any necessary corrections before saving your changes.",
@@ -378,7 +461,7 @@
 				"multiple_uploads_guidance": "With Chrome, Firefox and Safari, you can select multiple pictures (product, ingredients, nutrition facts etc.) by clicking them while holding the Ctrl key pressed to add them all in one shot."
 			},
 			"manufacturing_places": "നിർമ്മാണ സ്ഥലങ്ങൾ",
-			"categories": "Categories :",
+			"categories": "വിഭാഗങ്ങൾ",
 			"labels": "Labels",
 			"brands": "ബ്രാൻഡുകൾ",
 			"stores": "Stores",
@@ -428,6 +511,10 @@
 			"macronutrients": "മാക്രോ-പോഷകങ്ങൾ",
 			"micronutrients": "സൂക്ഷ്മ പോഷകങ്ങൾ",
 			"nutrient": {
+				"added-sugars": "Added sugars",
+				"calcium": "Calcium",
+				"carbohydrates-total": "Total carbohydrates (includes fiber)",
+				"cholesterol": "Cholesterol",
 				"fat": "ആകെ കൊഴുപ്പ്",
 				"saturated-fat": "പൂരിത കൊഴുപ്പ്",
 				"carbohydrates": "Carbohydrate",
@@ -436,9 +523,14 @@
 				"salt": "Salt",
 				"fibers": "നാരുകൾ",
 				"sodium": "Sodium",
-				"alcohol": "Alcohol"
+				"alcohol": "Alcohol",
+				"iron": "Iron",
+				"potassium": "Potassium",
+				"trans-fat": "Trans fat",
+				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "അധിക പോഷകങ്ങൾ",
+			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "ഈ എഡിറ്റിൽ ഒരു അഭിപ്രായം ചേർക്കുക",
 			"save_btn": "Save",
@@ -455,8 +547,11 @@
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
 			"sections": {
+				"product_type_step": "Product Type",
 				"images": "Photos",
 				"basic_info": "അടിസ്ഥാന വിവരങ്ങൾ",
+				"take_photos": "Take key photos of the product",
+				"score_calculation": "Score Calculation",
 				"origin_traceability": "Traceability & Origins",
 				"languages": "ഭാഷകളും ഉൽപ്പന്ന നാമങ്ങളും",
 				"ingredients": "Ingredients",
@@ -466,6 +561,22 @@
 				"prices": "Prices",
 				"comment": "Comment"
 			},
+			"more_details": "More details",
+			"more_details_subsections": {
+				"product_details": "Product Details",
+				"classification": "Classification",
+				"origin_traceability": "Origin & Traceability",
+				"languages": "Languages",
+				"comment": "Comment"
+			},
+			"score_calculation_description": "Fill in these details to calculate Nutri-Score, Ultra-processing level (NOVA groups) and Green-Score.",
+			"optional_suffix": "(optional)",
+			"submit_product": "Submit",
+			"continue_to_score": "Score Calculation",
+			"skip_score_info": "You can skip this step. Other contributors can complete it later.",
+			"product_tags": "Product tags",
+			"product_names": "Product names",
+			"delete_language": "Delete language",
 			"legal_warning_title": "പകർപ്പവകാശമുള്ള ചിത്രങ്ങൾ അപ്‌ലോഡ് ചെയ്യരുത്.",
 			"legal_warning_photos_1": "നിങ്ങളുടെ ഉടമസ്ഥതയില്ലാത്തതോ അവകാശമില്ലാത്തതോ ആയ ഫോട്ടോകൾ അപ്‌ലോഡ് ചെയ്യരുത്. പകർപ്പവകാശമുള്ള ചിത്രങ്ങൾ അനുമതിയില്ലാതെ അപ്‌ലോഡ് ചെയ്യുന്നത് നിയമവിരുദ്ധമാണ് കൂടാതെ നിങ്ങളുടെ അക്കൗണ്ട് താൽക്കാലികമായി നിർത്തിവച്ചേക്കാം.",
 			"legal_warning_photos_2": "നിങ്ങളുടെ സ്വന്തം ഫോട്ടോകളോ നിങ്ങൾക്ക് ഉപയോഗിക്കാൻ വ്യക്തമായ അനുമതിയുള്ളതോ മാത്രം അപ്‌ലോഡ് ചെയ്യുക.",
@@ -544,6 +655,22 @@
 				"add_nutrition_facts": "Add nutrition facts"
 			}
 		},
+		"external_sources": {
+			"title": "External sources",
+			"description": "Additional information provided by organizations outside Open Food Facts.",
+			"loading": "Loading external sources…",
+			"error": "External sources could not be loaded.",
+			"source_label": "External source",
+			"reason_category": "Category match",
+			"reason_country": "Country match",
+			"reason_language": "Language match",
+			"reason_product_type": "Product type match",
+			"reason_public": "Public source",
+			"reason_moderator": "Moderator access",
+			"reason_account": "Account access",
+			"provider_website": "Provider website",
+			"privacy_policy": "Privacy policy"
+		},
 		"moderator": {
 			"barcode_correction_title": "Correct Barcode",
 			"barcode_correction_new_code_label": "New barcode",
@@ -616,7 +743,12 @@
 		"product_not_found": "ഉൽപ്പന്നം കണ്ടെത്തിയില്ല",
 		"barcode_scanned_not_found": "ബാർകോഡ് {barcode} വിജയകരമായി സ്കാൻ ചെയ്തു, പക്ഷേ ഞങ്ങളുടെ ഓപ്പൺ ഫുഡ് ഫാക്‌ട്‌സ്, ഓപ്പൺ ബ്യൂട്ടി ഫാക്‌ട്‌സ്, ഓപ്പൺ പ്രോഡക്‌ട്‌സ് ഫാക്‌ട്‌സ് അല്ലെങ്കിൽ ഓപ്പൺ പെറ്റ് ഫുഡ് ഫാക്‌ട്‌സ് എന്നിവയിൽ ഒരു ഉൽപ്പന്നവും കണ്ടെത്തിയില്ല.",
 		"add_new_product": "പുതിയ ഉൽപ്പന്നം ചേർക്കുക",
-		"scan_again": "വീണ്ടും സ്കാൻ ചെയ്യുക"
+		"scan_again": "വീണ്ടും സ്കാൻ ചെയ്യുക",
+		"invalid_barcode": "Scanned code is not a valid barcode",
+		"invalid_barcode_payload": "Scanner payload",
+		"empty_barcode_payload": "(empty)",
+		"manual_barcode": "Enter the barcode manually",
+		"camera_access_required": "Camera access is required. Please enable it in your browser settings."
 	},
 	"errors": {
 		"network": {
@@ -632,7 +764,8 @@
 		"step": "ഘട്ടം",
 		"of": "യുടെ",
 		"cancel": "Cancel",
-		"close": "close"
+		"close": "close",
+		"scroll_to_top": "Scroll to top"
 	},
 	"menu": {
 		"button": "Menu",
@@ -725,7 +858,7 @@
 		"code_barcode": "Code (Barcode)",
 		"brand": "Brand",
 		"quantity": "Quantity",
-		"nova_group": "Nova Group",
+		"nova_group": "Ultra-processing level",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",

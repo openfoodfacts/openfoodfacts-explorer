@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import { createProductsApi, type Product } from '$lib/api';
-	import { getLanguageName } from '$lib/languages';
+	import { _ } from '#lib/i18n/index.js';
+	import { createProductsApi, type Product } from '#lib/api.js';
+	import { getLanguageName } from '#lib/languages.js';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
@@ -13,11 +13,11 @@
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 
-	import { getShortcutCtx } from '$lib/stores/shortcuts';
+	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
-	import { focusEditField } from '$lib/utils/fieldFocus';
-	import { trackOffEvent } from '$lib/analytics';
-	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
+	import { focusEditField } from '#lib/utils/fieldFocus.js';
+	import { trackOffEvent } from '#lib/analytics.js';
+	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 
 	type OCRResult = {
 		status?: number;
@@ -55,7 +55,7 @@
 		}
 
 		ocrLoading = true;
-		trackOffEvent('product', 'launch_ocr', 'ingredients');
+		trackOffEvent('contribution', 'ocr_started', 'ingredients');
 
 		try {
 			const openfoodfacts = createProductsApi(fetch);
@@ -67,24 +67,29 @@
 			const { data: tmpData, error } = await openfoodfacts.performOCR(product.code, imagefield);
 			if (error) {
 				console.error('Error performing OCR:', error);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 
 			const data = tmpData as OCRResult;
 			if (!data || typeof data !== 'object') {
 				console.warn('OCR failed - invalid result:', data);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 			const ocrText = data.ingredients_text_from_image || data.text || data.ingredients_text || '';
 			if (!ocrText || !ocrText.trim()) {
 				console.warn('OCR returned empty text:', data);
+				trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 				return;
 			}
 
 			// Set OCR result
 			product[`ingredients_text_${languageCode}`] = ocrText;
+			trackOffEvent('contribution', 'ocr_succeeded', 'ingredients');
 		} catch (error) {
 			console.error('Error performing OCR:', error);
+			trackOffEvent('contribution', 'ocr_failed', 'ingredients');
 		} finally {
 			ocrLoading = false;
 		}

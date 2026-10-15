@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { persisted } from 'svelte-local-storage-store';
-import type { Nutriments } from '$lib/api/nutriments';
+import type { Nutriments } from '#lib/api/nutriments.js';
 
 export type NutritionData = {
 	calories: number;
@@ -36,6 +36,7 @@ export function addItemToCalculator(item: CalculatorItem) {
 			return [...items, item];
 		}
 	});
+	isCalculatorOpen.set(true);
 }
 
 export function updateItemQuantity(id: string, amount: number) {
