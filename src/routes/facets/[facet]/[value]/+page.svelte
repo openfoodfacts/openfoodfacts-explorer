@@ -30,10 +30,10 @@
 		mapFacet
 	} = $derived(data);
 
-	// Only facet and value may refetch the hierarchy; untrack keeps the reads inside the
-	// request from refetching it on every page or sort change.
+	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
-	const facetValue = $derived(data.facet.value);
+	// The tag id, not data.facet.value, which is the display name on map facets.
+	const facetValue = $derived(page.params.value ?? '');
 	const noHierarchy = { parents: [] as HierarchyItem[], children: [] as HierarchyItem[] };
 	const hierarchy = $derived.by(() => {
 		const [name, value] = [facetName, facetValue];
@@ -92,7 +92,7 @@
 	</div>
 {:then { parents, children }}
 	{#if parents.length || children.length}
-		{@const expanded = childrenExpandedFor === facet.value}
+		{@const expanded = childrenExpandedFor === facetValue}
 		<div class="-mt-4 mb-8 flex flex-col gap-3">
 			{#if parents.length}
 				<div class="flex flex-col gap-2 sm:flex-row">
@@ -113,7 +113,7 @@
 							<button
 								type="button"
 								class="btn btn-ghost btn-xs"
-								onclick={() => (childrenExpandedFor = facet.value)}
+								onclick={() => (childrenExpandedFor = facetValue)}
 							>
 								{$_('facets.hierarchy_more', {
 									values: { count: children.length - CHILDREN_SHOWN },
