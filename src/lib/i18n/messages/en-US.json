@@ -689,6 +689,7 @@
 			}
 		},
 		"prices": {
+			"quantity_nudge": "Add the quantity to compare prices per kilo or litre.",
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
 			"view_prices": "View prices on Open Prices",

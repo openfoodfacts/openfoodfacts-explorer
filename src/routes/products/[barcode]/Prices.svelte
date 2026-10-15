@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { userInfo } from '#lib/stores/user.js';
 
 	import { _ } from '#lib/i18n/index.js';
 	import { OPEN_PRICES_PRODUCTS_URL, OPEN_PRICES_BASE_URL } from '#lib/const.js';
@@ -9,7 +12,19 @@
 
 	let PricesMap: Promise<typeof import('./PricesMap.svelte').default> | null = $state(null);
 
-	let { prices, barcode }: { barcode: string; prices: PriceFull[] } = $props();
+	let { prices, barcode, states }: { barcode: string; prices: PriceFull[]; states?: string[] } =
+		$props();
+
+	let quantityToBeCompleted = $derived(states?.includes('en:quantity-to-be-completed') ?? false);
+	let editQuantityUrl = $derived(
+		new URL(resolve('/products/[barcode]/edit', { barcode }), page.url.href).pathname +
+			'#basic-info'
+	);
+	let quantityLink = $derived(
+		$userInfo == null
+			? resolve('/loginrequired') + `?redirect=${encodeURIComponent(editQuantityUrl)}`
+			: editQuantityUrl
+	);
 
 	let count = $derived(prices.length);
 	let uniqueStores = $derived(
@@ -47,6 +62,17 @@
 			})}
 		{/if}
 	</p>
+
+	{#if quantityToBeCompleted}
+		<a
+			href={quantityLink}
+			class="inline-flex min-h-10 max-w-full link items-center rounded-sm py-2 text-sm text-secondary underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline-solid"
+		>
+			{$_('product.prices.quantity_nudge', {
+				default: 'Add the quantity to compare prices per kilo or litre.'
+			})}
+		</a>
+	{/if}
 
 	{#if count === 0}
 		<div class="my-4 rounded-lg border border-base-300 bg-base-200 p-6 text-center">
