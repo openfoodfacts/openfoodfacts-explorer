@@ -122,39 +122,6 @@
 	let isNutrientFinished = $state(false);
 	let lastProductCode = $state<string | null>(null);
 
-	if (
-		browser &&
-		!(window as unknown as { __robotoff_fetch_patched?: boolean }).__robotoff_fetch_patched
-	) {
-		(window as unknown as { __robotoff_fetch_patched?: boolean }).__robotoff_fetch_patched = true;
-		const originalFetch = window.fetch;
-		window.fetch = function (input: RequestInfo | URL, init?: RequestInit) {
-			const urlStr =
-				typeof input === 'string' ? input : input instanceof Request ? input.url : input.toString();
-
-			if (
-				urlStr.includes('/api/v1/insights') &&
-				urlStr.includes('insight_types=nutrient_extraction') &&
-				urlStr.includes('barcode=')
-			) {
-				try {
-					const url = new URL(urlStr, window.location.href);
-					if (url.searchParams.has('lc')) {
-						url.searchParams.delete('lc');
-						if (typeof input === 'string') {
-							input = url.toString();
-						} else if (input instanceof Request) {
-							input = new Request(url.toString(), input);
-						}
-					}
-				} catch {
-					// Fall through to originalFetch
-				}
-			}
-			return originalFetch.call(this, input, init);
-		};
-	}
-
 	$effect(() => {
 		if (product.code !== lastProductCode) {
 			lastProductCode = product.code ?? null;
@@ -184,8 +151,10 @@
 		node.addEventListener('nutrient-state', handleNutrientState);
 
 		let formObserver: MutationObserver | null = null;
+		let destroyed = false;
 
 		function applyStyleFix() {
+			if (destroyed) return;
 			const shadow = node.shadowRoot;
 			if (shadow) {
 				if (!shadow.querySelector('#nutrient-image-sticky-fix')) {
@@ -271,18 +240,21 @@
 		}
 		if (typeof customElements !== 'undefined') {
 			customElements.whenDefined('robotoff-nutrient-extraction').then(() => {
+				if (destroyed) return;
 				applyStyleFix();
 				if (node.shadowRoot) {
 					observer.observe(node.shadowRoot, { childList: true, subtree: true });
 				}
 			});
 			customElements.whenDefined('robotoff-nutrient-extraction-form').then(() => {
+				if (destroyed) return;
 				applyStyleFix();
 			});
 		}
 
 		return {
 			destroy() {
+				destroyed = true;
 				node.removeEventListener('nutrient-state', handleNutrientState);
 				observer.disconnect();
 				formObserver?.disconnect();
