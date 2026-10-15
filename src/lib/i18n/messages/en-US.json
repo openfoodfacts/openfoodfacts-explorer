@@ -998,6 +998,7 @@
 		"brand": "Brand",
 		"quantity": "Quantity",
 		"nova_group": "Ultra-processing level",
+		"nova_group_explanation": "NOVA classifies foods by how much they are processed, from 1 (unprocessed or minimally processed) to 4 (ultra-processed).",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
