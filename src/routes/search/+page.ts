@@ -1,15 +1,13 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { SearchApi, type SearchBody } from '@openfoodfacts/openfoodfacts-nodejs';
-
-import { createSearchApi, type SearchResult } from '$lib/api/search';
-import { createPricesApi, isConfigured as isPricesConfigured } from '$lib/api/prices';
+import { compatSearch, type SearchResult } from '#lib/api/search.js';
+import { createPricesApi, isConfigured as isPricesConfigured } from '#lib/api/prices.js';
 import {
 	createProductsApi,
 	getBulkProductAttributes,
 	getBulkProductCardsByCode
-} from '$lib/api/product';
+} from '#lib/api/product.js';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -50,65 +48,6 @@ async function getPrices(
 	}
 
 	return prices;
-}
-
-// FIXME: We can drop this compatibility layer once the new API is deployed in production
-async function compatSearch(
-	baseFetch: typeof fetch,
-	params: Omit<SearchBody, 'facets' | 'charts'>
-): ReturnType<SearchApi['search']> {
-	const api = createSearchApi(baseFetch);
-
-	// Try the new API first
-	const newParams: SearchBody = {
-		...params,
-		facets: [
-			'brands',
-			'categories',
-			'nutrition_grades',
-			'environmental_score_grade',
-			'nova_group',
-			'labels',
-			'countries',
-			'allergens',
-			'additives',
-			'stores',
-			'languages'
-		],
-		charts: [
-			{ chart_type: 'DistributionChart', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChart', field: 'environmental_score_grade' },
-			{ chart_type: 'DistributionChart', field: 'nova_group' },
-			{ chart_type: 'ScatterChart', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
-		]
-	};
-
-	try {
-		const res = await api.search(newParams);
-
-		if (res.error || res.data == null) {
-			console.error('Search API newParams error:', res.error);
-			throw res.error || new Error('No data');
-		}
-		// @ts-expect-error - data is unknown
-		return { data: res.data };
-	} catch (e) {
-		console.warn('search: API failed, falling back to basic facets:', e);
-	}
-
-	const oldParams = {
-		...params,
-		facets: ['brands', 'categories', 'nutrition_grades', 'environmental_score_grade'],
-		charts: [
-			{ chart_type: 'DistributionChartType', field: 'nutrition_grades' },
-			{ chart_type: 'DistributionChartType', field: 'environmental_score_grade' },
-			{ chart_type: 'DistributionChartType', field: 'nova_group' },
-			{ chart_type: 'ScatterChartType', x: 'nutriscore_score', y: 'nutriments.fiber_100g' }
-		]
-	};
-
-	// @ts-expect-error - legacy search API parameters fallback
-	return api.search(oldParams);
 }
 
 export const load: PageLoad = async ({ fetch, url }) => {

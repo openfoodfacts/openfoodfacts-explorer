@@ -5,10 +5,10 @@
 	import ScoreCalculationStep from './edit-product-steps/ScoreCalculationStep.svelte';
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 	import IconMdiArrowRight from '@iconify-svelte/mdi/arrow-right';
-	import type { Product } from '$lib/api';
+	import type { Product } from '#lib/api.js';
 
-	import { _ } from '$lib/i18n';
-	import { getToastCtx } from '$lib/stores/toasts';
+	import { _ } from '#lib/i18n/index.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -60,7 +60,7 @@
 
 		const params = new SvelteURLSearchParams(page.url.search);
 		params.set('step', (step + 1).toString());
-		goto(`?${params.toString()}`, { replaceState: true, noScroll: true });
+		goto(`?${params.toString()}`, { replace: true, reset: false });
 	}
 
 	const nextStep = () => gotoStep(currentStep + 1);
@@ -127,7 +127,7 @@
 		if (!isProductTypeSelected && stepStr && stepStr !== '1') {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('step', '1');
-			goto(`?${params.toString()}`, { replaceState: true, noScroll: true });
+			goto(`?${params.toString()}`, { replace: true, reset: false });
 		}
 	});
 </script>

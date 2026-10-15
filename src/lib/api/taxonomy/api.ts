@@ -1,5 +1,5 @@
 import { OpenFoodFacts } from '@openfoodfacts/openfoodfacts-nodejs';
-import { type ProductType } from '$lib/const';
+import { type ProductType } from '#lib/const.js';
 import type { TaxoNode, Taxonomy } from './types';
 
 type BackendType = NonNullable<NonNullable<ConstructorParameters<typeof OpenFoodFacts>[1]>['type']>;

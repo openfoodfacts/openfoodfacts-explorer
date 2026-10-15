@@ -1,7 +1,7 @@
 import { type Country, type Language } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import { createProductsApi, getTaxo } from '$lib/api';
-import { createPricesApi } from '$lib/api/prices';
+import { createProductsApi, getTaxo } from '#lib/api.js';
+import { createPricesApi } from '#lib/api/prices.js';
 
 import type { PageLoad } from './$types';
 

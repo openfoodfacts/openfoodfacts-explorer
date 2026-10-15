@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import { isEditableTarget } from '$lib/utils/dom';
-	import type { Shortcut } from '$lib/stores/shortcuts';
+	import type { Shortcut } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
 
 	let helpModal: HTMLDialogElement;

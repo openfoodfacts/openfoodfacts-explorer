@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { _ } from '$lib/i18n';
-	import type { Facet, FacetItem } from '$lib/api/search';
+	import { _ } from '#lib/i18n/index.js';
+	import type { Facet, FacetItem } from '#lib/api/search.js';
 	import IconMdiPlus from '@iconify-svelte/mdi/plus';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import FacetCard from './FacetCard.svelte';
-	import {
-		computeFacetCollections,
-		FACET_CATEGORY_LABELS,
-		type FacetsSelection
-	} from '$lib/facets';
+	import { computeFacetCollections } from '#lib/search/facet-collections.js';
+	import { FACET_CATEGORY_LABELS } from '#lib/search/facet-catalog.js';
+	import { type FacetsSelection } from '#lib/search/facet-selection.js';
 
 	type Props = {
 		facets: Record<string, Facet>;
@@ -140,7 +138,7 @@
 </script>
 
 <div
-	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-0.5 max-md:flex-nowrap max-md:overflow-x-auto max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
+	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-0.5 max-md:flex-nowrap max-md:overflow-x-auto max-md:px-4 max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
 >
 	{#each Object.entries(allAggregatedFacets) as [facetKey, facet] (facetKey)}
 		{@const sel = selectedFacets[facetKey]}

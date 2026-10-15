@@ -1,5 +1,5 @@
-import { createSearchApi } from '$lib/api/search';
-import { getBulkProductCardsByCode } from '$lib/api/product';
+import { createSearchApi } from '#lib/api/search.js';
+import { getBulkProductCardsByCode } from '#lib/api/product.js';
 import type { PageLoad } from './$types';
 import type { Product, SearchApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
