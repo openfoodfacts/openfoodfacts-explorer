@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
+	import { dev } from '$app/env';
 
 	import type {
 		KnowledgeElement,
 		KnowledgePanel,
 		KnowledgePanels,
 		KnowledgePanelTitle
-	} from '$lib/api';
+	} from '#lib/api.js';
 
-	import Card from '$lib/ui/Card.svelte';
+	import Card from '#lib/ui/Card.svelte';
 	import Element from './Element.svelte';
 
 	type Props = {

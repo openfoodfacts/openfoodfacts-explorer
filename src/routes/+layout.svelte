@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { Matomo } from '$lib/matomo';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -11,13 +10,13 @@
 	import { navigating, page } from '$app/state';
 	import { slide } from 'svelte/transition';
 
-	import Logo from '$lib/ui/Logo.svelte';
-	import Navbar from '$lib/ui/Navbar.svelte';
-	import Footer from '$lib/ui/Footer.svelte';
-	import SearchBar from '$lib/ui/SearchBar.svelte';
-	import Toast from '$lib/ui/Toast.svelte';
-	import SlowServerDialog from '$lib/ui/SlowServerDialog.svelte';
-	import EnvironmentNotice from '$lib/ui/EnvironmentNotice.svelte';
+	import Logo from '#lib/ui/Logo.svelte';
+	import Navbar from '#lib/ui/Navbar.svelte';
+	import Footer from '#lib/ui/Footer.svelte';
+	import SearchBar from '#lib/ui/SearchBar.svelte';
+	import Toast from '#lib/ui/Toast.svelte';
+	import SlowServerDialog from '#lib/ui/SlowServerDialog.svelte';
+	import EnvironmentNotice from '#lib/ui/EnvironmentNotice.svelte';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiMagnify from '@iconify-svelte/mdi/magnify';
@@ -27,30 +26,31 @@
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import { toggleCalculator } from '$lib/stores/calculatorStore';
-	import CompareFloatingButton from '$lib/ui/CompareFloatingButton.svelte';
-	import NutritionCalculator from '$lib/ui/NutritionCalculator.svelte';
+	import { toggleCalculator } from '#lib/stores/calculatorStore.js';
+	import CompareFloatingButton from '#lib/ui/CompareFloatingButton.svelte';
+	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
+	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale } from '$lib/i18n';
+	import { _, getLocale, locale } from '#lib/i18n/index.js';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
 		MATOMO_SITE_ID,
 		OPEN_PRICES_BASE_URL,
 		ROBOTOFF_URL
-	} from '$lib/const';
-	import { userInfo } from '$lib/stores/user';
-	import { extractQuery } from '$lib/facets';
-	import { dev } from '$app/environment';
+	} from '#lib/const.js';
+	import { userInfo } from '#lib/stores/user.js';
+	import { extractQuery } from '#lib/search/lucene.js';
+	import { dev } from '$app/env';
 	import type { LayoutProps } from './$types';
-	import { getWebsiteFlavorFromParam } from '$lib/flavor';
-	import { createWebsiteCtx } from '$lib/stores/website';
-	import { setToastCtx, type Toast as ToastType, type ToastContext } from '$lib/stores/toasts';
+	import { getWebsiteFlavorFromParam } from '#lib/flavor.js';
+	import { createWebsiteCtx } from '#lib/stores/website.js';
+	import { setToastCtx, type Toast as ToastType, type ToastContext } from '#lib/stores/toasts.js';
 	import Shortcuts from './Shortcuts.svelte';
-	import { setShortcutCtx, type Shortcut } from '$lib/stores/shortcuts';
-	import { getLanguageCode, preferences, runPreferencesMigrations } from '$lib/settings';
+	import { setShortcutCtx, type Shortcut } from '#lib/stores/shortcuts.js';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
-	import { shouldBeContainer } from '$lib/layout';
+	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve } from '$app/paths';
 
 	// == Global website context setup ==
@@ -65,10 +65,21 @@
 		}));
 	}
 
-	syncWebsiteFlavor(page.url);
+	syncWebsiteFlavor(new URL(page.url.href));
+
+	let MatomoComponent = $state<Component<{ url: string; siteId: number }> | null>(null);
+
+	onMount(async () => {
+		try {
+			const mod = await import('#lib/matomo/index.js');
+			MatomoComponent = mod.Matomo;
+		} catch {
+			console.warn('Matomo analytics failed to load or was blocked.');
+		}
+	});
 
 	$effect(() => {
-		syncWebsiteFlavor(page.url);
+		syncWebsiteFlavor(new URL(page.url.href));
 	});
 
 	// == Global toast context setup ==
@@ -140,9 +151,9 @@
 
 	// == Global User Permissions Context ==
 
-	import { setPermissionsCtx, type UserPermissionsContext } from '$lib/stores/user';
-	import { fetchCurrentUserPermissions } from '$lib/api/permissions';
-	import { wrapFetchWithAuth } from '$lib/stores/auth';
+	import { setPermissionsCtx, type UserPermissionsContext } from '#lib/stores/user.js';
+	import { fetchCurrentUserPermissions } from '#lib/api/permissions.js';
+	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
 	let permissionsCtx = $state<UserPermissionsContext>({
 		isAdmin: false,
@@ -154,8 +165,11 @@
 	$effect(() => {
 		// Runs whenever the derived $userInfo changes (i.e. user logs in or logs out)
 		if ($userInfo && $userInfo.preferred_username) {
+			// Ignore responses for a previous user if they log out or switch accounts mid-request
+			let cancelled = false;
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
+				if (cancelled) return;
 				if (data && data.status === 'success' && data.user) {
 					permissionsCtx.isAdmin = data.user.admin === 1;
 					permissionsCtx.isModerator = data.user.moderator === 1;
@@ -164,6 +178,9 @@
 					permissionsCtx.isModerator = false;
 				}
 			});
+			return () => {
+				cancelled = true;
+			};
 		} else {
 			// Clear roles when logged out
 			permissionsCtx.isAdmin = false;
@@ -190,7 +207,7 @@
 	}
 	// update searchQuery when the ?q parameter changes
 	$effect(() => {
-		updateSearchQuery(page.url);
+		updateSearchQuery(new URL(page.url.href));
 	});
 
 	let isSearching = $state(false);
@@ -202,7 +219,7 @@
 	}
 
 	function getLoginUrl(url: URL) {
-		return resolve('/oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
+		return resolve('oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
 	}
 
 	let searchActive = $state(false);
@@ -237,7 +254,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
-<Matomo url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{#if MatomoComponent}
+	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+{/if}
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
 
@@ -249,7 +268,7 @@
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
-			apiUrl: ROBOTOFF_URL + '/api/v1',
+			apiUrl: new URL('/api/v1', ROBOTOFF_URL).toString(),
 			imgUrl: IMAGE_HOST + '/images/products'
 		})}
 	>
@@ -286,7 +305,7 @@
 				<!-- Settings button -->
 				<a
 					class="btn link btn-ghost"
-					href={resolve('/settings')}
+					href={resolve('settings')}
 					aria-label={$_('settings_link')}
 					title={$_('settings_link')}
 				>
@@ -326,7 +345,7 @@
 							<div class="divider my-1"></div>
 							<li>
 								<a
-									href={resolve('/oauth/logout')}
+									href={resolve('oauth/logout')}
 									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
@@ -339,7 +358,7 @@
 					<a
 						rel="external"
 						class="btn gap-2 rounded-full border-base-300 btn-outline px-4 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-content"
-						href={getLoginUrl(page.url)}
+						href={getLoginUrl(new URL(page.url.href))}
 					>
 						<IconMdiLogin class="h-5 w-5" />
 						<span>{$_('navbar.login', { default: 'Login' })}</span>
@@ -408,25 +427,20 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn link btn-outline" href="/static/discover">
-			{$_('discover_link')}
-		</a>
-		<a class="btn link btn-outline" href="/static/contribute">
-			{$_('contribute_link')}
-		</a>
-		<a class="btn link btn-outline" href="/static/producers">
-			{$_('producers_link')}
-		</a>
-		<a class="btn link btn-outline" href={OPEN_PRICES_BASE_URL}>
-			{$_('prices_link')}
-		</a>
-		<a class="btn link btn-outline" href="/folksonomy">
-			{$_('folksonomy_link')}
-		</a>
-		<a class="btn link btn-outline" href="/facets">
-			{$_('facets_link')}
-		</a>
+		<a class="btn link btn-outline" href="/static/discover">{$_('discover_link')}</a>
 
+		<a class="btn link btn-outline" href="/static/contribute">{$_('contribute_link')}</a>
+
+		<a class="btn link btn-outline" href="/static/producers">{$_('producers_link')}</a>
+
+		<a
+			class="btn link btn-outline"
+			href={OPEN_PRICES_BASE_URL}
+			target="_blank"
+			rel="noopener noreferrer">{$_('prices_link')}</a
+		>
+
+		<ExploreByMenu mobile onNavigate={() => (accordionOpen = false)} />
 		<div class="divider md:divider-horizontal"></div>
 		<button
 			type="button"
@@ -468,7 +482,8 @@
 							<IconMdiAccountCircle class="h-4 w-4" />
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
-						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('/oauth/logout')}>
+
+						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('oauth/logout')}>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
 						</a>
@@ -479,7 +494,7 @@
 			<a
 				rel="external"
 				class="btn gap-2 rounded-full btn-outline px-5 transition-all duration-300 hover:bg-primary hover:text-primary-content"
-				href={getLoginUrl(page.url)}
+				href={getLoginUrl(new URL(page.url.href))}
 			>
 				<IconMdiLogin class="h-5 w-5" />
 				<span>{$_('navbar.login', { default: 'Login' })}</span>
