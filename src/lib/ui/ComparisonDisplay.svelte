@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 
-	import { _ } from '$lib/i18n';
-	import { KP_ATTRIBUTE_IMG } from '$lib/const';
-	import BlurredImageDisplay from '$lib/ui/BlurredImageDisplay.svelte';
+	import { _ } from '#lib/i18n/index.js';
+	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
+	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -326,6 +326,7 @@
 	}
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
+	let expandedNutrients = $state<Record<string, boolean>>({});
 </script>
 
 {#snippet scoreImage(imageSrc: string, altText: string, isBest: boolean)}
@@ -480,18 +481,41 @@
 
 				{#if product.nutriments}
 					<div class="mt-4 border-t pt-4">
-						<p class="mb-2 text-sm font-semibold">{$_('compare.nutrients_per_100g')}</p>
-						<div class="space-y-1 text-sm">
-							{#each availableNutrients as nutrient (nutrient.key)}
-								{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
-								{#if comparison.value != null}
-									<div class="flex items-center justify-between">
-										<span class="font-medium">{nutrient.label}:</span>
-										{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
-									</div>
-								{/if}
-							{/each}
-						</div>
+						<button
+							type="button"
+							class="flex w-full items-center justify-between text-left text-sm font-semibold"
+							onclick={() => {
+								expandedNutrients[product.code] = !expandedNutrients[product.code];
+							}}
+							aria-expanded={expandedNutrients[product.code] ?? false}
+						>
+							<span
+								>{$_('compare.nutrients_per_100g', {
+									default: 'Nutrients /100g:'
+								})}</span
+							>
+							<span>{expandedNutrients[product.code] ? '▲' : '▼'}</span>
+						</button>
+
+						{#if expandedNutrients[product.code]}
+							<div class="mt-2 space-y-1 text-sm">
+								{#each availableNutrients as nutrient (nutrient.key)}
+									{@const comparison = getNutrientComparison(
+										product,
+										nutrient.key,
+										products,
+										index
+									)}
+
+									{#if comparison.value != null}
+										<div class="flex items-center justify-between">
+											<span class="font-medium">{nutrient.label}:</span>
+											{@render nutrientValue(comparison, nutrient.unit, nutrient.key)}
+										</div>
+									{/if}
+								{/each}
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>
@@ -611,7 +635,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
 							{@render scoreImage(
 								getNutriScoreImage(product.nutriscore_grade),
@@ -630,7 +654,7 @@
 				>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
 							{@render scoreImage(
 								getNovaImage(product.nova_group),
@@ -647,7 +671,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
-					<td animate:flip={{ duration: 300 }}>
+					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
 							{@render scoreImage(
 								getGreenScoreImage(product.ecoscore_grade),

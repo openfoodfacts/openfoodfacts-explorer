@@ -1,4 +1,4 @@
-import { createFolksonomyApi } from '$lib/api/folksonomy';
+import { createFolksonomyApi } from '#lib/api/folksonomy.js';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from '../$types';
 

@@ -1,5 +1,5 @@
 import { OpenFoodFacts, type CurrentUserPermissions } from '@openfoodfacts/openfoodfacts-nodejs';
-import { API_HOST } from '$lib/const';
+import { API_HOST } from '#lib/const.js';
 export type { CurrentUserPermissions };
 
 export async function fetchCurrentUserPermissions(

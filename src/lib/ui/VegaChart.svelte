@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { onMount } from 'svelte';
 	import type { Spec } from 'vega';
 	import type { TopLevelSpec } from 'vega-lite';
@@ -7,20 +7,9 @@
 	import * as compat from '$lib/compat';
 	import { preferences } from '$lib/settings';
 
-	type Props = {
-		spec: Spec | TopLevelSpec;
-		title?: string;
-	};
-
-	type VegaMarkEncodeEntry = {
-		fill?: { value: string };
-		stroke?: { value: string };
-	};
-
-	type VegaMarkEncode = {
-		enter?: VegaMarkEncodeEntry;
-		update?: VegaMarkEncodeEntry;
-	};
+	type Props = { spec: Spec | TopLevelSpec; title?: string };
+	type VegaMarkEncodeEntry = { fill?: { value: string }; stroke?: { value: string } };
+	type VegaMarkEncode = { enter?: VegaMarkEncodeEntry; update?: VegaMarkEncodeEntry };
 
 	type VegaMark = {
 		type: string;
@@ -47,21 +36,14 @@
 			background: 'transparent',
 			axis: {
 				domainColor: labelColor,
-				gridColor: gridColor,
-				labelColor: labelColor,
+				gridColor,
+				labelColor,
 				tickColor: labelColor,
 				titleColor: labelColor
 			},
-			legend: {
-				labelColor: labelColor,
-				titleColor: labelColor
-			},
-			title: {
-				color: labelColor
-			},
-			view: {
-				stroke: 'transparent'
-			}
+			legend: { labelColor, titleColor: labelColor },
+			title: { color: labelColor },
+			view: { stroke: 'transparent' }
 		};
 	}
 	// Vega does not support CSS variables natively. We patch the compiled
@@ -96,6 +78,7 @@
 
 		try {
 			const isVegaLite = spec.$schema?.includes('vega-lite');
+
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 
 			if (darkMode) {

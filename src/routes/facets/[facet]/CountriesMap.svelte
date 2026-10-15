@@ -8,6 +8,7 @@
 
 	import { getTaxo } from '$lib/api';
 	import { preferences } from '$lib/settings';
+	import { getTaxo } from '#lib/api.js';
 	import { buildCountryData } from './country-data';
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';

@@ -5,21 +5,28 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 
-	import { _ } from '$lib/i18n';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
+	import { _ } from '#lib/i18n/index.js';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 
-	import KnowledgePanels from '$lib/knowledgepanels/Panels.svelte';
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import ProductGrid from '$lib/ui/ProductGrid.svelte';
-	import PersonalizedSearchToggle from '$lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '$lib/ui/facets/BackLink.svelte';
+	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
+	import Pagination from '#lib/Pagination.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import ProductGrid from '#lib/ui/ProductGrid.svelte';
+	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
+	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
-		$derived(data);
+	let {
+		facet,
+		results,
+		knowledgePanels,
+		searchOptions,
+		productAttributes,
+		distributionData,
+		mapFacet
+	} = $derived(data);
 
 	let listView = $state(false);
 
@@ -41,15 +48,22 @@
 <div class="mb-4">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
+		label={$_('facets.facet_back_to_overview', {
+			values: { facet: facet.name },
+			default: 'Back to {facet} overview'
+		})}
 	/>
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
 
-{#if distributionData && MapComponent}
+{#if distributionData && MapComponent && mapFacet}
 	<div class="my-8 w-full">
-		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<h2 class="mb-4 text-2xl font-bold">
+			{$_(mapFacet.heading, {
+				default: mapFacet.defaultHeading
+			})}
+		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
 			Note: The geographic distribution shown on this map is based only on the products visible on

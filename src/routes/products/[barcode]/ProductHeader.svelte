@@ -1,19 +1,19 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { _ } from '$lib/i18n';
-	import { shareContent } from '$lib/utils/webShare';
+	import { _ } from '#lib/i18n/index.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 
 	import { navigating } from '$app/state';
 
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import TagChipList from '$lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
-	import { compareStore } from '$lib/stores/compareStore';
-	import { userInfo } from '$lib/stores/user';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import Card from '$lib/ui/Card.svelte';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
+	import TagChipList from '#lib/ui/TagChips.svelte';
+	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import { userInfo } from '#lib/stores/user.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import Card from '#lib/ui/Card.svelte';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';

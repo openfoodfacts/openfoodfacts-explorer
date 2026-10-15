@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 8,
+	version: 9,
 	theme: 'system' as 'system' | 'light' | 'dark',
 	locale: undefined as string | undefined,
 	country: 'world',
@@ -22,7 +22,7 @@ const DEFAULT_PREFERENCES = {
 	displayPricesInSearch: true,
 	productSidebarVisible: true,
 
-	moderator: false
+	hideModeratorTools: false
 };
 
 type Preferences = typeof DEFAULT_PREFERENCES;
@@ -142,12 +142,18 @@ const MIGRATIONS: {
 		}
 	},
 	{
-		version: 8,
+		version: 9,
 		upgrade: (preferences) => {
 			if (!('theme' in preferences)) {
 				// @ts-expect-error - adding new field
 				preferences.theme = 'system';
 			}
+		// 2026-10-02: Replace the opt-in `moderator` flag with an opt-out `hideModeratorTools` flag.
+		version: 8,
+		upgrade: (preferences) => {
+			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
+			delete legacyPreferences.moderator;
+			legacyPreferences.hideModeratorTools = false;
 			return preferences;
 		}
 	}

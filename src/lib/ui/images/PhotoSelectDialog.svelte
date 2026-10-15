@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ProductImage } from '$lib/api';
-	import { _ } from '$lib/i18n';
+	import type { ProductImage } from '#lib/api.js';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 
 	type Props = {

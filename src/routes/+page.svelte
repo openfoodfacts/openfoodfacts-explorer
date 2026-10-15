@@ -2,17 +2,17 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 
-	import { _ } from '$lib/i18n';
-	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '$lib/api';
-	import { deduplicate } from '$lib/utils';
-	import { personalizedSearch } from '$lib/stores/preferencesStore';
-	import type { ProductAttributeForScoringGroup } from '$lib/api/product';
+	import { _ } from '#lib/i18n/index.js';
+	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '#lib/api.js';
+	import { deduplicate } from '#lib/utils.js';
+	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
+	import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
 
-	import Logo from '$lib/ui/Logo.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import ProductGrid from '$lib/ui/ProductGrid.svelte';
+	import Logo from '#lib/ui/Logo.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
-	import CountUp from '$lib/ui/CountUp.svelte';
+	import CountUp from '#lib/ui/CountUp.svelte';
 
 	import IconMdiCompassOutline from '@iconify-svelte/mdi/compass-outline';
 	import IconMdiLightbulbOnOutline from '@iconify-svelte/mdi/lightbulb-on-outline';
@@ -31,11 +31,11 @@
 		async () => getAttributes(await products)
 	);
 
-	import chocoBarIcon from '$lib/assets/chocolate-bar.svg';
-	import cheeseIcon from '$lib/assets/cheese.svg';
-	import butterIcon from '$lib/assets/butter.svg';
-	import eggIcon from '$lib/assets/egg-01.svg';
-	import pastaIcon from '$lib/assets/pasta.svg';
+	import chocoBarIcon from '#lib/assets/chocolate-bar.svg';
+	import cheeseIcon from '#lib/assets/cheese.svg';
+	import butterIcon from '#lib/assets/butter.svg';
+	import eggIcon from '#lib/assets/egg-01.svg';
+	import pastaIcon from '#lib/assets/pasta.svg';
 
 	const heroIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
 
@@ -91,7 +91,9 @@
 	class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
 >
 	<!-- Decorative SVG assets -->
+
 	<img src={heroIcons[0]} alt="" aria-hidden="true" class="decorative-svg -top-10 -left-10 w-40" />
+
 	<img
 		src={heroIcons[1]}
 		alt=""
@@ -111,7 +113,7 @@
 		</p>
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
-				href={resolve('/explore')}
+				href={resolve('explore')}
 				class="btn flex w-full items-center gap-2 px-4 shadow-md transition-transform btn-md btn-primary hover:scale-105 sm:w-auto lg:px-6 lg:btn-lg"
 			>
 				<IconMdiCompassOutline class="h-5 w-5" />
@@ -137,7 +139,7 @@
 
 <div class="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
 	<a
-		href={resolve('/explore')}
+		href={resolve('explore')}
 		class="flex flex-col items-center rounded-lg border border-secondary p-6 text-center transition outline-none hover:bg-base-200 focus:bg-base-200 focus:ring-2 focus:ring-primary"
 	>
 		<IconMdiDatabase class="mb-4 h-12 w-12 text-primary" />
@@ -199,9 +201,7 @@
 	</div>
 
 	<!-- Preferences Collapsible Section -->
-	<div class="mx-auto mb-4 w-full max-w-2xl">
-		<PersonalizedSearchToggle></PersonalizedSearchToggle>
-	</div>
+	<div class="mx-auto mb-4 w-full max-w-2xl"><PersonalizedSearchToggle /></div>
 
 	<div class="flex w-full">
 		{#await Promise.all([products, attributesByCode])}

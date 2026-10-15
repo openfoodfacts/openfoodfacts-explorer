@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import { _ } from '$lib/i18n';
-	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '$lib/i18n';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
-	import Tabs from '$lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '$lib/stores/preferencesStore';
-	import { userInfo, getPermissionsCtx } from '$lib/stores/user';
-	import Metadata from '$lib/Metadata.svelte';
+	import { preferences } from '#lib/settings.js';
+	import { getLocaleLabel } from '#lib/languages.js';
+	import { _ } from '#lib/i18n/index.js';
+	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
+	import Tabs from '#lib/ui/Tabs.svelte';
+	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
+	import Metadata from '#lib/Metadata.svelte';
+	import { COMMIT_SHA } from '#lib/const.js';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -18,10 +20,12 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
 	import IconMdiThemeLightDark from '@iconify-svelte/mdi/theme-light-dark';
+	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
 	import type { PageProps } from './$types';
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
+	const APP_VERSION = import.meta.env.BUILD_VERSION;
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -39,40 +43,11 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	function getDisplayName(
-		type: 'language' | 'region',
-		code: string,
-		displayLocale = 'en'
-	): string | undefined {
-		if (typeof Intl.DisplayNames !== 'function') return undefined;
-		try {
-			return new Intl.DisplayNames([displayLocale], { type }).of(code) ?? undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	function getLocaleLabel(code: string): string {
-		const languageCode = getLanguageCode(code);
-		const language = Object.values(data.languages).find(
-			(item) => item.language_code_2?.en?.toLowerCase() === languageCode
-		);
-		const exonym = language?.name?.en ?? getDisplayName('language', languageCode) ?? languageCode;
-		const endonym =
-			language?.name?.[languageCode] ??
-			getDisplayName('language', languageCode, languageCode) ??
-			exonym;
-		const region = code.split('-').find((part) => /^[A-Z]{2}$/.test(part));
-		const englishRegion = region && getDisplayName('region', region);
-		const nativeRegion = region && getDisplayName('region', region, languageCode);
-		const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
-		const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
-
-		return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
-	}
-
 	let localeOptions = $derived(
-		availableLocales.map((code) => ({ code, label: getLocaleLabel(code) }))
+		availableLocales.map((code) => ({
+			code,
+			label: getLocaleLabel(code, Object.values(data.languages))
+		}))
 	);
 
 	function getSelectedLocale(): string {
@@ -152,6 +127,41 @@
 					{/if}
 				</div>
 			</div>
+			{#if permissions.isModerator}
+				<div class="card bg-base-200 shadow-md">
+					<div class="card-body">
+						<h2 class="card-title flex items-center gap-2">
+							<IconMdiShieldAccount class="h-6 w-6" aria-hidden="true" />
+							{$_('settings.section_moderation', { default: 'Moderation' })}
+						</h2>
+
+						<div class="mt-6 space-y-6">
+							<div class="form-control">
+								<label class="label cursor-pointer">
+									<span class="label-text font-semibold">
+										{$_('settings.moderator_mode', { default: 'Moderator Mode' })}
+									</span>
+									<input
+										id="moderator-mode-toggle"
+										type="checkbox"
+										class="toggle toggle-primary"
+										checked={!$preferences.hideModeratorTools}
+										onchange={(e) => {
+											$preferences.hideModeratorTools = !e.currentTarget.checked;
+										}}
+									/>
+								</label>
+								<p class="mt-1 text-xs text-base-content/70">
+									{$_('settings.enable_moderator_mode_help', {
+										default:
+											'Show moderator-only tools when editing products, such as barcode correction, image management and product deletion.'
+									})}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title">{$_('settings.news')}</h2>
@@ -176,6 +186,31 @@
 						<IconMdiGithub class="h-5 w-5" />
 						<span>{$_('settings.github_cta')}</span>
 					</a>
+					<p class="mt-4 text-sm text-primary-content/80">
+						{#if COMMIT_SHA !== 'unknown'}
+							<a
+								class="link font-mono"
+								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
+								target="_blank"
+								rel="noopener noreferrer"
+								title={COMMIT_SHA}
+								aria-label={$_('settings.app_commit_link', {
+									default: 'View commit {sha} on GitHub',
+									values: { sha: COMMIT_SHA }
+								})}
+							>
+								{$_('settings.app_version', {
+									default: 'Version {version}',
+									values: { version: APP_VERSION }
+								})}
+							</a>
+						{:else}
+							{$_('settings.app_version', {
+								default: 'Version {version}',
+								values: { version: APP_VERSION }
+							})}
+						{/if}
+					</p>
 				</div>
 			</div>
 		</div>
@@ -347,8 +382,29 @@
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
 					<IconMdiHeart class="h-6 w-6" />
-					{$_('settings.influences')}
+					{$_('settings.food_preferences', { default: 'Food preferences' })}
 				</h2>
+
+				<div class="mt-6 rounded-box border border-base-300 bg-base-100 p-4">
+					<label class="flex cursor-pointer items-center justify-between gap-4">
+						<span class="font-semibold text-base-content">
+							{$_('preferences.classify_products', {
+								default: 'Classify products according to your preferences'
+							})}
+						</span>
+						<input
+							id="classify-products-toggle"
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={$personalizedSearch.classifyProductsEnabled}
+						/>
+					</label>
+					<p class="mt-1 text-xs text-base-content/70">
+						{$_('preferences.classify_products_desc', {
+							default: 'Enable personalized product classification based on your preferences.'
+						})}
+					</p>
+				</div>
 
 				<div class="mt-6">
 					<PreferencesForm groups={attributeGroups as AttributeGroup[]} />
@@ -402,38 +458,6 @@
 							>
 								{$_('settings.admin_tools.top_translators', { default: 'Top translators' })}
 							</a>
-						</div>
-					</div>
-				</div>
-			{/if}
-
-			{#if permissions.isModerator}
-				<div class="card border-2 border-warning bg-warning/10 shadow-md">
-					<div class="card-body">
-						<h2 class="card-title flex items-center gap-2">
-							<IconMdiTools class="h-6 w-6" />
-							{$_('settings.dev_settings_title')}
-						</h2>
-
-						<p class="mt-4 text-sm text-base-content/70">
-							{$_('settings.dev_warning')}
-						</p>
-
-						<div class="mt-6">
-							<div class="form-control">
-								<label class="label cursor-pointer">
-									<span class="label-text font-semibold">{$_('settings.moderator_mode')}</span>
-									<input
-										id="dev-mode-toggle"
-										type="checkbox"
-										class="toggle toggle-accent"
-										bind:checked={$preferences.moderator}
-									/>
-								</label>
-								<p class="mt-1 text-xs text-base-content/70">
-									{$_('settings.moderator_mode_help')}
-								</p>
-							</div>
 						</div>
 					</div>
 				</div>
