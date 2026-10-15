@@ -645,6 +645,7 @@
 					"upload_failed": "Upload failed: {error}",
 					"upload_failed_generic": "Upload failed. Please try again.",
 					"upload_error": "Image upload failed. Please try again.",
+					"refresh_failed": "Image uploaded, but it could not be shown yet. Reload the page to see it.",
 					"unselect_success": "Image unselected successfully.",
 					"unselect_failed": "Failed to unselect image. Please try again.",
 					"unselect_error": "Error unselecting image. Please try again.",

@@ -46,7 +46,17 @@
 			if (status === 'success' || status === 'success_with_warnings') {
 				toast.success($_('product.edit.images.toast.upload_success'));
 				trackOffEvent('contribution', 'image_upload_succeeded', imagefield.split('_')[0]);
-				await onUploaded?.();
+				try {
+					await onUploaded?.();
+				} catch (err) {
+					// The image is uploaded; only reloading it into the form failed.
+					console.error('Failed to refresh images after upload:', err);
+					toast.warning(
+						$_('product.edit.images.toast.refresh_failed', {
+							default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
+						})
+					);
+				}
 			} else if (result?.data?.errors && result.data.errors.length > 0) {
 				toast.error(
 					$_('product.edit.images.toast.upload_failed', {
