@@ -1,34 +1,31 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { tracker } from '$lib/matomo';
-	import { trackOffEvent, trackOffSiteSearch } from '$lib/analytics';
+	import { tracker, trackOffEvent, trackOffSiteSearch } from '#lib/analytics.js';
 
 	import { navigating, page } from '$app/state';
 	import { beforeNavigate, goto } from '$app/navigation';
 	import { onDestroy } from 'svelte';
 
-	import { _ } from '$lib/i18n';
-	import { preferences } from '$lib/settings';
-	import { SORT_OPTIONS } from '$lib/const';
+	import { _ } from '#lib/i18n/index.js';
+	import { preferences } from '#lib/settings.js';
+	import { SORT_OPTIONS } from '#lib/const.js';
 	import {
 		addExcludeFacet,
 		addIncludeFacet,
-		extractQuery,
-		parseLuceneFacets,
 		removeExcludeFacet,
 		removeIncludeFacet,
-		toLuceneString,
 		toggleExcludeFacet,
 		toggleIncludeFacet,
 		type FacetsSelection
-	} from '$lib/facets';
-	import { personalizedSearch, type AttributeGroup } from '$lib/stores/preferencesStore';
-	import { personalizeSearchResults } from '$lib/productScoring';
-	import Pagination from '$lib/Pagination.svelte';
-	import Metadata from '$lib/Metadata.svelte';
-	import SearchOptionsFooter from '$lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '$lib/ui/VegaChart.svelte';
-	import PreferencesForm from '$lib/ui/preferences/PreferencesForm.svelte';
+	} from '#lib/search/facet-selection.js';
+	import { extractQuery, parseLuceneFacets, toLuceneString } from '#lib/search/lucene.js';
+	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { personalizeSearchResults } from '#lib/productScoring.js';
+	import Pagination from '#lib/Pagination.svelte';
+	import Metadata from '#lib/Metadata.svelte';
+	import SearchOptionsFooter from '#lib/ui/SearchOptionsFooter.svelte';
+	import VegaChart from '#lib/ui/VegaChart.svelte';
+	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
@@ -40,15 +37,16 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
-	import WcProductCard from '$lib/ui/WcProductCard.svelte';
-	import type { SearchResult } from '$lib/api/search';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { exportSearchResultsCsv } from '$lib/utils/searchCsvExport';
+	import WcProductCard from '#lib/ui/WcProductCard.svelte';
+	import type { SearchResult } from '#lib/api/search.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { exportSearchResultsCsv } from '#lib/utils/searchCsvExport.js';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
 	const toastCtx = getToastCtx();
 	let isExportingCsv = $state(false);
+	let isNavigatingToSearch = $derived(navigating.to?.route.id === '/search');
 
 	let sortedProducts = $derived.by(() => {
 		if (!searchResult?.hits || searchResult.hits.length === 0 || !data.attributesByCode) return [];
@@ -83,7 +81,7 @@
 	let showAdvancedOptions = $state(false);
 
 	let selectedSort = $derived.by(() => {
-		const url = new URL(page.url);
+		const url = new URL(page.url.href);
 		const sortValue = url.searchParams.get('sort_by') || '-unique_scans_n';
 		return SORT_OPTIONS.find((opt) => opt.value === sortValue) || SORT_OPTIONS[0];
 	});
@@ -98,9 +96,21 @@
 		if (sortDropdown) sortDropdown.open = false; // Close the dropdown
 
 		const nextSort = SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
-		const newUrl = new URL(page.url);
+		const newUrl = new URL(page.url.href);
 		newUrl.searchParams.set('sort_by', nextSort.value);
-		goto(newUrl.toString());
+		window.scrollTo(0, 0);
+		goto(newUrl.toString(), { reset: false });
+	}
+
+	function getSearchPageUrl(nextPage: number) {
+		const newUrl = new URL(page.url.href);
+		newUrl.searchParams.set('page', nextPage.toString());
+		return newUrl.toString();
+	}
+
+	function navigateToSearchPage(nextPage: number) {
+		window.scrollTo(0, 0);
+		void goto(getSearchPageUrl(nextPage), { reset: false });
 	}
 
 	// Local state for UI facet toggling, synced with data.query from server
@@ -129,7 +139,9 @@
 		}
 	}
 
-	beforeNavigate(() => {
+	beforeNavigate(({ shallow }) => {
+		if (shallow) return;
+
 		clearPendingTimer();
 	});
 
@@ -146,12 +158,12 @@
 		const applyNavigation = () => {
 			const mainQuery = extractQuery(data.query);
 			const newQuery = toLuceneString(mainQuery, nextFacets);
-			const newUrl = new URL(page.url);
+			const newUrl = new URL(page.url.href);
 			newUrl.searchParams.set('q', newQuery);
 			newUrl.searchParams.set('page', '1');
 
 			if (newUrl.toString() !== page.url.toString()) {
-				goto(newUrl.toString(), { keepFocus: true, noScroll: true, replaceState: true });
+				goto(newUrl.toString(), { reset: false, replace: true });
 			}
 		};
 
@@ -255,7 +267,7 @@
 
 <div class="mb-6 flex w-full flex-wrap items-center justify-between gap-4">
 	<h2 class="text-xl font-bold text-base-content">
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<span class="block h-7 w-64 skeleton rounded"></span>
 			<span class="mt-2 block h-4 w-80 skeleton rounded"></span>
 		{:else}
@@ -285,17 +297,20 @@
 			</span>
 		{/if}
 	</h2>
-	<div class="flex items-center gap-2">
+	<div class="flex w-full items-center gap-2 sm:w-auto">
 		<!-- Sort By Dropdown -->
-		<details class="dropdown relative dropdown-end shrink-0 open:z-50" bind:this={sortDropdown}>
+		<details
+			class="dropdown relative dropdown-end min-w-0 flex-1 open:z-50 sm:flex-none"
+			bind:this={sortDropdown}
+		>
 			<summary
-				class="sm:rounded-btn btn flex w-60 shrink-0 items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
+				class="sm:rounded-btn btn flex w-full items-center justify-between gap-2 rounded-full btn-outline px-4 text-xs btn-sm sm:w-64 sm:text-sm"
 			>
 				<span class="truncate">{getSelectedSortLabel()}</span>
 				<IconMdiChevronDown class="h-4 w-4 shrink-0" />
 			</summary>
 			<ul
-				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl sm:w-64"
+				class="menu dropdown-content absolute top-full right-0 z-50 mt-1 w-60 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl max-sm:right-auto max-sm:left-0 sm:w-64"
 			>
 				{#each SORT_OPTIONS as { label, value } (value)}
 					<li>
@@ -312,7 +327,7 @@
 
 		<!-- Advanced Options Toggle -->
 		<button
-			class="btn gap-2 btn-sm"
+			class="btn shrink-0 gap-2 btn-sm"
 			class:btn-primary={showAdvancedOptions}
 			class:btn-outline={!showAdvancedOptions}
 			onclick={() => (showAdvancedOptions = !showAdvancedOptions)}
@@ -353,7 +368,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn w-full btn-soft btn-sm md:w-fit"
+						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
 					>
 						{$_('search.generate_graphs_classic', {
 							values: { term: mainSearchTerm },
@@ -365,7 +380,7 @@
 						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={encodedMainSearchTerm}"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn w-full btn-soft btn-sm md:w-fit"
+						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
 					>
 						{$_('search.advanced_search_classic', {
 							values: { term: mainSearchTerm },
@@ -505,7 +520,7 @@
 
 	<div class="flex w-full min-w-0 flex-col">
 		<!-- Mobile/Tablet Facet Bar (Only visible on < lg) -->
-		<div class="mt-2 mb-1 lg:hidden" id="facets">
+		<div class="mt-2 mb-1 max-md:-mx-4 lg:hidden" id="facets">
 			<FacetBar
 				facets={searchResult.facets}
 				selectedFacets={localFacets}
@@ -538,7 +553,7 @@
 
 		<div class="divider my-1 lg:hidden"></div>
 
-		{#if navigating.to != null}
+		{#if isNavigatingToSearch}
 			<!-- Product Card Skeleton Loading State during API Call -->
 			<div class="my-6 max-md:me-4">
 				<div
@@ -608,7 +623,7 @@
 								</span>
 							{/if}
 							<WcProductCard
-								{product}
+								product={data.productCardsByCode[product.code] ?? product}
 								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
 							/>
 						</div>
@@ -697,16 +712,13 @@
 </div>
 
 <!-- Pagination -->
-{#if navigating.to == null && searchResult.count > 0 && searchResult.page_count > 1}
+{#if !isNavigatingToSearch && searchResult.count > 0 && searchResult.page_count > 1}
 	<div class="my-8 flex w-full justify-center">
 		<Pagination
 			page={searchResult.page}
 			totalPages={searchResult.page_count}
-			pageUrl={(p: number) => {
-				const newUrl = new URL(page.url);
-				newUrl.searchParams.set('page', p.toString());
-				return newUrl.toString();
-			}}
+			pageUrl={getSearchPageUrl}
+			onPageChange={navigateToSearchPage}
 		/>
 	</div>
 {/if}

@@ -1,4 +1,4 @@
-import type { Product } from '$lib/api';
+import type { Product } from '#lib/api.js';
 
 export type IssueSeverity = 'warning' | 'error';
 

@@ -1,7 +1,7 @@
 import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
 import { get } from 'svelte/store';
-import { preferences } from '$lib/settings';
-import { browser } from '$app/environment';
+import { preferences } from '#lib/settings.js';
+import { browser } from '$app/env';
 
 export const locales = ['en', 'it'];
 
@@ -45,6 +45,7 @@ export function resolveAvailableLocale(candidate: string | null | undefined): st
 	if (exactMatch) return exactMatch;
 
 	const language = normalized.split('-')[0];
+
 	return (
 		availableLocales.find((locale) => locale.toLowerCase() === language) ??
 		availableLocales.find((locale) => locale.toLowerCase().startsWith(`${language}-`)) ??
