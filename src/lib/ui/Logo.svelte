@@ -57,9 +57,5 @@
 			? '(prefers-color-scheme: dark)'
 			: 'not all'}
 	/>
-	<img
-		src={logoSrc}
-		alt={$_('footer.decorative_alt', { default: 'Open Food Facts Explorer' })}
-		class="h-full w-full object-contain"
-	/>
+	<img src={logoSrc} alt="Open Food Facts Explorer" class="h-full w-full object-contain" />
 </picture>
