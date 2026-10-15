@@ -8,7 +8,6 @@
 	import TagsString from '../../../routes/products/[barcode]/edit/TagsString.svelte';
 	import { getLanguageName } from '$lib/languages';
 	import InfoTooltip from '../InfoTooltip.svelte';
-	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
 	import { getShortcutCtx } from '$lib/stores/shortcuts';
