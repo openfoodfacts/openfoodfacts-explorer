@@ -9,12 +9,27 @@ import {
 import type { PageLoad } from './$types';
 import { requireInt } from '#lib/utils.js';
 import { getBulkProductAttributes } from '#lib/api.js';
+import { getTaxo } from '#lib/api/taxonomy/api.js';
+import { getOrDefault } from '#lib/api/taxonomy/types.js';
+import { getLocale } from '#lib/i18n/index.js';
+import { getFacetDistribution, MAP_FACETS } from './map-facets';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
 
+async function getTaxonomyOrUndefined(facet: string, fetch: typeof window.fetch) {
+	try {
+		return await getTaxo(facet, fetch);
+	} catch (error) {
+		console.error('Taxonomy fetch failed:', error);
+		return undefined;
+	}
+}
+
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
+	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
+	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	const pageStr = url.searchParams.get('page') || '1';
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
@@ -33,14 +48,17 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		pageSize,
 		sortBy
 	};
+	const taxonomy = mapFacet ? await getTaxonomyOrUndefined(facet, fetch) : undefined;
+	const facetDisplayValue = getOrDefault(taxonomy?.[value]?.name ?? {}, lang) ?? value;
 
-	let results = {
+	let results: FacetResponseData = {
 		products: [],
 		count: 0,
 		page: 1,
+		page_count: 0,
 		page_size: pageSize
-	} as unknown as FacetResponseData;
-	let kp = { knowledge_panels: {} } as unknown as KPResponseData;
+	};
+	let kp: KPResponseData = { knowledge_panels: {} };
 	let productAttributes = {};
 	let distributionData = null;
 
@@ -48,42 +66,27 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		results = await getFacetValue(fetch, facet, value, searchOptions);
 		kp = await getFacetKnowledgePanels(fetch, facet, value);
 
-		if (results && results.products && results.products.length > 0) {
-			const productCodes = results.products.map((state) => state.code as string);
+		if (results.products.length > 0) {
+			const products = results.products;
+
+			const productCodes = products.map((state) => state.code as string);
 			productAttributes = await getBulkProductAttributes(fetch, productCodes);
 
-			if (facet === 'origins' || facet === 'countries') {
-				const countryCounts: Record<string, number> = {};
-				results.products.forEach((product) => {
-					if (Array.isArray(product.countries_tags)) {
-						product.countries_tags.forEach((tag: string) => {
-							countryCounts[tag] = (countryCounts[tag] || 0) + 1;
-						});
-					}
-				});
-
-				const mappedTags = Object.entries(countryCounts).map(([id, count]) => ({
-					id,
-					products: count,
-					known: 1,
-					name: id
-				}));
-
-				if (mappedTags.length > 0) {
-					distributionData = { count: mappedTags.length, tags: mappedTags };
-				}
+			if (mapFacet) {
+				distributionData = getFacetDistribution(products, mapFacet.tagsField, taxonomy, lang);
 			}
 		}
 	} catch (e) {
-		console.error('API Fetch failed (Likely server outage):', e);
+		console.error('API Fetch failed:', e);
 	}
 
 	return {
 		searchOptions,
-		facet: { name: facet, value },
+		facet: { name: facet, value: facetDisplayValue },
 		results: results,
 		knowledgePanels: kp.knowledge_panels || {},
 		productAttributes,
-		distributionData
+		distributionData,
+		mapFacet: mapFacet ?? null
 	};
 };

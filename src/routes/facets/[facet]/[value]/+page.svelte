@@ -20,8 +20,15 @@
 	import { getHierarchy, type HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
-		$derived(data);
+	let {
+		facet,
+		results,
+		knowledgePanels,
+		searchOptions,
+		productAttributes,
+		distributionData,
+		mapFacet
+	} = $derived(data);
 
 	// Only facet and value may refetch the hierarchy; untrack keeps the reads inside the
 	// request from refetching it on every page or sort change.
@@ -58,7 +65,10 @@
 <div class="mb-4">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
+		label={$_('facets.facet_back_to_overview', {
+			values: { facet: facet.name },
+			default: 'Back to {facet} overview'
+		})}
 	/>
 </div>
 
@@ -118,9 +128,13 @@
 	{/if}
 {/await}
 
-{#if distributionData && MapComponent}
+{#if distributionData && MapComponent && mapFacet}
 	<div class="my-8 w-full">
-		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<h2 class="mb-4 text-2xl font-bold">
+			{$_(mapFacet.heading, {
+				default: mapFacet.defaultHeading
+			})}
+		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
 			Note: The geographic distribution shown on this map is based only on the products visible on
