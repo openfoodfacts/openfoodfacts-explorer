@@ -5,7 +5,9 @@
 		isConfigured as isFolksonomyConfigured
 	} from '#lib/api/folksonomy.js';
 	import { _ } from '#lib/i18n/index.js';
-	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { page } from '$app/state';
+	import { parseUrlLocation } from '#lib/url-location.js';
+	import { preferences } from '#lib/settings.js';
 
 	import KnowledgePanelsComp from '#lib/knowledgepanels/Panels.svelte';
 	import ExternalPanels from '#lib/knowledgepanels/ExternalPanels.svelte';
@@ -53,8 +55,8 @@
 	} from '#lib/stores/preferencesStore.js';
 	import { PRODUCT_URL } from '#lib/const.js';
 	import { toWebsiteFlavor } from '#lib/flavor.js';
-	import { resolve } from '$app/paths';
-	import { goto } from '$app/navigation';
+	import { resolve } from '#lib/paths.js';
+	import { goto } from '#lib/navigation.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 	import { browser } from '$app/env';
 	import {
@@ -126,8 +128,8 @@
 
 		const requestContext = {
 			code: product.code,
-			lc: data.lc || getLanguageCode($preferences.locale),
-			cc: $preferences.country || 'world',
+			lc: data.lc,
+			cc: parseUrlLocation(page.url.pathname)?.country ?? 'world',
 			productType: product.product_type,
 			categories: product.categories_tags ?? []
 		};
@@ -507,7 +509,11 @@
 			{/if}
 
 			<div id="data-sources">
-				<DataSources {product} canEdit={!product.product_type || product.product_type === 'food'} />
+				<DataSources
+					{product}
+					barcode={product.code}
+					canEdit={!product.product_type || product.product_type === 'food'}
+				/>
 			</div>
 
 			{#if isFolksonomyConfigured()}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { _ } from '#lib/i18n/index.js';
 	import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
 	import { calculateScore } from '#lib/scoring.js';

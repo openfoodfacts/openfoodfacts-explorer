@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
+	import { goto } from '#lib/navigation.js';
+	import { resolve } from '#lib/paths.js';
 
 	import Card from '#lib/ui/Card.svelte';
 	import Metadata from '#lib/Metadata.svelte';
