@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { _ } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
 
@@ -14,7 +15,7 @@
 		{#each data.facets as { taxo, icon: IconComponent, name } (taxo)}
 			<li class="flex">
 				<a
-					href={`/facets/${taxo}`}
+					href={resolve('/facets/[facet]', { facet: taxo })}
 					class="flex min-h-20 w-full items-center rounded-lg border p-4 text-xl font-semibold transition hover:bg-base-200"
 				>
 					<IconComponent class="me-4 h-5 w-5 shrink-0"></IconComponent>

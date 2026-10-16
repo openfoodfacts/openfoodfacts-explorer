@@ -1,11 +1,7 @@
 <script lang="ts">
 	import IconMdiArrowLeft from '@iconify-svelte/mdi/arrow-left';
 
-	type Props = {
-		href: string;
-		label: string;
-	};
-
+	type Props = { href: string; label: string };
 	let { href, label }: Props = $props();
 </script>
 

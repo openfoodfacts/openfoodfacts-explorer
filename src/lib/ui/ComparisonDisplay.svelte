@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { flip } from 'svelte/animate';
 
 	import { _ } from '#lib/i18n/index.js';
@@ -428,7 +429,7 @@
 						/>
 					{/if}
 					<h3 class="mt-2 text-center font-semibold">
-						<a href={`/products/${product.code}`} class="link">
+						<a href={resolve('/products/[barcode]', { barcode: product.code })} class="link">
 							{product.product_name ?? product.code}
 						</a>
 					</h3>
@@ -580,7 +581,7 @@
 							{/if}
 							{#if product.image_front_small_url}
 								<a
-									href={`/products/${product.code}`}
+									href={resolve('/products/[barcode]', { barcode: product.code })}
 									class="contents"
 									aria-label={product.product_name ?? product.code}
 								>
@@ -601,7 +602,10 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
 				{#each products as product (product.code)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
-						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
+						<a
+							href={resolve('/products/[barcode]', { barcode: product.code })}
+							class="no-underline hover:text-primary"
+						>
 							{product.product_name ?? '-'}
 						</a>
 					</td>

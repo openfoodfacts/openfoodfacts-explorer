@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
@@ -17,7 +18,6 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
-	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
@@ -264,7 +264,10 @@
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
+								<a
+									class="badge font-mono wrap-break-word"
+									href={resolve('/facets/[facet]/[value]', { facet: 'packager-codes', value: tag })}
+								>
 									{tag.toUpperCase()}
 								</a>
 							{/each}

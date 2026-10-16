@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
+	import { goto } from '#lib/navigation.js';
+
 	import { page } from '$app/state';
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
 	import Pagination from '#lib/Pagination.svelte';
@@ -7,7 +9,6 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
-	import { goto } from '$app/navigation';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '#lib/Metadata.svelte';
 
@@ -85,7 +86,7 @@
 			{#each results.tags as { known, name, products, id } (id)}
 				<tr>
 					<td>
-						<a href={`/facets/${facet}/${id}`} class="link">
+						<a href={resolve('/facets/[facet]/[value]', { facet, value: id })} class="link">
 							{name}
 						</a>
 					</td>
@@ -102,7 +103,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `?${params}`;
+			return `${resolve('/facets/[facet]', { facet })}?${params}`;
 		}}
 	/>
 </div>

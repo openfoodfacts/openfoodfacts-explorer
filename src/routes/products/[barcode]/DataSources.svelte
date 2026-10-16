@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import Card from '#lib/ui/Card.svelte';
 	import { _, getLocale } from '#lib/i18n/index.js';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
@@ -6,16 +7,16 @@
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
 	import type { ProductDataSection } from '#lib/api.js';
-	import { page } from '$app/state';
 
 	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)
 	import '@formatjs/intl-durationformat/polyfill.js';
 
 	type Props = {
 		product: ProductDataSection;
+		barcode: string;
 	};
 
-	let { product }: Props = $props();
+	let { product, barcode }: Props = $props();
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -113,9 +114,13 @@
 </script>
 
 {#snippet user(user: string | null)}
-	<a href="/users/{user}" class="break-all underline">
-		{user ?? $_('product.datasources.unknown')}
-	</a>
+	{#if user}
+		<a href={resolve('/users/[user]', { user })} class="break-all underline">
+			{user}
+		</a>
+	{:else}
+		<span>{$_('product.datasources.unknown')}</span>
+	{/if}
 {/snippet}
 
 <Card>
@@ -133,7 +138,7 @@
 			</div>
 			<div class="stat-desc">
 				{$_('product.datasources.user')}
-				<a href="/users/{product.last_editor}" class="underline">
+				<a href={resolve('/users/[user]', { user: product.last_editor })} class="underline">
 					{product.last_editor ?? $_('product.datasources.unknown')}
 				</a>
 			</div>
@@ -169,7 +174,7 @@
 				{#if product.checkers_tags && product.checkers_tags.length > 0}
 					{@const last_checker = product.checkers_tags[0]}
 					{$_('product.datasources.user')}
-					<a href="/users/{last_checker}" class="underline">
+					<a href={resolve('/users/[user]', { user: last_checker })} class="underline">
 						{last_checker ?? $_('product.datasources.unknown')}
 					</a>
 				{:else}
@@ -189,7 +194,7 @@
 			</div>
 			<div class="stat-desc">
 				{$_('product.datasources.user')}
-				<a href="/users/{product.creator}" class="underline">
+				<a href={resolve('/users/[user]', { user: product.creator })} class="underline">
 					{product.creator ?? $_('product.datasources.unknown')}
 				</a>
 			</div>
@@ -207,7 +212,7 @@
 				{#each product.editors_tags as editor, i (i)}
 					<li>
 						<a
-							href="/users/{editor}"
+							href={resolve('/users/[user]', { user: editor })}
 							title={editor ?? $_('product.datasources.unknown')}
 							class="flex h-10 items-center justify-center rounded bg-base-300 p-2 text-center text-base-content"
 						>
@@ -237,7 +242,7 @@
 
 	<a
 		class="mt-4 block rounded bg-warning p-3 text-center font-bold text-warning-content hover:shadow"
-		href="{page.url.pathname}/edit"
+		href={resolve('/products/[barcode]/edit', { barcode })}
 	>
 		{$_('product.datasources.incomplete_or_incorrect')}
 	</a>
@@ -248,7 +253,12 @@
 		<div class="mt-4 space-x-1">
 			<p class="my-2 font-bold">{$_('product.datasources.done')}:</p>
 			{#each doneStates as state, i (i)}
-				<a href="/facets/states/{state.key}" class="badge badge-secondary"> {state.label}</a>
+				<a
+					href={resolve('/facets/[facet]/[value]', { facet: 'states', value: state.key })}
+					class="badge badge-secondary"
+				>
+					{state.label}</a
+				>
 			{/each}
 		</div>
 	{/if}
@@ -257,7 +267,12 @@
 		<div class="mt-4 space-x-1">
 			<p class="my-2 font-bold">{$_('product.datasources.toDo')}:</p>
 			{#each toDoStates as state, i (i)}
-				<a href="/facets/states/{state.key}" class="badge badge-secondary"> {state.label}</a>
+				<a
+					href={resolve('/facets/[facet]/[value]', { facet: 'states', value: state.key })}
+					class="badge badge-secondary"
+				>
+					{state.label}</a
+				>
 			{/each}
 		</div>
 	{/if}

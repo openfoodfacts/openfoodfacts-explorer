@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import footerTopLeft from '#lib/assets/footer-top-left.svg';
 	import footerBottomRight from '#lib/assets/footer-bottom-right.svg';
 	import { _ } from '#lib/i18n/index.js';
@@ -69,7 +70,7 @@
 		}
 	];
 
-	const LINKS_CONTRIBUTE = [
+	const LINKS_CONTRIBUTE = $derived([
 		{
 			url: 'https://world.pro.openfoodfacts.org/',
 			key: 'footer.links.producers',
@@ -91,13 +92,17 @@
 			key: 'footer.links.github',
 			default: 'GitHub'
 		},
-		{ url: '/static/data', key: 'footer.links.data_api_sdks', default: 'Data, API, SDKs' },
-		{ url: 'https://wiki.openfoodfacts.org/', key: 'footer.links.wiki', default: 'Wiki' }
-	];
-
-	const LINKS_DISCOVER_PROJECTS = [
 		{
-			url: '/static/who-we-are',
+			url: resolve('/static/[id]', { id: 'data' }),
+			key: 'footer.links.data_api_sdks',
+			default: 'Data, API, SDKs'
+		},
+		{ url: 'https://wiki.openfoodfacts.org/', key: 'footer.links.wiki', default: 'Wiki' }
+	]);
+
+	const LINKS_DISCOVER_PROJECTS = $derived([
+		{
+			url: resolve('/static/[id]', { id: 'who-we-are' }),
 			key: 'footer.discover.who_we_are'
 		},
 		{
@@ -105,15 +110,15 @@
 			key: 'footer.discover.blog'
 		},
 		{
-			url: '/static/code-of-conduct',
+			url: resolve('/static/[id]', { id: 'code-of-conduct' }),
 			key: 'footer.discover.code_of_conduct'
 		},
 		{
-			url: '/static/open-food-facts-vision-mission-values-and-programs',
+			url: resolve('/static/[id]', { id: 'open-food-facts-vision-mission-values-and-programs' }),
 			key: 'footer.discover.vision_mission_values_and_programs'
 		},
 		{
-			url: '/static/partners',
+			url: resolve('/static/[id]', { id: 'partners' }),
 			key: 'footer.discover.partners'
 		},
 		{
@@ -121,10 +126,10 @@
 			key: 'footer.discover.faq'
 		},
 		{
-			url: '/static/presskit',
+			url: resolve('/static/[id]', { id: 'presskit' }),
 			key: 'footer.discover.press'
 		}
-	];
+	]);
 
 	const LINKS_OPEN_X_FACTS = [
 		{
@@ -149,11 +154,11 @@
 		}
 	];
 
-	const LINKS_FOOTER = [
-		{ url: '/static/legal', key: 'footer.links.legal' },
-		{ url: '/static/privacy', key: 'footer.links.privacy' },
-		{ url: '/static/terms-of-use', key: 'footer.links.terms_of_use' }
-	];
+	const LINKS_FOOTER = $derived([
+		{ url: resolve('/static/[id]', { id: 'legal' }), key: 'footer.links.legal' },
+		{ url: resolve('/static/[id]', { id: 'privacy' }), key: 'footer.links.privacy' },
+		{ url: resolve('/static/[id]', { id: 'terms-of-use' }), key: 'footer.links.terms_of_use' }
+	]);
 </script>
 
 <div
@@ -222,7 +227,7 @@
 		<div class="mt-2 flex flex-wrap gap-2">
 			{#each LINKS_OPEN_X_FACTS as link (link.flavor)}
 				<a
-					href={`/?flavor=${link.flavor}`}
+					href={`${resolve('/')}?flavor=${link.flavor}`}
 					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 				>
 					{$_(link.key, { default: link.default })}

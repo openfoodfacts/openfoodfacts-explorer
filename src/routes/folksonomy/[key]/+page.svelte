@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { page } from '$app/state';
 	import type { PageData } from './$types';
 
@@ -37,7 +38,7 @@
 		{#each data.tags as tag, i (i)}
 			<tr>
 				<td>
-					<a class="link" href="/products/{tag.product}">
+					<a class="link" href={resolve('/products/[barcode]', { barcode: tag.product })}>
 						{productNameOrBarcode(data.products[i], tag)}
 					</a>
 				</td>
