@@ -75,8 +75,8 @@
 		const preferredLanguage =
 			$preferences.locale != null ? getLanguageCode($preferences.locale) : undefined;
 		const activeLanguage =
-			preferredLanguage ??
 			parseUrlLocation(page.url.pathname)?.language ??
+			preferredLanguage ??
 			getLanguageCode(getLocale());
 		navigateToLocation(activeLanguage, country);
 	}

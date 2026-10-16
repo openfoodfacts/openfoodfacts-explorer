@@ -9,7 +9,7 @@ import { clearWindow } from 'isomorphic-dompurify';
 const UNPREFIXED_PATH_ALLOWLIST = [
 	/^\/(?:health|site\.webmanifest)$/,
 	/^\/(?:_app|assets)\//,
-	/\.[^/]+$/
+	/^\/(?:favicon\.ico|Placeholder\.svg|login\.svg)$/
 ];
 
 function requireLocationPrefix(pathname: string) {
