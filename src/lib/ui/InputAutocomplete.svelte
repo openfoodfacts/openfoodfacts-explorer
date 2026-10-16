@@ -30,6 +30,12 @@
 	let autoCompleteIndex = $state(-1);
 	let showInput = $state(false);
 
+	function formatItem(item: T): string {
+		const code = typeof item.code === 'string' && item.code ? ` - ${item.code}` : '';
+		if (typeof item.label === 'string' && item.label) return `${item.label}${code}`;
+		return `${item.locale || item.name} (${item.en})${code}`;
+	}
+
 	function matchesSearchQuery(item: T, query: string, keys: (keyof T)[]): boolean {
 		const lowerQuery = query.toLowerCase();
 		return keys.some((key) => {
@@ -128,10 +134,7 @@
 					showInput = false;
 				}}
 			>
-				<span
-					>{item.locale || item.name} ({item.en}){#if item.code}
-						- {item.code}{/if}</span
-				>
+				<span>{formatItem(item)}</span>
 			</button>
 		</li>
 	{/snippet}
@@ -186,8 +189,7 @@
 								searchQuery = '';
 							}}
 						>
-							{item.locale || item.name} ({item.en}){#if item.code}
-								- {item.code}{/if}
+							{formatItem(item)}
 						</button>
 					{/each}
 				</div>

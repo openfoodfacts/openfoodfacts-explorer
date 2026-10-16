@@ -36,11 +36,22 @@ export function getImageFieldName(
 	}
 }
 
+/**
+ * Deduplicate elements in an array based on a key function, preserving order
+ *
+ * The default policy is to keep the first occurrence of each unique key.
+ * If you need to keep the last occurrence, you can reverse the array before
+ * calling this function and then reverse the result.
+ *
+ * @param array - The array of elements to deduplicate
+ * @param key - A function that returns a string key for each element
+ */
 export function deduplicate<T>(array: T[], key: (el: T) => string): T[] {
 	const seen = new Set<string>();
 	return array.filter((el) => {
-		if (seen.has(key(el))) return false;
-		seen.add(key(el));
+		const value = key(el);
+		if (seen.has(value)) return false;
+		seen.add(value);
 		return true;
 	});
 }
