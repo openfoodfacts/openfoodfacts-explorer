@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { AutocompleteOption } from '#lib/api/search.js';
 	import { _, getBrowserLocale } from '#lib/i18n/index.js';
 	import { getLanguageCode } from '#lib/settings.js';
@@ -207,7 +208,7 @@
 			</button>
 		</div>
 		<a
-			href="/scan"
+			href={resolve('scan')}
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
 			class="btn join-item text-lg btn-secondary"

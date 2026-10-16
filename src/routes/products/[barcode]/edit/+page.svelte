@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -33,7 +33,7 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/env';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	interface Props {
 		data: PageData;

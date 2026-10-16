@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
@@ -21,7 +22,6 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiCompare from '@iconify-svelte/mdi/compare';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
-	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
@@ -138,7 +138,7 @@
 					</a>
 
 					<a
-						href={`/products/${product.code}/edit`}
+						href={resolve('/products/[barcode]/edit', { barcode: product.code! })}
 						class="btn btn-secondary btn-sm md:btn-md"
 						class:pointer-events-none={navigating.to}
 						title={$_('product.buttons.edit', { default: 'Edit' })}
@@ -252,7 +252,10 @@
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
+								<a
+									class="badge font-mono wrap-break-word"
+									href={resolve('/facets/[facet]/[value]', { facet: 'packager-codes', value: tag })}
+								>
 									{tag.toUpperCase()}
 								</a>
 							{/each}

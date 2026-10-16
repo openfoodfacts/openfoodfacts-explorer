@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import { resolve } from '#lib/paths.js';
 
-	import { _ } from '#lib/i18n/index.js';
+	import { _, getLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { formatUrlLocation } from '#lib/url-location.js';
 	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '#lib/api.js';
 	import { deduplicate } from '#lib/utils.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
@@ -70,6 +73,17 @@
 	}
 
 	onMount(() => {
+		if (window.location.pathname === '/') {
+			const language = $preferences.locale
+				? getLanguageCode($preferences.locale)
+				: getLanguageCode(getLocale());
+			const location = formatUrlLocation(language, $preferences.country);
+			void goto(`/${location}${window.location.search}${window.location.hash}`, {
+				replaceState: true
+			});
+			return;
+		}
+
 		products = getProducts();
 	});
 </script>

@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { slide } from 'svelte/transition';
 	import { tracker, trackOffEvent, trackOffSiteSearch } from '#lib/analytics.js';
 
 	import { navigating, page } from '$app/state';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { onDestroy } from 'svelte';
 
 	import { _ } from '#lib/i18n/index.js';
@@ -41,6 +43,7 @@
 	import type { SearchResult } from '#lib/api/search.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { exportSearchResultsCsv } from '#lib/utils/searchCsvExport.js';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: PageProps = $props();
 	let { search: searchResult } = $derived(data);
@@ -103,9 +106,9 @@
 	}
 
 	function getSearchPageUrl(nextPage: number) {
-		const newUrl = new URL(page.url.href);
-		newUrl.searchParams.set('page', nextPage.toString());
-		return newUrl.toString();
+		const params = new SvelteURLSearchParams(page.url.search);
+		params.set('page', nextPage.toString());
+		return `${resolve('search')}?${params}`;
 	}
 
 	function navigateToSearchPage(nextPage: number) {
@@ -365,7 +368,7 @@
 				</span>
 				<div class="flex flex-wrap gap-2">
 					<a
-						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms={encodedMainSearchTerm}"
+						href={`https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&graph=1&search_terms=${encodedMainSearchTerm}`}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
@@ -377,7 +380,7 @@
 						<IconMdiOpenInNew class="h-4 w-4" />
 					</a>
 					<a
-						href="https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms={encodedMainSearchTerm}"
+						href={`https://world.openfoodfacts.org/cgi/search.pl?action=display&sort_by=unique_scans_n&page_size=20&search_terms=${encodedMainSearchTerm}`}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="btn h-auto w-full btn-soft py-1.5 btn-sm md:w-fit"
@@ -647,7 +650,7 @@
 							</p>
 							<div class="mt-4 card-actions flex w-full flex-col gap-3">
 								<a
-									href="/products/{cleanedQuery}/edit"
+									href={resolve('/products/[barcode]/edit', { barcode: cleanedQuery })}
 									class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
 								>
 									<span class="text-xl">➕</span>

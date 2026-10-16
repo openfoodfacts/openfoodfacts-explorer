@@ -7,7 +7,7 @@
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import { _, getDateFormatter } from 'svelte-i18n';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	import IconMdiUpload from '@iconify-svelte/mdi/upload';
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';

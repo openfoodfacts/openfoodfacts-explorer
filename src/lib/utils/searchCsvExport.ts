@@ -1,4 +1,4 @@
-import { resolve } from '$app/paths';
+import { resolve } from '#lib/paths.js';
 import { downloadCsv, toCsv } from '#lib/utils/csv.js';
 
 export const SEARCH_CSV_HEADERS = [

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { page } from '$app/state';
 	import { _ } from '#lib/i18n/index.js';
 	import NetworkError from '#lib/ui/NetworkError.svelte';
@@ -38,7 +39,7 @@
 				})}
 			</p>
 			<div class="flex justify-center gap-4">
-				<a href="/" class="btn btn-lg btn-primary">
+				<a href={resolve('/')} class="btn btn-lg btn-primary">
 					{$_('general.return_home', { default: 'Return Home' })}
 				</a>
 			</div>
