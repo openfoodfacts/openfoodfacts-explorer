@@ -1,3 +1,6 @@
+import ISO31661 from 'iso-3166-1';
+import ISO6391 from 'iso-639-1';
+
 /**
  * We use the first segment of the URL to encode the location (language and country) for the current page.
  *
@@ -19,6 +22,8 @@ export type UrlLocation = {
 };
 
 const LOCATION_SEGMENT = /^(?:([a-z]{2})-)?([a-z]{2})$/i;
+const LANGUAGE_CODES: Set<string> = new Set(ISO6391.getAllCodes());
+const COUNTRY_CODES = new Set(ISO31661.all().map(({ alpha2 }) => alpha2.toLowerCase()));
 
 export function parseUrlLocation(pathname: string): UrlLocation | undefined {
 	const segment = pathname.split('/')[1];
@@ -26,10 +31,14 @@ export function parseUrlLocation(pathname: string): UrlLocation | undefined {
 
 	const match = LOCATION_SEGMENT.exec(segment);
 	if (!match) return undefined;
+	const language = match[1]?.toLowerCase();
+	const country = match[2].toLowerCase();
+	if (language && !LANGUAGE_CODES.has(language)) return undefined;
+	if (country !== 'ww' && !COUNTRY_CODES.has(country)) return undefined;
 
 	return {
-		...(match[1] ? { language: match[1].toLowerCase() } : {}),
-		country: match[2].toLowerCase() === 'ww' ? 'world' : match[2].toUpperCase()
+		...(language ? { language } : {}),
+		country: country === 'ww' ? 'world' : country.toUpperCase()
 	};
 }
 
@@ -42,6 +51,6 @@ export function formatUrlLocation(language: string | undefined, country: string)
 /** Remove the required leading location segment before SvelteKit matches the route. */
 export function stripUrlLocation(pathname: string): string {
 	if (!parseUrlLocation(pathname)) return pathname;
-	const stripped = pathname.replace(/^\/(?:[a-z]{2}-)?[a-z]{2}(?=\/|$)/i, '');
-	return stripped || '/';
+	const nextSlash = pathname.indexOf('/', 1);
+	return nextSlash < 0 ? '/' : pathname.slice(nextSlash);
 }
