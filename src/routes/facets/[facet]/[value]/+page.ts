@@ -5,13 +5,14 @@ import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
+import { parseUrlLocation } from '#lib/url-location.js';
 import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
 import { MAP_FACETS } from '../map-facets';
 
-export const load: PageLoad = async ({ fetch, params, data }) => {
+export const load: PageLoad = async ({ fetch, params, data, url }) => {
 	const { facet, value } = params;
 	const { searchOptions, queryProducts, mapValues } = data;
-	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
+	const lang = parseUrlLocation(url.pathname)?.language ?? getLocale().split('-')[0].toLowerCase();
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	// Geographic taxonomy supplies localized names for the facet and map.

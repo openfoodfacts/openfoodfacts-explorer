@@ -3,8 +3,9 @@ import type { PageLoad } from './$types';
 
 import { createProductsApi } from '#lib/api.js';
 
-import { get } from 'svelte/store';
-import { getLanguageCode, preferences } from '#lib/settings.js';
+import { getLanguageCode } from '#lib/settings.js';
+import { getLocale } from '#lib/i18n/index.js';
+import { parseUrlLocation } from '#lib/url-location.js';
 import {
 	ERR_INVALID_BARCODE,
 	ERR_PRODUCT_NOT_FOUND,
@@ -33,10 +34,10 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 	error(500, 'Server Error', { errors: cleanErrors });
 }
 
-export const load: PageLoad = async ({ params, fetch }) => {
+export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 
-	const lc = getLanguageCode(get(preferences).locale);
+	const lc = parseUrlLocation(url.pathname)?.language ?? getLanguageCode(getLocale());
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',

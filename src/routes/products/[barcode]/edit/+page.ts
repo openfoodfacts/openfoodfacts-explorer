@@ -21,7 +21,8 @@ import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 import type { PageLoad } from './$types';
 import { dev } from '$app/env';
 import { getLanguageCode, preferences } from '#lib/settings.js';
-import { resolve } from '$app/paths';
+import { resolveForUrl } from '#lib/paths.js';
+import { parseUrlLocation } from '#lib/url-location.js';
 
 export const ssr = false;
 
@@ -33,15 +34,17 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (get(userInfo) == null && !dev) {
 		redirect(
 			302,
-			resolve('loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+			resolveForUrl(url, 'loginrequired') +
+				`?redirect=${encodeURIComponent(url.pathname + url.search)}`
 		);
 	}
 
 	const off = createProductsApi(fetch);
+	const location = parseUrlLocation(url.pathname);
 
 	const productReq = await off.getProductV3(params.barcode, {
-		lc: getLanguageCode(get(preferences).locale),
-		cc: get(preferences).country
+		lc: location?.language ?? getLanguageCode(get(preferences).locale),
+		cc: location?.country ?? get(preferences).country
 	});
 
 	const { data: productState, error: productError } = productReq;

@@ -2,21 +2,12 @@ import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '#lib/settings.js';
 import { browser } from '$app/env';
+import { parseUrlLocation } from '#lib/url-location.js';
+import { availableLocales, messageLoaders } from './locales.js';
+
+export { availableLocales } from './locales.js';
 
 const FALLBACK_LOCALE = 'en';
-
-const messageLoaders = import.meta.glob('./messages/*.json');
-
-export const availableLocales = Object.keys(messageLoaders)
-	.map((path) =>
-		path
-			.split('/')
-			.pop()
-			?.replace(/\.json$/, '')
-			.replaceAll('_', '-')
-	)
-	.filter((locale): locale is string => locale != null)
-	.toSorted();
 
 Object.entries(messageLoaders).forEach(([path, loader]) => {
 	const fileName = path.split('/').pop();
@@ -51,8 +42,20 @@ export function resolveAvailableLocale(candidate: string | null | undefined): st
 	);
 }
 
+export function getLocaleForUrl(url: Pick<URL, 'pathname'>, preferredLocale?: string): string {
+	const language = parseUrlLocation(url.pathname)?.language;
+	if (!language) return getLocale();
+	const preferred = preferredLocale ?? (browser ? get(preferences).locale : undefined);
+	if (preferred && preferred.replaceAll('_', '-').split('-')[0].toLowerCase() === language) {
+		return resolveAvailableLocale(preferred);
+	}
+	return resolveAvailableLocale(language);
+}
+
 export function getBrowserLocale() {
 	if (!browser) throw new Error('getBrowserLocale should only be called in the browser');
+	const location = parseUrlLocation(window.location.pathname);
+	if (location) return getLocaleForUrl(window.location);
 	const storedPreferences = get(preferences) as { locale?: string; lang?: string };
 	const preferredLocale = storedPreferences.locale;
 	const navLang = getLocaleFromNavigator();

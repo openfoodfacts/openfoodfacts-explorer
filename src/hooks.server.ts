@@ -2,7 +2,10 @@ import { sequence, type Handle, type HandleFetch } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { clearWindow } from 'isomorphic-dompurify';
 
-import { locale } from '#lib/i18n/index.js';
+import { redirect } from '@sveltejs/kit';
+import { parseUrlLocation } from '#lib/url-location.js';
+import { locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+import { locationRedirect } from '#lib/server/location-redirect.js';
 import { ServerTiming } from '#lib/server/timing.ts';
 import { dev } from '$app/env';
 
@@ -10,9 +13,12 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	// Server timing setup
 	const startTime = performance.now();
 
-	const lang = event.request.headers.get('accept-language')?.split(',')[0];
+	const destination = locationRedirect(event.url, event.request.headers.get('accept-language'));
+	if (destination) redirect(307, destination);
+	const urlLocation = parseUrlLocation(event.url.pathname);
+	const lang = urlLocation?.language ?? event.request.headers.get('accept-language')?.split(',')[0];
 	if (lang) {
-		locale.set(lang);
+		locale.set(urlLocation ? resolveAvailableLocale(lang) : lang);
 	}
 
 	event.locals.timing = new ServerTiming();
