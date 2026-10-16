@@ -1,5 +1,6 @@
-import { resolve } from '#lib/paths.js';
 import { downloadCsv, toCsv } from '#lib/utils/csv.js';
+
+type ProductUrlResolver = (barcode: string) => string;
 
 export const SEARCH_CSV_HEADERS = [
 	'barcode',
@@ -48,7 +49,10 @@ function nutrimentValue(
 	return '';
 }
 
-export function productToCsvRow(product: SearchCsvProduct): unknown[] {
+export function productToCsvRow(
+	product: SearchCsvProduct,
+	resolveProductUrl: ProductUrlResolver
+): unknown[] {
 	const nutriments = product.nutriments;
 	return [
 		product.code ?? '',
@@ -57,7 +61,7 @@ export function productToCsvRow(product: SearchCsvProduct): unknown[] {
 		product.quantity ?? '',
 		product.categories ?? '',
 		product.countries ?? '',
-		product.code ? resolve('/products/[barcode]', { barcode: product.code }) : '',
+		product.code ? resolveProductUrl(product.code) : '',
 		product.nutriscore_grade ?? '',
 		product.environmental_score_grade ?? product.ecoscore_grade ?? '',
 		product.nova_group ?? '',
@@ -72,13 +76,22 @@ export function productToCsvRow(product: SearchCsvProduct): unknown[] {
 	];
 }
 
-export async function productsToCsv(products: SearchCsvProduct[]): Promise<string> {
-	return toCsv([...SEARCH_CSV_HEADERS], products.map(productToCsvRow));
+export async function productsToCsv(
+	products: SearchCsvProduct[],
+	resolveProductUrl: ProductUrlResolver
+): Promise<string> {
+	return toCsv(
+		[...SEARCH_CSV_HEADERS],
+		products.map((product) => productToCsvRow(product, resolveProductUrl))
+	);
 }
 
 /** Downloads the products already displayed on the current search results page. */
-export async function exportSearchResultsCsv(products: SearchCsvProduct[]): Promise<number> {
+export async function exportSearchResultsCsv(
+	products: SearchCsvProduct[],
+	resolveProductUrl: ProductUrlResolver
+): Promise<number> {
 	const stamp = new Date().toISOString().slice(0, 10);
-	downloadCsv(`off-search-${stamp}.csv`, await productsToCsv(products));
+	downloadCsv(`off-search-${stamp}.csv`, await productsToCsv(products, resolveProductUrl));
 	return products.length;
 }

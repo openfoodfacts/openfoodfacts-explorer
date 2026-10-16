@@ -203,7 +203,8 @@
 		isExportingCsv = true;
 		try {
 			const exportedCount = await exportSearchResultsCsv(
-				visibleProducts.map(({ product }) => product)
+				visibleProducts.map(({ product }) => product),
+				(barcode) => resolve('/products/[barcode]', { barcode })
 			);
 
 			toastCtx.success(
