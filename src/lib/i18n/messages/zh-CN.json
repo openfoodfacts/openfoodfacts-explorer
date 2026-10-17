@@ -1007,7 +1007,8 @@
 			"share_failed": "分享失败。",
 			"link_copied": "比较链接已复制到剪贴板！",
 			"copy_failed": "复制链接到剪贴板失败。"
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "加载内容失败。"
