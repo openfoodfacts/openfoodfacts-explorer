@@ -30,7 +30,8 @@
 	<p class="mb-6 max-w-2xl text-center text-lg text-primary">
 		{$_('explore.subtitle')}
 	</p>
-	<div class="mb-8 flex w-full max-w-xl justify-center">
+	<!-- Hidden on xl screens, where the desktop navbar already shows a search bar -->
+	<div class="mb-8 flex w-full max-w-xl justify-center xl:hidden">
 		<SearchBar bind:searchQuery onSearch={handleSearch} />
 	</div>
 </section>
