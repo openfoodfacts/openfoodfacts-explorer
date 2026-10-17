@@ -26,6 +26,25 @@ export function getPermissionsCtx(): UserPermissionsContext {
 	return lambda();
 }
 
+/**
+ * Resolves user permissions by applying development-only forced role overrides.
+ * In production (when isDev is false), forceRole is strictly ignored.
+ */
+export function resolvePermissions(
+	actual: UserPermissionsContext,
+	forceRole?: string,
+	isDev = false
+): UserPermissionsContext {
+	if (!isDev || forceRole?.toLowerCase().trim() !== 'moderator') {
+		return actual;
+	}
+
+	return {
+		...actual,
+		isModerator: true
+	};
+}
+
 export const userInfo = derived(userAuthTokens, ($tokens) => {
 	if (!$tokens || !$tokens.id_token) {
 		return null;
