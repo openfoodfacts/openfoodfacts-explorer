@@ -378,15 +378,16 @@
 <div class="gap-4 max-md:flex max-md:flex-col-reverse lg:grid lg:grid-cols-2">
 	<div>
 		<div class="space-y-4">
-			<div>
-				<label class="label">
+			<div class="form-control">
+				<label class="label cursor-pointer justify-start gap-3">
 					<input
+						id="no-nutrition-data-toggle"
 						type="checkbox"
-						class="checkbox"
+						class="toggle toggle-primary"
 						checked={product.no_nutrition_data ?? false}
 						onchange={handleNoNutritionData}
 					/>
-					<span>
+					<span class="label-text">
 						{$_('product.edit.no_nutrition_data')}
 					</span>
 				</label>
