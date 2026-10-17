@@ -1007,7 +1007,8 @@
 			"share_failed": "Le partage a échoué.",
 			"link_copied": "Lien de comparaison copié dans le presse-papier !",
 			"copy_failed": "Échec de la copie du lien dans le presse-papier."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Échec du chargement du contenu."
