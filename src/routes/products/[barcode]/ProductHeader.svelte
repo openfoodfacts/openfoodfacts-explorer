@@ -24,7 +24,7 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
@@ -188,12 +188,13 @@
 					{/if}
 
 					<button
-						class="btn btn-secondary btn-sm md:btn-md"
+						class="btn gap-2 rounded-full btn-secondary btn-sm md:btn-md"
 						onclick={addToComparison}
-						title={$_('product.buttons.compare')}
-						aria-label={$_('product.buttons.compare')}
+						title={$_('product.buttons.compare', { default: 'Add to compare' })}
+						aria-label={$_('product.buttons.compare', { default: 'Add to compare' })}
 					>
-						<IconMdiCompare class="h-5 w-5" />
+						<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
+						<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
 					</button>
 				</div>
 			</div>

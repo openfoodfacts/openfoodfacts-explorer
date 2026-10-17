@@ -1027,7 +1027,8 @@
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
