@@ -16,7 +16,7 @@
 	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { focusEditField } from '#lib/utils/fieldFocus.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 	import TagsString from '#lib/ui/inputs/TagsString.svelte';
@@ -74,6 +74,10 @@
 			const images = { ...product.images };
 			delete images[`ingredients_${languageCode}`];
 			product = { ...product, images };
+
+			// The focused button is gone with the image; keep keyboard users in this language's tab
+			await tick();
+			document.getElementById(`ingredients-list-${languageCode}`)?.focus({ preventScroll: true });
 
 			toast.success($_('product.edit.images.toast.unselect_success'));
 			trackOffEvent('contribution', 'image_unselected', 'ingredients');
