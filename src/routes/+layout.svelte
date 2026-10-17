@@ -513,7 +513,14 @@
 	</div>
 {/if}
 {#if page.url.pathname !== '/compare'}
-	<CompareFloatingButton elevated={page.url.pathname === '/search'} />
+	<div
+		class={[
+			'fixed left-4',
+			page.url.pathname === '/search' ? 'bottom-20 z-40 lg:bottom-4 lg:z-50' : 'bottom-4 z-50'
+		]}
+	>
+		<CompareFloatingButton />
+	</div>
 {/if}
 <NutritionCalculator />
 <Footer />

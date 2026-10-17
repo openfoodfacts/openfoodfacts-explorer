@@ -5,8 +5,6 @@
 	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
 	import { _ } from '#lib/i18n/index.js';
 
-	let { elevated = false }: { elevated?: boolean } = $props();
-
 	const count = derived(compareStore, ($compareStore) => $compareStore.length);
 	const compareLabel = $derived(
 		$_('compare.floating_label', {
@@ -19,11 +17,7 @@
 {#if $count > 0}
 	<a
 		href="/compare"
-		class={[
-			'btn fixed left-4',
-			elevated ? 'bottom-20 z-40 lg:bottom-4 lg:z-50' : 'bottom-4 z-50',
-			'flex items-center gap-2 rounded-full px-3 shadow-lg btn-primary md:px-4'
-		]}
+		class="btn flex items-center gap-2 rounded-full px-3 shadow-lg btn-primary md:px-4"
 		title={compareLabel}
 		aria-label={compareLabel}
 	>
