@@ -285,7 +285,12 @@
 		try {
 			const { cropData, rotationAngle } = data;
 
-			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
+			// Track the request and the refresh as one operation, so saving the form waits for both
+			await trackRefresh(
+				saveImageWithSelectAndCrop(imageData, cropData, rotationAngle).finally(() =>
+					invalidateAll()
+				)
+			);
 
 			toast.success($_('product.edit.images.toast.save_success'));
 			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);

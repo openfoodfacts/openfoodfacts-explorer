@@ -212,11 +212,17 @@
 	// svelte-ignore state_referenced_locally
 	let product = $state<Product>(createProductStore(data));
 
+	// Snapshot of photos and text fields at load time, used to warn when a photo
+	// is changed without updating the corresponding text field
+	// svelte-ignore state_referenced_locally
+	let initialPhotoTextSnapshot = createPhotoTextSnapshot(product);
+
 	$effect(() => {
 		const currentBarcode = page.params.barcode;
 		untrack(() => {
 			if (product.code !== currentBarcode) {
 				product = createProductStore(data);
+				initialPhotoTextSnapshot = createPhotoTextSnapshot(product);
 			}
 		});
 	});
@@ -317,7 +323,41 @@
 		updateNutriment(key, target.value !== '' ? Number(target.value) : '');
 	}
 
+	let photoTextMismatches = $state<PhotoTextMismatch[]>([]);
+	let photoTextMismatchDialog: ReturnType<typeof PhotoTextMismatchDialog> | undefined = $state();
+
 	async function submit() {
+		// Photo changes are saved immediately and reloaded into `data`,
+		// while text fields are only saved on submit:
+		// wait for any pending reload so that we compare against the latest images
+		isSubmitting = true;
+		await waitForPendingRefreshes();
+		isSubmitting = false;
+
+		const currentImages = 'product' in data.state ? data.state.product?.images : undefined;
+		photoTextMismatches = isAddMode
+			? []
+			: findPhotoTextMismatches(
+					initialPhotoTextSnapshot,
+					currentImages as Record<string, unknown> | undefined,
+					product
+				);
+
+		if (photoTextMismatches.length > 0) {
+			trackOffEvent('contribution', 'photo_text_mismatch_warning_shown');
+			photoTextMismatchDialog?.open();
+			return;
+		}
+
+		await save();
+	}
+
+	async function saveAnyway() {
+		trackOffEvent('contribution', 'photo_text_mismatch_save_anyway');
+		await save();
+	}
+
+	async function save() {
 		isSubmitting = true;
 		const commentValue = comment;
 		trackOffEvent('contribution', 'edit_started');
@@ -611,3 +651,9 @@
 		/>
 	{/if}
 </div>
+
+<PhotoTextMismatchDialog
+	bind:this={photoTextMismatchDialog}
+	mismatches={photoTextMismatches}
+	onSaveAnyway={saveAnyway}
+/>
