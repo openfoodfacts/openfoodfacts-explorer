@@ -209,7 +209,7 @@
 		// Initialize sections open state based on preferences and mobile view
 		const isDefaultOpen = !isMobile && $preferences.editing.expandAllSections;
 		editSections.forEach((sec) => {
-			openSections[sec.id] = isDefaultOpen;
+			openSections[sec.id] = isDefaultOpen || sec.id === page.url.hash.slice(1);
 		});
 
 		return () => window.removeEventListener('resize', updateMobileState);

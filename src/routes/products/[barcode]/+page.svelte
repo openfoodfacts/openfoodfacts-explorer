@@ -421,7 +421,11 @@
 
 			{#if isPriceConfigured() && data?.prices != null}
 				<div id="prices">
-					<Prices prices={data.prices} barcode={product.code} />
+					<Prices
+						prices={data.prices}
+						barcode={product.code}
+						states={product.states_tags ?? product.states_hierarchy}
+					/>
 				</div>
 			{/if}
 
