@@ -1,6 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { ProductStateError } from '#lib/api.js';
+import type { ServerTiming } from '#lib/server/timing.ts';
 
 // for information about these interfaces
 declare global {
@@ -9,7 +10,9 @@ declare global {
 			errors?: (ProductStateError | string)[];
 			actions?: { label: string; url?: string }[];
 		}
-		// interface Locals {}
+		interface Locals {
+			timing: ServerTiming;
+		}
 		// interface PageData {}
 		interface PageState {
 			currentStep?: number;
