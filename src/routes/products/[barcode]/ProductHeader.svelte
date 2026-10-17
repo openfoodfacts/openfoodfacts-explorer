@@ -8,7 +8,12 @@
 	import { getLanguageCode, preferences } from '#lib/settings.js';
 	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
 	import TagChipList from '#lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
+	import type { Nutriments } from '#lib/api/nutriments.js';
+	import {
+		addItemToCalculator,
+		extractNutriments,
+		hasNoNutritionData
+	} from '#lib/stores/calculatorStore.js';
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import { userInfo } from '#lib/stores/user.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
@@ -52,14 +57,15 @@
 	function addToCalculator() {
 		// FIXME: product.code cannot be null
 		const code = product.code!;
+		const nutriments: Partial<Nutriments> | undefined = product.nutriments;
 
 		addItemToCalculator({
 			id: code,
 			name: product.product_name || code,
 			quantity: 100,
 			imageUrl: product.image_front_small_url,
-			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
-			nutriments: extractNutriments(product.nutriments)
+			nutriments: extractNutriments(nutriments),
+			missingNutrition: hasNoNutritionData(nutriments)
 		});
 	}
 

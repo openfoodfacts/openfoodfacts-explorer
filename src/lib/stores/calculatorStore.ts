@@ -7,8 +7,8 @@ export type NutritionData = {
 	proteins: number;
 	carbohydrates: number;
 	fat: number;
-	sugars: number;
-	salt: number;
+	sugars?: number;
+	salt?: number;
 };
 
 export type CalculatorItem = {
@@ -17,9 +17,12 @@ export type CalculatorItem = {
 	quantity: number;
 	imageUrl?: string;
 	nutriments: NutritionData;
+	/** True when the product has no nutrition data, so its values are all 0 */
+	missingNutrition?: boolean;
 };
 
 const DEFAULT_QUANTITY_INCREMENT = 100;
+const KJ_PER_KCAL = 4.184;
 
 export const calculatorItems = persisted<CalculatorItem[]>('nutritionCalculatorItems', []);
 
@@ -27,33 +30,23 @@ export const isCalculatorOpen = writable<boolean>(false);
 
 export function addItemToCalculator(item: CalculatorItem) {
 	calculatorItems.update((items) => {
-		const existingIndex = items.findIndex((i) => i.id === item.id);
-		if (existingIndex >= 0) {
-			const updatedItems = [...items];
-			updatedItems[existingIndex].quantity += DEFAULT_QUANTITY_INCREMENT;
-			return updatedItems;
-		} else {
-			return [...items, item];
+		const existing = items.find((i) => i.id === item.id);
+		if (existing) {
+			return items.map((i) =>
+				i.id === item.id ? { ...i, quantity: i.quantity + DEFAULT_QUANTITY_INCREMENT } : i
+			);
 		}
+		return [...items, item];
 	});
 	isCalculatorOpen.set(true);
 }
 
 export function updateItemQuantity(id: string, amount: number) {
-	calculatorItems.update((items) => {
-		const index = items.findIndex((item) => item.id === id);
-		if (index === -1) return items;
-
-		const updatedItems = [...items];
-		const newQuantity = updatedItems[index].quantity + amount;
-
-		if (newQuantity <= 0) {
-			return items.filter((item) => item.id !== id);
-		} else {
-			updatedItems[index].quantity = newQuantity;
-			return updatedItems;
-		}
-	});
+	calculatorItems.update((items) =>
+		items
+			.map((item) => (item.id === id ? { ...item, quantity: item.quantity + amount } : item))
+			.filter((item) => item.quantity > 0)
+	);
 }
 
 export function removeItem(id: string) {
@@ -68,9 +61,23 @@ export function toggleCalculator() {
 	isCalculatorOpen.update((value) => !value);
 }
 
-export function extractNutriments(nutriments: Nutriments): NutritionData {
+function getCalories(nutriments: Partial<Nutriments>): number {
+	const kcal = nutriments['energy-kcal_100g'];
+	if (kcal != null) return kcal;
+
+	const kj = nutriments['energy-kj_100g'];
+	if (kj != null) return kj / KJ_PER_KCAL;
+
+	return 0;
+}
+
+export function extractNutriments(nutriments: Partial<Nutriments> | undefined): NutritionData {
+	if (!nutriments) {
+		return { calories: 0, proteins: 0, carbohydrates: 0, fat: 0 };
+	}
+
 	return {
-		calories: nutriments['energy-kcal_100g'] || 0,
+		calories: getCalories(nutriments),
 		proteins: nutriments.proteins_100g || 0,
 		carbohydrates: nutriments.carbohydrates_100g || 0,
 		fat: nutriments.fat_100g || 0,
@@ -79,8 +86,24 @@ export function extractNutriments(nutriments: Nutriments): NutritionData {
 	};
 }
 
-function calculateTotals(items: CalculatorItem[]): NutritionData {
-	const totals: NutritionData = {
+/** Whether the nutriments contain none of the values used by the calculator */
+export function hasNoNutritionData(nutriments: Partial<Nutriments> | undefined): boolean {
+	if (!nutriments) return true;
+
+	const keys: (keyof Nutriments)[] = [
+		'energy-kcal_100g',
+		'energy-kj_100g',
+		'proteins_100g',
+		'carbohydrates_100g',
+		'fat_100g',
+		'sugars_100g',
+		'salt_100g'
+	];
+	return keys.every((key) => nutriments[key] == null);
+}
+
+export function calculateTotals(items: CalculatorItem[]): Required<NutritionData> {
+	const totals: Required<NutritionData> = {
 		calories: 0,
 		proteins: 0,
 		carbohydrates: 0,
