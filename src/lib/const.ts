@@ -1,4 +1,4 @@
-import { resolve } from '$app/paths';
+import { resolveForUrl } from '#lib/paths.js';
 import { dev } from '$app/env';
 import {
 	PUBLIC_OFF_BASE_URL,
@@ -62,9 +62,10 @@ export const BACKEND_DOMAINS: Record<ProductType, string> = {
 
 export const OAUTH_IDP_BASE_URL = PUBLIC_AUTH_BASE_URL;
 export const OAUTH_CLIENT_ID = PUBLIC_AUTH_PKCE_ID;
-export const OAUTH_REDIRECT_URI = (url: URL) => url.origin + resolve('oauth/login/callback');
+export const OAUTH_REDIRECT_URI = (url: URL) =>
+	url.origin + resolveForUrl(url, 'oauth/login/callback');
 export const OAUTH_LOGOUT_REDIRECT_URI = (url: URL) =>
-	url.origin + resolve('oauth/logout/callback');
+	url.origin + resolveForUrl(url, 'oauth/logout/callback');
 export const KEYCLOAK_REALM = PUBLIC_KEYCLOAK_REALM;
 export const KEYCLOAK_URL = `${OAUTH_IDP_BASE_URL}/realms/${KEYCLOAK_REALM}`;
 export const KEYCLOAK_ACCOUNT_URL = `${KEYCLOAK_URL}/account/#/`;

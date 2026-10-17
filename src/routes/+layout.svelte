@@ -6,7 +6,7 @@
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { navigating, page } from '$app/state';
 	import { slide } from 'svelte/transition';
 
@@ -31,7 +31,7 @@
 	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale } from '#lib/i18n/index.js';
+	import { _, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -51,7 +51,8 @@
 	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
+	import { parseUrlLocation } from '#lib/url-location.js';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();
@@ -80,6 +81,11 @@
 
 	$effect(() => {
 		syncWebsiteFlavor(new URL(page.url.href));
+	});
+
+	$effect(() => {
+		const location = parseUrlLocation(page.url.pathname);
+		if (location?.language) locale.set(resolveAvailableLocale(location.language));
 	});
 
 	// == Global toast context setup ==
@@ -214,7 +220,7 @@
 
 	async function gotoProductsSearch() {
 		isSearching = true;
-		await goto('/search?q=' + encodeURIComponent(searchQuery));
+		await goto(resolve('search') + '?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
 	}
 
@@ -287,7 +293,7 @@
 	<div class="flex justify-center">
 		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
-				<a href="/"> <Logo /> </a>
+				<a href={resolve('/')}> <Logo /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -378,7 +384,7 @@
 <div class="top-0 right-0 left-0 z-50 mx-4 mb-2 bg-base-100 xl:hidden">
 	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
-			<a href="/">
+			<a href={resolve('/')}>
 				<Logo />
 			</a>
 		</div>
@@ -427,11 +433,17 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn link btn-outline" href="/static/discover">{$_('discover_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'discover' })}
+			>{$_('discover_link')}</a
+		>
 
-		<a class="btn link btn-outline" href="/static/contribute">{$_('contribute_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'contribute' })}
+			>{$_('contribute_link')}</a
+		>
 
-		<a class="btn link btn-outline" href="/static/producers">{$_('producers_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'producers' })}
+			>{$_('producers_link')}</a
+		>
 
 		<a
 			class="btn link btn-outline"
@@ -456,7 +468,7 @@
 		</button>
 		<a
 			class="btn link btn-outline"
-			href="/settings"
+			href={resolve('settings')}
 			title={$_('settings_link')}
 			aria-label={$_('settings_link')}
 		>

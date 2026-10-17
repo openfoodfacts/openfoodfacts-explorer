@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { page } from '$app/state';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import { _ } from '#lib/i18n/index.js';
@@ -18,7 +18,7 @@
 		if (pathname && menu) menu.open = false;
 	});
 
-	const links = [
+	const links = $derived([
 		{
 			href: resolve('facets'),
 			labelKey: 'navigation.browse_products_by',
@@ -35,7 +35,7 @@
 			defaultLabel: 'Explore prices',
 			external: true
 		}
-	];
+	]);
 
 	function closeMenu() {
 		menu.open = false;

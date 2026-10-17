@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { preferences } from '#lib/settings.js';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
@@ -57,6 +60,25 @@
 		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
+		navigateToLocation(getLanguageCode(selectedLocale), $preferences.country);
+	}
+
+	function navigateToLocation(language: string | undefined, country: string) {
+		const targetLocation = formatUrlLocation(language, country);
+		const path = stripUrlLocation(page.url.pathname);
+		void goto(`/${targetLocation}${path === '/' ? '' : path}${page.url.search}${page.url.hash}`);
+	}
+
+	function handleCountryChange(event: Event) {
+		const country = (event.currentTarget as HTMLSelectElement).value;
+		preferences.update((current) => ({ ...current, country }));
+		const preferredLanguage =
+			$preferences.locale != null ? getLanguageCode($preferences.locale) : undefined;
+		const activeLanguage =
+			parseUrlLocation(page.url.pathname)?.language ??
+			preferredLanguage ??
+			getLanguageCode(getLocale());
+		navigateToLocation(activeLanguage, country);
 	}
 </script>
 
@@ -189,7 +211,7 @@
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
-								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
+								href={`${GITHUB_REPO_URL}/commit/${COMMIT_SHA}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								title={COMMIT_SHA}
@@ -259,7 +281,8 @@
 						<select
 							name="country-select"
 							class="select-bordered select w-full"
-							bind:value={$preferences.country}
+							value={$preferences.country}
+							onchange={handleCountryChange}
 						>
 							<option value="world" selected={$preferences.country === 'world'}>
 								{$_('world_option')}

@@ -21,7 +21,7 @@ import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 import type { PageLoad } from './$types';
 import { dev } from '$app/env';
 import { getLanguageCode, preferences } from '#lib/settings.js';
-import { resolve } from '$app/paths';
+import { resolveForUrl } from '#lib/paths.js';
 
 export const ssr = false;
 
@@ -33,7 +33,8 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (get(userInfo) == null && !dev) {
 		redirect(
 			302,
-			resolve('loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+			resolveForUrl(url, 'loginrequired') +
+				`?redirect=${encodeURIComponent(url.pathname + url.search)}`
 		);
 	}
 

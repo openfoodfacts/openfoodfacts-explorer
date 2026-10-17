@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	import Card from '#lib/ui/Card.svelte';
 	import Metadata from '#lib/Metadata.svelte';
@@ -36,7 +36,7 @@
 		if (comparisonTitle.trim()) {
 			params.set('title', comparisonTitle.trim());
 		}
-		return `${window.location.origin}/compare/shared?${params.toString()}`;
+		return `${window.location.origin}${resolve('/compare/shared')}?${params.toString()}`;
 	}
 
 	const toastCtx = getToastCtx();

@@ -2,9 +2,9 @@
 	import { page } from '$app/state';
 
 	import { saveAuthTokens } from '#lib/stores/auth.js';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { createKeycloakApi } from '#lib/api.js';
 	import { getSafeRedirectUrl } from '#lib/utils.js';
 	import { trackOffEvent } from '#lib/analytics.js';

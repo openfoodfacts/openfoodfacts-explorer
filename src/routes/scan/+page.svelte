@@ -2,10 +2,10 @@
 	import { onDestroy, onMount, tick } from 'svelte';
 	import type { BarcodeDetector as WasmBarcodeDetector } from 'barcode-detector/ponyfill';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { Gs1Barcode } from '#lib/barcodes/gs1.js';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import zxingWasmUrl from 'zxing-wasm/reader/zxing_reader.wasm?url';
 
 	let error: string | null = $state(null);

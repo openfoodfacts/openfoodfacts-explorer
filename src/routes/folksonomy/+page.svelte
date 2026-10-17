@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 
@@ -158,7 +159,7 @@
 			class="key-card rounded-lg border border-base-300 bg-base-100 p-3 transition-all duration-300 hover:shadow-lg"
 		>
 			<a
-				href="/folksonomy/{key.k}"
+				href={resolve('/folksonomy/[key]', { key: key.k })}
 				class="flex h-full flex-col font-mono transition-colors hover:text-primary"
 			>
 				<div class="mb-2 flex items-start justify-between gap-2">

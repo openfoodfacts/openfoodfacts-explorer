@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import { derived } from 'svelte/store';
 	import { page } from '$app/state';
@@ -11,7 +12,7 @@
 
 {#if $count > 0 && !isOnComparePage}
 	<a
-		href="/compare"
+		href={resolve('compare')}
 		class="btn fixed bottom-4 left-4 z-50 flex items-center rounded-full px-3 shadow-lg btn-primary md:px-4"
 		title="Compare Products ({$count})"
 		aria-label="Compare Products ({$count})"
