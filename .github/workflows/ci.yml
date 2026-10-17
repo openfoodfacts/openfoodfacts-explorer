@@ -20,6 +20,7 @@ jobs:
       - uses: pnpm/setup@v3.1.1
         with:
           cache: true
+          save-cache: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           runtime: node@22
 
       - name: Copy .env.example to .env
