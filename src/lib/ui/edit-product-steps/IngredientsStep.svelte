@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '#lib/i18n/index.js';
-	import { createProductsApi, type Product } from '#lib/api.js';
+	import { createProductsApi, unselectImageV3, type Product } from '#lib/api.js';
 	import { getLanguageName } from '#lib/languages.js';
 
 	import InfoTooltip from '../InfoTooltip.svelte';
@@ -12,12 +12,16 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
+	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiImageRemove from '@iconify-svelte/mdi/image-remove';
 
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '#lib/utils/fieldFocus.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 	import TagsString from '#lib/ui/inputs/TagsString.svelte';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { photoEditRequest } from '#lib/stores/photoEditRequest.js';
 
 	type OCRResult = {
 		status?: number;
@@ -44,6 +48,42 @@
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
+	let unselectingLang = $state<string | null>(null);
+
+	const toast = getToastCtx();
+
+	function editIngredientsImage(e: MouseEvent, languageCode: string) {
+		photoEditRequest.set({
+			typeId: 'ingredients',
+			language: languageCode,
+			returnTo: e.currentTarget as HTMLElement
+		});
+	}
+
+	async function unselectIngredientsImage(languageCode: string) {
+		unselectingLang = languageCode;
+		try {
+			const result = await unselectImageV3(fetch, product.code, 'ingredients', languageCode);
+			if (result.error) {
+				console.warn('Image unselect failed:', result.error);
+				toast.error($_('product.edit.images.toast.unselect_failed'));
+				return;
+			}
+
+			// Drop the selection locally so unsaved edits in the form are kept
+			const images = { ...product.images };
+			delete images[`ingredients_${languageCode}`];
+			product = { ...product, images };
+
+			toast.success($_('product.edit.images.toast.unselect_success'));
+			trackOffEvent('contribution', 'image_unselected', 'ingredients');
+		} catch (error) {
+			console.error('Error unselecting image:', error);
+			toast.error($_('product.edit.images.toast.unselect_error'));
+		} finally {
+			unselectingLang = null;
+		}
+	}
 
 	function toggleInfo() {
 		showInfo = !showInfo;
@@ -159,22 +199,51 @@
 					<div class="flex flex-col gap-3">
 						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
 
-						<!-- OCR Button -->
-						<button
-							type="button"
-							class="btn self-start btn-outline btn-sm"
-							class:loading={ocrLoading}
-							disabled={ocrLoading}
-							onclick={() => performOCR(code)}
-						>
-							{#if ocrLoading}
-								<span class="loading h-4 w-4 loading-spinner"></span>
-								<span>Extracting ingredients...</span>
-							{:else}
-								<IconMdiTextRecognition class="h-4 w-4" />
-								<span>Extract ingredients from image</span>
-							{/if}
-						</button>
+						<div class="flex flex-wrap gap-2">
+							<!-- OCR Button -->
+							<button
+								type="button"
+								class="btn btn-outline btn-sm"
+								class:loading={ocrLoading}
+								disabled={ocrLoading}
+								onclick={() => performOCR(code)}
+							>
+								{#if ocrLoading}
+									<span class="loading h-4 w-4 loading-spinner"></span>
+									<span>Extracting ingredients...</span>
+								{:else}
+									<IconMdiTextRecognition class="h-4 w-4" />
+									<span>Extract ingredients from image</span>
+								{/if}
+							</button>
+
+							<button
+								type="button"
+								class="btn gap-2 btn-outline btn-sm"
+								onclick={(e) => editIngredientsImage(e, code)}
+							>
+								<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
+								<span>{$_('product.edit.images.edit_photo', { default: 'Edit Photo' })}</span>
+							</button>
+
+							<button
+								type="button"
+								class="btn gap-2 btn-outline btn-error btn-sm"
+								disabled={unselectingLang === code}
+								onclick={() => unselectIngredientsImage(code)}
+							>
+								{#if unselectingLang === code}
+									<span class="loading h-4 w-4 loading-spinner"></span>
+									<span>{$_('product.edit.images.unselecting', { default: 'Unselecting...' })}</span
+									>
+								{:else}
+									<IconMdiImageRemove class="h-4 w-4" aria-hidden="true" />
+									<span
+										>{$_('product.edit.images.unselect_image', { default: 'Unselect Image' })}</span
+									>
+								{/if}
+							</button>
+						</div>
 					</div>
 				{:else}
 					<p class="mb-4 alert text-sm alert-warning sm:text-base">
