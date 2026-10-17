@@ -1007,7 +1007,8 @@
 			"share_failed": "Delning misslyckades.",
 			"link_copied": "Länken till jämförelsen har kopierats till urklippet!",
 			"copy_failed": "Det gick inte att kopiera länken till urklippet."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Det gick inte att läsa in innehållet."
