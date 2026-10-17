@@ -985,7 +985,7 @@
 		"import_to_my": "Import to My Comparison",
 		"import_dialog_title": "Import Comparison",
 		"continue_question": "Continue?",
-		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
+		"replace_comparison": "This will replace your current comparison with {count, plural, one {# products} =1 {1 product} other {# products}}. Continue?",
 		"import": "Import",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",
@@ -1007,7 +1007,8 @@
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
