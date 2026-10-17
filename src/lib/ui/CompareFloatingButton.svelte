@@ -20,9 +20,11 @@
 {#if $count > 0 && !isOnComparePage}
 	<a
 		href="/compare"
-		class="btn fixed left-4 {isOnSearchPage
-			? 'bottom-20 z-40 lg:bottom-4 lg:z-50'
-			: 'bottom-4 z-50'} flex items-center gap-2 rounded-full px-3 shadow-lg btn-primary md:px-4"
+		class={[
+			'btn fixed left-4',
+			isOnSearchPage ? 'bottom-20 z-40 lg:bottom-4 lg:z-50' : 'bottom-4 z-50',
+			'flex items-center gap-2 rounded-full px-3 shadow-lg btn-primary md:px-4'
+		]}
 		title={compareLabel}
 		aria-label={compareLabel}
 	>
