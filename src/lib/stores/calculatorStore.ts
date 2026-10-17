@@ -65,7 +65,7 @@ function getCalories(nutriments: Partial<Nutriments>): number {
 	const kcal = nutriments['energy-kcal_100g'];
 	if (kcal != null) return kcal;
 
-	const kj = nutriments['energy-kj_100g'];
+	const kj = nutriments['energy-kj_100g'] ?? nutriments.energy_100g;
 	if (kj != null) return kj / KJ_PER_KCAL;
 
 	return 0;
@@ -93,6 +93,7 @@ export function hasNoNutritionData(nutriments: Partial<Nutriments> | undefined):
 	const keys: (keyof Nutriments)[] = [
 		'energy-kcal_100g',
 		'energy-kj_100g',
+		'energy_100g',
 		'proteins_100g',
 		'carbohydrates_100g',
 		'fat_100g',

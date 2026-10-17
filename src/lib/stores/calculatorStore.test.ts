@@ -49,8 +49,21 @@ describe('extractNutriments', () => {
 	});
 
 	it('prefers kcal over kJ', () => {
-		const result = extractNutriments({ 'energy-kcal_100g': 0, 'energy-kj_100g': 418.4 });
+		const result = extractNutriments({
+			'energy-kcal_100g': 0,
+			'energy-kj_100g': 418.4,
+			energy_100g: 836.8
+		});
 		expect(result.calories).toBe(0);
+	});
+
+	it('converts generic energy from kJ when explicit energy values are missing', () => {
+		expect(extractNutriments({ energy_100g: 418.4 }).calories).toBeCloseTo(100);
+	});
+
+	it.each([0, 418.4])('prefers explicit kJ (%s) over generic energy', (kj) => {
+		const result = extractNutriments({ 'energy-kj_100g': kj, energy_100g: 836.8 });
+		expect(result.calories).toBeCloseTo(kj / 4.184);
 	});
 
 	it('returns zeros when nutriments are missing', () => {
@@ -72,6 +85,10 @@ describe('hasNoNutritionData', () => {
 	it('is false when any used value is present, including 0', () => {
 		expect(hasNoNutritionData({ fat_100g: 0 })).toBe(false);
 		expect(hasNoNutritionData({ 'energy-kj_100g': 100 })).toBe(false);
+	});
+
+	it.each([0, 418.4])('is false when only generic energy (%s) is present', (energy) => {
+		expect(hasNoNutritionData({ energy_100g: energy })).toBe(false);
 	});
 });
 
