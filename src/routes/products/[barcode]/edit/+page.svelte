@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -500,6 +500,19 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
+	// After uploading a missing image from a step, reload the product and only take
+	// its images, so unsaved edits in the form are kept.
+	async function reloadImages() {
+		await refreshAll();
+		if ('product' in data.state && data.state.product) {
+			product = {
+				...product,
+				// @ts-expect-error - FIXME: to be fixed in the SDK
+				images: data.state.product.images ?? {}
+			};
+		}
+	}
+
 	// Determine if we're in add mode (new product) or edit mode (existing product)
 	const isAddMode = $derived(productNotFound);
 
@@ -594,6 +607,7 @@
 			{getIngredientsImage}
 			{getNutritionImage}
 			{getPackagingImage}
+			onImageUploaded={reloadImages}
 			{submit}
 			{addLanguage}
 			{brandNames}

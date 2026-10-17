@@ -25,6 +25,7 @@
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
+	import MissingImageUpload from './MissingImageUpload.svelte';
 	import {
 		getServingSizeValidationResult,
 		getNutritionIssues,
@@ -42,6 +43,7 @@
 		getNutritionImage: (language: string) => string | null;
 		handleNutrimentInput: (e: Event, key: string) => void;
 		editMode?: boolean;
+		onImageUploaded?: () => Promise<void>;
 	};
 
 	let {
@@ -49,7 +51,8 @@
 		units,
 		getNutritionImage,
 		handleNutrimentInput,
-		editMode = false
+		editMode = false,
+		onImageUploaded
 	}: Props = $props();
 
 	const IGNORE_NUTRIENTS: NutrientKey[] = ['energy-kj', 'energy-kcal', 'energy'];
@@ -639,11 +642,14 @@
 			/>
 			<div class="tab-content p-6">
 				{#if nutritionImage == null}
-					<p class="mb-4 alert text-sm alert-warning sm:text-base">
-						{$_('product.edit.no_nutrition_image', {
+					<MissingImageUpload
+						message={$_('product.edit.no_nutrition_image', {
 							values: { language: getLanguageName(code) }
 						})}
-					</p>
+						productCode={product.code}
+						imagefield={`nutrition_${code}`}
+						onUploaded={onImageUploaded}
+					/>
 				{:else}
 					<div class="sticky top-4">
 						<ImageButton

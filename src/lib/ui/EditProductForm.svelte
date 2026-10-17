@@ -95,6 +95,7 @@
 		getIngredientsImage: (language: string) => string | null;
 		getNutritionImage: (language: string) => string | null;
 		getPackagingImage: (language: string) => string | null;
+		onImageUploaded?: () => Promise<void>;
 
 		// Submission
 
@@ -131,6 +132,7 @@
 		getIngredientsImage,
 		getNutritionImage,
 		getPackagingImage,
+		onImageUploaded,
 		languages,
 		categoryNames,
 		labelNames,
@@ -325,7 +327,13 @@
 				{$_('product.edit.sections.ingredients')}
 			</div>
 			<div class="collapse-content">
-				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} editMode />
+				<IngredientsStep
+					bind:product
+					{getIngredientsImage}
+					{allergenNames}
+					{onImageUploaded}
+					editMode
+				/>
 			</div>
 		</div>
 
@@ -342,7 +350,14 @@
 				{$_('product.edit.sections.nutrition')}
 			</div>
 			<div class="collapse-content">
-				<NutritionStep bind:product {units} {getNutritionImage} {handleNutrimentInput} editMode />
+				<NutritionStep
+					bind:product
+					{units}
+					{getNutritionImage}
+					{handleNutrimentInput}
+					{onImageUploaded}
+					editMode
+				/>
 			</div>
 		</div>
 
@@ -387,7 +402,7 @@
 				{$_('product.edit.sections.packaging')}
 			</div>
 			<div class="collapse-content">
-				<PackagingStep bind:product {getPackagingImage} editMode />
+				<PackagingStep bind:product {getPackagingImage} {onImageUploaded} editMode />
 			</div>
 		</div>
 
