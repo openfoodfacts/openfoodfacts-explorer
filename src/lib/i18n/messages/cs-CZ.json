@@ -1007,7 +1007,8 @@
 			"share_failed": "Sdílení se nezdařilo.",
 			"link_copied": "Odkaz na porovnání zkopírován do schránky!",
 			"copy_failed": "Kopírování odkazu do schránky se nezdařilo."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Nepodařilo se načíst obsah."
