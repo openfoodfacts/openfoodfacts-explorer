@@ -4,6 +4,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
+	import SearchableSelect from '#lib/ui/SearchableSelect.svelte';
 	import Tabs from '#lib/ui/Tabs.svelte';
 	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
 	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
@@ -53,8 +54,7 @@
 		return resolveAvailableLocale($preferences.locale ?? getLocale());
 	}
 
-	function handleLocaleChange(event: Event) {
-		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
+	function handleLocaleChange(selectedLocale: string) {
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
 	}
@@ -235,18 +235,12 @@
 								{$_('general.language')}
 							</span>
 						</label>
-						<select
-							class="select-bordered select w-full"
-							name="lang-select"
+						<SearchableSelect
+							label={$_('general.language', { default: 'Language' })}
+							options={localeOptions}
 							value={getSelectedLocale()}
 							onchange={handleLocaleChange}
-						>
-							{#each localeOptions as localeOption (localeOption.code)}
-								<option value={localeOption.code}>
-									{localeOption.label}
-								</option>
-							{/each}
-						</select>
+						/>
 					</div>
 
 					<div class="form-control">
@@ -256,27 +250,21 @@
 								{$_('general.country')}
 							</span>
 						</label>
-						<select
-							name="country-select"
-							class="select-bordered select w-full"
-							bind:value={$preferences.country}
-						>
-							<option value="world" selected={$preferences.country === 'world'}>
-								{$_('world_option')}
-							</option>
-
-							{#each Object.keys(data.countries).toSorted() as countryKey (countryKey)}
-								{@const country = data.countries[countryKey]}
-								{@const code2 = country.country_code_2.en}
-								<option
-									value={code2}
-									selected={$preferences.country === code2}
-									class="overflow-hidden text-ellipsis"
-								>
-									{country.name['en']}
-								</option>
-							{/each}
-						</select>
+						<SearchableSelect
+							label={$_('general.country', { default: 'Country' })}
+							options={[
+								{ code: 'world', label: $_('world_option', { default: 'World' }) },
+								...Object.keys(data.countries)
+									.toSorted()
+									.filter((key) => data.countries[key].country_code_2.en !== 'world')
+									.map((key) => ({
+										code: data.countries[key].country_code_2.en,
+										label: data.countries[key].name.en
+									}))
+							]}
+							value={$preferences.country}
+							onchange={(country) => ($preferences.country = country)}
+						/>
 					</div>
 
 					<div class="form-control">
@@ -286,17 +274,12 @@
 								{$_('general.currency')}
 							</span>
 						</label>
-						<select
-							name="currency-select"
-							class="select-bordered select w-full"
-							bind:value={$preferences.currency}
-						>
-							{#each data.currencies as currency (currency)}
-								<option value={currency} selected={$preferences.currency === currency}>
-									{currency}
-								</option>
-							{/each}
-						</select>
+						<SearchableSelect
+							label={$_('general.currency', { default: 'Currency' })}
+							options={data.currencies.map((code) => ({ code, label: code }))}
+							value={$preferences.currency}
+							onchange={(currency) => ($preferences.currency = currency)}
+						/>
 					</div>
 				</div>
 			</div>

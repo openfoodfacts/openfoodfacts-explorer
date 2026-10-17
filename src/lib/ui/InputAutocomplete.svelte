@@ -13,6 +13,7 @@
 		buttonAriaLabel?: string;
 		Icon?: ComponentType;
 		inline?: boolean;
+		noResultsMessage?: string;
 	}
 
 	let {
@@ -23,7 +24,8 @@
 		buttonTitle = $_('product.edit.add_language', { default: 'Add a language' }),
 		buttonAriaLabel = $_('product.edit.add_language', { default: 'Add a language' }),
 		Icon = IconMdiPlus,
-		inline = false
+		inline = false,
+		noResultsMessage
 	}: Props = $props();
 
 	let searchQuery = $state('');
@@ -31,7 +33,10 @@
 	let showInput = $state(false);
 
 	function formatItem(item: T): string {
-		const code = typeof item.code === 'string' && item.code ? ` - ${item.code}` : '';
+		const code =
+			typeof item.code === 'string' && item.code && item.code !== item.label
+				? ` - ${item.code}`
+				: '';
 		if (typeof item.label === 'string' && item.label) return `${item.label}${code}`;
 		return `${item.locale || item.name} (${item.en})${code}`;
 	}
@@ -154,6 +159,7 @@
 			<input
 				type="text"
 				{placeholder}
+				aria-label={placeholder}
 				bind:value={searchQuery}
 				onkeydown={handleKeyDown}
 				onblur={() => {
@@ -171,7 +177,7 @@
 		{#if inline}
 			{#if filteredItems.length === 0}
 				<p class="mt-4 text-center text-sm opacity-70 sm:text-base">
-					{$_('product.edit.no_languages_found')}
+					{noResultsMessage ?? $_('product.edit.no_languages_found')}
 				</p>
 			{:else}
 				<div
