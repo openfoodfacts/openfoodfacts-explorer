@@ -7,7 +7,7 @@ import {
 	type FacetSortOption
 } from '#lib/api/facets.js';
 import type { PageLoad } from './$types';
-import { requireInt } from '#lib/utils.js';
+import { requireBoundedInt } from '#lib/utils.js';
 import { getBulkProductAttributes } from '#lib/api.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
@@ -26,16 +26,22 @@ async function getTaxonomyOrUndefined(facet: string, fetch: typeof window.fetch)
 	}
 }
 
+const MAX_PAGE_SIZE = 200;
+
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	const pageStr = url.searchParams.get('page') || '1';
-	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
+	const page = requireBoundedInt(pageStr, { min: 1, max: Number.MAX_SAFE_INTEGER }, () =>
+		error(400, 'Invalid page number')
+	);
 
 	const pageSizeStr = url.searchParams.get('page_size') || '50';
-	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
+	const pageSize = requireBoundedInt(pageSizeStr, { min: 1, max: MAX_PAGE_SIZE }, () =>
+		error(400, 'Invalid page size')
+	);
 
 	const sortByStr = url.searchParams.get('sort_by');
 	if (sortByStr && !FACETS_SORT_OPTIONS.includes(sortByStr as FacetSortOption)) {

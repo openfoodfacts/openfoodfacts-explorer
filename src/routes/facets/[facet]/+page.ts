@@ -1,15 +1,21 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
-import { requireInt } from '#lib/utils.js';
+import { requireBoundedInt } from '#lib/utils.js';
+
+const MAX_PAGE_SIZE = 200;
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet } = params;
 	const pageStr = url.searchParams.get('page') || '1';
 	const pageSizeStr = url.searchParams.get('page_size') || '50';
 
-	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
-	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
+	const page = requireBoundedInt(pageStr, { min: 1, max: Number.MAX_SAFE_INTEGER }, () =>
+		error(400, 'Invalid page number')
+	);
+	const pageSize = requireBoundedInt(pageSizeStr, { min: 1, max: MAX_PAGE_SIZE }, () =>
+		error(400, 'Invalid page size')
+	);
 
 	const kp = getFacetKnowledgePanels(fetch, facet);
 	try {
