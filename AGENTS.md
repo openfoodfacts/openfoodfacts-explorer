@@ -128,7 +128,18 @@ src/
 | Build fails after dependency change | Stale lockfile                                    | `rm -rf node_modules pnpm-lock.yaml && pnpm install`                         |
 | App won't start                     | Missing `.env`                                    | `cp .env.example .env`                                                       |
 | CI fails on lint/format             | Unformatted code                                  | `pnpm format && pnpm lint`                                                   |
+| Cannot test moderator tools         | Missing moderator account on live API             | Set `FORCE_ROLE=moderator` in `.env`                                         |
 | `binding_property_non_reactive`     | `bind:prop={obj.subprop}` on a `$bindable()` prop | Use one-way `value` + `oninput` that reassigns the parent object (see below) |
+
+### Testing Moderator Features in Development
+
+Sandbox and agent environments do not have privileged accounts on the live Open Food Facts API. To test moderator UI (such as Moderator Mode in Settings, deleting products, moving images, or wiping nutrients), add to `.env`:
+
+```env
+FORCE_ROLE=moderator
+```
+
+This override is active only in local development (`dev === true`) and is strictly ignored in production builds.
 
 ### Svelte 5: `binding_property_non_reactive`
 

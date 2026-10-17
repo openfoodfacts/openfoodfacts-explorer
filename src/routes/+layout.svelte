@@ -151,14 +151,17 @@
 
 	// == Global User Permissions Context ==
 
-	import { setPermissionsCtx, type UserPermissionsContext } from '#lib/stores/user.js';
+	import {
+		resolvePermissions,
+		setPermissionsCtx,
+		type UserPermissionsContext
+	} from '#lib/stores/user.js';
 	import { fetchCurrentUserPermissions } from '#lib/api/permissions.js';
 	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
-	let permissionsCtx = $state<UserPermissionsContext>({
-		isAdmin: false,
-		isModerator: false
-	});
+	let permissionsCtx = $state<UserPermissionsContext>(
+		resolvePermissions({ isAdmin: false, isModerator: false }, import.meta.env.FORCE_ROLE, dev)
+	);
 
 	setPermissionsCtx(() => permissionsCtx);
 
@@ -170,21 +173,26 @@
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
 				if (cancelled) return;
-				if (data && data.status === 'success' && data.user) {
-					permissionsCtx.isAdmin = data.user.admin === 1;
-					permissionsCtx.isModerator = data.user.moderator === 1;
-				} else {
-					permissionsCtx.isAdmin = false;
-					permissionsCtx.isModerator = false;
-				}
+				const actual = {
+					isAdmin: data?.status === 'success' && data.user?.admin === 1,
+					isModerator: data?.status === 'success' && data.user?.moderator === 1
+				};
+				const resolved = resolvePermissions(actual, import.meta.env.FORCE_ROLE, dev);
+				permissionsCtx.isAdmin = resolved.isAdmin;
+				permissionsCtx.isModerator = resolved.isModerator;
 			});
 			return () => {
 				cancelled = true;
 			};
 		} else {
-			// Clear roles when logged out
-			permissionsCtx.isAdmin = false;
-			permissionsCtx.isModerator = false;
+			// Clear roles when logged out, keeping dev-forced roles if active
+			const resolved = resolvePermissions(
+				{ isAdmin: false, isModerator: false },
+				import.meta.env.FORCE_ROLE,
+				dev
+			);
+			permissionsCtx.isAdmin = resolved.isAdmin;
+			permissionsCtx.isModerator = resolved.isModerator;
 		}
 	});
 
