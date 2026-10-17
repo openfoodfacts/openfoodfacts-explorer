@@ -174,6 +174,8 @@
 
 	let rootEl: HTMLDivElement | undefined = $state();
 	let editReturnTo: HTMLElement | undefined;
+	// Section toggle around the trigger, focused if the trigger is gone (e.g. image unselected)
+	let editReturnFallback: HTMLElement | undefined;
 	let editingImageData: ProductImage | undefined = $state();
 	let editingImageModal: PhotoEditDialog | undefined = $state();
 	let isSavingImage = $state(false);
@@ -214,13 +216,16 @@
 	// Opening the editor from an edit step expands this section and moves focus into
 	// the dialog, so bring the user back to the button they used once it's closed.
 	function returnToEditTrigger() {
-		const el = editReturnTo;
+		const trigger = editReturnTo;
+		const fallback = editReturnFallback;
 		editReturnTo = undefined;
-		if (el == null) return;
+		editReturnFallback = undefined;
+		if (trigger == null) return;
 		// Wait for the dialog to unmount, otherwise focus falls back to the body
 		tick().then(() =>
 			requestAnimationFrame(() => {
-				if (!el.isConnected) return;
+				const el = trigger.isConnected ? trigger : fallback?.isConnected ? fallback : null;
+				if (el == null) return;
 				el.scrollIntoView({ block: 'center' });
 				el.focus({ preventScroll: true });
 			})
@@ -256,6 +261,10 @@
 
 			activeLanguageCode = request.language;
 			editReturnTo = request.returnTo;
+			editReturnFallback =
+				request.returnTo
+					?.closest('.collapse')
+					?.querySelector<HTMLInputElement>(':scope > input[type="checkbox"]') ?? undefined;
 			editingImageData = image;
 		});
 	});
