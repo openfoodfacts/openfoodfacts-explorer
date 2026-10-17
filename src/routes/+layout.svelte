@@ -512,7 +512,9 @@
 		{@render children?.()}
 	</div>
 {/if}
-<CompareFloatingButton />
+{#if page.url.pathname !== '/compare'}
+	<CompareFloatingButton elevated={page.url.pathname === '/search'} />
+{/if}
 <NutritionCalculator />
 <Footer />
 <Toast />
