@@ -20,7 +20,7 @@ jobs:
       - uses: pnpm/setup@v3.1.1
         with:
           cache: true
-          runtime: node@22
+          runtime: node@26
 
       - name: Copy .env.example to .env
         run: cp .env.example .env

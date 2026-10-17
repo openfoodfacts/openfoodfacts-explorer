@@ -18,7 +18,7 @@
 		"url": "git+https://github.com/openfoodfacts/openfoodfacts-explorer.git"
 	},
 	"engines": {
-		"node": ">=22.17.0 <25"
+		"node": ">=22.17.0 <27"
 	},
 	"scripts": {
 		"dev": "vite dev",
