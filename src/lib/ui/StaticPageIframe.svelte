@@ -6,8 +6,11 @@
 	let { src }: Props = $props();
 
 	const LOAD_TIMEOUT_MS = 8000;
+	// used when the iframe loads but never reports its height
+	const FALLBACK_HEIGHT_PX = 800;
 
 	let frameHeight = $state<number | null>(null);
+	let iframeLoaded = $state(false);
 	let hasError = $state(false);
 	let iframeEl = $state<HTMLIFrameElement | null>(null);
 
@@ -17,10 +20,9 @@
 	onMount(() => {
 		const ac = new AbortController();
 
-		// External page never posts frameHeight on network/server failure;
-		// surface a graceful error instead of an infinite spinner.
+		// missing frameHeight isn't itself a failure - only a stuck iframe is
 		const timeoutId = setTimeout(() => {
-			if (frameHeight === null) hasError = true;
+			if (frameHeight === null && !iframeLoaded) hasError = true;
 		}, LOAD_TIMEOUT_MS);
 
 		const handler = (e: MessageEvent) => {
@@ -64,13 +66,18 @@
 		<span class="font-medium text-red-500">{$_('static_iframe.load_failed')}</span>
 	</div>
 {:else}
-	<!-- scrolling="no" prevents the iframe's internal scrollbar -->
 	<iframe
 		bind:this={iframeEl}
 		{src}
 		title="External Content"
-		scrolling="no"
+		onload={() => (iframeLoaded = true)}
+		onerror={() => (hasError = true)}
+		scrolling={frameHeight !== null ? 'no' : 'auto'}
 		class="w-full border-0"
-		style:height={frameHeight !== null ? `${frameHeight}px` : '24rem'}
+		style:height={frameHeight !== null
+			? `${frameHeight}px`
+			: iframeLoaded
+				? `${FALLBACK_HEIGHT_PX}px`
+				: '24rem'}
 	></iframe>
 {/if}
