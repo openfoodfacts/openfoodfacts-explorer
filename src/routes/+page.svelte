@@ -3,6 +3,9 @@
 	import { resolve } from '$app/paths';
 
 	import { _ } from '#lib/i18n/index.js';
+	import { getPageDescription } from '#lib/i18n/pageDescriptions.js';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
+
 	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '#lib/api.js';
 	import { deduplicate } from '#lib/utils.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
@@ -22,6 +25,9 @@
 	import IconMdiLicense from '@iconify-svelte/mdi/license';
 
 	import type { PageProps } from './$types';
+	const websiteCtx = getWebsiteCtx();
+	const description = $derived(getPageDescription($_, 'landing.subtitle', $websiteCtx.flavor));
+
 	let { data }: PageProps = $props();
 
 	type ReducedState = Awaited<ReturnType<typeof getProducts>>[number];
@@ -79,13 +85,7 @@
 	<link rel="preconnect" href="https://images.openfoodfacts.org" crossorigin="anonymous" />
 </svelte:head>
 
-<Metadata
-	title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
-	description={$_('landing.subtitle', {
-		default:
-			'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'
-	})}
-/>
+<Metadata title={$_('landing.title', { default: 'Open Food Facts Explorer' })} {description} />
 
 <section
 	class="relative flex min-h-120 flex-col items-center justify-center overflow-hidden px-4 pt-16 pb-12"
@@ -109,7 +109,7 @@
 		</div>
 
 		<p class="mb-6 max-w-xl text-center text-lg font-medium text-base-content/80 md:text-xl">
-			{$_('landing.subtitle')}
+			{description}
 		</p>
 		<div class="flex w-full flex-wrap justify-center gap-4">
 			<a
@@ -195,7 +195,7 @@
 			{$_('landing.help_improve_title')}
 		</h2>
 		<p class="mx-auto max-w-3xl text-base text-base-content/70">
-			{$_('landing.help_improve_desc')}
+			{getPageDescription($_, 'landing.help_improve_desc', $websiteCtx.flavor)}
 		</p>
 		<div class="mx-auto mt-4 mb-2 h-1 w-16 rounded bg-primary/30"></div>
 	</div>

@@ -7,6 +7,9 @@
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import ComparisonDisplay from '#lib/ui/ComparisonDisplay.svelte';
 	import { _ } from '#lib/i18n/index.js';
+	import { getPageDescription } from '#lib/i18n/pageDescriptions.js';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
+
 	import { shareContent } from '#lib/utils/webShare.js';
 
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
@@ -14,6 +17,11 @@
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { browser } from '$app/env';
+
+	const websiteCtx = getWebsiteCtx();
+	const description = $derived(
+		getPageDescription($_, 'compare.page_description', $websiteCtx.flavor)
+	);
 
 	type ComparisonMode = 'absolute' | 'relative-first' | 'relative-best';
 
@@ -68,12 +76,7 @@
 	}
 </script>
 
-<Metadata
-	title={$_('compare.page_title', { default: 'Compare Products' })}
-	description={$_('compare.page_description', {
-		default: 'Compare nutritional information of food products'
-	})}
-/>
+<Metadata title={$_('compare.page_title', { default: 'Compare Products' })} {description} />
 
 <div class="mx-4">
 	<Card>

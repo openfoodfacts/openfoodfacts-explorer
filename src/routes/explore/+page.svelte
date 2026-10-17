@@ -3,9 +3,15 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import SearchBar from '#lib/ui/SearchBar.svelte';
 	import { _ } from '#lib/i18n/index.js';
+	import { getPageDescription } from '#lib/i18n/pageDescriptions.js';
+	import { getWebsiteCtx } from '#lib/stores/website.js';
+
 	import type { PageProps } from './$types';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import { goto } from '$app/navigation';
+
+	const websiteCtx = getWebsiteCtx();
+	const description = $derived(getPageDescription($_, 'explore.subtitle', $websiteCtx.flavor));
 
 	let { data }: PageProps = $props();
 	let searchQuery = $state('');
@@ -15,12 +21,7 @@
 	}
 </script>
 
-<Metadata
-	title={$_('explore.title', { default: 'Explore Open Food Facts' })}
-	description={$_('explore.subtitle', {
-		default: 'Discover trending products, popular categories, and contribute to food transparency!'
-	})}
-/>
+<Metadata title={$_('explore.title', { default: 'Explore Open Food Facts' })} {description} />
 
 <section class="flex flex-col items-center justify-center bg-base-100 px-4 py-12">
 	<Logo />
@@ -28,7 +29,7 @@
 		{$_('explore.title')}
 	</h1>
 	<p class="mb-6 max-w-2xl text-center text-lg text-primary">
-		{$_('explore.subtitle')}
+		{description}
 	</p>
 	<div class="mb-8 flex w-full max-w-xl justify-center">
 		<SearchBar bind:searchQuery onSearch={handleSearch} />
