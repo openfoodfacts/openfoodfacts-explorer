@@ -1007,7 +1007,8 @@
 			"share_failed": "Delen mislukt.",
 			"link_copied": "Vergelijkingslink gekopieerd naar klembord!",
 			"copy_failed": "Koppeling kopiëren naar klembord mislukt."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Inhoud laden mislukt."
