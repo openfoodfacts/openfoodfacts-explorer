@@ -1007,7 +1007,8 @@
 			"share_failed": "Falló al compartir.",
 			"link_copied": "¡Enlace de comparación copiado al portapapeles!",
 			"copy_failed": "Error al copiar el enlace en el portapapeles."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Error al cargar contenido."
