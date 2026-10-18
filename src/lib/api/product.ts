@@ -18,6 +18,49 @@ export function createProductsApi(fetch: typeof window.fetch) {
 	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
+export async function getProductHistoryPanels(
+	fetch: typeof window.fetch,
+	code: string,
+	lc: string
+): Promise<KnowledgePanels> {
+	try {
+		const { data } = await createProductsApi(fetch).getProductV3(code, {
+			product_type: 'all',
+			fields: ['knowledge_panels'],
+			knowledge_panels_included: 'contribution_card',
+			// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
+			activate_knowledge_panel_product_history: 1,
+			knowledge_panels_client: 'web',
+			lc
+		});
+		const panels = (data?.status === 'success' ? data.product.knowledge_panels : undefined) as
+			KnowledgePanels | undefined;
+		return panels?.product_history ? panels : {};
+	} catch {
+		return {};
+	}
+}
+
+export function mergeHistoryPanels(
+	panels: KnowledgePanels,
+	history: { code: string; panels: KnowledgePanels } | null,
+	code: string
+): KnowledgePanels {
+	const historyRoot = history?.code === code ? history.panels.root?.elements : undefined;
+	if (!history || !historyRoot) return panels;
+	const panelId = (e: unknown) =>
+		(e as { panel_element?: { panel_id?: string } }).panel_element?.panel_id;
+	const elements = [...(panels.root?.elements ?? [])] as typeof historyRoot;
+	const present = new Set(elements.map(panelId));
+	const productCard = elements.findIndex((e) => panelId(e) === 'product_card');
+	elements.splice(
+		productCard < 0 ? elements.length : productCard,
+		0,
+		...historyRoot.filter((e) => !present.has(panelId(e)))
+	);
+	return { ...panels, ...history.panels, root: { ...panels.root, elements } };
+}
+
 export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
