@@ -8,6 +8,7 @@ import { defineConfig } from 'vite';
 import packageJson from './package.json' with { type: 'json' };
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tailwindcss from '@tailwindcss/vite';
+import { litSvelteWrapperPlugin } from '@openfoodfacts/lit-sveltekit/vite';
 
 const packageVersion = packageJson.version;
 
@@ -49,6 +50,19 @@ const vercelScripts = runningOnVercel()
 	: ([] as const);
 
 export default defineConfig({
+	optimizeDeps: {
+		include: ['@openfoodfacts/openfoodfacts-webcomponents']
+	},
+	resolve: {
+		dedupe: ['lit', 'lit-html']
+	},
+	ssr: {
+		noExternal: [
+			'@openfoodfacts/lit-sveltekit',
+			'@openfoodfacts/openfoodfacts-webcomponents',
+			'dayjs'
+		]
+	},
 	server: {
 		proxy: {
 			'/api/search': {
@@ -59,6 +73,11 @@ export default defineConfig({
 		}
 	},
 	plugins: [
+		litSvelteWrapperPlugin([
+			{
+				manifestPath: 'node_modules/@openfoodfacts/openfoodfacts-webcomponents/custom-elements.json'
+			}
+		]),
 		tailwindcss(),
 		sentrySvelteKit({
 			sourceMapsUploadOptions: {

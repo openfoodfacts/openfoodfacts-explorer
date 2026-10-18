@@ -32,6 +32,7 @@
 		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy.d.ts",
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
+		"spike:lit-ssr": "node scripts/lit-ssr-spike.mjs",
 		"prepare": "if [ ! \"$HUSKY\" = \"0\" ]; then husky; fi",
 		"pre-commit": "pnpm format",
 		"test": "vitest run --passWithNoTests"
@@ -106,12 +107,17 @@
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
+		"@openfoodfacts/lit-sveltekit": "workspace:*",
+		"@lit-labs/ssr": "^4.1.0",
+		"@lit-labs/ssr-client": "^1.1.8",
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
 		"@opentelemetry/api": "^1.9.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"barcode-detector": "^3.2.2",
 		"csv-stringify": "^6.9.0",
 		"isomorphic-dompurify": "^4.5.0",
+		"lit": "^3.3.3",
+		"lit-html": "^3.3.3",
 		"zxing-wasm": "3.1.5"
 	},
 	"packageManager": "pnpm@12.5.1+sha512.e3f305bc784a2bc89f5ad3b6138889470fae8d2af5f36b61216ec91c2c3d64089775f9de38aac331044ea40f245cb0d5666392dfdf65824e1907ef6a2c62de5f"

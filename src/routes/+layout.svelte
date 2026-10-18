@@ -52,6 +52,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve } from '$app/paths';
+	import { loadLitComponents } from '@openfoodfacts/lit-sveltekit/sveltekit/client';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();
@@ -146,7 +147,7 @@
 	// Load OpenFoodFacts Web Components
 
 	onMount(async () => {
-		await import('@openfoodfacts/openfoodfacts-webcomponents');
+		await loadLitComponents(() => import('@openfoodfacts/openfoodfacts-webcomponents'));
 	});
 
 	// == Global User Permissions Context ==
