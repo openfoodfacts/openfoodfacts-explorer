@@ -32,7 +32,6 @@
 		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy.d.ts",
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
-		"spike:lit-ssr": "node scripts/lit-ssr-spike.mjs",
 		"prepare": "if [ ! \"$HUSKY\" = \"0\" ]; then husky; fi",
 		"pre-commit": "pnpm format",
 		"test": "vitest run --passWithNoTests"
