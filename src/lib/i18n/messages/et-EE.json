@@ -113,7 +113,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Language",
+		"language": "Keel",
 		"country": "Riik",
 		"currency": "Valuuta",
 		"loading": "Laadimine…",
@@ -581,7 +581,7 @@
 				"salt": "Sool",
 				"fibers": "Kiud",
 				"sodium": "Naatrium",
-				"alcohol": "Alcohol",
+				"alcohol": "Alkohol",
 				"iron": "Raud",
 				"potassium": "Kaalium",
 				"trans-fat": "Trans-rasva",
