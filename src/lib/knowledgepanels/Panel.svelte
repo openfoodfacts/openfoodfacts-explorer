@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/environment';
 
 	import type {
@@ -10,6 +11,7 @@
 
 	import Card from '$lib/ui/Card.svelte';
 	import Element from './Element.svelte';
+	import type { ExpansionController } from './expansionController.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -18,28 +20,33 @@
 		id: string;
 		link?: string;
 		productCode?: string;
-		expandedPanels?: Record<string, boolean>;
-		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
 	};
-	let {
-		panels,
-		panel,
-		inline = false,
-		id,
-		link,
-		productCode,
-		expandedPanels,
-		onPanelExpansionChange
-	}: Props = $props();
+	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
-	let expanded = $derived(expandedPanels?.[id] ?? panel?.expanded ?? false);
+	const expansionController = getContext<ExpansionController>('knowledge-panel-expansion');
+	const isCollapsible = $derived(
+		panel != null && panel.type !== 'inline' && !inline && panel.title_element != null
+	);
+
+	onMount(() => {
+		if (!isCollapsible) return;
+		return expansionController.register(id, panel.expanded ?? false);
+	});
+
+	let expanded = $derived(expansionController.expandedPanels[id] ?? panel?.expanded ?? false);
+
+	$effect(() => {
+		if (isCollapsible) {
+			expansionController.updateDefault(id, panel.expanded ?? false);
+		}
+	});
 
 	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		<Element {element} {panels} {productCode} {expandedPanels} {onPanelExpansionChange} />
+		<Element {element} {panels} {productCode} />
 	{/each}
 {/snippet}
 
@@ -57,7 +64,7 @@
 		<input
 			type="checkbox"
 			checked={expanded}
-			onchange={(event) => onPanelExpansionChange?.(id, event.currentTarget.checked)}
+			onchange={(event) => expansionController.setExpanded(id, event.currentTarget.checked)}
 		/>
 
 		<div

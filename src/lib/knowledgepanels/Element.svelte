@@ -16,16 +16,14 @@
 		panels: KnowledgePanels;
 		element: KnowledgeElement;
 		productCode?: string;
-		expandedPanels?: Record<string, boolean>;
-		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
 	};
-	let { panels, element, productCode, expandedPanels, onPanelExpansionChange }: Props = $props();
+	let { panels, element, productCode }: Props = $props();
 </script>
 
 {#snippet panel(id: string)}
 	{@const panel = panels[id]}
 	{#if panel !== null}
-		<Panel {panel} {panels} {id} {productCode} {expandedPanels} {onPanelExpansionChange} />
+		<Panel {panel} {panels} {id} {productCode} />
 	{:else}
 		{trackOffEvent('system', 'knowledge_panel_missing', id)}
 		<div class="alert alert-warning">Panel not found: {id}</div>
@@ -36,7 +34,7 @@
 	{#if element.element_type === 'panel'}
 		{@render panel(element.panel_element.panel_id)}
 	{:else if element.element_type === 'panel_group'}
-		<PanelGroup {element} {panels} code={productCode} {expandedPanels} {onPanelExpansionChange} />
+		<PanelGroup {element} {panels} code={productCode} />
 	{:else if element.element_type === 'action'}
 		<Action {element} code={productCode} />
 	{:else if element.element_type === 'text'}

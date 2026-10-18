@@ -6,16 +6,12 @@
 	let {
 		element,
 		panels: panels,
-		code: code,
-		expandedPanels,
-		onPanelExpansionChange
+		code: code
 	}: {
 		element: KnowledgePanelGroupElement;
 		panels: KnowledgePanels;
 		/** Optional product code to enable product-specific features like product links */
 		code?: string;
-		expandedPanels?: Record<string, boolean>;
-		onPanelExpansionChange?: (id: string, expanded: boolean) => void;
 	} = $props();
 
 	let groupEl = $derived(element.panel_group_element);
@@ -32,7 +28,7 @@
 	<div class="flex grow flex-col gap-2">
 		{#each groupEl.panel_ids as id (id)}
 			{@const panel = panels[id]}
-			<Panel {panel} {panels} {id} productCode={code} {expandedPanels} {onPanelExpansionChange} />
+			<Panel {panel} {panels} {id} productCode={code} />
 		{/each}
 	</div>
 

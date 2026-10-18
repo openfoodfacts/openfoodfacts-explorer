@@ -11,8 +11,10 @@ Props:
   If not provided, all panels are displayed.
 -->
 <script lang="ts">
+	import { setContext } from 'svelte';
 	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api';
 	import Panel from './Panel.svelte';
+	import { createExpansionController } from './expansionController.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -24,36 +26,23 @@ Props:
 
 	let { panels, code, summary = true, roots, onAllPanelsExpandedChange }: Props = $props();
 
-	let expandedPanels = $state<Record<string, boolean>>({});
+	const expansionController = createExpansionController();
+	setContext('knowledge-panel-expansion', expansionController);
 	let expansionProductCode = $state<string | undefined>();
 
 	$effect(() => {
 		if (code !== expansionProductCode) {
-			expandedPanels = {};
+			expansionController.reset();
 			expansionProductCode = code;
 		}
 	});
 
-	let allPanelsExpanded = $derived.by(() => {
-		const panelIds = Object.keys(panels);
-
-		return (
-			panelIds.length > 0 &&
-			panelIds.every((id) => expandedPanels[id] ?? panels[id]?.expanded ?? false)
-		);
-	});
-
 	$effect(() => {
-		onAllPanelsExpandedChange?.(allPanelsExpanded);
+		onAllPanelsExpandedChange?.(expansionController.allPanelsExpanded);
 	});
-
-	function handlePanelExpansionChange(id: string, expanded: boolean) {
-		expandedPanels = { ...expandedPanels, [id]: expanded };
-	}
 
 	export function toggleAllPanels() {
-		const expanded = !allPanelsExpanded;
-		expandedPanels = Object.fromEntries(Object.keys(panels).map((id) => [id, expanded]));
+		expansionController.toggleAll();
 	}
 
 	const SUMMARY_ID = 'knowledge-panels';
@@ -107,15 +96,6 @@ Props:
 
 {#each Object.entries(panels) as [id, panel] (id)}
 	{#if roots == null || roots.includes(id) || (panel.type != null && roots.includes(panel.type))}
-		<Panel
-			{panel}
-			{panels}
-			{id}
-			link={'#' + SUMMARY_ID}
-			productCode={code}
-			{expandedPanels}
-			onPanelExpansionChange={handlePanelExpansionChange}
-			inline
-		/>
+		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
 	{/if}
 {/each}
