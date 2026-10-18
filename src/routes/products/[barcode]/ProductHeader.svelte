@@ -1,25 +1,25 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { _ } from '$lib/i18n';
-	import { shareContent } from '$lib/utils/webShare';
+	import { _ } from '#lib/i18n/index.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 
 	import { navigating } from '$app/state';
 
-	import { getLanguageCode, preferences } from '$lib/settings';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '$lib/const';
-	import TagChipList from '$lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '$lib/stores/calculatorStore';
-	import { compareStore } from '$lib/stores/compareStore';
-	import { userInfo } from '$lib/stores/user';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import Card from '$lib/ui/Card.svelte';
-	import ImageButton from '$lib/ui/ImageButton.svelte';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
+	import TagChipList from '#lib/ui/TagChips.svelte';
+	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
+	import { compareStore } from '#lib/stores/compareStore.js';
+	import { userInfo } from '#lib/stores/user.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import Card from '#lib/ui/Card.svelte';
+	import ImageButton from '#lib/ui/ImageButton.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
 	import { resolve } from '$app/paths';
 	type Props = {
@@ -182,12 +182,13 @@
 					{/if}
 
 					<button
-						class="btn btn-secondary btn-sm md:btn-md"
+						class="btn gap-2 rounded-full btn-secondary btn-sm md:btn-md"
 						onclick={addToComparison}
-						title={$_('product.buttons.compare')}
-						aria-label={$_('product.buttons.compare')}
+						title={$_('product.buttons.compare', { default: 'Add to compare' })}
+						aria-label={$_('product.buttons.compare', { default: 'Add to compare' })}
 					>
-						<IconMdiCompare class="h-5 w-5" />
+						<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
+						<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
 					</button>
 				</div>
 			</div>

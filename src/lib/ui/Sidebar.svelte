@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import type { Component, ComponentType } from 'svelte';
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';
 
 	export interface SidebarSectionBase {
@@ -173,7 +173,7 @@
 		if (!document.getElementById(targetId)) return;
 
 		event.preventDefault();
-		await goto(section.href, { noScroll: true });
+		await goto(section.href, { reset: false });
 	}
 
 	function updateActiveSection() {

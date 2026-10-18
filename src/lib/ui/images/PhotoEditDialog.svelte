@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import 'cropperjs';
-	import type { ProductImage } from '$lib/api';
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { _ } from '$lib/i18n';
+	import type { ProductImage } from '#lib/api.js';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { _ } from '#lib/i18n/index.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';

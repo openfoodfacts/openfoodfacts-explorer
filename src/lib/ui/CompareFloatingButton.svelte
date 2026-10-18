@@ -1,22 +1,27 @@
 <script lang="ts">
-	import { compareStore } from '$lib/stores/compareStore';
+	import { compareStore } from '#lib/stores/compareStore.js';
 	import { derived } from 'svelte/store';
-	import { page } from '$app/state';
 
-	import IconMdiCompare from '@iconify-svelte/mdi/compare';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
+	import { _ } from '#lib/i18n/index.js';
 
 	const count = derived(compareStore, ($compareStore) => $compareStore.length);
-	const isOnComparePage = $derived(page.url.pathname === '/compare');
+	const compareLabel = $derived(
+		$_('compare.floating_label', {
+			default: 'Compare ({count})',
+			values: { count: $count }
+		})
+	);
 </script>
 
-{#if $count > 0 && !isOnComparePage}
+{#if $count > 0}
 	<a
 		href="/compare"
-		class="btn fixed bottom-4 left-4 z-50 flex items-center rounded-full px-3 shadow-lg btn-primary md:px-4"
-		title="Compare Products ({$count})"
-		aria-label="Compare Products ({$count})"
+		class="btn flex items-center gap-2 rounded-full px-3 shadow-lg btn-primary md:px-4"
+		title={compareLabel}
+		aria-label={compareLabel}
 	>
-		<IconMdiCompare class="h-5 w-5" />
-		<span class="ml-2 hidden md:inline">Compare ({$count})</span>
+		<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
+		<span>{compareLabel}</span>
 	</a>
 {/if}

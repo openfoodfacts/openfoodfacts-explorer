@@ -1,8 +1,8 @@
 import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 import { decodeJwt } from 'jose';
-import type { KeycloakTokens } from '$lib/api/keycloak';
-import { createKeycloakApi } from '$lib/api';
+import type { KeycloakTokens } from '#lib/api/keycloak.js';
+import { createKeycloakApi } from '#lib/api.js';
 
 // Module-level variable to track ongoing refresh operations
 // This prevents multiple concurrent refresh attempts (race conditions)

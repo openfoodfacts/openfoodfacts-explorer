@@ -12,7 +12,7 @@ Props:
 -->
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api';
+	import type { KnowledgePanelElement, KnowledgePanels } from '$lib/api.js';
 	import Panel from './Panel.svelte';
 	import { createExpansionController } from './expansionController.svelte';
 

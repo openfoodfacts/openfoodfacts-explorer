@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiChevronUp from '@iconify-svelte/mdi/chevron-up';
 	import { fly } from 'svelte/transition';
 

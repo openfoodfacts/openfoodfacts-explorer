@@ -1,5 +1,5 @@
-import { getLocale, locale, waitLocale } from '$lib/i18n';
-import { browser } from '$app/environment';
+import { getLocale, locale, waitLocale } from '#lib/i18n/index.js';
+import { browser } from '$app/env';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async () => {
