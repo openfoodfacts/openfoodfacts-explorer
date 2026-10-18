@@ -14,6 +14,8 @@
 		let active = true;
 
 		function applyProps() {
+			// Until registration, the allowlist is unavailable. whenDefined reapplies
+			// the latest props after Lit's declared properties become available.
 			const nextProperties = splitWebComponentProps(
 				currentProps.tag,
 				currentProps.props

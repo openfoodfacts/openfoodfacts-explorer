@@ -85,6 +85,7 @@ Generated wrappers and their declarations are written under the consuming app's 
 - Component packages should publish a Custom Elements Manifest and TypeScript declarations that register their tags in `HTMLElementTagNameMap`. Keep Lit external in published component bundles so the server and browser can resolve compatible Lit modules.
 - Props used for SSR must be JSON-serializable. When serialization or Lit SSR fails, the element falls back to client rendering.
 - `ssr` is reserved by the wrapper and is not passed through as a custom-element property. SSR is disabled unless the wrapper receives `ssr` or `ssr={true}`.
+- Only properties declared in the component's Lit `elementProperties` map are assigned. Unknown properties are ignored; browser property assignment waits for component registration. Standard host attributes and event handlers are handled separately.
 - Explicit custom-event mapping and forwarding Svelte children into Lit slots are not implemented yet.
 - Lit SSR is part of Lit Labs and remains experimental. Its current limitations include unsupported async component work and support for Lit components that use shadow DOM. Check the [Lit SSR status](https://lit.dev/docs/ssr/overview/) and the [browser requirements for declarative shadow DOM](https://lit.dev/docs/ssr/client-usage/) before choosing a production browser matrix.
 

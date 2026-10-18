@@ -40,13 +40,11 @@ type SplitWebComponentProps = {
 	attributes: Record<string, unknown>;
 };
 
-function isWebComponentHostAttribute(tag: string, name: string): boolean {
+function isWebComponentHostAttribute(
+	ctor: LitElementConstructor | undefined,
+	name: string
+): boolean {
 	if (name.startsWith('aria-') || name.startsWith('data-') || /^on[a-z]/i.test(name)) return true;
-
-	const ctor =
-		typeof customElements === 'undefined'
-			? undefined
-			: (customElements.get(tag) as LitElementConstructor | undefined);
 
 	if (ctor?.elementProperties?.has(name)) return false;
 	return hostAttributeNames.has(name.toLowerCase());
@@ -56,12 +54,17 @@ export function splitWebComponentProps(
 	tag: string,
 	props: Record<string, unknown>
 ): SplitWebComponentProps {
+	const ctor =
+		typeof customElements === 'undefined'
+			? undefined
+			: (customElements.get(tag) as LitElementConstructor | undefined);
 	const properties: Record<string, unknown> = {};
 	const attributes: Record<string, unknown> = {};
 
 	for (const [name, value] of Object.entries(props)) {
-		if (isWebComponentHostAttribute(tag, name)) attributes[name] = value;
-		else properties[name] = value;
+		if (name === '__proto__' || name === 'constructor' || name === 'prototype') continue;
+		if (isWebComponentHostAttribute(ctor, name)) attributes[name] = value;
+		else if (ctor?.elementProperties?.has(name)) properties[name] = value;
 	}
 
 	return { properties, attributes };
