@@ -9,8 +9,16 @@ const resolvedVirtualModuleName = `\0${virtualModuleName}`;
 const outputDirectory = '.svelte-kit/generated/lit-svelte';
 
 /**
- * Reads a Custom Elements Manifest, generates Svelte adapters outside src,
- * and exposes them as named exports from a virtual module.
+ * Creates a Vite plugin that generates Svelte wrappers for custom elements in
+ * one or more Custom Elements Manifests.
+ *
+ * Resolve each `manifestPath` relative to the Vite project root. The plugin
+ * writes generated wrappers under `.svelte-kit/generated/lit-svelte/` and
+ * exposes them as named exports from `virtual:lit-svelte/components`. Add the
+ * plugin to the Vite configuration before `sveltekit()`.
+ *
+ * @param sources Manifest paths and optional prefixes for generated component names.
+ * @returns A Vite plugin that generates and serves the wrappers.
  */
 export function litSvelteWrapperPlugin(sources: readonly LitSvelteWrapperSource[]): Plugin {
 	let projectRoot = process.cwd();

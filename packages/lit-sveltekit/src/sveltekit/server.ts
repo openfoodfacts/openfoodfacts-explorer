@@ -3,8 +3,9 @@ import { LIT_SSR_STATE_ATTRIBUTE, parseLitSsrState } from './ssrState.js';
 import { splitWebComponentProps } from './splitWebComponentProps.js';
 
 type LitSsrHandleOptions = {
-	/** Stable key used to register a bundle once, including across Vite HMR reloads. */
+	/** Stable, unique key for this component bundle; registration is cached by this key. */
 	registrationKey: string;
+	/** Dynamically imports the module that registers this bundle's custom elements. */
 	registerComponents: () => Promise<unknown>;
 };
 
@@ -276,6 +277,20 @@ function createPageTransform(options: LitSsrHandleOptions) {
 	};
 }
 
+/**
+ * Creates a SvelteKit handle that server-renders opted-in Lit wrapper elements.
+ *
+ * The handle transforms wrappers that include the generated SSR state marker.
+ * Their component bundle is imported on the first such render and registered
+ * once per `registrationKey`. If Lit cannot render an element, the handle logs
+ * the error and keeps the client-rendered element in the response.
+ *
+ * Pass the returned handle to SvelteKit's `sequence()` alongside any existing
+ * handles. A wrapper must also receive its `ssr` prop to opt into SSR.
+ *
+ * @param options Bundle registration key and lazy component-registration callback.
+ * @returns A SvelteKit request handle that adds Lit SSR to page rendering.
+ */
 export function createLitSsrHandle(options: LitSsrHandleOptions): Handle {
 	return async ({ event, resolve }) => {
 		const transformPageChunk = createPageTransform(options);
