@@ -52,25 +52,12 @@ Wraps the <product-card> web component and adds accessibility features.
 			quantity: rawProduct.quantity ?? '',
 			image_front_small_url: rawProduct.image_front_small_url ?? '',
 			brands: normalizeBrands(rawProduct.brands),
-			product_type: rawProduct.product_type ?? 'food',
+			product_type: rawProduct.product_type ?? '',
 			...(greenScoreGrade != null && { greenscore_grade: greenScoreGrade })
 		};
 	});
-	const productCardAriaLabel = $derived(
-		productForCard.product_name
-			? $_('product.card.aria_label', {
-					values: { productName: productForCard.product_name, productCode: productForCard.code },
-					default: 'Go to product {productName} with code {productCode}'
-				})
-			: $_('product.card.aria_label_no_name', {
-					values: { productCode: productForCard.code },
-					default: 'Go to product with code {productCode}'
-				})
-	);
+
 	let navigating = $state(false);
-	const productCardNavigation = $derived({
-		to: navigating ? { params: { barcode: product.code } } : null
-	});
 	async function navigateToProduct() {
 		navigating = true;
 		await goto(`/products/${product.code}`);
@@ -177,16 +164,26 @@ Wraps the <product-card> web component and adds accessibility features.
 />
 
 <ProductCard
-	product={productForCard}
-	{personalScore}
-	showMatchTag={personalScore != null}
-	navigating={productCardNavigation}
 	class="block h-44 w-full cursor-pointer [&:not(:defined)]:skeleton"
-	aria-label={productCardAriaLabel}
-	role="button"
-	tabindex={0}
+	product={productForCard}
 	onclick={navigateToProduct}
 	onkeyup={(e: KeyboardEvent) => e.key === 'Enter' && navigateToProduct()}
+	aria-label={productForCard.product_name
+		? $_('product.card.aria_label', {
+				values: { productName: productForCard.product_name, productCode: productForCard.code },
+				default: 'Go to product {productName} with code {productCode}'
+			})
+		: $_('product.card.aria_label_no_name', {
+				values: { productCode: productForCard.code },
+				default: 'Go to product with code {productCode}'
+			})}
+	showMatchTag={personalScore != undefined}
+	navigating={{
+		to: navigating ? { params: { barcode: product.code } } : null
+	}}
+	{personalScore}
+	role="button"
+	tabindex="0"
 	oncontextmenu={contextMenu}
 ></ProductCard>
 
