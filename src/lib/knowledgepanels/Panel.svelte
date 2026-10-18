@@ -25,7 +25,11 @@
 
 	const expansionController = getContext<ExpansionController>('knowledge-panel-expansion');
 	const isCollapsible = $derived(
-		panel != null && panel.type !== 'inline' && !inline && panel.title_element != null
+		panel != null &&
+			panel.type !== 'inline' &&
+			!inline &&
+			panel.title_element != null &&
+			!(panel.type === 'card' && panel.elements != null)
 	);
 
 	onMount(() => {

@@ -56,6 +56,7 @@ export function createExpansionController(): ExpansionController {
 			return;
 		}
 		panelDefaults = { ...panelDefaults, [id]: defaultExpanded };
+		expandedPanels = { ...expandedPanels, [id]: defaultExpanded };
 	}
 
 	function toggleAll() {
