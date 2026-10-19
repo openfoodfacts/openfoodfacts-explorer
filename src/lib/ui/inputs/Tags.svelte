@@ -7,11 +7,19 @@
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
+		/** Loads suggestions for the typed value from a remote source, replacing `autocomplete` */
+		getSuggestions?: (query: string) => Promise<readonly string[]>;
 		placeholder?: string;
 		onChange?: (tags: string[]) => void;
 	};
 
-	let { tags = $bindable([]), autocomplete = [], placeholder, onChange }: Props = $props();
+	let {
+		tags = $bindable([]),
+		autocomplete = [],
+		getSuggestions,
+		placeholder,
+		onChange
+	}: Props = $props();
 
 	let autoCompleteFuse = $derived(new Fuse(autocomplete, { threshold: 0.2 }));
 	let autoCompleteIndex = $state(-1);
@@ -23,8 +31,37 @@
 	// Track active search value (newValue for additions, editingValue for inline edits)
 	let activeSearchValue = $derived(editingIndex === -1 ? newValue : editingValue);
 
+	let remoteSuggestions = $state<readonly string[]>([]);
+
+	// Fetch remote suggestions after the user stops typing, ignoring stale responses
+	$effect(() => {
+		if (!getSuggestions) return;
+		const query = activeSearchValue.trim();
+		if (query.length < 3) {
+			remoteSuggestions = [];
+			return;
+		}
+		let cancelled = false;
+		const timer = setTimeout(async () => {
+			try {
+				const suggestions = await getSuggestions(query);
+				if (!cancelled) remoteSuggestions = suggestions;
+			} catch (error) {
+				console.warn('Failed to load suggestions:', error);
+			}
+		}, 300);
+		return () => {
+			cancelled = true;
+			clearTimeout(timer);
+		};
+	});
+
 	let filteredAutocomplete = $derived(
-		activeSearchValue.length < 3 ? [] : autoCompleteFuse.search(activeSearchValue).slice(0, 10)
+		activeSearchValue.length < 3
+			? []
+			: getSuggestions
+				? remoteSuggestions.slice(0, 10).map((item) => ({ item }))
+				: autoCompleteFuse.search(activeSearchValue).slice(0, 10)
 	);
 
 	// Reactive bounds check: reset suggestion index to -1 if list shrinks under it
