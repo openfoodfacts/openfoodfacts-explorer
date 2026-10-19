@@ -64,7 +64,7 @@
 		"@typescript-eslint/parser": "^8.71.1",
 		"@vercel/speed-insights": "^2.0.0",
 		"cropperjs": "^2.3.0",
-		"cytoscape": "^3.34.3",
+		"cytoscape": "^3.34.4",
 		"daisyui": "5.7.47",
 		"eslint": "^10.12.0",
 		"eslint-config-prettier": "^10.1.8",
