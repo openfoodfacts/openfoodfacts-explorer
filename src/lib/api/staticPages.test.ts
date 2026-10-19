@@ -9,8 +9,10 @@ const staticPageHtml = `<html><body>
 		<h1>Privacy</h1>
 		<p>&nbsp;</p>
 		<p><img src="/images/banner.png" alt="Banner"></p>
+		<p><img src="images/relative.png" alt="Relative image"></p>
 		<table><tr><td>Cookies</td></tr></table>
 		<a href="/terms-of-use">Terms</a>
+		<a href="related-page">Related page</a>
 		<a href="#contact">Contact</a>
 		<a href="https://blog.openfoodfacts.org/">Blog</a>
 		<a href="/contribute" class="button round">Join us</a>
@@ -22,7 +24,11 @@ const staticPageHtml = `<html><body>
 </body></html>`;
 
 describe('extractStaticPageContent', () => {
-	const content = extractStaticPageContent(staticPageHtml) ?? '';
+	const content =
+		extractStaticPageContent(
+			staticPageHtml,
+			'https://world.openfoodfacts.org/about/privacy?content_only=1'
+		) ?? '';
 
 	it('keeps only the main column, without scripts or styles', () => {
 		expect(content).toContain('<h1>Privacy</h1>');
@@ -32,11 +38,13 @@ describe('extractStaticPageContent', () => {
 		expect(content).not.toContain('display: none');
 	});
 
-	it('points site-relative links and images to the main site and leaves the others alone', () => {
+	it('rebases relative URLs against the source page and preserves fragments and absolute URLs', () => {
 		expect(content).toContain('href="https://world.openfoodfacts.org/terms-of-use"');
+		expect(content).toContain('href="https://world.openfoodfacts.org/about/related-page"');
 		expect(content).toContain('href="#contact"');
 		expect(content).toContain('href="https://blog.openfoodfacts.org/"');
 		expect(content).toContain('src="https://world.openfoodfacts.org/images/logo.svg"');
+		expect(content).toContain('src="https://world.openfoodfacts.org/about/images/relative.png"');
 		expect(content).toContain('src="https://blog.openfoodfacts.org/photo.png"');
 	});
 

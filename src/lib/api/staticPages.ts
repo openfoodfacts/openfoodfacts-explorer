@@ -1,14 +1,24 @@
 import { sanitize } from 'isomorphic-dompurify';
 import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
-/** Replace site-relative URLs with absolute URLs so they work in the Explorer page */
+/** Resolve page-relative URLs against the source page so they work in the Explorer page */
 function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
 	for (const [selector, attribute] of [
-		['a[href^="/"]', 'href'],
-		['img[src^="/"]', 'src']
+		['a[href]', 'href'],
+		['img[src]', 'src']
 	]) {
 		for (const element of content.querySelectorAll(selector)) {
-			const rebasedUrl = new URL(element.getAttribute(attribute) ?? '', base).href;
+			const value = element.getAttribute(attribute);
+			if (
+				!value ||
+				value.startsWith('#') ||
+				value.startsWith('//') ||
+				/^[a-z][a-z\d+.-]*:/i.test(value)
+			) {
+				continue;
+			}
+
+			const rebasedUrl = new URL(value, base).href;
 			element.setAttribute(attribute, rebasedUrl);
 		}
 	}
@@ -49,10 +59,16 @@ export async function getStaticPageContent(
 	fetch: typeof window.fetch,
 	id: string
 ): Promise<string | null> {
-	const page = await fetch(`${STATIC_PAGES_BASE_URL}/${id}?content_only=1`, {
+	const sourcePageUrl = `${STATIC_PAGES_BASE_URL}/${id}`;
+	let base = sourcePageUrl;
+	const page = await fetch(`${sourcePageUrl}?content_only=1`, {
 		signal: AbortSignal.timeout(5000)
 	})
-		.then((response) => (response.ok ? response.text() : null))
+		.then((response) => {
+			if (!response.ok) return null;
+			base = response.url || sourcePageUrl;
+			return response.text();
+		})
 		.catch(() => null);
-	return page === null ? null : extractStaticPageContent(page);
+	return page === null ? null : extractStaticPageContent(page, base);
 }
