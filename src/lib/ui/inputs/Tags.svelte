@@ -37,10 +37,9 @@
 	$effect(() => {
 		if (!getSuggestions) return;
 		const query = activeSearchValue.trim();
-		if (query.length < 3) {
-			remoteSuggestions = [];
-			return;
-		}
+		// Drop results for the previous query so they can't be picked while waiting
+		remoteSuggestions = [];
+		if (query.length < 3) return;
 		let cancelled = false;
 		const timer = setTimeout(async () => {
 			try {
