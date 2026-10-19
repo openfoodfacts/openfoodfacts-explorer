@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { extractStaticPageContent, getStaticPageContent } from './staticPages';
 
-const page = `<html><body>
+const staticPageHtml = `<html><body>
 	<div id="barcode-scanner-modal"><button>Scan</button></div>
 	<div id="main_column">
 		<style>.row { display: none; }</style>
@@ -22,7 +22,7 @@ const page = `<html><body>
 </body></html>`;
 
 describe('extractStaticPageContent', () => {
-	const content = extractStaticPageContent(page) ?? '';
+	const content = extractStaticPageContent(staticPageHtml) ?? '';
 
 	it('keeps only the main column, without scripts or styles', () => {
 		expect(content).toContain('<h1>Privacy</h1>');
@@ -58,7 +58,7 @@ describe('extractStaticPageContent', () => {
 
 describe('getStaticPageContent', () => {
 	it('returns null when the main site fails or cannot be reached', async () => {
-		const failing = vi.fn().mockResolvedValue(new Response(page, { status: 503 }));
+		const failing = vi.fn().mockResolvedValue(new Response(staticPageHtml, { status: 503 }));
 		const unreachable = vi.fn().mockRejectedValue(new TypeError('fetch failed'));
 		const cutOff = vi
 			.fn()
@@ -71,7 +71,7 @@ describe('getStaticPageContent', () => {
 	});
 
 	it('returns the cleaned content of a page', async () => {
-		const ok = vi.fn().mockResolvedValue(new Response(page));
+		const ok = vi.fn().mockResolvedValue(new Response(staticPageHtml));
 		expect(await getStaticPageContent(ok, 'privacy')).toContain('<h1>Privacy</h1>');
 	});
 });

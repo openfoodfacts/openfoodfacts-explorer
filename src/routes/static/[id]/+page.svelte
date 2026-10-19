@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StaticPageIframe from '#lib/ui/StaticPageIframe.svelte';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
-	import { STATIC_PAGES_BASE_URL } from '#lib/api/staticPages.js';
+	import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 	import { page } from '$app/state';
 	import type { PageProps } from './$types';
 

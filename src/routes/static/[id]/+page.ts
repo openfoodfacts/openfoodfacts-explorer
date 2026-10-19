@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { getStaticPageContent, STATIC_PAGES_BASE_URL } from '#lib/api/staticPages.js';
+import { getStaticPageContent } from '#lib/api/staticPages.js';
+import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
 // Text, headings and tables only, so they survive sanitizing intact
 const NATIVE_PAGES = new Set([
