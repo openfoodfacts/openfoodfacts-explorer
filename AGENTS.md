@@ -118,6 +118,17 @@ src/
 - Always provide a `default` fallback: `$_('some.key', { default: 'Fallback text' })`.
 - Add new keys to `src/lib/i18n/messages/en-US.json` first.
 
+### Environment Variables vs. Build Metadata
+
+- **For `.env` variables (runtime/user configuration):**
+  - Always declare them in `src/env.ts` using `defineEnvVars` from `@sveltejs/kit/env`.
+  - In client-side code, import them from `$app/env/public` (e.g. `import { FORCE_ROLE } from '$app/env/public'`).
+  - Do **not** use `vite.config.ts` `define` or `import.meta.env` for variables loaded from `.env`.
+- **For build-time Git / package metadata (compile-time constants):**
+  - If you need a value computed during build by Node or Git (e.g. `PACKAGE_VERSION`, `BUILD_VERSION`, `BUILD_COMMIT_SHA`, `VERCEL`), define it in `vite.config.ts` under `define: { 'import.meta.env.NAME': JSON.stringify(...) }`.
+  - Add its type definition to `vite-env.d.ts` under `interface ImportMetaEnv`.
+  - Access it in source code via `import.meta.env.NAME`.
+
 ---
 
 ## Common Issues

@@ -42,6 +42,7 @@
 	import { userInfo } from '#lib/stores/user.js';
 	import { extractQuery } from '#lib/search/lucene.js';
 	import { dev } from '$app/env';
+	import { FORCE_ROLE } from '$app/env/public';
 	import type { LayoutProps } from './$types';
 	import { getWebsiteFlavorFromParam } from '#lib/flavor.js';
 	import { createWebsiteCtx } from '#lib/stores/website.js';
@@ -160,7 +161,7 @@
 	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
 	let permissionsCtx = $state<UserPermissionsContext>(
-		resolvePermissions({ isAdmin: false, isModerator: false }, import.meta.env.FORCE_ROLE, dev)
+		resolvePermissions({ isAdmin: false, isModerator: false }, FORCE_ROLE, dev)
 	);
 
 	setPermissionsCtx(() => permissionsCtx);
@@ -177,7 +178,7 @@
 					isAdmin: data?.status === 'success' && data.user?.admin === 1,
 					isModerator: data?.status === 'success' && data.user?.moderator === 1
 				};
-				const resolved = resolvePermissions(actual, import.meta.env.FORCE_ROLE, dev);
+				const resolved = resolvePermissions(actual, FORCE_ROLE, dev);
 				permissionsCtx.isAdmin = resolved.isAdmin;
 				permissionsCtx.isModerator = resolved.isModerator;
 			});
@@ -186,11 +187,7 @@
 			};
 		} else {
 			// Clear roles when logged out, keeping dev-forced roles if active
-			const resolved = resolvePermissions(
-				{ isAdmin: false, isModerator: false },
-				import.meta.env.FORCE_ROLE,
-				dev
-			);
+			const resolved = resolvePermissions({ isAdmin: false, isModerator: false }, FORCE_ROLE, dev);
 			permissionsCtx.isAdmin = resolved.isAdmin;
 			permissionsCtx.isModerator = resolved.isModerator;
 		}
