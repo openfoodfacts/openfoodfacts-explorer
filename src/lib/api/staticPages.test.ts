@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
-import { extractStaticPageContent, getStaticPageContent } from './staticPages';
+import { sanitize } from 'isomorphic-dompurify';
+import {
+	extractStaticPageContent,
+	getStaticPageContent,
+	makeSiteRelativeUrlsAbsolute
+} from './staticPages';
 
 const staticPageHtml = `<html><body>
 	<div id="barcode-scanner-modal"><button>Scan</button></div>
@@ -22,6 +27,49 @@ const staticPageHtml = `<html><body>
 	</div>
 	<script src="https://static.openfoodfacts.org/js/dist/jquery.js"></script>
 </body></html>`;
+
+function createContentElement(html: string): Element {
+	const body = sanitize(`<div id="content">${html}</div>`, {
+		USE_PROFILES: { html: true },
+		RETURN_DOM: true
+	}) as HTMLElement;
+	return body.querySelector('#content')!;
+}
+
+describe('makeSiteRelativeUrlsAbsolute', () => {
+	it('rebases root-relative and page-relative URLs against the source page', () => {
+		const content = createContentElement(
+			'<a href="/terms-of-use">Terms</a><a href="related-page">Related</a><img src="images/photo.png">'
+		);
+
+		makeSiteRelativeUrlsAbsolute(
+			content,
+			'https://world.openfoodfacts.org/about/privacy?content_only=1'
+		);
+
+		expect(
+			content.querySelector('a[href="https://world.openfoodfacts.org/terms-of-use"]')
+		).not.toBeNull();
+		expect(
+			content.querySelector('a[href="https://world.openfoodfacts.org/about/related-page"]')
+		).not.toBeNull();
+		expect(
+			content.querySelector('img[src="https://world.openfoodfacts.org/about/images/photo.png"]')
+		).not.toBeNull();
+	});
+
+	it('preserves fragment-only and absolute URLs', () => {
+		const content = createContentElement(
+			'<a href="#contact">Contact</a><a href="https://blog.openfoodfacts.org/post">Blog</a><img src="//cdn.example.org/photo.png">'
+		);
+
+		makeSiteRelativeUrlsAbsolute(content, 'https://world.openfoodfacts.org/about/privacy');
+
+		expect(content.querySelector('a[href="#contact"]')).not.toBeNull();
+		expect(content.querySelector('a[href="https://blog.openfoodfacts.org/post"]')).not.toBeNull();
+		expect(content.querySelector('img[src="//cdn.example.org/photo.png"]')).not.toBeNull();
+	});
+});
 
 describe('extractStaticPageContent', () => {
 	const content =

@@ -2,7 +2,7 @@ import { sanitize } from 'isomorphic-dompurify';
 import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
 /** Resolve page-relative URLs against the source page so they work in the Explorer page */
-function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
+export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
 	for (const [selector, attribute] of [
 		['a[href]', 'href'],
 		['img[src]', 'src']
