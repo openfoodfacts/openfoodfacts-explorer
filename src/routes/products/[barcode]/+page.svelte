@@ -111,6 +111,7 @@
 		};
 	});
 
+	// Product history needs the login token, which the server-side page load does not have
 	let history = $state<{ code: string; panels: KnowledgePanels } | null>(null);
 	let loggedIn = $derived($userAuthTokens != null);
 	$effect(() => {
