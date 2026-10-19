@@ -64,8 +64,9 @@
 		unselectingLang = languageCode;
 		try {
 			const result = await unselectImageV3(fetch, product.code, 'ingredients', languageCode);
-			if (result.error) {
-				console.warn('Image unselect failed:', result.error);
+			const status = result.data?.status;
+			if (result.error || (status !== 'success' && status !== 'success_with_warnings')) {
+				console.warn('Image unselect failed:', result.error ?? result.data?.errors ?? status);
 				toast.error($_('product.edit.images.toast.unselect_failed'));
 				return;
 			}
@@ -233,7 +234,7 @@
 							<button
 								type="button"
 								class="btn gap-2 btn-outline btn-error btn-sm"
-								disabled={unselectingLang === code}
+								disabled={unselectingLang === code || ocrLoading}
 								onclick={() => unselectIngredientsImage(code)}
 							>
 								{#if unselectingLang === code}
