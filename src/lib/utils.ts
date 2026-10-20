@@ -68,6 +68,26 @@ export function requireInt(value: string | null, error: () => never) {
 }
 
 /**
+ * Parses an integer query parameter and requires it to stay within an inclusive range.
+ */
+export function requireBoundedInt(
+	value: string | null,
+	{ min, max }: { min: number; max: number },
+	error: () => never
+) {
+	if (value == null || !/^-?\d+$/.test(value)) {
+		error();
+	}
+
+	const intValue = Number(value);
+	if (!Number.isSafeInteger(intValue) || intValue < min || intValue > max) {
+		error();
+	}
+
+	return intValue;
+}
+
+/**
  * Validates and sanitizes a redirect URL to prevent Open Redirect vulnerabilities.
  * @param redirectUrl - The URL string to validate
  * @param origin - The application's current origin (e.g. url.origin)
