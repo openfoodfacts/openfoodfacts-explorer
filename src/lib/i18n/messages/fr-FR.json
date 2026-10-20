@@ -711,7 +711,8 @@
 				"add_packaging_image": "Ajouter une photo de l'emballage",
 				"add_ingredients_image": "Ajouter une photo des ingrédients",
 				"add_nutrition_facts": "Ajouter les informations nutritionnelles"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "Sources externes",
