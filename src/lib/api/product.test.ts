@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getProductHistoryPanels, mergeHistoryPanels } from './product';
+import { addHistoryPanel, getProductHistoryPanels } from './product';
 import type { KnowledgePanels } from './knowledgepanels';
 
 const respond = (panels: object) =>
@@ -51,7 +51,7 @@ describe('getProductHistoryPanels', () => {
 	});
 });
 
-describe('mergeHistoryPanels', () => {
+describe('addHistoryPanel', () => {
 	const ref = (panel_id: string) => ({ element_type: 'panel', panel_element: { panel_id } });
 	const page = {
 		root: { elements: [ref('health_card'), ref('product_card')] },
@@ -68,7 +68,7 @@ describe('mergeHistoryPanels', () => {
 		);
 
 	it('inserts the contribution card before the product card', () => {
-		const merged = mergeHistoryPanels(page, { code: '1', panels: history }, '1');
+		const merged = addHistoryPanel(page, history);
 		expect(ids(merged)).toEqual(['health_card', 'contribution_card', 'product_card']);
 		expect(merged.product_history).toBeDefined();
 	});
@@ -78,17 +78,12 @@ describe('mergeHistoryPanels', () => {
 			...page,
 			root: { elements: [ref('health_card'), ref('contribution_card'), ref('product_card')] }
 		} as unknown as KnowledgePanels;
-		const merged = mergeHistoryPanels(withCard, { code: '1', panels: history }, '1');
+		const merged = addHistoryPanel(withCard, history);
 		expect(ids(merged)).toEqual(['health_card', 'contribution_card', 'product_card']);
 		expect(merged.contribution_card).toEqual({ id: 'with-history' });
 	});
 
 	it('leaves the page panels unchanged without history', () => {
-		expect(mergeHistoryPanels(page, null, '1')).toBe(page);
-		expect(mergeHistoryPanels(page, { code: '1', panels: {} }, '1')).toBe(page);
-	});
-
-	it('ignores history fetched for another product', () => {
-		expect(mergeHistoryPanels(page, { code: '1', panels: history }, '2')).toBe(page);
+		expect(addHistoryPanel(page, {})).toBe(page);
 	});
 });

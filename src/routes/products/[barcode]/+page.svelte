@@ -53,7 +53,7 @@
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
 	} from '#lib/api/externalSources.js';
-	import { getProductHistoryPanels, mergeHistoryPanels } from '#lib/api/product.js';
+	import { addHistoryPanel, getProductHistoryPanels } from '#lib/api/product.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -118,15 +118,20 @@
 		history = null;
 		const code = product.code;
 		if (!browser || !loggedIn || !code) return;
-		let cancelled = false;
-		getProductHistoryPanels(window.fetch.bind(window), code, data.lc).then((panels) => {
-			if (!cancelled) history = { code, panels };
+		const abortController = new AbortController();
+		const abortingFetch: typeof fetch = (input, init) =>
+			fetch(input, { ...init, signal: abortController.signal });
+		getProductHistoryPanels(abortingFetch, code, data.lc).then((panels) => {
+			if (!abortController.signal.aborted) history = { code, panels };
 		});
-		return () => {
-			cancelled = true;
-		};
+		return () => abortController.abort();
 	});
-	let panels = $derived(mergeHistoryPanels(product.knowledge_panels, history, product.code));
+	// Until the effect above reruns, `history` can still hold the previous product's history
+	let panels = $derived(
+		history && history.code === product.code
+			? addHistoryPanel(product.knowledge_panels, history.panels)
+			: product.knowledge_panels
+	);
 
 	let hasExternalKnowledgePanelsSection = $derived(
 		browser && product.code != null && externalKnowledgePanelBatchPromise != null

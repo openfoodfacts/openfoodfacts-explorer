@@ -49,18 +49,14 @@ export async function getProductHistoryPanels(
 /**
  * Add the history panels to the product's panels, so the Contribution card shows the history table.
  * @param panels - The product's panels from the page load
- * @param history - The result of `getProductHistoryPanels`, with the barcode it was fetched for
- * @param code - The barcode of the product on screen
+ * @param history - The result of `getProductHistoryPanels` for the same product
  * @returns The product's panels, with the Contribution card that has the history added or swapped in
  */
-export function mergeHistoryPanels(
+export function addHistoryPanel(
 	panels: KnowledgePanels,
-	history: { code: string; panels: KnowledgePanels } | null,
-	code: string
+	history: KnowledgePanels
 ): KnowledgePanels {
-	// No history yet, or history fetched for the previous product, still in flight after navigating
-	if (!history || history.code !== code) return panels;
-	const historyRoot = history.panels.root?.elements;
+	const historyRoot = history.root?.elements;
 	if (!historyRoot) return panels;
 
 	const panelId = (e: unknown) =>
@@ -75,7 +71,7 @@ export function mergeHistoryPanels(
 	const productCard = elements.findIndex((e) => panelId(e) === 'product_card');
 	elements.splice(productCard < 0 ? elements.length : productCard, 0, ...missing);
 
-	return { ...panels, ...history.panels, root: { ...panels.root, elements } };
+	return { ...panels, ...history, root: { ...panels.root, elements } };
 }
 
 export async function getBulkProductAttributes(
