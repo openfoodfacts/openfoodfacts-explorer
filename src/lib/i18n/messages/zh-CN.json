@@ -711,7 +711,8 @@
 				"add_packaging_image": "添加包装照片",
 				"add_ingredients_image": "添加成分照片",
 				"add_nutrition_facts": "添加营养成分"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "外部来源",
