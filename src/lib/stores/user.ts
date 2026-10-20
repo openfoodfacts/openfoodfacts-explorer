@@ -3,6 +3,9 @@ import { getContext, setContext } from 'svelte';
 import { userAuthTokens } from './auth';
 import { decodeJwt } from 'jose';
 
+import { dev as defaultDev } from '$app/env';
+import { FORCE_ROLE as defaultForceRole } from '$app/env/public';
+
 export type UserInfo = {
 	preferred_username: string;
 	email: string;
@@ -10,9 +13,58 @@ export type UserInfo = {
 };
 
 export type UserPermissionsContext = {
-	isAdmin: boolean;
-	isModerator: boolean;
+	readonly isAdmin: boolean;
+	readonly isModerator: boolean;
+	readonly roles: string[];
+	isAuthorized: (requiredRoles: string[]) => boolean;
 };
+
+/**
+ * Checks whether the user is authorized for any of the required roles.
+ * In development mode, `forceRole` takes precedence.
+ */
+export function checkAuthorization(
+	userRoles: string[],
+	requiredRoles: string[],
+	forceRole = defaultForceRole,
+	isDev = defaultDev
+): boolean {
+	const normalizedRequired = requiredRoles.map((r) => r.toLowerCase().trim());
+
+	if (isDev && forceRole) {
+		const normalizedForce = forceRole.toLowerCase().trim();
+		if (normalizedRequired.includes(normalizedForce)) {
+			return true;
+		}
+	}
+
+	const normalizedUser = new Set(userRoles.map((r) => r.toLowerCase().trim()));
+	return normalizedRequired.some((role) => normalizedUser.has(role));
+}
+
+/**
+ * Creates a reactive permissions context linked to the user roles state getter.
+ */
+export function createPermissionsContext(
+	getUserRoles: () => string[],
+	forceRole = defaultForceRole,
+	isDev = defaultDev
+): UserPermissionsContext {
+	return {
+		get roles() {
+			return getUserRoles();
+		},
+		isAuthorized(requiredRoles: string[]) {
+			return checkAuthorization(getUserRoles(), requiredRoles, forceRole, isDev);
+		},
+		get isAdmin() {
+			return this.isAuthorized(['admin']);
+		},
+		get isModerator() {
+			return this.isAuthorized(['moderator']);
+		}
+	};
+}
 
 export function setPermissionsCtx(ctx: () => UserPermissionsContext) {
 	setContext('permissions-ctx', ctx);
@@ -27,22 +79,10 @@ export function getPermissionsCtx(): UserPermissionsContext {
 }
 
 /**
- * Resolves user permissions by applying development-only forced role overrides.
- * In production (when isDev is false), forceRole is strictly ignored.
+ * Helper to check authorization against the active permissions context.
  */
-export function resolvePermissions(
-	actual: UserPermissionsContext,
-	forceRole?: string,
-	isDev = false
-): UserPermissionsContext {
-	if (!isDev || forceRole?.toLowerCase().trim() !== 'moderator') {
-		return actual;
-	}
-
-	return {
-		...actual,
-		isModerator: true
-	};
+export function isAuthorized(requiredRoles: string[]): boolean {
+	return getPermissionsCtx().isAuthorized(requiredRoles);
 }
 
 export const userInfo = derived(userAuthTokens, ($tokens) => {

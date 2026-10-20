@@ -1,43 +1,58 @@
 import { describe, it, expect } from 'vitest';
-import { resolvePermissions, type UserPermissionsContext } from './user';
+import { checkAuthorization, createPermissionsContext } from './user';
 
-describe('resolvePermissions', () => {
-	const defaultPermissions: UserPermissionsContext = {
-		isAdmin: false,
-		isModerator: false
-	};
-
-	it('returns actual permissions unchanged when isDev is false', () => {
-		const res = resolvePermissions(defaultPermissions, 'moderator', false);
-		expect(res).toEqual({ isAdmin: false, isModerator: false });
+describe('checkAuthorization', () => {
+	it('authorizes any role match in user roles when in production', () => {
+		expect(checkAuthorization(['moderator'], ['moderator'], undefined, false)).toBe(true);
+		expect(checkAuthorization(['admin'], ['moderator'], undefined, false)).toBe(false);
+		expect(checkAuthorization(['admin', 'moderator'], ['moderator'], undefined, false)).toBe(true);
+		expect(checkAuthorization(['admin'], ['moderator', 'admin'], undefined, false)).toBe(true);
 	});
 
-	it('returns actual permissions unchanged in dev when forceRole is not provided or empty', () => {
-		expect(resolvePermissions(defaultPermissions, undefined, true)).toEqual(defaultPermissions);
-		expect(resolvePermissions(defaultPermissions, '', true)).toEqual(defaultPermissions);
+	it('forces role authorization in development mode when forceRole matches one of required roles', () => {
+		expect(checkAuthorization([], ['moderator'], 'moderator', true)).toBe(true);
+		expect(checkAuthorization([], ['admin', 'moderator'], 'moderator', true)).toBe(true);
 	});
 
-	it('forces moderator permission in dev when forceRole is "moderator"', () => {
-		const res = resolvePermissions(defaultPermissions, 'moderator', true);
-		expect(res).toEqual({ isAdmin: false, isModerator: true });
+	it('handles case-insensitivity and whitespace in forceRole and requiredRoles', () => {
+		expect(checkAuthorization([], ['moderator'], '  MODERATOR  ', true)).toBe(true);
+		expect(checkAuthorization([], [' MODERATOR '], 'moderator', true)).toBe(true);
 	});
 
-	it('handles case-insensitivity and whitespace for moderator role', () => {
-		const res = resolvePermissions(defaultPermissions, '  MODERATOR  ', true);
-		expect(res).toEqual({ isAdmin: false, isModerator: true });
+	it('strictly ignores forceRole when isDev is false', () => {
+		expect(checkAuthorization([], ['moderator'], 'moderator', false)).toBe(false);
 	});
 
-	it('ignores unhandled roles like admin or unknown strings', () => {
-		const res = resolvePermissions(defaultPermissions, 'admin', true);
-		expect(res).toEqual(defaultPermissions);
+	it('returns false when neither userRoles nor dev forceRole match required roles', () => {
+		expect(checkAuthorization(['viewer'], ['moderator', 'admin'], 'editor', true)).toBe(false);
+		expect(checkAuthorization([], ['moderator'], '', true)).toBe(false);
+		expect(checkAuthorization([], ['moderator'], undefined, true)).toBe(false);
+	});
+});
+
+describe('createPermissionsContext', () => {
+	it('evaluates dynamic user roles and forceRole in dev mode', () => {
+		let roles: string[] = [];
+		const ctx = createPermissionsContext(() => roles, 'moderator', true);
+
+		expect(ctx.isModerator).toBe(true);
+		expect(ctx.isAdmin).toBe(false);
+		expect(ctx.isAuthorized(['moderator'])).toBe(true);
+		expect(ctx.isAuthorized(['admin'])).toBe(false);
+
+		roles = ['admin'];
+		expect(ctx.isAdmin).toBe(true);
+		expect(ctx.isAuthorized(['admin'])).toBe(true);
 	});
 
-	it('preserves existing true permissions from actual user roles', () => {
-		const adminPermissions: UserPermissionsContext = {
-			isAdmin: true,
-			isModerator: false
-		};
-		const res = resolvePermissions(adminPermissions, 'moderator', true);
-		expect(res).toEqual({ isAdmin: true, isModerator: true });
+	it('does not force roles when isDev is false', () => {
+		let roles: string[] = [];
+		const ctx = createPermissionsContext(() => roles, 'moderator', false);
+
+		expect(ctx.isModerator).toBe(false);
+		expect(ctx.isAdmin).toBe(false);
+
+		roles = ['moderator'];
+		expect(ctx.isModerator).toBe(true);
 	});
 });

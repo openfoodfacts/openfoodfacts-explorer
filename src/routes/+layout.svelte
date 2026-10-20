@@ -42,7 +42,6 @@
 	import { userInfo } from '#lib/stores/user.js';
 	import { extractQuery } from '#lib/search/lucene.js';
 	import { dev } from '$app/env';
-	import { FORCE_ROLE } from '$app/env/public';
 	import type { LayoutProps } from './$types';
 	import { getWebsiteFlavorFromParam } from '#lib/flavor.js';
 	import { createWebsiteCtx } from '#lib/stores/website.js';
@@ -152,17 +151,12 @@
 
 	// == Global User Permissions Context ==
 
-	import {
-		resolvePermissions,
-		setPermissionsCtx,
-		type UserPermissionsContext
-	} from '#lib/stores/user.js';
+	import { createPermissionsContext, setPermissionsCtx } from '#lib/stores/user.js';
 	import { fetchCurrentUserPermissions } from '#lib/api/permissions.js';
 	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
-	let permissionsCtx = $state<UserPermissionsContext>(
-		resolvePermissions({ isAdmin: false, isModerator: false }, FORCE_ROLE, dev)
-	);
+	let userRoles = $state<string[]>([]);
+	const permissionsCtx = createPermissionsContext(() => userRoles);
 
 	setPermissionsCtx(() => permissionsCtx);
 
@@ -174,22 +168,19 @@
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
 				if (cancelled) return;
-				const actual = {
-					isAdmin: data?.status === 'success' && data.user?.admin === 1,
-					isModerator: data?.status === 'success' && data.user?.moderator === 1
-				};
-				const resolved = resolvePermissions(actual, FORCE_ROLE, dev);
-				permissionsCtx.isAdmin = resolved.isAdmin;
-				permissionsCtx.isModerator = resolved.isModerator;
+				const roles: string[] = [];
+				if (data?.status === 'success' && data.user) {
+					if (data.user.admin === 1) roles.push('admin');
+					if (data.user.moderator === 1) roles.push('moderator');
+				}
+				userRoles = roles;
 			});
 			return () => {
 				cancelled = true;
 			};
 		} else {
-			// Clear roles when logged out, keeping dev-forced roles if active
-			const resolved = resolvePermissions({ isAdmin: false, isModerator: false }, FORCE_ROLE, dev);
-			permissionsCtx.isAdmin = resolved.isAdmin;
-			permissionsCtx.isModerator = resolved.isModerator;
+			// Clear roles when logged out
+			userRoles = [];
 		}
 	});
 
