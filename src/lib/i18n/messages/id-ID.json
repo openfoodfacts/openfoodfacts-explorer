@@ -711,7 +711,8 @@
 				"add_packaging_image": "Add a photo of the packaging",
 				"add_ingredients_image": "Add a photo of the ingredients",
 				"add_nutrition_facts": "Tambahkan nilai gizi"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "Sumber eksternal",
