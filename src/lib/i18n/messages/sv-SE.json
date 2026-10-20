@@ -711,7 +711,8 @@
 				"add_packaging_image": "Lägg till ett foto på förpackningen",
 				"add_ingredients_image": "Lägg till ett foto på ingredienserna",
 				"add_nutrition_facts": "Lägg till näringsfakta"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "Externa källor",
