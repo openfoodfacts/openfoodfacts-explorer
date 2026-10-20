@@ -11,17 +11,39 @@ Props:
   If not provided, all panels are displayed.
 -->
 <script lang="ts">
+	import { setContext } from 'svelte';
 	import type { KnowledgePanelElement, KnowledgePanels } from '#lib/api.js';
 	import Panel from './Panel.svelte';
+	import { createExpansionController } from './expansionController.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
 		code?: string;
 		summary?: boolean;
 		roots?: string[];
+		onAllPanelsExpandedChange?: (expanded: boolean) => void;
 	};
 
-	let { panels, code, summary = true, roots }: Props = $props();
+	let { panels, code, summary = true, roots, onAllPanelsExpandedChange }: Props = $props();
+
+	const expansionController = createExpansionController();
+	setContext('knowledge-panel-expansion', expansionController);
+	let expansionProductCode = $state<string | undefined>();
+
+	$effect(() => {
+		if (code !== expansionProductCode) {
+			expansionController.reset();
+			expansionProductCode = code;
+		}
+	});
+
+	$effect(() => {
+		onAllPanelsExpandedChange?.(expansionController.allPanelsExpanded);
+	});
+
+	export function toggleAllPanels() {
+		expansionController.toggleAll();
+	}
 
 	const SUMMARY_ID = 'knowledge-panels';
 

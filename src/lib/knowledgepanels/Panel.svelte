@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContext, onMount } from 'svelte';
 	import { dev } from '$app/env';
 
 	import type {
@@ -10,6 +11,7 @@
 
 	import Card from '#lib/ui/Card.svelte';
 	import Element from './Element.svelte';
+	import type { ExpansionController } from './expansionController.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -21,7 +23,27 @@
 	};
 	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
 
-	let expanded = $derived(panel?.expanded ?? false);
+	const expansionController = getContext<ExpansionController>('knowledge-panel-expansion');
+	const isCollapsible = $derived(
+		panel != null &&
+			panel.type !== 'inline' &&
+			!inline &&
+			panel.title_element != null &&
+			!(panel.type === 'card' && panel.elements != null)
+	);
+
+	onMount(() => {
+		if (!isCollapsible) return;
+		return expansionController.register(id, panel.expanded ?? false);
+	});
+
+	let expanded = $derived(expansionController.expandedPanels[id] ?? panel?.expanded ?? false);
+
+	$effect(() => {
+		if (isCollapsible) {
+			expansionController.updateDefault(id, panel.expanded ?? false);
+		}
+	});
 
 	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
 </script>
@@ -43,7 +65,11 @@
 			'type' in title && `kp-panel-type-${title.type}`
 		]}
 	>
-		<input type="checkbox" checked={expanded} />
+		<input
+			type="checkbox"
+			checked={expanded}
+			onchange={(event) => expansionController.setExpanded(id, event.currentTarget.checked)}
+		/>
 
 		<div
 			class={[
