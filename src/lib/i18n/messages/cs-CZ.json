@@ -711,7 +711,8 @@
 				"add_packaging_image": "Přidejte fotografii obalu",
 				"add_ingredients_image": "Přidejte fotku ingrediencí",
 				"add_nutrition_facts": "Přidat výživová fakta"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "Externí zdroje",
