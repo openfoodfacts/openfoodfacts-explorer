@@ -106,12 +106,17 @@
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
+		"@openfoodfacts/lit-sveltekit": "workspace:*",
+		"@lit-labs/ssr": "^4.1.0",
+		"@lit-labs/ssr-client": "^1.1.8",
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
 		"@opentelemetry/api": "^1.9.1",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"barcode-detector": "^3.2.2",
 		"csv-stringify": "^6.9.0",
 		"isomorphic-dompurify": "^4.5.0",
+		"lit": "^3.3.3",
+		"lit-html": "^3.3.3",
 		"zxing-wasm": "3.1.5"
 	},
 	"packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
