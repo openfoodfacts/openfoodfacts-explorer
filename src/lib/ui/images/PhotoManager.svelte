@@ -19,6 +19,7 @@
 	import type { ImageEditData } from '#lib/utils/imageEdit.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { trackOffEvent } from '#lib/analytics.js';
+	import { trackRefresh } from '#lib/utils/pendingRefresh.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
@@ -287,9 +288,7 @@
 
 			// Track the request and the refresh as one operation, so saving the form waits for both
 			await trackRefresh(
-				saveImageWithSelectAndCrop(imageData, cropData, rotationAngle).finally(() =>
-					invalidateAll()
-				)
+				saveImageWithSelectAndCrop(imageData, cropData, rotationAngle).finally(() => refreshAll())
 			);
 
 			toast.success($_('product.edit.images.toast.save_success'));

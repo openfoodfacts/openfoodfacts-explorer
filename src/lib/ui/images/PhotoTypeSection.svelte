@@ -17,6 +17,7 @@
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 	import { userInfo } from '#lib/stores/user.js';
+	import { trackRefresh } from '#lib/utils/pendingRefresh.js';
 
 	type PhotoType = { id: string; label: string };
 

@@ -26,6 +26,13 @@
 	import AddProductForm from '#lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { userInfo } from '#lib/stores/user.js';
+	import PhotoTextMismatchDialog from '#lib/ui/PhotoTextMismatchDialog.svelte';
+	import {
+		createPhotoTextSnapshot,
+		findPhotoTextMismatches,
+		type PhotoTextMismatch
+	} from '#lib/utils/photoTextMismatch.js';
+	import { waitForPendingRefreshes } from '#lib/utils/pendingRefresh.js';
 
 	import type { PageData } from './$types';
 	import { PRODUCT_IMAGE_URL, PRODUCT_STATUS } from '#lib/const.js';

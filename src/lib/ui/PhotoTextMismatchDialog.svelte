@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { _ } from '$lib/i18n';
-	import { getLanguageName } from '$lib/languages';
-	import type { PhotoTextMismatch } from '$lib/utils/photoTextMismatch';
+	import { _ } from '#lib/i18n/index.js';
+	import { getLanguageName } from '#lib/languages.js';
+	import type { PhotoTextMismatch } from '#lib/utils/photoTextMismatch.js';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 
 	type Props = {
