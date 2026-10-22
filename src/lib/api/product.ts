@@ -18,6 +18,62 @@ export function createProductsApi(fetch: typeof window.fetch) {
 	return new OpenFoodFacts(fetchToUse, { host: API_HOST });
 }
 
+/**
+ * Fetch the Contribution card with the product history table in it.
+ * The server only builds the history for a logged-in user, so this runs in the browser after login.
+ * @returns The panels, or an empty object when there is no history or the request fails
+ */
+export async function getProductHistoryPanels(
+	fetch: typeof window.fetch,
+	code: string,
+	lc: string
+): Promise<KnowledgePanels> {
+	try {
+		const { data } = await createProductsApi(fetch).getProductV3(code, {
+			product_type: 'all',
+			fields: ['knowledge_panels'],
+			knowledge_panels_included: 'contribution_card',
+			// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
+			activate_knowledge_panel_product_history: 1,
+			knowledge_panels_client: 'web',
+			lc
+		});
+		const panels = (data?.status === 'success' ? data.product.knowledge_panels : undefined) as
+			KnowledgePanels | undefined;
+		return panels?.product_history ? panels : {};
+	} catch {
+		return {};
+	}
+}
+
+/**
+ * Add the history panels to the product's panels, so the Contribution card shows the history table.
+ * @param panels - The product's panels from the page load
+ * @param history - The result of `getProductHistoryPanels` for the same product
+ * @returns The product's panels, with the Contribution card that has the history added or swapped in
+ */
+export function addHistoryPanel(
+	panels: KnowledgePanels,
+	history: KnowledgePanels
+): KnowledgePanels {
+	const historyRoot = history.root?.elements;
+	if (!historyRoot) return panels;
+
+	const panelId = (e: unknown) =>
+		(e as { panel_element?: { panel_id?: string } }).panel_element?.panel_id;
+	const elements = [...(panels.root?.elements ?? [])] as typeof historyRoot;
+
+	// A page load without the login token (anonymous, or the first server-side render) has no
+	// Contribution card in root, so add it above the product card like the server orders it.
+	// A logged-in page load already has it, and must not get a second one.
+	const present = new Set(elements.map(panelId));
+	const missing = historyRoot.filter((e) => !present.has(panelId(e)));
+	const productCard = elements.findIndex((e) => panelId(e) === 'product_card');
+	elements.splice(productCard < 0 ? elements.length : productCard, 0, ...missing);
+
+	return { ...panels, ...history, root: { ...panels.root, elements } };
+}
+
 export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
