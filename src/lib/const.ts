@@ -20,6 +20,7 @@ export {
 };
 
 export const STATIC_HOST = 'https://static.openfoodfacts.org';
+export const STATIC_PAGES_BASE_URL = 'https://world.openfoodfacts.org';
 export const API_HOST = PUBLIC_OFF_BASE_URL || 'https://world.openfoodfacts.org';
 export const IS_NON_PRODUCTION =
 	dev || ['development', 'staging'].includes(PUBLIC_ENVIRONMENT ?? '');

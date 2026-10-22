@@ -711,7 +711,8 @@
 				"add_packaging_image": "Add a photo of the packaging",
 				"add_ingredients_image": "Add a photo of the ingredients",
 				"add_nutrition_facts": "Add nutrition facts"
-			}
+			},
+			"history_filter": "Filter by contributor or comment"
 		},
 		"external_sources": {
 			"title": "External sources",
@@ -1007,7 +1008,8 @@
 			"share_failed": "Sharing failed.",
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
-		}
+		},
+		"floating_label": "Compare ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."

@@ -53,6 +53,7 @@
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
 	} from '#lib/api/externalSources.js';
+	import { addHistoryPanel, getProductHistoryPanels } from '#lib/api/product.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -110,6 +111,28 @@
 		};
 	});
 
+	// Product history needs the login token, which the server-side page load does not have
+	let history = $state<{ code: string; panels: KnowledgePanels } | null>(null);
+	let loggedIn = $derived($userAuthTokens != null);
+	$effect(() => {
+		history = null;
+		const code = product.code;
+		if (!browser || !loggedIn || !code) return;
+		const abortController = new AbortController();
+		const abortingFetch: typeof fetch = (input, init) =>
+			fetch(input, { ...init, signal: abortController.signal });
+		getProductHistoryPanels(abortingFetch, code, data.lc).then((panels) => {
+			if (!abortController.signal.aborted) history = { code, panels };
+		});
+		return () => abortController.abort();
+	});
+	// Until the effect above reruns, `history` can still hold the previous product's history
+	let panels = $derived(
+		history && history.code === product.code
+			? addHistoryPanel(product.knowledge_panels, history.panels)
+			: product.knowledge_panels
+	);
+
 	let hasExternalKnowledgePanelsSection = $derived(
 		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
@@ -158,7 +181,7 @@
 				label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
 				icon: IconMdiFlag
 			},
-			product.knowledge_panels?.contribution_card && {
+			panels.contribution_card && {
 				id: 'contribution_card',
 				label: $_('product.sections.contribution', { default: 'Contribution' }),
 				icon: IconMdiHelpCircleOutline
@@ -384,7 +407,7 @@
 
 			<div id="knowledge-panels-container">
 				<KnowledgePanelsComp
-					panels={product.knowledge_panels}
+					{panels}
 					code={product.code}
 					roots={['root']}
 					summary={sidebarHidden}
