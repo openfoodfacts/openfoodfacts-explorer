@@ -18,12 +18,12 @@
 <div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
 	{#if status === 404 && isProductError}
 		<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-			<div class="card-body items-center p-8 text-center">
+			<div class="card-body items-center p-6 text-center">
 				<div class="mb-2 text-6xl grayscale-[20%]">🥝</div>
-				<h1 class="text-3xl font-bold">
+				<h1 class="text-2xl font-bold">
 					{$_('product.not_found_title', { default: "We don't know this product yet!" })}
 				</h1>
-				<p class="py-4 text-lg text-base-content/80">
+				<p class="py-3 text-base-content/80">
 					{$_('product.not_found_desc', {
 						default: "You've discovered a new item. Be the hero who adds it to the database!"
 					})}

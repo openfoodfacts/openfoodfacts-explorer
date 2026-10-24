@@ -185,14 +185,19 @@
 			</div>
 
 			<div class="flex min-w-0 flex-col gap-2">
-				<h1 class="text-2xl leading-tight font-bold wrap-break-word md:text-3xl">
+				<h1
+					class={[
+						'leading-tight font-bold wrap-break-word md:text-3xl',
+						product.product_name ? 'text-2xl' : 'text-xl'
+					]}
+				>
 					{product.product_name || product.code}
 				</h1>
 				{#if metaLine}
 					<p class="text-sm text-base-content/70 md:text-base">{metaLine}</p>
 				{/if}
 				<div class="flex flex-wrap items-center gap-2 text-sm text-base-content/70">
-					<span>{$_('product.barcode.code_label')}</span>
+					<span class="sr-only md:not-sr-only">{$_('product.barcode.code_label')}</span>
 					{#if product.product_name}
 						<span class="rounded-lg bg-base-content/10 px-2 font-mono text-xs md:text-sm"
 							>{product.code}</span
