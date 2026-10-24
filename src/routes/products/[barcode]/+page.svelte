@@ -49,6 +49,7 @@
 	import { goto } from '$app/navigation';
 	import { trackOffEvent } from '#lib/analytics.js';
 	import { browser } from '$app/env';
+	import { isNutritionMissing } from '#lib/utils/nutritionFacts.js';
 	import {
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
@@ -137,6 +138,153 @@
 		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
 
+	let isNutritionMissingForProduct = $derived(Boolean(product.code) && isNutritionMissing(product));
+
+	let hasNutrientInsight = $state(false);
+	let noInsightAvailable = $state(false);
+	let isNutrientFinished = $state(false);
+	let lastProductCode = $state<string | null>(null);
+
+	$effect(() => {
+		if (product.code !== lastProductCode) {
+			lastProductCode = product.code ?? null;
+			hasNutrientInsight = false;
+			noInsightAvailable = false;
+			isNutrientFinished = false;
+		}
+	});
+
+	function handleNutrientState(event: Event) {
+		const customEvent = event as CustomEvent<{ state: string }>;
+		const state = customEvent.detail?.state;
+
+		if (state === 'has-data') {
+			hasNutrientInsight = true;
+			noInsightAvailable = false;
+		} else if (state === 'no-data') {
+			hasNutrientInsight = false;
+			noInsightAvailable = true;
+		} else if (state === 'FINISHED') {
+			isNutrientFinished = true;
+			hasNutrientInsight = false;
+		}
+	}
+
+	function nutrientExtractionAction(node: HTMLElement) {
+		node.addEventListener('nutrient-state', handleNutrientState);
+
+		let formObserver: MutationObserver | null = null;
+		let destroyed = false;
+
+		function applyStyleFix() {
+			if (destroyed) return;
+			const shadow = node.shadowRoot;
+			if (shadow) {
+				if (!shadow.querySelector('#nutrient-image-sticky-fix')) {
+					const style = document.createElement('style');
+					style.id = 'nutrient-image-sticky-fix';
+					style.textContent = `
+						.image-wrapper {
+							position: relative !important;
+							top: auto !important;
+						}
+					`;
+					shadow.appendChild(style);
+				}
+
+				const formElem = shadow.querySelector('robotoff-nutrient-extraction-form');
+				const formShadow = formElem?.shadowRoot;
+				if (formShadow && !formShadow.querySelector('#nutrient-grid-2x2-fix')) {
+					const formStyle = document.createElement('style');
+					formStyle.id = 'nutrient-grid-2x2-fix';
+					formStyle.textContent = `
+						form,
+						.serving-size-selection {
+							max-width: 46rem !important;
+							width: 100% !important;
+						}
+
+						.nutrient-rows {
+							display: grid !important;
+							grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+							gap: 1rem 1.5rem !important;
+						}
+
+						.toggle-nutrient-button-wrapper button {
+							height: 2.5rem !important;
+							width: 2.5rem !important;
+							padding: 0 !important;
+							display: inline-flex !important;
+							align-items: center !important;
+							justify-content: center !important;
+							border-radius: 9999px !important;
+							box-sizing: border-box !important;
+						}
+
+						.toggle-nutrient-button-wrapper eye-visible-icon,
+						.toggle-nutrient-button-wrapper eye-invisible-icon {
+							display: flex !important;
+							align-items: center !important;
+							justify-content: center !important;
+							transform: scale(0.85);
+						}
+
+						.alert.success.with-icons {
+							padding: 0.35rem 0.75rem !important;
+							font-size: 0.85rem !important;
+							border-radius: 0.5rem !important;
+						}
+
+						.alert.success.with-icons suggestion-icon,
+						.alert.success.with-icons add-icon {
+							transform: scale(0.85);
+						}
+
+						@media (max-width: 640px) {
+							.nutrient-rows {
+								grid-template-columns: 1fr !important;
+							}
+						}
+					`;
+					formShadow.appendChild(formStyle);
+
+					if (!formObserver) {
+						formObserver = new MutationObserver(applyStyleFix);
+						formObserver.observe(formShadow, { childList: true });
+					}
+				}
+			}
+		}
+
+		applyStyleFix();
+		const observer = new MutationObserver(applyStyleFix);
+		if (node.shadowRoot) {
+			observer.observe(node.shadowRoot, { childList: true, subtree: true });
+		}
+		if (typeof customElements !== 'undefined') {
+			customElements.whenDefined('robotoff-nutrient-extraction').then(() => {
+				if (destroyed) return;
+				applyStyleFix();
+				if (node.shadowRoot) {
+					observer.observe(node.shadowRoot, { childList: true, subtree: true });
+				}
+			});
+			customElements.whenDefined('robotoff-nutrient-extraction-form').then(() => {
+				if (destroyed) return;
+				applyStyleFix();
+			});
+		}
+
+		return {
+			destroy() {
+				destroyed = true;
+				node.removeEventListener('nutrient-state', handleNutrientState);
+				observer.disconnect();
+				formObserver?.disconnect();
+			}
+		};
+	}
+
 	let websiteCtx = getWebsiteCtx();
 	$effect(() => {
 		// Update website context based on product type
@@ -190,6 +338,11 @@
 				id: 'product_card',
 				label: $_('product.sections.product_information', { default: 'Product information' }),
 				icon: IconMdiFormatListBulleted
+			},
+			hasNutrientInsight && {
+				id: 'nutrient-extraction',
+				label: $_('product.sections.nutrient_extraction', { default: 'Extract nutrition' }),
+				icon: IconMdiNutrition
 			},
 			hasExternalKnowledgePanelsSection && {
 				id: 'external-sources',
@@ -413,6 +566,30 @@
 					summary={sidebarHidden}
 				/>
 			</div>
+
+			{#if isNutrientFinished}
+				<div class="alert alert-success shadow-sm">
+					<IconMdiNutrition class="h-6 w-6 shrink-0" />
+					<span>
+						{$_('product.nutrient_extraction.success', {
+							default: 'Thank you for contributing! The nutritional information has been submitted.'
+						})}
+					</span>
+				</div>
+			{:else if isNutritionMissingForProduct && product.code}
+				<div
+					id="nutrient-extraction"
+					class:hidden={noInsightAvailable}
+					use:nutrientExtractionAction
+				>
+					{#if !noInsightAvailable}
+						<Card>
+							<robotoff-nutrient-extraction product-code={product.code} use:nutrientExtractionAction
+							></robotoff-nutrient-extraction>
+						</Card>
+					{/if}
+				</div>
+			{/if}
 
 			{#if hasExternalKnowledgePanelsSection}
 				<div id="external-sources">
