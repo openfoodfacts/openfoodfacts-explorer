@@ -930,7 +930,17 @@
 		"contributors_count": "Contributors",
 		"open_data": "Open Data",
 		"help_improve_title": "Help Improve Open Food Facts",
-		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products."
+		"help_improve_desc": "Help us improve Open Food Facts by editing or answering questions about these products.",
+		"subtitle_by_flavor": {
+			"beauty": "A collaborative, free and open database of cosmetic products from around the world. Discover, search, and contribute to cosmetics transparency for everyone.",
+			"petfood": "A collaborative, free and open database of pet food products from around the world. Discover, search, and contribute to pet food transparency for everyone.",
+			"product": "A collaborative, free and open database of products from around the world. Discover, search, and contribute to product transparency for everyone."
+		},
+		"help_improve_desc_by_flavor": {
+			"beauty": "Help us improve Open Beauty Facts by editing or answering questions about these products.",
+			"petfood": "Help us improve Open Pet Food Facts by editing or answering questions about these products.",
+			"product": "Help us improve Open Products Facts by editing or answering questions about these products."
+		}
 	},
 	"dashboard": {
 		"products_created": "Products created",
@@ -960,7 +970,12 @@
 		"random_product": "Random Product",
 		"random_product_desc": "Feeling lucky? Discover a random product from our database.",
 		"learn_more": "Learn More",
-		"learn_more_desc": "Find out how Open Food Facts works and how you can help."
+		"learn_more_desc": "Find out how Open Food Facts works and how you can help.",
+		"subtitle_by_flavor": {
+			"beauty": "Discover cosmetic products, explore categories, and contribute to cosmetics transparency!",
+			"petfood": "Discover pet food products, explore categories, and contribute to pet food transparency!",
+			"product": "Discover products, explore categories, and contribute to product transparency!"
+		}
 	},
 	"compare": {
 		"page_title": "Compare Products",
@@ -1009,7 +1024,12 @@
 			"link_copied": "Comparison link copied to clipboard!",
 			"copy_failed": "Failed to copy link to clipboard."
 		},
-		"floating_label": "Compare ({count})"
+		"floating_label": "Compare ({count})",
+		"page_description_by_flavor": {
+			"beauty": "Compare information about cosmetic products",
+			"petfood": "Compare information about pet food products",
+			"product": "Compare information about products"
+		}
 	},
 	"static_iframe": {
 		"load_failed": "Failed to load content."
