@@ -63,8 +63,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.71.2",
 		"@typescript-eslint/parser": "^8.71.2",
 		"@vercel/speed-insights": "^2.0.0",
-		"cropperjs": "^2.3.0",
-		"cytoscape": "^3.34.3",
+		"cropperjs": "^2.3.1",
+		"cytoscape": "^3.34.4",
 		"daisyui": "5.7.50",
 		"eslint": "^10.12.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -111,7 +111,7 @@
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"barcode-detector": "^3.2.2",
 		"csv-stringify": "^6.9.0",
-		"isomorphic-dompurify": "^4.5.0",
+		"isomorphic-dompurify": "^4.6.0",
 		"zxing-wasm": "3.1.5"
 	},
 	"packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
