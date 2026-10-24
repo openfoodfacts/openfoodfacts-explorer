@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, type Component } from 'svelte';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -193,13 +192,6 @@
 	let searchQuery: string = $state('');
 
 	let { children }: LayoutProps = $props();
-
-	onMount(() => {
-		if (import.meta.env.VERCEL) {
-			// if we're on vercel and on the client, inject the speed insights script
-			injectSpeedInsights();
-		}
-	});
 
 	function updateSearchQuery(url: URL) {
 		const q = url.searchParams.get('q') ?? '';
