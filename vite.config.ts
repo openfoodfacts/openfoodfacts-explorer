@@ -2,7 +2,7 @@ import vercelAdapter from '@sveltejs/adapter-vercel';
 import nodejsAdapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { execFileSync } from 'node:child_process';
-import { sentrySvelteKit } from '@sentry/sveltekit';
+import { sentrySvelteKit } from '@sentry/sveltekit/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import packageJson from './package.json' with { type: 'json' };
@@ -61,10 +61,8 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sentrySvelteKit({
-			sourceMapsUploadOptions: {
-				org: 'openfoodfacts',
-				project: 'openfoodfacts-explorer'
-			}
+			org: 'openfoodfacts',
+			project: 'openfoodfacts-explorer'
 		}),
 
 		sveltekit({
