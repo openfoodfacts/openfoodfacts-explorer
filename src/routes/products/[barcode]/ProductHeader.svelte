@@ -2,6 +2,7 @@
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import { navigating } from '$app/state';
 
@@ -73,7 +74,13 @@
 				})
 			},
 			{
-				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
+				onSuccess: () => {
+					trackOffEvent('engagement', 'share_product', 'native_share');
+				},
+				onClipboard: () => {
+					trackOffEvent('engagement', 'share_product', 'clipboard_copy');
+					toastCtx.success($_('product.toast.copied_link'));
+				},
 				onError: () => toastCtx.error($_('product.toast.failed_copy'))
 			}
 		);
@@ -166,6 +173,7 @@
 						rel="noopener noreferrer"
 						title={$_('product.buttons.report')}
 						aria-label={$_('product.buttons.report')}
+						onclick={() => trackOffEvent('feature', 'report_problem_opened', 'product_header')}
 					>
 						<IconMdiFlag class="h-5 w-5" />
 					</a>
