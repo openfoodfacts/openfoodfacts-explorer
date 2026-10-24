@@ -46,7 +46,7 @@
 		"@iconify-svelte/mdi": "^1.0.2",
 		"@iconify-svelte/simple-icons": "^1.0.44",
 		"@openfoodfacts/openfoodfacts-nodejs": "2.0.0-alpha.36",
-		"@sentry/sveltekit": "11.8.0",
+		"@sentry/sveltekit": "^11.8.0",
 		"@sveltejs/adapter-node": "^6.0.1",
 		"@sveltejs/adapter-vercel": "^7.0.2",
 		"@sveltejs/kit": "^3.1.1",
