@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '#lib/i18n/index.js';
-	import type { Product } from '#lib/api.js';
+	import { getEmbCodeSuggestions, type Product } from '#lib/api.js';
 	import { preferences } from '#lib/settings.js';
 	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import { PRODUCT_TYPES } from '#lib/const.js';
@@ -759,7 +759,7 @@
 							</label>
 							<TagsString
 								tagsString={product.emb_codes ?? ''}
-								autocomplete={[]}
+								getSuggestions={(query) => getEmbCodeSuggestions(fetch, query)}
 								placeholder={$_('product.edit.traceability_examples', {
 									default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
 								})}
