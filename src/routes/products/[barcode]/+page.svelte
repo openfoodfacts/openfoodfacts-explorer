@@ -36,7 +36,7 @@
 	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
-	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '#lib/api/knowledgepanels.js';
 	import ScrollToTop from '#lib/ui/ScrollToTop.svelte';
 	import { onMount } from 'svelte';
@@ -53,7 +53,7 @@
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
 	} from '#lib/api/externalSources.js';
-	import { addHistoryPanel, getProductHistoryPanels } from '#lib/api/product.js';
+	import { addHistoryPanel, createProductsApi, getProductHistoryPanels } from '#lib/api/product.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -270,7 +270,7 @@
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
-		const offApi = new OpenFoodFacts(fetch);
+		const offApi = createProductsApi(fetch);
 
 		const searchParams: Record<string, unknown> = {
 			fields: ['attribute_groups_en']
