@@ -915,7 +915,17 @@
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview",
 		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_countries": "Where these products are sold",
+		"filter_label": "Filter the whole facet",
+		"filter_placeholder": "Filter values, e.g. apple",
+		"filter_status_label": "Status",
+		"filter_status_all": "All values",
+		"filter_status_known": "Known values",
+		"filter_status_unknown": "Unknown values",
+		"filter_submit": "Filter",
+		"filter_clear": "Clear",
+		"filter_warning": "Filtering scans every value of this facet and can take up to a minute to load. Please use it sparingly.",
+		"filter_results_count": "{count, plural, one {# matching value} other {# matching values}}"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
