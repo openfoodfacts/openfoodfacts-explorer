@@ -3,8 +3,14 @@
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
-	type Props = { src?: string; alt?: string; rawImageId?: number; productCode?: string };
-	let { src, alt, rawImageId, productCode }: Props = $props();
+	type Props = {
+		src?: string;
+		alt?: string;
+		caption?: string;
+		rawImageId?: number;
+		productCode?: string;
+	};
+	let { src, alt, caption, rawImageId, productCode }: Props = $props();
 
 	let modal: ImageModal;
 
@@ -24,7 +30,8 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src);
+		return () =>
+			modal.displayImage(getFullSizeImageUrl(src), caption ?? alt, imageId, productCode, src);
 	});
 </script>
 
