@@ -62,7 +62,6 @@
 		"@types/topojson-specification": "^1.0.5",
 		"@typescript-eslint/eslint-plugin": "^8.71.2",
 		"@typescript-eslint/parser": "^8.71.2",
-		"@vercel/speed-insights": "^2.0.0",
 		"cropperjs": "^2.3.0",
 		"cytoscape": "^3.34.3",
 		"daisyui": "5.7.50",
