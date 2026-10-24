@@ -571,7 +571,7 @@ export type ImageUploadResponse = {
 
 // Response type for v3.3 image operations
 export type ImageOperationResponse = {
-	status: 'success' | 'failure';
+	status: 'success' | 'success_with_warnings' | 'success_with_errors' | 'failure';
 	result?: {
 		id: string;
 		name: string;
