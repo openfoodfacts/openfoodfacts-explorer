@@ -6,12 +6,7 @@
 	import { navigating } from '$app/state';
 
 	import { getLanguageCode, preferences } from '#lib/settings.js';
-	import {
-		API_HOST,
-		PRODUCT_REPORT_URL,
-		PRODUCT_WEBSITE_URL,
-		TRACEABILITY_CODES_URL
-	} from '#lib/const.js';
+	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
 	import TagChipList from '#lib/ui/TagChips.svelte';
 	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
 	import { compareStore } from '#lib/stores/compareStore.js';
@@ -98,10 +93,14 @@
 	let credit = $derived(
 		uploader ? $_('product.image_attribution', { values: { photographer: uploader } }) : undefined
 	);
-	let creditHref = $derived(`${API_HOST}/cgi/product_image.pl?code=${product.code}&id=${frontKey}`);
+	let creditHref = $derived(
+		`${new URL(productWebsiteUrl).origin}/cgi/product_image.pl?code=${product.code}&id=${frontKey}`
+	);
 
 	let metaLine = $derived(
-		[product.brands, product.generic_name, product.quantity].filter(Boolean).join(' · ')
+		[product.brands?.replaceAll(',', ', '), product.generic_name, product.quantity]
+			.filter(Boolean)
+			.join(' · ')
 	);
 
 	let similarHref = $derived.by(() => {
@@ -231,7 +230,6 @@
 						role="button"
 						class="btn rounded-full btn-outline btn-sm"
 						aria-label={$_('product.buttons.more')}
-						aria-haspopup="menu"
 					>
 						<IconMdiDotsHorizontal class="h-5 w-5" aria-hidden="true" />
 					</div>
