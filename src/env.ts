@@ -11,5 +11,6 @@ export const variables = defineEnvVars({
 	PUBLIC_NUTRIPATROL_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_AUTH_BASE_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_AUTH_PKCE_ID: { public: true, schema: (input) => input ?? '' },
-	PUBLIC_KEYCLOAK_REALM: { public: true, schema: (input) => input ?? '' }
+	PUBLIC_KEYCLOAK_REALM: { public: true, schema: (input) => input ?? '' },
+	FORCE_ROLE: { public: true, schema: (input) => input ?? '' }
 });

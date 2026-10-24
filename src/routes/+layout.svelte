@@ -151,14 +151,12 @@
 
 	// == Global User Permissions Context ==
 
-	import { setPermissionsCtx, type UserPermissionsContext } from '#lib/stores/user.js';
+	import { createPermissionsContext, setPermissionsCtx } from '#lib/stores/user.js';
 	import { fetchCurrentUserPermissions } from '#lib/api/permissions.js';
 	import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
-	let permissionsCtx = $state<UserPermissionsContext>({
-		isAdmin: false,
-		isModerator: false
-	});
+	let userRoles = $state<string[]>([]);
+	const permissionsCtx = createPermissionsContext(() => userRoles);
 
 	setPermissionsCtx(() => permissionsCtx);
 
@@ -170,21 +168,19 @@
 			const authFetch = wrapFetchWithAuth(globalThis.fetch);
 			fetchCurrentUserPermissions(authFetch).then(({ data }) => {
 				if (cancelled) return;
-				if (data && data.status === 'success' && data.user) {
-					permissionsCtx.isAdmin = data.user.admin === 1;
-					permissionsCtx.isModerator = data.user.moderator === 1;
-				} else {
-					permissionsCtx.isAdmin = false;
-					permissionsCtx.isModerator = false;
+				const roles: string[] = [];
+				if (data?.status === 'success' && data.user) {
+					if (data.user.admin === 1) roles.push('admin');
+					if (data.user.moderator === 1) roles.push('moderator');
 				}
+				userRoles = roles;
 			});
 			return () => {
 				cancelled = true;
 			};
 		} else {
 			// Clear roles when logged out
-			permissionsCtx.isAdmin = false;
-			permissionsCtx.isModerator = false;
+			userRoles = [];
 		}
 	});
 
