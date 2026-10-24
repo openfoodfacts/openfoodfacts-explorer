@@ -78,7 +78,7 @@
 </script>
 
 <dialog
-	class="h-screen max-h-screen w-screen max-w-screen border border-base-300 bg-base-100 p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
+	class="h-dvh max-h-dvh w-screen max-w-screen border border-base-300 bg-base-100 p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={(e) => {
