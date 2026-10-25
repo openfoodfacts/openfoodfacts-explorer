@@ -15,7 +15,9 @@ export * from './api/externalSources';
 export function createRobotoffApi(fetch: typeof window.fetch) {
 	const rawUrl = new URL(ROBOTOFF_URL);
 	const { fetch: wrappedFetch, url } = wrapFetchWithCredentials(fetch, rawUrl);
-	return new Robotoff(wrappedFetch, { baseUrl: url.toString() });
+	const fetchWithCredentials: typeof fetch = (input, init) =>
+		wrappedFetch(input, { ...init, credentials: 'include' });
+	return new Robotoff(fetchWithCredentials, { baseUrl: url.toString() });
 }
 
 export function createKeycloakApi(fetch: typeof window.fetch, url: URL) {

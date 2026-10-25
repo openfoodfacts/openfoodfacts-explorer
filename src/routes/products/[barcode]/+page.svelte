@@ -370,7 +370,9 @@
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
-			<div id="overview" class="flex flex-col gap-4"><ProductHeader {product} lc={data.lc} /></div>
+			<div id="overview" class="flex flex-col gap-4">
+				<ProductHeader {product} lc={data.lc} logoCount={data.logos.length} />
+			</div>
 
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
