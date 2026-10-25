@@ -31,7 +31,7 @@
 			return undefined;
 		}
 		return () =>
-			modal.displayImage(getFullSizeImageUrl(src), caption ?? alt, imageId, productCode, src);
+			modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src, caption);
 	});
 </script>
 

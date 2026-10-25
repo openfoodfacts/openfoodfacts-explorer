@@ -93,6 +93,8 @@
 	let credit = $derived(
 		uploader ? $_('product.image_attribution', { values: { photographer: uploader } }) : undefined
 	);
+	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
+
 	let creditHref = $derived(
 		`${new URL(productWebsiteUrl).origin}/cgi/product_image.pl?code=${product.code}&id=${frontKey}`
 	);
@@ -124,8 +126,6 @@
 	function closeOnEscape(e: KeyboardEvent) {
 		if (e.key === 'Escape') closeMenu();
 	}
-
-	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
 
 	function addToComparison() {
 		closeMenu();

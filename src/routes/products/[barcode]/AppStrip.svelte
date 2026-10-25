@@ -21,7 +21,7 @@
 			{$_('product.app_strip.get_app')}
 		</a>
 		<button
-			class="btn btn-ghost btn-xs"
+			class="btn btn-circle btn-ghost btn-xs"
 			aria-label={$_('slow_server.dismiss')}
 			onclick={() => ($dismissed = true)}
 		>

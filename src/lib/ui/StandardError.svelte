@@ -29,7 +29,7 @@
 					})}
 				</p>
 				<p class="text-sm text-base-content/70">
-					{$_('product.barcode.code_label')}
+					{$_('product.barcode.code_label', { default: 'Barcode' })}
 					<span class="rounded-lg bg-base-content/10 px-2 font-mono">{page.params.barcode}</span>
 				</p>
 				<div class="mt-4 card-actions flex w-full flex-col gap-3">
