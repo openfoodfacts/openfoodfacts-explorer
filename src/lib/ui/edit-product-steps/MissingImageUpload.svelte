@@ -89,7 +89,7 @@
 		/>
 		<button
 			type="button"
-			class="btn gap-2 btn-outline btn-sm"
+			class="btn gap-2 btn-outline btn-sm [--btn-color:var(--color-warning-content)] [--btn-fg:var(--color-warning)]"
 			disabled={isUploading}
 			onclick={openFilePicker}
 		>
