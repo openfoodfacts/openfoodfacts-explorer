@@ -62,8 +62,8 @@
 		"@types/topojson-specification": "^1.0.5",
 		"@typescript-eslint/eslint-plugin": "^8.71.2",
 		"@typescript-eslint/parser": "^8.71.2",
-		"cropperjs": "^2.3.0",
-		"cytoscape": "^3.34.3",
+		"cropperjs": "^2.3.1",
+		"cytoscape": "^3.34.4",
 		"daisyui": "5.7.50",
 		"eslint": "^10.12.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -74,7 +74,7 @@
 		"husky": "^9.1.7",
 		"iso-3166-1": "^2.1.1",
 		"iso-639-1": "^3.1.6",
-		"jose": "^6.2.12",
+		"jose": "^6.2.13",
 		"jsbarcode": "^3.12.3",
 		"leaflet": "^1.9.4",
 		"leaflet.markercluster": "^1.5.3",
@@ -106,12 +106,12 @@
 	},
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
-		"@opentelemetry/api": "^1.9.1",
+		"@opentelemetry/api": "^1.10.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
-		"barcode-detector": "^3.2.2",
+		"barcode-detector": "^3.2.3",
 		"csv-stringify": "^6.9.0",
-		"isomorphic-dompurify": "^4.5.0",
-		"zxing-wasm": "3.1.5"
+		"isomorphic-dompurify": "^4.6.0",
+		"zxing-wasm": "3.1.6"
 	},
 	"packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
 }
