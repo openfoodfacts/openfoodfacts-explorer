@@ -24,6 +24,13 @@
 		"logout": "లాగౌట్",
 		"account": "ఖాతా"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "శోధన - {query} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
 		"placeholder": "ప్రశ్న లేదా బార్‌కోడ్",
