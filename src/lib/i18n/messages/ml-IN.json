@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "തിരയുക - {query} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
 		"placeholder": "അന്വേഷണം അല്ലെങ്കിൽ ബാർകോഡ്",
