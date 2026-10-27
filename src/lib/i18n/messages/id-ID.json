@@ -24,6 +24,13 @@
 		"logout": "Keluar",
 		"account": "Akun"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Pencarian - {query} - Buka Penjelajah Fakta Makanan",
 		"placeholder": "Pertanyaan atau kode batang",
