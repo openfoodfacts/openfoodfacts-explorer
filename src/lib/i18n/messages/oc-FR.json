@@ -24,6 +24,13 @@
 		"logout": "Desconnexion",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Recèrca - {query} - Explorator de faches alimentaris dobèrt",
 		"placeholder": "Requèsta o còde de barras",
