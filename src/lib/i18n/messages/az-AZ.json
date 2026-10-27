@@ -24,6 +24,13 @@
 		"logout": "Çıxış",
 		"account": "Hesab"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Axtar - {query} - Qida Faktları Explorer açın",
 		"placeholder": "Sorğu və ya barkod",
