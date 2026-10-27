@@ -24,6 +24,13 @@
 		"logout": "Выйти",
 		"account": "Учётная запись"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Поиск - {query} - Открыть проводник по фактам о еде",
 		"placeholder": "Запрос или штрихкод",
