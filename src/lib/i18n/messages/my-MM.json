@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ရှာဖွေပါ - {query} - Food Facts Explorer ကိုဖွင့်ပါ။",
 		"placeholder": "မေးမြန်းမှု သို့မဟုတ် ဘားကုဒ်",
