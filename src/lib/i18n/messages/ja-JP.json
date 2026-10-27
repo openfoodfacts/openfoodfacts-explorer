@@ -24,6 +24,13 @@
 		"logout": "ログアウト",
 		"account": "アカウント"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "検索 - {query} - Open Food Facts Explorer",
 		"placeholder": "クエリまたはバーコード",
