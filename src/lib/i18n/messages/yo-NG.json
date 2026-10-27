@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Àkọọ́lẹ̀"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Ṣewadii - {query} - Ṣiṣawari Awọn Otitọ Ounje",
 		"placeholder": "Ibeere tabi kooduopo",
