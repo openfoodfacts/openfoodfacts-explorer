@@ -704,6 +704,7 @@
 			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Edit product",
 				"add_categories": "Add categories",
