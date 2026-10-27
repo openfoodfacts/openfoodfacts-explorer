@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "शोधा - {query} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
 		"placeholder": "क्वेरी किंवा बारकोड",
