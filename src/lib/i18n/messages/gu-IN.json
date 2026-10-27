@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "ખાતું"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "શોધો - {query} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
 		"placeholder": "ક્વેરી અથવા બારકોડ",
