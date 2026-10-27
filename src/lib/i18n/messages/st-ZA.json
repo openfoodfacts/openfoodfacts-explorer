@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Batla - {query} - Bula Mofuputsi oa Lintlha tsa Lijo",
 		"placeholder": "Potso kapa barcode",
