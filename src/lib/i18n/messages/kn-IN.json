@@ -24,6 +24,13 @@
 		"logout": "ಲಾಗ್‌ಔಟ್",
 		"account": "ಖಾತೆ"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ಹುಡುಕಾಟ - {query} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
 		"placeholder": "ಪ್ರಶ್ನೆ ಅಥವಾ ಬಾರ್‌ಕೋಡ್",
