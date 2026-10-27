@@ -24,6 +24,13 @@
 		"logout": "Logg ut",
 		"account": "Konto"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Søk - {query} - Åpne Matfakta-utforskeren",
 		"placeholder": "Spørsmål eller strekkode",
