@@ -24,6 +24,13 @@
 		"logout": "Logi välja",
 		"account": "Konto"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Otsing - {query} - Ava toidufaktide uurija",
 		"placeholder": "Päring või vöötkood",
