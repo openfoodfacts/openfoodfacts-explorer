@@ -24,6 +24,13 @@
 		"logout": "Digennaskañ",
 		"account": "Kont"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Klask - {query} - Ergerzher ar fedoù boued digor",
 		"placeholder": "Goulenn pe kod barrennoù",
