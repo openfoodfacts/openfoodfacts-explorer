@@ -31,6 +31,7 @@
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
 	import { _, getLocale, locale } from '#lib/i18n/index.js';
+	import { startLogout } from '#lib/auth/logout.js';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -336,13 +337,14 @@
 							</li>
 							<div class="divider my-1"></div>
 							<li>
-								<a
-									href={resolve('oauth/logout')}
+								<button
+									type="button"
+									onclick={startLogout}
 									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
 									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-								</a>
+								</button>
 							</li>
 						</ul>
 					</div>
@@ -475,10 +477,14 @@
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
 
-						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('oauth/logout')}>
+						<button
+							type="button"
+							onclick={startLogout}
+							class="btn gap-2 btn-outline btn-error btn-sm"
+						>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>
