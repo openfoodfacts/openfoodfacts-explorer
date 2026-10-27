@@ -24,6 +24,13 @@
 		"logout": "Kijelentkezés",
 		"account": "Fiók"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Keresés - {query} - Élelmiszerinformációk böngészőjének megnyitása",
 		"placeholder": "Lekérdezés vagy vonalkód",
