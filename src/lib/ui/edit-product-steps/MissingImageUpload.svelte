@@ -43,8 +43,26 @@
 			const result = await uploadImageV3(fetch, productCode, base64Data, imagefield);
 			const status = result?.data?.status;
 
-			if (status === 'success' || status === 'success_with_warnings') {
-				toast.success($_('product.edit.images.toast.upload_success'));
+			if (
+				status === 'success' ||
+				status === 'success_with_warnings' ||
+				status === 'success_with_errors'
+			) {
+				if (status === 'success_with_errors') {
+					// The image is saved, but part of the request (e.g. selecting it) failed.
+					const error = (result.data?.errors ?? [])
+						.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
+						.filter(Boolean)
+						.join(', ');
+					toast.warning(
+						$_('product.edit.images.toast.upload_success_with_errors', {
+							default: 'Image uploaded, but some changes could not be applied: {error}',
+							values: { error }
+						})
+					);
+				} else {
+					toast.success($_('product.edit.images.toast.upload_success'));
+				}
 				trackOffEvent('contribution', 'image_upload_succeeded', imagefield.split('_')[0]);
 				try {
 					await onUploaded?.();
