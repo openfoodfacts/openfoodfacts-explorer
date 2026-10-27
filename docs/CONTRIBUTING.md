@@ -60,6 +60,16 @@ If you see an issue that you would like to work on, please follow these guidelin
 5. Open a Pull Request (PR) against the `main` branch of the original repository.
 6. In your PR description, reference the issue you are addressing (e.g., "Fixes #123") and provide a clear explanation of your changes, following the suggested template.
 
+## Testing Moderator Features Locally
+
+To test features that require moderator permissions (e.g., Moderator Mode in Settings or moderation actions in product edit) without a privileged account, add `FORCE_ROLE` to your `.env` file:
+
+```env
+FORCE_ROLE=moderator
+```
+
+> **Note:** This override only works in local development mode (`pnpm dev`) and is completely ignored in production builds.
+
 ## Design & UX Guidelines
 
 This project has a specific design system (Tailwind CSS v4 + DaisyUI v5). Before building any UI, please read our **[Design Guide](DESIGN.md)** to ensure consistency.
