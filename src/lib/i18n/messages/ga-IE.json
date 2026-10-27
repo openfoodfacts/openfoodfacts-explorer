@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Cuntas"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Cuardaigh - {query} - Oscail Taiscéalaí Fíricí Bia",
 		"placeholder": "Fiosrúchán nó cód barra",
