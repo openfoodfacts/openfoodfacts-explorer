@@ -24,6 +24,13 @@
 		"logout": "Logga ut",
 		"account": "Konto"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Sök - {query} - Open Food Facts Explorer",
 		"placeholder": "Sökterm eller streckkod",
