@@ -24,6 +24,13 @@
 		"logout": "Odjavi se",
 		"account": "Račun"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Pretraga - {query} - Open Food Facts Explorer",
 		"placeholder": "Upit ili barkod",
