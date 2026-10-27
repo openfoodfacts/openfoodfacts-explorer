@@ -24,6 +24,13 @@
 		"logout": "Atsijungti",
 		"account": "Paskyra"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Paieška – {query} – Atidaryti maisto faktų naršyklę",
 		"placeholder": "Užklausa arba brūkšninis kodas",
