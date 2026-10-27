@@ -20,6 +20,11 @@
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
 	import IconMdiDotsHorizontal from '@iconify-svelte/mdi/dots-horizontal';
+	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
+	import IconMdiShape from '@iconify-svelte/mdi/shape';
+	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
+	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -154,8 +159,14 @@
 			<div class="flex min-w-0 flex-col gap-2 md:row-span-2">
 				{#if frontImage}
 					<div
-						class="aspect-square overflow-hidden rounded-xl bg-white [&_button]:size-full [&_img]:size-full [&_img]:object-contain [&>div]:size-full [&>div>button>div]:size-full"
+						class="relative aspect-square overflow-hidden rounded-xl bg-white [&>div]:size-full [&>div_button]:size-full [&>div_img]:size-full [&>div_img]:object-contain [&>div>button>div]:size-full"
 					>
+						<img
+							src={frontImage}
+							alt=""
+							class="absolute inset-0 size-full scale-150 object-cover blur-sm"
+							aria-hidden="true"
+						/>
 						<ImageButton
 							src={frontImage}
 							alt={product.product_name}
@@ -243,15 +254,20 @@
 								rel="noopener noreferrer"
 								onclick={closeMenu}
 							>
+								<IconMdiOpenInNew class="h-5 w-5" aria-hidden="true" />
 								{$_('product.buttons.classic_view')}
 							</a>
 						</li>
 						<li>
-							<button onclick={addToComparison}>{$_('product.buttons.compare')}</button>
+							<button onclick={addToComparison}>
+								<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
+								{$_('product.buttons.compare')}
+							</button>
 						</li>
 						{#if similarHref}
 							<li>
 								<a href={similarHref} onclick={closeMenu}>
+									<IconMdiShape class="h-5 w-5" aria-hidden="true" />
 									{$_('product.barcode.similar_products')}
 								</a>
 							</li>
@@ -259,6 +275,7 @@
 						{#if $userInfo != null}
 							<li>
 								<button onclick={addToCalculator}>
+									<IconMdiCalculator class="h-5 w-5" aria-hidden="true" />
 									{$_('product.buttons.add_to_calculator')}
 								</button>
 							</li>
@@ -271,6 +288,7 @@
 								rel="noopener noreferrer"
 								onclick={closeMenu}
 							>
+								<IconMdiFlag class="h-5 w-5" aria-hidden="true" />
 								{$_('product.buttons.report')}
 							</a>
 						</li>
