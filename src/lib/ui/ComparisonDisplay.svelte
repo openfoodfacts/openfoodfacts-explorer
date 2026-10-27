@@ -4,6 +4,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
 	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
+	import InfoTooltip from '#lib/ui/InfoTooltip.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -649,9 +650,17 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
-					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
-				>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
+					<span class="flex items-center gap-1">
+						{$_('compare.nova_group', { default: 'Ultra-processing level' })}
+						<InfoTooltip
+							text={$_('compare.nova_group_explanation', {
+								default:
+									'NOVA classifies foods by how much they are processed, from 1 (unprocessed or minimally processed) to 4 (ultra-processed).'
+							})}
+						/>
+					</span>
+				</td>
 				{#each products as product (product.code)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
