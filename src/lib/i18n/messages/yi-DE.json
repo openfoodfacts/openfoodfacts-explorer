@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "זוכן - {query} - עפֿענען עסן פאַקטן עקספּלאָרער",
 		"placeholder": "אָנפֿרעג אָדער באַרקאָד",
