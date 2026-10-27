@@ -326,7 +326,10 @@
 								rel="noopener noreferrer"
 								aria-label="Report to NutriPatrol"
 								title="Report to NutriPatrol"
-								onclick={(e) => e.stopPropagation()}
+								onclick={(e) => {
+									e.stopPropagation();
+									trackOffEvent('feature', 'report_problem_opened', 'image_report');
+								}}
 							>
 								<IconMdiFlagOutline class="h-3.5 w-3.5" />
 							</a>
