@@ -24,6 +24,13 @@
 		"logout": "লগআউট",
 		"account": "হিসাব"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "অনুসন্ধান - {query} - খাদ্য তথ্য অনুসন্ধানকারী খুলুন",
 		"placeholder": "কোয়েরি বা বারকোড",
