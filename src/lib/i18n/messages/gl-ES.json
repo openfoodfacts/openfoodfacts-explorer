@@ -24,6 +24,13 @@
 		"logout": "Saír da sesión",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Buscar - {query} - Abrir o explorador de información sobre alimentos",
 		"placeholder": "Consulta ou código de barras",
