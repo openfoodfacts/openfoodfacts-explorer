@@ -24,6 +24,13 @@
 		"logout": "注销",
 		"account": "账户"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "搜索 - {query} - 打开食物信息探索器",
 		"placeholder": "查询或条形码",
