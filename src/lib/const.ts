@@ -83,6 +83,8 @@ export const OPEN_PRICES_PRODUCT_URL = (barcode: string) =>
 	`${OPEN_PRICES_BASE_URL}/product/${barcode}`;
 export const OPEN_PRICES_PRODUCTS_URL = (barcode: string) =>
 	`${OPEN_PRICES_BASE_URL}/products/${barcode}`;
+export const OPEN_PRICES_ADD_PRICE_URL = (barcode: string) =>
+	`${OPEN_PRICES_BASE_URL}/prices/add/multiple?${new URLSearchParams({ code: barcode })}`;
 
 export const MATOMO_SITE_ID = 17;
 export const MATOMO_HOST = 'https://analytics.openfoodfacts.org';
