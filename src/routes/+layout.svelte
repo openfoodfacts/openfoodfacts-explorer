@@ -29,6 +29,7 @@
 	import CompareFloatingButton from '#lib/ui/CompareFloatingButton.svelte';
 	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
+	import CommandPalette from '$lib/ui/CommandPalette.svelte';
 
 	import { _, getLocale, locale } from '#lib/i18n/index.js';
 	import {
@@ -45,6 +46,9 @@
 	import { getWebsiteFlavorFromParam } from '#lib/flavor.js';
 	import { createWebsiteCtx } from '#lib/stores/website.js';
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '#lib/stores/toasts.js';
+	import { setCommandCtx } from '$lib/stores/commandPalette';
+	import { getNavigationCommands } from '$lib/commands/navigation';
+	import type { Command } from '$lib/commands/types';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '#lib/stores/shortcuts.js';
 	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
@@ -141,6 +145,34 @@
 	]);
 
 	setShortcutCtx(() => shortcuts);
+
+	// == Global command palette context ==
+	let _commandsMap: Record<string, Command[]> = $state({});
+
+	function registerCommands(sourceId: string, commands: Command[]) {
+		_commandsMap = { ..._commandsMap, [sourceId]: commands };
+	}
+
+	function unregisterCommands(sourceId: string) {
+		const next = { ..._commandsMap };
+		delete next[sourceId];
+		_commandsMap = next;
+	}
+
+	const commandCtx = {
+		getCommands() {
+			return Object.values(_commandsMap).flat();
+		},
+		register: registerCommands,
+		unregister: unregisterCommands
+	};
+
+	setCommandCtx(() => commandCtx);
+
+	onMount(() => {
+		// register global navigation commands under a stable source id
+		registerCommands('global-navigation', getNavigationCommands());
+	});
 
 	// Load OpenFoodFacts Web Components
 
@@ -517,4 +549,5 @@
 <NutritionCalculator />
 <Footer />
 <Toast />
+<CommandPalette />
 <SlowServerDialog />
