@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Fittex - {query} - Iftaħ l-Esploratur tal-Fatti dwar l-Ikel",
 		"placeholder": "Mistoqsija jew barcode",
