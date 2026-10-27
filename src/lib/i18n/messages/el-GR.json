@@ -24,6 +24,13 @@
 		"logout": "Αποσύνδεση",
 		"account": "Λογαριασμός"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Αναζήτηση - {query} - Άνοιγμα Εξερεύνησης Open Food Facts",
 		"placeholder": "Ερώτημα ή γραμμωτός κώδικας",
