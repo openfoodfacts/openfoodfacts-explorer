@@ -24,6 +24,13 @@
 		"logout": "Desconectarse",
 		"account": "Cuenta"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Buscar - {query} - Explorador de datos alimentarios abiertos",
 		"placeholder": "Consulta o código de barras",
