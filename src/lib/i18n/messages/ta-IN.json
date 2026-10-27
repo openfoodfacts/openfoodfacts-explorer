@@ -24,6 +24,13 @@
 		"logout": "விடுபதிகை",
 		"account": "கணக்கு"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "தேடல் - {query} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
 		"placeholder": "வினவல் அல்லது பார்கோடு",
