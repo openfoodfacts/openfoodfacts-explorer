@@ -24,6 +24,13 @@
 		"logout": "Đăng xuất",
 		"account": "Tài khoản"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Tìm kiếm - {query} - Mở Trình khám phá thông tin thực phẩm",
 		"placeholder": "Truy vấn hoặc mã vạch",
