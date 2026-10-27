@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "I-akhawunti"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Sesha - {query} - Vula Isihloli Sokudla Kwamaqiniso",
 		"placeholder": "Umbuzo noma ibhakhodi",
