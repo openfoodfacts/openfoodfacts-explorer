@@ -9,6 +9,7 @@
 	} from '#lib/api.js';
 
 	import Card from '#lib/ui/Card.svelte';
+	import { trackOffEvent } from '#lib/analytics.js';
 	import Element from './Element.svelte';
 
 	type Props = {
@@ -24,6 +25,12 @@
 	let expanded = $derived(panel?.expanded ?? false);
 
 	const MONOCHROME_ICON_PATH = '/images/icons/dist/';
+
+	function trackExpansion(event: Event) {
+		if ((event.currentTarget as HTMLInputElement).checked) {
+			trackOffEvent('knowledge_panel', 'expanded');
+		}
+	}
 </script>
 
 {#snippet elementList(elements: KnowledgeElement[])}
@@ -43,7 +50,7 @@
 			'type' in title && `kp-panel-type-${title.type}`
 		]}
 	>
-		<input type="checkbox" checked={expanded} />
+		<input type="checkbox" checked={expanded} onchange={trackExpansion} />
 
 		<div
 			class={[
