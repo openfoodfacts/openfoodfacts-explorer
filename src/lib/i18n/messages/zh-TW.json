@@ -24,6 +24,13 @@
 		"logout": "登出",
 		"account": "帳戶"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "搜尋 - {query} - 打開食物資訊探索器",
 		"placeholder": "查詢或條碼",
