@@ -24,12 +24,12 @@ export function startLogout(): void {
 
 export function completeLogout(returnedState: string | null): void {
 	const storedState = sessionStorage.getItem('logoutState');
-	sessionStorage.removeItem('logoutState');
 
 	if (!returnedState || !storedState || returnedState !== storedState) {
 		throw new Error('Logout callback state validation failed');
 	}
 
+	sessionStorage.removeItem('logoutState');
 	clearAuthTokens();
 	trackOffEvent('account', 'logout_succeeded');
 }

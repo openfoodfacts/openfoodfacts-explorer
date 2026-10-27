@@ -43,7 +43,7 @@ describe('completeLogout', () => {
 		expect(() => completeLogout(null)).toThrow('Logout callback state validation failed');
 		expect(clearAuthTokens).not.toHaveBeenCalled();
 		expect(trackOffEvent).not.toHaveBeenCalled();
-		expect(sessionStorageMock.getItem('logoutState')).toBeNull();
+		expect(sessionStorageMock.getItem('logoutState')).toBe('expected-state');
 	});
 
 	it('throws when the callback state does not match without clearing tokens', () => {
@@ -54,7 +54,7 @@ describe('completeLogout', () => {
 		);
 		expect(clearAuthTokens).not.toHaveBeenCalled();
 		expect(trackOffEvent).not.toHaveBeenCalled();
-		expect(sessionStorageMock.getItem('logoutState')).toBeNull();
+		expect(sessionStorageMock.getItem('logoutState')).toBe('expected-state');
 	});
 
 	it('rejects reuse of a state after it has been consumed', () => {
