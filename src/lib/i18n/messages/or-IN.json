@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ଖୋଜନ୍ତୁ - {query} - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
 		"placeholder": "କ୍ୱେରୀ କିମ୍ବା ବାରକୋଡ୍",
