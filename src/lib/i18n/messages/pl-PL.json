@@ -24,6 +24,13 @@
 		"logout": "Wyloguj",
 		"account": "Konto"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Szukaj - {query} - Otwórz Eksplorator Faktów o Jedzeniu",
 		"placeholder": "Zapytanie lub kod kreskowy",
