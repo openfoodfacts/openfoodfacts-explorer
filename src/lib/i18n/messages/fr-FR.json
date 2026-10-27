@@ -24,6 +24,13 @@
 		"logout": "Se déconnecter",
 		"account": "Compte"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Recherche - {query} - Ouvrir l'explorateur de données alimentaires",
 		"placeholder": "Requête ou code-barres",
