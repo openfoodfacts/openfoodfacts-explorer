@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "គណនី"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ស្វែងរក - {query} - បើក Food Facts Explorer",
 		"placeholder": "សំណួរឬបាកូដ",
