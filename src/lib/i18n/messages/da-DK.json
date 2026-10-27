@@ -24,6 +24,13 @@
 		"logout": "Log ud",
 		"account": "Konto"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Søg - {query} - Åbn Food Facts Explorer",
 		"placeholder": "Forespørgsel eller stregkode",
