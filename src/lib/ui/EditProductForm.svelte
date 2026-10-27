@@ -25,6 +25,7 @@
 
 	import type { Product } from '#lib/api.js';
 	import { _ } from '#lib/i18n/index.js';
+	import { OPEN_PRICES_ADD_PRICE_URL } from '#lib/const.js';
 	import { preferences } from '#lib/settings.js';
 	import { getPermissionsCtx } from '#lib/stores/user.js';
 	import BarcodeCorrectionCard from './BarcodeCorrectionCard.svelte';
@@ -146,11 +147,6 @@
 		onCorrectBarcode,
 		onDeleteProduct
 	}: Props = $props();
-
-	function getOpenPricesUrl(code: string): string {
-		const params = new URLSearchParams({ code });
-		return `https://prices.openfoodfacts.org/prices/add/single?${params}`;
-	}
 
 	const permissions = getPermissionsCtx();
 
@@ -363,7 +359,7 @@
 				</p>
 				{#if product.code != null}
 					<a
-						href={getOpenPricesUrl(product.code)}
+						href={OPEN_PRICES_ADD_PRICE_URL(product.code)}
 						class="btn btn-secondary btn-sm"
 						target="_blank"
 						rel="noopener noreferrer"
