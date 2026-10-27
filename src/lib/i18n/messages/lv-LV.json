@@ -24,6 +24,13 @@
 		"logout": "Izlogoties",
 		"account": "Konts"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Meklēšana — {query} — Atvērt pārtikas faktu pārlūku",
 		"placeholder": "Vaicājums vai svītrkods",
