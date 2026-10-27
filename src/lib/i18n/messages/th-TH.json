@@ -24,6 +24,13 @@
 		"logout": "ออกจากระบบ",
 		"account": "บัญชี"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ค้นหา - {query} - Open Food Facts Explorer",
 		"placeholder": "สอบถามหรือบาร์โค้ด",
