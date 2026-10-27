@@ -24,6 +24,13 @@
 		"logout": "Termina sessione",
 		"account": "Profilo"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Ricerca - {query} - Open Food Facts Explorer",
 		"placeholder": "Query o codice a barre",
