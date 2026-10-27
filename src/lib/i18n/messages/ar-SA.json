@@ -24,6 +24,13 @@
 		"logout": "تسجيل خروج",
 		"account": "الحساب"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "بحث - {query} - مستكشف حقائق الطعام المفتوح",
 		"placeholder": "استعلام أو رمز شريطي",
