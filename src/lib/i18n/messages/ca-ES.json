@@ -24,6 +24,13 @@
 		"logout": "Tanca la sessió",
 		"account": "Compte"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Cerca - {query} - Obre l'Explorador de Dades sobre Aliments",
 		"placeholder": "Consulta o codi de barres",
