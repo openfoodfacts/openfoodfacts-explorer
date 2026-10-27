@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Налог"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Претрага - {query} - Отвори истраживач чињеница о храни",
 		"placeholder": "Упит или баркод",
