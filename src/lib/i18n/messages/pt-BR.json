@@ -24,6 +24,13 @@
 		"logout": "Terminar sessão",
 		"account": "Conta"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Pesquisar - {query} - Abrir Explorador de Fatos Alimentares",
 		"placeholder": "Consulta ou código de barras",
