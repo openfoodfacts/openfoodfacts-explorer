@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Cyfrif"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Chwilio - {query} - Agor Archwiliwr Ffeithiau Bwyd",
 		"placeholder": "Ymholiad neu god bar",
