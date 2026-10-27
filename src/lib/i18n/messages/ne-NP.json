@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "खोज - {query} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
 		"placeholder": "क्वेरी वा बारकोड",
