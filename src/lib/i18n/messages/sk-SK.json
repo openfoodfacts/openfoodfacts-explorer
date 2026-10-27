@@ -24,6 +24,13 @@
 		"logout": "Odhlásiť sa",
 		"account": "Účet"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Hľadať - {query} - Otvoriť prieskumník faktov o jedle",
 		"placeholder": "Dopyt alebo čiarový kód",
