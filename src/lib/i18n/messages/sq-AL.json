@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Llogari"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Kërko - {query} - Hap Eksploruesin e Fakteve Ushqimore",
 		"placeholder": "Pyetje ose barkod",
