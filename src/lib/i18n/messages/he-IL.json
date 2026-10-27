@@ -24,6 +24,13 @@
 		"logout": "יציאה",
 		"account": "חשבון"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "חיפוש - {query} - פתח את סייר עובדות המזון",
 		"placeholder": "שאילתה או ברקוד",
