@@ -5,6 +5,7 @@
 	import type { TopLevelSpec } from 'vega-lite';
 
 	import * as compat from '#lib/compat.js';
+	import { preferences } from '#lib/settings.js';
 
 	type Props = { spec: Spec | TopLevelSpec; title?: string };
 	type VegaMarkEncodeEntry = { fill?: { value: string }; stroke?: { value: string } };
@@ -20,7 +21,11 @@
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
-	let darkMode = $state<boolean | undefined>(undefined);
+	let isSystemDark = $state(false);
+
+	let darkMode = $derived(
+		$preferences.theme === 'dark' || ($preferences.theme !== 'light' && isSystemDark)
+	);
 
 	function getDarkModeConfig() {
 		const style = getComputedStyle(document.documentElement);
@@ -115,16 +120,22 @@
 
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		darkMode = mediaQuery.matches;
-		const handler = (e: MediaQueryListEvent) => (darkMode = e.matches);
+
+		isSystemDark = mediaQuery.matches;
+
+		const handler = (e: MediaQueryListEvent) => {
+			isSystemDark = e.matches;
+		};
+
 		compat.addMediaQueryListener(mediaQuery, handler);
+
 		return () => {
 			compat.removeMediaQueryListener(mediaQuery, handler);
 		};
 	});
 
 	$effect(() => {
-		if (darkMode !== undefined) {
+		if (browser && typeof darkMode === 'boolean') {
 			updateSpec(spec);
 		}
 	});
