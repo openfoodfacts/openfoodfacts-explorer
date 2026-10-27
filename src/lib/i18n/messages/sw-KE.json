@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Akaunti"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Tafuta - {query} - Fungua Kichunguzi cha Ukweli wa Chakula",
 		"placeholder": "Hoja au msimbopau",
