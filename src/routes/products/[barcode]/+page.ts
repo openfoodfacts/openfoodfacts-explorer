@@ -3,7 +3,8 @@ import type { PageLoad } from './$types';
 
 import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
-import { createProductsApi } from '#lib/api.js';
+import { createProductsApi, createRobotoffApi } from '#lib/api.js';
+import { PUBLIC_IMAGES_URL } from '$app/env/public';
 
 import { get } from 'svelte/store';
 import { getLanguageCode, preferences } from '#lib/settings.js';
@@ -37,6 +38,51 @@ async function getPricesCoords(api: PricesApi, code: string) {
 	}
 
 	return prices;
+}
+
+type LogoDetection = {
+	logo_id: number;
+	image_url?: string;
+	type?: string;
+	value?: string;
+	confidence?: number;
+};
+
+async function getLogos(barcode: string, fetch: typeof window.fetch): Promise<LogoDetection[]> {
+	try {
+		const response = await createRobotoffApi(fetch).searchLogos({
+			barcode,
+			annotated: false
+		});
+		const data = response.data as
+			| {
+					logos?: Array<{
+						id?: number;
+						source_image?: string;
+						annotation_type?: string;
+						annotation_value?: string;
+						score?: number;
+					}>;
+			  }
+			| undefined;
+
+		return (
+			data?.logos
+				?.filter((logo): logo is typeof logo & { id: number } => logo.id != null)
+				.map((logo) => ({
+					logo_id: logo.id,
+					image_url: logo.source_image
+						? `${PUBLIC_IMAGES_URL}/images/products${logo.source_image}`
+						: undefined,
+					type: logo.annotation_type,
+					value: logo.annotation_value,
+					confidence: logo.score
+				})) ?? []
+		);
+	} catch (err) {
+		console.error('Error fetching logo detections:', err);
+		return [];
+	}
 }
 
 function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | undefined) {
@@ -105,6 +151,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	const pricesResponse = isPriceConfigured()
 		? getPricesCoords(createPricesApi(fetch), params.barcode)
 		: Promise.resolve(null);
+	const logosResponse = getLogos(params.barcode, fetch);
 
 	const defaultPreferences = (async () => {
 		const { data: attributeGroups } = await productsApi.getAttributeGroups();
@@ -119,6 +166,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		defaultProductPreferences: await defaultPreferences,
 		tags: await folksonomyTags,
 		keys: await folksonomyKeys,
-		prices: await pricesResponse
+		prices: await pricesResponse,
+		logos: await logosResponse
 	};
 };
