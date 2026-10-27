@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Batla - {query} - Bula Sebatlisisi sa Dintlha tsa Dijo",
 		"placeholder": "Patlisiso kgotsa khoutu ya bara",
