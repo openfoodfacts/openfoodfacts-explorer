@@ -3,6 +3,8 @@ import { get } from 'svelte/store';
 import { preferences } from '#lib/settings.js';
 import { browser } from '$app/env';
 
+export const locales = ['en', 'it'];
+
 const FALLBACK_LOCALE = 'en';
 
 const messageLoaders = import.meta.glob('./messages/*.json');
