@@ -24,6 +24,13 @@
 		"logout": "लॉग आउट करें",
 		"account": "खाता"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "खोज - {query} - खाद्य तथ्य एक्सप्लोरर खोलें",
 		"placeholder": "क्वेरी या बारकोड",
