@@ -24,6 +24,13 @@
 		"logout": "Logout",
 		"account": "መለያ"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "ፍለጋ - {query} - ክፍት የምግብ እውነታዎች አሳሽ",
 		"placeholder": "መጠይቅ ወይም ባርኮድ",
