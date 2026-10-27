@@ -24,6 +24,13 @@
 		"logout": "Deqeve",
 		"account": "Account"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "Lêgerîn - {query} - Lêgerînerê Agahiyên Xwarinê Vekirî",
 		"placeholder": "Lêpirsîn an barkod",
