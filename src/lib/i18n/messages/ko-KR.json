@@ -24,6 +24,13 @@
 		"logout": "로그아웃",
 		"account": "계정"
 	},
+	"oauth": {
+		"logout": {
+			"in_progress": "Logging out…",
+			"failed": "Logout could not be verified. Please try again.",
+			"return_home": "Return home"
+		}
+	},
 	"search": {
 		"title": "검색 - {query} - 오픈 식품 정보 탐색기",
 		"placeholder": "쿼리 또는 바코드",
