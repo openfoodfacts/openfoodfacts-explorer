@@ -117,7 +117,7 @@
 			key: 'footer.discover.partners'
 		},
 		{
-			url: 'https://support.openfoodfacts.org/help/en-gb',
+			url: '/static/faq',
 			key: 'footer.discover.faq'
 		},
 		{
