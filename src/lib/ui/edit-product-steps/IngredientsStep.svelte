@@ -13,8 +13,8 @@
 	import IconMdiTextRecognition from '@iconify-svelte/mdi/text-recognition';
 	import IconMdiLanguage from '@iconify-svelte/mdi/language';
 	import IconMdiCodeTags from '@iconify-svelte/mdi/code-tags';
-	import IconMdiFormatFont from '@iconify-svelte/mdi/format-font';
 
+	import { preferences } from '#lib/settings.js';
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import { onMount } from 'svelte';
 	import { focusEditField } from '#lib/utils/fieldFocus.js';
@@ -100,25 +100,11 @@
 	let activeLang = $state(product.lang);
 	const shortcutCtx = getShortcutCtx();
 
-	const MONOSPACE_STORAGE_KEY = 'off_ingredients_monospace';
-	let isMonospace = $state(false);
-
 	function toggleMonospace() {
-		isMonospace = !isMonospace;
-		try {
-			localStorage.setItem(MONOSPACE_STORAGE_KEY, String(isMonospace));
-		} catch {
-			// Ignore localStorage errors
-		}
+		$preferences.editing.monospaceIngredients = !$preferences.editing.monospaceIngredients;
 	}
 
 	onMount(() => {
-		try {
-			isMonospace = localStorage.getItem(MONOSPACE_STORAGE_KEY) === 'true';
-		} catch {
-			// Ignore localStorage errors
-		}
-
 		shortcutCtx.set('Shift+I', {
 			description: $_('product.shortcuts.edit_product_ingredients'),
 			action: () => focusEditField(`#ingredients-list-${activeLang}`)
@@ -215,37 +201,25 @@
 				<button
 					type="button"
 					class="btn gap-1 btn-ghost btn-xs sm:btn-sm"
-					class:btn-active={isMonospace}
-					aria-pressed={isMonospace}
-					aria-label={isMonospace
-						? $_('product.edit.default_font_tooltip', { default: 'Switch back to default font' })
-						: $_('product.edit.toggle_monospace', { default: 'Toggle monospace font' })}
-					title={isMonospace
-						? $_('product.edit.default_font_tooltip', { default: 'Switch back to default font' })
-						: $_('product.edit.monospace_tooltip', {
-								default:
-									"Switch to monospace font to spot OCR errors (e.g. 'rn' vs 'm', 'I' vs 'l')"
-							})}
+					class:btn-active={$preferences.editing.monospaceIngredients}
+					aria-pressed={Boolean($preferences.editing.monospaceIngredients)}
+					aria-label={$_('product.edit.monospace_font', { default: 'Monospace font' })}
+					title={$_('product.edit.monospace_tooltip', {
+						default: "Switch to monospace font to spot OCR errors (e.g. 'rn' vs 'm', 'I' vs 'l')"
+					})}
 					onclick={toggleMonospace}
 				>
-					{#if isMonospace}
-						<IconMdiFormatFont class="h-4 w-4" />
-						<span class="hidden sm:inline">
-							{$_('product.edit.default_font', { default: 'Default font' })}
-						</span>
-					{:else}
-						<IconMdiCodeTags class="h-4 w-4" />
-						<span class="hidden sm:inline">
-							{$_('product.edit.monospace', { default: 'Monospace' })}
-						</span>
-					{/if}
+					<IconMdiCodeTags class="h-4 w-4" />
+					<span class="hidden sm:inline">
+						{$_('product.edit.monospace_font', { default: 'Monospace font' })}
+					</span>
 				</button>
 			</div>
 
 			<textarea
 				id={`ingredients-list-${code}`}
 				class="textarea-bordered textarea w-full text-sm sm:text-base"
-				class:font-mono={isMonospace}
+				class:font-mono={$preferences.editing.monospaceIngredients}
 				class:opacity-50={ocrLoading}
 				value={product[`ingredients_text_${code}`] ?? ''}
 				oninput={(e) => {
