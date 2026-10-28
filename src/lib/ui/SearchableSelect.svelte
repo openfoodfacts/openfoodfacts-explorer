@@ -41,6 +41,8 @@
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
+		if (event.isComposing || event.keyCode === 229) return;
+
 		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
 			event.preventDefault();
 			open = true;
@@ -54,7 +56,7 @@
 			}
 		} else if (event.key === 'Enter' && open) {
 			event.preventDefault();
-			const option = filteredOptions[activeIndex < 0 ? 0 : activeIndex];
+			const option = filteredOptions[activeIndex];
 			if (option) selectOption(option.code);
 		} else if (event.key === 'Escape' && open) {
 			event.preventDefault();
