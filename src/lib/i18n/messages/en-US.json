@@ -549,6 +549,8 @@
 			"ingredients": "Ingredients",
 			"ingredients_list": "Ingredients list",
 			"no_ingredients_image": "No ingredients image",
+			"monospace_font": "Monospace font",
+			"monospace_tooltip": "Switch to monospace font to spot OCR errors (e.g. 'rn' vs 'm', 'I' vs 'l')",
 			"nutritional_information": "Nutritional Information",
 			"no_nutrition_image": "No nutrition image for language {language}",
 			"serving_size": "Serving Size",
