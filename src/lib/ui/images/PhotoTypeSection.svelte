@@ -87,11 +87,22 @@
 			}
 
 			const status = uploadResult.data?.status;
-			if (
-				status === 'success' ||
-				status === 'success_with_warnings' ||
-				status === 'success_with_errors'
-			) {
+			if (status === 'success_with_errors') {
+				// The image is saved, but part of the request (e.g. selecting it) failed.
+				// Don't open the editor: it would match the image by id and could save it
+				// as a different photo type than the one requested.
+				const error = (uploadResult.data.errors ?? [])
+					.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
+					.filter(Boolean)
+					.join(', ');
+				toast.warning(
+					$_('product.edit.images.toast.upload_success_with_errors', {
+						default: 'Image uploaded, but some changes could not be applied: {error}',
+						values: { error }
+					})
+				);
+				trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
+			} else if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here
 					// to access the uploaded images
@@ -107,19 +118,7 @@
 						const isDuplicate =
 							uploadResult.data.warnings?.[0]?.message?.id === 'image_already_uploaded';
 
-						if (status === 'success_with_errors') {
-							// The image is saved, but part of the request (e.g. selecting it) failed.
-							const error = (uploadResult.data.errors ?? [])
-								.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
-								.filter(Boolean)
-								.join(', ');
-							toast.warning(
-								$_('product.edit.images.toast.upload_success_with_errors', {
-									default: 'Image uploaded, but some changes could not be applied: {error}',
-									values: { error }
-								})
-							);
-						} else if (isDuplicate) {
+						if (isDuplicate) {
 							toast.warning(
 								$_('product.edit.images.toast.already_uploaded', {
 									default:
