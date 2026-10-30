@@ -26,9 +26,9 @@
 	},
 	"oauth": {
 		"logout": {
-			"in_progress": "Logging out…",
-			"failed": "Logout could not be verified. Please try again.",
-			"return_home": "Return home"
+			"in_progress": "Déconnexion...",
+			"failed": "La déconnexion n'a pas pu être vérifiée. Veuillez réessayer.",
+			"return_home": "Retour à l'accueil"
 		}
 	},
 	"search": {
@@ -719,7 +719,7 @@
 				"add_ingredients_image": "Ajouter une photo des ingrédients",
 				"add_nutrition_facts": "Ajouter les informations nutritionnelles"
 			},
-			"history_filter": "Filter by contributor or comment"
+			"history_filter": "Filtrer par contributeur ou commentaire"
 		},
 		"external_sources": {
 			"title": "Sources externes",
@@ -1016,7 +1016,7 @@
 			"link_copied": "Lien de comparaison copié dans le presse-papier !",
 			"copy_failed": "Échec de la copie du lien dans le presse-papier."
 		},
-		"floating_label": "Compare ({count})"
+		"floating_label": "Comparer ({count})"
 	},
 	"static_iframe": {
 		"load_failed": "Échec du chargement du contenu."
