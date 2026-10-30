@@ -322,7 +322,10 @@
 	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
 	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
 	<div
-		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning']}
+		class={[
+			'tooltip ml-auto shrink-0 cursor-default',
+			isError ? 'tooltip-error' : 'tooltip-warning'
+		]}
 		data-tip={issue.title}
 	>
 		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
@@ -499,7 +502,7 @@
 					{@const issueKeys = [nutrient, 'all']}
 					{@const issue = issuesByField(issueKeys)[0]}
 					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
-						<span class="label w-60">
+						<span class="label w-36 shrink-0">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
 
@@ -507,9 +510,6 @@
 									<InfoTooltip text={$_(EMPTY_NUTRIENT_TOOLTIPS[nutrient])} />
 								{/if}
 							</span>
-							{#if issue}
-								{@render issueTooltip(issue)}
-							{/if}
 						</span>
 
 						<input
@@ -535,6 +535,9 @@
 								<option value="µg">{$_('product.edit.si_micrograms')}</option>
 							</select>
 						</span>
+						{#if issue}
+							{@render issueTooltip(issue)}
+						{/if}
 					</label>
 				{/each}
 			</fieldset>
@@ -547,7 +550,7 @@
 					{@const nutrientDetails = nutrientById.get(nutrient)}
 					<div class="join">
 						<label class="input join-item w-full">
-							<span class="label w-60">
+							<span class="label w-36 shrink-0">
 								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
