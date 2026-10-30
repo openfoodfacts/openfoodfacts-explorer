@@ -18,22 +18,25 @@
 <div class="flex min-h-[50vh] w-full flex-col items-center justify-center p-4">
 	{#if status === 404 && isProductError}
 		<div class="card w-full max-w-lg bg-base-100 shadow-xl">
-			<div class="card-body items-center p-8 text-center">
-				<div class="mb-4 text-8xl grayscale-[20%]">🥝</div>
-				<h1 class="text-3xl font-bold">
+			<div class="card-body items-center p-6 text-center">
+				<div class="mb-2 text-6xl grayscale-[20%]">🥝</div>
+				<h1 class="text-2xl font-bold">
 					{$_('product.not_found_title', { default: "We don't know this product yet!" })}
 				</h1>
-				<p class="py-4 text-lg text-base-content/80">
+				<p class="py-3 text-base-content/80">
 					{$_('product.not_found_desc', {
 						default: "You've discovered a new item. Be the hero who adds it to the database!"
 					})}
+				</p>
+				<p class="text-sm text-base-content/70">
+					{$_('product.barcode.code_label', { default: 'Barcode' })}
+					<span class="rounded-lg bg-base-content/10 px-2 font-mono">{page.params.barcode}</span>
 				</p>
 				<div class="mt-4 card-actions flex w-full flex-col gap-3">
 					<a
 						href={resolve(`products/${page.params.barcode}/edit`)}
 						class="btn w-full font-bold text-primary-content shadow-md btn-lg btn-primary"
 					>
-						<span class="text-xl">➕</span>
 						{$_('product.add_product', { default: 'Add This Product' })}
 					</a>
 					<a href={resolve('/')} class="btn btn-ghost btn-sm">
