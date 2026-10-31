@@ -1,6 +1,6 @@
 {
 	"nutriscore": "Nutri-Score",
-	"ecoscore": "النتيجة البيئية",
+	"ecoscore": "Green-Score",
 	"nova": "نوفا - مستويات المعالجة الفائقة",
 	"settings_link": "الإعدادات",
 	"folksonomy_link": "علم اللغة الشعبية",
@@ -851,8 +851,8 @@
 		"categories": "الفئات",
 		"categories_tags": "الفئات",
 		"nutrition_grades": "Nutri-Score",
-		"environmental_score_grade": "النتيجة البيئية",
-		"ecoscore_grade": "النتيجة البيئية",
+		"environmental_score_grade": "Green-Score",
+		"ecoscore_grade": "Green-Score",
 		"nova_group": "Ultra-processing level (NOVA)",
 		"nova_groups": "Ultra-processing level (NOVA)",
 		"labels": "التسميات وشهادات الاعتماد",
