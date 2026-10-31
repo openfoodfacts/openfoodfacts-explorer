@@ -1,6 +1,6 @@
 {
 	"nutriscore": "Nutri-Score",
-	"ecoscore": "Зелен-Резултат",
+	"ecoscore": "Green-Score",
 	"nova": "Нова - Нива на ултра-обработка",
 	"settings_link": "Настройки",
 	"folksonomy_link": "Фолксономия",
@@ -851,8 +851,8 @@
 		"categories": "Категории",
 		"categories_tags": "Категории",
 		"nutrition_grades": "Nutri-Score",
-		"environmental_score_grade": "Зелен-Резултат",
-		"ecoscore_grade": "Зелен-Резултат",
+		"environmental_score_grade": "Green-Score",
+		"ecoscore_grade": "Green-Score",
 		"nova_group": "Ultra-processing level (NOVA)",
 		"nova_groups": "Ultra-processing level (NOVA)",
 		"labels": "Етикети и сертификати",
