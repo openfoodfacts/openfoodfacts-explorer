@@ -35,6 +35,36 @@ function nutrimentNumber(value: unknown): number | null {
 	return Number.isFinite(numeric) ? numeric : null;
 }
 
+const GRAMS_PER_UNIT: Record<string, number> = {
+	g: 1,
+	mg: 1e-3,
+	µg: 1e-6,
+	ug: 1e-6,
+	mcg: 1e-6,
+	μg: 1e-6
+};
+
+/**
+ * Nutriment values are stored as typed, while the chosen unit lives in `<nutrient>_unit`.
+ * Checks that compare amounts must do it in grams, so convert through the stored unit first.
+ */
+function nutrimentInGrams(product: Product, field: string): number | null {
+	const nutriments = product.nutriments as Record<string, unknown> | undefined;
+	const value = nutrimentNumber(nutriments?.[field]);
+
+	if (value == null) {
+		return null;
+	}
+
+	const rawUnit = String(nutriments?.[`${field}_unit`] ?? 'g')
+		.trim()
+		.toLowerCase()
+		.replace('μ', 'µ');
+	const factor = GRAMS_PER_UNIT[rawUnit];
+
+	return factor == null ? value : value * factor;
+}
+
 function containsKnownUnit(token: string, units: readonly string[]): boolean {
 	// Return true when the token contains a known unit as a standalone token.
 	for (const unit of units) {
@@ -131,11 +161,11 @@ const energyMismatchAnalysis: AnalysisFunc = (product) => {
 };
 
 const energyFromMacronutrientsAnalysis: AnalysisFunc = (product) => {
-	const protein = nutrimentNumber(product.nutriments?.['proteins']) ?? 0;
-	const carbs = nutrimentNumber(product.nutriments?.['carbohydrates']) ?? 0;
-	const fat = nutrimentNumber(product.nutriments?.['fat']) ?? 0;
-	const fiber = nutrimentNumber(product.nutriments?.['fibers']) ?? 0;
-	const alcohol = nutrimentNumber(product.nutriments?.['alcohol']) ?? 0;
+	const protein = nutrimentInGrams(product, 'proteins') ?? 0;
+	const carbs = nutrimentInGrams(product, 'carbohydrates') ?? 0;
+	const fat = nutrimentInGrams(product, 'fat') ?? 0;
+	const fiber = nutrimentInGrams(product, 'fibers') ?? 0;
+	const alcohol = nutrimentInGrams(product, 'alcohol') ?? 0;
 
 	const calculatedKcal = protein * 4 + carbs * 4 + fat * 9 + fiber * 2 + alcohol * 7;
 
@@ -174,12 +204,12 @@ const energyFromMacronutrientsAnalysis: AnalysisFunc = (product) => {
 };
 
 const sumOfMacroLessThan100g: AnalysisFunc = (product) => {
-	const protein = nutrimentNumber(product.nutriments?.['proteins']) ?? 0;
-	const carbs = nutrimentNumber(product.nutriments?.['carbohydrates']) ?? 0;
-	const fat = nutrimentNumber(product.nutriments?.['fat']) ?? 0;
-	const fiber = nutrimentNumber(product.nutriments?.['fibers']) ?? 0;
-	const alcohol = nutrimentNumber(product.nutriments?.['alcohol']) ?? 0;
-	const salt = nutrimentNumber(product.nutriments?.['salt']) ?? 0;
+	const protein = nutrimentInGrams(product, 'proteins') ?? 0;
+	const carbs = nutrimentInGrams(product, 'carbohydrates') ?? 0;
+	const fat = nutrimentInGrams(product, 'fat') ?? 0;
+	const fiber = nutrimentInGrams(product, 'fibers') ?? 0;
+	const alcohol = nutrimentInGrams(product, 'alcohol') ?? 0;
+	const salt = nutrimentInGrams(product, 'salt') ?? 0;
 
 	const total = protein + carbs + fat + fiber + alcohol + salt;
 
@@ -213,7 +243,7 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 		'sugars'
 	] as const;
 	for (const field of fields) {
-		const value = nutrimentNumber(product.nutriments?.[field]);
+		const value = nutrimentInGrams(product, field);
 
 		if (value != null && value > 100) {
 			issues.push({
@@ -228,8 +258,8 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 };
 
 function sugarsLessThanCarbs(product: Product): Issue[] {
-	const sugars = nutrimentNumber(product.nutriments?.['sugars']) ?? 0;
-	const carbs = nutrimentNumber(product.nutriments?.['carbohydrates']) ?? 0;
+	const sugars = nutrimentInGrams(product, 'sugars') ?? 0;
+	const carbs = nutrimentInGrams(product, 'carbohydrates') ?? 0;
 	if (sugars > carbs) {
 		return [
 			{
@@ -249,8 +279,8 @@ function sugarsLessThanCarbs(product: Product): Issue[] {
 }
 
 const saturatedFatExceedsFatAnalysis: AnalysisFunc = (product) => {
-	const saturatedFat = nutrimentNumber(product.nutriments?.['saturated-fat']);
-	const fat = nutrimentNumber(product.nutriments?.['fat']);
+	const saturatedFat = nutrimentInGrams(product, 'saturated-fat');
+	const fat = nutrimentInGrams(product, 'fat');
 
 	if (saturatedFat == null || fat == null || saturatedFat <= fat) {
 		return [];
@@ -269,8 +299,8 @@ const saturatedFatExceedsFatAnalysis: AnalysisFunc = (product) => {
 };
 
 const saltSodiumMismatchAnalysis: AnalysisFunc = (product) => {
-	const salt = nutrimentNumber(product.nutriments?.['salt']);
-	const sodium = nutrimentNumber(product.nutriments?.['sodium']);
+	const salt = nutrimentInGrams(product, 'salt');
+	const sodium = nutrimentInGrams(product, 'sodium');
 
 	if (salt == null || sodium == null || salt <= 0 || sodium <= 0) {
 		return [];
