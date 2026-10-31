@@ -28,8 +28,8 @@
 
 	type Props = {
 		product: Product;
-		// Reloads the images into the edit form's own copy of the product. Without it,
-		// refreshAll() reloads the page data but the form keeps its old images.
+		// Reloads the images into the edit form's own copy of the product after any image
+		// change. Without it, refreshAll() reloads the page data but the form keeps its old images.
 		reloadImages?: () => Promise<void>;
 	};
 	let { product, reloadImages = refreshAll }: Props = $props();
@@ -255,23 +255,38 @@
 		};
 	};
 
-	function handleImageUploaded(imgId: number) {
-		reloadImages().then(() => {
-			setTimeout(() => {
-				openUploadedImage(imgId);
-			}, 1500);
-		});
-	}
-
-	function openUploadedImage(imgId: number) {
-		const typeImages = currentImages.filter((img) => img.imgid === imgId);
-
-		if (typeImages.length === 0) {
-			console.warn(`No images found for imgId: ${imgId}`);
+	async function handleImageUploaded(imgId: number, typeId: string, languageCode: string) {
+		try {
+			await reloadImages();
+		} catch (err) {
+			// The image is uploaded; only reloading it into the form failed.
+			console.error('Failed to refresh images after upload:', err);
+			toast.warning(
+				$_('product.edit.images.toast.refresh_failed', {
+					default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
+				})
+			);
 			return;
 		}
 
-		const uploadedImage = typeImages[0];
+		// The editor saves for the active language, so only open it if the user is
+		// still on the language the image was uploaded for.
+		if (languageCode !== activeLanguageCode) return;
+
+		await tick();
+		openUploadedImage(imgId, typeId);
+	}
+
+	function openUploadedImage(imgId: number, typeId: string) {
+		// Match the type too: the same image can be selected for several types
+		// (e.g. a duplicate upload already used as the front photo).
+		const uploadedImage = currentImages.find((img) => img.imgid === imgId && img.typeId === typeId);
+
+		if (!uploadedImage) {
+			console.warn(`No ${typeId} image found for imgId: ${imgId}`);
+			return;
+		}
+
 		editingImageData = uploadedImage;
 	}
 
@@ -307,7 +322,7 @@
 		} finally {
 			isSavingImage = false;
 
-			await refreshAll();
+			await reloadImages();
 			closeEditModal();
 		}
 	}
@@ -367,7 +382,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
-				await refreshAll();
+				await reloadImages();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -410,7 +425,7 @@
 			);
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await refreshAll();
+			await reloadImages();
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);

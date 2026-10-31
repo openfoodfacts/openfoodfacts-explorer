@@ -31,8 +31,9 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
-		onImageUploaded?: (imgId: number) => void;
-		// Reloads the images without opening the editor
+		// Called with the type and language the image was uploaded for
+		onImageUploaded?: (imgId: number, typeId: string, languageCode: string) => void;
+		// Reloads the images (after a partial upload or an unselect), without opening the editor
 		onImagesChanged?: () => Promise<void>;
 		onSelectImage?: () => void;
 		isSelectingImage?: boolean;
@@ -68,8 +69,10 @@
 
 		const file = input.files[0];
 
+		// Keep the language the upload is for: the active language can change while it runs
+		const languageCode = activeLanguageCode;
 		// Map type to OpenFoodFacts imagefield value using utility function
-		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
+		const imagefield = getImageFieldName(imageType, languageCode, photoTypes);
 		const barcode = product.code;
 
 		if ($userInfo == null) {
@@ -147,7 +150,7 @@
 						}
 
 						trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
-						onImageUploaded(imgid);
+						onImageUploaded(imgid, sectionType.id, languageCode);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
 					}
@@ -187,7 +190,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', sectionType.id);
-				await refreshAll();
+				await (onImagesChanged ?? refreshAll)();
 			} else {
 				console.warn('Image unselect failed:', result);
 				toast.error($_('product.edit.images.toast.unselect_failed'));
