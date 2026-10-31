@@ -26,8 +26,13 @@
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import { getLanguageName } from '#lib/languages.js';
 
-	type Props = { product: Product };
-	let { product }: Props = $props();
+	type Props = {
+		product: Product;
+		// Reloads the images into the edit form's own copy of the product. Without it,
+		// refreshAll() reloads the page data but the form keeps its old images.
+		reloadImages?: () => Promise<void>;
+	};
+	let { product, reloadImages = refreshAll }: Props = $props();
 
 	const toast = getToastCtx();
 
@@ -251,7 +256,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		refreshAll().then(() => {
+		reloadImages().then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -446,6 +451,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
+						onImagesChanged={reloadImages}
 						onSelectImage={() => openImageSelection(photoType.id)}
 						isSelectingImage={isSelectingImage && selectingImageSection === photoType.id}
 					/>
@@ -464,6 +470,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
+						onImagesChanged={reloadImages}
 					/>
 				{/each}
 

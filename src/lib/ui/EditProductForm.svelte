@@ -271,7 +271,7 @@
 				{$_('product.edit.sections.images')}
 			</div>
 			<div class="collapse-content">
-				<ImagesStep bind:product editMode />
+				<ImagesStep bind:product {onImageUploaded} editMode />
 			</div>
 		</div>
 

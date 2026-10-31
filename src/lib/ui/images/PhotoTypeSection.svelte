@@ -32,6 +32,8 @@
 		onToggleExpansion: (type: string) => void;
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
 		onImageUploaded?: (imgId: number) => void;
+		// Reloads the images without opening the editor
+		onImagesChanged?: () => Promise<void>;
 		onSelectImage?: () => void;
 		isSelectingImage?: boolean;
 	};
@@ -48,6 +50,7 @@
 		onToggleExpansion,
 		onImageEdit,
 		onImageUploaded,
+		onImagesChanged,
 		onSelectImage,
 		isSelectingImage = false
 	}: Props = $props();
@@ -89,8 +92,8 @@
 			const status = uploadResult.data?.status;
 			if (status === 'success_with_errors') {
 				// The image is saved, but part of the request (e.g. selecting it) failed.
-				// Don't open the editor: it would match the image by id and could save it
-				// as a different photo type than the one requested.
+				// Show the saved image, but don't open the editor: it would match the image
+				// by id and could save it as a different photo type than the one requested.
 				const error = (uploadResult.data.errors ?? [])
 					.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
 					.filter(Boolean)
@@ -102,6 +105,16 @@
 					})
 				);
 				trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
+				try {
+					await onImagesChanged?.();
+				} catch (err) {
+					console.error('Failed to refresh images after upload:', err);
+					toast.warning(
+						$_('product.edit.images.toast.refresh_failed', {
+							default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
+						})
+					);
+				}
 			} else if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here
