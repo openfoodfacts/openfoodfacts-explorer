@@ -175,18 +175,49 @@
 		};
 	}
 
-	function switchKjAndKcal() {
-		const energyKj = product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g'];
-		const energyKcal = product.nutriments?.['energy-kcal_100g'];
+	const KJ_PER_KCAL = 4.184;
 
-		product = {
-			...product,
-			nutriments: {
-				...product.nutriments,
-				'energy-kj_100g': energyKcal,
-				'energy-kcal_100g': energyKj
-			}
-		};
+	function toEnergyNumber(value: unknown): number | null {
+		if (value == null || value === '') {
+			return null;
+		}
+
+		const parsed = typeof value === 'number' ? value : Number(String(value).replace(',', '.'));
+		return Number.isFinite(parsed) ? parsed : null;
+	}
+
+	function roundEnergy(value: number): number {
+		return Math.round(value * 10) / 10;
+	}
+
+	function switchKjAndKcal() {
+		const nutriments = product.nutriments ?? ({} as Nutriments);
+		const energyKj = toEnergyNumber(nutriments['energy-kj_100g'] ?? nutriments['energy_100g']);
+		const energyKcal = toEnergyNumber(nutriments['energy-kcal_100g']);
+
+		// Nothing to convert when the fields are empty.
+		if (energyKj != null) {
+			product = {
+				...product,
+				nutriments: {
+					...nutriments,
+					'energy-kj_100g': energyKj,
+					'energy-kcal_100g': roundEnergy(energyKj / KJ_PER_KCAL)
+				}
+			};
+			return;
+		}
+
+		if (energyKcal != null) {
+			product = {
+				...product,
+				nutriments: {
+					...nutriments,
+					'energy-kj_100g': roundEnergy(energyKcal * KJ_PER_KCAL),
+					'energy-kcal_100g': energyKcal
+				}
+			};
+		}
 	}
 
 	function handleServingSize(event: Event) {
@@ -442,14 +473,19 @@
 
 			<!-- Energy -->
 			<fieldset class="fieldset">
-				<div class="flex gap-2">
-					<label class={['input grow', fieldInputClasses('energy')]}>
-						<span class="label">
-							{$_('product.edit.energy')}
-						</span>
+				<div class="flex items-center gap-2">
+					<span class="label leading-0">{$_('product.edit.energy')}</span>
+					{#if issuesByField('energy').length > 0}
+						{@render issueTooltip(issuesByField('energy')[0])}
+					{/if}
+				</div>
+				<div class="flex flex-wrap items-center gap-2">
+					<label class={['input grow basis-24', fieldInputClasses('energy')]}>
 						<input
 							id="energy-kj-input"
+							class="min-w-0 grow"
 							type="number"
+							aria-label={`${$_('product.edit.energy')} (${$_('product.edit.si_kilojoules')})`}
 							value={product.nutriments?.['energy-kj_100g'] ??
 								product.nutriments?.['energy_100g'] ??
 								''}
@@ -458,51 +494,44 @@
 							step="1"
 							min="0"
 						/>
-						<span class="label">
+						<span class="label px-1">
 							{$_('product.edit.si_kilojoules')}
 						</span>
-						{#if issuesByField('energy').length > 0}
-							{@render issueTooltip(issuesByField('energy')[0])}
-						{/if}
 					</label>
 
 					<button
 						type="button"
-						class="btn btn-square btn-ghost btn-sm"
-						aria-label="Swap units"
+						class="btn btn-square shrink-0 btn-ghost btn-sm"
+						aria-label="Convert energy units"
+						title="Convert energy units"
 						onclick={switchKjAndKcal}
 					>
 						<IconMdiSwapHorizontal class="h-5 w-5" />
 					</button>
 
-					<label class={['input grow', fieldInputClasses('energy')]}>
-						<span class="label">
-							{$_('product.edit.energy')}
-						</span>
+					<label class={['input grow basis-24', fieldInputClasses('energy')]}>
 						<input
 							id="energy-kcal-input"
+							class="min-w-0 grow"
 							type="number"
+							aria-label={`${$_('product.edit.energy')} (${$_('product.edit.si_kilocalories')})`}
 							value={product.nutriments?.['energy-kcal_100g'] ?? ''}
 							oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
 							placeholder="500"
 							step="1"
 							min="0"
 						/>
-						<span class="label">
+						<span class="label px-1">
 							{$_('product.edit.si_kilocalories')}
 						</span>
-						{#if issuesByField('energy').length > 0}
-							{@render issueTooltip(issuesByField('energy')[0])}
-						{/if}
 					</label>
 				</div>
 			</fieldset>
 			<fieldset class="fieldset">
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
-					{@const issueKeys = [nutrient, 'all']}
-					{@const issue = issuesByField(issueKeys)[0]}
-					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
-						<span class="label w-36 shrink-0">
+					{@const issue = issuesByField(nutrient)[0]}
+					<label class={['input w-full', fieldInputClasses(nutrient)]}>
+						<span class="label w-40 shrink-0">
 							<span class="flex grow items-center gap-2">
 								{$_(`product.edit.nutrient.${nutrient}`)}
 
@@ -510,6 +539,9 @@
 									<InfoTooltip text={$_(EMPTY_NUTRIENT_TOOLTIPS[nutrient])} />
 								{/if}
 							</span>
+							{#if issue}
+								{@render issueTooltip(issue)}
+							{/if}
 						</span>
 
 						<input
@@ -535,9 +567,6 @@
 								<option value="µg">{$_('product.edit.si_micrograms')}</option>
 							</select>
 						</span>
-						{#if issue}
-							{@render issueTooltip(issue)}
-						{/if}
 					</label>
 				{/each}
 			</fieldset>
@@ -550,7 +579,7 @@
 					{@const nutrientDetails = nutrientById.get(nutrient)}
 					<div class="join">
 						<label class="input join-item w-full">
-							<span class="label w-36 shrink-0">
+							<span class="label w-40 shrink-0">
 								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
