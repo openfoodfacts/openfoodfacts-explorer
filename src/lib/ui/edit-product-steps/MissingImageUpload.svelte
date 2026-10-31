@@ -42,6 +42,11 @@
 			const base64Data = await fileToBase64(file);
 			const result = await uploadImageV3(fetch, productCode, base64Data, imagefield);
 			const status = result?.data?.status;
+			// Errors are objects; show their (translated) message, not "[object Object]"
+			const error = (result?.data?.errors ?? [])
+				.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
+				.filter(Boolean)
+				.join(', ');
 
 			if (
 				status === 'success' ||
@@ -50,10 +55,6 @@
 			) {
 				if (status === 'success_with_errors') {
 					// The image is saved, but part of the request (e.g. selecting it) failed.
-					const error = (result.data?.errors ?? [])
-						.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
-						.filter(Boolean)
-						.join(', ');
 					toast.warning(
 						$_('product.edit.images.toast.upload_success_with_errors', {
 							default: 'Image uploaded, but some changes could not be applied: {error}',
@@ -75,12 +76,8 @@
 						})
 					);
 				}
-			} else if (result?.data?.errors && result.data.errors.length > 0) {
-				toast.error(
-					$_('product.edit.images.toast.upload_failed', {
-						values: { error: result.data.errors.join(', ') }
-					})
-				);
+			} else if (error) {
+				toast.error($_('product.edit.images.toast.upload_failed', { values: { error } }));
 			} else {
 				toast.error($_('product.edit.images.toast.upload_failed_generic'));
 			}
@@ -95,7 +92,17 @@
 </script>
 
 <div class="mb-4 alert flex flex-wrap items-center justify-between gap-2 alert-warning">
-	<span class="text-sm sm:text-base">{message}</span>
+	<div class="flex flex-col gap-1">
+		<span class="text-sm sm:text-base">{message}</span>
+		{#if onUploaded}
+			<!-- Uploading from here skips the Photos section, so repeat its copyright notice -->
+			<span class="text-xs">
+				{$_('product.edit.legal_warning_photos_2', {
+					default: 'Only upload your own photos or those you have explicit permission to use.'
+				})}
+			</span>
+		{/if}
+	</div>
 	{#if onUploaded}
 		<input
 			bind:this={fileInput}
