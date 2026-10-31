@@ -33,8 +33,9 @@
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
 		// Called with the type and language the image was uploaded for
 		onImageUploaded?: (imgId: number, typeId: string, languageCode: string) => void;
-		// Reloads the images (after a partial upload or an unselect), without opening the editor
-		onImagesChanged?: () => Promise<void>;
+		// Reloads the images (after a partial upload or an unselect), without opening the editor.
+		// Shows its own warning if the reload fails, and never throws.
+		onImagesChanged?: () => Promise<unknown>;
 		onSelectImage?: () => void;
 		isSelectingImage?: boolean;
 	};
@@ -108,16 +109,7 @@
 					})
 				);
 				trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
-				try {
-					await onImagesChanged?.();
-				} catch (err) {
-					console.error('Failed to refresh images after upload:', err);
-					toast.warning(
-						$_('product.edit.images.toast.refresh_failed', {
-							default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
-						})
-					);
-				}
+				await onImagesChanged?.();
 			} else if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here

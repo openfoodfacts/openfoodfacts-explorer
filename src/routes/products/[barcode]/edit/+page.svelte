@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, refreshAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
@@ -18,7 +18,8 @@
 		updateBarcode,
 		updatePackagingsV3,
 		deleteProduct,
-		updateObsoleteStatusV3
+		updateObsoleteStatusV3,
+		createProductsApi
 	} from '#lib/api.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { getLanguageCode, preferences } from '#lib/settings.js';
@@ -500,17 +501,26 @@
 		return PRODUCT_IMAGE_URL(`${path}/${filename}`);
 	}
 
-	// After uploading a missing image from a step, reload the product and only take
-	// its images, so unsaved edits in the form are kept.
+	// After an image change, fetch only the product's images and put them into the form,
+	// so unsaved edits are kept. Rerunning the page loader (refreshAll) is avoided: if it
+	// failed, SvelteKit would replace the form with the error page and the edits would be lost.
+	// Throws if the images can't be loaded; the form is left as it is.
 	async function reloadImages() {
-		await refreshAll();
-		if ('product' in data.state && data.state.product) {
-			product = {
-				...product,
-				// @ts-expect-error - FIXME: to be fixed in the SDK
-				images: data.state.product.images ?? {}
-			};
+		const code = product.code;
+		const { data: state } = await createProductsApi(fetch).getProductV3(code, {
+			fields: ['images']
+		});
+		if (!state || state.status === 'failure' || !('product' in state) || !state.product) {
+			throw new Error(`Could not reload the images of product ${code}`);
 		}
+		// Another product may have been opened while the request was running
+		if (product.code !== code) return;
+
+		product = {
+			...product,
+			// @ts-expect-error - FIXME: to be fixed in the SDK
+			images: state.product.images ?? {}
+		};
 	}
 
 	// Determine if we're in add mode (new product) or edit mode (existing product)

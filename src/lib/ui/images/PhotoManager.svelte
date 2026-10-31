@@ -255,19 +255,25 @@
 		};
 	};
 
-	async function handleImageUploaded(imgId: number, typeId: string, languageCode: string) {
+	// Reload the images after a change. Never throws: the change itself succeeded, so a failed
+	// refresh must not be reported as a failed upload/select/unselect, or leave the editor open.
+	async function refreshImages(): Promise<boolean> {
 		try {
 			await reloadImages();
+			return true;
 		} catch (err) {
-			// The image is uploaded; only reloading it into the form failed.
-			console.error('Failed to refresh images after upload:', err);
+			console.error('Failed to refresh images:', err);
 			toast.warning(
 				$_('product.edit.images.toast.refresh_failed', {
-					default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
+					default: 'The photos could not be refreshed. Reload the page to see the latest version.'
 				})
 			);
-			return;
+			return false;
 		}
+	}
+
+	async function handleImageUploaded(imgId: number, typeId: string, languageCode: string) {
+		if (!(await refreshImages())) return;
 
 		// The editor saves for the active language, so only open it if the user is
 		// still on the language the image was uploaded for.
@@ -322,7 +328,7 @@
 		} finally {
 			isSavingImage = false;
 
-			await reloadImages();
+			await refreshImages();
 			closeEditModal();
 		}
 	}
@@ -382,7 +388,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
-				await reloadImages();
+				await refreshImages();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -425,7 +431,7 @@
 			);
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await reloadImages();
+			await refreshImages();
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
@@ -466,7 +472,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
-						onImagesChanged={reloadImages}
+						onImagesChanged={refreshImages}
 						onSelectImage={() => openImageSelection(photoType.id)}
 						isSelectingImage={isSelectingImage && selectingImageSection === photoType.id}
 					/>
@@ -485,7 +491,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
-						onImagesChanged={reloadImages}
+						onImagesChanged={refreshImages}
 					/>
 				{/each}
 

@@ -72,7 +72,8 @@
 					console.error('Failed to refresh images after upload:', err);
 					toast.warning(
 						$_('product.edit.images.toast.refresh_failed', {
-							default: 'Image uploaded, but it could not be shown yet. Reload the page to see it.'
+							default:
+								'The photos could not be refreshed. Reload the page to see the latest version.'
 						})
 					);
 				}
