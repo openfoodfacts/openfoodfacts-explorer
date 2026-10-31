@@ -1,6 +1,6 @@
 {
 	"nutriscore": "营养价值评分",
-	"ecoscore": "绿色评分",
+	"ecoscore": "Green-Score",
 	"nova": "Nova - 超处理级别",
 	"settings_link": "设置",
 	"folksonomy_link": "民间经济学",
@@ -851,8 +851,8 @@
 		"categories": "类别",
 		"categories_tags": "类别",
 		"nutrition_grades": "营养价值评分",
-		"environmental_score_grade": "绿色评分",
-		"ecoscore_grade": "绿色评分",
+		"environmental_score_grade": "Green-Score",
+		"ecoscore_grade": "Green-Score",
 		"nova_group": "Ultra-processing level (NOVA)",
 		"nova_groups": "Ultra-processing level (NOVA)",
 		"labels": "标签和证书",
