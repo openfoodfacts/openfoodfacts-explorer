@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Hwehwɛ {value} ɔfa no wɔ Open Food Facts Explorer so.",
 		"facet_back_to_list": "San kɔ afã horow so",
 		"facet_back_to_overview": "San kɔ {facet} nsɛm a wɔaka abom so",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
