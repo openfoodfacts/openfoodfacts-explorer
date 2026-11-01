@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Откријте категорију {value} на Open Food Facts Explorer-у.",
 		"facet_back_to_list": "Назад на фасете",
 		"facet_back_to_overview": "Назад на преглед {facet}",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
