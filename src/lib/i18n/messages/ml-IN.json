@@ -921,6 +921,9 @@
 		"facet_value_website_description": "ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ {value} വിഭാഗം കണ്ടെത്തുക.",
 		"facet_back_to_list": "വശങ്ങളിലേക്ക് മടങ്ങുക",
 		"facet_back_to_overview": "{facet} അവലോകനത്തിലേക്ക് മടങ്ങുക",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
