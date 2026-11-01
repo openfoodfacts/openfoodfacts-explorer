@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Open Food Facts Explorer හි {value} කාණ්ඩය සොයා ගන්න.",
 		"facet_back_to_list": "මුහුණුවර වෙත ආපසු",
 		"facet_back_to_overview": "{facet} දළ විශ්ලේෂණය වෙත ආපසු යන්න",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
