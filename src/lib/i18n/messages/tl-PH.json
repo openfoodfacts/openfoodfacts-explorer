@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Tuklasin ang kategoryang {value} sa Open Food Facts Explorer.",
 		"facet_back_to_list": "Bumalik sa facet",
 		"facet_back_to_overview": "Bumalik sa {facet} pangkalahatang-ideya",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
