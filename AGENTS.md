@@ -118,6 +118,17 @@ src/
 - Always provide a `default` fallback: `$_('some.key', { default: 'Fallback text' })`.
 - Add new keys to `src/lib/i18n/messages/en-US.json` first.
 
+### Environment Variables vs. Build Metadata
+
+- **For `.env` variables (runtime/user configuration):**
+  - Always declare them in `src/env.ts` using `defineEnvVars` from `@sveltejs/kit/env`.
+  - In client-side code, import them from `$app/env/public` (e.g. `import { FORCE_ROLE } from '$app/env/public'`).
+  - Do **not** use `vite.config.ts` `define` or `import.meta.env` for variables loaded from `.env`.
+- **For build-time Git / package metadata (compile-time constants):**
+  - If you need a value computed during build by Node or Git (e.g. `PACKAGE_VERSION`, `BUILD_VERSION`, `BUILD_COMMIT_SHA`, `VERCEL`), define it in `vite.config.ts` under `define: { 'import.meta.env.NAME': JSON.stringify(...) }`.
+  - Add its type definition to `vite-env.d.ts` under `interface ImportMetaEnv`.
+  - Access it in source code via `import.meta.env.NAME`.
+
 ---
 
 ## Common Issues
@@ -128,7 +139,18 @@ src/
 | Build fails after dependency change | Stale lockfile                                    | `rm -rf node_modules pnpm-lock.yaml && pnpm install`                         |
 | App won't start                     | Missing `.env`                                    | `cp .env.example .env`                                                       |
 | CI fails on lint/format             | Unformatted code                                  | `pnpm format && pnpm lint`                                                   |
+| Cannot test moderator tools         | Missing moderator account on live API             | Set `FORCE_ROLE=moderator` in `.env`                                         |
 | `binding_property_non_reactive`     | `bind:prop={obj.subprop}` on a `$bindable()` prop | Use one-way `value` + `oninput` that reassigns the parent object (see below) |
+
+### Testing Moderator Features in Development
+
+Sandbox and agent environments do not have privileged accounts on the live Open Food Facts API. To test moderator UI (such as Moderator Mode in Settings, deleting products, moving images, or wiping nutrients), add to `.env`:
+
+```env
+FORCE_ROLE=moderator
+```
+
+This override is active only in local development (`dev === true`) and is strictly ignored in production builds.
 
 ### Svelte 5: `binding_property_non_reactive`
 
