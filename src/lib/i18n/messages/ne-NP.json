@@ -921,6 +921,9 @@
 		"facet_value_website_description": "ओपन फूड फ्याक्ट्स एक्सप्लोररमा {value} श्रेणी पत्ता लगाउनुहोस्।",
 		"facet_back_to_list": "पक्षहरूमा फर्कनुहोस्",
 		"facet_back_to_overview": "{facet} सिंहावलोकनमा फर्कनुहोस्",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
