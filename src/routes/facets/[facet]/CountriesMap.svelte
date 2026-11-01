@@ -294,6 +294,17 @@
 					pathLayer.bindPopup(
 						`<strong>${safeName}</strong>: ${numberFormat.format(data.products)} products`
 					);
+
+					// Unbind sticky tooltip to avoid stacking
+					pathLayer.on({
+						popupopen() {
+							pathLayer.closeTooltip();
+							pathLayer.unbindTooltip();
+						},
+						popupclose() {
+							pathLayer.bindTooltip(tooltipContent, { sticky: true });
+						}
+					});
 				}
 			}
 		});
