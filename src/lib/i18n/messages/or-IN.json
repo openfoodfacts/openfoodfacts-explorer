@@ -921,6 +921,9 @@
 		"facet_value_website_description": "ଓପନ ଫୁଡ୍ ଫ୍ୟାକ୍ଟସ୍ ଏକ୍ସପ୍ଲୋରରରେ {value} ବର୍ଗ ଆବିଷ୍କାର କରନ୍ତୁ।",
 		"facet_back_to_list": "ଦିଗଗୁଡ଼ିକୁ ଫେରନ୍ତୁ",
 		"facet_back_to_overview": "{facet} ସଂକ୍ଷିପ୍ତ ବିବରଣୀକୁ ଫେରନ୍ତୁ",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
