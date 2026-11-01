@@ -11,8 +11,10 @@ Props:
   If not provided, all panels are displayed.
 -->
 <script lang="ts">
+	import { _ } from '#lib/i18n/index.js';
 	import type { KnowledgePanelElement, KnowledgePanels } from '#lib/api.js';
 	import Panel from './Panel.svelte';
+	import { validatePanelTree } from './validatePanelTree';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -22,6 +24,7 @@ Props:
 	};
 
 	let { panels, code, summary = true, roots }: Props = $props();
+	const warnedResponses: object[] = [];
 
 	const SUMMARY_ID = 'knowledge-panels';
 
@@ -31,10 +34,20 @@ Props:
 			: Object.fromEntries(
 					Object.entries(panels).filter(
 						([id, panel]) =>
-							roots.includes(id) || (panel.type != null && roots.includes(panel.type))
+							roots.includes(id) || (panel?.type != null && roots.includes(panel.type))
 					)
 				)
 	);
+	let validation = $derived(validatePanelTree(panels, Object.keys(rootPanels)));
+
+	$effect(() => {
+		if (validation.valid || warnedResponses.indexOf(panels) !== -1) return;
+		warnedResponses.push(panels);
+		console.warn('[knowledge-panels] Rejected panel response during preflight validation.', {
+			reason: validation.reason,
+			panelId: validation.panelId
+		});
+	});
 
 	let sections = $derived.by(() => {
 		const toDisplay = Object.entries(rootPanels)
@@ -47,33 +60,42 @@ Props:
 			.map((it) => it.panel_element?.panel_id);
 
 		return Object.entries(panels).filter(
-			([id, panel]) => id && toDisplay.includes(id) && panel.title_element
+			([id, panel]) => id && toDisplay.includes(id) && panel?.title_element
 		);
 	});
 </script>
 
-{#if summary}
-	<div>
-		<div class="absolute ms-5 max-w-max rounded-xl bg-secondary px-4 text-secondary-content">
-			Summary
-		</div>
-
-		<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
-
-		<div class="my-4 flex flex-row flex-wrap justify-center gap-2 md:gap-4" id={SUMMARY_ID}>
-			{#each sections as [panelKey, panel] (panelKey)}
-				<a class="btn text-lg btn-secondary" href={'#' + panelKey}>
-					{panel.title_element!.title}
-				</a>
-			{/each}
-		</div>
-
-		<div class="border-b-2 border-dashed border-secondary"></div>
+{#if !validation.valid}
+	<div class="alert alert-warning">
+		{$_('knowledge_panels.invalid_response', {
+			default:
+				'These panels could not be displayed because their references are invalid or too complex.'
+		})}
 	</div>
-{/if}
+{:else}
+	{#if summary}
+		<div>
+			<div class="absolute ms-5 max-w-max rounded-xl bg-secondary px-4 text-secondary-content">
+				Summary
+			</div>
 
-{#each Object.entries(panels) as [id, panel] (id)}
-	{#if roots == null || roots.includes(id) || (panel.type != null && roots.includes(panel.type))}
-		<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
+			<div class="mt-3 border-b-2 border-dashed border-secondary"></div>
+
+			<div class="my-4 flex flex-row flex-wrap justify-center gap-2 md:gap-4" id={SUMMARY_ID}>
+				{#each sections as [panelKey, panel] (panelKey)}
+					<a class="btn text-lg btn-secondary" href={'#' + panelKey}>
+						{panel.title_element!.title}
+					</a>
+				{/each}
+			</div>
+
+			<div class="border-b-2 border-dashed border-secondary"></div>
+		</div>
 	{/if}
-{/each}
+
+	{#each Object.entries(panels) as [id, panel] (id)}
+		{#if roots == null || roots.includes(id) || (panel?.type != null && roots.includes(panel.type))}
+			<Panel {panel} {panels} {id} link={'#' + SUMMARY_ID} productCode={code} inline />
+		{/if}
+	{/each}
+{/if}
