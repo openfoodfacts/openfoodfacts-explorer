@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Open Food Facts Explorer дээрх {value} ангиллыг олж мэдээрэй.",
 		"facet_back_to_list": "Нүүр хуудас руу буцах",
 		"facet_back_to_overview": "{facet} тойм руу буцах",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
