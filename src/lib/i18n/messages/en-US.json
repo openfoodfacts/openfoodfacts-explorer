@@ -401,7 +401,12 @@
 			"datasources": "Data Sources",
 			"prices": "Prices",
 			"folksonomy": "Tags & Community",
-			"external_sources": "External sources"
+			"external_sources": "External sources",
+			"nutrient_extraction": "Extract nutrition"
+		},
+		"nutrient_extraction": {
+			"title": "Nutrition facts extraction",
+			"success": "Thank you for contributing! The nutritional information has been submitted."
 		},
 		"gs1": {
 			"title": "GS1 barcode information",
