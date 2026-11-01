@@ -921,6 +921,9 @@
 		"facet_value_website_description": "ኣብ ክፉት ሓቅታት መግቢ ዳህሳሲ {value} ዝብል ምድብ ርኸቡ።",
 		"facet_back_to_list": "ናብ ገጻት ክንምለስ",
 		"facet_back_to_overview": "ናብ {facet} ሓፈሻዊ ትሕዝቶ ንመለስ",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
