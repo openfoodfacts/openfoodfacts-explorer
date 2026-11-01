@@ -921,6 +921,9 @@
 		"facet_value_website_description": "মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত {value} শ্ৰেণীটো আৱিষ্কাৰ কৰক।",
 		"facet_back_to_list": "ফেচেটলৈ উভতি যাওঁক",
 		"facet_back_to_overview": "{facet} অভাৰভিউলৈ উভতি যাওক",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
