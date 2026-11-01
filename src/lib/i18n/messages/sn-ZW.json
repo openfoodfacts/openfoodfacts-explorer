@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Tsvaga iyo {value} chikamu paVhura Chikafu Chokwadi Explorer.",
 		"facet_back_to_list": "Back to faces",
 		"facet_back_to_overview": "Dzokera ku {facet} muchidimbu",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
