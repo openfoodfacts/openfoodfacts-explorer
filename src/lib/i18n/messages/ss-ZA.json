@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Titfolele {value} sigaba ku-Explorer Yemaciniso Ekudla Lavulekile.",
 		"facet_back_to_list": "Emuva etincenyeni",
 		"facet_back_to_overview": "Emuva ku {facet} kubuka konkhe",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
