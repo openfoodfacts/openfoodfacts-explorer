@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Découvrez la catégorie {value} sur Open Food Facts Explorer.",
 		"facet_back_to_list": "Retour aux facettes",
 		"facet_back_to_overview": "Retour à l'aperçu {facet}",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origines des ingrédients",
 		"map_heading_countries": "Où ces produits sont vendus"
 	},
