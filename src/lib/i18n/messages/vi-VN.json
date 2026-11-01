@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Khám phá danh mục {value} trên Open Food Facts Explorer.",
 		"facet_back_to_list": "Quay lại các khía cạnh",
 		"facet_back_to_overview": "Quay lại tổng quan {facet}",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
