@@ -592,6 +592,7 @@
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
+			"swap_energy_units": "Swap units",
 			"si_grams": "g",
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
