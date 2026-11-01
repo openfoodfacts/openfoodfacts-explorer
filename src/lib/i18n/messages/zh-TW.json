@@ -631,6 +631,7 @@
 			}
 		},
 		"prices": {
+			"quantity_nudge": "補全數量，以比較每公斤或每公升的價格。",
 			"no_prices_found": "未找到該產品的價格",
 			"loading": "正在加載價格…",
 			"view_prices": "查看開放價格",
