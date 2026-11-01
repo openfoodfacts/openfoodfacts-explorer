@@ -5,6 +5,7 @@
 	import { NUTRIPATROL_URL } from '#lib/const.js';
 	import { resolve } from '$app/paths';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -35,6 +36,7 @@
 		{
 			type: 'report_product_to_nutripatrol',
 			action: () => {
+				trackOffEvent('feature', 'report_problem_opened', 'knowledge_panel');
 				const params = new URLSearchParams({
 					barcode: requireCode(),
 					source: 'web',
