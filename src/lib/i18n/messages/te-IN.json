@@ -921,6 +921,9 @@
 		"facet_value_website_description": "ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో {value} వర్గాన్ని కనుగొనండి.",
 		"facet_back_to_list": "కోణాలకు తిరిగి వెళ్ళు",
 		"facet_back_to_overview": "{facet} అవలోకనానికి తిరిగి వెళ్ళు",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
