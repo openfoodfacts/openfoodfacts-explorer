@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Open Food Facts Explorer で {value} カテゴリを見つけてください。",
 		"facet_back_to_list": "ファセットに戻る",
 		"facet_back_to_overview": "{facet} の概要に戻る",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
