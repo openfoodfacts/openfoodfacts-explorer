@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Ṣe afẹri ẹka {value} lori Ṣiṣawari Awọn Otitọ Ounje.",
 		"facet_back_to_list": "Pada si awọn abala",
 		"facet_back_to_overview": "Pada si {facet} awotẹlẹ",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
