@@ -921,6 +921,9 @@
 		"facet_value_website_description": "Aw ye {value} kulu sɔrɔ Open Food Facts Explorer kan.",
 		"facet_back_to_list": "Segin ka na facettes kan",
 		"facet_back_to_overview": "Segin {facet} lajɛba kan",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold"
 	},
