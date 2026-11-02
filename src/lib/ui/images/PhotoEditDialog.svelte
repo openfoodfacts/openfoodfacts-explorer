@@ -4,6 +4,7 @@
 	import type { ProductImage } from '#lib/api.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { _ } from '#lib/i18n/index.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiRotateLeft from '@iconify-svelte/mdi/rotate-left';
@@ -738,6 +739,7 @@
 						rel="noopener noreferrer"
 						class="btn btn-outline hover:btn-outline hover:btn-warning"
 						aria-label="Report this image"
+						onclick={() => trackOffEvent('feature', 'report_problem_opened', 'image_report')}
 					>
 						<IconMdiFlag class="h-4 w-4" aria-hidden="true" />
 						{$_('product.edit.images.report_image', { default: 'Report Image' })}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
@@ -54,7 +55,10 @@
 				rel="noopener noreferrer"
 				aria-label="Report to NutriPatrol"
 				title="Report to NutriPatrol"
-				onclick={(e) => e.stopPropagation()}
+				onclick={(e) => {
+					e.stopPropagation();
+					trackOffEvent('feature', 'report_problem_opened', 'image_report');
+				}}
 			>
 				<IconMdiFlagOutline class="h-4 w-4" />
 			</a>
