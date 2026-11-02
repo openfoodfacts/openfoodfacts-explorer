@@ -70,9 +70,9 @@
 	const LABEL_GAP = 10;
 
 	/**
-	 * Makes the labels of each band axis readable at any width: drops the `xx:` language prefix,
-	 * wraps a label wider than its bar at hyphens, and turns the whole axis sideways while the
-	 * `labelsSideways` signal is on.
+	 * Returns a copy of the spec whose band axis labels stay readable at any width: drops the `xx:`
+	 * language prefix, wraps a label wider than its bar at hyphens, and turns the axis sideways while
+	 * the added `labelsSideways` signal is on. Also pads the bands and fits the chart to the width.
 	 */
 	function withReadableBandLabels(spec: Spec, bandScales: Set<string | undefined>): Spec {
 		const label = "replace(datum.label, regexp('^[a-z]{2}:'), '')";
@@ -197,7 +197,7 @@
 				if (token !== renderToken) return;
 				let fittedWidth = view.width();
 				view.addResizeListener((width) => {
-					// A label flip changes the padding and fires this listener too.
+					// A label flip fires this at the same width; skip it so one flip cannot cause another.
 					if (width === fittedWidth) return;
 					fittedWidth = width;
 					fitLabels();

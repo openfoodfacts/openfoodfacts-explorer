@@ -139,7 +139,7 @@
 		}
 	}
 
-	function onlyChartsParamChanged(from: URL, to: URL) {
+	function sameExceptCharts(from: URL, to: URL) {
 		const withoutCharts = (url: URL) => {
 			const copy = new URL(url);
 			copy.searchParams.delete('charts');
@@ -151,7 +151,7 @@
 	beforeNavigate(({ shallow, from, to }) => {
 		if (shallow) return;
 		// A chart selection change must not cancel a pending filter update.
-		if (from && to && onlyChartsParamChanged(from.url, to.url)) return;
+		if (from && to && sameExceptCharts(from.url, to.url)) return;
 
 		clearPendingTimer();
 	});

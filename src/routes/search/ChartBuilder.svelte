@@ -62,7 +62,7 @@
 		loading = true;
 		const q = query;
 		const requested = [...fields];
-		// Untracked: the fetch wrappers read navigation state, which would refetch on every navigation.
+		// Untracked: Sentry's fetch wrapper reads the navigation state, which would refetch on every navigation.
 		untrack(() => loadCharts(q, requested))
 			.catch((err) => {
 				console.error('Chart search failed:', err);
