@@ -52,12 +52,17 @@
 				url: `${window.location.origin}${window.location.pathname}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
+					default: 'Check out this product on Open Food Facts: {productName}',
 					values: { productName: product.product_name || product.code }
 				})
 			},
 			{
-				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
-				onError: () => toastCtx.error($_('product.toast.failed_copy'))
+				onClipboard: () =>
+					toastCtx.success(
+						$_('product.toast.copied_link', { default: 'Link copied to clipboard!' })
+					),
+				onError: () =>
+					toastCtx.error($_('product.toast.failed_copy', { default: 'Failed to copy link' }))
 			}
 		);
 	}
@@ -75,7 +80,10 @@
 	});
 	let credit = $derived(
 		frontImageUploader != null && frontImageUploader !== ''
-			? $_('product.image_attribution', { values: { photographer: frontImageUploader } })
+			? $_('product.image_attribution', {
+					default: 'Attribution: Photo by {photographer} per Open Food Facts',
+					values: { photographer: frontImageUploader }
+				})
 			: undefined
 	);
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
@@ -96,9 +104,13 @@
 	async function copyBarcode() {
 		try {
 			await navigator.clipboard.writeText(product.code!);
-			toastCtx.success($_('product.toast.copied_barcode'));
+			toastCtx.success(
+				$_('product.toast.copied_barcode', { default: 'Barcode copied to clipboard!' })
+			);
 		} catch {
-			toastCtx.error($_('product.toast.failed_copy_barcode'));
+			toastCtx.error(
+				$_('product.toast.failed_copy_barcode', { default: 'Failed to copy barcode' })
+			);
 		}
 	}
 </script>
@@ -132,7 +144,7 @@
 						class="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl bg-base-content/10 p-1 text-center text-xs text-base-content/70 md:gap-2 md:text-sm"
 					>
 						<IconMdiCameraOutline class="h-6 w-6 md:h-10 md:w-10" aria-hidden="true" />
-						<span>{$_('product.edit.no_photo_available')}</span>
+						<span>{$_('product.edit.no_photo_available', { default: 'No photo available' })}</span>
 					</div>
 				{/if}
 				{#if credit}
@@ -160,14 +172,16 @@
 					<p class="text-sm text-base-content/70 md:text-base">{metaLine}</p>
 				{/if}
 				<div class="flex flex-wrap items-center gap-2 text-sm text-base-content/70">
-					<span class="sr-only md:not-sr-only">{$_('product.barcode.code_label')}</span>
+					<span class="sr-only md:not-sr-only"
+						>{$_('product.barcode.code_label', { default: 'Barcode' })}</span
+					>
 					{#if product.product_name}
 						<span class="rounded-lg bg-base-content/10 px-2 font-mono text-xs md:text-sm"
 							>{product.code}</span
 						>
 					{/if}
 					<button class="btn rounded-full btn-outline btn-xs" onclick={copyBarcode}>
-						{$_('product.buttons.copy')}
+						{$_('product.buttons.copy', { default: 'Copy' })}
 					</button>
 				</div>
 			</div>
@@ -181,12 +195,12 @@
 				>
 					<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
 					{product.product_name
-						? $_('product.buttons.edit')
-						: $_('product.edit.edit_product_title')}
+						? $_('product.buttons.edit', { default: 'Edit' })
+						: $_('product.edit.edit_product_title', { default: 'Edit product' })}
 				</a>
 				<button class="btn rounded-full btn-outline btn-sm" onclick={sharePage}>
 					<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
-					{$_('product.buttons.share')}
+					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
 			</div>
@@ -235,14 +249,16 @@
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
 						<div class="mb-2 text-sm font-bold text-secondary">
-							<span>{$_('product.header.traceability_codes')}</span>
+							<span
+								>{$_('product.header.traceability_codes', { default: 'Traceability Codes' })}</span
+							>
 							<a
 								href={TRACEABILITY_CODES_URL}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="link text-xs link-secondary"
 							>
-								({$_('product.header.traceability_codes_learn_more')})
+								({$_('product.header.traceability_codes_learn_more', { default: 'Learn more' })})
 							</a>
 						</div>
 
@@ -259,15 +275,19 @@
 				{#if product.link != null}
 					<div class="mb-2">
 						<div class="mb-2 text-sm font-bold text-secondary">
-							{$_('product.header.producer_link')}
+							{$_('product.header.producer_link', { default: 'Producer link' })}
 						</div>
 						<a
 							class="link break-all"
 							href={product.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							title={$_('product.buttons.view_on_off')}
-							aria-label={$_('product.buttons.view_on_off')}
+							title={$_('product.buttons.view_on_off', {
+								default: 'View product on Open Food Facts'
+							})}
+							aria-label={$_('product.buttons.view_on_off', {
+								default: 'View product on Open Food Facts'
+							})}
 						>
 							{product.link}
 						</a>
