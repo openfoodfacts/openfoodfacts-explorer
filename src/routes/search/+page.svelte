@@ -139,16 +139,19 @@
 		}
 	}
 
-	function withoutCharts(url: URL) {
-		const copy = new URL(url);
-		copy.searchParams.delete('charts');
-		return copy.href;
+	function onlyChartsParamChanged(from: URL, to: URL) {
+		const withoutCharts = (url: URL) => {
+			const copy = new URL(url);
+			copy.searchParams.delete('charts');
+			return copy.href;
+		};
+		return withoutCharts(from) === withoutCharts(to);
 	}
 
 	beforeNavigate(({ shallow, from, to }) => {
 		if (shallow) return;
 		// A chart selection change must not cancel a pending filter update.
-		if (from && to && withoutCharts(from.url) === withoutCharts(to.url)) return;
+		if (from && to && onlyChartsParamChanged(from.url, to.url)) return;
 
 		clearPendingTimer();
 	});

@@ -64,16 +64,48 @@
 		});
 	}
 
-	// Band axis labels stay readable on any width: the `xx:` language prefix is dropped, a label wider
-	// than its bar wraps at hyphens, and if neighbouring labels would still collide the whole axis turns
-	// sideways (one choice per chart, never mixed).
 	const CHAR_WIDTH = 6;
-	// Share of each bar slot left empty, so bars never touch on narrow screens.
 	const BAND_PADDING = 0.2;
 	const LABEL_FONT = '10px sans-serif';
 	const LABEL_GAP = 10;
 
-	// Widest pair of neighbouring labels, in px, once each is split at its hyphens.
+	/**
+	 * Makes the labels of each band axis readable at any width: drops the `xx:` language prefix,
+	 * wraps a label wider than its bar at hyphens, and turns the whole axis sideways while the
+	 * `labelsSideways` signal is on.
+	 */
+	function withReadableBandLabels(spec: Spec, bandScales: Set<string | undefined>): Spec {
+		const label = "replace(datum.label, regexp('^[a-z]{2}:'), '')";
+		return {
+			...spec,
+			// resize: grow the height when the labels turn sideways after the first render.
+			autosize: { type: 'fit-x', contains: 'padding', resize: true },
+			signals: [...(spec.signals ?? []), { name: 'labelsSideways', value: false }],
+			scales: spec.scales?.map((s) => (s.type === 'band' ? { ...s, padding: BAND_PADDING } : s)),
+			axes: spec.axes?.map((axis) => {
+				if (!bandScales.has(axis.scale) || axis.encode?.labels) return axis;
+				const step = `bandwidth('${axis.scale}') / ${1 - BAND_PADDING}`;
+				return {
+					...axis,
+					encode: {
+						...axis.encode,
+						labels: {
+							update: {
+								text: {
+									signal: `labelsSideways || length(${label}) * ${CHAR_WIDTH} <= ${step} - 4 ? ${label} : split(${label}, '-')`
+								},
+								angle: { signal: `labelsSideways ? -90 : 0` },
+								align: { signal: `labelsSideways ? 'right' : 'center'` },
+								baseline: { signal: `labelsSideways ? 'middle' : 'top'` }
+							}
+						}
+					}
+				};
+			})
+		};
+	}
+
+	/** Returns the largest mean width, in px, of two neighbouring labels once they wrap at hyphens. */
 	function neighbourLabelWidth(labels: string[]): number {
 		const context = document.createElement('canvas').getContext('2d');
 		if (!context) return 0;
@@ -106,40 +138,10 @@
 			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
 			if (height) compiledSpec = { ...compiledSpec, height };
 			if (title) compiledSpec = { ...compiledSpec, title: undefined };
-			const label = "replace(datum.label, regexp('^[a-z]{2}:'), '')";
 			const bandScales = new Set(
 				(compiledSpec.scales ?? []).filter((s) => s.type === 'band').map((s) => s.name)
 			);
-			compiledSpec = {
-				...compiledSpec,
-				// resize: grow the height when the labels turn sideways after the first render.
-				autosize: { type: 'fit-x', contains: 'padding', resize: true },
-				signals: [...(compiledSpec.signals ?? []), { name: 'labelsSideways', value: false }],
-				scales: compiledSpec.scales?.map((s) =>
-					s.type === 'band' ? { ...s, padding: BAND_PADDING } : s
-				),
-				axes: compiledSpec.axes?.map((axis) => {
-					const step = `bandwidth('${axis.scale}') / ${1 - BAND_PADDING}`;
-					return bandScales.has(axis.scale) && !axis.encode?.labels
-						? {
-								...axis,
-								encode: {
-									...axis.encode,
-									labels: {
-										update: {
-											text: {
-												signal: `labelsSideways || length(${label}) * ${CHAR_WIDTH} <= ${step} - 4 ? ${label} : split(${label}, '-')`
-											},
-											angle: { signal: `labelsSideways ? -90 : 0` },
-											align: { signal: `labelsSideways ? 'right' : 'center'` },
-											baseline: { signal: `labelsSideways ? 'middle' : 'top'` }
-										}
-									}
-								}
-							}
-						: axis;
-				})
-			};
+			compiledSpec = withReadableBandLabels(compiledSpec, bandScales);
 
 			if (darkMode) {
 				const style = getComputedStyle(document.documentElement);
@@ -174,9 +176,8 @@
 			await view.runAsync();
 			if (token !== renderToken) return;
 
-			// Sideways or not is decided after the first render, from the rows actually drawn (the spec's
-			// rows can include values its transforms filter out) and the real bar spacing. It is decided again
-			// only when the container width changes, so a label flip cannot trigger another flip.
+			// Turns the labels sideways when neighbours would overlap at the drawn bar width. Reads
+			// view.data() because the spec's rows include values its transforms filter out.
 			const axisScale = compiledSpec.axes?.find((a) => bandScales.has(a.scale))?.scale;
 			const domain = (
 				compiledSpec.scales?.find((s) => s.name === axisScale) as
@@ -196,6 +197,7 @@
 				if (token !== renderToken) return;
 				let fittedWidth = view.width();
 				view.addResizeListener((width) => {
+					// A label flip changes the padding and fires this listener too.
 					if (width === fittedWidth) return;
 					fittedWidth = width;
 					fitLabels();
