@@ -89,32 +89,39 @@
 	);
 
 	let frontKey = $derived(frontImage?.match(/\/(front_[a-z]+)\.\d+\.\d+\.jpg$/)?.[1]);
-	let uploader = $derived.by(() => {
+	let frontImageUploader = $derived.by(() => {
 		const images = (product as unknown as Record<string, unknown>).images as
 			Record<string, { imgid?: string; uploader?: string }> | undefined;
-		const imgid = frontKey ? images?.[frontKey]?.imgid : undefined;
-		return imgid ? images?.[imgid]?.uploader : undefined;
+		const imgid = frontKey != null ? images?.[frontKey]?.imgid : null;
+		return imgid != null ? (images?.[imgid]?.uploader ?? null) : null;
 	});
 	let credit = $derived(
-		uploader ? $_('product.image_attribution', { values: { photographer: uploader } }) : undefined
+		frontImageUploader != null && frontImageUploader !== ''
+			? $_('product.image_attribution', { values: { photographer: frontImageUploader } })
+			: undefined
 	);
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
 
 	let creditHref = $derived(
-		`${new URL(productWebsiteUrl).origin}/cgi/product_image.pl?code=${product.code}&id=${frontKey}`
+		frontKey != null
+			? `${new URL(productWebsiteUrl).origin}/cgi/product_image.pl?${new URLSearchParams({ code: product.code!, id: frontKey })}`
+			: null
 	);
 
 	let metaLine = $derived(
-		[product.brands?.replaceAll(',', ', '), product.generic_name, product.quantity]
+		[getLocalizedTags('brands')?.join(', '), product.generic_name, product.quantity]
 			.filter(Boolean)
 			.join(' · ')
 	);
 
 	let similarHref = $derived.by(() => {
 		const value = product.categories_tags?.at(-1);
-		return value ? resolve('/facets/[facet]/[value]', { facet: 'categories', value }) : undefined;
+		return value != null
+			? resolve('/facets/[facet]/[value]', { facet: 'categories', value })
+			: null;
 	});
 
+	// TODO: move copying to the clipboard into a shared helper
 	async function copyBarcode() {
 		try {
 			await navigator.clipboard.writeText(product.code!);
@@ -124,11 +131,13 @@
 		}
 	}
 
+	let activeElement = $state<Element | null>(null);
+
 	function closeMenu() {
-		(document.activeElement as HTMLElement | null)?.blur();
+		(activeElement as HTMLElement | null)?.blur();
 	}
 
-	function closeOnEscape(e: KeyboardEvent) {
+	function menuOnKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') closeMenu();
 	}
 
@@ -149,6 +158,8 @@
 		}
 	}
 </script>
+
+<svelte:document bind:activeElement />
 
 <AppStrip />
 <Card>
@@ -235,7 +246,7 @@
 					<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
 					{$_('product.buttons.share')}
 				</button>
-				<div class="dropdown dropdown-end" role="presentation" onkeydown={closeOnEscape}>
+				<div class="dropdown dropdown-end" role="presentation" onkeydown={menuOnKeydown}>
 					<div
 						tabindex="0"
 						role="button"
