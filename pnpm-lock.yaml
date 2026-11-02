@@ -346,9 +346,6 @@ importers:
       openapi-typescript:
         specifier: ^7.13.0
         version: 7.13.0(typescript@6.0.3)
-      postcss:
-        specifier: ^8.5.31
-        version: 8.5.31
       prettier:
         specifier: ^3.9.10
         version: 3.9.10
