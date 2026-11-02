@@ -21,12 +21,14 @@
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
+		logoCount?: number;
 	};
-	let { product, lc }: Props = $props();
+	let { product, lc, logoCount = 0 }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -190,6 +192,25 @@
 						<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
 						<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
 					</button>
+
+					{#if logoCount > 0}
+						<a
+							href={`/products/${product.code}/logos`}
+							class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
+							aria-label={$_('product.logo_annotations.banner', {
+								default: 'Annotate {count, plural, one {# logo} other {# logos}}',
+								values: { count: logoCount }
+							})}
+						>
+							<IconMdiAlert class="h-5 w-5" />
+							<span>
+								{$_('product.logo_annotations.banner', {
+									default: 'Annotate {count, plural, one {# logo} other {# logos}}',
+									values: { count: logoCount }
+								})}
+							</span>
+						</a>
+					{/if}
 				</div>
 			</div>
 

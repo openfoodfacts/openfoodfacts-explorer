@@ -308,6 +308,24 @@
 			"compare": "Add to compare",
 			"view_on_off": "View product on Open Food Facts"
 		},
+		"logo_annotations": {
+			"banner": "Annotate {count, plural, one {# logo} other {# logos}}",
+			"title": "Logo annotations",
+			"back": "Back to product",
+			"empty_title": "No logos to annotate",
+			"empty_description": "All logos for this product have been annotated or no logos were detected.",
+			"image_alt": "Logo crop",
+			"type": "Type",
+			"value": "Value",
+			"confidence": "Confidence",
+			"annotation_type": "Annotation type",
+			"choose_type": "Choose type…",
+			"value_placeholder": "Enter value…",
+			"submit": "Annotate",
+			"select_type": "Please select an annotation type.",
+			"success": "Logo annotated successfully.",
+			"error": "Error annotating logo: {message}"
+		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
