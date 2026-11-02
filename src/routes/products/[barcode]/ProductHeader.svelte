@@ -6,25 +6,17 @@
 	import { navigating } from '$app/state';
 
 	import { getLanguageCode, preferences } from '#lib/settings.js';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
+	import { PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
 	import TagChipList from '#lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
-	import { compareStore } from '#lib/stores/compareStore.js';
-	import { userInfo } from '#lib/stores/user.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import Card from '#lib/ui/Card.svelte';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
 	import AppStrip from './AppStrip.svelte';
+	import ProductMoreMenu from './ProductMoreMenu.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
-	import IconMdiDotsHorizontal from '@iconify-svelte/mdi/dots-horizontal';
-	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
-	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
-	import IconMdiShape from '@iconify-svelte/mdi/shape';
-	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
@@ -53,20 +45,6 @@
 	}
 
 	let toastCtx = getToastCtx();
-	function addToCalculator() {
-		closeMenu();
-		// FIXME: product.code cannot be null
-		const code = product.code!;
-
-		addItemToCalculator({
-			id: code,
-			name: product.product_name || code,
-			quantity: 100,
-			imageUrl: product.image_front_small_url,
-			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
-			nutriments: extractNutriments(product.nutriments)
-		});
-	}
 
 	async function sharePage() {
 		await shareContent(
@@ -88,7 +66,7 @@
 		(product.image_front_url as string | undefined) ?? product.image_front_small_url
 	);
 
-	let frontKey = $derived(frontImage?.match(/\/(front_[a-z]+)\.\d+\.\d+\.jpg$/)?.[1]);
+	let frontKey = $derived(frontImage?.split('/').at(-1)?.split('.')[0]);
 	let frontImageUploader = $derived.by(() => {
 		const images = (product as unknown as Record<string, unknown>).images as
 			Record<string, { imgid?: string; uploader?: string }> | undefined;
@@ -114,13 +92,6 @@
 			.join(' · ')
 	);
 
-	let similarHref = $derived.by(() => {
-		const value = product.categories_tags?.at(-1);
-		return value != null
-			? resolve('/facets/[facet]/[value]', { facet: 'categories', value })
-			: null;
-	});
-
 	// TODO: move copying to the clipboard into a shared helper
 	async function copyBarcode() {
 		try {
@@ -130,36 +101,7 @@
 			toastCtx.error($_('product.toast.failed_copy_barcode'));
 		}
 	}
-
-	let activeElement = $state<Element | null>(null);
-
-	function closeMenu() {
-		(activeElement as HTMLElement | null)?.blur();
-	}
-
-	function menuOnKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') closeMenu();
-	}
-
-	function addToComparison() {
-		closeMenu();
-		// Convert Product to ProductReduced - using type assertion since the product exists
-		const added = compareStore.addProduct(product);
-		if (added) {
-			toastCtx.success(
-				$_('product.menu.added_to_comparison', { default: 'Product added to comparison' })
-			);
-		} else {
-			toastCtx.warning(
-				$_('product.menu.add_to_comparison_failed', {
-					default: 'Product is already in comparison or comparison list is full'
-				})
-			);
-		}
-	}
 </script>
-
-<svelte:document bind:activeElement />
 
 <AppStrip />
 <Card>
@@ -246,65 +188,7 @@
 					<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
 					{$_('product.buttons.share')}
 				</button>
-				<div class="dropdown dropdown-end" role="presentation" onkeydown={menuOnKeydown}>
-					<div
-						tabindex="0"
-						role="button"
-						class="btn rounded-full btn-outline btn-sm"
-						aria-label={$_('product.buttons.more')}
-					>
-						<IconMdiDotsHorizontal class="h-5 w-5" aria-hidden="true" />
-					</div>
-					<ul
-						class="menu dropdown-content z-50 mt-1 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
-					>
-						<li>
-							<a
-								href={productWebsiteUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								onclick={closeMenu}
-							>
-								<IconMdiOpenInNew class="h-5 w-5" aria-hidden="true" />
-								{$_('product.buttons.classic_view')}
-							</a>
-						</li>
-						<li>
-							<button onclick={addToComparison}>
-								<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
-								{$_('product.buttons.compare')}
-							</button>
-						</li>
-						{#if similarHref}
-							<li>
-								<a href={similarHref} onclick={closeMenu}>
-									<IconMdiShape class="h-5 w-5" aria-hidden="true" />
-									{$_('product.barcode.similar_products')}
-								</a>
-							</li>
-						{/if}
-						{#if $userInfo != null}
-							<li>
-								<button onclick={addToCalculator}>
-									<IconMdiCalculator class="h-5 w-5" aria-hidden="true" />
-									{$_('product.buttons.add_to_calculator')}
-								</button>
-							</li>
-						{/if}
-						<li>
-							<a
-								id="report-problem"
-								href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
-								target="_blank"
-								rel="noopener noreferrer"
-								onclick={closeMenu}
-							>
-								<IconMdiFlag class="h-5 w-5" aria-hidden="true" />
-								{$_('product.buttons.report')}
-							</a>
-						</li>
-					</ul>
-				</div>
+				<ProductMoreMenu {product} {productWebsiteUrl} />
 			</div>
 		</div>
 
