@@ -306,12 +306,21 @@
 			"report": "Informar de un problema con este producto",
 			"add_to_calculator": "Agregar producto a la calculadora nutricional",
 			"compare": "Añadir para comparar",
-			"view_on_off": "Ver el producto en Open Food Facts"
+			"view_on_off": "Ver el producto en Open Food Facts",
+			"copy": "Copiar",
+			"more": "More actions"
 		},
 		"share_text": "Consulta este producto en Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "¡Enlace copiado al portapapeles!",
-			"failed_copy": "No se pudo copiar el enlace"
+			"failed_copy": "No se pudo copiar el enlace",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "¡Escanea códigos de barras para obtener el Nutri-Score, el Green-Score y más!",
+			"get_app": "Descargar la aplicación"
 		},
 		"barcode": {
 			"title": "Barcode information",
