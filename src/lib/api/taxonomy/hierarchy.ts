@@ -73,9 +73,11 @@ export async function getChildCounts(
 			(e): e is KnowledgeTableElement =>
 				e.element_type === 'table' && e.table_element.id === 'related_categories_children'
 		);
-		return new Map(
-			table?.table_element.rows.map((r) => [r.values[0].text, Number(r.values[1].text)])
-		);
+		const counts = (table?.table_element.rows ?? []).map((r): [string, number] => [
+			r.values[0].text,
+			Number(r.values[1].text)
+		]);
+		return new Map(counts.filter(([, count]) => Number.isFinite(count)));
 	} catch {
 		return new Map();
 	}

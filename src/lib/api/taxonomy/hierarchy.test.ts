@@ -109,6 +109,20 @@ describe('getChildCounts', () => {
 		const fetch = vi.fn(async () => Promise.reject(new Error('down')));
 		expect((await getChildCounts(fetch, 'categories', 'en:cereals', 'en')).size).toBe(0);
 	});
+
+	it('returns no counts on an error status', async () => {
+		const fetch = vi.fn(async () => new Response('{}', { status: 500 }));
+		expect((await getChildCounts(fetch, 'categories', 'en:cereals', 'en')).size).toBe(0);
+	});
+
+	it('skips a count that is not a number', async () => {
+		const fetch = panelFetch([
+			['Mueslis', '8575'],
+			['Flocons', 'n/a']
+		]);
+		const counts = await getChildCounts(fetch, 'categories', 'en:cereals', 'en');
+		expect([...counts]).toEqual([['Mueslis', 8575]]);
+	});
 });
 
 describe('sortByCount', () => {
