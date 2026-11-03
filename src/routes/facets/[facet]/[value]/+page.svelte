@@ -93,7 +93,7 @@
 		>
 			{item.name}
 			{#if counts?.has(item.name)}
-				<span class="opacity-60">{counts.get(item.name)?.toLocaleString()}</span>
+				<span class="opacity-60">{counts.get(item.name)?.toLocaleString(getLocale())}</span>
 			{/if}
 		</a>
 	{/each}
