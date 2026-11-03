@@ -3,16 +3,21 @@
 
 	type Props = {
 		score: number;
+		matches: boolean;
 		title: string;
 		linkLabel: string;
 		href: string;
 		children?: Snippet;
 	};
 
-	let { score, title, linkLabel, href, children }: Props = $props();
+	let { score, matches, title, linkLabel, href, children }: Props = $props();
 
 	let color = $derived(
-		score >= 50 ? 'progress-success' : score >= 25 ? 'progress-warning' : 'progress-error'
+		!matches || score < 25
+			? 'progress-error'
+			: score >= 50
+				? 'progress-success'
+				: 'progress-warning'
 	);
 </script>
 

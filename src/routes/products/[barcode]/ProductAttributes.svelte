@@ -64,10 +64,16 @@
 			element.element_type === 'action' ? element.action_element.actions : []
 		);
 		// Photo actions are skipped: the server offers them even when the photo exists
-		const action = actions.find((it) => !it.endsWith('_image'));
-		const href = action && getEditActionHref(action, code);
-		if (href == null) return undefined;
-		return { href, label: $_(`product.knowledge_panels.action.${action}`, { default: action }) };
+		for (const action of actions) {
+			const href = action.endsWith('_image') ? undefined : getEditActionHref(action, code);
+			if (href != null) {
+				return {
+					href,
+					label: $_(`product.knowledge_panels.action.${action}`, { default: action })
+				};
+			}
+		}
+		return undefined;
 	}
 </script>
 
@@ -75,6 +81,7 @@
 	{#if showScore}
 		<OverallScore
 			score={scoreData.score}
+			matches={scoreData.matchStatus !== 'does_not_match'}
 			title={hasPreferences
 				? $_(`product.score.match_status.${scoreData.matchStatus}`, {
 						default: MATCH_STATUS_LABELS[scoreData.matchStatus]

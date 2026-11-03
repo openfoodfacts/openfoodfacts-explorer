@@ -27,7 +27,6 @@ const PREF_WEIGHTS = {
 	not_important: 0
 } as const;
 
-// Highest match value that counts as not matching
 const MISMATCH_MAX_MATCH = 10;
 
 // Get weight for preference importance
@@ -110,10 +109,10 @@ export function calculateScore(
 	};
 }
 
-export function getMismatchedAttributes<T extends ProductAttributeForScoring>(
-	productAttributes: { id: string; attributes: T[] }[],
+export function getMismatchedAttributes(
+	productAttributes: ProductAttributeForScoringGroup[],
 	currentPrefs: UserPreference[]
-): T[] {
+): ProductAttributeForScoring[] {
 	return productAttributes.flatMap((group) =>
 		group.attributes.filter((attr) => {
 			const pref = getPreference(currentPrefs, group.id, attr.id);
