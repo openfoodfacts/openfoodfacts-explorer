@@ -11,7 +11,7 @@ import {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 
-import type { ProductSource } from '$lib/types/sdk-overrides';
+import type { ProductSource } from '#lib/types/sdk-overrides.js';
 export type { PackagingTaxonomyTag, PackagingComponent, ProductSource };
 
 export function createProductsApi(fetch: typeof window.fetch) {

@@ -22,4 +22,4 @@ export type KnowledgePanelTableRow = SDKKnowledgePanelTableRow & {
 	values: (SDKKnowledgePanelTableRow['values'][number] & { icon_url?: string; url?: string })[];
 };
 
-export type { ProductSource } from '$lib/api/sources';
+export type { ProductSource } from '#lib/api/sources.js';
