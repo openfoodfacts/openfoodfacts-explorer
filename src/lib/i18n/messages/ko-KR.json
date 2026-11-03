@@ -306,12 +306,21 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "View product on Open Food Facts",
+			"copy": "복사",
+			"more": "More actions"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"failed_copy": "Failed to copy link",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Nutri-Score, Green-Score 등을 얻으려면 바코드를 스캔하십시오!",
+			"get_app": "앱 다운받기"
 		},
 		"barcode": {
 			"title": "Barcode information",
