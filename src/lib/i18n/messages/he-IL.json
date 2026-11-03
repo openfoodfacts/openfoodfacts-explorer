@@ -306,12 +306,21 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "הוספה להשוואה",
-			"view_on_off": "הצגת המוצר ב־Open Food Facts"
+			"view_on_off": "הצגת המוצר ב־Open Food Facts",
+			"copy": "העתקה",
+			"more": "More actions"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "הקישור הועתק ללוח הגזירים!",
-			"failed_copy": "העתקת הקישור נכשלה"
+			"failed_copy": "העתקת הקישור נכשלה",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "ניתן לסרוק ברקודים כדי לקבל Nutri-Score,‏ Green-Score ועוד!",
+			"get_app": "קבלת היישומון"
 		},
 		"barcode": {
 			"title": "Barcode information",
