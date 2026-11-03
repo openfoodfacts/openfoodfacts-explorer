@@ -23,6 +23,7 @@
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
+	import IconMdiSearch from '@iconify-svelte/mdi/search';
 
 	import ImageButton from '../ImageButton.svelte';
 	import {
@@ -97,6 +98,12 @@
 	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
+	let nutrientSearch = $state('');
+	let nutrientDropdownOpen = $state(false);
+	let activeNutrientIndex = $state(-1);
+	let nutrientSearchInput = $state<HTMLInputElement>();
+	let nutrientOptionsList = $state<HTMLUListElement>();
+	let nutrientTrigger = $state<HTMLButtonElement>();
 
 	function addPersistedNutrientsToFallbackCatalog() {
 		nutrientCatalog = [
@@ -146,6 +153,20 @@
 		getSelectableNutrients(nutrientCatalog, DEFAULT_NUTRIENT_IDS, additionalNutrients)
 	);
 
+	let filteredNutrients = $derived.by(() => {
+		const query = nutrientSearch.trim().toLowerCase();
+
+		return canAddNutrients.filter((nutrient) => {
+			if (query === '') return true;
+
+			return (
+				nutrientName(nutrient).toLowerCase().includes(query) ||
+				nutrient.name.toLowerCase().includes(query) ||
+				nutrient.id.toLowerCase().includes(query)
+			);
+		});
+	});
+
 	function nutrientName(nutrient: NutrientOption) {
 		return $_(`product.edit.nutrient.${nutrient.id}`, { default: nutrient.name });
 	}
@@ -162,6 +183,71 @@
 			};
 		}
 	}
+
+	function openNutrientDropdown() {
+		nutrientSearch = '';
+		activeNutrientIndex = -1;
+		nutrientDropdownOpen = true;
+	}
+
+	function closeNutrientDropdown() {
+		nutrientDropdownOpen = false;
+	}
+
+	function toggleNutrientDropdown() {
+		if (nutrientDropdownOpen) {
+			closeNutrientDropdown();
+		} else {
+			openNutrientDropdown();
+		}
+	}
+
+	function selectNutrient(id: string) {
+		addNutrient(id);
+		closeNutrientDropdown();
+		nutrientTrigger?.focus();
+	}
+
+	function handleNutrientSearchInput(event: Event) {
+		nutrientSearch = (event.currentTarget as HTMLInputElement).value;
+		activeNutrientIndex = -1;
+	}
+
+	function handleNutrientSearchKeydown(event: KeyboardEvent) {
+		if (event.key === 'ArrowDown') {
+			event.preventDefault();
+			activeNutrientIndex = Math.min(activeNutrientIndex + 1, filteredNutrients.length - 1);
+		} else if (event.key === 'ArrowUp') {
+			event.preventDefault();
+			activeNutrientIndex = Math.max(activeNutrientIndex - 1, 0);
+		} else if (event.key === 'Enter') {
+			event.preventDefault();
+			const nutrient = filteredNutrients[activeNutrientIndex] ?? filteredNutrients[0];
+			if (nutrient) {
+				selectNutrient(nutrient.id);
+			}
+		} else if (event.key === 'Escape') {
+			event.preventDefault();
+			closeNutrientDropdown();
+			nutrientTrigger?.focus();
+		}
+	}
+
+	$effect(() => {
+		// Focus the search field as soon as the dropdown opens.
+		if (nutrientDropdownOpen) {
+			nutrientSearchInput?.focus();
+		}
+	});
+
+	$effect(() => {
+		// Keep the highlighted option visible while using the arrow keys.
+		if (activeNutrientIndex < 0 || !nutrientOptionsList) return;
+
+		nutrientOptionsList
+			.querySelectorAll('[role="option"]')
+			[activeNutrientIndex]?.scrollIntoView({ block: 'nearest' });
+	});
 
 	function removeNutrient(id: string) {
 		additionalNutrients = additionalNutrients.filter((nutrient) => nutrient !== id);
@@ -582,24 +668,87 @@
 						{$_('product.edit.add_nutrient')}
 					</span>
 
-					<select
-						class="select w-full"
-						onchange={(e) => {
-							addNutrient(e.currentTarget.value);
-							e.currentTarget.value = '';
+					<div
+						class="relative w-full"
+						onfocusout={(event) => {
+							if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+								closeNutrientDropdown();
+							}
 						}}
 					>
-						<option disabled value="" selected>
+						<button
+							bind:this={nutrientTrigger}
+							type="button"
+							class="select w-full text-left"
+							aria-haspopup="listbox"
+							aria-expanded={nutrientDropdownOpen}
+							aria-controls="add-nutrient-options"
+							onclick={toggleNutrientDropdown}
+						>
 							{$_('product.edit.additional_nutrients', {
 								default: 'Additional nutrients'
 							})}
-						</option>
-						{#each canAddNutrients as nutrient (nutrient)}
-							<option value={nutrient.id}>
-								{nutrientName(nutrient)}
-							</option>
-						{/each}
-					</select>
+						</button>
+
+						{#if nutrientDropdownOpen}
+							<div
+								class="absolute inset-x-0 top-full z-20 mt-1 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
+							>
+								<label class="input w-full">
+									<IconMdiSearch class="h-4 w-4 opacity-70" aria-hidden="true" />
+									<input
+										bind:this={nutrientSearchInput}
+										type="search"
+										value={nutrientSearch}
+										oninput={handleNutrientSearchInput}
+										onkeydown={handleNutrientSearchKeydown}
+										placeholder={$_('product.edit.search_nutrients', {
+											default: 'Search nutrients'
+										})}
+										aria-label={$_('product.edit.search_nutrients', {
+											default: 'Search nutrients'
+										})}
+										aria-controls="add-nutrient-options"
+										aria-autocomplete="list"
+										aria-activedescendant={activeNutrientIndex >= 0
+											? `add-nutrient-option-${filteredNutrients[activeNutrientIndex]?.id}`
+											: undefined}
+									/>
+								</label>
+
+								<ul
+									bind:this={nutrientOptionsList}
+									id="add-nutrient-options"
+									class="menu mt-1 max-h-60 w-full flex-nowrap overflow-y-auto p-0"
+									role="listbox"
+									aria-label={$_('product.edit.additional_nutrients')}
+								>
+									{#each filteredNutrients as nutrient, index (nutrient.id)}
+										<li role="presentation">
+											<button
+												type="button"
+												id={`add-nutrient-option-${nutrient.id}`}
+												role="option"
+												aria-selected={activeNutrientIndex === index}
+												class={activeNutrientIndex === index
+													? 'bg-primary text-primary-content'
+													: ''}
+												onclick={() => selectNutrient(nutrient.id)}
+											>
+												{nutrientName(nutrient)}
+											</button>
+										</li>
+									{:else}
+										<li class="px-2 py-2 text-sm opacity-70" role="presentation">
+											{$_('product.edit.no_nutrients_found', {
+												default: 'No nutrients found'
+											})}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
+					</div>
 				{/if}
 				{#if nutrientLoadFailed}
 					<p class="text-sm text-base-content/70">
