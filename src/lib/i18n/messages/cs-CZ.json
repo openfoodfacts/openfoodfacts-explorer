@@ -306,12 +306,21 @@
 			"report": "Nahlásit problém s tímto produktem",
 			"add_to_calculator": "Přidat produkt do nutriční kalkulačky",
 			"compare": "Přidat k porovnání",
-			"view_on_off": "Zobrazit produkt na Open Food Facts"
+			"view_on_off": "Zobrazit produkt na Open Food Facts",
+			"copy": "Kopírovat",
+			"more": "More actions"
 		},
 		"share_text": "Podívejte se na tento produkt na Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Odkaz zkopírován do schránky",
-			"failed_copy": "Kopírování odkazu se nezdařilo"
+			"failed_copy": "Kopírování odkazu se nezdařilo",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Naskenujte čárové kódy a získejte Nutri-Score, Green-Score a další!",
+			"get_app": "Stáhněte si aplikaci"
 		},
 		"barcode": {
 			"title": "Barcode information",
