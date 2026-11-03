@@ -171,10 +171,12 @@
 					>
 						{product.product_name || product.code}
 					</h1>
-					<SourceBadge
-						source={getSourceForField(product, 'product_name')}
-						fieldName="product_name"
-					/>
+					{#if product.product_name}
+						<SourceBadge
+							source={getSourceForField(product, 'product_name')}
+							fieldName="product_name"
+						/>
+					{/if}
 				</div>
 				{#if metaLine}
 					<p class="text-sm text-base-content/70 md:text-base">{metaLine}</p>
