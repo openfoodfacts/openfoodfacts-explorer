@@ -88,12 +88,14 @@
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
 		<a
-			class="badge h-auto badge-outline py-1 badge-lg hover:badge-secondary"
+			class="badge h-auto badge-outline py-1 hover:badge-secondary"
 			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
 		>
 			{item.name}
 			{#if counts?.has(item.name)}
-				<span class="opacity-60">{counts.get(item.name)?.toLocaleString(getLocale())}</span>
+				<span class="text-[10px] opacity-60"
+					>{counts.get(item.name)?.toLocaleString(getLocale())}</span
+				>
 			{/if}
 		</a>
 	{/each}
