@@ -306,12 +306,21 @@
 			"report": "Rapportera ett problem med denna produkt",
 			"add_to_calculator": "Lägg till produkten i näringskalkylatorn",
 			"compare": "Lägg till för jämförelse",
-			"view_on_off": "Visa produkten på Open Food Facts"
+			"view_on_off": "Visa produkten på Open Food Facts",
+			"copy": "Kopiera",
+			"more": "More actions"
 		},
 		"share_text": "Titta på denna produkt på Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Länken har kopierats till urklippet!",
-			"failed_copy": "Kunde inte kopiera länken"
+			"failed_copy": "Kunde inte kopiera länken",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Skanna streckkoder för att få Nutri-Score, Green-Score och mer!",
+			"get_app": "Skaffa appen"
 		},
 		"barcode": {
 			"title": "Streckkodsinformation",
