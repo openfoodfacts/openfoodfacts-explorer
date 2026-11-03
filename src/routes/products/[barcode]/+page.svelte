@@ -355,7 +355,7 @@
 
 	<div
 		class={[
-			'relative w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
+			'relative mt-8 w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
 			sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
 		]}
 	>
@@ -364,7 +364,6 @@
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
 			collapsible={true}
-			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
