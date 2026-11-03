@@ -204,8 +204,9 @@
 
 	function selectNutrient(id: string) {
 		addNutrient(id);
-		closeNutrientDropdown();
-		nutrientTrigger?.focus();
+		activeNutrientIndex = -1;
+		// Keep the panel open so several nutrients can be added in a row.
+		nutrientSearchInput?.focus();
 	}
 
 	function handleNutrientSearchInput(event: Event) {
@@ -669,7 +670,7 @@
 					</span>
 
 					<div
-						class="relative w-full"
+						class="w-full"
 						onfocusout={(event) => {
 							if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
 								closeNutrientDropdown();
@@ -691,9 +692,39 @@
 						</button>
 
 						{#if nutrientDropdownOpen}
-							<div
-								class="absolute inset-x-0 top-full z-20 mt-1 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
-							>
+							<div class="mt-1 w-full rounded-box border border-base-300 bg-base-100 p-2 shadow-sm">
+								{#if additionalNutrients.length > 0}
+									<div class="mb-2 flex flex-wrap gap-1">
+										{#each additionalNutrients as nutrient (nutrient)}
+											{@const nutrientDetails = nutrientById.get(nutrient)}
+											{@const nutrientLabel = nutrientDetails
+												? nutrientName(nutrientDetails)
+												: nutrient}
+											<span
+												class="inline-flex items-center gap-1 rounded-full bg-base-200 py-1 pr-1 pl-3 text-sm"
+											>
+												{nutrientLabel}
+												<button
+													type="button"
+													class="btn btn-circle btn-ghost btn-xs"
+													aria-label={`${$_('product.edit.remove_nutrient', {
+														default: 'Remove nutrient'
+													})}: ${nutrientLabel}`}
+													title={`${$_('product.edit.remove_nutrient', {
+														default: 'Remove nutrient'
+													})}: ${nutrientLabel}`}
+													onclick={() => {
+														removeNutrient(nutrient);
+														nutrientSearchInput?.focus();
+													}}
+												>
+													<IconMdiClose class="h-3.5 w-3.5" aria-hidden="true" />
+												</button>
+											</span>
+										{/each}
+									</div>
+								{/if}
+
 								<label class="input w-full">
 									<IconMdiSearch class="h-4 w-4 opacity-70" aria-hidden="true" />
 									<input
@@ -719,7 +750,7 @@
 								<ul
 									bind:this={nutrientOptionsList}
 									id="add-nutrient-options"
-									class="menu mt-1 max-h-60 w-full flex-nowrap overflow-y-auto p-0"
+									class="mt-1 max-h-60 w-full overflow-y-auto p-0"
 									role="listbox"
 									aria-label={$_('product.edit.additional_nutrients')}
 								>
@@ -730,9 +761,9 @@
 												id={`add-nutrient-option-${nutrient.id}`}
 												role="option"
 												aria-selected={activeNutrientIndex === index}
-												class={activeNutrientIndex === index
-													? 'bg-primary text-primary-content'
-													: ''}
+												class={`w-full rounded-field px-3 py-2 text-left text-sm hover:bg-base-200 focus:bg-base-200 ${
+													activeNutrientIndex === index ? 'bg-primary text-primary-content' : ''
+												}`}
 												onclick={() => selectNutrient(nutrient.id)}
 											>
 												{nutrientName(nutrient)}
