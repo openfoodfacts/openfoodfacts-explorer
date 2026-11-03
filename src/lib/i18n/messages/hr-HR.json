@@ -306,12 +306,21 @@
 			"report": "Prijavite problem s ovim proizvodom",
 			"add_to_calculator": "Dodaj proizvod u kalkulator nutritivnih vrijednosti",
 			"compare": "Dodaj za usporedbu",
-			"view_on_off": "Pogledajte proizvod na Open Food Factsu"
+			"view_on_off": "Pogledajte proizvod na Open Food Factsu",
+			"copy": "Kopiraj",
+			"more": "More actions"
 		},
 		"share_text": "Pogledajte ovaj proizvod na Open Food Factsu: {productName}",
 		"toast": {
 			"copied_link": "Poveznica kopirana u međuspremnik!",
-			"failed_copy": "Nije uspjelo kopirati poveznicu"
+			"failed_copy": "Nije uspjelo kopirati poveznicu",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Skenirajte barkodove kako biste dobili Nutri-Score, Green-Score i još mnogo toga!",
+			"get_app": "Preuzmite aplikaciju"
 		},
 		"barcode": {
 			"title": "Informacije o crtičnom kodu",
