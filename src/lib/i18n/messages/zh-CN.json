@@ -306,12 +306,21 @@
 			"report": "报告此产品的问题",
 			"add_to_calculator": "将产品添加到营养计算器",
 			"compare": "添加到比较",
-			"view_on_off": "在 Open Food Facts 上查看产品"
+			"view_on_off": "在 Open Food Facts 上查看产品",
+			"copy": "复制",
+			"more": "More actions"
 		},
 		"share_text": "看看 Open Food Facts 上的这个产品：{productName}",
 		"toast": {
 			"copied_link": "链接已复制到剪贴板！",
-			"failed_copy": "复制链接失败"
+			"failed_copy": "复制链接失败",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "扫描条形码即可获得 Nutri-Score、Green-Score 等数据！",
+			"get_app": "获取应用"
 		},
 		"barcode": {
 			"title": "条形码信息",
