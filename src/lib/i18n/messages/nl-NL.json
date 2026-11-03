@@ -306,12 +306,21 @@
 			"report": "Meld een probleem met dit product.",
 			"add_to_calculator": "Voeg dit product toe aan de voedingswaardecalculator",
 			"compare": "Toevoegen om te vergelijken",
-			"view_on_off": "Bekijk product op Open Food Facts"
+			"view_on_off": "Bekijk product op Open Food Facts",
+			"copy": "Kopiëren",
+			"more": "More actions"
 		},
 		"share_text": "Bekijk dit product op Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link gekopieerd naar klembord!",
-			"failed_copy": "Kopiëren van link mislukt"
+			"failed_copy": "Kopiëren van link mislukt",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Scan barcodes om de Nutri-Score, de Green-Score en meer te zien!",
+			"get_app": "Download de app"
 		},
 		"barcode": {
 			"title": "Barcode information",
