@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { browser } from '$app/env';
 
-	import { _ } from '#lib/i18n/index.js';
+	import { _, getLocale } from '#lib/i18n/index.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
 
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
@@ -16,12 +17,35 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
+	import { getHierarchy, type HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
-	let { facet, results, knowledgePanels, searchOptions, productAttributes, distributionData } =
-		$derived(data);
+	let {
+		facet,
+		results,
+		knowledgePanels,
+		searchOptions,
+		productAttributes,
+		distributionData,
+		mapFacet
+	} = $derived(data);
+
+	// untrack: refetch only on facet/value change, not on page or sort.
+	const facetName = $derived(data.facet.name);
+	// The tag id, not data.facet.value, which is the display name on map facets.
+	const facetValue = $derived(page.params.value ?? '');
+	const noHierarchy = { parents: [] as HierarchyItem[], children: [] as HierarchyItem[] };
+	const hierarchy = $derived.by(() => {
+		const [name, value] = [facetName, facetValue];
+		return browser
+			? untrack(() => getHierarchy(fetch, name, value, getLocale()).catch(() => noHierarchy))
+			: Promise.resolve(noHierarchy);
+	});
 
 	let listView = $state(false);
+
+	const CHILDREN_SHOWN = 8;
+	let childrenExpandedFor: string | null = $state(null);
 
 	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
 	onMount(async () => {
@@ -41,15 +65,76 @@
 <div class="mb-4">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', { values: { facet: facet.name } })}
+		label={$_('facets.facet_back_to_overview', {
+			values: { facet: facet.name },
+			default: 'Back to {facet} overview'
+		})}
 	/>
 </div>
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
 
-{#if distributionData && MapComponent}
+{#snippet chips(items: HierarchyItem[])}
+	{#each items as item (item.id)}
+		<a
+			class="badge h-auto badge-outline py-1 badge-lg hover:badge-secondary"
+			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
+		>
+			{item.name}
+		</a>
+	{/each}
+{/snippet}
+
+{#await hierarchy}
+	<div class="-mt-4 mb-8 flex items-center gap-2 text-sm opacity-70">
+		<span class="loading loading-sm loading-spinner"></span>
+		{$_('general.loading', { default: 'Loading…' })}
+	</div>
+{:then { parents, children }}
+	{#if parents.length || children.length}
+		{@const expanded = childrenExpandedFor === facetValue}
+		<div class="-mt-4 mb-8 flex flex-col gap-3">
+			{#if parents.length}
+				<div class="flex flex-col gap-2 sm:flex-row">
+					<span class="w-24 shrink-0 pt-1 text-sm font-semibold opacity-70">
+						{$_('facets.hierarchy_belongs_to', { default: 'Belongs to' })}
+					</span>
+					<div class="flex flex-wrap gap-2">{@render chips(parents)}</div>
+				</div>
+			{/if}
+			{#if children.length}
+				<div class="flex flex-col gap-2 sm:flex-row">
+					<span class="w-24 shrink-0 pt-1 text-sm font-semibold opacity-70">
+						{$_('facets.hierarchy_includes', { default: 'Includes' })}
+					</span>
+					<div class="flex flex-wrap items-center gap-2">
+						{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{#if !expanded && children.length > CHILDREN_SHOWN}
+							<button
+								type="button"
+								class="btn btn-ghost btn-xs"
+								onclick={() => (childrenExpandedFor = facetValue)}
+							>
+								{$_('facets.hierarchy_more', {
+									values: { count: children.length - CHILDREN_SHOWN },
+									default: '+ {count} more'
+								})}
+							</button>
+						{/if}
+					</div>
+				</div>
+			{/if}
+		</div>
+	{/if}
+{/await}
+
+{#if distributionData && MapComponent && mapFacet}
 	<div class="my-8 w-full">
-		<h2 class="mb-4 text-2xl font-bold">Where these products are sold</h2>
+		<h2 class="mb-4 text-2xl font-bold">
+			{$_(mapFacet.heading, {
+				default: mapFacet.defaultHeading
+			})}
+		</h2>
 		<MapComponent facet={distributionData} />
 		<p class="mt-2 text-sm text-gray-500">
 			Note: The geographic distribution shown on this map is based only on the products visible on

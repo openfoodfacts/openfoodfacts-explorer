@@ -19,7 +19,7 @@ export type AttributeGroup = Omit<AttributeGroupV2[number], 'attributes' | 'id'>
 };
 
 export type KnowledgePanelTableRow = SDKKnowledgePanelTableRow & {
-	values: (SDKKnowledgePanelTableRow['values'][number] & { icon_url?: string })[];
+	values: (SDKKnowledgePanelTableRow['values'][number] & { icon_url?: string; url?: string })[];
 };
 
 export type { ProductSource } from '$lib/api/sources';

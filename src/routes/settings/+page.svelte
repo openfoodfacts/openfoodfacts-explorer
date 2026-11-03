@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { preferences } from '#lib/settings.js';
+	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 	import Tabs from '#lib/ui/Tabs.svelte';
-	import type { AttributeGroup } from '#lib/stores/preferencesStore.js';
+	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
 	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
 	import Metadata from '#lib/Metadata.svelte';
 	import { COMMIT_SHA } from '#lib/const.js';
@@ -41,40 +42,11 @@
 	);
 	let permissions = $derived(getPermissionsCtx());
 
-	function getDisplayName(
-		type: 'language' | 'region',
-		code: string,
-		displayLocale = 'en'
-	): string | undefined {
-		if (typeof Intl.DisplayNames !== 'function') return undefined;
-		try {
-			return new Intl.DisplayNames([displayLocale], { type }).of(code) ?? undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	function getLocaleLabel(code: string): string {
-		const languageCode = getLanguageCode(code);
-		const language = Object.values(data.languages).find(
-			(item) => item.language_code_2?.en?.toLowerCase() === languageCode
-		);
-		const exonym = language?.name?.en ?? getDisplayName('language', languageCode) ?? languageCode;
-		const endonym =
-			language?.name?.[languageCode] ??
-			getDisplayName('language', languageCode, languageCode) ??
-			exonym;
-		const region = code.split('-').find((part) => /^[A-Z]{2}$/.test(part));
-		const englishRegion = region && getDisplayName('region', region);
-		const nativeRegion = region && getDisplayName('region', region, languageCode);
-		const nativeLabel = nativeRegion ? `${endonym} (${nativeRegion})` : endonym;
-		const englishLabel = englishRegion ? `${exonym} (${englishRegion})` : exonym;
-
-		return nativeLabel === englishLabel ? nativeLabel : `${nativeLabel} — ${englishLabel}`;
-	}
-
 	let localeOptions = $derived(
-		availableLocales.map((code) => ({ code, label: getLocaleLabel(code) }))
+		availableLocales.map((code) => ({
+			code,
+			label: getLocaleLabel(code, Object.values(data.languages))
+		}))
 	);
 
 	function getSelectedLocale(): string {
@@ -388,8 +360,29 @@
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
 					<IconMdiHeart class="h-6 w-6" />
-					{$_('settings.influences')}
+					{$_('settings.food_preferences', { default: 'Food preferences' })}
 				</h2>
+
+				<div class="mt-6 rounded-box border border-base-300 bg-base-100 p-4">
+					<label class="flex cursor-pointer items-center justify-between gap-4">
+						<span class="font-semibold text-base-content">
+							{$_('preferences.classify_products', {
+								default: 'Classify products according to your preferences'
+							})}
+						</span>
+						<input
+							id="classify-products-toggle"
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={$personalizedSearch.classifyProductsEnabled}
+						/>
+					</label>
+					<p class="mt-1 text-xs text-base-content/70">
+						{$_('preferences.classify_products_desc', {
+							default: 'Enable personalized product classification based on your preferences.'
+						})}
+					</p>
+				</div>
 
 				<div class="mt-6">
 					<PreferencesForm groups={attributeGroups as AttributeGroup[]} />
