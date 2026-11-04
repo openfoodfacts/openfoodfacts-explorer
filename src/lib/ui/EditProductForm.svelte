@@ -325,7 +325,7 @@
 				{$_('product.edit.sections.ingredients')}
 			</div>
 			<div class="collapse-content">
-				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} editMode />
+				<IngredientsStep bind:product {getIngredientsImage} {allergenNames} editMode canEditPhoto />
 			</div>
 		</div>
 

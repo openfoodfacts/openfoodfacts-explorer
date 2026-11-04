@@ -37,13 +37,17 @@
 		getIngredientsImage: (language: string) => string | null;
 		allergenNames?: string[];
 		editMode?: boolean;
+		// Show "Edit Photo". Only set it where the Photos section (PhotoManager) is mounted
+		// alongside this step: it opens the editor, and nothing else handles the request.
+		canEditPhoto?: boolean;
 	};
 
 	let {
 		product = $bindable(),
 		getIngredientsImage,
 		allergenNames = [],
-		editMode = false
+		editMode = false,
+		canEditPhoto = false
 	}: Props = $props();
 
 	let showInfo = $state(false);
@@ -222,14 +226,16 @@
 								{/if}
 							</button>
 
-							<button
-								type="button"
-								class="btn gap-2 btn-outline btn-sm"
-								onclick={(e) => editIngredientsImage(e, code)}
-							>
-								<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
-								<span>{$_('product.edit.images.edit_photo', { default: 'Edit Photo' })}</span>
-							</button>
+							{#if canEditPhoto}
+								<button
+									type="button"
+									class="btn gap-2 btn-outline btn-sm"
+									onclick={(e) => editIngredientsImage(e, code)}
+								>
+									<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
+									<span>{$_('product.edit.images.edit_photo', { default: 'Edit Photo' })}</span>
+								</button>
+							{/if}
 
 							<button
 								type="button"
