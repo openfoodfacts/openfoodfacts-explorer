@@ -1,0 +1,21 @@
+# Automation and deployment
+/.github/                 @VaiTon @teolemon
+/Dockerfile               @VaiTon @teolemon
+/docker/                  @VaiTon @teolemon
+/compose.yml              @VaiTon @teolemon
+/docker-compose.yml       @VaiTon @teolemon
+
+# Dependencies and build configuration
+/package.json             @VaiTon @teolemon
+/pnpm-lock.yaml           @VaiTon @teolemon
+/pnpm-workspace.yaml      @VaiTon @teolemon
+/vite.config.ts           @VaiTon @teolemon
+/svelte.config.js         @VaiTon @teolemon
+
+# Authentication and server configuration
+/src/lib/auth/            @VaiTon @teolemon
+/src/lib/api/keycloak.ts  @VaiTon @teolemon
+/src/lib/stores/auth.ts   @VaiTon @teolemon
+/src/routes/oauth/        @VaiTon @teolemon
+/src/hooks.server.ts      @VaiTon @teolemon
+/src/env.ts               @VaiTon @teolemon
