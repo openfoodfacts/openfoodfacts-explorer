@@ -233,10 +233,16 @@
 				selectNutrient(nutrient.id);
 			}
 		} else if (event.key === 'Escape') {
-			event.preventDefault();
-			closeNutrientDropdown();
-			nutrientTrigger?.focus();
+			handleNutrientEscape(event);
 		}
+	}
+
+	function handleNutrientEscape(event: KeyboardEvent) {
+		if (!nutrientDropdownOpen) return;
+
+		event.preventDefault();
+		closeNutrientDropdown();
+		nutrientTrigger?.focus();
 	}
 
 	$effect(() => {
@@ -757,7 +763,9 @@
 									id="add-nutrient-options"
 									class="mt-1 max-h-60 w-full overflow-y-auto p-0"
 									role="listbox"
+									tabindex="-1"
 									aria-label={$_('product.edit.additional_nutrients')}
+									onkeydown={handleNutrientEscape}
 								>
 									{#each filteredNutrients as nutrient, index (nutrient.id)}
 										<li role="presentation">
@@ -765,6 +773,7 @@
 												type="button"
 												id={`add-nutrient-option-${nutrient.id}`}
 												role="option"
+												tabindex="-1"
 												aria-selected={activeNutrientIndex === index}
 												class={`w-full rounded-field px-3 py-2 text-left text-sm hover:bg-base-200 focus:bg-base-200 ${
 													activeNutrientIndex === index ? 'bg-primary text-primary-content' : ''
@@ -774,14 +783,23 @@
 												{nutrientName(nutrient)}
 											</button>
 										</li>
-									{:else}
-										<li class="px-2 py-2 text-sm opacity-70" role="presentation">
-											{$_('product.edit.no_nutrients_found', {
-												default: 'No nutrients found'
-											})}
-										</li>
 									{/each}
 								</ul>
+
+								<!-- Live region outside the listbox so empty results are announced. -->
+								<p
+									class="px-2 py-2 text-sm opacity-70"
+									class:sr-only={filteredNutrients.length > 0}
+									role="status"
+									aria-live="polite"
+									aria-atomic="true"
+								>
+									{filteredNutrients.length === 0
+										? $_('product.edit.no_nutrients_found', {
+												default: 'No nutrients found'
+											})
+										: ''}
+								</p>
 							</div>
 						{/if}
 					</div>
