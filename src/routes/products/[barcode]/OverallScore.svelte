@@ -19,8 +19,8 @@
 
 <div class="flex items-center gap-3 rounded-box bg-base-content/5 p-4">
 	<div
-		class={['radial-progress shrink-0 rounded-full text-sm', color]}
-		style="--value:{score}; --size:3rem; --thickness:4px; box-shadow: inset 0 0 0 4px color-mix(in oklab, var(--color-base-content) 12%, transparent)"
+		class={['radial-progress text-sm inset-ring-4 inset-ring-base-content/12', color]}
+		style="--value:{score}; --size:3rem; --thickness:4px"
 		role="progressbar"
 		aria-valuenow={score}
 		aria-valuemin="0"
