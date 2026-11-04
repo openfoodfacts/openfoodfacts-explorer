@@ -27,6 +27,8 @@ workflows:
         - 'actions/add-to-project@v2.0.0'
     '.github/workflows/label.yml':
         - 'actions/labeler@v7.0.0'
+    '.github/workflows/limit-contributor-prs.yml':
+        - 'actions/github-script@v9.0.0'
     '.github/workflows/merge-conflict-autolabel.yml':
         - 'eps1lon/actions-label-merge-conflict@v3.1.0'
     '.github/workflows/plan.lock.yml':
