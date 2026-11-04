@@ -11,6 +11,7 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import Metadata from '#lib/Metadata.svelte';
 	import { userInfo } from '#lib/stores/user.js';
+	import { FACET_FILTER_MAX_RESULTS, filterFacet } from '#lib/api/facets.js';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 
 	import CountriesMap from './CountriesMap.svelte';
@@ -31,6 +32,36 @@
 		status,
 		isFiltered
 	} = $derived(data);
+
+	type FilterState =
+		{ status: 'idle' | 'loading' | 'error' } | { status: 'done'; tags: typeof results.tags };
+	let filterState = $state<FilterState>({ status: 'idle' });
+
+	// The whole-facet filter is expensive for the backend: only run it for logged-in users,
+	// and only in the browser ($effect never runs during server-side rendering)
+	let canFilter = $derived(isFiltered && $userInfo != null);
+
+	$effect(() => {
+		if (!canFilter) {
+			filterState = { status: 'idle' };
+			return;
+		}
+
+		const controller = new AbortController();
+		filterState = { status: 'loading' };
+		filterFacet(fetch, facet, { filter, status, signal: controller.signal })
+			.then(({ tags }) => {
+				if (!controller.signal.aborted) filterState = { status: 'done', tags };
+			})
+			.catch((err) => {
+				if (controller.signal.aborted) return;
+				console.error('Failed to filter facet:', err);
+				filterState = { status: 'error' };
+			});
+
+		// A new filter, or leaving the page, cancels the running one
+		return () => controller.abort();
+	});
 </script>
 
 <Metadata
@@ -61,7 +92,7 @@
 
 	<div class="grow">
 		<h2 class="my-3 grow text-2xl font-bold">Search Options</h2>
-		{#if !isFiltered}
+		{#if !canFilter}
 			<label class="select w-full">
 				<span class="label">Page Size</span>
 				<select
@@ -81,7 +112,13 @@
 			</label>
 		{/if}
 
-		{#if $userInfo != null || isFiltered}
+		{#if $userInfo == null && isFiltered}
+			<div class="mt-4 alert alert-info" role="note">
+				{$_('facets.filter_login_required', { default: 'Log in to filter the whole facet.' })}
+			</div>
+		{/if}
+
+		{#if $userInfo != null}
 			<form method="GET" class="mt-4 flex flex-col gap-3">
 				<div class="flex gap-2 max-sm:flex-col">
 					<input
@@ -131,39 +168,61 @@
 
 <div>
 	<h2 class="text-2xl font-bold">Products</h2>
-	{#if isFiltered}
+	{#if canFilter && filterState.status === 'loading'}
+		<p class="mt-4 flex items-center gap-2">
+			<span class="loading loading-sm loading-spinner" aria-hidden="true"></span>
+			{$_('facets.filter_loading', {
+				default: 'Filtering… this can take up to a minute.'
+			})}
+		</p>
+	{:else if canFilter && filterState.status === 'error'}
+		<div class="mt-4 alert alert-error" role="alert">
+			{$_('facets.filter_error', {
+				default: 'Filtering failed or took too long. Try a more specific filter.'
+			})}
+		</div>
+	{:else if filterState.status === 'done'}
 		<p class="mt-2 text-sm opacity-70">
 			{$_('facets.filter_results_count', {
 				default: '{count, plural, one {# matching value} other {# matching values}}',
-				values: { count: results.tags.length }
+				values: { count: filterState.tags.length }
 			})}
+			{#if filterState.tags.length >= FACET_FILTER_MAX_RESULTS}
+				{$_('facets.filter_truncated', {
+					default: 'Showing the first {count} matches. Refine the filter to see the others.',
+					values: { count: FACET_FILTER_MAX_RESULTS }
+				})}
+			{/if}
 		</p>
 	{/if}
 
-	<table class="table my-4 table-zebra">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Known</th>
-				<th class="text-end">Products</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each results.tags as { known, name, products, id } (id)}
+	{#if !canFilter || filterState.status === 'done'}
+		{@const tags = filterState.status === 'done' ? filterState.tags : results.tags}
+		<table class="table my-4 table-zebra">
+			<thead>
 				<tr>
-					<td>
-						<a href={`/facets/${facet}/${id}`} class="link">
-							{name}
-						</a>
-					</td>
-					<td>{known === 1 ? 'Yes' : 'No'}</td>
-					<td class="text-end">{formatNumber(products)}</td>
+					<th>Name</th>
+					<th>Known</th>
+					<th class="text-end">Products</th>
 				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{#each tags as { known, name, products, id } (id)}
+					<tr>
+						<td>
+							<a href={`/facets/${facet}/${id}`} class="link">
+								{name}
+							</a>
+						</td>
+						<td>{known === 1 ? 'Yes' : 'No'}</td>
+						<td class="text-end">{formatNumber(products)}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/if}
 
-	{#if !isFiltered}
+	{#if !canFilter}
 		<Pagination
 			page={currentPage ?? 1}
 			totalPages={pages}

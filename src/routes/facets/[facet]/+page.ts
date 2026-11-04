@@ -1,11 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import {
-	FACET_STATUS_OPTIONS,
-	filterFacet,
-	getFacet,
-	getFacetKnowledgePanels
-} from '#lib/api/facets.js';
+import { FACET_STATUS_OPTIONS, getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
 import { requireInt } from '#lib/utils.js';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
@@ -23,11 +18,11 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 
 	const kp = getFacetKnowledgePanels(fetch, facet);
 	try {
-		const results = isFiltered
-			? await filterFacet(fetch, facet, { filter, status })
-			: await getFacet(fetch, facet, { page, pageSize });
-		// A filtered facet comes back in one go, so there is a single page
-		const pages = isFiltered ? 1 : Math.ceil(results.count / (pageSize || 100));
+		// Always load the regular paginated facet here. The whole-facet filter is expensive
+		// for the backend, so the page runs it in the browser for logged-in users only,
+		// never during server-side rendering (e.g. for crawlers following a filter link).
+		const results = await getFacet(fetch, facet, { page, pageSize });
+		const pages = Math.ceil(results.count / (pageSize || 100));
 
 		return {
 			facet,
