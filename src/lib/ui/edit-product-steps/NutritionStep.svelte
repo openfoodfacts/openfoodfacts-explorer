@@ -21,7 +21,7 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
-	import IconMdiSwapVertical from '@iconify-svelte/mdi/swap-vertical';
+	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
@@ -439,60 +439,63 @@
 
 			<!-- Energy -->
 			<fieldset class="fieldset">
-				<div class="flex items-center gap-2">
-					<div class="flex grow flex-col gap-2">
-						<label class={['input w-full', fieldInputClasses('energy')]}>
-							<span class="label">
-								{$_('product.edit.energy')}
-							</span>
-							<input
-								id="energy-kj-input"
-								type="number"
-								value={product.nutriments?.['energy-kj_100g'] ??
-									product.nutriments?.['energy_100g'] ??
-									''}
-								oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
-								placeholder="2100"
-								step="1"
-								min="0"
-							/>
-							<span class="label">
-								{$_('product.edit.si_kilojoules')}
-							</span>
-							{#if issuesByField('energy').length > 0}
-								{@render issueTooltip(issuesByField('energy')[0])}
-							{/if}
-						</label>
-						<label class={['input w-full', fieldInputClasses('energy')]}>
-							<span class="label">
-								{$_('product.edit.energy')}
-							</span>
-							<input
-								id="energy-kcal-input"
-								type="number"
-								value={product.nutriments?.['energy-kcal_100g'] ?? ''}
-								oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
-								placeholder="500"
-								step="1"
-								min="0"
-							/>
-							<span class="label">
-								{$_('product.edit.si_kilocalories')}
-							</span>
-							{#if issuesByField('energy').length > 0}
-								{@render issueTooltip(issuesByField('energy')[0])}
-							{/if}
-						</label>
-					</div>
+				<!-- Mobile: fields stack beside the swap button. md and up: one row, with "Energy" in the legend so the values fit -->
+				<legend class="fieldset-legend max-md:hidden">{$_('product.edit.energy')}</legend>
+				<div class="grid grid-cols-[1fr_auto] items-center gap-2 md:flex">
+					<label class={['input grow max-md:w-full', fieldInputClasses('energy')]}>
+						<span class="label md:hidden">
+							{$_('product.edit.energy')}
+						</span>
+						<input
+							id="energy-kj-input"
+							type="number"
+							value={product.nutriments?.['energy-kj_100g'] ??
+								product.nutriments?.['energy_100g'] ??
+								''}
+							oninput={(e) => handleNutrimentInput(e, 'energy-kj_100g')}
+							placeholder="2100"
+							step="1"
+							min="0"
+						/>
+						<span class="label">
+							{$_('product.edit.si_kilojoules')}
+						</span>
+						{#if issuesByField('energy').length > 0}
+							{@render issueTooltip(issuesByField('energy')[0])}
+						{/if}
+					</label>
 
 					<button
 						type="button"
-						class="btn btn-square btn-ghost btn-sm"
+						class="btn row-span-2 btn-square btn-ghost btn-sm"
 						aria-label={$_('product.edit.swap_energy_units', { default: 'Swap units' })}
 						onclick={switchKjAndKcal}
 					>
-						<IconMdiSwapVertical class="h-5 w-5" aria-hidden="true" />
+						<IconMdiSwapHorizontal class="h-5 w-5 max-md:rotate-90" aria-hidden="true" />
 					</button>
+
+					<label
+						class={['input grow max-md:col-start-1 max-md:w-full', fieldInputClasses('energy')]}
+					>
+						<span class="label md:hidden">
+							{$_('product.edit.energy')}
+						</span>
+						<input
+							id="energy-kcal-input"
+							type="number"
+							value={product.nutriments?.['energy-kcal_100g'] ?? ''}
+							oninput={(e) => handleNutrimentInput(e, 'energy-kcal_100g')}
+							placeholder="500"
+							step="1"
+							min="0"
+						/>
+						<span class="label">
+							{$_('product.edit.si_kilocalories')}
+						</span>
+						{#if issuesByField('energy').length > 0}
+							{@render issueTooltip(issuesByField('energy')[0])}
+						{/if}
+					</label>
 				</div>
 			</fieldset>
 			<fieldset class="fieldset">
