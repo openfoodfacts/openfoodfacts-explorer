@@ -1,5 +1,6 @@
 <script lang="ts">
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import InputAutocomplete from '../InputAutocomplete.svelte';
 	import { _, locale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import {
@@ -23,7 +24,6 @@
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiSwapHorizontal from '@iconify-svelte/mdi/swap-horizontal';
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
-	import IconMdiSearch from '@iconify-svelte/mdi/search';
 
 	import ImageButton from '../ImageButton.svelte';
 	import {
@@ -98,12 +98,6 @@
 	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
-	let nutrientSearch = $state('');
-	let nutrientDropdownOpen = $state(false);
-	let activeNutrientIndex = $state(-1);
-	let nutrientSearchInput = $state<HTMLInputElement>();
-	let nutrientOptionsList = $state<HTMLUListElement>();
-	let nutrientTrigger = $state<HTMLButtonElement>();
 
 	function addPersistedNutrientsToFallbackCatalog() {
 		nutrientCatalog = [
@@ -153,19 +147,15 @@
 		getSelectableNutrients(nutrientCatalog, DEFAULT_NUTRIENT_IDS, additionalNutrients)
 	);
 
-	let filteredNutrients = $derived.by(() => {
-		const query = nutrientSearch.trim().toLowerCase();
-
-		return canAddNutrients.filter((nutrient) => {
-			if (query === '') return true;
-
-			return (
-				nutrientName(nutrient).toLowerCase().includes(query) ||
-				nutrient.name.toLowerCase().includes(query) ||
-				nutrient.id.toLowerCase().includes(query)
-			);
-		});
-	});
+	// Shape the nutrient catalog for the shared searchable picker:
+	// `label` is the translated name; `name` and `id` keep raw matching working.
+	let nutrientPickerItems = $derived(
+		canAddNutrients.map((nutrient) => ({
+			id: nutrient.id,
+			label: nutrientName(nutrient),
+			name: nutrient.name
+		}))
+	);
 
 	function nutrientName(nutrient: NutrientOption) {
 		return $_(`product.edit.nutrient.${nutrient.id}`, { default: nutrient.name });
@@ -188,78 +178,6 @@
 			};
 		}
 	}
-
-	function openNutrientDropdown() {
-		nutrientSearch = '';
-		activeNutrientIndex = -1;
-		nutrientDropdownOpen = true;
-	}
-
-	function closeNutrientDropdown() {
-		nutrientDropdownOpen = false;
-	}
-
-	function toggleNutrientDropdown() {
-		if (nutrientDropdownOpen) {
-			closeNutrientDropdown();
-		} else {
-			openNutrientDropdown();
-		}
-	}
-
-	function selectNutrient(id: string) {
-		addNutrient(id);
-		activeNutrientIndex = -1;
-		// Keep the panel open so several nutrients can be added in a row.
-		nutrientSearchInput?.focus();
-	}
-
-	function handleNutrientSearchInput(event: Event) {
-		nutrientSearch = (event.currentTarget as HTMLInputElement).value;
-		activeNutrientIndex = -1;
-	}
-
-	function handleNutrientSearchKeydown(event: KeyboardEvent) {
-		if (event.key === 'ArrowDown') {
-			event.preventDefault();
-			activeNutrientIndex = Math.min(activeNutrientIndex + 1, filteredNutrients.length - 1);
-		} else if (event.key === 'ArrowUp') {
-			event.preventDefault();
-			activeNutrientIndex = Math.max(activeNutrientIndex - 1, 0);
-		} else if (event.key === 'Enter') {
-			event.preventDefault();
-			const nutrient = filteredNutrients[activeNutrientIndex] ?? filteredNutrients[0];
-			if (nutrient) {
-				selectNutrient(nutrient.id);
-			}
-		} else if (event.key === 'Escape') {
-			handleNutrientEscape(event);
-		}
-	}
-
-	function handleNutrientEscape(event: KeyboardEvent) {
-		if (!nutrientDropdownOpen) return;
-
-		event.preventDefault();
-		closeNutrientDropdown();
-		nutrientTrigger?.focus();
-	}
-
-	$effect(() => {
-		// Focus the search field as soon as the dropdown opens.
-		if (nutrientDropdownOpen) {
-			nutrientSearchInput?.focus();
-		}
-	});
-
-	$effect(() => {
-		// Keep the highlighted option visible while using the arrow keys.
-		if (activeNutrientIndex < 0 || !nutrientOptionsList) return;
-
-		nutrientOptionsList
-			.querySelectorAll('[role="option"]')
-			[activeNutrientIndex]?.scrollIntoView({ block: 'nearest' });
-	});
 
 	function removeNutrient(id: string) {
 		additionalNutrients = additionalNutrients.filter((nutrient) => nutrient !== id);
@@ -675,133 +593,30 @@
 				{/each}
 
 				{#if canAddNutrients.length > 0}
-					<span class="label">
-						{$_('product.edit.add_nutrient')}
-					</span>
-
 					<div
-						class="w-full"
-						onfocusout={(event) => {
-							if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-								closeNutrientDropdown();
-							}
-						}}
+						class="collapse-arrow collapse rounded-lg border-2 border-base-300 bg-base-300 dark:bg-base-200"
 					>
-						<button
-							bind:this={nutrientTrigger}
-							type="button"
-							class="select w-full text-left"
-							aria-haspopup="listbox"
-							aria-expanded={nutrientDropdownOpen}
-							aria-controls="add-nutrient-options"
-							onclick={toggleNutrientDropdown}
-						>
-							{$_('product.edit.additional_nutrients', {
-								default: 'Additional nutrients'
-							})}
-						</button>
-
-						{#if nutrientDropdownOpen}
-							<div class="mt-1 w-full rounded-box border border-base-300 bg-base-100 p-2 shadow-sm">
-								{#if additionalNutrients.length > 0}
-									<div class="mb-2 flex flex-wrap gap-1">
-										{#each additionalNutrients as nutrient (nutrient)}
-											{@const nutrientDetails = nutrientById.get(nutrient)}
-											{@const nutrientLabel = nutrientDetails
-												? nutrientName(nutrientDetails)
-												: nutrient}
-											<span
-												class="inline-flex items-center gap-1 rounded-full bg-base-200 py-1 pr-1 pl-3 text-sm"
-											>
-												{nutrientLabel}
-												<button
-													type="button"
-													class="btn btn-circle btn-ghost btn-xs disabled:cursor-not-allowed disabled:opacity-40"
-													aria-label={`${$_('product.edit.remove_nutrient', {
-														default: 'Remove nutrient'
-													})}: ${nutrientLabel}`}
-													title={`${$_('product.edit.remove_nutrient', {
-														default: 'Remove nutrient'
-													})}: ${nutrientLabel}`}
-													disabled={hasNutrientValue(nutrient)}
-													onclick={() => {
-														removeNutrient(nutrient);
-														nutrientSearchInput?.focus();
-													}}
-												>
-													<IconMdiClose class="h-3.5 w-3.5" aria-hidden="true" />
-												</button>
-											</span>
-										{/each}
-									</div>
-								{/if}
-
-								<label class="input w-full">
-									<IconMdiSearch class="h-4 w-4 opacity-70" aria-hidden="true" />
-									<input
-										bind:this={nutrientSearchInput}
-										type="search"
-										value={nutrientSearch}
-										oninput={handleNutrientSearchInput}
-										onkeydown={handleNutrientSearchKeydown}
-										placeholder={$_('product.edit.search_nutrients', {
-											default: 'Search nutrients'
-										})}
-										aria-label={$_('product.edit.search_nutrients', {
-											default: 'Search nutrients'
-										})}
-										aria-controls="add-nutrient-options"
-										aria-autocomplete="list"
-										aria-activedescendant={activeNutrientIndex >= 0
-											? `add-nutrient-option-${filteredNutrients[activeNutrientIndex]?.id}`
-											: undefined}
-									/>
-								</label>
-
-								<ul
-									bind:this={nutrientOptionsList}
-									id="add-nutrient-options"
-									class="mt-1 max-h-60 w-full overflow-y-auto p-0"
-									role="listbox"
-									tabindex="-1"
-									aria-label={$_('product.edit.additional_nutrients')}
-									onkeydown={handleNutrientEscape}
-								>
-									{#each filteredNutrients as nutrient, index (nutrient.id)}
-										<li role="presentation">
-											<button
-												type="button"
-												id={`add-nutrient-option-${nutrient.id}`}
-												role="option"
-												tabindex="-1"
-												aria-selected={activeNutrientIndex === index}
-												class={`w-full rounded-field px-3 py-2 text-left text-sm hover:bg-base-200 focus:bg-base-200 ${
-													activeNutrientIndex === index ? 'bg-primary text-primary-content' : ''
-												}`}
-												onclick={() => selectNutrient(nutrient.id)}
-											>
-												{nutrientName(nutrient)}
-											</button>
-										</li>
-									{/each}
-								</ul>
-
-								<!-- Live region outside the listbox so empty results are announced. -->
-								<p
-									class="px-2 py-2 text-sm opacity-70"
-									class:sr-only={filteredNutrients.length > 0}
-									role="status"
-									aria-live="polite"
-									aria-atomic="true"
-								>
-									{filteredNutrients.length === 0
-										? $_('product.edit.no_nutrients_found', {
-												default: 'No nutrients found'
-											})
-										: ''}
-								</p>
-							</div>
-						{/if}
+						<input
+							type="checkbox"
+							aria-label={$_('product.edit.add_nutrient', { default: 'Add nutrient' })}
+						/>
+						<div class="collapse-title text-sm font-semibold sm:text-base">
+							{$_('product.edit.add_nutrient', { default: 'Add nutrient' })}
+						</div>
+						<div class="collapse-content">
+							<InputAutocomplete
+								items={nutrientPickerItems}
+								searchKeys={['label', 'name', 'id']}
+								placeholder={$_('product.edit.search_nutrients', {
+									default: 'Search nutrients'
+								})}
+								emptyText={$_('product.edit.no_nutrients_found', {
+									default: 'No nutrients found'
+								})}
+								inline
+								onselect={(item) => addNutrient(item.id)}
+							/>
+						</div>
 					</div>
 				{/if}
 				{#if nutrientLoadFailed}

@@ -13,6 +13,7 @@
 		buttonAriaLabel?: string;
 		Icon?: ComponentType;
 		inline?: boolean;
+		emptyText?: string;
 	}
 
 	let {
@@ -23,7 +24,8 @@
 		buttonTitle = $_('product.edit.add_language', { default: 'Add a language' }),
 		buttonAriaLabel = $_('product.edit.add_language', { default: 'Add a language' }),
 		Icon = IconMdiPlus,
-		inline = false
+		inline = false,
+		emptyText = $_('product.edit.no_languages_found')
 	}: Props = $props();
 
 	let searchQuery = $state('');
@@ -171,7 +173,7 @@
 		{#if inline}
 			{#if filteredItems.length === 0}
 				<p class="mt-4 text-center text-sm opacity-70 sm:text-base">
-					{$_('product.edit.no_languages_found')}
+					{emptyText}
 				</p>
 			{:else}
 				<div
