@@ -98,6 +98,7 @@
 	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
+	let nutrientPickerOpen = $state(false);
 
 	function addPersistedNutrientsToFallbackCatalog() {
 		nutrientCatalog = [
@@ -555,19 +556,20 @@
 				{/each}
 			</fieldset>
 
-			<fieldset class="fieldset">
+			<fieldset class="fieldset grid-cols-1">
 				<legend class="fieldset-legend">
 					{$_('product.edit.additional_nutrients')}
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}
-					<div class="join">
-						<label class="input join-item w-full">
-							<span class="label w-60">
+					<div class="join w-full min-w-0">
+						<label class="input join-item min-w-0 flex-1">
+							<span class="label max-w-32 truncate sm:w-60">
 								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
 								id={`${nutrient}-input`}
+								class="min-w-0 flex-1"
 								type="number"
 								value={product.nutriments?.[nutrient] ?? ''}
 								oninput={(e) => handleNutrimentInput(e, nutrient)}
@@ -575,7 +577,7 @@
 								step="0.1"
 								min="0"
 							/>
-							<span class="label">
+							<span class="label shrink-0">
 								{product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g'}
 							</span>
 						</label>
@@ -598,6 +600,7 @@
 					>
 						<input
 							type="checkbox"
+							bind:checked={nutrientPickerOpen}
 							aria-label={$_('product.edit.add_nutrient', { default: 'Add nutrient' })}
 						/>
 						<div class="collapse-title text-sm font-semibold sm:text-base">
@@ -615,6 +618,7 @@
 								})}
 								inline
 								onselect={(item) => addNutrient(item.id)}
+								onEscape={() => (nutrientPickerOpen = false)}
 							/>
 						</div>
 					</div>

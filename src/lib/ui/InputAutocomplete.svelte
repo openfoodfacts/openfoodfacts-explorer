@@ -14,6 +14,7 @@
 		Icon?: ComponentType;
 		inline?: boolean;
 		emptyText?: string;
+		onEscape?: () => void;
 	}
 
 	let {
@@ -25,7 +26,8 @@
 		buttonAriaLabel = $_('product.edit.add_language', { default: 'Add a language' }),
 		Icon = IconMdiPlus,
 		inline = false,
-		emptyText = $_('product.edit.no_languages_found')
+		emptyText = $_('product.edit.no_languages_found'),
+		onEscape
 	}: Props = $props();
 
 	let searchQuery = $state('');
@@ -103,9 +105,11 @@
 				autoCompleteIndex -= 1;
 			}
 		} else if (event.key === 'Escape') {
+			event.preventDefault();
 			searchQuery = '';
 			autoCompleteIndex = -1;
 			showInput = false;
+			onEscape?.();
 		}
 	}
 </script>
