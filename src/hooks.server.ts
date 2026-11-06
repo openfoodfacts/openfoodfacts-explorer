@@ -4,7 +4,9 @@ import { clearWindow } from 'isomorphic-dompurify';
 
 import { locale } from '#lib/i18n/index.js';
 import { ServerTiming } from '#lib/server/timing.ts';
+import { withClientIp } from '#lib/server/client-ip.js';
 import { dev } from '$app/env';
+import { CLIENT_IP_ALLOWED_ORIGINS } from '$app/env/private';
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	// Server timing setup
@@ -57,7 +59,14 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	const kind = url.origin === event.url.origin ? 'internal' : 'external';
 	const desc = `${request.method} ${url.pathname}`.replace(/"/g, '');
 
-	return event.locals.timing.measure(`fetch-${kind}`, () => fetch(request), desc);
+	// If the request is to a trusted origin, add the client's IP address to the request headers.
+	const reqWithClientIp = withClientIp(
+		request,
+		() => event.getClientAddress(),
+		CLIENT_IP_ALLOWED_ORIGINS
+	);
+
+	return event.locals.timing.measure(`fetch-${kind}`, () => fetch(reqWithClientIp), desc);
 };
 
 export const handleError = Sentry.handleErrorWithSentry();
