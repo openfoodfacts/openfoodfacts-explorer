@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { QUERY_BASE_URL } from '$app/env/private';
-import { queryFacetCounts } from '#lib/server/query-facets.js';
+import { queryAllFacetValues, queryFacetCounts } from '#lib/server/query-facets.js';
 import { requireInt } from '#lib/utils.js';
 import type { PageServerLoad } from './$types';
 
@@ -13,7 +13,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	);
 	if (page < 1 || pageSize < 1) error(400, 'Page and page size must be positive');
 
-	return {
-		queryResults: await queryFacetCounts(fetch, QUERY_BASE_URL, params.facet, page, pageSize)
-	};
+	const [queryResults, mapValues] = await Promise.all([
+		queryFacetCounts(fetch, QUERY_BASE_URL, params.facet, page, pageSize),
+		params.facet === 'countries' || params.facet === 'origins'
+			? queryAllFacetValues(fetch, QUERY_BASE_URL, params.facet)
+			: null
+	]);
+	return { queryResults, mapValues };
 };

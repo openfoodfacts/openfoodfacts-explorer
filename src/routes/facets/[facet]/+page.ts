@@ -54,6 +54,18 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 		return {
 			facet,
 			results,
+			mapResults: data.mapValues
+				? {
+						count: data.mapValues.length,
+						tags: data.mapValues.map(({ _id, count }) => ({
+							id: _id,
+							name: _id,
+							known: 1,
+							products: count
+						}))
+					}
+				: results,
+			mapIsPageLimited: !data.mapValues,
 			pages,
 			pageSize,
 			page,

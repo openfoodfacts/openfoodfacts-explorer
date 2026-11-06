@@ -7,7 +7,8 @@
 	import * as iso from 'iso-3166-1';
 
 	import { getTaxo } from '#lib/api.js';
-	import { buildCountryData } from './country-data';
+	import { _ } from '#lib/i18n/index.js';
+	import { buildCountryData, countryColorIntensity } from './country-data';
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -252,7 +253,7 @@
 				};
 			}
 
-			const intensity = Math.log1p(data.products) / Math.log1p(maxProducts);
+			const intensity = countryColorIntensity(data.products, maxProducts);
 			return {
 				fillColor: choroplethColor(intensity),
 				color: dataBorder,
@@ -317,7 +318,9 @@
 		}
 
 		// Add legend
-		const minVal = hasData ? Math.min(...productValues) : 0;
+		const legendTitle = DOMPurify.sanitize(
+			$_('facets.map_sqrt_legend', { default: 'Products (square-root scale)' })
+		);
 		const LegendControl = L.Control.extend({
 			onAdd() {
 				if (L == null) {
@@ -325,12 +328,13 @@
 				}
 				const div = L.DomUtil.create('div', 'countries-map-legend');
 				div.innerHTML = `
-					<strong>Products</strong>
+					<strong>${legendTitle}</strong>
 					<div class="countries-map-legend-scale">
 						<div class="countries-map-legend-gradient"></div>
 						<div class="countries-map-legend-labels">
 							<span>${numberFormat.format(maxProducts)}</span>
-							<span>${numberFormat.format(minVal)}</span>
+							<span>${numberFormat.format(maxProducts / 4)}</span>
+							<span>0</span>
 						</div>
 					</div>`;
 				return div;
