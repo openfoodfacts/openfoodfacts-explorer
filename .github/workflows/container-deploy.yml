@@ -42,6 +42,7 @@ jobs:
           echo "SSH_PROXY_HOST=ovh1.openfoodfacts.org" >> $GITHUB_ENV
           echo "SSH_HOST=10.1.0.200" >> $GITHUB_ENV
           # application parameters
+          echo "CLIENT_IP_ALLOWED_ORIGINS=https://static.openfoodfacts.net https://world.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_FOLKSONOMY_API_URL=https://api.folksonomy.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_OFF_BASE_URL=https://world.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_SEARCH_BASE_URL=https://search.openfoodfacts.net" >> $GITHUB_ENV
@@ -125,6 +126,7 @@ jobs:
             RESTART_POLICY=unless-stopped
             EOF=====
             # Set App variables
+            echo "CLIENT_IP_ALLOWED_ORIGINS='${{ env.CLIENT_IP_ALLOWED_ORIGINS }}'" >> .env
             echo "PUBLIC_FOLKSONOMY_API_URL=${{ env.PUBLIC_FOLKSONOMY_API_URL }}" >> .env
             echo "PUBLIC_OFF_BASE_URL=${{ env.PUBLIC_OFF_BASE_URL }}" >> .env
             echo "PUBLIC_SEARCH_BASE_URL=${{ env.PUBLIC_SEARCH_BASE_URL }}" >> .env
