@@ -49,10 +49,12 @@ export async function queryFacetCounts(
 	// Query currently returns either the paginated values or their total, so both
 	// requests are needed. Its PostgreSQL backend could return both in one query
 	// using COUNT(*) OVER (), with special handling for pages beyond the end.
-	const [values, count] = await Promise.all([
-		client.getFacetValues(field, { limit: pageSize, skip: (page - 1) * pageSize }),
-		client.countFacetValues(field)
-	]);
+	const valuesPromise = client.getFacetValues(field, {
+		limit: pageSize,
+		skip: (page - 1) * pageSize
+	});
+	const countPromise = client.countFacetValues(field);
+	const [values, count] = await Promise.all([valuesPromise, countPromise]);
 	return { values, count };
 }
 

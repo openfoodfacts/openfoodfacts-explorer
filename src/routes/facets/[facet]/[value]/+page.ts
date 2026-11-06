@@ -1,7 +1,7 @@
 import type { FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
 import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
-import { getBulkProductAttributes } from '#lib/api.js';
+import { getBulkProductAttributesAndImages } from '#lib/api.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
@@ -44,18 +44,18 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 		}
 	})();
 
-	// Attributes support personalized scoring and depend on the product codes.
-	const productAttributes = (async () => {
+	// Fetch scoring attributes and card images together for the product codes.
+	const productDetails = (async () => {
 		const { products } = await results;
-		if (products.length === 0) return {};
+		if (products.length === 0) return { attributesByCode: {}, imagesByCode: {} };
 		try {
-			return await getBulkProductAttributes(
+			return await getBulkProductAttributesAndImages(
 				fetch,
 				products.map((product) => product.code)
 			);
 		} catch (error) {
 			console.error('Product attribute fetch failed:', error);
-			return {};
+			return { attributesByCode: {}, imagesByCode: {} };
 		}
 	})();
 
@@ -67,20 +67,22 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 		return getFacetDistribution((await results).products, mapFacet.tagsField, taxo, lang);
 	})();
 
-	return Promise.all([
-		taxonomy,
-		results,
-		knowledgePanels,
-		productAttributes,
-		distributionData
-	]).then(([taxo, products, panels, attributes, distribution]) => ({
-		searchOptions,
-		facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
-		results: products,
-		knowledgePanels: panels,
-		productAttributes: attributes,
-		distributionData: distribution,
-		mapIsPageLimited: !mapValues,
-		mapFacet: mapFacet ?? null
-	}));
+	return Promise.all([taxonomy, results, knowledgePanels, productDetails, distributionData]).then(
+		([taxo, products, panels, details, distribution]) => ({
+			searchOptions,
+			facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
+			results: {
+				...products,
+				products: products.products.map((product) => {
+					const image = details.imagesByCode[product.code];
+					return image ? Object.assign({}, product, { image_front_small_url: image }) : product;
+				})
+			},
+			knowledgePanels: panels,
+			productAttributes: details.attributesByCode,
+			distributionData: distribution,
+			mapIsPageLimited: !mapValues,
+			mapFacet: mapFacet ?? null
+		})
+	);
 };

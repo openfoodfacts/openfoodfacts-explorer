@@ -78,15 +78,30 @@ export async function getBulkProductAttributes(
 	fetch: typeof window.fetch,
 	productCodes: string[]
 ): Promise<Record<string, ProductAttributeForScoringGroup[]>> {
+	return (await getBulkProductData(fetch, productCodes, false)).attributesByCode;
+}
+
+export async function getBulkProductAttributesAndImages(
+	fetch: typeof window.fetch,
+	productCodes: string[]
+) {
+	return getBulkProductData(fetch, productCodes, true);
+}
+
+async function getBulkProductData(
+	fetch: typeof window.fetch,
+	productCodes: string[],
+	includeImages: boolean
+) {
 	if (productCodes.length === 0) {
-		return {};
+		return { attributesByCode: {}, imagesByCode: {} };
 	}
 
 	const off = createProductsApi(fetch);
 
 	const params = new URLSearchParams({
 		code: productCodes.join(','),
-		fields: 'product_name,code,attribute_groups'
+		fields: `product_name,code,attribute_groups${includeImages ? ',image_front_small_url' : ''}`
 	});
 
 	const { data, error } = await off.apiv2.search(Object.fromEntries(params.entries()));
@@ -97,12 +112,15 @@ export async function getBulkProductAttributes(
 
 	// Create a map of product code to attribute groups
 	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
+	const imagesByCode: Record<string, string> = {};
 	for (const product of data.products || []) {
+		if (!product.code) continue;
 		// @ts-expect-error - FIXME: deduplicate attribute groups definition
-		attributesByCode[product.code!] = product.attribute_groups || [];
+		attributesByCode[product.code] = product.attribute_groups || [];
+		if (product.image_front_small_url) imagesByCode[product.code] = product.image_front_small_url;
 	}
 
-	return attributesByCode;
+	return { attributesByCode, imagesByCode };
 }
 
 export async function addOrEditProductV2(

@@ -13,11 +13,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	);
 	if (page < 1 || pageSize < 1) error(400, 'Page and page size must be positive');
 
-	const [queryResults, mapValues] = await Promise.all([
-		queryFacetCounts(fetch, QUERY_BASE_URL, params.facet, page, pageSize),
+	const queryResultsPromise = queryFacetCounts(fetch, QUERY_BASE_URL, params.facet, page, pageSize);
+	const mapValuesPromise =
 		params.facet === 'countries' || params.facet === 'origins'
 			? queryAllFacetValues(fetch, QUERY_BASE_URL, params.facet)
-			: null
-	]);
+			: Promise.resolve(null);
+	const [queryResults, mapValues] = await Promise.all([queryResultsPromise, mapValuesPromise]);
 	return { queryResults, mapValues };
 };
