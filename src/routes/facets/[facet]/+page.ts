@@ -2,22 +2,8 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
 import { requireInt } from '#lib/utils.js';
-import { getTaxo } from '#lib/api/taxonomy/api.js';
-import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
-
-const FACETS_WITH_TAXONOMY = new Set([
-	'categories',
-	'countries',
-	'labels',
-	'origins',
-	'ingredients',
-	'additives',
-	'allergens',
-	'languages',
-	'packaging',
-	'states'
-]);
+import { toFacetResults, toMapResults } from './facet-results';
 
 export const load: PageLoad = async ({ fetch, params, url, data }) => {
 	const { facet } = params;
@@ -29,42 +15,15 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 
 	const kp = getFacetKnowledgePanels(fetch, facet);
 	try {
-		let results;
-		if (data.queryResults) {
-			const taxonomy = FACETS_WITH_TAXONOMY.has(facet)
-				? await getTaxo(facet, fetch).catch(() => undefined)
-				: undefined;
-			const lang = getLocale();
-			results = {
-				count: data.queryResults.count,
-				tags: data.queryResults.values.map(({ _id, count }) => ({
-					id: _id,
-					known: taxonomy ? (taxonomy[_id] ? 1 : 0) : -1,
-					name:
-						getOrDefault(taxonomy?.[_id]?.name ?? {}, lang) ??
-						_id.replace(/^[a-z]{2}:/, '').replaceAll('-', ' '),
-					products: count
-				}))
-			};
-		} else {
-			results = await getFacet(fetch, facet, { page, pageSize });
-		}
+		const results = data.queryResults
+			? await toFacetResults(fetch, facet, data.queryResults, getLocale())
+			: await getFacet(fetch, facet, { page, pageSize });
 		const pages = Math.ceil(results.count / (pageSize || 100));
 
 		return {
 			facet,
 			results,
-			mapResults: data.mapValues
-				? {
-						count: data.mapValues.length,
-						tags: data.mapValues.map(({ _id, count }) => ({
-							id: _id,
-							name: _id,
-							known: 1,
-							products: count
-						}))
-					}
-				: results,
+			mapResults: data.mapValues ? toMapResults(data.mapValues) : results,
 			mapIsPageLimited: !data.mapValues,
 			pages,
 			pageSize,
