@@ -1,7 +1,7 @@
 import type { FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
 import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
-import { getBulkProductAttributesAndImages } from '#lib/api.js';
+import { getBulkProductAttributesAndImages } from './facet-products';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
