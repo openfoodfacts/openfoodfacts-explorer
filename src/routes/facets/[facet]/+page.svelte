@@ -89,7 +89,7 @@
 							{name}
 						</a>
 					</td>
-					<td>{known === 1 ? 'Yes' : 'No'}</td>
+					<td>{known === -1 ? '—' : known === 1 ? 'Yes' : 'No'}</td>
 					<td class="text-end">{formatNumber(products)}</td>
 				</tr>
 			{/each}
