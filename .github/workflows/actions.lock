@@ -6,7 +6,7 @@ workflows:
     '.github/workflows/actions-lock.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/auto-assign-pr.yml':
-        - 'toshimaru/auto-author-assign@v3.1.0'
+        - 'toshimaru/auto-author-assign@v3.1.1'
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/dependency-review-action@v5.0.0'
@@ -144,8 +144,8 @@ dependencies:
         commit: 'sha1-15c168cfa0cf8d5234974e0047908173d3ab39a1'
         owner_id: 61683879
         repo_id: 283534087
-    'toshimaru/auto-author-assign@v3.1.0':
-        ref: 'v3.1.0'
-        commit: 'sha1-a78a94b219445cece8ccf0d45fec60af449f212a'
+    'toshimaru/auto-author-assign@v3.1.1':
+        ref: 'v3.1.1'
+        commit: 'sha1-415448809ea5ba0e171b251632720b009df3d8d6'
         owner_id: 803398
         repo_id: 255515795
