@@ -26,7 +26,7 @@ async function getTaxonomyOrUndefined(facet: string, fetch: typeof window.fetch)
 	}
 }
 
-export const load: PageLoad = async ({ fetch, params, url }) => {
+export const load: PageLoad = async ({ fetch, params, url, data }) => {
 	const { facet, value } = params;
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
@@ -63,7 +63,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	let distributionData = null;
 
 	try {
-		results = await getFacetValue(fetch, facet, value, searchOptions);
+		results = data.queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
 		kp = await getFacetKnowledgePanels(fetch, facet, value);
 
 		if (results.products.length > 0) {
