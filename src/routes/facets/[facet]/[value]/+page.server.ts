@@ -1,6 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { QUERY_BASE_URL, QUERY_IMAGES_BASE_URL } from '$app/env/private';
-import { PUBLIC_IMAGES_URL } from '$app/env/public';
+import { QUERY_BASE_URL } from '$app/env/private';
 import { FACETS_SORT_OPTIONS, type FacetSortOption } from '#lib/api/facets.js';
 import { queryFacetProducts } from '#lib/server/query-facet-products.js';
 import { queryAllFacetValues, QUERY_FACETS } from '#lib/server/query-facets.js';
@@ -26,18 +25,19 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	const field = Object.hasOwn(QUERY_FACETS, params.facet) ? QUERY_FACETS[params.facet] : undefined;
 	const hasMap = Object.hasOwn(MAP_FACETS, params.facet);
 
-	const [queryProducts, mapValues] = await Promise.all([
-		queryFacetProducts(
-			fetch,
-			QUERY_BASE_URL,
-			QUERY_IMAGES_BASE_URL || PUBLIC_IMAGES_URL,
-			params.facet,
-			params.value,
-			searchOptions
-		),
+	const queryProductsPromise = queryFacetProducts(
+		fetch,
+		QUERY_BASE_URL,
+		params.facet,
+		params.value,
+		searchOptions
+	);
+
+	const mapValuesPromise =
 		field && hasMap
 			? queryAllFacetValues(fetch, QUERY_BASE_URL, params.facet, { [field]: params.value })
-			: null
-	]);
+			: Promise.resolve(null);
+
+	const [queryProducts, mapValues] = await Promise.all([queryProductsPromise, mapValuesPromise]);
 	return { queryProducts, mapValues, searchOptions };
 };
