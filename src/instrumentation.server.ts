@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/sveltekit';
-import { PUBLIC_SENTRY_ENABLED } from '$app/env/public';
+import { PUBLIC_SENTRY_DSN } from '$app/env/public';
 
-if (PUBLIC_SENTRY_ENABLED) {
+if (PUBLIC_SENTRY_DSN) {
 	Sentry.init({
-		dsn: 'https://6a3e1451763425bd80a12c9548969f22@o241488.ingest.us.sentry.io/4509950733320194',
+		dsn: PUBLIC_SENTRY_DSN,
 
 		tracesSampleRate: 1.0
 
