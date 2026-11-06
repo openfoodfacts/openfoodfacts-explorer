@@ -16,11 +16,16 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		error(400, 'Invalid page size')
 	);
 	if (page < 1 || pageSize < 1) error(400, 'Page and page size must be positive');
+
 	const sortBy = url.searchParams.get('sort_by');
-	if (sortBy && !FACETS_SORT_OPTIONS.includes(sortBy as FacetSortOption))
+	if (sortBy && !FACETS_SORT_OPTIONS.includes(sortBy as FacetSortOption)) {
 		error(400, 'Invalid sort option');
+	}
+	const searchOptions = { page, pageSize, sortBy: (sortBy as FacetSortOption) || undefined };
+
 	const field = Object.hasOwn(QUERY_FACETS, params.facet) ? QUERY_FACETS[params.facet] : undefined;
 	const hasMap = Object.hasOwn(MAP_FACETS, params.facet);
+
 	const [queryProducts, mapValues] = await Promise.all([
 		queryFacetProducts(
 			fetch,
@@ -28,11 +33,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			QUERY_IMAGES_BASE_URL || PUBLIC_IMAGES_URL,
 			params.facet,
 			params.value,
-			{ page, pageSize, sortBy: (sortBy as FacetSortOption) || undefined }
+			searchOptions
 		),
 		field && hasMap
 			? queryAllFacetValues(fetch, QUERY_BASE_URL, params.facet, { [field]: params.value })
 			: null
 	]);
-	return { queryProducts, mapValues };
+	return { queryProducts, mapValues, searchOptions };
 };
