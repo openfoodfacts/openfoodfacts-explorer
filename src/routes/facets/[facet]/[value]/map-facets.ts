@@ -23,6 +23,20 @@ export const MAP_FACETS: Record<string, MapFacet> = {
 type Products = Array<Partial<Record<MapFacet['tagsField'], unknown>>>;
 type Taxonomy = Awaited<ReturnType<typeof getTaxo>>;
 
+export function queryValuesToDistribution(
+	values: { _id: string; count: number }[],
+	taxonomy: Taxonomy | undefined,
+	lang: string
+) {
+	const tags = values.map(({ _id: id, count: products }) => ({
+		id,
+		products,
+		known: 1,
+		name: getOrDefault(taxonomy?.[id]?.name ?? {}, lang) ?? id
+	}));
+	return tags.length ? { count: tags.length, tags } : null;
+}
+
 export function getFacetDistribution(
 	products: Products,
 	tagsField: MapFacet['tagsField'],

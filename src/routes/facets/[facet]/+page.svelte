@@ -36,8 +36,15 @@
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
 
-{#if facet === 'countries'}
-	<CountriesMap facet={data.results} />
+{#if facet === 'countries' || facet === 'origins'}
+	<CountriesMap facet={data.mapResults} />
+	{#if data.mapIsPageLimited}
+		<p class="mt-2 text-sm text-base-content/70">
+			{$_('facets.map_page_limited', {
+				default: 'This map only includes data from the current page.'
+			})}
+		</p>
+	{/if}
 {/if}
 
 <div class="my-8 flex gap-4 max-md:flex-col">

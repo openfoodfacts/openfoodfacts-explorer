@@ -1,4 +1,8 @@
-import { QueryApi, type QueryFacetField } from '@openfoodfacts/openfoodfacts-nodejs';
+import {
+	QueryApi,
+	type QueryFacetField,
+	type QueryFilter
+} from '@openfoodfacts/openfoodfacts-nodejs';
 
 export const QUERY_FACETS: Record<string, QueryFacetField> = {
 	categories: 'categories_tags',
@@ -47,4 +51,15 @@ export async function queryFacetCounts(
 		client.countFacetValues(field)
 	]);
 	return { values, count };
+}
+
+export async function queryAllFacetValues(
+	fetch: typeof globalThis.fetch,
+	queryUrl: string,
+	facet: string,
+	filter: QueryFilter = {}
+) {
+	const field = Object.hasOwn(QUERY_FACETS, facet) ? QUERY_FACETS[facet] : undefined;
+	if (!queryUrl || !field) return null;
+	return new QueryApi(fetch, { baseUrl: queryUrl }).getFacetValues(field, { filter });
 }

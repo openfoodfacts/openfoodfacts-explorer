@@ -1,7 +1,19 @@
 import { describe, expect, it, vi } from 'vitest';
-import { QUERY_FACETS, queryFacetCounts } from './query-facets';
+import { QUERY_FACETS, queryAllFacetValues, queryFacetCounts } from './query-facets';
 
 describe('queryFacetCounts', () => {
+	it('requests the entire distribution for a filtered facet', async () => {
+		const fetch = vi.fn(async (..._: [RequestInfo | URL, RequestInit?]) =>
+			Response.json([{ _id: 'en:france', count: 120 }])
+		);
+		await queryAllFacetValues(fetch, 'https://query.example', 'countries', {
+			countries_tags: 'en:austria'
+		});
+		expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual([
+			{ $match: { countries_tags: 'en:austria' } },
+			{ $group: { _id: '$countries_tags' } }
+		]);
+	});
 	it('maps each Query-supported facet to its indexed field', () => {
 		expect(QUERY_FACETS).toMatchObject({
 			brands: 'brands_tags',

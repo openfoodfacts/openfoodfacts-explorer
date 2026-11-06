@@ -12,7 +12,7 @@ import { getBulkProductAttributes } from '#lib/api.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
-import { getFacetDistribution, MAP_FACETS } from './map-facets';
+import { getFacetDistribution, MAP_FACETS, queryValuesToDistribution } from './map-facets';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
 type KPResponseData = Awaited<ReturnType<typeof getFacetKnowledgePanels>>;
@@ -60,7 +60,9 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 	};
 	let kp: KPResponseData = { knowledge_panels: {} };
 	let productAttributes = {};
-	let distributionData = null;
+	let distributionData = data.mapValues
+		? queryValuesToDistribution(data.mapValues, taxonomy, lang)
+		: null;
 
 	try {
 		results = data.queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
@@ -72,7 +74,7 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 			const productCodes = products.map((state) => state.code as string);
 			productAttributes = await getBulkProductAttributes(fetch, productCodes);
 
-			if (mapFacet) {
+			if (mapFacet && !data.mapValues) {
 				distributionData = getFacetDistribution(products, mapFacet.tagsField, taxonomy, lang);
 			}
 		}
@@ -87,6 +89,7 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 		knowledgePanels: kp.knowledge_panels || {},
 		productAttributes,
 		distributionData,
+		mapIsPageLimited: !data.mapValues,
 		mapFacet: mapFacet ?? null
 	};
 };
