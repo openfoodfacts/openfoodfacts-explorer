@@ -153,8 +153,8 @@ export function getMissingNutrientOptions(
 		const unit = nutriments?.[`${id}_unit`];
 		missingNutrients.push({
 			id,
-			name: id,
-			...(typeof unit === 'string' ? { unit } : {})
+			name: id === 'nova-group' ? 'NOVA group' : id,
+			...(typeof unit === 'string' ? { unit } : id === 'nova-group' ? { unit: '' } : {})
 		});
 	}
 
