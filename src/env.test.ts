@@ -9,9 +9,7 @@ describe('CLIENT_IP_ALLOWED_ORIGINS', () => {
 			value: new Set(['https://example.org', 'https://example.net'])
 		});
 		expect(await validate('')).toEqual({ value: new Set() });
-		expect(await validate(undefined)).toEqual({
-			value: new Set(['https://world.openfoodfacts.org', 'https://world.openfoodfacts.net'])
-		});
+		expect(await validate(undefined)).toEqual({ value: new Set() });
 	});
 
 	it.each([

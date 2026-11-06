@@ -6,9 +6,7 @@ export const variables = defineEnvVars({
 		schema: (input) => {
 			const origins = new Set<string>();
 
-			const envVarVal = (
-				input ?? 'https://world.openfoodfacts.org https://world.openfoodfacts.net'
-			).split(/\s+/);
+			const envVarVal = (input ?? '').split(/\s+/);
 
 			const validateUrl = (url: URL) =>
 				url.protocol === 'https:' &&

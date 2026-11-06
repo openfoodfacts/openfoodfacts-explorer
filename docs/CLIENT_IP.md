@@ -3,8 +3,8 @@
 Server-side requests using SvelteKit's request-scoped `fetch` send `X-Real-IP` to
 the explicitly allowed origins in the private runtime environment variable
 `CLIENT_IP_ALLOWED_ORIGINS`, a space-separated list of HTTPS origins. It defaults
-to `https://world.openfoodfacts.org https://world.openfoodfacts.net`; set it to
-an empty value to disable forwarding. Paths, credentials, query strings and
+to an empty list, disabling forwarding until origins are explicitly configured.
+Paths, credentials, query strings and
 fragments are not allowed. Requests with a forwarded address reject redirects
 to prevent the address from reaching a different origin. Global `fetch` calls do
 not pass through this hook.
