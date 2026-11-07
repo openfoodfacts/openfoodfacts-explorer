@@ -645,7 +645,9 @@
 					"select_error": "Error selecting image. Please try again.",
 					"not_loaded": "Image not fully loaded. Please wait and try again.",
 					"invalid_crop": "Please select a valid crop area.",
-					"already_uploaded": "This image was already uploaded; reusing the existing photo to replace the active one."
+					"already_uploaded": "This image was already uploaded; reusing the existing photo to replace the active one.",
+					"review_ingredients_after_image_change": "The ingredients photo changed. Please review the ingredients list to make sure it matches.",
+					"review_nutrition_after_image_change": "The nutrition photo changed. Please review the nutrition facts to make sure they match."
 				},
 				"select_image": "Select an Image",
 				"uploading": "Uploading...",

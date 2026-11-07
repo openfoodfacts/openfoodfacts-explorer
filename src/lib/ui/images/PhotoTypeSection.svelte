@@ -31,7 +31,7 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
-		onImageUploaded?: (imgId: number) => void;
+		onImageUploaded?: (imgId: number, imageType: string) => void;
 		onSelectImage?: () => void;
 		isSelectingImage?: boolean;
 	};
@@ -119,7 +119,7 @@
 						}
 
 						trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
-						onImageUploaded(imgid);
+						onImageUploaded(imgid, sectionType.id);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
 					}
