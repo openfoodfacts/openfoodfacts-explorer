@@ -631,6 +631,7 @@
 			}
 		},
 		"prices": {
+			"quantity_nudge": "補全數量，以比較每公斤或每公升的價格。",
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
 			"view_prices": "View prices on Open Prices",
