@@ -119,6 +119,11 @@ src/
 - Always provide a `default` fallback: `$_('some.key', { default: 'Fallback text' })`.
 - Add new keys to `src/lib/i18n/messages/en-US.json` first.
 
+### Internal paths
+
+- Use `resolve` from `#lib/paths.js` for internal links instead of SvelteKit's `$app/paths` resolver. It preserves the active language and region prefix.
+- When resolving a path from a request URL outside a page component, use `resolveForUrl` from `#lib/paths.js`.
+
 ---
 
 ## Common Issues

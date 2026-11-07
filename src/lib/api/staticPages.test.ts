@@ -3,6 +3,7 @@ import { sanitize } from 'isomorphic-dompurify';
 import {
 	extractStaticPageContent,
 	getStaticPageContent,
+	getStaticPageUrl,
 	makeSiteRelativeUrlsAbsolute
 } from './staticPages';
 
@@ -121,13 +122,27 @@ describe('getStaticPageContent', () => {
 			.mockResolvedValue(
 				new Response(new ReadableStream({ start: (stream) => stream.error(new Error('reset')) }))
 			);
-		expect(await getStaticPageContent(failing, 'privacy')).toBeNull();
-		expect(await getStaticPageContent(unreachable, 'privacy')).toBeNull();
-		expect(await getStaticPageContent(cutOff, 'privacy')).toBeNull();
+		expect(await getStaticPageContent(failing, 'privacy', 'en')).toBeNull();
+		expect(await getStaticPageContent(unreachable, 'privacy', 'en')).toBeNull();
+		expect(await getStaticPageContent(cutOff, 'privacy', 'en')).toBeNull();
 	});
 
 	it('returns the cleaned content of a page', async () => {
 		const ok = vi.fn().mockResolvedValue(new Response(staticPageHtml));
-		expect(await getStaticPageContent(ok, 'privacy')).toContain('<h1>Privacy</h1>');
+		expect(await getStaticPageContent(ok, 'privacy', 'it')).toContain('<h1>Privacy</h1>');
+		expect(ok.mock.calls[0][0].href).toBe(
+			'https://world.openfoodfacts.org/privacy?lc=it&content_only=1'
+		);
+	});
+});
+
+describe('getStaticPageUrl', () => {
+	it('preserves parameters for valid pages', () => {
+		const url = getStaticPageUrl('privacy', 'fr', true);
+		expect(url.searchParams.get('lc')).toBe('fr');
+		expect(url.searchParams.get('content_only')).toBe('1');
+	});
+	it.each(['/evil.example/path', '\\evil.example/path'])('rejects cross-origin ID %s', (id) => {
+		expect(() => getStaticPageUrl(id, 'en')).toThrow();
 	});
 });

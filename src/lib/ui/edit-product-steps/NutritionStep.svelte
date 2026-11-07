@@ -13,6 +13,8 @@
 		type Nutriments
 	} from '#lib/api.js';
 	import { preferences } from '#lib/settings.js';
+	import { page } from '$app/state';
+	import { parseUrlLocation } from '#lib/url-location.js';
 	import { getPermissionsCtx } from '#lib/stores/user.js';
 
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
@@ -119,7 +121,7 @@
 
 	$effect(() => {
 		const currentLocale = $locale ?? 'en';
-		const country = $preferences.country;
+		const country = parseUrlLocation(page.url.pathname)?.country ?? 'world';
 		let cancelled = false;
 
 		getNutrients(fetch, currentLocale, country)

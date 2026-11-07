@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { KnowledgeActionElement } from '#lib/api.js';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { NUTRIPATROL_URL } from '#lib/const.js';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
 
 	type Props = {

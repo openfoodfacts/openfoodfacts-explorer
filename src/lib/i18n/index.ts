@@ -2,6 +2,7 @@ import { init, register, getLocaleFromNavigator, isLoading } from 'svelte-i18n';
 import { get } from 'svelte/store';
 import { preferences } from '#lib/settings.js';
 import { browser } from '$app/env';
+import { parseUrlLocation } from '#lib/url-location.js';
 
 const FALLBACK_LOCALE = 'en';
 
@@ -51,8 +52,15 @@ export function resolveAvailableLocale(candidate: string | null | undefined): st
 	);
 }
 
+export function getLocaleForUrl(url: Pick<URL, 'pathname'>): string {
+	const language = parseUrlLocation(url.pathname)?.language;
+	return language ? resolveAvailableLocale(language) : getLocale();
+}
+
 export function getBrowserLocale() {
 	if (!browser) throw new Error('getBrowserLocale should only be called in the browser');
+	const location = parseUrlLocation(window.location.pathname);
+	if (location) return resolveAvailableLocale(location.language ?? getLocaleFromNavigator());
 	const storedPreferences = get(preferences) as { locale?: string; lang?: string };
 	const preferredLocale = storedPreferences.locale;
 	const navLang = getLocaleFromNavigator();

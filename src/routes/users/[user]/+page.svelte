@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import Metadata from '#lib/Metadata.svelte';
 	import { _, getNumberFormatter } from 'svelte-i18n';
@@ -81,7 +82,7 @@
 		</div>
 
 		<a
-			href={`/facets/contributors/${encodeURIComponent(user)}`}
+			href={resolve('/facets/[facet]/[value]', { facet: 'contributors', value: user })}
 			class="btn mt-4 w-full btn-outline"
 		>
 			{$_('dashboard.view_all_contributions', { default: 'View all contributions' })}
@@ -98,7 +99,9 @@
 			{/each}
 		</div>
 
-		<a href={`/facets/editors/${encodeURIComponent(user)}`} class="btn mt-4 w-full btn-outline"
+		<a
+			href={resolve('/facets/[facet]/[value]', { facet: 'editors', value: user })}
+			class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_edits', { default: 'View all edits' })}</a
 		>
 	</section>
@@ -116,7 +119,7 @@
 		</div>
 
 		<a
-			href={`/facets/photographers/${encodeURIComponent(user)}`}
+			href={resolve('/facets/[facet]/[value]', { facet: 'photographers', value: user })}
 			class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_photographs', { default: 'View all photographs' })}</a
 		>

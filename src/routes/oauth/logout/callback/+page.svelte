@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { completeLogout } from '#lib/auth/logout.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { onMount } from 'svelte';

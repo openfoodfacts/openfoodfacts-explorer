@@ -2,15 +2,35 @@ import { sequence, type Handle, type HandleFetch } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { clearWindow } from 'isomorphic-dompurify';
 
+import { error } from '@sveltejs/kit';
+import { parseUrlLocation } from '#lib/url-location.js';
 import { locale } from '#lib/i18n/index.js';
 import { ServerTiming } from '#lib/server/timing.ts';
 import { dev } from '$app/env';
+
+const UNPREFIXED_PATH_ALLOWLIST = [
+	/^\/(?:health|site\.webmanifest)$/,
+	/^\/oauth\/(?:login|logout)\/callback$/,
+	/^\/(?:_app|assets)\//,
+	/^\/(?:favicon\.ico|Placeholder\.svg|login\.svg)$/
+];
+
+function requireLocationPrefix(pathname: string) {
+	const location = parseUrlLocation(pathname);
+	const isAllowedPath =
+		pathname === '/' || UNPREFIXED_PATH_ALLOWLIST.some((pattern) => pattern.test(pathname));
+	if (!location && !isAllowedPath) {
+		error(404, 'A language and region prefix is required in the URL');
+	}
+	return location;
+}
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	// Server timing setup
 	const startTime = performance.now();
 
-	const lang = event.request.headers.get('accept-language')?.split(',')[0];
+	const urlLocation = requireLocationPrefix(event.url.pathname);
+	const lang = urlLocation?.language ?? event.request.headers.get('accept-language')?.split(',')[0];
 	if (lang) {
 		locale.set(lang);
 	}
