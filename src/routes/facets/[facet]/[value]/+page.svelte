@@ -272,7 +272,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facet.value })}?${params}`;
+			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facetValue })}?${params}`;
 		}}
 	/>
 </div>

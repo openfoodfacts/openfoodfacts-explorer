@@ -189,7 +189,7 @@
 				class="col-span-2 mt-4 flex flex-wrap items-center gap-2 md:col-span-1 md:col-start-2 md:mt-2 md:self-start"
 			>
 				<a
-					href={`/products/${product.code}/edit`}
+					href={resolve('/products/[barcode]/edit', { barcode: `${product.code}` })}
 					class={['btn rounded-full btn-sm', product.product_name ? 'btn-outline' : 'btn-primary']}
 					class:pointer-events-none={navigating.to}
 				>

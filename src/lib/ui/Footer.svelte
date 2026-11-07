@@ -122,7 +122,7 @@
 			key: 'footer.discover.partners'
 		},
 		{
-			url: '/static/faq',
+			url: resolve('/static/[id]', { id: 'faq' }),
 			key: 'footer.discover.faq'
 		},
 		{

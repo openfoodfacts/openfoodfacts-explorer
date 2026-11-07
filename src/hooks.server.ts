@@ -10,6 +10,7 @@ import { dev } from '$app/env';
 
 const UNPREFIXED_PATH_ALLOWLIST = [
 	/^\/(?:health|site\.webmanifest)$/,
+	/^\/oauth\/(?:login|logout)\/callback$/,
 	/^\/(?:_app|assets)\//,
 	/^\/(?:favicon\.ico|Placeholder\.svg|login\.svg)$/
 ];

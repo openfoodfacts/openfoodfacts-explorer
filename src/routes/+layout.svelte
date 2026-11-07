@@ -48,10 +48,11 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '#lib/stores/toasts.js';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '#lib/stores/shortcuts.js';
-	import { getLanguageCode, runPreferencesMigrations } from '#lib/settings.js';
+	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
-	import { resolve } from '#lib/paths.js';
+	import { resolve, resolveForUrl } from '#lib/paths.js';
+	import { formatUrlLocation, parseUrlLocation } from '#lib/url-location.js';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();
@@ -216,7 +217,18 @@
 	}
 
 	function getLoginUrl(url: URL) {
-		return resolve('oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
+		const location = parseUrlLocation(url.pathname);
+		const target = location
+			? url
+			: new URL(
+					`/${formatUrlLocation($preferences.country, getLanguageCode($preferences.locale ?? getLocale()))}`,
+					url
+				);
+		return (
+			resolveForUrl(target, 'oauth/login') +
+			'?redirect=' +
+			encodeURIComponent(url.pathname + url.search)
+		);
 	}
 
 	let searchActive = $state(false);
