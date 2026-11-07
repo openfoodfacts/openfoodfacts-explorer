@@ -38,8 +38,8 @@ describe('queryFacetCounts', () => {
 		expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual([
 			{ $match: {} },
 			{ $group: { _id: '$categories_tags' } },
-			{ $limit: 5 },
-			{ $skip: 5 }
+			{ $skip: 5 },
+			{ $limit: 5 }
 		]);
 	});
 

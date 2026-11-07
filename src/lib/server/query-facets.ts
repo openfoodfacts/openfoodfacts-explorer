@@ -1,8 +1,10 @@
 import {
 	QueryApi,
 	type QueryFacetField,
+	type QueryFacetValue,
 	type QueryFilter
 } from '@openfoodfacts/openfoodfacts-nodejs';
+import { USER_AGENT } from '#lib/const.js';
 
 export const QUERY_FACETS: Record<string, QueryFacetField> = {
 	categories: 'categories_tags',
@@ -35,6 +37,32 @@ export const QUERY_FACETS: Record<string, QueryFacetField> = {
 	teams: 'teams_tags'
 };
 
+// TODO: Replace this workaround with QueryApi.getFacetValues once the SDK applies skip before limit.
+async function getFacetValuesPage(
+	fetch: typeof globalThis.fetch,
+	queryUrl: string,
+	field: QueryFacetField,
+	limit: number,
+	skip: number
+): Promise<QueryFacetValue[]> {
+	if (!Number.isInteger(limit) || limit <= 0)
+		throw new RangeError('limit must be a positive integer');
+	if (!Number.isInteger(skip) || skip < 0)
+		throw new RangeError('skip must be a non-negative integer');
+	const response = await fetch(`${queryUrl.replace(/\/$/, '')}/aggregate`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', 'User-Agent': USER_AGENT },
+		body: JSON.stringify([
+			{ $match: {} },
+			{ $group: { _id: `$${field}` } },
+			{ $skip: skip },
+			{ $limit: limit }
+		])
+	});
+	if (!response.ok) throw new Error(`Query API error: HTTP ${response.status}`);
+	return (await response.json()) as QueryFacetValue[];
+}
+
 export async function queryFacetCounts(
 	fetch: typeof globalThis.fetch,
 	queryUrl: string,
@@ -49,10 +77,7 @@ export async function queryFacetCounts(
 	// Query currently returns either the paginated values or their total, so both
 	// requests are needed. Its PostgreSQL backend could return both in one query
 	// using COUNT(*) OVER (), with special handling for pages beyond the end.
-	const valuesPromise = client.getFacetValues(field, {
-		limit: pageSize,
-		skip: (page - 1) * pageSize
-	});
+	const valuesPromise = getFacetValuesPage(fetch, queryUrl, field, pageSize, (page - 1) * pageSize);
 	const countPromise = client.countFacetValues(field);
 	const [values, count] = await Promise.all([valuesPromise, countPromise]);
 	return { values, count };
