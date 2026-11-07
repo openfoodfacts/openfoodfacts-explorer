@@ -3,21 +3,11 @@ import { get } from 'svelte/store';
 import { preferences } from '#lib/settings.js';
 import { browser } from '$app/env';
 import { parseUrlLocation } from '#lib/url-location.js';
+import { availableLocales, messageLoaders } from './locales.js';
+
+export { availableLocales } from './locales.js';
 
 const FALLBACK_LOCALE = 'en';
-
-const messageLoaders = import.meta.glob('./messages/*.json');
-
-export const availableLocales = Object.keys(messageLoaders)
-	.map((path) =>
-		path
-			.split('/')
-			.pop()
-			?.replace(/\.json$/, '')
-			.replaceAll('_', '-')
-	)
-	.filter((locale): locale is string => locale != null)
-	.toSorted();
 
 Object.entries(messageLoaders).forEach(([path, loader]) => {
 	const fileName = path.split('/').pop();

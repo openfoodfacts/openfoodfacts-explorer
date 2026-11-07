@@ -1,10 +1,11 @@
 import ISO31661 from 'iso-3166-1';
 import ISO6391 from 'iso-639-1';
+import { availableLocales } from '#lib/i18n/locales.js';
 
 /**
  * We use the first segment of the URL to encode the location (language and country) for the current page.
  *
- * The segment is in the format `country-language`, where `language` is a two-letter ISO 639-1 code or `kmr`
+ * The segment is in the format `country-language`, where `language` is an ISO 639-1 code or an available locale's language code
  * and `country` is a two-letter ISO 3166-1 alpha-2 code or `world`.
  *
  * Examples:
@@ -20,8 +21,11 @@ export type UrlLocation = {
 	country: string;
 };
 
-const LOCATION_SEGMENT = /^(world|[a-z]{2})-([a-z]{2}|kmr)$/i;
-const LANGUAGE_CODES: Set<string> = new Set([...ISO6391.getAllCodes(), 'kmr']);
+const LOCATION_SEGMENT = /^(world|[a-z]{2})-([a-z]{2,3})$/i;
+const LANGUAGE_CODES = new Set([
+	...ISO6391.getAllCodes(),
+	...availableLocales.map((locale) => locale.split('-')[0].toLowerCase())
+]);
 const COUNTRY_CODES = new Set(ISO31661.all().map(({ alpha2 }) => alpha2.toLowerCase()));
 
 export function parseUrlLocation(pathname: string): UrlLocation | undefined {

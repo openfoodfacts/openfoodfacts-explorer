@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from './url-location';
+import { availableLocales } from './i18n/locales';
 
 describe('parseUrlLocation', () => {
 	it('parses country followed by language', () => {
@@ -15,6 +16,13 @@ describe('parseUrlLocation', () => {
 		expect(parseUrlLocation('/world-kmr/search')).toEqual({ country: 'world', language: 'kmr' });
 		expect(parseUrlLocation('/tr-kmr')).toEqual({ country: 'TR', language: 'kmr' });
 		expect(parseUrlLocation('/world-xyz')).toBeUndefined();
+	});
+
+	it('accepts the language of every available locale', () => {
+		for (const locale of availableLocales) {
+			const language = locale.split('-')[0].toLowerCase();
+			expect(parseUrlLocation(`/world-${language}`)).toEqual({ country: 'world', language });
+		}
 	});
 
 	it('normalizes valid codes case-insensitively', () => {
