@@ -19,6 +19,7 @@
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
+	import PwaInstallButton from '$lib/ui/PwaInstallButton.svelte';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
 	import type { PageProps } from './$types';
@@ -298,6 +299,16 @@
 							{/each}
 						</select>
 					</div>
+				</div>
+
+				<div class="divider"></div>
+
+				<div>
+					<p class="font-semibold">{$_('pwa.install_label')}</p>
+					<p class="mt-1 mb-3 text-sm text-base-content/70">
+						{$_('pwa.install_description')}
+					</p>
+					<PwaInstallButton />
 				</div>
 			</div>
 		</div>
