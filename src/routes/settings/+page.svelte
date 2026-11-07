@@ -9,6 +9,8 @@
 	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
 	import Metadata from '#lib/Metadata.svelte';
 	import { COMMIT_SHA } from '#lib/const.js';
+	import { getCurrencyForCountry } from '#lib/currencies/country-currency.js';
+	import IconMdiInformation from '@iconify-svelte/mdi/information';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -57,6 +59,30 @@
 		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
+	}
+
+	let suggestedCurrency = $state<string | null>(null);
+
+	function handleCountryChange(event: Event) {
+		const selectedCountry = (event.currentTarget as HTMLSelectElement).value;
+		$preferences.country = selectedCountry;
+
+		const currency = getCurrencyForCountry(selectedCountry);
+		suggestedCurrency =
+			currency != null && currency !== $preferences.currency && data.currencies.includes(currency)
+				? currency
+				: null;
+	}
+
+	function acceptSuggestedCurrency() {
+		if (suggestedCurrency == null) return;
+		$preferences.currency = suggestedCurrency;
+		suggestedCurrency = null;
+	}
+
+	function handleCurrencyChange(event: Event) {
+		$preferences.currency = (event.currentTarget as HTMLSelectElement).value;
+		suggestedCurrency = null;
 	}
 </script>
 
@@ -259,7 +285,8 @@
 						<select
 							name="country-select"
 							class="select-bordered select w-full"
-							bind:value={$preferences.country}
+							value={$preferences.country}
+							onchange={handleCountryChange}
 						>
 							<option value="world" selected={$preferences.country === 'world'}>
 								{$_('world_option')}
@@ -289,7 +316,8 @@
 						<select
 							name="currency-select"
 							class="select-bordered select w-full"
-							bind:value={$preferences.currency}
+							value={$preferences.currency}
+							onchange={handleCurrencyChange}
 						>
 							{#each data.currencies as currency (currency)}
 								<option value={currency} selected={$preferences.currency === currency}>
@@ -297,6 +325,39 @@
 								</option>
 							{/each}
 						</select>
+						{#if suggestedCurrency}
+							<div class="mt-3 alert alert-info" role="alert" aria-live="polite">
+								<IconMdiInformation class="h-5 w-5 shrink-0" aria-hidden="true" />
+								<span class="text-sm">
+									{$_('settings.currency_suggestion', {
+										default: 'The official currency of this country is {currency}.',
+										values: { currency: suggestedCurrency }
+									})}
+								</span>
+								<div class="flex gap-2">
+									<button
+										type="button"
+										class="btn btn-primary btn-sm"
+										onclick={acceptSuggestedCurrency}
+									>
+										{$_('settings.currency_suggestion_accept', {
+											default: 'Switch to {currency}',
+											values: { currency: suggestedCurrency }
+										})}
+									</button>
+									<button
+										type="button"
+										class="btn btn-ghost btn-sm"
+										onclick={() => (suggestedCurrency = null)}
+									>
+										{$_('settings.currency_suggestion_dismiss', {
+											default: 'Keep {currency}',
+											values: { currency: $preferences.currency }
+										})}
+									</button>
+								</div>
+							</div>
+						{/if}
 					</div>
 				</div>
 			</div>
