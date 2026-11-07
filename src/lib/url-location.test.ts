@@ -11,6 +11,12 @@ describe('parseUrlLocation', () => {
 		expect(parseUrlLocation('/world-en/search')).toEqual({ country: 'world', language: 'en' });
 	});
 
+	it('accepts kmr as a language', () => {
+		expect(parseUrlLocation('/world-kmr/search')).toEqual({ country: 'world', language: 'kmr' });
+		expect(parseUrlLocation('/tr-kmr')).toEqual({ country: 'TR', language: 'kmr' });
+		expect(parseUrlLocation('/world-xyz')).toBeUndefined();
+	});
+
 	it('normalizes valid codes case-insensitively', () => {
 		expect(parseUrlLocation('/US-Fr/search')).toEqual({ country: 'US', language: 'fr' });
 	});

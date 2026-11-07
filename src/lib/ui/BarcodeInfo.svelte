@@ -224,7 +224,9 @@
 			<div class="flex flex-wrap gap-2 pt-1">
 				<a
 					class="btn btn-secondary btn-sm"
-					href={`https://www.gs1.org/services/verified-by-gs1/results?gtin=${encodeURIComponent(code)}`}
+					href="https://www.gs1.org/services/verified-by-gs1/results?gtin={encodeURIComponent(
+						code
+					)}"
 					target="_blank"
 					rel="noopener noreferrer"
 				>

@@ -3,6 +3,9 @@ import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
 export function getStaticPageUrl(id: string, language: string, contentOnly = false): URL {
 	const url = new URL(`/${id}`, STATIC_PAGES_BASE_URL);
+	if (url.origin !== new URL(STATIC_PAGES_BASE_URL).origin) {
+		throw new Error('Invalid static page ID');
+	}
 	url.searchParams.set('lc', language);
 	if (contentOnly) url.searchParams.set('content_only', '1');
 	return url;
