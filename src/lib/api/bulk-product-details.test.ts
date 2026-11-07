@@ -19,6 +19,7 @@ describe('getBulkProductAttributesAndImages', () => {
 		expect(fetch).toHaveBeenCalledOnce();
 		const input = (fetch.mock.calls[0] as unknown[])[0];
 		const url = new URL(input instanceof Request ? input.url : String(input));
+		expect(url.searchParams.get('page_size')).toBe('2');
 		expect(url.searchParams.get('fields')?.split(',')).toContain('image_front_small_url');
 		expect(url.searchParams.get('fields')?.split(',')).toContain('attribute_groups');
 		expect(result).toEqual({

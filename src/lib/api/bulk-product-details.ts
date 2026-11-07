@@ -12,6 +12,7 @@ export async function getBulkProductAttributesAndImages(
 	const api = createProductsApi(fetch);
 	const params = new URLSearchParams({
 		code: productCodes.join(','),
+		page_size: String(productCodes.length),
 		fields: ['product_name', 'code', 'attribute_groups', 'image_front_small_url'].join(',')
 	});
 	const { data, error } = await api.apiv2.search(Object.fromEntries(params.entries()));
