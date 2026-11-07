@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import cytoscape from 'cytoscape';
 	import type { Core, ElementDefinition } from 'cytoscape';
 
@@ -20,8 +20,10 @@
 	let container: HTMLDivElement | null = null;
 	let cy: Core | null = null;
 
+	let isSystemDark = $state(false);
+
 	let darkMode = $derived(
-		window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+		$preferences.theme === 'dark' || ($preferences.theme !== 'light' && isSystemDark)
 	);
 
 	// TailwindCSS palette colors (hex values)
@@ -197,13 +199,25 @@
 	}
 
 	onMount(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+		isSystemDark = mediaQuery.matches;
+
+		const updateTheme = (event: MediaQueryListEvent) => {
+			isSystemDark = event.matches;
+		};
+
 		const fitOnResize = () => {
 			if (cy) cy.fit();
 		};
+
+		mediaQuery.addEventListener('change', updateTheme);
 		window.addEventListener('resize', fitOnResize);
-		onDestroy(() => {
+
+		return () => {
+			mediaQuery.removeEventListener('change', updateTheme);
 			window.removeEventListener('resize', fitOnResize);
-		});
+		};
 	});
 
 	$effect(() => {

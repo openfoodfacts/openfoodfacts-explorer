@@ -108,13 +108,10 @@
 <style lang="postcss">
 	@reference 'tailwindcss';
 
-	@media (prefers-color-scheme: dark) {
-		/* Flip black knowledge panel icons to white so they stay readable on a dark
-		   background. Only monochrome icons are inverted: see MONOCHROME_ICON_PATH. */
-		.kp-icon-monochrome,
-		.kp-icon-from-eval {
-			@apply invert;
-		}
+	/* Flip monochrome knowledge panel icons only when the application uses dark mode. */
+	:global([data-theme='dark']) .kp-icon-monochrome,
+	:global([data-theme='dark']) .kp-icon-from-eval {
+		@apply invert;
 	}
 
 	/*.kp-icon-small {

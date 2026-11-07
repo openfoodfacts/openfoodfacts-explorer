@@ -2,7 +2,8 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 8,
+	version: 9,
+	theme: 'system' as 'system' | 'light' | 'dark',
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -147,6 +148,16 @@ const MIGRATIONS: {
 			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
 			delete legacyPreferences.moderator;
 			legacyPreferences.hideModeratorTools = false;
+			return preferences;
+		}
+	},
+	{
+		version: 9,
+		upgrade: (preferences) => {
+			if (!('theme' in preferences)) {
+				// @ts-expect-error - adding new field
+				preferences.theme = 'system';
+			}
 			return preferences;
 		}
 	}
