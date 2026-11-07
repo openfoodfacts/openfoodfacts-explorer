@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MAP_FACETS } from './map-facets';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
@@ -19,6 +20,8 @@
 		return new Intl.NumberFormat().format(n);
 	}
 
+	const formatKnown = (known: number) => (known === -1 ? '—' : known === 1 ? 'Yes' : 'No');
+
 	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
 </script>
 
@@ -36,7 +39,7 @@
 
 <h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
 
-{#if facet === 'countries' || facet === 'origins'}
+{#if Object.hasOwn(MAP_FACETS, facet)}
 	<CountriesMap facet={data.mapResults} />
 	{#if data.mapIsPageLimited}
 		<p class="mt-2 text-sm text-base-content/70">
@@ -96,7 +99,7 @@
 							{name}
 						</a>
 					</td>
-					<td>{known === -1 ? '—' : known === 1 ? 'Yes' : 'No'}</td>
+					<td>{formatKnown(known)}</td>
 					<td class="text-end">{formatNumber(products)}</td>
 				</tr>
 			{/each}

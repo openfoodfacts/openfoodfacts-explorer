@@ -4,7 +4,7 @@ import { FACETS_SORT_OPTIONS, type FacetSortOption } from '#lib/api/facets.js';
 import { queryFacetProducts } from '#lib/server/query-facet-products.js';
 import { queryAllFacetValues, QUERY_FACETS } from '#lib/server/query-facets.js';
 import { requireInt } from '#lib/utils.js';
-import { MAP_FACETS } from './map-facets';
+import { MAP_FACETS } from '../map-facets';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {

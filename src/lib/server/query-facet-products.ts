@@ -10,6 +10,23 @@ const QUERY_SORT_FIELDS: Record<FacetSortOption, string> = {
 	last_modified_t: 'last_modified_t'
 };
 
+const PRODUCT_FIELDS = [
+	'code',
+	'product_name',
+	'brands',
+	'quantity',
+	'nutriscore_grade',
+	'ecoscore_grade',
+	'green_score_grade',
+	'environmental_score_grade',
+	'nova_group',
+	'product_type',
+	'nutriments',
+	'additives_n',
+	'origins_tags',
+	'countries_tags'
+];
+
 export async function queryFacetProducts(
 	fetch: typeof globalThis.fetch,
 	queryUrl: string,
@@ -27,24 +44,7 @@ export async function queryFacetProducts(
 	const productsPromise = api.POST('/find', {
 		body: {
 			filter,
-			projection: Object.fromEntries(
-				[
-					'code',
-					'product_name',
-					'brands',
-					'quantity',
-					'nutriscore_grade',
-					'ecoscore_grade',
-					'green_score_grade',
-					'environmental_score_grade',
-					'nova_group',
-					'product_type',
-					'nutriments',
-					'additives_n',
-					'origins_tags',
-					'countries_tags'
-				].map((field) => [field, true])
-			),
+			projection: Object.fromEntries(PRODUCT_FIELDS.map((field) => [field, true])),
 			sort: [[sortField, -1]],
 			limit: opts.pageSize,
 			skip: (opts.page - 1) * opts.pageSize
