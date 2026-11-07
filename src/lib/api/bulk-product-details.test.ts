@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getBulkProductAttributesAndImages } from './facet-products';
+import { getBulkProductAttributesAndImages } from './bulk-product-details';
 
 describe('getBulkProductAttributesAndImages', () => {
 	it('fetches attributes and images together and indexes them by barcode', async () => {

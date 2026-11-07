@@ -12,11 +12,12 @@ export async function getBulkProductAttributesAndImages(
 	const api = createProductsApi(fetch);
 	const params = new URLSearchParams({
 		code: productCodes.join(','),
-		fields: 'product_name,code,attribute_groups,image_front_small_url'
+		fields: ['product_name', 'code', 'attribute_groups', 'image_front_small_url'].join(',')
 	});
 	const { data, error } = await api.apiv2.search(Object.fromEntries(params.entries()));
-	if (!data)
+	if (!data) {
 		throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
+	}
 
 	for (const product of data.products || []) {
 		if (!product.code) continue;

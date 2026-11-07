@@ -1,11 +1,12 @@
 import type { FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
 import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
-import { getBulkProductAttributesAndImages } from './facet-products';
+import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
-import { getFacetDistribution, MAP_FACETS, queryValuesToDistribution } from './map-facets';
+import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
+import { MAP_FACETS } from '../map-facets';
 
 export const load: PageLoad = async ({ fetch, params, data }) => {
 	const { facet, value } = params;
@@ -67,22 +68,27 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 		return getFacetDistribution((await results).products, mapFacet.tagsField, taxo, lang);
 	})();
 
-	return Promise.all([taxonomy, results, knowledgePanels, productDetails, distributionData]).then(
-		([taxo, products, panels, details, distribution]) => ({
-			searchOptions,
-			facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
-			results: {
-				...products,
-				products: products.products.map((product) => {
-					const image = details.imagesByCode[product.code];
-					return image ? Object.assign({}, product, { image_front_small_url: image }) : product;
-				})
-			},
-			knowledgePanels: panels,
-			productAttributes: details.attributesByCode,
-			distributionData: distribution,
-			mapIsPageLimited: !mapValues,
-			mapFacet: mapFacet ?? null
-		})
-	);
+	const [taxo, products, panels, details, distribution] = await Promise.all([
+		taxonomy,
+		results,
+		knowledgePanels,
+		productDetails,
+		distributionData
+	]);
+	return {
+		searchOptions,
+		facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
+		results: {
+			...products,
+			products: products.products.map((product) => {
+				const image = details.imagesByCode[product.code];
+				return image ? Object.assign({}, product, { image_front_small_url: image }) : product;
+			})
+		},
+		knowledgePanels: panels,
+		productAttributes: details.attributesByCode,
+		distributionData: distribution,
+		mapIsPageLimited: !mapValues,
+		mapFacet: mapFacet ?? null
+	};
 };
