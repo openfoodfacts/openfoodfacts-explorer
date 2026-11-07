@@ -13,7 +13,7 @@ export const goto: typeof svelteGoto = (url, options) => {
 		return svelteGoto(url, options);
 	}
 
-	const prefix = `/${formatUrlLocation(currentLocation.language, currentLocation.country)}`;
+	const prefix = `/${formatUrlLocation(currentLocation.country, currentLocation.language)}`;
 	target.pathname = `${prefix}${target.pathname === '/' ? '' : target.pathname}`;
 	return svelteGoto(target, options);
 };

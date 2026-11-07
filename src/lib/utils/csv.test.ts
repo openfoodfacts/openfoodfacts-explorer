@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { toCsv } from './csv';
 import { productToCsvRow, productsToCsv, SEARCH_CSV_HEADERS } from './searchCsvExport';
 
-const resolveProductUrl = (barcode: string) => `/en-ww/products/${barcode}`;
+const resolveProductUrl = (barcode: string) => `/world-en/products/${barcode}`;
 
 describe('toCsv', () => {
 	it('builds a CRLF CSV with a trailing newline', async () => {
@@ -59,7 +59,7 @@ describe('productToCsvRow', () => {
 			'400 g',
 			'Spreads, Hazelnut spreads',
 			'France, Germany',
-			'/en-ww/products/3017620422003',
+			'/world-en/products/3017620422003',
 			'e',
 			'd',
 			4,

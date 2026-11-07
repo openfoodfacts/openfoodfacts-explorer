@@ -3,7 +3,7 @@
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { _ } from '#lib/i18n/index.js';
+	import { _, locale } from '#lib/i18n/index.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 
 	import {
@@ -21,7 +21,7 @@
 		updateObsoleteStatusV3
 	} from '#lib/api.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
-	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import EditProductForm from '#lib/ui/EditProductForm.svelte';
 	import AddProductForm from '#lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
@@ -150,7 +150,7 @@
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
-			.map((t) => getOrDefault(t.name, getLanguageCode($preferences.locale)))
+			.map((t) => getOrDefault(t.name, getLanguageCode($locale ?? undefined)))
 			.filter((t): t is string => t !== undefined);
 	}
 

@@ -1,7 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { getStaticPageContent } from '#lib/api/staticPages.js';
-import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
+import { getStaticPageContent, getStaticPageUrl } from '#lib/api/staticPages.js';
+import { getLocaleForUrl } from '#lib/i18n/index.js';
+import { getLanguageCode } from '#lib/settings.js';
 
 // Text, headings and tables only, so they survive sanitizing intact
 const NATIVE_PAGES = new Set([
@@ -19,12 +20,13 @@ const NATIVE_PAGES = new Set([
 // These run their own scripts (filters, search, forms), so they only work on the main site
 const MAIN_SITE_PAGES = new Set(['data', 'faq', 'partners', 'presskit']);
 
-export const load: PageLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
+	const language = getLanguageCode(getLocaleForUrl(url));
 	if (MAIN_SITE_PAGES.has(params.id)) {
-		redirect(307, `${STATIC_PAGES_BASE_URL}/${params.id}`, { external: true });
+		redirect(307, getStaticPageUrl(params.id, language).href, { external: true });
 	}
 	if (!NATIVE_PAGES.has(params.id)) {
-		return { content: null };
+		return { content: null, language };
 	}
-	return { content: await getStaticPageContent(fetch, params.id) };
+	return { content: await getStaticPageContent(fetch, params.id, language), language };
 };

@@ -77,9 +77,11 @@
 			const language = $preferences.locale
 				? getLanguageCode($preferences.locale)
 				: getLanguageCode(getLocale());
-			const location = formatUrlLocation(language, $preferences.country);
+			const location = formatUrlLocation($preferences.country, language);
 			void goto(`/${location}${window.location.search}${window.location.hash}`, {
 				replaceState: true
+			}).then(() => {
+				products = getProducts();
 			});
 			return;
 		}

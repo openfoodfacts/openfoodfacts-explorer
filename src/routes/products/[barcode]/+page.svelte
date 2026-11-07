@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { isConfigured as isPriceConfigured } from '#lib/api/prices.js';
 	import { isConfigured as isFolksonomyConfigured } from '#lib/api/folksonomy.js';
-	import { _ } from '#lib/i18n/index.js';
+	import { _, locale } from '#lib/i18n/index.js';
+	import { page } from '$app/state';
+	import { parseUrlLocation } from '#lib/url-location.js';
 	import { getLanguageCode, preferences } from '#lib/settings.js';
 
 	import KnowledgePanelsComp from '#lib/knowledgepanels/Panels.svelte';
@@ -89,8 +91,8 @@
 
 		const requestContext = {
 			code: product.code,
-			lc: data.lc || getLanguageCode($preferences.locale),
-			cc: $preferences.country || 'world',
+			lc: getLanguageCode($locale ?? undefined),
+			cc: parseUrlLocation(page.url.pathname)?.country ?? 'world',
 			productType: product.product_type,
 			categories: product.categories_tags ?? []
 		};

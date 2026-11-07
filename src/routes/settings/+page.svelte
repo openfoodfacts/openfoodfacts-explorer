@@ -44,6 +44,7 @@
 		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
+	let currentLocation = $derived(parseUrlLocation(page.url.pathname));
 
 	let localeOptions = $derived(
 		availableLocales.map((code) => ({
@@ -53,18 +54,18 @@
 	);
 
 	function getSelectedLocale(): string {
-		return resolveAvailableLocale($preferences.locale ?? getLocale());
+		return resolveAvailableLocale(currentLocation?.language ?? $locale ?? getLocale());
 	}
 
 	function handleLocaleChange(event: Event) {
 		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
-		navigateToLocation(getLanguageCode(selectedLocale), $preferences.country);
+		navigateToLocation(getLanguageCode(selectedLocale), currentLocation?.country ?? 'world');
 	}
 
-	function navigateToLocation(language: string | undefined, country: string) {
-		const targetLocation = formatUrlLocation(language, country);
+	function navigateToLocation(language: string, country: string) {
+		const targetLocation = formatUrlLocation(country, language);
 		const path = stripUrlLocation(page.url.pathname);
 		void goto(`/${targetLocation}${path === '/' ? '' : path}${page.url.search}${page.url.hash}`);
 	}
@@ -72,12 +73,7 @@
 	function handleCountryChange(event: Event) {
 		const country = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, country }));
-		const preferredLanguage =
-			$preferences.locale != null ? getLanguageCode($preferences.locale) : undefined;
-		const activeLanguage =
-			parseUrlLocation(page.url.pathname)?.language ??
-			preferredLanguage ??
-			getLanguageCode(getLocale());
+		const activeLanguage = currentLocation?.language ?? getLanguageCode(getLocale());
 		navigateToLocation(activeLanguage, country);
 	}
 </script>
@@ -281,10 +277,10 @@
 						<select
 							name="country-select"
 							class="select-bordered select w-full"
-							value={$preferences.country}
+							value={currentLocation?.country ?? 'world'}
 							onchange={handleCountryChange}
 						>
-							<option value="world" selected={$preferences.country === 'world'}>
+							<option value="world" selected={(currentLocation?.country ?? 'world') === 'world'}>
 								{$_('world_option')}
 							</option>
 
@@ -293,7 +289,7 @@
 								{@const code2 = country.country_code_2.en}
 								<option
 									value={code2}
-									selected={$preferences.country === code2}
+									selected={currentLocation?.country === code2}
 									class="overflow-hidden text-ellipsis"
 								>
 									{country.name['en']}

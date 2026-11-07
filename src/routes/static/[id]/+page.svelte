@@ -1,13 +1,13 @@
 <script lang="ts">
 	import StaticPageIframe from '#lib/ui/StaticPageIframe.svelte';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
-	import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
+	import { getStaticPageUrl } from '#lib/api/staticPages.js';
 	import { page } from '$app/state';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
-	let iframeUrl = $derived(`${STATIC_PAGES_BASE_URL}/${page.params.id}?content_only=1`);
+	let iframeUrl = $derived(getStaticPageUrl(page.params.id ?? '', data.language, true).href);
 </script>
 
 {#if data.content}

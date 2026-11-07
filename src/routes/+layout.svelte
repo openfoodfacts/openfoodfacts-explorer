@@ -30,7 +30,7 @@
 	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import { _, getLocale, getLocaleForUrl, locale } from '#lib/i18n/index.js';
 	import { startLogout } from '#lib/auth/logout.js';
 	import {
 		IMAGE_HOST,
@@ -48,11 +48,10 @@
 	import { setToastCtx, type Toast as ToastType, type ToastContext } from '#lib/stores/toasts.js';
 	import Shortcuts from './Shortcuts.svelte';
 	import { setShortcutCtx, type Shortcut } from '#lib/stores/shortcuts.js';
-	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
+	import { getLanguageCode, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve } from '#lib/paths.js';
-	import { parseUrlLocation } from '#lib/url-location.js';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();
@@ -84,8 +83,7 @@
 	});
 
 	$effect(() => {
-		const location = parseUrlLocation(page.url.pathname);
-		if (location?.language) locale.set(resolveAvailableLocale(location.language));
+		locale.set(getLocaleForUrl(page.url));
 	});
 
 	// == Global toast context setup ==
@@ -263,7 +261,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={getLanguageCode($preferences.locale ?? getLocale())}
+		language-code={getLanguageCode($locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,

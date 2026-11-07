@@ -1,6 +1,13 @@
 import { sanitize } from 'isomorphic-dompurify';
 import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
+export function getStaticPageUrl(id: string, language: string, contentOnly = false): URL {
+	const url = new URL(`/${id}`, STATIC_PAGES_BASE_URL);
+	url.searchParams.set('lc', language);
+	if (contentOnly) url.searchParams.set('content_only', '1');
+	return url;
+}
+
 /** Resolve page-relative URLs against the source page so they work in the Explorer page */
 export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
 	for (const [selector, attribute] of [
@@ -57,11 +64,12 @@ export function extractStaticPageContent(
 
 export async function getStaticPageContent(
 	fetch: typeof window.fetch,
-	id: string
+	id: string,
+	language: string
 ): Promise<string | null> {
-	const sourcePageUrl = `${STATIC_PAGES_BASE_URL}/${id}`;
+	const sourcePageUrl = getStaticPageUrl(id, language).href;
 	let base = sourcePageUrl;
-	const page = await fetch(`${sourcePageUrl}?content_only=1`, {
+	const page = await fetch(getStaticPageUrl(id, language, true), {
 		signal: AbortSignal.timeout(5000)
 	})
 		.then((response) => {

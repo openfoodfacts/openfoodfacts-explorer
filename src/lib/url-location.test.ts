@@ -3,41 +3,42 @@ import { describe, expect, it } from 'vitest';
 import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from './url-location';
 
 describe('parseUrlLocation', () => {
-	it('parses language and country prefixes', () => {
-		expect(parseUrlLocation('/fr-fr/products/123')).toEqual({ language: 'fr', country: 'FR' });
+	it('parses country followed by language', () => {
+		expect(parseUrlLocation('/us-fr/products/123')).toEqual({ country: 'US', language: 'fr' });
 	});
 
-	it('allows the world country exception with or without a language', () => {
-		expect(parseUrlLocation('/en-ww/search')).toEqual({ language: 'en', country: 'world' });
-		expect(parseUrlLocation('/ww/search')).toEqual({ country: 'world' });
+	it('accepts world as the worldwide country', () => {
+		expect(parseUrlLocation('/world-en/search')).toEqual({ country: 'world', language: 'en' });
 	});
 
 	it('normalizes valid codes case-insensitively', () => {
-		expect(parseUrlLocation('/EN-us/search')).toEqual({ language: 'en', country: 'US' });
+		expect(parseUrlLocation('/US-Fr/search')).toEqual({ country: 'US', language: 'fr' });
 	});
 
-	it.each(['/zz-zz/search', '/zz-fr/search', '/en-zz/search', '/eng-us/search', '/'])(
-		'rejects invalid location prefixes in %s',
-		(pathname) => {
-			expect(parseUrlLocation(pathname)).toBeUndefined();
-		}
+	it.each([
+		'/zz-fr/search',
+		'/us-zz/search',
+		'/us/search',
+		'/world/search',
+		'/en-ww/search',
+		'/ww-en/search',
+		'/'
+	])('rejects invalid location prefixes in %s', (pathname) =>
+		expect(parseUrlLocation(pathname)).toBeUndefined()
 	);
 });
 
 describe('formatUrlLocation', () => {
-	it('formats a language and world location', () => {
-		expect(formatUrlLocation('EN', 'world')).toBe('en-ww');
-	});
-
-	it('formats a country-only location', () => {
-		expect(formatUrlLocation(undefined, 'FR')).toBe('fr');
+	it('formats country followed by language', () => {
+		expect(formatUrlLocation('US', 'FR')).toBe('us-fr');
+		expect(formatUrlLocation('world', 'EN')).toBe('world-en');
 	});
 });
 
 describe('stripUrlLocation', () => {
 	it('strips a recognized prefix while preserving the rest of the path', () => {
-		expect(stripUrlLocation('/fr-fr/products/123')).toBe('/products/123');
-		expect(stripUrlLocation('/ww')).toBe('/');
+		expect(stripUrlLocation('/us-fr/products/123')).toBe('/products/123');
+		expect(stripUrlLocation('/world-en')).toBe('/');
 	});
 
 	it('preserves an unrecognized prefix', () => {

@@ -45,5 +45,5 @@ function resolveForPathname<T extends RouteIdWithSearchOrHash | PathnameWithSear
 	...args: ResolveArgs<T>
 ): string {
 	const location = parseUrlLocation(pathname);
-	return withLocationPrefix(svelteResolve(...args), location);
+	return withLocationPrefix(svelteResolve(...args), location, pathname);
 }

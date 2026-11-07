@@ -11,7 +11,7 @@ import { requireInt } from '#lib/utils.js';
 import { getBulkProductAttributes } from '#lib/api.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
-import { getLocale } from '#lib/i18n/index.js';
+import { getLocaleForUrl } from '#lib/i18n/index.js';
 import { getFacetDistribution, MAP_FACETS } from './map-facets';
 
 type FacetResponseData = Awaited<ReturnType<typeof getFacetValue>>;
@@ -28,7 +28,7 @@ async function getTaxonomyOrUndefined(facet: string, fetch: typeof window.fetch)
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	const { facet, value } = params;
-	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
+	const lang = getLocaleForUrl(url).split('-')[0].toLowerCase();
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	const pageStr = url.searchParams.get('page') || '1';
