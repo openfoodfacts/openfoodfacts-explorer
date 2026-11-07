@@ -926,7 +926,21 @@
 		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
-		"facet_back_to_overview": "Back to {facet} overview"
+		"facet_back_to_overview": "Back to {facet} overview",
+		"filter_label": "Filter the whole facet",
+		"filter_placeholder": "Filter values, e.g. apple",
+		"filter_status_label": "Status",
+		"filter_status_all": "All values",
+		"filter_status_known": "Known values",
+		"filter_status_unknown": "Unknown values",
+		"filter_submit": "Filter",
+		"filter_clear": "Clear",
+		"filter_warning": "Filtering scans every value of this facet and can take up to a minute to load. Please use it sparingly.",
+		"filter_results_count": "{count, plural, one {# matching value} other {# matching values}}",
+		"filter_truncated": "Showing the first {count} matches. Refine the filter to see the others.",
+		"filter_loading": "Filtering… this can take up to a minute.",
+		"filter_error": "Filtering failed or took too long. Try a more specific filter.",
+		"filter_login_required": "Log in to filter the whole facet."
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
