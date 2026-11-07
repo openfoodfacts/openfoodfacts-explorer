@@ -564,7 +564,7 @@
 					{@const nutrientDetails = nutrientById.get(nutrient)}
 					<div class="join w-full min-w-0">
 						<label class="input join-item min-w-0 flex-1">
-							<span class="label max-w-32 truncate sm:w-60">
+							<span class="label max-w-32 truncate sm:w-60 sm:max-w-60">
 								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
