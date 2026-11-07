@@ -239,6 +239,20 @@ export async function getTaxonomySuggestions(
 }
 
 /**
+ * Fetch traceability code (emb_codes) suggestions matching a search string
+ * @param fetch - The fetch function
+ * @param searchString - The partially typed code, e.g. "FR 38.01"
+ * @returns Array of matching codes
+ */
+export async function getEmbCodeSuggestions(
+	fetch: typeof window.fetch,
+	searchString: string
+): Promise<string[]> {
+	const { data } = await getTaxonomySuggestions(fetch, 'emb_codes', searchString, 10);
+	return data?.suggestions ?? [];
+}
+
+/**
  * Cleans a packaging component object before sending it to the API.
  * This extracts localized strings from taxonomy fields and removes null/empty values.
  * @param component The raw packaging component

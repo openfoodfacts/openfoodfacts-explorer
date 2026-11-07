@@ -294,7 +294,10 @@
 		</div>
 
 		<!-- Traceability & Origins Section -->
-		<div id="origin-traceability" class="collapse-arrow collapse bg-base-200 shadow-md">
+		<div
+			id="origin-traceability"
+			class="collapse-arrow collapse overflow-visible bg-base-200 shadow-md focus-within:z-10"
+		>
 			<input
 				type="checkbox"
 				bind:checked={openSections['origin-traceability']}
