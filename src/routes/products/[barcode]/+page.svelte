@@ -369,7 +369,10 @@
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
-			<div id="overview" class="flex flex-col gap-4"><ProductHeader {product} lc={data.lc} /></div>
+			<div id="overview" class="flex flex-col gap-4">
+				<ProductHeader {product} lc={data.lc} {scores} />
+				<div class="md:hidden">{@render scores()}</div>
+			</div>
 
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
@@ -378,30 +381,6 @@
 					is-logged-in={$userInfo != null}
 					onclick={() => trackOffEvent('feature', 'nutrisight_opened')}
 				></robotoff-contribution-message>
-			</div>
-
-			<div id="attributes">
-				{#await productAttributes}
-					<div class="flex items-center justify-center py-8">
-						<span class="loading loading-lg loading-spinner"></span>
-						<span class="ml-2">{$_('product.loading_attributes')}</span>
-					</div>
-				{:then attributes}
-					{#if attributes != null}
-						<ProductAttributes
-							groups={attributes}
-							defaultPreferences={data.defaultProductPreferences}
-						/>
-					{:else}
-						<div class="alert alert-warning">
-							<IconMdiWarning class="h-6 w-6 shrink-0" />
-							<div>
-								<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
-								<p>{$_('product.attributes_error_body')}</p>
-							</div>
-						</div>
-					{/if}
-				{/await}
 			</div>
 
 			<div id="knowledge-panels-container">
@@ -504,5 +483,31 @@
 		</div>
 	</div>
 </div>
+
+{#snippet scores()}
+	{#await productAttributes}
+		<div class="flex items-center justify-center py-8">
+			<span class="loading loading-lg loading-spinner"></span>
+			<span class="ml-2">{$_('product.loading_attributes')}</span>
+		</div>
+	{:then attributes}
+		{#if attributes != null}
+			<ProductAttributes
+				groups={attributes}
+				defaultPreferences={data.defaultProductPreferences}
+				{panels}
+				code={product.code}
+			/>
+		{:else}
+			<div class="alert alert-warning">
+				<IconMdiWarning class="h-6 w-6 shrink-0" />
+				<div>
+					<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
+					<p>{$_('product.attributes_error_body')}</p>
+				</div>
+			</div>
+		{/if}
+	{/await}
+{/snippet}
 
 <ScrollToTop />

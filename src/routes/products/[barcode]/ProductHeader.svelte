@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
 
@@ -21,8 +22,9 @@
 	type Props = {
 		product: Product;
 		lc?: string;
+		scores?: Snippet;
 	};
-	let { product, lc }: Props = $props();
+	let { product, lc, scores }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -203,6 +205,7 @@
 					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
+				<div id="attributes" class="mt-2 hidden basis-full md:block">{@render scores?.()}</div>
 			</div>
 		</div>
 
