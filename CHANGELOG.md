@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/openfoodfacts/openfoodfacts-explorer/compare/v0.2.0...v0.3.0) (2026-11-07)
+
+
+### Features
+
+* **facets:** show product counts on category subcategories ([#2137](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2137)⁠) ([63bc318](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/63bc3186262dd029330b254167a5c64b38fef488))
+
 ## 0.2.0 (2026-11-04)
 
 
