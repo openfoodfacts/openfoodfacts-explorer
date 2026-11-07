@@ -139,11 +139,11 @@
 		"message": "Data and features on this site may change or be reset without notice."
 	},
 	"footer": {
-		"stay_updated": "Stay Updated",
+		"stay_updated": "Hold dig opdateret",
 		"contribute": "Bidrag",
-		"discover_title": "Discover our Project",
+		"discover_title": "Opdag vores projekt",
 		"open_x_facts_title": "Open X Facts",
-		"open_x_facts_description": "Try the temporary landing pages for each Open X Facts project.",
+		"open_x_facts_description": "Prøv de midlertidige destinationssider for hvert Open X Facts-projekt.",
 		"open_x_facts": {
 			"open_food_facts": "Open Food Facts",
 			"open_beauty_facts": "Open Beauty Facts",
@@ -163,7 +163,7 @@
 			"bluesky": "Bluesky"
 		},
 		"links": {
-			"newsletter": "Newsletter",
+			"newsletter": "Nyhedsbrev",
 			"forum": "Forum",
 			"producers": "Producers Platform",
 			"translators": "Oversættere",
@@ -187,18 +187,18 @@
 	},
 	"settings": {
 		"page_title": "Indstillinger",
-		"page_description": "Manage your preferences and account settings",
-		"subtitle": "Manage your preferences and personalize your experience",
+		"page_description": "Administrer dine præferencer og kontoindstillinger",
+		"subtitle": "Administrer dine præferencer og personliggør din oplevelse",
 		"tab": {
 			"account": "Konto",
 			"general": "Generelt",
 			"editing": "Redigering",
 			"preferences": "Præferencer",
-			"developer": "Developer"
+			"developer": "Udvikler"
 		},
 		"username": "Brugernavn",
 		"email": "E-mail",
-		"roles": "Roles",
+		"roles": "Roller",
 		"section_general": "Generelt",
 		"section_editing": "Redigering",
 		"section_user": "Bruger",
@@ -222,11 +222,11 @@
 			"title": "Admin tools",
 			"description": "Useful links for Open Food Facts administrators",
 			"organization_table": "Organization table",
-			"recent_changes": "Recent changes",
-			"top_translators": "Top translators"
+			"recent_changes": "Seneste ændringer",
+			"top_translators": "Top oversættere"
 		},
 		"moderator_mode": "Moderator Mode",
-		"dev_access_denied": "Access Denied",
+		"dev_access_denied": "Adgang nægtet",
 		"dev_access_message": "Developer settings are only available to administrators. If you believe you should have access, please contact the administrator."
 	},
 	"folksonomy": {
