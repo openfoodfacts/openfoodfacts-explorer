@@ -16,9 +16,15 @@
 		product: Product;
 		getPackagingImage: (language: string) => string | null;
 		editMode?: boolean;
+		onImageUploaded?: () => Promise<void>;
 	};
 
-	let { product = $bindable(), getPackagingImage, editMode = false }: Props = $props();
+	let {
+		product = $bindable(),
+		getPackagingImage,
+		editMode = false,
+		onImageUploaded
+	}: Props = $props();
 
 	let showInfo = $state(false);
 	function toggleInfo() {
@@ -62,6 +68,8 @@
 	src={getPackagingImage(product.lang || 'en')}
 	productCode={product.code}
 	alt={`Packaging photo (${product.lang || 'en'})`}
+	lang={product.lang || 'en'}
+	{onImageUploaded}
 />
 <PackagingRecyclingInstructions bind:product />
 <PackagingComponentsEditor bind:product />

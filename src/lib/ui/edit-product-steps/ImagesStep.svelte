@@ -10,8 +10,13 @@
 	import IconMdiInformation from '@iconify-svelte/mdi/information';
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 
-	type Props = { product: Product; editMode?: boolean };
-	let { product = $bindable(), editMode = false }: Props = $props();
+	type Props = {
+		product: Product;
+		editMode?: boolean;
+		// Reloads the product images into the form after an upload (edit mode)
+		onImageUploaded?: () => Promise<void>;
+	};
+	let { product = $bindable(), editMode = false, onImageUploaded }: Props = $props();
 
 	let showInfo = $state(false);
 	const toggleInfo = () => {
@@ -62,5 +67,5 @@
 </div>
 
 {#key product.code}
-	<PhotoManager {product} />
+	<PhotoManager {product} reloadImages={onImageUploaded} />
 {/key}
