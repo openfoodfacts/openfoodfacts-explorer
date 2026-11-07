@@ -399,7 +399,7 @@
 							{$_('product.edit.serving_size')}
 							<InfoTooltip text={$_('product.edit.tooltips.serving_size')} />
 							{#if servingSizeIssue}
-								{@render issueTooltip(servingSizeIssue, 'ml-auto shrink-0')}
+								{@render issueTooltip(servingSizeIssue)}
 							{/if}
 						</span>
 						<input
@@ -459,7 +459,7 @@
 							{$_('product.edit.si_kilojoules')}
 						</span>
 						{#if issuesByField('energy').length > 0}
-							{@render issueTooltip(issuesByField('energy')[0], 'ml-auto shrink-0')}
+							{@render issueTooltip(issuesByField('energy')[0])}
 						{/if}
 					</label>
 
@@ -489,7 +489,7 @@
 							{$_('product.edit.si_kilocalories')}
 						</span>
 						{#if issuesByField('energy').length > 0}
-							{@render issueTooltip(issuesByField('energy')[0], 'ml-auto shrink-0')}
+							{@render issueTooltip(issuesByField('energy')[0])}
 						{/if}
 					</label>
 				</div>
