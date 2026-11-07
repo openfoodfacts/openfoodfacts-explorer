@@ -614,6 +614,8 @@
 			},
 			"add_nutrient": "Add Nutrient",
 			"remove_nutrient": "Remove nutrient",
+			"search_nutrients": "Search nutrients",
+			"no_nutrients_found": "No nutrients found",
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
