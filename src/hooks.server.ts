@@ -15,6 +15,7 @@ const UNPREFIXED_PATH_ALLOWLIST = [
 	/^\/(?:favicon\.ico|Placeholder\.svg|login\.svg)$/
 ];
 
+/** Return the URL location, or reject unprefixed paths except the root and allowlisted endpoints. */
 function requireLocationPrefix(pathname: string) {
 	const location = parseUrlLocation(pathname);
 	const isAllowedPath =
