@@ -161,7 +161,7 @@
 	}
 </script>
 
-<Card compactMobile>
+<Card>
 	<div class="space-y-6">
 		<header class="space-y-4">
 			<h1 class="text-2xl font-bold md:text-3xl">

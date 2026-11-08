@@ -87,7 +87,7 @@
 			<div>{@render elementList(panel.elements)}</div>
 		{/if}
 	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null}
-		<Card compactMobile>
+		<Card>
 			<div class="flex items-center">
 				<h2 class="mb-3 grow text-2xl font-bold sm:text-3xl md:text-4xl">
 					{panel.title_element.title}

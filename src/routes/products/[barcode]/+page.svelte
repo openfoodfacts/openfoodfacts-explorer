@@ -457,7 +457,7 @@
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">
-					<Card compactMobile>
+					<Card>
 						<label class="label">
 							<input class="toggle" type="checkbox" bind:checked={useWCFolksonomyEditor} />
 							{$_('product.folksonomy.use_wc_editor')}
