@@ -934,7 +934,8 @@
 		"hierarchy_includes": "Includes",
 		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_countries": "Where these products are sold",
+		"map_sqrt_legend": "Products (square-root scale)"
 	},
 	"landing": {
 		"title": "अन्न तथ्ये एक्सप्लोरर उघडा",
