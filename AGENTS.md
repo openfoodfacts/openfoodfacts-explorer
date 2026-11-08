@@ -86,6 +86,11 @@ src/
 
 ## Contributing Rules
 
+### Community Comments
+
+- **Do not draft or rewrite community comments using an LLM.** This includes comments on issues, pull requests, and other community discussions.
+- Leave comments to the human contributor, including comments claiming issues.
+
 ### Issues
 
 - **Features require an issue before you start.** If no issue exists for a feature, create one first.
