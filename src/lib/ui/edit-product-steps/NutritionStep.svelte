@@ -439,13 +439,10 @@
 
 			<!-- Energy -->
 			<fieldset class="fieldset">
-				<!-- Mobile: fields stack beside the swap button. md and up: one row, with "Energy" in the legend so the values fit -->
-				<legend class="fieldset-legend max-md:hidden">{$_('product.edit.energy')}</legend>
+				<!-- Mobile: fields stack beside the swap button. md and up: one row -->
+				<legend class="fieldset-legend">{$_('product.edit.energy')}</legend>
 				<div class="grid grid-cols-[1fr_auto] items-center gap-2 md:flex">
 					<label class={['input grow max-md:w-full', fieldInputClasses('energy')]}>
-						<span class="label md:hidden">
-							{$_('product.edit.energy')}
-						</span>
 						<input
 							id="energy-kj-input"
 							type="number"
@@ -477,9 +474,6 @@
 					<label
 						class={['input grow max-md:col-start-1 max-md:w-full', fieldInputClasses('energy')]}
 					>
-						<span class="label md:hidden">
-							{$_('product.edit.energy')}
-						</span>
 						<input
 							id="energy-kcal-input"
 							type="number"
@@ -499,6 +493,9 @@
 				</div>
 			</fieldset>
 			<fieldset class="fieldset">
+				<legend class="fieldset-legend">
+					{$_('product.edit.macronutrients', { default: 'Macro-nutrients' })}
+				</legend>
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					{@const issueKeys = [nutrient, 'all']}
 					{@const issue = issuesByField(issueKeys)[0]}
@@ -545,7 +542,7 @@
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">
-					{$_('product.edit.additional_nutrients')}
+					{$_('product.edit.other_nutrients', { default: 'Others' })}
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}

@@ -588,6 +588,7 @@
 				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"other_nutrients": "Others",
 			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
