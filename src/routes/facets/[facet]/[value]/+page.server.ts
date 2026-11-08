@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { QUERY_BASE_URL } from '$app/env/private';
+import { PUBLIC_QUERY_BASE_URL } from '$app/env/public';
 import { FACETS_SORT_OPTIONS, type FacetSortOption } from '#lib/api/facets.js';
 import { queryFacetProducts } from '#lib/server/query-facet-products.js';
 import { queryAllFacetValues, QUERY_FACETS } from '#lib/server/query-facets.js';
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 	const queryProductsPromise = queryFacetProducts(
 		fetch,
-		QUERY_BASE_URL,
+		PUBLIC_QUERY_BASE_URL,
 		params.facet,
 		params.value,
 		searchOptions
@@ -35,7 +35,7 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 
 	const mapValuesPromise =
 		field && hasMap
-			? queryAllFacetValues(fetch, QUERY_BASE_URL, params.facet, { [field]: params.value })
+			? queryAllFacetValues(fetch, PUBLIC_QUERY_BASE_URL, params.facet, { [field]: params.value })
 			: Promise.resolve(null);
 
 	const [queryProducts, mapValues] = await Promise.all([queryProductsPromise, mapValuesPromise]);
