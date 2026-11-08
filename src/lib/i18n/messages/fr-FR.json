@@ -934,7 +934,8 @@
 		"hierarchy_includes": "Comprend",
 		"hierarchy_more": "+ {count} de plus",
 		"map_heading_origins": "Origines des ingrédients",
-		"map_heading_countries": "Où ces produits sont vendus"
+		"map_heading_countries": "Où ces produits sont vendus",
+		"map_sqrt_legend": "Products (square-root scale)"
 	},
 	"landing": {
 		"title": "Ouvrir l'explorateur de faits alimentaires",
