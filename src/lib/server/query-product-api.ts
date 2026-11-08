@@ -1,7 +1,7 @@
 import createClient from 'openapi-fetch';
 import type { QueryFilter } from '@openfoodfacts/openfoodfacts-nodejs';
 
-// Query's find/count operations are not exposed by the SDK yet.
+// TODO: Replace this client and its local types with SDK find/count operations when available.
 // Request and response shapes follow https://query.openfoodfacts.org/openapi.json.
 type JsonBody<T> = { content: { 'application/json': T } };
 type JsonResponse<T> = { content: { 'application/json': T } };

@@ -2,6 +2,7 @@ import type { FacetSortOption, FacetValueResponse } from '@openfoodfacts/openfoo
 import { QUERY_FACETS } from './query-facets';
 import { createQueryProductApi } from './query-product-api';
 
+// TODO: Use SDK Query sorting and product projection support when it is available.
 const QUERY_SORT_FIELDS: Record<FacetSortOption, string> = {
 	popularity: 'popularity_key',
 	nutriscore_score: 'nutriscore_score_opposite',
@@ -65,6 +66,7 @@ export async function queryFacetProducts(
 		throw new Error('Invalid Query response');
 	}
 
+	// TODO: Replace this response adaptation with an SDK-provided facet product result.
 	return {
 		// Query returns the projected card fields rather than the SDK's full Product type.
 		products: rawProducts as FacetValueResponse['products'],

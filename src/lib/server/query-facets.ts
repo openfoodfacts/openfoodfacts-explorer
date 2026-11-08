@@ -6,6 +6,7 @@ import {
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { USER_AGENT } from '#lib/const.js';
 
+// TODO: Use the SDK's facet-to-Query-field mapping if it exposes one.
 export const QUERY_FACETS: Record<string, QueryFacetField> = {
 	categories: 'categories_tags',
 	countries: 'countries_tags',
