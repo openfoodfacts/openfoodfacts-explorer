@@ -116,7 +116,7 @@
 </script>
 
 <AppStrip />
-<Card>
+<Card compactMobile>
 	<div class="flex flex-col gap-6">
 		<div
 			class="grid grid-cols-[6rem_1fr] gap-x-3.5 md:grid-cols-[14rem_1fr] md:grid-rows-[auto_1fr] md:gap-x-6"

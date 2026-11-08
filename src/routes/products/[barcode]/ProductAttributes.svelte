@@ -71,17 +71,19 @@
 {#snippet attributeCard(attribute: ProductAttributeV2)}
 	{@const colors = getColorStyle(attribute.grade ?? 'unknown')}
 	<div class="indicator mt-4 h-20 w-full">
-		<div class="indicator-item badge badge-soft indicator-center indicator-top badge-primary">
+		<div
+			class="indicator-item badge badge-soft badge-lg indicator-center indicator-top badge-primary"
+		>
 			<div>{attribute.name}</div>
 		</div>
 
 		<div
-			class="m-1 flex h-full w-full items-center justify-start gap-4 rounded-lg p-4 {colors.bgColor}"
+			class="m-1 flex h-full w-full items-center justify-start gap-4 rounded-lg p-3 sm:p-4 {colors.bgColor}"
 			title={attribute.title}
 		>
 			<img alt={attribute.title} src={attribute.icon_url} class="h-15 w-15 object-contain" />
 			<div>
-				<p class="text-sm font-semibold {colors.textColor}">{attribute.title}</p>
+				<p class="text-base font-semibold {colors.textColor}">{attribute.title}</p>
 				<p class="text-xs text-black">{attribute.description_short}</p>
 			</div>
 		</div>
@@ -89,7 +91,7 @@
 {/snippet}
 
 <div class="my-4">
-	<h2 class="mb-4 text-center text-3xl font-bold">Attributes</h2>
+	<h2 class="mb-4 text-center text-2xl font-bold sm:text-3xl">Attributes</h2>
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each visibleAttributes as attr (attr.id)}

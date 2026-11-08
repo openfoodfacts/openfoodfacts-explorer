@@ -29,8 +29,8 @@
 	});
 </script>
 
-<Card>
-	<h1 class="my-4 text-2xl font-bold sm:text-4xl">
+<Card compactMobile>
+	<h1 class="mb-4 text-2xl font-bold sm:text-4xl">
 		{$_('product.prices.title', { default: 'Prices' })}
 	</h1>
 
