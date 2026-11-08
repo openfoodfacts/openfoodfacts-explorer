@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	type Product = {
 		code: string;
 		image_front_small_url?: string;
@@ -9,7 +10,7 @@
 </script>
 
 <a
-	href="/products/{product.code}"
+	href={resolve('/products/[barcode]', { barcode: product.code })}
 	class="flex h-24 flex-row items-center rounded-lg bg-white p-2 dark:bg-base-300"
 >
 	{#if product.image_front_small_url}

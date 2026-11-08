@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { preferences } from '#lib/settings.js';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
@@ -41,6 +44,7 @@
 		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
+	let currentLocation = $derived(parseUrlLocation(page.url.pathname));
 
 	let localeOptions = $derived(
 		availableLocales.map((code) => ({
@@ -50,13 +54,27 @@
 	);
 
 	function getSelectedLocale(): string {
-		return resolveAvailableLocale($preferences.locale ?? getLocale());
+		return resolveAvailableLocale(currentLocation?.language ?? $locale ?? getLocale());
 	}
 
 	function handleLocaleChange(event: Event) {
 		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
+		navigateToLocation(getLanguageCode(selectedLocale), currentLocation?.country ?? 'world');
+	}
+
+	function navigateToLocation(language: string, country: string) {
+		const targetLocation = formatUrlLocation(country, language);
+		const path = stripUrlLocation(page.url.pathname);
+		void goto(`/${targetLocation}${path === '/' ? '' : path}${page.url.search}${page.url.hash}`);
+	}
+
+	function handleCountryChange(event: Event) {
+		const country = (event.currentTarget as HTMLSelectElement).value;
+		preferences.update((current) => ({ ...current, country }));
+		const activeLanguage = currentLocation?.language ?? getLanguageCode(getLocale());
+		navigateToLocation(activeLanguage, country);
 	}
 </script>
 
@@ -189,7 +207,7 @@
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
-								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
+								href={`${GITHUB_REPO_URL}/commit/${COMMIT_SHA}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								title={COMMIT_SHA}
@@ -259,9 +277,10 @@
 						<select
 							name="country-select"
 							class="select-bordered select w-full"
-							bind:value={$preferences.country}
+							value={currentLocation?.country ?? 'world'}
+							onchange={handleCountryChange}
 						>
-							<option value="world" selected={$preferences.country === 'world'}>
+							<option value="world" selected={(currentLocation?.country ?? 'world') === 'world'}>
 								{$_('world_option')}
 							</option>
 
@@ -270,7 +289,7 @@
 								{@const code2 = country.country_code_2.en}
 								<option
 									value={code2}
-									selected={$preferences.country === code2}
+									selected={currentLocation?.country === code2}
 									class="overflow-hidden text-ellipsis"
 								>
 									{country.name['en']}

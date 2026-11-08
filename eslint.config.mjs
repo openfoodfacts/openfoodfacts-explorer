@@ -41,6 +41,24 @@ export default [
 		}
 	},
 	{
+		files: ['**/*.{js,ts,svelte}'],
+		ignores: ['src/lib/paths.ts'],
+		rules: {
+			'no-restricted-imports': [
+				'error',
+				{
+					paths: [
+						{
+							name: '$app/paths',
+							importNames: ['resolve'],
+							message: 'Use resolve from #lib/paths.js to preserve the location prefix.'
+						}
+					]
+				}
+			]
+		}
+	},
+	{
 		ignores: [
 			'**/*.cjs',
 			'**/.DS_Store',

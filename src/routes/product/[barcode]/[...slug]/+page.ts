@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { resolve } from '$app/paths';
+import { resolveForUrl } from '#lib/paths.js';
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ params, url }) => {
 	const { barcode } = params;
 
-	redirect(302, resolve('/products/[barcode]', { barcode }));
+	redirect(302, resolveForUrl(url, '/products/[barcode]', { barcode }));
 };

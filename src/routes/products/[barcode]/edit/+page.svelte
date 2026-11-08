@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import ISO6391 from 'iso-639-1';
 	import { untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { _ } from '#lib/i18n/index.js';
+	import { _, locale } from '#lib/i18n/index.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 
 	import {
@@ -21,7 +21,7 @@
 		updateObsoleteStatusV3
 	} from '#lib/api.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
-	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import EditProductForm from '#lib/ui/EditProductForm.svelte';
 	import AddProductForm from '#lib/ui/AddProductForm.svelte';
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
@@ -33,7 +33,7 @@
 	import { page } from '$app/state';
 	import { dev } from '$app/env';
 	import IconMdiAlert from '@iconify-svelte/mdi/alert';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	interface Props {
 		data: PageData;
@@ -150,7 +150,7 @@
 
 	function getNames(taxo: Taxonomy) {
 		return Object.values(taxo)
-			.map((t) => getOrDefault(t.name, getLanguageCode($preferences.locale)))
+			.map((t) => getOrDefault(t.name, getLanguageCode($locale ?? undefined)))
 			.filter((t): t is string => t !== undefined);
 	}
 

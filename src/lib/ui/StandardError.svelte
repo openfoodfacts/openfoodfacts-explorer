@@ -3,7 +3,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '#lib/api/errorUtils.js';
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	type Props = { error: globalThis.App.Error };
 	let { error }: Props = $props();

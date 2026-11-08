@@ -5,7 +5,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 
 	let { data }: PageProps = $props();
 	let searchQuery = $state('');
