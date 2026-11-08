@@ -138,7 +138,7 @@
 </script>
 
 <div
-	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-0.5 max-md:flex-nowrap max-md:overflow-x-auto max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
+	class="flex w-full max-w-full scrollbar-none items-center gap-2 pb-0.5 max-md:flex-nowrap max-md:overflow-x-auto max-md:px-4 max-md:has-[details[open]]:overflow-x-hidden md:flex-wrap md:justify-center md:gap-4 md:overflow-visible"
 >
 	{#each Object.entries(allAggregatedFacets) as [facetKey, facet] (facetKey)}
 		{@const sel = selectedFacets[facetKey]}

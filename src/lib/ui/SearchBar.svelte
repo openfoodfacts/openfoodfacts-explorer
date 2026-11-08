@@ -1,12 +1,9 @@
 <script lang="ts">
-	import {
-		createSearchApi,
-		type AutocompleteOption,
-		type AutocompleteResponse
-	} from '#lib/api/search.js';
+	import type { AutocompleteOption } from '#lib/api/search.js';
 	import { _, getBrowserLocale } from '#lib/i18n/index.js';
 	import { getLanguageCode } from '#lib/settings.js';
 	import { onDestroy } from 'svelte';
+	import { fetchAutocompleteOptions } from './searchbar';
 
 	import IconMdiBarcodeScan from '@iconify-svelte/mdi/barcode-scan';
 
@@ -34,7 +31,12 @@
 	// used for aborting previously executing autocomplete requests
 	let autocompleteAbortController: AbortController | null = null;
 
+	// track request ID to prevent stale results from overwriting newer queries
+	let requestId = 0;
+
 	async function fetchAutocomplete(query: string) {
+		const currentRequestId = ++requestId;
+
 		autocompleteAbortController?.abort();
 
 		if (query.trim().length < minQueryLength) {
@@ -45,32 +47,32 @@
 
 		autocompleteAbortController = new AbortController();
 
-		const autocompleteQuery = {
-			q: query,
-			taxonomy_names: 'brands,categories,labels',
-			lang: getLanguageCode(getBrowserLocale()),
-			size: 5,
-			fuzziness: null,
-			index_id: null
+		const abortingFetch = (input: URL | RequestInfo, init?: RequestInit) => {
+			return fetch(input, { ...init, signal: autocompleteAbortController!.signal });
 		};
 
 		autocompleteLoading = true;
+
 		try {
-			const api = createSearchApi(fetch);
-			const { data, error } = await api.autocomplete(autocompleteQuery);
-			if (error) {
-				console.error('Autocomplete error', error);
-				autocompleteList = [];
-			} else {
-				const result = data as AutocompleteResponse | undefined;
-				autocompleteList = Array.isArray(result?.options) ? result.options : [];
+			const options = await fetchAutocompleteOptions(
+				abortingFetch,
+				query,
+				getLanguageCode(getBrowserLocale()),
+				5
+			);
+
+			// Only update if this is still the current request (prevent stale results)
+			if (currentRequestId === requestId) {
+				autocompleteList = options;
 			}
 		} catch (e) {
 			if (e instanceof Error && e.name !== 'AbortError') {
 				console.error('Autocomplete error', e);
 			}
 		} finally {
-			autocompleteLoading = false;
+			if (currentRequestId === requestId) {
+				autocompleteLoading = false;
+			}
 		}
 	}
 
@@ -93,6 +95,11 @@
 	function handleSelect(item: AutocompleteOption) {
 		searchQuery = item.text;
 		onSearch?.(item.text);
+	}
+
+	function getLocalizedTaxonomyName(taxonomyName: string): string {
+		const key = `product.edit.${taxonomyName}`;
+		return $_(key, { default: taxonomyName });
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
@@ -175,7 +182,9 @@
 									>
 										<div class="flex flex-col gap-1">
 											<p class="">{item.text}</p>
-											<p class=" text-xs text-base-content">{item.taxonomy_name}</p>
+											<p class=" text-xs text-base-content">
+												{getLocalizedTaxonomyName(item.taxonomy_name)}
+											</p>
 										</div>
 									</button>
 								</li>
@@ -198,7 +207,7 @@
 			</button>
 		</div>
 		<a
-			href="/qr"
+			href="/scan"
 			title={$_('search.scan')}
 			aria-label={$_('search.scan')}
 			class="btn join-item text-lg btn-secondary"

@@ -44,9 +44,6 @@ function runningOnVercel() {
 }
 
 const adapter = runningOnVercel() ? vercelAdapter() : nodejsAdapter();
-const vercelScripts = runningOnVercel()
-	? (['https://va.vercel-scripts.com/'] as const)
-	: ([] as const);
 
 export default defineConfig({
 	server: {
@@ -79,7 +76,6 @@ export default defineConfig({
 					'script-src': [
 						'self',
 						'unsafe-eval' /* Required for Vega charts */,
-						...vercelScripts,
 						'https://analytics.openfoodfacts.org/matomo.js'
 					],
 					'img-src': [
