@@ -333,7 +333,7 @@
 						<div class="countries-map-legend-gradient"></div>
 						<div class="countries-map-legend-labels">
 							<span>${numberFormat.format(maxProducts)}</span>
-							<span>${numberFormat.format(maxProducts / 4)}</span>
+							<span>${numberFormat.format(Math.round(maxProducts / 4))}</span>
 							<span>0</span>
 						</div>
 					</div>`;
