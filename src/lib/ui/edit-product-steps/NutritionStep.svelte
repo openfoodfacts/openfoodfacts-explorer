@@ -94,13 +94,16 @@
 
 	const permissions = getPermissionsCtx();
 
-	function addPersistedNutrients(catalog: NutrientOption[]): NutrientOption[] {
-		return [...catalog, ...getMissingNutrientOptions(product.nutriments, catalog)];
-	}
-
-	let nutrientCatalog = $state<NutrientOption[]>(addPersistedNutrients(FALLBACK_NUTRIENTS));
+	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
+
+	function addPersistedNutrientsToFallbackCatalog() {
+		nutrientCatalog = [
+			...nutrientCatalog,
+			...getMissingNutrientOptions(product.nutriments, nutrientCatalog)
+		];
+	}
 
 	function syncExistingNutrients() {
 		const existingNutrients = nutrientCatalog
@@ -111,6 +114,7 @@
 		additionalNutrients = [...new Set([...additionalNutrients, ...existingNutrients])];
 	}
 
+	addPersistedNutrientsToFallbackCatalog();
 	syncExistingNutrients();
 
 	$effect(() => {
@@ -121,7 +125,7 @@
 		getNutrients(fetch, currentLocale, country)
 			.then((nutrients) => {
 				if (cancelled) return;
-				nutrientCatalog = addPersistedNutrients(nutrients);
+				nutrientCatalog = nutrients;
 				nutrientLoadFailed = false;
 				syncExistingNutrients();
 			})
@@ -139,18 +143,11 @@
 	let nutrientById = $derived(new Map(nutrientCatalog.map((nutrient) => [nutrient.id, nutrient])));
 
 	let canAddNutrients = $derived(
-		getSelectableNutrients(
-			nutrientCatalog,
-			new Set([...DEFAULT_NUTRIENT_IDS, 'nova-group']),
-			additionalNutrients
-		)
+		getSelectableNutrients(nutrientCatalog, DEFAULT_NUTRIENT_IDS, additionalNutrients)
 	);
 
-	function nutrientName(nutrient: NutrientOption | string) {
-		const id = typeof nutrient === 'string' ? nutrient : nutrient.id;
-		const defaultName =
-			typeof nutrient === 'string' ? (id === 'nova-group' ? 'NOVA group' : id) : nutrient.name;
-		return $_(`product.edit.nutrient.${id}`, { default: defaultName });
+	function nutrientName(nutrient: NutrientOption) {
+		return $_(`product.edit.nutrient.${nutrient.id}`, { default: nutrient.name });
 	}
 
 	function addNutrient(id: string) {
@@ -551,7 +548,7 @@
 					<div class="join">
 						<label class="input join-item w-full">
 							<span class="label w-60">
-								{nutrientName(nutrientDetails ?? nutrient)}
+								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
 								id={`${nutrient}-input`}
@@ -563,9 +560,7 @@
 								min="0"
 							/>
 							<span class="label">
-								{product.nutriments?.[`${nutrient}_unit`] ??
-									nutrientDetails?.unit ??
-									(nutrient === 'nova-group' ? '' : 'g')}
+								{product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g'}
 							</span>
 						</label>
 						<button

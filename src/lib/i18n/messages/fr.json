@@ -527,8 +527,7 @@
 				"iron": "Fer",
 				"potassium": "Potassium",
 				"trans-fat": "Graisses transaturées",
-				"vitamin-d": "Vitamine D",
-				"nova-group": "Groupe NOVA"
+				"vitamin-d": "Vitamine D"
 			},
 			"additional_nutrients": "Nutriments supplémentaires",
 			"nutrients_load_failed": "La liste complète des nutriments n'a pas pu être chargée.",
