@@ -36,7 +36,7 @@
 	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
 
-	import { OpenFoodFacts, type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '#lib/api/knowledgepanels.js';
 	import ScrollToTop from '#lib/ui/ScrollToTop.svelte';
 	import { onMount } from 'svelte';
@@ -54,6 +54,7 @@
 		getExternalKnowledgePanelRequests,
 		type ExternalKnowledgePanelBatch
 	} from '#lib/api/externalSources.js';
+	import { addHistoryPanel, createProductsApi, getProductHistoryPanels } from '#lib/api/product.js';
 
 	let { data }: PageProps = $props();
 	let { state: productState } = $derived(data);
@@ -110,6 +111,28 @@
 			cancelled = true;
 		};
 	});
+
+	// Product history needs the login token, which the server-side page load does not have
+	let history = $state<{ code: string; panels: KnowledgePanels } | null>(null);
+	let loggedIn = $derived($userAuthTokens != null);
+	$effect(() => {
+		history = null;
+		const code = product.code;
+		if (!browser || !loggedIn || !code) return;
+		const abortController = new AbortController();
+		const abortingFetch: typeof fetch = (input, init) =>
+			fetch(input, { ...init, signal: abortController.signal });
+		getProductHistoryPanels(abortingFetch, code, data.lc).then((panels) => {
+			if (!abortController.signal.aborted) history = { code, panels };
+		});
+		return () => abortController.abort();
+	});
+	// Until the effect above reruns, `history` can still hold the previous product's history
+	let panels = $derived(
+		history && history.code === product.code
+			? addHistoryPanel(product.knowledge_panels, history.panels)
+			: product.knowledge_panels
+	);
 
 	let hasExternalKnowledgePanelsSection = $derived(
 		browser && product.code != null && externalKnowledgePanelBatchPromise != null
@@ -306,7 +329,7 @@
 				label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
 				icon: IconMdiFlag
 			},
-			product.knowledge_panels?.contribution_card && {
+			panels.contribution_card && {
 				id: 'contribution_card',
 				label: $_('product.sections.contribution', { default: 'Contribution' }),
 				icon: IconMdiHelpCircleOutline
@@ -400,7 +423,7 @@
 	});
 
 	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
-		const offApi = new OpenFoodFacts(fetch);
+		const offApi = createProductsApi(fetch);
 
 		const searchParams: Record<string, unknown> = {
 			fields: ['attribute_groups_en']
@@ -485,7 +508,7 @@
 
 	<div
 		class={[
-			'relative w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
+			'relative mt-8 w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
 			sidebarHidden ? 'lg:grid-cols-1' : 'lg:grid-cols-[auto_1fr]'
 		]}
 	>
@@ -494,7 +517,6 @@
 			sections={activeSections}
 			bind:hidden={sidebarHidden}
 			collapsible={true}
-			class="lg:pt-28"
 			headerActionLabel={$_('product.sidebar.hide', { default: 'Hide Sidebar' })}
 			onHeaderAction={() => (sidebarHidden = true)}
 		/>
@@ -537,7 +559,7 @@
 
 			<div id="knowledge-panels-container">
 				<KnowledgePanelsComp
-					panels={product.knowledge_panels}
+					{panels}
 					code={product.code}
 					roots={['root']}
 					summary={sidebarHidden}

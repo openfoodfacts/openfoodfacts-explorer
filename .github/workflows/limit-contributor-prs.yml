@@ -1,0 +1,46 @@
+name: Limit open contributor PRs
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  limit:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/github-script@v9.0.0
+        env:
+          # Set this repository variable to a positive integer to change the limit.
+          MAX_OPEN_PRS: ${{ vars.MAX_OPEN_PRS || '3' }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.user.type === 'Bot' || ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(pr.author_association)) {
+              core.info('Maintainers and bots are exempt from the PR limit.');
+              return;
+            }
+
+            const limit = Number(process.env.MAX_OPEN_PRS);
+            if (!Number.isSafeInteger(limit) || limit < 1) {
+              core.setFailed('MAX_OPEN_PRS must be a positive integer.');
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const openPRs = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100
+            });
+            const authorPRs = openPRs.filter(openPR => openPR.user.id === pr.user.id);
+            if (authorPRs.length <= limit || !authorPRs.some(openPR => openPR.number === pr.number)) {
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner, repo, issue_number: pr.number,
+              body: `Thanks for your contribution! We limit outside contributors to ${limit} open pull requests at a time. Please reopen this pull request once one of your other pull requests has been merged or closed.`
+            });
+            await github.rest.pulls.update({ owner, repo, pull_number: pr.number, state: 'closed' });

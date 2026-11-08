@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	import { _ } from '#lib/i18n/index.js';
-	import { OPEN_PRICES_PRODUCTS_URL, OPEN_PRICES_BASE_URL } from '#lib/const.js';
+	import { OPEN_PRICES_PRODUCTS_URL, OPEN_PRICES_ADD_PRICE_URL } from '#lib/const.js';
 
 	import Card from '#lib/ui/Card.svelte';
 	import type { PriceFull } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -79,7 +79,7 @@
 
 	<div class="mt-4 flex flex-wrap items-center justify-between gap-4">
 		<a
-			href={`${OPEN_PRICES_BASE_URL}/prices/add/single?code=${barcode}`}
+			href={OPEN_PRICES_ADD_PRICE_URL(barcode)}
 			class="btn btn-primary btn-sm"
 			target="_blank"
 			rel="noopener noreferrer"

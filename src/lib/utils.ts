@@ -100,3 +100,10 @@ export function getSafeRedirectUrl(redirectUrl: string | null | undefined, origi
 		return '/';
 	}
 }
+
+/**
+ * @returns Whether the URL is an absolute http or https link, safe to use as a link target
+ */
+export function isHttpUrl(url: string | undefined): url is string {
+	return url != null && /^https?:\/\//.test(url);
+}
