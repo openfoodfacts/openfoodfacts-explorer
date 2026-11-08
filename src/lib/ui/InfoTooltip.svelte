@@ -34,5 +34,5 @@
 			class="h-4 w-4 text-primary transition-colors duration-200 hover:text-primary/70"
 		/>
 	</button>
-	<span id={descriptionId} class="sr-only">{text}</span>
+	<span id={descriptionId} hidden>{text}</span>
 </div>
