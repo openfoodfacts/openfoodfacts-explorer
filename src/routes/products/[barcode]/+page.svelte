@@ -471,7 +471,7 @@
 								auth-token={$userAuthTokens?.access_token ?? ''}
 							></folksonomy-editor>
 						{:else}
-							<h1 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h1>
+							<h2 class="my-4 text-4xl font-bold">{$_('product.folksonomy.title_beta')}</h2>
 
 							<div class="my-4 prose text-justify">
 								<p>

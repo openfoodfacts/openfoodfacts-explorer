@@ -18,8 +18,9 @@
 		id: string;
 		link?: string;
 		productCode?: string;
+		headingLevel?: 3 | 4;
 	};
-	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
+	let { panels, panel, inline = false, id, link, productCode, headingLevel = 3 }: Props = $props();
 
 	let expanded = $derived(panel?.expanded ?? false);
 
@@ -63,9 +64,14 @@
 				/>
 			{/if}
 			<div class="grow">
-				<div class="kp-title">{title.title}</div>
+				<svelte:element
+					this={headingLevel === 4 ? 'h4' : 'h3'}
+					class="kp-title text-base font-medium text-base-content"
+				>
+					{title.title}
+				</svelte:element>
 				{#if title.subtitle != null}
-					<h3 class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</h3>
+					<p class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</p>
 				{/if}
 			</div>
 		</div>

@@ -119,7 +119,7 @@
 {/snippet}
 
 <Card>
-	<h1 class="text-4xl font-bold">{$_('product.datasources.title')}</h1>
+	<h2 class="text-4xl font-bold">{$_('product.datasources.title')}</h2>
 
 	<div class="stats mt-4 w-full max-lg:stats-vertical">
 		<!-- Last edit -->
