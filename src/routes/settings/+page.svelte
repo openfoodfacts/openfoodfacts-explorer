@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { getBuildCommits, type BuildCommit } from './commits.js';
 	import { preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
@@ -26,6 +28,10 @@
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 	const APP_VERSION = import.meta.env.BUILD_VERSION;
+	let buildCommits = $state<Promise<BuildCommit[]> | undefined>();
+	onMount(() => {
+		buildCommits = getBuildCommits(COMMIT_SHA);
+	});
 
 	const TABS = [
 		{ label: 'account', i18nKey: 'settings.tab.account', icon: IconMdiAccount },
@@ -214,6 +220,48 @@
 							})}
 						{/if}
 					</p>
+					<div class="mt-4 text-sm">
+						<h3 class="font-semibold">
+							{$_('settings.recent_commits', { default: 'Recent commits in this version' })}
+						</h3>
+						{#if buildCommits}
+							{#await buildCommits}
+								<p>{$_('settings.commits_loading', { default: 'Loading commits…' })}</p>
+							{:then commits}
+								{#if commits.length}
+									<ul class="menu mt-2 w-full rounded-box border border-primary-content/20 p-1">
+										{#each commits as commit (commit.sha)}
+											<li>
+												<a
+													class="flex items-start gap-3 break-words hover:bg-primary-content/10 focus-visible:outline-2 focus-visible:outline-primary-content"
+													href="{GITHUB_REPO_URL}/commit/{commit.sha}"
+													target="_blank"
+													rel="noopener noreferrer"
+													><span class="shrink-0 font-mono text-primary-content/70"
+														>{commit.sha.slice(0, 7)}</span
+													><span class="min-w-0 break-words">{commit.message}</span></a
+												>
+											</li>
+										{/each}
+									</ul>
+								{:else}
+									<p>
+										{$_('settings.commits_unavailable', {
+											default: 'Commit history is unavailable.'
+										})}
+									</p>
+								{/if}
+							{:catch}
+								<p>
+									{$_('settings.commits_unavailable', {
+										default: 'Commit history is unavailable.'
+									})}
+								</p>
+							{/await}
+						{:else}
+							<p>{$_('settings.commits_loading', { default: 'Loading commits…' })}</p>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>

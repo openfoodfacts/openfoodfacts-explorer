@@ -215,6 +215,9 @@
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
+		"recent_commits": "Recent commits in this version",
+		"commits_loading": "Loading commits…",
+		"commits_unavailable": "Commit history is unavailable.",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"admin_tools": {
 			"title": "Admin tools",

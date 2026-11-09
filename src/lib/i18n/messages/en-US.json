@@ -216,6 +216,9 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"recent_commits": "Recent commits in this version",
+		"commits_loading": "Loading commits…",
+		"commits_unavailable": "Commit history is unavailable.",
 		"app_version": "Version {version}",
 		"app_commit_link": "View commit {sha} on GitHub",
 		"admin_tools": {
