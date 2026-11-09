@@ -306,12 +306,21 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "View product on Open Food Facts",
+			"copy": "Copy",
+			"more": "More actions"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"failed_copy": "Failed to copy link",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Scan barcodes to get the Nutri-Score, the Green-Score and more!",
+			"get_app": "Get the app"
 		},
 		"barcode": {
 			"title": "Barcode information",
@@ -923,8 +932,13 @@
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_countries": "Where these products are sold",
+		"map_page_limited": "This map only includes data from the current page.",
+		"map_sqrt_legend": "Products (square-root scale)"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
