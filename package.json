@@ -104,7 +104,7 @@
 		"world-atlas": "^2.0.2"
 	},
 	"dependencies": {
-		"@openfoodfacts/openfoodfacts-webcomponents": "^1.18.3",
+		"@openfoodfacts/openfoodfacts-webcomponents": "^1.19.0",
 		"@opentelemetry/api": "^1.10.0",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
 		"barcode-detector": "^3.2.3",
