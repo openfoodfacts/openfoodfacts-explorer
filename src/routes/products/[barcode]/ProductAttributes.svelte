@@ -189,11 +189,23 @@
 		>
 			{@render attributeList()}
 		</OverallScore>
-	{:else if part === 'score' && visibleAttributes.length > 0}
+	{:else if part === 'score'}
 		<section class="rounded-box bg-base-content/5 p-4">
-			<h2 class="font-semibold">
-				{$_('product.score.attributes', { default: 'Your attributes' })}
-			</h2>
+			<div class="flex items-center justify-between gap-3">
+				<h2 class="text-base font-semibold">
+					{visibleAttributes.length > 0
+						? $_('product.score.attributes', { default: 'Your attributes' })
+						: $_('product.score.overall', { default: 'Overall score' })}
+				</h2>
+				<a
+					href={resolve('/settings') + '?tab=preferences'}
+					class="max-w-[45%] text-right text-sm font-semibold text-secondary"
+				>
+					{hasPreferences
+						? $_('product.score.edit_preferences', { default: 'Edit your preferences' })
+						: $_('product.score.personalize', { default: 'Personalize' })}&nbsp;›
+				</a>
+			</div>
 			{@render attributeList()}
 		</section>
 	{/if}
