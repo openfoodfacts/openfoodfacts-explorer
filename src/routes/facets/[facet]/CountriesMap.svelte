@@ -6,6 +6,7 @@
 	import * as topojson from 'topojson-client';
 	import * as iso from 'iso-3166-1';
 
+	import { preferences } from '#lib/settings.js';
 	import { getTaxo } from '#lib/api.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { buildCountryData, countryColorIntensity } from './country-data';
@@ -120,16 +121,23 @@
 	let mapInstance: Leaflet.Map | null = $state(null);
 	let legendControl: Leaflet.Control | null = null;
 
-	let isDark: boolean = $state(false);
+	let isSystemDark = $state(false);
+
+	let isDark = $derived(
+		$preferences.theme === 'dark' || ($preferences.theme !== 'light' && isSystemDark)
+	);
 
 	onMount(() => {
 		const abortController = new AbortController();
 
 		const mq = window.matchMedia('(prefers-color-scheme: dark)');
-		isDark = mq.matches;
-		const handleColorSchemeChange = (e: MediaQueryListEvent) => (isDark = e.matches);
-		mq.addEventListener('change', handleColorSchemeChange);
+		isSystemDark = mq.matches;
 
+		const handleColorSchemeChange = (e: MediaQueryListEvent) => {
+			isSystemDark = e.matches;
+		};
+
+		mq.addEventListener('change', handleColorSchemeChange);
 		(async () => {
 			L = await import('leaflet'); // Dynamically import Leaflet
 			if (abortController.signal.aborted) return; // Component was unmounted
@@ -378,16 +386,15 @@
 		background: linear-gradient(to top, var(--gradient-start), var(--gradient-end));
 	}
 
-	@media (prefers-color-scheme: dark) {
-		:global(.countries-map-legend) {
-			background: #1f2937;
-			color: #f9fafb;
-			border-color: rgba(255, 255, 255, 0.15);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-		}
-		:global(.countries-map-legend-gradient) {
-			border-color: rgba(255, 255, 255, 0.1);
-		}
+	:global([data-theme='dark'] .countries-map-legend) {
+		background: #1f2937;
+		color: #f9fafb;
+		border-color: rgba(255, 255, 255, 0.15);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	}
+
+	:global([data-theme='dark'] .countries-map-legend-gradient) {
+		border-color: rgba(255, 255, 255, 0.1);
 	}
 
 	:global(.countries-map-legend strong) {
