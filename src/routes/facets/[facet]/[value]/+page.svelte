@@ -157,10 +157,13 @@
 			})}
 		</h2>
 		<MapComponent facet={distributionData} />
-		<p class="mt-2 text-sm text-gray-500">
-			Note: The geographic distribution shown on this map is based only on the products visible on
-			the current page.
-		</p>
+		{#if data.mapIsPageLimited}
+			<p class="mt-2 text-sm text-base-content/70">
+				{$_('facets.map_page_limited', {
+					default: 'This map only includes data from the current page.'
+				})}
+			</p>
+		{/if}
 	</div>
 {/if}
 

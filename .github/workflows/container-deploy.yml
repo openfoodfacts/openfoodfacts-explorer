@@ -45,6 +45,7 @@ jobs:
           echo "PUBLIC_FOLKSONOMY_API_URL=https://api.folksonomy.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_OFF_BASE_URL=https://world.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_SEARCH_BASE_URL=https://search.openfoodfacts.net" >> $GITHUB_ENV
+          echo "PUBLIC_QUERY_BASE_URL=https://query.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_AUTH_BASE_URL=https://auth.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_AUTH_PKCE_ID=explorer" >> $GITHUB_ENV
           echo "PUBLIC_KEYCLOAK_REALM=openfoodfacts" >> $GITHUB_ENV
@@ -127,6 +128,7 @@ jobs:
             echo "PUBLIC_FOLKSONOMY_API_URL=${{ env.PUBLIC_FOLKSONOMY_API_URL }}" >> .env
             echo "PUBLIC_OFF_BASE_URL=${{ env.PUBLIC_OFF_BASE_URL }}" >> .env
             echo "PUBLIC_SEARCH_BASE_URL=${{ env.PUBLIC_SEARCH_BASE_URL }}" >> .env
+            echo "PUBLIC_QUERY_BASE_URL=${{ env.PUBLIC_QUERY_BASE_URL }}" >> .env
             echo "PUBLIC_AUTH_BASE_URL=${{ env.PUBLIC_AUTH_BASE_URL }}" >> .env
             echo "PUBLIC_AUTH_PKCE_ID=${{ env.PUBLIC_AUTH_PKCE_ID }}" >> .env
             echo "PUBLIC_KEYCLOAK_REALM=${{ env.PUBLIC_KEYCLOAK_REALM }}" >> .env

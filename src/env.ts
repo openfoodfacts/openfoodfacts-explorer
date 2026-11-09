@@ -1,6 +1,7 @@
 import { defineEnvVars } from '@sveltejs/kit/env';
 
 export const variables = defineEnvVars({
+	PUBLIC_QUERY_BASE_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_OFF_BASE_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_ENVIRONMENT: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_SENTRY_DSN: { public: true, schema: (input) => input ?? '' },
