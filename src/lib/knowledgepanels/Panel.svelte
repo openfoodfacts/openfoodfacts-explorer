@@ -18,7 +18,7 @@
 		id: string;
 		link?: string;
 		productCode?: string;
-		headingLevel?: 3 | 4;
+		headingLevel?: number;
 	};
 	let { panels, panel, inline = false, id, link, productCode, headingLevel = 3 }: Props = $props();
 
@@ -29,7 +29,16 @@
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		<Element {element} {panels} {productCode} />
+		<Element
+			{element}
+			{panels}
+			{productCode}
+			headingLevel={panel.type === 'card'
+				? 2
+				: panel.type === 'inline' || inline
+					? headingLevel - 1
+					: headingLevel}
+		/>
 	{/each}
 {/snippet}
 
@@ -65,7 +74,7 @@
 			{/if}
 			<div class="grow">
 				<svelte:element
-					this={headingLevel === 4 ? 'h4' : 'h3'}
+					this={`h${Math.min(headingLevel, 6)}`}
 					class="kp-title text-base font-medium text-base-content"
 				>
 					{title.title}
