@@ -1,0 +1,19 @@
+{
+	"name": "@openfoodfacts/lit-sveltekit",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./vite": "./src/vite-plugin/index.ts",
+		"./sveltekit/client": "./src/sveltekit/client.ts",
+		"./sveltekit/server": "./src/sveltekit/server.ts"
+	},
+	"peerDependencies": {
+		"@lit-labs/ssr": "^4.1.0",
+		"@lit-labs/ssr-client": "^1.1.8",
+		"@sveltejs/kit": "^3.0.0",
+		"lit": "^3.3.3",
+		"svelte": "^5.0.0",
+		"vite": "^8.0.0"
+	}
+}
