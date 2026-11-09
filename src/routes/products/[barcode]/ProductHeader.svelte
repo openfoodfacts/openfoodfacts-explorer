@@ -22,7 +22,7 @@
 	type Props = {
 		product: Product;
 		lc?: string;
-		scores?: Snippet;
+		scores?: Snippet<['tiles' | 'score']>;
 	};
 	let { product, lc, scores }: Props = $props();
 
@@ -205,9 +205,11 @@
 					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
-				<div id="attributes" class="mt-2 hidden basis-full md:block">{@render scores?.()}</div>
+				<div class="mt-2 min-w-0 basis-full">{@render scores?.('tiles')}</div>
 			</div>
 		</div>
+
+		<div id="attributes" class="w-full min-w-0">{@render scores?.('score')}</div>
 
 		<div class="min-w-0">
 			<!-- Metadata Body -->

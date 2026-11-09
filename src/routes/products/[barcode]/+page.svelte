@@ -269,27 +269,24 @@
 		};
 	});
 
-	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
+	// Only this preference affects the attributes API request. Other preference
+	// changes should update the score without reloading the product attributes.
+	let unwantedIngredients = $derived.by(() => {
+		const preference = $personalizedSearch.userPreferences.find(
+			(item) => item.attributeId === 'attribute_unwanted_ingredients_tags'
+		);
+		if (!preference) return undefined;
+		return preference.type === 'tags' ? preference.value.join(',') : preference.value;
+	});
+	let attributeProductCode = $derived(product.code);
+
+	async function getProductAttributes(
+		code: string,
+		unwanted: string | undefined
+	): Promise<ProductGroupedAttributes[]> {
 		const offApi = createProductsApi(fetch);
-
-		const searchParams: Record<string, unknown> = {
-			fields: ['attribute_groups_en']
-		};
-
-		const SENT_ATTRIBUTES = ['attribute_unwanted_ingredients_tags'];
-
-		for (const prefAttr of SENT_ATTRIBUTES) {
-			const pref = $personalizedSearch.userPreferences.find((p) => p.attributeId === prefAttr);
-			if (pref == null) {
-				continue;
-			}
-
-			if (pref.type === 'attribute') {
-				searchParams[pref.attributeId] = pref.value;
-			} else if (pref.type === 'tags') {
-				searchParams[pref.attributeId] = pref.value.join(',');
-			}
-		}
+		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
+		if (unwanted !== undefined) searchParams.attribute_unwanted_ingredients_tags = unwanted;
 
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
 
@@ -308,8 +305,8 @@
 	}
 
 	let productAttributes = $derived.by(() => {
-		if (product.code && browser) {
-			return getProductAttributes(product.code);
+		if (attributeProductCode && browser) {
+			return getProductAttributes(attributeProductCode, unwantedIngredients);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
@@ -371,7 +368,6 @@
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
 				<ProductHeader {product} lc={data.lc} {scores} />
-				<div class="md:hidden">{@render scores()}</div>
 			</div>
 
 			<div>
@@ -484,21 +480,24 @@
 	</div>
 </div>
 
-{#snippet scores()}
+{#snippet scores(part: 'tiles' | 'score')}
 	{#await productAttributes}
-		<div class="flex items-center justify-center py-8">
-			<span class="loading loading-lg loading-spinner"></span>
-			<span class="ml-2">{$_('product.loading_attributes')}</span>
-		</div>
+		{#if part === 'score'}
+			<div class="flex items-center justify-center py-8">
+				<span class="loading loading-lg loading-spinner"></span>
+				<span class="ml-2">{$_('product.loading_attributes')}</span>
+			</div>
+		{/if}
 	{:then attributes}
 		{#if attributes != null}
 			<ProductAttributes
 				groups={attributes}
 				defaultPreferences={data.defaultProductPreferences}
+				{part}
 				{panels}
 				code={product.code}
 			/>
-		{:else}
+		{:else if part === 'score'}
 			<div class="alert alert-warning">
 				<IconMdiWarning class="h-6 w-6 shrink-0" />
 				<div>

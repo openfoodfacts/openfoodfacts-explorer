@@ -285,6 +285,9 @@
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
 		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
 			"overall": "Overall score",
 			"personalize": "Personalize",
 			"edit_preferences": "Edit your preferences",
