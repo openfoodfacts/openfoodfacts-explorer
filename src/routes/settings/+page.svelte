@@ -21,6 +21,7 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
+	import IconMdiNewspaper from '@iconify-svelte/mdi/newspaper';
 
 	import type { PageProps } from './$types';
 
@@ -91,7 +92,7 @@
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
-						<IconMdiAccount class="h-6 w-6" />
+						<IconMdiAccount class="h-6 w-6" aria-hidden="true" />
 						{$_('settings.section_user')}
 					</h2>
 
@@ -164,7 +165,10 @@
 			{/if}
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
-					<h2 class="card-title">{$_('settings.news')}</h2>
+					<h2 class="card-title flex items-center gap-2">
+						<IconMdiNewspaper class="h-6 w-6" aria-hidden="true" />
+						{$_('settings.news')}
+					</h2>
 					<div class="mt-4">
 						<news-feed
 							url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
@@ -183,7 +187,7 @@
 						rel="noopener noreferrer"
 						aria-label={$_('settings.github_link')}
 					>
-						<IconMdiGithub class="h-5 w-5" />
+						<IconMdiGithub class="h-5 w-5" aria-hidden="true" />
 						<span>{$_('settings.github_cta')}</span>
 					</a>
 					<p class="mt-4 text-sm text-primary-content/80">
@@ -224,7 +228,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiCog class="h-6 w-6" />
+					<IconMdiCog class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.section_general')}
 				</h2>
 
@@ -232,7 +236,7 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialTranslate class="h-5 w-5" />
+								<IconMaterialTranslate class="h-5 w-5" aria-hidden="true" />
 								{$_('general.language')}
 							</span>
 						</label>
@@ -253,7 +257,7 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialPublic class="h-5 w-5" />
+								<IconMaterialPublic class="h-5 w-5" aria-hidden="true" />
 								{$_('general.country')}
 							</span>
 						</label>
@@ -283,7 +287,7 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialUniversalCurrencyAlt class="h-5 w-5" />
+								<IconMaterialUniversalCurrencyAlt class="h-5 w-5" aria-hidden="true" />
 								{$_('general.currency')}
 							</span>
 						</label>
@@ -312,7 +316,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiPencil class="h-6 w-6" />
+					<IconMdiPencil class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.section_editing')}
 				</h2>
 
@@ -360,7 +364,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiHeart class="h-6 w-6" />
+					<IconMdiHeart class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.food_preferences', { default: 'Food preferences' })}
 				</h2>
 

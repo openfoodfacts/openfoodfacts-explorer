@@ -17,7 +17,12 @@
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 
 	import type { PageProps } from './$types';
-	import { getHierarchy, type HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
+	import {
+		getChildCounts,
+		getHierarchy,
+		sortByCount,
+		type HierarchyItem
+	} from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
 	let {
@@ -41,6 +46,12 @@
 			? untrack(() => getHierarchy(fetch, name, value, getLocale()).catch(() => noHierarchy))
 			: Promise.resolve(noHierarchy);
 	});
+	const childCounts = $derived.by(() => {
+		const [name, value] = [facetName, facetValue];
+		return browser
+			? untrack(() => getChildCounts(fetch, name, value, getLocale()))
+			: Promise.resolve(new Map<string, number>());
+	});
 
 	let listView = $state(false);
 
@@ -62,7 +73,7 @@
 	})}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
 		label={$_('facets.facet_back_to_overview', {
@@ -70,17 +81,29 @@
 			default: 'Back to {facet} overview'
 		})}
 	/>
-</div>
+	<span
+		>{$_('facets.value_heading', {
+			values: {
+				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
+				value: facet.value
+			},
+			default: 'Exploring {facet}: {value}'
+		})}</span
+	>
+</h2>
 
-<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
-
-{#snippet chips(items: HierarchyItem[])}
+{#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
 		<a
-			class="badge h-auto badge-outline py-1 badge-lg hover:badge-secondary"
+			class="badge h-auto badge-outline py-1 hover:badge-secondary"
 			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
 		>
 			{item.name}
+			{#if counts?.has(item.name)}
+				<span class="text-[10px] opacity-60"
+					>{counts.get(item.name)?.toLocaleString(getLocale())}</span
+				>
+			{/if}
 		</a>
 	{/each}
 {/snippet}
@@ -108,7 +131,12 @@
 						{$_('facets.hierarchy_includes', { default: 'Includes' })}
 					</span>
 					<div class="flex flex-wrap items-center gap-2">
-						{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{#await childCounts}
+							{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{:then counts}
+							{@const sorted = sortByCount(children, counts)}
+							{@render chips(expanded ? sorted : sorted.slice(0, CHILDREN_SHOWN), counts)}
+						{/await}
 						{#if !expanded && children.length > CHILDREN_SHOWN}
 							<button
 								type="button"
@@ -136,10 +164,13 @@
 			})}
 		</h2>
 		<MapComponent facet={distributionData} />
-		<p class="mt-2 text-sm text-gray-500">
-			Note: The geographic distribution shown on this map is based only on the products visible on
-			the current page.
-		</p>
+		{#if data.mapIsPageLimited}
+			<p class="mt-2 text-sm text-base-content/70">
+				{$_('facets.map_page_limited', {
+					default: 'This map only includes data from the current page.'
+				})}
+			</p>
+		{/if}
 	</div>
 {/if}
 
