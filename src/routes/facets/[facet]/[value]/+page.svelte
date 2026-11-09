@@ -73,7 +73,7 @@
 	})}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
 		label={$_('facets.facet_back_to_overview', {
@@ -81,9 +81,16 @@
 			default: 'Back to {facet} overview'
 		})}
 	/>
-</div>
-
-<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+	<span
+		>{$_('facets.value_heading', {
+			values: {
+				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
+				value: facet.value
+			},
+			default: 'Exploring {facet}: {value}'
+		})}</span
+	>
+</h2>
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
