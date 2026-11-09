@@ -1,27 +1,25 @@
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import type { getTaxo } from '#lib/api/taxonomy/api.js';
 
-export type MapFacet = {
-	tagsField: 'origins_tags' | 'countries_tags';
-	heading: string;
-	defaultHeading: string;
-};
-
-export const MAP_FACETS: Record<string, MapFacet> = {
-	origins: {
-		tagsField: 'origins_tags',
-		heading: 'facets.map_heading_origins',
-		defaultHeading: 'Origins of the ingredients'
-	},
-	countries: {
-		tagsField: 'countries_tags',
-		heading: 'facets.map_heading_countries',
-		defaultHeading: 'Where these products are sold'
-	}
-};
+import type { MapFacet } from '../map-facets';
 
 type Products = Array<Partial<Record<MapFacet['tagsField'], unknown>>>;
 type Taxonomy = Awaited<ReturnType<typeof getTaxo>>;
+
+export function queryValuesToDistribution(
+	values: { _id: string; count: number }[],
+	taxonomy: Taxonomy | undefined,
+	lang: string
+) {
+	if (!values.length) return null;
+	const tags = values.map(({ _id: id, count: products }) => ({
+		id,
+		products,
+		known: 1,
+		name: getOrDefault(taxonomy?.[id]?.name ?? {}, lang) ?? id
+	}));
+	return { count: tags.length, tags };
+}
 
 export function getFacetDistribution(
 	products: Products,
