@@ -582,11 +582,7 @@
 					</span>
 				</div>
 			{:else if isNutritionMissingForProduct && product.code}
-				<div
-					id="nutrient-extraction"
-					class:hidden={noInsightAvailable}
-					use:nutrientExtractionAction
-				>
+				<div id="nutrient-extraction" class:hidden={noInsightAvailable}>
 					{#if !noInsightAvailable}
 						<Card>
 							<robotoff-nutrient-extraction product-code={product.code} use:nutrientExtractionAction
