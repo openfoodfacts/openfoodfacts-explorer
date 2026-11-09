@@ -87,6 +87,17 @@ describe('patchRobotoffFetch', () => {
 		expect(mockFetch.mock.calls[0][0]).toBe(requestUrl);
 	});
 
+	it('does not modify combined insight requests containing other types (e.g. contribution message)', async () => {
+		patchRobotoffFetch();
+
+		const requestUrl =
+			'https://robotoff.openfoodfacts.org/api/v1/insights?insight_types=nutrient_extraction,ingredient_spellcheck,ingredient_detection&barcode=123456&lc=en';
+		await window.fetch(requestUrl);
+
+		expect(mockFetch).toHaveBeenCalledTimes(1);
+		expect(mockFetch.mock.calls[0][0]).toBe(requestUrl);
+	});
+
 	it('does not re-patch window.fetch if called multiple times', async () => {
 		patchRobotoffFetch();
 		const patchedFetch = window.fetch;

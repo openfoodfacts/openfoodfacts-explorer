@@ -153,6 +153,24 @@ describe('nutritionFacts utility', () => {
 			).toBe(true);
 		});
 
+		it('returns false when product is explicitly marked with no_nutrition_data', () => {
+			expect(
+				isNutritionMissing({
+					code: '123456',
+					no_nutrition_data: true,
+					nutriments: {}
+				})
+			).toBe(false);
+
+			expect(
+				isNutritionMissing({
+					code: '123456',
+					no_nutrition_data: 'on',
+					nutriments: {}
+				})
+			).toBe(false);
+		});
+
 		it('returns false for complete products with real nutrients', () => {
 			expect(
 				isNutritionMissing({

@@ -13,14 +13,13 @@ export function patchRobotoffFetch(): void {
 		const urlStr =
 			typeof input === 'string' ? input : input instanceof Request ? input.url : input.toString();
 
-		if (
-			urlStr.includes('/api/v1/insights') &&
-			urlStr.includes('insight_types=nutrient_extraction') &&
-			urlStr.includes('barcode=')
-		) {
+		if (urlStr.includes('/api/v1/insights') && urlStr.includes('barcode=')) {
 			try {
 				const url = new URL(urlStr, window.location.href);
-				if (url.searchParams.has('lc')) {
+				if (
+					url.searchParams.get('insight_types') === 'nutrient_extraction' &&
+					url.searchParams.has('lc')
+				) {
 					url.searchParams.delete('lc');
 					if (typeof input === 'string' || input instanceof URL) {
 						input = url.toString();

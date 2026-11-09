@@ -71,11 +71,12 @@ export function isNutritionMissing(
 				code?: string;
 				nutriments?: Record<string, unknown> | null;
 				states_tags?: string[] | null;
+				no_nutrition_data?: boolean | string | null;
 		  }
 		| null
 		| undefined
 ): boolean {
-	if (!product?.code) {
+	if (!product?.code || Boolean(product.no_nutrition_data)) {
 		return false;
 	}
 

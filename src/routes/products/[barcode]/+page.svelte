@@ -138,7 +138,13 @@
 		browser && product.code != null && externalKnowledgePanelBatchPromise != null
 	);
 
-	let isNutritionMissingForProduct = $derived(Boolean(product.code) && isNutritionMissing(product));
+	let isNutritionMissingForProduct = $derived(
+		Boolean(product.code) &&
+			$userInfo != null &&
+			product.product_type === 'food' &&
+			!product.no_nutrition_data &&
+			isNutritionMissing(product)
+	);
 
 	let hasNutrientInsight = $state(false);
 	let noInsightAvailable = $state(false);
