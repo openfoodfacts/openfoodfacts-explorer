@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Відредагуйте свої налаштування",
+			"match_status": {
+				"very_good_match": "Чудово поєднується",
+				"good_match": "Добре поєднується",
+				"poor_match": "Погано поєднується",
+				"may_not_match": "Може не поєднуватися",
+				"does_not_match": "Не поєднується",
+				"unknown_match": "Невідоме поєднання"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
