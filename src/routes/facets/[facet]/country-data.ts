@@ -2,6 +2,7 @@ import * as iso from 'iso-3166-1';
 
 import type { Country, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
 
+/** Scale the fraction of the largest product count using its square root for map coloring. */
 export function countryColorIntensity(products: number, maxProducts: number): number {
 	if (maxProducts <= 0) return 0;
 	return Math.sqrt(Math.max(0, Math.min(products / maxProducts, 1)));
