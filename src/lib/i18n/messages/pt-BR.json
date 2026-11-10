@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Edite as suas preferências alimentares",
+			"match_status": {
+				"very_good_match": "Correspondência excelente",
+				"good_match": "Boa correspondência",
+				"poor_match": "Baixa correspondência",
+				"may_not_match": "Pode não corresponder",
+				"does_not_match": "Não corresponde",
+				"unknown_match": "Combinação desconhecida"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
