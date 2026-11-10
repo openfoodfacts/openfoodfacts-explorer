@@ -17,7 +17,12 @@ export function getVisibleAttributes<T extends Attribute>(
 
 	const attributes = groups.flatMap((group) =>
 		group.attributes.filter((attribute) => {
-			if (!attribute.id || excludedIds.includes(attribute.id)) return false;
+			if (!attribute.id) return false;
+			if (
+				excludedIds.includes(attribute.id) &&
+				!(attribute.status === 'known' && attribute.match != null && attribute.match <= 10)
+			)
+				return false;
 			const preference = getPreference(preferences, group.id, attribute.id);
 			return preference?.type === 'attribute' && preference.value !== 'not_important';
 		})

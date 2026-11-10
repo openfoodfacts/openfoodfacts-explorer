@@ -119,6 +119,7 @@
 </script>
 
 <AppStrip />
+<div id="attributes"></div>
 <Card>
 	<div class="flex flex-col gap-6">
 		<div
@@ -206,11 +207,11 @@
 					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
-				<div class="mt-2 min-w-0 basis-full">{@render tiles?.()}</div>
+				<div class="mt-2 hidden min-w-0 basis-full md:block">{@render tiles?.()}</div>
 			</div>
 		</div>
 
-		<div id="attributes" class="w-full min-w-0">{@render score?.()}</div>
+		<div class="hidden w-full min-w-0 md:block">{@render score?.()}</div>
 
 		<div class="min-w-0">
 			<!-- Metadata Body -->
@@ -321,6 +322,10 @@
 		</div>
 	</div>
 </Card>
+<div class="flex min-w-0 flex-col gap-2 md:hidden">
+	{@render tiles?.()}
+	{@render score?.()}
+</div>
 
 {#snippet taxonomyTags(
 	titleKey: string,

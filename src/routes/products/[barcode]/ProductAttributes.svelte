@@ -126,11 +126,11 @@
 	{:else}
 		<section class="rounded-box bg-base-content/5 p-4">
 			<div class="flex items-center justify-between gap-3">
-				<h2 class="text-base font-semibold">
-					{visibleAttributes.length > 0
-						? $_('product.score.attributes', { default: 'Your attributes' })
-						: $_('product.score.overall', { default: 'Overall score' })}
-				</h2>
+				{#if visibleAttributes.length > 0}
+					<h2 class="text-base font-semibold">
+						{$_('product.score.attributes', { default: 'Your attributes' })}
+					</h2>
+				{/if}
 				<a
 					href={resolve('/settings')}
 					class="max-w-[45%] text-right text-sm font-semibold text-secondary"
