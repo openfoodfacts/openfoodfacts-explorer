@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Chỉnh sửa tùy chọn của bạn",
+			"match_status": {
+				"very_good_match": "Rất phù hợp",
+				"good_match": "Phù hợp",
+				"poor_match": "Kém phù hợp",
+				"may_not_match": "Không phù hợp",
+				"does_not_match": "Không phù hợp",
+				"unknown_match": "Độ phù hợp không xác định"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
