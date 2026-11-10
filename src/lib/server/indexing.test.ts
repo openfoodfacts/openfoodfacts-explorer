@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { RequestEvent } from '@sveltejs/kit';
 import {
 	createIndexingHandle,
+	DENIED_CRAWLERS,
 	DENY_ALL_ROBOTS_TXT,
 	getCrawlerKind,
 	getRobotsTxt,
@@ -17,7 +18,37 @@ const AHREFSBOT = 'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/ro
 const FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0';
 const BINGBOT = 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)';
 
+// User agents as these crawlers send them
+const GOOGLEBOT_SMARTPHONE =
+	'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.122 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+const YANDEXBOT = 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)';
+
 const url = (path: string) => new URL(path, 'https://world.openfoodfacts.org');
+
+type RobotsGroup = { agents: string[]; rules: string[] };
+
+/** Splits robots.txt into groups: user-agent lines and the rules that follow them (RFC 9309). */
+function parseRobotsTxt(text: string): RobotsGroup[] {
+	const groups: RobotsGroup[] = [];
+	for (const line of text.split('\n')) {
+		const match = /^([\w-]+):\s*(.*)$/.exec(line.trim());
+		if (!match) continue;
+		const [, field, value] = match;
+		const current = groups.at(-1);
+		if (field.toLowerCase() !== 'user-agent') current?.rules.push(`${field}: ${value}`);
+		else if (current && current.rules.length === 0) current.agents.push(value);
+		else groups.push({ agents: [value], rules: [] });
+	}
+	return groups;
+}
+
+const robotsGroups = parseRobotsTxt(ROBOTS_TXT);
+const rulesFor = (agent: string) =>
+	robotsGroups.find((group) => group.agents.includes(agent))?.rules;
+// Crawlers that robots.txt keeps out of the whole site
+const bannedAgents = robotsGroups
+	.filter((group) => group.rules.join('\n') === 'Disallow: /')
+	.flatMap((group) => group.agents);
 
 describe('getCrawlerKind', () => {
 	it('does not flag browsers or missing user agents', () => {
@@ -27,8 +58,16 @@ describe('getCrawlerKind', () => {
 	});
 
 	it('allows search engine crawlers', () => {
-		expect(getCrawlerKind(GOOGLEBOT)).toBe('allowed');
-		expect(getCrawlerKind('Mozilla/5.0 (compatible; YandexBot/3.0)')).toBe('allowed');
+		for (const userAgent of [
+			GOOGLEBOT,
+			GOOGLEBOT_SMARTPHONE,
+			'Googlebot-Image/1.0',
+			'Mozilla/5.0 (compatible; Google-InspectionTool/1.0;)',
+			'Mozilla/5.0 (compatible; YandexImages/3.0; +http://yandex.com/bots)',
+			'DuckDuckBot/1.1; (+http://duckduckgo.com/duckduckbot.html)'
+		]) {
+			expect(getCrawlerKind(userAgent), userAgent).toBe('allowed');
+		}
 	});
 
 	it('denies the crawlers Product Opener denies', () => {
@@ -36,6 +75,34 @@ describe('getCrawlerKind', () => {
 		expect(getCrawlerKind(BINGBOT)).toBe('denied');
 		expect(getCrawlerKind('Mozilla/5.0 (compatible; GPTBot/1.2)')).toBe('denied');
 		expect(getCrawlerKind('Mozilla/5.0 (compatible; YandexMarket/1.0)')).toBe('denied');
+	});
+
+	it('denies the crawlers robots.txt bans, which Product Opener lets through', () => {
+		for (const userAgent of [
+			YANDEXBOT,
+			'Mozilla/5.0 (compatible; DotBot/1.2; +https://opensiteexplorer.org/dotbot; help@moz.com)',
+			'Mozilla/5.0 (compatible; spbot/5.0.3; +http://OpenLinkProfiler.org/bot )',
+			'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot',
+			'Mozilla/5.0 (compatible; AliyunSecBot/Aliyun; AliyunSecBot@service.alibaba.com)',
+			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 YisouSpider/5.0 Safari/537.36'
+		]) {
+			expect(getCrawlerKind(userAgent), userAgent).toBe('denied');
+		}
+	});
+});
+
+describe('robots.txt and the User-Agent check', () => {
+	it('serves the NOINDEX page to every crawler that robots.txt bans', () => {
+		expect(bannedAgents).not.toHaveLength(0);
+		for (const agent of bannedAgents) {
+			expect(getCrawlerKind(`Mozilla/5.0 (compatible; ${agent}/1.0)`), agent).toBe('denied');
+		}
+	});
+
+	it('bans in robots.txt every crawler that the User-Agent check denies', () => {
+		for (const { token } of DENIED_CRAWLERS) {
+			expect(bannedAgents, token).toContain(token);
+		}
 	});
 });
 
@@ -125,6 +192,7 @@ describe('getRobotsTxt', () => {
 
 	it('denies everything to denied crawlers', () => {
 		expect(getRobotsTxt(AHREFSBOT, true)).toBe(DENY_ALL_ROBOTS_TXT);
+		expect(getRobotsTxt(YANDEXBOT, true)).toBe(DENY_ALL_ROBOTS_TXT);
 	});
 
 	it('serves the standard rules otherwise', () => {
@@ -134,30 +202,30 @@ describe('getRobotsTxt', () => {
 });
 
 describe('ROBOTS_TXT', () => {
-	const groups = ROBOTS_TXT.trim()
-		.split('\n\n')
-		.map((group) => group.split('\n'));
-	const group = (agent: string) => groups.find((lines) => lines[0] === `User-agent: ${agent}`);
-
 	it('lets only Googlebot crawl facet pages', () => {
-		expect(group('Googlebot')).not.toContain('Disallow: /facets');
-		expect(group('*')).toContain('Disallow: /facets');
-		expect(group('Bingbot')).toContain('Disallow: /facets');
+		expect(rulesFor('Googlebot')).not.toContain('Disallow: /facets');
+		expect(rulesFor('*')).toContain('Disallow: /facets');
 	});
 
 	it('blocks private pages and Product Opener endpoints for every crawler', () => {
-		for (const agent of ['*', 'Googlebot', 'Bingbot']) {
+		for (const agent of ['*', 'Googlebot']) {
 			for (const path of ['/api', '/cgi', '/search', '/settings', '/products/*/edit']) {
-				expect(group(agent), `${agent} ${path}`).toContain(`Disallow: ${path}`);
+				expect(rulesFor(agent), `${agent} ${path}`).toContain(`Disallow: ${path}`);
 			}
 		}
 	});
 
 	it('blocks denied crawlers from the whole site', () => {
-		const denied = groups.at(-1) ?? [];
-		expect(denied).toContain('User-agent: AhrefsBot');
-		expect(denied).toContain('User-agent: GPTBot');
-		expect(denied.at(-1)).toBe('Disallow: /');
+		for (const agent of ['AhrefsBot', 'GPTBot', 'Bingbot', 'YandexBot', 'SeznamBot']) {
+			expect(rulesFor(agent), agent).toEqual(['Disallow: /']);
+		}
+	});
+
+	it('names each crawler in one group only, as crawlers merge the rules of every group naming them', () => {
+		const agents = robotsGroups.flatMap((group) =>
+			group.agents.map((agent) => agent.toLowerCase())
+		);
+		expect(new Set(agents).size).toBe(agents.length);
 	});
 });
 

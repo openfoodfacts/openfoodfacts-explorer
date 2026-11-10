@@ -7,21 +7,106 @@ import type { Handle } from '@sveltejs/kit/hooks';
  * - pages that must not be indexed: `is_no_index_page` in ProductOpener::Routing
  * - facets that may be indexed: `@index_tag_types` in ProductOpener::Config_off
  * - robots.txt: the file nginx serves on world.openfoodfacts.org
+ *
+ * Product Opener lists denied crawlers twice, in robots.txt and in its User-Agent check, and the
+ * two lists disagree. Explorer denies the crawlers of both, from the single `DENIED_CRAWLERS` list.
  */
 
-// Known web crawlers. Matching is a prefix match, as in Product Opener.
-const CRAWLER_PATTERN =
-	/\b(GoogleOther|Googlebot|Googlebot-Image|Google-InspectionTool|bingbot|Applebot|Yandex|DuckDuck|DotBot|Seekport|Ahrefs|DataForSeo|Seznam|ZoomBot|Mojeek|QRbot|Qwant|facebookexternalhit|Bytespider|GPTBot|ChatGPT-User|cohere-ai|anthropic-ai|PerplexityBot|ClaudeBot|Claude-Web|SEOkicks|Searchmetrics|MJ12|SurveyBot|SEOdiver|wotbox|Cliqz|Paracrawl|Scrapy|VelenPublicWebCrawler|Semrush|MegaIndex\.ru|Amazon|aiohttp|python-request|ImagesiftBot|Diffbot|Timpibot|meta-webindexer|meta-externalagent)/i;
+type DeniedCrawler = {
+	/** The crawler's product token, which names it in robots.txt. */
+	token: string;
+	/** How its User-Agent name starts, when that is broader than the token. Defaults to the token. */
+	userAgent?: string;
+};
 
-// Crawlers that are not allowed to index any page.
-const DENIED_CRAWLER_PATTERN =
-	/\b(bingbot|Seekport|Ahrefs|DataForSeo|Seznam|ZoomBot|Mojeek|QRbot|Bytespider|SEOkicks|Searchmetrics|MJ12|SurveyBot|SEOdiver|wotbox|Cliqz|Paracrawl|Scrapy|VelenPublicWebCrawler|Semrush|MegaIndex\.ru|YandexMarket|Amazon|GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|Claude-Web|cohere-ai|anthropic-ai|ImagesiftBot|Diffbot|Timpibot|meta-webindexer|meta-externalagent|Applebot)/i;
+/**
+ * Crawlers that may not crawl or index any page. This one list builds both their robots.txt group
+ * (`Disallow: /`) and the User-Agent check that serves them the NOINDEX page, so the two cannot
+ * drift apart.
+ */
+export const DENIED_CRAWLERS: readonly DeniedCrawler[] = [
+	{ token: 'AhrefsBot', userAgent: 'Ahrefs' },
+	{ token: 'AliyunSecBot' },
+	{ token: 'Amazonbot', userAgent: 'Amazon' },
+	{ token: 'anthropic-ai' },
+	{ token: 'Applebot' },
+	// Product Opener's robots.txt gives Bingbot its own group, but its User-Agent check denies it,
+	// so Bing gets the NOINDEX page on every URL of the current site.
+	{ token: 'Bingbot' },
+	{ token: 'Bytespider' },
+	{ token: 'ChatGPT-User' },
+	{ token: 'Claude-Web' },
+	{ token: 'ClaudeBot' },
+	{ token: 'Cliqzbot', userAgent: 'Cliqz' },
+	{ token: 'cohere-ai' },
+	{ token: 'DataForSeoBot', userAgent: 'DataForSeo' },
+	{ token: 'Diffbot' },
+	{ token: 'DotBot' },
+	{ token: 'GPTBot' },
+	{ token: 'ImagesiftBot' },
+	{ token: 'MegaIndex.ru' },
+	{ token: 'meta-externalagent' },
+	{ token: 'meta-webindexer' },
+	{ token: 'MJ12bot', userAgent: 'MJ12' },
+	{ token: 'MojeekBot', userAgent: 'Mojeek' },
+	{ token: 'OAI-SearchBot' },
+	{ token: 'Paracrawl' },
+	{ token: 'PerplexityBot' },
+	{ token: 'QRbot' },
+	{ token: 'Scrapy' },
+	{ token: 'SearchmetricsBot', userAgent: 'Searchmetrics' },
+	{ token: 'Seekport' },
+	{ token: 'SeekportBot', userAgent: 'Seekport' },
+	{ token: 'SemrushBot', userAgent: 'Semrush' },
+	{ token: 'SEOdiver' },
+	{ token: 'SEOkicks-Robot', userAgent: 'SEOkicks' },
+	{ token: 'SeznamBot', userAgent: 'Seznam' },
+	{ token: 'spbot' },
+	{ token: 'SurveyBot' },
+	{ token: 'Timpibot' },
+	{ token: 'VelenPublicWebCrawler' },
+	{ token: 'wotbox' },
+	{ token: 'YandexBot' },
+	{ token: 'YandexMarket' },
+	{ token: 'YisouSpider' },
+	{ token: 'ZoomBot' }
+];
+
+/**
+ * Crawlers that may index the pages `isIndexable` allows, by how their User-Agent name starts.
+ * They follow the `*` group of robots.txt, except Googlebot, which has its own.
+ */
+const ALLOWED_CRAWLERS = [
+	'Googlebot', // also Googlebot-Image, Googlebot-News and Googlebot-Video
+	'GoogleOther',
+	'Google-InspectionTool',
+	'Yandex', // YandexImages and the other Yandex bots; YandexBot and YandexMarket are denied
+	'DuckDuck',
+	'Qwant',
+	'facebookexternalhit',
+	// HTTP libraries, so that scripts get the NOINDEX page like crawlers do
+	'aiohttp',
+	'python-request'
+];
+
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** Matches a User-Agent with one of `names` at the start of a word, ignoring case, as Product Opener does. */
+const userAgentPattern = (names: readonly string[]) =>
+	new RegExp(`\\b(?:${names.map(escapeRegExp).join('|')})`, 'i');
+
+const DENIED_CRAWLER_PATTERN = userAgentPattern(
+	DENIED_CRAWLERS.map(({ token, userAgent }) => userAgent ?? token)
+);
+const ALLOWED_CRAWLER_PATTERN = userAgentPattern(ALLOWED_CRAWLERS);
 
 export type CrawlerKind = 'none' | 'allowed' | 'denied';
 
 export function getCrawlerKind(userAgent: string | null): CrawlerKind {
-	if (!userAgent || !CRAWLER_PATTERN.test(userAgent)) return 'none';
-	return DENIED_CRAWLER_PATTERN.test(userAgent) ? 'denied' : 'allowed';
+	if (!userAgent) return 'none';
+	// Denied first, so that YandexBot is denied although Yandex bots are allowed.
+	if (DENIED_CRAWLER_PATTERN.test(userAgent)) return 'denied';
+	return ALLOWED_CRAWLER_PATTERN.test(userAgent) ? 'allowed' : 'none';
 }
 
 /** Only production deployments may be indexed, so previews and staging never reach search results. */
@@ -99,53 +184,13 @@ const PRIVATE_PATHS = [
 	'/settings'
 ];
 
-// Crawlers blocked from the whole site in the current robots.txt.
-const DENIED_ROBOTS = [
-	'meta-externalagent',
-	'meta-webindexer',
-	'Applebot',
-	'SEOkicks-Robot',
-	'DotBot',
-	'SearchmetricsBot',
-	'MJ12bot',
-	'SurveyBot',
-	'SEOdiver',
-	'spbot',
-	'wotbox',
-	'Cliqzbot',
-	'SeekportBot',
-	'Seekport',
-	'Paracrawl',
-	'Scrapy',
-	'VelenPublicWebCrawler',
-	'SemrushBot',
-	'MegaIndex.ru',
-	'YandexMarket',
-	'YandexBot',
-	'Amazonbot',
-	'DataForSeoBot',
-	'AhrefsBot',
-	'GPTBot',
-	'cohere-ai',
-	'anthropic-ai',
-	'ClaudeBot',
-	'Claude-Web',
-	'PerplexityBot',
-	'Diffbot',
-	'ImagesiftBot',
-	'ChatGPT-User',
-	'OAI-SearchBot',
-	'AliyunSecBot',
-	'YisouSpider'
-];
-
 const robotsGroup = (userAgents: string[], rules: string[]) =>
 	[...userAgents.map((agent) => `User-agent: ${agent}`), ...rules].join('\n');
 
 const disallow = (paths: string[]) => paths.map((path) => `Disallow: ${path}`);
 const allow = (paths: string[]) => paths.map((path) => `Allow: ${path}`);
 
-// Product Opener image and OpenSearch endpoints stay crawlable for Google and Bing.
+// Product Opener image and OpenSearch endpoints stay crawlable for Google.
 const ALLOWED_CGI = ['/cgi/product_image.pl', '/cgi/opensearch.pl'];
 
 /**
@@ -160,12 +205,15 @@ export const ROBOTS_TXT =
 			[...disallow(['/api', '/cgi', ...PRIVATE_PATHS]), ...allow(ALLOWED_CGI)]
 		),
 		robotsGroup(
-			['Bingbot'],
-			[...disallow(['/api', '/cgi', '/facets', ...PRIVATE_PATHS]), ...allow(ALLOWED_CGI)]
-		),
-		robotsGroup(DENIED_ROBOTS, ['Disallow: /'])
+			DENIED_CRAWLERS.map(({ token }) => token),
+			['Disallow: /']
+		)
 	].join('\n\n') + '\n';
 
+/**
+ * Denied crawlers get `Disallow: /` for every path, like Product Opener's `deny_all_robots_txt`.
+ * This also covers a denied User-Agent whose robots.txt token is not listed, such as AhrefsSiteAudit.
+ */
 export function getRobotsTxt(userAgent: string | null, indexingAllowed: boolean): string {
 	if (!indexingAllowed || getCrawlerKind(userAgent) === 'denied') return DENY_ALL_ROBOTS_TXT;
 	return ROBOTS_TXT;
