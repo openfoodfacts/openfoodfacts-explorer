@@ -284,6 +284,22 @@
 		"loading_attributes": "Načítání atributů produktu...",
 		"attributes_error_title": "Nelze načíst personalizované atributy",
 		"attributes_error_body": "Při načítání personalizovaných atributů došlo k chybě. Zkuste to prosím znovu později.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Upravte své předvolby",
+			"match_status": {
+				"very_good_match": "Velmi dobrá shoda",
+				"good_match": "Dobrá shoda",
+				"poor_match": "Špatná shoda",
+				"may_not_match": "Nemusí se shodovat",
+				"does_not_match": "Neshoduje se",
+				"unknown_match": "Neznámá shoda"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Otevřít stránku API produktu",
