@@ -47,7 +47,7 @@
 
 		<div
 			class={[
-				'collapse-title my-2 flex w-full cursor-pointer items-center p-2 select-none hover:bg-base-200 dark:hover:bg-base-100'
+				'collapse-title my-1 flex w-full cursor-pointer items-center p-1 select-none hover:bg-base-200 sm:my-2 sm:p-2 dark:hover:bg-base-100'
 			]}
 		>
 			{#if title.icon_url != null}
@@ -89,7 +89,9 @@
 	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null}
 		<Card>
 			<div class="flex items-center">
-				<h2 class="my-3 grow text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
+				<h2 class="mb-3 grow text-2xl font-bold sm:text-3xl md:text-4xl">
+					{panel.title_element.title}
+				</h2>
 				{#if link != null}
 					<a class="link" href={link}>Go back</a>
 				{/if}

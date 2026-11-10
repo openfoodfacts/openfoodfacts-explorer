@@ -8,6 +8,6 @@
 	let { children }: Props = $props();
 </script>
 
-<div class="w-full rounded-2xl bg-white p-6 shadow-md dark:bg-base-200">
+<div class="w-full rounded-2xl bg-white p-3 shadow-md sm:p-6 dark:bg-base-200">
 	{@render children?.()}
 </div>
