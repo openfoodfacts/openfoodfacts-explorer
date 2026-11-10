@@ -284,6 +284,22 @@
 		"loading_attributes": "Chargement des attributs du produit...",
 		"attributes_error_title": "Impossible de charger les attributs personnalisés",
 		"attributes_error_body": "Une erreur est survenue lors du chargement des attributs personnalisés. Veuillez réessayer plus tard.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Afficher moins",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Modifier vos préférences",
+			"match_status": {
+				"very_good_match": "Très compatible",
+				"good_match": "Compatible",
+				"poor_match": "Peu compatible",
+				"may_not_match": "Compatibilité incertaine",
+				"does_not_match": "Pas de compatibilité",
+				"unknown_match": "Compatibilité inconnue"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Afficher/masquer les outils de code-barres",
 			"api_page": "Ouvrir la page API du produit",
