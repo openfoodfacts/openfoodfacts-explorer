@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
-	import { tick, untrack } from 'svelte';
+	import { onMount, tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	import { refreshAll } from '$app/navigation';
@@ -18,7 +18,7 @@
 	} from '#lib/api/product.js';
 	import type { ImageEditData } from '#lib/utils/imageEdit.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
-	import { photoEditRequest } from '#lib/stores/photoEditRequest.js';
+	import { getPhotoEditorCtx, type PhotoEditTarget } from '#lib/stores/photoEditor.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
@@ -172,10 +172,6 @@
 	let currentImages = $derived(getImagesForLanguage(activeLanguageCode));
 	let expandedCategories = $state(new Set<string>());
 
-	let rootEl: HTMLDivElement | undefined = $state();
-	let editReturnTo: HTMLElement | undefined;
-	// Section toggle around the trigger, focused if the trigger is gone (e.g. image unselected)
-	let editReturnFallback: HTMLElement | undefined;
 	let editingImageData: ProductImage | undefined = $state();
 	let editingImageModal: PhotoEditDialog | undefined = $state();
 	let isSavingImage = $state(false);
@@ -213,60 +209,35 @@
 		editingImageModal?.openModal();
 	}
 
-	// Opening the editor from an edit step expands this section and moves focus into
-	// the dialog, so bring the user back to the button they used once it's closed.
-	function returnToEditTrigger() {
-		const trigger = editReturnTo;
-		const fallback = editReturnFallback;
-		editReturnTo = undefined;
-		editReturnFallback = undefined;
-		if (trigger == null) return;
-		// Wait for the dialog to unmount, otherwise focus falls back to the body
-		tick().then(() =>
-			requestAnimationFrame(() => {
-				const el = trigger.isConnected ? trigger : fallback?.isConnected ? fallback : null;
-				if (el == null) return;
-				el.scrollIntoView({ block: 'center' });
-				el.focus({ preventScroll: true });
-			})
-		);
-	}
-
 	function closeEditModal() {
+		// Close the dialog before unmounting it, so the browser puts focus back on the
+		// button that opened it (also when it was opened from an edit step)
+		editingImageModal?.closeModal();
 		editingImageData = undefined;
-		returnToEditTrigger();
 	}
 
-	// Open the editor when an edit step asks for a specific selected image
-	$effect(() => {
-		const request = $photoEditRequest;
-		if (request == null) return;
+	// Open the editor for a selected image when an edit step asks for it
+	async function editSelectedImage({ typeId, language }: PhotoEditTarget) {
+		const image = getStandardImages(language).find((img) => img.typeId === typeId);
+		if (image == null) {
+			console.warn(`No selected ${typeId} image to edit for ${language}`);
+			return;
+		}
 
-		untrack(() => {
-			photoEditRequest.set(null);
-			const image = getStandardImages(request.language).find(
-				(img) => img.typeId === request.typeId
-			);
-			if (image == null) {
-				console.warn('No selected image to edit for', request);
-				return;
-			}
-			// The editor dialog can't render inside a collapsed section, so open it first
-			const sectionToggle = rootEl
-				?.closest('.collapse')
-				?.querySelector<HTMLInputElement>(':scope > input[type="checkbox"]');
-			if (sectionToggle && !sectionToggle.checked) {
-				sectionToggle.click();
-			}
+		activeLanguageCode = language;
+		editingImageData = image;
+		await tick(); // let svelte create the node in the DOM
+		editingImageModal?.openModal();
+	}
 
-			activeLanguageCode = request.language;
-			editReturnTo = request.returnTo;
-			editReturnFallback =
-				request.returnTo
-					?.closest('.collapse')
-					?.querySelector<HTMLInputElement>(':scope > input[type="checkbox"]') ?? undefined;
-			editingImageData = image;
-		});
+	// Only set where edit steps can open the editor (the edit form)
+	const photoEditor = getPhotoEditorCtx();
+	onMount(() => {
+		if (photoEditor == null) return;
+
+		const onEdit = (e: Event) => editSelectedImage((e as CustomEvent<PhotoEditTarget>).detail);
+		photoEditor.addEventListener('edit', onEdit);
+		return () => photoEditor.removeEventListener('edit', onEdit);
 	});
 
 	// Auto-open modal when editingImageData is set
@@ -421,7 +392,6 @@
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
 				await refreshAll();
 				editingImageModal?.closeModal();
-				returnToEditTrigger();
 			} else {
 				console.warn('Image unselect failed:', result);
 				toast.error($_('product.edit.images.toast.unselect_failed'));
@@ -474,7 +444,7 @@
 	}
 </script>
 
-<div bind:this={rootEl} class="mb-4 sm:mb-6">
+<div class="mb-4 sm:mb-6">
 	<div class="tabs tabs-lift">
 		<div class="tab tab-disabled cursor-default">
 			<IconMdiLanguage class="mr-1 h-5 w-5 align-middle" />

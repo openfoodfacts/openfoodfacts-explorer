@@ -21,7 +21,7 @@
 	import { trackOffEvent } from '#lib/analytics.js';
 	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 	import { getToastCtx } from '#lib/stores/toasts.js';
-	import { photoEditRequest } from '#lib/stores/photoEditRequest.js';
+	import { getPhotoEditorCtx } from '#lib/stores/photoEditor.js';
 
 	type OCRResult = {
 		status?: number;
@@ -37,32 +37,23 @@
 		getIngredientsImage: (language: string) => string | null;
 		allergenNames?: string[];
 		editMode?: boolean;
-		// Show "Edit Photo". Only set it where the Photos section (PhotoManager) is mounted
-		// alongside this step: it opens the editor, and nothing else handles the request.
-		canEditPhoto?: boolean;
 	};
 
 	let {
 		product = $bindable(),
 		getIngredientsImage,
 		allergenNames = [],
-		editMode = false,
-		canEditPhoto = false
+		editMode = false
 	}: Props = $props();
+
+	// Only available where the Photos section is rendered too (the edit form)
+	const photoEditor = getPhotoEditorCtx();
 
 	let showInfo = $state(false);
 	let ocrLoading = $state(false);
 	let unselectingLang = $state<string | null>(null);
 
 	const toast = getToastCtx();
-
-	function editIngredientsImage(e: MouseEvent, languageCode: string) {
-		photoEditRequest.set({
-			typeId: 'ingredients',
-			language: languageCode,
-			returnTo: e.currentTarget as HTMLElement
-		});
-	}
 
 	async function unselectIngredientsImage(languageCode: string) {
 		unselectingLang = languageCode;
@@ -226,11 +217,11 @@
 								{/if}
 							</button>
 
-							{#if canEditPhoto}
+							{#if photoEditor}
 								<button
 									type="button"
 									class="btn gap-2 btn-outline btn-sm"
-									onclick={(e) => editIngredientsImage(e, code)}
+									onclick={() => photoEditor.edit({ typeId: 'ingredients', language: code })}
 								>
 									<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
 									<span>{$_('product.edit.images.edit_photo', { default: 'Edit Photo' })}</span>
