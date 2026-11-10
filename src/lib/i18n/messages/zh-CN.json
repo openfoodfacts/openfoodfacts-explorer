@@ -284,6 +284,22 @@
 		"loading_attributes": "正在加载产品属性…",
 		"attributes_error_title": "无法加载个性化属性",
 		"attributes_error_body": "加载个性化属性时出错。请稍后重试。",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "编辑您的偏好",
+			"match_status": {
+				"very_good_match": "匹配度高",
+				"good_match": "匹配度较高",
+				"poor_match": "匹配度低",
+				"may_not_match": "可能不匹配",
+				"does_not_match": "不匹配",
+				"unknown_match": "匹配度未知"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "显示/隐藏条形码工具",
 			"api_page": "打开产品 API 页面",
