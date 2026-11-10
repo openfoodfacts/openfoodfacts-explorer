@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Επεξεργαστείτε τις προτιμήσεις σας",
+			"match_status": {
+				"very_good_match": "Πολύ καλή αντιστοιχία",
+				"good_match": "Καλή αντιστοιχία",
+				"poor_match": "Κακή αντιστοιχία",
+				"may_not_match": "Μπορεί να μην ταιριάζει",
+				"does_not_match": "Δεν ταιριάζει",
+				"unknown_match": "Άγνωστη αντιστοιχία"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
