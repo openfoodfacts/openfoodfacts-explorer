@@ -24,6 +24,7 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
+/** Returns the number of prices for each barcode, using one Prices API request per 100 codes. */
 async function getPrices(
 	baseFetch: typeof fetch,
 	barcodes: string[]
