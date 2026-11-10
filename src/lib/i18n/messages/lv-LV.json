@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Rediģēt savas preferences",
+			"match_status": {
+				"very_good_match": "Ļoti laba spēle",
+				"good_match": "Laba atbilstība",
+				"poor_match": "Slikta atbilstība",
+				"may_not_match": "Var neatbilst",
+				"does_not_match": "Neatbilst",
+				"unknown_match": "Nezināma atbilstība"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
