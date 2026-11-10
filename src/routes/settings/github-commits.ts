@@ -1,4 +1,4 @@
-export type BuildCommit = { sha: string; message: string };
+export type GitHubCommitInfo = { sha: string; message: string };
 
 type GitHubCommit = { sha: string; commit: { message: string } };
 
@@ -13,15 +13,21 @@ function isGitHubCommit(value: unknown): value is GitHubCommit {
 }
 
 /** Fetch commits starting at the build's immutable commit, never at a moving branch. */
-export async function getBuildCommits(
+export async function getGitHubCommits(
 	sha: string,
-	fetcher: typeof fetch = fetch
-): Promise<BuildCommit[]> {
+	repoUrl: string,
+	fetcher: typeof fetch = fetch,
+	options = { size: 5 }
+): Promise<GitHubCommitInfo[]> {
 	if (!/^[a-f\d]{7,40}$/i.test(sha)) throw new Error('Build commit is unavailable');
 
-	const url = new URL('https://api.github.com/repos/openfoodfacts/openfoodfacts-explorer/commits');
+	const repo = new URL(repoUrl);
+	if (repo.hostname !== 'github.com' || !/^\/[^/]+\/[^/]+\/?$/.test(repo.pathname)) {
+		throw new Error('Invalid GitHub repository URL');
+	}
+	const url = new URL(`https://api.github.com/repos${repo.pathname.replace(/\/$/, '')}/commits`);
 	url.searchParams.set('sha', sha);
-	url.searchParams.set('per_page', '5');
+	url.searchParams.set('per_page', options.size.toString());
 
 	const response = await fetcher(url);
 	if (!response.ok) throw new Error('Could not load build commits');
@@ -31,6 +37,6 @@ export async function getBuildCommits(
 	if (!data.every(isGitHubCommit)) throw new Error('Invalid build commit');
 
 	return data
-		.slice(0, 5)
+		.slice(0, options.size)
 		.map(({ sha, commit }) => ({ sha, message: commit.message.split('\n')[0] }));
 }
