@@ -23,6 +23,10 @@ const GOOGLEBOT_SMARTPHONE =
 	'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.122 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 const YANDEXBOT = 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)';
 
+// The DuckDuckGo browser adds DuckDuckGo/<major version> to its User-Agent (UserAgentProvider in duckduckgo/Android)
+const DUCKDUCKGO_ANDROID =
+	'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.0.0 Mobile DuckDuckGo/5 Safari/537.36';
+
 const url = (path: string) => new URL(path, 'https://world.openfoodfacts.org');
 
 type RobotsGroup = { agents: string[]; rules: string[] };
@@ -52,7 +56,14 @@ const bannedAgents = robotsGroups
 
 describe('getCrawlerKind', () => {
 	it('does not flag browsers or missing user agents', () => {
-		expect(getCrawlerKind(FIREFOX)).toBe('none');
+		for (const userAgent of [
+			FIREFOX,
+			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+			'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+			DUCKDUCKGO_ANDROID
+		]) {
+			expect(getCrawlerKind(userAgent), userAgent).toBe('none');
+		}
 		expect(getCrawlerKind(null)).toBe('none');
 		expect(getCrawlerKind('')).toBe('none');
 	});
@@ -284,10 +295,12 @@ describe('createIndexingHandle', () => {
 	});
 
 	it('renders non-indexable pages for people with a noindex header', async () => {
-		const event = makeEvent('/search', '/search?q=chocolate', FIREFOX);
-		const { response, resolve } = await run(true, event);
-		expect(resolve).toHaveBeenCalledOnce();
-		expect(response.headers.get('x-robots-tag')).toBe('noindex');
+		for (const userAgent of [FIREFOX, DUCKDUCKGO_ANDROID]) {
+			const event = makeEvent('/search', '/search?q=chocolate', userAgent);
+			const { response, resolve } = await run(true, event);
+			expect(resolve, userAgent).toHaveBeenCalledOnce();
+			expect(response.headers.get('x-robots-tag')).toBe('noindex');
+		}
 	});
 
 	it('adds a noindex header to every page outside production', async () => {

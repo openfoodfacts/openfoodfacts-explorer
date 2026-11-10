@@ -81,7 +81,7 @@ const ALLOWED_CRAWLERS = [
 	'GoogleOther',
 	'Google-InspectionTool',
 	'Yandex', // YandexImages and the other Yandex bots; YandexBot and YandexMarket are denied
-	'DuckDuck',
+	'DuckDuckBot', // not DuckDuck, which also matches the DuckDuckGo browser (DuckDuckGo/5)
 	'Qwant',
 	'facebookexternalhit',
 	// HTTP libraries, so that scripts get the NOINDEX page like crawlers do
