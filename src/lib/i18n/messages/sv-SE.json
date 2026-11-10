@@ -284,6 +284,22 @@
 		"loading_attributes": "Läser in produktattribut…",
 		"attributes_error_title": "Det gick inte att läsa in de personanpassade attributen",
 		"attributes_error_body": "Ett fel uppstod när de personanpassade attributen lästes in. Försök igen senare.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Visa mindre",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Redigera dina inställningar",
+			"match_status": {
+				"very_good_match": "Mycket god matchning",
+				"good_match": "God matchning",
+				"poor_match": "Dålig matchning",
+				"may_not_match": "Kanske inte matchar",
+				"does_not_match": "Matchar inte",
+				"unknown_match": "Okänd matchning"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Visa/dölj streckkodsverktyg",
 			"api_page": "Öppna produkt-API-sidan",
