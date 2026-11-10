@@ -284,6 +284,22 @@
 		"loading_attributes": "Učitavanje atributa proizvoda...",
 		"attributes_error_title": "Ne može se učitati personalizirane atribute",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Uredite svoje postavke",
+			"match_status": {
+				"very_good_match": "Vrlo dobra utakmica",
+				"good_match": "Dobra utakmica",
+				"poor_match": "Loša utakmica",
+				"may_not_match": "Možda se ne podudara",
+				"does_not_match": "Ne odgovara",
+				"unknown_match": "Nepoznati meč"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
