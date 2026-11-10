@@ -31,7 +31,6 @@ async function getPrices(
 	const prices: Record<string, number> = {};
 	const api = createPricesApi(baseFetch);
 
-	// The Prices API returns at most 100 items per page
 	const batches: string[][] = [];
 	for (let i = 0; i < barcodes.length; i += 100) {
 		batches.push(barcodes.slice(i, i + 100));
@@ -40,12 +39,10 @@ async function getPrices(
 	const results = await Promise.all(
 		batches.map(async (codes) => {
 			try {
-				// shortcut: code__in is not in the SDK types yet, drop the cast once they are regenerated
 				const query = { code__in: codes.join(','), size: codes.length } as Parameters<
 					typeof api.getProducts
 				>[0];
 				const res = await api.getProducts(query);
-				// The SDK types `items` as a nested array, but the API returns a flat list
 				return { codes, items: res.data?.items.flat() ?? null };
 			} catch {
 				return { codes, items: null };
@@ -55,7 +52,6 @@ async function getPrices(
 
 	for (const { codes, items } of results) {
 		if (!items) continue;
-		// Products unknown to the Prices API are not returned and have no prices
 		for (const code of codes) prices[code] = 0;
 		for (const item of items) prices[item.code] = item.price_count ?? 0;
 	}
