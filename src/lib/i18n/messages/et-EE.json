@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Muuda oma eelistusi",
+			"match_status": {
+				"very_good_match": "Väga hea vaste",
+				"good_match": "Hea vaste",
+				"poor_match": "Kehv vaste",
+				"may_not_match": "Ei pruugi sobida",
+				"does_not_match": "Ei sobi",
+				"unknown_match": "Vaste pole teada"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
