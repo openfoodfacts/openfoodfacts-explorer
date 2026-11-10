@@ -4,5 +4,6 @@ export type ProductGroupedAttributes = {
 	id: string;
 	name: string;
 	warning?: string;
-	attributes: AttributeV2[];
+	// FIXME: Remove panel_id once the SDK type includes it
+	attributes: (AttributeV2 & { panel_id?: string })[];
 };
