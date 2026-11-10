@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Tercihlerinizi düzenleyin",
+			"match_status": {
+				"very_good_match": "Çok iyi eşleşme",
+				"good_match": "İyi eşleşme",
+				"poor_match": "Zayıf eşleşme",
+				"may_not_match": "Eşleşmeyebilir",
+				"does_not_match": "Eşleşmiyor",
+				"unknown_match": "Bilinmeyen eşleşme"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
