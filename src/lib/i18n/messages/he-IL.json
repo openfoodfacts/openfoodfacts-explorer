@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "להציג פחות",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "עריכת ההעדפות שלך",
+			"match_status": {
+				"very_good_match": "התאמה טובה מאוד",
+				"good_match": "התאמה טובה",
+				"poor_match": "התאמה גרועה",
+				"may_not_match": "אולי אין התאמה",
+				"does_not_match": "אינו תואם",
+				"unknown_match": "התאמה לא ידועה"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
