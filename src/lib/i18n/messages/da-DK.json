@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Vis færre",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Rediger dine præferencer",
+			"match_status": {
+				"very_good_match": "Meget godt match",
+				"good_match": "Godt match",
+				"poor_match": "Dårligt match",
+				"may_not_match": "Matcher muligvis ikke",
+				"does_not_match": "Matcher ikke",
+				"unknown_match": "Ukendt match"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
