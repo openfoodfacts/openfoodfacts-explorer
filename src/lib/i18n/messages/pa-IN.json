@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Edit your preferences",
+			"match_status": {
+				"very_good_match": "ਬਹੁਤ ਵਧੀਆ ਮੈਚ।",
+				"good_match": "ਵਧੀਆ ਮੇਲ",
+				"poor_match": "ਮਾੜਾ ਮੇਲ",
+				"may_not_match": "May not match",
+				"does_not_match": "ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ",
+				"unknown_match": "ਅਗਿਆਤ ਮੇਲ"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
