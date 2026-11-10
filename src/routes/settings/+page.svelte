@@ -215,7 +215,9 @@
 							})}
 						{/if}
 					</p>
-					<GitHubCommits sha={COMMIT_SHA} repoUrl={GITHUB_REPO_URL} />
+					{#if COMMIT_SHA !== 'unknown'}
+						<GitHubCommits sha={COMMIT_SHA} repoUrl={GITHUB_REPO_URL} />
+					{/if}
 				</div>
 			</div>
 		</div>
