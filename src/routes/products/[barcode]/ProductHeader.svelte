@@ -22,9 +22,10 @@
 	type Props = {
 		product: Product;
 		lc?: string;
-		scores?: Snippet<['tiles' | 'score']>;
+		tiles?: Snippet;
+		score?: Snippet;
 	};
-	let { product, lc, scores }: Props = $props();
+	let { product, lc, tiles, score }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -205,11 +206,11 @@
 					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
-				<div class="mt-2 min-w-0 basis-full">{@render scores?.('tiles')}</div>
+				<div class="mt-2 min-w-0 basis-full">{@render tiles?.()}</div>
 			</div>
 		</div>
 
-		<div id="attributes" class="w-full min-w-0">{@render scores?.('score')}</div>
+		<div id="attributes" class="w-full min-w-0">{@render score?.()}</div>
 
 		<div class="min-w-0">
 			<!-- Metadata Body -->

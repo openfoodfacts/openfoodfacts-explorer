@@ -10,6 +10,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
+	import ScoreTiles from './ScoreTiles.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import DataSources from './DataSources.svelte';
 
@@ -367,7 +368,7 @@
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
-				<ProductHeader {product} lc={data.lc} {scores} />
+				<ProductHeader {product} lc={data.lc} {score} {tiles} />
 			</div>
 
 			<div>
@@ -480,24 +481,16 @@
 	</div>
 </div>
 
-{#snippet scores(part: 'tiles' | 'score')}
+{#snippet score()}
 	{#await productAttributes}
-		{#if part === 'score'}
-			<div class="flex items-center justify-center py-8">
-				<span class="loading loading-lg loading-spinner"></span>
-				<span class="ml-2">{$_('product.loading_attributes')}</span>
-			</div>
-		{/if}
+		<div class="flex items-center justify-center py-8">
+			<span class="loading loading-lg loading-spinner"></span>
+			<span class="ml-2">{$_('product.loading_attributes')}</span>
+		</div>
 	{:then attributes}
 		{#if attributes != null}
-			<ProductAttributes
-				groups={attributes}
-				defaultPreferences={data.defaultProductPreferences}
-				{part}
-				{panels}
-				code={product.code}
-			/>
-		{:else if part === 'score'}
+			<ProductAttributes groups={attributes} defaultPreferences={data.defaultProductPreferences} />
+		{:else}
 			<div class="alert alert-warning">
 				<IconMdiWarning class="h-6 w-6 shrink-0" />
 				<div>
@@ -505,6 +498,14 @@
 					<p>{$_('product.attributes_error_body')}</p>
 				</div>
 			</div>
+		{/if}
+	{/await}
+{/snippet}
+
+{#snippet tiles()}
+	{#await productAttributes then attributes}
+		{#if attributes != null}
+			<ScoreTiles groups={attributes} {panels} code={product.code} />
 		{/if}
 	{/await}
 {/snippet}

@@ -2,6 +2,9 @@ import { getPreference, type UserPreference } from '#lib/stores/preferencesStore
 
 type Attribute = { id?: string; status?: string; match?: number };
 
+/** Select preferred non-tile attributes, putting mandatory and mismatching attributes first.
+ * Unknown attributes follow known attributes of the same preference priority.
+ */
 export function getVisibleAttributes<T extends Attribute>(
 	groups: { id: string; attributes: T[] }[],
 	preferences: UserPreference[],

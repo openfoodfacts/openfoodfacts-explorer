@@ -9,7 +9,6 @@
 	import { userInfo, getPermissionsCtx } from '#lib/stores/user.js';
 	import Metadata from '#lib/Metadata.svelte';
 	import { COMMIT_SHA } from '#lib/const.js';
-	import { page } from '$app/state';
 
 	import IconMdiAccount from '@iconify-svelte/mdi/account';
 	import IconMaterialTranslate from '@iconify-svelte/material-symbols/translate';
@@ -40,7 +39,7 @@
 	let { attributeGroups } = $derived(data);
 
 	let activeTab = $state<'account' | 'general' | 'editing' | 'preferences' | 'developer'>(
-		TABS.find((tab) => tab.label === page.url.searchParams.get('tab'))?.label ?? 'account'
+		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
 
