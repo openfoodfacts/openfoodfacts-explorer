@@ -10,6 +10,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
+	import ScoreTiles from './ScoreTiles.svelte';
 	import Folksonomy from './Folksonomy.svelte';
 	import DataSources from './DataSources.svelte';
 
@@ -269,27 +270,24 @@
 		};
 	});
 
-	async function getProductAttributes(code: string): Promise<ProductGroupedAttributes[]> {
+	// Only this preference affects the attributes API request. Other preference
+	// changes should update the score without reloading the product attributes.
+	let unwantedIngredients = $derived.by(() => {
+		const preference = $personalizedSearch.userPreferences.find(
+			(item) => item.attributeId === 'attribute_unwanted_ingredients_tags'
+		);
+		if (!preference) return undefined;
+		return preference.type === 'tags' ? preference.value.join(',') : preference.value;
+	});
+	let attributeProductCode = $derived(product.code);
+
+	async function getProductAttributes(
+		code: string,
+		unwanted: string | undefined
+	): Promise<ProductGroupedAttributes[]> {
 		const offApi = createProductsApi(fetch);
-
-		const searchParams: Record<string, unknown> = {
-			fields: ['attribute_groups_en']
-		};
-
-		const SENT_ATTRIBUTES = ['attribute_unwanted_ingredients_tags'];
-
-		for (const prefAttr of SENT_ATTRIBUTES) {
-			const pref = $personalizedSearch.userPreferences.find((p) => p.attributeId === prefAttr);
-			if (pref == null) {
-				continue;
-			}
-
-			if (pref.type === 'attribute') {
-				searchParams[pref.attributeId] = pref.value;
-			} else if (pref.type === 'tags') {
-				searchParams[pref.attributeId] = pref.value.join(',');
-			}
-		}
+		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
+		if (unwanted !== undefined) searchParams.attribute_unwanted_ingredients_tags = unwanted;
 
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
 
@@ -308,8 +306,8 @@
 	}
 
 	let productAttributes = $derived.by(() => {
-		if (product.code && browser) {
-			return getProductAttributes(product.code);
+		if (attributeProductCode && browser) {
+			return getProductAttributes(attributeProductCode, unwantedIngredients);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
@@ -369,7 +367,9 @@
 		/>
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
-			<div id="overview" class="flex flex-col gap-4"><ProductHeader {product} lc={data.lc} /></div>
+			<div id="overview" class="flex flex-col gap-4">
+				<ProductHeader {product} lc={data.lc} {score} {tiles} />
+			</div>
 
 			<div>
 				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
@@ -378,30 +378,6 @@
 					is-logged-in={$userInfo != null}
 					onclick={() => trackOffEvent('feature', 'nutrisight_opened')}
 				></robotoff-contribution-message>
-			</div>
-
-			<div id="attributes">
-				{#await productAttributes}
-					<div class="flex items-center justify-center py-8">
-						<span class="loading loading-lg loading-spinner"></span>
-						<span class="ml-2">{$_('product.loading_attributes')}</span>
-					</div>
-				{:then attributes}
-					{#if attributes != null}
-						<ProductAttributes
-							groups={attributes}
-							defaultPreferences={data.defaultProductPreferences}
-						/>
-					{:else}
-						<div class="alert alert-warning">
-							<IconMdiWarning class="h-6 w-6 shrink-0" />
-							<div>
-								<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
-								<p>{$_('product.attributes_error_body')}</p>
-							</div>
-						</div>
-					{/if}
-				{/await}
 			</div>
 
 			<div id="knowledge-panels-container">
@@ -504,5 +480,34 @@
 		</div>
 	</div>
 </div>
+
+{#snippet score()}
+	{#await productAttributes}
+		<div class="flex items-center justify-center py-8">
+			<span class="loading loading-lg loading-spinner"></span>
+			<span class="ml-2">{$_('product.loading_attributes')}</span>
+		</div>
+	{:then attributes}
+		{#if attributes != null}
+			<ProductAttributes groups={attributes} defaultPreferences={data.defaultProductPreferences} />
+		{:else}
+			<div class="alert alert-warning">
+				<IconMdiWarning class="h-6 w-6 shrink-0" />
+				<div>
+					<h3 class="font-bold">{$_('product.attributes_error_title')}</h3>
+					<p>{$_('product.attributes_error_body')}</p>
+				</div>
+			</div>
+		{/if}
+	{/await}
+{/snippet}
+
+{#snippet tiles()}
+	{#await productAttributes then attributes}
+		{#if attributes != null}
+			<ScoreTiles groups={attributes} {panels} code={product.code} />
+		{/if}
+	{/await}
+{/snippet}
 
 <ScrollToTop />
