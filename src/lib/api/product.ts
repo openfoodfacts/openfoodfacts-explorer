@@ -739,7 +739,7 @@ export type Product = ProductDataSection & {
 	Partial<Record<LangPackagingText, string>> &
 	Partial<Record<LangGenericName, string>>;
 
-const REDUCED_FIELDS = [
+export const REDUCED_FIELDS = [
 	'image_front_small_url',
 	'code',
 	'product_name',
