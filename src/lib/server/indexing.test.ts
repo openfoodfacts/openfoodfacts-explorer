@@ -12,18 +12,15 @@ import {
 	ROBOTS_TXT
 } from './indexing';
 
-// User agents from Product Opener's tests/integration/page_crawler.t
 const GOOGLEBOT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 const AHREFSBOT = 'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)';
 const FIREFOX = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0';
 const BINGBOT = 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)';
 
-// User agents as these crawlers send them
 const GOOGLEBOT_SMARTPHONE =
 	'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.122 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 const YANDEXBOT = 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)';
 
-// The DuckDuckGo browser adds DuckDuckGo/<major version> to its User-Agent (UserAgentProvider in duckduckgo/Android)
 const DUCKDUCKGO_ANDROID =
 	'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.0.0 Mobile DuckDuckGo/5 Safari/537.36';
 
@@ -31,7 +28,6 @@ const url = (path: string) => new URL(path, 'https://world.openfoodfacts.org');
 
 type RobotsGroup = { agents: string[]; rules: string[] };
 
-/** Splits robots.txt into groups: user-agent lines and the rules that follow them (RFC 9309). */
 function parseRobotsTxt(text: string): RobotsGroup[] {
 	const groups: RobotsGroup[] = [];
 	for (const line of text.split('\n')) {
@@ -49,7 +45,6 @@ function parseRobotsTxt(text: string): RobotsGroup[] {
 const robotsGroups = parseRobotsTxt(ROBOTS_TXT);
 const rulesFor = (agent: string) =>
 	robotsGroups.find((group) => group.agents.includes(agent))?.rules;
-// Crawlers that robots.txt keeps out of the whole site
 const bannedAgents = robotsGroups
 	.filter((group) => group.rules.join('\n') === 'Disallow: /')
 	.flatMap((group) => group.agents);

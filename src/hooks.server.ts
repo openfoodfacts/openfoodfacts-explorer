@@ -3,12 +3,11 @@ import * as Sentry from '@sentry/sveltekit';
 import { clearWindow } from 'isomorphic-dompurify';
 
 import { locale } from '#lib/i18n/index.js';
-import { createIndexingHandle, isIndexingAllowed } from '#lib/server/indexing.js';
+import { createIndexingHandle } from '#lib/server/indexing.js';
 import { ServerTiming } from '#lib/server/timing.ts';
 import { dev } from '$app/env';
-import { PUBLIC_ENVIRONMENT } from '$app/env/public';
 
-const handleRequest: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
+const handleRequest: Handle = async ({ event, resolve }) => {
 	// Server timing setup
 	const startTime = performance.now();
 
@@ -52,11 +51,12 @@ const handleRequest: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	clearWindow();
 
 	return resolved;
-});
+};
 
 export const handle: Handle = sequence(
+	Sentry.sentryHandle(),
 	handleRequest,
-	createIndexingHandle(isIndexingAllowed(PUBLIC_ENVIRONMENT))
+	createIndexingHandle()
 );
 
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
