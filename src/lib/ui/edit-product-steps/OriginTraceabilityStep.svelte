@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { _ } from '#lib/i18n/index.js';
-	import { getEmbCodeSuggestions, type Product } from '#lib/api.js';
+	import { getTaxonomySuggestions, type Product } from '#lib/api.js';
 
 	import TagsString from '#lib/ui/inputs/TagsString.svelte';
 	import InfoTooltip from '../InfoTooltip.svelte';
@@ -117,7 +117,8 @@
 		</label>
 		<TagsString
 			tagsString={product.emb_codes ?? ''}
-			getSuggestions={(query) => getEmbCodeSuggestions(fetch, query)}
+			getSuggestions={async (query) =>
+				(await getTaxonomySuggestions(fetch, 'emb_codes', query, 10)).data?.suggestions ?? []}
 			placeholder={$_('product.edit.traceability_examples', {
 				default: 'Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE'
 			})}

@@ -7,7 +7,7 @@
 	type Props = {
 		tags?: string[];
 		autocomplete?: readonly string[];
-		/** Loads suggestions for the typed value from a remote source, replacing `autocomplete` */
+		/** When set, loads suggestions for the typed value and is used instead of the preloaded `autocomplete` list */
 		getSuggestions?: (query: string) => Promise<readonly string[]>;
 		placeholder?: string;
 		onChange?: (tags: string[]) => void;
