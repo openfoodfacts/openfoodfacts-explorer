@@ -7,7 +7,9 @@
 	import * as iso from 'iso-3166-1';
 
 	import { getTaxo } from '#lib/api.js';
-	import { buildCountryData } from './country-data';
+	import { _ } from '#lib/i18n/index.js';
+	import { equalEarthCrs } from '#lib/map/proj/equal-earth.js';
+	import { buildCountryData, countryColorIntensity } from './country-data';
 
 	import type { GeometryCollection, Topology } from 'topojson-specification';
 	import type { Country, FacetResponse, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -90,7 +92,7 @@
 	}
 
 	// Map configuration
-	const MIN_ZOOM = 1;
+	const MIN_ZOOM = 0;
 	const INITIAL_ZOOM = 1;
 
 	// Exclude non-meaningful surfaces
@@ -112,7 +114,7 @@
 	let countryTaxonomy: Taxonomy<Country> | null = $state(null);
 
 	// Lazy loaded Leaflet module
-	let L: typeof import('leaflet') | null = null;
+	let L: typeof import('leaflet') | null = $state.raw(null);
 
 	// Map instance and legend control references
 	let mapContainer: HTMLElement;
@@ -130,14 +132,9 @@
 		mq.addEventListener('change', handleColorSchemeChange);
 
 		(async () => {
-			L = await import('leaflet'); // Dynamically import Leaflet
+			const leaflet = await import('leaflet'); // Dynamically import Leaflet
 			if (abortController.signal.aborted) return; // Component was unmounted
-
-			mapInstance = L.map(mapContainer, { zoomControl: true, minZoom: MIN_ZOOM });
-			mapInstance.setView([20, 0], INITIAL_ZOOM);
-
-			// Leaflet injects its own background-color via JS; override it directly
-			mapContainer.style.setProperty('background', 'transparent');
+			L = leaflet;
 
 			const abortingFetch: typeof fetch = (input, init) => {
 				return fetch(input, { ...init, signal: abortController.signal });
@@ -154,17 +151,28 @@
 		return () => {
 			abortController.abort();
 			mq.removeEventListener('change', handleColorSchemeChange);
-			if (mapInstance) {
-				mapInstance.off();
-				mapInstance.remove();
-				mapInstance = null;
-			}
-			if (legendControl) {
-				legendControl.remove();
-				legendControl = null;
-			}
-
 			countryTaxonomy = null;
+		};
+	});
+
+	$effect(() => {
+		if (L == null || !mapContainer) return;
+		const map = L.map(mapContainer, {
+			zoomControl: true,
+			minZoom: MIN_ZOOM,
+			zoomSnap: 0.1,
+			crs: equalEarthCrs(L)
+		});
+		map.setView([20, 0], INITIAL_ZOOM);
+		mapContainer.style.setProperty('background', 'transparent');
+		mapInstance = map;
+
+		return () => {
+			legendControl?.remove();
+			legendControl = null;
+			map.off();
+			map.remove();
+			mapInstance = null;
 		};
 	});
 
@@ -252,7 +260,7 @@
 				};
 			}
 
-			const intensity = Math.log1p(data.products) / Math.log1p(maxProducts);
+			const intensity = countryColorIntensity(data.products, maxProducts);
 			return {
 				fillColor: choroplethColor(intensity),
 				color: dataBorder,
@@ -294,19 +302,55 @@
 					pathLayer.bindPopup(
 						`<strong>${safeName}</strong>: ${numberFormat.format(data.products)} products`
 					);
+
+					// Unbind sticky tooltip to avoid stacking
+					pathLayer.on({
+						popupopen() {
+							pathLayer.closeTooltip();
+							pathLayer.unbindTooltip();
+						},
+						popupclose() {
+							pathLayer.bindTooltip(tooltipContent, { sticky: true });
+						}
+					});
 				}
 			}
 		});
 
 		geoLayer.addTo(map);
 
-		// Fit the map to the bounds of the layers
+		// Geographic bounds alone do not capture the widest part of Equal Earth,
+		// so fit the projected country coordinates instead of the corner points.
 		if (geoLayer.getLayers().length > 0) {
-			map.fitBounds(geoLayer.getBounds(), { padding: [20, 20] });
+			const points: Leaflet.Point[] = [];
+			for (const feature of filteredGeoJSON.features) {
+				const geometry = feature.geometry;
+				const polygons =
+					geometry.type === 'Polygon'
+						? [geometry.coordinates]
+						: geometry.type === 'MultiPolygon'
+							? geometry.coordinates
+							: [];
+				for (const polygon of polygons) {
+					for (const ring of polygon) {
+						for (const [lng, lat] of ring) points.push(map.project(L.latLng(lat, lng), 0));
+					}
+				}
+			}
+			if (points.length > 0) {
+				const bounds = L.bounds(points);
+				const size = bounds.getSize();
+				const available = map.getSize().subtract(L.point(40, 40));
+				const scale = Math.min(available.x / size.x, available.y / size.y);
+				const zoom = Math.floor(map.getScaleZoom(scale, 0) * 10) / 10;
+				map.setView(map.unproject(bounds.getCenter(), 0), zoom);
+			}
 		}
 
 		// Add legend
-		const minVal = hasData ? Math.min(...productValues) : 0;
+		const legendTitle = DOMPurify.sanitize(
+			$_('facets.map_sqrt_legend', { default: 'Products (square-root scale)' })
+		);
 		const LegendControl = L.Control.extend({
 			onAdd() {
 				if (L == null) {
@@ -314,12 +358,13 @@
 				}
 				const div = L.DomUtil.create('div', 'countries-map-legend');
 				div.innerHTML = `
-					<strong>Products</strong>
+					<strong>${legendTitle}</strong>
 					<div class="countries-map-legend-scale">
 						<div class="countries-map-legend-gradient"></div>
 						<div class="countries-map-legend-labels">
 							<span>${numberFormat.format(maxProducts)}</span>
-							<span>${numberFormat.format(minVal)}</span>
+							<span>${numberFormat.format(Math.round(maxProducts / 4))}</span>
+							<span>0</span>
 						</div>
 					</div>`;
 				return div;
@@ -336,7 +381,7 @@
 
 <div
 	bind:this={mapContainer}
-	class="countries-map h-96 w-full"
+	class="countries-map mx-auto w-full max-w-3xl"
 	style:--gradient-start={rgbToCSS(THEME.gradient.start)}
 	style:--gradient-end={rgbToCSS(THEME.gradient.end)}
 	role="region"
@@ -345,6 +390,12 @@
 ></div>
 
 <style>
+	.countries-map {
+		height: auto;
+		min-height: 16rem;
+		aspect-ratio: 2.05458 / 1;
+	}
+
 	:global(.countries-map-legend) {
 		background: white;
 		color: #111827;

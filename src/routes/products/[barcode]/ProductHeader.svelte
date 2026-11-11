@@ -1,32 +1,31 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
 
 	import { navigating } from '$app/state';
 
 	import { getLanguageCode, preferences } from '#lib/settings.js';
-	import { PRODUCT_REPORT_URL, PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
+	import { PRODUCT_WEBSITE_URL, TRACEABILITY_CODES_URL } from '#lib/const.js';
 	import TagChipList from '#lib/ui/TagChips.svelte';
-	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
-	import { compareStore } from '#lib/stores/compareStore.js';
-	import { userInfo } from '#lib/stores/user.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import Card from '#lib/ui/Card.svelte';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
+	import AppStrip from './AppStrip.svelte';
+	import ProductMoreMenu from './ProductMoreMenu.svelte';
 
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
-	import IconMdiFlag from '@iconify-svelte/mdi/flag';
-	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
-	import IconMdiScaleBalance from '@iconify-svelte/mdi/scale-balance';
-	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
+	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
 	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
+		tiles?: Snippet;
+		score?: Snippet;
 	};
-	let { product, lc }: Props = $props();
+	let { product, lc, tiles, score }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -49,19 +48,6 @@
 	}
 
 	let toastCtx = getToastCtx();
-	function addToCalculator() {
-		// FIXME: product.code cannot be null
-		const code = product.code!;
-
-		addItemToCalculator({
-			id: code,
-			name: product.product_name || code,
-			quantity: 100,
-			imageUrl: product.image_front_small_url,
-			// @ts-expect-error - FIXME: maybe deprecated but the JSON response has this field
-			nutriments: extractNutriments(product.nutriments)
-		});
-	}
 
 	async function sharePage() {
 		await shareContent(
@@ -69,137 +55,167 @@
 				url: `${window.location.origin}${window.location.pathname}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
+					default: 'Check out this product on Open Food Facts: {productName}',
 					values: { productName: product.product_name || product.code }
 				})
 			},
 			{
-				onClipboard: () => toastCtx.success($_('product.toast.copied_link')),
-				onError: () => toastCtx.error($_('product.toast.failed_copy'))
+				onClipboard: () =>
+					toastCtx.success(
+						$_('product.toast.copied_link', { default: 'Link copied to clipboard!' })
+					),
+				onError: () =>
+					toastCtx.error($_('product.toast.failed_copy', { default: 'Failed to copy link' }))
 			}
 		);
 	}
 
 	let frontImage = $derived(
-		product.image_front_small_url ??
-			('image_front_url' in product ? (product.image_front_url as string) : undefined)
+		(product.image_front_url as string | undefined) ?? product.image_front_small_url
 	);
 
+	let frontKey = $derived(frontImage?.split('/').at(-1)?.split('.')[0]);
+	let frontImageUploader = $derived.by(() => {
+		const images = (product as unknown as Record<string, unknown>).images as
+			Record<string, { imgid?: string; uploader?: string }> | undefined;
+		const imgid = frontKey != null ? images?.[frontKey]?.imgid : null;
+		return imgid != null ? (images?.[imgid]?.uploader ?? null) : null;
+	});
+	let credit = $derived(
+		frontImageUploader != null && frontImageUploader !== ''
+			? $_('product.image_attribution', {
+					default: 'Attribution: Photo by {photographer} per Open Food Facts',
+					values: { photographer: frontImageUploader }
+				})
+			: undefined
+	);
 	let productWebsiteUrl = $derived(PRODUCT_WEBSITE_URL(product.code!, product.product_type));
 
-	function addToComparison() {
-		// Convert Product to ProductReduced - using type assertion since the product exists
-		const added = compareStore.addProduct(product);
-		if (added) {
+	let creditHref = $derived(
+		frontKey != null
+			? `${new URL(productWebsiteUrl).origin}/cgi/product_image.pl?${new URLSearchParams({ code: product.code!, id: frontKey })}`
+			: null
+	);
+
+	let metaLine = $derived(
+		[getLocalizedTags('brands')?.join(', '), product.generic_name, product.quantity]
+			.filter(Boolean)
+			.join(' · ')
+	);
+
+	// TODO: move copying to the clipboard into a shared helper
+	async function copyBarcode() {
+		try {
+			await navigator.clipboard.writeText(product.code!);
 			toastCtx.success(
-				$_('product.menu.added_to_comparison', { default: 'Product added to comparison' })
+				$_('product.toast.copied_barcode', { default: 'Barcode copied to clipboard!' })
 			);
-		} else {
-			toastCtx.warning(
-				$_('product.menu.add_to_comparison_failed', {
-					default: 'Product is already in comparison or comparison list is full'
-				})
+		} catch {
+			toastCtx.error(
+				$_('product.toast.failed_copy_barcode', { default: 'Failed to copy barcode' })
 			);
 		}
 	}
 </script>
 
+<AppStrip />
+<div id="attributes"></div>
 <Card>
-	<div class="flex flex-col gap-6 md:flex-row-reverse md:gap-8">
-		<!-- 1. Image Column (Visual Anchor) -->
-		<!-- Left on Desktop, Top on Mobile -->
+	<div class="flex flex-col gap-6">
 		<div
-			class="mx-auto flex w-full max-w-50 shrink-0 items-start justify-center md:h-auto md:w-1/4 md:max-w-none"
+			class="grid grid-cols-[6rem_1fr] gap-x-3.5 md:grid-cols-[14rem_1fr] md:grid-rows-[auto_1fr] md:gap-x-6"
 		>
-			<ImageButton src={frontImage} alt={product.product_name} productCode={product.code} />
-		</div>
+			<div class="flex min-w-0 flex-col gap-2 md:row-span-2">
+				{#if frontImage}
+					<div
+						class="relative aspect-square overflow-hidden rounded-xl bg-white [&>div]:size-full [&>div_button]:size-full [&>div_img]:size-full [&>div_img]:object-contain [&>div>button>div]:size-full"
+					>
+						<img
+							src={frontImage}
+							alt=""
+							class="absolute inset-0 size-full scale-150 object-cover blur-sm"
+							aria-hidden="true"
+						/>
+						<ImageButton
+							src={frontImage}
+							alt={product.product_name}
+							productCode={product.code}
+							caption={credit}
+						/>
+					</div>
+				{:else}
+					<div
+						class="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl bg-base-content/10 p-1 text-center text-xs text-base-content/70 md:gap-2 md:text-sm"
+					>
+						<IconMdiCameraOutline class="h-6 w-6 md:h-10 md:w-10" aria-hidden="true" />
+						<span>{$_('product.edit.no_photo_available', { default: 'No photo available' })}</span>
+					</div>
+				{/if}
+				{#if credit}
+					<a
+						href={creditHref}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hidden link text-xs text-base-content/70 md:block"
+					>
+						{credit}
+					</a>
+				{/if}
+			</div>
 
-		<!-- 2. Content Column -->
-		<div class="flex min-w-0 flex-1 flex-col gap-8">
-			<!-- Header Section: Title & Actions -->
-			<div class="flex flex-col gap-8">
+			<div class="flex min-w-0 flex-col gap-2">
 				<h1
-					class="text-center text-3xl leading-tight font-bold wrap-break-word md:text-left md:text-4xl"
+					class={[
+						'leading-tight font-bold wrap-break-word md:text-3xl',
+						product.product_name ? 'text-2xl' : 'text-xl'
+					]}
 				>
-					{product.product_name ?? '[' + product.code + ']'}
+					{product.product_name || product.code}
 				</h1>
-
-				<!-- Action Toolbar -->
-				<div class="flex shrink-0 flex-wrap items-center justify-center gap-2 md:justify-start">
-					<a
-						href={productWebsiteUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn btn-secondary btn-sm md:btn-md"
-						title={$_('product.buttons.classic_view', { default: 'Classic view' })}
-						aria-label={$_('product.buttons.classic_view', { default: 'Classic view' })}
+				{#if metaLine}
+					<p class="text-sm text-base-content/70 md:text-base">{metaLine}</p>
+				{/if}
+				<div class="flex flex-wrap items-center gap-2 text-sm text-base-content/70">
+					<span class="sr-only md:not-sr-only"
+						>{$_('product.barcode.code_label', { default: 'Barcode' })}</span
 					>
-						<IconMdiOpenInNew class="h-5 w-5" />
-						<span>{$_('product.buttons.classic_view')}</span>
-					</a>
-
-					<a
-						href={`/products/${product.code}/edit`}
-						class="btn btn-secondary btn-sm md:btn-md"
-						class:pointer-events-none={navigating.to}
-						title={$_('product.buttons.edit', { default: 'Edit' })}
-						aria-label={$_('product.buttons.edit', { default: 'Edit' })}
-					>
-						<IconMdiPencil class="h-5 w-5" />
-						<span class="hidden md:block"> {$_('product.buttons.edit')} </span>
-					</a>
-
-					<button
-						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
-						onclick={sharePage}
-						title={$_('product.buttons.share', { default: 'Share' })}
-						aria-label={$_('product.buttons.share', { default: 'Share' })}
-					>
-						<IconMdiShareVariant class="h-5 w-5" />
-						<span class="hidden md:block">{$_('product.buttons.share')}</span>
-					</button>
-
-					<a
-						id="report-problem"
-						class="btn flex items-center gap-2 btn-secondary btn-sm md:btn-md"
-						href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
-						target="_blank"
-						rel="noopener noreferrer"
-						title={$_('product.buttons.report')}
-						aria-label={$_('product.buttons.report')}
-					>
-						<IconMdiFlag class="h-5 w-5" />
-					</a>
-
-					{#if $userInfo != null}
-						<button
-							class="btn btn-secondary btn-sm md:btn-md"
-							onclick={addToCalculator}
-							title={$_('product.buttons.add_to_calculator')}
-							aria-label={$_('product.buttons.add_to_calculator')}
+					{#if product.product_name}
+						<span class="rounded-lg bg-base-content/10 px-2 font-mono text-xs md:text-sm"
+							>{product.code}</span
 						>
-							<IconMdiCalculator class="h-5 w-5" />
-						</button>
 					{/if}
-
-					<button
-						class="btn gap-2 rounded-full btn-secondary btn-sm md:btn-md"
-						onclick={addToComparison}
-						title={$_('product.buttons.compare', { default: 'Add to compare' })}
-						aria-label={$_('product.buttons.compare', { default: 'Add to compare' })}
-					>
-						<IconMdiScaleBalance class="h-5 w-5" aria-hidden="true" />
-						<span>{$_('product.buttons.compare', { default: 'Add to compare' })}</span>
+					<button class="btn rounded-full btn-outline btn-xs" onclick={copyBarcode}>
+						{$_('product.buttons.copy', { default: 'Copy' })}
 					</button>
 				</div>
 			</div>
+			<div
+				class="col-span-2 mt-4 flex flex-wrap items-center gap-2 md:col-span-1 md:col-start-2 md:mt-2 md:self-start"
+			>
+				<a
+					href={`/products/${product.code}/edit`}
+					class={['btn rounded-full btn-sm', product.product_name ? 'btn-outline' : 'btn-primary']}
+					class:pointer-events-none={navigating.to}
+				>
+					<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
+					{product.product_name
+						? $_('product.buttons.edit', { default: 'Edit' })
+						: $_('product.edit.edit_product_title', { default: 'Edit product' })}
+				</a>
+				<button class="btn rounded-full btn-outline btn-sm" onclick={sharePage}>
+					<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
+					{$_('product.buttons.share', { default: 'Share' })}
+				</button>
+				<ProductMoreMenu {product} {productWebsiteUrl} />
+				<div class="mt-2 hidden min-w-0 basis-full md:block">{@render tiles?.()}</div>
+			</div>
+		</div>
 
+		<div class="hidden w-full min-w-0 md:block">{@render score?.()}</div>
+
+		<div class="min-w-0">
 			<!-- Metadata Body -->
 			<div class="flex flex-col gap-3 text-center md:text-left">
-				<div class="mb-2">
-					<div class="mb-2 text-sm font-bold text-secondary">{$_('product.header.quantity')}</div>
-					<div>{product.quantity}</div>
-				</div>
-
 				<!-- Brands -->
 				{@render taxonomyTags(
 					'product.header.brands',
@@ -240,14 +256,16 @@
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
 					<div class="mb-2">
 						<div class="mb-2 text-sm font-bold text-secondary">
-							<span>{$_('product.header.traceability_codes')}</span>
+							<span
+								>{$_('product.header.traceability_codes', { default: 'Traceability Codes' })}</span
+							>
 							<a
 								href={TRACEABILITY_CODES_URL}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="link text-xs link-secondary"
 							>
-								({$_('product.header.traceability_codes_learn_more')})
+								({$_('product.header.traceability_codes_learn_more', { default: 'Learn more' })})
 							</a>
 						</div>
 
@@ -264,15 +282,19 @@
 				{#if product.link != null}
 					<div class="mb-2">
 						<div class="mb-2 text-sm font-bold text-secondary">
-							{$_('product.header.producer_link')}
+							{$_('product.header.producer_link', { default: 'Producer link' })}
 						</div>
 						<a
 							class="link break-all"
 							href={product.link}
 							target="_blank"
 							rel="noopener noreferrer"
-							title={$_('product.buttons.view_on_off')}
-							aria-label={$_('product.buttons.view_on_off')}
+							title={$_('product.buttons.view_on_off', {
+								default: 'View product on Open Food Facts'
+							})}
+							aria-label={$_('product.buttons.view_on_off', {
+								default: 'View product on Open Food Facts'
+							})}
 						>
 							{product.link}
 						</a>
@@ -300,6 +322,10 @@
 		</div>
 	</div>
 </Card>
+<div class="flex min-w-0 flex-col gap-2 md:hidden">
+	{@render tiles?.()}
+	{@render score?.()}
+</div>
 
 {#snippet taxonomyTags(
 	titleKey: string,

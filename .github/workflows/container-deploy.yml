@@ -45,6 +45,7 @@ jobs:
           echo "PUBLIC_FOLKSONOMY_API_URL=https://api.folksonomy.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_OFF_BASE_URL=https://world.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_SEARCH_BASE_URL=https://search.openfoodfacts.net" >> $GITHUB_ENV
+          echo "PUBLIC_QUERY_BASE_URL=https://query.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_AUTH_BASE_URL=https://auth.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_AUTH_PKCE_ID=explorer" >> $GITHUB_ENV
           echo "PUBLIC_KEYCLOAK_REALM=openfoodfacts" >> $GITHUB_ENV
@@ -53,6 +54,7 @@ jobs:
           echo "PUBLIC_IMAGES_URL=https://images.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_NUTRIPATROL_URL=https://nutripatrol.openfoodfacts.net" >> $GITHUB_ENV
           echo "PUBLIC_ENVIRONMENT=staging" >> $GITHUB_ENV
+          echo "PUBLIC_SENTRY_DSN=https://6a3e1451763425bd80a12c9548969f22@o241488.ingest.us.sentry.io/4509950733320194" >> $GITHUB_ENV
       - name: Set various variable for production deployment
         if: matrix.env == 'off-explorer-org'
         run: |
@@ -126,6 +128,7 @@ jobs:
             echo "PUBLIC_FOLKSONOMY_API_URL=${{ env.PUBLIC_FOLKSONOMY_API_URL }}" >> .env
             echo "PUBLIC_OFF_BASE_URL=${{ env.PUBLIC_OFF_BASE_URL }}" >> .env
             echo "PUBLIC_SEARCH_BASE_URL=${{ env.PUBLIC_SEARCH_BASE_URL }}" >> .env
+            echo "PUBLIC_QUERY_BASE_URL=${{ env.PUBLIC_QUERY_BASE_URL }}" >> .env
             echo "PUBLIC_AUTH_BASE_URL=${{ env.PUBLIC_AUTH_BASE_URL }}" >> .env
             echo "PUBLIC_AUTH_PKCE_ID=${{ env.PUBLIC_AUTH_PKCE_ID }}" >> .env
             echo "PUBLIC_KEYCLOAK_REALM=${{ env.PUBLIC_KEYCLOAK_REALM }}" >> .env
@@ -134,6 +137,7 @@ jobs:
             echo "PUBLIC_IMAGES_URL=${{ env.PUBLIC_IMAGES_URL }}" >> .env
             echo "PUBLIC_NUTRIPATROL_URL=${{ env.PUBLIC_NUTRIPATROL_URL }}" >> .env
             echo "PUBLIC_ENVIRONMENT=${{ env.PUBLIC_ENVIRONMENT }}" >> .env
+            echo "PUBLIC_SENTRY_DSN=${{ env.PUBLIC_SENTRY_DSN }}" >> .env
 
       - name: Pull Docker image
         uses: appleboy/ssh-action@v1.2.5

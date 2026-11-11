@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { _ } from '#lib/i18n/index.js';
 	import { NUTRIPATROL_URL } from '#lib/const.js';
-	import { resolve } from '$app/paths';
+	import { getEditActionHref } from '#lib/knowledgepanels/actions.js';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
 
 	type Props = {
@@ -19,91 +19,29 @@
 		return code;
 	}
 
-	const HANDLED_ACTIONS = [
-		{
-			type: 'edit_product',
-			action: () => {
-				goto(resolve(`/products/[barcode]/edit`, { barcode: requireCode() }));
-			}
-		},
-		{
-			type: 'add_categories',
-			action: () => {
-				goto(resolve(`/products/[barcode]/edit`, { barcode: requireCode() }) + '#categories');
-			}
-		},
-		{
-			type: 'report_product_to_nutripatrol',
-			action: () => {
-				const params = new URLSearchParams({
-					barcode: requireCode(),
-					source: 'web',
-					flavor: 'off'
-				});
-				window.open(
-					`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`,
-					'_blank',
-					'noopener,noreferrer'
-				);
-			}
-		},
-		{
-			type: 'add_ingredients_text',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#ingredients`);
-			}
-		},
-		{
-			type: 'add_packaging_components',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#add-packaging-component`);
-			}
-		},
-		{
-			type: 'add_origins',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#origins`);
-			}
-		},
-		{
-			type: 'add_recycling_instructions',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#recycling`);
-			}
-		},
-		{
-			type: 'add_quantity',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#quantity`);
-			}
-		},
-		{
-			type: 'add_packaging_image',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#images`);
-			}
-		},
-		{
-			type: 'add_ingredients_image',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#images`);
-			}
-		},
-		{
-			type: 'add_nutrition_facts',
-			action: () => {
-				goto(`/products/${requireCode()}/edit#nutrition`);
-			}
-		}
-	];
-
-	const DEFAULT_ACTION = (action: string) => {
-		console.warn(`No specific handler for action: ${action}`);
-	};
+	function reportToNutripatrol() {
+		const params = new URLSearchParams({
+			barcode: requireCode(),
+			source: 'web',
+			flavor: 'off'
+		});
+		window.open(
+			`${NUTRIPATROL_URL}/flag/product/?${params.toString()}`,
+			'_blank',
+			'noopener,noreferrer'
+		);
+	}
 
 	function getActionHandler(action: string) {
-		const handler = HANDLED_ACTIONS.find((a) => a.type === action);
-		return handler ? handler.action : () => DEFAULT_ACTION(action);
+		if (action === 'report_product_to_nutripatrol') return reportToNutripatrol;
+		return () => {
+			const href = getEditActionHref(action, requireCode());
+			if (href == null) {
+				console.warn(`No specific handler for action: ${action}`);
+				return;
+			}
+			goto(href);
+		};
 	}
 </script>
 
