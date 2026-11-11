@@ -34,20 +34,28 @@ describe('getBulkProductAttributesAndImages', () => {
 
 describe('getBulkProductCardsAndAttributes', () => {
 	it('fetches card fields and attributes in one request per 100 codes', async () => {
-		const fetch = vi.fn(async () =>
-			Response.json({ products: [{ code: '1', product_name: 'One', attribute_groups: [] }] })
-		);
+		const toUrl = (input: unknown) => new URL(input instanceof Request ? input.url : String(input));
+		// Each batch answers with a product named after its first requested code
+		const fetch = vi.fn(async (input: RequestInfo | URL) => {
+			const first = toUrl(input).searchParams.get('code')!.split(',')[0];
+			return Response.json({
+				products: [{ code: first, product_name: `Product ${first}`, attribute_groups: [] }]
+			});
+		});
 		const codes = Array.from({ length: 150 }, (_, i) => String(i + 1));
 		const result = await getBulkProductCardsAndAttributes(fetch, codes);
 
-		const urls = (fetch.mock.calls as unknown[][]).map(
-			([input]) => new URL(input instanceof Request ? input.url : String(input))
-		);
+		const urls = (fetch.mock.calls as unknown[][]).map(([input]) => toUrl(input));
+		expect(urls.map((url) => url.searchParams.get('code'))).toEqual([
+			codes.slice(0, 100).join(','),
+			codes.slice(100).join(',')
+		]);
 		expect(urls.map((url) => url.searchParams.get('page_size'))).toEqual(['100', '50']);
 		const fields = urls[0].searchParams.get('fields')?.split(',');
 		expect(fields).toContain('attribute_groups');
 		expect(fields).toContain('image_front_small_url');
-		expect(result.cardsByCode['1']).toMatchObject({ code: '1', product_name: 'One' });
-		expect(result.attributesByCode).toEqual({ '1': [] });
+		expect(result.cardsByCode['1']).toMatchObject({ code: '1', product_name: 'Product 1' });
+		expect(result.cardsByCode['101']).toMatchObject({ code: '101', product_name: 'Product 101' });
+		expect(result.attributesByCode).toEqual({ '1': [], '101': [] });
 	});
 });
