@@ -42,7 +42,7 @@ export function attributesToDefaultPreferences(
 	attributeGroups: AttributeGroup[]
 ): AttributePreference[] {
 	return attributeGroups.flatMap((group) =>
-		group.attributes!.map((attr) => ({
+		(group.attributes ?? []).map((attr) => ({
 			type: 'attribute' as const,
 			groupId: group.id,
 			attributeId: attr.id,

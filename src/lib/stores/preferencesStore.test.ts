@@ -40,6 +40,11 @@ describe('attributesToDefaultPreferences', () => {
 			}
 		]);
 	});
+
+	it('skips a group without attributes', () => {
+		const groups = [{ id: 'environment' }, ...GROUPS] as AttributeGroup[];
+		expect(attributesToDefaultPreferences(groups)).toEqual(attributesToDefaultPreferences(GROUPS));
+	});
 });
 
 describe('resetToDefaults', () => {
