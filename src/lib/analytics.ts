@@ -55,6 +55,7 @@ export function trackOffSiteSearch(keyword: string, resultsCount?: number): void
 	if (
 		normalizedKeyword === '' ||
 		/^\d{5,18}$/.test(normalizedBarcode) ||
+		/(?:^|\D)\d{5,18}(?!\d)/.test(normalizedKeyword) ||
 		/(?:^|\D)\d{5,18}(?!\d)/.test(normalizedKeyword.replace(/(\d)[\s-]+(?=\d)/g, '$1')) ||
 		/[^\s@]+@[^\s@]+\.[^\s@]+/.test(normalizedKeyword)
 	) {
