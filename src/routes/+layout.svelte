@@ -245,6 +245,10 @@
 	<title>OFF Explorer</title>
 	<meta name="description" content="Open Food Facts Explorer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	{#if IMAGE_HOST}
+		<!-- Product photos are <img> (no-cors), so no crossorigin attribute here -->
+		<link rel="preconnect" href={IMAGE_HOST} />
+	{/if}
 </svelte:head>
 
 {#if MatomoComponent}
