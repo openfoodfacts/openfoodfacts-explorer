@@ -60,6 +60,7 @@
 					]}
 					src={title.icon_url}
 					alt={title.title}
+					loading="lazy"
 				/>
 			{/if}
 			<div class="grow">

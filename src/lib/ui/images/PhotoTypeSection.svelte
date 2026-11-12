@@ -1,4 +1,5 @@
 <script lang="ts">
+	import OffImage from '#lib/ui/OffImage.svelte';
 	import { refreshAll } from '$app/navigation';
 
 	import { getImageFieldName } from '#lib/utils.js';
@@ -303,8 +304,9 @@
 							onclick={() => onImageEdit?.(image.url, image.alt)}
 							title="Click to edit this image"
 						>
-							<img
+							<OffImage
 								src={image.url}
+								sizes="160px"
 								alt={image.alt}
 								class="h-full w-full object-cover transition-transform group-hover:scale-105"
 							/>

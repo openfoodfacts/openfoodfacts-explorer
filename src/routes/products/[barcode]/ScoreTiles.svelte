@@ -57,7 +57,12 @@
 					GRADE_BACKGROUNDS[tile.grade ?? ''] ?? 'bg-base-content/5'
 				]}
 			>
-				<img src={tile.icon_url} alt="" class="h-8 w-12 shrink-0 object-contain sm:w-auto" />
+				<img
+					src={tile.icon_url}
+					alt=""
+					loading="lazy"
+					class="h-8 w-12 shrink-0 object-contain sm:w-auto"
+				/>
 				<div class="min-w-0">
 					<p class="text-sm leading-tight font-bold sm:mt-1.5">{tile.title}</p>
 					{#if addAction}

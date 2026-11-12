@@ -4,6 +4,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
 	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
+	import OffImage from '#lib/ui/OffImage.svelte';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -421,8 +422,9 @@
 
 				<div class="flex flex-col items-center pt-4">
 					{#if product.image_front_small_url}
-						<img
+						<OffImage
 							src={product.image_front_small_url}
+							sizes="96px"
 							alt={product.product_name ?? product.code}
 							class="mb-2 h-24 object-contain"
 						/>

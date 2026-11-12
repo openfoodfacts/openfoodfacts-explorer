@@ -1,4 +1,5 @@
 <script lang="ts">
+	import OffImage from '#lib/ui/OffImage.svelte';
 	import type { ProductImage } from '#lib/api.js';
 	import { _ } from '#lib/i18n/index.js';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
@@ -52,8 +53,9 @@
 					onclick={() => handleImageSelect(image)}
 					aria-label={image.alt || 'Select image'}
 				>
-					<img
+					<OffImage
 						src={image.url}
+						sizes="160px"
 						alt={image.alt}
 						class="block h-40 w-full object-cover group-hover:opacity-80"
 					/>

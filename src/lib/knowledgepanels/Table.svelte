@@ -25,6 +25,7 @@
 							{#if cell.icon_url}
 								<img
 									src={cell.icon_url}
+									loading="lazy"
 									class="mr-1 inline-block h-[1em] w-[1em] overflow-hidden align-middle text-[18px] brightness-0 dark:invert"
 									alt=""
 									aria-hidden="true"
