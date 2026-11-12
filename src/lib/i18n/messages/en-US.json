@@ -284,6 +284,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Edit your preferences",
+			"match_status": {
+				"very_good_match": "Very good match",
+				"good_match": "Good match",
+				"poor_match": "Poor match",
+				"may_not_match": "May not match",
+				"does_not_match": "Does not match",
+				"unknown_match": "Unknown match"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
@@ -851,6 +867,39 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"names": {
+			"countries": "Countries",
+			"nutrition-grades": "Nutrition grades",
+			"nova-groups": "NOVA groups",
+			"environmental-score": "Green-Score",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"packaging": "Packaging",
+			"origins": "Origins of ingredients",
+			"manufacturing-places": "Manufacturing or processing places",
+			"packager-codes": "Traceability codes",
+			"ingredients": "Ingredients",
+			"additives": "Additives",
+			"vitamins": "Added vitamins",
+			"minerals": "Added minerals",
+			"amino-acids": "Added amino acids",
+			"nucleotides": "Added nucleotides",
+			"other-nutritional-substances": "Other nutritional substances added",
+			"allergens": "Allergens",
+			"traces": "Traces",
+			"misc": "Miscellaneous",
+			"languages": "Languages",
+			"contributors": "Contributors",
+			"states": "States",
+			"data-sources": "Data sources",
+			"entry-dates": "Entry dates",
+			"last-edit-dates": "Last edit dates",
+			"last-check-dates": "Last check dates",
+			"teams": "Teams"
+		},
+		"heading": "Exploring {facet}",
+		"value_heading": "Exploring {facet}: {value}",
 		"category_general": "General",
 		"category_nutrition": "Nutrition & Health",
 		"category_packaging": "Packaging & Origin",
@@ -934,7 +983,9 @@
 		"hierarchy_includes": "Includes",
 		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_countries": "Where these products are sold",
+		"map_page_limited": "This map only includes data from the current page.",
+		"map_sqrt_legend": "Products (square-root scale)"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",

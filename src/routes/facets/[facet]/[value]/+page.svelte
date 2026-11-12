@@ -73,7 +73,7 @@
 	})}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
 		label={$_('facets.facet_back_to_overview', {
@@ -81,9 +81,16 @@
 			default: 'Back to {facet} overview'
 		})}
 	/>
-</div>
-
-<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+	<span
+		>{$_('facets.value_heading', {
+			values: {
+				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
+				value: facet.value
+			},
+			default: 'Exploring {facet}: {value}'
+		})}</span
+	>
+</h2>
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
@@ -157,10 +164,13 @@
 			})}
 		</h2>
 		<MapComponent facet={distributionData} />
-		<p class="mt-2 text-sm text-gray-500">
-			Note: The geographic distribution shown on this map is based only on the products visible on
-			the current page.
-		</p>
+		{#if data.mapIsPageLimited}
+			<p class="mt-2 text-sm text-base-content/70">
+				{$_('facets.map_page_limited', {
+					default: 'This map only includes data from the current page.'
+				})}
+			</p>
+		{/if}
 	</div>
 {/if}
 
