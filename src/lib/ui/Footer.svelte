@@ -245,6 +245,7 @@
 			src={footerTopLeft}
 			loading="lazy"
 			style="width: 177px; height: 177px;"
+			loading="lazy"
 			alt={$_('footer.decorative_alt')}
 		/>
 	</div>
@@ -253,6 +254,7 @@
 			src={footerBottomRight}
 			loading="lazy"
 			style="width: 251px; height: 178px;"
+			loading="lazy"
 			alt={$_('footer.decorative_alt')}
 		/>
 	</div>
