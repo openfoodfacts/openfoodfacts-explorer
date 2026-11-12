@@ -52,7 +52,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve } from '$app/paths';
-	import { pwaInstallStore, type BeforeInstallPromptEvent } from '$lib/stores/pwa';
+	import { pwaInstallStore, type BeforeInstallPromptEvent } from '#lib/stores/pwa.svelte.js';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();

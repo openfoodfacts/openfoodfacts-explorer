@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { getToastCtx } from '$lib/stores/toasts';
-	import { pwaInstallStore } from '$lib/stores/pwa';
-	import { _ } from '$lib/i18n';
+	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { pwaInstallStore } from '#lib/stores/pwa.svelte.js';
+	import { _ } from '#lib/i18n/index.js';
 	import IconMdiDownload from '@iconify-svelte/mdi/download';
 
 	const toastCtx = getToastCtx();
 
 	// Derived: is there a deferred install prompt waiting?
-	let prompt = $derived($pwaInstallStore);
+	let prompt = $derived(pwaInstallStore.value);
 
 	let installing = $state(false);
 
