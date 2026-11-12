@@ -58,9 +58,9 @@
 				]}
 			>
 				<img
-					loading="lazy"
 					src={tile.icon_url}
 					alt=""
+					loading="lazy"
 					class="h-8 w-12 shrink-0 object-contain sm:w-auto"
 				/>
 				<div class="min-w-0">
