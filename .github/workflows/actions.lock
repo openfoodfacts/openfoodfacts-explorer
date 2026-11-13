@@ -24,7 +24,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'github/gh-aw@v1.0.1'
     '.github/workflows/github-projects.yml':
-        - 'actions/add-to-project@v2.0.0'
+        - 'actions/add-to-project@v2.0.1'
     '.github/workflows/label.yml':
         - 'actions/labeler@v7.0.0'
     '.github/workflows/limit-contributor-prs.yml':
@@ -44,9 +44,9 @@ workflows:
     '.github/workflows/weekly-issue-summary.yml':
         - 'actions/checkout@v7.0.1'
 dependencies:
-    'actions/add-to-project@v2.0.0':
-        ref: 'v2.0.0'
-        commit: 'sha1-5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd'
+    'actions/add-to-project@v2.0.1':
+        ref: 'v2.0.1'
+        commit: 'sha1-f2c1f1fa649a891be84948ea89b5dfba1526ef05'
         owner_id: 44036562
         repo_id: 454132203
     'actions/attest-build-provenance@v4.2.2':
