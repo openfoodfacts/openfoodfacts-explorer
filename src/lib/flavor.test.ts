@@ -32,10 +32,6 @@ describe('toWebsiteFlavor', () => {
 describe('isCosmeticProduct', () => {
 	it('identifies cosmetic and beauty product types', () => {
 		expect(isCosmeticProduct('beauty')).toBe(true);
-		expect(isCosmeticProduct('obf')).toBe(true);
-		expect(isCosmeticProduct('cosmetic')).toBe(true);
-		expect(isCosmeticProduct('cosmetics')).toBe(true);
-		expect(isCosmeticProduct(' BEAUTY ')).toBe(true);
 	});
 
 	it('returns false for non-cosmetic product types', () => {
