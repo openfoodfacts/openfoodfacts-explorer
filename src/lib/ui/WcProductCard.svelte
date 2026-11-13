@@ -23,6 +23,10 @@ Wraps the <product-card> web component and adds accessibility features.
 	};
 	let { product, personalScore }: Props = $props();
 
+	// Leave the attribute out when there is no score: before <product-card> is defined,
+	// Svelte would set showmatchtag="false", and Lit reads any boolean attribute as true.
+	const showMatchTag = $derived(personalScore != undefined ? true : undefined);
+
 	function normalizeBrands(value: unknown): string {
 		if (Array.isArray(value)) {
 			return value
@@ -172,7 +176,7 @@ Wraps the <product-card> web component and adds accessibility features.
 				values: { productCode: productForCard.code },
 				default: 'Go to product with code {productCode}'
 			})}
-	showMatchTag={personalScore != undefined}
+	{showMatchTag}
 	navigating={{
 		to: navigating ? { params: { barcode: product.code } } : null
 	}}
