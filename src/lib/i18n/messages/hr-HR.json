@@ -120,7 +120,7 @@
 		"button": "Pomoć i prečaci"
 	},
 	"general": {
-		"language": "Jezik",
+		"language": "Jezici",
 		"country": "Zemlja",
 		"currency": "Valuta",
 		"loading": "Učitavanje…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Prijavite problem s ovim proizvodom",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Dodajte komponente pakiranja",
+				"add_packaging_components": "Fotografirajte informacije o recikliranju",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Pogledajte cijene na Open Prices",
