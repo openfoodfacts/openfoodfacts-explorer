@@ -439,11 +439,10 @@
 
 			<!-- Energy -->
 			<fieldset class="fieldset">
-				<div class="flex gap-2">
-					<label class={['input grow', fieldInputClasses('energy')]}>
-						<span class="label">
-							{$_('product.edit.energy')}
-						</span>
+				<!-- Mobile: fields stack beside the swap button. md and up: one row -->
+				<legend class="fieldset-legend">{$_('product.edit.energy')}</legend>
+				<div class="grid grid-cols-[1fr_auto] items-center gap-2 md:flex">
+					<label class={['input grow max-md:w-full', fieldInputClasses('energy')]}>
 						<input
 							id="energy-kj-input"
 							type="number"
@@ -465,17 +464,16 @@
 
 					<button
 						type="button"
-						class="btn btn-square btn-ghost btn-sm"
-						aria-label="Swap units"
+						class="btn row-span-2 btn-square btn-ghost btn-sm"
+						aria-label={$_('product.edit.swap_energy_units', { default: 'Swap units' })}
 						onclick={switchKjAndKcal}
 					>
-						<IconMdiSwapHorizontal class="h-5 w-5" />
+						<IconMdiSwapHorizontal class="h-5 w-5 max-md:rotate-90" aria-hidden="true" />
 					</button>
 
-					<label class={['input grow', fieldInputClasses('energy')]}>
-						<span class="label">
-							{$_('product.edit.energy')}
-						</span>
+					<label
+						class={['input grow max-md:col-start-1 max-md:w-full', fieldInputClasses('energy')]}
+					>
 						<input
 							id="energy-kcal-input"
 							type="number"
@@ -495,6 +493,9 @@
 				</div>
 			</fieldset>
 			<fieldset class="fieldset">
+				<legend class="fieldset-legend">
+					{$_('product.edit.macronutrients', { default: 'Macro-nutrients' })}
+				</legend>
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
 					{@const issueKeys = [nutrient, 'all']}
 					{@const issue = issuesByField(issueKeys)[0]}
@@ -541,7 +542,7 @@
 
 			<fieldset class="fieldset">
 				<legend class="fieldset-legend">
-					{$_('product.edit.additional_nutrients')}
+					{$_('product.edit.other_nutrients', { default: 'Others' })}
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}

@@ -582,6 +582,7 @@
 				"vitamin-d": "Vitamin D"
 			},
 			"additional_nutrients": "Additional nutrients",
+			"other_nutrients": "Others",
 			"nutrients_load_failed": "The complete nutrient list could not be loaded.",
 			"comment": "Comment",
 			"comment_placeholder": "Add a comment to this edit",
@@ -595,6 +596,7 @@
 			"debug": "Debug",
 			"si_kilojoules": "kJ",
 			"si_kilocalories": "kcal",
+			"swap_energy_units": "Swap units",
 			"si_grams": "g",
 			"si_milligrams": "mg",
 			"si_micrograms": "µg",
