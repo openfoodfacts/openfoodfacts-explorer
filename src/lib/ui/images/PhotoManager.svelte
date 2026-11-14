@@ -26,8 +26,13 @@
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import { getLanguageName } from '#lib/languages.js';
 
-	type Props = { product: Product };
-	let { product }: Props = $props();
+	type Props = {
+		product: Product;
+		// Reloads the images into the edit form's own copy of the product after any image
+		// change. Without it, refreshAll() reloads the page data but the form keeps its old images.
+		reloadImages?: () => Promise<void>;
+	};
+	let { product, reloadImages = refreshAll }: Props = $props();
 
 	const toast = getToastCtx();
 
@@ -250,23 +255,44 @@
 		};
 	};
 
-	function handleImageUploaded(imgId: number) {
-		refreshAll().then(() => {
-			setTimeout(() => {
-				openUploadedImage(imgId);
-			}, 1500);
-		});
+	// Reload the images after a change. Never throws: the change itself succeeded, so a failed
+	// refresh must not be reported as a failed upload/select/unselect, or leave the editor open.
+	async function refreshImages(): Promise<boolean> {
+		try {
+			await reloadImages();
+			return true;
+		} catch (err) {
+			console.error('Failed to refresh images:', err);
+			toast.warning(
+				$_('product.edit.images.toast.refresh_failed', {
+					default: 'The photos could not be refreshed. Reload the page to see the latest version.'
+				})
+			);
+			return false;
+		}
 	}
 
-	function openUploadedImage(imgId: number) {
-		const typeImages = currentImages.filter((img) => img.imgid === imgId);
+	async function handleImageUploaded(imgId: number, typeId: string, languageCode: string) {
+		if (!(await refreshImages())) return;
 
-		if (typeImages.length === 0) {
-			console.warn(`No images found for imgId: ${imgId}`);
+		// The editor saves for the active language, so only open it if the user is
+		// still on the language the image was uploaded for.
+		if (languageCode !== activeLanguageCode) return;
+
+		await tick();
+		openUploadedImage(imgId, typeId);
+	}
+
+	function openUploadedImage(imgId: number, typeId: string) {
+		// Match the type too: the same image can be selected for several types
+		// (e.g. a duplicate upload already used as the front photo).
+		const uploadedImage = currentImages.find((img) => img.imgid === imgId && img.typeId === typeId);
+
+		if (!uploadedImage) {
+			console.warn(`No ${typeId} image found for imgId: ${imgId}`);
 			return;
 		}
 
-		const uploadedImage = typeImages[0];
 		editingImageData = uploadedImage;
 	}
 
@@ -302,7 +328,7 @@
 		} finally {
 			isSavingImage = false;
 
-			await refreshAll();
+			await refreshImages();
 			closeEditModal();
 		}
 	}
@@ -362,7 +388,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', image.typeId);
-				await refreshAll();
+				await refreshImages();
 				editingImageModal?.closeModal();
 			} else {
 				console.warn('Image unselect failed:', result);
@@ -405,7 +431,7 @@
 			);
 
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await refreshAll();
+			await refreshImages();
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
@@ -446,6 +472,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
+						onImagesChanged={refreshImages}
 						onSelectImage={() => openImageSelection(photoType.id)}
 						isSelectingImage={isSelectingImage && selectingImageSection === photoType.id}
 					/>
@@ -464,6 +491,7 @@
 						onToggleExpansion={toggleCategoryExpansion}
 						onImageEdit={openEditModal}
 						onImageUploaded={handleImageUploaded}
+						onImagesChanged={refreshImages}
 					/>
 				{/each}
 

@@ -31,7 +31,11 @@
 		photoTypes: Array<{ id: string; label: string }>;
 		onToggleExpansion: (type: string) => void;
 		onImageEdit?: (imageUrl: string, imageAlt: string) => void;
-		onImageUploaded?: (imgId: number) => void;
+		// Called with the type and language the image was uploaded for
+		onImageUploaded?: (imgId: number, typeId: string, languageCode: string) => void;
+		// Reloads the images (after a partial upload or an unselect), without opening the editor.
+		// Shows its own warning if the reload fails, and never throws.
+		onImagesChanged?: () => Promise<unknown>;
 		onSelectImage?: () => void;
 		isSelectingImage?: boolean;
 	};
@@ -48,6 +52,7 @@
 		onToggleExpansion,
 		onImageEdit,
 		onImageUploaded,
+		onImagesChanged,
 		onSelectImage,
 		isSelectingImage = false
 	}: Props = $props();
@@ -65,8 +70,10 @@
 
 		const file = input.files[0];
 
+		// Keep the language the upload is for: the active language can change while it runs
+		const languageCode = activeLanguageCode;
 		// Map type to OpenFoodFacts imagefield value using utility function
-		const imagefield = getImageFieldName(imageType, activeLanguageCode, photoTypes);
+		const imagefield = getImageFieldName(imageType, languageCode, photoTypes);
 		const barcode = product.code;
 
 		if ($userInfo == null) {
@@ -87,7 +94,23 @@
 			}
 
 			const status = uploadResult.data?.status;
-			if (status === 'success' || status === 'success_with_warnings') {
+			if (status === 'success_with_errors') {
+				// The image is saved, but part of the request (e.g. selecting it) failed.
+				// Show the saved image, but don't open the editor: it would match the image
+				// by id and could save it as a different photo type than the one requested.
+				const error = (uploadResult.data.errors ?? [])
+					.map((e) => e.message?.lc_name ?? e.message?.name ?? e.message?.id)
+					.filter(Boolean)
+					.join(', ');
+				toast.warning(
+					$_('product.edit.images.toast.upload_success_with_errors', {
+						default: 'Image uploaded, but some changes could not be applied: {error}',
+						values: { error }
+					})
+				);
+				trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
+				await onImagesChanged?.();
+			} else if (status === 'success' || status === 'success_with_warnings') {
 				if (onImageUploaded) {
 					// FIXME: The API response typing is incorrect, so we need to cast here
 					// to access the uploaded images
@@ -119,7 +142,7 @@
 						}
 
 						trackOffEvent('contribution', 'image_upload_succeeded', sectionType.id);
-						onImageUploaded(imgid);
+						onImageUploaded(imgid, sectionType.id, languageCode);
 					} else {
 						console.warn('Image upload successful but no valid imgid received:', uploadResult.data);
 					}
@@ -159,7 +182,7 @@
 			if (result.data?.status === 'success' || !result.error) {
 				toast.success($_('product.edit.images.toast.unselect_success'));
 				trackOffEvent('contribution', 'image_unselected', sectionType.id);
-				await refreshAll();
+				await (onImagesChanged ?? refreshAll)();
 			} else {
 				console.warn('Image unselect failed:', result);
 				toast.error($_('product.edit.images.toast.unselect_failed'));
