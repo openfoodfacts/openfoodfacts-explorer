@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
-import { addHistoryPanel, getProductHistoryPanels } from './product';
+import {
+	addHistoryPanel,
+	getBulkProductAttributes,
+	getBulkProductCards,
+	getProductHistoryPanels
+} from './product';
 import type { KnowledgePanels } from './knowledgepanels';
 
 const respond = (panels: object) =>
@@ -48,6 +53,24 @@ describe('getProductHistoryPanels', () => {
 		expect(await getProductHistoryPanels(bad as unknown as typeof window.fetch, '1', 'en')).toEqual(
 			{}
 		);
+	});
+});
+
+describe('bulk product requests', () => {
+	// Without page_size, the search API returns at most 20 products
+	it('ask for as many products as there are codes', async () => {
+		const fetch = vi.fn(async () => Response.json({ products: [] }));
+		const codes = Array.from({ length: 46 }, (_, i) => String(i + 1));
+
+		await getBulkProductCards(fetch, codes);
+		await getBulkProductAttributes(fetch, codes);
+
+		for (const call of fetch.mock.calls as unknown[][]) {
+			const input = call[0];
+			const url = new URL(input instanceof Request ? input.url : String(input));
+			expect(url.searchParams.get('page_size')).toBe('46');
+		}
+		expect(fetch).toHaveBeenCalledTimes(2);
 	});
 });
 
