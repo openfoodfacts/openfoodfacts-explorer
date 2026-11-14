@@ -5,6 +5,7 @@
 	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
 	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
 	import OffImage from '#lib/ui/OffImage.svelte';
+	import { getImageSizes } from '#lib/ui/imageSizes.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -424,6 +425,10 @@
 					{#if product.image_front_small_url}
 						<OffImage
 							src={product.image_front_small_url}
+							imageSizes={getImageSizes(
+								product.image_front_small_url,
+								(product as unknown as Record<string, unknown>).images
+							)}
 							sizes="96px"
 							alt={product.product_name ?? product.code}
 							class="mb-2 h-24 object-contain"
@@ -588,6 +593,10 @@
 								>
 									<BlurredImageDisplay
 										src={product.image_front_small_url}
+										imageSizes={getImageSizes(
+											product.image_front_small_url,
+											(product as unknown as Record<string, unknown>).images
+										)}
 										alt={product.product_name ?? product.code}
 										class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
 									/>

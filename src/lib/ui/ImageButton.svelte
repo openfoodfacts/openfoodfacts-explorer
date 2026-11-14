@@ -2,10 +2,12 @@
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import ImageModal from './ImageModal.svelte';
 	import OffImage from './OffImage.svelte';
+	import type { ImageSizes } from './imageSizes.js';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
 	type Props = {
 		src?: string;
+		imageSizes?: ImageSizes;
 		alt?: string;
 		caption?: string;
 		rawImageId?: number;
@@ -18,6 +20,7 @@
 	};
 	let {
 		src,
+		imageSizes,
 		alt,
 		caption,
 		rawImageId,
@@ -58,6 +61,7 @@
 			<div class="flex items-center justify-center">
 				<OffImage
 					{src}
+					{imageSizes}
 					alt={alt ?? ''}
 					{sizes}
 					{loading}
