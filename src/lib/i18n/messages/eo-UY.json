@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Lingvo",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Currency",
 		"loading": "Ŝarĝante…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Aldoni pakajn komponantojn",
+				"add_packaging_components": "Fotu la informojn pri reciklado",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Vidu prezojn ĉe Malfermaj Prezoj",
