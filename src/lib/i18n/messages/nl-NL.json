@@ -120,7 +120,7 @@
 		"button": "Hulp en sneltoetsen"
 	},
 	"general": {
-		"language": "Taal",
+		"language": "Talen",
 		"country": "Land",
 		"currency": "Valuta",
 		"loading": "Bezig met laden…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Meld een probleem met dit product.",
 				"add_ingredients_text": "Ingrediëntentekst toevoegen",
-				"add_packaging_components": "Voeg verpakkingsonderdelen toe",
+				"add_packaging_components": "Maak een foto van de recyclinginformatie",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Voeg een prijs toe aan Open Prijzen",
 				"view_prices": "Bekijk prijzen op Open Prices",
