@@ -1,5 +1,8 @@
 import { getPreference, type UserPreference } from '#lib/stores/preferencesStore.js';
-import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
+import type {
+	ProductAttributeForScoring,
+	ProductAttributeForScoringGroup
+} from '#lib/api/product.js';
 
 export type MatchStatus =
 	| 'unknown_match'
@@ -23,6 +26,8 @@ const PREF_WEIGHTS = {
 	important: 1,
 	not_important: 0
 } as const;
+
+const MISMATCH_MAX_MATCH = 10;
 
 // Get weight for preference importance
 const getWeight = (importance: string): number =>
@@ -61,7 +66,7 @@ export function calculateScore(
 
 				// Check for mandatory mismatches and uncertainties
 				if (prefValue === 'mandatory') {
-					if (match <= 10) {
+					if (match <= MISMATCH_MAX_MATCH) {
 						hasMandatoryMismatch = true;
 					} else if (match <= 50) {
 						hasMandatoryUncertain = true;
@@ -102,4 +107,21 @@ export function calculateScore(
 		totalWeights,
 		totalWeightedScore
 	};
+}
+
+export function getMismatchedAttributes(
+	productAttributes: ProductAttributeForScoringGroup[],
+	currentPrefs: UserPreference[]
+): ProductAttributeForScoring[] {
+	return productAttributes.flatMap((group) =>
+		group.attributes.filter((attr) => {
+			const pref = getPreference(currentPrefs, group.id, attr.id);
+			return (
+				pref?.type === 'attribute' &&
+				getWeight(pref.value) > 0 &&
+				attr.status === 'known' &&
+				(attr.match ?? 0) <= MISMATCH_MAX_MATCH
+			);
+		})
+	);
 }

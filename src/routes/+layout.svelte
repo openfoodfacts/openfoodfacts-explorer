@@ -280,7 +280,7 @@
 	<div class="flex justify-center">
 		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
-				<a href="/"> <Logo /> </a>
+				<a href="/"> <Logo fetchpriority="high" /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -373,7 +373,7 @@
 	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
 			<a href="/">
-				<Logo />
+				<Logo fetchpriority="high" />
 			</a>
 		</div>
 		<div class="navbar-end flex gap-1 sm:gap-2">

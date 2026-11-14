@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
 
@@ -21,8 +22,10 @@
 	type Props = {
 		product: Product;
 		lc?: string;
+		tiles?: Snippet;
+		score?: Snippet;
 	};
-	let { product, lc }: Props = $props();
+	let { product, lc, tiles, score }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -116,6 +119,7 @@
 </script>
 
 <AppStrip />
+<div id="attributes"></div>
 <Card>
 	<div class="flex flex-col gap-6">
 		<div
@@ -203,8 +207,11 @@
 					{$_('product.buttons.share', { default: 'Share' })}
 				</button>
 				<ProductMoreMenu {product} {productWebsiteUrl} />
+				<div class="mt-2 hidden min-w-0 basis-full md:block">{@render tiles?.()}</div>
 			</div>
 		</div>
+
+		<div class="hidden w-full min-w-0 md:block">{@render score?.()}</div>
 
 		<div class="min-w-0">
 			<!-- Metadata Body -->
@@ -315,6 +322,10 @@
 		</div>
 	</div>
 </Card>
+<div class="flex min-w-0 flex-col gap-2 md:hidden">
+	{@render tiles?.()}
+	{@render score?.()}
+</div>
 
 {#snippet taxonomyTags(
 	titleKey: string,

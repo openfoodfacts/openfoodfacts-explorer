@@ -30,14 +30,18 @@
 	description={$_('facets.facet_website_description', { values: { facet } })}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('facets')}
 		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
 	/>
-</div>
-
-<h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
+	<span
+		>{$_('facets.heading', {
+			values: { facet: $_(`facets.names.${facet}`, { default: facet }) },
+			default: 'Exploring {facet}'
+		})}</span
+	>
+</h2>
 
 {#if Object.hasOwn(MAP_FACETS, facet)}
 	<CountriesMap facet={data.mapResults} />
