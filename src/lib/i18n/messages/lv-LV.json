@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Valoda",
+		"language": "Valodas",
 		"country": "Valsts",
 		"currency": "Valūta",
 		"loading": "Ielādē…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Pievienojiet iepakojuma komponentus",
+				"add_packaging_components": "Nofotografējiet informāciju par pārstrādi",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Skatīt cenas vietnē Open Prices",
