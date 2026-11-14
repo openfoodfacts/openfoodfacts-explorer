@@ -553,6 +553,9 @@
 				}
 			},
 			"no_nutrition_data": "No nutrition information on the product",
+			"nutrition_disabled_cosmetics_badge": "Not applicable for cosmetics",
+			"nutrition_disabled_cosmetics_title": "Nutrition facts are disabled",
+			"nutrition_disabled_cosmetics_help": "Nutritional information is disabled because this product is classified as a cosmetic/beauty product.",
 			"no_nutrition_specified": "No nutrition data specified",
 			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
