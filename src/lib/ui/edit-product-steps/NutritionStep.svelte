@@ -648,6 +648,7 @@
 					<div class="sticky top-4">
 						<ImageButton
 							src={nutritionImage ?? undefined}
+							imageSizes={product.images?.[`nutrition_${code}`]?.sizes}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
 							productCode={product.code}
 						/>

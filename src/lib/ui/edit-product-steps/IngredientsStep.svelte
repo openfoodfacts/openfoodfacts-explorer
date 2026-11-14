@@ -157,7 +157,11 @@
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
-						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
+						<ImageButton
+							src={getIngredientsImage(code) ?? undefined}
+							imageSizes={product.images?.[`ingredients_${code}`]?.sizes}
+							productCode={product.code}
+						/>
 
 						<!-- OCR Button -->
 						<button

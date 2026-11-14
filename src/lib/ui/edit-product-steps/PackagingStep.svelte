@@ -60,6 +60,7 @@
 
 <PackagingImage
 	src={getPackagingImage(product.lang || 'en')}
+	imageSizes={product.images?.[`packaging_${product.lang || 'en'}`]?.sizes}
 	productCode={product.code}
 	alt={`Packaging photo (${product.lang || 'en'})`}
 />

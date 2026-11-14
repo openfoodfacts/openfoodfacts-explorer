@@ -98,7 +98,7 @@
 					<div
 						class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-base-100 p-2"
 					>
-						<img class="h-full w-full object-contain" src={source.icon_url} alt="" />
+						<img class="h-full w-full object-contain" src={source.icon_url} alt="" loading="lazy" />
 					</div>
 				{/if}
 				<div class="min-w-0 grow">

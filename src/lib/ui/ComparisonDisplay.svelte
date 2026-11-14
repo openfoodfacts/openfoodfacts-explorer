@@ -4,6 +4,9 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
 	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
+	import OffImage from '#lib/ui/OffImage.svelte';
+	import { getFrontImage } from '#lib/ui/frontImage.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -408,6 +411,7 @@
 <div class="block lg:hidden">
 	<div class="flex flex-col gap-4">
 		{#each products as product, index (product.code)}
+			{@const front = getFrontImage(product, getLanguageCode($preferences.locale), 'small')}
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
@@ -420,9 +424,11 @@
 				{/if}
 
 				<div class="flex flex-col items-center pt-4">
-					{#if product.image_front_small_url}
-						<img
-							src={product.image_front_small_url}
+					{#if front.src}
+						<OffImage
+							src={front.src}
+							imageSizes={front.imageSizes}
+							sizes="96px"
 							alt={product.product_name ?? product.code}
 							class="mb-2 h-24 object-contain"
 						/>
@@ -530,6 +536,7 @@
 			<tr>
 				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
 				{#each products as product, index (product.code)}
+					{@const front = getFrontImage(product, getLanguageCode($preferences.locale), 'small')}
 					<th
 						animate:flip={{ duration: 300 }}
 						class="relative min-w-40"
@@ -578,14 +585,15 @@
 									{/if}
 								</div>
 							{/if}
-							{#if product.image_front_small_url}
+							{#if front.src}
 								<a
 									href={`/products/${product.code}`}
 									class="contents"
 									aria-label={product.product_name ?? product.code}
 								>
 									<BlurredImageDisplay
-										src={product.image_front_small_url}
+										src={front.src}
+										imageSizes={front.imageSizes}
 										alt={product.product_name ?? product.code}
 										class="mx-auto mb-2 aspect-square w-8/12 rounded-xl"
 									/>

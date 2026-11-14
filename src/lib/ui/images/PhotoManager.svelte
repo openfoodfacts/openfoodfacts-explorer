@@ -80,6 +80,7 @@
 
 			images.push({
 				url: imageUrl,
+				imageSizes: imageData.sizes,
 				alt: `${photoType.label} photo${languageName ? ` for ${languageName}` : ''}`,
 				type: photoType.label,
 				imgid,
@@ -118,6 +119,7 @@
 
 			images.push({
 				url: imageUrl,
+				imageSizes: imageData.sizes,
 				alt: `Additional photo (${typePrefix})${languageName ? ` for ${languageName}` : ''}`,
 				type: typePrefix.charAt(0).toUpperCase() + typePrefix.slice(1),
 				imgid,
@@ -141,6 +143,7 @@
 
 			images.push({
 				url,
+				imageSizes: imgObj.sizes,
 				alt: `Additional photo${languageName ? ` for ${languageName}` : ''}`,
 				type: 'Other',
 				imgid,

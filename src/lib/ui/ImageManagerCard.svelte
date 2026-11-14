@@ -1,4 +1,5 @@
 <script lang="ts">
+	import OffImage from '#lib/ui/OffImage.svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import type { Product, RawImage } from '#lib/api.js';
 	import { getProductImageUrl, moveImages, deleteImages } from '#lib/api/product.js';
@@ -60,6 +61,7 @@
 				return {
 					imgid: parseInt(key, 10),
 					url,
+					imageSizes: imgObj?.sizes,
 					uploaded_t: imgObj?.uploaded_t || 0,
 					uploader: imgObj?.uploader || 'unknown'
 				};
@@ -322,8 +324,10 @@
 						onclick={() => toggleSelect(img.imgid)}
 						disabled={isSubmitting || (activeTab === 'delete' && activeImageIds.has(img.imgid))}
 					>
-						<img
-							src={img.url}
+						<OffImage
+							src={img.url ?? ''}
+							imageSizes={img.imageSizes}
+							sizes="160px"
 							alt={$_('product.moderator.image_manager_image_alt', {
 								default: 'Uploaded image {imgid}',
 								values: { imgid: img.imgid }

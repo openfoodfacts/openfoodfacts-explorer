@@ -1,4 +1,5 @@
 <script lang="ts">
+	import OffImage from '#lib/ui/OffImage.svelte';
 	import {
 		calculatorItems,
 		isCalculatorOpen,
@@ -46,8 +47,9 @@
 					<div class="flex items-center justify-between border-b p-2">
 						<div class="flex items-center">
 							{#if item.imageUrl}
-								<img
+								<OffImage
 									src={item.imageUrl}
+									sizes="48px"
 									alt={item.name}
 									class="mr-2 h-12 w-12 rounded object-cover"
 								/>
