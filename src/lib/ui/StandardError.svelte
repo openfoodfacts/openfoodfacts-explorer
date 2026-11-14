@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { _ } from '#lib/i18n/index.js';
-	import { ERR_PRODUCT_NOT_FOUND, ERR_INVALID_BARCODE } from '#lib/api/errorUtils.js';
+	import {
+		ERR_PRODUCT_NOT_FOUND,
+		ERR_INVALID_BARCODE,
+		ERR_EDIT_FOOD_ONLY
+	} from '#lib/api/errorUtils.js';
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
 	import { resolve } from '$app/paths';
 
@@ -78,7 +82,11 @@
 				</div>
 				<div>
 					<h3 class="text-xl font-bold text-error-content">
-						{message || $_('general.unknown_error', { default: 'Something went wrong' })}
+						{message === ERR_EDIT_FOOD_ONLY
+							? $_('product.edit.food_only', {
+									default: 'Editing is currently available only for food products.'
+								})
+							: message || $_('general.unknown_error', { default: 'Something went wrong' })}
 					</h3>
 					<div class="mt-1 badge border-none bg-base-100 badge-sm font-bold text-error">
 						Error {status}

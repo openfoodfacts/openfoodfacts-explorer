@@ -244,6 +244,15 @@
 			}
 		});
 
+		return () => {
+			shortcutCtx.delete('A');
+			shortcutCtx.delete('Shift+B');
+		};
+	});
+
+	$effect(() => {
+		// FIXME: Enable editing shortcuts for other Open Facts product types.
+		if (product.product_type && product.product_type !== 'food') return;
 		shortcutCtx.set('E', {
 			description: $_('product.shortcuts.edit_same_window'),
 			action: () => {
@@ -261,12 +270,9 @@
 				}
 			}
 		});
-
 		return () => {
-			shortcutCtx.delete('A');
 			shortcutCtx.delete('E');
 			shortcutCtx.delete('Shift+E');
-			shortcutCtx.delete('Shift+B');
 		};
 	});
 
@@ -429,7 +435,9 @@
 				</div>
 			{/if}
 
-			<div id="data-sources"><DataSources {product} /></div>
+			<div id="data-sources">
+				<DataSources {product} canEdit={!product.product_type || product.product_type === 'food'} />
+			</div>
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">

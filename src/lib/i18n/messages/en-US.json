@@ -445,6 +445,7 @@
 			"source_link": "GS1"
 		},
 		"edit": {
+			"food_only": "Editing is currently available only for food products.",
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
