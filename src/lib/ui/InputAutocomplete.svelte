@@ -13,6 +13,8 @@
 		buttonAriaLabel?: string;
 		Icon?: ComponentType;
 		inline?: boolean;
+		emptyText?: string;
+		onEscape?: () => void;
 	}
 
 	let {
@@ -23,7 +25,9 @@
 		buttonTitle = $_('product.edit.add_language', { default: 'Add a language' }),
 		buttonAriaLabel = $_('product.edit.add_language', { default: 'Add a language' }),
 		Icon = IconMdiPlus,
-		inline = false
+		inline = false,
+		emptyText = $_('product.edit.no_languages_found'),
+		onEscape
 	}: Props = $props();
 
 	let searchQuery = $state('');
@@ -101,9 +105,11 @@
 				autoCompleteIndex -= 1;
 			}
 		} else if (event.key === 'Escape') {
+			event.preventDefault();
 			searchQuery = '';
 			autoCompleteIndex = -1;
 			showInput = false;
+			onEscape?.();
 		}
 	}
 </script>
@@ -171,7 +177,7 @@
 		{#if inline}
 			{#if filteredItems.length === 0}
 				<p class="mt-4 text-center text-sm opacity-70 sm:text-base">
-					{$_('product.edit.no_languages_found')}
+					{emptyText}
 				</p>
 			{:else}
 				<div

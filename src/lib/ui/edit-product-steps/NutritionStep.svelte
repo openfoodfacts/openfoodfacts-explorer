@@ -1,5 +1,6 @@
 <script lang="ts">
 	import InfoTooltip from '../InfoTooltip.svelte';
+	import InputAutocomplete from '../InputAutocomplete.svelte';
 	import { _, locale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import {
@@ -97,6 +98,7 @@
 	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
+	let nutrientPickerOpen = $state(false);
 
 	function addPersistedNutrientsToFallbackCatalog() {
 		nutrientCatalog = [
@@ -146,8 +148,23 @@
 		getSelectableNutrients(nutrientCatalog, DEFAULT_NUTRIENT_IDS, additionalNutrients)
 	);
 
+	// Shape the nutrient catalog for the shared searchable picker:
+	// `label` is the translated name; `name` and `id` keep raw matching working.
+	let nutrientPickerItems = $derived(
+		canAddNutrients.map((nutrient) => ({
+			id: nutrient.id,
+			label: nutrientName(nutrient),
+			name: nutrient.name
+		}))
+	);
+
 	function nutrientName(nutrient: NutrientOption) {
 		return $_(`product.edit.nutrient.${nutrient.id}`, { default: nutrient.name });
+	}
+
+	function hasNutrientValue(id: string): boolean {
+		const value = product.nutriments?.[id] as string | number | undefined;
+		return value !== undefined && value !== '';
 	}
 
 	function addNutrient(id: string) {
@@ -539,19 +556,20 @@
 				{/each}
 			</fieldset>
 
-			<fieldset class="fieldset">
+			<fieldset class="fieldset grid-cols-1">
 				<legend class="fieldset-legend">
 					{$_('product.edit.additional_nutrients')}
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}
-					<div class="join">
-						<label class="input join-item w-full">
-							<span class="label w-60">
+					<div class="join w-full min-w-0">
+						<label class="input join-item min-w-0 flex-1">
+							<span class="label max-w-32 truncate sm:w-60 sm:max-w-60">
 								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 							</span>
 							<input
 								id={`${nutrient}-input`}
+								class="min-w-0 flex-1"
 								type="number"
 								value={product.nutriments?.[nutrient] ?? ''}
 								oninput={(e) => handleNutrimentInput(e, nutrient)}
@@ -559,7 +577,7 @@
 								step="0.1"
 								min="0"
 							/>
-							<span class="label">
+							<span class="label shrink-0">
 								{product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g'}
 							</span>
 						</label>
@@ -568,8 +586,7 @@
 							class="btn join-item btn-square shrink-0 btn-error disabled:border-base-300 disabled:bg-base-300 disabled:text-base-content/60"
 							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
 							title={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
-							disabled={product.nutriments?.[nutrient] !== undefined &&
-								(product.nutriments?.[nutrient] as string | number) !== ''}
+							disabled={hasNutrientValue(nutrient)}
 							onclick={() => removeNutrient(nutrient)}
 						>
 							<IconMdiClose class="h-5 w-5" aria-hidden="true" />
@@ -578,28 +595,33 @@
 				{/each}
 
 				{#if canAddNutrients.length > 0}
-					<span class="label">
-						{$_('product.edit.add_nutrient')}
-					</span>
-
-					<select
-						class="select w-full"
-						onchange={(e) => {
-							addNutrient(e.currentTarget.value);
-							e.currentTarget.value = '';
-						}}
+					<div
+						class="collapse-arrow collapse rounded-lg border-2 border-base-300 bg-base-300 dark:bg-base-200"
 					>
-						<option disabled value="" selected>
-							{$_('product.edit.additional_nutrients', {
-								default: 'Additional nutrients'
-							})}
-						</option>
-						{#each canAddNutrients as nutrient (nutrient)}
-							<option value={nutrient.id}>
-								{nutrientName(nutrient)}
-							</option>
-						{/each}
-					</select>
+						<input
+							type="checkbox"
+							bind:checked={nutrientPickerOpen}
+							aria-label={$_('product.edit.add_nutrient', { default: 'Add nutrient' })}
+						/>
+						<div class="collapse-title text-sm font-semibold sm:text-base">
+							{$_('product.edit.add_nutrient', { default: 'Add nutrient' })}
+						</div>
+						<div class="collapse-content">
+							<InputAutocomplete
+								items={nutrientPickerItems}
+								searchKeys={['label', 'name', 'id']}
+								placeholder={$_('product.edit.search_nutrients', {
+									default: 'Search nutrients'
+								})}
+								emptyText={$_('product.edit.no_nutrients_found', {
+									default: 'No nutrients found'
+								})}
+								inline
+								onselect={(item) => addNutrient(item.id)}
+								onEscape={() => (nutrientPickerOpen = false)}
+							/>
+						</div>
+					</div>
 				{/if}
 				{#if nutrientLoadFailed}
 					<p class="text-sm text-base-content/70">
