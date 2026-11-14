@@ -216,6 +216,9 @@
 		"github_link": "GitHub",
 		"github_cta": "Aidez-nous à améliorer Explorer sur GitHub",
 		"github_help_text": "Aidez-nous à améliorer Open Food Facts Explorer !",
+		"recent_commits": "Recent commits in this version",
+		"commits_loading": "Loading commits…",
+		"commits_unavailable": "Commit history is unavailable.",
 		"app_version": "Version {version}",
 		"app_commit_link": "Voir le commit {sha} sur GitHub",
 		"admin_tools": {
@@ -442,6 +445,7 @@
 			"source_link": "GS1"
 		},
 		"edit": {
+			"food_only": "Editing is currently available only for food products.",
 			"sidebar_navigation": "Sections d'édition du produit",
 			"sidebar": {
 				"collapse_all": "Tout réduire",
