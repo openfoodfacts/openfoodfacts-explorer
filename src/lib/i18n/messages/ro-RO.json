@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Limbă",
+		"language": "Limbi",
 		"country": "Țară",
 		"currency": "Valută",
 		"loading": "Se încarcă…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Adăugați componente de ambalare",
+				"add_packaging_components": "Faceți o fotografie a informațiilor despre reciclare",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Vizualizați prețurile pe Open Prices",
