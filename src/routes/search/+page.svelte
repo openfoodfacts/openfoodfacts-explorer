@@ -37,7 +37,7 @@
 	import FacetBar from './FacetBar.svelte';
 	import SearchSidebar from './SearchSidebar.svelte';
 	import ActiveFiltersBar from './ActiveFiltersBar.svelte';
-	import WcProductCard from '#lib/ui/WcProductCard.svelte';
+	import ComparableProductCard from '#lib/ui/ComparableProductCard.svelte';
 	import type { SearchResult } from '#lib/api/search.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { exportSearchResultsCsv } from '#lib/utils/searchCsvExport.js';
@@ -622,7 +622,7 @@
 									})}
 								</span>
 							{/if}
-							<WcProductCard
+							<ComparableProductCard
 								product={data.productCardsByCode[product.code] ?? product}
 								personalScore={$personalizedSearch.classifyProductsEnabled ? scoreData : undefined}
 							/>
