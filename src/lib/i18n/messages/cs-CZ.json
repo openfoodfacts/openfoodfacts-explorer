@@ -120,7 +120,7 @@
 		"button": "Nápověda a zkratky"
 	},
 	"general": {
-		"language": "Jazyk",
+		"language": "Jazyky",
 		"country": "Země",
 		"currency": "Měna",
 		"loading": "Načítá se…",
@@ -738,7 +738,7 @@
 				"add_categories": "Přidat kategorie",
 				"report_product_to_nutripatrol": "Nahlásit problém s tímto produktem",
 				"add_ingredients_text": "Přidat text ingrediencí",
-				"add_packaging_components": "Přidat součásti obalu",
+				"add_packaging_components": "Vyfoťte informace o recyklaci",
 				"add_origins": "Přidejte původ ingrediencí",
 				"add_price": "Přidejte cenu na Open Prices",
 				"view_prices": "Zobrazit ceny na Open Prices",
