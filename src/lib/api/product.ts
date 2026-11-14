@@ -667,6 +667,10 @@ export type Product = ProductDataSection & {
 	image_ingredients_thumb_url: string;
 
 	images: Record<string, SelectedImage | RawImage>;
+	selected_images?: Record<
+		string,
+		{ thumb?: Record<string, string>; display?: Record<string, string> }
+	>;
 
 	image_nutrition_url: string;
 	image_nutrition_small_url: string;

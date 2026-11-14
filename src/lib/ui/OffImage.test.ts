@@ -4,10 +4,11 @@ import OffImage from './OffImage.svelte';
 
 describe('OffImage', () => {
 	const src = 'https://images.openfoodfacts.org/images/products/123/front_en.1.400.jpg';
+	const thumb = 'https://images.openfoodfacts.org/images/products/123/front_en.1.100.jpg';
 
 	it('uses the actual variant widths and keeps the original source', () => {
 		const { body } = render(OffImage, {
-			props: { src, alt: '', imageSizes: { 100: { w: 67 }, 400: { w: 267 } } }
+			props: { src, alt: '', imageSizes: { 100: { w: 67, url: thumb }, 400: { w: 267, url: src } } }
 		});
 		expect(body).toContain(`src="${src}"`);
 		expect(body).toContain('front_en.1.100.jpg 67w,');
@@ -22,7 +23,7 @@ describe('OffImage', () => {
 
 	it('omits duplicate or invalid widths and does not rewrite unrelated URLs', () => {
 		const { body } = render(OffImage, {
-			props: { src, alt: '', imageSizes: { 100: { w: 80 }, 400: { w: 80 } } }
+			props: { src, alt: '', imageSizes: { 100: { w: 80, url: thumb }, 400: { w: 80, url: src } } }
 		});
 		expect(body).toContain('front_en.1.100.jpg 80w');
 		expect(body).not.toContain('front_en.1.400.jpg 80w');

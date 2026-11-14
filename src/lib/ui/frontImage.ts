@@ -1,5 +1,5 @@
 import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-import type { ImageSizes } from './imageSizes.js';
+import { getSelectedImageSizes, type ImageSizes } from './imageSizes.js';
 
 type FrontImageProduct = {
 	lang?: string;
@@ -7,7 +7,11 @@ type FrontImageProduct = {
 	image_front_url?: string;
 	image_front_small_url?: string;
 	selected_images?: {
-		front?: { display?: Record<string, string>; small?: Record<string, string> };
+		front?: {
+			display?: Record<string, string>;
+			small?: Record<string, string>;
+			thumb?: Record<string, string>;
+		};
 	};
 	images?: Record<string, { sizes?: ImageSizes }>;
 };
@@ -24,7 +28,7 @@ export function getFrontImage(product: Product, language: string, size: 'display
 	if (selectedLanguage && urls) {
 		return {
 			src: urls[selectedLanguage],
-			imageSizes: data.images?.[`front_${selectedLanguage}`]?.sizes
+			imageSizes: getSelectedImageSizes(data, 'front', selectedLanguage)
 		};
 	}
 	return {

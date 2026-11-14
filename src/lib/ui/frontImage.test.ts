@@ -9,7 +9,8 @@ const product = {
 	selected_images: {
 		front: {
 			display: { en: 'english-400', fr: 'french-400', de: 'german-400' },
-			small: { en: 'english-200', fr: 'french-200', de: 'german-200' }
+			small: { en: 'english-200', fr: 'french-200', de: 'german-200' },
+			thumb: { en: 'english-100', fr: 'french-100' }
 		}
 	},
 	images: {
@@ -22,13 +23,13 @@ describe('getFrontImage', () => {
 	it('pairs the requested language URL and metadata', () => {
 		expect(getFrontImage(product, 'en', 'display')).toEqual({
 			src: 'english-400',
-			imageSizes: { 100: { w: 63 }, 400: { w: 254 } }
+			imageSizes: { 100: { w: 63, url: 'english-100' }, 400: { w: 254, url: 'english-400' } }
 		});
 	});
 	it('falls back to the product language and uses the requested variant', () => {
 		expect(getFrontImage(product, 'es', 'small')).toEqual({
 			src: 'french-200',
-			imageSizes: { 100: { w: 75 }, 400: { w: 300 } }
+			imageSizes: { 100: { w: 75, url: 'french-100' }, 400: { w: 300, url: 'french-400' } }
 		});
 	});
 	it('falls back to English and then alphabetically when needed', () => {
