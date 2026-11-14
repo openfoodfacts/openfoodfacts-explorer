@@ -215,7 +215,9 @@
 
 		<div class="min-w-0">
 			<!-- Metadata Body -->
-			<div class="flex flex-col gap-3 text-center md:text-left">
+			<div
+				class="flex flex-col gap-2 text-left md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:items-baseline md:gap-x-3 md:gap-y-2"
+			>
 				<!-- Brands -->
 				{@render taxonomyTags(
 					'product.header.brands',
@@ -254,10 +256,10 @@
 
 				<!-- Traceability Codes -->
 				{#if product.emb_codes_tags != null && product.emb_codes_tags.length > 0}
-					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
+					<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+						<div class="shrink-0 text-sm font-bold text-secondary">
 							<span
-								>{$_('product.header.traceability_codes', { default: 'Traceability Codes' })}</span
+								>{$_('product.header.traceability_codes', { default: 'Traceability Codes' })}:</span
 							>
 							<a
 								href={TRACEABILITY_CODES_URL}
@@ -269,20 +271,22 @@
 							</a>
 						</div>
 
-						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
-							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
-									{tag.toUpperCase()}
-								</a>
-							{/each}
-						</div>
+						<TagChipList
+							containerClass="contents md:flex md:flex-wrap md:gap-1"
+							class="font-mono"
+							tags={(product.emb_codes_tags as unknown as string[]).map((tag) => ({
+								id: tag,
+								name: tag.toUpperCase(),
+								href: `/facets/packager-codes/${tag}`
+							}))}
+						/>
 					</div>
 				{/if}
 
 				{#if product.link != null}
-					<div class="mb-2">
-						<div class="mb-2 text-sm font-bold text-secondary">
-							{$_('product.header.producer_link', { default: 'Producer link' })}
+					<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+						<div class="shrink-0 text-sm font-bold text-secondary">
+							{$_('product.header.producer_link', { default: 'Producer link' })}:
 						</div>
 						<a
 							class="link break-all"
@@ -335,11 +339,12 @@
 	facet: string
 )}
 	{#if tags != null && tags.length > 0}
-		<div class="mb-2">
-			<div class="mb-2 text-sm font-bold text-secondary">
-				{$_(titleKey, { default: defaultTitle })}
+		<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 md:contents">
+			<div class="shrink-0 text-sm font-bold text-secondary">
+				{$_(titleKey, { default: defaultTitle })}:
 			</div>
 			<TagChipList
+				containerClass="contents md:flex md:flex-wrap md:gap-1"
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
