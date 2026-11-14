@@ -298,7 +298,7 @@
 					<div>
 						<button
 							type="button"
-							class="group relative aspect-square cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
+							class="group relative aspect-square w-full cursor-pointer overflow-hidden rounded border bg-transparent p-0 transition-shadow hover:shadow-lg"
 							disabled={isUploading || isUnselecting}
 							onclick={() => onImageEdit?.(image.url, image.alt)}
 							title="Click to edit this image"
