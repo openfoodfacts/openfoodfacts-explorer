@@ -7,6 +7,7 @@
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import { userInfo } from '#lib/stores/user.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import IconMdiDotsHorizontal from '@iconify-svelte/mdi/dots-horizontal';
 	import IconMdiOpenInNew from '@iconify-svelte/mdi/open-in-new';
@@ -121,7 +122,10 @@
 				href={PRODUCT_REPORT_URL(product.code!, product.product_type)}
 				target="_blank"
 				rel="noopener noreferrer"
-				onclick={closeMenu}
+				onclick={() => {
+					closeMenu();
+					trackOffEvent('feature', 'report_problem_opened', 'product_header');
+				}}
 			>
 				<IconMdiFlag class="h-5 w-5" aria-hidden="true" />
 				{$_('product.buttons.report')}

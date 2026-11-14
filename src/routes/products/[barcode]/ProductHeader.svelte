@@ -3,6 +3,7 @@
 	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import { shareContent } from '#lib/utils/webShare.js';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	import { navigating } from '$app/state';
 
@@ -60,10 +61,15 @@
 				})
 			},
 			{
-				onClipboard: () =>
+				onSuccess: () => {
+					trackOffEvent('engagement', 'share_product', 'native_share');
+				},
+				onClipboard: () => {
+					trackOffEvent('engagement', 'share_product', 'clipboard_copy');
 					toastCtx.success(
 						$_('product.toast.copied_link', { default: 'Link copied to clipboard!' })
-					),
+					);
+				},
 				onError: () =>
 					toastCtx.error($_('product.toast.failed_copy', { default: 'Failed to copy link' }))
 			}

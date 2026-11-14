@@ -9,6 +9,7 @@
 	} from '#lib/api.js';
 
 	import Card from '#lib/ui/Card.svelte';
+	import { trackOffEvent } from '#lib/analytics.js';
 	import Element from './Element.svelte';
 
 	type Props = {
@@ -43,7 +44,19 @@
 			'type' in title && `kp-panel-type-${title.type}`
 		]}
 	>
-		<input type="checkbox" checked={expanded} />
+		<input
+			type="checkbox"
+			checked={expanded}
+			onchange={(e) => {
+				if (!elements || elements.length === 0) return;
+				trackOffEvent(
+					'knowledge_panel',
+					'panel_toggled',
+					id?.trim().toLowerCase(),
+					e.currentTarget.checked ? 1 : 0
+				);
+			}}
+		/>
 
 		<div
 			class={[
