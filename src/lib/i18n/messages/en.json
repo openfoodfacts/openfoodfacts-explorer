@@ -267,6 +267,12 @@
 		"classify_products_desc": "Enable personalized product classification based on your preferences.",
 		"use_default": "Use default preferences",
 		"default_description": "Nutri-Score, Green-Score and food processing level (NOVA)",
+		"loading": "Loading preferences…",
+		"expand_all": "Expand all",
+		"collapse_all": "Collapse all",
+		"reset_confirm_title": "Use default preferences?",
+		"reset_confirm_body": "Your current choices will be replaced with the default preferences.",
+		"reset_confirm_action": "Use defaults",
 		"options": {
 			"not_important": "Not important",
 			"important": "Important",

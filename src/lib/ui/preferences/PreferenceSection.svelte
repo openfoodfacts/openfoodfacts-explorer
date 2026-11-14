@@ -11,10 +11,12 @@
 
 	type Props = {
 		group: AttributeGroup;
+		open?: boolean;
 		onChange: (preference: UserPreference) => void;
+		onToggle?: (open: boolean) => void;
 	};
 
-	let { group, onChange }: Props = $props();
+	let { group, open = true, onChange, onToggle }: Props = $props();
 
 	let { name: groupName, id: groupId, attributes = [], warning: warningText } = $derived(group);
 
@@ -59,7 +61,12 @@
 {/snippet}
 
 <div class="collapse-arrow collapse rounded-box bg-base-200">
-	<input type="checkbox" checked />
+	<input
+		type="checkbox"
+		checked={open}
+		aria-label={groupName || groupId}
+		onchange={(e) => onToggle?.(e.currentTarget.checked)}
+	/>
 	<div class="collapse-title text-lg font-medium">
 		{groupName || groupId || 'Unnamed Group'}
 	</div>
