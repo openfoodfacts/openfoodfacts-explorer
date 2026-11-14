@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getSelectedImageSizes } from '../imageSizes.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { createProductsApi, type Product } from '#lib/api.js';
 	import { getLanguageName } from '#lib/languages.js';
@@ -159,7 +160,7 @@
 					<div class="flex flex-col gap-3">
 						<ImageButton
 							src={getIngredientsImage(code) ?? undefined}
-							imageSizes={product.images?.[`ingredients_${code}`]?.sizes}
+							imageSizes={getSelectedImageSizes(product, 'ingredients', code)}
 							productCode={product.code}
 						/>
 
