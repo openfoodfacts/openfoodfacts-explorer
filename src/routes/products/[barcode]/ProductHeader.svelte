@@ -137,6 +137,7 @@
 							aria-hidden="true"
 						/>
 						<ImageButton
+							loading="eager"
 							src={frontImage}
 							alt={product.product_name}
 							productCode={product.code}

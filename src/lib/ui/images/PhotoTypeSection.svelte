@@ -305,6 +305,7 @@
 						>
 							<img
 								src={image.url}
+								loading="lazy"
 								alt={image.alt}
 								class="h-full w-full object-cover transition-transform group-hover:scale-105"
 							/>
