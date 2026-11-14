@@ -317,15 +317,15 @@
 	});
 </script>
 
-{#snippet issueTooltip(issue: Issue)}
+{#snippet issueTooltip(issue: Issue, extraClass: string = '')}
 	{@const isError = issue.severity === 'error'}
 	{@const Icon = isError ? IconMdiAlertCircle : IconMdiAlert}
 	{@const iconColorClass = isError ? 'text-error' : 'text-warning'}
 	<div
-		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning']}
+		class={['tooltip cursor-default', isError ? 'tooltip-error' : 'tooltip-warning', extraClass]}
 		data-tip={issue.title}
 	>
-		<Icon class={[iconColorClass, 'ml-2 h-5 w-5 text-lg']} />
+		<Icon class={[iconColorClass, 'ml-1 h-4 w-4 text-lg sm:ml-2 sm:h-5 sm:w-5']} />
 	</div>
 {/snippet}
 
@@ -496,19 +496,24 @@
 			</fieldset>
 			<fieldset class="fieldset">
 				{#each DEFAULT_SHOWN as nutrient (nutrient)}
-					{@const issueKeys = [nutrient, 'all']}
-					{@const issue = issuesByField(issueKeys)[0]}
-					<label class={['input w-full', fieldInputClasses(issueKeys)]}>
-						<span class="label w-60">
-							<span class="flex grow items-center gap-2">
-								{$_(`product.edit.nutrient.${nutrient}`)}
+					{@const issue = issuesByField(nutrient)[0]}
+					{@const label = $_(`product.edit.nutrient.${nutrient}`)}
+					<label class={['input h-auto min-h-10 w-full', fieldInputClasses(nutrient)]}>
+						<span
+							class="label h-auto w-24 shrink-0 justify-start pr-1 min-[390px]:w-37 sm:w-40 sm:pr-3 md:w-60"
+						>
+							<span class="flex min-w-0 grow items-center gap-1 sm:gap-2">
+								<span
+									class="min-w-0 leading-tight break-words hyphens-auto whitespace-normal sm:truncate"
+									title={label}>{label}</span
+								>
 
 								{#if EMPTY_NUTRIENT_TOOLTIPS[nutrient] && (product.nutriments?.[nutrient] === undefined || product.nutriments?.[nutrient] === null || (product.nutriments?.[nutrient] as unknown) === '')}
 									<InfoTooltip text={$_(EMPTY_NUTRIENT_TOOLTIPS[nutrient])} />
 								{/if}
 							</span>
 							{#if issue}
-								{@render issueTooltip(issue)}
+								{@render issueTooltip(issue, 'ml-auto shrink-0')}
 							{/if}
 						</span>
 
@@ -545,10 +550,16 @@
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}
+					{@const label = nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
 					<div class="join">
-						<label class="input join-item w-full">
-							<span class="label w-60">
-								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
+						<label class="input join-item h-auto min-h-10 w-full">
+							<span
+								class="label h-auto w-24 shrink-0 pr-1 min-[390px]:w-37 sm:w-40 sm:pr-3 md:w-60"
+							>
+								<span
+									class="min-w-0 leading-tight break-words hyphens-auto whitespace-normal sm:truncate"
+									title={label}>{label}</span
+								>
 							</span>
 							<input
 								id={`${nutrient}-input`}
