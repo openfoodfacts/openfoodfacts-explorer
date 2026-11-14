@@ -120,7 +120,7 @@
 		"button": "Βοήθεια και Συντομεύσεις"
 	},
 	"general": {
-		"language": "Γλώσσα",
+		"language": "Γλώσσες",
 		"country": "Χώρα",
 		"currency": "Νόμισμα",
 		"loading": "Φόρτωση…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Προσθέστε μέρη της συσκευασίας",
+				"add_packaging_components": "Τραβήξτε μια φωτογραφία των πληροφοριών ανακύκλωσης",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Δείτε τις τιμές στο Open Prices",
