@@ -13,7 +13,7 @@
 	import Card from '#lib/ui/Card.svelte';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
 	import OffImage from '#lib/ui/OffImage.svelte';
-	import { getImageSizes } from '#lib/ui/imageSizes.js';
+	import { getFrontImage } from '#lib/ui/frontImage.js';
 	import AppStrip from './AppStrip.svelte';
 	import ProductMoreMenu from './ProductMoreMenu.svelte';
 
@@ -72,15 +72,11 @@
 		);
 	}
 
-	let frontImage = $derived(
-		(product.image_front_url as string | undefined) ?? product.image_front_small_url
-	);
+	let front = $derived(getFrontImage(product, lc || getLanguageCode(preferredLocale), 'display'));
+	let frontImage = $derived(front.src);
 	const frontImageDisplaySizes = '(min-width: 768px) 224px, 96px';
 
 	let frontKey = $derived(frontImage?.split('/').at(-1)?.split('.')[0]);
-	let frontImageSizes = $derived(
-		getImageSizes(frontImage, (product as unknown as Record<string, unknown>).images)
-	);
 	let frontImageUploader = $derived.by(() => {
 		const images = (product as unknown as Record<string, unknown>).images as
 			Record<string, { imgid?: string; uploader?: string }> | undefined;
@@ -138,7 +134,7 @@
 					>
 						<OffImage
 							src={frontImage}
-							imageSizes={frontImageSizes}
+							imageSizes={front.imageSizes}
 							alt=""
 							sizes={frontImageDisplaySizes}
 							loading="eager"
@@ -147,7 +143,7 @@
 						/>
 						<ImageButton
 							src={frontImage}
-							imageSizes={frontImageSizes}
+							imageSizes={front.imageSizes}
 							sizes={frontImageDisplaySizes}
 							loading="eager"
 							fetchpriority="high"
