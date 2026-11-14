@@ -13,6 +13,7 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '../lib/ui/PersonalizedSearchToggle.svelte';
 	import CountUp from '#lib/ui/CountUp.svelte';
+	import { DonationBanner } from 'virtual:lit-svelte/components';
 
 	import IconMdiCompassOutline from '@iconify-svelte/mdi/compass-outline';
 	import IconMdiLightbulbOnOutline from '@iconify-svelte/mdi/lightbulb-on-outline';
@@ -183,7 +184,7 @@
 </div>
 
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
-	<donation-banner></donation-banner>
+	<DonationBanner />
 </div>
 <div class="xl:max-w-8xl container mx-auto mt-16 px-4">
 	<mobile-badges></mobile-badges>
