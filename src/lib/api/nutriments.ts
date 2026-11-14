@@ -148,7 +148,14 @@ export function getMissingNutrientOptions(
 	const missingNutrients: NutrientOption[] = [];
 
 	for (const [id, value] of Object.entries(nutriments ?? {})) {
-		if (value == null || DERIVED_NUTRIENT_KEY_SUFFIX.test(id) || knownIds.has(id)) continue;
+		if (
+			value == null ||
+			id === 'nova-group' ||
+			DERIVED_NUTRIENT_KEY_SUFFIX.test(id) ||
+			knownIds.has(id)
+		) {
+			continue;
+		}
 
 		const unit = nutriments?.[`${id}_unit`];
 		missingNutrients.push({

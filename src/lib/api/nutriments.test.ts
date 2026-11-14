@@ -54,6 +54,24 @@ describe('nutrients API', () => {
 		expect(missingNutrients).toEqual([{ id: 'caffeine', name: 'caffeine', unit: 'mg' }]);
 	});
 
+	it('excludes nova-group from missing nutrient options', () => {
+		const missingNutrients = getMissingNutrientOptions(
+			{
+				'nova-group': 4,
+				'nova-group_100g': 4,
+				'nova-group_serving': 4,
+				'nova-group_unit': '',
+				'nova-group_value': 4,
+				fat: 30,
+				caffeine: 20,
+				caffeine_unit: 'mg'
+			},
+			nutrientOptions
+		);
+
+		expect(missingNutrients).toEqual([{ id: 'caffeine', name: 'caffeine', unit: 'mg' }]);
+	});
+
 	it('loads localized nutrients through the SDK client', async () => {
 		const fetchMock = vi.fn().mockResolvedValue(
 			new Response(
