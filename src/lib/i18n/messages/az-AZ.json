@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Dil",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Valyuta",
 		"loading": "Yüklənir…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Qablaşdırma komponentlərini əlavə edin",
+				"add_packaging_components": "Təkrar emal məlumatlarının şəklini çəkin",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Açıq qiymətlərdə qiymətlərə baxın",
