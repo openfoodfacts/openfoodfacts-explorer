@@ -790,6 +790,7 @@ export function getProductImageUrl(
 
 export type ProductImage = {
 	url: string;
+	imageSizes?: Partial<Record<100 | 400, { w: number }>>;
 	alt: string;
 	type: string;
 	imgid: number; // The numeric image ID for the API
