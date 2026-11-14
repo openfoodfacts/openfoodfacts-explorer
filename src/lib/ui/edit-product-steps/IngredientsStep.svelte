@@ -5,6 +5,7 @@
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
+	import { getImageSizes } from '../imageSizes.js';
 
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -157,7 +158,11 @@
 			<div class="mb-4">
 				{#if getIngredientsImage(code) != null}
 					<div class="flex flex-col gap-3">
-						<ImageButton src={getIngredientsImage(code) ?? undefined} productCode={product.code} />
+						<ImageButton
+							src={getIngredientsImage(code) ?? undefined}
+							imageSizes={getImageSizes(getIngredientsImage(code), product.images)}
+							productCode={product.code}
+						/>
 
 						<!-- OCR Button -->
 						<button

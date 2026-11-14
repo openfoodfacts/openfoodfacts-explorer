@@ -306,6 +306,7 @@
 						>
 							<OffImage
 								src={image.url}
+								imageSizes={image.imageSizes}
 								sizes="160px"
 								alt={image.alt}
 								class="h-full w-full object-cover transition-transform group-hover:scale-105"

@@ -61,6 +61,7 @@
 				return {
 					imgid: parseInt(key, 10),
 					url,
+					imageSizes: imgObj?.sizes,
 					uploaded_t: imgObj?.uploaded_t || 0,
 					uploader: imgObj?.uploader || 'unknown'
 				};
@@ -325,6 +326,7 @@
 					>
 						<OffImage
 							src={img.url ?? ''}
+							imageSizes={img.imageSizes}
 							sizes="160px"
 							alt={$_('product.moderator.image_manager_image_alt', {
 								default: 'Uploaded image {imgid}',

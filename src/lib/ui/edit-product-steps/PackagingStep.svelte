@@ -9,6 +9,7 @@
 	import IconMdiInformationOutline from '@iconify-svelte/mdi/information';
 
 	import PackagingImage from './PackagingImage.svelte';
+	import { getImageSizes } from '../imageSizes.js';
 	import PackagingRecyclingInstructions from './PackagingRecyclingInstructions.svelte';
 	import PackagingComponentsEditor from './PackagingComponentsEditor.svelte';
 
@@ -60,6 +61,7 @@
 
 <PackagingImage
 	src={getPackagingImage(product.lang || 'en')}
+	imageSizes={getImageSizes(getPackagingImage(product.lang || 'en'), product.images)}
 	productCode={product.code}
 	alt={`Packaging photo (${product.lang || 'en'})`}
 />

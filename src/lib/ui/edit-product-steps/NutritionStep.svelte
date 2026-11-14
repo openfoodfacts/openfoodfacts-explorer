@@ -25,6 +25,7 @@
 	import IconMdiDeleteSweep from '@iconify-svelte/mdi/delete-sweep';
 
 	import ImageButton from '../ImageButton.svelte';
+	import { getImageSizes } from '../imageSizes.js';
 	import {
 		getServingSizeValidationResult,
 		getNutritionIssues,
@@ -648,6 +649,7 @@
 					<div class="sticky top-4">
 						<ImageButton
 							src={nutritionImage ?? undefined}
+							imageSizes={getImageSizes(nutritionImage, product.images)}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
 							productCode={product.code}
 						/>
