@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Мова",
+		"language": "Мови",
 		"country": "Країна",
 		"currency": "Валюта",
 		"loading": "Завантаження…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Додайте пакувальні компоненти",
+				"add_packaging_components": "Сфотографуйте інформацію про перероблення",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Переглянути ціни на Open Prices",
