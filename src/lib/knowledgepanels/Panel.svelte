@@ -18,8 +18,9 @@
 		id: string;
 		link?: string;
 		productCode?: string;
+		headingLevel?: number;
 	};
-	let { panels, panel, inline = false, id, link, productCode }: Props = $props();
+	let { panels, panel, inline = false, id, link, productCode, headingLevel = 3 }: Props = $props();
 
 	let expanded = $derived(panel?.expanded ?? false);
 
@@ -28,7 +29,16 @@
 
 {#snippet elementList(elements: KnowledgeElement[])}
 	{#each elements as element, i (i)}
-		<Element {element} {panels} {productCode} />
+		<Element
+			{element}
+			{panels}
+			{productCode}
+			headingLevel={panel.type === 'card'
+				? 2
+				: panel.type === 'inline' || inline
+					? headingLevel - 1
+					: headingLevel}
+		/>
 	{/each}
 {/snippet}
 
@@ -63,9 +73,14 @@
 				/>
 			{/if}
 			<div class="grow">
-				<div class="kp-title">{title.title}</div>
+				<svelte:element
+					this={`h${Math.min(headingLevel, 6)}`}
+					class="kp-title text-base font-medium text-base-content"
+				>
+					{title.title}
+				</svelte:element>
 				{#if title.subtitle != null}
-					<h3 class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</h3>
+					<p class="kp-subtitle text-sm text-secondary italic">{title.subtitle}</p>
 				{/if}
 			</div>
 		</div>
