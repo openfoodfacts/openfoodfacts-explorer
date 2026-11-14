@@ -120,7 +120,7 @@
 		"button": "Ayuda y atajos"
 	},
 	"general": {
-		"language": "Idioma",
+		"language": "Idiomas",
 		"country": "País",
 		"currency": "Moneda",
 		"loading": "Cargando…",
@@ -738,7 +738,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Informar de un problema con este producto",
 				"add_ingredients_text": "Añadir texto de ingredientes",
-				"add_packaging_components": "Añadir un componente del envase",
+				"add_packaging_components": "Haz una fotografía de la información de reciclaje",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Agregar un precio a los precios abiertos",
 				"view_prices": "Ver precios en Precios Abiertos",
