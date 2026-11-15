@@ -79,7 +79,6 @@
 						src={attribute.icon_url}
 						loading="lazy"
 						alt=""
-						loading="lazy"
 						class="h-8 w-8 shrink-0 object-contain"
 					/>{/if}
 				<div class="min-w-0 flex-1">

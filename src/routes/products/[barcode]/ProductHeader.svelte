@@ -142,7 +142,6 @@
 							aria-hidden="true"
 						/>
 						<ImageButton
-							loading="eager"
 							src={frontImage}
 							imageSizes={front.imageSizes}
 							sizes={frontImageDisplaySizes}
