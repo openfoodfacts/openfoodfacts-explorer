@@ -385,6 +385,8 @@
 			"countries": "Země"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Použijte editor webových komponent",
 			"title_beta": "Personalizované vlastnosti (beta)",
 			"intro_before": "Tyto vlastnosti vytvářejí a vyplňují uživatelé pro různé účely. Můžete přidat vlastní. Vlastnosti a hodnoty, které vytvoříte, ",
@@ -727,6 +729,7 @@
 		"prices": {
 			"no_prices_found": "Pro tento produkt nebyly nalezeny žádné ceny",
 			"loading": "Načítání cen…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Zobrazit ceny na Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} cena} few {{count} ceny} many {{count} cen} other {{count} cen}} nalezeno v {storeCount, plural, one {{storeCount} obchodě} few {{storeCount} obchodech} many {{storeCount} obchodech} other {{storeCount} obchodech}}",
 			"no_prices_explanation": "Pomozte nám vytvořit největší databázi otevřených cen přidáním informací o ceně tohoto produktu.",
