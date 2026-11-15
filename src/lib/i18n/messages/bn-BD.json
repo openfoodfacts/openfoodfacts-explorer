@@ -385,6 +385,8 @@
 			"countries": "Countries"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
@@ -727,6 +729,7 @@
 		"prices": {
 			"no_prices_found": "এই পণ্যের জন্য কোন দাম পাওয়া যায়নি।",
 			"loading": "দাম লোড হচ্ছে…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "ওপেন প্রাইস-এ দাম দেখুন",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
