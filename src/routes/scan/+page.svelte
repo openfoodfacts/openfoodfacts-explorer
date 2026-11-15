@@ -291,9 +291,37 @@
 	}
 </script>
 
+{#snippet manualBarcodeForm()}
+	<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
+		<label class="mb-2 block text-left" for="manual-barcode">
+			{$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+		</label>
+
+		<div class="join w-full">
+			<input
+				id="manual-barcode"
+				type="text"
+				inputmode="numeric"
+				placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+				aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
+				bind:value={manualBarcode}
+				class="input-bordered input join-item w-full"
+				required
+				pattern="[0-9]+"
+				minlength="5"
+				maxlength="14"
+			/>
+
+			<button class="btn join-item btn-primary" type="submit">
+				{$_('search.button', { default: 'Search' })}
+			</button>
+		</div>
+	</form>
+{/snippet}
+
 {#if error != null}
-	<div class="flex h-screen items-center justify-center">
-		<div class="flex flex-col items-center gap-4 text-center">
+	<div class="flex min-h-screen items-center justify-center px-4">
+		<div class="flex w-full max-w-md flex-col items-center gap-4 text-center">
 			<div class="max-w-full px-4" role="alert">
 				<p class="text-error">{error}</p>
 				{#if invalidBarcodePayload !== null}
@@ -314,6 +342,7 @@
 					{$_('qr.scan_again', { default: 'Scan again' })}
 				</button>
 			{/if}
+			{@render manualBarcodeForm()}
 		</div>
 	</div>
 {:else}
@@ -328,31 +357,7 @@
 		></video>
 
 		{#if scannerTimedOut}
-			<form class="mt-6 w-full max-w-md" onsubmit={submitManualBarcode}>
-				<label class="mb-2 block text-left" for="manual-barcode">
-					{$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-				</label>
-
-				<div class="join w-full">
-					<input
-						id="manual-barcode"
-						type="text"
-						inputmode="numeric"
-						placeholder={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-						aria-label={$_('qr.manual_barcode', { default: 'Enter the barcode manually' })}
-						bind:value={manualBarcode}
-						class="input-bordered input join-item w-full"
-						required
-						pattern="[0-9]+"
-						minlength="5"
-						maxlength="14"
-					/>
-
-					<button class="btn join-item btn-primary" type="submit">
-						{$_('search.button', { default: 'Search' })}
-					</button>
-				</div>
-			</form>
+			{@render manualBarcodeForm()}
 		{/if}
 	</div>
 {/if}
