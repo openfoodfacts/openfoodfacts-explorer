@@ -385,6 +385,8 @@
 			"countries": "Negara"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
 			"intro_before": "Properti ini dibuat dan diisi oleh pengguna untuk berbagai keperluan. Silakan tambahkan properti Anda sendiri. Properti dan nilai yang Anda buat ",
@@ -727,6 +729,7 @@
 		"prices": {
 			"no_prices_found": "Tidak ada harga yang ditemukan untuk produk ini",
 			"loading": "Memuat harga…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Lihat harga di Harga Terbuka",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
