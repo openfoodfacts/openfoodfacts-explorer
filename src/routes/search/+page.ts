@@ -24,27 +24,37 @@ function isValidEAN13(code: string): boolean {
 	return checkDigit === digits[12];
 }
 
+/** Returns the number of prices for each barcode, using one Prices API request per 100 codes. */
 async function getPrices(
 	baseFetch: typeof fetch,
 	barcodes: string[]
 ): Promise<Record<string, number>> {
 	const prices: Record<string, number> = {};
 	const api = createPricesApi(baseFetch);
+
+	const batches: string[][] = [];
+	for (let i = 0; i < barcodes.length; i += 100) {
+		batches.push(barcodes.slice(i, i + 100));
+	}
+
 	const results = await Promise.all(
-		barcodes.map(async (code) => {
+		batches.map(async (codes) => {
 			try {
-				const res = await api.getPrices({ product_code: code });
-				return { code, prices: res };
+				const query = { code__in: codes.join(','), size: codes.length } as Parameters<
+					typeof api.getProducts
+				>[0];
+				const res = await api.getProducts(query);
+				return { codes, items: res.data?.items.flat() ?? null };
 			} catch {
-				return { code, prices: { data: null } };
+				return { codes, items: null };
 			}
 		})
 	);
 
-	for (const result of results) {
-		if (result.prices && result.prices.data && result.prices.data.items) {
-			prices[result.code] = result.prices.data.total;
-		}
+	for (const { codes, items } of results) {
+		if (!items) continue;
+		for (const code of codes) prices[code] = 0;
+		for (const item of items) prices[item.code] = item.price_count ?? 0;
 	}
 
 	return prices;

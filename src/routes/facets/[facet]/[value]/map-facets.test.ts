@@ -1,5 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { getFacetDistribution } from './map-facets';
+import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
+
+describe('queryValuesToDistribution', () => {
+	it('preserves full-result counts and localizes names', () => {
+		expect(
+			queryValuesToDistribution(
+				[
+					{ _id: 'en:france', count: 250 },
+					{ _id: 'en:italy', count: 30 }
+				],
+				{ 'en:france': { name: { fr: 'France' } } },
+				'fr'
+			)
+		).toEqual({
+			count: 2,
+			tags: [
+				{ id: 'en:france', products: 250, known: 1, name: 'France' },
+				{ id: 'en:italy', products: 30, known: 1, name: 'en:italy' }
+			]
+		});
+	});
+});
 
 describe('getFacetDistribution', () => {
 	it('counts tags across products and localizes their names', () => {

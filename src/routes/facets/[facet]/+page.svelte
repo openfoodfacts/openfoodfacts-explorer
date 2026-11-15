@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MAP_FACETS } from './map-facets';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
@@ -19,6 +20,8 @@
 		return new Intl.NumberFormat().format(n);
 	}
 
+	const formatKnown = (known: number) => (known === -1 ? '—' : known === 1 ? 'Yes' : 'No');
+
 	let { facet, results, pages, page: currentPage, knowledgePanels } = $derived(data);
 </script>
 
@@ -27,17 +30,28 @@
 	description={$_('facets.facet_website_description', { values: { facet } })}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('facets')}
 		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
 	/>
-</div>
+	<span
+		>{$_('facets.heading', {
+			values: { facet: $_(`facets.names.${facet}`, { default: facet }) },
+			default: 'Exploring {facet}'
+		})}</span
+	>
+</h2>
 
-<h2 class="my-8 text-3xl font-bold">Exploring {facet}</h2>
-
-{#if facet === 'countries'}
-	<CountriesMap facet={data.results} />
+{#if Object.hasOwn(MAP_FACETS, facet)}
+	<CountriesMap facet={data.mapResults} />
+	{#if data.mapIsPageLimited}
+		<p class="mt-2 text-sm text-base-content/70">
+			{$_('facets.map_page_limited', {
+				default: 'This map only includes data from the current page.'
+			})}
+		</p>
+	{/if}
 {/if}
 
 <div class="my-8 flex gap-4 max-md:flex-col">
@@ -89,7 +103,7 @@
 							{name}
 						</a>
 					</td>
-					<td>{known === 1 ? 'Yes' : 'No'}</td>
+					<td>{formatKnown(known)}</td>
 					<td class="text-end">{formatNumber(products)}</td>
 				</tr>
 			{/each}
