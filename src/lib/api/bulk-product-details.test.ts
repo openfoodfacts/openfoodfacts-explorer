@@ -33,29 +33,28 @@ describe('getBulkProductAttributesAndImages', () => {
 });
 
 describe('getBulkProductCardsAndAttributes', () => {
-	it('fetches card fields and attributes in one request per 100 codes', async () => {
+	it('fetches card fields and attributes for all codes in one request', async () => {
 		const toUrl = (input: unknown) => new URL(input instanceof Request ? input.url : String(input));
-		// Each batch answers with a product named after its first requested code
-		const fetch = vi.fn(async (input: RequestInfo | URL) => {
-			const first = toUrl(input).searchParams.get('code')!.split(',')[0];
-			return Response.json({
-				products: [{ code: first, product_name: `Product ${first}`, attribute_groups: [] }]
-			});
-		});
-		const codes = Array.from({ length: 150 }, (_, i) => String(i + 1));
+		const fetch = vi.fn(async () =>
+			Response.json({
+				products: [
+					{ code: '1', product_name: 'Product 1', attribute_groups: [] },
+					{ code: '24', product_name: 'Product 24', attribute_groups: [] }
+				]
+			})
+		);
+		const codes = Array.from({ length: 24 }, (_, i) => String(i + 1));
 		const result = await getBulkProductCardsAndAttributes(fetch, codes);
 
-		const urls = (fetch.mock.calls as unknown[][]).map(([input]) => toUrl(input));
-		expect(urls.map((url) => url.searchParams.get('code'))).toEqual([
-			codes.slice(0, 100).join(','),
-			codes.slice(100).join(',')
-		]);
-		expect(urls.map((url) => url.searchParams.get('page_size'))).toEqual(['100', '50']);
-		const fields = urls[0].searchParams.get('fields')?.split(',');
+		expect(fetch).toHaveBeenCalledTimes(1);
+		const url = toUrl((fetch.mock.calls as unknown[][])[0][0]);
+		expect(url.searchParams.get('code')).toBe(codes.join(','));
+		expect(url.searchParams.get('page_size')).toBe('24');
+		const fields = url.searchParams.get('fields')?.split(',');
 		expect(fields).toContain('attribute_groups');
 		expect(fields).toContain('image_front_small_url');
 		expect(result.cardsByCode['1']).toMatchObject({ code: '1', product_name: 'Product 1' });
-		expect(result.cardsByCode['101']).toMatchObject({ code: '101', product_name: 'Product 101' });
-		expect(result.attributesByCode).toEqual({ '1': [], '101': [] });
+		expect(result.cardsByCode['24']).toMatchObject({ code: '24', product_name: 'Product 24' });
+		expect(result.attributesByCode).toEqual({ '1': [], '24': [] });
 	});
 });

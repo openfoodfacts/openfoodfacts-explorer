@@ -5,31 +5,41 @@ import {
 	type ProductReduced
 } from '#lib/api/product.js';
 
-async function fetchProductsInBatches(
+// The search API returns at most this many products in one request when signed out.
+export const MAX_PRODUCTS_PER_REQUEST = 100;
+
+async function fetchProducts(
 	fetch: typeof window.fetch,
 	productCodes: string[],
 	fields: readonly string[]
 ) {
 	const api = createProductsApi(fetch);
+	const params = new URLSearchParams({
+		code: productCodes.join(','),
+		page_size: String(productCodes.length),
+		fields: fields.join(',')
+	});
+
+	const { data, error } = await api.apiv2.search(Object.fromEntries(params.entries()));
+	if (!data) {
+		throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
+	}
+	return data.products || [];
+}
+
+async function fetchProductsInBatches(
+	fetch: typeof window.fetch,
+	productCodes: string[],
+	fields: readonly string[]
+) {
 	const products = [];
 
 	// TODO VERIFY: Product opener can limit the number of results returned by the API.
 	// Fetch in batches of 100 product codes. We explicitly do this sequentially to avoid
 	// overloading the server.
-	for (let offset = 0; offset < productCodes.length; offset += 100) {
-		const codes = productCodes.slice(offset, offset + 100);
-		const params = new URLSearchParams({
-			code: codes.join(','),
-			page_size: String(codes.length),
-			fields: fields.join(',')
-		});
-
-		const { data, error } = await api.apiv2.search(Object.fromEntries(params.entries()));
-		if (!data) {
-			throw new Error(`No data returned for bulk product attributes: ${error || 'unknown error'}`);
-		}
-
-		products.push(...(data.products || []));
+	for (let offset = 0; offset < productCodes.length; offset += MAX_PRODUCTS_PER_REQUEST) {
+		const codes = productCodes.slice(offset, offset + MAX_PRODUCTS_PER_REQUEST);
+		products.push(...(await fetchProducts(fetch, codes, fields)));
 	}
 	return products;
 }
@@ -47,7 +57,7 @@ export async function getBulkProductCardsAndAttributes(
 	const attributesByCode: Record<string, ProductAttributeForScoringGroup[]> = {};
 	if (productCodes.length === 0) return { cardsByCode, attributesByCode };
 
-	const products = await fetchProductsInBatches(fetch, productCodes, [
+	const products = await fetchProducts(fetch, productCodes, [
 		...REDUCED_FIELDS,
 		'attribute_groups'
 	]);

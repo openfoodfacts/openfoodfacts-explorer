@@ -4,7 +4,10 @@ import type { PageLoad } from './$types';
 import { compatSearch, type SearchResult } from '#lib/api/search.js';
 import { createPricesApi, isConfigured as isPricesConfigured } from '#lib/api/prices.js';
 import { createProductsApi } from '#lib/api/product.js';
-import { getBulkProductCardsAndAttributes } from '#lib/api/bulk-product-details.js';
+import {
+	getBulkProductCardsAndAttributes,
+	MAX_PRODUCTS_PER_REQUEST
+} from '#lib/api/bulk-product-details.js';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -71,7 +74,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
-	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
+	// Product details are fetched in one request, so do not ask for more results than it can return
+	const requestedPageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
+	const pageSize = Math.min(requestedPageSize, MAX_PRODUCTS_PER_REQUEST);
 
 	const { data: searchData, error: searchError } = await compatSearch(fetch, {
 		q: query,
