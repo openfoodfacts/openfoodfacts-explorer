@@ -385,6 +385,8 @@
 			"countries": "Pays"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Utiliser l'éditeur de composants Web",
 			"title_beta": "Propriétés personnalisées (bêta)",
 			"intro_before": "Ces propriétés sont créées et renseignées par les utilisateurs pour tout type d'usage. N'hésitez pas à ajouter les vôtres. Les propriétés et valeurs que vous créez",
@@ -727,6 +729,7 @@
 		"prices": {
 			"no_prices_found": "Aucun prix trouvé pour ce produit",
 			"loading": "Tarifs de chargement…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Voir les prix sur Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} prix} other {{count} prix}} trouvé(s) dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
 			"no_prices_explanation": "Aidez-nous à construire la plus grande base de données Open Prices en ajoutant des informations sur les prix de ce produit.",
