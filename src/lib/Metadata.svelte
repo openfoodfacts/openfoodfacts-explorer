@@ -16,6 +16,14 @@
 		url = page.url.toString(),
 		type = 'website'
 	}: Props = $props();
+
+	let domain = $derived.by(() => {
+		try {
+			return new URL(url, page.url.origin).hostname;
+		} catch {
+			return page.url.hostname;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -33,7 +41,7 @@
 
 	<!-- Twitter Meta Tags -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta property="twitter:domain" content="openfoodfacts-explorer.vercel.app" />
+	<meta property="twitter:domain" content={domain} />
 	<meta property="twitter:url" content={url} />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
