@@ -385,6 +385,8 @@
 			"countries": "国家/地区"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "使用 Web Component 编辑器",
 			"title_beta": "个性化属性（测试版）",
 			"intro_before": "这些属性由用户创建和填写，可用于各种用途。欢迎添加您自己的属性。您创建的属性和值 ",
@@ -727,6 +729,7 @@
 		"prices": {
 			"no_prices_found": "未找到该产品的价格",
 			"loading": "正在加载价格…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "查看开放价格",
 			"kp_subtitle_found": "在 {storeCount, plural, one {{storeCount} 家商店} other {{storeCount} 家商店}} 中找到 {count, plural, one {{count} 条价格信息} other {{count} 条价格信息}}",
 			"no_prices_explanation": "通过为此产品添加价格信息，帮助我们建立最大的 Open Prices 数据库。",
