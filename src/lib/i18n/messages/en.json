@@ -1066,9 +1066,22 @@
 		"load_failed": "Failed to load content."
 	},
 	"calculator": {
+		"title": "Nutrition Calculator",
+		"close_aria": "Close calculator",
+		"empty_state": "Add products to calculate total nutrition",
+		"quantity_grams": "{quantity}g",
+		"decrease_quantity_aria": "Decrease quantity",
+		"increase_quantity_aria": "Increase quantity",
+		"remove_item_aria": "Remove item",
+		"total_nutrition": "Total Nutrition:",
+		"calories": "Calories: {value} kcal",
+		"proteins": "Protein: {value}g",
+		"carbohydrates": "Carbs: {value}g",
+		"fat": "Fat: {value}g",
+		"sugars": "Sugars: {value}g",
+		"salt": "Salt: {value}g",
 		"clear_all": "Clear All",
-		"clear_all_aria": "Clear all items from calculator",
-		"title": "Calculator"
+		"clear_all_aria": "Clear all items from calculator"
 	},
 	"navigation": {
 		"return_to_home": "Return to Home"

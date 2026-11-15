@@ -30,10 +30,13 @@ export function addItemToCalculator(item: CalculatorItem) {
 		const existingIndex = items.findIndex((i) => i.id === item.id);
 		if (existingIndex >= 0) {
 			const updatedItems = [...items];
-			updatedItems[existingIndex].quantity += DEFAULT_QUANTITY_INCREMENT;
+			updatedItems[existingIndex] = {
+				...updatedItems[existingIndex],
+				quantity: updatedItems[existingIndex].quantity + DEFAULT_QUANTITY_INCREMENT
+			};
 			return updatedItems;
 		} else {
-			return [...items, item];
+			return [...items, { ...item }];
 		}
 	});
 	isCalculatorOpen.set(true);
@@ -44,13 +47,13 @@ export function updateItemQuantity(id: string, amount: number) {
 		const index = items.findIndex((item) => item.id === id);
 		if (index === -1) return items;
 
-		const updatedItems = [...items];
-		const newQuantity = updatedItems[index].quantity + amount;
+		const newQuantity = items[index].quantity + amount;
 
 		if (newQuantity <= 0) {
 			return items.filter((item) => item.id !== id);
 		} else {
-			updatedItems[index].quantity = newQuantity;
+			const updatedItems = [...items];
+			updatedItems[index] = { ...updatedItems[index], quantity: newQuantity };
 			return updatedItems;
 		}
 	});
@@ -68,14 +71,29 @@ export function toggleCalculator() {
 	isCalculatorOpen.update((value) => !value);
 }
 
-export function extractNutriments(nutriments: Nutriments): NutritionData {
+export function extractNutriments(nutriments?: Nutriments | null): NutritionData {
+	if (!nutriments) {
+		return {
+			calories: 0,
+			proteins: 0,
+			carbohydrates: 0,
+			fat: 0,
+			sugars: 0,
+			salt: 0
+		};
+	}
+
+	const kcal =
+		nutriments['energy-kcal_100g'] ||
+		(nutriments['energy-kj_100g'] ? Math.round(nutriments['energy-kj_100g'] / 4.184) : 0);
+
 	return {
-		calories: nutriments['energy-kcal_100g'] || 0,
+		calories: kcal || 0,
 		proteins: nutriments.proteins_100g || 0,
 		carbohydrates: nutriments.carbohydrates_100g || 0,
 		fat: nutriments.fat_100g || 0,
-		sugars: nutriments.sugars_100g,
-		salt: nutriments.salt_100g
+		sugars: nutriments.sugars_100g || 0,
+		salt: nutriments.salt_100g || 0
 	};
 }
 
