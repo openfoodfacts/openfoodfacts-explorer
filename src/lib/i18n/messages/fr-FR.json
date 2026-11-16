@@ -327,16 +327,16 @@
 			"compare": "Ajouter au comparateur",
 			"view_on_off": "Voir le produit sur Open Food Facts",
 			"copy": "Copier",
-			"more": "More actions"
+			"more": "Plus d'actions"
 		},
 		"share_text": "Découvrez ce produit sur Open Food Facts : {productName}",
 		"toast": {
 			"copied_link": "Lien copié dans le presse-papier !",
 			"failed_copy": "Échec de la copie du lien",
-			"copied_barcode": "Barcode copied to clipboard!",
-			"failed_copy_barcode": "Failed to copy barcode"
+			"copied_barcode": "Code-barres copié dans le presse-papiers !",
+			"failed_copy_barcode": "Échec de la copie du code-barres"
 		},
-		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"image_attribution": "Attribution : Photo par {photographer} via Open Food Facts",
 		"app_strip": {
 			"text": "Scannez les codes-barres pour obtenir le Nutri-Score, le Green-Score et plus !",
 			"get_app": "Installer l'app"
