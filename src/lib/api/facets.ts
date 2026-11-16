@@ -1,5 +1,7 @@
 import type { KnowledgePanels } from './knowledgepanels';
 import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
+import { API_HOST } from '#lib/const.js';
+import { wrapFetchWithAuth } from '#lib/stores/auth.js';
 import { createProductsApi } from './product';
 
 export type FacetSortOption = ProductFacetsSortOption;
@@ -12,6 +14,9 @@ export const FACETS_SORT_OPTIONS = [
 	'nutriscore_score'
 ] as const satisfies readonly FacetSortOption[];
 
+export const FACET_STATUS_OPTIONS = ['known', 'unknown'] as const;
+export type FacetStatus = (typeof FACET_STATUS_OPTIONS)[number];
+
 export async function getFacet(
 	fetch: typeof window.fetch,
 	facet: string,
@@ -19,6 +24,42 @@ export async function getFacet(
 ) {
 	const client = createProductsApi(fetch);
 	return client.getFacet(facet, opts);
+}
+
+// Most matches returned by a whole-facet filter; refine the filter to see others
+export const FACET_FILTER_MAX_RESULTS = 500;
+
+/**
+ * Filter the whole facet by value name and/or known status.
+ * The server scans every value of the facet, so this can take up to a minute.
+ * With `filter` or `status` it ignores `page` and `page_size`, and `count` is still
+ * the unfiltered total, so the matches are capped with `limit` instead.
+ */
+export async function filterFacet(
+	fetch: typeof window.fetch,
+	facet: string,
+	opts: {
+		filter?: string;
+		status?: FacetStatus;
+		maxResults?: number;
+		signal?: AbortSignal;
+	}
+): Promise<Awaited<ReturnType<typeof getFacet>>> {
+	const params = new URLSearchParams();
+	if (opts.filter) params.set('filter', opts.filter);
+	if (opts.status) params.set('status', opts.status);
+	// The server stops once it has counted `limit` matches, before adding that one,
+	// so it returns `limit - 1` values
+	params.set('limit', String((opts.maxResults ?? FACET_FILTER_MAX_RESULTS) + 1));
+
+	const response = await wrapFetchWithAuth(fetch)(
+		`${API_HOST}/facets/${encodeURIComponent(facet)}.json?${params}`,
+		{ signal: opts.signal }
+	);
+	if (!response.ok) {
+		throw new Error(`Failed to filter facet: ${response.status} ${response.statusText}`);
+	}
+	return response.json();
 }
 
 export async function getFacetValue(
