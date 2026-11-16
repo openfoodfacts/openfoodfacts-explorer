@@ -1,5 +1,4 @@
 import type { FacetSortOption, FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
-import { QUERY_FACETS } from './query-facets';
 import { createQueryProductApi } from './query-product-api';
 
 // TODO: Use SDK Query sorting and product projection support when it is available.
@@ -31,14 +30,11 @@ const PRODUCT_FIELDS = [
 export async function queryFacetProducts(
 	fetch: typeof globalThis.fetch,
 	queryUrl: string,
-	facet: string,
-	value: string,
+	filter: Record<string, string> | null,
 	opts: { page: number; pageSize: number; sortBy?: FacetSortOption }
 ): Promise<FacetValueResponse | null> {
-	const field = Object.hasOwn(QUERY_FACETS, facet) ? QUERY_FACETS[facet] : undefined;
-	if (!queryUrl || !field) return null;
+	if (!queryUrl || !filter) return null;
 
-	const filter = { [field]: value };
 	const sortField = QUERY_SORT_FIELDS[opts.sortBy ?? 'last_modified_t'];
 
 	const api = createQueryProductApi(fetch, queryUrl);

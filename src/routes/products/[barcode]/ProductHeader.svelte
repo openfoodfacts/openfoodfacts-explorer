@@ -370,7 +370,7 @@
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
-					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
+					href: resolve('/facets/[facet]/[value]/[...rest]', { facet, value: tag, rest: '' })
 				}))}
 			/>
 		</div>

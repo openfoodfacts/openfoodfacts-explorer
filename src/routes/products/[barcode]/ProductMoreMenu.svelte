@@ -26,7 +26,7 @@
 	let similarHref = $derived.by(() => {
 		const value = product.categories_tags?.at(-1);
 		return value != null
-			? resolve('/facets/[facet]/[value]', { facet: 'categories', value })
+			? resolve('/facets/[facet]/[value]/[...rest]', { facet: 'categories', value, rest: '' })
 			: null;
 	});
 

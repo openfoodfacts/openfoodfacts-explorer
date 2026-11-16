@@ -1,5 +1,30 @@
 import { describe, expect, it, vi } from 'vitest';
-import { QUERY_FACETS, queryAllFacetValues, queryFacetCounts } from './query-facets';
+import {
+	getQueryFilter,
+	QUERY_FACETS,
+	queryAllFacetValues,
+	queryFacetCounts
+} from './query-facets';
+
+describe('getQueryFilter', () => {
+	it('builds one filter that matches every facet and value', () => {
+		expect(
+			getQueryFilter([
+				{ facet: 'brands', value: 'ferrero' },
+				{ facet: 'categories', value: 'en:spreads' }
+			])
+		).toEqual({ brands_tags: 'ferrero', categories_tags: 'en:spreads' });
+	});
+
+	it('returns null when a facet has no Query field', () => {
+		expect(
+			getQueryFilter([
+				{ facet: 'brands', value: 'ferrero' },
+				{ facet: 'contributors', value: 'example' }
+			])
+		).toBeNull();
+	});
+});
 
 describe('queryFacetCounts', () => {
 	it('requests the entire distribution for a filtered facet', async () => {

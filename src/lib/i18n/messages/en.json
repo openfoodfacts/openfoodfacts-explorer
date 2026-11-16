@@ -967,7 +967,11 @@
 		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
-		"facet_back_to_overview": "Back to {facet} overview"
+		"facet_back_to_overview": "Back to {facet} overview",
+		"nested_heading": "Exploring {filters}",
+		"nested_website_title": "Exploring {filters} - Open Food Facts Explorer",
+		"nested_website_description": "Products matching {filters} on Open Food Facts Explorer",
+		"remove_filter": "Remove {filter}"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
