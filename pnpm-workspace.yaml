@@ -1,3 +1,6 @@
+packages:
+  - packages/*
+
 allowBuilds:
   '@sentry/cli': true
   es5-ext: true
@@ -40,3 +43,4 @@ overrides:
   dompurify@<=3.4.10: ^3.4.11
   undici@>=7.0.0 <7.28.0: ^7.28.0
   undici@>=7.23.0 <7.28.0: ^7.28.0
+  '@openfoodfacts/openfoodfacts-webcomponents': link:../openfoodfacts-webcomponents/web-components

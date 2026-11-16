@@ -4,6 +4,7 @@ Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { ProductCard } from 'virtual:lit-svelte/components';
 	import { createProductsApi } from '#lib/api.js';
 	import type { ProductReduced } from '#lib/api.js';
 	import type { ScoreData } from '#lib/scoring.js';
@@ -47,7 +48,11 @@ Wraps the <product-card> web component and adds accessibility features.
 
 		return {
 			...product,
+			product_name: rawProduct.product_name ?? '',
+			quantity: rawProduct.quantity ?? '',
+			image_front_small_url: rawProduct.image_front_small_url ?? '',
 			brands: normalizeBrands(rawProduct.brands),
+			product_type: rawProduct.product_type ?? '',
 			...(greenScoreGrade != null && { greenscore_grade: greenScoreGrade })
 		};
 	});
@@ -158,7 +163,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	}}
 />
 
-<product-card
+<ProductCard
 	class="block h-44 w-full cursor-pointer [&:not(:defined)]:skeleton"
 	product={productForCard}
 	onclick={navigateToProduct}
@@ -180,7 +185,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	role="button"
 	tabindex="0"
 	oncontextmenu={contextMenu}
-></product-card>
+></ProductCard>
 
 {#if showContextMenu}
 	<div
