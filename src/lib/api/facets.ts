@@ -42,7 +42,9 @@ export function getFacetPairs(facet: string, value: string, rest: string): Facet
 
 // Build the page path for facet/value pairs
 export function getFacetPairsPath(pairs: FacetPair[]): string {
-	const parts = pairs.map((pair) => `${pair.facet}/${pair.value}`);
+	const parts = pairs.map(
+		(pair) => `${encodeURIComponent(pair.facet)}/${encodeURIComponent(pair.value)}`
+	);
 	return `/facets/${parts.join('/')}`;
 }
 
@@ -56,12 +58,13 @@ export async function getProductsForFacetFilter(
 	opts: { page: number; pageSize: number; sortBy?: FacetSortOption }
 ) {
 	const client = createProductsApi(fetch);
+	const sortBy = opts.sortBy ?? 'last_modified_t';
 	const params: Record<string, string> = {
 		...filter,
 		page: String(opts.page),
-		page_size: String(opts.pageSize)
+		page_size: String(opts.pageSize),
+		sort_by: sortBy
 	};
-	if (opts.sortBy) params.sort_by = opts.sortBy;
 
 	const { data, error } = await client.apiv2.search(params);
 	if (!data) throw new Error(`Facet search failed: ${error || 'unknown error'}`);
