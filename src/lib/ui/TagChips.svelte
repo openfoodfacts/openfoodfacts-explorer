@@ -8,19 +8,35 @@
 	type Props = {
 		tags: TagItem[];
 		class?: string;
+		containerClass?: string;
 	};
 
-	let { tags = [], class: className = '' }: Props = $props();
+	let { tags = [], class: className = '', containerClass = '' }: Props = $props();
 </script>
 
-<div class="flex flex-wrap justify-center gap-1 md:justify-start">
+<div
+	class={containerClass.startsWith('contents')
+		? containerClass
+		: ['flex flex-wrap gap-1', containerClass || 'justify-center md:justify-start']}
+>
 	{#each tags as tag (tag.id)}
 		{#if tag.href}
-			<a class="badge wrap-break-word {className}" href={tag.href}>
+			<a
+				class={[
+					'badge h-auto min-h-6 w-fit max-w-full wrap-break-word whitespace-normal',
+					className
+				]}
+				href={tag.href}
+			>
 				{tag.name}
 			</a>
 		{:else}
-			<span class="badge wrap-break-word {className}">
+			<span
+				class={[
+					'badge h-auto min-h-6 w-fit max-w-full wrap-break-word whitespace-normal',
+					className
+				]}
+			>
 				{tag.name}
 			</span>
 		{/if}
