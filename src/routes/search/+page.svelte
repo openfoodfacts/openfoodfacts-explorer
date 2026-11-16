@@ -24,7 +24,7 @@
 	import Pagination from '#lib/Pagination.svelte';
 	import Metadata from '#lib/Metadata.svelte';
 	import SearchOptionsFooter from '#lib/ui/SearchOptionsFooter.svelte';
-	import VegaChart from '#lib/ui/VegaChart.svelte';
+	import VegaChart from '#lib/ui/charts/VegaChart.svelte';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';

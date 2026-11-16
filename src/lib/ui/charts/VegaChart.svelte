@@ -5,17 +5,9 @@
 	import type { TopLevelSpec } from 'vega-lite';
 
 	import * as compat from '#lib/compat.js';
+	import { patchMarksForDarkMode, withReadableBandLabels } from './vega-spec.js';
 
 	type Props = { spec: Spec | TopLevelSpec; title?: string; height?: number };
-	type VegaMarkEncodeEntry = { fill?: { value: string }; stroke?: { value: string } };
-	type VegaMarkEncode = { enter?: VegaMarkEncodeEntry; update?: VegaMarkEncodeEntry };
-
-	type VegaMark = {
-		type: string;
-		encode?: VegaMarkEncode;
-		[key: string]: unknown;
-	};
-
 	let { spec, title, height }: Props = $props();
 	let chartContainer: HTMLDivElement | undefined = $state();
 	let isLoading = $state(true);
@@ -43,101 +35,50 @@
 			view: { stroke: 'transparent' }
 		};
 	}
-	// Vega does not support CSS variables natively. We patch the compiled
-	// spec marks to use the current theme colors from CSS variables,
-	// consistent with getDarkModeConfig().
-	function patchMarksForDarkMode(marks: VegaMark[], primaryColor: string): VegaMark[] {
-		return marks.map((mark) => {
-			const patched: VegaMark = {
-				...mark,
-				encode: {
-					...mark.encode,
-					update: {
-						...mark.encode?.update,
-						fill: { value: primaryColor },
-						stroke: { value: primaryColor }
-					},
-					enter: { ...mark.encode?.enter, fill: { value: primaryColor } }
-				} as VegaMarkEncode
-			};
-			return patched;
-		});
-	}
 
-	const CHAR_WIDTH = 6;
-	const BAND_PADDING = 0.2;
 	const LABEL_FONT = '10px sans-serif';
 	const LABEL_GAP = 10;
 
-	/**
-	 * Returns a copy of the spec whose band axis labels stay readable at any width: drops the `xx:`
-	 * language prefix, wraps a label wider than its bar at hyphens, and turns the axis sideways while
-	 * the added `labelsSideways` signal is on. Also pads the bands and fits the chart to the width.
-	 */
-	function withReadableBandLabels(spec: Spec, bandScales: Set<string | undefined>): Spec {
-		const label = "replace(datum.label, regexp('^[a-z]{2}:'), '')";
-		return {
-			...spec,
-			// resize: grow the height when the labels turn sideways after the first render.
-			autosize: { type: 'fit-x', contains: 'padding', resize: true },
-			signals: [...(spec.signals ?? []), { name: 'labelsSideways', value: false }],
-			scales: spec.scales?.map((s) => (s.type === 'band' ? { ...s, padding: BAND_PADDING } : s)),
-			axes: spec.axes?.map((axis) => {
-				if (!bandScales.has(axis.scale) || axis.encode?.labels) return axis;
-				const step = `bandwidth('${axis.scale}') / ${1 - BAND_PADDING}`;
-				return {
-					...axis,
-					encode: {
-						...axis.encode,
-						labels: {
-							update: {
-								text: {
-									signal: `labelsSideways || length(${label}) * ${CHAR_WIDTH} <= ${step} - 4 ? ${label} : split(${label}, '-')`
-								},
-								angle: { signal: `labelsSideways ? -90 : 0` },
-								align: { signal: `labelsSideways ? 'right' : 'center'` },
-								baseline: { signal: `labelsSideways ? 'middle' : 'top'` }
-							}
-						}
-					}
-				};
-			})
-		};
-	}
-
-	/** Returns the largest mean width, in px, of two neighbouring labels once they wrap at hyphens. */
-	function neighbourLabelWidth(labels: string[]): number {
-		const context = document.createElement('canvas').getContext('2d');
-		if (!context) return 0;
-		context.font = LABEL_FONT;
-		const widths = labels.map((text) =>
-			Math.max(
-				...text
-					.replace(/^[a-z]{2}:/, '')
-					.split('-')
-					.map((part) => context.measureText(part).width)
-			)
-		);
-		return Math.max(0, ...widths.slice(1).map((w, i) => (w + widths[i]) / 2));
-	}
+	import { neighbourLabelWidth } from '#lib/ui/browser-utils.js';
 
 	async function updateSpec(spec: Spec | TopLevelSpec) {
+		// Only run in the browser with a valid chart container and spec
 		if (!browser || !chartContainer || !spec) return;
 
+		// Increment the render token to track the current render cycle
 		const token = ++renderToken;
+		// Every time we finish an async operation, we check if the token is
+		// stale to avoid race conditions
+		const isStale = () => token !== renderToken;
+
+		// Dynamically import Vega and Vega-Lite
 		const vega = await import('vega');
-		const vegaLite = await import('vega-lite');
-		if (token !== renderToken) return;
+		if (isStale()) return;
 
 		isLoading = true;
 		error = null;
 
-		try {
-			const isVegaLite = spec.$schema?.includes('vega-lite');
+		const isVegaLiteSpec = (spec: Spec | TopLevelSpec): spec is TopLevelSpec =>
+			spec.$schema?.includes('vega-lite') ?? false;
 
-			let compiledSpec = isVegaLite ? vegaLite.compile(spec as TopLevelSpec).spec : (spec as Spec);
+		const compileVegaSpec = async (spec: Spec | TopLevelSpec) => {
+			if (isVegaLiteSpec(spec)) {
+				const vegaLite = await import('vega-lite');
+				return vegaLite.compile(spec).spec;
+			}
+			return spec;
+		};
+
+		try {
+			// Compile the spec to a Vega spec if it's a Vega-Lite spec
+			let compiledSpec = await compileVegaSpec(spec);
+			if (isStale()) return;
+
+			// Override the compiled spec with height and title if provided
 			if (height) compiledSpec = { ...compiledSpec, height };
 			if (title) compiledSpec = { ...compiledSpec, title: undefined };
+
+			// Apply readable band labels to the compiled spec
 			const bandScales = new Set(
 				(compiledSpec.scales ?? []).filter((s) => s.type === 'band').map((s) => s.name)
 			);
@@ -147,12 +88,11 @@
 				const style = getComputedStyle(document.documentElement);
 				const primaryColor = style.getPropertyValue('--color-primary').trim();
 
-				const rawMarks = ((compiledSpec as Spec).marks || []) as unknown as VegaMark[];
-				const patchedMarks = patchMarksForDarkMode(rawMarks, primaryColor);
+				const patchedMarks = patchMarksForDarkMode(compiledSpec.marks ?? [], primaryColor);
 
 				compiledSpec = {
 					...compiledSpec,
-					marks: patchedMarks as unknown as Spec['marks'],
+					marks: patchedMarks,
 					config: {
 						...compiledSpec.config,
 						...getDarkModeConfig()
@@ -165,7 +105,10 @@
 				throw new Error('Failed to parse Vega spec');
 			}
 
+			// If there was a previous view, finalize it before creating a new one.
 			previousView?.finalize();
+
+			// Create a new Vega view
 			const view = new vega.View(runtime, {
 				renderer: 'svg',
 				container: chartContainer,
@@ -173,28 +116,37 @@
 			});
 			previousView = view;
 
+			// Render the chart
 			await view.runAsync();
-			if (token !== renderToken) return;
+			if (isStale()) return;
 
-			// Turns the labels sideways when neighbours would overlap at the drawn bar width. Reads
-			// view.data() because the spec's rows include values its transforms filter out.
+			// Turns the labels sideways when neighbours would overlap at the
+			// drawn bar width. Reads view.data() because the spec's rows
+			// include values its transforms filter out.
 			const axisScale = compiledSpec.axes?.find((a) => bandScales.has(a.scale))?.scale;
 			const domain = (
 				compiledSpec.scales?.find((s) => s.name === axisScale) as
 					{ domain?: { data?: string; field?: string } } | undefined
 			)?.domain;
+
 			if (axisScale && domain?.data && domain.field) {
 				const { data, field } = domain;
 				const fitLabels = () => {
-					if (token !== renderToken) return;
+					if (isStale()) return;
 					const labels = view.data(data).map((row) => String(row[field]));
 					const step = (view.scale(axisScale) as unknown as { step(): number }).step();
-					return view
-						.signal('labelsSideways', step < neighbourLabelWidth(labels) + LABEL_GAP)
-						.runAsync();
+
+					const labelsWithoutLanguagePrefix = labels.map((label) =>
+						label.replace(/^[a-z]{2}:/, '')
+					);
+
+					const labelsSideways =
+						step < neighbourLabelWidth(labelsWithoutLanguagePrefix, LABEL_FONT) + LABEL_GAP;
+
+					return view.signal('labelsSideways', labelsSideways).runAsync();
 				};
 				await fitLabels();
-				if (token !== renderToken) return;
+				if (isStale()) return;
 				let fittedWidth = view.width();
 				view.addResizeListener((width) => {
 					// A label flip fires this at the same width; skip it so one flip cannot cause another.
@@ -205,7 +157,7 @@
 			}
 			isLoading = false;
 		} catch (err) {
-			if (token !== renderToken) return;
+			if (isStale()) return;
 			console.error('Chart rendering error:', err);
 			error = err instanceof Error ? err.message : 'Chart failed to load';
 			isLoading = false;

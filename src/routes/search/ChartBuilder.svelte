@@ -5,7 +5,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { createSearchApi, type SearchResult } from '#lib/api/search.js';
 	import { CHART_FIELDS, parseChartFields, rejectedChartFields } from '#lib/search/chart-fields.js';
-	import VegaChart from '#lib/ui/VegaChart.svelte';
+	import VegaChart from '#lib/ui/charts/VegaChart.svelte';
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 
