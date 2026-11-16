@@ -3,11 +3,11 @@ import type { PageLoad } from './$types';
 
 import { compatSearch, type SearchResult } from '#lib/api/search.js';
 import { createPricesApi, isConfigured as isPricesConfigured } from '#lib/api/prices.js';
+import { createProductsApi } from '#lib/api/product.js';
 import {
-	createProductsApi,
-	getBulkProductAttributes,
-	getBulkProductCardsByCode
-} from '#lib/api/product.js';
+	getBulkProductCardsAndAttributes,
+	MAX_PRODUCTS_PER_REQUEST
+} from '#lib/api/bulk-product-details.js';
 
 function isValidEAN13(code: string): boolean {
 	if (!/^\d{13}$/.test(code)) {
@@ -74,7 +74,9 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	}
 
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
-	const pageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
+	// Product details are fetched in one request, so do not ask for more results than it can return
+	const requestedPageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
+	const pageSize = Math.min(requestedPageSize, MAX_PRODUCTS_PER_REQUEST);
 
 	const { data: searchData, error: searchError } = await compatSearch(fetch, {
 		q: query,
@@ -111,8 +113,12 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const off = createProductsApi(fetch);
 
 	// Create promises
-	const attributesPromise = getBulkProductAttributes(fetch, productCodes);
-	const productCardsPromise = getBulkProductCardsByCode(fetch, productCodes);
+	const productDetailsPromise = getBulkProductCardsAndAttributes(fetch, productCodes).catch(
+		(error): Awaited<ReturnType<typeof getBulkProductCardsAndAttributes>> => {
+			console.error('Product cards and attributes fetch failed:', error);
+			return { cardsByCode: {}, attributesByCode: {} };
+		}
+	);
 
 	const pricesPromise = isPricesConfigured()
 		? getPrices(fetch, productCodes)
@@ -121,9 +127,13 @@ export const load: PageLoad = async ({ fetch, url }) => {
 	const attributeGroupsPromise = off.getAttributeGroups();
 
 	// Load data in parallel
-	const [attributesByCode, prices, productCardsByCode, attributeGroupsResponse] = await Promise.all(
-		[attributesPromise, pricesPromise, productCardsPromise, attributeGroupsPromise]
-	);
+	const [productDetails, prices, attributeGroupsResponse] = await Promise.all([
+		productDetailsPromise,
+		pricesPromise,
+		attributeGroupsPromise
+	]);
+	const productCardsByCode = productDetails.cardsByCode;
+	const attributesByCode = productDetails.attributesByCode;
 
 	const attributeGroups = attributeGroupsResponse.data ?? [];
 
