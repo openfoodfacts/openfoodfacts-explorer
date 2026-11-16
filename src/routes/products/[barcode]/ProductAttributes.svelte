@@ -77,6 +77,7 @@
 				></span>
 				{#if attribute.icon_url}<img
 						src={attribute.icon_url}
+						loading="lazy"
 						alt=""
 						class="h-8 w-8 shrink-0 object-contain"
 					/>{/if}

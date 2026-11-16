@@ -238,6 +238,7 @@
 	<div class="absolute top-0 left-0 z-0 hidden md:block">
 		<img
 			src={footerTopLeft}
+			loading="lazy"
 			style="width: 177px; height: 177px;"
 			alt={$_('footer.decorative_alt')}
 		/>
@@ -245,6 +246,7 @@
 	<div class="absolute right-0 bottom-0 z-0 hidden md:block">
 		<img
 			src={footerBottomRight}
+			loading="lazy"
 			style="width: 251px; height: 178px;"
 			alt={$_('footer.decorative_alt')}
 		/>

@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { isConfigured as isPriceConfigured } from '#lib/api/prices.js';
-	import { isConfigured as isFolksonomyConfigured } from '#lib/api/folksonomy.js';
+	import { createPricesApi, isConfigured as isPriceConfigured } from '#lib/api/prices.js';
+	import {
+		createFolksonomyApi,
+		isConfigured as isFolksonomyConfigured
+	} from '#lib/api/folksonomy.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { getLanguageCode, preferences } from '#lib/settings.js';
 
@@ -43,7 +46,11 @@
 	import { onMount } from 'svelte';
 	import { getShortcutCtx } from '#lib/stores/shortcuts.js';
 	import type { ProductGroupedAttributes } from './types';
-	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
+	import {
+		attributesToDefaultPreferences,
+		personalizedSearch,
+		type AttributeGroup
+	} from '#lib/stores/preferencesStore.js';
 	import { PRODUCT_URL } from '#lib/const.js';
 	import { toWebsiteFlavor } from '#lib/flavor.js';
 	import { resolve } from '$app/paths';
@@ -77,6 +84,35 @@
 	// TODO: Remove the casts once the external types are fixed
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
+	);
+
+	async function loadPrices(code: string) {
+		const api = createPricesApi(fetch);
+		const first = await api.getPrices({ product_code: code });
+		if (first.error || !first.data) throw new Error('Failed to load prices');
+		const prices = [...first.data.items.flat()];
+		for (let page = 2; page <= first.data.pages; page++) {
+			const result = await api.getPrices({ product_code: code, page });
+			if (result.error || !result.data) throw new Error('Failed to load prices');
+			prices.push(...result.data.items.flat());
+		}
+		return prices;
+	}
+
+	async function loadFolksonomy(code: string) {
+		const api = createFolksonomyApi(fetch);
+		const [tags, keys] = await Promise.all([api.getProductTags(code), api.getKeys()]);
+		if (tags.error || keys.error || !tags.data || !keys.data) {
+			throw new Error('Failed to load folksonomy');
+		}
+		return { tags: tags.data, keys: keys.data };
+	}
+
+	let pricesPromise = $derived(
+		browser && product.code && isPriceConfigured() ? loadPrices(product.code) : null
+	);
+	let folksonomyPromise = $derived(
+		browser && product.code && isFolksonomyConfigured() ? loadFolksonomy(product.code) : null
 	);
 
 	let externalKnowledgePanelBatchPromise = $state<Promise<ExternalKnowledgePanelBatch> | null>(
@@ -198,7 +234,8 @@
 				icon: IconMdiDatabase
 			},
 			isPriceConfigured() &&
-				data.prices != null && {
+				product.code != null &&
+				product.code !== '' && {
 					id: 'prices',
 					label: $_('product.sections.prices', { default: 'Prices' }),
 					icon: IconMdiTagMultiple
@@ -244,6 +281,15 @@
 			}
 		});
 
+		return () => {
+			shortcutCtx.delete('A');
+			shortcutCtx.delete('Shift+B');
+		};
+	});
+
+	$effect(() => {
+		// FIXME: Enable editing shortcuts for other Open Facts product types.
+		if (product.product_type && product.product_type !== 'food') return;
 		shortcutCtx.set('E', {
 			description: $_('product.shortcuts.edit_same_window'),
 			action: () => {
@@ -261,12 +307,9 @@
 				}
 			}
 		});
-
 		return () => {
-			shortcutCtx.delete('A');
 			shortcutCtx.delete('E');
 			shortcutCtx.delete('Shift+E');
-			shortcutCtx.delete('Shift+B');
 		};
 	});
 
@@ -311,6 +354,20 @@
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
+
+	async function getDefaultPreferences() {
+		const { data, error } = await createProductsApi(fetch).getAttributeGroups();
+		if (error || !data) throw new Error('Failed to load default attribute preferences');
+		// FIXME: Remove cast when SDK fixes ids type being string | undefined
+		return attributesToDefaultPreferences(data as AttributeGroup[]);
+	}
+
+	let hasSavedPreferences = $derived($personalizedSearch.userPreferences.length > 0);
+	let defaultPreferences = $derived.by(() => {
+		if (!browser) return new Promise<ReturnType<typeof attributesToDefaultPreferences>>(() => {});
+		return hasSavedPreferences ? Promise.resolve([]) : getDefaultPreferences();
+	});
+	let scoreAttributes = $derived(Promise.all([productAttributes, defaultPreferences]));
 
 	$effect(() => {
 		const expectedValue = !sidebarHidden;
@@ -417,9 +474,29 @@
 				</div>
 			{/if}
 
-			{#if isPriceConfigured() && data?.prices != null}
+			<!--
+			If we use a single if here then the #prices id might not exist in
+			the DOM when prices are not configured, so the sidebar would need
+			to handle this case properly. For now we use two ifs.
+			-->
+			{#if isPriceConfigured() && product.code}
 				<div id="prices">
-					<Prices prices={data.prices} barcode={product.code} />
+					{#if pricesPromise}
+						{#await pricesPromise}
+							<div class="flex items-center justify-center py-8" role="status">
+								<span class="loading loading-lg loading-spinner"></span>
+								<span class="ml-2"
+									>{$_('product.prices.loading', { default: 'Loading prices…' })}</span
+								>
+							</div>
+						{:then prices}
+							<Prices {prices} barcode={product.code} />
+						{:catch}
+							<div class="alert alert-warning" role="alert">
+								{$_('product.prices.error', { default: 'Prices could not be loaded.' })}
+							</div>
+						{/await}
+					{/if}
 				</div>
 			{/if}
 
@@ -429,7 +506,9 @@
 				</div>
 			{/if}
 
-			<div id="data-sources"><DataSources {product} /></div>
+			<div id="data-sources">
+				<DataSources {product} canEdit={!product.product_type || product.product_type === 'food'} />
+			</div>
 
 			{#if isFolksonomyConfigured()}
 				<div id="folksonomy">
@@ -470,8 +549,25 @@
 								</p>
 							</div>
 
-							{#if data.tags != null && data.keys != null}
-								<Folksonomy tags={data.tags ?? []} keys={data.keys} barcode={product.code!} />
+							{#if folksonomyPromise}
+								{#await folksonomyPromise}
+									<div class="flex items-center justify-center py-8" role="status">
+										<span class="loading loading-lg loading-spinner"></span>
+										<span class="ml-2"
+											>{$_('product.folksonomy.loading', { default: 'Loading properties…' })}</span
+										>
+									</div>
+								{:then folksonomy}
+									<Folksonomy
+										tags={folksonomy.tags}
+										keys={folksonomy.keys}
+										barcode={product.code}
+									/>
+								{:catch}
+									<div class="alert alert-warning" role="alert">
+										{$_('product.folksonomy.error', { default: 'Properties could not be loaded.' })}
+									</div>
+								{/await}
 							{/if}
 						{/if}
 					</Card>
@@ -482,14 +578,14 @@
 </div>
 
 {#snippet score()}
-	{#await productAttributes}
+	{#await scoreAttributes}
 		<div class="flex items-center justify-center py-8">
 			<span class="loading loading-lg loading-spinner"></span>
 			<span class="ml-2">{$_('product.loading_attributes')}</span>
 		</div>
-	{:then attributes}
+	{:then [attributes, defaults]}
 		{#if attributes != null}
-			<ProductAttributes groups={attributes} defaultPreferences={data.defaultProductPreferences} />
+			<ProductAttributes groups={attributes} defaultPreferences={defaults} />
 		{:else}
 			<div class="alert alert-warning">
 				<IconMdiWarning class="h-6 w-6 shrink-0" />
@@ -499,6 +595,23 @@
 				</div>
 			</div>
 		{/if}
+	{:catch}
+		<div class="alert alert-warning" role="alert">
+			<IconMdiWarning class="h-6 w-6 shrink-0" />
+			<div>
+				<h3 class="font-bold">
+					{$_('product.attributes_error_title', {
+						default: 'Unable to load personalized attributes'
+					})}
+				</h3>
+				<p>
+					{$_('product.attributes_error_body', {
+						default:
+							'There was an error while loading the personalized attributes. Please try again later.'
+					})}
+				</p>
+			</div>
+		</div>
 	{/await}
 {/snippet}
 

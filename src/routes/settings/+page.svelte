@@ -1,4 +1,5 @@
 <script lang="ts">
+	import GitHubCommits from './GitHubCommits.svelte';
 	import { preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
@@ -214,6 +215,9 @@
 							})}
 						{/if}
 					</p>
+					{#if COMMIT_SHA !== 'unknown'}
+						<GitHubCommits sha={COMMIT_SHA} repoUrl={GITHUB_REPO_URL} />
+					{/if}
 				</div>
 			</div>
 		</div>

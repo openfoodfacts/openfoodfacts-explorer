@@ -48,6 +48,7 @@
 							{#if item.imageUrl}
 								<img
 									src={item.imageUrl}
+									loading="lazy"
 									alt={item.name}
 									class="mr-2 h-12 w-12 rounded object-cover"
 								/>

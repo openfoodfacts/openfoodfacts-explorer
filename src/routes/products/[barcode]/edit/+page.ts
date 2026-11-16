@@ -14,7 +14,7 @@ import {
 	createProductsApi,
 	type ProductStateFailure
 } from '#lib/api.js';
-import { type ProductStateResponse } from '#lib/api/errorUtils.js';
+import { ERR_EDIT_FOOD_ONLY, type ProductStateResponse } from '#lib/api/errorUtils.js';
 import { userInfo } from '#lib/stores/user.js';
 import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 
@@ -46,6 +46,10 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 
 	const { data: productState, error: productError } = productReq;
 	const parsedError = (productError || null) as ProductStateResponse | null;
+	// FIXME: Support editing products from the other Open Facts databases.
+	if (parsedError?.result?.id === 'product_found_with_a_different_product_type') {
+		error(403, ERR_EDIT_FOOD_ONLY);
+	}
 	const isNotFound =
 		(parsedError && parsedError.result?.id === 'product_not_found') ||
 		(productState &&
@@ -71,6 +75,9 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		productState && 'product' in productState
 			? (productState.product.product_type as ProductType)
 			: undefined;
+	if (productType && productType !== 'food') {
+		error(403, ERR_EDIT_FOOD_ONLY);
+	}
 
 	const [categories, labels, brands, stores, origins, countries, units, allergens] =
 		await Promise.all([
