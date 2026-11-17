@@ -199,7 +199,7 @@
 				type="file"
 				accept="image/*"
 				class="hidden"
-				disabled={isUploading}
+				disabled={isUploading || isSelectingImage}
 				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
 			{#if !(isStandardType && hasImagesOfType)}
@@ -207,7 +207,7 @@
 					type="button"
 					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
 					class:loading={isUploading}
-					disabled={isUploading}
+					disabled={isUploading || isSelectingImage}
 					onclick={() => triggerFileInput(inputId)}
 				>
 					{#if isUploading}
