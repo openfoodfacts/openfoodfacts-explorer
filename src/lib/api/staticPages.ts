@@ -9,17 +9,34 @@ function rebaseUrl(value: string, base: string): string {
 	return isAlreadyAbsolute(value) ? value : new URL(value, base).href;
 }
 
-/** Rebase every URL in a srcset's comma-separated "url descriptor" list */
+/**
+ * Rebase every URL in a srcset's "url descriptor" list.
+ * Candidates are comma-separated, but a URL itself may contain commas, so each
+ * candidate's URL is read through the next ASCII whitespace rather than split on commas.
+ */
 function rebaseSrcset(value: string, base: string): string {
-	return value
-		.split(',')
-		.map((candidate) => {
-			const trimmed = candidate.trim();
-			if (!trimmed) return trimmed;
-			const [url, ...descriptor] = trimmed.split(/\s+/);
-			return [rebaseUrl(url, base), ...descriptor].join(' ');
-		})
-		.join(', ');
+	const candidates: string[] = [];
+	let rest = value;
+	while (true) {
+		rest = rest.replace(/^[,\s]+/, '');
+		if (!rest) break;
+
+		const url = /^\S+/.exec(rest)?.[0] ?? '';
+		rest = rest.slice(url.length);
+
+		if (url.endsWith(',')) {
+			candidates.push(rebaseUrl(url.replace(/,+$/, ''), base));
+			continue;
+		}
+
+		rest = rest.replace(/^\s+/, '');
+		const descriptorMatch = /^[^,]*/.exec(rest)?.[0] ?? '';
+		const descriptor = descriptorMatch.trim();
+		rest = rest.slice(descriptorMatch.length);
+
+		candidates.push(descriptor ? `${rebaseUrl(url, base)} ${descriptor}` : rebaseUrl(url, base));
+	}
+	return candidates.join(', ');
 }
 
 /** Resolve page-relative URLs against the source page so they work in the Explorer page */
