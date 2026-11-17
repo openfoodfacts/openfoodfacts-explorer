@@ -1,6 +1,27 @@
 import { sanitize } from 'isomorphic-dompurify';
 import { STATIC_PAGES_BASE_URL } from '#lib/const.js';
 
+function isAlreadyAbsolute(value: string): boolean {
+	return value.startsWith('#') || value.startsWith('//') || /^[a-z][a-z\d+.-]*:/i.test(value);
+}
+
+function rebaseUrl(value: string, base: string): string {
+	return isAlreadyAbsolute(value) ? value : new URL(value, base).href;
+}
+
+/** Rebase every URL in a srcset's comma-separated "url descriptor" list */
+function rebaseSrcset(value: string, base: string): string {
+	return value
+		.split(',')
+		.map((candidate) => {
+			const trimmed = candidate.trim();
+			if (!trimmed) return trimmed;
+			const [url, ...descriptor] = trimmed.split(/\s+/);
+			return [rebaseUrl(url, base), ...descriptor].join(' ');
+		})
+		.join(', ');
+}
+
 /** Resolve page-relative URLs against the source page so they work in the Explorer page */
 export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
 	for (const [selector, attribute] of [
@@ -9,18 +30,18 @@ export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): vo
 	]) {
 		for (const element of content.querySelectorAll(selector)) {
 			const value = element.getAttribute(attribute);
-			if (
-				!value ||
-				value.startsWith('#') ||
-				value.startsWith('//') ||
-				/^[a-z][a-z\d+.-]*:/i.test(value)
-			) {
+			if (!value || isAlreadyAbsolute(value)) {
 				continue;
 			}
 
-			const rebasedUrl = new URL(value, base).href;
-			element.setAttribute(attribute, rebasedUrl);
+			element.setAttribute(attribute, rebaseUrl(value, base));
 		}
+	}
+
+	for (const element of content.querySelectorAll('img[srcset], source[srcset]')) {
+		const value = element.getAttribute('srcset');
+		if (!value) continue;
+		element.setAttribute('srcset', rebaseSrcset(value, base));
 	}
 }
 

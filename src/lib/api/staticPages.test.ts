@@ -58,6 +58,24 @@ describe('makeSiteRelativeUrlsAbsolute', () => {
 		).not.toBeNull();
 	});
 
+	it('rebases srcset URLs on img and source elements, preserving descriptors', () => {
+		const content = createContentElement(
+			'<picture><source srcset="images/photo.webp" type="image/webp"><img src="images/photo.png" srcset="images/photo.png 1x, images/photo-2x.png 2x"></picture>'
+		);
+
+		makeSiteRelativeUrlsAbsolute(
+			content,
+			'https://world.openfoodfacts.org/about/privacy?content_only=1'
+		);
+
+		expect(content.querySelector('source')?.getAttribute('srcset')).toBe(
+			'https://world.openfoodfacts.org/about/images/photo.webp'
+		);
+		expect(content.querySelector('img')?.getAttribute('srcset')).toBe(
+			'https://world.openfoodfacts.org/about/images/photo.png 1x, https://world.openfoodfacts.org/about/images/photo-2x.png 2x'
+		);
+	});
+
 	it('preserves fragment-only and absolute URLs', () => {
 		const content = createContentElement(
 			'<a href="#contact">Contact</a><a href="https://blog.openfoodfacts.org/post">Blog</a><img src="//cdn.example.org/photo.png">'
