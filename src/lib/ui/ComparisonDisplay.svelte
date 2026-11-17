@@ -424,6 +424,7 @@
 					{#if product.image_front_small_url}
 						<img
 							src={product.image_front_small_url}
+							loading="lazy"
 							alt={product.product_name ?? product.code}
 							class="mb-2 h-24 object-contain"
 						/>

@@ -13,9 +13,10 @@
 
 	type Props = {
 		product: ProductDataSection;
+		canEdit: boolean;
 	};
 
-	let { product }: Props = $props();
+	let { product, canEdit }: Props = $props();
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -235,12 +236,14 @@
 		</p>
 	{/if}
 
-	<a
-		class="mt-4 block rounded bg-warning p-3 text-center font-bold text-warning-content hover:shadow"
-		href="{page.url.pathname}/edit"
-	>
-		{$_('product.datasources.incomplete_or_incorrect')}
-	</a>
+	{#if canEdit}
+		<a
+			class="mt-4 block rounded bg-warning p-3 text-center font-bold text-warning-content hover:shadow"
+			href="{page.url.pathname}/edit"
+		>
+			{$_('product.datasources.incomplete_or_incorrect')}
+		</a>
+	{/if}
 
 	<div class="divider"></div>
 

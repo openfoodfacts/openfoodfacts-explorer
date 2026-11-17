@@ -1,43 +1,15 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-import { PricesApi } from '@openfoodfacts/openfoodfacts-nodejs';
-
 import { createProductsApi } from '#lib/api.js';
 
 import { get } from 'svelte/store';
 import { getLanguageCode, preferences } from '#lib/settings.js';
 import {
-	createFolksonomyApi,
-	isConfigured as isFolksonomyConfigured
-} from '#lib/api/folksonomy.js';
-import { createPricesApi, isConfigured as isPriceConfigured } from '#lib/api/prices.js';
-import {
-	attributesToDefaultPreferences,
-	type AttributeGroup
-} from '#lib/stores/preferencesStore.js';
-import {
 	ERR_INVALID_BARCODE,
 	ERR_PRODUCT_NOT_FOUND,
 	type ProductStateResponse
 } from '#lib/api/errorUtils.js';
-
-async function getPricesCoords(api: PricesApi, code: string) {
-	// load all prices coordinates
-	const { data, error } = await api.getPrices({ product_code: code });
-	if (error != null) throw new Error('Error fetching first page.');
-
-	const { items, pages } = data;
-
-	const prices = [...items.flat()];
-	for (let page = 2; page <= pages; page++) {
-		const res = await api.getPrices({ product_code: code, page: page });
-		if (res.error != null) throw new Error(`Error fetching page ${page}.`);
-		prices.push(...res.data.items.flat());
-	}
-
-	return prices;
-}
 
 function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | undefined) {
 	if (!apiErrorWrapped) return;
@@ -63,7 +35,6 @@ function handleProductApiError(apiErrorWrapped: ProductStateResponse | null | un
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const productsApi = createProductsApi(fetch);
-	const folkApi = createFolksonomyApi(fetch);
 
 	const lc = getLanguageCode(get(preferences).locale);
 
@@ -94,31 +65,5 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		error(404, 'Failure to load product', { errors: state.errors });
 	}
 
-	const folksonomyTags = isFolksonomyConfigured()
-		? folkApi.getProductTags(params.barcode).then((it) => it.data ?? [])
-		: Promise.resolve([]);
-
-	const folksonomyKeys = isFolksonomyConfigured()
-		? folkApi.getKeys().then((it) => it.data)
-		: Promise.resolve([]);
-
-	const pricesResponse = isPriceConfigured()
-		? getPricesCoords(createPricesApi(fetch), params.barcode)
-		: Promise.resolve(null);
-
-	const defaultPreferences = (async () => {
-		const { data: attributeGroups } = await productsApi.getAttributeGroups();
-		// FIXME: Remove cast when SDK fixes ids type being string | undefined
-		const attributeGroupsList = (attributeGroups ?? []) as AttributeGroup[];
-		return attributesToDefaultPreferences(attributeGroupsList);
-	})();
-
-	return {
-		state,
-		lc,
-		defaultProductPreferences: await defaultPreferences,
-		tags: await folksonomyTags,
-		keys: await folksonomyKeys,
-		prices: await pricesResponse
-	};
+	return { state, lc };
 };

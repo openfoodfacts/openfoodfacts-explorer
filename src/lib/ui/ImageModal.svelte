@@ -17,6 +17,7 @@
 		url: string;
 		previewUrl?: string;
 		alt?: string;
+		caption?: string;
 		imageid?: number;
 		productCode?: string;
 	};
@@ -35,9 +36,10 @@
 		alt?: string,
 		imageid?: number,
 		productCode?: string,
-		previewUrl?: string
+		previewUrl?: string,
+		caption?: string
 	) {
-		image = { url, previewUrl, alt, imageid, productCode };
+		image = { url, previewUrl, alt, caption, imageid, productCode };
 		isImageLoading = true;
 
 		zoomLevel = 1;
@@ -78,7 +80,7 @@
 </script>
 
 <dialog
-	class="h-screen max-h-screen w-screen max-w-screen border border-base-300 bg-base-100 p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
+	class="h-dvh max-h-dvh w-screen max-w-screen border border-base-300 bg-base-100 p-0 shadow-lg md:inset-0 md:m-auto md:h-[90vh] md:w-[90vw] md:rounded-xl"
 	bind:this={dialog}
 	onclose={() => (image = undefined)}
 	onclick={(e) => {
@@ -185,11 +187,11 @@
 		</div>
 
 		<div class="absolute bottom-2 left-2 z-10">
-			{#if image?.alt}
+			{#if image?.caption ?? image?.alt}
 				<div
 					class="rounded-md bg-base-100/80 px-3 py-1 text-sm font-medium text-base-content shadow-md backdrop-blur-sm"
 				>
-					{image.alt}
+					{image.caption ?? image.alt}
 				</div>
 			{/if}
 		</div>
