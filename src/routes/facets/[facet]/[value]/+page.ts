@@ -28,11 +28,21 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 
 	// Use Query products when configured, or fall back to Product Opener.
 	const results = (async (): Promise<FacetValueResponse> => {
+		const empty = {
+			products: [],
+			count: 0,
+			page: 1,
+			page_count: 0,
+			page_size: searchOptions.pageSize
+		};
 		try {
-			return queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
+			const response = queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
+			// Product Opener answers some values it doesn't know (e.g. /facets/nova-groups/4)
+			// with the facet's tag list, `{ count, tags }`, instead of a product list.
+			return Array.isArray(response.products) ? response : empty;
 		} catch (error) {
 			console.error('Product fetch failed:', error);
-			return { products: [], count: 0, page: 1, page_count: 0, page_size: searchOptions.pageSize };
+			return empty;
 		}
 	})();
 
