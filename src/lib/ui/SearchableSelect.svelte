@@ -89,7 +89,8 @@
 		aria-controls={`${id}-options`}
 		aria-activedescendant={open && activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
 		autocomplete="off"
-		placeholder={$_('settings.search_options', { default: 'Search {label}', values: { label } })}
+		placeholder={selectedLabel ||
+			$_('settings.search_options', { default: 'Search {label}', values: { label } })}
 		value={open ? query : selectedLabel}
 		onfocus={() => (open = true)}
 		onclick={() => (open = true)}
