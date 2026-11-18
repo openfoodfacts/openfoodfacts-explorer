@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { resolveDomain } from '#lib/metadata.js';
 
 	type Props = {
 		title: string;
 		description: string;
 		imageUrl?: string;
 		url?: string;
+		domain?: string;
 		type?: 'website' | 'product' | 'article' | 'profile';
 	};
 
@@ -14,8 +16,11 @@
 		description,
 		imageUrl = '',
 		url = page.url.toString(),
+		domain,
 		type = 'website'
 	}: Props = $props();
+
+	const twitterDomain = $derived(resolveDomain(url, page.url.href, domain));
 </script>
 
 <svelte:head>
@@ -33,7 +38,7 @@
 
 	<!-- Twitter Meta Tags -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta property="twitter:domain" content="openfoodfacts-explorer.vercel.app" />
+	<meta property="twitter:domain" content={twitterDomain} />
 	<meta property="twitter:url" content={url} />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
