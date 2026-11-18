@@ -44,6 +44,11 @@ const GRAMS_PER_UNIT: Record<string, number> = {
 	μg: 1e-6
 };
 
+// Alcohol is usually declared in % vol, not in grams. 1 % vol is roughly
+// 0.789 g of ethanol per 100 ml, which is close enough to per 100 g.
+const GRAMS_PER_ALCOHOL_VOLUME_PERCENT = 0.789;
+const ALCOHOL_VOLUME_UNITS = new Set(['%vol', 'vol%', '%']);
+
 type GramAmount = { kind: 'grams'; grams: number } | { kind: 'missing' } | { kind: 'unknown-unit' };
 
 /**
@@ -68,11 +73,18 @@ function gramAmount(product: Product, field: string): GramAmount {
 		.replace('μ', 'µ');
 	const factor = rawUnit === '' ? 1 : GRAMS_PER_UNIT[rawUnit];
 
-	if (factor == null) {
-		return { kind: 'unknown-unit' };
+	if (factor != null) {
+		return { kind: 'grams', grams: value * factor };
 	}
 
-	return { kind: 'grams', grams: value * factor };
+	// Beer and wine store alcohol as ABV, e.g. `alcohol: 5, alcohol_unit: '% vol'`.
+	// Without this, those products would skip the energy and macro-sum checks.
+	const compactUnit = rawUnit.replace(/\s+/g, '');
+	if (field === 'alcohol' && ALCOHOL_VOLUME_UNITS.has(compactUnit)) {
+		return { kind: 'grams', grams: value * GRAMS_PER_ALCOHOL_VOLUME_PERCENT };
+	}
+
+	return { kind: 'unknown-unit' };
 }
 
 /**

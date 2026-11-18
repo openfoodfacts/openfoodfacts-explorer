@@ -198,4 +198,40 @@ describe('getNutritionIssues unit handling', () => {
 
 		expect(issuesFor(product, 'sodium')).toHaveLength(1);
 	});
+
+	describe('alcohol', () => {
+		it('converts % vol to grams for the energy check', () => {
+			// 5 % vol ≈ 3.945 g of ethanol ≈ 27.615 kcal.
+			const product = productWith({
+				alcohol: 5,
+				alcohol_unit: '% vol',
+				'energy-kcal_100g': 27.615
+			});
+
+			expect(issuesFor(product, 'all')).toEqual([]);
+		});
+
+		it('reports an energy mismatch using the converted alcohol value', () => {
+			// Treating the raw 5 as grams would calculate 35 kcal and match the
+			// declared energy, so this only passes with the % vol conversion.
+			const product = productWith({
+				alcohol: 5,
+				alcohol_unit: '% vol',
+				'energy-kcal_100g': 35
+			});
+
+			expect(issuesFor(product, 'all')).toHaveLength(1);
+		});
+
+		it('includes alcohol declared as % vol in the macro sum', () => {
+			// 98 g of other macros + 3.945 g of alcohol exceeds 100 g.
+			const product = productWith({
+				carbohydrates: 98,
+				alcohol: 5,
+				alcohol_unit: '% vol'
+			});
+
+			expect(issuesFor(product, 'all')).toHaveLength(1);
+		});
+	});
 });
