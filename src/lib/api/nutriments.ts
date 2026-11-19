@@ -131,6 +131,20 @@ export function getReadOnlyNutriment(id: string): ReadOnlyNutrimentMetadata | un
 	return Object.hasOwn(READ_ONLY_NUTRIMENTS, id) ? READ_ONLY_NUTRIMENTS[id] : undefined;
 }
 
+export function isReadOnlyNutrimentKey(key: string): boolean {
+	const baseId = key.replace(DERIVED_NUTRIENT_KEY_SUFFIX, '');
+	return getReadOnlyNutriment(baseId) != null;
+}
+
+export function clearEditableNutrimentValues(nutriments: Partial<Nutriments>): Nutriments {
+	return Object.fromEntries(
+		Object.entries(nutriments).map(([key, value]) => [
+			key,
+			isReadOnlyNutrimentKey(key) ? value : ('' as string | number)
+		])
+	) as Nutriments;
+}
+
 export function flattenNutrients(nutrients: NutrientApiEntry[]): NutrientOption[] {
 	return nutrients.flatMap(
 		({ nutrients: children, display_in_edit_form: displayInEditForm, ...nutrient }) => [

@@ -3,6 +3,7 @@
 	import { _, locale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import {
+		clearEditableNutrimentValues,
 		getNutrients,
 		getMissingNutrientOptions,
 		getReadOnlyNutriment,
@@ -289,11 +290,9 @@
 
 		product = {
 			...product,
-			nutriments: Object.fromEntries(
-				Object.keys(product.nutriments).map((key) => [key, '' as string | number])
-			) as Nutriments
+			nutriments: clearEditableNutrimentValues(product.nutriments)
 		};
-		additionalNutrients = [];
+		additionalNutrients = additionalNutrients.filter((id) => getReadOnlyNutriment(id) != null);
 	}
 
 	const shortcutCtx = getShortcutCtx();

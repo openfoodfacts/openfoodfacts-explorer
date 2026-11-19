@@ -2,11 +2,13 @@ import { describe, expect, it, vi } from 'vitest';
 import enMessages from '../i18n/messages/en.json';
 import enUsMessages from '../i18n/messages/en-US.json';
 import {
+	clearEditableNutrimentValues,
 	flattenNutrients,
 	getMissingNutrientOptions,
 	getNutrients,
 	getReadOnlyNutriment,
 	getSelectableNutrients,
+	isReadOnlyNutrimentKey,
 	type NutrientOption
 } from './nutriments';
 
@@ -103,6 +105,40 @@ describe('nutrients API', () => {
 	it('has nova-group translation in en-US and en fallback messages', () => {
 		expect(enUsMessages.product.edit.nutrient['nova-group']).toBe('NOVA group');
 		expect(enMessages.product.edit.nutrient['nova-group']).toBe('NOVA group');
+	});
+
+	it('preserves read-only nutriments and their derived keys when clearing editable values', () => {
+		expect(isReadOnlyNutrimentKey('nova-group')).toBe(true);
+		expect(isReadOnlyNutrimentKey('nova-group_100g')).toBe(true);
+		expect(isReadOnlyNutrimentKey('nova-group_unit')).toBe(true);
+		expect(isReadOnlyNutrimentKey('fat')).toBe(false);
+		expect(isReadOnlyNutrimentKey('fat_100g')).toBe(false);
+
+		const cleared = clearEditableNutrimentValues({
+			'nova-group': 4,
+			'nova-group_100g': 4,
+			'nova-group_serving': 4,
+			'nova-group_unit': '',
+			'nova-group_value': 4,
+			fat: 30,
+			fat_100g: 30,
+			fat_unit: 'g',
+			caffeine: 20,
+			caffeine_unit: 'mg'
+		});
+
+		expect(cleared).toEqual({
+			'nova-group': 4,
+			'nova-group_100g': 4,
+			'nova-group_serving': 4,
+			'nova-group_unit': '',
+			'nova-group_value': 4,
+			fat: '',
+			fat_100g: '',
+			fat_unit: '',
+			caffeine: '',
+			caffeine_unit: ''
+		});
 	});
 
 	it('loads localized nutrients through the SDK client', async () => {
