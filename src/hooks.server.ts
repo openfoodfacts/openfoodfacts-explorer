@@ -8,6 +8,7 @@ import { locale, resolveAvailableLocale } from '#lib/i18n/index.js';
 import { locationRedirect } from '#lib/server/location-redirect.js';
 import { ServerTiming } from '#lib/server/timing.ts';
 import { dev } from '$app/env';
+import { PUBLIC_ENVIRONMENT } from '$app/env/public';
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	// Server timing setup
@@ -23,11 +24,16 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 
 	event.locals.timing = new ServerTiming();
 
+	const manifestCrossorigin =
+		PUBLIC_ENVIRONMENT === 'staging' ? 'crossorigin="use-credentials"' : '';
+
 	const resolved = await resolve(event, {
 		transformPageChunk: ({ html }) => {
 			// Replace the %lang% placeholder in app.html with the user's active language
 			// from the accept-language header to ensure proper accessibility and SEO.
-			return html.replace('%lang%', lang || 'en');
+			return html
+				.replace('%lang%', lang || 'en')
+				.replace('%manifest.crossorigin%', manifestCrossorigin);
 		},
 		filterSerializedResponseHeaders(name) {
 			return ['content-length', 'content-type', 'etag', 'cache-control'].includes(
