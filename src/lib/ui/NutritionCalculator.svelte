@@ -9,7 +9,7 @@
 		totalNutrition
 	} from '#lib/stores/calculatorStore.js';
 	import { onMount } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { _ } from '#lib/i18n/index.js';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiMinus from '@iconify-svelte/mdi/minus';

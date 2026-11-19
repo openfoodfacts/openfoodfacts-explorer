@@ -4,7 +4,8 @@ import { clearWindow } from 'isomorphic-dompurify';
 
 import { redirect } from '@sveltejs/kit';
 import { parseUrlLocation } from '#lib/url-location.js';
-import { locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+import { resolveAvailableLocale } from '#lib/i18n/index.js';
+import { withRequestLocale } from '#lib/server/request-locale.js';
 import { locationRedirect } from '#lib/server/location-redirect.js';
 import { ServerTiming } from '#lib/server/timing.ts';
 import { dev } from '$app/env';
@@ -13,28 +14,28 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	// Server timing setup
 	const startTime = performance.now();
 
-	const destination = locationRedirect(event.url, event.request.headers.get('accept-language'));
+	const acceptLanguage = event.request.headers.get('accept-language');
+	const destination = locationRedirect(event.url, acceptLanguage);
 	if (destination) redirect(307, destination);
 	const urlLocation = parseUrlLocation(event.url.pathname);
-	const lang = urlLocation?.language ?? event.request.headers.get('accept-language')?.split(',')[0];
-	if (lang) {
-		locale.set(urlLocation ? resolveAvailableLocale(lang) : lang);
-	}
-
+	// FIXME: We only consider the first language in Accept-Language.
+	const lang = resolveAvailableLocale(
+		urlLocation?.language ?? acceptLanguage?.split(',')[0]?.split(';')[0].trim()
+	);
 	event.locals.timing = new ServerTiming();
 
-	const resolved = await resolve(event, {
-		transformPageChunk: ({ html }) => {
-			// Replace the %lang% placeholder in app.html with the user's active language
-			// from the accept-language header to ensure proper accessibility and SEO.
-			return html.replace('%lang%', lang || 'en');
-		},
-		filterSerializedResponseHeaders(name) {
-			return ['content-length', 'content-type', 'etag', 'cache-control'].includes(
-				name.toLowerCase()
-			);
-		}
-	});
+	const resolved = await withRequestLocale(lang, () =>
+		resolve(event, {
+			transformPageChunk: ({ html }) => {
+				return html.replace('%lang%', lang);
+			},
+			filterSerializedResponseHeaders(name) {
+				return ['content-length', 'content-type', 'etag', 'cache-control'].includes(
+					name.toLowerCase()
+				);
+			}
+		})
+	);
 
 	event.locals.timing.add('total', performance.now() - startTime, 'Total request time');
 

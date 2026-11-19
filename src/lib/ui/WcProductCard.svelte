@@ -8,7 +8,7 @@ Wraps the <product-card> web component and adds accessibility features.
 	import type { ProductReduced } from '#lib/api.js';
 	import type { ScoreData } from '#lib/scoring.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
-	import { _ } from 'svelte-i18n';
+	import { _ } from '#lib/i18n/index.js';
 
 	import IconMdiAdd from '@iconify-svelte/mdi/plus';
 	import IconMdiEdit from '@iconify-svelte/mdi/pencil';

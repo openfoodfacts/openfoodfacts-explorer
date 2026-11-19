@@ -2,7 +2,7 @@
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import { userInfo } from '#lib/stores/user.js';
 	import { resolve } from '#lib/paths.js';
-	import { _ } from 'svelte-i18n';
+	import { _ } from '#lib/i18n/index.js';
 	import ResizableImage from './ResizableImage.svelte';
 
 	import IconMdiMagnifyPlusOutline from '@iconify-svelte/mdi/magnify-plus-outline';
