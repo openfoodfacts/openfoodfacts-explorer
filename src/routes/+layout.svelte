@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, type Component } from 'svelte';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
@@ -32,6 +31,7 @@
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
 	import { _, getLocale, locale } from '#lib/i18n/index.js';
+	import { startLogout } from '#lib/auth/logout.js';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -194,13 +194,6 @@
 
 	let { children }: LayoutProps = $props();
 
-	onMount(() => {
-		if (import.meta.env.VERCEL) {
-			// if we're on vercel and on the client, inject the speed insights script
-			injectSpeedInsights();
-		}
-	});
-
 	function updateSearchQuery(url: URL) {
 		const q = url.searchParams.get('q') ?? '';
 		searchQuery = extractQuery(q);
@@ -287,7 +280,7 @@
 	<div class="flex justify-center">
 		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
-				<a href="/"> <Logo /> </a>
+				<a href="/"> <Logo fetchpriority="high" /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -344,13 +337,14 @@
 							</li>
 							<div class="divider my-1"></div>
 							<li>
-								<a
-									href={resolve('oauth/logout')}
+								<button
+									type="button"
+									onclick={startLogout}
 									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
 									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-								</a>
+								</button>
 							</li>
 						</ul>
 					</div>
@@ -379,7 +373,7 @@
 	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
 			<a href="/">
-				<Logo />
+				<Logo fetchpriority="high" />
 			</a>
 		</div>
 		<div class="navbar-end flex gap-1 sm:gap-2">
@@ -483,10 +477,14 @@
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
 
-						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('oauth/logout')}>
+						<button
+							type="button"
+							onclick={startLogout}
+							class="btn gap-2 btn-outline btn-error btn-sm"
+						>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>

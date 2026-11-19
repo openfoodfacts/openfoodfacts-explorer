@@ -105,6 +105,7 @@ src/
 - In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review).
 - **Always disclose that you are an AI agent** both on the issue (when claiming it) and in the PR.
 - Do not open a PR with failing lint, type errors, or build failures.
+- Add a before/after screenshot if your change is visual
 
 ### UI & Design
 
