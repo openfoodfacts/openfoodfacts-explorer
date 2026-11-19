@@ -91,7 +91,8 @@ export default defineConfig({
 						'https://play.google.com',
 						'https://fdroid.gitlab.io',
 						'https://upload.wikimedia.org',
-						'https://lheuredescomptes.org'
+						'https://lheuredescomptes.org',
+						'https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/'
 					],
 					'style-src': ['self', 'unsafe-inline'],
 					'frame-ancestors': ['none']

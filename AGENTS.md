@@ -105,6 +105,7 @@ src/
 - In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review).
 - **Always disclose that you are an AI agent** both on the issue (when claiming it) and in the PR.
 - Do not open a PR with failing lint, type errors, or build failures.
+- Add a before/after screenshot if your change is visual
 
 ### UI & Design
 
@@ -117,6 +118,12 @@ src/
 - **All user-facing strings must go through svelte-i18n.**
 - Always provide a `default` fallback: `$_('some.key', { default: 'Fallback text' })`.
 - Add new keys to `src/lib/i18n/messages/en-US.json` first.
+
+### Internal paths
+
+- Use `resolve` from `#lib/paths.js` for internal links instead of SvelteKit's `$app/paths` resolver. It preserves the active language and region prefix.
+- When resolving a path from a request URL outside a page component, use `resolveForUrl` from `#lib/paths.js`.
+- OAuth callback URLs are fixed, allowlisted endpoints: use `resolve` from `$app/paths` without a location prefix for these paths.
 
 ---
 

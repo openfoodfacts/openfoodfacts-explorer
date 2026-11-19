@@ -10,7 +10,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const toastCtx = getToastCtx();

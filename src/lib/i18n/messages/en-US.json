@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Language",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Currency",
 		"loading": "Loading…",
@@ -216,6 +216,9 @@
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
+		"recent_commits": "Recent commits in this version",
+		"commits_loading": "Loading commits…",
+		"commits_unavailable": "Commit history is unavailable.",
 		"app_version": "Version {version}",
 		"app_commit_link": "View commit {sha} on GitHub",
 		"admin_tools": {
@@ -286,6 +289,22 @@
 		"loading_attributes": "Loading product attributes...",
 		"attributes_error_title": "Unable to load personalized attributes",
 		"attributes_error_body": "There was an error while loading the personalized attributes. Please try again later.",
+		"score": {
+			"attributes": "Your attributes",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"overall": "Overall score",
+			"personalize": "Personalize",
+			"edit_preferences": "Edit your preferences",
+			"match_status": {
+				"very_good_match": "Very good match",
+				"good_match": "Good match",
+				"poor_match": "Poor match",
+				"may_not_match": "May not match",
+				"does_not_match": "Does not match",
+				"unknown_match": "Unknown match"
+			}
+		},
 		"shortcuts": {
 			"show_barcode": "Show/hide barcode tools",
 			"api_page": "Open product API page",
@@ -308,12 +327,21 @@
 			"report": "Report an issue with this product",
 			"add_to_calculator": "Add product to nutritional calculator",
 			"compare": "Add to compare",
-			"view_on_off": "View product on Open Food Facts"
+			"view_on_off": "View product on Open Food Facts",
+			"copy": "Copy",
+			"more": "More actions"
 		},
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link"
+			"failed_copy": "Failed to copy link",
+			"copied_barcode": "Barcode copied to clipboard!",
+			"failed_copy_barcode": "Failed to copy barcode"
+		},
+		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"app_strip": {
+			"text": "Scan barcodes to get the Nutri-Score, the Green-Score and more!",
+			"get_app": "Get the app"
 		},
 		"barcode": {
 			"title": "Barcode information",
@@ -359,6 +387,8 @@
 			"countries": "Countries"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
@@ -419,6 +449,7 @@
 			"source_link": "GS1"
 		},
 		"edit": {
+			"food_only": "Editing is currently available only for food products.",
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
@@ -574,7 +605,7 @@
 			"no_nutrition_specified": "No nutrition data specified",
 			"remove_all_nutrient_values": "Remove all nutrient values",
 			"nutritional_values": "Nutritional Values",
-			"energy": "Energy",
+			"energy": "Calories",
 			"macronutrients": "Macro-nutrients",
 			"micronutrients": "Micro-nutrients",
 			"nutrient": {
@@ -585,7 +616,7 @@
 				"fat": "Total Fat",
 				"saturated-fat": "Saturated Fat",
 				"carbohydrates": "Carbohydrates",
-				"sugars": "Sugars",
+				"sugars": "Sugar",
 				"proteins": "Proteins",
 				"salt": "Salt",
 				"fibers": "Fibers",
@@ -700,6 +731,7 @@
 		"prices": {
 			"no_prices_found": "No prices found for this product",
 			"loading": "Loading prices…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "View prices on Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
@@ -711,7 +743,7 @@
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "View prices on Open Prices",
@@ -844,6 +876,39 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"names": {
+			"countries": "Countries",
+			"nutrition-grades": "Nutrition grades",
+			"nova-groups": "NOVA groups",
+			"environmental-score": "Green-Score",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"packaging": "Packaging",
+			"origins": "Origins of ingredients",
+			"manufacturing-places": "Manufacturing or processing places",
+			"packager-codes": "Traceability codes",
+			"ingredients": "Ingredients",
+			"additives": "Additives",
+			"vitamins": "Added vitamins",
+			"minerals": "Added minerals",
+			"amino-acids": "Added amino acids",
+			"nucleotides": "Added nucleotides",
+			"other-nutritional-substances": "Other nutritional substances added",
+			"allergens": "Allergens",
+			"traces": "Traces",
+			"misc": "Miscellaneous",
+			"languages": "Languages",
+			"contributors": "Contributors",
+			"states": "States",
+			"data-sources": "Data sources",
+			"entry-dates": "Entry dates",
+			"last-edit-dates": "Last edit dates",
+			"last-check-dates": "Last check dates",
+			"teams": "Teams"
+		},
+		"heading": "Exploring {facet}",
+		"value_heading": "Exploring {facet}: {value}",
 		"category_general": "General",
 		"category_nutrition": "Nutrition & Health",
 		"category_packaging": "Packaging & Origin",
@@ -923,8 +988,13 @@
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview",
+		"hierarchy_belongs_to": "Belongs to",
+		"hierarchy_includes": "Includes",
+		"hierarchy_more": "+ {count} more",
 		"map_heading_origins": "Origins of the ingredients",
-		"map_heading_countries": "Where these products are sold"
+		"map_heading_countries": "Where these products are sold",
+		"map_page_limited": "This map only includes data from the current page.",
+		"map_sqrt_legend": "Products (square-root scale)"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",
@@ -995,7 +1065,7 @@
 		"import_to_my": "Import to My Comparison",
 		"import_dialog_title": "Import Comparison",
 		"continue_question": "Continue?",
-		"replace_comparison": "This will replace your current comparison with {count, plural, =1 {1 product} other {# products}}. Continue?",
+		"replace_comparison": "This will replace your current comparison with {count, plural, one {# products} =1 {1 product} other {# products}}. Continue?",
 		"import": "Import",
 		"no_products_to_compare": "No products to compare",
 		"invalid_link_hint": "This link doesn't contain any valid products to compare",

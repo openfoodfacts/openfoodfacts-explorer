@@ -3,7 +3,7 @@
 Wraps the <product-card> web component and adds accessibility features.
 -->
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { createProductsApi } from '#lib/api.js';
 	import type { ProductReduced } from '#lib/api.js';
 	import type { ScoreData } from '#lib/scoring.js';
@@ -15,7 +15,7 @@ Wraps the <product-card> web component and adds accessibility features.
 
 	import { compareStore } from '#lib/stores/compareStore.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	type Props = {
 		product: ProductReduced | Product;

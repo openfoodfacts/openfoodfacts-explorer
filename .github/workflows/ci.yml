@@ -17,11 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - uses: pnpm/setup@v3.1.1
+      - uses: pnpm/setup@v3.1.2
         with:
           cache: true
           save-cache: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-          runtime: node@22
+          runtime: node@26
 
       - name: Copy .env.example to .env
         run: cp .env.example .env

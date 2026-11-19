@@ -3,8 +3,15 @@
 	import ImageModal from './ImageModal.svelte';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
-	type Props = { src?: string; alt?: string; rawImageId?: number; productCode?: string };
-	let { src, alt, rawImageId, productCode }: Props = $props();
+	type Props = {
+		src?: string;
+		alt?: string;
+		caption?: string;
+		rawImageId?: number;
+		productCode?: string;
+		loading?: 'lazy' | 'eager';
+	};
+	let { src, alt, caption, rawImageId, productCode, loading = 'lazy' }: Props = $props();
 
 	let modal: ImageModal;
 
@@ -24,7 +31,8 @@
 		if (src == null) {
 			return undefined;
 		}
-		return () => modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src);
+		return () =>
+			modal.displayImage(getFullSizeImageUrl(src), alt, imageId, productCode, src, caption);
 	});
 </script>
 
@@ -34,13 +42,24 @@
 	<button class="flex cursor-pointer items-center justify-center" {onclick}>
 		{#if src != null}
 			<div class="flex items-center justify-center">
-				<img {src} {alt} class="max-h-full max-w-full cursor-pointer rounded-lg object-contain" />
+				<img
+					{src}
+					{alt}
+					{loading}
+					class="max-h-full max-w-full cursor-pointer rounded-lg object-contain"
+				/>
 			</div>
 		{:else}
 			<div
 				class="mt-4 flex min-h-[120px] min-w-[120px] items-center justify-center rounded-lg bg-gray-200"
 			>
-				<img src="/Placeholder.svg" alt="Image not available" height="24" aria-hidden="true" />
+				<img
+					src="/Placeholder.svg"
+					alt="Image not available"
+					height="24"
+					loading="lazy"
+					aria-hidden="true"
+				/>
 			</div>
 		{/if}
 	</button>
