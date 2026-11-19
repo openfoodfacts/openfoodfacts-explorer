@@ -11,6 +11,38 @@ export function getStaticPageUrl(id: string, language: string, contentOnly = fal
 	return url;
 }
 
+function resolvePageRelativeUrl(value: string, base: string): string {
+	if (
+		!value ||
+		value.startsWith('#') ||
+		value.startsWith('//') ||
+		/^[a-z][a-z\d+.-]*:/i.test(value)
+	) {
+		return value;
+	}
+	return new URL(value, base).href;
+}
+
+function resolveSrcset(srcset: string, base: string): string {
+	// A URL may contain commas (for example, in a data URL). Only trailing commas
+	// or commas after a descriptor separate candidates.
+	const candidateUrl = /[^\t\n\f\r ,][^\t\n\f\r ]*/g;
+	const candidates: string[] = [];
+	let match: RegExpExecArray | null;
+	while ((match = candidateUrl.exec(srcset)) !== null) {
+		const url = match[0].replace(/,+$/, '');
+		let descriptor = '';
+		if (url === match[0]) {
+			const end = srcset.indexOf(',', candidateUrl.lastIndex);
+			const next = end === -1 ? srcset.length : end;
+			descriptor = srcset.slice(candidateUrl.lastIndex, next);
+			candidateUrl.lastIndex = next;
+		}
+		candidates.push(resolvePageRelativeUrl(url, base) + descriptor);
+	}
+	return candidates.join(', ');
+}
+
 /** Resolve page-relative URLs against the source page so they work in the Explorer page */
 export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): void {
 	for (const [selector, attribute] of [
@@ -19,18 +51,13 @@ export function makeSiteRelativeUrlsAbsolute(content: Element, base: string): vo
 	]) {
 		for (const element of content.querySelectorAll(selector)) {
 			const value = element.getAttribute(attribute);
-			if (
-				!value ||
-				value.startsWith('#') ||
-				value.startsWith('//') ||
-				/^[a-z][a-z\d+.-]*:/i.test(value)
-			) {
-				continue;
-			}
-
-			const rebasedUrl = new URL(value, base).href;
-			element.setAttribute(attribute, rebasedUrl);
+			if (value) element.setAttribute(attribute, resolvePageRelativeUrl(value, base));
 		}
+	}
+
+	for (const element of content.querySelectorAll('picture source[srcset], img[srcset]')) {
+		const srcset = element.getAttribute('srcset');
+		if (srcset) element.setAttribute('srcset', resolveSrcset(srcset, base));
 	}
 }
 

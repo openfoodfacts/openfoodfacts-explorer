@@ -73,6 +73,23 @@ describe('makeSiteRelativeUrlsAbsolute', () => {
 });
 
 describe('extractStaticPageContent', () => {
+	it('rebases responsive image candidates against the localized source page', () => {
+		const content = extractStaticPageContent(
+			`<div id="main_column"><picture>
+				<source type="image/webp" srcset="/images/community.webp">
+				<img src="/images/community.png"
+					srcset="images/community.png 1x, /images/community-large.png 2x, https://static.openfoodfacts.org/community.png 3x">
+			</picture></div>`,
+			'https://world-it.openfoodfacts.org/contribuire?content_only=1'
+		);
+
+		expect(content).toContain('srcset="https://world-it.openfoodfacts.org/images/community.webp"');
+		expect(content).toContain('src="https://world-it.openfoodfacts.org/images/community.png"');
+		expect(content).toContain(
+			'srcset="https://world-it.openfoodfacts.org/images/community.png 1x, https://world-it.openfoodfacts.org/images/community-large.png 2x, https://static.openfoodfacts.org/community.png 3x"'
+		);
+	});
+
 	const content =
 		extractStaticPageContent(
 			staticPageHtml,
