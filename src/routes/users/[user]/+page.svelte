@@ -2,7 +2,7 @@
 	import { resolve } from '#lib/paths.js';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 	import Metadata from '#lib/Metadata.svelte';
-	import { _, getNumberFormatter } from 'svelte-i18n';
+	import { _, getNumberFormatter } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

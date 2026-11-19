@@ -6,7 +6,7 @@
 	import type { Product, ProductImage } from '#lib/api.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { getLanguageName } from '#lib/languages.js';
-	import { _, getDateFormatter } from 'svelte-i18n';
+	import { _, getDateFormatter } from '#lib/i18n/index.js';
 	import { resolve } from '#lib/paths.js';
 
 	import IconMdiUpload from '@iconify-svelte/mdi/upload';
