@@ -633,7 +633,16 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
+					<span class="flex items-center gap-1">
+						{$_('nutriscore')}
+						<InfoTooltip
+							text={$_('compare.nutriscore_explanation', {
+								default: 'Nutri-Score rates the nutritional quality of a food from A to E.'
+							})}
+						/>
+					</span>
+				</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
@@ -677,7 +686,17 @@
 				{/each}
 			</tr>
 			<tr>
-				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
+				<td class="sticky left-0 w-40 bg-base-100 font-semibold">
+					<span class="flex items-center gap-1">
+						{$_('ecoscore')}
+						<InfoTooltip
+							text={$_('compare.green_score_explanation', {
+								default:
+									'Green-Score estimates the environmental impact of a food, based on its life cycle and packaging.'
+							})}
+						/>
+					</span>
+				</td>
 				{#each products as product (product.code)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>

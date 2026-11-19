@@ -1012,6 +1012,8 @@
 		"quantity": "Quantity",
 		"nova_group": "Ultra-processing level",
 		"nova_group_explanation": "NOVA classifies foods by how much they are processed, from 1 (unprocessed or minimally processed) to 4 (ultra-processed).",
+		"nutriscore_explanation": "Nutri-Score rates the nutritional quality of a food from A to E.",
+		"green_score_explanation": "Green-Score estimates the environmental impact of a food, based on its life cycle and packaging.",
 		"num_additives": "N. of additives",
 		"nutritional_values_per_100g": "Nutritional Values (per 100g)",
 		"fruits_vegetables_nuts": "Fruits/Vegetables/Nuts",
