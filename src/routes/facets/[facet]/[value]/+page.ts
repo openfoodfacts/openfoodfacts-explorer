@@ -3,7 +3,7 @@ import type { PageLoad } from './$types';
 import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
 import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
-import { getOrDefault } from '#lib/api/taxonomy/types.js';
+import { getFacetLabel, getFacetLabelEntry } from '#lib/api/taxonomy/facet-labels.js';
 import { getLocale } from '#lib/i18n/index.js';
 import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
 import { MAP_FACETS } from '../map-facets';
@@ -14,11 +14,12 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
-	// Geographic taxonomy supplies localized names for the facet and map.
+	// Map facets already load the full taxonomy. Other facets need only one label.
 	const taxonomy = (async () => {
-		if (!mapFacet) return undefined;
 		try {
-			return await getTaxo(facet, fetch);
+			return mapFacet
+				? await getTaxo(facet, fetch)
+				: await getFacetLabelEntry(fetch, facet, value, lang);
 		} catch (error) {
 			console.error('Taxonomy fetch failed:', error);
 			return undefined;
@@ -77,7 +78,7 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 	]);
 	return {
 		searchOptions,
-		facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
+		facet: { name: facet, value: getFacetLabel(value, taxo, lang) },
 		results: {
 			...products,
 			products: products.products.map((product) => {
