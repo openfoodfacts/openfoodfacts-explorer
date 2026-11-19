@@ -601,7 +601,8 @@
 				"iron": "Iron",
 				"potassium": "Potassium",
 				"trans-fat": "Trans fat",
-				"vitamin-d": "Vitamin D"
+				"vitamin-d": "Vitamin D",
+				"nova-group": "NOVA group"
 			},
 			"additional_nutrients": "Additional nutrients",
 			"nutrients_load_failed": "The complete nutrient list could not be loaded.",

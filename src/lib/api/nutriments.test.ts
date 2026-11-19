@@ -1,8 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
+import enMessages from '../i18n/messages/en.json';
+import enUsMessages from '../i18n/messages/en-US.json';
 import {
 	flattenNutrients,
 	getMissingNutrientOptions,
 	getNutrients,
+	getReadOnlyNutriment,
 	getSelectableNutrients,
 	type NutrientOption
 } from './nutriments';
@@ -54,7 +57,13 @@ describe('nutrients API', () => {
 		expect(missingNutrients).toEqual([{ id: 'caffeine', name: 'caffeine', unit: 'mg' }]);
 	});
 
-	it('excludes nova-group from missing nutrient options', () => {
+	it('identifies nova-group as a read-only nutriment with name "NOVA group" and empty unit', () => {
+		expect(getReadOnlyNutriment('nova-group')).toEqual({ name: 'NOVA group', unit: '' });
+		expect(getReadOnlyNutriment('fat')).toBeUndefined();
+		expect(getReadOnlyNutriment('toString')).toBeUndefined();
+	});
+
+	it('preserves persisted nova-group with name "NOVA group" and empty unit', () => {
 		const missingNutrients = getMissingNutrientOptions(
 			{
 				'nova-group': 4,
@@ -69,7 +78,31 @@ describe('nutrients API', () => {
 			nutrientOptions
 		);
 
-		expect(missingNutrients).toEqual([{ id: 'caffeine', name: 'caffeine', unit: 'mg' }]);
+		expect(missingNutrients).toEqual([
+			{ id: 'nova-group', name: 'NOVA group', unit: '' },
+			{ id: 'caffeine', name: 'caffeine', unit: 'mg' }
+		]);
+	});
+
+	it('defaults unit to empty string for nova-group even when unit key is absent', () => {
+		const missingNutrients = getMissingNutrientOptions({ 'nova-group': 4 }, nutrientOptions);
+
+		expect(missingNutrients).toEqual([{ id: 'nova-group', name: 'NOVA group', unit: '' }]);
+	});
+
+	it('excludes read-only nutriments from selectable additional options', () => {
+		const options = getSelectableNutrients(
+			[...nutrientOptions, { id: 'nova-group', name: 'NOVA group', unit: '' }],
+			new Set(),
+			[]
+		);
+
+		expect(options.map(({ id }) => id)).toEqual(['fat', 'trans-fat']);
+	});
+
+	it('has nova-group translation in en-US and en fallback messages', () => {
+		expect(enUsMessages.product.edit.nutrient['nova-group']).toBe('NOVA group');
+		expect(enMessages.product.edit.nutrient['nova-group']).toBe('NOVA group');
 	});
 
 	it('loads localized nutrients through the SDK client', async () => {

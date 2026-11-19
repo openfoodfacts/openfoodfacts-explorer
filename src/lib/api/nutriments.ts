@@ -115,6 +115,22 @@ type NutrientsResponse = {
 	nutrients: NutrientApiEntry[];
 };
 
+export type ReadOnlyNutrimentMetadata = {
+	name: string;
+	unit: string;
+};
+
+/**
+ * Non-editable score keys that may be persisted inside `product.nutriments`.
+ */
+export const READ_ONLY_NUTRIMENTS: Readonly<Record<string, ReadOnlyNutrimentMetadata>> = {
+	'nova-group': { name: 'NOVA group', unit: '' }
+};
+
+export function getReadOnlyNutriment(id: string): ReadOnlyNutrimentMetadata | undefined {
+	return Object.hasOwn(READ_ONLY_NUTRIMENTS, id) ? READ_ONLY_NUTRIMENTS[id] : undefined;
+}
+
 export function flattenNutrients(nutrients: NutrientApiEntry[]): NutrientOption[] {
 	return nutrients.flatMap(
 		({ nutrients: children, display_in_edit_form: displayInEditForm, ...nutrient }) => [
@@ -130,7 +146,10 @@ export function getSelectableNutrients(
 	addedIds: readonly string[]
 ): NutrientOption[] {
 	return nutrients.filter(
-		(nutrient) => !excludedIds.has(nutrient.id) && !addedIds.includes(nutrient.id)
+		(nutrient) =>
+			!excludedIds.has(nutrient.id) &&
+			!addedIds.includes(nutrient.id) &&
+			getReadOnlyNutriment(nutrient.id) == null
 	);
 }
 
@@ -148,20 +167,21 @@ export function getMissingNutrientOptions(
 	const missingNutrients: NutrientOption[] = [];
 
 	for (const [id, value] of Object.entries(nutriments ?? {})) {
-		if (
-			value == null ||
-			id === 'nova-group' ||
-			DERIVED_NUTRIENT_KEY_SUFFIX.test(id) ||
-			knownIds.has(id)
-		) {
+		if (value == null || DERIVED_NUTRIENT_KEY_SUFFIX.test(id) || knownIds.has(id)) {
 			continue;
 		}
 
+		const readOnlyMeta = getReadOnlyNutriment(id);
 		const unit = nutriments?.[`${id}_unit`];
+		const resolvedUnit = readOnlyMeta
+			? readOnlyMeta.unit
+			: typeof unit === 'string'
+				? unit
+				: undefined;
 		missingNutrients.push({
 			id,
-			name: id,
-			...(typeof unit === 'string' ? { unit } : {})
+			name: readOnlyMeta?.name ?? id,
+			...(resolvedUnit !== undefined ? { unit: resolvedUnit } : {})
 		});
 	}
 
