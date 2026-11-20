@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { page } from '$app/state';
 	import { browser } from '$app/env';
 
@@ -332,12 +332,12 @@
 					{#each results.products as { product_name, code } (code)}
 						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
-								<a href={`/products/${code}`} class="link">
+								<a href={resolve('/products/[barcode]', { barcode: code })} class="link">
 									{code}
 								</a>
 							</td>
 							<td>
-								<a href={`/products/${code}`}>
+								<a href={resolve('/products/[barcode]', { barcode: code })}>
 									{product_name}
 								</a>
 							</td>
@@ -353,7 +353,12 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `?${params}`;
+			const pagePath = resolve('/facets/[facet]/[value]/[...rest]', {
+				facet: facet.name,
+				value: facetValue,
+				rest: page.params.rest ?? ''
+			});
+			return `${pagePath}?${params}`;
 		}}
 	/>
 </div>

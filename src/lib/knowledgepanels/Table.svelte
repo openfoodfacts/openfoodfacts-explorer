@@ -8,7 +8,7 @@
 	let rows = $derived(element.table_element.rows as KnowledgePanelTableRow[]);
 </script>
 
-<div class="overflow-x-auto">
+<div class="max-w-full min-w-0 overflow-x-auto">
 	<table class="table-compact table w-full">
 		<thead>
 			<tr>

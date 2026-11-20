@@ -9,14 +9,15 @@ import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
+import { parseUrlLocation } from '#lib/url-location.js';
 import { getFacetDistribution, queryValuesToDistribution } from '../map-facets';
 import { MAP_FACETS } from '../../map-facets';
 
-export const load: PageLoad = async ({ fetch, params, data }) => {
+export const load: PageLoad = async ({ fetch, params, data, url }) => {
 	const { facet, value } = params;
 	const { searchOptions, queryProducts, mapValues, facetPairs, facetFilter } = data;
 	const isNested = facetPairs.length > 1;
-	const lang = getLocale().split('-')[0]?.toLowerCase() || 'en';
+	const lang = parseUrlLocation(url.pathname)?.language ?? getLocale().split('-')[0].toLowerCase();
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
 	// Geographic taxonomy supplies localized names for the facet and map.
@@ -32,20 +33,33 @@ export const load: PageLoad = async ({ fetch, params, data }) => {
 
 	// Use Query products when configured, or fall back to Product Opener.
 	const results = (async (): Promise<FacetValueResponse> => {
+		const empty = {
+			products: [],
+			count: 0,
+			page: 1,
+			page_count: 0,
+			page_size: searchOptions.pageSize
+		};
 		try {
-			if (queryProducts) return queryProducts;
-			if (isNested && facetFilter) {
+			let response: FacetValueResponse;
+			if (queryProducts) {
+				response = queryProducts;
+			} else if (isNested && facetFilter) {
 				// The search API returns the same count, page and products fields
-				return (await getProductsForFacetFilter(
+				response = (await getProductsForFacetFilter(
 					fetch,
 					facetFilter,
 					searchOptions
 				)) as FacetValueResponse;
+			} else {
+				response = await getFacetValue(fetch, facet, value, searchOptions);
 			}
-			return await getFacetValue(fetch, facet, value, searchOptions);
+			// Product Opener answers some values it doesn't know (e.g. /facets/nova-groups/4)
+			// with the facet's tag list, `{ count, tags }`, instead of a product list.
+			return Array.isArray(response.products) ? response : empty;
 		} catch (error) {
 			console.error('Product fetch failed:', error);
-			return { products: [], count: 0, page: 1, page_count: 0, page_size: searchOptions.pageSize };
+			return empty;
 		}
 	})();
 

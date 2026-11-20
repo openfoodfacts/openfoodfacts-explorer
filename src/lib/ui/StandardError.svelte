@@ -7,7 +7,7 @@
 		ERR_EDIT_FOOD_ONLY
 	} from '#lib/api/errorUtils.js';
 	import IconMdiAlertCircleOutline from '@iconify-svelte/mdi/alert-circle-outline';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 
 	type Props = { error: globalThis.App.Error };
 	let { error }: Props = $props();

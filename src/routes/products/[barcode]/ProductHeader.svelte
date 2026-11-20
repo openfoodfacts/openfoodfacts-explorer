@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
@@ -18,7 +19,6 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
-	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
@@ -195,7 +195,7 @@
 			>
 				{#if !product.product_type || product.product_type === 'food'}
 					<a
-						href={`/products/${product.code}/edit`}
+						href={resolve('/products/[barcode]/edit', { barcode: `${product.code}` })}
 						class={[
 							'btn rounded-full btn-sm',
 							product.product_name ? 'btn-outline' : 'btn-primary'
@@ -298,7 +298,14 @@
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
+								<a
+									class="badge font-mono wrap-break-word"
+									href={resolve('/facets/[facet]/[value]/[...rest]', {
+										facet: 'packager-codes',
+										value: tag,
+										rest: ''
+									})}
+								>
 									{tag.toUpperCase()}
 								</a>
 							{/each}

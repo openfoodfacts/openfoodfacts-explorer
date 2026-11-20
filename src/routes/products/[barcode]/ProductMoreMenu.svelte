@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { _ } from '#lib/i18n/index.js';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { PRODUCT_REPORT_URL } from '#lib/const.js';
 	import { addItemToCalculator, extractNutriments } from '#lib/stores/calculatorStore.js';
 	import { compareStore } from '#lib/stores/compareStore.js';
