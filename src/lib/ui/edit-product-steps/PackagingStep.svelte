@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getSelectedImageSizes } from '../imageSizes.js';
 	import { _ } from '#lib/i18n/index.js';
 	// TODO: switch to SDK
 	import type { Product } from '#lib/api.js';
@@ -60,6 +61,7 @@
 
 <PackagingImage
 	src={getPackagingImage(product.lang || 'en')}
+	imageSizes={getSelectedImageSizes(product, 'packaging', product.lang || 'en')}
 	productCode={product.code}
 	alt={`Packaging photo (${product.lang || 'en'})`}
 />
