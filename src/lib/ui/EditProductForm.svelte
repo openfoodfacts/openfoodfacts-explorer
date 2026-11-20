@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import { PhotoEditor, setPhotoEditorCtx } from '#lib/stores/photoEditor.js';
 	import { page } from '$app/state';
 	import ImagesStep from './edit-product-steps/ImagesStep.svelte';
 	import BasicInfoStep from './edit-product-steps/BasicInfoStep.svelte';
@@ -164,6 +165,15 @@
 	let activeSection = $state('languages');
 	let isMobile = $state(false);
 	let openSections = $state<Record<string, boolean>>({});
+
+	// The Photos section is always rendered here, so steps can open its editor.
+	// The editor dialog can't show inside a collapsed section, so expand it first.
+	setPhotoEditorCtx(
+		new PhotoEditor(async () => {
+			openSections['images'] = true;
+			await tick();
+		})
+	);
 
 	const editSections = $derived.by(() => {
 		const sections: SidebarSection[] = DEFAULT_SECTIONS.map((sec) => ({

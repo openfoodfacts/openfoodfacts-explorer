@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ISO6391 from 'iso-639-1';
-	import { tick, untrack } from 'svelte';
+	import { onMount, tick, untrack } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
 	import { refreshAll } from '$app/navigation';
@@ -18,6 +18,7 @@
 	} from '#lib/api/product.js';
 	import type { ImageEditData } from '#lib/utils/imageEdit.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
+	import { getPhotoEditorCtx, type PhotoEditTarget } from '#lib/stores/photoEditor.js';
 	import { trackOffEvent } from '#lib/analytics.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
@@ -209,8 +210,35 @@
 	}
 
 	function closeEditModal() {
+		// Close the dialog before unmounting it, so the browser puts focus back on the
+		// button that opened it (also when it was opened from an edit step)
+		editingImageModal?.closeModal();
 		editingImageData = undefined;
 	}
+
+	// Open the editor for a selected image when an edit step asks for it
+	async function editSelectedImage({ typeId, language }: PhotoEditTarget) {
+		const image = getStandardImages(language).find((img) => img.typeId === typeId);
+		if (image == null) {
+			console.warn(`No selected ${typeId} image to edit for ${language}`);
+			return;
+		}
+
+		activeLanguageCode = language;
+		editingImageData = image;
+		await tick(); // let svelte create the node in the DOM
+		editingImageModal?.openModal();
+	}
+
+	// Only set where edit steps can open the editor (the edit form)
+	const photoEditor = getPhotoEditorCtx();
+	onMount(() => {
+		if (photoEditor == null) return;
+
+		const onEdit = (e: Event) => editSelectedImage((e as CustomEvent<PhotoEditTarget>).detail);
+		photoEditor.addEventListener('edit', onEdit);
+		return () => photoEditor.removeEventListener('edit', onEdit);
+	});
 
 	// Auto-open modal when editingImageData is set
 	$effect(() => {
