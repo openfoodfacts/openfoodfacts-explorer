@@ -3,8 +3,10 @@
 	import { _, locale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
 	import {
+		clearEditableNutrimentValues,
 		getNutrients,
 		getMissingNutrientOptions,
+		getReadOnlyNutriment,
 		getSelectableNutrients,
 		NUTRIENTS,
 		type NutrientOption,
@@ -96,16 +98,13 @@
 
 	const permissions = getPermissionsCtx();
 
-	let nutrientCatalog = $state<NutrientOption[]>(FALLBACK_NUTRIENTS);
+	function addPersistedNutrients(catalog: NutrientOption[]): NutrientOption[] {
+		return [...catalog, ...getMissingNutrientOptions(product.nutriments, catalog)];
+	}
+
+	let nutrientCatalog = $state<NutrientOption[]>(addPersistedNutrients(FALLBACK_NUTRIENTS));
 	let additionalNutrients = $state<string[]>([]);
 	let nutrientLoadFailed = $state(false);
-
-	function addPersistedNutrientsToFallbackCatalog() {
-		nutrientCatalog = [
-			...nutrientCatalog,
-			...getMissingNutrientOptions(product.nutriments, nutrientCatalog)
-		];
-	}
 
 	function syncExistingNutrients() {
 		const existingNutrients = nutrientCatalog
@@ -116,7 +115,6 @@
 		additionalNutrients = [...new Set([...additionalNutrients, ...existingNutrients])];
 	}
 
-	addPersistedNutrientsToFallbackCatalog();
 	syncExistingNutrients();
 
 	$effect(() => {
@@ -127,7 +125,7 @@
 		getNutrients(fetch, currentLocale, country)
 			.then((nutrients) => {
 				if (cancelled) return;
-				nutrientCatalog = nutrients;
+				nutrientCatalog = addPersistedNutrients(nutrients);
 				nutrientLoadFailed = false;
 				syncExistingNutrients();
 			})
@@ -294,11 +292,9 @@
 
 		product = {
 			...product,
-			nutriments: Object.fromEntries(
-				Object.keys(product.nutriments).map((key) => [key, '' as string | number])
-			) as Nutriments
+			nutriments: clearEditableNutrimentValues(product.nutriments)
 		};
-		additionalNutrients = [];
+		additionalNutrients = additionalNutrients.filter((id) => getReadOnlyNutriment(id) != null);
 	}
 
 	const shortcutCtx = getShortcutCtx();
@@ -547,10 +543,17 @@
 				</legend>
 				{#each additionalNutrients as nutrient (nutrient)}
 					{@const nutrientDetails = nutrientById.get(nutrient)}
+					{@const readOnlyMeta = getReadOnlyNutriment(nutrient)}
+					{@const isReadOnly = readOnlyMeta != null}
+					{@const unit = readOnlyMeta
+						? readOnlyMeta.unit
+						: (product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g')}
 					<div class="join">
 						<label class="input join-item w-full">
 							<span class="label w-60">
-								{nutrientDetails ? nutrientName(nutrientDetails) : nutrient}
+								{nutrientName(
+									nutrientDetails ?? { id: nutrient, name: readOnlyMeta?.name ?? nutrient }
+								)}
 							</span>
 							<input
 								id={`${nutrient}-input`}
@@ -560,18 +563,22 @@
 								placeholder="0.0"
 								step="0.1"
 								min="0"
+								disabled={isReadOnly}
 							/>
-							<span class="label">
-								{product.nutriments?.[`${nutrient}_unit`] ?? nutrientDetails?.unit ?? 'g'}
-							</span>
+							{#if unit !== ''}
+								<span class="label">
+									{unit}
+								</span>
+							{/if}
 						</label>
 						<button
 							type="button"
 							class="btn join-item btn-square shrink-0 btn-error disabled:border-base-300 disabled:bg-base-300 disabled:text-base-content/60"
 							aria-label={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
 							title={$_('product.edit.remove_nutrient', { default: 'Remove nutrient' })}
-							disabled={product.nutriments?.[nutrient] !== undefined &&
-								(product.nutriments?.[nutrient] as string | number) !== ''}
+							disabled={isReadOnly ||
+								(product.nutriments?.[nutrient] !== undefined &&
+									(product.nutriments?.[nutrient] as string | number) !== '')}
 							onclick={() => removeNutrient(nutrient)}
 						>
 							<IconMdiClose class="h-5 w-5" aria-hidden="true" />
