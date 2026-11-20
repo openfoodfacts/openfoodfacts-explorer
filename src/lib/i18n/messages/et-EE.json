@@ -485,7 +485,7 @@
 				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "Allergeenid",
-			"traces": "Traces",
+			"traces": "Jäljed",
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
@@ -736,6 +736,7 @@
 			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Toote muutmine",
 				"add_categories": "Add categories",
@@ -894,7 +895,7 @@
 			"nucleotides": "Added nucleotides",
 			"other-nutritional-substances": "Other nutritional substances added",
 			"allergens": "Allergeenid",
-			"traces": "Traces",
+			"traces": "Jäljed",
 			"misc": "Muu",
 			"languages": "Keeled",
 			"contributors": "Contributors",
@@ -933,7 +934,7 @@
 		"packaging": "Pakend",
 		"languages": "Keeled",
 		"ingredients": "Koostisosad",
-		"traces": "Traces",
+		"traces": "Jäljed",
 		"vitamins": "Added vitamins",
 		"minerals": "Added minerals",
 		"amino_acids": "Added amino acids",
