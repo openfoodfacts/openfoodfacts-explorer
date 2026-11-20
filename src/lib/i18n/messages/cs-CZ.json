@@ -736,6 +736,7 @@
 			"loading_map": "Načítání mapy cen…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Upravit produkt",
 				"add_categories": "Přidat kategorie",
