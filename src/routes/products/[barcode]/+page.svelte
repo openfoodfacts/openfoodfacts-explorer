@@ -511,6 +511,7 @@
 			<div id="data-sources">
 				<DataSources
 					{product}
+					{panels}
 					barcode={product.code}
 					canEdit={!product.product_type || product.product_type === 'food'}
 				/>
