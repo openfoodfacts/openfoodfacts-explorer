@@ -14,8 +14,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
-	import CategoryBreadcrumbs from '#lib/ui/facets/CategoryBreadcrumbs.svelte';
+	import FacetBreadcrumbs from '#lib/ui/facets/FacetBreadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import {
@@ -36,9 +35,10 @@
 		mapFacet
 	} = $derived(data);
 
-	const isCategory = $derived(facet.name === 'categories');
 	const facetLabel = $derived(
-		isCategory ? facet.value.replace(/^[a-z]{2}:/, '').replaceAll('-', ' ') : facet.value
+		facet.name === 'categories'
+			? facet.value.replace(/^[a-z]{2}:/, '').replaceAll('-', ' ')
+			: facet.value
 	);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
@@ -79,24 +79,9 @@
 	})}
 />
 
-{#if isCategory}
-	<CategoryBreadcrumbs category={facetLabel} />
-{/if}
+<FacetBreadcrumbs facet={facet.name} value={facetLabel} />
 
-<h2
-	class="mb-8 flex items-center gap-2 text-3xl font-bold"
-	class:mt-2={isCategory}
-	class:mt-8={!isCategory}
->
-	{#if !isCategory}
-		<BackLink
-			href={resolve('/facets/[facet]', { facet: facet.name })}
-			label={$_('facets.facet_back_to_overview', {
-				values: { facet: facet.name },
-				default: 'Back to {facet} overview'
-			})}
-		/>
-	{/if}
+<h2 class="mt-2 mb-8 flex items-center gap-2 text-3xl font-bold">
 	<span
 		>{$_('facets.value_heading', {
 			values: {

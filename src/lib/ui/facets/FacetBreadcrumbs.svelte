@@ -4,7 +4,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { resolve } from '#lib/paths.js';
 
-	let { category }: { category?: string } = $props();
+	let { facet, value }: { facet: string; value?: string } = $props();
 
 	const breadcrumbs = $derived([
 		{
@@ -12,10 +12,10 @@
 			href: resolve('facets')
 		},
 		{
-			name: $_('facets.names.categories', { default: 'Categories' }),
-			href: category ? resolve('/facets/[facet]', { facet: 'categories' }) : undefined
+			name: $_(`facets.names.${facet}`, { default: facet }),
+			href: value !== undefined ? resolve('/facets/[facet]', { facet }) : undefined
 		},
-		...(category ? [{ name: category }] : [])
+		...(value !== undefined ? [{ name: value }] : [])
 	]);
 	const breadcrumbStructuredData = $derived({
 		itemListElement: breadcrumbs.map(({ name, href }, index) => ({
