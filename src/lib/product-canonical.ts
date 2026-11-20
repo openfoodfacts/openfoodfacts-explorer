@@ -35,6 +35,9 @@ export function productSeo(product: Product, url: URL, barcode: string) {
 	}
 
 	const productPage = '/products/[barcode]';
-	const canonicalUrl = new URL(resolveForUrl(url, productPage, { barcode }), origin).href;
+	const canonicalUrl = new URL(
+		resolveForUrl(url, productPage, { barcode: product.code || barcode }),
+		origin
+	).href;
 	return { canonicalUrl };
 }

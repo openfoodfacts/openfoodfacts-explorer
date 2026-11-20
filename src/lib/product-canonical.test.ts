@@ -1,5 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { productOpenerCanonicalUrl } from './product-canonical.js';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('$app/env/public', () => ({
+	ORIGIN: 'https://explorer.example.org',
+	SEO_CANONICAL_TARGET: 'explorer'
+}));
+import { productOpenerCanonicalUrl, productSeo } from './product-canonical.js';
 
 const product = {
 	code: '3017620422003',
@@ -31,5 +36,28 @@ describe('Product Opener product canonicals', () => {
 				}
 			)
 		).toBeUndefined();
+	});
+});
+
+describe('Explorer product canonicals', () => {
+	it('uses the API barcode for original and normalized requests', () => {
+		const normalized = '0012345678905';
+		const original = '12345678905';
+		const result = (barcode: string) =>
+			productSeo(
+				{ code: normalized },
+				new URL(`https://preview.example.org/world-en/products/${barcode}`),
+				barcode
+			).canonicalUrl;
+
+		expect(result(original)).toBe(`https://explorer.example.org/world-en/products/${normalized}`);
+		expect(result(normalized)).toBe(result(original));
+	});
+
+	it('falls back to the request barcode if the product has no code', () => {
+		const url = new URL('https://preview.example.org/world-en/products/12345678905');
+		expect(productSeo({}, url, '12345678905').canonicalUrl).toBe(
+			'https://explorer.example.org/world-en/products/12345678905'
+		);
 	});
 });
