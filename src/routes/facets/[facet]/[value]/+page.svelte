@@ -36,9 +36,7 @@
 	} = $derived(data);
 
 	const facetLabel = $derived(
-		facet.name === 'categories'
-			? facet.value.replace(/^[a-z]{2}:/, '').replaceAll('-', ' ')
-			: facet.value
+		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
 	);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
