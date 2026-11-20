@@ -1,4 +1,5 @@
-import OpenFoodFacts, { type Product } from '@openfoodfacts/openfoodfacts-nodejs';
+import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+import { createProductsApi } from '#lib/api/product.js';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -27,7 +28,7 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		);
 	}
 
-	const offApi = new OpenFoodFacts(fetch);
+	const offApi = createProductsApi(fetch);
 
 	// Fetch all products in parallel
 	const productPromises = barcodes.map(async (barcode) => {

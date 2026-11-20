@@ -5,7 +5,7 @@
 	import { _ } from '#lib/i18n/index.js';
 	import type { PageProps } from './$types';
 	import WcProductCard from '#lib/ui/WcProductCard.svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 
 	let { data }: PageProps = $props();
 	let searchQuery = $state('');
@@ -23,7 +23,7 @@
 />
 
 <section class="flex flex-col items-center justify-center bg-base-100 px-4 py-12">
-	<Logo />
+	<Logo fetchpriority="high" />
 	<h1 class="mb-2 text-center text-4xl font-bold text-primary drop-shadow-lg sm:text-5xl">
 		{$_('explore.title')}
 	</h1>

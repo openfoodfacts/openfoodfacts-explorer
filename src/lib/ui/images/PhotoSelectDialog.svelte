@@ -54,6 +54,7 @@
 				>
 					<img
 						src={image.url}
+						loading="lazy"
 						alt={image.alt}
 						class="block h-40 w-full object-cover group-hover:opacity-80"
 					/>

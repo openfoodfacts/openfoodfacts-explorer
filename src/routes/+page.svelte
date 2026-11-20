@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import { resolve } from '#lib/paths.js';
 
-	import { _ } from '#lib/i18n/index.js';
+	import { _, getLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { formatUrlLocation } from '#lib/url-location.js';
 	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '#lib/api.js';
 	import { deduplicate } from '#lib/utils.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
@@ -70,6 +73,19 @@
 	}
 
 	onMount(() => {
+		if (window.location.pathname === '/') {
+			const language = $preferences.locale
+				? getLanguageCode($preferences.locale)
+				: getLanguageCode(getLocale());
+			const location = formatUrlLocation($preferences.country, language);
+			void goto(`/${location}${window.location.search}${window.location.hash}`, {
+				replaceState: true
+			}).then(() => {
+				products = getProducts();
+			});
+			return;
+		}
+
 		products = getProducts();
 	});
 </script>
@@ -105,7 +121,7 @@
 		class="flex w-full max-w-2xl flex-col items-center rounded-3xl border border-base-200/40 bg-white/90 p-6 shadow-xl backdrop-blur-md lg:p-8 dark:bg-base-300/90"
 	>
 		<div class="mb-4 h-14 w-full scale-100 px-4 drop-shadow-lg md:h-20 lg:scale-110 lg:px-16">
-			<Logo class="h-full w-full" />
+			<Logo class="h-full w-full" fetchpriority="high" />
 		</div>
 
 		<p class="mb-6 max-w-xl text-center text-lg font-medium text-base-content/80 md:text-xl">

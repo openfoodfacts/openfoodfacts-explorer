@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { FolksonomyKey, FolksonomyTag } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { createFolksonomyApi, getFolksonomyValues } from '#lib/api/folksonomy.js';
 	import { slide } from 'svelte/transition';
@@ -200,7 +201,11 @@
 			<tr transition:slide>
 				<td aria-label="Key">
 					<div class="flex w-full">
-						<a href="/folksonomy/{tag.k}" class="grow link pl-2 font-mono max-sm:w-20" type="text">
+						<a
+							href={resolve('/folksonomy/[key]', { key: tag.k })}
+							class="grow link pl-2 font-mono max-sm:w-20"
+							type="text"
+						>
 							{tag.k}
 						</a>
 					</div>
@@ -317,7 +322,7 @@
 			<tr>
 				<td colspan="3" class="text-center">
 					<p class="mb-4">You must be logged in to create a new tag</p>
-					<a href="/settings" class="btn w-1/4 btn-primary">Login</a>
+					<a href={resolve('settings')} class="btn w-1/4 btn-primary">Login</a>
 				</td>
 			</tr>
 		{/if}
