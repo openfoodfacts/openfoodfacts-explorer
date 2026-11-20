@@ -1,5 +1,6 @@
 export const ERR_PRODUCT_NOT_FOUND = 'Product Not Found';
 export const ERR_INVALID_BARCODE = 'Invalid Barcode Format';
+export const ERR_EDIT_FOOD_ONLY = 'Editing is only available for food products';
 
 export type OffMessage = {
 	field: { id: string; value: string | null };

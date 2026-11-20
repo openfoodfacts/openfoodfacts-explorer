@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { _ } from '#lib/i18n/index.js';
 	import type { ProductAttributeForScoringGroup } from '#lib/api/product.js';
 	import { calculateScore } from '#lib/scoring.js';
@@ -77,6 +77,7 @@
 				></span>
 				{#if attribute.icon_url}<img
 						src={attribute.icon_url}
+						loading="lazy"
 						alt=""
 						class="h-8 w-8 shrink-0 object-contain"
 					/>{/if}
