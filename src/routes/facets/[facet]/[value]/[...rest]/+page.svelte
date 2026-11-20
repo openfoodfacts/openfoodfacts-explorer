@@ -16,6 +16,8 @@
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
 	import { getFacetPairsPath } from '#lib/api/facets.js';
+	import { withLocationPrefix } from '#lib/location-link.js';
+	import { parseUrlLocation } from '#lib/url-location.js';
 
 	import type { PageProps } from './$types';
 	import {
@@ -56,7 +58,9 @@
 		const params = new SvelteURLSearchParams(page.url.search);
 		params.delete('page');
 		const query = params.size > 0 ? `?${params}` : '';
-		return getFacetPairsPath(otherPairs) + query;
+		// Keep the location prefix of the current page, e.g. /fr-fr
+		const location = parseUrlLocation(page.url.pathname);
+		return withLocationPrefix(getFacetPairsPath(otherPairs) + query, location, page.url.pathname);
 	}
 
 	// untrack: refetch only on facet/value change, not on page or sort.
