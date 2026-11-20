@@ -13,6 +13,7 @@
 	import ExternalPanels from '#lib/knowledgepanels/ExternalPanels.svelte';
 	import Card from '#lib/ui/Card.svelte';
 	import Metadata from '#lib/Metadata.svelte';
+	import JsonLd from '#lib/JsonLd.svelte';
 
 	import ProductAttributes from './ProductAttributes.svelte';
 	import ScoreTiles from './ScoreTiles.svelte';
@@ -87,6 +88,20 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+
+	const productDescription = $derived(
+		$_('product.description', {
+			default: 'Product page for {productName} on Open Food Facts Explorer',
+			values: { productName: product.product_name }
+		})
+	);
+	const productStructuredData = $derived({
+		name: product.product_name || undefined,
+		image: product.image_front_url || product.image_front_small_url || undefined,
+		description: productDescription,
+		gtin: product.code || undefined,
+		brand: product.brands ? { '@type': 'Brand', name: product.brands } : undefined
+	});
 
 	async function loadPrices(code: string) {
 		const api = createPricesApi(fetch);
@@ -384,32 +399,13 @@
 		default: '{productName} - Open Food Facts Explorer',
 		values: { productName: product.product_name }
 	})}
-	description={$_('product.description', {
-		default: 'Product page for {productName} on Open Food Facts Explorer',
-		values: { productName: product.product_name }
-	})}
+	description={productDescription}
 	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
-<div itemscope itemtype="https://schema.org/Product">
-	<meta itemprop="name" content={product.product_name || ''} />
+<JsonLd type="Product" data={productStructuredData} />
 
-	<meta itemprop="image" content={product.image_front_url || product.image_front_small_url || ''} />
-
-	<meta
-		itemprop="description"
-		content={$_('product.description', {
-			default: 'Product page for {productName} on Open Food Facts Explorer',
-			values: { productName: product.product_name }
-		})}
-	/>
-	<meta itemprop="gtin" content={product.code || ''} />
-	{#if product.brands}
-		<div itemprop="brand" itemscope itemtype="https://schema.org/Brand">
-			<meta itemprop="name" content={product.brands} />
-		</div>
-	{/if}
-
+<div>
 	<div
 		class={[
 			'relative mt-8 w-full pb-[4.5rem] transition-all duration-300 lg:grid lg:gap-8',
