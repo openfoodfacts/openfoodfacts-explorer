@@ -6,7 +6,7 @@
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
 	import Pagination from '#lib/Pagination.svelte';
 	import { _ } from '#lib/i18n/index.js';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import FacetBreadcrumbs from '#lib/ui/facets/FacetBreadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -37,11 +37,9 @@
 	})}
 />
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('facets')}
-		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
-	/>
+<FacetBreadcrumbs {facet} />
+
+<h2 class="mt-2 mb-8 flex items-center gap-2 text-3xl font-bold">
 	<span
 		>{$_('facets.heading', {
 			values: { facet: $_(`facets.names.${facet}`, { default: facet }) },

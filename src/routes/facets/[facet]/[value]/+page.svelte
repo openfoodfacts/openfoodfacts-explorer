@@ -14,7 +14,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import FacetBreadcrumbs from '#lib/ui/facets/FacetBreadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import {
@@ -34,6 +34,10 @@
 		distributionData,
 		mapFacet
 	} = $derived(data);
+
+	const facetLabel = $derived(
+		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
+	);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
@@ -66,26 +70,21 @@
 
 <Metadata
 	title={$_('facets.facet_value_website_title', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 	description={$_('facets.facet_value_website_description', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 />
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', {
-			values: { facet: facet.name },
-			default: 'Back to {facet} overview'
-		})}
-	/>
+<FacetBreadcrumbs facet={facet.name} value={facetLabel} />
+
+<h2 class="mt-2 mb-8 flex items-center gap-2 text-3xl font-bold">
 	<span
 		>{$_('facets.value_heading', {
 			values: {
 				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
-				value: facet.value
+				value: facetLabel
 			},
 			default: 'Exploring {facet}: {value}'
 		})}</span
