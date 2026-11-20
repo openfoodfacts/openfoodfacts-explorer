@@ -5,6 +5,7 @@
 
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import ImageButton from '../ImageButton.svelte';
+	import MissingImageUpload from './MissingImageUpload.svelte';
 
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
@@ -33,13 +34,15 @@
 		getIngredientsImage: (language: string) => string | null;
 		allergenNames?: string[];
 		editMode?: boolean;
+		onImageUploaded?: () => Promise<void>;
 	};
 
 	let {
 		product = $bindable(),
 		getIngredientsImage,
 		allergenNames = [],
-		editMode = false
+		editMode = false,
+		onImageUploaded
 	}: Props = $props();
 
 	let showInfo = $state(false);
@@ -177,9 +180,12 @@
 						</button>
 					</div>
 				{:else}
-					<p class="mb-4 alert text-sm alert-warning sm:text-base">
-						{$_('product.edit.no_ingredients_image')}
-					</p>
+					<MissingImageUpload
+						message={$_('product.edit.no_ingredients_image')}
+						productCode={product.code}
+						imagefield={`ingredients_${code}`}
+						onUploaded={onImageUploaded}
+					/>
 				{/if}
 			</div>
 
