@@ -399,7 +399,10 @@
 		default: '{productName} - Open Food Facts Explorer',
 		values: { productName: product.product_name }
 	})}
-	description={productDescription}
+	description={$_('product.description', {
+		default: 'Product page for {productName} on Open Food Facts Explorer',
+		values: { productName: product.product_name }
+	})}
 	imageUrl={product.image_front_small_url ?? product.image_front_url ?? undefined}
 />
 
