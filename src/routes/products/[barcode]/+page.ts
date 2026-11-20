@@ -5,6 +5,7 @@ import { createProductsApi } from '#lib/api.js';
 
 import { getLanguageCode } from '#lib/settings.js';
 import { getLocale } from '#lib/i18n/index.js';
+import { productSeo } from '#lib/product-canonical.js';
 import { parseUrlLocation } from '#lib/url-location.js';
 import {
 	ERR_INVALID_BARCODE,
@@ -67,5 +68,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		error(404, 'Failure to load product', { errors: state.errors });
 	}
 
-	return { state, lc };
+	const seo = state.product ? productSeo(state.product, url, params.barcode) : {};
+
+	return { state, lc, ...seo };
 };

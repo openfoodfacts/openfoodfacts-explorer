@@ -1,6 +1,22 @@
 import { defineEnvVars } from '@sveltejs/kit/env';
 
 export const variables = defineEnvVars({
+	SEO_CANONICAL_TARGET: {
+		public: true,
+		schema: (input) => {
+			if (!input || input === 'product-opener') return 'product-opener' as const;
+			if (input === 'explorer') return 'explorer' as const;
+			throw new Error('Expected product-opener or explorer');
+		}
+	},
+	ORIGIN: {
+		public: true,
+		schema: (input) => {
+			if (!input) return undefined;
+			const url = URL.parse(input);
+			if (url && [url.origin, url.origin + '/'].includes(input)) return url.origin;
+		}
+	},
 	PUBLIC_QUERY_BASE_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_OFF_BASE_URL: { public: true, schema: (input) => input ?? '' },
 	PUBLIC_ENVIRONMENT: { public: true, schema: (input) => input ?? '' },
