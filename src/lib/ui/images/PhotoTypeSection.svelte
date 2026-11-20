@@ -199,7 +199,7 @@
 				type="file"
 				accept="image/*"
 				class="hidden"
-				disabled={isUploading}
+				disabled={isUploading || isSelectingImage}
 				onchange={(e) => handleImageUpload(e, sectionType.label)}
 			/>
 			{#if !(isStandardType && hasImagesOfType)}
@@ -207,7 +207,7 @@
 					type="button"
 					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
 					class:loading={isUploading}
-					disabled={isUploading}
+					disabled={isUploading || isSelectingImage}
 					onclick={() => triggerFileInput(inputId)}
 				>
 					{#if isUploading}
@@ -282,10 +282,35 @@
 	</div>
 
 	{#if imagesOfType.length === 0}
-		<div class="alert justify-center alert-dash">
-			{$_('product.edit.images.section_no_photos', {
-				default: 'No photo selected for this section yet.'
-			})}
+		<div class="alert flex flex-col justify-center alert-dash text-center sm:flex-row">
+			<span>
+				{$_('product.edit.images.section_no_photos', {
+					default: 'No photo selected for this section yet.'
+				})}
+			</span>
+			{#if onSelectImage}
+				<button
+					type="button"
+					class="btn btn-outline btn-xs sm:btn-sm"
+					disabled={isSelectingImage || isUploading}
+					onclick={() => onSelectImage?.()}
+				>
+					{#if isSelectingImage}
+						<span class="loading h-3 w-3 loading-spinner sm:h-4 sm:w-4"></span>
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
+						>
+					{:else}
+						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
+						<span class="text-xs sm:text-sm"
+							>{$_('product.edit.images.select_type', {
+								values: { type: sectionType.label },
+								default: 'Select ' + sectionType.label
+							})}</span
+						>
+					{/if}
+				</button>
+			{/if}
 		</div>
 	{/if}
 	{#if imagesOfType.length > 0}
@@ -362,33 +387,6 @@
 						</p>
 					</div>
 				</div>
-			{:else}
-				<p class="text-center text-xs text-base-content/60 sm:text-sm">
-					No {sectionType.label.toLowerCase()}
-					{$_('product.edit.images.photos_available', { default: 'photos available' })}
-				</p>
-				<button
-					type="button"
-					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
-					class:loading={isSelectingImage}
-					disabled={isSelectingImage}
-					onclick={() => onSelectImage?.()}
-				>
-					{#if isSelectingImage}
-						<span class="loading h-3 w-3 loading-spinner sm:h-4 sm:w-4"></span>
-						<span class="text-xs sm:text-sm"
-							>{$_('product.edit.images.selecting', { default: 'Selecting...' })}</span
-						>
-					{:else}
-						<IconMdiImagePlus class="h-3 w-3 sm:h-4 sm:w-4" />
-						<span class="text-xs sm:text-sm"
-							>{$_('product.edit.images.select_type', {
-								values: { type: sectionType.label },
-								default: 'Select ' + sectionType.label
-							})}</span
-						>
-					{/if}
-				</button>
 			{/if}
 		</div>
 	{/if}
