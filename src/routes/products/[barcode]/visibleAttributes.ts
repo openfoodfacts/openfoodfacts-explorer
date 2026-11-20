@@ -4,11 +4,13 @@ type Attribute = { id?: string; status?: string; match?: number };
 
 /** Select preferred non-tile attributes, putting mandatory and mismatching attributes first.
  * Unknown attributes follow known attributes of the same preference priority.
+ * Mismatching tile attributes are listed too when `listMismatchingTiles` is set.
  */
 export function getVisibleAttributes<T extends Attribute>(
 	groups: { id: string; attributes: T[] }[],
 	preferences: UserPreference[],
-	excludedIds: readonly string[]
+	excludedIds: readonly string[],
+	listMismatchingTiles = false
 ): T[] {
 	function preferenceFor(attribute: T) {
 		const group = groups.find((item) => item.attributes.includes(attribute));
@@ -20,7 +22,12 @@ export function getVisibleAttributes<T extends Attribute>(
 			if (!attribute.id) return false;
 			if (
 				excludedIds.includes(attribute.id) &&
-				!(attribute.status === 'known' && attribute.match != null && attribute.match <= 10)
+				!(
+					listMismatchingTiles &&
+					attribute.status === 'known' &&
+					attribute.match != null &&
+					attribute.match <= 10
+				)
 			)
 				return false;
 			const preference = getPreference(preferences, group.id, attribute.id);
