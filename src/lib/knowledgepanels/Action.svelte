@@ -5,6 +5,7 @@
 	import { NUTRIPATROL_URL } from '#lib/const.js';
 	import { getEditActionHref } from '#lib/knowledgepanels/actions.js';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
+	import { trackOffEvent } from '#lib/analytics.js';
 
 	type Props = {
 		element: KnowledgeActionElement;
@@ -20,6 +21,7 @@
 	}
 
 	function reportToNutripatrol() {
+		trackOffEvent('feature', 'report_problem_opened', 'knowledge_panel');
 		const params = new URLSearchParams({
 			barcode: requireCode(),
 			source: 'web',
