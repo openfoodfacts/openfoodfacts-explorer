@@ -12,6 +12,7 @@
 	"account_link": "Account",
 	"world_option": "World",
 	"navigation": {
+		"breadcrumb": "Breadcrumb",
 		"explore_by": "Explore by",
 		"browse_products_by": "Browse products by…",
 		"explore_products_by": "Explore products by",

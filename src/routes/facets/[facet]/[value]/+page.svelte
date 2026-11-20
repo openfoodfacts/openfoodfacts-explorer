@@ -15,6 +15,7 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import CategoryBreadcrumbs from '#lib/ui/facets/CategoryBreadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import {
@@ -34,6 +35,11 @@
 		distributionData,
 		mapFacet
 	} = $derived(data);
+
+	const isCategory = $derived(facet.name === 'categories');
+	const facetLabel = $derived(
+		isCategory ? facet.value.replace(/^[a-z]{2}:/, '').replaceAll('-', ' ') : facet.value
+	);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
@@ -66,26 +72,36 @@
 
 <Metadata
 	title={$_('facets.facet_value_website_title', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 	description={$_('facets.facet_value_website_description', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 />
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', {
-			values: { facet: facet.name },
-			default: 'Back to {facet} overview'
-		})}
-	/>
+{#if isCategory}
+	<CategoryBreadcrumbs category={facetLabel} />
+{/if}
+
+<h2
+	class="mb-8 flex items-center gap-2 text-3xl font-bold"
+	class:mt-2={isCategory}
+	class:mt-8={!isCategory}
+>
+	{#if !isCategory}
+		<BackLink
+			href={resolve('/facets/[facet]', { facet: facet.name })}
+			label={$_('facets.facet_back_to_overview', {
+				values: { facet: facet.name },
+				default: 'Back to {facet} overview'
+			})}
+		/>
+	{/if}
 	<span
 		>{$_('facets.value_heading', {
 			values: {
 				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
-				value: facet.value
+				value: facetLabel
 			},
 			default: 'Exploring {facet}: {value}'
 		})}</span
