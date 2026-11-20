@@ -120,7 +120,7 @@
 		"button": "Aide et raccourcis"
 	},
 	"general": {
-		"language": "Langue",
+		"language": "Langues",
 		"country": "Pays",
 		"currency": "Devise",
 		"loading": "Chargement…",
@@ -216,8 +216,8 @@
 		"github_link": "GitHub",
 		"github_cta": "Aidez-nous à améliorer Explorer sur GitHub",
 		"github_help_text": "Aidez-nous à améliorer Open Food Facts Explorer !",
-		"recent_commits": "Recent commits in this version",
-		"commits_loading": "Loading commits…",
+		"recent_commits": "Modifications récentes dans cette version",
+		"commits_loading": "Chargement du produit…",
 		"commits_unavailable": "Commit history is unavailable.",
 		"app_version": "Version {version}",
 		"app_commit_link": "Voir le commit {sha} sur GitHub",
@@ -288,11 +288,11 @@
 		"attributes_error_title": "Impossible de charger les attributs personnalisés",
 		"attributes_error_body": "Une erreur est survenue lors du chargement des attributs personnalisés. Veuillez réessayer plus tard.",
 		"score": {
-			"attributes": "Your attributes",
-			"show_more": "Show more",
+			"attributes": "Vos attributs",
+			"show_more": "Afficher plus",
 			"show_less": "Afficher moins",
-			"overall": "Overall score",
-			"personalize": "Personalize",
+			"overall": "Score global",
+			"personalize": "Personnaliser",
 			"edit_preferences": "Modifier vos préférences",
 			"match_status": {
 				"very_good_match": "Très compatible",
@@ -327,16 +327,16 @@
 			"compare": "Ajouter au comparateur",
 			"view_on_off": "Voir le produit sur Open Food Facts",
 			"copy": "Copier",
-			"more": "More actions"
+			"more": "Plus d'actions"
 		},
 		"share_text": "Découvrez ce produit sur Open Food Facts : {productName}",
 		"toast": {
 			"copied_link": "Lien copié dans le presse-papier !",
 			"failed_copy": "Échec de la copie du lien",
-			"copied_barcode": "Barcode copied to clipboard!",
-			"failed_copy_barcode": "Failed to copy barcode"
+			"copied_barcode": "Code-barres copié dans le presse-papiers !",
+			"failed_copy_barcode": "Échec de la copie du code-barres"
 		},
-		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"image_attribution": "Attribution : Photo par {photographer} via Open Food Facts",
 		"app_strip": {
 			"text": "Scannez les codes-barres pour obtenir le Nutri-Score, le Green-Score et plus !",
 			"get_app": "Installer l'app"
@@ -385,6 +385,8 @@
 			"countries": "Pays"
 		},
 		"folksonomy": {
+			"loading": "Chargement des propriétés…",
+			"error": "Les propriétés n'ont pas pu être chargées.",
 			"use_wc_editor": "Utiliser l'éditeur de composants Web",
 			"title_beta": "Propriétés personnalisées (bêta)",
 			"intro_before": "Ces propriétés sont créées et renseignées par les utilisateurs pour tout type d'usage. N'hésitez pas à ajouter les vôtres. Les propriétés et valeurs que vous créez",
@@ -445,7 +447,7 @@
 			"source_link": "GS1"
 		},
 		"edit": {
-			"food_only": "Editing is currently available only for food products.",
+			"food_only": "L'édition n'est actuellement disponible que pour les produits alimentaires.",
 			"sidebar_navigation": "Sections d'édition du produit",
 			"sidebar": {
 				"collapse_all": "Tout réduire",
@@ -660,7 +662,7 @@
 				"product_details": "Détails du produit",
 				"classification": "Classification",
 				"origin_traceability": "Origine et traçabilité",
-				"languages": "Langue",
+				"languages": "Langues",
 				"comment": "Commentaire"
 			},
 			"score_calculation_description": "Remplissez ces détails pour calculer le Nutri-Score, le niveau d'ultra-transformation (groupes NOVA) et le Green-Score.",
@@ -727,18 +729,20 @@
 		"prices": {
 			"no_prices_found": "Aucun prix trouvé pour ce produit",
 			"loading": "Tarifs de chargement…",
+			"error": "Les prix n'ont pas pu être chargés.",
 			"view_prices": "Voir les prix sur Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} prix} other {{count} prix}} trouvé(s) dans {storeCount, plural, one {{storeCount} magasin} other {{storeCount} magasins}}",
 			"no_prices_explanation": "Aidez-nous à construire la plus grande base de données Open Prices en ajoutant des informations sur les prix de ce produit.",
 			"loading_map": "Chargement de la carte des prix…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "Ces panneaux n’ont pas pu être affichés car leurs références sont invalides ou trop complexes.",
 			"action": {
 				"edit_product": "Modifier le produit",
 				"add_categories": "Ajouter des catégories",
 				"report_product_to_nutripatrol": "Signaler un problème avec ce produit",
 				"add_ingredients_text": "Ajouter le texte des ingrédients",
-				"add_packaging_components": "Ajouter des composants d'emballage",
+				"add_packaging_components": "Prendre une photo des informations de recyclage",
 				"add_origins": "Ajouter les origines des ingrédients",
 				"add_price": "Ajouter un prix sur Open Prices",
 				"view_prices": "Voir les prix sur Open Prices",
@@ -889,11 +893,11 @@
 			"minerals": "Minéraux ajoutés",
 			"amino-acids": "Acides aminés ajoutés",
 			"nucleotides": "Nucléotides ajoutés",
-			"other-nutritional-substances": "Other nutritional substances added",
+			"other-nutritional-substances": "Autres substances nutritives ajoutées",
 			"allergens": "Allergènes",
 			"traces": "Traces éventuelles",
 			"misc": "Divers",
-			"languages": "Langue",
+			"languages": "Langues",
 			"contributors": "Contributeurs",
 			"states": "États",
 			"data-sources": "Sources de données",
@@ -902,8 +906,8 @@
 			"last-check-dates": "Dates de dernière vérification",
 			"teams": "Équipes"
 		},
-		"heading": "Exploring {facet}",
-		"value_heading": "Exploring {facet}: {value}",
+		"heading": "Exploration de {facet}",
+		"value_heading": "Exploration de {facet}: {value}",
 		"category_general": "Général",
 		"category_nutrition": "Nutrition & Santé",
 		"category_packaging": "Emballage & Origine",
@@ -928,7 +932,7 @@
 		"manufacturing_places": "Lieux de fabrication",
 		"emb_codes": "Codes de traçabilité",
 		"packaging": "Emballage",
-		"languages": "Langue",
+		"languages": "Langues",
 		"ingredients": "Ingrédients",
 		"traces": "Traces éventuelles",
 		"vitamins": "Vitamines ajoutées",
@@ -988,8 +992,8 @@
 		"hierarchy_more": "+ {count} de plus",
 		"map_heading_origins": "Origines des ingrédients",
 		"map_heading_countries": "Où ces produits sont vendus",
-		"map_page_limited": "This map only includes data from the current page.",
-		"map_sqrt_legend": "Products (square-root scale)"
+		"map_page_limited": "Cette carte n'inclut que les données de la page actuelle.",
+		"map_sqrt_legend": "Produits (échelle de racine carrée)"
 	},
 	"landing": {
 		"title": "Ouvrir l'explorateur de faits alimentaires",

@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Keel",
+		"language": "Keeled",
 		"country": "Riik",
 		"currency": "Valuuta",
 		"loading": "Laadimine…",
@@ -385,6 +385,8 @@
 			"countries": "Riigid"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
@@ -483,7 +485,7 @@
 				"traces": "List any traces of allergens that may be present due to cross-contamination (e.g. Nuts, Soy)."
 			},
 			"allergens": "Allergeenid",
-			"traces": "Traces",
+			"traces": "Jäljed",
 			"cannot_delete_main_language": "Cannot delete the main language",
 			"confirm_delete_language": "Are you sure you want to delete all fields for {language}?",
 			"traceability_examples": "Examples: FR 38.012.001 CE, ES 12.03456/B CE, IT 1234 L CE",
@@ -727,18 +729,20 @@
 		"prices": {
 			"no_prices_found": "Selle toote hindu ei leitud",
 			"loading": "Hindade laadimine…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Vaata hindu lehelt Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
 			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Toote muutmine",
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Vaata hindu lehelt Open Prices",
@@ -891,7 +895,7 @@
 			"nucleotides": "Added nucleotides",
 			"other-nutritional-substances": "Other nutritional substances added",
 			"allergens": "Allergeenid",
-			"traces": "Traces",
+			"traces": "Jäljed",
 			"misc": "Muu",
 			"languages": "Keeled",
 			"contributors": "Contributors",
@@ -930,7 +934,7 @@
 		"packaging": "Pakend",
 		"languages": "Keeled",
 		"ingredients": "Koostisosad",
-		"traces": "Traces",
+		"traces": "Jäljed",
 		"vitamins": "Added vitamins",
 		"minerals": "Added minerals",
 		"amino_acids": "Added amino acids",

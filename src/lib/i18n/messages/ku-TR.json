@@ -120,7 +120,7 @@
 		"button": "Help and Shortcuts"
 	},
 	"general": {
-		"language": "Ziman",
+		"language": "Languages",
 		"country": "Country",
 		"currency": "Currency",
 		"loading": "Ciji tıbe…",
@@ -385,6 +385,8 @@
 			"countries": "Countries"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Personalized properties (beta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
@@ -727,18 +729,20 @@
 		"prices": {
 			"no_prices_found": "Ji bo vê berhemê ti biha nehat dîtin",
 			"loading": "Nirxan barkirin…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Nirxan li ser Bihayên Vekirî bibînin",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
 			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Berhem pergal",
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Report an issue with this product",
 				"add_ingredients_text": "Add ingredients text",
-				"add_packaging_components": "Add packaging components",
+				"add_packaging_components": "Take a photo of the recycling information",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Add a price on Open Prices",
 				"view_prices": "Nirxan li ser Bihayên Vekirî bibînin",

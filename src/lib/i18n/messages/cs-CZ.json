@@ -120,7 +120,7 @@
 		"button": "Nápověda a zkratky"
 	},
 	"general": {
-		"language": "Jazyk",
+		"language": "Jazyky",
 		"country": "Země",
 		"currency": "Měna",
 		"loading": "Načítá se…",
@@ -385,6 +385,8 @@
 			"countries": "Země"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Použijte editor webových komponent",
 			"title_beta": "Personalizované vlastnosti (beta)",
 			"intro_before": "Tyto vlastnosti vytvářejí a vyplňují uživatelé pro různé účely. Můžete přidat vlastní. Vlastnosti a hodnoty, které vytvoříte, ",
@@ -727,18 +729,20 @@
 		"prices": {
 			"no_prices_found": "Pro tento produkt nebyly nalezeny žádné ceny",
 			"loading": "Načítání cen…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Zobrazit ceny na Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} cena} few {{count} ceny} many {{count} cen} other {{count} cen}} nalezeno v {storeCount, plural, one {{storeCount} obchodě} few {{storeCount} obchodech} many {{storeCount} obchodech} other {{storeCount} obchodech}}",
 			"no_prices_explanation": "Pomozte nám vytvořit největší databázi otevřených cen přidáním informací o ceně tohoto produktu.",
 			"loading_map": "Načítání mapy cen…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Upravit produkt",
 				"add_categories": "Přidat kategorie",
 				"report_product_to_nutripatrol": "Nahlásit problém s tímto produktem",
 				"add_ingredients_text": "Přidat text ingrediencí",
-				"add_packaging_components": "Přidat součásti obalu",
+				"add_packaging_components": "Vyfoťte informace o recyklaci",
 				"add_origins": "Přidejte původ ingrediencí",
 				"add_price": "Přidejte cenu na Open Prices",
 				"view_prices": "Zobrazit ceny na Open Prices",
