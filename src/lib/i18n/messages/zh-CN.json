@@ -736,6 +736,7 @@
 			"loading_map": "正在加载价格地图…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "编辑产品",
 				"add_categories": "添加类别",
