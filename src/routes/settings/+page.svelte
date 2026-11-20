@@ -1,8 +1,12 @@
 <script lang="ts">
-	import { preferences } from '#lib/settings.js';
+	import GitHubCommits from './GitHubCommits.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
-	import { availableLocales, getLocale, locale, resolveAvailableLocale } from '#lib/i18n/index.js';
+	import { availableLocales, getLocale, getLocaleForUrl, locale } from '#lib/i18n/index.js';
 	import PreferencesForm from '#lib/ui/preferences/PreferencesForm.svelte';
 	import Tabs from '#lib/ui/Tabs.svelte';
 	import { personalizedSearch, type AttributeGroup } from '#lib/stores/preferencesStore.js';
@@ -20,6 +24,7 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
+	import IconMdiNewspaper from '@iconify-svelte/mdi/newspaper';
 
 	import type { PageProps } from './$types';
 
@@ -41,6 +46,7 @@
 		'account'
 	);
 	let permissions = $derived(getPermissionsCtx());
+	let currentLocation = $derived(parseUrlLocation(page.url.pathname));
 
 	let localeOptions = $derived(
 		availableLocales.map((code) => ({
@@ -50,13 +56,27 @@
 	);
 
 	function getSelectedLocale(): string {
-		return resolveAvailableLocale($preferences.locale ?? getLocale());
+		return getLocaleForUrl(page.url, $preferences.locale);
 	}
 
 	function handleLocaleChange(event: Event) {
 		const selectedLocale = (event.currentTarget as HTMLSelectElement).value;
 		preferences.update((current) => ({ ...current, locale: selectedLocale }));
 		locale.set(selectedLocale);
+		navigateToLocation(getLanguageCode(selectedLocale), currentLocation?.country ?? 'world');
+	}
+
+	function navigateToLocation(language: string, country: string) {
+		const targetLocation = formatUrlLocation(country, language);
+		const path = stripUrlLocation(page.url.pathname);
+		void goto(`/${targetLocation}${path === '/' ? '' : path}${page.url.search}${page.url.hash}`);
+	}
+
+	function handleCountryChange(event: Event) {
+		const country = (event.currentTarget as HTMLSelectElement).value;
+		preferences.update((current) => ({ ...current, country }));
+		const activeLanguage = currentLocation?.language ?? getLanguageCode(getLocale());
+		navigateToLocation(activeLanguage, country);
 	}
 </script>
 
@@ -90,7 +110,7 @@
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
 					<h2 class="card-title flex items-center gap-2">
-						<IconMdiAccount class="h-6 w-6" />
+						<IconMdiAccount class="h-6 w-6" aria-hidden="true" />
 						{$_('settings.section_user')}
 					</h2>
 
@@ -163,7 +183,10 @@
 			{/if}
 			<div class="card bg-base-200 shadow-md">
 				<div class="card-body">
-					<h2 class="card-title">{$_('settings.news')}</h2>
+					<h2 class="card-title flex items-center gap-2">
+						<IconMdiNewspaper class="h-6 w-6" aria-hidden="true" />
+						{$_('settings.news')}
+					</h2>
 					<div class="mt-4">
 						<news-feed
 							url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
@@ -182,14 +205,14 @@
 						rel="noopener noreferrer"
 						aria-label={$_('settings.github_link')}
 					>
-						<IconMdiGithub class="h-5 w-5" />
+						<IconMdiGithub class="h-5 w-5" aria-hidden="true" />
 						<span>{$_('settings.github_cta')}</span>
 					</a>
 					<p class="mt-4 text-sm text-primary-content/80">
 						{#if COMMIT_SHA !== 'unknown'}
 							<a
 								class="link font-mono"
-								href="{GITHUB_REPO_URL}/commit/{COMMIT_SHA}"
+								href={`${GITHUB_REPO_URL}/commit/${COMMIT_SHA}`}
 								target="_blank"
 								rel="noopener noreferrer"
 								title={COMMIT_SHA}
@@ -210,6 +233,9 @@
 							})}
 						{/if}
 					</p>
+					{#if COMMIT_SHA !== 'unknown'}
+						<GitHubCommits sha={COMMIT_SHA} repoUrl={GITHUB_REPO_URL} />
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -223,7 +249,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiCog class="h-6 w-6" />
+					<IconMdiCog class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.section_general')}
 				</h2>
 
@@ -231,7 +257,7 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialTranslate class="h-5 w-5" />
+								<IconMaterialTranslate class="h-5 w-5" aria-hidden="true" />
 								{$_('general.language')}
 							</span>
 						</label>
@@ -252,16 +278,17 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialPublic class="h-5 w-5" />
+								<IconMaterialPublic class="h-5 w-5" aria-hidden="true" />
 								{$_('general.country')}
 							</span>
 						</label>
 						<select
 							name="country-select"
 							class="select-bordered select w-full"
-							bind:value={$preferences.country}
+							value={currentLocation?.country ?? 'world'}
+							onchange={handleCountryChange}
 						>
-							<option value="world" selected={$preferences.country === 'world'}>
+							<option value="world" selected={(currentLocation?.country ?? 'world') === 'world'}>
 								{$_('world_option')}
 							</option>
 
@@ -270,7 +297,7 @@
 								{@const code2 = country.country_code_2.en}
 								<option
 									value={code2}
-									selected={$preferences.country === code2}
+									selected={currentLocation?.country === code2}
 									class="overflow-hidden text-ellipsis"
 								>
 									{country.name['en']}
@@ -282,7 +309,7 @@
 					<div class="form-control">
 						<label class="label">
 							<span class="label-text flex items-center gap-2 font-semibold">
-								<IconMaterialUniversalCurrencyAlt class="h-5 w-5" />
+								<IconMaterialUniversalCurrencyAlt class="h-5 w-5" aria-hidden="true" />
 								{$_('general.currency')}
 							</span>
 						</label>
@@ -311,7 +338,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiPencil class="h-6 w-6" />
+					<IconMdiPencil class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.section_editing')}
 				</h2>
 
@@ -359,7 +386,7 @@
 		>
 			<div class="card-body">
 				<h2 class="card-title flex items-center gap-2">
-					<IconMdiHeart class="h-6 w-6" />
+					<IconMdiHeart class="h-6 w-6" aria-hidden="true" />
 					{$_('settings.food_preferences', { default: 'Food preferences' })}
 				</h2>
 

@@ -324,6 +324,7 @@
 					>
 						<img
 							src={img.url}
+							loading="lazy"
 							alt={$_('product.moderator.image_manager_image_alt', {
 								default: 'Uploaded image {imgid}',
 								values: { imgid: img.imgid }

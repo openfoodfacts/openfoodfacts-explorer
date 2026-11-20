@@ -14,14 +14,15 @@ import {
 	createProductsApi,
 	type ProductStateFailure
 } from '#lib/api.js';
-import { type ProductStateResponse } from '#lib/api/errorUtils.js';
+import { ERR_EDIT_FOOD_ONLY, type ProductStateResponse } from '#lib/api/errorUtils.js';
 import { userInfo } from '#lib/stores/user.js';
 import { PRODUCT_STATUS, type ProductType } from '#lib/const.js';
 
 import type { PageLoad } from './$types';
 import { dev } from '$app/env';
 import { getLanguageCode, preferences } from '#lib/settings.js';
-import { resolve } from '$app/paths';
+import { resolveForUrl } from '#lib/paths.js';
+import { parseUrlLocation } from '#lib/url-location.js';
 
 export const ssr = false;
 
@@ -33,19 +34,25 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (get(userInfo) == null && !dev) {
 		redirect(
 			302,
-			resolve('loginrequired') + `?redirect=${encodeURIComponent(url.pathname + url.search)}`
+			resolveForUrl(url, 'loginrequired') +
+				`?redirect=${encodeURIComponent(url.pathname + url.search)}`
 		);
 	}
 
 	const off = createProductsApi(fetch);
+	const location = parseUrlLocation(url.pathname);
 
 	const productReq = await off.getProductV3(params.barcode, {
-		lc: getLanguageCode(get(preferences).locale),
-		cc: get(preferences).country
+		lc: location?.language ?? getLanguageCode(get(preferences).locale),
+		cc: location?.country ?? get(preferences).country
 	});
 
 	const { data: productState, error: productError } = productReq;
 	const parsedError = (productError || null) as ProductStateResponse | null;
+	// FIXME: Support editing products from the other Open Facts databases.
+	if (parsedError?.result?.id === 'product_found_with_a_different_product_type') {
+		error(403, ERR_EDIT_FOOD_ONLY);
+	}
 	const isNotFound =
 		(parsedError && parsedError.result?.id === 'product_not_found') ||
 		(productState &&
@@ -71,6 +78,9 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		productState && 'product' in productState
 			? (productState.product.product_type as ProductType)
 			: undefined;
+	if (productType && productType !== 'food') {
+		error(403, ERR_EDIT_FOOD_ONLY);
+	}
 
 	const [categories, labels, brands, stores, origins, countries, units, allergens] =
 		await Promise.all([

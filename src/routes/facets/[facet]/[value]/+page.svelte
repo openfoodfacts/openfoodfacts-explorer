@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { page } from '$app/state';
 	import { browser } from '$app/env';
 
@@ -73,7 +73,7 @@
 	})}
 />
 
-<div class="mb-4">
+<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
 	<BackLink
 		href={resolve('/facets/[facet]', { facet: facet.name })}
 		label={$_('facets.facet_back_to_overview', {
@@ -81,9 +81,16 @@
 			default: 'Back to {facet} overview'
 		})}
 	/>
-</div>
-
-<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+	<span
+		>{$_('facets.value_heading', {
+			values: {
+				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
+				value: facet.value
+			},
+			default: 'Exploring {facet}: {value}'
+		})}</span
+	>
+</h2>
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
@@ -254,12 +261,12 @@
 					{#each results.products as { product_name, code } (code)}
 						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
-								<a href={`/products/${code}`} class="link">
+								<a href={resolve('/products/[barcode]', { barcode: code })} class="link">
 									{code}
 								</a>
 							</td>
 							<td>
-								<a href={`/products/${code}`}>
+								<a href={resolve('/products/[barcode]', { barcode: code })}>
 									{product_name}
 								</a>
 							</td>
@@ -275,7 +282,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `?${params}`;
+			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facetValue })}?${params}`;
 		}}
 	/>
 </div>

@@ -15,16 +15,16 @@ workflows:
         - 'actions/attest-build-provenance@v4.2.2'
         - 'actions/checkout@v7.0.1'
         - 'docker/build-push-action@v7.4.0'
-        - 'docker/login-action@v4.7.0'
+        - 'docker/login-action@v4.8.0'
         - 'docker/metadata-action@v6.2.0'
     '.github/workflows/container-deploy.yml':
         - 'appleboy/ssh-action@v1.2.5'
         - 'tomchv/wait-my-workflow@v1.1.0'
     '.github/workflows/copilot-setup-steps.yml':
         - 'actions/checkout@v7.0.1'
-        - 'github/gh-aw@v1.0.1'
+        - 'github/gh-aw@v1.2.2'
     '.github/workflows/github-projects.yml':
-        - 'actions/add-to-project@v2.0.0'
+        - 'actions/add-to-project@v2.0.1'
     '.github/workflows/label.yml':
         - 'actions/labeler@v7.0.0'
     '.github/workflows/limit-contributor-prs.yml':
@@ -40,13 +40,13 @@ workflows:
     '.github/workflows/release-please.yml':
         - 'googleapis/release-please-action@v5.0.0'
     '.github/workflows/semantic-pr.yml':
-        - 'amannn/action-semantic-pull-request@v6.1.1'
+        - 'amannn/action-semantic-pull-request@v6.1.2'
     '.github/workflows/weekly-issue-summary.yml':
         - 'actions/checkout@v7.0.1'
 dependencies:
-    'actions/add-to-project@v2.0.0':
-        ref: 'v2.0.0'
-        commit: 'sha1-5afcf98fcd03f1c2f92c3c83f58ae24323cc57fd'
+    'actions/add-to-project@v2.0.1':
+        ref: 'v2.0.1'
+        commit: 'sha1-f2c1f1fa649a891be84948ea89b5dfba1526ef05'
         owner_id: 44036562
         repo_id: 454132203
     'actions/attest-build-provenance@v4.2.2':
@@ -91,9 +91,9 @@ dependencies:
         commit: 'sha1-cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         owner_id: 44036562
         repo_id: 192625955
-    'amannn/action-semantic-pull-request@v6.1.1':
-        ref: 'v6.1.1'
-        commit: 'sha1-48f256284bd46cdaab1048c3721360e808335d50'
+    'amannn/action-semantic-pull-request@v6.1.2':
+        ref: 'v6.1.2'
+        commit: 'sha1-2252a14e810aa9b85c2d560bd7070c802206ecf6'
         owner_id: 4038316
         repo_id: 220418983
     'appleboy/ssh-action@v1.2.5':
@@ -106,9 +106,9 @@ dependencies:
         commit: 'sha1-c3c9e263c25d99ce0380d002d59b67737d91b0dc'
         owner_id: 5429470
         repo_id: 241092383
-    'docker/login-action@v4.7.0':
-        ref: 'v4.7.0'
-        commit: 'sha1-81c6f93d4bc991e510b342a00b419b3bb4efc5c6'
+    'docker/login-action@v4.8.0':
+        ref: 'v4.8.0'
+        commit: 'sha1-8aa5831fb8d48d8f76594c7ddde61ae58019f550'
         owner_id: 5429470
         repo_id: 287743349
     'docker/metadata-action@v6.2.0':
@@ -126,9 +126,9 @@ dependencies:
         commit: 'sha1-659a35a406812c494292238e24a71993179c01c3'
         owner_id: 9919
         repo_id: 1036865607
-    'github/gh-aw@v1.0.1':
-        ref: 'v1.0.1'
-        commit: 'sha1-0627fdbe4beb5f3b71aa569f8d97150b87f2111a'
+    'github/gh-aw@v1.2.2':
+        ref: 'v1.2.2'
+        commit: 'sha1-399a445fe2d8926c616b54b1b82a16b5b2be4445'
         owner_id: 9919
         repo_id: 1036865607
     'googleapis/release-please-action@v5.0.0':
