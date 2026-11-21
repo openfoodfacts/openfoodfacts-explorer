@@ -82,7 +82,11 @@
 		</div>
 
 		<a
-			href={resolve('/facets/[facet]/[value]', { facet: 'contributors', value: user })}
+			href={resolve('/facets/[facet]/[value]/[...rest]', {
+				facet: 'contributors',
+				value: user,
+				rest: ''
+			})}
 			class="btn mt-4 w-full btn-outline"
 		>
 			{$_('dashboard.view_all_contributions', { default: 'View all contributions' })}
@@ -100,7 +104,11 @@
 		</div>
 
 		<a
-			href={resolve('/facets/[facet]/[value]', { facet: 'editors', value: user })}
+			href={resolve('/facets/[facet]/[value]/[...rest]', {
+				facet: 'editors',
+				value: user,
+				rest: ''
+			})}
 			class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_edits', { default: 'View all edits' })}</a
 		>
@@ -119,7 +127,11 @@
 		</div>
 
 		<a
-			href={resolve('/facets/[facet]/[value]', { facet: 'photographers', value: user })}
+			href={resolve('/facets/[facet]/[value]/[...rest]', {
+				facet: 'photographers',
+				value: user,
+				rest: ''
+			})}
 			class="btn mt-4 w-full btn-outline"
 			>{$_('dashboard.view_all_photographs', { default: 'View all photographs' })}</a
 		>

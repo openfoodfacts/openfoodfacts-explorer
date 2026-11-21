@@ -1,17 +1,22 @@
 import type { FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
-import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
+import {
+	getFacetKnowledgePanels,
+	getFacetValue,
+	getProductsForFacetFilter
+} from '#lib/api/facets.js';
 import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
 import { parseUrlLocation } from '#lib/url-location.js';
-import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
-import { MAP_FACETS } from '../map-facets';
+import { getFacetDistribution, queryValuesToDistribution } from '../map-facets';
+import { MAP_FACETS } from '../../map-facets';
 
 export const load: PageLoad = async ({ fetch, params, data, url }) => {
 	const { facet, value } = params;
-	const { searchOptions, queryProducts, mapValues } = data;
+	const { searchOptions, queryProducts, mapValues, facetPairs, facetFilter } = data;
+	const isNested = facetPairs.length > 1;
 	const lang = parseUrlLocation(url.pathname)?.language ?? getLocale().split('-')[0].toLowerCase();
 	const mapFacet = Object.hasOwn(MAP_FACETS, facet) ? MAP_FACETS[facet] : undefined;
 
@@ -36,7 +41,19 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 			page_size: searchOptions.pageSize
 		};
 		try {
-			const response = queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
+			let response: FacetValueResponse;
+			if (queryProducts) {
+				response = queryProducts;
+			} else if (isNested && facetFilter) {
+				// The search API returns the same count, page and products fields
+				response = (await getProductsForFacetFilter(
+					fetch,
+					facetFilter,
+					searchOptions
+				)) as FacetValueResponse;
+			} else {
+				response = await getFacetValue(fetch, facet, value, searchOptions);
+			}
 			// Product Opener answers some values it doesn't know (e.g. /facets/nova-groups/4)
 			// with the facet's tag list, `{ count, tags }`, instead of a product list.
 			return Array.isArray(response.products) ? response : empty;
@@ -47,7 +64,9 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 	})();
 
 	// Knowledge panels are independent of the product list.
+	// They describe one facet value, so nested pages do not show them.
 	const knowledgePanels = (async () => {
+		if (isNested) return {};
 		try {
 			return (await getFacetKnowledgePanels(fetch, facet, value)).knowledge_panels || {};
 		} catch (error) {
@@ -89,6 +108,7 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 	return {
 		searchOptions,
 		facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
+		facetPairs,
 		results: {
 			...products,
 			products: products.products.map((product) => {

@@ -1,10 +1,10 @@
 import { error } from '@sveltejs/kit';
 import { PUBLIC_QUERY_BASE_URL } from '$app/env/public';
-import { FACETS_SORT_OPTIONS, type FacetSortOption } from '#lib/api/facets.js';
+import { FACETS_SORT_OPTIONS, getFacetPairs, type FacetSortOption } from '#lib/api/facets.js';
 import { queryFacetProducts } from '#lib/server/query-facet-products.js';
-import { queryAllFacetValues, QUERY_FACETS } from '#lib/server/query-facets.js';
+import { getQueryFilter, queryAllFacetValues } from '#lib/server/query-facets.js';
 import { requireInt } from '#lib/utils.js';
-import { MAP_FACETS } from '../map-facets';
+import { MAP_FACETS } from '../../map-facets';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
@@ -22,22 +22,27 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	}
 	const searchOptions = { page, pageSize, sortBy: (sortBy as FacetSortOption) || undefined };
 
-	const field = Object.hasOwn(QUERY_FACETS, params.facet) ? QUERY_FACETS[params.facet] : undefined;
+	const facetPairs = getFacetPairs(params.facet, params.value, params.rest);
+	if (facetPairs == null) error(404, 'Invalid facet path');
+
+	// Nested pages filter on every pair, so each facet needs a Query field
+	const facetFilter = getQueryFilter(facetPairs);
+	if (facetPairs.length > 1 && facetFilter == null) error(404, 'Unknown facet');
+
 	const hasMap = Object.hasOwn(MAP_FACETS, params.facet);
 
 	const queryProductsPromise = queryFacetProducts(
 		fetch,
 		PUBLIC_QUERY_BASE_URL,
-		params.facet,
-		params.value,
+		facetFilter,
 		searchOptions
 	);
 
 	const mapValuesPromise =
-		field && hasMap
-			? queryAllFacetValues(fetch, PUBLIC_QUERY_BASE_URL, params.facet, { [field]: params.value })
+		hasMap && facetFilter
+			? queryAllFacetValues(fetch, PUBLIC_QUERY_BASE_URL, params.facet, facetFilter)
 			: Promise.resolve(null);
 
 	const [queryProducts, mapValues] = await Promise.all([queryProductsPromise, mapValuesPromise]);
-	return { queryProducts, mapValues, searchOptions };
+	return { queryProducts, mapValues, searchOptions, facetPairs, facetFilter };
 };

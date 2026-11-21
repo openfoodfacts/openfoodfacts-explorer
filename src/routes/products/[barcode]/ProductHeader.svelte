@@ -300,7 +300,11 @@
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
 								<a
 									class="badge font-mono wrap-break-word"
-									href={resolve('/facets/[facet]/[value]', { facet: 'packager-codes', value: tag })}
+									href={resolve('/facets/[facet]/[value]/[...rest]', {
+										facet: 'packager-codes',
+										value: tag,
+										rest: ''
+									})}
 								>
 									{tag.toUpperCase()}
 								</a>
@@ -373,7 +377,7 @@
 				tags={tags.map((tag, idx) => ({
 					id: tag,
 					name: localizedTags && localizedTags[idx] ? localizedTags[idx] : tag,
-					href: resolve('/facets/[facet]/[value]', { facet, value: tag })
+					href: resolve('/facets/[facet]/[value]/[...rest]', { facet, value: tag, rest: '' })
 				}))}
 			/>
 		</div>

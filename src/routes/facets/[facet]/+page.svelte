@@ -110,7 +110,10 @@
 			{#each results.tags as { known, name, products, id } (id)}
 				<tr>
 					<td>
-						<a href={resolve('/facets/[facet]/[value]', { facet, value: id })} class="link">
+						<a
+							href={resolve('/facets/[facet]/[value]/[...rest]', { facet, value: id, rest: '' })}
+							class="link"
+						>
 							{name}
 						</a>
 					</td>

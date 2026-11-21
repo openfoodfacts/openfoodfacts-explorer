@@ -5,6 +5,7 @@ import {
 	type QueryFilter
 } from '@openfoodfacts/openfoodfacts-nodejs';
 import { USER_AGENT } from '#lib/const.js';
+import type { FacetPair } from '#lib/api/facets.js';
 
 // TODO: Use the SDK's facet-to-Query-field mapping if it exposes one.
 export const QUERY_FACETS: Record<string, QueryFacetField> = {
@@ -82,6 +83,21 @@ export async function queryFacetCounts(
 	const countPromise = client.countFacetValues(field);
 	const [values, count] = await Promise.all([valuesPromise, countPromise]);
 	return { values, count };
+}
+
+/**
+ * Build one Query filter that matches every facet/value pair.
+ *
+ * @returns the filter,
+ * or null when a facet has no Query field
+ */
+export function getQueryFilter(pairs: FacetPair[]): Record<string, string> | null {
+	const filter: Record<string, string> = {};
+	for (const pair of pairs) {
+		if (!Object.hasOwn(QUERY_FACETS, pair.facet)) return null;
+		filter[QUERY_FACETS[pair.facet]] = pair.value;
+	}
+	return filter;
 }
 
 export async function queryAllFacetValues(
