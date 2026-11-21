@@ -8,3 +8,7 @@ reviews:
     # also review stacked PRs (their base is the previous PR's branch, not main)
     base_branches:
       - ".*"
+ # path_filters:
+    # translation files are synced from Crowdin (1 file per language),
+    # excluding them keeps PRs under the 100 files review limit
+   # - "!src/i18n/locales/**"
