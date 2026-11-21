@@ -5,6 +5,13 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { KP_ATTRIBUTE_IMG } from '#lib/const.js';
 	import BlurredImageDisplay from '#lib/ui/BlurredImageDisplay.svelte';
+	import {
+		calculatePercentageDiff,
+		getBestValue,
+		getDirection,
+		getNutrientValue,
+		getRank
+	} from './comparison';
 
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
@@ -36,22 +43,6 @@
 		isBest: boolean;
 		isWorst: boolean;
 	};
-
-	// Helper to safely get a nutrient value from a product
-	function getNutrientValue(product: Product, nutrientKey: string): number | null {
-		const rawValue = product.nutriments?.[nutrientKey];
-		if (typeof rawValue === 'number') {
-			return rawValue;
-		}
-
-		// Try to parse if it's a string
-		if (typeof rawValue === 'string') {
-			const parsed = parseFloat(rawValue);
-			return isNaN(parsed) ? null : parsed;
-		}
-
-		return null;
-	}
 
 	type AvailableNutrient = {
 		key: string;
@@ -89,7 +80,7 @@
 			unit: $_('product.edit.si_grams')
 		},
 		{
-			key: 'fibers_100g',
+			key: 'fiber_100g',
 			label: $_('product.edit.nutrient.fibers'),
 			unit: $_('product.edit.si_grams')
 		},
@@ -119,47 +110,6 @@
 			unit: '%'
 		}
 	];
-	// Nutrients to compare
-	const nutrientRules: Record<string, 'min' | 'max'> = {
-		proteins_100g: 'max',
-		fibers_100g: 'max',
-		'fruits-vegetables-nuts-estimate-from-ingredients_100g': 'max',
-		sugars_100g: 'min',
-		salt_100g: 'min',
-		sodium_100g: 'min',
-		alcohol_100g: 'min',
-		carbohydrates_100g: 'min',
-		'energy-kcal_100g': 'min',
-		'energy-kj_100g': 'min',
-		fat_100g: 'min',
-		'saturated-fat_100g': 'min'
-	};
-	// Get the direction of the nutrient
-	function getDirection(nutrientKey: string): 'min' | 'max' {
-		return nutrientRules[nutrientKey] ?? 'min';
-	}
-	// Get the best value for a nutrient
-	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
-		const values = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		if (!values.length) return null;
-
-		const direction = getDirection(nutrientKey);
-		return direction === 'min' ? Math.min(...values) : Math.max(...values);
-	}
-
-	// Get the worst value for a nutrient
-	function getWorstValue(products: Product[], nutrientKey: NutrientKey): number | null {
-		const values = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		if (!values.length) return null;
-
-		const direction = getDirection(nutrientKey);
-		return direction === 'min' ? Math.max(...values) : Math.min(...values);
-	}
-
 	// Get nutrient value with comparison data
 	function getNutrientComparison(
 		product: Product,
@@ -192,24 +142,20 @@
 		let diffFormatted = '';
 		if (referenceValue != null && referenceValue !== value) {
 			diff = calculatePercentageDiff(value, referenceValue);
-			diffFormatted = `${percentageFormatter.format(diff)}%`;
+			if (diff !== null) {
+				diffFormatted = `${percentageFormatter.format(diff)}%`;
+			}
 		}
 
-		const bestValue = getBestValue(products, nutrientKey);
-		const worstValue = getWorstValue(products, nutrientKey);
-
-		// Count how many products have this nutrient to avoid highlighting "best" when only one is compared
-		const comparableCount = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null).length;
+		const rank = getRank(products, nutrientKey, value);
 
 		return {
 			value,
 			formatted,
 			diff,
 			diffFormatted,
-			isBest: comparableCount > 1 && bestValue === value,
-			isWorst: comparableCount > 1 && worstValue === value
+			isBest: rank.isBest,
+			isWorst: rank.isWorst
 		};
 	}
 
@@ -266,12 +212,6 @@
 			return integerFormatter.format(value);
 		}
 		return decimalFormatter.format(value);
-	}
-
-	// Calculate percentage difference between two values
-	function calculatePercentageDiff(value: number, reference: number): number {
-		if (reference === 0) return 0;
-		return ((value - reference) / reference) * 100;
 	}
 
 	const percentageFormatter = new Intl.NumberFormat(undefined, {
