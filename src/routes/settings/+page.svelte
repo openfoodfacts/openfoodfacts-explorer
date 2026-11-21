@@ -24,7 +24,6 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
-	import IconMdiNewspaper from '@iconify-svelte/mdi/newspaper';
 
 	import type { PageProps } from './$types';
 
@@ -181,20 +180,6 @@
 					</div>
 				</div>
 			{/if}
-			<div class="card bg-base-200 shadow-md">
-				<div class="card-body">
-					<h2 class="card-title flex items-center gap-2">
-						<IconMdiNewspaper class="h-6 w-6" aria-hidden="true" />
-						{$_('settings.news')}
-					</h2>
-					<div class="mt-4">
-						<news-feed
-							url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
-						></news-feed>
-					</div>
-				</div>
-			</div>
-
 			<div class="card bg-primary text-primary-content shadow-md">
 				<div class="card-body">
 					<p class="mb-4">{$_('settings.github_help_text')}</p>

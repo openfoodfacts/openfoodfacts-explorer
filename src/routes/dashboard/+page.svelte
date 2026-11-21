@@ -35,6 +35,7 @@
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiHistory from '@iconify-svelte/mdi/history';
+	import IconMdiNewspaper from '@iconify-svelte/mdi/newspaper';
 	import IconMdiTrophyOutline from '@iconify-svelte/mdi/trophy-outline';
 	import {
 		countUnlockedBadges,
@@ -535,6 +536,20 @@
 						</p>
 					{/if}
 				</form>
+			</div>
+		</div>
+	</section>
+
+	<section class="mx-auto mt-12 w-full max-w-7xl px-4">
+		<div class="rounded-3xl bg-base-200 p-6 sm:p-8">
+			<h2 class="flex items-center gap-2 text-2xl font-bold">
+				<IconMdiNewspaper class="h-7 w-7" aria-hidden="true" />
+				{$_('settings.news', { default: 'News' })}
+			</h2>
+			<div class="mt-4">
+				<news-feed
+					url="https://raw.githubusercontent.com/openfoodfacts/smooth-app_assets/refs/heads/main/prod/tagline/web/main.json"
+				></news-feed>
 			</div>
 		</div>
 	</section>
