@@ -44,9 +44,11 @@
 					{#each section.products as product (product.code)}
 						<div>
 							<div class="indicator w-full indicator-center indicator-bottom">
-								<p class="indicator-item badge text-xs badge-info select-none">
-									{product.scans_n} scans
-								</p>
+								{#if product.scans_n != null}
+									<p class="indicator-item badge text-xs badge-info select-none">
+										{product.scans_n} scans
+									</p>
+								{/if}
 								<WcProductCard product={data.productCardsByCode[product.code] ?? product} />
 							</div>
 						</div>
