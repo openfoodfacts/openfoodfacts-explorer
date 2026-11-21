@@ -5,10 +5,10 @@ import type { Product, SearchApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 type ExploreSection = {
 	category: string;
-	products: Product[];
+	products: { code: string; scans_n?: number }[];
 };
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageLoad = async ({ fetch, data }) => {
 	const api = createSearchApi(fetch);
 
 	// Fetch some popular categories for the Explore landing page.
@@ -26,7 +26,13 @@ export const load: PageLoad = async ({ fetch }) => {
 	];
 
 	// For each category, fetch a few popular products.
-	const sectionsPromise = Promise.all(categories.map((c) => getSomeProducts(api, c)));
+	const sectionsPromise = Promise.all(
+		categories.map((category, index) => {
+			const querySection = data.querySections?.[index];
+			if (querySection) return querySection.products.length ? querySection : null;
+			return getSomeProducts(api, category);
+		})
+	);
 	const sections = (await sectionsPromise).filter((s): s is ExploreSection => s != null);
 	const productCodes = [
 		...new Set(sections.flatMap((section) => section.products.map((p) => p.code)))
