@@ -782,6 +782,11 @@
 	"landing": {
 		"contributor_home": "Votre espace contributeur",
 		"contributor_intro": "Trouvez un produit, ajoutez ce que vous savez et aidez chacun à faire des choix éclairés.",
+		"share_certificate": "Partager le certificat",
+		"certificate_failed": "Impossible de créer le certificat, veuillez réessayer",
+		"certificate_title": "Certificat de contribution",
+		"certificate_awarded_to": "Décerné à",
+		"certificate_saved": "Certificat enregistré",
 		"greetings": {
 			"morning_1": "Bonjour, {user}",
 			"morning_2": "Que la journée commence bien, {user}",

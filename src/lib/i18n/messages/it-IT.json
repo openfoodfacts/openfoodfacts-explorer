@@ -994,6 +994,11 @@
 	"landing": {
 		"contributor_home": "Il tuo spazio da contributore",
 		"contributor_intro": "Trova un prodotto, aggiungi ciò che sai e aiuta tutti a fare scelte consapevoli.",
+		"share_certificate": "Condividi il certificato",
+		"certificate_failed": "Impossibile creare il certificato, riprova",
+		"certificate_title": "Certificato di contribuzione",
+		"certificate_awarded_to": "Conferito a",
+		"certificate_saved": "Certificato salvato",
 		"greetings": {
 			"morning_1": "Buongiorno, {user}",
 			"morning_2": "Buon risveglio, {user}",
