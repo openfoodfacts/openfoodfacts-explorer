@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/openfoodfacts/openfoodfacts-explorer/compare/v0.3.0...v0.4.0) (2026-11-21)
+
+
+### Features
+
+* **product:** show storage, customer service and manufacturer note panels - [#2211](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2211)⁠ ([ad5c0c3](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/ad5c0c3a652c7fe92b752d2aed0066fa0d80830f))
+* **seo:** add product canonical URLs ([#2237](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2237)) ([986f864](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/986f864447d9947cc6c8d08f4de5f4dd489523f1))
+
+
+### Bug Fixes
+
+* **auth:** replace login callback history entry ([#2240](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2240)) ([1a957ce](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/1a957cef8ddcd2eb2bf07f5751b264c8936cccc8))
+* preflight knowledge panel references ([61059ac](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/61059ac6cdb5a2d25080e1ca55a3ac298fb19cd8))
+* **seo:** remove duplicate meta description from root layout ([8417591](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/8417591deee3c64c3c80ff1a8f18f0dc9ca41637))
+
 ## [0.3.0](https://github.com/openfoodfacts/openfoodfacts-explorer/compare/v0.2.0...v0.3.0) (2026-11-19)
 
 
