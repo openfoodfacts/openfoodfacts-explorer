@@ -10,7 +10,9 @@
 	import { createCertificateBlob, downloadBlob, type CertificateRow } from '#lib/certificate.js';
 	import { _, getNumberFormatter } from '#lib/i18n/index.js';
 	import { resolve } from '#lib/paths.js';
+	import OpenPrices from './OpenPrices.svelte';
 	import QualityErrors from './QualityErrors.svelte';
+	import { getOpenPricesChallenges, getOpenPricesUserBadges } from '#lib/api/prices.js';
 	import Metadata from '#lib/Metadata.svelte';
 	import SearchBar from '#lib/ui/SearchBar.svelte';
 
@@ -234,6 +236,27 @@
 		);
 		if (!data?.tags?.length) return null;
 		return data;
+	});
+
+	// Open Prices: the challenges people can join now or soon, and the badges the user earned.
+	// Each request can fail on its own, so the section shows whatever did load.
+	const openPrices = $derived.by(async () => {
+		const user = username;
+		if (!user) return null;
+		const settle = <T,>(request: Promise<T[]>) =>
+			request.catch((error) => {
+				console.error('Could not load Open Prices data:', error);
+				return [] as T[];
+			});
+
+		const [ongoing, upcoming, badges] = await Promise.all([
+			settle(getOpenPricesChallenges(fetch, 'ONGOING')),
+			settle(getOpenPricesChallenges(fetch, 'UPCOMING')),
+			settle(getOpenPricesUserBadges(fetch, user))
+		]);
+		const challenges = [...ongoing, ...upcoming];
+		if (challenges.length === 0 && badges.length === 0) return null;
+		return { challenges, badges };
 	});
 
 	const stats = $derived([
@@ -839,6 +862,17 @@
 	{:then errors}
 		{#if errors}
 			<QualityErrors {errors} {username} />
+		{/if}
+	{/await}
+
+	{#await openPrices}
+		<!-- Same footprint as the loaded section, so the page below does not jump. -->
+		<section class="mx-auto mt-12 w-full max-w-7xl px-4" aria-hidden="true">
+			<div class="h-96 skeleton rounded-3xl"></div>
+		</section>
+	{:then prices}
+		{#if prices}
+			<OpenPrices {prices} {username} />
 		{/if}
 	{/await}
 
