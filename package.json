@@ -32,7 +32,7 @@
 		"api:folksonomy": "openapi-typescript https://api.folksonomy.openfoodfacts.org/openapi.json --output src/lib/api/folksonomy.d.ts",
 		"api:prices": "openapi-typescript https://prices.openfoodfacts.net/api/schema --output src/lib/api/prices.d.ts",
 		"api": "pnpm run api:folksonomy && pnpm run api:prices",
-		"prepare": "if [ ! \"$HUSKY\" = \"0\" ]; then husky; fi",
+		"prepare": "node -e \"if (process.env.HUSKY !== '0') { try { require('child_process').execSync('husky', { stdio: 'inherit' }); } catch {} }\"",
 		"pre-commit": "pnpm format",
 		"test": "vitest run --passWithNoTests"
 	},

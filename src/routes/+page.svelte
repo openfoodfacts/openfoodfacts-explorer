@@ -40,10 +40,7 @@
 	import eggIcon from '#lib/assets/egg-01.svg';
 	import pastaIcon from '#lib/assets/pasta.svg';
 
-	const heroIcons = [chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon];
-
-	// random icons
-	heroIcons.sort(() => Math.random() - 0.5);
+	let heroIcons = $state([chocoBarIcon, cheeseIcon, butterIcon, eggIcon, pastaIcon]);
 
 	const INSIGHT_COUNT = 12;
 	const SKELETON_COUNT = 6;
@@ -73,6 +70,7 @@
 	}
 
 	onMount(() => {
+		heroIcons = [...heroIcons].sort(() => Math.random() - 0.5);
 		if (window.location.pathname === '/') {
 			const language = $preferences.locale
 				? getLanguageCode($preferences.locale)

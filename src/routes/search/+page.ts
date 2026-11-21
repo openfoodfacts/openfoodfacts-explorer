@@ -1,4 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
+import { resolve } from '$app/paths';
+import { get } from 'svelte/store';
 import type { PageLoad } from './$types';
 
 import { compatSearch, type SearchResult } from '#lib/api/search.js';
@@ -10,20 +12,15 @@ import {
 	getBulkProductCardsAndAttributes,
 	MAX_PRODUCTS_PER_REQUEST
 } from '#lib/api/bulk-product-details.js';
+import { Gs1Barcode } from '#lib/barcodes/gs1.js';
+import { getLanguageCode, preferences } from '#lib/settings.js';
 
-function isValidEAN13(code: string): boolean {
-	if (!/^\d{13}$/.test(code)) {
-		return false;
-	}
-
-	const digits = code.split('').map(Number);
-	const checksum =
-		digits.slice(0, 12).reduce((sum, digit, index) => {
-			return sum + digit * (index % 2 === 0 ? 1 : 3);
-		}, 0) % 10;
-
-	const checkDigit = (10 - checksum) % 10;
-	return checkDigit === digits[12];
+function getBarcodeRedirectTarget(query: string): string | null {
+	const trimmed = query.trim();
+	const parsed = Gs1Barcode.parse(trimmed);
+	if (parsed?.code) return parsed.code;
+	if (/^\d{5,7}$/.test(trimmed)) return trimmed;
+	return null;
 }
 
 /** Returns the number of prices for each barcode, using one Prices API request per 100 codes. */
@@ -70,19 +67,22 @@ export const load: PageLoad = async ({ fetch, url }) => {
 		error(400, 'Missing query parameter');
 	}
 
-	// If the code is an EAN13 code, we can directly fetch the product
-	if (isValidEAN13(query)) {
-		redirect(308, resolveForUrl(url, '/products/[barcode]', { barcode: query }));
+	// If the query is a recognized barcode or store code, redirect directly to the product
+	const barcode = getBarcodeRedirectTarget(query);
+	if (barcode) {
+		redirect(308, resolveForUrl(url, '/products/[barcode]', { barcode }));
 	}
 
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
 	// Product details are fetched in one request, so do not ask for more results than it can return
 	const requestedPageSize = parseInt(url.searchParams.get('page_size') || '24', 10);
 	const pageSize = Math.min(requestedPageSize, MAX_PRODUCTS_PER_REQUEST);
+	const lang =
+		parseUrlLocation(url.pathname)?.language ?? getLanguageCode(get(preferences).locale) ?? 'en';
 
 	const { data: searchData, error: searchError } = await compatSearch(fetch, {
 		q: query,
-		langs: [parseUrlLocation(url.pathname)?.language ?? 'en'],
+		langs: [lang],
 		page,
 		page_size: pageSize,
 		sort_by: sortBy

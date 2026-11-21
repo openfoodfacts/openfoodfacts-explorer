@@ -26,7 +26,7 @@
 		</a>
 		<button
 			class="btn btn-circle btn-ghost btn-xs"
-			aria-label={$_('slow_server.dismiss')}
+			aria-label={$_('product.app_strip.dismiss', { default: 'Dismiss' })}
 			onclick={() => ($dismissed = true)}
 		>
 			<IconMdiClose class="h-4 w-4" aria-hidden="true" />

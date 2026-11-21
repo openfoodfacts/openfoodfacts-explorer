@@ -99,34 +99,31 @@
 	let newValue = $state('');
 
 	let possibleValues: { v: string; product_count: number }[] | null = $state(null);
+	let debounceTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
 	$effect(() => {
-		// when newKey changes, fetch possible values
+		// when newKey changes, fetch possible values with debouncing
 		const key = newKey;
+		clearTimeout(debounceTimeoutId);
 
-		debounce(100, () => {
-			if (key == '') {
-				possibleValues = null;
-				return;
-			}
+		if (key === '') {
+			possibleValues = null;
+			return;
+		}
+
+		debounceTimeoutId = setTimeout(() => {
 			console.debug('Fetching possible values for key:', key);
 
 			getFolksonomyValues(fetch, key).then((values) => {
 				console.debug('Possible values for key', key, ':', values);
 				possibleValues = values;
 			});
-		});
-	});
+		}, 100);
 
-	function debounce(delay: number, fn: () => void) {
-		let timeoutId: number | undefined;
-		(() => {
-			if (timeoutId) {
-				clearTimeout(timeoutId);
-			}
-			timeoutId = window.setTimeout(fn, delay);
-		})();
-	}
+		return () => {
+			clearTimeout(debounceTimeoutId);
+		};
+	});
 
 	let isLoading: boolean = $state(false);
 
