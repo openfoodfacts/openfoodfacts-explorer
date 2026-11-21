@@ -3,6 +3,17 @@ import { createParticles, FOOD_EMOJIS, stepParticles } from './confetti.js';
 
 const COLORS = ['red', 'green', 'blue'];
 
+/** Small seeded generator (mulberry32), so tests that need many random values stay stable. */
+function seededRandom(seed: number): () => number {
+	let state = seed;
+	return () => {
+		state = (state + 0x6d2b79f5) | 0;
+		let t = Math.imul(state ^ (state >>> 15), 1 | state);
+		t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
+
 describe('createParticles', () => {
 	it('creates the requested number of particles at the origin, with the given colours', () => {
 		const particles = createParticles(100, 200, 50, COLORS);
@@ -18,11 +29,14 @@ describe('createParticles', () => {
 	});
 
 	it('launches particles upwards, in a cone', () => {
-		const particles = createParticles(0, 0, 200, COLORS);
+		const particles = createParticles(0, 0, 200, COLORS, { random: seededRandom(42) });
 
-		// Upwards means a negative vertical speed; the cone is a bit wider than 90°.
+		// Upwards means a negative vertical speed; the cone is a bit wider than 90°, so a few
+		// particles fall back down from the start.
 		const upwards = particles.filter((particle) => particle.vy < 0);
+		const downwards = particles.filter((particle) => particle.vy > 0);
 		expect(upwards.length).toBeGreaterThan(particles.length * 0.7);
+		expect(downwards.length).toBeGreaterThan(0);
 	});
 
 	it('creates nothing without colours', () => {
