@@ -2,13 +2,23 @@
 	import { page } from '$app/state';
 	import { goto } from '#lib/navigation.js';
 	import { completeLogout } from '#lib/auth/logout.js';
+	import { getAuthTokens } from '#lib/stores/auth.js';
 	import { _ } from '#lib/i18n/index.js';
 	import { onMount } from 'svelte';
 
 	async function doLogout() {
 		const returnedState = page.url.searchParams.get('state');
-		completeLogout(returnedState);
-		await goto('/');
+		try {
+			completeLogout(returnedState);
+		} catch (error) {
+			// If already logged out (e.g. back navigation to consumed callback), redirect home
+			if (!getAuthTokens()) {
+				await goto('/', { replaceState: true });
+				return;
+			}
+			throw error;
+		}
+		await goto('/', { replaceState: true });
 	}
 
 	let logoutResult: Promise<void> | null = $state(null);

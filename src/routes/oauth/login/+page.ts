@@ -6,6 +6,7 @@ import type { PageLoad } from './$types';
 
 import { createKeycloakApi } from '#lib/api.js';
 import { getSafeRedirectUrl } from '#lib/utils.js';
+import { getAuthTokens, isTokenExpired } from '#lib/stores/auth.js';
 
 /**
  * Encodes a Uint8Array to a base64 URL-safe string.
@@ -28,6 +29,16 @@ async function createChallengeS256(verifier: string): Promise<string> {
  * Redirects the user to the Keycloak login page with PKCE.
  */
 export const load: PageLoad = async ({ url }) => {
+	// Only store if it's a safe, same-origin relative path
+	const redirectUrl = url.searchParams.get('redirect');
+	const safeRedirect = getSafeRedirectUrl(redirectUrl, url.origin);
+
+	// If already authenticated, redirect directly without re-initiating login flow
+	const tokens = getAuthTokens();
+	if (tokens && !isTokenExpired(tokens)) {
+		redirect(302, safeRedirect);
+	}
+
 	// 1. Generate PKCE values
 	const verifier = base64URLEncode(crypto.getRandomValues(new Uint8Array(32)));
 	const codeChallenge = await createChallengeS256(verifier);
@@ -38,10 +49,6 @@ export const load: PageLoad = async ({ url }) => {
 	// 3. Store the verifier and state in local storage for later verification
 	localStorage.setItem('verifier', verifier);
 	localStorage.setItem('authState', state);
-
-	// Only store if it's a safe, same-origin relative path
-	const redirectUrl = url.searchParams.get('redirect');
-	const safeRedirect = getSafeRedirectUrl(redirectUrl, url.origin);
 	localStorage.setItem('authRedirect', safeRedirect);
 
 	// 4. Create and redirect to the Keycloak login URL

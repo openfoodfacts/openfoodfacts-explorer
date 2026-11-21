@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
-	import { saveAuthTokens } from '#lib/stores/auth.js';
+	import { getAuthTokens, isTokenExpired, saveAuthTokens } from '#lib/stores/auth.js';
 	import { goto } from '#lib/navigation.js';
 	import { onMount } from 'svelte';
 	import { resolve } from '#lib/paths.js';
@@ -16,6 +16,17 @@
 		const storedState = localStorage.getItem('authState');
 
 		if (!returnedState || returnedState !== storedState) {
+			// If already authenticated (e.g. back navigation or page reload after login),
+			// avoid throwing an error and safely redirect to destination or home.
+			const tokens = getAuthTokens();
+			if (tokens && !isTokenExpired(tokens)) {
+				const redirectUrl = localStorage.getItem('authRedirect');
+				localStorage.removeItem('authRedirect');
+				const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
+				await goto(targetPath, { replaceState: true });
+				return;
+			}
+
 			console.error('State validation failed');
 			throw new Error('Authentication failed: Invalid state parameter');
 		}
