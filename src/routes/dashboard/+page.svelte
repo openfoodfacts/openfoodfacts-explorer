@@ -134,19 +134,13 @@
 
 	const CERTIFICATE_FILE_NAME = 'open-food-facts-certificate.png';
 
-	// Share a certificate image: with the native share sheet when it can send files, otherwise
-	// as a download. If the image cannot be made, only the text is shared.
-	async function shareProgress(
+	// Draw the certificate image and share it with the system share sheet, so it can be sent
+	// straight from a phone. Where files cannot be shared (most desktops), save it instead.
+	async function shareCertificate(
 		level: string,
 		unlocked: number,
 		counts: Record<ContributionKind, number>
 	) {
-		const text = $_('landing.share_text', {
-			default: 'I am a {level} on Open Food Facts, with {count} of {total} badges!',
-			values: { level, count: unlocked, total: TOTAL_BADGES }
-		});
-		const url = new URL(resolve('/'), window.location.origin).href;
-
 		try {
 			const blob = await createCertificateBlob({
 				username: username ?? '',
@@ -159,33 +153,26 @@
 				awardedTo: $_('landing.certificate_awarded_to', { default: 'Awarded to' }),
 				footer: `${$_('landing.title', { default: 'Open Food Facts Explorer' })} · ${new Date().toLocaleDateString(undefined, { dateStyle: 'long' })}`,
 				rows: certificateRows(counts)
-			}).catch((error) => {
-				console.error('Could not create the certificate:', error);
-				return null;
 			});
-
-			if (blob) {
-				const file = new File([blob], CERTIFICATE_FILE_NAME, { type: 'image/png' });
-				if (navigator.canShare?.({ files: [file] })) {
-					await navigator.share({ files: [file], text, url });
-					return;
-				}
-				// No file sharing here (most desktops): save the image instead.
-				downloadBlob(blob, CERTIFICATE_FILE_NAME);
-				toasts.success($_('landing.certificate_saved', { default: 'Certificate saved' }));
+			const file = new File([blob], CERTIFICATE_FILE_NAME, { type: 'image/png' });
+			if (navigator.canShare?.({ files: [file] })) {
+				await navigator.share({
+					files: [file],
+					title: $_('landing.certificate_title', { default: 'Certificate of contribution' })
+				});
 				return;
 			}
-
-			if (navigator.share) {
-				await navigator.share({ text, url });
-				return;
-			}
-			await navigator.clipboard.writeText(`${text} ${url}`);
-			toasts.success($_('landing.share_copied', { default: 'Copied to the clipboard' }));
+			downloadBlob(blob, CERTIFICATE_FILE_NAME);
+			toasts.success($_('landing.certificate_saved', { default: 'Certificate saved' }));
 		} catch (error) {
 			// Closing the share sheet is not an error.
 			if (error instanceof DOMException && error.name === 'AbortError') return;
-			toasts.error($_('landing.share_failed', { default: 'Could not share, please try again' }));
+			console.error('Could not share the certificate:', error);
+			toasts.error(
+				$_('landing.certificate_failed', {
+					default: 'Could not create the certificate, please try again'
+				})
+			);
 		}
 	}
 
@@ -596,14 +583,14 @@
 							type="button"
 							class="btn btn-outline btn-sm"
 							onclick={() =>
-								shareProgress(
+								shareCertificate(
 									levelName(badgeLevel.key, badgeLevel.fallback),
 									badgeTotal,
 									badgeCounts
 								)}
 						>
 							<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
-							{$_('landing.share', { default: 'Share' })}
+							{$_('landing.share_certificate', { default: 'Share certificate' })}
 						</button>
 					</div>
 					<ul class="mt-2 divide-y divide-base-content/10">
