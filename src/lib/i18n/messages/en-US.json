@@ -1058,7 +1058,7 @@
 		"badge_tip_unlocked": "{count} {label}",
 		"badge_tip_locked": "{count} {label}: {remaining} to go",
 		"share_certificate": "Share certificate",
-		"certificate_failed": "Could not create the certificate, please try again",
+		"certificate_failed": "Could not share the certificate, please try again",
 		"certificate_title": "Certificate of contribution",
 		"certificate_awarded_to": "Awarded to",
 		"certificate_saved": "Certificate saved",

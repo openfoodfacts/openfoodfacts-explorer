@@ -116,8 +116,11 @@
 	}
 
 	// The rows of badges drawn on the certificate, in the same order as on this page.
-	function certificateRows(counts: Record<ContributionKind, number>): CertificateRow[] {
-		return stats.map((stat) => {
+	function certificateRows(
+		counts: Record<ContributionKind, number>,
+		rows: ReadonlyArray<{ key: ContributionKind; badge: string }>
+	): CertificateRow[] {
+		return rows.map((stat) => {
 			const scale = MILESTONES_BY_KIND[stat.key];
 			const progress = getMilestoneProgress(counts[stat.key], scale);
 			return {
@@ -134,27 +137,12 @@
 
 	const CERTIFICATE_FILE_NAME = 'open-food-facts-certificate.png';
 
-	// Draw the certificate image and share it with the system share sheet, so it can be sent
-	// straight from a phone. Where files cannot be shared (most desktops), save it instead.
-	async function shareCertificate(
-		level: string,
-		unlocked: number,
-		counts: Record<ContributionKind, number>
-	) {
+	// Share the prepared certificate with the system share sheet, so it can be sent straight from
+	// a phone. Where files cannot be shared (most desktops), save it instead. This is called
+	// right from the tap, with nothing awaited before `navigator.share`: some browsers refuse to
+	// share once the tap is no longer recent.
+	async function shareCertificate(file: File) {
 		try {
-			const blob = await createCertificateBlob({
-				username: username ?? '',
-				levelName: level,
-				badgesText: $_('landing.badges_progress', {
-					default: '{count} of {total} badges',
-					values: { count: unlocked, total: TOTAL_BADGES }
-				}),
-				title: $_('landing.certificate_title', { default: 'Certificate of contribution' }),
-				awardedTo: $_('landing.certificate_awarded_to', { default: 'Awarded to' }),
-				footer: `${$_('landing.title', { default: 'Open Food Facts Explorer' })} · ${new Date().toLocaleDateString(undefined, { dateStyle: 'long' })}`,
-				rows: certificateRows(counts)
-			});
-			const file = new File([blob], CERTIFICATE_FILE_NAME, { type: 'image/png' });
 			if (navigator.canShare?.({ files: [file] })) {
 				await navigator.share({
 					files: [file],
@@ -162,7 +150,7 @@
 				});
 				return;
 			}
-			downloadBlob(blob, CERTIFICATE_FILE_NAME);
+			downloadBlob(file, CERTIFICATE_FILE_NAME);
 			toasts.success($_('landing.certificate_saved', { default: 'Certificate saved' }));
 		} catch (error) {
 			// Closing the share sheet is not an error.
@@ -170,7 +158,7 @@
 			console.error('Could not share the certificate:', error);
 			toasts.error(
 				$_('landing.certificate_failed', {
-					default: 'Could not create the certificate, please try again'
+					default: 'Could not share the certificate, please try again'
 				})
 			);
 		}
@@ -277,6 +265,44 @@
 			badgeIcon: IconMdiCameraOutline
 		}
 	]);
+
+	// The certificate is drawn ahead of time, as soon as the counts are known, so the share
+	// button can open the share sheet right from the tap. `null` when it cannot be made.
+	const certificate = $derived.by(async () => {
+		// Read what the image depends on before the first await, so that it is redrawn when it changes.
+		const user = username;
+		const translate = $_;
+		const rows = stats;
+		const data = await contributions;
+		if (!user || !data) return null;
+
+		const counts = {
+			contributor: data.contributor.count,
+			editor: data.editor.count,
+			photographer: data.photographer.count
+		};
+		const unlocked = countUnlockedBadges(counts);
+		const level = getContributorLevel(unlocked);
+
+		try {
+			const blob = await createCertificateBlob({
+				username: user,
+				levelName: translate(`landing.levels.${level.key}`, { default: level.fallback }),
+				badgesText: translate('landing.badges_progress', {
+					default: '{count} of {total} badges',
+					values: { count: unlocked, total: TOTAL_BADGES }
+				}),
+				title: translate('landing.certificate_title', { default: 'Certificate of contribution' }),
+				awardedTo: translate('landing.certificate_awarded_to', { default: 'Awarded to' }),
+				footer: `${translate('landing.title', { default: 'Open Food Facts Explorer' })} · ${new Date().toLocaleDateString(undefined, { dateStyle: 'long' })}`,
+				rows: certificateRows(counts, rows)
+			});
+			return new File([blob], CERTIFICATE_FILE_NAME, { type: 'image/png' });
+		} catch (error) {
+			console.error('Could not create the certificate:', error);
+			return null;
+		}
+	});
 </script>
 
 <Metadata
@@ -322,19 +348,24 @@
 	</section>
 
 	<section class="mx-auto mt-6 w-full max-w-7xl px-4">
-		<div class="relative grid overflow-hidden rounded-3xl bg-base-200 lg:grid-cols-[1.35fr_1fr]">
-			<img
-				src={cheeseIcon}
-				alt=""
+		<!-- No overflow clipping here: the level ladder and the search suggestions must be able to
+			extend past the hero. Only the decorative images are clipped, in their own layer. -->
+		<div class="relative grid rounded-3xl bg-base-200 lg:grid-cols-[1.35fr_1fr]">
+			<div
+				class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl"
 				aria-hidden="true"
-				class="pointer-events-none absolute -top-10 -right-8 w-36 rotate-12 opacity-4 sm:w-48 lg:right-[38%]"
-			/>
-			<img
-				src={chocoBarIcon}
-				alt=""
-				aria-hidden="true"
-				class="pointer-events-none absolute -bottom-16 -left-14 w-36 -rotate-12 opacity-3 sm:w-44"
-			/>
+			>
+				<img
+					src={cheeseIcon}
+					alt=""
+					class="absolute -top-10 -right-8 w-36 rotate-12 opacity-4 sm:w-48 lg:right-[38%]"
+				/>
+				<img
+					src={chocoBarIcon}
+					alt=""
+					class="absolute -bottom-16 -left-14 w-36 -rotate-12 opacity-3 sm:w-44"
+				/>
+			</div>
 			<div class="relative flex flex-col justify-center px-6 py-10 sm:px-10 lg:py-14">
 				<h1 class="mb-4 max-w-xl text-4xl leading-tight font-bold text-base-content sm:text-5xl">
 					{$_(greeting.key, { default: greeting.fallback, values: { user: username } })}
@@ -434,7 +465,10 @@
 				</div>
 			</div>
 
-			<div class="relative flex flex-col justify-center gap-3 bg-base-300/60 p-5 sm:p-8">
+			<!-- Rounded like the hero, since the hero no longer clips its corners. -->
+			<div
+				class="relative flex flex-col justify-center gap-3 rounded-b-3xl bg-base-300/60 p-5 sm:p-8 lg:rounded-s-none lg:rounded-e-3xl"
+			>
 				<a
 					class="group flex items-center gap-4 rounded-2xl bg-primary p-5 text-primary-content transition hover:opacity-90"
 					href={resolve('/scan')}
@@ -569,29 +603,26 @@
 				{/each}
 			</div>
 			{#if data}
-				{@const badgeCounts = {
-					contributor: data.contributor.count,
-					editor: data.editor.count,
-					photographer: data.photographer.count
-				}}
-				{@const badgeTotal = countUnlockedBadges(badgeCounts)}
-				{@const badgeLevel = getContributorLevel(badgeTotal)}
 				<div class="mt-4 rounded-2xl border border-base-content/10 bg-base-100 p-5 sm:p-6">
 					<div class="flex flex-wrap items-center justify-between gap-2">
 						<h3 class="text-lg font-bold">{$_('landing.badges', { default: 'Badges' })}</h3>
-						<button
-							type="button"
-							class="btn btn-outline btn-sm"
-							onclick={() =>
-								shareCertificate(
-									levelName(badgeLevel.key, badgeLevel.fallback),
-									badgeTotal,
-									badgeCounts
-								)}
-						>
-							<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
-							{$_('landing.share_certificate', { default: 'Share certificate' })}
-						</button>
+						<!-- Enabled once the certificate is drawn, see `certificate`. -->
+						{#await certificate}
+							<button type="button" class="btn btn-outline btn-sm" disabled>
+								<span class="loading loading-xs loading-spinner" aria-hidden="true"></span>
+								{$_('landing.share_certificate', { default: 'Share certificate' })}
+							</button>
+						{:then file}
+							<button
+								type="button"
+								class="btn btn-outline btn-sm"
+								disabled={!file}
+								onclick={() => file && shareCertificate(file)}
+							>
+								<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
+								{$_('landing.share_certificate', { default: 'Share certificate' })}
+							</button>
+						{/await}
 					</div>
 					<ul class="mt-2 divide-y divide-base-content/10">
 						{#each stats as stat (stat.facet)}
