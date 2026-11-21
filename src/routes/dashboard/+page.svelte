@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { userInfo } from '#lib/stores/user.js';
-	import { getFacetValue } from '#lib/api/facets.js';
+	import { getEditorDataQualityErrors, getFacetValue } from '#lib/api/facets.js';
 	import { QueryApi } from '@openfoodfacts/openfoodfacts-nodejs';
 	import { PUBLIC_QUERY_BASE_URL } from '$app/env/public';
 	import { getToastCtx } from '#lib/stores/toasts.js';
@@ -10,9 +10,9 @@
 	import { createCertificateBlob, downloadBlob, type CertificateRow } from '#lib/certificate.js';
 	import { _, getNumberFormatter } from '#lib/i18n/index.js';
 	import { resolve } from '#lib/paths.js';
+	import QualityErrors from './QualityErrors.svelte';
 	import Metadata from '#lib/Metadata.svelte';
 	import SearchBar from '#lib/ui/SearchBar.svelte';
-	import WcProductCard from '#lib/ui/WcProductCard.svelte';
 
 	import chocoBarIcon from '#lib/assets/chocolate-bar.svg';
 	import cheeseIcon from '#lib/assets/cheese.svg';
@@ -34,7 +34,6 @@
 	import IconMdiCheckBold from '@iconify-svelte/mdi/check-bold';
 	import IconMdiChevronDown from '@iconify-svelte/mdi/chevron-down';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
-	import IconMdiHistory from '@iconify-svelte/mdi/history';
 	import IconMdiNewspaper from '@iconify-svelte/mdi/newspaper';
 	import IconMdiTrophyOutline from '@iconify-svelte/mdi/trophy-outline';
 	import {
@@ -220,24 +219,21 @@
 		}
 	});
 
-	// A product the user edited a while ago, to check it is still up to date. Older edits are
-	// more likely to be stale, so they come from the second page; the pick is stable for a day.
-	const revisit = $derived.by(async () => {
+	// The data quality errors found in the products the user edited. The facets API accepts the
+	// data quality facet as a second level after the editor, so it goes in the "value" part. It
+	// answers with the error types and how many products each affects, most frequent first.
+	const QUALITY_ERRORS_SHOWN = 5;
+	const qualityErrors = $derived.by(async () => {
 		const user = username;
-		const data = await contributions;
-		if (!user || !data || data.editor.count === 0) return null;
-
-		const older =
-			data.editor.count > 6
-				? await getFacetValue(fetch, 'editors', encodeURIComponent(user), {
-						page: 2,
-						pageSize: 24,
-						sortBy: 'last_modified_t'
-					}).catch(() => null)
-				: null;
-		const pool = older && older.products.length > 0 ? older.products : data.editor.products;
-		const random = seededRandom(`${now.toDateString()}|revisit|${user}`);
-		return pool[Math.floor(random() * pool.length)] ?? null;
+		if (!user) return null;
+		const data = await getEditorDataQualityErrors(fetch, user, QUALITY_ERRORS_SHOWN).catch(
+			(error) => {
+				console.error('Could not load the data quality errors:', error);
+				return null;
+			}
+		);
+		if (!data?.tags?.length) return null;
+		return data;
 	});
 
 	const stats = $derived([
@@ -835,81 +831,17 @@
 		</div>
 	</section>
 
-	{#await revisit}
+	{#await qualityErrors}
 		<!-- Same footprint as the loaded section, so the page below does not jump. -->
-		<section class="mx-auto mt-12 mb-16 w-full max-w-7xl px-4" aria-hidden="true">
-			<div class="h-96 skeleton rounded-3xl md:h-72"></div>
+		<section class="mx-auto mt-12 w-full max-w-7xl px-4" aria-hidden="true">
+			<div class="h-96 skeleton rounded-3xl"></div>
 		</section>
-	{:then product}
-		{#if product}
-			<section class="mx-auto mt-12 mb-16 w-full max-w-7xl px-4">
-				<div
-					class="grid items-center gap-6 rounded-3xl bg-base-200 p-6 sm:p-8 md:grid-cols-[1fr_22rem]"
-				>
-					<div class="flex flex-col items-start gap-4">
-						<span
-							class="grid h-12 w-12 place-items-center rounded-xl bg-secondary text-secondary-content"
-						>
-							<IconMdiHistory class="h-7 w-7" aria-hidden="true" />
-						</span>
-						<div>
-							<h2 class="text-2xl font-bold sm:text-3xl">
-								{$_('landing.revisit_title', { default: 'Worth a second look' })}
-							</h2>
-							<p class="mt-2 max-w-lg text-base-content/80">
-								{$_('landing.revisit_description', {
-									default:
-										'You edited this product a while ago. Is the information still up to date?'
-								})}
-							</p>
-						</div>
-						<a
-							class="btn btn-primary"
-							href={resolve('/products/[barcode]/edit', { barcode: product.code })}
-						>
-							{$_('landing.revisit_action', { default: 'Review this product' })}
-							<IconMdiArrowRight class="h-5 w-5" aria-hidden="true" />
-						</a>
-					</div>
-					<div class="w-full max-w-sm justify-self-center md:justify-self-end">
-						<WcProductCard {product} />
-					</div>
-				</div>
-			</section>
+	{:then errors}
+		{#if errors}
+			<QualityErrors {errors} {username} />
 		{/if}
 	{/await}
-	<section class="mx-auto mt-12 mb-16 w-full max-w-7xl px-4">
-		<h2 class="text-2xl font-bold">
-			{$_('landing.recent_contributions', { default: 'Recently updated products you edited' })}
-		</h2>
-		{#await contributions}
-			<p class="mt-4 text-base-content/70">{$_('general.loading', { default: 'Loading…' })}</p>
-		{:then data}
-			{#if data && data.editor.products.length > 0}
-				<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{#each data.editor.products.slice(0, 6) as product (product.code)}
-						<WcProductCard {product} />
-					{/each}
-				</div>
-				<a
-					href={resolve('/facets/[facet]/[value]', { facet: 'editors', value: username })}
-					class="btn mt-4 w-full btn-outline"
-				>
-					{$_('dashboard.view_all_edits', { default: 'View all edits' })}
-				</a>
-			{:else if data}
-				<p class="mt-4 text-base-content/70">
-					{$_('landing.no_recent_contributions', {
-						default: 'Your edited products will appear here.'
-					})}
-				</p>
-			{:else}
-				<p class="mt-4 text-base-content/70">
-					{$_('landing.recent_contributions_unavailable', {
-						default: 'Your recent contributions are temporarily unavailable.'
-					})}
-				</p>
-			{/if}
-		{/await}
-	</section>
+
+	<!-- Bottom spacing, whichever sections above are shown. -->
+	<div class="mb-16"></div>
 {/if}
