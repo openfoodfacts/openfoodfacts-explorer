@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import Logo from './Logo.svelte';
 	import { shouldBeContainer } from '#lib/layout.js';
+	import { OPEN_PRICES_BASE_URL } from '#lib/const.js';
 
 	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
 	import IconSimpleIconsMastodon from '@iconify-svelte/simple-icons/mastodon';
@@ -104,6 +105,11 @@
 		{
 			url: resolve('/static/[id]', { id: 'who-we-are' }),
 			key: 'footer.discover.who_we_are'
+		},
+		{
+			url: resolve('/static/[id]', { id: 'open-food-facts-mobile-app' }),
+			key: 'footer.discover.mobile_app',
+			default: 'Mobile app'
 		},
 		{
 			url: 'https://blog.openfoodfacts.org/en/',
@@ -212,7 +218,7 @@
 					href={link.url}
 					class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
 				>
-					{$_(link.key)}
+					{$_(link.key, { default: link.default })}
 				</a>
 			{/each}
 		</div>
@@ -233,6 +239,14 @@
 					{$_(link.key, { default: link.default })}
 				</a>
 			{/each}
+			<a
+				href={OPEN_PRICES_BASE_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="rounded-full bg-secondary-content px-4 py-2 text-primary transition-opacity hover:opacity-80"
+			>
+				{$_('footer.open_x_facts.open_prices', { default: 'Open Prices' })}
+			</a>
 		</div>
 	</div>
 </div>
