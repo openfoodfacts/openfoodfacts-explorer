@@ -15,7 +15,7 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
-	import { getFacetPairsPath } from '#lib/api/facets.js';
+	import { getFacetPairsPath, type FacetPair } from '#lib/api/facets.js';
 	import { withLocationPrefix } from '#lib/location-link.js';
 	import { parseUrlLocation } from '#lib/url-location.js';
 
@@ -52,15 +52,21 @@
 			.join(' › ')
 	);
 
+	/** Link to a facet page for these pairs, keeping the location prefix, e.g. /fr-fr. */
+	function facetPairsHref(pairs: FacetPair[], query: string) {
+		// getFacetPairsPath encodes each value, so a "#" in a value stays in the path
+		const path = getFacetPairsPath(pairs) + query;
+		const location = parseUrlLocation(page.url.pathname);
+		return withLocationPrefix(path, location, page.url.pathname);
+	}
+
 	/** Link to this page without one of its filters, back on the first page. */
 	function removeFilterHref(index: number) {
 		const otherPairs = facetPairs.filter((_, pairIndex) => pairIndex !== index);
 		const params = new SvelteURLSearchParams(page.url.search);
 		params.delete('page');
 		const query = params.size > 0 ? `?${params}` : '';
-		// Keep the location prefix of the current page, e.g. /fr-fr
-		const location = parseUrlLocation(page.url.pathname);
-		return withLocationPrefix(getFacetPairsPath(otherPairs) + query, location, page.url.pathname);
+		return facetPairsHref(otherPairs, query);
 	}
 
 	// untrack: refetch only on facet/value change, not on page or sort.
@@ -357,12 +363,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			const pagePath = resolve('/facets/[facet]/[value]/[...rest]', {
-				facet: facet.name,
-				value: facetValue,
-				rest: page.params.rest ?? ''
-			});
-			return `${pagePath}?${params}`;
+			return facetPairsHref(facetPairs, `?${params}`);
 		}}
 	/>
 </div>
