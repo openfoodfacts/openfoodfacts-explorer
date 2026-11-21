@@ -104,7 +104,8 @@
 	const LINKS_DISCOVER_PROJECTS = $derived([
 		{
 			url: resolve('/static/[id]', { id: 'who-we-are' }),
-			key: 'footer.discover.who_we_are'
+			key: 'footer.discover.who_we_are',
+			default: 'Who we are'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'open-food-facts-mobile-app' }),
@@ -113,27 +114,33 @@
 		},
 		{
 			url: 'https://blog.openfoodfacts.org/en/',
-			key: 'footer.discover.blog'
+			key: 'footer.discover.blog',
+			default: 'Blog'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'code-of-conduct' }),
-			key: 'footer.discover.code_of_conduct'
+			key: 'footer.discover.code_of_conduct',
+			default: 'Code of Conduct'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'open-food-facts-vision-mission-values-and-programs' }),
-			key: 'footer.discover.vision_mission_values_and_programs'
+			key: 'footer.discover.vision_mission_values_and_programs',
+			default: 'Vision, Mission, Values and Programs'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'partners' }),
-			key: 'footer.discover.partners'
+			key: 'footer.discover.partners',
+			default: 'Partners'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'faq' }),
-			key: 'footer.discover.faq'
+			key: 'footer.discover.faq',
+			default: 'FAQ'
 		},
 		{
 			url: resolve('/static/[id]', { id: 'presskit' }),
-			key: 'footer.discover.press'
+			key: 'footer.discover.press',
+			default: 'Press'
 		}
 	]);
 
