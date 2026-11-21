@@ -27,6 +27,7 @@ Please provide a description of your changes below.
 - [ ] I understand the changes I'm proposing and why they are needed.
 - [ ] My changes generate no new warnings or errors (linting, console).
 - [ ] I have made corresponding changes to the documentation (if applicable).
+- [ ] This issue has been discussed with a maintainer and approved for implementation.
 
 ## Large Language Models usage disclosure
 

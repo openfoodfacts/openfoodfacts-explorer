@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import JsBarcode from 'jsbarcode';
 	import OpenFoodFacts from '@openfoodfacts/openfoodfacts-nodejs';
 
@@ -236,7 +237,7 @@
 				{#if code.length >= 3}
 					<a
 						class="btn btn-soft btn-sm"
-						href={`/search?barcode_prefix=${encodeURIComponent(code.slice(0, 3))}`}
+						href={`${resolve('search')}?barcode_prefix=${encodeURIComponent(code.slice(0, 3))}`}
 					>
 						{$_('product.barcode.similar_products', { default: 'Similar products' })}
 					</a>

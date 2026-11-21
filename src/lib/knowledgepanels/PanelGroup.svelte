@@ -26,9 +26,11 @@
 <h3 class="my-3 text-lg font-bold sm:text-xl">{groupEl.title}</h3>
 <div class="flex flex-col gap-4 md:flex-row">
 	<div class="flex grow flex-col gap-2">
-		{#each groupEl.panel_ids as id (id)}
+		{#each groupEl.panel_ids as id, index (`${index}:${id}`)}
 			{@const panel = panels[id]}
-			<Panel {panel} {panels} {id} productCode={code} />
+			{#if panel != null}
+				<Panel {panel} {panels} {id} productCode={code} />
+			{/if}
 		{/each}
 	</div>
 

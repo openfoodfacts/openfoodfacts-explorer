@@ -1,4 +1,7 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"env": {
+		"NODE_OPTIONS": "--experimental-require-module"
+	},
 	"buildCommand": "node scripts/fetch-build-history.mjs && pnpm build"
 }
