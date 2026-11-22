@@ -68,6 +68,27 @@ describe('queryFacetCounts', () => {
 		]);
 	});
 
+	it('counts only the values of products that match the filter', async () => {
+		const fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+			const stages = JSON.parse(String(init?.body));
+			return Response.json(
+				stages.some((stage: Record<string, unknown>) => '$count' in stage)
+					? { categories_tags: 3 }
+					: [{ _id: 'en:spreads', count: 7 }]
+			);
+		});
+		const result = await queryFacetCounts(fetch, 'https://query.example', 'categories', 1, 50, {
+			brands_tags: 'ferrero'
+		});
+		expect(result).toEqual({ values: [{ _id: 'en:spreads', count: 7 }], count: 3 });
+
+		// Both the page of values and the total use the filter
+		for (const call of fetch.mock.calls) {
+			const stages = JSON.parse(String(call[1]?.body));
+			expect(stages[0]).toEqual({ $match: { brands_tags: 'ferrero' } });
+		}
+	});
+
 	it('leaves unconfigured and unsupported facets on the existing path', async () => {
 		const fetch = vi.fn();
 		expect(await queryFacetCounts(fetch, '', 'categories', 1, 50)).toBeNull();
