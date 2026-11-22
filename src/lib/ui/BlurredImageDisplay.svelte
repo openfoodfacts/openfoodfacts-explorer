@@ -1,5 +1,6 @@
 <script lang="ts">
 	import OffImage from './OffImage.svelte';
+	import ImageBackdrop from './ImageBackdrop.svelte';
 	import type { ImageSizes } from './imageSizes.js';
 
 	type Props = {
@@ -13,14 +14,7 @@
 
 <div class={['relative overflow-hidden', className]}>
 	<div class="absolute inset-0 overflow-hidden">
-		<OffImage
-			{src}
-			{imageSizes}
-			alt={alt ?? ''}
-			sizes="64px"
-			class="h-full w-full scale-150 object-cover blur-sm"
-			aria-hidden="true"
-		/>
+		<ImageBackdrop {src} {imageSizes} sizes="64px" />
 	</div>
 
 	<div class="relative h-full w-full">

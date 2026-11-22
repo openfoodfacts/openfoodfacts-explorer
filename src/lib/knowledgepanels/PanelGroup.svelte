@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { KnowledgePanelGroupElement, KnowledgePanels } from '#lib/api.js';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
+	import ImageBackdrop from '#lib/ui/ImageBackdrop.svelte';
+	import { getPanelImageSizes } from '#lib/ui/imageSizes.js';
 	import Panel from './Panel.svelte';
 
 	let {
@@ -18,8 +20,7 @@
 	let previewImageUrl = $derived(
 		groupEl.image?.sizes['400']?.url ??
 			groupEl.image?.sizes['200']?.url ??
-			groupEl.image?.sizes['100']?.url ??
-			groupEl.image?.sizes['full']?.url
+			groupEl.image?.sizes['100']?.url
 	);
 </script>
 
@@ -36,9 +37,18 @@
 
 	{#if groupEl.image != null && previewImageUrl != null}
 		{@const parsedImageId = Number(groupEl.image.id)}
-		<div class="md:max-w-64">
+		<div
+			class="relative aspect-2/1 w-full overflow-hidden rounded-xl bg-base-100 md:aspect-square md:max-w-64 [&>div]:size-full [&>div_button]:size-full [&>div_img]:size-full [&>div_img]:object-contain [&>div>button>div]:size-full"
+		>
+			<ImageBackdrop
+				src={previewImageUrl}
+				imageSizes={getPanelImageSizes(groupEl.image.sizes)}
+				sizes="(min-width: 768px) 256px, 100vw"
+			/>
 			<ImageButton
 				src={previewImageUrl}
+				imageSizes={getPanelImageSizes(groupEl.image.sizes)}
+				sizes="(min-width: 768px) 256px, 100vw"
 				alt={groupEl.image.alt}
 				rawImageId={Number.isFinite(parsedImageId) ? parsedImageId : undefined}
 				productCode={code}

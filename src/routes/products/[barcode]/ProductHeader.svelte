@@ -13,7 +13,7 @@
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import Card from '#lib/ui/Card.svelte';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
-	import OffImage from '#lib/ui/OffImage.svelte';
+	import ImageBackdrop from '#lib/ui/ImageBackdrop.svelte';
 	import { getFrontImage } from '#lib/ui/frontImage.js';
 	import AppStrip from './AppStrip.svelte';
 	import ProductMoreMenu from './ProductMoreMenu.svelte';
@@ -132,14 +132,11 @@
 					<div
 						class="relative aspect-square overflow-hidden rounded-xl bg-white [&>div]:size-full [&>div_button]:size-full [&>div_img]:size-full [&>div_img]:object-contain [&>div>button>div]:size-full"
 					>
-						<OffImage
+						<ImageBackdrop
 							src={frontImage}
 							imageSizes={front.imageSizes}
-							alt=""
 							sizes={frontImageDisplaySizes}
 							loading="eager"
-							class="absolute inset-0 size-full scale-150 object-cover blur-sm"
-							aria-hidden="true"
 						/>
 						<ImageButton
 							src={frontImage}
