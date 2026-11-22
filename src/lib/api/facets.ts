@@ -1,5 +1,9 @@
 import type { KnowledgePanels } from './knowledgepanels';
-import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
+import type {
+	FacetResponse,
+	FacetSortOption as ProductFacetsSortOption
+} from '@openfoodfacts/openfoodfacts-nodejs';
+import { API_HOST } from '#lib/const.js';
 import { createProductsApi } from './product';
 
 export type FacetSortOption = ProductFacetsSortOption;
@@ -40,6 +44,35 @@ export function getFacetPairs(facet: string, value: string, rest: string): Facet
 	return pairs;
 }
 
+export type FacetDrilldown = { pairs: FacetPair[]; listFacet: string };
+
+/**
+ * Read a drilldown path, which lists the values of one facet for the products of some pairs,
+ * e.g. /facets/brands/ferrero/categories lists the categories of Ferrero products.
+ *
+ * @param path the path after the first facet and value, such as "categories"
+ * or "labels/en:organic/categories"
+ * @returns the pairs and the facet to list, or null when the path is not a valid drilldown
+ */
+export function getFacetDrilldown(
+	facet: string,
+	value: string,
+	path: string
+): FacetDrilldown | null {
+	const parts = path.split('/');
+	const listFacet = parts.pop();
+	if (!listFacet) return null;
+
+	const pairs = getFacetPairs(facet, value, parts.join('/'));
+	if (pairs == null) return null;
+
+	// Listing a facet that is already filtered on would only show its own value
+	for (const pair of pairs) {
+		if (pair.facet === listFacet) return null;
+	}
+	return { pairs, listFacet };
+}
+
 // Build the page path for facet/value pairs
 export function getFacetPairsPath(pairs: FacetPair[]): string {
 	const parts = pairs.map(
@@ -78,6 +111,26 @@ export async function getFacet(
 ) {
 	const client = createProductsApi(fetch);
 	return client.getFacet(facet, opts);
+}
+
+/**
+ * Load the values of a facet for the products of some pairs from Product Opener,
+ * e.g. /facets/brands/ferrero/categories.json. Used when Query is not available.
+ */
+export async function getFacetForPairs(
+	fetch: typeof window.fetch,
+	drilldown: FacetDrilldown,
+	opts: { page: number; pageSize: number }
+): Promise<FacetResponse> {
+	const params = new URLSearchParams({
+		page: String(opts.page),
+		page_size: String(opts.pageSize)
+	});
+	const path = `${getFacetPairsPath(drilldown.pairs)}/${encodeURIComponent(drilldown.listFacet)}`;
+
+	const response = await fetch(`${API_HOST}${path}.json?${params}`);
+	if (!response.ok) throw new Error(`Facet request failed: HTTP ${response.status}`);
+	return (await response.json()) as FacetResponse;
 }
 
 export async function getFacetValue(

@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getFacetPairs, getFacetPairsPath, getProductsForFacetFilter } from './facets';
+import {
+	getFacetDrilldown,
+	getFacetForPairs,
+	getFacetPairs,
+	getFacetPairsPath,
+	getProductsForFacetFilter
+} from './facets';
 
 describe('getFacetPairs', () => {
 	it('returns one pair for a single facet page', () => {
@@ -21,6 +27,66 @@ describe('getFacetPairs', () => {
 		['a repeated facet', 'brands/nutella']
 	])('rejects %s', (_, rest) => {
 		expect(getFacetPairs('brands', 'ferrero', rest)).toBeNull();
+	});
+});
+
+describe('getFacetDrilldown', () => {
+	it('lists a facet for the products of one value', () => {
+		expect(getFacetDrilldown('brands', 'ferrero', 'categories')).toEqual({
+			pairs: [{ facet: 'brands', value: 'ferrero' }],
+			listFacet: 'categories'
+		});
+	});
+
+	it('lists a facet for the products of several values', () => {
+		expect(getFacetDrilldown('brands', 'ferrero', 'labels/en:organic/categories')).toEqual({
+			pairs: [
+				{ facet: 'brands', value: 'ferrero' },
+				{ facet: 'labels', value: 'en:organic' }
+			],
+			listFacet: 'categories'
+		});
+	});
+
+	it.each([
+		['an empty path', ''],
+		['an even path', 'categories/en:spreads'],
+		['an empty part', 'labels//categories'],
+		['a facet that is already filtered on', 'brands'],
+		['a facet that is filtered on later in the path', 'labels/en:organic/labels']
+	])('rejects %s', (_, path) => {
+		expect(getFacetDrilldown('brands', 'ferrero', path)).toBeNull();
+	});
+});
+
+describe('getFacetForPairs', () => {
+	it('requests the facet list of the pairs from Product Opener', async () => {
+		const fetch = vi.fn(async (..._: [RequestInfo | URL, RequestInit?]) =>
+			Response.json({ count: 1, tags: [] })
+		);
+		const drilldown = {
+			pairs: [
+				{ facet: 'brands', value: 'ferrero' },
+				{ facet: 'labels', value: 'en:organic' }
+			],
+			listFacet: 'categories'
+		};
+
+		const result = await getFacetForPairs(fetch, drilldown, { page: 2, pageSize: 10 });
+
+		expect(result).toEqual({ count: 1, tags: [] });
+		expect(String(fetch.mock.calls[0][0])).toMatch(
+			/\/facets\/brands\/ferrero\/labels\/en%3Aorganic\/categories\.json\?page=2&page_size=10$/
+		);
+	});
+
+	it('throws when Product Opener fails', async () => {
+		const fetch = vi.fn(async () => new Response('', { status: 503 }));
+		const drilldown = { pairs: [{ facet: 'brands', value: 'ferrero' }], listFacet: 'categories' };
+
+		await expect(getFacetForPairs(fetch, drilldown, { page: 1, pageSize: 50 })).rejects.toThrow(
+			'HTTP 503'
+		);
 	});
 });
 
