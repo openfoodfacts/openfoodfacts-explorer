@@ -976,7 +976,9 @@
 		"drilldown_website_title": "Exploring {facet} for {filters} - Open Food Facts Explorer",
 		"drilldown_website_description": "{facet} of the products matching {filters} on Open Food Facts Explorer",
 		"drilldown_back": "Back to {filters}",
-		"drilldown_empty": "No values found for these products."
+		"drilldown_empty": "No values found for these products.",
+		"explore_by": "Explore by",
+		"explore_by_placeholder": "Choose a facet"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",

@@ -15,7 +15,7 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
-	import { facetPairsHref } from '#lib/ui/facets/facet-links.js';
+	import { EXPLORE_BY_FACETS, facetPairsHref } from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
 	import {
@@ -57,6 +57,16 @@
 		params.delete('page');
 		const query = params.size > 0 ? `?${params}` : '';
 		return facetPairsHref(otherPairs, page.url.pathname, { query });
+	}
+
+	// The facets this page is not filtered on yet
+	const exploreByFacets = $derived(
+		EXPLORE_BY_FACETS.filter((name) => !facetPairs.some((pair) => pair.facet === name))
+	);
+
+	/** Open the list of a facet's values for the products of this page. */
+	function exploreBy(listFacet: string) {
+		goto(facetPairsHref(facetPairs, page.url.pathname, { listFacet }));
 	}
 
 	// untrack: refetch only on facet/value change, not on page or sort.
@@ -158,6 +168,18 @@
 		{/each}
 	</div>
 {/if}
+
+<label class="select mb-8 w-full max-w-sm">
+	<span class="label">{$_('facets.explore_by', { default: 'Explore by' })}</span>
+	<select value="" oninput={(e) => exploreBy(e.currentTarget.value)}>
+		<option value="" disabled>
+			{$_('facets.explore_by_placeholder', { default: 'Choose a facet' })}
+		</option>
+		{#each exploreByFacets as name (name)}
+			<option value={name}>{$_(`facets.names.${name}`, { default: name })}</option>
+		{/each}
+	</select>
+</label>
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
