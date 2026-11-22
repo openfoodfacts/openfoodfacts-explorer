@@ -6,7 +6,7 @@
 	import KnowledgePanels from '#lib/knowledgepanels/Panels.svelte';
 	import Pagination from '#lib/Pagination.svelte';
 	import { _ } from '#lib/i18n/index.js';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -37,17 +37,15 @@
 	})}
 />
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('facets')}
-		label={$_('navigation.back_to_explore_by', { default: 'Back to explore by' })}
-	/>
-	<span
-		>{$_('facets.heading', {
-			values: { facet: $_(`facets.names.${facet}`, { default: facet }) },
-			default: 'Exploring {facet}'
-		})}</span
-	>
+<Breadcrumbs
+	breadcrumbs={[
+		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
+		{ name: facetName }
+	]}
+/>
+
+<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
+	<span>{facetName}</span>
 </h2>
 
 {#if Object.hasOwn(MAP_FACETS, facet)}
