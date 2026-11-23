@@ -1,0 +1,14 @@
+# CodeRabbit configuration
+# See https://docs.coderabbit.ai/getting-started/configure-coderabbit
+reviews:
+  auto_review:
+    # skip release PRs opened by release-please (e.g. "chore(main): release 1.114.2")
+    ignore_title_keywords:
+      - 'chore(main): release'
+    # also review stacked PRs (their base is the previous PR's branch, not main)
+    base_branches:
+      - '.*'
+  # path_filters:
+  # translation files are synced from Crowdin (1 file per language),
+  # excluding them keeps PRs under the 100 files review limit
+  # - "!src/i18n/locales/**"

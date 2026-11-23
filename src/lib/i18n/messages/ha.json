@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Bincika - {query} - Buɗe Facts Facts Explorer",
+		"title": "Bincika - {query}",
 		"placeholder": "Tambaya ko barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Buɗe Facts Facts Explorer",
+		"title": "{productName}",
 		"description": "Shafin samfur na {productName} akan Buɗe Facts Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Binciko {facet} - Buɗe Facts Facts Explorer",
+		"facet_website_title": "Binciko {facet}",
 		"facet_website_description": "Gano nau'in {facet} akan Buɗe Facts Facts Explorer.",
-		"facet_value_website_title": "Binciken {facet}: {value} - Buɗe Facts Food Explorer",
+		"facet_value_website_title": "Binciken {facet}: {value}",
 		"facet_value_website_description": "Gano nau'in {value} akan Buɗe Facts Facts Explorer.",
 		"facet_back_to_list": "Komawa ga fuskoki",
 		"facet_back_to_overview": "Komawa {facet} dubawa"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "An ƙirƙira samfuran",
 		"products_edited": "Products edited",
-		"html_title": "Bayanin Mai amfani - {user} - Buɗe Facts Food Explorer",
+		"html_title": "Bayanin Mai amfani - {user}",
 		"title": "Bayanan mai amfani na {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

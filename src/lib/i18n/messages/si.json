@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "සොයන්න - {query} - විවෘත ආහාර කරුණු ගවේෂකය",
+		"title": "සොයන්න - {query}",
 		"placeholder": "විමසුම හෝ තීරු කේතය",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - විවෘත ආහාර කරුණු ගවේෂකය",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer හි {productName} සඳහා නිෂ්පාදන පිටුව",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} ගවේෂණය කිරීම - විවෘත ආහාර කරුණු ගවේෂකය",
+		"facet_website_title": "{facet} ගවේෂණය කිරීම",
 		"facet_website_description": "Open Food Facts Explorer හි {facet} කාණ්ඩය සොයා ගන්න.",
-		"facet_value_website_title": "{facet}ගවේෂණය කිරීම : {value} - විවෘත ආහාර කරුණු ගවේෂකය",
+		"facet_value_website_title": "{facet}ගවේෂණය කිරීම : {value}",
 		"facet_value_website_description": "Open Food Facts Explorer හි {value} කාණ්ඩය සොයා ගන්න.",
 		"facet_back_to_list": "මුහුණුවර වෙත ආපසු",
 		"facet_back_to_overview": "{facet} දළ විශ්ලේෂණය වෙත ආපසු යන්න"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "නිර්මාණය කරන ලද නිෂ්පාදන",
 		"products_edited": "Products edited",
-		"html_title": "පරිශීලක පැතිකඩ - {user} - විවෘත ආහාර කරුණු ගවේෂකය",
+		"html_title": "පරිශීලක පැතිකඩ - {user}",
 		"title": "{user}හි පරිශීලක පැතිකඩ",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

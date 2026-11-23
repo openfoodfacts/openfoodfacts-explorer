@@ -1,3 +1,5 @@
+// The caller adds the active location when navigating to this generated path.
+// eslint-disable-next-line no-restricted-imports
 import { resolve } from '$app/paths';
 
 const EDIT_SECTIONS: Record<string, string> = {

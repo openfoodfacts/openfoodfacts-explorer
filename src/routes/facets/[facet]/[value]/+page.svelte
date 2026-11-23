@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { page } from '$app/state';
 	import { browser } from '$app/env';
 
@@ -14,7 +14,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
 	import {
@@ -34,6 +34,10 @@
 		distributionData,
 		mapFacet
 	} = $derived(data);
+
+	const facetLabel = $derived(
+		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
+	);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
@@ -66,30 +70,26 @@
 
 <Metadata
 	title={$_('facets.facet_value_website_title', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 	description={$_('facets.facet_value_website_description', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 />
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', {
-			values: { facet: facet.name },
-			default: 'Back to {facet} overview'
-		})}
-	/>
-	<span
-		>{$_('facets.value_heading', {
-			values: {
-				facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
-				value: facet.value
-			},
-			default: 'Exploring {facet}: {value}'
-		})}</span
-	>
+<Breadcrumbs
+	breadcrumbs={[
+		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
+		{
+			name: $_(`facets.names.${facet.name}`, { default: facet.name }),
+			href: resolve('/facets/[facet]', { facet: facet.name })
+		},
+		{ name: facetLabel }
+	]}
+/>
+
+<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
+	<span>{facetLabel}</span>
 </h2>
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
@@ -261,12 +261,12 @@
 					{#each results.products as { product_name, code } (code)}
 						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
-								<a href={`/products/${code}`} class="link">
+								<a href={resolve('/products/[barcode]', { barcode: code })} class="link">
 									{code}
 								</a>
 							</td>
 							<td>
-								<a href={`/products/${code}`}>
+								<a href={resolve('/products/[barcode]', { barcode: code })}>
 									{product_name}
 								</a>
 							</td>
@@ -282,7 +282,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `?${params}`;
+			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facetValue })}?${params}`;
 		}}
 	/>
 </div>

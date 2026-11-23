@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '#lib/paths.js';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { Snippet } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
@@ -18,7 +19,6 @@
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
 	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
-	import { resolve } from '$app/paths';
 	type Props = {
 		product: Product;
 		lc?: string;
@@ -137,6 +137,7 @@
 							aria-hidden="true"
 						/>
 						<ImageButton
+							loading="eager"
 							src={frontImage}
 							alt={product.product_name}
 							productCode={product.code}
@@ -192,16 +193,42 @@
 			<div
 				class="col-span-2 mt-4 flex flex-wrap items-center gap-2 md:col-span-1 md:col-start-2 md:mt-2 md:self-start"
 			>
-				<a
-					href={`/products/${product.code}/edit`}
-					class={['btn rounded-full btn-sm', product.product_name ? 'btn-outline' : 'btn-primary']}
-					class:pointer-events-none={navigating.to}
-				>
-					<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
-					{product.product_name
-						? $_('product.buttons.edit', { default: 'Edit' })
-						: $_('product.edit.edit_product_title', { default: 'Edit product' })}
-				</a>
+				{#if !product.product_type || product.product_type === 'food'}
+					<a
+						href={resolve('/products/[barcode]/edit', { barcode: `${product.code}` })}
+						class={[
+							'btn rounded-full btn-sm',
+							product.product_name ? 'btn-outline' : 'btn-primary'
+						]}
+						class:pointer-events-none={navigating.to}
+					>
+						<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
+						{product.product_name
+							? $_('product.buttons.edit', { default: 'Edit' })
+							: $_('product.edit.edit_product_title', { default: 'Edit product' })}
+					</a>
+				{:else}
+					<div
+						class="tooltip tooltip-top"
+						data-tip={$_('product.edit.food_only', {
+							default: 'Editing is currently available only for food products.'
+						})}
+					>
+						<button
+							class="btn btn-disabled rounded-full btn-outline btn-sm"
+							aria-disabled="true"
+							aria-describedby="edit-food-only"
+						>
+							<IconMdiPencil class="h-4 w-4" aria-hidden="true" />
+							{$_('product.buttons.edit', { default: 'Edit' })}
+						</button>
+						<span id="edit-food-only" class="sr-only">
+							{$_('product.edit.food_only', {
+								default: 'Editing is currently available only for food products.'
+							})}
+						</span>
+					</div>
+				{/if}
 				<button class="btn rounded-full btn-outline btn-sm" onclick={sharePage}>
 					<IconMdiShareVariant class="h-4 w-4" aria-hidden="true" />
 					{$_('product.buttons.share', { default: 'Share' })}
@@ -271,7 +298,10 @@
 
 						<div class="flex flex-wrap items-center justify-center gap-2 md:justify-start">
 							{#each product.emb_codes_tags as unknown as string[] as tag, i (i)}
-								<a class="badge font-mono wrap-break-word" href="/facets/packager-codes/{tag}">
+								<a
+									class="badge font-mono wrap-break-word"
+									href={resolve('/facets/[facet]/[value]', { facet: 'packager-codes', value: tag })}
+								>
 									{tag.toUpperCase()}
 								</a>
 							{/each}

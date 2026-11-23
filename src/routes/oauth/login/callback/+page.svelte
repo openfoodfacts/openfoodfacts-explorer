@@ -2,9 +2,9 @@
 	import { page } from '$app/state';
 
 	import { saveAuthTokens } from '#lib/stores/auth.js';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { createKeycloakApi } from '#lib/api.js';
 	import { getSafeRedirectUrl } from '#lib/utils.js';
 	import { trackOffEvent } from '#lib/analytics.js';
@@ -49,7 +49,7 @@
 			// Verify the destination is same-origin
 			const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
 
-			await goto(targetPath);
+			await goto(targetPath, { replaceState: true });
 		} catch (error) {
 			console.error('Token exchange failed:', error);
 			throw new Error('Authentication failed: Token exchange error', { cause: error });

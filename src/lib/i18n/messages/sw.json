@@ -17,7 +17,7 @@
 		"account": "Akaunti"
 	},
 	"search": {
-		"title": "Tafuta - {query} - Fungua Kichunguzi cha Ukweli wa Chakula",
+		"title": "Tafuta - {query}",
 		"placeholder": "Hoja au msimbopau",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Fungua Kichunguzi cha Ukweli wa Chakula",
+		"title": "{productName}",
 		"description": "Ukurasa wa bidhaa wa {productName} kwenye Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Kuchunguza {facet} - Fungua Kichunguzi cha Ukweli wa Chakula",
+		"facet_website_title": "Kuchunguza {facet}",
 		"facet_website_description": "Gundua kitengo cha {facet} kwenye Open Food Facts Explorer.",
-		"facet_value_website_title": "Kuchunguza {facet}: {value} - Fungua Kichunguzi cha Ukweli wa Chakula",
+		"facet_value_website_title": "Kuchunguza {facet}: {value}",
 		"facet_value_website_description": "Gundua kitengo cha {value} kwenye Open Food Facts Explorer.",
 		"facet_back_to_list": "Rudi kwa sura",
 		"facet_back_to_overview": "Rudi kwa {facet} muhtasari"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Bidhaa zilizoundwa",
 		"products_edited": "Products edited",
-		"html_title": "Wasifu wa Mtumiaji - {user} - Fungua Kichunguzi cha Ukweli wa Chakula",
+		"html_title": "Wasifu wa Mtumiaji - {user}",
 		"title": "Wasifu wa Mtumiaji wa {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

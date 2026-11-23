@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "खोज - {query} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
+		"title": "खोज - {query}",
 		"placeholder": "क्वेरी वा बारकोड",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
+		"title": "{productName}",
 		"description": "ओपन फूड फ्याक्ट्स एक्सप्लोररमा {productName} को लागि उत्पादन पृष्ठ",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "अन्वेषण गर्दै {facet} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
+		"facet_website_title": "अन्वेषण गर्दै {facet}",
 		"facet_website_description": "ओपन फूड फ्याक्ट्स एक्सप्लोररमा {facet} श्रेणी पत्ता लगाउनुहोस्।",
-		"facet_value_website_title": "अन्वेषण गर्दै {facet}: {value} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
+		"facet_value_website_title": "अन्वेषण गर्दै {facet}: {value}",
 		"facet_value_website_description": "ओपन फूड फ्याक्ट्स एक्सप्लोररमा {value} श्रेणी पत्ता लगाउनुहोस्।",
 		"facet_back_to_list": "पक्षहरूमा फर्कनुहोस्",
 		"facet_back_to_overview": "{facet} सिंहावलोकनमा फर्कनुहोस्"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "सिर्जना गरिएका उत्पादनहरू",
 		"products_edited": "Products edited",
-		"html_title": "प्रयोगकर्ता प्रोफाइल - {user} - खाद्य तथ्य अन्वेषक खोल्नुहोस्",
+		"html_title": "प्रयोगकर्ता प्रोफाइल - {user}",
 		"title": "{user}को प्रयोगकर्ता प्रोफाइल",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

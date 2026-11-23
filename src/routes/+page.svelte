@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import { resolve } from '#lib/paths.js';
 
-	import { _ } from '#lib/i18n/index.js';
+	import { _, getLocale } from '#lib/i18n/index.js';
+	import { getLanguageCode, preferences } from '#lib/settings.js';
+	import { formatUrlLocation } from '#lib/url-location.js';
 	import { createRobotoffApi, getBulkProductAttributes, getBulkProductCards } from '#lib/api.js';
 	import { deduplicate } from '#lib/utils.js';
 	import { personalizedSearch } from '#lib/stores/preferencesStore.js';
@@ -70,6 +73,19 @@
 	}
 
 	onMount(() => {
+		if (window.location.pathname === '/') {
+			const language = $preferences.locale
+				? getLanguageCode($preferences.locale)
+				: getLanguageCode(getLocale());
+			const location = formatUrlLocation($preferences.country, language);
+			void goto(`/${location}${window.location.search}${window.location.hash}`, {
+				replaceState: true
+			}).then(() => {
+				products = getProducts();
+			});
+			return;
+		}
+
 		products = getProducts();
 	});
 </script>
@@ -80,7 +96,7 @@
 </svelte:head>
 
 <Metadata
-	title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
+	title="Open Food Facts"
 	description={$_('landing.subtitle', {
 		default:
 			'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'

@@ -17,7 +17,7 @@
 		"account": "Konto"
 	},
 	"search": {
-		"title": "Suche - {query} - Open Food Facts Explorer",
+		"title": "Suche - {query}",
 		"placeholder": "Abfrage oder Barcode",
 		"go": "Los",
 		"scan": "Strichcode einlesen",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} – Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Produktseite für {productName} auf Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Zum Produkt {productName} mit dem Code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobiles Navigationsmenü"
 	},
 	"facets": {
-		"facet_website_title": "Erkunden {facet} – Open Food Facts Explorer",
+		"facet_website_title": "Erkunden {facet}",
 		"facet_website_description": "Entdecken Sie die Kategorie {facet} auf Open Food Facts Explorer.",
-		"facet_value_website_title": "Erkunden {facet}: {value} – Open Food Facts Explorer",
+		"facet_value_website_title": "Erkunden {facet}: {value}",
 		"facet_value_website_description": "Entdecken Sie die Kategorie {value} auf Open Food Facts Explorer.",
 		"facet_back_to_list": "Zurück zu den Facetten",
 		"facet_back_to_overview": "Zurück zur Übersicht {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Erstellte Produkte",
 		"products_edited": "Produkte bearbeitet",
-		"html_title": "Benutzerprofil – {user} – Open Food Facts Explorer",
+		"html_title": "Benutzerprofil – {user}",
 		"title": "Benutzerprofil von {user}",
 		"has_created": "Erstellt",
 		"has_edited": "Bearbeitet",

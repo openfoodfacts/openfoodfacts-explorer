@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Sesha - {query} - Vula Umhloli Wemaciniso Ekudla",
+		"title": "Sesha - {query}",
 		"placeholder": "Umbuto noma ibhakhodi",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Vula Umhloli Wemaciniso Ekudla",
+		"title": "{productName}",
 		"description": "Likhasi lemkhicito le {productName} ku-Explorer Yemaciniso Ekudla Lokuvulekile",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Kuhlola {facet} - Vula Umhloli Wemaciniso Ekudla",
+		"facet_website_title": "Kuhlola {facet}",
 		"facet_website_description": "Titfolele {facet} sigaba ku-Explorer Yemaciniso Ekudla Lavulekile.",
-		"facet_value_website_title": "Kuhlola {facet}: {value} - Vula Umhloli Wemaciniso Ekudla",
+		"facet_value_website_title": "Kuhlola {facet}: {value}",
 		"facet_value_website_description": "Titfolele {value} sigaba ku-Explorer Yemaciniso Ekudla Lavulekile.",
 		"facet_back_to_list": "Emuva etincenyeni",
 		"facet_back_to_overview": "Emuva ku {facet} kubuka konkhe"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Imikhicito leyakhiwe",
 		"products_edited": "Products edited",
-		"html_title": "Iphrofayili Yemsebentisi - {user} - Vula Umhloli Wemaciniso Ekudla",
+		"html_title": "Iphrofayili Yemsebentisi - {user}",
 		"title": "Iphrofayili yemsebentisi ye {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

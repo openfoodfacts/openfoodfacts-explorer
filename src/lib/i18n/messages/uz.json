@@ -17,7 +17,7 @@
 		"account": "Hisob"
 	},
 	"search": {
-		"title": "Qidiruv - {query} - Oziq-ovqat faktlari tadqiqotchisini oching",
+		"title": "Qidiruv - {query} - Oziq",
 		"placeholder": "So'rov yoki shtrix kod",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Oziq-ovqat faktlari tadqiqotchisini oching",
+		"title": "{productName} - Oziq",
 		"description": "Open Food Facts Explorer-da {productName} uchun mahsulot sahifasi",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Exploring {facet} - Oziq-ovqat faktlari tadqiqotchisini oching",
+		"facet_website_title": "Exploring {facet} - Oziq",
 		"facet_website_description": "Open Food Facts Explorer-da {facet} toifasini kashf eting.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Oziq-ovqat faktlari tadqiqotchisini oching",
+		"facet_value_website_title": "Exploring {facet}: {value} - Oziq",
 		"facet_value_website_description": "Open Food Facts Explorer-da {value} toifasini kashf eting.",
 		"facet_back_to_list": "Fasetlarga qaytish",
 		"facet_back_to_overview": "{facet} sharhiga qaytish"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Yaratilgan mahsulotlar",
 		"products_edited": "Products edited",
-		"html_title": "Foydalanuvchi profili - {user} - Food Facts Explorer-ni oching",
+		"html_title": "Foydalanuvchi profili - {user} - Food Facts Explorer",
 		"title": "{user}foydalanuvchi profili",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
