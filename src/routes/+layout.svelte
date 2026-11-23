@@ -510,7 +510,7 @@
 		{@render children?.()}
 	</div>
 {/if}
-{#if page.url.pathname !== '/compare'}
+{#if !page.url.pathname.startsWith('/compare')}
 	<div
 		class={[
 			'fixed left-4',

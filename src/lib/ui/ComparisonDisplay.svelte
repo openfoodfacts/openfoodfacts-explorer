@@ -8,10 +8,18 @@
 	import IconMdiClose from '@iconify-svelte/mdi/close';
 	import IconMdiDrag from '@iconify-svelte/mdi/drag';
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
+	import {
+		type NutrientComparison,
+		type ComparisonMode,
+		getNutrientComparison,
+		getScoreComparison,
+		getNovaComparison,
+		getDiffColorClass
+	} from '#lib/ui/comparisonUtils.js';
 
 	type Props = {
 		products: Product[];
-		comparisonMode: 'absolute' | 'relative-first' | 'relative-best';
+		comparisonMode: ComparisonMode;
 		onRemoveProduct?: (code: string) => void;
 		onReorderProduct?: (fromIndex: number, toIndex: number) => void;
 		readonly?: boolean;
@@ -24,33 +32,6 @@
 		onReorderProduct,
 		readonly = false
 	}: Props = $props();
-
-	type NutrientKey = string;
-
-	type NutrientComparison = {
-		value: number | null;
-		formatted: string;
-		diff: number | null;
-		diffFormatted: string;
-		isBest: boolean;
-		isWorst: boolean;
-	};
-
-	// Helper to safely get a nutrient value from a product
-	function getNutrientValue(product: Product, nutrientKey: string): number | null {
-		const rawValue = product.nutriments?.[nutrientKey];
-		if (typeof rawValue === 'number') {
-			return rawValue;
-		}
-
-		// Try to parse if it's a string
-		if (typeof rawValue === 'string') {
-			const parsed = parseFloat(rawValue);
-			return isNaN(parsed) ? null : parsed;
-		}
-
-		return null;
-	}
 
 	type AvailableNutrient = {
 		key: string;
@@ -118,119 +99,6 @@
 			unit: '%'
 		}
 	];
-	// Nutrients to compare
-	const nutrientRules: Record<string, 'min' | 'max'> = {
-		proteins_100g: 'max',
-		fibers_100g: 'max',
-		'fruits-vegetables-nuts-estimate-from-ingredients_100g': 'max',
-		sugars_100g: 'min',
-		salt_100g: 'min',
-		sodium_100g: 'min',
-		alcohol_100g: 'min',
-		carbohydrates_100g: 'min',
-		'energy-kcal_100g': 'min',
-		'energy-kj_100g': 'min',
-		fat_100g: 'min',
-		'saturated-fat_100g': 'min'
-	};
-	// Get the direction of the nutrient
-	function getDirection(nutrientKey: string): 'min' | 'max' {
-		return nutrientRules[nutrientKey] ?? 'min';
-	}
-	// Get the best value for a nutrient
-	function getBestValue(products: Product[], nutrientKey: NutrientKey): number | null {
-		const values = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		if (!values.length) return null;
-
-		const direction = getDirection(nutrientKey);
-		return direction === 'min' ? Math.min(...values) : Math.max(...values);
-	}
-
-	// Get the worst value for a nutrient
-	function getWorstValue(products: Product[], nutrientKey: NutrientKey): number | null {
-		const values = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null);
-		if (!values.length) return null;
-
-		const direction = getDirection(nutrientKey);
-		return direction === 'min' ? Math.max(...values) : Math.min(...values);
-	}
-
-	// Get nutrient value with comparison data
-	function getNutrientComparison(
-		product: Product,
-		nutrientKey: NutrientKey,
-		products: Product[],
-		index: number
-	): NutrientComparison {
-		const value = getNutrientValue(product, nutrientKey);
-		const formatted = formatNutrient(value, nutrientKey !== 'energy-kcal_100g');
-
-		if (value == null) {
-			return {
-				value,
-				formatted,
-				diff: null,
-				diffFormatted: '',
-				isBest: false,
-				isWorst: false
-			};
-		}
-
-		let referenceValue: number | null = null;
-		if (comparisonMode === 'relative-first' && index > 0) {
-			referenceValue = getNutrientValue(products[0], nutrientKey);
-		} else if (comparisonMode === 'relative-best') {
-			referenceValue = getBestValue(products, nutrientKey);
-		}
-
-		let diff: number | null = null;
-		let diffFormatted = '';
-		if (referenceValue != null && referenceValue !== value) {
-			diff = calculatePercentageDiff(value, referenceValue);
-			diffFormatted = `${percentageFormatter.format(diff)}%`;
-		}
-
-		const bestValue = getBestValue(products, nutrientKey);
-		const worstValue = getWorstValue(products, nutrientKey);
-
-		// Count how many products have this nutrient to avoid highlighting "best" when only one is compared
-		const comparableCount = products
-			.map((p) => getNutrientValue(p, nutrientKey))
-			.filter((v): v is number => v !== null).length;
-
-		return {
-			value,
-			formatted,
-			diff,
-			diffFormatted,
-			isBest: comparableCount > 1 && bestValue === value,
-			isWorst: comparableCount > 1 && worstValue === value
-		};
-	}
-
-	// Get color class for difference indicator
-	function getDiffColorClass(
-		diff: number | null,
-		isBest: boolean,
-		isWorst: boolean,
-		nutrientKey: string
-	): string {
-		if (isBest) return 'text-success font-semibold';
-		if (isWorst) return 'text-error';
-		if (diff == null) return '';
-
-		const direction = getDirection(nutrientKey);
-
-		if (direction === 'min') {
-			return diff < 0 ? 'text-success' : 'text-warning';
-		} else {
-			return diff > 0 ? 'text-success' : 'text-warning';
-		}
-	}
 
 	function getNutriScoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('nutriscore-' + (grade ?? 'unknown') + '-new-en.svg');
@@ -244,85 +112,6 @@
 
 	function getGreenScoreImage(grade: string | null | undefined) {
 		return KP_ATTRIBUTE_IMG('green-score-' + (grade ?? 'unknown') + '.svg');
-	}
-
-	// Number formatters
-	const integerFormatter = new Intl.NumberFormat(undefined, {
-		maximumFractionDigits: 0
-	});
-
-	const decimalFormatter = new Intl.NumberFormat(undefined, {
-		minimumFractionDigits: 1,
-		maximumFractionDigits: 1
-	});
-
-	// Helper to format nutrient values
-	function formatNutrient(value: number | undefined | null, useDecimals = true): string {
-		if (value === undefined || value === null) {
-			return '-';
-		}
-		if (!useDecimals) {
-			return integerFormatter.format(value);
-		}
-		return decimalFormatter.format(value);
-	}
-
-	// Calculate percentage difference between two values
-	function calculatePercentageDiff(value: number, reference: number): number {
-		if (reference === 0) return 0;
-		return ((value - reference) / reference) * 100;
-	}
-
-	const percentageFormatter = new Intl.NumberFormat(undefined, {
-		maximumFractionDigits: 0,
-		signDisplay: 'exceptZero'
-	});
-
-	// Get score comparison
-	function getScoreComparison(
-		grade: string | undefined,
-		products: Product[],
-		scoreType: 'nutriscore' | 'ecoscore'
-	): { isBest: boolean; isWorst: boolean } {
-		if (!grade) return { isBest: false, isWorst: false };
-
-		const grades = products
-			.map((p) => (scoreType === 'nutriscore' ? p.nutriscore_grade : p.ecoscore_grade))
-			.filter((g): g is string => g != null);
-
-		if (grades.length <= 1) return { isBest: false, isWorst: false };
-
-		const gradeOrder = ['a', 'b', 'c', 'd', 'e'];
-		const currentIndex = gradeOrder.indexOf(grade.toLowerCase());
-		const indices = grades.map((g) => gradeOrder.indexOf(g.toLowerCase()));
-
-		const bestIndex = Math.min(...indices);
-		const worstIndex = Math.max(...indices);
-
-		return {
-			isBest: currentIndex === bestIndex && currentIndex !== -1,
-			isWorst: currentIndex === worstIndex && currentIndex !== -1 && grades.length > 1
-		};
-	}
-
-	// Get Nova score comparison (lower is better)
-	function getNovaComparison(
-		novaGroup: number | undefined,
-		products: Product[]
-	): { isBest: boolean; isWorst: boolean } {
-		if (!novaGroup) return { isBest: false, isWorst: false };
-
-		const groups = products.map((p) => p.nova_group).filter((g): g is number => g != null);
-
-		if (groups.length <= 1) return { isBest: false, isWorst: false };
-
-		const bestGroup = Math.min(...groups);
-		const worstGroup = Math.max(...groups);
-
-		return {
-			isBest: novaGroup === bestGroup,
-			isWorst: novaGroup === worstGroup
-		};
 	}
 
 	let dragSrcIndex: { code: string; idx: number } | null = null;
@@ -407,7 +196,7 @@
 <!-- Mobile: Card View -->
 <div class="block lg:hidden">
 	<div class="flex flex-col gap-4">
-		{#each products as product, index (product.code)}
+		{#each products as product, index (product.code ?? index)}
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
@@ -504,7 +293,8 @@
 										product,
 										nutrient.key,
 										products,
-										index
+										index,
+										comparisonMode
 									)}
 
 									{#if comparison.value != null}
@@ -525,11 +315,14 @@
 
 <!-- Desktop: Table View -->
 <div class="hidden overflow-x-auto lg:block">
-	<table class="table w-full table-fixed table-zebra">
+	<table
+		class="table w-full table-fixed table-zebra"
+		style="min-width: {Math.max(640, 160 + products.length * 180)}px;"
+	>
 		<thead>
 			<tr>
 				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
-				{#each products as product, index (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<th
 						animate:flip={{ duration: 300 }}
 						class="relative min-w-40"
@@ -599,7 +392,7 @@
 		<tbody>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
 							{product.product_name ?? '-'}
@@ -609,15 +402,15 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
-						{product.code}
+						{product.code || '-'}
 					</td>
 				{/each}
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.brand')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
 					</td>
@@ -625,7 +418,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.quantity')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
 					</td>
@@ -633,7 +426,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
@@ -652,7 +445,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
 					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
 				>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
@@ -669,7 +462,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
@@ -686,15 +479,15 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.num_additives')}</td>
-				{#each products as product (product.code)}
+				{#each products as product, index (product.code ?? index)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
 					</td>
 				{/each}
 			</tr>
 			<tr class="bg-base-200">
-				<td></td>
-				<td colspan={products.length} class="sticky left-0 text-center font-bold">
+				<td class="sticky left-0 bg-base-200"></td>
+				<td colspan={products.length} class="text-center font-bold">
 					{$_('compare.nutritional_values_per_100g')}
 				</td>
 			</tr>
@@ -704,8 +497,14 @@
 						class="sticky left-0 w-40 overflow-hidden bg-base-100 leading-tight font-semibold break-words whitespace-normal"
 						>{nutrient.label}</td
 					>
-					{#each products as product, index (product.code)}
-						{@const comparison = getNutrientComparison(product, nutrient.key, products, index)}
+					{#each products as product, index (product.code ?? index)}
+						{@const comparison = getNutrientComparison(
+							product,
+							nutrient.key,
+							products,
+							index,
+							comparisonMode
+						)}
 						<td animate:flip={{ duration: 300 }}>
 							{@render nutrientValueDesktop(comparison, nutrient.unit, nutrient.key)}
 						</td>
