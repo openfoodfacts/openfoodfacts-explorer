@@ -15,7 +15,11 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
-	import { EXPLORE_BY_FACETS, facetPairsHref } from '#lib/ui/facets/facet-links.js';
+	import {
+		EXPLORE_BY_FACETS,
+		facetPairsHref,
+		searchWithoutPage
+	} from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
 	import {
@@ -68,9 +72,10 @@
 		EXPLORE_BY_FACETS.filter((name) => !facetPairs.some((pair) => pair.facet === name))
 	);
 
-	/** Open the list of a facet's values for the products of this page. */
+	/** Open the list of a facet's values for the products of this page, keeping the search options. */
 	function exploreBy(listFacet: string) {
-		goto(facetPairsHref(facetPairs, page.url.pathname, { listFacet }));
+		const query = searchWithoutPage(page.url.search);
+		goto(facetPairsHref(facetPairs, page.url.pathname, { listFacet, query }));
 	}
 
 	// Nested pages link the first value back to its own page
