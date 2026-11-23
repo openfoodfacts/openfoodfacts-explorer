@@ -252,7 +252,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		refreshAll().then(() => {
+		trackRefresh(refreshAll()).then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -408,8 +408,9 @@
 				image.imgid
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await refreshAll();
+			await trackRefresh(
+				selectAndCropImagesV3(fetch, product.code, selectionData).then(() => refreshAll())
+			);
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
