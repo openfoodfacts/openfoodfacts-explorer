@@ -14,7 +14,8 @@
 		getNutrientComparison,
 		getScoreComparison,
 		getNovaComparison,
-		getDiffColorClass
+		getDiffColorClass,
+		getProductKey
 	} from '#lib/ui/comparisonUtils.js';
 
 	type Props = {
@@ -196,7 +197,7 @@
 <!-- Mobile: Card View -->
 <div class="block lg:hidden">
 	<div class="flex flex-col gap-4">
-		{#each products as product, index (product.code ?? index)}
+		{#each products as product, index (getProductKey(product, index, products))}
 			<div class="relative rounded-lg border-2 p-4 shadow-md">
 				{#if !readonly && onRemoveProduct}
 					<button
@@ -269,24 +270,25 @@
 				{/if}
 
 				{#if product.nutriments}
+					{@const productKey = getProductKey(product, index, products)}
 					<div class="mt-4 border-t pt-4">
 						<button
 							type="button"
 							class="flex w-full items-center justify-between text-left text-sm font-semibold"
 							onclick={() => {
-								expandedNutrients[product.code] = !expandedNutrients[product.code];
+								expandedNutrients[productKey] = !expandedNutrients[productKey];
 							}}
-							aria-expanded={expandedNutrients[product.code] ?? false}
+							aria-expanded={expandedNutrients[productKey] ?? false}
 						>
 							<span
 								>{$_('compare.nutrients_per_100g', {
 									default: 'Nutrients /100g:'
 								})}</span
 							>
-							<span>{expandedNutrients[product.code] ? '▲' : '▼'}</span>
+							<span>{expandedNutrients[productKey] ? '▲' : '▼'}</span>
 						</button>
 
-						{#if expandedNutrients[product.code]}
+						{#if expandedNutrients[productKey]}
 							<div class="mt-2 space-y-1 text-sm">
 								{#each availableNutrients as nutrient (nutrient.key)}
 									{@const comparison = getNutrientComparison(
@@ -322,7 +324,7 @@
 		<thead>
 			<tr>
 				<th class="sticky left-0 z-10 w-40 bg-base-100"></th>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<th
 						animate:flip={{ duration: 300 }}
 						class="relative min-w-40"
@@ -392,7 +394,7 @@
 		<tbody>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.name')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						<a href={`/products/${product.code}`} class="no-underline hover:text-primary">
 							{product.product_name ?? '-'}
@@ -402,7 +404,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.code_barcode')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<td class="text-center font-mono text-sm" animate:flip={{ duration: 300 }}>
 						{product.code || '-'}
 					</td>
@@ -410,7 +412,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.brand')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.brands ?? '-'}
 					</td>
@@ -418,7 +420,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.quantity')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<td class="text-center text-sm" animate:flip={{ duration: 300 }}>
 						{product.quantity ?? '-'}
 					</td>
@@ -426,7 +428,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('nutriscore')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					{@const comparison = getScoreComparison(product.nutriscore_grade, products, 'nutriscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nutriscore_grade}
@@ -445,7 +447,7 @@
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold"
 					>{$_('compare.nova_group', { default: 'Ultra-processing level' })}</td
 				>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					{@const comparison = getNovaComparison(product.nova_group, products)}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.nova_group}
@@ -462,7 +464,7 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('ecoscore')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					{@const comparison = getScoreComparison(product.ecoscore_grade, products, 'ecoscore')}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{#if product.ecoscore_grade}
@@ -479,14 +481,14 @@
 			</tr>
 			<tr>
 				<td class="sticky left-0 w-40 bg-base-100 font-semibold">{$_('compare.num_additives')}</td>
-				{#each products as product, index (product.code ?? index)}
+				{#each products as product, index (getProductKey(product, index, products))}
 					<td class="text-center" animate:flip={{ duration: 300 }}>
 						{product.additives_n ?? '-'}
 					</td>
 				{/each}
 			</tr>
 			<tr class="bg-base-200">
-				<td class="sticky left-0 bg-base-200"></td>
+				<td class="sticky left-0 w-40 bg-base-200"></td>
 				<td colspan={products.length} class="text-center font-bold">
 					{$_('compare.nutritional_values_per_100g')}
 				</td>
@@ -497,7 +499,7 @@
 						class="sticky left-0 w-40 overflow-hidden bg-base-100 leading-tight font-semibold break-words whitespace-normal"
 						>{nutrient.label}</td
 					>
-					{#each products as product, index (product.code ?? index)}
+					{#each products as product, index (getProductKey(product, index, products))}
 						{@const comparison = getNutrientComparison(
 							product,
 							nutrient.key,

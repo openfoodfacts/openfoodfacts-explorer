@@ -10,7 +10,10 @@ import {
 	getNovaComparison,
 	getNutrientComparison,
 	getDiffColorClass,
-	getDirection
+	getDirection,
+	getProductKey,
+	VALID_SCORE_GRADES,
+	parseNovaGroup
 } from './comparisonUtils.js';
 
 describe('comparisonUtils', () => {
@@ -22,6 +25,41 @@ describe('comparisonUtils', () => {
 		} as unknown as Product;
 	};
 
+	describe('getProductKey', () => {
+		it('returns product code when present and non-empty', () => {
+			const product = createMockProduct({ code: '3017620422003' });
+			expect(getProductKey(product, 0)).toBe('3017620422003');
+		});
+
+		it('trims whitespace around product code', () => {
+			const product = createMockProduct({ code: '  3017620422003  ' });
+			expect(getProductKey(product, 0)).toBe('3017620422003');
+		});
+
+		it('returns unique fallback key for undefined, null, empty or whitespace-only code', () => {
+			const emptyProd = createMockProduct({ code: '' });
+			const wsProd = createMockProduct({ code: '   ' });
+			const nullProd = createMockProduct({ code: null });
+			const undefinedProd = createMockProduct({ code: undefined });
+
+			expect(getProductKey(emptyProd, 0)).toBe('__no_code_0');
+			expect(getProductKey(wsProd, 1)).toBe('__no_code_1');
+			expect(getProductKey(nullProd, 2)).toBe('__no_code_2');
+			expect(getProductKey(undefinedProd, 3)).toBe('__no_code_3');
+		});
+
+		it('disambiguates duplicate product codes across the list', () => {
+			const p1 = createMockProduct({ code: '123' });
+			const p2 = createMockProduct({ code: '123' });
+			const p3 = createMockProduct({ code: '456' });
+			const list = [p1, p2, p3];
+
+			expect(getProductKey(p1, 0, list)).toBe('123');
+			expect(getProductKey(p2, 1, list)).toBe('123__dup_1');
+			expect(getProductKey(p3, 2, list)).toBe('456');
+		});
+	});
+
 	describe('getNutrientValue', () => {
 		it('extracts number values directly', () => {
 			const product = createMockProduct({
@@ -30,9 +68,9 @@ describe('comparisonUtils', () => {
 			expect(getNutrientValue(product, 'energy-kcal_100g')).toBe(250);
 		});
 
-		it('parses string values if numeric', () => {
+		it('parses string values if numeric and trims whitespace', () => {
 			const product = createMockProduct({
-				nutriments: { fat_100g: '12.5' as unknown as number }
+				nutriments: { fat_100g: ' 12.5 ' as unknown as number }
 			});
 			expect(getNutrientValue(product, 'fat_100g')).toBe(12.5);
 		});
@@ -47,11 +85,22 @@ describe('comparisonUtils', () => {
 			expect(getNutrientValue(product2, 'fat_100g')).toBeNull();
 		});
 
-		it('returns null for NaN values', () => {
-			const product = createMockProduct({
-				nutriments: { fat_100g: NaN }
-			});
-			expect(getNutrientValue(product, 'fat_100g')).toBeNull();
+		it('returns null for NaN, Infinity, and -Infinity values', () => {
+			expect(
+				getNutrientValue(createMockProduct({ nutriments: { fat_100g: NaN } }), 'fat_100g')
+			).toBeNull();
+			expect(
+				getNutrientValue(createMockProduct({ nutriments: { fat_100g: Infinity } }), 'fat_100g')
+			).toBeNull();
+			expect(
+				getNutrientValue(createMockProduct({ nutriments: { fat_100g: -Infinity } }), 'fat_100g')
+			).toBeNull();
+			expect(
+				getNutrientValue(
+					createMockProduct({ nutriments: { fat_100g: 'Infinity' as unknown as number } }),
+					'fat_100g'
+				)
+			).toBeNull();
 		});
 	});
 
@@ -90,7 +139,7 @@ describe('comparisonUtils', () => {
 			}),
 			createMockProduct({
 				code: '4',
-				nutriments: {}
+				nutriments: { sugars_100g: NaN, proteins_100g: Infinity }
 			})
 		];
 
@@ -122,18 +171,23 @@ describe('comparisonUtils', () => {
 			expect(calculatePercentageDiff(100, 100)).toBe(0);
 		});
 
-		it('handles division by zero and invalid values safely', () => {
+		it('handles division by zero and non-finite values safely', () => {
 			expect(calculatePercentageDiff(100, 0)).toBe(0);
 			expect(calculatePercentageDiff(NaN, 100)).toBe(0);
 			expect(calculatePercentageDiff(100, NaN)).toBe(0);
+			expect(calculatePercentageDiff(Infinity, 100)).toBe(0);
+			expect(calculatePercentageDiff(100, Infinity)).toBe(0);
+			expect(calculatePercentageDiff(-Infinity, 100)).toBe(0);
 		});
 	});
 
 	describe('formatNutrient', () => {
-		it('formats null/undefined/NaN as hyphen', () => {
+		it('formats null/undefined/NaN/Infinity as hyphen', () => {
 			expect(formatNutrient(null)).toBe('-');
 			expect(formatNutrient(undefined)).toBe('-');
 			expect(formatNutrient(NaN)).toBe('-');
+			expect(formatNutrient(Infinity)).toBe('-');
+			expect(formatNutrient(-Infinity)).toBe('-');
 		});
 
 		it('formats decimals and integers correctly', () => {
@@ -142,12 +196,20 @@ describe('comparisonUtils', () => {
 		});
 	});
 
-	describe('getScoreComparison', () => {
+	describe('VALID_SCORE_GRADES & getScoreComparison', () => {
+		it('contains exactly Open Food Facts supported grades A through E', () => {
+			expect(VALID_SCORE_GRADES).toEqual(['a', 'b', 'c', 'd', 'e']);
+		});
+
 		const products = [
 			createMockProduct({ code: '1', nutriscore_grade: 'a', ecoscore_grade: 'b' }),
 			createMockProduct({ code: '2', nutriscore_grade: 'c', ecoscore_grade: 'd' }),
-			createMockProduct({ code: '3', nutriscore_grade: 'e', ecoscore_grade: 'f' }),
-			createMockProduct({ code: '4', nutriscore_grade: 'unknown' as unknown as string })
+			createMockProduct({ code: '3', nutriscore_grade: 'e', ecoscore_grade: 'e' }),
+			createMockProduct({
+				code: '4',
+				nutriscore_grade: 'unknown' as unknown as string,
+				ecoscore_grade: 'f' as unknown as string
+			})
 		];
 
 		it('identifies best and worst Nutri-Score grades', () => {
@@ -165,21 +227,29 @@ describe('comparisonUtils', () => {
 			});
 		});
 
-		it('does not corrupt best score when an invalid/unknown grade exists', () => {
-			// Product 4 has 'unknown', which indexOf returns -1 for.
-			// Product 1 ('a') should still be best!
-			const res = getScoreComparison('a', products, 'nutriscore');
-			expect(res.isBest).toBe(true);
+		it('handles uppercase and whitespace around grade', () => {
+			expect(getScoreComparison('  A  ', products, 'nutriscore')).toEqual({
+				isBest: true,
+				isWorst: false
+			});
 		});
 
-		it('handles Eco-Score grade f properly', () => {
+		it('treats unsupported grade f or unknown as unranked without corrupting comparison', () => {
+			// In OFF, Nutri-Score & Green-Score are A-E only.
+			// Grade 'f' is unsupported and should return isBest: false, isWorst: false
 			const resF = getScoreComparison('f', products, 'ecoscore');
-			expect(resF.isWorst).toBe(true);
 			expect(resF.isBest).toBe(false);
+			expect(resF.isWorst).toBe(false);
 
+			// Product 1 with grade 'b' is the best among valid products
 			const resB = getScoreComparison('b', products, 'ecoscore');
 			expect(resB.isBest).toBe(true);
 			expect(resB.isWorst).toBe(false);
+
+			// Product 3 with grade 'e' is the worst among valid products
+			const resE = getScoreComparison('e', products, 'ecoscore');
+			expect(resE.isBest).toBe(false);
+			expect(resE.isWorst).toBe(true);
 		});
 
 		it('returns neither best nor worst when all products have identical scores', () => {
@@ -200,6 +270,55 @@ describe('comparisonUtils', () => {
 				isWorst: false
 			});
 		});
+
+		it('handles null, undefined or empty grades safely', () => {
+			expect(getScoreComparison(null, products, 'nutriscore')).toEqual({
+				isBest: false,
+				isWorst: false
+			});
+			expect(getScoreComparison(undefined, products, 'nutriscore')).toEqual({
+				isBest: false,
+				isWorst: false
+			});
+			expect(getScoreComparison('', products, 'nutriscore')).toEqual({
+				isBest: false,
+				isWorst: false
+			});
+		});
+	});
+
+	describe('parseNovaGroup', () => {
+		it('parses integers 1 to 4 correctly', () => {
+			expect(parseNovaGroup(1)).toBe(1);
+			expect(parseNovaGroup(2)).toBe(2);
+			expect(parseNovaGroup(3)).toBe(3);
+			expect(parseNovaGroup(4)).toBe(4);
+		});
+
+		it('parses numeric string representations 1 to 4 with whitespace trimming', () => {
+			expect(parseNovaGroup('1')).toBe(1);
+			expect(parseNovaGroup(' 2 ')).toBe(2);
+			expect(parseNovaGroup('3')).toBe(3);
+			expect(parseNovaGroup('4')).toBe(4);
+		});
+
+		it('rejects numbers outside range 1 to 4', () => {
+			expect(parseNovaGroup(0)).toBeNull();
+			expect(parseNovaGroup(5)).toBeNull();
+			expect(parseNovaGroup(-1)).toBeNull();
+			expect(parseNovaGroup('0')).toBeNull();
+			expect(parseNovaGroup('5')).toBeNull();
+		});
+
+		it('rejects non-integer numbers, NaN, and non-numeric strings', () => {
+			expect(parseNovaGroup(2.5)).toBeNull();
+			expect(parseNovaGroup(NaN)).toBeNull();
+			expect(parseNovaGroup('unknown')).toBeNull();
+			expect(parseNovaGroup('')).toBeNull();
+			expect(parseNovaGroup('   ')).toBeNull();
+			expect(parseNovaGroup(null)).toBeNull();
+			expect(parseNovaGroup(undefined)).toBeNull();
+		});
 	});
 
 	describe('getNovaComparison', () => {
@@ -207,7 +326,8 @@ describe('comparisonUtils', () => {
 			createMockProduct({ code: '1', nova_group: 1 }),
 			createMockProduct({ code: '2', nova_group: 3 }),
 			createMockProduct({ code: '3', nova_group: '4' as unknown as number }),
-			createMockProduct({ code: '4', nova_group: 'unknown' as unknown as number })
+			createMockProduct({ code: '4', nova_group: 'unknown' as unknown as number }),
+			createMockProduct({ code: '5', nova_group: 99 as unknown as number })
 		];
 
 		it('identifies lowest Nova group as best and highest as worst', () => {
@@ -236,8 +356,12 @@ describe('comparisonUtils', () => {
 			});
 		});
 
-		it('handles unknown and invalid groups gracefully', () => {
+		it('handles unknown and invalid groups gracefully without corrupting valid ones', () => {
 			expect(getNovaComparison('unknown', products)).toEqual({
+				isBest: false,
+				isWorst: false
+			});
+			expect(getNovaComparison(99, products)).toEqual({
 				isBest: false,
 				isWorst: false
 			});

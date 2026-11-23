@@ -31,16 +31,31 @@ export function getDirection(nutrientKey: string): 'min' | 'max' {
 	return nutrientRules[nutrientKey] ?? 'min';
 }
 
-// Safely get a nutrient value from a product
+// Generates a stable, unique key for products in keyed loops
+export function getProductKey(product: Product, index: number, products?: Product[]): string {
+	const code = product?.code != null ? String(product.code).trim() : '';
+	if (!code) {
+		return `__no_code_${index}`;
+	}
+	if (products) {
+		const firstIndex = products.findIndex((p) => p.code != null && String(p.code).trim() === code);
+		if (firstIndex !== -1 && firstIndex !== index) {
+			return `${code}__dup_${index}`;
+		}
+	}
+	return code;
+}
+
+// Safely get a nutrient value from a product, rejecting NaN and non-finite numbers
 export function getNutrientValue(product: Product, nutrientKey: string): number | null {
 	const rawValue = product.nutriments?.[nutrientKey];
 	if (typeof rawValue === 'number') {
-		return isNaN(rawValue) ? null : rawValue;
+		return isNaN(rawValue) || !isFinite(rawValue) ? null : rawValue;
 	}
 
 	if (typeof rawValue === 'string') {
-		const parsed = parseFloat(rawValue);
-		return isNaN(parsed) ? null : parsed;
+		const parsed = parseFloat(rawValue.trim());
+		return isNaN(parsed) || !isFinite(parsed) ? null : parsed;
 	}
 
 	return null;
@@ -50,7 +65,7 @@ export function getNutrientValue(product: Product, nutrientKey: string): number 
 export function getBestValue(products: Product[], nutrientKey: string): number | null {
 	const values = products
 		.map((p) => getNutrientValue(p, nutrientKey))
-		.filter((v): v is number => v !== null && !isNaN(v));
+		.filter((v): v is number => v !== null && !isNaN(v) && isFinite(v));
 	if (!values.length) return null;
 
 	const direction = getDirection(nutrientKey);
@@ -61,7 +76,7 @@ export function getBestValue(products: Product[], nutrientKey: string): number |
 export function getWorstValue(products: Product[], nutrientKey: string): number | null {
 	const values = products
 		.map((p) => getNutrientValue(p, nutrientKey))
-		.filter((v): v is number => v !== null && !isNaN(v));
+		.filter((v): v is number => v !== null && !isNaN(v) && isFinite(v));
 	if (!values.length) return null;
 
 	const direction = getDirection(nutrientKey);
@@ -70,8 +85,17 @@ export function getWorstValue(products: Product[], nutrientKey: string): number 
 
 // Calculate percentage difference between two values
 export function calculatePercentageDiff(value: number, reference: number): number {
-	if (reference === 0 || isNaN(reference) || isNaN(value)) return 0;
-	return ((value - reference) / reference) * 100;
+	if (
+		reference === 0 ||
+		!isFinite(reference) ||
+		isNaN(reference) ||
+		!isFinite(value) ||
+		isNaN(value)
+	) {
+		return 0;
+	}
+	const diff = ((value - reference) / reference) * 100;
+	return !isFinite(diff) || isNaN(diff) ? 0 : diff;
 }
 
 const integerFormatter = new Intl.NumberFormat(undefined, {
@@ -89,7 +113,7 @@ export const percentageFormatter = new Intl.NumberFormat(undefined, {
 });
 
 export function formatNutrient(value: number | undefined | null, useDecimals = true): string {
-	if (value === undefined || value === null || isNaN(value)) {
+	if (value === undefined || value === null || !isFinite(value) || isNaN(value)) {
 		return '-';
 	}
 	if (!useDecimals) {
@@ -98,6 +122,9 @@ export function formatNutrient(value: number | undefined | null, useDecimals = t
 	return decimalFormatter.format(value);
 }
 
+// Supported score grades in Open Food Facts (Nutri-Score and Eco-Score / Green-Score: A to E)
+export const VALID_SCORE_GRADES = ['a', 'b', 'c', 'd', 'e'] as const;
+
 export function getScoreComparison(
 	grade: string | undefined | null,
 	products: Product[],
@@ -105,14 +132,18 @@ export function getScoreComparison(
 ): { isBest: boolean; isWorst: boolean } {
 	if (!grade || typeof grade !== 'string') return { isBest: false, isWorst: false };
 
-	const gradeOrder = ['a', 'b', 'c', 'd', 'e', 'f'];
-	const currentIndex = gradeOrder.indexOf(grade.trim().toLowerCase());
+	const cleanGrade = grade.trim().toLowerCase();
+	const currentIndex = VALID_SCORE_GRADES.indexOf(
+		cleanGrade as (typeof VALID_SCORE_GRADES)[number]
+	);
 	if (currentIndex === -1) return { isBest: false, isWorst: false };
 
 	const validIndices = products
 		.map((p) => (scoreType === 'nutriscore' ? p.nutriscore_grade : p.ecoscore_grade))
 		.filter((g): g is string => typeof g === 'string' && g.trim() !== '')
-		.map((g) => gradeOrder.indexOf(g.trim().toLowerCase()))
+		.map((g) =>
+			VALID_SCORE_GRADES.indexOf(g.trim().toLowerCase() as (typeof VALID_SCORE_GRADES)[number])
+		)
 		.filter((idx) => idx !== -1);
 
 	if (validIndices.length <= 1) return { isBest: false, isWorst: false };
@@ -126,26 +157,26 @@ export function getScoreComparison(
 	};
 }
 
+// Parse NOVA group according to Open Food Facts data model (integers 1 to 4)
+export function parseNovaGroup(group: number | string | undefined | null): number | null {
+	if (group == null) return null;
+	const num = typeof group === 'number' ? group : parseInt(String(group).trim(), 10);
+	if (isNaN(num) || !Number.isInteger(num) || num < 1 || num > 4) {
+		return null;
+	}
+	return num;
+}
+
 export function getNovaComparison(
 	novaGroup: number | string | undefined | null,
 	products: Product[]
 ): { isBest: boolean; isWorst: boolean } {
-	if (novaGroup == null) return { isBest: false, isWorst: false };
-
-	const currentGroup = typeof novaGroup === 'number' ? novaGroup : parseInt(String(novaGroup), 10);
-	if (isNaN(currentGroup)) return { isBest: false, isWorst: false };
+	const currentGroup = parseNovaGroup(novaGroup);
+	if (currentGroup === null) return { isBest: false, isWorst: false };
 
 	const validGroups = products
-		.map((p) => {
-			const g = p.nova_group;
-			if (typeof g === 'number') return g;
-			if (typeof g === 'string') {
-				const parsed = parseInt(g, 10);
-				return isNaN(parsed) ? null : parsed;
-			}
-			return null;
-		})
-		.filter((g): g is number => g !== null && !isNaN(g));
+		.map((p) => parseNovaGroup(p.nova_group))
+		.filter((g): g is number => g !== null);
 
 	if (validGroups.length <= 1) return { isBest: false, isWorst: false };
 
@@ -198,7 +229,7 @@ export function getNutrientComparison(
 
 	const comparableCount = products
 		.map((p) => getNutrientValue(p, nutrientKey))
-		.filter((v): v is number => v !== null && !isNaN(v)).length;
+		.filter((v): v is number => v !== null && !isNaN(v) && isFinite(v)).length;
 
 	const isBest =
 		comparableCount > 1 &&
