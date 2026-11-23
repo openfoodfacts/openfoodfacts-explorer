@@ -51,3 +51,19 @@ export function facetPairsHref(
 	const location = parseUrlLocation(pathname);
 	return withLocationPrefix(path, location, pathname);
 }
+
+/**
+ * The search options of the current page, such as page_size and sort_by, without its page number.
+ * Links to another facet page keep these options but start on its first page.
+ *
+ * @param search the search part of the current URL, e.g. "?page=2&sort_by=popularity"
+ * @returns the query to add to a link, e.g. "?sort_by=popularity", or "" when nothing is left
+ */
+export function searchWithoutPage(search: string): string {
+	const params = new URLSearchParams(search);
+	params.delete('page');
+	if (params.size === 0) {
+		return '';
+	}
+	return `?${params}`;
+}

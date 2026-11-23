@@ -6,7 +6,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import Pagination from '#lib/Pagination.svelte';
 	import BackLink from '#lib/ui/facets/BackLink.svelte';
-	import { facetPairsHref } from '#lib/ui/facets/facet-links.js';
+	import { facetPairsHref, searchWithoutPage } from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
 
@@ -31,10 +31,11 @@
 		return new Intl.NumberFormat().format(n);
 	}
 
-	/** Link to the products that also have this value of the listed facet. */
+	/** Link to the products that also have this value of the listed facet, keeping the search options. */
 	function valueHref(value: string) {
 		const pairs = [...drilldown.pairs, { facet: drilldown.listFacet, value }];
-		return facetPairsHref(pairs, page.url.pathname);
+		const query = searchWithoutPage(page.url.search);
+		return facetPairsHref(pairs, page.url.pathname, { query });
 	}
 
 	function pageHref(n: number) {
