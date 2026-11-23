@@ -120,7 +120,7 @@
 		"button": "Hulp en sneltoetsen"
 	},
 	"general": {
-		"language": "Taal",
+		"language": "Talen",
 		"country": "Land",
 		"currency": "Valuta",
 		"loading": "Bezig met laden…",
@@ -385,6 +385,8 @@
 			"countries": "Landen"
 		},
 		"folksonomy": {
+			"loading": "Loading properties…",
+			"error": "Properties could not be loaded.",
 			"use_wc_editor": "Use the Web Component Editor",
 			"title_beta": "Gepersonaliseerde eigenschappen (bèta)",
 			"intro_before": "These properties are created and filled by users for any kind of usages. Feel free to add your own. The properties and values you create ",
@@ -727,18 +729,20 @@
 		"prices": {
 			"no_prices_found": "Er zijn geen prijzen gevonden voor dit product",
 			"loading": "Prijzen laden…",
+			"error": "Prices could not be loaded.",
 			"view_prices": "Bekijk prijzen op Open Prices",
 			"kp_subtitle_found": "{count, plural, one {{count} price} other {{count} prices}} found in {storeCount, plural, one {{storeCount} store} other {{storeCount} stores}}",
 			"no_prices_explanation": "Help us build the biggest Open Prices database by adding price information for this product.",
 			"loading_map": "Loading prices map…"
 		},
 		"knowledge_panels": {
+			"invalid_response": "These panels could not be displayed because their references are invalid or too complex.",
 			"action": {
 				"edit_product": "Bewerk product",
 				"add_categories": "Add categories",
 				"report_product_to_nutripatrol": "Meld een probleem met dit product.",
 				"add_ingredients_text": "Ingrediëntentekst toevoegen",
-				"add_packaging_components": "Voeg verpakkingsonderdelen toe",
+				"add_packaging_components": "Maak een foto van de recyclinginformatie",
 				"add_origins": "Add origins of ingredients",
 				"add_price": "Voeg een prijs toe aan Open Prijzen",
 				"view_prices": "Bekijk prijzen op Open Prices",
