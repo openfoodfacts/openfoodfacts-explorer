@@ -5,6 +5,7 @@ import { createProductsApi } from '#lib/api.js';
 
 import { getLanguageCode } from '#lib/settings.js';
 import { getLocale } from '#lib/i18n/index.js';
+import { productSeo } from '#lib/product-canonical.js';
 import { parseUrlLocation } from '#lib/url-location.js';
 import {
 	ERR_INVALID_BARCODE,
@@ -51,8 +52,9 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 			`stores_tags_${lc}`,
 			`countries_tags_${lc}`
 		],
-		// @ts-expect-error - This is a temporary workaround until the SDK supports this parameter.
+		// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
 		knowledge_panels_client: 'web',
+		activate_knowledge_panel_product_information: 1,
 		lc
 	});
 
@@ -66,5 +68,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		error(404, 'Failure to load product', { errors: state.errors });
 	}
 
-	return { state, lc };
+	const seo = state.product ? productSeo(state.product, url, params.barcode) : {};
+
+	return { state, lc, ...seo };
 };

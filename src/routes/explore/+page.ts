@@ -5,10 +5,10 @@ import type { Product, SearchApi } from '@openfoodfacts/openfoodfacts-nodejs';
 
 type ExploreSection = {
 	category: string;
-	products: Product[];
+	products: { code: string; scans_n?: number }[];
 };
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageLoad = async ({ fetch, data }) => {
 	const api = createSearchApi(fetch);
 
 	// Fetch some popular categories for the Explore landing page.
@@ -26,14 +26,39 @@ export const load: PageLoad = async ({ fetch }) => {
 	];
 
 	// For each category, fetch a few popular products.
-	const sectionsPromise = Promise.all(categories.map((c) => getSomeProducts(api, c)));
+	const sectionsPromise = Promise.all(
+		categories.map((category, index) => {
+			const querySection = data.querySections?.[index];
+			if (querySection) return querySection.products.length ? querySection : null;
+			return getSomeProducts(api, category);
+		})
+	);
 	const sections = (await sectionsPromise).filter((s): s is ExploreSection => s != null);
 	const productCodes = [
 		...new Set(sections.flatMap((section) => section.products.map((p) => p.code)))
 	];
-	const productCardsByCode = await getBulkProductCardsByCode(fetch, productCodes);
+	const productCardsByCode = await getBulkProductCardsByCode(fetch, productCodes).catch(
+		(error): Awaited<ReturnType<typeof getBulkProductCardsByCode>> => {
+			console.error('Explore product-card request failed', error);
+			return {};
+		}
+	);
 
-	return { sections, productCardsByCode };
+	const queryCategories = new Set(
+		data.querySections?.filter((section) => section != null).map((section) => section.category)
+	);
+	const populatedSections = sections
+		.map((section) =>
+			queryCategories.has(section.category)
+				? {
+						...section,
+						products: section.products.filter((product) => productCardsByCode[product.code])
+					}
+				: section
+		)
+		.filter((section) => section.products.length > 0);
+
+	return { sections: populatedSections, productCardsByCode };
 };
 
 async function getSomeProducts(api: SearchApi, cat: string): Promise<ExploreSection | null> {

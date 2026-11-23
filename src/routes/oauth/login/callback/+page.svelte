@@ -49,7 +49,7 @@
 			// Verify the destination is same-origin
 			const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
 
-			await goto(targetPath);
+			await goto(targetPath, { replaceState: true });
 		} catch (error) {
 			console.error('Token exchange failed:', error);
 			throw new Error('Authentication failed: Token exchange error', { cause: error });

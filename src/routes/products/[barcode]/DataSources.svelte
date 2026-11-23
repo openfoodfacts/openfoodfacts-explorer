@@ -6,18 +6,20 @@
 	import IconMdiAlertCircle from '@iconify-svelte/mdi/alert-circle';
 	import IconMdiCheck from '@iconify-svelte/mdi/check';
 	import IconMdiCalendarPlus from '@iconify-svelte/mdi/calendar-plus';
-	import type { ProductDataSection } from '#lib/api.js';
+	import type { KnowledgePanels, ProductDataSection } from '#lib/api.js';
+	import Panel from '#lib/knowledgepanels/Panel.svelte';
 
 	// Polyfill for Intl.DurationFormat, which is not yet supported in all environments (e.g. NodeJS 22)
 	import '@formatjs/intl-durationformat/polyfill.js';
 
 	type Props = {
 		product: ProductDataSection;
+		panels: KnowledgePanels;
 		canEdit: boolean;
 		barcode: string;
 	};
 
-	let { product, canEdit, barcode }: Props = $props();
+	let { product, panels, canEdit, barcode }: Props = $props();
 	function formatShortDate(unix: number | null | undefined): string {
 		if (unix == null || unix === undefined || Number.isNaN(unix)) {
 			return $_('product.datasources.unknown');
@@ -126,6 +128,12 @@
 
 <Card>
 	<h1 class="text-4xl font-bold">{$_('product.datasources.title')}</h1>
+
+	{#if panels.sources_manufacturer}
+		<div class="mt-4">
+			<Panel panel={panels.sources_manufacturer} {panels} id="sources_manufacturer" inline />
+		</div>
+	{/if}
 
 	<div class="stats mt-4 w-full max-lg:stats-vertical">
 		<!-- Last edit -->

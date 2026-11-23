@@ -14,7 +14,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
 	import { EXPLORE_BY_FACETS, facetPairsHref } from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
@@ -36,6 +36,10 @@
 		mapFacet,
 		facetPairs
 	} = $derived(data);
+
+	const facetLabel = $derived(
+		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
+	);
 
 	const isNested = $derived(facetPairs.length > 1);
 
@@ -68,6 +72,18 @@
 	function exploreBy(listFacet: string) {
 		goto(facetPairsHref(facetPairs, page.url.pathname, { listFacet }));
 	}
+
+	// Nested pages link the first value back to its own page
+	const breadcrumbs = $derived([
+		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
+		{
+			name: $_(`facets.names.${facet.name}`, { default: facet.name }),
+			href: resolve('/facets/[facet]', { facet: facet.name })
+		},
+		isNested
+			? { name: facetLabel, href: facetPairsHref([facetPairs[0]], page.url.pathname) }
+			: { name: facetLabel }
+	]);
 
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
@@ -113,22 +129,17 @@
 {:else}
 	<Metadata
 		title={$_('facets.facet_value_website_title', {
-			values: { facet: facet.name, value: facet.value }
+			values: { facet: facet.name, value: facetLabel }
 		})}
 		description={$_('facets.facet_value_website_description', {
-			values: { facet: facet.name, value: facet.value }
+			values: { facet: facet.name, value: facetLabel }
 		})}
 	/>
 {/if}
 
-<h2 class="my-8 flex items-center gap-2 text-3xl font-bold">
-	<BackLink
-		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', {
-			values: { facet: facet.name },
-			default: 'Back to {facet} overview'
-		})}
-	/>
+<Breadcrumbs {breadcrumbs} />
+
+<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
 	{#if isNested}
 		<span
 			>{$_('facets.nested_heading', {
@@ -137,15 +148,7 @@
 			})}</span
 		>
 	{:else}
-		<span
-			>{$_('facets.value_heading', {
-				values: {
-					facet: $_(`facets.names.${facet.name}`, { default: facet.name }),
-					value: facet.value
-				},
-				default: 'Exploring {facet}: {value}'
-			})}</span
-		>
+		<span>{facetLabel}</span>
 	{/if}
 </h2>
 
