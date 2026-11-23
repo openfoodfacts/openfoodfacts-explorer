@@ -37,21 +37,30 @@ describe('compareStore', () => {
 		expect(get(compareStore).length).toBe(MAX_COMPARE_PRODUCTS);
 	});
 
-	it('prevents adding duplicate products with the same code', () => {
+	it('prevents adding products with empty, missing, or whitespace-only barcodes', () => {
+		expect(compareStore.addProduct(createProduct(''))).toBe(false);
+		expect(compareStore.addProduct(createProduct('   '))).toBe(false);
+		expect(compareStore.addProduct({ product_name: 'No Code' } as unknown as Product)).toBe(false);
+		expect(get(compareStore).length).toBe(0);
+	});
+
+	it('prevents adding duplicate products with the same code (including trimmed)', () => {
 		const p1 = createProduct('001');
+		const p1WithSpaces = createProduct('  001  ');
 		expect(compareStore.addProduct(p1)).toBe(true);
 		expect(compareStore.addProduct(p1)).toBe(false);
+		expect(compareStore.addProduct(p1WithSpaces)).toBe(false);
 		expect(get(compareStore).length).toBe(1);
 	});
 
-	it('removes a product by barcode', () => {
+	it('removes a product by barcode (including with whitespace)', () => {
 		const p1 = createProduct('001');
 		const p2 = createProduct('002');
 		compareStore.addProduct(p1);
 		compareStore.addProduct(p2);
 		expect(get(compareStore).length).toBe(2);
 
-		compareStore.removeProduct('001');
+		compareStore.removeProduct(' 001 ');
 		const current = get(compareStore);
 		expect(current.length).toBe(1);
 		expect(current[0].code).toBe('002');

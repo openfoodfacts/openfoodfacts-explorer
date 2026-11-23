@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 import {
 	getNutrientValue,
@@ -12,6 +12,7 @@ import {
 	getDiffColorClass,
 	getDirection,
 	getProductKey,
+	resetProductKeyCache,
 	VALID_SCORE_GRADES,
 	parseNovaGroup
 } from './comparisonUtils.js';
@@ -26,6 +27,10 @@ describe('comparisonUtils', () => {
 	};
 
 	describe('getProductKey', () => {
+		beforeEach(() => {
+			resetProductKeyCache();
+		});
+
 		it('returns product code when present and non-empty', () => {
 			const product = createMockProduct({ code: '3017620422003' });
 			expect(getProductKey(product, 0)).toBe('3017620422003');
@@ -42,10 +47,19 @@ describe('comparisonUtils', () => {
 			const nullProd = createMockProduct({ code: null });
 			const undefinedProd = createMockProduct({ code: undefined });
 
-			expect(getProductKey(emptyProd, 0)).toBe('__no_code_0');
-			expect(getProductKey(wsProd, 1)).toBe('__no_code_1');
-			expect(getProductKey(nullProd, 2)).toBe('__no_code_2');
-			expect(getProductKey(undefinedProd, 3)).toBe('__no_code_3');
+			const kEmpty = getProductKey(emptyProd, 0);
+			const kWs = getProductKey(wsProd, 1);
+			const kNull = getProductKey(nullProd, 2);
+			const kUndef = getProductKey(undefinedProd, 3);
+
+			expect(kEmpty).toMatch(/^__no_code_\d+$/);
+			expect(kWs).toMatch(/^__no_code_\d+$/);
+			expect(kNull).toMatch(/^__no_code_\d+$/);
+			expect(kUndef).toMatch(/^__no_code_\d+$/);
+
+			// All keys must be unique
+			const allKeys = new Set([kEmpty, kWs, kNull, kUndef]);
+			expect(allKeys.size).toBe(4);
 		});
 
 		it('disambiguates duplicate product codes across the list', () => {
@@ -57,6 +71,43 @@ describe('comparisonUtils', () => {
 			expect(getProductKey(p1, 0, list)).toBe('123');
 			expect(getProductKey(p2, 1, list)).toBe('123__dup_1');
 			expect(getProductKey(p3, 2, list)).toBe('456');
+		});
+
+		it('ensures keys remain strictly stable during reordering, removal, and insertion', () => {
+			const pValid = createMockProduct({ code: 'valid-001' });
+			const pDup = createMockProduct({ code: 'valid-001' });
+			const pNoCode = createMockProduct({ code: '' });
+			const pAnother = createMockProduct({ code: 'valid-002' });
+
+			let list = [pValid, pDup, pNoCode];
+
+			// Initial evaluation
+			const keyValidInit = getProductKey(pValid, 0, list);
+			const keyDupInit = getProductKey(pDup, 1, list);
+			const keyNoCodeInit = getProductKey(pNoCode, 2, list);
+
+			expect(keyValidInit).toBe('valid-001');
+			expect(keyDupInit).toBe('valid-001__dup_1');
+			expect(keyNoCodeInit).toBe('__no_code_1');
+
+			// Reverse order (reordering simulation)
+			list = [pNoCode, pDup, pValid];
+			expect(getProductKey(pNoCode, 0, list)).toBe(keyNoCodeInit);
+			expect(getProductKey(pDup, 1, list)).toBe(keyDupInit);
+			expect(getProductKey(pValid, 2, list)).toBe(keyValidInit);
+
+			// Insertion of another product at index 1
+			list = [pNoCode, pAnother, pDup, pValid];
+			expect(getProductKey(pAnother, 1, list)).toBe('valid-002');
+			expect(getProductKey(pNoCode, 0, list)).toBe(keyNoCodeInit);
+			expect(getProductKey(pDup, 2, list)).toBe(keyDupInit);
+			expect(getProductKey(pValid, 3, list)).toBe(keyValidInit);
+
+			// Removal of pDup
+			list = [pNoCode, pAnother, pValid];
+			expect(getProductKey(pNoCode, 0, list)).toBe(keyNoCodeInit);
+			expect(getProductKey(pAnother, 1, list)).toBe('valid-002');
+			expect(getProductKey(pValid, 2, list)).toBe(keyValidInit);
 		});
 	});
 

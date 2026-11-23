@@ -31,19 +31,56 @@ export function getDirection(nutrientKey: string): 'min' | 'max' {
 	return nutrientRules[nutrientKey] ?? 'min';
 }
 
+// Cache for object-lifecycle stable keys (handles missing codes and duplicates during reordering)
+const productKeyMap = new WeakMap<object, string>();
+let noCodeCounter = 0;
+let dupCounter = 0;
+
+export function resetProductKeyCache(): void {
+	noCodeCounter = 0;
+	dupCounter = 0;
+}
+
 // Generates a stable, unique key for products in keyed loops
-export function getProductKey(product: Product, index: number, products?: Product[]): string {
-	const code = product?.code != null ? String(product.code).trim() : '';
-	if (!code) {
-		return `__no_code_${index}`;
+export function getProductKey(product: Product, index = 0, products?: Product[]): string {
+	if (!product || typeof product !== 'object') {
+		return `__invalid_${index}`;
 	}
-	if (products) {
-		const firstIndex = products.findIndex((p) => p.code != null && String(p.code).trim() === code);
-		if (firstIndex !== -1 && firstIndex !== index) {
-			return `${code}__dup_${index}`;
+
+	const cached = productKeyMap.get(product);
+	if (cached) {
+		return cached;
+	}
+
+	const cleanCode = product.code != null ? String(product.code).trim() : '';
+
+	let assignedKey: string;
+	if (cleanCode) {
+		// If products list is provided, verify whether this cleanCode is already claimed by another object
+		const codeClaimedByOther =
+			products != null &&
+			products.some(
+				(other) =>
+					other !== product &&
+					other &&
+					typeof other === 'object' &&
+					productKeyMap.has(other) &&
+					productKeyMap.get(other) === cleanCode
+			);
+
+		if (codeClaimedByOther) {
+			dupCounter++;
+			assignedKey = `${cleanCode}__dup_${dupCounter}`;
+		} else {
+			assignedKey = cleanCode;
 		}
+	} else {
+		noCodeCounter++;
+		assignedKey = `__no_code_${noCodeCounter}`;
 	}
-	return code;
+
+	productKeyMap.set(product, assignedKey);
+	return assignedKey;
 }
 
 // Safely get a nutrient value from a product, rejecting NaN and non-finite numbers
