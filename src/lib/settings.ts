@@ -2,7 +2,7 @@ import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
 const DEFAULT_PREFERENCES = {
-	version: 8,
+	version: 9,
 	locale: undefined as string | undefined,
 	country: 'world',
 	currency: 'USD',
@@ -15,7 +15,8 @@ const DEFAULT_PREFERENCES = {
 	},
 
 	editing: {
-		expandAllSections: true
+		expandAllSections: true,
+		monospaceIngredients: false
 	},
 
 	displayPricesInSearch: true,
@@ -61,6 +62,7 @@ const MIGRATIONS: {
 	{
 		version: 1,
 		upgrade: (preferences) => {
+			// @ts-expect-error - legacy migration schema
 			preferences.editing = {
 				expandAllSections: false
 			};
@@ -111,6 +113,7 @@ const MIGRATIONS: {
 					preferences.editing.expandAllSections = true;
 				}
 			} else {
+				// @ts-expect-error - legacy migration schema
 				preferences.editing = {
 					expandAllSections: true
 				};
@@ -147,6 +150,22 @@ const MIGRATIONS: {
 			const legacyPreferences = preferences as Preferences & { moderator?: boolean };
 			delete legacyPreferences.moderator;
 			legacyPreferences.hideModeratorTools = false;
+			return preferences;
+		}
+	},
+	{
+		version: 9,
+		upgrade: (preferences) => {
+			if (preferences.editing) {
+				if (preferences.editing.monospaceIngredients === undefined) {
+					preferences.editing.monospaceIngredients = false;
+				}
+			} else {
+				preferences.editing = {
+					expandAllSections: true,
+					monospaceIngredients: false
+				};
+			}
 			return preferences;
 		}
 	}
