@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
 	getQueryFilter,
+	isKnownFacet,
 	QUERY_FACETS,
 	queryAllFacetValues,
 	queryFacetCounts
@@ -23,6 +24,17 @@ describe('getQueryFilter', () => {
 				{ facet: 'contributors', value: 'example' }
 			])
 		).toBeNull();
+	});
+});
+
+describe('isKnownFacet', () => {
+	it('knows facets that have a Query field', () => {
+		expect(isKnownFacet('categories')).toBe(true);
+	});
+
+	it('does not know other names', () => {
+		expect(isKnownFacet('not-a-facet')).toBe(false);
+		expect(isKnownFacet('toString')).toBe(false);
 	});
 });
 

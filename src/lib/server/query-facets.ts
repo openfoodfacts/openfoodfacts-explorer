@@ -94,6 +94,11 @@ export async function queryFacetCounts(
 	return { values, count };
 }
 
+/** Whether a facet is one Explorer knows, i.e. it has a Query field. */
+export function isKnownFacet(facet: string): boolean {
+	return Object.hasOwn(QUERY_FACETS, facet);
+}
+
 /**
  * Build one Query filter that matches every facet/value pair.
  *
@@ -103,7 +108,7 @@ export async function queryFacetCounts(
 export function getQueryFilter(pairs: FacetPair[]): Record<string, string> | null {
 	const filter: Record<string, string> = {};
 	for (const pair of pairs) {
-		if (!Object.hasOwn(QUERY_FACETS, pair.facet)) return null;
+		if (!isKnownFacet(pair.facet)) return null;
 		filter[QUERY_FACETS[pair.facet]] = pair.value;
 	}
 	return filter;

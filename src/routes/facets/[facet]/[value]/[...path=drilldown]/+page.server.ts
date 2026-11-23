@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { PUBLIC_QUERY_BASE_URL } from '$app/env/public';
 import { getFacetDrilldown } from '#lib/api/facets.js';
-import { getQueryFilter, queryFacetCounts } from '#lib/server/query-facets.js';
+import { getQueryFilter, isKnownFacet, queryFacetCounts } from '#lib/server/query-facets.js';
 import { requireInt } from '#lib/utils.js';
 import type { PageServerLoad } from './$types';
 
@@ -17,19 +17,19 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	const drilldown = getFacetDrilldown(params.facet, params.value, params.path);
 	if (drilldown == null) error(404, 'Invalid facet path');
 
-	// Without a Query field for every pair, the page loads the list from Product Opener
+	// Like nested pages, every facet in the path must be known
 	const filter = getQueryFilter(drilldown.pairs);
-	let queryResults = null;
-	if (filter != null) {
-		queryResults = await queryFacetCounts(
-			fetch,
-			PUBLIC_QUERY_BASE_URL,
-			drilldown.listFacet,
-			page,
-			pageSize,
-			filter
-		);
-	}
+	if (filter == null || !isKnownFacet(drilldown.listFacet)) error(404, 'Unknown facet');
+
+	// Without a Query URL this is null, and the page loads the list from Product Opener
+	const queryResults = await queryFacetCounts(
+		fetch,
+		PUBLIC_QUERY_BASE_URL,
+		drilldown.listFacet,
+		page,
+		pageSize,
+		filter
+	);
 
 	return { drilldown, page, pageSize, queryResults };
 };
