@@ -74,7 +74,7 @@
 		"husky": "^9.1.7",
 		"iso-3166-1": "^2.1.1",
 		"iso-639-1": "^3.1.6",
-		"jose": "^6.2.17",
+		"jose": "^6.2.18",
 		"jsbarcode": "^3.12.3",
 		"leaflet": "^1.9.4",
 		"leaflet.markercluster": "^1.5.3",
@@ -106,11 +106,11 @@
 	"dependencies": {
 		"@openfoodfacts/openfoodfacts-webcomponents": "^1.19.0",
 		"@opentelemetry/api": "^1.10.0",
-		"@webcomponents/webcomponentsjs": "^2.8.0",
-		"barcode-detector": "^3.2.3",
+		"@webcomponents/webcomponentsjs": "^2.8.1",
+		"barcode-detector": "^3.2.4",
 		"csv-stringify": "^6.9.0",
-		"isomorphic-dompurify": "^4.7.0",
-		"zxing-wasm": "3.1.6"
+		"isomorphic-dompurify": "^4.8.0",
+		"zxing-wasm": "3.1.7"
 	},
 	"packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
 }
