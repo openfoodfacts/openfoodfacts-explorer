@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "ស្វែងរក - {query} - បើក Food Facts Explorer",
+		"title": "ស្វែងរក - {query}",
 		"placeholder": "សំណួរឬបាកូដ",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - បើក Food Facts Explorer",
+		"title": "{productName}",
 		"description": "ទំព័រផលិតផលសម្រាប់ {productName} នៅលើ Open Food Facts Explorer",
 		"image_alt": "រូបភាព",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "ការរុករក {facet} - បើកកម្មវិធីរុករកការពិត",
+		"facet_website_title": "ការរុករក {facet}",
 		"facet_website_description": "ស្វែងយល់ពីប្រភេទ {facet} នៅលើ Open Food Facts Explorer ។",
-		"facet_value_website_title": "រុករក {facet}: {value} - បើក Food Facts Explorer",
+		"facet_value_website_title": "រុករក {facet}: {value}",
 		"facet_value_website_description": "ស្វែងយល់ពីប្រភេទ {value} នៅលើ Open Food Facts Explorer ។",
 		"facet_back_to_list": "ត្រលប់ទៅផ្នែក",
 		"facet_back_to_overview": "ត្រឡប់ទៅ {facet} ទិដ្ឋភាពទូទៅ",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "ផលិតផលត្រូវបានបង្កើតឡើង",
 		"products_edited": "Products edited",
-		"html_title": "កម្រងព័ត៌មានអ្នកប្រើប្រាស់ - {user} - បើក Food Facts Explorer",
+		"html_title": "កម្រងព័ត៌មានអ្នកប្រើប្រាស់ - {user}",
 		"title": "កម្រងព័ត៌មានអ្នកប្រើប្រាស់របស់ {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

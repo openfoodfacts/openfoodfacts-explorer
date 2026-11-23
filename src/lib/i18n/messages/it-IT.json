@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Ricerca - {query} - Open Food Facts Explorer",
+		"title": "Ricerca - {query}",
 		"placeholder": "Query o codice a barre",
 		"go": "Vai",
 		"scan": "Scansiona un codice a barre",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Pagina del prodotto per {productName} su Open Food Facts Explorer",
 		"image_alt": "Immagine",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Esplorando {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Esplorando {facet}",
 		"facet_website_description": "Scopri la categoria {facet} su Open Food Facts Explorer.",
-		"facet_value_website_title": "Esplorando {facet}: {value} - Apri Esplora i Fatti Alimentari",
+		"facet_value_website_title": "Esplorando {facet}: {value}",
 		"facet_value_website_description": "Scopri la categoria {value} su Open Food Facts Explorer.",
 		"facet_back_to_list": "Torna alle sfaccettature",
 		"facet_back_to_overview": "Torna alla panoramica di {facet}",
@@ -1043,7 +1043,7 @@
 	"dashboard": {
 		"products_created": "Prodotti creati",
 		"products_edited": "Prodotti modificati",
-		"html_title": "Profilo utente - {user} - Esplora i fatti alimentari aperti",
+		"html_title": "Profilo utente - {user}",
 		"title": "Profilo utente di {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -25,7 +25,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Ricerca - {query} - Open Food Facts Explorer",
+		"title": "Ricerca - {query}",
 		"placeholder": "Query o codice a barre",
 		"go": "Vai",
 		"scan": "Scansiona un codice a barre",
@@ -226,7 +226,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Pagina del prodotto per {productName} su Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Vai al prodotto {productName} con codice {productCode}",
@@ -361,13 +361,13 @@
 		"edit": {
 			"sidebar_navigation": "Sezioni per la modifica del prodotto",
 			"sidebar": {
-					"collapse_all": "Comprimi tutto",
-					"expand_all": "Espandi tutto"
+				"collapse_all": "Comprimi tutto",
+				"expand_all": "Espandi tutto"
 			},
 			"moderator_only": "Solo moderatori",
 			"info": {
 				"images": "Carica immagini chiare del prodotto, degli ingredienti e dei valori nutrizionali per aiutare gli altri a identificare il prodotto.",
-			"basic_info": "Fornisci i dettagli principali sul prodotto, come quantità, imballaggio e produttore.",
+				"basic_info": "Fornisci i dettagli principali sul prodotto, come quantità, imballaggio e produttore.",
 				"origin_traceability": "Fornisci informazioni sull'origine e sulla tracciabilità, come luoghi di produzione, origini degli ingredienti e codici di tracciabilità.",
 				"languages": "Aggiungi nomi e descrizioni dei prodotti in lingue diverse per rendere il prodotto accessibile a più utenti.",
 				"ingredients": "Elenca tutti gli ingredienti presenti nel prodotto. Questo aiuta gli utenti con allergie o preferenze alimentari.",
@@ -649,17 +649,17 @@
 		"knowledge_panels": {
 			"action": {
 				"edit_product": "Modifica il prodotto",
-					"add_categories": "Aggiungi categorie",
-					"report_product_to_nutripatrol": "Segnala un problema con questo prodotto",
-					"add_ingredients_text": "Aggiungi il testo degli ingredienti",
+				"add_categories": "Aggiungi categorie",
+				"report_product_to_nutripatrol": "Segnala un problema con questo prodotto",
+				"add_ingredients_text": "Aggiungi il testo degli ingredienti",
 				"add_packaging_components": "Aggiungi i componenti dell'imballaggio",
-					"add_origins": "Aggiungi l'origine degli ingredienti",
-					"add_price": "Aggiungi un prezzo su Open Prices",
+				"add_origins": "Aggiungi l'origine degli ingredienti",
+				"add_price": "Aggiungi un prezzo su Open Prices",
 				"view_prices": "Visualizza i prezzi su Open Prices",
-					"add_recycling_instructions": "Aggiungi istruzioni per il riciclaggio",
-					"add_quantity": "Aggiungi quantità",
-					"add_packaging_image": "Aggiungi una foto dell'imballaggio",
-					"add_ingredients_image": "Aggiungi una foto degli ingredienti",
+				"add_recycling_instructions": "Aggiungi istruzioni per il riciclaggio",
+				"add_quantity": "Aggiungi quantità",
+				"add_packaging_image": "Aggiungi una foto dell'imballaggio",
+				"add_ingredients_image": "Aggiungi una foto degli ingredienti",
 				"add_nutrition_facts": "Aggiungi dati nutrizionali"
 			}
 		},
@@ -743,7 +743,7 @@
 			"image_manager_delete_success": "Immagini eliminate con successo.",
 			"image_manager_delete_error": "Impossibile eliminare le immagini. Riprova.",
 			"image_manager_in_use": "Attiva / In uso",
-				"image_manager_in_use_tooltip": "Questa immagine è attualmente attiva. Deselezionala prima nel gestore immagini per poterla eliminare.",
+			"image_manager_in_use_tooltip": "Questa immagine è attualmente attiva. Deselezionala prima nel gestore immagini per poterla eliminare.",
 			"image_manager_image_alt": "Immagine caricata {imgid}"
 		}
 	},
@@ -752,11 +752,11 @@
 		"barcode_scanned_not_found": "Il codice a barre {barcode} è stato scansionato correttamente, ma non è stato trovato alcun prodotto nei nostri Open Food Facts, Open Beauty Facts, Open Products Facts o Open Pet Food Facts.",
 		"add_new_product": "Aggiungi nuovo prodotto",
 		"scan_again": "Scansiona di nuovo",
-			"invalid_barcode": "Il codice scansionato non è un codice a barre valido",
-			"invalid_barcode_payload": "Dati dello scanner",
-			"empty_barcode_payload": "(vuoto)",
-			"manual_barcode": "Inserisci manualmente il codice a barre",
-			"camera_access_required": "È necessario consentire l'accesso alla fotocamera. Abilitalo nelle impostazioni del browser."
+		"invalid_barcode": "Il codice scansionato non è un codice a barre valido",
+		"invalid_barcode_payload": "Dati dello scanner",
+		"empty_barcode_payload": "(vuoto)",
+		"manual_barcode": "Inserisci manualmente il codice a barre",
+		"camera_access_required": "È necessario consentire l'accesso alla fotocamera. Abilitalo nelle impostazioni del browser."
 	},
 	"errors": {
 		"network": {
@@ -820,9 +820,9 @@
 		"known": "Noto",
 		"yes": "Sì",
 		"no": "No",
-		"facet_website_title": "Esplorando {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Esplorando {facet}",
 		"facet_website_description": "Scopri la categoria {facet} su Open Food Facts Explorer.",
-		"facet_value_website_title": "Esplora {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Esplora {facet}: {value}",
 		"facet_value_website_description": "Scopri la categoria {value} su Open Food Facts Explorer.",
 		"facet_back_to_list": "Torna alle sfaccettature",
 		"facet_back_to_overview": "Torna alla panoramica di {facet}"
@@ -879,7 +879,7 @@
 	"dashboard": {
 		"products_created": "Prodotti creati",
 		"products_edited": "Prodotti modificati",
-		"html_title": "Profilo utente - {user} - Open Food Facts Explorer",
+		"html_title": "Profilo utente - {user}",
 		"title": "Profilo utente di {user}",
 		"has_created": "Ha creato",
 		"has_edited": "Ha modificato",
@@ -962,9 +962,9 @@
 		"hint_relative_first": "💡 Le percentuali mostrano la differenza rispetto al primo prodotto",
 		"hint_relative_best": "💡 Le percentuali mostrano la differenza rispetto al valore migliore (più basso è meglio per la maggior parte dei nutrienti)",
 		"toast": {
-				"share_failed": "Condivisione non riuscita.",
-				"link_copied": "Link del confronto copiato negli appunti!",
-				"copy_failed": "Impossibile copiare il link negli appunti."
+			"share_failed": "Condivisione non riuscita.",
+			"link_copied": "Link del confronto copiato negli appunti!",
+			"copy_failed": "Impossibile copiare il link negli appunti."
 		}
 	},
 	"static_iframe": {

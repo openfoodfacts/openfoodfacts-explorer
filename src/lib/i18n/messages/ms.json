@@ -17,7 +17,7 @@
 		"account": "Akaun"
 	},
 	"search": {
-		"title": "Carian - {query} - Open Food Facts Explorer",
+		"title": "Carian - {query}",
 		"placeholder": "Pertanyaan atau kod bar",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Penjelajah Fakta Makanan Terbuka",
+		"title": "{productName}",
 		"description": "Halaman produk untuk {productName} di Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Meneroka {facet} - Penjelajah Fakta Makanan Terbuka",
+		"facet_website_title": "Meneroka {facet}",
 		"facet_website_description": "Temui kategori {facet} di Open Food Facts Explorer.",
-		"facet_value_website_title": "Meneroka {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Meneroka {facet}: {value}",
 		"facet_value_website_description": "Temui kategori {value} di Open Food Facts Explorer.",
 		"facet_back_to_list": "Kembali kepada aspek",
 		"facet_back_to_overview": "Kembali ke {facet} gambaran keseluruhan"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produk yang dicipta",
 		"products_edited": "Products edited",
-		"html_title": "Profil Pengguna - {user} - Open Food Facts Explorer",
+		"html_title": "Profil Pengguna - {user}",
 		"title": "Profil Pengguna {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Recèrca - {query} - Explorator de faches alimentaris dobèrt",
+		"title": "Recèrca - {query}",
 		"placeholder": "Requèsta o còde de barras",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Pagina de produch per {productName} sus Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Explorant {facet} - Explorator de faches alimentaris dobèrts",
+		"facet_website_title": "Explorant {facet}",
 		"facet_website_description": "Descobrissètz la categoria {facet} sus Open Food Facts Explorer.",
-		"facet_value_website_title": "Explorant {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Explorant {facet}: {value}",
 		"facet_value_website_description": "Descobrissètz la categoria {value} sus Open Food Facts Explorer.",
 		"facet_back_to_list": "Tornar a las facetas",
 		"facet_back_to_overview": "Tornar a {facet} vista generala"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produchs creats",
 		"products_edited": "Products edited",
-		"html_title": "Perfil d'utilizaire - {user} - Open Food Facts Explorer",
+		"html_title": "Perfil d'utilizaire - {user}",
 		"title": "Perfil d'utilizaire de {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

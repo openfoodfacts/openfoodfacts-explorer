@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Fikarohana - {query} - Open Food Facts Explorer",
+		"title": "Fikarohana - {query}",
 		"placeholder": "Fanontaniana na barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Pejin'ny vokatra ho an'ny {productName} amin'ny Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Mikaroka {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Mikaroka {facet}",
 		"facet_website_description": "Jereo ny sokajy {facet} ao amin'ny Open Food Facts Explorer.",
-		"facet_value_website_title": "Mikaroka {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Mikaroka {facet}: {value}",
 		"facet_value_website_description": "Jereo ny sokajy {value} ao amin'ny Open Food Facts Explorer.",
 		"facet_back_to_list": "Hiverina any amin'ny facets",
 		"facet_back_to_overview": "Miverina amin'ny {facet} topimaso",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Vokatra noforonina",
 		"products_edited": "Products edited",
-		"html_title": "Profile mpampiasa - {user} - Open Food Facts Explorer",
+		"html_title": "Profile mpampiasa - {user}",
 		"title": "mombamomba ny mpampiasa {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

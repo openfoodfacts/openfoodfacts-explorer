@@ -17,7 +17,7 @@
 		"account": "الحساب"
 	},
 	"search": {
-		"title": "بحث - {query} - مستكشف حقائق الطعام المفتوح",
+		"title": "بحث - {query}",
 		"placeholder": "استعلام أو رمز شريطي",
 		"go": "Go",
 		"scan": "امسح الرمز الشريطي",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - مستكشف حقائق الطعام المفتوح",
+		"title": "{productName}",
 		"description": "صفحة المنتج لـ {productName} على مستكشف حقائق الطعام المفتوح",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "استكشاف {facet} - مستكشف حقائق الطعام المفتوح",
+		"facet_website_title": "استكشاف {facet}",
 		"facet_website_description": "اكتشف فئة {facet} على Open Food Facts Explorer.",
-		"facet_value_website_title": "استكشاف {facet}: {value} - مستكشف حقائق الطعام المفتوح",
+		"facet_value_website_title": "استكشاف {facet}: {value}",
 		"facet_value_website_description": "اكتشف فئة {value} على Open Food Facts Explorer.",
 		"facet_back_to_list": "العودة إلى الجوانب",
 		"facet_back_to_overview": "العودة إلى نظرة عامة {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "المنتجات التي تم إنشاؤها",
 		"products_edited": "المنتجات المعدلة",
-		"html_title": "ملف تعريف المستخدم - {user} - مستكشف حقائق الطعام المفتوح",
+		"html_title": "ملف تعريف المستخدم - {user}",
 		"title": "الملف الشخصي للمستخدم {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

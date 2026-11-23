@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "शोधा - {query} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
+		"title": "शोधा - {query}",
 		"placeholder": "क्वेरी किंवा बारकोड",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
+		"title": "{productName}",
 		"description": "ओपन फूड फॅक्ट्स एक्सप्लोरर वर {productName} साठी उत्पादन पृष्ठ",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "एक्सप्लोरिंग {facet} - ओपन फूड फॅक्ट्स एक्सप्लोरर",
+		"facet_website_title": "एक्सप्लोरिंग {facet}",
 		"facet_website_description": "ओपन फूड फॅक्ट्स एक्सप्लोरर वर {facet} श्रेणी शोधा.",
-		"facet_value_website_title": "एक्सप्लोर करणे {facet}: {value} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
+		"facet_value_website_title": "एक्सप्लोर करणे {facet}: {value}",
 		"facet_value_website_description": "ओपन फूड फॅक्ट्स एक्सप्लोरर वर {value} श्रेणी शोधा.",
 		"facet_back_to_list": "पैलूंकडे परत",
 		"facet_back_to_overview": "{facet} विहंगावलोकन वर परत जा",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "तयार केलेली उत्पादने",
 		"products_edited": "Products edited",
-		"html_title": "वापरकर्ता प्रोफाइल - {user} - फूड फॅक्ट्स एक्सप्लोरर उघडा",
+		"html_title": "वापरकर्ता प्रोफाइल - {user}",
 		"title": "{user}चे वापरकर्ता प्रोफाइल",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

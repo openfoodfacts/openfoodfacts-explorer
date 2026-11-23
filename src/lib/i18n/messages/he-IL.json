@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "חיפוש - {query} - פתח את סייר עובדות המזון",
+		"title": "חיפוש - {query}",
 		"placeholder": "שאילתה או ברקוד",
 		"go": "קדימה",
 		"scan": "סריקת ברקוד",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - פתח את סייר עובדות המזון",
+		"title": "{productName}",
 		"description": "דף מוצר עבור {productName} ב-Open Food Facts Explorer",
 		"image_alt": "תמונה",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "למשל: שם משתמש…",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "חקירה {facet} - פתח את סייר עובדות המזון",
+		"facet_website_title": "חקירה {facet}",
 		"facet_website_description": "גלו את הקטגוריה {facet} ב-Open Food Facts Explorer.",
-		"facet_value_website_title": "חקירה של {facet}: {value} - פתח את סייר עובדות המזון",
+		"facet_value_website_title": "חקירה של {facet}: {value}",
 		"facet_value_website_description": "גלו את הקטגוריה {value} ב-Open Food Facts Explorer.",
 		"facet_back_to_list": "חזרה להיבטים",
 		"facet_back_to_overview": "חזרה לסקירה הכללית {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "מוצרים שנוצרו",
 		"products_edited": "מוצרים שנערכו",
-		"html_title": "פרופיל משתמש - {user} - פתח את סייר עובדות המזון",
+		"html_title": "פרופיל משתמש - {user}",
 		"title": "פרופיל משתמש של {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

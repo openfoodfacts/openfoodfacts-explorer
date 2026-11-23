@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Претрага - {query} - Отвори истраживач чињеница о храни",
+		"title": "Претрага - {query}",
 		"placeholder": "Упит или баркод",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Отвори истраживач чињеница о храни",
+		"title": "{productName}",
 		"description": "Страница производа за {productName} на Open Food Facts Explorer-у",
 		"image_alt": "Слика",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Истраживање {facet} - Отворите истраживач чињеница о храни",
+		"facet_website_title": "Истраживање {facet}",
 		"facet_website_description": "Откријте категорију {facet} на Open Food Facts Explorer-у.",
-		"facet_value_website_title": "Истраживање {facet}: {value} - Отвори истраживач чињеница о храни",
+		"facet_value_website_title": "Истраживање {facet}: {value}",
 		"facet_value_website_description": "Откријте категорију {value} на Open Food Facts Explorer-у.",
 		"facet_back_to_list": "Назад на фасете",
 		"facet_back_to_overview": "Назад на преглед {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Производи креирани",
 		"products_edited": "Products edited",
-		"html_title": "Кориснички профил - {user} - Отвори истраживање чињеница о храни",
+		"html_title": "Кориснички профил - {user}",
 		"title": "Кориснички профил корисника {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

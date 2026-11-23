@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Хайх - {query} - Хүнсний баримт судлаачийг нээнэ үү",
+		"title": "Хайх - {query}",
 		"placeholder": "Асуулга эсвэл бар код",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Хүнсний баримт судлаачийг нээнэ үү",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer дээрх {productName} бүтээгдэхүүний хуудас",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Exploring {facet} - Хүнсний баримт судлаачийг нээнэ үү",
+		"facet_website_title": "Exploring {facet}",
 		"facet_website_description": "Open Food Facts Explorer дээрх {facet} ангиллыг олж мэдээрэй.",
-		"facet_value_website_title": "{facet}судлах: {value} - Хүнсний баримт судлаачдыг нээх",
+		"facet_value_website_title": "{facet}судлах: {value}",
 		"facet_value_website_description": "Open Food Facts Explorer дээрх {value} ангиллыг олж мэдээрэй.",
 		"facet_back_to_list": "Нүүр хуудас руу буцах",
 		"facet_back_to_overview": "{facet} тойм руу буцах",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Бүтээсэн бүтээгдэхүүн",
 		"products_edited": "Products edited",
-		"html_title": "Хэрэглэгчийн профайл - {user} - Хүнсний баримт судлаачийг нээнэ үү",
+		"html_title": "Хэрэглэгчийн профайл - {user}",
 		"title": "{user}-н хэрэглэгчийн профайл",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

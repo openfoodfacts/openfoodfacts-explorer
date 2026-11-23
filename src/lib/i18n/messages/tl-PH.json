@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Maghanap - {query} - Buksan ang Food Facts Explorer",
+		"title": "Maghanap - {query}",
 		"placeholder": "Tanong o barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Pahina ng produkto para sa {productName} sa Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Pag-explore {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Pag-explore {facet}",
 		"facet_website_description": "Tuklasin ang kategoryang {facet} sa Open Food Facts Explorer.",
-		"facet_value_website_title": "Paggalugad {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Paggalugad {facet}: {value}",
 		"facet_value_website_description": "Tuklasin ang kategoryang {value} sa Open Food Facts Explorer.",
 		"facet_back_to_list": "Bumalik sa facet",
 		"facet_back_to_overview": "Bumalik sa {facet} pangkalahatang-ideya",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Mga produktong nilikha",
 		"products_edited": "Products edited",
-		"html_title": "Profile ng User - {user} - Open Food Facts Explorer",
+		"html_title": "Profile ng User - {user}",
 		"title": "Profile ng User ng {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "I-akhawunti"
 	},
 	"search": {
-		"title": "Sesha - {query} - Vula Isihloli Sokudla Kwamaqiniso",
+		"title": "Sesha - {query}",
 		"placeholder": "Umbuzo noma ibhakhodi",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Vula Isihloli Sokudla Kwamaqiniso",
+		"title": "{productName}",
 		"description": "Ikhasi lomkhiqizo lika- {productName} ku-Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Ukuhlola {facet} - Vula Isihloli Sokudla Kwamaqiniso",
+		"facet_website_title": "Ukuhlola {facet}",
 		"facet_website_description": "Zitholele isigaba esingu- {facet} ku-Open Food Facts Explorer.",
-		"facet_value_website_title": "Ukuhlola {facet}: {value} - Vula Isihloli samaqiniso okudla",
+		"facet_value_website_title": "Ukuhlola {facet}: {value}",
 		"facet_value_website_description": "Zitholele isigaba esingu- {value} ku-Open Food Facts Explorer.",
 		"facet_back_to_list": "Buyela ezicini",
 		"facet_back_to_overview": "Buyela ku- {facet} ukubuka konke"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Imikhiqizo idaliwe",
 		"products_edited": "Products edited",
-		"html_title": "Iphrofayela Yomsebenzisi - {user} - Vula Isihloli Sokudla Kwamaqiniso",
+		"html_title": "Iphrofayela Yomsebenzisi - {user}",
 		"title": "Iphrofayela yomsebenzisi ye- {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

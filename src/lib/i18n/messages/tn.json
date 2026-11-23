@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Batla - {query} - Bula Sebatlisisi sa Dintlha tsa Dijo",
+		"title": "Batla - {query}",
 		"placeholder": "Patlisiso kgotsa khoutu ya bara",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Motlhotlhomisi wa Dintlha tsa Dijo tse di Buletsweng",
+		"title": "{productName}",
 		"description": "Tsebe ya sedirisiwa sa {productName} mo Motlhotlhomisi wa Dintlha tsa Dijo tse di Buletsweng",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Go Batlisisa {facet} - Sebatlisisi sa Dintlha tsa Dijo tse di Buletsweng",
+		"facet_website_title": "Go Batlisisa {facet}",
 		"facet_website_description": "Ribolola setlhopha sa {facet} mo Motlhotlhomisi wa Dintlha tsa Dijo tse di Buletsweng.",
-		"facet_value_website_title": "Go Batlisisa {facet}: {value} - Sebatlisisi sa Dintlha tsa Dijo tse di Buletsweng",
+		"facet_value_website_title": "Go Batlisisa {facet}: {value}",
 		"facet_value_website_description": "Ribolola setlhopha sa {value} mo Motlhotlhomisi wa Dintlha tsa Dijo tse di Buletsweng.",
 		"facet_back_to_list": "Boela kwa dikarolong",
 		"facet_back_to_overview": "Boela kwa {facet} kakaretso"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Dikumo tse di tlhamilweng",
 		"products_edited": "Products edited",
-		"html_title": "Porofaele ya Modirisi - {user} - Bula Sebatlisisi sa Dintlha tsa Dijo",
+		"html_title": "Porofaele ya Modirisi - {user}",
 		"title": "Porofaele ya Modirisi ya {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

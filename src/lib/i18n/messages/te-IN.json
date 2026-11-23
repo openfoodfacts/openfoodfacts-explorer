@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "శోధన - {query} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
+		"title": "శోధన - {query}",
 		"placeholder": "ప్రశ్న లేదా బార్‌కోడ్",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
+		"title": "{productName}",
 		"description": "ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో {productName} కోసం ఉత్పత్తి పేజీ",
 		"image_alt": "చిత్రం",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} ని అన్వేషిస్తోంది - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
+		"facet_website_title": "{facet} ని అన్వేషిస్తోంది",
 		"facet_website_description": "ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో {facet} వర్గాన్ని కనుగొనండి.",
-		"facet_value_website_title": "{facet}ని అన్వేషిస్తోంది : {value} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
+		"facet_value_website_title": "{facet}ని అన్వేషిస్తోంది : {value}",
 		"facet_value_website_description": "ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్‌లో {value} వర్గాన్ని కనుగొనండి.",
 		"facet_back_to_list": "కోణాలకు తిరిగి వెళ్ళు",
 		"facet_back_to_overview": "{facet} అవలోకనానికి తిరిగి వెళ్ళు",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "సృష్టించబడిన ఉత్పత్తులు",
 		"products_edited": "Products edited",
-		"html_title": "యూజర్ ప్రొఫైల్ - {user} - ఓపెన్ ఫుడ్ ఫ్యాక్ట్స్ ఎక్స్‌ప్లోరర్",
+		"html_title": "యూజర్ ప్రొఫైల్ - {user}",
 		"title": "{user}యొక్క వినియోగదారు ప్రొఫైల్",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

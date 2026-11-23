@@ -17,7 +17,7 @@
 		"account": "Compte"
 	},
 	"search": {
-		"title": "Recherche - {query} - Ouvrir l'explorateur de données alimentaires",
+		"title": "Recherche - {query}",
 		"placeholder": "Requête ou code-barres",
 		"go": "Aller",
 		"scan": "Scanner un code-barres",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Ouvrir l'explorateur de faits alimentaires",
+		"title": "{productName}",
 		"description": "Page produit pour {productName} sur Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Aller au produit {productName} avec le code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Menu de navigation mobile"
 	},
 	"facets": {
-		"facet_website_title": "Explorer {facet} - Ouvrir l'explorateur de faits alimentaires",
+		"facet_website_title": "Explorer {facet}",
 		"facet_website_description": "Découvrez la catégorie {facet} sur Open Food Facts Explorer.",
-		"facet_value_website_title": "Exploration de {facet}: {value} - Ouvrir l'explorateur de faits alimentaires",
+		"facet_value_website_title": "Exploration de {facet}: {value}",
 		"facet_value_website_description": "Découvrez la catégorie {value} sur Open Food Facts Explorer.",
 		"facet_back_to_list": "Retour aux facettes",
 		"facet_back_to_overview": "Retour à l'aperçu {facet}"
@@ -831,7 +831,7 @@
 	"dashboard": {
 		"products_created": "Produits créés",
 		"products_edited": "Produits modifiés",
-		"html_title": "Profil utilisateur - {user} - Ouvrir l'explorateur de faits alimentaires",
+		"html_title": "Profil utilisateur - {user}",
 		"title": "Profil utilisateur de {user}",
 		"has_created": "A créé",
 		"has_edited": "A modifié",

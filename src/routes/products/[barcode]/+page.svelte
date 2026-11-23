@@ -397,7 +397,7 @@
 <Metadata
 	canonicalUrl={data.canonicalUrl}
 	title={$_('product.title', {
-		default: '{productName} - Open Food Facts Explorer',
+		default: '{productName}',
 		values: { productName: product.product_name }
 	})}
 	description={$_('product.description', {

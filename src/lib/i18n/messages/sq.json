@@ -17,7 +17,7 @@
 		"account": "Llogari"
 	},
 	"search": {
-		"title": "Kërko - {query} - Hap Eksploruesin e Fakteve Ushqimore",
+		"title": "Kërko - {query}",
 		"placeholder": "Pyetje ose barkod",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Hapni Eksploruesin e Fakteve Ushqimore",
+		"title": "{productName}",
 		"description": "Faqja e produktit për {productName} në Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Duke eksploruar {facet} - Hapni Eksploruesin e Fakteve Ushqimore",
+		"facet_website_title": "Duke eksploruar {facet}",
 		"facet_website_description": "Zbuloni kategorinë {facet} në Open Food Facts Explorer.",
-		"facet_value_website_title": "Duke eksploruar {facet}: {value} - Hapni Eksploruesin e Fakteve Ushqimore",
+		"facet_value_website_title": "Duke eksploruar {facet}: {value}",
 		"facet_value_website_description": "Zbuloni kategorinë {value} në Open Food Facts Explorer.",
 		"facet_back_to_list": "Kthehu te aspektet",
 		"facet_back_to_overview": "Kthehu te përmbledhja {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produktet e krijuara",
 		"products_edited": "Products edited",
-		"html_title": "Profili i Përdoruesit - {user} - Hapni Eksploruesin e Fakteve Ushqimore",
+		"html_title": "Profili i Përdoruesit - {user}",
 		"title": "Profili i përdoruesit të {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

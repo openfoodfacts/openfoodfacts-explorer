@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Іздеу - {query} - Food Facts Explorer ашыңыз",
+		"title": "Іздеу - {query}",
 		"placeholder": "Сұрау немесе штрих-код",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Food Facts Explorer ашыңыз",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer сайтындағы {productName} өнім беті",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Exploring {facet} - Food Facts Explorer ашыңыз",
+		"facet_website_title": "Exploring {facet}",
 		"facet_website_description": "Open Food Facts Explorer сайтында {facet} санатын ашыңыз.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Food Facts Explorer-ді ашыңыз",
+		"facet_value_website_title": "Exploring {facet}: {value} - Food Facts Explorer",
 		"facet_value_website_description": "Open Food Facts Explorer сайтында {value} санатын ашыңыз.",
 		"facet_back_to_list": "Фасеттерге оралу",
 		"facet_back_to_overview": "{facet} шолуға оралу",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Құрылған өнімдер",
 		"products_edited": "Products edited",
-		"html_title": "Пайдаланушы профилі - {user} - Food Facts Explorer ашыңыз",
+		"html_title": "Пайдаланушы профилі - {user}",
 		"title": "{user}пайдаланушы профилі",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

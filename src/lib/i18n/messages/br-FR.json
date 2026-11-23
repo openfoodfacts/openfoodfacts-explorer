@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Klask - {query} - Ergerzher ar fedoù boued digor",
+		"title": "Klask - {query}",
 		"placeholder": "Goulenn pe kod barrennoù",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Ergerzher fedoù boued digor",
+		"title": "{productName}",
 		"description": "Pajenn produ evit {productName} war Open Food Facts Explorer",
 		"image_alt": "Skeudenn",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Ergerzhout {facet} - Ergerzher fedoù boued digor",
+		"facet_website_title": "Ergerzhout {facet}",
 		"facet_website_description": "Dizoloit ar rummad {facet} war Open Food Facts Explorer.",
-		"facet_value_website_title": "Ergerzhout {facet}: {value} - Ergerzher fedoù boued digor",
+		"facet_value_website_title": "Ergerzhout {facet}: {value}",
 		"facet_value_website_description": "Dizoloit ar rummad {value} war Open Food Facts Explorer.",
 		"facet_back_to_list": "Distreiñ d'ar fazioù",
 		"facet_back_to_overview": "Distreiñ da {facet} gwel dre vras",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Produioù krouet",
 		"products_edited": "Products edited",
-		"html_title": "Profil implijer - {user} - Digeriñ Food Facts Explorer",
+		"html_title": "Profil implijer - {user}",
 		"title": "Profil implijer eus {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

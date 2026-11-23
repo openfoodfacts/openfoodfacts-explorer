@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "ရှာဖွေပါ - {query} - Food Facts Explorer ကိုဖွင့်ပါ။",
+		"title": "ရှာဖွေပါ - {query}",
 		"placeholder": "မေးမြန်းမှု သို့မဟုတ် ဘားကုဒ်",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Food Facts Explorer ကိုဖွင့်ပါ။",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer ရှိ {productName} အတွက် ထုတ်ကုန်စာမျက်နှာ",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} ကိုရှာဖွေနေသည် - Food Facts Explorer ကိုဖွင့်ပါ။",
+		"facet_website_title": "{facet} ကိုရှာဖွေနေသည်",
 		"facet_website_description": "Open Food Facts Explorer တွင် {facet} အမျိုးအစားကို ရှာဖွေပါ။",
-		"facet_value_website_title": "{facet}: {value} စူးစမ်းလေ့လာခြင်း - Food Facts Explorer ကိုဖွင့်ပါ",
+		"facet_value_website_title": "{facet}: {value} စူးစမ်းလေ့လာခြင်း",
 		"facet_value_website_description": "Open Food Facts Explorer တွင် {value} အမျိုးအစားကို ရှာဖွေပါ။",
 		"facet_back_to_list": "မျက်နှာစာများ သို့ ပြန်သွားရန်",
 		"facet_back_to_overview": "{facet} ခြုံငုံသုံးသပ်ချက်သို့ ပြန်သွားရန်",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "ထုတ်ကုန်များဖန်တီးခဲ့သည်။",
 		"products_edited": "Products edited",
-		"html_title": "အသုံးပြုသူပရိုဖိုင် - {user} - Food Facts Explorer ကိုဖွင့်ပါ။",
+		"html_title": "အသုံးပြုသူပရိုဖိုင် - {user}",
 		"title": "{user}၏ အသုံးပြုသူပရိုဖိုင်",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

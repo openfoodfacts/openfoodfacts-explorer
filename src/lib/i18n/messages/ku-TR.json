@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Lêgerîn - {query} - Lêgerînerê Agahiyên Xwarinê Vekirî",
+		"title": "Lêgerîn - {query}",
 		"placeholder": "Lêpirsîn an barkod",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Lêgerînerê Agahiyên Xwarinê Vekirî",
+		"title": "{productName}",
 		"description": "Rûpela berhemê ji bo {productName} li ser Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Lêkolîna {facet} - Lêgerînerê Agahiyên Xwarinê Vekirî",
+		"facet_website_title": "Lêkolîna {facet}",
 		"facet_website_description": "Kategoriya {facet} li ser Open Food Facts Explorer kifş bikin.",
-		"facet_value_website_title": "Lêkolîna {facet}: {value} - Lêgerînerê Agahiyên Xwarinê Vekirî",
+		"facet_value_website_title": "Lêkolîna {facet}: {value}",
 		"facet_value_website_description": "Kategoriya {value} li ser Open Food Facts Explorer kifş bikin.",
 		"facet_back_to_list": "Vegere bo aliyên",
 		"facet_back_to_overview": "Vegere bo pêşdîtina {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Berhemên hatine afirandin",
 		"products_edited": "Products edited",
-		"html_title": "Profîla Bikarhêner - {user} - Lêgerînerê Agahiyên Xwarinê Vekin",
+		"html_title": "Profîla Bikarhêner - {user}",
 		"title": "Profîla Bikarhêner a {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

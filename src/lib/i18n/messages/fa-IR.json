@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "جستجو - {query} - کاوشگر اطلاعات غذایی را باز کنید",
+		"title": "جستجو - {query}",
 		"placeholder": "استعلام یا بارکد",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - کاوشگر اطلاعات غذایی را باز کنید",
+		"title": "{productName}",
 		"description": "صفحه محصول برای {productName} در Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "کاوش {facet} - کاوشگر حقایق غذایی را باز کنید",
+		"facet_website_title": "کاوش {facet}",
 		"facet_website_description": "دسته {facet} را در Open Food Facts Explorer کشف کنید.",
-		"facet_value_website_title": "کاوش {facet}: {value} - کاوشگر حقایق غذایی را باز کنید",
+		"facet_value_website_title": "کاوش {facet}: {value}",
 		"facet_value_website_description": "دسته {value} را در Open Food Facts Explorer کشف کنید.",
 		"facet_back_to_list": "بازگشت به جنبه‌ها",
 		"facet_back_to_overview": "بازگشت به نمای کلی {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "محصولات ایجاد شده",
 		"products_edited": "محصولات ویرایش شده",
-		"html_title": "مشخصات کاربر - {user} - کاوشگر اطلاعات غذایی را باز کنید",
+		"html_title": "مشخصات کاربر - {user}",
 		"title": "پروفایل کاربری {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

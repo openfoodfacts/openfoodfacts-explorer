@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Phendla - {query} - Vula uMhloli weeNkatha zoKutya",
+		"title": "Phendla - {query}",
 		"placeholder": "Umbuzo okanye ibhakhowudi",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} -Vula uMhloli weeNtkatha zoKutya",
+		"title": "{productName}",
 		"description": "Iphepha lemveliso ye {productName} kwi-Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Ukuphonononga {facet} -Vula uMjongi weenyaniso zokutya",
+		"facet_website_title": "Ukuphonononga {facet}",
 		"facet_website_description": "Fumana udidi lwe {facet} kwi-Open Food Facts Explorer.",
-		"facet_value_website_title": "Ukuphonononga {facet}: {value} -Vula uMphononongi weeMbali zoKutya",
+		"facet_value_website_title": "Ukuphonononga {facet}: {value}",
 		"facet_value_website_description": "Fumana udidi lwe {value} kwi-Open Food Facts Explorer.",
 		"facet_back_to_list": "Buyela kumacala",
 		"facet_back_to_overview": "Buyela ku {facet} isishwankathelo",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Iimveliso zenziwe",
 		"products_edited": "Products edited",
-		"html_title": "Iprofayile yoMsebenzisi- {user} -Vula uMhloli weeNqaku zoKutya",
+		"html_title": "Iprofayile yoMsebenzisi- {user}",
 		"title": "Iprofayile yomsebenzisi ye {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "Konts"
 	},
 	"search": {
-		"title": "Meklēšana — {query} — Atvērt pārtikas faktu pārlūku",
+		"title": "Meklēšana — {query}",
 		"placeholder": "Vaicājums vai svītrkods",
 		"go": "Ej",
 		"scan": "Skenēt svītrkodu",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} — Atvērt pārtikas faktu pārlūku",
+		"title": "{productName}",
 		"description": "Produkta lapa {productName} vietnē Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Izpētot {facet} — Atvērt pārtikas faktu pārlūku",
+		"facet_website_title": "Izpētot {facet}",
 		"facet_website_description": "Atklājiet {facet} kategoriju vietnē Open Food Facts Explorer.",
-		"facet_value_website_title": "Izpētot {facet}: {value} — Atvērt pārtikas faktu pārlūku",
+		"facet_value_website_title": "Izpētot {facet}: {value}",
 		"facet_value_website_description": "Atklājiet {value} kategoriju vietnē Open Food Facts Explorer.",
 		"facet_back_to_list": "Atpakaļ pie aspektiem",
 		"facet_back_to_overview": "Atpakaļ uz {facet} pārskatu"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Izveidotie produkti",
 		"products_edited": "Rediģētie produkti",
-		"html_title": "Lietotāja profils — {user} — Atvērt pārtikas faktu pārlūku",
+		"html_title": "Lietotāja profils — {user}",
 		"title": "{user}lietotāja profils",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

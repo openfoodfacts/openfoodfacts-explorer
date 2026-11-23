@@ -17,7 +17,7 @@
 		"account": "Λογαριασμός"
 	},
 	"search": {
-		"title": "Αναζήτηση - {query} - Άνοιγμα Εξερεύνησης Open Food Facts",
+		"title": "Αναζήτηση - {query}",
 		"placeholder": "Ερώτημα ή γραμμωτός κώδικας",
 		"go": "Go",
 		"scan": "Σάρωση ενός γραμμωτού κώδικα",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Εξερευνητής Open Food Facts",
+		"title": "{productName}",
 		"description": "Σελίδα προϊόντος για {productName} στον Εξερευνητή Open Food Facts",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Εξερευνώντας {facet} - Εξερευνητής Open Food Facts",
+		"facet_website_title": "Εξερευνώντας {facet}",
 		"facet_website_description": "Ανακαλύψτε την κατηγορία {facet} στον Εξερευνητή Open Food Facts.",
-		"facet_value_website_title": "Εξερευνώντας {facet}: {value} - Εξερευνητής Open Food Facts",
+		"facet_value_website_title": "Εξερευνώντας {facet}: {value}",
 		"facet_value_website_description": "Ανακαλύψτε την κατηγορία {value} στον Εξερευνητή Open Food Facts.",
 		"facet_back_to_list": "Επιστροφή στις όψεις",
 		"facet_back_to_overview": "Επιστροφή στην επισκόπηση {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Προϊόντα που δημιουργήθηκαν",
 		"products_edited": "Προϊόντα που επεξεργάστηκαν",
-		"html_title": "Προφίλ χρήστη - {user} - Άνοιγμα εξερεύνησης πληροφοριών για τα τρόφιμα",
+		"html_title": "Προφίλ χρήστη - {user}",
 		"title": "Προφίλ χρήστη του/της {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

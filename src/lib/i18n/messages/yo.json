@@ -17,7 +17,7 @@
 		"account": "Àkọọ́lẹ̀"
 	},
 	"search": {
-		"title": "Ṣewadii - {query} - Ṣiṣawari Awọn Otitọ Ounje",
+		"title": "Ṣewadii - {query}",
 		"placeholder": "Ibeere tabi kooduopo",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Ṣiṣawari Awọn Otitọ Ounje",
+		"title": "{productName}",
 		"description": "Oju-iwe ọja fun {productName} lori Ṣiṣawari Awọn Otitọ Ounje",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Ṣiṣawari {facet} - Ṣiṣawari Awọn Otitọ Ounje",
+		"facet_website_title": "Ṣiṣawari {facet}",
 		"facet_website_description": "Ṣe afẹri ẹka {facet} lori Ṣiṣawari Awọn Otitọ Ounje.",
-		"facet_value_website_title": "Ṣiṣawari {facet}: {value} - Ṣiṣawari Awọn Otitọ Ounje",
+		"facet_value_website_title": "Ṣiṣawari {facet}: {value}",
 		"facet_value_website_description": "Ṣe afẹri ẹka {value} lori Ṣiṣawari Awọn Otitọ Ounje.",
 		"facet_back_to_list": "Pada si awọn abala",
 		"facet_back_to_overview": "Pada si {facet} awotẹlẹ"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Awọn ọja ti a ṣẹda",
 		"products_edited": "Products edited",
-		"html_title": "Profaili olumulo - {user} - Ṣiṣawari Awọn Otitọ Ounje",
+		"html_title": "Profaili olumulo - {user}",
 		"title": "Profaili olumulo ti {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

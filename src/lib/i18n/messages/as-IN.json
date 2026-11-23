@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "সন্ধান - {query} - খোলা খাদ্য তথ্য এক্সপ্লোৰার",
+		"title": "সন্ধান - {query}",
 		"placeholder": "প্ৰশ্ন বা বাৰক'ড",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - খোলা খাদ্য তথ্য এক্সপ্লোৰাৰ",
+		"title": "{productName}",
 		"description": "মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত {productName} ৰ বাবে প্ৰডাক্ট পেজ",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "অন্বেষণ {facet} - খোলা খাদ্য তথ্য এক্সপ্লোৰার",
+		"facet_website_title": "অন্বেষণ {facet}",
 		"facet_website_description": "মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত {facet} শ্ৰেণীটো আৱিষ্কাৰ কৰক।",
-		"facet_value_website_title": "{facet}অন্বেষণ : {value} - খোলা খাদ্য তথ্য এক্সপ্লোৰাৰ",
+		"facet_value_website_title": "{facet}অন্বেষণ : {value}",
 		"facet_value_website_description": "মুক্ত খাদ্য তথ্য এক্সপ্ল'ৰাৰত {value} শ্ৰেণীটো আৱিষ্কাৰ কৰক।",
 		"facet_back_to_list": "ফেচেটলৈ উভতি যাওঁক",
 		"facet_back_to_overview": "{facet} অভাৰভিউলৈ উভতি যাওক",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "সৃষ্টি কৰা সামগ্ৰী",
 		"products_edited": "Products edited",
-		"html_title": "- {user} - খোলা খাদ্য তথ্য এক্সপ্লোৰার",
+		"html_title": "- {user}",
 		"title": "{user}ৰ ব্যৱহাৰকাৰী প্ৰ'ফাইল",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

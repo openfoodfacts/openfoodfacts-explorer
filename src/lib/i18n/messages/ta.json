@@ -17,7 +17,7 @@
 		"account": "கணக்கு"
 	},
 	"search": {
-		"title": "தேடல் - {query} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
+		"title": "தேடல் - {query}",
 		"placeholder": "வினவல் அல்லது பார்கோடு",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
+		"title": "{productName}",
 		"description": "திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரரில் {productName} க்கான தயாரிப்புப் பக்கம்",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} ஐ ஆராய்தல் - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
+		"facet_website_title": "{facet} ஐ ஆராய்தல்",
 		"facet_website_description": "திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரரில் {facet} வகையைக் கண்டறியவும்.",
-		"facet_value_website_title": "{facet}ஐ ஆராய்தல் : {value} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
+		"facet_value_website_title": "{facet}ஐ ஆராய்தல் : {value}",
 		"facet_value_website_description": "திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரரில் {value} வகையைக் கண்டறியவும்.",
 		"facet_back_to_list": "அம்சங்களுக்குத் திரும்பு",
 		"facet_back_to_overview": "{facet} கண்ணோட்டத்திற்குத் திரும்பு"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "உருவாக்கப்பட்ட தயாரிப்புகள்",
 		"products_edited": "Products edited",
-		"html_title": "பயனர் சுயவிவரம் - {user} - திறந்த உணவு உண்மைகள் எக்ஸ்ப்ளோரர்",
+		"html_title": "பயனர் சுயவிவரம் - {user}",
 		"title": "{user}இன் பயனர் சுயவிவரம்",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
