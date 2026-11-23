@@ -51,13 +51,9 @@ const ALCOHOL_VOLUME_UNITS = new Set(['%vol', 'vol%', '%']);
 
 type GramAmount = { kind: 'grams'; grams: number } | { kind: 'missing' } | { kind: 'unknown-unit' };
 
-/**
- * Nutriment values are stored as typed, while the chosen unit lives in `<nutrient>_unit`.
- * Checks that compare amounts must do it in grams, so convert through the stored unit first.
- *
- * A missing unit means grams, which is how the edit form stores nutrients by default. A unit we
- * cannot convert is reported as `unknown-unit` so callers skip the comparison, instead of
- * validating the raw number as if it were already in grams.
+/*
+ * Converts nutrient values to grams before comparison.
+ * Missing units are treated as grams, while unsupported units are skipped.
  */
 function gramAmount(product: Product, field: string): GramAmount {
 	const nutriments = product.nutriments as Record<string, unknown> | undefined;
@@ -87,7 +83,7 @@ function gramAmount(product: Product, field: string): GramAmount {
 	return { kind: 'unknown-unit' };
 }
 
-/**
+/*
  * Gram amounts for a group of fields, or `null` when any of them uses a unit we cannot convert.
  * Missing values count as zero, which is how the aggregate checks have always treated them.
  */
@@ -299,11 +295,9 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 		'proteins',
 		'carbohydrates',
 		'fat',
-		'saturated-fat',
 		'fibers',
 		'alcohol',
 		'salt',
-		'sodium',
 		'sugars'
 	] as const;
 	for (const field of fields) {
@@ -346,63 +340,12 @@ function sugarsLessThanCarbs(product: Product): Issue[] {
 	];
 }
 
-const saturatedFatExceedsFatAnalysis: AnalysisFunc = (product) => {
-	const saturatedFat = gramAmount(product, 'saturated-fat');
-	const fat = gramAmount(product, 'fat');
-
-	if (saturatedFat.kind !== 'grams' || fat.kind !== 'grams' || saturatedFat.grams <= fat.grams) {
-		return [];
-	}
-
-	return [
-		{
-			severity: 'warning',
-			field: 'saturated-fat',
-			title: 'Saturated fat cannot be greater than total fat',
-			desc:
-				`The amount of saturated fat (${saturatedFat.grams.toFixed(2)}g)` +
-				` exceeds the total fat (${fat.grams.toFixed(2)}g) per 100g of product.`
-		}
-	];
-};
-
-const saltSodiumMismatchAnalysis: AnalysisFunc = (product) => {
-	const salt = gramAmount(product, 'salt');
-	const sodium = gramAmount(product, 'sodium');
-
-	if (salt.kind !== 'grams' || sodium.kind !== 'grams' || salt.grams <= 0 || sodium.grams <= 0) {
-		return [];
-	}
-
-	// Salt is roughly 2.5 times the sodium content.
-	const expectedSalt = sodium.grams * 2.5;
-	const mismatch = Math.abs(expectedSalt - salt.grams) / ((expectedSalt + salt.grams) / 2);
-
-	if (mismatch <= 0.2) {
-		return [];
-	}
-
-	return [
-		{
-			severity: 'warning',
-			field: 'sodium',
-			title: 'Salt and sodium values are inconsistent  salt should be 2.5 times of Na',
-			desc:
-				`Salt should be about 2.5 times the sodium value.` +
-				` ${sodium.grams.toFixed(2)}g of sodium corresponds to about` +
-				` ${expectedSalt.toFixed(2)}g of salt, but ${salt.grams.toFixed(2)}g is declared.`
-		}
-	];
-};
-
 const analysisFunctions: AnalysisFunc[] = [
 	energyMismatchAnalysis,
 	energyFromMacronutrientsAnalysis,
 	sumOfMacroLessThan100g,
 	singleFieldLessThan100g,
-	sugarsLessThanCarbs,
-	saturatedFatExceedsFatAnalysis,
-	saltSodiumMismatchAnalysis
+	sugarsLessThanCarbs
 ];
 
 export function getNutritionIssues(product: Product): Issue[] {
