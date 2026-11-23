@@ -6,6 +6,7 @@
 		description: string;
 		imageUrl?: string;
 		url?: string;
+		canonicalUrl?: string;
 		type?: 'website' | 'product' | 'article' | 'profile';
 	};
 
@@ -14,6 +15,7 @@
 		description,
 		imageUrl = '',
 		url = page.url.toString(),
+		canonicalUrl,
 		type = 'website'
 	}: Props = $props();
 </script>
@@ -21,6 +23,9 @@
 <svelte:head>
 	<!-- HTML Meta Tags -->
 	<title>{title}</title>
+	{#if canonicalUrl}
+		<link rel="canonical" href={canonicalUrl} />
+	{/if}
 	<meta property="og:logo" content="/favicon.ico" />
 	<meta name="description" content={description} />
 

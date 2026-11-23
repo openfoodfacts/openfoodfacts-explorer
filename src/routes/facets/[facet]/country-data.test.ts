@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import type { Country, Taxonomy } from '@openfoodfacts/openfoodfacts-nodejs';
-import { buildCountryData } from './country-data';
+import { buildCountryData, countryColorIntensity } from './country-data';
+
+describe('countryColorIntensity', () => {
+	it('uses a square-root scale and handles empty or out-of-range values', () => {
+		expect(countryColorIntensity(1_000_000, 1_000_000)).toBe(1);
+		expect(countryColorIntensity(37_000, 1_000_000)).toBeCloseTo(0.192, 3);
+		expect(countryColorIntensity(250_000, 1_000_000)).toBe(0.5);
+		expect(countryColorIntensity(0, 0)).toBe(0);
+		expect(countryColorIntensity(-1, 100)).toBe(0);
+		expect(countryColorIntensity(200, 100)).toBe(1);
+	});
+});
 
 describe('buildCountryData', () => {
 	it('only includes countries present in facet.tags', () => {

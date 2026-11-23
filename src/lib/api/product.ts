@@ -86,6 +86,7 @@ export async function getBulkProductAttributes(
 
 	const params = new URLSearchParams({
 		code: productCodes.join(','),
+		page_size: String(productCodes.length),
 		fields: 'product_name,code,attribute_groups'
 	});
 
@@ -436,6 +437,7 @@ export async function getBulkProductCards(fetch: typeof window.fetch, codes: str
 
 	const params = new URLSearchParams({
 		code: codes.join(','),
+		page_size: String(codes.length),
 		fields: REDUCED_FIELDS.join(',')
 	});
 
@@ -739,7 +741,7 @@ export type Product = ProductDataSection & {
 	Partial<Record<LangPackagingText, string>> &
 	Partial<Record<LangGenericName, string>>;
 
-const REDUCED_FIELDS = [
+export const REDUCED_FIELDS = [
 	'image_front_small_url',
 	'code',
 	'product_name',

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import { resolve } from '$app/paths';
+	import { resolve } from '#lib/paths.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { page } from '$app/state';
 	import { browser } from '$app/env';
 
@@ -14,10 +14,15 @@
 	import Metadata from '#lib/Metadata.svelte';
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
-	import BackLink from '#lib/ui/facets/BackLink.svelte';
+	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
 
 	import type { PageProps } from './$types';
-	import { getHierarchy, type HierarchyItem } from '#lib/api/taxonomy/hierarchy.js';
+	import {
+		getChildCounts,
+		getHierarchy,
+		sortByCount,
+		type HierarchyItem
+	} from '#lib/api/taxonomy/hierarchy.js';
 
 	let { data }: PageProps = $props();
 	let {
@@ -30,6 +35,10 @@
 		mapFacet
 	} = $derived(data);
 
+	const facetLabel = $derived(
+		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
+	);
+
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
 	// The tag id, not data.facet.value, which is the display name on map facets.
@@ -40,6 +49,12 @@
 		return browser
 			? untrack(() => getHierarchy(fetch, name, value, getLocale()).catch(() => noHierarchy))
 			: Promise.resolve(noHierarchy);
+	});
+	const childCounts = $derived.by(() => {
+		const [name, value] = [facetName, facetValue];
+		return browser
+			? untrack(() => getChildCounts(fetch, name, value, getLocale()))
+			: Promise.resolve(new Map<string, number>());
 	});
 
 	let listView = $state(false);
@@ -55,32 +70,40 @@
 
 <Metadata
 	title={$_('facets.facet_value_website_title', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 	description={$_('facets.facet_value_website_description', {
-		values: { facet: facet.name, value: facet.value }
+		values: { facet: facet.name, value: facetLabel }
 	})}
 />
 
-<div class="mb-4">
-	<BackLink
-		href={resolve('/facets/[facet]', { facet: facet.name })}
-		label={$_('facets.facet_back_to_overview', {
-			values: { facet: facet.name },
-			default: 'Back to {facet} overview'
-		})}
-	/>
-</div>
+<Breadcrumbs
+	breadcrumbs={[
+		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
+		{
+			name: $_(`facets.names.${facet.name}`, { default: facet.name }),
+			href: resolve('/facets/[facet]', { facet: facet.name })
+		},
+		{ name: facetLabel }
+	]}
+/>
 
-<h2 class="my-8 text-3xl font-bold">Exploring {facet.name}: {facet.value}</h2>
+<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
+	<span>{facetLabel}</span>
+</h2>
 
-{#snippet chips(items: HierarchyItem[])}
+{#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
 		<a
-			class="badge h-auto badge-outline py-1 badge-lg hover:badge-secondary"
+			class="badge h-auto badge-outline py-1 hover:badge-secondary"
 			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
 		>
 			{item.name}
+			{#if counts?.has(item.name)}
+				<span class="text-[10px] opacity-60"
+					>{counts.get(item.name)?.toLocaleString(getLocale())}</span
+				>
+			{/if}
 		</a>
 	{/each}
 {/snippet}
@@ -108,7 +131,12 @@
 						{$_('facets.hierarchy_includes', { default: 'Includes' })}
 					</span>
 					<div class="flex flex-wrap items-center gap-2">
-						{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{#await childCounts}
+							{@render chips(expanded ? children : children.slice(0, CHILDREN_SHOWN))}
+						{:then counts}
+							{@const sorted = sortByCount(children, counts)}
+							{@render chips(expanded ? sorted : sorted.slice(0, CHILDREN_SHOWN), counts)}
+						{/await}
 						{#if !expanded && children.length > CHILDREN_SHOWN}
 							<button
 								type="button"
@@ -136,10 +164,13 @@
 			})}
 		</h2>
 		<MapComponent facet={distributionData} />
-		<p class="mt-2 text-sm text-gray-500">
-			Note: The geographic distribution shown on this map is based only on the products visible on
-			the current page.
-		</p>
+		{#if data.mapIsPageLimited}
+			<p class="mt-2 text-sm text-base-content/70">
+				{$_('facets.map_page_limited', {
+					default: 'This map only includes data from the current page.'
+				})}
+			</p>
+		{/if}
 	</div>
 {/if}
 
@@ -230,12 +261,12 @@
 					{#each results.products as { product_name, code } (code)}
 						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
 							<td>
-								<a href={`/products/${code}`} class="link">
+								<a href={resolve('/products/[barcode]', { barcode: code })} class="link">
 									{code}
 								</a>
 							</td>
 							<td>
-								<a href={`/products/${code}`}>
+								<a href={resolve('/products/[barcode]', { barcode: code })}>
 									{product_name}
 								</a>
 							</td>
@@ -251,7 +282,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `?${params}`;
+			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facetValue })}?${params}`;
 		}}
 	/>
 </div>

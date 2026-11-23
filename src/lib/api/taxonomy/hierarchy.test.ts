@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getHierarchy } from './hierarchy';
+import { getChildCounts, getHierarchy, sortByCount } from './hierarchy';
 
 // Like the real API, names come back only in the languages asked for with lc (English if none).
 type Entry = { name?: Record<string, string>; parents?: string[]; children?: string[] };
@@ -56,5 +56,92 @@ describe('getHierarchy', () => {
 	it('throws on a failed taxonomy response', async () => {
 		const fetch = vi.fn(async () => ({ ok: false, status: 400 }) as unknown as Response);
 		await expect(getHierarchy(fetch, 'brands', 'x', 'en')).rejects.toThrow('400');
+	});
+});
+
+const panelFetch = (counts: [string, string][]) =>
+	vi.fn(async (_: RequestInfo | URL) => {
+		const row = (...texts: string[]) => ({ values: texts.map((text) => ({ text })) });
+		const table = (id: string, rows: object[]) => ({
+			element_type: 'table',
+			table_element: { id, rows }
+		});
+		const elements = [
+			table('related_categories_parents', [row('Plant-based')]),
+			table(
+				'related_categories_children',
+				counts.map(([name, n]) => row(name, n))
+			)
+		];
+		return new Response(
+			JSON.stringify({ tag: { knowledge_panels: { related_categories: { elements } } } })
+		);
+	});
+
+describe('getChildCounts', () => {
+	it('reads the subcategory counts from the related categories panel', async () => {
+		const fetch = panelFetch([
+			['Mueslis', '8575'],
+			['Flocons', '6010']
+		]);
+
+		const counts = await getChildCounts(fetch, 'categories', 'en:cereals', 'fr-FR');
+
+		expect(fetch).toHaveBeenCalledOnce();
+		const input = fetch.mock.calls[0][0];
+		const url = new URL(input instanceof Request ? input.url : String(input));
+		expect(decodeURIComponent(url.pathname)).toBe('/api/v3/tag/categories/en:cereals');
+		expect(url.searchParams.get('activate_knowledge_panel_related_categories')).toBe('1');
+		expect(url.searchParams.get('lc')).toBe('fr,en');
+		expect([...counts]).toEqual([
+			['Mueslis', 8575],
+			['Flocons', 6010]
+		]);
+	});
+
+	it('sends no request for other facets', async () => {
+		const fetch = panelFetch([]);
+		expect((await getChildCounts(fetch, 'labels', 'en:organic', 'en')).size).toBe(0);
+		expect(fetch).not.toHaveBeenCalled();
+	});
+
+	it('returns no counts when the request fails', async () => {
+		const fetch = vi.fn(async () => Promise.reject(new Error('down')));
+		expect((await getChildCounts(fetch, 'categories', 'en:cereals', 'en')).size).toBe(0);
+	});
+
+	it('returns no counts on an error status', async () => {
+		const fetch = vi.fn(async () => new Response('{}', { status: 500 }));
+		expect((await getChildCounts(fetch, 'categories', 'en:cereals', 'en')).size).toBe(0);
+	});
+
+	it('skips a count that is not a number', async () => {
+		const fetch = panelFetch([
+			['Mueslis', '8575'],
+			['Flocons', 'n/a']
+		]);
+		const counts = await getChildCounts(fetch, 'categories', 'en:cereals', 'en');
+		expect([...counts]).toEqual([['Mueslis', 8575]]);
+	});
+});
+
+describe('sortByCount', () => {
+	const items = ['Flakes', 'Granola', 'Mueslis', 'Porridge'].map((name) => ({ id: name, name }));
+
+	it('puts counted items first, biggest first, then the others in their order', () => {
+		const counts = new Map([
+			['Porridge', 1283],
+			['Mueslis', 8575]
+		]);
+		expect(sortByCount(items, counts).map((i) => i.name)).toEqual([
+			'Mueslis',
+			'Porridge',
+			'Flakes',
+			'Granola'
+		]);
+	});
+
+	it('keeps the order without counts', () => {
+		expect(sortByCount(items, new Map())).toEqual(items);
 	});
 });

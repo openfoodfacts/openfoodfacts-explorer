@@ -23,11 +23,10 @@
 
 {#snippet panel(id: string)}
 	{@const panel = panels[id]}
-	{#if panel !== null}
+	{#if panel != null}
 		<Panel {panel} {panels} {id} {productCode} />
 	{:else}
 		{trackOffEvent('system', 'knowledge_panel_missing', id)}
-		<div class="alert alert-warning">Panel not found: {id}</div>
 	{/if}
 {/snippet}
 
