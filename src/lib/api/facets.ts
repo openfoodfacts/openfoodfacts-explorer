@@ -1,6 +1,7 @@
 import type { KnowledgePanels } from './knowledgepanels';
 import type { FacetSortOption as ProductFacetsSortOption } from '@openfoodfacts/openfoodfacts-nodejs';
 import { createProductsApi } from './product';
+import { API_HOST } from '#lib/const.js';
 
 export type FacetSortOption = ProductFacetsSortOption;
 
@@ -29,6 +30,30 @@ export async function getFacetValue(
 ) {
 	const client = createProductsApi(fetch);
 	return client.getFacetValue(facet, value, opts);
+}
+
+export type DataQualityErrorTag = { id: string; name: string; products: number };
+
+/**
+ * The data quality errors found in the products edited by a user, most frequent first.
+ * A second facet level lists the values of that facet (error types with their number of
+ * products), not products, so the SDK's `getFacetValue` typing does not apply.
+ */
+export async function getEditorDataQualityErrors(
+	fetch: typeof window.fetch,
+	editor: string,
+	pageSize: number
+): Promise<{ count: number; tags: DataQualityErrorTag[] }> {
+	const params = new URLSearchParams({ page: '1', page_size: `${pageSize}` });
+	const response = await fetch(
+		`${API_HOST}/facets/editors/${encodeURIComponent(editor)}/data-quality-errors.json?${params}`
+	);
+	if (!response.ok) {
+		throw new Error(
+			`Failed to fetch data quality errors: ${response.status} ${response.statusText}`
+		);
+	}
+	return await response.json();
 }
 
 const FACETS_KP_HOST = 'https://facets-kp.openfoodfacts.org';
