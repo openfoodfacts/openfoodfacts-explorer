@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Cerca - {query} - Obre l'Explorador de Dades sobre Aliments",
+		"title": "Cerca - {query}",
 		"placeholder": "Consulta o codi de barres",
 		"go": "Go",
 		"scan": "Escaneja el codi de barres",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Obre l'Explorador de Dades sobre Aliments",
+		"title": "{productName}",
 		"description": "Pàgina del producte {productName} a Open Food Facts Explorer",
 		"image_alt": "Imatge",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Explorant {facet} - Explorador obert de dades sobre aliments",
+		"facet_website_title": "Explorant {facet}",
 		"facet_website_description": "Descobreix la categoria {facet} a l'Open Food Facts Explorer.",
-		"facet_value_website_title": "Explorant {facet}: {value} - Obre l'Explorador de Dades Alimentaries",
+		"facet_value_website_title": "Explorant {facet}: {value}",
 		"facet_value_website_description": "Descobreix la categoria {value} a l'Open Food Facts Explorer.",
 		"facet_back_to_list": "Torna a les facetes",
 		"facet_back_to_overview": "Torna a la descripció general de {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Productes creats",
 		"products_edited": "Products edited",
-		"html_title": "Perfil d'usuari - {user} - Explorador obert de dades sobre aliments",
+		"html_title": "Perfil d'usuari - {user}",
 		"title": "Perfil d'usuari de {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

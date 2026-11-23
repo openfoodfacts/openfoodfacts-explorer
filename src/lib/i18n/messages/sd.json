@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "ڳولا - {query} - فوڊ فيڪٽس ايڪسپلورر کوليو",
+		"title": "ڳولا - {query}",
 		"placeholder": "سوال يا بارڪوڊ",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - فوڊ فيڪٽس ايڪسپلورر کوليو",
+		"title": "{productName}",
 		"description": "اوپن فوڊ فيڪٽس ايڪسپلورر تي {productName} لاءِ پراڊڪٽ پيج",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} جي ڳولا - فوڊ فيڪٽس ايڪسپلورر کوليو",
+		"facet_website_title": "{facet} جي ڳولا",
 		"facet_website_description": "اوپن فوڊ فيڪٽس ايڪسپلورر تي {facet} ڪيٽيگري ڳوليو.",
-		"facet_value_website_title": "{facet}جي ڳولا : {value} - فوڊ فيڪٽس ايڪسپلورر کوليو",
+		"facet_value_website_title": "{facet}جي ڳولا : {value}",
 		"facet_value_website_description": "اوپن فوڊ فيڪٽس ايڪسپلورر تي {value} ڪيٽيگري ڳوليو.",
 		"facet_back_to_list": "پهلوئن ڏانهن واپس",
 		"facet_back_to_overview": "{facet} جي جائزي ڏانهن واپس وڃو"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "ٺاهيل شيون",
 		"products_edited": "Products edited",
-		"html_title": "استعمال ڪندڙ جو پروفائل - {user} - فوڊ فيڪٽس ايڪسپلورر کوليو",
+		"html_title": "استعمال ڪندڙ جو پروفائل - {user}",
 		"title": "{user}جو استعمال ڪندڙ پروفائل",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

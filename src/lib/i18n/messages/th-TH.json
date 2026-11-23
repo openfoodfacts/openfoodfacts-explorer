@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "ค้นหา - {query} - Open Food Facts Explorer",
+		"title": "ค้นหา - {query}",
 		"placeholder": "สอบถามหรือบาร์โค้ด",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "หน้าผลิตภัณฑ์สำหรับ {productName} บน Open Food Facts Explorer",
 		"image_alt": "รูปภาพ",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "สำรวจ {facet} - Open Food Facts Explorer",
+		"facet_website_title": "สำรวจ {facet}",
 		"facet_website_description": "ค้นพบหมวดหมู่ {facet} บน Open Food Facts Explorer",
-		"facet_value_website_title": "สำรวจ {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "สำรวจ {facet}: {value}",
 		"facet_value_website_description": "ค้นพบหมวดหมู่ {value} บน Open Food Facts Explorer",
 		"facet_back_to_list": "กลับไปที่ด้านต่างๆ",
 		"facet_back_to_overview": "กลับไปที่ภาพรวม {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "ผลิตภัณฑ์ที่สร้างขึ้น",
 		"products_edited": "ผลิตภัณฑ์ที่ได้รับการแก้ไข",
-		"html_title": "โปรไฟล์ผู้ใช้ - {user} - Open Food Facts Explorer",
+		"html_title": "โปรไฟล์ผู้ใช้ - {user}",
 		"title": "โปรไฟล์ผู้ใช้ของ {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

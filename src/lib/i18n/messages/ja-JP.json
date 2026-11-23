@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "検索 - {query} - Open Food Facts Explorer",
+		"title": "検索 - {query}",
 		"placeholder": "クエリまたはバーコード",
 		"go": "行く",
 		"scan": "バーコードをスキャンする",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - 食品情報エクスプローラーを開く",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer の {productName} の製品ページ",
 		"image_alt": "画像",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "探索中 {facet} - Open Food Facts Explorer",
+		"facet_website_title": "探索中 {facet}",
 		"facet_website_description": "Open Food Facts Explorer で {facet} カテゴリを見つけてください。",
-		"facet_value_website_title": "{facet}の探索: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "{facet}の探索: {value}",
 		"facet_value_website_description": "Open Food Facts Explorer で {value} カテゴリを見つけてください。",
 		"facet_back_to_list": "ファセットに戻る",
 		"facet_back_to_overview": "{facet} の概要に戻る",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "作成された製品",
 		"products_edited": "自分が編集した製品",
-		"html_title": "ユーザープロフィール - {user} - Open Food Facts Explorer",
+		"html_title": "ユーザープロフィール - {user}",
 		"title": "{user}のユーザープロフィール",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

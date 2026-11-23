@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Søg - {query} - Åbn Food Facts Explorer",
+		"title": "Søg - {query}",
 		"placeholder": "Forespørgsel eller stregkode",
 		"go": "Gå",
 		"scan": "Scan en stregkode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Åbn Madfakta-Explorer",
+		"title": "{productName} - Åbn Madfakta",
 		"description": "Produktside for {productName} på Open Food Facts Explorer",
 		"image_alt": "Billed",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Udforsk {facet} - Åbn Food Facts Explorer",
+		"facet_website_title": "Udforsk {facet}",
 		"facet_website_description": "Opdag kategorien {facet} på Open Food Facts Explorer.",
-		"facet_value_website_title": "Udforsker {facet}: {value} - Åbn Madfakta-udforskeren",
+		"facet_value_website_title": "Udforsker {facet}: {value} - Åbn Madfakta",
 		"facet_value_website_description": "Opdag kategorien {value} på Open Food Facts Explorer.",
 		"facet_back_to_list": "Tilbage til facetter",
 		"facet_back_to_overview": "Tilbage til {facet} oversigt",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Produkter oprettet",
 		"products_edited": "Produkter redigeret",
-		"html_title": "Brugerprofil - {user} - Åbn Food Facts Explorer",
+		"html_title": "Brugerprofil - {user}",
 		"title": "Brugerprofil for {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Serĉi - {query} - Malferma Esplorilo pri Manĝaĵoj",
+		"title": "Serĉi - {query}",
 		"placeholder": "Demando aŭ strekkodo",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Malferma Esplorilo pri Manĝaĵoj",
+		"title": "{productName}",
 		"description": "Produkta paĝo por {productName} ĉe Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Esplorante {facet} - Malferma Esplorilo de Faktoj pri Manĝaĵoj",
+		"facet_website_title": "Esplorante {facet}",
 		"facet_website_description": "Malkovru la kategorion {facet} ĉe Open Food Facts Explorer.",
-		"facet_value_website_title": "Esplorante {facet}: {value} - Malferma Esplorilo pri Manĝaĵoj",
+		"facet_value_website_title": "Esplorante {facet}: {value}",
 		"facet_value_website_description": "Malkovru la kategorion {value} ĉe Open Food Facts Explorer.",
 		"facet_back_to_list": "Reen al facetoj",
 		"facet_back_to_overview": "Reen al la superrigardo de {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Produktoj kreitaj",
 		"products_edited": "Produktoj redaktitaj",
-		"html_title": "Uzanto-profilo - {user} - Malferma Esplorilo de Faktoj pri Manĝaĵoj",
+		"html_title": "Uzanto-profilo - {user}",
 		"title": "Uzantoprofilo de {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

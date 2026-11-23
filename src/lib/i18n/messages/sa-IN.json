@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "अन्वेषणम् - {query} - खाद्यतथ्य अन्वेषकं उद्घाटयतु",
+		"title": "अन्वेषणम् - {query}",
 		"placeholder": "प्रश्नं वा बारकोड् वा",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - खाद्यतथ्य अन्वेषकः उद्घाटयतु",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer इत्यत्र {productName} इत्यस्य उत्पादपृष्ठम्",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "अन्वेषण {facet} - खुला खाद्य तथ्य अन्वेषक",
+		"facet_website_title": "अन्वेषण {facet}",
 		"facet_website_description": "Open Food Facts Explorer इत्यत्र {facet} श्रेणीं अन्वेष्टुम्।",
-		"facet_value_website_title": "अन्वेषण {facet}: {value} - खुला खाद्य तथ्य अन्वेषक",
+		"facet_value_website_title": "अन्वेषण {facet}: {value}",
 		"facet_value_website_description": "Open Food Facts Explorer इत्यत्र {value} श्रेणीं अन्वेष्टुम्।",
 		"facet_back_to_list": "पक्षेषु पुनः",
 		"facet_back_to_overview": "{facet} अवलोकनं प्रति पुनः",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "उत्पादाः निर्मिताः",
 		"products_edited": "Products edited",
-		"html_title": "उपयोक्तृरूपरेखा - {user} - Open Food Facts Explorer",
+		"html_title": "उपयोक्तृरूपरेखा - {user}",
 		"title": "{user}इत्यस्य उपयोक्तृरूपरेखा",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

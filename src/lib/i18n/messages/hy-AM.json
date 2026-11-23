@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Որոնում - {query} - Բացել սննդի փաստերի ուսումնասիրողը",
+		"title": "Որոնում - {query}",
 		"placeholder": "Հարցում կամ շտրիխ կոդ",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Բացեք սննդի մասին տեղեկություններ ուսումնասիրողը",
+		"title": "{productName}",
 		"description": "{productName} -ի ապրանքի էջը Open Food Facts Explorer-ում",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Ուսումնասիրելով {facet} - Բացեք սննդի փաստերի ուսումնասիրողը",
+		"facet_website_title": "Ուսումնասիրելով {facet}",
 		"facet_website_description": "Բացահայտեք {facet} կատեգորիան Open Food Facts Explorer-ում։",
-		"facet_value_website_title": "Ուսումնասիրելով {facet}: {value} - Բացեք սննդի փաստերի ուսումնասիրողը",
+		"facet_value_website_title": "Ուսումնասիրելով {facet}: {value}",
 		"facet_value_website_description": "Բացահայտեք {value} կատեգորիան Open Food Facts Explorer-ում։",
 		"facet_back_to_list": "Վերադառնալ դեպի կողմերը",
 		"facet_back_to_overview": "Վերադառնալ {facet} ակնարկին",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Ստեղծված ապրանքներ",
 		"products_edited": "Products edited",
-		"html_title": "Օգտատիրոջ էջ - {user} - Բացել սննդի մասին տեղեկություններ ուսումնասիրողը",
+		"html_title": "Օգտատիրոջ էջ - {user}",
 		"title": "{user}-ի օգտատիրոջ էջը",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

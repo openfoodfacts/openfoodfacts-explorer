@@ -17,7 +17,7 @@
 		"account": "Paskyra"
 	},
 	"search": {
-		"title": "Paieška – {query} – Atidaryti maisto faktų naršyklę",
+		"title": "Paieška – {query}",
 		"placeholder": "Užklausa arba brūkšninis kodas",
 		"go": "Go",
 		"scan": "Nuskaityti brūkšninį kodą",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Atidaryti maisto faktų naršyklę",
+		"title": "{productName}",
 		"description": "Produkto puslapis, skirtas {productName} , „Open Food Facts Explorer“ platformoje",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Tyrinėjimas {facet} – Atidaryti maisto faktų naršyklę",
+		"facet_website_title": "Tyrinėjimas {facet}",
 		"facet_website_description": "Atraskite {facet} kategoriją „Open Food Facts Explorer“.",
-		"facet_value_website_title": "Tyrinėti {facet}: {value} – Atidaryti maisto faktų naršyklę",
+		"facet_value_website_title": "Tyrinėti {facet}: {value}",
 		"facet_value_website_description": "Atraskite {value} kategoriją „Open Food Facts Explorer“.",
 		"facet_back_to_list": "Grįžimas prie aspektų",
 		"facet_back_to_overview": "Atgal į {facet} apžvalgą"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Sukurti produktai",
 		"products_edited": "Produktai redaguoti",
-		"html_title": "Vartotojo profilis – {user} – Atidaryti maisto faktų naršyklę",
+		"html_title": "Vartotojo profilis – {user}",
 		"title": "{user}naudotojo profilis",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "Konto"
 	},
 	"search": {
-		"title": "Sök - {query} - Öppna matfaktautforskaren",
+		"title": "Sök - {query}",
 		"placeholder": "Fråga eller streckkod",
 		"go": "Go",
 		"scan": "Skanna en streckkod",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Öppna matfaktautforskaren",
+		"title": "{productName}",
 		"description": "Produktsida för {productName} på Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Utforskar {facet} - Öppna matfaktautforskaren",
+		"facet_website_title": "Utforskar {facet}",
 		"facet_website_description": "Upptäck kategorin {facet} på Open Food Facts Explorer.",
-		"facet_value_website_title": "Utforskar {facet}: {value} - Öppna matfaktautforskaren",
+		"facet_value_website_title": "Utforskar {facet}: {value}",
 		"facet_value_website_description": "Upptäck kategorin {value} på Open Food Facts Explorer.",
 		"facet_back_to_list": "Tillbaka till fasetter",
 		"facet_back_to_overview": "Tillbaka till {facet} översikten"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produkter skapade",
 		"products_edited": "Produkter redigerade",
-		"html_title": "Användarprofil - {user} - Öppna Food Facts Explorer",
+		"html_title": "Användarprofil - {user}",
 		"title": "Användarprofil för {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

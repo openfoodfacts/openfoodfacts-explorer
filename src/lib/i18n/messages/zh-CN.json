@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "搜索 - {query} - 打开食物信息探索器",
+		"title": "搜索 - {query}",
 		"placeholder": "查询或条形码",
 		"go": "Go",
 		"scan": "扫描条形码",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - 打开食物信息探索器",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer 上的 {productName} 产品页面",
 		"image_alt": "图片",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "探索 {facet} - 打开食物信息探索器",
+		"facet_website_title": "探索 {facet}",
 		"facet_website_description": "在 Open Food Facts Explorer 上发现 {facet} 类别。",
-		"facet_value_website_title": "探索 {facet}: {value} - 打开食物信息探索器",
+		"facet_value_website_title": "探索 {facet}: {value}",
 		"facet_value_website_description": "在 Open Food Facts Explorer 上发现 {value} 类别。",
 		"facet_back_to_list": "回到方面",
 		"facet_back_to_overview": "返回 {facet} 概览",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "创造的产品",
 		"products_edited": "产品已编辑",
-		"html_title": "用户资料 - {user} - 打开食物信息探索器",
+		"html_title": "用户资料 - {user}",
 		"title": "{user}的用户个人资料",
 		"has_created": "已创建",
 		"has_edited": "已编辑",

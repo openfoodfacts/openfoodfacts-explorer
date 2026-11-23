@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Tìm kiếm - {query} - Mở Trình khám phá thông tin thực phẩm",
+		"title": "Tìm kiếm - {query}",
 		"placeholder": "Truy vấn hoặc mã vạch",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Mở Trình khám phá thông tin thực phẩm",
+		"title": "{productName}",
 		"description": "Trang sản phẩm dành cho {productName} trên Open Food Facts Explorer",
 		"image_alt": "Hình ảnh",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Khám phá {facet} - Mở Trình khám phá thông tin thực phẩm",
+		"facet_website_title": "Khám phá {facet}",
 		"facet_website_description": "Khám phá danh mục {facet} trên Open Food Facts Explorer.",
-		"facet_value_website_title": "Khám phá {facet}: {value} - Mở Trình khám phá thông tin thực phẩm",
+		"facet_value_website_title": "Khám phá {facet}: {value}",
 		"facet_value_website_description": "Khám phá danh mục {value} trên Open Food Facts Explorer.",
 		"facet_back_to_list": "Quay lại các khía cạnh",
 		"facet_back_to_overview": "Quay lại tổng quan {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Sản phẩm đã tạo",
 		"products_edited": "Sản phẩm đã được chỉnh sửa",
-		"html_title": "Hồ sơ người dùng - {user} - Mở Trình khám phá thông tin thực phẩm",
+		"html_title": "Hồ sơ người dùng - {user}",
 		"title": "Hồ sơ người dùng của {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

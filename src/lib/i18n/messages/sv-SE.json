@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Sök - {query} - Open Food Facts Explorer",
+		"title": "Sök - {query}",
 		"placeholder": "Sökterm eller streckkod",
 		"go": "Go",
 		"scan": "Skanna en streckkod",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Produktsida för {productName} på Open Food Facts Explorer",
 		"image_alt": "Bild",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "t.ex. användarnamn …",
 			"entry_dates": "t.ex. 2024-01 …"
 		},
-		"facet_website_title": "Utforskar {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Utforskar {facet}",
 		"facet_website_description": "Upptäck kategorin {facet} på Open Food Facts Explorer.",
-		"facet_value_website_title": "Utforskar {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Utforskar {facet}: {value}",
 		"facet_value_website_description": "Upptäck kategorin {value} på Open Food Facts Explorer.",
 		"facet_back_to_list": "Tillbaka till fasetterna",
 		"facet_back_to_overview": "Tillbaka till översikt över {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Produkter skapade",
 		"products_edited": "Produkter redigerade",
-		"html_title": "Användarprofil - {user} - Open Food Facts Explorer",
+		"html_title": "Användarprofil - {user}",
 		"title": "Användarprofil för {user}",
 		"has_created": "Har skapat",
 		"has_edited": "Har redigerat",

@@ -17,7 +17,7 @@
 		"account": "Hesab"
 	},
 	"search": {
-		"title": "Axtar - {query} - Qida Faktları Explorer açın",
+		"title": "Axtar - {query}",
 		"placeholder": "Sorğu və ya barkod",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Qida Faktları Explorer açın",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer-də {productName} üçün məhsul səhifəsi",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Exploring {facet} - Açıq Qida Faktları Explorer",
+		"facet_website_title": "Exploring {facet}",
 		"facet_website_description": "Open Food Facts Explorer-də {facet} kateqoriyasını kəşf edin.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Açıq Qida Faktları Explorer",
+		"facet_value_website_title": "Exploring {facet}: {value}",
 		"facet_value_website_description": "Open Food Facts Explorer-də {value} kateqoriyasını kəşf edin.",
 		"facet_back_to_list": "Fasetlərə qayıt",
 		"facet_back_to_overview": "{facet} icmalına qayıt"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Məhsullar yaradılmışdır",
 		"products_edited": "Redaktə edilmiş məhsullar",
-		"html_title": "İstifadəçi Profili - {user} - Qida Faktları Explorer-i açın",
+		"html_title": "İstifadəçi Profili - {user} - Qida Faktları Explorer",
 		"title": "{user}İstifadəçi Profili",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

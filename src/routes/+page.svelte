@@ -96,7 +96,7 @@
 </svelte:head>
 
 <Metadata
-	title={$_('landing.title', { default: 'Open Food Facts Explorer' })}
+	title="Open Food Facts"
 	description={$_('landing.subtitle', {
 		default:
 			'A collaborative, free and open database of food products from around the world. Discover, search, and contribute to food transparency for everyone.'

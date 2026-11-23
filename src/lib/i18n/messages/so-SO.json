@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Raadi - {query} - Furan Xaqiiqooyinka Cuntada Explorer",
+		"title": "Raadi - {query}",
 		"placeholder": "Weydii ama barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Furan Xaqiiqooyinka Cuntada Explorer",
+		"title": "{productName}",
 		"description": "Bogga badeecada ee {productName} ee ku yaal Explorer Facts Food Furan",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Sahaminta {facet} - Furan Xaqiiqooyinka Cuntada Explorer",
+		"facet_website_title": "Sahaminta {facet}",
 		"facet_website_description": "Ka hel qaybta {facet} ee ku yaal Explorer Facts Food Furan.",
-		"facet_value_website_title": "Sahaminta {facet}: {value} - Furan Xaqiiqooyinka Cuntada Explorer",
+		"facet_value_website_title": "Sahaminta {facet}: {value}",
 		"facet_value_website_description": "Ka hel qaybta {value} ee ku yaal Explorer Facts Food Furan.",
 		"facet_back_to_list": "Ku noqo wajiyada",
 		"facet_back_to_overview": "Ku laabo {facet} dulmar",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Alaabooyinka la sameeyay",
 		"products_edited": "Products edited",
-		"html_title": "Xogta Isticmaalaha - {user} - Furan Xaqiiqooyinka Cuntada Explorer",
+		"html_title": "Xogta Isticmaalaha - {user}",
 		"title": "Xogta isticmaale ee {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

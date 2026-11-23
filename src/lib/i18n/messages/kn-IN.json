@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "ಹುಡುಕಾಟ - {query} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
+		"title": "ಹುಡುಕಾಟ - {query}",
 		"placeholder": "ಪ್ರಶ್ನೆ ಅಥವಾ ಬಾರ್‌ಕೋಡ್",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
+		"title": "{productName}",
 		"description": "ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ {productName} ಗಾಗಿ ಉತ್ಪನ್ನ ಪುಟ",
 		"image_alt": "ಚಿತ್ರ",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} ಅನ್ವೇಷಿಸಲಾಗುತ್ತಿದೆ - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
+		"facet_website_title": "{facet} ಅನ್ವೇಷಿಸಲಾಗುತ್ತಿದೆ",
 		"facet_website_description": "ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ {facet} ವರ್ಗವನ್ನು ಅನ್ವೇಷಿಸಿ.",
-		"facet_value_website_title": "{facet}ಅನ್ವೇಷಿಸಲಾಗುತ್ತಿದೆ : {value} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
+		"facet_value_website_title": "{facet}ಅನ್ವೇಷಿಸಲಾಗುತ್ತಿದೆ : {value}",
 		"facet_value_website_description": "ಓಪನ್ ಫುಡ್ ಫ್ಯಾಕ್ಟ್ಸ್ ಎಕ್ಸ್‌ಪ್ಲೋರರ್‌ನಲ್ಲಿ {value} ವರ್ಗವನ್ನು ಅನ್ವೇಷಿಸಿ.",
 		"facet_back_to_list": "ಅಂಶಗಳಿಗೆ ಹಿಂತಿರುಗಿ",
 		"facet_back_to_overview": "{facet} ಅವಲೋಕನಕ್ಕೆ ಹಿಂತಿರುಗಿ",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "ರಚಿಸಲಾದ ಉತ್ಪನ್ನಗಳು",
 		"products_edited": "Products edited",
-		"html_title": "ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್ - {user} - ಮುಕ್ತ ಆಹಾರ ಸಂಗತಿಗಳ ಪರಿಶೋಧಕ",
+		"html_title": "ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್ - {user}",
 		"title": "{user}ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

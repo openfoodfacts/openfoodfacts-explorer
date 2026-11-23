@@ -17,7 +17,7 @@
 		"account": "Konto"
 	},
 	"search": {
-		"title": "Søk - {query} - Open Food Facts utforsker",
+		"title": "Søk - {query}",
 		"placeholder": "Spørring eller strekkode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts utforsker",
+		"title": "{productName}",
 		"description": "Produktside for {productName} i Open Food Facts utforsker",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Utforsk {facet} - Open Food Facts utforsker",
+		"facet_website_title": "Utforsk {facet}",
 		"facet_website_description": "Oppdag {facet} kategorien i Open Food Facts Explorer.",
-		"facet_value_website_title": "Utforsk {facet}: {value} - Open Food Facts utforsker",
+		"facet_value_website_title": "Utforsk {facet}: {value}",
 		"facet_value_website_description": "Oppdag {value} kategorien i Open Food Facts Explorer.",
 		"facet_back_to_list": "Tilbake til fasetter",
 		"facet_back_to_overview": "Tilbake til oversikt over {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produkter opprettet",
 		"products_edited": "Produkter redigert",
-		"html_title": "Brukerprofil - {user} - Open Food Facts utforsker",
+		"html_title": "Brukerprofil - {user}",
 		"title": "Brukerprofil for {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

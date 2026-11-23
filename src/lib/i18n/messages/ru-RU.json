@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Поиск - {query} - Открыть проводник по фактам о еде",
+		"title": "Поиск - {query}",
 		"placeholder": "Запрос или штрихкод",
 		"go": "Go",
 		"scan": "Сканировать штрихкод",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} — Откройте проводник по фактам о еде",
+		"title": "{productName}",
 		"description": "Страница продукта {productName} на Open Food Facts Explorer",
 		"image_alt": "Изображение",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Исследуем {facet} — Open Food Facts Explorer",
+		"facet_website_title": "Исследуем {facet}",
 		"facet_website_description": "Откройте для себя категорию {facet} на сайте Open Food Facts Explorer.",
-		"facet_value_website_title": "Исследуем {facet}: {value} — Open Food Facts Explorer",
+		"facet_value_website_title": "Исследуем {facet}: {value}",
 		"facet_value_website_description": "Откройте для себя категорию {value} на сайте Open Food Facts Explorer.",
 		"facet_back_to_list": "Вернуться к граням",
 		"facet_back_to_overview": "Вернуться к обзору {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Созданные продукты",
 		"products_edited": "Продукты отредактированы",
-		"html_title": "Профиль пользователя — {user} — Open Food Facts Explorer",
+		"html_title": "Профиль пользователя — {user}",
 		"title": "Профиль пользователя {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

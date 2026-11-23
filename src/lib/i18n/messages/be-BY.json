@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Пошук - {query} - Адкрыць аглядальнік фактаў пра ежу",
+		"title": "Пошук - {query}",
 		"placeholder": "Запыт або штрых-код",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Адкрыць даследчык фактаў пра ежу",
+		"title": "{productName}",
 		"description": "Старонка прадукту {productName} на Open Food Facts Explorer",
 		"image_alt": "Выява",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Даследуем {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Даследуем {facet}",
 		"facet_website_description": "Адкрыйце для сябе катэгорыю {facet} на Open Food Facts Explorer.",
-		"facet_value_website_title": "Даследуем {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Даследуем {facet}: {value}",
 		"facet_value_website_description": "Адкрыйце для сябе катэгорыю {value} на Open Food Facts Explorer.",
 		"facet_back_to_list": "Вярнуцца да граняў",
 		"facet_back_to_overview": "Назад да агляду {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Створаныя прадукты",
 		"products_edited": "Products edited",
-		"html_title": "Профіль карыстальніка - {user} - Адкрыць аглядальнік фактаў пра ежу",
+		"html_title": "Профіль карыстальніка - {user}",
 		"title": "Профіль карыстальніка {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
