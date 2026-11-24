@@ -5,5 +5,8 @@ import { resolveForUrl } from '#lib/paths.js';
 export const load: PageLoad = async ({ params, url }) => {
 	const { user } = params;
 
-	redirect(301, `${resolveForUrl(url, '/users/[user]', { user })}${url.search}`);
+	redirect(
+		301,
+		`${resolveForUrl(url, '/facets/[facet]/[value]', { facet: 'editors', value: user })}${url.search}`
+	);
 };
