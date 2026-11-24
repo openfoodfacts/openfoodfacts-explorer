@@ -345,11 +345,13 @@
 
 	async function getProductAttributes(
 		code: string,
-		unwanted: string | undefined
+		unwanted: string | undefined,
+		rev: number | undefined
 	): Promise<ProductGroupedAttributes[]> {
 		const offApi = createProductsApi(fetch);
 		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
 		if (unwanted !== undefined) searchParams.attribute_unwanted_ingredients_tags = unwanted;
+		if (rev !== undefined) searchParams.rev = rev;
 
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
 
@@ -369,7 +371,11 @@
 
 	let productAttributes = $derived.by(() => {
 		if (attributeProductCode && browser) {
-			return getProductAttributes(attributeProductCode, unwantedIngredients);
+			return getProductAttributes(
+				attributeProductCode,
+				unwantedIngredients,
+				latestRevWhenOld != null ? product.rev : undefined
+			);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
