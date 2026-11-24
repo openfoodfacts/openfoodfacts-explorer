@@ -81,6 +81,8 @@ export const SORT_OPTIONS = [
 	{ label: 'Recently modified products', value: '-last_modified_t' }
 ];
 
+export const PRO_PLATFORM_URL = 'https://world.pro.openfoodfacts.org/';
+
 export const OPEN_PRICES_BASE_URL = PUBLIC_PRICES_API_URL || 'https://prices.openfoodfacts.org';
 export const OPEN_PRICES_PRODUCT_URL = (barcode: string) =>
 	`${OPEN_PRICES_BASE_URL}/product/${barcode}`;

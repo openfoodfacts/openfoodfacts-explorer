@@ -38,6 +38,7 @@
 		MATOMO_HOST,
 		MATOMO_SITE_ID,
 		OPEN_PRICES_BASE_URL,
+		PRO_PLATFORM_URL,
 		ROBOTOFF_URL
 	} from '#lib/const.js';
 	import { userInfo } from '#lib/stores/user.js';
@@ -456,8 +457,11 @@
 			>{$_('contribute_link')}</a
 		>
 
-		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'producers' })}
-			>{$_('producers_link')}</a
+		<a
+			class="btn link btn-outline"
+			href={PRO_PLATFORM_URL}
+			target="_blank"
+			rel="noopener noreferrer">{$_('producers_link')}</a
 		>
 
 		<a

@@ -3,13 +3,13 @@
 	import { _ } from '#lib/i18n/index.js';
 	import { page } from '$app/state';
 	import { shouldBeContainer } from '#lib/layout.js';
-	import { OPEN_PRICES_BASE_URL } from '#lib/const.js';
+	import { OPEN_PRICES_BASE_URL, PRO_PLATFORM_URL } from '#lib/const.js';
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
 	const navItems = $derived([
 		{ name: 'discover_link', href: resolve('/static/[id]', { id: 'discover' }) },
 		{ name: 'contribute_link', href: resolve('/static/[id]', { id: 'contribute' }) },
-		{ name: 'producers_link', href: resolve('/static/[id]', { id: 'producers' }) },
+		{ name: 'producers_link', href: PRO_PLATFORM_URL, external: true },
 		{ name: 'prices_link', href: OPEN_PRICES_BASE_URL, external: true }
 	]);
 </script>
