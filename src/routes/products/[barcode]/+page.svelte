@@ -309,6 +309,7 @@
 	$effect(() => {
 		// FIXME: Enable editing shortcuts for other Open Facts product types.
 		if (product.product_type && product.product_type !== 'food') return;
+		if (latestRevWhenOld != null) return;
 		shortcutCtx.set('E', {
 			description: $_('product.shortcuts.edit_same_window'),
 			action: () => {

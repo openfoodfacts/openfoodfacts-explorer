@@ -56,7 +56,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
 		knowledge_panels_client: 'web',
 		activate_knowledge_panel_product_information: 1,
-		rev: rev ?? undefined,
+		rev: rev || undefined,
 		lc
 	});
 
