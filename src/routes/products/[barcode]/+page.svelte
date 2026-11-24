@@ -21,6 +21,7 @@
 	import DataSources from './DataSources.svelte';
 
 	import ProductHeader from './ProductHeader.svelte';
+	import RevisionBanner from './RevisionBanner.svelte';
 	import BarcodeInfo from '#lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
 
@@ -88,6 +89,7 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+	let latestRevWhenOld = $derived(product.rev !== data.latestRev ? data.latestRev : undefined);
 
 	const productDescription = $derived(
 		$_('product.description', {
@@ -427,7 +429,16 @@
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
-				<ProductHeader {product} lc={data.lc} {score} {tiles} />
+				{#if latestRevWhenOld != null}
+					<RevisionBanner
+						code={product.code}
+						rev={product.rev}
+						latestRev={latestRevWhenOld}
+						editor={product.last_editor ?? product.last_modified_by}
+						modifiedT={product.last_modified_t}
+					/>
+				{/if}
+				<ProductHeader {product} lc={data.lc} {score} {tiles} editable={latestRevWhenOld == null} />
 			</div>
 
 			<div>
@@ -513,7 +524,8 @@
 					{product}
 					{panels}
 					barcode={product.code}
-					canEdit={!product.product_type || product.product_type === 'food'}
+					canEdit={latestRevWhenOld == null &&
+						(!product.product_type || product.product_type === 'food')}
 				/>
 			</div>
 

@@ -24,8 +24,9 @@
 		lc?: string;
 		tiles?: Snippet;
 		score?: Snippet;
+		editable?: boolean;
 	};
-	let { product, lc, tiles, score }: Props = $props();
+	let { product, lc, tiles, score, editable = true }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -193,7 +194,7 @@
 			<div
 				class="col-span-2 mt-4 flex flex-wrap items-center gap-2 md:col-span-1 md:col-start-2 md:mt-2 md:self-start"
 			>
-				{#if !product.product_type || product.product_type === 'food'}
+				{#if editable && (!product.product_type || product.product_type === 'food')}
 					<a
 						href={resolve('/products/[barcode]/edit', { barcode: `${product.code}` })}
 						class={[
@@ -207,7 +208,7 @@
 							? $_('product.buttons.edit', { default: 'Edit' })
 							: $_('product.edit.edit_product_title', { default: 'Edit product' })}
 					</a>
-				{:else}
+				{:else if editable}
 					<div
 						class="tooltip tooltip-top"
 						data-tip={$_('product.edit.food_only', {
