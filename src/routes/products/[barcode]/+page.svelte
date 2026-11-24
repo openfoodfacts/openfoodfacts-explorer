@@ -89,7 +89,7 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
-	let latestRevWhenOld = $derived(product.rev !== data.latestRev ? data.latestRev : undefined);
+	let isOldRev = $derived(data.rev != null && product.rev !== data.latestRev);
 
 	const productDescription = $derived(
 		$_('product.description', {
@@ -309,7 +309,7 @@
 	$effect(() => {
 		// FIXME: Enable editing shortcuts for other Open Facts product types.
 		if (product.product_type && product.product_type !== 'food') return;
-		if (latestRevWhenOld != null) return;
+		if (isOldRev) return;
 		shortcutCtx.set('E', {
 			description: $_('product.shortcuts.edit_same_window'),
 			action: () => {
@@ -375,7 +375,7 @@
 			return getProductAttributes(
 				attributeProductCode,
 				unwantedIngredients,
-				latestRevWhenOld != null ? product.rev : undefined
+				isOldRev ? product.rev : undefined
 			);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
@@ -436,16 +436,16 @@
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
-				{#if latestRevWhenOld != null}
+				{#if isOldRev}
 					<RevisionBanner
 						code={product.code}
 						rev={product.rev}
-						latestRev={latestRevWhenOld}
+						latestRev={data.latestRev}
 						editor={product.last_editor ?? product.last_modified_by}
 						modifiedT={product.last_modified_t}
 					/>
 				{/if}
-				<ProductHeader {product} lc={data.lc} {score} {tiles} editable={latestRevWhenOld == null} />
+				<ProductHeader {product} lc={data.lc} {score} {tiles} editable={!isOldRev} />
 			</div>
 
 			<div>
@@ -531,8 +531,7 @@
 					{product}
 					{panels}
 					barcode={product.code}
-					canEdit={latestRevWhenOld == null &&
-						(!product.product_type || product.product_type === 'food')}
+					canEdit={!isOldRev && (!product.product_type || product.product_type === 'food')}
 				/>
 			</div>
 

@@ -7,7 +7,7 @@
 	type Props = {
 		code: string;
 		rev: number;
-		latestRev: number;
+		latestRev?: number;
 		editor?: string;
 		modifiedT: number;
 	};
@@ -24,7 +24,9 @@
 			{$_('product.revision.title', { default: 'You are viewing an old version of this product' })}
 		</span>
 		<span>
-			{#if editor}
+			{#if latestRev == null}
+				{$_('product.revision.number', { values: { rev }, default: `Revision ${rev}` })}
+			{:else if editor}
 				{$_('product.revision.details', {
 					values: { rev, latestRev, editor, date },
 					default: `Revision ${rev} of ${latestRev}, by ${editor} on ${date}`
@@ -50,7 +52,7 @@
 				})}
 			</a>
 		{/if}
-		{#if rev < latestRev}
+		{#if latestRev == null || rev < latestRev}
 			<a
 				class="btn btn-ghost px-0 btn-sm"
 				href={`${resolve('/products/[barcode]', { barcode: code })}?rev=${rev + 1}`}

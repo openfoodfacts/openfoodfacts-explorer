@@ -74,9 +74,10 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		? await productsApi
 				.getProductV3(params.barcode, { product_type: 'all', fields: ['rev'] })
 				.then(({ data }) => (data && data.status !== 'failure' ? data.product.rev : undefined))
+				.catch(() => undefined)
 		: undefined;
 
 	const seo = state.product ? productSeo(state.product, url, params.barcode) : {};
 
-	return { state, lc, latestRev, ...seo };
+	return { state, lc, rev: rev || undefined, latestRev, ...seo };
 };
