@@ -1,6 +1,7 @@
+import { error, isHttpError } from '@sveltejs/kit';
 import type { FacetValueResponse } from '@openfoodfacts/openfoodfacts-nodejs';
 import type { PageLoad } from './$types';
-import { getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
+import { FacetHttpError, getFacetKnowledgePanels, getFacetValue } from '#lib/api/facets.js';
 import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details.js';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
@@ -39,10 +40,22 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 			const response = queryProducts ?? (await getFacetValue(fetch, facet, value, searchOptions));
 			// Product Opener answers some values it doesn't know (e.g. /facets/nova-groups/4)
 			// with the facet's tag list, `{ count, tags }`, instead of a product list.
-			return Array.isArray(response.products) ? response : empty;
-		} catch (error) {
-			console.error('Product fetch failed:', error);
-			return empty;
+			if (!Array.isArray(response.products)) {
+				return empty;
+			}
+			if (response.count === 0) {
+				error(404, 'Facet value not found');
+			}
+			return response;
+		} catch (err) {
+			if (isHttpError(err)) throw err;
+			if (err instanceof FacetHttpError && err.status === 404) {
+				error(404, 'Facet value not found');
+			}
+			console.error('Product fetch failed:', err);
+			error(500, 'An error occurred while fetching the facet data', {
+				errors: [err instanceof Error ? err.message : 'Unknown error']
+			});
 		}
 	})();
 

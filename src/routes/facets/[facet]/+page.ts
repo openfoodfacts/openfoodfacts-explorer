@@ -1,6 +1,6 @@
-import { error } from '@sveltejs/kit';
+import { error, isHttpError } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
+import { FacetHttpError, getFacet, getFacetKnowledgePanels } from '#lib/api/facets.js';
 import { requireInt } from '#lib/utils.js';
 import { getLocale } from '#lib/i18n/index.js';
 import type { FacetResponse, QueryFacetValue } from '@openfoodfacts/openfoodfacts-nodejs';
@@ -72,7 +72,7 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 	const page = requireInt(pageStr, () => error(400, 'Invalid page number'));
 	const pageSize = requireInt(pageSizeStr, () => error(400, 'Invalid page size'));
 
-	const kp = getFacetKnowledgePanels(fetch, facet);
+	const kp = getFacetKnowledgePanels(fetch, facet).catch(() => ({ knowledge_panels: {} }));
 	try {
 		const results = data.queryResults
 			? await toFacetResults(fetch, facet, data.queryResults, getLocale())
@@ -90,6 +90,10 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 			knowledgePanels: (await kp).knowledge_panels
 		};
 	} catch (e) {
+		if (isHttpError(e)) throw e;
+		if (e instanceof FacetHttpError && e.status === 404) {
+			error(404, 'Facet not found');
+		}
 		throw error(500, 'An error occurred while fetching the facet data', {
 			errors: [e instanceof Error ? e.message : 'Unknown error']
 		});

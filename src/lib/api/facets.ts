@@ -13,12 +13,33 @@ export const FACETS_SORT_OPTIONS = [
 	'nutriscore_score'
 ] as const satisfies readonly FacetSortOption[];
 
+export class FacetHttpError extends Error {
+	readonly status: number;
+
+	constructor(status: number, statusText: string) {
+		super(`Facet request failed: ${status} ${statusText}`);
+		this.name = 'FacetHttpError';
+		this.status = status;
+	}
+}
+
+function createFacetProductsApi(fetch: typeof window.fetch) {
+	const checkedFetch: typeof window.fetch = async (input, init) => {
+		const response = await fetch(input, init);
+		if (!response.ok) {
+			throw new FacetHttpError(response.status, response.statusText);
+		}
+		return response;
+	};
+	return createProductsApi(checkedFetch);
+}
+
 export async function getFacet(
 	fetch: typeof window.fetch,
 	facet: string,
 	opts?: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const client = createProductsApi(fetch);
+	const client = createFacetProductsApi(fetch);
 	return client.getFacet(facet, opts);
 }
 
@@ -28,7 +49,7 @@ export async function getFacetValue(
 	value: string,
 	opts: { page?: number; pageSize?: number; sortBy?: FacetSortOption }
 ) {
-	const client = createProductsApi(fetch);
+	const client = createFacetProductsApi(fetch);
 	return client.getFacetValue(facet, value, opts);
 }
 
