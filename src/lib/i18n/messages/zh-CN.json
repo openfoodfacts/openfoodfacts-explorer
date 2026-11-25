@@ -402,6 +402,13 @@
 			"footer_link": "Folksonomy Engine 项目",
 			"footer_after": "提供。欢迎参与或提出反馈。"
 		},
+		"revision": {
+			"title": "You are viewing an old version of this product",
+			"details": "Revision {rev} of {latestRev}, by {editor} on {date}",
+			"details_no_editor": "Revision {rev} of {latestRev}, on {date}",
+			"number": "Revision {rev}",
+			"current": "See the current version"
+		},
 		"datasources": {
 			"title": "数据源",
 			"user": "用户：",
