@@ -370,7 +370,6 @@
 				<button
 					type="button"
 					class="btn w-full btn-outline btn-xs sm:w-auto sm:btn-sm"
-					class:loading={isSelectingImage}
 					disabled={isSelectingImage}
 					onclick={() => onSelectImage?.()}
 				>
