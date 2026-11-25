@@ -402,6 +402,13 @@
 			"footer_link": "Folksonomy Engine project",
 			"footer_after": ". Don't hesitate to participate or give feedback."
 		},
+		"revision": {
+			"title": "You are viewing an old version of this product",
+			"details": "Revision {rev} of {latestRev}, by {editor} on {date}",
+			"details_no_editor": "Revision {rev} of {latestRev}, on {date}",
+			"number": "Revision {rev}",
+			"current": "See the current version"
+		},
 		"datasources": {
 			"title": "Data Fibea ahorow",
 			"user": "User: ",
