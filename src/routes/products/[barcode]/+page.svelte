@@ -445,7 +445,7 @@
 						modifiedT={product.last_modified_t}
 					/>
 				{/if}
-				<ProductHeader {product} lc={data.lc} {score} {tiles} editable={!isOldRev} />
+				<ProductHeader {product} lc={data.lc} {score} {tiles} oldRevision={isOldRev} />
 			</div>
 
 			<div>

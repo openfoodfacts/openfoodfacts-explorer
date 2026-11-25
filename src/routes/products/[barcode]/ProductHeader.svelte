@@ -24,9 +24,9 @@
 		lc?: string;
 		tiles?: Snippet;
 		score?: Snippet;
-		editable?: boolean;
+		oldRevision?: boolean;
 	};
-	let { product, lc, tiles, score, editable = true }: Props = $props();
+	let { product, lc, tiles, score, oldRevision = false }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -53,7 +53,7 @@
 	async function sharePage() {
 		await shareContent(
 			{
-				url: `${window.location.origin}${window.location.pathname}`,
+				url: `${window.location.origin}${window.location.pathname}${oldRevision ? `?rev=${product.rev}` : ''}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
 					default: 'Check out this product on Open Food Facts: {productName}',
@@ -194,7 +194,7 @@
 			<div
 				class="col-span-2 mt-4 flex flex-wrap items-center gap-2 md:col-span-1 md:col-start-2 md:mt-2 md:self-start"
 			>
-				{#if editable && (!product.product_type || product.product_type === 'food')}
+				{#if !oldRevision && (!product.product_type || product.product_type === 'food')}
 					<a
 						href={resolve('/products/[barcode]/edit', { barcode: `${product.code}` })}
 						class={[
@@ -208,7 +208,7 @@
 							? $_('product.buttons.edit', { default: 'Edit' })
 							: $_('product.edit.edit_product_title', { default: 'Edit product' })}
 					</a>
-				{:else if editable}
+				{:else if !oldRevision}
 					<div
 						class="tooltip tooltip-top"
 						data-tip={$_('product.edit.food_only', {

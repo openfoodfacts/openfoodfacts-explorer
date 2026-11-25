@@ -39,7 +39,8 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 
 	const lc = parseUrlLocation(url.pathname)?.language ?? getLanguageCode(getLocale());
-	const rev = url.searchParams.get('rev');
+	const revNumber = parseInt(url.searchParams.get('rev') ?? '', 10);
+	const rev = revNumber > 0 ? revNumber : undefined;
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
@@ -56,7 +57,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
 		knowledge_panels_client: 'web',
 		activate_knowledge_panel_product_information: 1,
-		rev: rev || undefined,
+		rev,
 		lc
 	});
 
@@ -79,5 +80,5 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 
 	const seo = state.product ? productSeo(state.product, url, params.barcode) : {};
 
-	return { state, lc, rev: rev || undefined, latestRev, ...seo };
+	return { state, lc, rev, latestRev, ...seo };
 };
