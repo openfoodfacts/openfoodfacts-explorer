@@ -1,8 +1,10 @@
 <script lang="ts">
 	import GitHubCommits from './GitHubCommits.svelte';
+	import { getContributionLinks, type ContributionFacet } from './contribution-links.js';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
+	import { resolve } from '#lib/paths.js';
 	import { getLanguageCode, preferences } from '#lib/settings.js';
 	import { getLocaleLabel } from '#lib/languages.js';
 	import { _ } from '#lib/i18n/index.js';
@@ -22,10 +24,18 @@
 	import IconMdiTools from '@iconify-svelte/mdi/tools';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiPencil from '@iconify-svelte/mdi/pencil';
+	import IconMdiCameraOutline from '@iconify-svelte/mdi/camera-outline';
+	import IconMdiPlusCircleOutline from '@iconify-svelte/mdi/plus-circle-outline';
 	import IconMdiHeart from '@iconify-svelte/mdi/heart';
 	import IconMdiShieldAccount from '@iconify-svelte/mdi/shield-account';
 
 	import type { PageProps } from './$types';
+
+	const CONTRIBUTION_ICONS: Record<ContributionFacet, typeof IconMdiPencil> = {
+		editors: IconMdiPencil,
+		photographers: IconMdiCameraOutline,
+		contributors: IconMdiPlusCircleOutline
+	};
 
 	const GITHUB_REPO_URL = 'https://github.com/openfoodfacts/openfoodfacts-explorer';
 	const APP_VERSION = import.meta.env.BUILD_VERSION;
@@ -114,10 +124,30 @@
 					</h2>
 
 					{#if $userInfo}
+						{@const contributionLinks = getContributionLinks($userInfo.preferred_username)}
 						<div class="mt-4 space-y-4">
 							<div>
 								<p class="text-sm text-base-content/70">{$_('settings.username')}</p>
-								<p class="text-lg font-semibold">{$userInfo.preferred_username}</p>
+								<div class="mt-1 flex flex-wrap items-center gap-2">
+									<p class="text-lg font-semibold">{$userInfo.preferred_username}</p>
+									{#if contributionLinks.length > 0}
+										<div class="flex flex-wrap gap-2">
+											{#each contributionLinks as link (link.facet)}
+												{@const LinkIcon = CONTRIBUTION_ICONS[link.facet]}
+												<a
+													href={resolve('/facets/[facet]/[value]', {
+														facet: link.facet,
+														value: link.username
+													})}
+													class="btn gap-1.5 btn-soft btn-sm"
+												>
+													<LinkIcon class="h-4 w-4" aria-hidden="true" />
+													<span>{$_(link.labelKey, { default: link.defaultLabel })}</span>
+												</a>
+											{/each}
+										</div>
+									{/if}
+								</div>
 							</div>
 							<div>
 								<p class="mb-2 text-sm text-base-content/70">{$_('settings.email')}</p>
