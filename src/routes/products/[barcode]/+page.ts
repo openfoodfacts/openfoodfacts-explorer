@@ -39,8 +39,12 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 
 	const lc = parseUrlLocation(url.pathname)?.language ?? getLanguageCode(getLocale());
-	const revNumber = parseInt(url.searchParams.get('rev') ?? '', 10);
-	const rev = revNumber > 0 ? revNumber : undefined;
+	// `rev` is optional, but when present it must be a positive integer
+	const revParam = url.searchParams.get('rev');
+	if (revParam !== null && !/^[1-9]\d*$/.test(revParam)) {
+		error(400, 'Invalid revision', { errors: [] });
+	}
+	const rev = revParam !== null ? Number(revParam) : undefined;
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
