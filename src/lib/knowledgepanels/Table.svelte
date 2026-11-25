@@ -2,12 +2,13 @@
 	import type { KnowledgeTableElement } from '#lib/api.js';
 	import type { KnowledgePanelTableRow } from '#lib/types/sdk-overrides.js';
 	import HtmlPurify from '#lib/ui/HtmlPurify.svelte';
+	import { isHttpUrl } from '#lib/utils.js';
 
 	let { element }: { element: KnowledgeTableElement } = $props();
 	let rows = $derived(element.table_element.rows as KnowledgePanelTableRow[]);
 </script>
 
-<div class="overflow-x-auto">
+<div class="max-w-full min-w-0 overflow-x-auto">
 	<table class="table-compact table w-full">
 		<thead>
 			<tr>
@@ -24,12 +25,17 @@
 							{#if cell.icon_url}
 								<img
 									src={cell.icon_url}
+									loading="lazy"
 									class="mr-1 inline-block h-[1em] w-[1em] overflow-hidden align-middle text-[18px] brightness-0 dark:invert"
 									alt=""
 									aria-hidden="true"
 								/>
 							{/if}
-							<HtmlPurify dirty={cell.text} />
+							{#if isHttpUrl(cell.url)}
+								<a class="link" href={cell.url}><HtmlPurify dirty={cell.text} /></a>
+							{:else}
+								<HtmlPurify dirty={cell.text} />
+							{/if}
 						</td>
 					{/each}
 				</tr>

@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Tsvaga - {query} - Vhura Zvokudya Zvokwadi Explorer",
+		"title": "Tsvaga - {query}",
 		"placeholder": "Mubvunzo kana barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Vhura Chikafu Chokwadi Chekuongorora",
+		"title": "{productName}",
 		"description": "Peji yechigadzirwa che {productName} paVhura Chikafu Chokwadi Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Kuongorora {facet} - Vhura Chikafu Chokwadi Chekuongorora",
+		"facet_website_title": "Kuongorora {facet}",
 		"facet_website_description": "Tsvaga iyo {facet} chikamu paVhura Chikafu Chokwadi Explorer.",
-		"facet_value_website_title": "Kuongorora {facet}: {value} - Vhura Chikafu Chokwadi Chekuongorora",
+		"facet_value_website_title": "Kuongorora {facet}: {value}",
 		"facet_value_website_description": "Tsvaga iyo {value} chikamu paVhura Chikafu Chokwadi Explorer.",
 		"facet_back_to_list": "Back to faces",
 		"facet_back_to_overview": "Dzokera ku {facet} muchidimbu"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Zvigadzirwa zvakagadzirwa",
 		"products_edited": "Products edited",
-		"html_title": "Mushandisi Profile - {user} - Vhura Chikafu Chokwadi Chekuongorora",
+		"html_title": "Mushandisi Profile - {user}",
 		"title": "User Profile ye {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

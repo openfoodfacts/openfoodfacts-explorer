@@ -18,7 +18,7 @@
 	{/if}
 </div>
 
-<div class="prose w-full max-w-full dark:text-white">
+<div class="prose w-full max-w-full min-w-0 has-[table]:overflow-x-auto dark:text-white">
 	<HtmlPurify dirty={html} />
 </div>
 

@@ -17,7 +17,7 @@
 		"account": "Профил"
 	},
 	"search": {
-		"title": "Търсене - {query} - Open Food Facts Explorer",
+		"title": "Търсене - {query}",
 		"placeholder": "Заявка или баркод",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Отворете изследователя на хранителна информация",
+		"title": "{productName}",
 		"description": "Страница на продукта за {productName} в Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Изследване на {facet} - Отворете изследователя на факти за храната",
+		"facet_website_title": "Изследване на {facet}",
 		"facet_website_description": "Открийте категорията {facet} в Open Food Facts Explorer.",
-		"facet_value_website_title": "Изследване на {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Изследване на {facet}: {value}",
 		"facet_value_website_description": "Открийте категорията {value} в Open Food Facts Explorer.",
 		"facet_back_to_list": "Обратно към фасетите",
 		"facet_back_to_overview": "Обратно към {facet} общ преглед"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Създадени продукти",
 		"products_edited": "Редактирани плодукти",
-		"html_title": "Потребителски профил - {user} - Open Food Facts Explorer",
+		"html_title": "Потребителски профил - {user}",
 		"title": "Потребителски профил на {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

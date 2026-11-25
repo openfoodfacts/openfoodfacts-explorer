@@ -17,7 +17,7 @@
 		"account": "Kontua"
 	},
 	"search": {
-		"title": "Bilatu - {query} - Ireki Janari Datuen Arakatzailea",
+		"title": "Bilatu - {query}",
 		"placeholder": "Kontsulta edo barra-kodea",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Ireki Janari Datuen Arakatzailea",
+		"title": "{productName}",
 		"description": "{productName} produktuaren orria Open Food Facts Explorer-en",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} arakatzen - Janari Datuen Arakatzaile Irekia",
+		"facet_website_title": "{facet} arakatzen",
 		"facet_website_description": "Ezagutu {facet} kategoria Open Food Facts Explorer-en.",
-		"facet_value_website_title": "{facet}arakatzen : {value} - Janari Datuen Arakatzaile Irekia",
+		"facet_value_website_title": "{facet}arakatzen : {value}",
 		"facet_value_website_description": "Ezagutu {value} kategoria Open Food Facts Explorer-en.",
 		"facet_back_to_list": "Alderdietara itzuli",
 		"facet_back_to_overview": "Itzuli {facet} ikuspegi orokorrera"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Sortutako produktuak",
 		"products_edited": "Products edited",
-		"html_title": "Erabiltzailearen profila - {user} - Ireki elikagaien datuen arakatzailea",
+		"html_title": "Erabiltzailearen profila - {user}",
 		"title": "{user}-ren erabiltzaile-profila",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Pretraga - {query} - Otvori istraživač činjenica o hrani",
+		"title": "Pretraga - {query}",
 		"placeholder": "Upit ili barkod",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Otvorite istraživač činjenica o hrani",
+		"title": "{productName}",
 		"description": "Stranica proizvoda za {productName} na Open Food Facts Exploreru",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Istraživanje {facet} - Otvorite istraživač činjenica o hrani",
+		"facet_website_title": "Istraživanje {facet}",
 		"facet_website_description": "Otkrijte kategoriju {facet} na Open Food Facts Exploreru.",
-		"facet_value_website_title": "Istraživanje {facet}: {value} - Otvorite istraživač činjenica o hrani",
+		"facet_value_website_title": "Istraživanje {facet}: {value}",
 		"facet_value_website_description": "Otkrijte kategoriju {value} na Open Food Facts Exploreru.",
 		"facet_back_to_list": "Nazad na fasete",
 		"facet_back_to_overview": "Nazad na {facet} pregled"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Proizvodi kreirani",
 		"products_edited": "Products edited",
-		"html_title": "Korisnički profil - {user} - Open Food Nutrition ...",
+		"html_title": "Korisnički profil - {user}",
 		"title": "Korisnički profil korisnika {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

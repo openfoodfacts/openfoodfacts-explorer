@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Search - {query} - Open Food Facts Explorer",
+		"title": "Search - {query}",
 		"placeholder": "Query or barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Exploring {facet}",
 		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Exploring {facet}: {value}",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Products created",
 		"products_edited": "Products edited",
-		"html_title": "User Profile - {user} - Open Food Facts Explorer",
+		"html_title": "User Profile - {user}",
 		"title": "User Profile of {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

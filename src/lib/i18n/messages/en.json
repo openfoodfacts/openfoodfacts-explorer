@@ -18,7 +18,7 @@
 		"welcome": "User Menu"
 	},
 	"search": {
-		"title": "Search - {query} - Open Food Facts Explorer",
+		"title": "Search - {query}",
 		"placeholder": "Query or barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -215,6 +215,9 @@
 		"not_logged_in": "Not logged in",
 		"github_link": "GitHub",
 		"github_cta": "Help us improve Explorer on GitHub",
+		"recent_commits": "Recent commits in this version",
+		"commits_loading": "Loading commits…",
+		"commits_unavailable": "Commit history is unavailable.",
 		"github_help_text": "Help us improve Open Food Facts Explorer!",
 		"admin_tools": {
 			"title": "Admin tools",
@@ -272,8 +275,12 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Product page for {productName} on Open Food Facts Explorer",
+		"app_strip": {
+			"text": "Scan barcodes to get the Nutri-Score, the Green-Score and more!",
+			"get_app": "Get the app"
+		},
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
 			"aria_label_no_name": "Go to product with code {productCode}"
@@ -399,6 +406,7 @@
 			"report_problem": "Report a Problem"
 		},
 		"edit": {
+			"food_only": "Editing is currently available only for food products.",
 			"sidebar_navigation": "Product edit sections",
 			"sidebar": {
 				"collapse_all": "Collapse All",
@@ -848,6 +856,39 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
+		"names": {
+			"countries": "Countries",
+			"nutrition-grades": "Nutrition grades",
+			"nova-groups": "NOVA groups",
+			"environmental-score": "Green-Score",
+			"brands": "Brands",
+			"categories": "Categories",
+			"labels": "Labels",
+			"packaging": "Packaging",
+			"origins": "Origins of ingredients",
+			"manufacturing-places": "Manufacturing or processing places",
+			"packager-codes": "Traceability codes",
+			"ingredients": "Ingredients",
+			"additives": "Additives",
+			"vitamins": "Added vitamins",
+			"minerals": "Added minerals",
+			"amino-acids": "Added amino acids",
+			"nucleotides": "Added nucleotides",
+			"other-nutritional-substances": "Other nutritional substances added",
+			"allergens": "Allergens",
+			"traces": "Traces",
+			"misc": "Miscellaneous",
+			"languages": "Languages",
+			"contributors": "Contributors",
+			"states": "States",
+			"data-sources": "Data sources",
+			"entry-dates": "Entry dates",
+			"last-edit-dates": "Last edit dates",
+			"last-check-dates": "Last check dates",
+			"teams": "Teams"
+		},
+		"heading": "Exploring {facet}",
+		"value_heading": "Exploring {facet}: {value}",
 		"category_general": "General",
 		"category_nutrition": "Nutrition & Health",
 		"category_packaging": "Packaging & Origin",
@@ -921,9 +962,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Exploring {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Exploring {facet}",
 		"facet_website_description": "Discover the {facet} category on Open Food Facts Explorer.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Exploring {facet}: {value}",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
 		"facet_back_to_overview": "Back to {facet} overview"
@@ -946,7 +987,7 @@
 	"dashboard": {
 		"products_created": "Products created",
 		"products_edited": "Products edited",
-		"html_title": "User Profile - {user} - Open Food Facts Explorer",
+		"html_title": "User Profile - {user}",
 		"title": "User Profile of {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

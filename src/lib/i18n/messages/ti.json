@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "ምድላይ - {query} - ክፉት ናይ መግቢ ሓቅታት ዳህሳሲ",
+		"title": "ምድላይ - {query}",
 		"placeholder": "ሕቶ ወይ ባርኮድ",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ክፉት ናይ መግቢ ሓቅታት ዳህሳሲ",
+		"title": "{productName}",
 		"description": "ገጽ ፍርያት ን {productName} ኣብ ክፉት ሓቅታት መግቢ ዳህሳሲ",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "ዳህሳስ {facet} - ክፉት ሓቅታት መግቢ ዳህሳሲ",
+		"facet_website_title": "ዳህሳስ {facet}",
 		"facet_website_description": "ኣብ ክፉት ሓቅታት መግቢ ዳህሳሲ {facet} ዝብል ምድብ ርኸቡ።",
-		"facet_value_website_title": "ዳህሳስ {facet}: {value} - ክፉት ሓቅታት መግቢ ዳህሳሲ",
+		"facet_value_website_title": "ዳህሳስ {facet}: {value}",
 		"facet_value_website_description": "ኣብ ክፉት ሓቅታት መግቢ ዳህሳሲ {value} ዝብል ምድብ ርኸቡ።",
 		"facet_back_to_list": "ናብ ገጻት ክንምለስ",
 		"facet_back_to_overview": "ናብ {facet} ሓፈሻዊ ትሕዝቶ ንመለስ"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "ዝተፈጠሩ ፍርያት",
 		"products_edited": "Products edited",
-		"html_title": "ፕሮፋይል ተጠቃሚ - {user} - ክፉት ናይ መግቢ ሓቅታት ዳህሳሲ",
+		"html_title": "ፕሮፋይል ተጠቃሚ - {user}",
 		"title": "ተጠቃሚ ፕሮፋይል ናይ {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import type { Component, ComponentType } from 'svelte';
 	import { _ } from '#lib/i18n/index.js';
 	import IconMdiChevronRight from '@iconify-svelte/mdi/chevron-right';

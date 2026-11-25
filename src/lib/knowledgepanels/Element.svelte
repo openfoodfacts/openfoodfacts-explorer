@@ -11,6 +11,7 @@
 	import PanelGroup from './PanelGroup.svelte';
 	import Action from './Action.svelte';
 	import Table from './Table.svelte';
+	import ProductHistoryTable from './ProductHistoryTable.svelte';
 
 	type Props = {
 		panels: KnowledgePanels;
@@ -22,11 +23,10 @@
 
 {#snippet panel(id: string)}
 	{@const panel = panels[id]}
-	{#if panel !== null}
+	{#if panel != null}
 		<Panel {panel} {panels} {id} {productCode} />
 	{:else}
 		{trackOffEvent('system', 'knowledge_panel_missing', id)}
-		<div class="alert alert-warning">Panel not found: {id}</div>
 	{/if}
 {/snippet}
 
@@ -45,6 +45,8 @@
 			alt={element.image_element.alt_text}
 			{productCode}
 		/>
+	{:else if element.element_type === 'table' && element.table_element.id === 'product_history_table'}
+		<ProductHistoryTable {element} />
 	{:else if element.element_type === 'table'}
 		<Table {element} />
 	{:else if element.element_type === 'map'}

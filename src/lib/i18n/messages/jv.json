@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Telusuri - {query} - Open Food Facts Explorer",
+		"title": "Telusuri - {query}",
 		"placeholder": "Pitakonan utawa barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Open Food Facts Explorer",
+		"title": "{productName}",
 		"description": "Kaca produk kanggo {productName} ing Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Njelajah {facet} - Open Food Facts Explorer",
+		"facet_website_title": "Njelajah {facet}",
 		"facet_website_description": "Temokake kategori {facet} ing Open Food Facts Explorer.",
-		"facet_value_website_title": "Njelajah {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Njelajah {facet}: {value}",
 		"facet_value_website_description": "Temokake kategori {value} ing Open Food Facts Explorer.",
 		"facet_back_to_list": "Bali menyang facets",
 		"facet_back_to_overview": "Bali menyang {facet} ringkesan"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produk digawe",
 		"products_edited": "Products edited",
-		"html_title": "Profil Panganggo - {user} - Bukak Penjelajah Fakta Pangan",
+		"html_title": "Profil Panganggo - {user}",
 		"title": "Profil pangguna {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

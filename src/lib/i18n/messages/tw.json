@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Hwehwɛ - {query} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
+		"title": "Hwehwɛ - {query}",
 		"placeholder": "Asɛmmisa anaa barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
+		"title": "{productName}",
 		"description": "Aguade krataafa ma {productName} wɔ Open Food Facts Explorer so",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Nhwehwɛmu {facet} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
+		"facet_website_title": "Nhwehwɛmu {facet}",
 		"facet_website_description": "Hwehwɛ {facet} ɔfa no wɔ Open Food Facts Explorer so.",
-		"facet_value_website_title": "Nhwehwɛmu {facet}: {value} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
+		"facet_value_website_title": "Nhwehwɛmu {facet}: {value}",
 		"facet_value_website_description": "Hwehwɛ {value} ɔfa no wɔ Open Food Facts Explorer so.",
 		"facet_back_to_list": "San kɔ afã horow so",
 		"facet_back_to_overview": "San kɔ {facet} nsɛm a wɔaka abom so"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Nneɛma a wɔayɛ",
 		"products_edited": "Products edited",
-		"html_title": "Ɔdefoɔ Profile - {user} - Bue Aduan Ho Nokwasɛm Nhwehwɛmu",
+		"html_title": "Ɔdefoɔ Profile - {user}",
 		"title": "Ɔdefoɔ no ho nsɛm a ɛfa {user}ho",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

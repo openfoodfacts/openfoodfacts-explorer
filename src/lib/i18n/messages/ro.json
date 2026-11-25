@@ -17,7 +17,7 @@
 		"account": "Cont"
 	},
 	"search": {
-		"title": "Căutare - {query} - Deschideți Exploratorul de Informații Alimentare",
+		"title": "Căutare - {query}",
 		"placeholder": "Interogare sau cod de bare",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Deschideți Exploratorul de Informații Alimentare",
+		"title": "{productName}",
 		"description": "Pagina produsului {productName} pe Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Explorând {facet} - Deschideți Exploratorul de Informații Alimentare",
+		"facet_website_title": "Explorând {facet}",
 		"facet_website_description": "Descoperă categoria {facet} pe Open Food Facts Explorer.",
-		"facet_value_website_title": "Explorând {facet}: {value} - Deschideți Exploratorul de Informații Alimentare",
+		"facet_value_website_title": "Explorând {facet}: {value}",
 		"facet_value_website_description": "Descoperă categoria {value} pe Open Food Facts Explorer.",
 		"facet_back_to_list": "Înapoi la fațete",
 		"facet_back_to_overview": "Înapoi la prezentarea generală {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produse create",
 		"products_edited": "Produse editate",
-		"html_title": "Profil utilizator - {user} - Deschideți Exploratorul de Informații Alimentare",
+		"html_title": "Profil utilizator - {user}",
 		"title": "Profilul utilizatorului {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

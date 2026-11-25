@@ -1,12 +1,12 @@
-ARG NODE_VERSION=24
-ARG ALPINE_VERSION=3.23
+ARG NODE_VERSION=26
+ARG ALPINE_VERSION=3.24
 
 # 1. Setup Arguments and Base
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN npm install --global corepack && corepack enable pnpm
 WORKDIR /app
 
 # 2. Dependencies Stage

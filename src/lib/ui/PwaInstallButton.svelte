@@ -15,7 +15,7 @@
 	function handleAppInstalled() {
 		pwaInstallStore.clear();
 		installing = false;
-		toastCtx.success($_('pwa.install_success'));
+		toastCtx.success($_('pwa.install_success', { default: 'App installed successfully!' }));
 	}
 
 	$effect(() => {
@@ -41,13 +41,15 @@
 			const { outcome } = await prompt.userChoice;
 
 			if (outcome === 'accepted') {
-				toastCtx.success($_('pwa.install_success'));
+				toastCtx.success($_('pwa.install_success', { default: 'App installed successfully!' }));
 			}
 			// Whether accepted or dismissed, clear the stored prompt
 			// — the browser won't fire `beforeinstallprompt` again.
 			pwaInstallStore.clear();
 		} catch {
-			toastCtx.error($_('pwa.install_error'));
+			toastCtx.error(
+				$_('pwa.install_error', { default: 'Could not install the app. Please try again.' })
+			);
 		} finally {
 			installing = false;
 		}
@@ -56,9 +58,11 @@
 
 {#if prompt}
 	<button class="btn gap-2 btn-primary" onclick={handleInstall} disabled={installing}>
-		<IconMdiDownload class="h-5 w-5" />
+		<IconMdiDownload class="h-5 w-5" aria-hidden="true" />
 		<span>
-			{installing ? $_('pwa.install_in_progress') : $_('pwa.install_button')}
+			{installing
+				? $_('pwa.install_in_progress', { default: 'Installing…' })
+				: $_('pwa.install_button', { default: 'Install app' })}
 		</span>
 	</button>
 {/if}

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { onMount, type Component } from 'svelte';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	import '../app.css';
 	import 'leaflet/dist/leaflet.css';
 	import '@fontsource-variable/plus-jakarta-sans';
 
-	import { goto } from '$app/navigation';
+	import { goto } from '#lib/navigation.js';
 	import { navigating, page } from '$app/state';
 	import { slide } from 'svelte/transition';
 
@@ -25,13 +24,15 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiViewDashboardOutline from '@iconify-svelte/mdi/view-dashboard-outline';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import { toggleCalculator } from '#lib/stores/calculatorStore.js';
 	import CompareFloatingButton from '#lib/ui/CompareFloatingButton.svelte';
 	import NutritionCalculator from '#lib/ui/NutritionCalculator.svelte';
 	import ExploreByMenu from '#lib/ui/ExploreByMenu.svelte';
 
-	import { _, getLocale, locale } from '#lib/i18n/index.js';
+	import { _, getLocale, getLocaleForUrl, locale } from '#lib/i18n/index.js';
+	import { startLogout } from '#lib/auth/logout.js';
 	import {
 		IMAGE_HOST,
 		MATOMO_HOST,
@@ -51,7 +52,8 @@
 	import { getLanguageCode, preferences, runPreferencesMigrations } from '#lib/settings.js';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { shouldBeContainer } from '#lib/layout.js';
-	import { resolve } from '$app/paths';
+	import { resolve, resolveForUrl } from '#lib/paths.js';
+	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
 	import { pwaInstallStore, type BeforeInstallPromptEvent } from '#lib/stores/pwa.svelte.js';
 
 	// == Global website context setup ==
@@ -81,6 +83,10 @@
 
 	$effect(() => {
 		syncWebsiteFlavor(new URL(page.url.href));
+	});
+
+	$effect(() => {
+		locale.set(getLocaleForUrl(page.url));
 	});
 
 	// == Global toast context setup ==
@@ -213,13 +219,6 @@
 
 	let { children }: LayoutProps = $props();
 
-	onMount(() => {
-		if (import.meta.env.VERCEL) {
-			// if we're on vercel and on the client, inject the speed insights script
-			injectSpeedInsights();
-		}
-	});
-
 	function updateSearchQuery(url: URL) {
 		const q = url.searchParams.get('q') ?? '';
 		searchQuery = extractQuery(q);
@@ -233,12 +232,25 @@
 
 	async function gotoProductsSearch() {
 		isSearching = true;
-		await goto('/search?q=' + encodeURIComponent(searchQuery));
+		await goto(resolve('search') + '?q=' + encodeURIComponent(searchQuery));
 		isSearching = false;
 	}
 
 	function getLoginUrl(url: URL) {
-		return resolve('oauth/login') + '?redirect=' + encodeURIComponent(url.pathname + url.search);
+		const location = parseUrlLocation(url.pathname);
+		const target = location
+			? url
+			: new URL(
+					`/${formatUrlLocation($preferences.country, getLanguageCode($preferences.locale ?? getLocale()))}`,
+					url
+				);
+		// Logging in from the home page lands on the contributor dashboard.
+		// From any other page, return to where the user was.
+		const redirectTo =
+			stripUrlLocation(url.pathname) === '/'
+				? resolveForUrl(target, '/dashboard')
+				: url.pathname + url.search;
+		return resolveForUrl(target, 'oauth/login') + '?redirect=' + encodeURIComponent(redirectTo);
 	}
 
 	let searchActive = $state(false);
@@ -268,8 +280,7 @@
 </script>
 
 <svelte:head>
-	<title>OFF Explorer</title>
-	<meta name="description" content="Open Food Facts Explorer" />
+	<title>Open Food Facts</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
@@ -283,7 +294,7 @@
 	<!-- Global OpenFoodFacts Web Components Configuration -->
 	<off-webcomponents-configuration
 		bind:this={config}
-		language-code={getLanguageCode($preferences.locale ?? getLocale())}
+		language-code={getLanguageCode($locale ?? getLocale())}
 		assets-images-path="/assets/webcomponents"
 		robotoff-configuration={JSON.stringify({
 			dryRun: dev,
@@ -306,7 +317,7 @@
 	<div class="flex justify-center">
 		<div class="navbar flex max-w-7xl bg-base-100 px-10">
 			<div class="navbar-start">
-				<a href="/"> <Logo /> </a>
+				<a href={resolve('/')}> <Logo fetchpriority="high" /> </a>
 			</div>
 			<div class="navbar-center">
 				<SearchBar bind:searchQuery onSearch={gotoProductsSearch} loading={isSearching} />
@@ -345,6 +356,15 @@
 							</li>
 							<li>
 								<a
+									href={resolve('/dashboard')}
+									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiViewDashboardOutline class="h-5 w-5" />
+									<span>{$_('navbar.dashboard', { default: 'Dashboard' })}</span>
+								</a>
+							</li>
+							<li>
+								<a
 									href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
 									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
 								>
@@ -363,13 +383,14 @@
 							</li>
 							<div class="divider my-1"></div>
 							<li>
-								<a
-									href={resolve('oauth/logout')}
+								<button
+									type="button"
+									onclick={startLogout}
 									class="flex gap-2 px-4 py-2 text-error hover:bg-error/10 active:bg-error active:text-error-content"
 								>
 									<IconMdiLogout class="h-5 w-5" />
 									<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-								</a>
+								</button>
 							</li>
 						</ul>
 					</div>
@@ -397,8 +418,8 @@
 <div class="top-0 right-0 left-0 z-50 mx-4 mb-2 bg-base-100 xl:hidden">
 	<div class="navbar mx-auto mt-2 mb-2 bg-base-100 px-0">
 		<div class="navbar-start">
-			<a href="/">
-				<Logo />
+			<a href={resolve('/')}>
+				<Logo fetchpriority="high" />
 			</a>
 		</div>
 		<div class="navbar-end flex gap-1 sm:gap-2">
@@ -446,11 +467,17 @@
 		class:hidden={!accordionOpen}
 		class="mt-3 flex flex-col gap-2 md:flex-row md:flex-wrap md:justify-center"
 	>
-		<a class="btn link btn-outline" href="/static/discover">{$_('discover_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'discover' })}
+			>{$_('discover_link')}</a
+		>
 
-		<a class="btn link btn-outline" href="/static/contribute">{$_('contribute_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'contribute' })}
+			>{$_('contribute_link')}</a
+		>
 
-		<a class="btn link btn-outline" href="/static/producers">{$_('producers_link')}</a>
+		<a class="btn link btn-outline" href={resolve('/static/[id]', { id: 'producers' })}
+			>{$_('producers_link')}</a
+		>
 
 		<a
 			class="btn link btn-outline"
@@ -475,7 +502,7 @@
 		</button>
 		<a
 			class="btn link btn-outline"
-			href="/settings"
+			href={resolve('settings')}
 			title={$_('settings_link')}
 			aria-label={$_('settings_link')}
 		>
@@ -494,6 +521,10 @@
 						>
 					</div>
 					<div class="grid grid-cols-2 gap-2">
+						<a class="btn gap-2 btn-outline btn-sm" href={resolve('/dashboard')}>
+							<IconMdiViewDashboardOutline class="h-4 w-4" />
+							<span>{$_('navbar.dashboard', { default: 'Dashboard' })}</span>
+						</a>
 						<a
 							class="btn gap-2 btn-outline btn-sm"
 							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}
@@ -502,10 +533,14 @@
 							<span>{$_('navbar.account', { default: 'Account' })}</span>
 						</a>
 
-						<a class="btn gap-2 btn-outline btn-error btn-sm" href={resolve('oauth/logout')}>
+						<button
+							type="button"
+							onclick={startLogout}
+							class="btn gap-2 btn-outline btn-error btn-sm"
+						>
 							<IconMdiLogout class="h-4 w-4" />
 							<span>{$_('navbar.logout', { default: 'Logout' })}</span>
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -531,7 +566,18 @@
 		{@render children?.()}
 	</div>
 {/if}
-<CompareFloatingButton />
+{#if stripUrlLocation(page.url.pathname) !== '/compare'}
+	<div
+		class={[
+			'fixed left-4',
+			stripUrlLocation(page.url.pathname) === '/search'
+				? 'bottom-20 z-40 lg:bottom-4 lg:z-50'
+				: 'bottom-4 z-50'
+		]}
+	>
+		<CompareFloatingButton />
+	</div>
+{/if}
 <NutritionCalculator />
 <Footer />
 <Toast />
