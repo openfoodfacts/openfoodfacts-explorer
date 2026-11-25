@@ -21,6 +21,7 @@
 	import DataSources from './DataSources.svelte';
 
 	import ProductHeader from './ProductHeader.svelte';
+	import RevisionBanner from './RevisionBanner.svelte';
 	import BarcodeInfo from '#lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
 
@@ -88,6 +89,7 @@
 	let product = $derived(
 		productState.status === 'success' ? (productState.product as UiProduct) : ({} as UiProduct)
 	);
+	let isOldRev = $derived(data.rev != null && product.rev !== data.latestRev);
 
 	const productDescription = $derived(
 		$_('product.description', {
@@ -307,6 +309,7 @@
 	$effect(() => {
 		// FIXME: Enable editing shortcuts for other Open Facts product types.
 		if (product.product_type && product.product_type !== 'food') return;
+		if (isOldRev) return;
 		shortcutCtx.set('E', {
 			description: $_('product.shortcuts.edit_same_window'),
 			action: () => {
@@ -343,11 +346,13 @@
 
 	async function getProductAttributes(
 		code: string,
-		unwanted: string | undefined
+		unwanted: string | undefined,
+		rev: number | undefined
 	): Promise<ProductGroupedAttributes[]> {
 		const offApi = createProductsApi(fetch);
 		const searchParams: Record<string, unknown> = { fields: ['attribute_groups_en'] };
 		if (unwanted !== undefined) searchParams.attribute_unwanted_ingredients_tags = unwanted;
+		if (rev !== undefined) searchParams.rev = rev;
 
 		const { data: prodData, error } = await offApi.apiv3.getProductV3(code, { ...searchParams });
 
@@ -367,7 +372,11 @@
 
 	let productAttributes = $derived.by(() => {
 		if (attributeProductCode && browser) {
-			return getProductAttributes(attributeProductCode, unwantedIngredients);
+			return getProductAttributes(
+				attributeProductCode,
+				unwantedIngredients,
+				isOldRev ? product.rev : undefined
+			);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
@@ -427,7 +436,16 @@
 
 		<div class="flex w-full min-w-0 flex-col gap-4 space-y-4">
 			<div id="overview" class="flex flex-col gap-4">
-				<ProductHeader {product} lc={data.lc} {score} {tiles} />
+				{#if isOldRev}
+					<RevisionBanner
+						code={product.code}
+						rev={product.rev}
+						latestRev={data.latestRev}
+						editor={product.last_editor ?? product.last_modified_by}
+						modifiedT={product.last_modified_t}
+					/>
+				{/if}
+				<ProductHeader {product} lc={data.lc} {score} {tiles} oldRevision={isOldRev} />
 			</div>
 
 			<div>
@@ -513,7 +531,7 @@
 					{product}
 					{panels}
 					barcode={product.code}
-					canEdit={!product.product_type || product.product_type === 'food'}
+					canEdit={!isOldRev && (!product.product_type || product.product_type === 'food')}
 				/>
 			</div>
 

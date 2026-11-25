@@ -39,6 +39,12 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 	const productsApi = createProductsApi(fetch);
 
 	const lc = parseUrlLocation(url.pathname)?.language ?? getLanguageCode(getLocale());
+	// `rev` is optional, but when present it must be a positive integer
+	const revParam = url.searchParams.get('rev');
+	if (revParam !== null && !/^[1-9]\d*$/.test(revParam)) {
+		error(400, 'Invalid revision', { errors: [] });
+	}
+	const rev = revParam !== null ? Number(revParam) : undefined;
 
 	const { data: state, error: apiErrorWrapped } = await productsApi.getProductV3(params.barcode, {
 		product_type: 'all',
@@ -55,6 +61,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		// @ts-expect-error - This is a temporary workaround until the SDK supports these parameters.
 		knowledge_panels_client: 'web',
 		activate_knowledge_panel_product_information: 1,
+		rev,
 		lc
 	});
 
@@ -68,7 +75,14 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 		error(404, 'Failure to load product', { errors: state.errors });
 	}
 
+	const latestRev = rev
+		? await productsApi
+				.getProductV3(params.barcode, { product_type: 'all', fields: ['rev'] })
+				.then(({ data }) => (data && data.status !== 'failure' ? data.product.rev : undefined))
+				.catch(() => undefined)
+		: undefined;
+
 	const seo = state.product ? productSeo(state.product, url, params.barcode) : {};
 
-	return { state, lc, ...seo };
+	return { state, lc, rev, latestRev, ...seo };
 };
