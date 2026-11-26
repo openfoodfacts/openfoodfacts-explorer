@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "ଖୋଜନ୍ତୁ - {query} - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
+		"title": "ଖୋଜନ୍ତୁ - {query}",
 		"placeholder": "କ୍ୱେରୀ କିମ୍ବା ବାରକୋଡ୍",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
+		"title": "{productName}",
 		"description": "ଓପନ ଫୁଡ୍ ଫ୍ୟାକ୍ଟସ୍ ଏକ୍ସପ୍ଲୋରରରେ {productName} ପାଇଁ ଉତ୍ପାଦ ପୃଷ୍ଠା",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} ଅନୁସନ୍ଧାନ - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
+		"facet_website_title": "{facet} ଅନୁସନ୍ଧାନ",
 		"facet_website_description": "ଓପନ ଫୁଡ୍ ଫ୍ୟାକ୍ଟସ୍ ଏକ୍ସପ୍ଲୋରରରେ {facet} ବର୍ଗ ଆବିଷ୍କାର କରନ୍ତୁ।",
-		"facet_value_website_title": "{facet}ଅନୁସନ୍ଧାନ କରୁଛି : {value} - ଖାଦ୍ୟ ତଥ୍ୟ ଅନୁସନ୍ଧାନକାରୀ ଖୋଲନ୍ତୁ",
+		"facet_value_website_title": "{facet}ଅନୁସନ୍ଧାନ କରୁଛି : {value}",
 		"facet_value_website_description": "ଓପନ ଫୁଡ୍ ଫ୍ୟାକ୍ଟସ୍ ଏକ୍ସପ୍ଲୋରରରେ {value} ବର୍ଗ ଆବିଷ୍କାର କରନ୍ତୁ।",
 		"facet_back_to_list": "ଦିଗଗୁଡ଼ିକୁ ଫେରନ୍ତୁ",
 		"facet_back_to_overview": "{facet} ସଂକ୍ଷିପ୍ତ ବିବରଣୀକୁ ଫେରନ୍ତୁ",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "ତିଆରି ହୋଇଥିବା ଉତ୍ପାଦଗୁଡ଼ିକ",
 		"products_edited": "Products edited",
-		"html_title": "ବ୍ୟବହାରକାରୀ ପ୍ରୋଫାଇଲ୍ - {user} - ଖାଦ୍ୟ ତଥ୍ୟ ଏକ୍ସପ୍ଲୋରର୍ ଖୋଲନ୍ତୁ",
+		"html_title": "ବ୍ୟବହାରକାରୀ ପ୍ରୋଫାଇଲ୍ - {user}",
 		"title": "{user}ଙ୍କ ବ୍ୟବହାରକାରୀ ପ୍ରୋଫାଇଲ୍",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "തിരയുക - {query} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
+		"title": "തിരയുക - {query}",
 		"placeholder": "അന്വേഷണം അല്ലെങ്കിൽ ബാർകോഡ്",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
+		"title": "{productName}",
 		"description": "ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ {productName} എന്നതിനായുള്ള ഉൽപ്പന്ന പേജ്",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} പര്യവേക്ഷണം ചെയ്യുന്നു - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
+		"facet_website_title": "{facet} പര്യവേക്ഷണം ചെയ്യുന്നു",
 		"facet_website_description": "ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ {facet} വിഭാഗം കണ്ടെത്തുക.",
-		"facet_value_website_title": "{facet}പര്യവേക്ഷണം ചെയ്യുന്നു : {value} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
+		"facet_value_website_title": "{facet}പര്യവേക്ഷണം ചെയ്യുന്നു : {value}",
 		"facet_value_website_description": "ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോററിൽ {value} വിഭാഗം കണ്ടെത്തുക.",
 		"facet_back_to_list": "വശങ്ങളിലേക്ക് മടങ്ങുക",
 		"facet_back_to_overview": "{facet} അവലോകനത്തിലേക്ക് മടങ്ങുക"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "സൃഷ്ടിച്ച ഉൽപ്പന്നങ്ങൾ",
 		"products_edited": "Products edited",
-		"html_title": "ഉപയോക്തൃ പ്രൊഫൈൽ - {user} - ഓപ്പൺ ഫുഡ് ഫാക്ട്സ് എക്സ്പ്ലോറർ",
+		"html_title": "ഉപയോക്തൃ പ്രൊഫൈൽ - {user}",
 		"title": "{user}എന്നയാളുടെ ഉപയോക്തൃ പ്രൊഫൈൽ",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

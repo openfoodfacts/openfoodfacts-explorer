@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Haku - {query} - Avaa ruokatietoselain",
+		"title": "Haku - {query}",
 		"placeholder": "Kysely tai viivakoodi",
 		"go": "Go",
 		"scan": "Skannaa viivakoodi",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Avaa ruokatietoselain",
+		"title": "{productName}",
 		"description": "Tuotesivu {productName} :lle Open Food Facts Explorerissa",
 		"image_alt": "Kuva",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Tutkimusmatkalla {facet} - Avaa ruokatietoselain",
+		"facet_website_title": "Tutkimusmatkalla {facet}",
 		"facet_website_description": "Tutustu {facet} -kategoriaan Open Food Facts Explorerissa.",
-		"facet_value_website_title": "Tutkimusmatkalla {facet}: {value} - Avaa ruokatietoselain",
+		"facet_value_website_title": "Tutkimusmatkalla {facet}: {value}",
 		"facet_value_website_description": "Tutustu {value} -kategoriaan Open Food Facts Explorerissa.",
 		"facet_back_to_list": "Takaisin fasetteihin",
 		"facet_back_to_overview": "Takaisin {facet} yleiskatsaukseen",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Luodut tuotteet",
 		"products_edited": "Muokatut tuotteet",
-		"html_title": "Käyttäjäprofiili - {user} - Avaa ruokatietoselain",
+		"html_title": "Käyttäjäprofiili - {user}",
 		"title": "{user}:n käyttäjäprofiili",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

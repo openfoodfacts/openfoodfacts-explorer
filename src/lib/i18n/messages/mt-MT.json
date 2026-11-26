@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Fittex - {query} - Iftaħ l-Esploratur tal-Fatti dwar l-Ikel",
+		"title": "Fittex - {query} - Iftaħ l-Esploratur tal-Fatti dwar l",
 		"placeholder": "Mistoqsija jew barcode",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Esploratur Miftuħ tal-Fatti dwar l-Ikel",
+		"title": "{productName} - Esploratur Miftuħ tal-Fatti dwar l",
 		"description": "Paġna tal-prodott għal {productName} fuq Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Esplorazzjoni {facet} - Esploratur Miftuħ tal-Fatti dwar l-Ikel",
+		"facet_website_title": "Esplorazzjoni {facet} - Esploratur Miftuħ tal-Fatti dwar l",
 		"facet_website_description": "Skopri l-kategorija {facet} fuq Open Food Facts Explorer.",
-		"facet_value_website_title": "Esplorazzjoni {facet}: {value} - Miftuħa l-Esploratur tal-Fatti dwar l-Ikel",
+		"facet_value_website_title": "Esplorazzjoni {facet}: {value} - Miftuħa l-Esploratur tal-Fatti dwar l",
 		"facet_value_website_description": "Skopri l-kategorija {value} fuq Open Food Facts Explorer.",
 		"facet_back_to_list": "Lura għall-aspetti",
 		"facet_back_to_overview": "Lura għall-ħarsa ġenerali lejn {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Prodotti maħluqa",
 		"products_edited": "Products edited",
-		"html_title": "Profil tal-Utent - {user} - Iftaħ l-Esploratur tal-Fatti dwar l-Ikel",
+		"html_title": "Profil tal-Utent - {user} - Iftaħ l-Esploratur tal-Fatti dwar l",
 		"title": "Profil tal-Utent ta' {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

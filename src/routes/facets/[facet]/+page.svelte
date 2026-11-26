@@ -28,7 +28,7 @@
 
 <Metadata
 	title={$_('facets.facet_website_title', {
-		default: 'Exploring {facet} - Open Food Facts Explorer',
+		default: 'Exploring {facet}',
 		values: { facet: facetName }
 	})}
 	description={$_('facets.facet_website_description', {

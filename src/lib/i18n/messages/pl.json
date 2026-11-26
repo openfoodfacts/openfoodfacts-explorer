@@ -17,7 +17,7 @@
 		"account": "Konto"
 	},
 	"search": {
-		"title": "Szukaj - {query} - Otwórz Eksplorator Faktów o Jedzeniu",
+		"title": "Szukaj - {query}",
 		"placeholder": "Zapytanie lub kod kreskowy",
 		"go": "Go",
 		"scan": "Zeskanuj kod kreskowy",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Otwórz Eksplorator Faktów o Żywności",
+		"title": "{productName}",
 		"description": "Strona produktu {productName} w Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Eksploracja {facet} - Otwórz Eksplorator Faktów o Jedzeniu",
+		"facet_website_title": "Eksploracja {facet}",
 		"facet_website_description": "Odkryj kategorię {facet} w Open Food Facts Explorer.",
-		"facet_value_website_title": "Eksploracja {facet}: {value} - Otwórz Eksplorator faktów o żywności",
+		"facet_value_website_title": "Eksploracja {facet}: {value}",
 		"facet_value_website_description": "Odkryj kategorię {value} w Open Food Facts Explorer.",
 		"facet_back_to_list": "Powrót do aspektów",
 		"facet_back_to_overview": "Powrót do przeglądu {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Produkty stworzone",
 		"products_edited": "Produkty edytowane",
-		"html_title": "Profil użytkownika - {user} - Otwórz Eksplorator faktów żywieniowych",
+		"html_title": "Profil użytkownika - {user}",
 		"title": "Profil użytkownika {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

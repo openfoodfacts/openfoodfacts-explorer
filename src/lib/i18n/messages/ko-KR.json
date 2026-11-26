@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "검색 - {query} - 오픈 식품 정보 탐색기",
+		"title": "검색 - {query}",
 		"placeholder": "쿼리 또는 바코드",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - 오픈 식품 정보 탐색기",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer의 {productName} 에 대한 제품 페이지",
 		"image_alt": "이미지",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} 탐색 - 오픈 푸드 팩트 탐색기",
+		"facet_website_title": "{facet} 탐색",
 		"facet_website_description": "Open Food Facts Explorer에서 {facet} 카테고리를 찾아보세요.",
-		"facet_value_website_title": "{facet}: {value} 탐색 - 오픈 푸드 팩트 탐색기",
+		"facet_value_website_title": "{facet}: {value} 탐색",
 		"facet_value_website_description": "Open Food Facts Explorer에서 {value} 카테고리를 찾아보세요.",
 		"facet_back_to_list": "측면으로 돌아가기",
 		"facet_back_to_overview": "{facet} 개요로 돌아가기",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "생성된 제품",
 		"products_edited": "제품 편집됨",
-		"html_title": "사용자 프로필 - {user} - Open Food Facts Explorer",
+		"html_title": "사용자 프로필 - {user}",
 		"title": "{user}의 사용자 프로필",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

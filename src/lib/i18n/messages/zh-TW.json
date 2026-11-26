@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "搜尋 - {query} - 打開食物資訊探索器",
+		"title": "搜尋 - {query}",
 		"placeholder": "查詢或條碼",
 		"go": "Go",
 		"scan": "掃描條碼",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - 打開食物資訊探索器",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer 上的 {productName} 產品頁面",
 		"image_alt": "圖片",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "探索 {facet} - 打開食物資訊探索器",
+		"facet_website_title": "探索 {facet}",
 		"facet_website_description": "在 Open Food Facts Explorer 上發現 {facet} 類別。",
-		"facet_value_website_title": "探索 {facet}: {value} - 打開食物資訊探索器",
+		"facet_value_website_title": "探索 {facet}: {value}",
 		"facet_value_website_description": "在 Open Food Facts Explorer 上發現 {value} 類別。",
 		"facet_back_to_list": "回到方面",
 		"facet_back_to_overview": "返回 {facet} 概覽",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "創造的產品",
 		"products_edited": "Products edited",
-		"html_title": "使用者資料 - {user} - 打開食物資訊探索器",
+		"html_title": "使用者資料 - {user}",
 		"title": "{user}的使用者個人資料",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

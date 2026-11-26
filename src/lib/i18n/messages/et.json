@@ -17,7 +17,7 @@
 		"account": "Konto"
 	},
 	"search": {
-		"title": "Otsing - {query} - Ava toidufaktide uurija",
+		"title": "Otsing - {query}",
 		"placeholder": "Päring või vöötkood",
 		"go": "Go",
 		"scan": "Skaneeri triipkoodi",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Ava toidufaktide uurija",
+		"title": "{productName}",
 		"description": "Tooteleht {productName} jaoks Open Food Facts Exploreris",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "Avastades {facet} - Ava toidufaktide uurija",
+		"facet_website_title": "Avastades {facet}",
 		"facet_website_description": "Avasta {facet} kategooria Open Food Facts Exploreris.",
-		"facet_value_website_title": "Avastades {facet}: {value} - Ava toidufaktide uurija",
+		"facet_value_website_title": "Avastades {facet}: {value}",
 		"facet_value_website_description": "Avasta {value} kategooria Open Food Facts Exploreris.",
 		"facet_back_to_list": "Tagasi tahkude juurde",
 		"facet_back_to_overview": "Tagasi {facet} ülevaate juurde"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Loodud tooted",
 		"products_edited": "Products edited",
-		"html_title": "Kasutajaprofiil - {user} - Ava toidufaktide uurija",
+		"html_title": "Kasutajaprofiil - {user}",
 		"title": "Kasutaja {user}profiil",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

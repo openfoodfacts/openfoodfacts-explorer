@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Шырав - {query} - Уҫӑ апат-ҫимӗҫ фактӗсене тӗпчекен",
+		"title": "Шырав - {query} - Уҫӑ апат",
 		"placeholder": "Ыйту е штрих-код",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Уҫӑ апат-ҫимӗҫ фактӗсене тӗпчекен",
+		"title": "{productName} - Уҫӑ апат",
 		"description": "Open Food Facts Explorer ҫинчи {productName} валли продукт страници",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Тӗпчесси {facet} - Уҫӑ апат-ҫимӗҫ фактӗсене тӗпчекен",
+		"facet_website_title": "Тӗпчесси {facet} - Уҫӑ апат",
 		"facet_website_description": "Open Food Facts Explorer ҫинче {facet} категорие тупӑр.",
-		"facet_value_website_title": "Тӗпчесси {facet}: {value} - Уҫӑ апат-ҫимӗҫ фактӗсене тӗпчекен",
+		"facet_value_website_title": "Тӗпчесси {facet}: {value} - Уҫӑ апат",
 		"facet_value_website_description": "Open Food Facts Explorer ҫинче {value} категорие тупӑр.",
 		"facet_back_to_list": "Фасетсем патне таврӑнӑр",
 		"facet_back_to_overview": "{facet} обзор патне таврӑнӑр",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Продукци тунӑ",
 		"products_edited": "Products edited",
-		"html_title": "Пулӑшакан профиль - {user} - Апат-ҫимӗҫ факчӗсене уҫӑ",
+		"html_title": "Пулӑшакан профиль - {user} - Апат",
 		"title": "Пулӑшакан профилӗ {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

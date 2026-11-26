@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "অনুসন্ধান - {query} - খাদ্য তথ্য অনুসন্ধানকারী খুলুন",
+		"title": "অনুসন্ধান - {query}",
 		"placeholder": "কোয়েরি বা বারকোড",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - খাদ্য তথ্য অনুসন্ধানকারী খুলুন",
+		"title": "{productName}",
 		"description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {productName} এর পণ্য পৃষ্ঠা",
 		"image_alt": "ভাবমূর্তি",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} অন্বেষণ - খাদ্য তথ্য অনুসন্ধানকারী খুলুন",
+		"facet_website_title": "{facet} অন্বেষণ",
 		"facet_website_description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {facet} বিভাগটি আবিষ্কার করুন।",
-		"facet_value_website_title": "{facet}অন্বেষণ : {value} - খাদ্য তথ্য এক্সপ্লোরার খুলুন",
+		"facet_value_website_title": "{facet}অন্বেষণ : {value}",
 		"facet_value_website_description": "ওপেন ফুড ফ্যাক্টস এক্সপ্লোরারে {value} বিভাগটি আবিষ্কার করুন।",
 		"facet_back_to_list": "দিকগুলিতে ফিরে যান",
 		"facet_back_to_overview": "{facet} ওভারভিউতে ফিরে যান",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "তৈরি পণ্য",
 		"products_edited": "Products edited",
-		"html_title": "ব্যবহারকারীর প্রোফাইল - {user} - খাদ্য তথ্য এক্সপ্লোরার খুলুন",
+		"html_title": "ব্যবহারকারীর প্রোফাইল - {user}",
 		"title": "{user}এর ব্যবহারকারীর প্রোফাইল",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

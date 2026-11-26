@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Pencarian - {query} - Buka Penjelajah Fakta Makanan",
+		"title": "Pencarian - {query}",
 		"placeholder": "Pertanyaan atau kode batang",
 		"go": "Cari",
 		"scan": "Pindai barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Buka Penjelajah Fakta Makanan",
+		"title": "{productName}",
 		"description": "Halaman produk untuk {productName} di Open Food Facts Explorer",
 		"image_alt": "Gambar",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Menjelajahi {facet} - Penjelajah Fakta Makanan Terbuka",
+		"facet_website_title": "Menjelajahi {facet}",
 		"facet_website_description": "Temukan kategori {facet} di Open Food Facts Explorer.",
-		"facet_value_website_title": "Menjelajahi {facet}: {value} - Penjelajah Fakta Makanan Terbuka",
+		"facet_value_website_title": "Menjelajahi {facet}: {value}",
 		"facet_value_website_description": "Temukan kategori {value} di Open Food Facts Explorer.",
 		"facet_back_to_list": "Kembali ke aspek",
 		"facet_back_to_overview": "Kembali ke ikhtisar {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Produk yang dibuat",
 		"products_edited": "Produk yang disunting",
-		"html_title": "Profil Pengguna - {user} - Buka Penjelajah Fakta Makanan",
+		"html_title": "Profil Pengguna - {user}",
 		"title": "Profil Pengguna {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

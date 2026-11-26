@@ -17,7 +17,7 @@
 		"account": "ખાતું"
 	},
 	"search": {
-		"title": "શોધો - {query} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
+		"title": "શોધો - {query}",
 		"placeholder": "ક્વેરી અથવા બારકોડ",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
+		"title": "{productName}",
 		"description": "ઓપન ફૂડ ફેક્ટ્સ એક્સપ્લોરર પર {productName} માટે પ્રોડક્ટ પેજ",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "{facet} શોધખોળ - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
+		"facet_website_title": "{facet} શોધખોળ",
 		"facet_website_description": "ઓપન ફૂડ ફેક્ટ્સ એક્સપ્લોરર પર {facet} શ્રેણી શોધો.",
-		"facet_value_website_title": "{facet}નું અન્વેષણ : {value} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
+		"facet_value_website_title": "{facet}નું અન્વેષણ : {value}",
 		"facet_value_website_description": "ઓપન ફૂડ ફેક્ટ્સ એક્સપ્લોરર પર {value} શ્રેણી શોધો.",
 		"facet_back_to_list": "પાસાઓ પર પાછા",
 		"facet_back_to_overview": "{facet} ઝાંખી પર પાછા જાઓ"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "બનાવેલા ઉત્પાદનો",
 		"products_edited": "Products edited",
-		"html_title": "યુઝર પ્રોફાઇલ - {user} - ફૂડ ફેક્ટ્સ એક્સપ્લોરર ખોલો",
+		"html_title": "યુઝર પ્રોફાઇલ - {user}",
 		"title": "{user}ની વપરાશકર્તા પ્રોફાઇલ",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

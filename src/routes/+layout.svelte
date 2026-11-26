@@ -24,6 +24,7 @@
 	import IconMdiLogin from '@iconify-svelte/mdi/login';
 	import IconMdiLogout from '@iconify-svelte/mdi/logout';
 	import IconMdiAccountCircle from '@iconify-svelte/mdi/account-circle';
+	import IconMdiViewDashboardOutline from '@iconify-svelte/mdi/view-dashboard-outline';
 	import IconMdiCalculator from '@iconify-svelte/mdi/calculator';
 	import { toggleCalculator } from '#lib/stores/calculatorStore.js';
 	import CompareFloatingButton from '#lib/ui/CompareFloatingButton.svelte';
@@ -224,11 +225,13 @@
 					`/${formatUrlLocation($preferences.country, getLanguageCode($preferences.locale ?? getLocale()))}`,
 					url
 				);
-		return (
-			resolveForUrl(target, 'oauth/login') +
-			'?redirect=' +
-			encodeURIComponent(url.pathname + url.search)
-		);
+		// Logging in from the home page lands on the contributor dashboard.
+		// From any other page, return to where the user was.
+		const redirectTo =
+			stripUrlLocation(url.pathname) === '/'
+				? resolveForUrl(target, '/dashboard')
+				: url.pathname + url.search;
+		return resolveForUrl(target, 'oauth/login') + '?redirect=' + encodeURIComponent(redirectTo);
 	}
 
 	let searchActive = $state(false);
@@ -258,7 +261,7 @@
 </script>
 
 <svelte:head>
-	<title>OFF Explorer</title>
+	<title>Open Food Facts</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
@@ -331,6 +334,15 @@
 								class="menu-title px-4 py-2 text-xs font-semibold tracking-wider text-base-content/60 uppercase"
 							>
 								{$_('navbar.welcome', { default: 'User Menu' })}
+							</li>
+							<li>
+								<a
+									href={resolve('/dashboard')}
+									class="flex gap-2 px-4 py-2 hover:bg-base-200 hover:text-base-content active:bg-primary active:text-primary-content"
+								>
+									<IconMdiViewDashboardOutline class="h-5 w-5" />
+									<span>{$_('navbar.dashboard', { default: 'Dashboard' })}</span>
+								</a>
 							</li>
 							<li>
 								<a
@@ -490,6 +502,10 @@
 						>
 					</div>
 					<div class="grid grid-cols-2 gap-2">
+						<a class="btn gap-2 btn-outline btn-sm" href={resolve('/dashboard')}>
+							<IconMdiViewDashboardOutline class="h-4 w-4" />
+							<span>{$_('navbar.dashboard', { default: 'Dashboard' })}</span>
+						</a>
 						<a
 							class="btn gap-2 btn-outline btn-sm"
 							href={resolve('/users/[user]', { user: $userInfo.preferred_username })}

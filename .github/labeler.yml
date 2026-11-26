@@ -1,98 +1,384 @@
-# Add labels to any any pull request with changes to the specified paths
+# Add labels to any pull request with changes to the specified paths
 
 GitHub Actions:
   - changed-files:
       - any-glob-to-any-file: '.github/**/*'
+
 🏷️ Folksonomy Engine:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/folksonomy/**/*'
       - any-glob-to-any-file: 'src/lib/api/folksonomy.ts'
+      - any-glob-to-any-file: 'src/lib/api/folksonomy.test.ts'
       - any-glob-to-any-file: 'src/routes/products/[barcode]/Folksonomy.svelte'
+
 📖 Knowledge panels:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/knowledgepanels/**/*'
+      - any-glob-to-any-file: 'src/lib/api/knowledgepanels.ts'
+
+3rd party knowledge panels:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/knowledgepanels/ExternalPanels.svelte'
+      - any-glob-to-any-file: 'src/lib/api/externalSources.ts'
+      - any-glob-to-any-file: 'src/lib/api/externalSources.test.ts'
+
 🌐 Translations:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/translations/**/*'
-Dependencies:
+      - any-glob-to-any-file: 'src/lib/i18n/**/*'
+      - any-glob-to-any-file: 'src/lib/languages.ts'
+      - any-glob-to-any-file: 'src/lib/languages.test.ts'
+      - any-glob-to-any-file: 'crowdin.yml'
+
+dependencies:
   - changed-files:
       - any-glob-to-any-file: '.github/dependabot.yml'
+      - any-glob-to-any-file: 'package.json'
+      - any-glob-to-any-file: 'pnpm-lock.yaml'
+      - any-glob-to-any-file: 'pnpm-workspace.yaml'
+
 📚 Documentation:
   - changed-files:
       - any-glob-to-any-file: 'README.md'
-🚦 Nutri-Score:
+      - any-glob-to-any-file: 'CHANGELOG.md'
+      - any-glob-to-any-file: 'AGENTS.md'
+      - any-glob-to-any-file: 'docs/**/*'
+
+Tags/Facets:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/nutriscore/**/*'
-facets:
+      - any-glob-to-any-file: 'src/lib/ui/inputs/Tags.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/inputs/TagsString.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/TagChips.svelte'
+      - any-glob-to-any-file: 'src/routes/facets/**/*'
+      - any-glob-to-any-file: 'src/lib/ui/facets/**/*'
+      - any-glob-to-any-file: 'src/lib/api/facets.ts'
+      - any-glob-to-any-file: 'src/lib/facets.test.ts'
+      - any-glob-to-any-file: 'src/lib/search/facet-*.ts'
+      - any-glob-to-any-file: 'src/lib/server/query-facet*.ts'
+      - any-glob-to-any-file: 'src/routes/search/FacetBar.svelte'
+      - any-glob-to-any-file: 'src/routes/search/FacetCard.svelte'
+
+Taxonomies:
   - changed-files:
-      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/Tags.svelte'
-      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/TagsString.svelte'
-      - any-glob-to-any-file: 'src/routes/taxo/[taxo]/[id]/**/*'
+      - any-glob-to-any-file: 'src/lib/api/taxonomy/**/*'
+      - any-glob-to-any-file: 'src/lib/ui/TaxonomyDAG.svelte'
+
 💸 Prices:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/Prices.svelte'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/PricesMap.svelte'
+      - any-glob-to-any-file: 'src/routes/dashboard/OpenPrices.svelte'
       - any-glob-to-any-file: 'src/lib/api/prices.ts'
       - any-glob-to-any-file: 'src/lib/api/prices.d.ts'
-      - any-glob-to-any-file: 'src/routes/products/[barcode]/PriceEdit.svelte'
+      - any-glob-to-any-file: 'src/lib/api/prices.test.ts'
+
 🖼️ Images:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/ImageModal.svelte'
       - any-glob-to-any-file: 'src/lib/ui/ImageButton.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/ImageManagerCard.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/BlurredImageDisplay.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/ResizableImage.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/images/**/*'
+      - any-glob-to-any-file: 'src/lib/utils/imageEdit.ts'
+      - any-glob-to-any-file: 'src/lib/utils/imageSearch.ts'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/ImagesStep.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/PackagingImage.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/PackagingImageUpload.svelte'
+
 Product page:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/**/*'
+      - any-glob-to-any-file: 'src/routes/product/[barcode]/**/*'
+
+product header:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/ProductHeader.svelte'
+
+product grid:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/ProductGrid.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/ProductCard.svelte'
+
+product history:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/knowledgepanels/ProductHistoryTable.svelte'
+
+Attributes:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/ProductAttributes.svelte'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/visibleAttributes.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/visibleAttributes.test.ts'
+
 Home page:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/ui/SmallProductCard.svelte'
-QR:
+      - any-glob-to-any-file: 'src/routes/+page.svelte'
+      - any-glob-to-any-file: 'src/routes/+page.ts'
+      - any-glob-to-any-file: 'src/routes/explore/**/*'
+
+Barcode scanning:
   - changed-files:
-      - any-glob-to-any-file: 'src/routes/qr/**/*'
+      - any-glob-to-any-file: 'src/routes/scan/**/*'
+      - any-glob-to-any-file: 'src/lib/barcodes/**/*'
+      - any-glob-to-any-file: 'src/lib/ui/BarcodeCorrectionCard.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/BarcodeInfo.svelte'
+
 Settings:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/settings/**/*'
+      - any-glob-to-any-file: 'src/lib/settings.ts'
+      - any-glob-to-any-file: 'src/lib/ui/preferences/**/*'
+      - any-glob-to-any-file: 'src/lib/stores/preferencesStore.ts'
+
 ✏️ Editing:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/**/*'
-      - any-glob-to-any-file: 'src/routes/products/[barcode]/edit/+page.ts'
-      - any-glob-to-any-file: 'src/routes/products/[barcode]/PriceEdit.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/EditProductForm.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/AddProductForm.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/**/*'
+
+✏️ Editing - Ingredients:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/IngredientsStep.svelte'
+
+✏️ Editing - Images:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/ImagesStep.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/PackagingImage.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/PackagingImageUpload.svelte'
+
+✏️ Editing - Nutrition facts:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/NutritionStep.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/nutrition.ts'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/nutrition.test.ts'
+
+✏️ Editing - Tags:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/inputs/Tags.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/inputs/TagsString.svelte'
+
+✏️ Editing - Multilingual:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/LanguagesStep.svelte'
+
+Product addition:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/AddProductForm.svelte'
+      - any-glob-to-any-file: 'src/lib/assets/add_*.svg'
+
+📦 Packaging:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/Packaging*.svelte'
+
 Search:
   - changed-files:
       - any-glob-to-any-file: 'src/routes/search/**/*'
-Green-Score:
+      - any-glob-to-any-file: 'src/lib/search/**/*'
+      - any-glob-to-any-file: 'src/lib/api/search.ts'
+      - any-glob-to-any-file: 'src/lib/api/search.test.ts'
+      - any-glob-to-any-file: 'src/lib/ui/SearchBar.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/searchbar.ts'
+      - any-glob-to-any-file: 'src/lib/ui/searchbar.test.ts'
+      - any-glob-to-any-file: 'src/lib/ui/SearchOptionsFooter.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/PersonalizedSearchToggle.svelte'
+      - any-glob-to-any-file: 'src/lib/utils/searchCsvExport.ts'
+
+personal search:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/greenscore/**/*'
-Ultra-processed foods - NOVA:
+      - any-glob-to-any-file: 'src/lib/ui/PersonalizedSearchToggle.svelte'
+
+personal scoring:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/nova/**/*'
+      - any-glob-to-any-file: 'src/lib/scoring.ts'
+      - any-glob-to-any-file: 'src/lib/scoring.test.ts'
+      - any-glob-to-any-file: 'src/lib/productScoring.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/OverallScore.svelte'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/ScoreTiles.svelte'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/scoreTiles.ts'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/ScoreCalculationStep.svelte'
+
 User Interface:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/**/*'
-Nutrients:
+      - any-glob-to-any-file: 'src/app.css'
+      - any-glob-to-any-file: 'src/app.html'
+
+Top Navigation:
   - changed-files:
-      - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+      - any-glob-to-any-file: 'src/lib/ui/Navbar.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/Sidebar.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/Breadcrumbs.svelte'
+
 Footer:
   - changed-files:
       - any-glob-to-any-file: 'src/lib/ui/Footer.svelte'
+      - any-glob-to-any-file: 'src/lib/assets/footer-*.svg'
+
+Nutrients:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/api/nutriments.ts'
+      - any-glob-to-any-file: 'src/lib/api/nutriments.test.ts'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/NutritionStep.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/nutrition.ts'
+      - any-glob-to-any-file: 'src/lib/ui/edit-product-steps/nutrition.test.ts'
+      - any-glob-to-any-file: 'src/lib/ui/NutritionCalculator.svelte'
+      - any-glob-to-any-file: 'src/lib/stores/calculatorStore.ts'
+
+Nutrition calculator:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/NutritionCalculator.svelte'
+      - any-glob-to-any-file: 'src/lib/stores/calculatorStore.ts'
+
+🔐 Auth:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/oauth/**/*'
+      - any-glob-to-any-file: 'src/routes/loginrequired/**/*'
+      - any-glob-to-any-file: 'src/lib/auth/**/*'
+      - any-glob-to-any-file: 'src/lib/stores/auth.ts'
+      - any-glob-to-any-file: 'src/lib/api/keycloak.ts'
+      - any-glob-to-any-file: 'src/lib/api/permissions.ts'
+      - any-glob-to-any-file: 'src/lib/api/permissions.test.ts'
+
+Permissions:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/api/permissions.ts'
+      - any-glob-to-any-file: 'src/lib/api/permissions.test.ts'
+
+User management:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/users/**/*'
+      - any-glob-to-any-file: 'src/lib/stores/user.ts'
+      - any-glob-to-any-file: 'src/lib/leaderboard.ts'
+      - any-glob-to-any-file: 'src/lib/leaderboard.test.ts'
+      - any-glob-to-any-file: 'src/lib/milestones.ts'
+      - any-glob-to-any-file: 'src/lib/milestones.test.ts'
+      - any-glob-to-any-file: 'src/lib/certificate.ts'
+      - any-glob-to-any-file: 'src/lib/certificate.test.ts'
+
+🧪 Tests:
+  - changed-files:
+      - any-glob-to-any-file: 'src/**/*.test.ts'
+      - any-glob-to-any-file: 'tsconfig.test.json'
+
+🧽 Data quality:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/dashboard/**/*'
+      - any-glob-to-any-file: 'src/routes/dashboard/QualityErrors.svelte'
+
+🗺️ Maps:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/map/**/*'
+      - any-glob-to-any-file: 'src/lib/knowledgepanels/Map.svelte'
+      - any-glob-to-any-file: 'src/routes/facets/[facet]/CountriesMap.svelte'
+      - any-glob-to-any-file: 'src/routes/facets/[facet]/country-data.ts'
+      - any-glob-to-any-file: 'src/routes/facets/[facet]/country-data.test.ts'
+      - any-glob-to-any-file: 'src/routes/facets/[facet]/map-facets.ts'
+      - any-glob-to-any-file: 'src/routes/products/[barcode]/PricesMap.svelte'
+
+Charts:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/VegaChart.svelte'
+
+Compare mode:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/compare/**/*'
+      - any-glob-to-any-file: 'src/lib/stores/compareStore.ts'
+      - any-glob-to-any-file: 'src/lib/ui/CompareFloatingButton.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/ComparisonDisplay.svelte'
+
+Sharing:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/utils/webShare.ts'
+      - any-glob-to-any-file: 'src/routes/compare/shared/**/*'
+
+🕷️ SEO:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/Metadata.svelte'
+      - any-glob-to-any-file: 'src/lib/JsonLd.svelte'
+      - any-glob-to-any-file: 'src/lib/JsonLd.test.ts'
+      - any-glob-to-any-file: 'src/lib/product-canonical.ts'
+      - any-glob-to-any-file: 'src/lib/product-canonical.test.ts'
+
+Static pages:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/static/**/*'
+      - any-glob-to-any-file: 'src/lib/api/staticPages.ts'
+      - any-glob-to-any-file: 'src/lib/api/staticPages.test.ts'
+      - any-glob-to-any-file: 'src/lib/ui/StaticPageIframe.svelte'
+
+Server-side rendering:
+  - changed-files:
+      - any-glob-to-any-file: 'src/hooks.server.ts'
+      - any-glob-to-any-file: 'src/lib/server/**/*'
+      - any-glob-to-any-file: 'src/routes/**/+page.server.ts'
+      - any-glob-to-any-file: 'src/routes/**/+server.ts'
+
+Network calls:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/api/**/*'
+      - any-glob-to-any-file: 'src/lib/api.ts'
+
+Error handling:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/+error.svelte'
+      - any-glob-to-any-file: 'src/lib/errors.ts'
+      - any-glob-to-any-file: 'src/lib/api/errorUtils.ts'
+      - any-glob-to-any-file: 'src/lib/ui/NetworkError.svelte'
+      - any-glob-to-any-file: 'src/lib/ui/StandardError.svelte'
+
+Web Components:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/ui/WcProductCard.svelte'
+      - any-glob-to-any-file: 'docs/webcomponents.md'
+
+Matomo:
+  - changed-files:
+      - any-glob-to-any-file: 'src/lib/matomo/**/*'
+      - any-glob-to-any-file: 'src/lib/analytics.ts'
+
+sentry:
+  - changed-files:
+      - any-glob-to-any-file: 'src/instrumentation.server.ts'
+
+keyboard shortcuts:
+  - changed-files:
+      - any-glob-to-any-file: 'src/routes/Shortcuts.svelte'
+      - any-glob-to-any-file: 'src/lib/stores/shortcuts.ts'
+
+progressive web app:
+  - changed-files:
+      - any-glob-to-any-file: 'src/service-worker/**/*'
+      - any-glob-to-any-file: 'src/routes/site.webmanifest/**/*'
+
+🐳 Docker:
+  - changed-files:
+      - any-glob-to-any-file: 'Dockerfile'
+      - any-glob-to-any-file: '.dockerignore'
+      - any-glob-to-any-file: 'compose.yml'
+      - any-glob-to-any-file: 'docker-compose.yml'
+      - any-glob-to-any-file: 'docker/**/*'
+
+👩‍💻 DevOps:
+  - changed-files:
+      - any-glob-to-any-file: 'Dockerfile'
+      - any-glob-to-any-file: '.dockerignore'
+      - any-glob-to-any-file: 'compose.yml'
+      - any-glob-to-any-file: 'docker-compose.yml'
+      - any-glob-to-any-file: 'docker/**/*'
+      - any-glob-to-any-file: 'vercel.json'
+      - any-glob-to-any-file: 'src/routes/health/**/*'
+
 # 👮 Nutri-Patrol:
-#  - changed-files:
-#      - any-glob-to-any-file: ''
+#   - changed-files:
+#       - any-glob-to-any-file: ''
 # 🎁 Donations:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
-
 # 🕹️ Gamification:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
-# 👥 Users:
-#   - changed-files:
-#       - any-glob-to-any-file: ''
 # 👮 Moderation:
-#   - changed-files:
-#       - any-glob-to-any-file: ''
-# 🔐 Auth:
-#   - changed-files:
-#       - any-glob-to-any-file: ''
-# 🧪 Tests:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
 # 🥜 Allergens:
@@ -105,9 +391,6 @@ Footer:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
 # 📸 Open Products Facts:
-#   - changed-files:
-#       - any-glob-to-any-file: ''
-# 🧽 Data Quality:
 #   - changed-files:
 #       - any-glob-to-any-file: ''
 # 🧪 Additives:

@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Ara - {query} - Açık Gıda Bilgileri Gezgini",
+		"title": "Ara - {query}",
 		"placeholder": "Sorgu veya barkod",
 		"go": "Git",
 		"scan": "Barkod tara",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Açık Gıda Bilgileri Gezgini",
+		"title": "{productName}",
 		"description": "Open Food Facts Explorer'da {productName} için ürün sayfası",
 		"image_alt": "Resim",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "{facet} 'ı Keşfetmek - Açık Gıda Bilgileri Gezgini",
+		"facet_website_title": "{facet} 'ı Keşfetmek",
 		"facet_website_description": "Open Food Facts Explorer'da {facet} kategorisini keşfedin.",
-		"facet_value_website_title": "{facet}'ı Keşfetmek: {value} - Açık Gıda Bilgileri Gezgini",
+		"facet_value_website_title": "{facet}'ı Keşfetmek: {value}",
 		"facet_value_website_description": "Open Food Facts Explorer'da {value} kategorisini keşfedin.",
 		"facet_back_to_list": "Yönlere geri dön",
 		"facet_back_to_overview": "{facet} genel bakışına geri dön",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Oluşturulan ürünler",
 		"products_edited": "Düzenlenen ürünler",
-		"html_title": "Kullanıcı Profili - {user} - Açık Gıda Bilgileri Gezgini",
+		"html_title": "Kullanıcı Profili - {user}",
 		"title": "{user}Kullanıcı Profili",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

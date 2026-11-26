@@ -5,5 +5,5 @@ import { resolveForUrl } from '#lib/paths.js';
 export const load: PageLoad = async ({ params, url }) => {
 	const { barcode } = params;
 
-	redirect(302, resolveForUrl(url, '/products/[barcode]', { barcode }));
+	redirect(302, resolveForUrl(url, '/products/[barcode]', { barcode }) + url.search);
 };

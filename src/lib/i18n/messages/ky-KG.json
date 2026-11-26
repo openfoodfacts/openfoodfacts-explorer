@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Издөө - {query} - Тамак-аш фактыларын изилдөөчү",
+		"title": "Издөө - {query} - Тамак",
 		"placeholder": "Суроо же штрих-код",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Тамак-аш фактыларын изилдөөчү ачыңыз",
+		"title": "{productName} - Тамак",
 		"description": "Open Food Facts Explorerде {productName} үчүн продукт бети",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Exploring {facet} - Тамак-аш фактыларын изилдөөчү ачыңыз",
+		"facet_website_title": "Exploring {facet} - Тамак",
 		"facet_website_description": "Open Food Facts Explorerде {facet} категориясын табыңыз.",
-		"facet_value_website_title": "Exploring {facet}: {value} - Open Food Facts Explorer",
+		"facet_value_website_title": "Exploring {facet}: {value}",
 		"facet_value_website_description": "Open Food Facts Explorerде {value} категориясын табыңыз.",
 		"facet_back_to_list": "Фасеттерге кайтуу",
 		"facet_back_to_overview": "{facet} обзорго кайтуу",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Продукциялар түзүлгөн",
 		"products_edited": "Products edited",
-		"html_title": "Колдонуучунун профили - {user} - Food Facts Explorer ачыңыз",
+		"html_title": "Колдонуучунун профили - {user}",
 		"title": "{user}колдонуучунун профили",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

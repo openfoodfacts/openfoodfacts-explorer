@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Buscar - {query} - Explorador de datos alimentarios abiertos",
+		"title": "Buscar - {query}",
 		"placeholder": "Consulta o código de barras",
 		"go": "Go",
 		"scan": "Escanear un código de barras",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Explorador de datos alimentarios abiertos",
+		"title": "{productName}",
 		"description": "Página de producto para {productName} en Open Food Facts Explorer",
 		"image_alt": "Imagen",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Explorando {facet} - Explorador de datos alimentarios abiertos",
+		"facet_website_title": "Explorando {facet}",
 		"facet_website_description": "Descubra la categoría {facet} en Open Food Facts Explorer.",
-		"facet_value_website_title": "Explorando {facet}: {value} - Explorador de datos alimentarios abiertos",
+		"facet_value_website_title": "Explorando {facet}: {value}",
 		"facet_value_website_description": "Descubra la categoría {value} en Open Food Facts Explorer.",
 		"facet_back_to_list": "Volver a las facetas",
 		"facet_back_to_overview": "Volver a la descripción general de {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Productos creados",
 		"products_edited": "Productos editados",
-		"html_title": "Perfil de usuario - {user} - Abrir el Explorador de datos alimentarios",
+		"html_title": "Perfil de usuario - {user}",
 		"title": "Perfil de usuario de {user}",
 		"has_created": "Ha creado",
 		"has_edited": "Ha editado",

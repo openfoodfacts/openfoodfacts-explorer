@@ -17,7 +17,7 @@
 		"account": "Account"
 	},
 	"search": {
-		"title": "Lorg - {query} - Fosgail Rannsaichear Fiosrachaidhean Bidhe",
+		"title": "Lorg - {query}",
 		"placeholder": "Ceist no còd-barra",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -218,7 +218,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Fosgail Rannsaichear Fiosrachaidh Bidhe",
+		"title": "{productName}",
 		"description": "Duilleag toraidh airson {productName} air Open Food Facts Explorer",
 		"card": {
 			"aria_label": "Go to product {productName} with code {productCode}",
@@ -772,9 +772,9 @@
 		"mobile_nav": "Mobile navigation menu"
 	},
 	"facets": {
-		"facet_website_title": "A’ sgrùdadh {facet} - Fosgail Rannsaichear Fiosrachaidhean Bidhe",
+		"facet_website_title": "A’ sgrùdadh {facet}",
 		"facet_website_description": "Faigh a-mach an roinn {facet} air Open Food Facts Explorer.",
-		"facet_value_website_title": "A’ sgrùdadh {facet}: {value} - Fosgail Rannsaichear Fiosrachaidhean Bidhe",
+		"facet_value_website_title": "A’ sgrùdadh {facet}: {value}",
 		"facet_value_website_description": "Faigh a-mach an roinn {value} air Open Food Facts Explorer.",
 		"facet_back_to_list": "Air ais gu taobhan",
 		"facet_back_to_overview": "Air ais gu sealladh farsaing {facet}"
@@ -797,7 +797,7 @@
 	"dashboard": {
 		"products_created": "Toraidhean air an cruthachadh",
 		"products_edited": "Products edited",
-		"html_title": "Pròifil Cleachdaiche - {user} - Fosgail Rannsaichear Fiosrachaidhean Bidhe",
+		"html_title": "Pròifil Cleachdaiche - {user}",
 		"title": "Pròifil Cleachdaiche {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Rechèch - {query} - Louvri Eksploratè Enfòmasyon sou Manje",
+		"title": "Rechèch - {query}",
 		"placeholder": "Rechèch oswa kòd bar",
 		"go": "Go",
 		"scan": "Eskane yon kòd ba",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Louvri Eksploratè Enfòmasyon sou Manje",
+		"title": "{productName}",
 		"description": "Paj pwodwi pou {productName} sou Open Food Facts Explorer",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Eksplore {facet} - Ouvri Eksploratè Enfòmasyon sou Manje",
+		"facet_website_title": "Eksplore {facet}",
 		"facet_website_description": "Dekouvri kategori {facet} la sou Open Food Facts Explorer.",
-		"facet_value_website_title": "Eksplore {facet}: {value} - Louvri Eksploratè Enfòmasyon sou Manje",
+		"facet_value_website_title": "Eksplore {facet}: {value}",
 		"facet_value_website_description": "Dekouvri kategori {value} la sou Open Food Facts Explorer.",
 		"facet_back_to_list": "Retounen nan aspè yo",
 		"facet_back_to_overview": "Retounen nan apèsi sou {facet}",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Pwodwi ki kreye",
 		"products_edited": "Products edited",
-		"html_title": "Pwofil Itilizatè - {user} - Louvri Eksploratè Enfòmasyon sou Manje",
+		"html_title": "Pwofil Itilizatè - {user}",
 		"title": "Pwofil Itilizatè {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",

@@ -18,11 +18,14 @@
 		canonicalUrl,
 		type = 'website'
 	}: Props = $props();
+
+	const siteTitle = 'Open Food Facts';
+	let fullTitle = $derived(title === siteTitle ? siteTitle : `${title} - ${siteTitle}`);
 </script>
 
 <svelte:head>
 	<!-- HTML Meta Tags -->
-	<title>{title}</title>
+	<title>{fullTitle}</title>
 	{#if canonicalUrl}
 		<link rel="canonical" href={canonicalUrl} />
 	{/if}
@@ -32,15 +35,15 @@
 	<!-- Facebook Meta Tags -->
 	<meta property="og:url" content={url} />
 	<meta property="og:type" content={type} />
-	<meta property="og:title" content={title} />
+	<meta property="og:title" content={fullTitle} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={imageUrl} />
 
 	<!-- Twitter Meta Tags -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta property="twitter:domain" content="openfoodfacts-explorer.vercel.app" />
+	<meta property="twitter:domain" content={page.url.hostname} />
 	<meta property="twitter:url" content={url} />
-	<meta name="twitter:title" content={title} />
+	<meta name="twitter:title" content={fullTitle} />
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={imageUrl} />
 </svelte:head>

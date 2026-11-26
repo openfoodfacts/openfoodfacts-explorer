@@ -32,7 +32,7 @@
 		}
 	},
 	"search": {
-		"title": "Ɲini - {query} - Dumuni tiɲɛkow ɲininikɛla da wuli",
+		"title": "Ɲini - {query}",
 		"placeholder": "Ɲininkali walima barɔdi",
 		"go": "Go",
 		"scan": "Scan a barcode",
@@ -277,7 +277,7 @@
 		}
 	},
 	"product": {
-		"title": "{productName} - Dumuni tiɲɛkow ɲininikɛla da wuli",
+		"title": "{productName}",
 		"description": "Fɛn dilannen ɲɛ min bɛ {productName} kan Open Food Facts Explorer kan",
 		"image_alt": "Image",
 		"card": {
@@ -977,9 +977,9 @@
 			"photographers": "e.g. username...",
 			"entry_dates": "e.g. 2024-01..."
 		},
-		"facet_website_title": "Sɛgɛsɛgɛli {facet} - Dumuni tiɲɛkow ɲininikɛla da wuli",
+		"facet_website_title": "Sɛgɛsɛgɛli {facet}",
 		"facet_website_description": "Aw ye {facet} kulu sɔrɔ Open Food Facts Explorer kan.",
-		"facet_value_website_title": "Sɛgɛsɛgɛli {facet}: {value} - Dumunifɛnw tiɲɛ ɲinini da wuli",
+		"facet_value_website_title": "Sɛgɛsɛgɛli {facet}: {value}",
 		"facet_value_website_description": "Aw ye {value} kulu sɔrɔ Open Food Facts Explorer kan.",
 		"facet_back_to_list": "Segin ka na facettes kan",
 		"facet_back_to_overview": "Segin {facet} lajɛba kan",
@@ -1009,7 +1009,7 @@
 	"dashboard": {
 		"products_created": "Fɛn minnu dabɔra",
 		"products_edited": "Fɛn dilannen ladilannenw",
-		"html_title": "Baarakɛla ka kunnafoni - {user} - Dumunifɛnw tiɲɛni ɲininikɛla da wuli",
+		"html_title": "Baarakɛla ka kunnafoni - {user}",
 		"title": "Baarakɛla ka kunnafoni {user}",
 		"has_created": "Has Created",
 		"has_edited": "Has Edited",
