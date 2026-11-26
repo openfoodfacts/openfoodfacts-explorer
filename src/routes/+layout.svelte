@@ -69,7 +69,11 @@
 
 	syncWebsiteFlavor(new URL(page.url.href));
 
-	let MatomoComponent = $state<Component<{ url: string; siteId: number }> | null>(null);
+	let MatomoComponent = $state<Component<{
+		url: string;
+		siteId: number;
+		linkTracking?: boolean | null;
+	}> | null>(null);
 
 	onMount(async () => {
 		try {
@@ -266,7 +270,7 @@
 </svelte:head>
 
 {#if MatomoComponent}
-	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} />
+	<MatomoComponent url={MATOMO_HOST} siteId={MATOMO_SITE_ID} linkTracking={true} />
 {/if}
 
 <Shortcuts {shortcuts} bind:this={shortcutsComp} />
