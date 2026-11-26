@@ -109,6 +109,8 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 		searchOptions,
 		facet: { name: facet, value: getOrDefault(taxo?.[value]?.name ?? {}, lang) ?? value },
 		facetPairs,
+		// The drilldown pages need a Query field for every facet in the path
+		canExploreBy: facetFilter != null,
 		results: {
 			...products,
 			products: products.products.map((product) => {

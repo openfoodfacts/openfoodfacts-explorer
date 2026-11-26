@@ -177,17 +177,19 @@
 	</div>
 {/if}
 
-<label class="select mb-8 w-full max-w-sm">
-	<span class="label">{$_('facets.explore_by', { default: 'Explore by' })}</span>
-	<select value="" oninput={(e) => exploreBy(e.currentTarget.value)}>
-		<option value="" disabled>
-			{$_('facets.explore_by_placeholder', { default: 'Choose a facet' })}
-		</option>
-		{#each exploreByFacets as name (name)}
-			<option value={name}>{$_(`facets.names.${name}`, { default: name })}</option>
-		{/each}
-	</select>
-</label>
+{#if data.canExploreBy}
+	<label class="select mb-8 w-full max-w-sm">
+		<span class="label">{$_('facets.explore_by', { default: 'Explore by' })}</span>
+		<select value="" oninput={(e) => exploreBy(e.currentTarget.value)}>
+			<option value="" disabled>
+				{$_('facets.explore_by_placeholder', { default: 'Choose a facet' })}
+			</option>
+			{#each exploreByFacets as name (name)}
+				<option value={name}>{$_(`facets.names.${name}`, { default: name })}</option>
+			{/each}
+		</select>
+	</label>
+{/if}
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
