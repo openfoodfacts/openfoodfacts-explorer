@@ -10,7 +10,7 @@ const pref = (attributeId: string, value = 'important', groupId = 'labels'): Use
 });
 
 describe('getVisibleAttributes', () => {
-	it('includes preferred attributes, puts poor matches first and unknowns last, and includes mismatching tiles', () => {
+	it('includes preferred attributes, puts poor matches first and unknowns last, and includes mismatching tiles only when asked', () => {
 		const groups = [
 			{
 				id: 'labels',
@@ -26,9 +26,11 @@ describe('getVisibleAttributes', () => {
 		];
 		const preferences = ['unknown', 'good', 'bad', 'nutriscore'].map((id) => pref(id));
 		preferences.push(pref('ignored', 'not_important'));
+		expect(
+			getVisibleAttributes(groups, preferences, ['nutriscore'], true).map((a) => a.id)
+		).toEqual(['bad', 'nutriscore', 'good', 'unknown']);
 		expect(getVisibleAttributes(groups, preferences, ['nutriscore']).map((a) => a.id)).toEqual([
 			'bad',
-			'nutriscore',
 			'good',
 			'unknown'
 		]);

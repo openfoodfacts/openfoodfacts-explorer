@@ -42,7 +42,9 @@
 	let scoreData = $derived(calculateScore(scoringGroups, preferences));
 	let showScore = $derived(scoreData.totalWeights > 0 && scoreData.matchStatus !== 'unknown_match');
 
-	let visibleAttributes = $derived(getVisibleAttributes(groups, preferences, tileAttributeIds));
+	let visibleAttributes = $derived(
+		getVisibleAttributes(groups, preferences, tileAttributeIds, hasPreferences)
+	);
 	let expanded = $state(false);
 	const INITIAL_ATTRIBUTES = 4;
 	let displayedAttributes = $derived(
