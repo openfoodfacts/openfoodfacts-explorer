@@ -124,7 +124,7 @@
 	<Metadata
 		title={$_('facets.nested_website_title', {
 			values: { filters: filtersLabel },
-			default: 'Exploring {filters} - Open Food Facts Explorer'
+			default: 'Exploring {filters}'
 		})}
 		description={$_('facets.nested_website_description', {
 			values: { filters: filtersLabel },

@@ -51,7 +51,7 @@
 <Metadata
 	title={$_('facets.drilldown_website_title', {
 		values: { facet: listFacetName, filters: filtersLabel },
-		default: 'Exploring {facet} for {filters} - Open Food Facts Explorer'
+		default: 'Exploring {facet} for {filters}'
 	})}
 	description={$_('facets.drilldown_website_description', {
 		values: { facet: listFacetName, filters: filtersLabel },
