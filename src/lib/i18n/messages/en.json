@@ -977,8 +977,12 @@
 		"drilldown_website_description": "{facet} of the products matching {filters} on Open Food Facts Explorer",
 		"drilldown_back": "Back to {filters}",
 		"drilldown_empty": "No values found for these products.",
-		"explore_by": "Explore by",
-		"explore_by_placeholder": "Choose a facet"
+		"slice_by": "Slice by another facet",
+		"slice_title": "Narrow down with another facet",
+		"slice_search": "Search country, label, brand…",
+		"slice_see_all": "See all",
+		"slice_error": "Could not load the values.",
+		"slice_more": "More facets"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",

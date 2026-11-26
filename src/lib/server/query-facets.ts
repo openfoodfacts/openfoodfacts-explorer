@@ -94,6 +94,23 @@ export async function queryFacetCounts(
 	return { values, count };
 }
 
+/**
+ * The most common values of a facet for the products that match the filter.
+ *
+ * @returns up to `limit` values with their product counts, or null when Query can't serve this facet
+ */
+export async function queryTopFacetValues(
+	fetch: typeof globalThis.fetch,
+	queryUrl: string,
+	facet: string,
+	limit: number,
+	filter: QueryFilter
+) {
+	const field = Object.hasOwn(QUERY_FACETS, facet) ? QUERY_FACETS[facet] : undefined;
+	if (!queryUrl || !field) return null;
+	return getFacetValuesPage(fetch, queryUrl, field, limit, 0, filter);
+}
+
 /** Whether a facet is one Explorer knows, i.e. it has a Query field. */
 export function isKnownFacet(facet: string): boolean {
 	return Object.hasOwn(QUERY_FACETS, facet);

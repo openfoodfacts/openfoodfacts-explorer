@@ -4,7 +4,8 @@ import {
 	isKnownFacet,
 	QUERY_FACETS,
 	queryAllFacetValues,
-	queryFacetCounts
+	queryFacetCounts,
+	queryTopFacetValues
 } from './query-facets';
 
 describe('getQueryFilter', () => {
@@ -106,6 +107,33 @@ describe('queryFacetCounts', () => {
 		expect(await queryFacetCounts(fetch, '', 'categories', 1, 50)).toBeNull();
 		expect(
 			await queryFacetCounts(fetch, 'https://query.example', 'contributors', 1, 50)
+		).toBeNull();
+		expect(fetch).not.toHaveBeenCalled();
+	});
+});
+
+describe('queryTopFacetValues', () => {
+	it('asks for the first values of the products that match the filter', async () => {
+		const fetch = vi.fn<typeof globalThis.fetch>(async () =>
+			Response.json([{ _id: 'en:italy', count: 9 }])
+		);
+		const result = await queryTopFacetValues(fetch, 'https://query.example', 'countries', 8, {
+			brands_tags: 'ferrero'
+		});
+		expect(result).toEqual([{ _id: 'en:italy', count: 9 }]);
+		expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual([
+			{ $match: { brands_tags: 'ferrero' } },
+			{ $group: { _id: '$countries_tags' } },
+			{ $skip: 0 },
+			{ $limit: 8 }
+		]);
+	});
+
+	it('returns null without a Query URL or a Query field', async () => {
+		const fetch = vi.fn();
+		expect(await queryTopFacetValues(fetch, '', 'countries', 8, {})).toBeNull();
+		expect(
+			await queryTopFacetValues(fetch, 'https://query.example', 'contributors', 8, {})
 		).toBeNull();
 		expect(fetch).not.toHaveBeenCalled();
 	});

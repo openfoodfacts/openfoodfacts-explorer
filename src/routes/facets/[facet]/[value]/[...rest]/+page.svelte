@@ -15,11 +15,8 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
-	import {
-		EXPLORE_BY_FACETS,
-		facetPairsHref,
-		searchWithoutPage
-	} from '#lib/ui/facets/facet-links.js';
+	import FacetSliceMenu from '#lib/ui/facets/FacetSliceMenu.svelte';
+	import { facetPairsHref, searchWithoutPage } from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
 	import {
@@ -65,17 +62,6 @@
 		params.delete('page');
 		const query = params.size > 0 ? `?${params}` : '';
 		return facetPairsHref(otherPairs, page.url.pathname, { query });
-	}
-
-	// The facets this page is not filtered on yet
-	const exploreByFacets = $derived(
-		EXPLORE_BY_FACETS.filter((name) => !facetPairs.some((pair) => pair.facet === name))
-	);
-
-	/** Open the list of a facet's values for the products of this page, keeping the search options. */
-	function exploreBy(listFacet: string) {
-		const query = searchWithoutPage(page.url.search);
-		goto(facetPairsHref(facetPairs, page.url.pathname, { listFacet, query }));
 	}
 
 	// Nested pages link the first value back to its own page
@@ -144,18 +130,30 @@
 
 <Breadcrumbs {breadcrumbs} />
 
-<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
-	{#if isNested}
-		<span
-			>{$_('facets.nested_heading', {
-				values: { filters: filtersLabel },
-				default: 'Exploring {filters}'
-			})}</span
-		>
-	{:else}
-		<span>{facetLabel}</span>
+<div class="mt-6 mb-8 flex items-start justify-between gap-4">
+	<h2 class="flex min-w-0 items-center gap-2 text-3xl font-bold">
+		{#if isNested}
+			<span
+				>{$_('facets.nested_heading', {
+					values: { filters: filtersLabel },
+					default: 'Exploring {filters}'
+				})}</span
+			>
+		{:else}
+			<span>{facetLabel}</span>
+		{/if}
+	</h2>
+	{#if data.canExploreBy}
+		<!-- A new menu for each page, so it starts closed and loads the values of that page -->
+		{#key page.url.pathname}
+			<FacetSliceMenu
+				{facetPairs}
+				pathname={page.url.pathname}
+				query={searchWithoutPage(page.url.search)}
+			/>
+		{/key}
 	{/if}
-</h2>
+</div>
 
 {#if isNested}
 	<div class="-mt-4 mb-8 flex flex-wrap gap-2">
@@ -175,20 +173,6 @@
 			</a>
 		{/each}
 	</div>
-{/if}
-
-{#if data.canExploreBy}
-	<label class="select mb-8 w-full max-w-sm">
-		<span class="label">{$_('facets.explore_by', { default: 'Explore by' })}</span>
-		<select value="" oninput={(e) => exploreBy(e.currentTarget.value)}>
-			<option value="" disabled>
-				{$_('facets.explore_by_placeholder', { default: 'Choose a facet' })}
-			</option>
-			{#each exploreByFacets as name (name)}
-				<option value={name}>{$_(`facets.names.${name}`, { default: name })}</option>
-			{/each}
-		</select>
-	</label>
 {/if}
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}

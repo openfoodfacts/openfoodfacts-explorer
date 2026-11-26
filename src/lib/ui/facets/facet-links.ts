@@ -22,6 +22,9 @@ export const EXPLORE_BY_FACETS = [
 	'states'
 ];
 
+/** Facets whose top values the "Slice by" menu shows, in this order. */
+export const SLICE_FACETS = ['countries', 'labels', 'brands', 'categories', 'packaging'];
+
 type FacetLinkOptions = {
 	/** A facet to list for the pairs, e.g. "categories" in /facets/brands/ferrero/categories */
 	listFacet?: string;
