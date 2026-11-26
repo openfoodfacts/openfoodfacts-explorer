@@ -25,8 +25,9 @@
 		tiles?: Snippet;
 		score?: Snippet;
 		oldRevision?: boolean;
+		rev?: number;
 	};
-	let { product, lc, tiles, score, oldRevision = false }: Props = $props();
+	let { product, lc, tiles, score, oldRevision = false, rev }: Props = $props();
 
 	let { locale: preferredLocale } = $derived($preferences);
 
@@ -53,7 +54,7 @@
 	async function sharePage() {
 		await shareContent(
 			{
-				url: `${window.location.origin}${window.location.pathname}${oldRevision ? `?rev=${product.rev}` : ''}`,
+				url: `${window.location.origin}${window.location.pathname}${rev != null ? `?rev=${rev}` : ''}`,
 				title: product.product_name || product.code,
 				text: $_('product.share_text', {
 					default: 'Check out this product on Open Food Facts: {productName}',

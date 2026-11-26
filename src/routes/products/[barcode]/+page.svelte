@@ -372,11 +372,7 @@
 
 	let productAttributes = $derived.by(() => {
 		if (attributeProductCode && browser) {
-			return getProductAttributes(
-				attributeProductCode,
-				unwantedIngredients,
-				isOldRev ? product.rev : undefined
-			);
+			return getProductAttributes(attributeProductCode, unwantedIngredients, data.rev);
 		}
 		return new Promise<ProductGroupedAttributes[]>(() => {});
 	});
@@ -445,7 +441,14 @@
 						modifiedT={product.last_modified_t}
 					/>
 				{/if}
-				<ProductHeader {product} lc={data.lc} {score} {tiles} oldRevision={isOldRev} />
+				<ProductHeader
+					{product}
+					lc={data.lc}
+					{score}
+					{tiles}
+					oldRevision={isOldRev}
+					rev={data.rev}
+				/>
 			</div>
 
 			<div>
