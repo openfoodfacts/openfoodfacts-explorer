@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
 	expandExternalSourceUrl,
+	getExternalKnowledgePanelRequests,
 	getExternalKnowledgePanels,
 	isExternalSourceEligible,
 	type ExternalSource
@@ -16,6 +17,30 @@ const source = (overrides: Partial<ExternalSource> = {}): ExternalSource => ({
 });
 
 describe('external knowledge panel sources', () => {
+	it.each(['fr', 'de'])('requests source metadata in %s', async (lc) => {
+		const fetch = vi.fn(async (input: RequestInfo | URL) => {
+			const url = new URL(input instanceof Request ? input.url : String(input));
+			if (url.pathname === '/api/v3/external_sources') {
+				return Response.json({ external_sources: [source({ name: `Source ${lc}` })] });
+			}
+			return Response.json({ panels: {} });
+		});
+
+		const { requests } = await getExternalKnowledgePanelRequests(fetch, {
+			code: '123',
+			lc,
+			cc: 'world',
+			categories: []
+		});
+		const metadataRequest = fetch.mock.calls[0][0];
+		const url = new URL(
+			metadataRequest instanceof Request ? metadataRequest.url : String(metadataRequest)
+		);
+		expect(url.searchParams.get('lc')).toBe(lc);
+		expect(requests[0].source.name).toBe(`Source ${lc}`);
+		await Promise.all(requests.map(({ promise }) => promise));
+	});
+
 	it('expands and encodes all documented URL variables', () => {
 		expect(
 			expandExternalSourceUrl('https://example.test/$code/$lc/$cc', {
