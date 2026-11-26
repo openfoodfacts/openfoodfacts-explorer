@@ -313,15 +313,15 @@
 			"view_page": "Go back to product page",
 			"edit_product_name": "Jump to product name",
 			"edit_product_quantity": "Jump to product quantity",
-			"edit_product_brands": "Jump to product brands",
-			"edit_product_categories": "Jump to product categories",
-			"edit_product_labels": "Jump to product labels",
-			"edit_product_ingredients": "Jump to product ingredients",
-			"edit_product_energy": "Jump to product energy",
-			"edit_product_fibers": "Jump to product fibers"
+			"edit_product_brands": "Gå til produktmærker",
+			"edit_product_categories": "Gå til produktkategorier",
+			"edit_product_labels": "Gå til produktetiketter",
+			"edit_product_ingredients": "Gå til produktets ingredienser",
+			"edit_product_energy": "Gå til produktets energi",
+			"edit_product_fibers": "Gå til produktfibre"
 		},
 		"buttons": {
-			"classic_view": "Classic view",
+			"classic_view": "Klassisk visning",
 			"edit": "Redigér",
 			"share": "Del",
 			"report": "Report an issue with this product",
@@ -334,24 +334,24 @@
 		"share_text": "Check out this product on Open Food Facts: {productName}",
 		"toast": {
 			"copied_link": "Link copied to clipboard!",
-			"failed_copy": "Failed to copy link",
-			"copied_barcode": "Barcode copied to clipboard!",
-			"failed_copy_barcode": "Failed to copy barcode"
+			"failed_copy": "Kunne ikke kopiere linket",
+			"copied_barcode": "Stregkode kopieret til udklipsholder!",
+			"failed_copy_barcode": "Kunne ikke kopiere stregkode"
 		},
-		"image_attribution": "Attribution: Photo by {photographer} per Open Food Facts",
+		"image_attribution": "Kreditering: Foto af {photographer} fra Open Food Facts",
 		"app_strip": {
 			"text": "Skan stregkoder for at få Nutri-Score, Green-Score og meget mere!",
 			"get_app": "Hent appen"
 		},
 		"barcode": {
-			"title": "Barcode information",
+			"title": "Stregkodeoplysninger",
 			"code_label": "Stregkode",
-			"validity_label": "Validity",
-			"valid": "Valid {variant}",
-			"invalid": "Invalid",
+			"validity_label": "Gyldighed",
+			"valid": "Gyldig {variant}",
+			"invalid": "Ugyldig",
 			"power_user_title": "Power-user tools",
-			"show_power_user": "Show advanced tools",
-			"hide_power_user": "Hide advanced tools",
+			"show_power_user": "Vis avancerede værktøjer",
+			"hide_power_user": "Skjul avancerede værktøjer",
 			"render_title": "Rendered barcode",
 			"render_unavailable": "This code cannot be rendered as a standard retail barcode.",
 			"search_title": "Søg",
@@ -433,7 +433,7 @@
 		},
 		"sections": {
 			"product": "Produkt",
-			"barcode_info": "Barcode information",
+			"barcode_info": "Stregkodeoplysninger",
 			"health": "Health & Nutrition",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
