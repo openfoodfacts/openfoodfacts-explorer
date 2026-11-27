@@ -97,7 +97,10 @@
 		"remove_exclude": "Remove exclude filter",
 		"remove_include_name": "Remove {name} filter",
 		"remove_exclude_name": "Remove exclude {name} filter",
-		"see_all_count": "See all ({count})"
+		"see_all_count": "See all ({count})",
+		"sort_popularity": "Popularity",
+		"off": "Off",
+		"on": "On"
 	},
 	"auth": {
 		"username": "Username",
@@ -908,6 +911,8 @@
 			"misc": "Miscellaneous",
 			"languages": "Languages",
 			"contributors": "Contributors",
+			"editors": "Editors",
+			"photographers": "Photographers",
 			"states": "States",
 			"data-sources": "Data sources",
 			"entry-dates": "Entry dates",
@@ -1002,7 +1007,12 @@
 		"map_heading_origins": "Origins of the ingredients",
 		"map_heading_countries": "Where these products are sold",
 		"map_page_limited": "This map only includes data from the current page.",
-		"map_sqrt_legend": "Products (square-root scale)"
+		"map_sqrt_legend": "Products (square-root scale)",
+		"knowledge_panels": "Knowledge panels",
+		"search_options": "Search options",
+		"products": "Products",
+		"name": "Name",
+		"code": "Code"
 	},
 	"landing": {
 		"contributor_home": "Your contributor space",

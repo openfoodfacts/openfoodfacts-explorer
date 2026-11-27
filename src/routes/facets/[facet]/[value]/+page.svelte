@@ -177,13 +177,17 @@
 <div class="my-8 flex w-full flex-col gap-4">
 	{#if Object.entries(knowledgePanels).length > 0}
 		<div class="w-full">
-			<h2 class="mb-2 grow text-2xl font-bold">Knowledge Panels</h2>
+			<h2 class="mb-2 grow text-2xl font-bold">
+				{$_('facets.knowledge_panels', { default: 'Knowledge panels' })}
+			</h2>
 			<KnowledgePanels panels={knowledgePanels} summary={false} />
 		</div>
 	{/if}
 
 	<div class="w-full space-y-2">
-		<h2 class="mb-2 grow text-2xl font-bold">Search Options</h2>
+		<h2 class="mb-2 grow text-2xl font-bold">
+			{$_('facets.search_options', { default: 'Search options' })}
+		</h2>
 		<div class="grid gap-4 md:grid-cols-3">
 			<label class="select w-full">
 				<span class="label w-50">{$_('search.page_size')}</span>
@@ -212,7 +216,9 @@
 						goto(`?${params}`);
 					}}
 				>
-					<option value="popularity">Popularity</option>
+					<option value="popularity"
+						>{$_('search.sort_popularity', { default: 'Popularity' })}</option
+					>
 					<option value="nutriscore_score">{$_('nutriscore')}</option>
 					<option value="environmental_score_score">{$_('ecoscore')}</option>
 					<option value="created_t">{$_('search.creation_date')}</option>
@@ -228,8 +234,8 @@
 						listView = e.currentTarget.value === 'true';
 					}}
 				>
-					<option value="false">Off</option>
-					<option value="true">On</option>
+					<option value="false">{$_('search.off', { default: 'Off' })}</option>
+					<option value="true">{$_('search.on', { default: 'On' })}</option>
 				</select>
 			</label>
 		</div>
@@ -237,7 +243,7 @@
 </div>
 
 <div class="my-8">
-	<h2 class="text-2xl font-bold">Products</h2>
+	<h2 class="text-2xl font-bold">{$_('facets.products', { default: 'Products' })}</h2>
 	<div class="my-8">
 		{#if !listView}
 			<!-- Preferences Collapsible Section -->
@@ -253,13 +259,16 @@
 			<table class="table my-4">
 				<thead>
 					<tr>
-						<th>Code</th>
-						<th>Name</th>
+						<th>{$_('facets.code', { default: 'Code' })}</th>
+						<th>{$_('facets.name', { default: 'Name' })}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each results.products as { product_name, code } (code)}
-						<tr class="cursor-pointer hover:bg-base-200" onclick={() => goto(`/products/${code}`)}>
+						<tr
+							class="cursor-pointer hover:bg-base-200"
+							onclick={() => goto(resolve('/products/[barcode]', { barcode: code }))}
+						>
 							<td>
 								<a href={resolve('/products/[barcode]', { barcode: code })} class="link">
 									{code}
