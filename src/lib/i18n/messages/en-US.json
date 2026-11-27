@@ -68,6 +68,8 @@
 		"page_size": "Page size",
 		"advanced_view": "Advanced view",
 		"export_csv": "Export CSV",
+		"share": "Share",
+		"share_text": "Check out these search results on Open Food Facts: {query}",
 		"export_csv_exporting": "Exporting…",
 		"export_csv_success": "Exported {count} products",
 		"export_csv_error": "Failed to export search results",
