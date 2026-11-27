@@ -3,6 +3,7 @@
 	import type { FacetPair } from '#lib/api/facets.js';
 	import { withLocationPrefix } from '#lib/location-link.js';
 	import { parseUrlLocation } from '#lib/url-location.js';
+	import { getLanguageCode } from '#lib/settings.js';
 	import { EXPLORE_BY_FACETS, SLICE_FACETS, facetPairsHref } from './facet-links';
 
 	type Tag = { id: string; name: string; products: number };
@@ -31,7 +32,7 @@
 
 	async function loadGroups(): Promise<Group[]> {
 		const location = parseUrlLocation(pathname);
-		const lang = location?.language ?? getLocale().split('-')[0].toLowerCase();
+		const lang = location?.language ?? getLanguageCode(getLocale());
 		const path = facetPairs.map((pair) => `${pair.facet}/${pair.value}`).join('/');
 		const params = new URLSearchParams({ path, lang });
 		const url = withLocationPrefix(`/api/facet-slice?${params}`, location, pathname);
