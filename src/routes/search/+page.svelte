@@ -203,7 +203,10 @@
 		await shareContent(
 			{
 				url: page.url.href,
-				title: $_('search.title', { values: { query: data.query } }),
+				title: $_('search.title', {
+					values: { query: data.query },
+					default: 'Search - {query}'
+				}),
 				text: $_('search.share_text', {
 					values: { query: mainSearchTerm },
 					default: 'Check out these search results on Open Food Facts: {query}'
