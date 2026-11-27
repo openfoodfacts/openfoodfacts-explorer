@@ -13,6 +13,7 @@
 	import Metadata from '#lib/Metadata.svelte';
 
 	import CountriesMap from './CountriesMap.svelte';
+	import { getPageForNewPageSize } from './page-size';
 
 	let { data }: PageProps = $props();
 
@@ -79,8 +80,16 @@
 				id="page_size"
 				value={`${data.pageSize}`}
 				oninput={(e) => {
+					const newPageSize = Number(e.currentTarget.value);
+					const nextPage = getPageForNewPageSize(
+						currentPage ?? 1,
+						data.pageSize,
+						newPageSize,
+						results.count
+					);
 					const params = new SvelteURLSearchParams(page.url.search);
 					params.set('page_size', e.currentTarget.value);
+					params.set('page', nextPage.toString());
 					goto(`?${params}`);
 				}}
 			>
