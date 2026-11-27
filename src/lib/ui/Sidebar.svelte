@@ -169,7 +169,7 @@
 		if (!document.getElementById(targetId)) return;
 
 		event.preventDefault();
-		await goto(section.href, { reset: false });
+		await goto(section.href, { reset: false, shallow: true });
 	}
 
 	function updateActiveSection() {
