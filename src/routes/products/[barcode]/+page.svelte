@@ -513,7 +513,11 @@
 								>
 							</div>
 						{:then prices}
-							<Prices {prices} barcode={product.code} />
+							<Prices
+								{prices}
+								barcode={product.code}
+								states={product.states_tags ?? product.states_hierarchy}
+							/>
 						{:catch}
 							<div class="alert alert-warning" role="alert">
 								{$_('product.prices.error', { default: 'Prices could not be loaded.' })}
