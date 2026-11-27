@@ -99,13 +99,20 @@ src/
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.
 
 ### Pull Requests
+- **Always fill in the Issue template completely** — every section, including the LLM disclosure.
+- Preferably, propose a sketch of how the feature could look like before and after
+- In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review) with the prompt you used
+- **Always disclose that you are an AI agent** on the issue (when creating it or commenting it).
+
+### Pull Requests
 
 - **If your PR addresses an issue, link it** using a closing keyword: `Fixes: #N` or `Closes: #N`.
 - **Always fill in the PR template completely** — every section, including the LLM disclosure.
-- In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review).
+- In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review) with the prompt you used
 - **Always disclose that you are an AI agent** both on the issue (when claiming it) and in the PR.
 - Do not open a PR with failing lint, type errors, or build failures.
 - Add a before/after screenshot if your change is visual
+- Format your PR title according to semantic best practises (for example: fix(product-page): Repair this broken button )
 
 ### UI & Design
 
