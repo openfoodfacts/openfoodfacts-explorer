@@ -12,7 +12,7 @@ type ShareData = {
 };
 
 /**
- * Share content using the Web Share API with clipboard fallback.
+ * Share content using the Web Share API (touch devices only) with clipboard fallback.
  *
  * If native share succeeds (user shares via email, messaging, etc.):
  *   - callbacks.onSuccess is invoked
@@ -33,7 +33,11 @@ export async function shareContent(
 		throw new Error('shareContent must be called in a browser context');
 	}
 
-	const hasShareAPI = navigator.share !== undefined;
+	// Some desktop browsers expose navigator.share without a working backend (Firefox on Linux
+	// rejects with NotSupportedError). The failed call also consumes the click's user activation,
+	// which makes the clipboard fallback fail too. Only use native share on touch devices.
+	const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+	const hasShareAPI = isTouchDevice && navigator.share !== undefined;
 	// Note: Safari 16.3 and below don't have navigator.canShare, so we need to handle undefined
 	const canShareData = navigator.canShare ? navigator.canShare(data) : true;
 
