@@ -6,6 +6,7 @@
 	"buildCommand": "node scripts/fetch-build-history.mjs && pnpm build",
 	"git": {
 		"deploymentEnabled": {
+			"main": false,
 			"l10n_*": false,
 			"release-please--*": false
 		}
