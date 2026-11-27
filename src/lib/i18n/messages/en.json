@@ -392,7 +392,9 @@
 		"sections": {
 			"product": "Product",
 			"barcode_info": "Barcode information",
-			"health": "Health & Nutrition",
+			"ingredients": "Ingredients",
+			"nutrition": "Nutrition",
+			"health": "Health",
 			"environment": "Environment & Sustainability",
 			"knowledge_panels": "Analysis & Insights",
 			"datasources": "Data Sources",

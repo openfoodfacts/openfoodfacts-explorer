@@ -35,6 +35,8 @@
 	import IconMdiNutrition from '@iconify-svelte/mdi/nutrition';
 	import IconMdiLeaf from '@iconify-svelte/mdi/leaf';
 	import IconMdiHeartPulse from '@iconify-svelte/mdi/heart-pulse';
+	import IconMdiFormatListChecks from '@iconify-svelte/mdi/format-list-checks';
+	import IconMdiFoodApple from '@iconify-svelte/mdi/food-apple';
 	import IconMdiFlag from '@iconify-svelte/mdi/flag';
 	import IconMdiHelpCircleOutline from '@iconify-svelte/mdi/help-circle-outline';
 	import IconMdiFormatListBulleted from '@iconify-svelte/mdi/format-list-bulleted';
@@ -222,6 +224,16 @@
 				label: $_('product.sections.attributes', { default: 'Attributes' }),
 				icon: IconMdiNutrition
 			},
+			product.knowledge_panels?.ingredients_card && {
+				id: 'ingredients_card',
+				label: $_('product.sections.ingredients', { default: 'Ingredients' }),
+				icon: IconMdiFormatListChecks
+			},
+			product.knowledge_panels?.nutrition_card && {
+				id: 'nutrition_card',
+				label: $_('product.sections.nutrition', { default: 'Nutrition' }),
+				icon: IconMdiFoodApple
+			},
 			product.knowledge_panels?.health_card && {
 				id: 'health_card',
 				label: $_('product.sections.health', { default: 'Health' }),
@@ -232,6 +244,11 @@
 				label: $_('product.sections.environment', { default: 'Environment' }),
 				icon: IconMdiLeaf
 			},
+			product.knowledge_panels?.product_card && {
+				id: 'product_card',
+				label: $_('product.sections.product_information', { default: 'Product information' }),
+				icon: IconMdiFormatListBulleted
+			},
 			product.knowledge_panels?.report_problem_card && {
 				id: 'report_problem_card',
 				label: $_('product.sections.report_problem', { default: 'Report a Problem' }),
@@ -241,11 +258,6 @@
 				id: 'contribution_card',
 				label: $_('product.sections.contribution', { default: 'Contribution' }),
 				icon: IconMdiHelpCircleOutline
-			},
-			product.knowledge_panels?.product_card && {
-				id: 'product_card',
-				label: $_('product.sections.product_information', { default: 'Product information' }),
-				icon: IconMdiFormatListBulleted
 			},
 			hasExternalKnowledgePanelsSection && {
 				id: 'external-sources',

@@ -90,9 +90,9 @@ describe('addHistoryPanel', () => {
 			(e) => e.panel_element.panel_id
 		);
 
-	it('inserts the contribution card before the product card', () => {
+	it('adds the contribution card last', () => {
 		const merged = addHistoryPanel(page, history);
-		expect(ids(merged)).toEqual(['health_card', 'contribution_card', 'product_card']);
+		expect(ids(merged)).toEqual(['health_card', 'product_card', 'contribution_card']);
 		expect(merged.product_history).toBeDefined();
 	});
 

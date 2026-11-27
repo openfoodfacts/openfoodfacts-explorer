@@ -87,6 +87,19 @@
 		{#if panel.elements != null}
 			<div>{@render elementList(panel.elements)}</div>
 		{/if}
+	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null && panel.expanded === false}
+		<Card>
+			<div class="collapse-arrow collapse">
+				<input type="checkbox" />
+				<div class="collapse-title px-0">
+					<h2 class="text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
+					{#if panel.title_element.subtitle != null}
+						<p class="mt-1 text-sm text-secondary">{panel.title_element.subtitle}</p>
+					{/if}
+				</div>
+				<div class="collapse-content px-0">{@render elementList(panel.elements)}</div>
+			</div>
+		</Card>
 	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null}
 		<Card>
 			<div class="flex items-center">
