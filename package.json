@@ -64,7 +64,7 @@
 		"@typescript-eslint/parser": "^8.72.2",
 		"cropperjs": "^2.3.1",
 		"cytoscape": "^3.35.0",
-		"daisyui": "5.7.50",
+		"daisyui": "5.8.1",
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.24.1",
