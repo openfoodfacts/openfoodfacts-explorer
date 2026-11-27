@@ -54,6 +54,7 @@
 	import { shouldBeContainer } from '#lib/layout.js';
 	import { resolve, resolveForUrl } from '#lib/paths.js';
 	import { formatUrlLocation, parseUrlLocation, stripUrlLocation } from '#lib/url-location.js';
+	import { patchRobotoffFetch } from '#lib/utils/patchRobotoffFetch.js';
 
 	// == Global website context setup ==
 	const websiteCtx = createWebsiteCtx();
@@ -154,8 +155,8 @@
 	setShortcutCtx(() => shortcuts);
 
 	// Load OpenFoodFacts Web Components
-
 	onMount(async () => {
+		patchRobotoffFetch();
 		await import('@openfoodfacts/openfoodfacts-webcomponents');
 	});
 
