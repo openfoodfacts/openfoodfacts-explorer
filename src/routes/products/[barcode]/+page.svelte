@@ -24,6 +24,7 @@
 	import RevisionBanner from './RevisionBanner.svelte';
 	import BarcodeInfo from '#lib/ui/BarcodeInfo.svelte';
 	import Prices from './Prices.svelte';
+	import HungerGamesCard from './HungerGamesCard.svelte';
 
 	import type { PageProps } from './$types';
 	import { userInfo } from '#lib/stores/user.js';
@@ -43,6 +44,7 @@
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import IconMdiLabel from '@iconify-svelte/mdi/label';
 	import IconMdiWarning from '@iconify-svelte/mdi/warning';
+	import IconMdiController from '@iconify-svelte/mdi/controller';
 
 	import type { Product } from '@openfoodfacts/openfoodfacts-nodejs';
 	import type { KnowledgePanels } from '#lib/api/knowledgepanels.js';
@@ -263,6 +265,11 @@
 				id: 'barcode-info',
 				label: $_('product.sections.barcode_info', { default: 'Barcode information' }),
 				icon: IconMdiBarcode
+			},
+			product.code != null && {
+				id: 'hunger-games',
+				label: $_('product.sections.hunger_games', { default: 'Hunger Games' }),
+				icon: IconMdiController
 			},
 			{
 				id: 'data-sources',
@@ -526,6 +533,9 @@
 			{#if product.code}
 				<div id="barcode-info">
 					<BarcodeInfo bind:this={barcodeInfo} {product} />
+				</div>
+				<div id="hunger-games">
+					<HungerGamesCard barcode={product.code} />
 				</div>
 			{/if}
 
