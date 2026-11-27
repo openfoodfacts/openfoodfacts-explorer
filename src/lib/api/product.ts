@@ -64,12 +64,10 @@ export function addHistoryPanel(
 	const elements = [...(panels.root?.elements ?? [])] as typeof historyRoot;
 
 	// A page load without the login token (anonymous, or the first server-side render) has no
-	// Contribution card in root, so add it above the product card like the server orders it.
+	// Contribution card in root, so add it last like the server orders it.
 	// A logged-in page load already has it, and must not get a second one.
 	const present = new Set(elements.map(panelId));
-	const missing = historyRoot.filter((e) => !present.has(panelId(e)));
-	const productCard = elements.findIndex((e) => panelId(e) === 'product_card');
-	elements.splice(productCard < 0 ? elements.length : productCard, 0, ...missing);
+	elements.push(...historyRoot.filter((e) => !present.has(panelId(e))));
 
 	return { ...panels, ...history, root: { ...panels.root, elements } };
 }
