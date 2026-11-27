@@ -5,21 +5,7 @@ import { requireInt } from '#lib/utils.js';
 import { getLocale } from '#lib/i18n/index.js';
 import type { FacetResponse, QueryFacetValue } from '@openfoodfacts/openfoodfacts-nodejs';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
-import { getOrDefault } from '#lib/api/taxonomy/types.js';
-
-// TODO: Select taxonomy facets for the current product domain; this list is hardcoded for food.
-const FACETS_WITH_TAXONOMY = new Set([
-	'categories',
-	'countries',
-	'labels',
-	'origins',
-	'ingredients',
-	'additives',
-	'allergens',
-	'languages',
-	'packaging',
-	'states'
-]);
+import { FACETS_WITH_TAXONOMY, getFacetLabel } from '#lib/api/taxonomy/facet-labels.js';
 
 type QueryResults = { count: number; values: QueryFacetValue[] };
 
@@ -44,9 +30,7 @@ async function toFacetResults(
 		tags: results.values.map(({ _id, count }) => ({
 			id: _id,
 			known: known(_id),
-			name:
-				getOrDefault(taxonomy?.[_id]?.name ?? {}, lang) ??
-				_id.replace(/^[a-z]{2}:/, '').replaceAll('-', ' '),
+			name: getFacetLabel(_id, taxonomy, lang),
 			products: count
 		}))
 	};
