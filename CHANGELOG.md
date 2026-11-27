@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.4.0](https://github.com/openfoodfacts/openfoodfacts-explorer/compare/v0.3.0...v0.4.0) (2026-11-27)
+
+
+### Features
+
+* **analytics:** enable Matomo link tracking ([2f783c1](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/2f783c166922f04d4530edeb25e52f1c7a49f17d))
+* **dashboard:** add the contributor dashboard - [#2245](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2245)⁠ ([deb4a02](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/deb4a02cda8595b50a7f4cbec3536dfe52466f2b))
+* **facets:** add breadcrumbs ([ce34f1f](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/ce34f1fb86ce6e5e38cf4be25bf322e5a16eb0c5))
+* **product:** show an old revision of a product from ?rev=N - [#2265](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2265)⁠ ([e951dcd](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/e951dcdf6c9c9ccfff198c703ee87dd56ffaa74c))
+* **product:** show storage, customer service and manufacturer note panels - [#2211](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2211)⁠ ([ad5c0c3](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/ad5c0c3a652c7fe92b752d2aed0066fa0d80830f))
+* **seo:** add product canonical URLs ([#2237](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2237)) ([986f864](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/986f864447d9947cc6c8d08f4de5f4dd489523f1))
+
+
+### Bug Fixes
+
+* **auth:** replace login callback history entry ([#2240](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2240)) ([1a957ce](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/1a957cef8ddcd2eb2bf07f5751b264c8936cccc8))
+* preflight knowledge panel references ([61059ac](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/61059ac6cdb5a2d25080e1ca55a3ac298fb19cd8))
+* **product:** keep the selected revision for attributes and Share ([#2275](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2275)) ([38a7b0a](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/38a7b0a91a942730417914f16d40d7c577af312b))
+* **product:** no attribute list under the score without preferences - [#2197](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2197)⁠ ([7a3446d](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/7a3446d78fdf5845cb4fa53cc285cec2b80083c0))
+* **seo:** derive twitter:domain from page url instead of hardcoding - [#2220](https://github.com/openfoodfacts/openfoodfacts-explorer/issues/2220)⁠ ([bca2527](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/bca2527aebc1fa2961289c5cb5955b7d415f868a))
+* **seo:** remove duplicate meta description from root layout ([8417591](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/8417591deee3c64c3c80ff1a8f18f0dc9ca41637))
+* use a consistent page title suffix ([74022ab](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/74022abc30787cc2be772ce2886f00d72833fa23))
+
+
+### Performance Improvements
+
+* **explore:** load popular products from query ([bb417f3](https://github.com/openfoodfacts/openfoodfacts-explorer/commit/bb417f34e96d5e9a4f4ec8e598404e7796d35fb5))
+
 ## [0.3.0](https://github.com/openfoodfacts/openfoodfacts-explorer/compare/v0.2.0...v0.3.0) (2026-11-19)
 
 
