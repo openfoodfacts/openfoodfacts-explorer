@@ -34,6 +34,7 @@
 	import IconMdiChartBar from '@iconify-svelte/mdi/chart-bar';
 	import IconMdiCog from '@iconify-svelte/mdi/cog';
 	import IconMdiDownload from '@iconify-svelte/mdi/download';
+	import IconMdiShareVariant from '@iconify-svelte/mdi/share-variant';
 	import IconMdiDatabase from '@iconify-svelte/mdi/database';
 	import type { PageProps } from './$types';
 	import FacetBar from './FacetBar.svelte';
@@ -43,6 +44,7 @@
 	import type { SearchResult } from '#lib/api/search.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { exportSearchResultsCsv } from '#lib/utils/searchCsvExport.js';
+	import { shareContent } from '#lib/utils/webShare.js';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	let { data }: PageProps = $props();
@@ -196,6 +198,27 @@
 		trackOffSiteSearch(mainSearchTerm, searchResult.count);
 		if (searchResult.count === 0) trackOffEvent('search', 'no_results');
 	});
+
+	async function shareSearch() {
+		await shareContent(
+			{
+				url: page.url.href,
+				title: $_('search.title', { values: { query: data.query } }),
+				text: $_('search.share_text', {
+					values: { query: mainSearchTerm },
+					default: 'Check out these search results on Open Food Facts: {query}'
+				})
+			},
+			{
+				onClipboard: () =>
+					toastCtx.success(
+						$_('product.toast.copied_link', { default: 'Link copied to clipboard!' })
+					),
+				onError: () =>
+					toastCtx.error($_('product.toast.failed_copy', { default: 'Failed to copy link' }))
+			}
+		);
+	}
 
 	async function handleExportCsv() {
 		if (isExportingCsv || visibleProducts.length === 0) return;
@@ -596,18 +619,24 @@
 						default: '{count} products displayed on this page'
 					})}
 				</p>
-				<button
-					type="button"
-					class="btn gap-2 btn-soft btn-sm max-sm:w-full"
-					onclick={handleExportCsv}
-					disabled={isExportingCsv}
-					aria-busy={isExportingCsv}
-				>
-					<IconMdiDownload class="h-5 w-5" />
-					{isExportingCsv
-						? $_('search.export_csv_exporting', { default: 'Exporting…' })
-						: $_('search.export_csv', { default: 'Export CSV' })}
-				</button>
+				<div class="flex gap-2 max-sm:flex-col">
+					<button type="button" class="btn gap-2 btn-soft btn-sm" onclick={shareSearch}>
+						<IconMdiShareVariant class="h-5 w-5" aria-hidden="true" />
+						{$_('search.share', { default: 'Share' })}
+					</button>
+					<button
+						type="button"
+						class="btn gap-2 btn-soft btn-sm max-sm:w-full"
+						onclick={handleExportCsv}
+						disabled={isExportingCsv}
+						aria-busy={isExportingCsv}
+					>
+						<IconMdiDownload class="h-5 w-5" />
+						{isExportingCsv
+							? $_('search.export_csv_exporting', { default: 'Exporting…' })
+							: $_('search.export_csv', { default: 'Export CSV' })}
+					</button>
+				</div>
 			</div>
 
 			<div class="max-md:me-4">
