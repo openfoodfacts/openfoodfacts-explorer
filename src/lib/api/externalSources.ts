@@ -2,8 +2,11 @@ import type { KnowledgePanels } from './knowledgepanels';
 import { createProductsApi } from './product';
 import { dev } from '$app/env';
 
-function getExternalSourcesResponse(fetch: typeof window.fetch) {
-	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources');
+function getExternalSourcesResponse(fetch: typeof window.fetch, lc: string) {
+	return createProductsApi(fetch).apiv3.client.GET('/api/v3/external_sources', {
+		// @ts-expect-error The SDK's endpoint definition does not yet include the lc query parameter.
+		params: { query: { lc } }
+	});
 }
 
 export type ExternalSource = NonNullable<
@@ -188,7 +191,7 @@ export async function getExternalKnowledgePanelRequests(
 	fetch: typeof window.fetch,
 	context: ExternalSourceProductContext
 ): Promise<ExternalKnowledgePanelBatch> {
-	const sources = await getExternalSources(fetch);
+	const sources = await getExternalSources(fetch, context.lc);
 	const sourceDiagnostics = sources.map((source) => ({
 		id: source.id,
 		issues: getExternalSourceEligibilityIssues(source, context)
@@ -238,9 +241,12 @@ export async function getExternalKnowledgePanels(
 }
 
 /** Fetch the ordered external source metadata from Product Opener v3. */
-export async function getExternalSources(fetch: typeof window.fetch): Promise<ExternalSource[]> {
+export async function getExternalSources(
+	fetch: typeof window.fetch,
+	lc: string
+): Promise<ExternalSource[]> {
 	try {
-		const { data, error } = await getExternalSourcesResponse(fetch);
+		const { data, error } = await getExternalSourcesResponse(fetch, lc);
 		if (error != null || data == null) {
 			console.warn('Failed to fetch external knowledge panel sources', error);
 			return [];
