@@ -41,3 +41,12 @@
 	--radius-field: 1rem;
 	--radius-box: 0.5rem;
 }
+
+/* Override Chrome's :-webkit-autofill colors using theme tokens.
+   Kept unlayered so it takes precedence over DaisyUI's .input box-shadow in @layer utilities. */
+:is(input, textarea, select):-webkit-autofill {
+	-webkit-text-fill-color: var(--color-base-content);
+	caret-color: var(--color-base-content);
+	box-shadow: 0 0 0 100vmax var(--color-base-100) inset;
+	background-clip: padding-box;
+}
