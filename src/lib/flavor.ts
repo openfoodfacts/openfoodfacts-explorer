@@ -51,3 +51,10 @@ export function getWebsiteFlavorFromParam(flavorParam: string | null): WebsiteFl
 	const flavor = WEBSITE_FLAVOR_ALIASES[flavorParam.trim().toLowerCase()];
 	return flavor;
 }
+
+/**
+ * Determines whether a product type corresponds to a cosmetic/beauty product.
+ */
+export function isCosmeticProduct(productType?: string | null): boolean {
+	return productType === 'beauty';
+}
