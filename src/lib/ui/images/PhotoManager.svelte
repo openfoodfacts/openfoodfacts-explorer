@@ -19,6 +19,7 @@
 	import type { ImageEditData } from '#lib/utils/imageEdit.js';
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import { trackOffEvent } from '#lib/analytics.js';
+	import { trackRefresh } from '#lib/utils/pendingRefresh.js';
 
 	import PhotoTypeSection from './PhotoTypeSection.svelte';
 	import PhotoEditDialog from './PhotoEditDialog.svelte';
@@ -251,7 +252,7 @@
 	};
 
 	function handleImageUploaded(imgId: number) {
-		refreshAll().then(() => {
+		trackRefresh(refreshAll()).then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
 			}, 1500);
@@ -285,7 +286,10 @@
 		try {
 			const { cropData, rotationAngle } = data;
 
-			await saveImageWithSelectAndCrop(imageData, cropData, rotationAngle);
+			// Track the request and the refresh as one operation, so saving the form waits for both
+			await trackRefresh(
+				saveImageWithSelectAndCrop(imageData, cropData, rotationAngle).finally(() => refreshAll())
+			);
 
 			toast.success($_('product.edit.images.toast.save_success'));
 			trackOffEvent('contribution', 'image_crop_saved', imageData.typeId);
@@ -404,8 +408,9 @@
 				image.imgid
 			);
 
-			await selectAndCropImagesV3(fetch, product.code, selectionData);
-			await refreshAll();
+			await trackRefresh(
+				selectAndCropImagesV3(fetch, product.code, selectionData).then(() => refreshAll())
+			);
 			toast.success($_('product.edit.images.toast.select_success'));
 		} catch (error) {
 			console.error('Error selecting image:', error);
