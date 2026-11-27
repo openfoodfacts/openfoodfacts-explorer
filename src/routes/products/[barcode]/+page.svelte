@@ -236,7 +236,7 @@
 			},
 			product.knowledge_panels?.health_card && {
 				id: 'health_card',
-				label: $_('product.sections.health', { default: 'Health' }),
+				label: $_('product.sections.health_card', { default: 'Health' }),
 				icon: IconMdiHeartPulse
 			},
 			product.knowledge_panels?.environment_card && {
