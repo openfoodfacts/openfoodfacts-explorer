@@ -22,6 +22,90 @@ function isLetter(character: string | undefined): boolean {
 	return character != null && LETTER_PATTERN.test(character);
 }
 
+/**
+ * Nutriment values are numbers, but the edit form stores an empty string while a field is being
+ * cleared. Normalise both shapes so the checks below never do maths on strings.
+ */
+function nutrimentNumber(value: unknown): number | null {
+	if (value == null || value === '') {
+		return null;
+	}
+
+	const numeric = typeof value === 'number' ? value : Number(String(value).replace(',', '.'));
+	return Number.isFinite(numeric) ? numeric : null;
+}
+
+const GRAMS_PER_UNIT: Record<string, number> = {
+	g: 1,
+	mg: 1e-3,
+	µg: 1e-6,
+	ug: 1e-6,
+	mcg: 1e-6,
+	μg: 1e-6
+};
+
+// Alcohol is usually declared in % vol, not in grams. 1 % vol is roughly
+// 0.789 g of ethanol per 100 ml, which is close enough to per 100 g.
+const GRAMS_PER_ALCOHOL_VOLUME_PERCENT = 0.789;
+const ALCOHOL_VOLUME_UNITS = new Set(['%vol', 'vol%', '%']);
+
+type GramAmount = { kind: 'grams'; grams: number } | { kind: 'missing' } | { kind: 'unknown-unit' };
+
+/*
+ * Converts nutrient values to grams before comparison.
+ * Missing units are treated as grams, while unsupported units are skipped.
+ */
+function gramAmount(product: Product, field: string): GramAmount {
+	const nutriments = product.nutriments as Record<string, unknown> | undefined;
+	const value = nutrimentNumber(nutriments?.[field]);
+
+	if (value == null) {
+		return { kind: 'missing' };
+	}
+
+	const rawUnit = String(nutriments?.[`${field}_unit`] ?? '')
+		.trim()
+		.toLowerCase()
+		.replace('μ', 'µ');
+	const factor = rawUnit === '' ? 1 : GRAMS_PER_UNIT[rawUnit];
+
+	if (factor != null) {
+		return { kind: 'grams', grams: value * factor };
+	}
+
+	// Beer and wine store alcohol as ABV, e.g. `alcohol: 5, alcohol_unit: '% vol'`.
+	// Without this, those products would skip the energy and macro-sum checks.
+	const compactUnit = rawUnit.replace(/\s+/g, '');
+	if (field === 'alcohol' && ALCOHOL_VOLUME_UNITS.has(compactUnit)) {
+		return { kind: 'grams', grams: value * GRAMS_PER_ALCOHOL_VOLUME_PERCENT };
+	}
+
+	return { kind: 'unknown-unit' };
+}
+
+/*
+ * Gram amounts for a group of fields, or `null` when any of them uses a unit we cannot convert.
+ * Missing values count as zero, which is how the aggregate checks have always treated them.
+ */
+function allGramAmounts(
+	product: Product,
+	fields: readonly string[]
+): Record<string, number> | null {
+	const amounts: Record<string, number> = {};
+
+	for (const field of fields) {
+		const amount = gramAmount(product, field);
+
+		if (amount.kind === 'unknown-unit') {
+			return null;
+		}
+
+		amounts[field] = amount.kind === 'grams' ? amount.grams : 0;
+	}
+
+	return amounts;
+}
+
 function containsKnownUnit(token: string, units: readonly string[]): boolean {
 	// Return true when the token contains a known unit as a standalone token.
 	for (const unit of units) {
@@ -85,45 +169,58 @@ export function getServingSizeValidationResult(
 
 const energyMismatchAnalysis: AnalysisFunc = (product) => {
 	const kcalToKjFactor = 4.184;
-	const energyKj = product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g'];
-	const energyKcal = product.nutriments?.['energy-kcal_100g'];
+	const energyKj = nutrimentNumber(
+		product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g']
+	);
+	const energyKcal = nutrimentNumber(product.nutriments?.['energy-kcal_100g']);
 
-	if (energyKj != null && energyKcal != null) {
-		// Convert kJ to kcal: 1 kcal = 4.184 kJ
-		const convertedKcal = energyKj / kcalToKjFactor;
-		const convertedKj = energyKcal * kcalToKjFactor;
-		const mismatch = Math.abs(convertedKcal - energyKcal) / ((convertedKcal + energyKcal) / 2);
-		if (mismatch > 0.1) {
-			return [
-				{
-					severity: 'warning',
-					field: 'energy',
-					title: 'Energy values in kJ and kcal differ by more than 10%',
-					desc:
-						`Either the kJ or kcal value is incorrect.` +
-						` ${energyKj.toFixed(2)} kJ ->` +
-						` ${convertedKcal.toFixed(2)} kcal;` +
-						` ${energyKcal.toFixed(2)} kcal ->` +
-						` ${convertedKj.toFixed(2)} kJ (difference: ${(mismatch * 100).toFixed(2)}%).`
-				}
-			];
-		}
+	if (energyKj == null || energyKcal == null) {
+		return [];
+	}
+
+	// Convert kJ to kcal: 1 kcal = 4.184 kJ
+	const convertedKcal = energyKj / kcalToKjFactor;
+	const convertedKj = energyKcal * kcalToKjFactor;
+	const mismatch = Math.abs(convertedKcal - energyKcal) / ((convertedKcal + energyKcal) / 2);
+
+	if (mismatch > 0.1) {
+		return [
+			{
+				severity: 'warning',
+				field: 'energy',
+				title: 'Energy values in kJ and kcal differ by more than 10%',
+				desc:
+					`Either the kJ or kcal value is incorrect.` +
+					` ${energyKj.toFixed(2)} kJ ->` +
+					` ${convertedKcal.toFixed(2)} kcal;` +
+					` ${energyKcal.toFixed(2)} kcal ->` +
+					` ${convertedKj.toFixed(2)} kJ (difference: ${(mismatch * 100).toFixed(2)}%).`
+			}
+		];
 	}
 	return [];
 };
 
 const energyFromMacronutrientsAnalysis: AnalysisFunc = (product) => {
-	const protein = product.nutriments?.['proteins'] ?? 0;
-	const carbs = product.nutriments?.['carbohydrates'] ?? 0;
-	const fat = product.nutriments?.['fat'] ?? 0;
-	const fiber = product.nutriments?.['fibers'] ?? 0;
-	const alcohol = product.nutriments?.['alcohol'] ?? 0;
+	const macros = allGramAmounts(product, ['proteins', 'carbohydrates', 'fat', 'fibers', 'alcohol']);
 
-	const calculatedKcal = protein * 4 + carbs * 4 + fat * 9 + fiber * 2 + alcohol * 7;
+	// A macro with an unknown unit makes the calculated energy meaningless.
+	if (macros == null) {
+		return [];
+	}
 
-	let energyKcal = product.nutriments?.['energy-kcal_100g'];
+	const calculatedKcal =
+		macros.proteins * 4 +
+		macros.carbohydrates * 4 +
+		macros.fat * 9 +
+		macros.fibers * 2 +
+		macros.alcohol * 7;
+
+	let energyKcal = nutrimentNumber(product.nutriments?.['energy-kcal_100g']);
 	if (energyKcal == null) {
-		const energyKj = product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g'];
+		const energyKj = nutrimentNumber(
+			product.nutriments?.['energy-kj_100g'] ?? product.nutriments?.['energy_100g']
+		);
 		if (energyKj != null) {
 			energyKcal = energyKj / 4.184;
 		}
@@ -154,14 +251,27 @@ const energyFromMacronutrientsAnalysis: AnalysisFunc = (product) => {
 };
 
 const sumOfMacroLessThan100g: AnalysisFunc = (product) => {
-	const protein = product.nutriments?.['proteins'] ?? 0;
-	const carbs = product.nutriments?.['carbohydrates'] ?? 0;
-	const fat = product.nutriments?.['fat'] ?? 0;
-	const fiber = product.nutriments?.['fibers'] ?? 0;
-	const alcohol = product.nutriments?.['alcohol'] ?? 0;
-	const salt = product.nutriments?.['salt'] ?? 0;
+	const macros = allGramAmounts(product, [
+		'proteins',
+		'carbohydrates',
+		'fat',
+		'fibers',
+		'alcohol',
+		'salt'
+	]);
 
-	const total = protein + carbs + fat + fiber + alcohol + salt;
+	// A macro with an unknown unit makes the total unreliable, so do not report a false error.
+	if (macros == null) {
+		return [];
+	}
+
+	const total =
+		macros.proteins +
+		macros.carbohydrates +
+		macros.fat +
+		macros.fibers +
+		macros.alcohol +
+		macros.salt;
 
 	if (total > 100) {
 		return [
@@ -191,38 +301,43 @@ const singleFieldLessThan100g: AnalysisFunc = (product) => {
 		'sugars'
 	] as const;
 	for (const field of fields) {
-		const value = product.nutriments?.[field] ?? 0;
-		if (value > 100) {
-			issues.push({
-				severity: 'error',
-				title: `The value of ${field} exceeds 100g`,
-				desc: `The amount of ${field} is ${value.toFixed(2)}g per 100g of product, which exceeds the maximum of 100g.`,
-				field: field
-			});
+		const amount = gramAmount(product, field);
+
+		if (amount.kind !== 'grams' || amount.grams <= 100) {
+			continue;
 		}
+
+		issues.push({
+			severity: 'error',
+			title: `The value of ${field} exceeds 100g`,
+			desc: `The amount of ${field} is ${amount.grams.toFixed(2)}g per 100g of product, which exceeds the maximum of 100g.`,
+			field: field
+		});
 	}
 	return issues;
 };
 
 function sugarsLessThanCarbs(product: Product): Issue[] {
-	const sugars = product.nutriments?.['sugars'] ?? 0;
-	const carbs = product.nutriments?.['carbohydrates'] ?? 0;
-	if (sugars > carbs) {
-		return [
-			{
-				title: 'Sugars cannot be greater than total carbohydrates',
-				desc:
-					`The amount of sugars` +
-					` (${sugars.toFixed(2)}g)` +
-					` exceeds the total carbohydrates` +
-					` (${carbs.toFixed(2)}g)` +
-					` per 100g of product.`,
-				severity: 'error',
-				field: 'sugars'
-			}
-		];
+	const sugars = gramAmount(product, 'sugars');
+	const carbs = gramAmount(product, 'carbohydrates');
+
+	if (sugars.kind !== 'grams' || carbs.kind !== 'grams' || sugars.grams <= carbs.grams) {
+		return [];
 	}
-	return [];
+
+	return [
+		{
+			title: 'Sugars cannot be greater than total carbohydrates',
+			desc:
+				`The amount of sugars` +
+				` (${sugars.grams.toFixed(2)}g)` +
+				` exceeds the total carbohydrates` +
+				` (${carbs.grams.toFixed(2)}g)` +
+				` per 100g of product.`,
+			severity: 'error',
+			field: 'sugars'
+		}
+	];
 }
 
 const analysisFunctions: AnalysisFunc[] = [
