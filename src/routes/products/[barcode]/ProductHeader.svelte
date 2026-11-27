@@ -13,6 +13,8 @@
 	import { getToastCtx } from '#lib/stores/toasts.js';
 	import Card from '#lib/ui/Card.svelte';
 	import ImageButton from '#lib/ui/ImageButton.svelte';
+	import ImageBackdrop from '#lib/ui/ImageBackdrop.svelte';
+	import { getFrontImage } from '#lib/ui/frontImage.js';
 	import AppStrip from './AppStrip.svelte';
 	import ProductMoreMenu from './ProductMoreMenu.svelte';
 
@@ -72,9 +74,9 @@
 		);
 	}
 
-	let frontImage = $derived(
-		(product.image_front_url as string | undefined) ?? product.image_front_small_url
-	);
+	let front = $derived(getFrontImage(product, lc || getLanguageCode(preferredLocale), 'display'));
+	let frontImage = $derived(front.src);
+	const frontImageDisplaySizes = '(min-width: 768px) 224px, 96px';
 
 	let frontKey = $derived(frontImage?.split('/').at(-1)?.split('.')[0]);
 	let frontImageUploader = $derived.by(() => {
@@ -132,15 +134,18 @@
 					<div
 						class="relative aspect-square overflow-hidden rounded-xl bg-white [&>div]:size-full [&>div_button]:size-full [&>div_img]:size-full [&>div_img]:object-contain [&>div>button>div]:size-full"
 					>
-						<img
+						<ImageBackdrop
 							src={frontImage}
-							alt=""
-							class="absolute inset-0 size-full scale-150 object-cover blur-sm"
-							aria-hidden="true"
+							imageSizes={front.imageSizes}
+							sizes={frontImageDisplaySizes}
+							loading="eager"
 						/>
 						<ImageButton
-							loading="eager"
 							src={frontImage}
+							imageSizes={front.imageSizes}
+							sizes={frontImageDisplaySizes}
+							loading="eager"
+							fetchpriority="high"
 							alt={product.product_name}
 							productCode={product.code}
 							caption={credit}

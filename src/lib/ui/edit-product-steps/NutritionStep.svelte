@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getSelectedImageSizes } from '../imageSizes.js';
 	import InfoTooltip from '../InfoTooltip.svelte';
 	import { _, locale } from '#lib/i18n/index.js';
 	import { getLanguageName } from '#lib/languages.js';
@@ -650,6 +651,7 @@
 					<div class="sticky top-4">
 						<ImageButton
 							src={nutritionImage ?? undefined}
+							imageSizes={getSelectedImageSizes(product, 'nutrition', code)}
 							alt={`Nutrition facts for ${getLanguageName(code)}`}
 							productCode={product.code}
 						/>

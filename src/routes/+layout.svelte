@@ -267,6 +267,10 @@
 <svelte:head>
 	<title>Open Food Facts</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	{#if IMAGE_HOST}
+		<!-- Product photos are <img> (no-cors), so no crossorigin attribute here -->
+		<link rel="preconnect" href={IMAGE_HOST} />
+	{/if}
 </svelte:head>
 
 {#if MatomoComponent}

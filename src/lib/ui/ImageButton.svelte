@@ -1,17 +1,34 @@
 <script lang="ts">
 	import { IMAGE_REPORT_URL } from '#lib/const.js';
 	import ImageModal from './ImageModal.svelte';
+	import OffImage from './OffImage.svelte';
+	import type { ImageSizes } from './imageSizes.js';
 	import IconMdiFlagOutline from '@iconify-svelte/mdi/flag-outline';
 
 	type Props = {
 		src?: string;
+		imageSizes?: ImageSizes;
 		alt?: string;
 		caption?: string;
 		rawImageId?: number;
 		productCode?: string;
+		/** Lazy by default; use `eager` for the above-the-fold front image. */
 		loading?: 'lazy' | 'eager';
+		fetchpriority?: 'high' | 'low' | 'auto';
+		/** Rendered width hint, see `OffImage`. */
+		sizes?: string;
 	};
-	let { src, alt, caption, rawImageId, productCode, loading = 'lazy' }: Props = $props();
+	let {
+		src,
+		imageSizes,
+		alt,
+		caption,
+		rawImageId,
+		productCode,
+		loading = 'lazy',
+		fetchpriority,
+		sizes = '(min-width: 768px) 256px, 100vw'
+	}: Props = $props();
 
 	let modal: ImageModal;
 
@@ -42,10 +59,13 @@
 	<button class="flex cursor-pointer items-center justify-center" {onclick}>
 		{#if src != null}
 			<div class="flex items-center justify-center">
-				<img
+				<OffImage
 					{src}
-					{alt}
+					{imageSizes}
+					alt={alt ?? ''}
+					{sizes}
 					{loading}
+					{fetchpriority}
 					class="max-h-full max-w-full cursor-pointer rounded-lg object-contain"
 				/>
 			</div>
