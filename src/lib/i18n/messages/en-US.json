@@ -150,7 +150,8 @@
 			"open_food_facts": "Open Food Facts",
 			"open_beauty_facts": "Open Beauty Facts",
 			"open_pet_food_facts": "Open Pet Food Facts",
-			"open_products_facts": "Open Products Facts"
+			"open_products_facts": "Open Products Facts",
+			"open_prices": "Open Prices"
 		},
 		"tagline": "A collaborative, free and open database of food products",
 		"tagline_break": "from around the world.",
@@ -179,6 +180,7 @@
 		},
 		"discover": {
 			"who_we_are": "Who we are",
+			"mobile_app": "Mobile app",
 			"blog": "Blog",
 			"code_of_conduct": "Code of Conduct",
 			"vision_mission_values_and_programs": "Vision, Mission, Values and Programs",
