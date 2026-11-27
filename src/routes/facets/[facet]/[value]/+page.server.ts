@@ -39,5 +39,8 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 			: Promise.resolve(null);
 
 	const [queryProducts, mapValues] = await Promise.all([queryProductsPromise, mapValuesPromise]);
+	if (queryProducts && queryProducts.count === 0) {
+		error(404, 'Facet value not found');
+	}
 	return { queryProducts, mapValues, searchOptions };
 };
