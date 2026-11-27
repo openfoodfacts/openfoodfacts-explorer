@@ -15,6 +15,8 @@
 	import ProductGrid from '#lib/ui/ProductGrid.svelte';
 	import PersonalizedSearchToggle from '#lib/ui/PersonalizedSearchToggle.svelte';
 	import Breadcrumbs from '#lib/ui/Breadcrumbs.svelte';
+	import FacetSliceMenu from '#lib/ui/facets/FacetSliceMenu.svelte';
+	import { facetPairsHref, searchWithoutPage } from '#lib/ui/facets/facet-links.js';
 
 	import type { PageProps } from './$types';
 	import {
@@ -32,27 +34,63 @@
 		searchOptions,
 		productAttributes,
 		distributionData,
-		mapFacet
+		mapFacet,
+		facetPairs
 	} = $derived(data);
 
 	const facetLabel = $derived(
 		facet.value.replace(/^[a-z]{2,3}:(.+)$/, (_, name: string) => name.replaceAll('-', ' '))
 	);
 
+	const isNested = $derived(facetPairs.length > 1);
+
+	// "Brands: Ferrero › Categories: en:spreads". The first value uses its display name.
+	const filtersLabel = $derived(
+		facetPairs
+			.map((pair, index) => {
+				const facetLabel = $_(`facets.names.${pair.facet}`, { default: pair.facet });
+				const valueLabel = index === 0 ? facet.value : pair.value;
+				return `${facetLabel}: ${valueLabel}`;
+			})
+			.join(' › ')
+	);
+
+	/** Link to this page without one of its filters, back on the first page. */
+	function removeFilterHref(index: number) {
+		const otherPairs = facetPairs.filter((_, pairIndex) => pairIndex !== index);
+		const params = new SvelteURLSearchParams(page.url.search);
+		params.delete('page');
+		const query = params.size > 0 ? `?${params}` : '';
+		return facetPairsHref(otherPairs, page.url.pathname, { query });
+	}
+
+	// Nested pages link the first value back to its own page
+	const breadcrumbs = $derived([
+		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
+		{
+			name: $_(`facets.names.${facet.name}`, { default: facet.name }),
+			href: resolve('/facets/[facet]', { facet: facet.name })
+		},
+		isNested
+			? { name: facetLabel, href: facetPairsHref([facetPairs[0]], page.url.pathname) }
+			: { name: facetLabel }
+	]);
+
 	// untrack: refetch only on facet/value change, not on page or sort.
 	const facetName = $derived(data.facet.name);
 	// The tag id, not data.facet.value, which is the display name on map facets.
 	const facetValue = $derived(page.params.value ?? '');
 	const noHierarchy = { parents: [] as HierarchyItem[], children: [] as HierarchyItem[] };
+	// Parent and child links lead to single facet pages, so nested pages leave them out.
 	const hierarchy = $derived.by(() => {
 		const [name, value] = [facetName, facetValue];
-		return browser
+		return browser && !isNested
 			? untrack(() => getHierarchy(fetch, name, value, getLocale()).catch(() => noHierarchy))
 			: Promise.resolve(noHierarchy);
 	});
 	const childCounts = $derived.by(() => {
 		const [name, value] = [facetName, facetValue];
-		return browser
+		return browser && !isNested
 			? untrack(() => getChildCounts(fetch, name, value, getLocale()))
 			: Promise.resolve(new Map<string, number>());
 	});
@@ -62,41 +100,90 @@
 	const CHILDREN_SHOWN = 8;
 	let childrenExpandedFor: string | null = $state(null);
 
-	let MapComponent: typeof import('../CountriesMap.svelte').default | null = $state(null);
+	let MapComponent: typeof import('../../CountriesMap.svelte').default | null = $state(null);
 	onMount(async () => {
-		MapComponent = (await import('../CountriesMap.svelte')).default;
+		MapComponent = (await import('../../CountriesMap.svelte')).default;
 	});
 </script>
 
-<Metadata
-	title={$_('facets.facet_value_website_title', {
-		values: { facet: facet.name, value: facetLabel }
-	})}
-	description={$_('facets.facet_value_website_description', {
-		values: { facet: facet.name, value: facetLabel }
-	})}
-/>
+{#if isNested}
+	<Metadata
+		title={$_('facets.nested_website_title', {
+			values: { filters: filtersLabel },
+			default: 'Exploring {filters}'
+		})}
+		description={$_('facets.nested_website_description', {
+			values: { filters: filtersLabel },
+			default: 'Products matching {filters} on Open Food Facts Explorer'
+		})}
+	/>
+{:else}
+	<Metadata
+		title={$_('facets.facet_value_website_title', {
+			values: { facet: facet.name, value: facetLabel }
+		})}
+		description={$_('facets.facet_value_website_description', {
+			values: { facet: facet.name, value: facetLabel }
+		})}
+	/>
+{/if}
 
-<Breadcrumbs
-	breadcrumbs={[
-		{ name: $_('navigation.explore_by', { default: 'Explore by' }), href: resolve('facets') },
-		{
-			name: $_(`facets.names.${facet.name}`, { default: facet.name }),
-			href: resolve('/facets/[facet]', { facet: facet.name })
-		},
-		{ name: facetLabel }
-	]}
-/>
+<Breadcrumbs {breadcrumbs} />
 
-<h2 class="mt-6 mb-8 flex items-center gap-2 text-3xl font-bold">
-	<span>{facetLabel}</span>
-</h2>
+<div class="mt-6 mb-8 flex items-start justify-between gap-4">
+	<h2 class="flex min-w-0 items-center gap-2 text-3xl font-bold">
+		{#if isNested}
+			<span
+				>{$_('facets.nested_heading', {
+					values: { filters: filtersLabel },
+					default: 'Exploring {filters}'
+				})}</span
+			>
+		{:else}
+			<span>{facetLabel}</span>
+		{/if}
+	</h2>
+	{#if data.canExploreBy}
+		<!-- A new menu for each page, so it starts closed and loads the values of that page -->
+		{#key page.url.pathname}
+			<FacetSliceMenu
+				{facetPairs}
+				pathname={page.url.pathname}
+				query={searchWithoutPage(page.url.search)}
+			/>
+		{/key}
+	{/if}
+</div>
+
+{#if isNested}
+	<div class="-mt-4 mb-8 flex flex-wrap gap-2">
+		{#each facetPairs as pair, index (pair.facet)}
+			{@const facetLabel = $_(`facets.names.${pair.facet}`, { default: pair.facet })}
+			{@const valueLabel = index === 0 ? facet.value : pair.value}
+			<a
+				class="badge h-auto gap-1 badge-outline py-1 hover:badge-secondary"
+				href={removeFilterHref(index)}
+				title={$_('facets.remove_filter', {
+					values: { filter: `${facetLabel}: ${valueLabel}` },
+					default: 'Remove {filter}'
+				})}
+			>
+				{facetLabel}: {valueLabel}
+				<span aria-hidden="true">✕</span>
+			</a>
+		{/each}
+	</div>
+{/if}
 
 {#snippet chips(items: HierarchyItem[], counts?: Map<string, number>)}
 	{#each items as item (item.id)}
 		<a
 			class="badge h-auto badge-outline py-1 hover:badge-secondary"
-			href={resolve('/facets/[facet]/[value]', { facet: facet.name, value: item.id })}
+			href={resolve('/facets/[facet]/[value]/[...rest]', {
+				facet: facet.name,
+				value: item.id,
+				rest: ''
+			})}
 		>
 			{item.name}
 			{#if counts?.has(item.name)}
@@ -282,7 +369,7 @@
 		pageUrl={(n) => {
 			const params = new SvelteURLSearchParams(page.url.search);
 			params.set('page', n.toString());
-			return `${resolve('/facets/[facet]/[value]', { facet: facet.name, value: facetValue })}?${params}`;
+			return facetPairsHref(facetPairs, page.url.pathname, { query: `?${params}` });
 		}}
 	/>
 </div>

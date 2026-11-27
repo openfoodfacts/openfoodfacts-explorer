@@ -967,7 +967,22 @@
 		"facet_value_website_title": "Exploring {facet}: {value}",
 		"facet_value_website_description": "Discover the {value} category on Open Food Facts Explorer.",
 		"facet_back_to_list": "Back to facets",
-		"facet_back_to_overview": "Back to {facet} overview"
+		"facet_back_to_overview": "Back to {facet} overview",
+		"nested_heading": "Exploring {filters}",
+		"nested_website_title": "Exploring {filters}",
+		"nested_website_description": "Products matching {filters} on Open Food Facts Explorer",
+		"remove_filter": "Remove {filter}",
+		"drilldown_heading": "Exploring {facet} for {filters}",
+		"drilldown_website_title": "Exploring {facet} for {filters}",
+		"drilldown_website_description": "{facet} of the products matching {filters} on Open Food Facts Explorer",
+		"drilldown_back": "Back to {filters}",
+		"drilldown_empty": "No values found for these products.",
+		"slice_by": "Slice by another facet",
+		"slice_title": "Narrow down with another facet",
+		"slice_search": "Search country, label, brand…",
+		"slice_see_all": "See all",
+		"slice_error": "Could not load the values.",
+		"slice_more": "More facets"
 	},
 	"landing": {
 		"title": "Open Food Facts Explorer",

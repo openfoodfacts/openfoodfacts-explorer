@@ -15,11 +15,16 @@ describe('query facet products', () => {
 				(request instanceof Request ? request.url : String(request)).endsWith('/count') ? 0 : []
 			)
 		);
-		await queryFacetProducts(fetch, 'https://query.example', 'categories', 'en:teas', {
-			page: 1,
-			pageSize: 5,
-			sortBy
-		});
+		await queryFacetProducts(
+			fetch,
+			'https://query.example',
+			{ categories_tags: 'en:teas' },
+			{
+				page: 1,
+				pageSize: 5,
+				sortBy
+			}
+		);
 		expect((await (fetch.mock.calls[0][0] as Request).clone().json()).sort).toEqual([
 			[expected, -1]
 		]);
@@ -36,8 +41,7 @@ describe('query facet products', () => {
 		const result = await queryFacetProducts(
 			fetch,
 			'https://query.example',
-			'categories',
-			'en:teas',
+			{ categories_tags: 'en:teas' },
 			{ page: 2, pageSize: 5, sortBy: 'nutriscore_score' }
 		);
 		expect(result?.count).toBe(13);
@@ -53,10 +57,10 @@ describe('query facet products', () => {
 	it('does not make a Query request when unconfigured or unsupported', async () => {
 		const fetch = vi.fn();
 		expect(
-			await queryFacetProducts(fetch, '', 'categories', 'en:teas', { page: 1, pageSize: 5 })
+			await queryFacetProducts(fetch, '', { categories_tags: 'en:teas' }, { page: 1, pageSize: 5 })
 		).toBeNull();
 		expect(
-			await queryFacetProducts(fetch, 'https://query.example', 'contributors', 'example', {
+			await queryFacetProducts(fetch, 'https://query.example', null, {
 				page: 1,
 				pageSize: 5
 			})

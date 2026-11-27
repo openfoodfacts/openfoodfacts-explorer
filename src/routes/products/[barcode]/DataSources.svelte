@@ -261,7 +261,11 @@
 			<p class="my-2 font-bold">{$_('product.datasources.done')}:</p>
 			{#each doneStates as state, i (i)}
 				<a
-					href={resolve('/facets/[facet]/[value]', { facet: 'states', value: state.key })}
+					href={resolve('/facets/[facet]/[value]/[...rest]', {
+						facet: 'states',
+						value: state.key,
+						rest: ''
+					})}
 					class="badge badge-secondary"
 				>
 					{state.label}</a
@@ -275,7 +279,11 @@
 			<p class="my-2 font-bold">{$_('product.datasources.toDo')}:</p>
 			{#each toDoStates as state, i (i)}
 				<a
-					href={resolve('/facets/[facet]/[value]', { facet: 'states', value: state.key })}
+					href={resolve('/facets/[facet]/[value]/[...rest]', {
+						facet: 'states',
+						value: state.key,
+						rest: ''
+					})}
 					class="badge badge-secondary"
 				>
 					{state.label}</a

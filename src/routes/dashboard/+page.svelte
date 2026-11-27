@@ -590,7 +590,11 @@
 				{#each stats as stat (stat.facet)}
 					<a
 						class="group flex items-center gap-4 rounded-2xl border border-base-content/10 bg-base-100 p-5 transition hover:border-primary/40 hover:bg-base-200"
-						href={resolve('/facets/[facet]/[value]', { facet: stat.facet, value: username })}
+						href={resolve('/facets/[facet]/[value]/[...rest]', {
+							facet: stat.facet,
+							value: username,
+							rest: ''
+						})}
 					>
 						<span class="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-base-200">
 							<img src={stat.icon} alt="" aria-hidden="true" class="w-8" />
