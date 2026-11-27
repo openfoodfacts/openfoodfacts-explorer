@@ -90,9 +90,11 @@
 	{:else if panel.type === 'card' && panel.title_element != null && panel.elements != null && panel.expanded === false}
 		<Card>
 			<div class="collapse-arrow collapse">
-				<input type="checkbox" />
+				<input type="checkbox" aria-labelledby="{id}-title" />
 				<div class="collapse-title ps-0">
-					<h2 class="text-2xl font-bold sm:text-4xl">{panel.title_element.title}</h2>
+					<h2 id="{id}-title" class="text-2xl font-bold sm:text-4xl">
+						{panel.title_element.title}
+					</h2>
 					{#if panel.title_element.subtitle != null}
 						<p class="mt-1 text-sm text-secondary">{panel.title_element.subtitle}</p>
 					{/if}
