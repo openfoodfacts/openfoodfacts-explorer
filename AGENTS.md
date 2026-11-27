@@ -98,7 +98,7 @@ src/
 - Branch off `main`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, etc.
 
-### Pull Requests
+### Issues
 - **Always fill in the Issue template completely** — every section, including the LLM disclosure.
 - Preferably, propose a sketch of how the feature could look like before and after
 - In the LLM disclosure section, state your agent name, model version, and how it was used (agentic / autocomplete / review) with the prompt you used
