@@ -250,7 +250,28 @@
 		};
 	};
 
-	function handleImageUploaded(imgId: number) {
+	function warnToReviewText(imageType: string) {
+		if (imageType === 'ingredients') {
+			toast.warning(
+				$_('product.edit.images.toast.review_ingredients_after_image_change', {
+					default:
+						'The ingredients photo changed. Please review the ingredients list to make sure it matches.'
+				})
+			);
+		}
+
+		if (imageType === 'nutrition') {
+			toast.warning(
+				$_('product.edit.images.toast.review_nutrition_after_image_change', {
+					default:
+						'The nutrition photo changed. Please review the nutrition facts to make sure they match.'
+				})
+			);
+		}
+	}
+
+	function handleImageUploaded(imgId: number, imageType: string) {
+		warnToReviewText(imageType);
 		refreshAll().then(() => {
 			setTimeout(() => {
 				openUploadedImage(imgId);
@@ -398,6 +419,9 @@
 		isSelectingImage = true;
 
 		try {
+			const previousImage = currentImages.find(
+				(currentImage) => currentImage.typeId === selectingImageSection
+			);
 			const selectionData = createSimpleImageSelection(
 				selectingImageSection,
 				activeLanguageCode,
@@ -407,6 +431,9 @@
 			await selectAndCropImagesV3(fetch, product.code, selectionData);
 			await refreshAll();
 			toast.success($_('product.edit.images.toast.select_success'));
+			if (previousImage?.imgid !== image.imgid) {
+				warnToReviewText(selectingImageSection);
+			}
 		} catch (error) {
 			console.error('Error selecting image:', error);
 			toast.error($_('product.edit.images.toast.select_error'));
