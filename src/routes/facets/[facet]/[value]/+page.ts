@@ -5,6 +5,7 @@ import { getBulkProductAttributesAndImages } from '#lib/api/bulk-product-details
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
 import { getLocale } from '#lib/i18n/index.js';
+import { facetSeo } from '#lib/canonical/facet.js';
 import { parseUrlLocation } from '#lib/url-location.js';
 import { getFacetDistribution, queryValuesToDistribution } from './map-facets';
 import { MAP_FACETS } from '../map-facets';
@@ -100,6 +101,7 @@ export const load: PageLoad = async ({ fetch, params, data, url }) => {
 		productAttributes: details.attributesByCode,
 		distributionData: distribution,
 		mapIsPageLimited: !mapValues,
-		mapFacet: mapFacet ?? null
+		mapFacet: mapFacet ?? null,
+		...facetSeo({ facet, value }, url, searchOptions.page)
 	};
 };

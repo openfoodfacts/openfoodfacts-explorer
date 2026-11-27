@@ -75,6 +75,7 @@
 	description={$_('facets.facet_value_website_description', {
 		values: { facet: facet.name, value: facetLabel }
 	})}
+	canonicalUrl={data.canonicalUrl}
 />
 
 <Breadcrumbs
