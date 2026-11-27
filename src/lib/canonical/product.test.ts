@@ -4,7 +4,7 @@ vi.mock('$app/env/public', () => ({
 	ORIGIN: 'https://explorer.example.org',
 	SEO_CANONICAL_TARGET: 'explorer'
 }));
-import { productOpenerCanonicalUrl, productSeo } from './product-canonical.js';
+import { productOpenerCanonicalUrl, productSeo } from './product.js';
 
 const product = {
 	code: '3017620422003',

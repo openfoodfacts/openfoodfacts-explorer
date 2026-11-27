@@ -6,6 +6,7 @@ import { getLocale } from '#lib/i18n/index.js';
 import type { FacetResponse, QueryFacetValue } from '@openfoodfacts/openfoodfacts-nodejs';
 import { getTaxo } from '#lib/api/taxonomy/api.js';
 import { getOrDefault } from '#lib/api/taxonomy/types.js';
+import { facetSeo } from '#lib/canonical/facet.js';
 
 // TODO: Select taxonomy facets for the current product domain; this list is hardcoded for food.
 const FACETS_WITH_TAXONOMY = new Set([
@@ -87,7 +88,8 @@ export const load: PageLoad = async ({ fetch, params, url, data }) => {
 			pages,
 			pageSize,
 			page,
-			knowledgePanels: (await kp).knowledge_panels
+			knowledgePanels: (await kp).knowledge_panels,
+			...facetSeo({ facet }, url, page)
 		};
 	} catch (e) {
 		throw error(500, 'An error occurred while fetching the facet data', {

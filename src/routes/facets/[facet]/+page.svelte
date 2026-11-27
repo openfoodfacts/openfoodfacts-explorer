@@ -35,6 +35,7 @@
 		default: 'Discover {facet} on Open Food Facts Explorer.',
 		values: { facet: facetName }
 	})}
+	canonicalUrl={data.canonicalUrl}
 />
 
 <Breadcrumbs

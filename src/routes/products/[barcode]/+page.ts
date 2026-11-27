@@ -5,7 +5,7 @@ import { createProductsApi } from '#lib/api.js';
 
 import { getLanguageCode } from '#lib/settings.js';
 import { getLocale } from '#lib/i18n/index.js';
-import { productSeo } from '#lib/product-canonical.js';
+import { productSeo } from '#lib/canonical/product.js';
 import { parseUrlLocation } from '#lib/url-location.js';
 import {
 	ERR_INVALID_BARCODE,
