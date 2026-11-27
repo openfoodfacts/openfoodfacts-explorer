@@ -6,6 +6,7 @@
 	import { page } from '$app/state';
 	import Logo from './Logo.svelte';
 	import { shouldBeContainer } from '#lib/layout.js';
+	import { PRO_PLATFORM_URL } from '#lib/const.js';
 
 	import IconSimpleIconsX from '@iconify-svelte/simple-icons/x';
 	import IconSimpleIconsMastodon from '@iconify-svelte/simple-icons/mastodon';
@@ -72,7 +73,7 @@
 
 	const LINKS_CONTRIBUTE = $derived([
 		{
-			url: 'https://world.pro.openfoodfacts.org/',
+			url: PRO_PLATFORM_URL,
 			key: 'footer.links.producers',
 			default: 'Producers Platform'
 		},
