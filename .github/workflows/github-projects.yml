@@ -163,3 +163,9 @@ jobs:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           labeled: '🤖 Robotoff'
           label-operator: OR
+      - uses: actions/add-to-project@v2.0.1
+        with:
+          project-url: https://github.com/orgs/openfoodfacts/projects/162 # Add issue to the 3rd party knowledge panels project
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          labeled: '3rd party knowledge panels'
+          label-operator: OR
