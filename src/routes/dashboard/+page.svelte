@@ -169,7 +169,9 @@
 	// Anonymous visitors are sent to the login page and come back here afterwards.
 	onMount(() => {
 		if (!$userInfo) {
-			window.location.href = `${resolve('oauth/login')}?redirect=${encodeURIComponent(resolve('/dashboard'))}`;
+			window.location.replace(
+				`${resolve('oauth/login')}?redirect=${encodeURIComponent(resolve('/dashboard'))}`
+			);
 		}
 	});
 
