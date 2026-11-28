@@ -1,59 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/state';
-
-	import { saveAuthTokens } from '#lib/stores/auth.js';
-	import { goto } from '#lib/navigation.js';
 	import { onMount } from 'svelte';
+
+	import { completeLoginCallback } from '#lib/auth/login.js';
+	import { goto } from '#lib/navigation.js';
 	import { resolve } from '#lib/paths.js';
-	import { createKeycloakApi } from '#lib/api.js';
-	import { getSafeRedirectUrl } from '#lib/utils.js';
-	import { trackOffEvent } from '#lib/analytics.js';
 
 	async function doPkceExchange() {
 		const url = new URL(page.url.href);
-
-		const returnedState = url.searchParams.get('state');
-		const storedState = localStorage.getItem('authState');
-
-		if (!returnedState || returnedState !== storedState) {
-			console.error('State validation failed');
-			throw new Error('Authentication failed: Invalid state parameter');
-		}
-
-		localStorage.removeItem('authState');
-
-		const verifier = localStorage.getItem('verifier');
-		const code = url.searchParams.get('code');
-
-		if (!verifier) {
-			console.error('Missing PKCE verifier in localStorage');
-			throw new Error('Authentication failed: Missing PKCE verifier');
-		}
-		if (!code) {
-			console.error('Missing authorization code in URL');
-			throw new Error('Authentication failed: Missing authorization code');
-		}
-
-		try {
-			const jwt = await createKeycloakApi(fetch, url).exchangeCode({
-				code,
-				verifier
-			});
-			localStorage.removeItem('verifier');
-			saveAuthTokens(jwt);
-			trackOffEvent('account', 'login_succeeded');
-
-			const redirectUrl = localStorage.getItem('authRedirect');
-			localStorage.removeItem('authRedirect');
-
-			// Verify the destination is same-origin
-			const targetPath = getSafeRedirectUrl(redirectUrl, url.origin);
-
-			await goto(targetPath, { replaceState: true });
-		} catch (error) {
-			console.error('Token exchange failed:', error);
-			throw new Error('Authentication failed: Token exchange error', { cause: error });
-		}
+		const { targetPath } = await completeLoginCallback(url, fetch);
+		await goto(targetPath, { replaceState: true });
 	}
 
 	let loginResult: Promise<void> | null = $state(null);
